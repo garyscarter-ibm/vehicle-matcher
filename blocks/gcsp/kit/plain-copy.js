@@ -130,11 +130,11 @@ const SENTENCES = {
   'licence-unconfirmed': () => 'Your licence details still need confirming.',
   'licence-not-valid-at-collection': () => 'Your licence is not valid on the collection date.',
   'locally-excluded': () => 'You have ruled this car out.',
-  'feedback-similar': () => 'Like the current car you rated highly.',
-  'feedback-improvement': (e) => keyList(e.keys) ? `Better than your current car for ${keyList(e.keys)}.` : 'Better than your current car on your preferences.',
+  'feedback-similar': () => 'Similar to your current car, which you rated highly.',
+  'feedback-improvement': (e) => keyList(e.keys) ? `Better than your current car for ${keyList(e.keys)}.` : 'Better than your current car for your preferences.',
   'same-again-match': () => 'The same model as your current car, as you asked.',
-  'feedback-similar-omitted': () => 'Too like the current car you rated low.',
-  'feedback-not-similar-or-better': () => 'Not like your current car, and not better on your preferences.',
+  'feedback-similar-omitted': () => 'Too similar to your current car, which you rated poorly.',
+  'feedback-not-similar-or-better': () => 'Neither similar to your current car nor better on your preferences.',
   'same-again-different': () => 'Not the same model as your current car.',
 };
 

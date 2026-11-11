@@ -55,15 +55,15 @@ test('mapped sentences carry the right facts', () => {
 
 test('current-car feedback codes read as their own sentences, never the generic fallback', () => {
   const t = (code, kind, keys) => reasonText({ code, keys }, kind);
-  assert.equal(t('feedback-similar', 'reasons'), 'Like the current car you rated highly.');
+  assert.equal(t('feedback-similar', 'reasons'), 'Similar to your current car, which you rated highly.');
   assert.equal(t('feedback-improvement', 'reasons', ['sportiness']), 'Better than your current car for sportiness.');
   assert.equal(t('feedback-improvement', 'reasons', ['sportiness', 'economy']), 'Better than your current car for sportiness and economy.');
   assert.equal(t('feedback-improvement', 'reasons', ['sportiness', 'comfort', 'size']), 'Better than your current car for sportiness, comfort and size.');
-  assert.equal(t('feedback-improvement', 'reasons', []), 'Better than your current car on your preferences.');
-  assert.equal(t('feedback-improvement', 'reasons', [7, null]), 'Better than your current car on your preferences.');
+  assert.equal(t('feedback-improvement', 'reasons', []), 'Better than your current car for your preferences.');
+  assert.equal(t('feedback-improvement', 'reasons', [7, null]), 'Better than your current car for your preferences.');
   assert.equal(t('same-again-match', 'reasons'), 'The same model as your current car, as you asked.');
-  assert.equal(t('feedback-similar-omitted', 'blockers'), 'Too like the current car you rated low.');
-  assert.equal(t('feedback-not-similar-or-better', 'blockers'), 'Not like your current car, and not better on your preferences.');
+  assert.equal(t('feedback-similar-omitted', 'blockers'), 'Too similar to your current car, which you rated poorly.');
+  assert.equal(t('feedback-not-similar-or-better', 'blockers'), 'Neither similar to your current car nor better on your preferences.');
   assert.equal(t('same-again-different', 'blockers'), 'Not the same model as your current car.');
 });
 

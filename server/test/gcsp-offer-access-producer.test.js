@@ -230,7 +230,7 @@ test('actual allocation under a saved positive rating pins the feedback reason a
   assert.match(dto.quote.revisions.feedback, /^employee\.currentCarFeedback\.v1@/);
   const card = toOfferPresentation({ status: 'ok', value: dto }).value.card.members[0];
   const texts = card.decision.reasons.map((r) => r.text);
-  assert.ok(texts.includes('Like the current car you rated highly.'), texts.join(' | '));
+  assert.ok(texts.includes('Similar to your current car, which you rated highly.'), texts.join(' | '));
   assert.ok(!texts.includes('This car meets one of your scheme\'s checks.'), texts.join(' | '));
   assert.equal(card.provenance.revisions.feedback, dto.quote.revisions.feedback);
   // A later negative rating changes the saved brief, not the offer already made.
