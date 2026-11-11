@@ -33,7 +33,7 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   // One synthetic ordering upstream confirms supply and releases it on top of the run's chosen stock source.
   const upstream = createDemoUpstream();
   const environmentId = env.GCSP_ENVIRONMENT_ID || defaultEnvironmentId;
-  // FUCQ-379 follow-up: one process owns the hosted database, so reads trust its cache for 2 s after its own commits.
+  // FUCQ-379 follow-up: one process owns the hosted database, so reads trust a cache entry for 2 s after it was checked or committed.
   // GCSP_PG_READ_TRUST_MS=0 restores a database check before every read.
   const trust = Number(env.GCSP_PG_READ_TRUST_MS ?? 2000);
   const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream, { policy: deps.policy }), production: upstream.production,
