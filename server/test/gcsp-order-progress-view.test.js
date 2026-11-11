@@ -101,7 +101,7 @@ test('current stage carries aria-current, its owner and its next step; the order
   const node = view('waiting-sales-manager');
   const current = node.querySelectorAll('[aria-current="step"]'); assert.equal(current.length, 1);
   assert.match(current[0].textContent, /Sales-manager approval/); assert.match(current[0].textContent, /With the sales manager/); assert.match(current[0].textContent, /Next: Sales-manager decision/);
-  assert.match(node.textContent, /BMW i4 eDrive40 M Sport/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
+  assert.match(node.textContent, /BMW 3 Series Saloon 320i/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
   assert.match(node.textContent, /No image for this car yet/);
   assert.match(view('waiting-hr').querySelector('[aria-current="step"]').textContent, /With HR/);
 });
@@ -292,7 +292,7 @@ test('return plan is its own section, shows the current car unchanged in every s
     const plan = section(node, 'return'); assert.ok(plan, name);
     assert.equal(plan.closest('.gcsp-order-handover'), null, name);
     assert.match(plan.querySelector('h2').textContent, /Returning your current car/);
-    assert.match(plan.textContent, /BMW 320i Touring/, name); assert.match(plan.textContent, /320i M Sport Touring/, name);
+    assert.match(plan.textContent, /BMW 3 Series Touring 320i/, name); assert.match(plan.textContent, /320i M Sport Touring/, name);
     assert.match(plan.textContent, /stays yours until it is returned/, name);
     assert.doesNotMatch(section(node, 'handover').textContent, /return|BMW 320i/i, name);
     document.body.replaceChildren();
@@ -347,7 +347,7 @@ const factOf = (node, label) => facts(node).find(([l]) => l === label)?.[1];
 test('return outcome: returned reads Returned with the new car as current, the old car returned and a synthetic reference', () => {
   const plan = section(view('return-returned', callbacks(log())), 'return');
   assert.match(said(plan), /^Returned: 12 Nov 2026, 10:30$/); assert.doesNotMatch(above(plan), /Return booked|Return requested|Return missed|Not booked yet/);
-  assert.equal(factOf(plan, 'Current car'), 'BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'Returned car'), 'BMW 320i Touring');
+  assert.equal(factOf(plan, 'Current car'), 'BMW 3 Series Saloon 320i'); assert.equal(factOf(plan, 'Returned car'), 'BMW 3 Series Touring 320i');
   assert.equal(factOf(plan, 'VIN'), undefined); assert.equal(factOf(plan, 'Car to return'), undefined); assert.equal(factOf(plan, 'Configuration'), undefined);
   assert.equal(factOf(plan, 'Return reference'), 'SYN-RET-0001'); assert.equal(factOf(plan, 'Return place'), 'Ashdown BMW');
   assert.equal(factOf(plan, 'Owner'), 'Retailer'); assert.match(factOf(plan, 'Next step'), /returned\. Nothing more is needed/);
@@ -364,7 +364,7 @@ test('return outcome: the new car falls back to "Your new car" without a host na
 
 test('return outcome: returned before the handover has no current car and keeps the handover separate', () => {
   const node = view('return-returned-first', callbacks(log())); const plan = section(node, 'return');
-  assert.equal(factOf(plan, 'Current car'), 'None'); assert.equal(factOf(plan, 'Returned car'), 'BMW 320i Touring');
+  assert.equal(factOf(plan, 'Current car'), 'None'); assert.equal(factOf(plan, 'Returned car'), 'BMW 3 Series Touring 320i');
   assert.match(said(plan), /^Returned: 12 Nov 2026, 10:30$/); assert.doesNotMatch(plan.textContent, /stays yours until it is returned/);
   assert.match(section(node, 'handover').textContent, /Booked: 8 Nov 2026, 09:00/); assert.doesNotMatch(section(node, 'handover').textContent, /Returned|Return/);
 });
@@ -372,7 +372,7 @@ test('return outcome: returned before the handover has no current car and keeps 
 test('return outcome: missed reads Return missed with the scheme team, keeps the held car as current and offers no action', () => {
   const plan = section(view('return-missed', callbacks(log())), 'return');
   assert.match(said(plan), /^Return missed: 12 Nov 2026, 09:00$/); assert.doesNotMatch(above(plan), /Returned|Return booked|Return reference/);
-  assert.equal(factOf(plan, 'Current car'), 'BMW 320i Touring'); assert.equal(factOf(plan, 'Configuration'), '320i M Sport Touring');
+  assert.equal(factOf(plan, 'Current car'), 'BMW 3 Series Touring 320i'); assert.equal(factOf(plan, 'Configuration'), '320i M Sport Touring');
   assert.match(plan.textContent, /stays yours until it is returned/); assert.equal(factOf(plan, 'Owner'), 'Scheme team');
   assert.match(factOf(plan, 'Next step'), /scheme team will contact you to rearrange the return/); assert.equal(plan.querySelector('button'), null);
   assert.match([...plan.querySelectorAll('li')].map((n) => n.textContent).join(' '), /Return missed/);
@@ -382,8 +382,8 @@ test('return outcome: missed reads Return missed with the scheme team, keeps the
 
 test('return outcome: a confirmed handover with the return still booked shows the new car, its VIN and the car to return, not Returned', () => {
   const plan = section(view('return-handover-complete', callbacks(log())), 'return');
-  assert.equal(factOf(plan, 'Current car'), 'BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'VIN'), 'ZZSYNTHETICVIN0001');
-  assert.equal(factOf(plan, 'Car to return'), 'BMW 320i Touring'); assert.equal(factOf(plan, 'Returned car'), undefined);
+  assert.equal(factOf(plan, 'Current car'), 'BMW 3 Series Saloon 320i'); assert.equal(factOf(plan, 'VIN'), 'ZZSYNTHETICVIN0001');
+  assert.equal(factOf(plan, 'Car to return'), 'BMW 3 Series Touring 320i'); assert.equal(factOf(plan, 'Returned car'), undefined);
   assert.match(said(plan), /^Return booked: 12 Nov 2026, 09:00$/); assert.doesNotMatch(above(plan), /Returned|Return missed|stays yours until it is returned/);
 });
 
@@ -401,7 +401,7 @@ test('return outcome: requested, proposed and booked returns never read Returned
   for (const name of ['return-unavailable', 'return-not-planned', 'return-requested', 'return-change-proposed', 'return-scheduled', 'return-buddy-home']) {
     const plan = section(view(name), 'return'); document.body.replaceChildren();
     assert.doesNotMatch(above(plan), /Returned|Return missed|VIN|Car to return|Return reference|None/, name);
-    assert.deepEqual(facts(plan).slice(0, 2), [['Current car', 'BMW 320i Touring'], ['Configuration', '320i M Sport Touring']], name);
+    assert.deepEqual(facts(plan).slice(0, 2), [['Current car', 'BMW 3 Series Touring 320i'], ['Configuration', '320i M Sport Touring']], name);
     assert.match(plan.textContent, /stays yours until it is returned/, name);
   }
 });
@@ -440,7 +440,7 @@ test('a section that fails keeps its own line and the other sections still rende
   p.stages = { status: 'forbidden', reason: 'x' }; p.appointment = { status: 'not-found' }; p.returnPlan = { status: 'unavailable' };
   const failed = orderProgressBody({ progress: p, car: fixtures.car });
   assert.match(section(failed, 'stages').textContent, /Order progress is not available to you\./);
-  assert.match(section(failed, 'stages').textContent, /BMW i4/);
+  assert.match(section(failed, 'stages').textContent, /BMW 3 Series Saloon/);
   assert.match(section(failed, 'handover').textContent, /No handover details found for this order\./);
   assert.match(section(failed, 'return').textContent, /Return plan unavailable/);
   assert.match(section(failed, 'documents').textContent, /Vehicle agreement/);

@@ -7,7 +7,7 @@ import { orderProgressFixtures } from '../../blocks/gcsp/order-progress/fixtures
 const { states } = orderProgressFixtures();
 const fixture = states['appointment-requested'];
 const orderUuid = fixture.stages.value.orderUuid;
-const NAME = 'Synthetic 3 Series Saloon 320i';
+const NAME = 'BMW 3 Series Saloon 320i';
 const dom = new JSDOM('<!doctype html><body><gcsp-order-progress brand="bmw" data-live></gcsp-order-progress></body>', { url: 'https://example.test/', pretendToBeVisual: true });
 const { window } = dom;
 for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements', 'location']) Object.defineProperty(globalThis, key, { value: window[key], configurable: true, writable: true });
