@@ -497,3 +497,159 @@ test('without a policy projection the score is absent, and the editor still work
   const e = again(); delete e.value.context.accountPreferences.understanding;
   const { controller } = harness(e); await controller.load(); assert.equal(score(controller), null); assert.equal(lane(controller).available, true);
 });
+
+// Buddy engagement (FUCQ-370): the lane shares the queue's versions and never runs ahead of unsent choices.
+const buddy = (state = 'disengaged', remaining = 0, extra = {}) => ({ state, reason: null, permissionVersion: 1, minimumCategories: 3, considered: 3 - remaining,
+  remaining, sameAgain: false, canEngage: state === 'disengaged' && remaining === 0, ...extra });
+const withBuddy = (outcome, view) => { outcome.value.initial.buddy = view; return outcome; };
+function engagementHarness(view = buddy(), categories = {}) {
+  const calls = []; const saves = []; const answers = [];
+  const transport = {
+    loadEditor: async () => withBuddy(editor(categories), structuredClone(view)),
+    savePreferences: (input) => { const d = deferred(); saves.push({ input: structuredClone(input), answer: (r) => d.resolve(r) }); return d.promise; },
+    engage: (input) => { calls.push(['engage', structuredClone(input)]); const d = deferred(); answers.push(d); return d.promise; },
+    disengage: (input) => { calls.push(['disengage', structuredClone(input)]); const d = deferred(); answers.push(d); return d.promise; },
+  };
+  let serial = 0;
+  const controller = createAccountPreferencesController({ transport, createCommandId: (kind) => `${kind}:${++serial}` });
+  return { controller, calls, saves, answers };
+}
+const engagedOk = (view, versions = {}) => ({ status: 'ok', value: { briefVersion: 2, draftVersion: 1, ...versions, buddy: view } });
+
+test('engage sends one request with the current versions, shows pending, then the success copy and the engaged state', async () => {
+  const { controller, calls, answers } = engagementHarness(buddy(), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load();
+  assert.equal(controller.snapshot().buddy.state, 'disengaged');
+  controller.engage(); controller.engage(); await settle();
+  assert.equal(calls.length, 1, 'a repeated click while pending does nothing');
+  assert.deepEqual(calls[0], ['engage', { commandId: 'engage:1', expectedBriefVersion: 1, expectedDraftVersion: 0 }]);
+  let view = controller.snapshot();
+  assert.equal(view.buddy.pending, 'engage'); assert.equal(view.buddy.state, 'disengaged', 'pending never reads as engaged');
+  assert.deepEqual(view.status, { kind: 'pending', text: 'Engaging Buddy.' });
+  answers[0].resolve(engagedOk(buddy('engaged'))); await settle();
+  view = controller.snapshot();
+  assert.equal(view.buddy.state, 'engaged'); assert.equal(view.buddy.pending, null); assert.equal(view.briefVersion, 2); assert.equal(view.draftVersion, 1);
+  assert.deepEqual(view.status, { kind: 'saved', text: 'Buddy engaged. Your preferences will guide the search.' });
+  controller.disengage(); await settle();
+  assert.deepEqual(calls[1], ['disengage', { commandId: 'disengage:2', expectedBriefVersion: 2, expectedDraftVersion: 1 }]);
+  assert.equal(controller.snapshot().status.text, 'Disengaging Buddy.');
+  answers[1].resolve(engagedOk(buddy('disengaged'), { briefVersion: 3, draftVersion: 2 })); await settle();
+  assert.equal(controller.snapshot().buddy.state, 'disengaged'); assert.equal(controller.snapshot().status.text, 'Buddy disengaged. Your preferences are kept.');
+});
+
+test('under the minimum engage sends nothing and asks the exact copy with a status focus hint', async () => {
+  const { controller, calls } = engagementHarness(buddy('disengaged', 2), { body: considered(['estate']) });
+  await controller.load(); controller.engage(); await settle();
+  assert.equal(calls.length, 0);
+  const view = controller.snapshot();
+  assert.equal(view.status.kind, 'failed'); assert.equal(view.status.text, 'Choose 2 more categories to engage Buddy. Your preferences save automatically.');
+  assert.equal(view.status.focus, 'status');
+  const one = engagementHarness(buddy('disengaged', 1)); await one.controller.load(); one.controller.engage();
+  assert.equal(one.controller.snapshot().status.text, 'Choose 1 more category to engage Buddy. Your preferences save automatically.');
+});
+
+test('the server refusing for the minimum adopts its remaining count and shows the same copy', async () => {
+  const { controller, answers } = engagementHarness(buddy(), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load(); controller.engage(); await settle();
+  answers[0].resolve({ status: 'invalid', code: 'engagement-minimum', remaining: 1, considered: 2, minimumCategories: 3 }); await settle();
+  assert.equal(controller.snapshot().buddy.remaining, 1);
+  assert.equal(controller.snapshot().status.text, 'Choose 1 more category to engage Buddy. Your preferences save automatically.');
+  assert.equal(controller.snapshot().status.focus, 'status');
+});
+
+test('an unsent or failed autosave makes engagement wait, and it never goes out on older choices', async () => {
+  const { controller, calls, saves } = engagementHarness(buddy());
+  await controller.load();
+  controller.open('comfort'); await settle();
+  assert.equal(controller.snapshot().buddy.waiting, true);
+  controller.engage(); await settle();
+  assert.equal(calls.length, 0, 'engage waits while the save is in flight');
+  saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
+  controller.engage(); await settle();
+  assert.equal(calls.length, 0, 'engage waits while the save has failed');
+  assert.equal(controller.snapshot().buddy.waiting, true);
+  controller.retry(); await settle();
+  saves[1].answer(ok(1, { comfort: considered(50) })); await settle();
+  assert.equal(controller.snapshot().buddy.waiting, false);
+});
+
+test('a lost transport answer retries under the same command ID; a later success clears the failure', async () => {
+  const { controller, calls, answers } = engagementHarness(buddy(), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load(); controller.engage(); await settle();
+  answers[0].resolve({ status: 'unavailable', retryable: true }); await settle();
+  let view = controller.snapshot();
+  assert.equal(view.buddy.failed, true); assert.equal(view.buddy.state, 'disengaged');
+  assert.deepEqual(view.status, { kind: 'failed', text: 'Buddy was not engaged. Try again.' });
+  controller.engage(); await settle();
+  assert.equal(calls[1][1].commandId, calls[0][1].commandId);
+  answers[1].resolve(engagedOk(buddy('engaged'))); await settle();
+  view = controller.snapshot(); assert.equal(view.buddy.failed, false); assert.equal(view.buddy.state, 'engaged');
+});
+
+test('a conflict carrying buddy adopts it without a false success; stale-version reloads', async () => {
+  const { controller, answers } = engagementHarness(buddy(), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load(); controller.engage(); await settle();
+  answers[0].resolve({ status: 'conflict', reason: 'already-engaged', buddy: buddy('engaged') }); await settle();
+  const view = controller.snapshot();
+  assert.equal(view.buddy.state, 'engaged'); assert.notEqual(view.status.kind, 'saved'); assert.notEqual(view.status.kind, 'failed');
+  let loads = 0; const calls = [];
+  const transport = { loadEditor: async () => { loads += 1; return withBuddy(editor(), buddy()); }, savePreferences: async () => ({ status: 'ok' }),
+    engage: async (input) => { calls.push(input); return { status: 'stale-version', action: 'refresh' }; } };
+  const stale = createAccountPreferencesController({ transport, createCommandId: () => 'engage:x' });
+  await stale.load(); stale.engage(); await settle(); await settle();
+  assert.equal(loads, 2, 'the readback reconciles'); assert.equal(stale.snapshot().buddy.pending, null);
+});
+
+test('run restarted and a read-only brief lock the lane', async () => {
+  const restarted = engagementHarness(buddy()); await restarted.controller.load(); restarted.controller.engage(); await settle();
+  restarted.answers[0].resolve({ status: 'stale-run' }); await settle();
+  assert.deepEqual(restarted.controller.snapshot().status, { kind: 'restarted', text: RUN_RESTARTED_MESSAGE }); assert.equal(restarted.controller.snapshot().disabled, true);
+  const lapsed = engagementHarness(buddy()); await lapsed.controller.load(); lapsed.controller.engage(); await settle();
+  lapsed.answers[0].resolve({ status: 'access-required' }); await settle();
+  assert.equal(lapsed.controller.snapshot().status.text, ACCESS_LAPSED_MESSAGE);
+  const readOnly = engagementHarness(buddy()); await readOnly.controller.load(); readOnly.controller.engage(); await settle();
+  readOnly.answers[0].resolve({ status: 'conflict', reason: 'brief-read-only' }); await settle();
+  assert.match(readOnly.controller.snapshot().status.text, /can no longer be changed/);
+  readOnly.controller.engage(); await settle(); assert.equal(readOnly.answers.length, 1, 'locked lanes send nothing');
+});
+
+test('a malformed or missing buddy view leaves the lane unknown and engagement refuses', async () => {
+  for (const view of [null, { state: 'maybe' }, { state: 'engaged' }]) {
+    const { controller, calls } = engagementHarness(view); await controller.load(); controller.engage(); controller.disengage(); await settle();
+    assert.equal(controller.snapshot().buddy.state, 'unknown'); assert.equal(calls.length, 0);
+  }
+});
+
+test('the minimum-loss notice shows only on a successful save that reports it, and a failed save claims nothing', async () => {
+  const { controller, saves } = engagementHarness(buddy('engaged'), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load();
+  controller.requestRemove('comfort'); controller.confirmRemove('comfort'); await settle();
+  saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
+  assert.equal(controller.snapshot().buddy.state, 'engaged'); assert.doesNotMatch(controller.snapshot().status.text, /Buddy disengaged/);
+  controller.retry(); await settle();
+  const lost = buddy('disengaged', 1, { reason: 'minimum-lost' });
+  saves[1].answer({ status: 'ok', value: { ...ok(1, { body: considered(['estate']) }).value, briefVersion: 2, buddy: lost, buddyTransition: 'minimum-lost' } }); await settle();
+  const view = controller.snapshot();
+  assert.equal(view.buddy.state, 'disengaged'); assert.equal(view.buddy.reason, 'minimum-lost'); assert.equal(view.briefVersion, 2);
+  assert.deepEqual(view.status, { kind: 'notice', text: 'Preferences saved. Buddy disengaged: choose at least 3 categories to engage again.' });
+  controller.open('comfort'); await settle();
+  assert.equal(controller.snapshot().status.kind, 'pending', 'the next edit replaces the notice');
+});
+
+test('a plain successful save adopts buddy and keeps the usual saved copy', async () => {
+  const { controller, saves } = engagementHarness(buddy('engaged'), { body: considered(['estate']), comfort: considered(100) });
+  await controller.load(); controller.change('body', { value: ['hatchback', 'estate'] }); await settle();
+  saves[0].answer({ status: 'ok', value: { ...ok(1, { body: considered(['hatchback', 'estate']), comfort: considered(100) }).value, briefVersion: 2, buddy: buddy('engaged'), buddyTransition: null } }); await settle();
+  assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.'); assert.equal(controller.snapshot().buddy.state, 'engaged'); assert.equal(controller.snapshot().briefVersion, 2);
+});
+
+test('refreshBuddy adopts the buddy lane quietly, defers while busy, and reloads when categories changed', async () => {
+  let current = buddy(); let loads = 0; const cats = { body: considered(['estate']), comfort: considered(100) };
+  const transport = { loadEditor: async () => { loads += 1; return withBuddy(editor(cats, { briefVersion: loads + 1 }), structuredClone(current)); }, savePreferences: () => new Promise(() => {}) };
+  const controller = createAccountPreferencesController({ transport, createCommandId: () => 'p:1' });
+  await controller.load();
+  current = buddy('engaged'); await controller.refreshBuddy();
+  assert.equal(controller.snapshot().buddy.state, 'engaged'); assert.equal(controller.snapshot().briefVersion, 3); assert.equal(controller.snapshot().status.kind, 'idle');
+  controller.open('comfort'); controller.change('comfort', { value: 0 }); await settle();
+  const before = loads; await controller.refreshBuddy(); assert.equal(loads, before, 'nothing is re-read while a save is pending');
+});

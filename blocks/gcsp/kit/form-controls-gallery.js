@@ -2,6 +2,7 @@ import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { categoryPreferences, preferenceCategories } from './category-preferences.js';
 import { understandingMeter } from './understanding-meter.js';
+import { buddyStatus } from './buddy-status.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
@@ -205,5 +206,14 @@ export function sameAgainExample() {
     body.append(el('p', 'gcsp-note', label), view.root); scope.append(body); section.append(scope);
     if (helpOpen) view.root.querySelector('.gcsp-help-tip').hidden = false;
   });
+  return section;
+}
+
+export function buddyStatusExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-status';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy status'));
+  const row = el('div', 'gcsp'); const strip = el('div', 'vm'); strip.style.display = 'grid'; strip.style.gap = '16px';
+  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyStatus({ id: `gallery-buddy-${state}`, state }).root));
+  row.append(strip); section.append(row);
   return section;
 }

@@ -9,6 +9,7 @@ import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
 import { viewStatus } from '../kit/view-status.js';
 import { starRating } from '../kit/star-rating.js';
+import { buddyStatus } from '../kit/buddy-status.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence, orderCopy } from '../order-progress/order-progress-copy.js';
@@ -368,7 +369,7 @@ function discardConfirm(controls, pending) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences, buddy } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   const head = el('div', 'gcsp-account-head');
@@ -383,6 +384,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   const refreshButton = (variant) => button({ label: 'Refresh', variant, disabled: pending, onClick: controls.refresh });
   const stale = message?.error || draft?.value?.requiresRefresh || (draft && !['ok', 'not-found'].includes(draft.status));
   if (stale && !failedRead) head.append(refreshButton('ghost'));
+  if (buddy && !journey) head.append(buddy);
   if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
@@ -450,7 +452,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
   let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
-  const ratings = new Map(); let rater; let stopRater;
+  const ratings = new Map(); let rater; let stopRater; let lamp; let stopLamp;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -505,7 +507,10 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       region.setAttribute('aria-label', 'Your preferences');
       regionTeardown = preferences(region, { signal: abort.signal, describeCar });
       const found = regionTeardown?.controller;
-      if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) { rater = found; stopRater = rater.subscribe(showRatings); }
+      if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) {
+        rater = found; stopRater = rater.subscribe(showRatings);
+        if (typeof found.refreshBuddy === 'function') { lamp = buddyStatus({ id: 'gcsp-account-buddy-status' }); stopLamp = rater.subscribe(showLamp); showLamp(rater.snapshot()); }
+      }
       return region;
     }
     const title = el('h2', 'gcsp-h2', 'Your preferences'); title.id = 'gcsp-account-preferences-title';
@@ -534,6 +539,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     }
     feature.querySelector('.vm-card-media')?.append(ratings.get(id).root);
   }
+  // The lamp follows the preferences controller's buddy lane; without that capability there is no lamp.
+  function showLamp(snap) { lamp?.update(snap.buddy?.state); }
   function showRatings(snap) {
     const lane = snap.rating;
     if (lane && !ratings.has(lane.contractId)) { for (const feature of main?.querySelectorAll('.gcsp-feature[data-contract-id]') ?? []) rateCar(feature); }
@@ -547,7 +554,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (draft?.status !== 'ok') confirming = false;
     const model = toAccountView(envelope);
     renderAccountBody(main, { model, draft, offers, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
-      preferences: model.account ? preferencesRegion() : undefined });
+      preferences: model.account ? preferencesRegion() : undefined, buddy: model.account ? lamp?.root : undefined });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focused && focused.isConnected && root.ownerDocument.activeElement !== focused) focused.focus();
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
@@ -587,6 +594,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function refresh() {
     if (pending || disposed) return;
+    rater?.refreshBuddy?.();
     pending = true; message = null; restarted = false; live.clear(); draw();
     drawer?.close(false); teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
@@ -601,6 +609,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
       typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
     if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
+    rater?.refreshBuddy?.();
     if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
     const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
     const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
@@ -703,7 +712,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { signOut, notifications, loadingLayout: 'feature', accountFailure: 'page', loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); stopLamp?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

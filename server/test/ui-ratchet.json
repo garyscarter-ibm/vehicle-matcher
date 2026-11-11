@@ -28,7 +28,8 @@
     "blocks/gcsp/kit/release-grid.js",
     "blocks/gcsp/kit/help-tip.js",
     "blocks/gcsp/kit/star-rating.js",
-    "blocks/gcsp/kit/understanding-meter.js"
+    "blocks/gcsp/kit/understanding-meter.js",
+    "blocks/gcsp/kit/buddy-status.js"
   ],
   "extensions": [
     ".js",
@@ -154,6 +155,11 @@
       "re": "el\\('div', 'gcsp-understanding'",
       "flags": "g",
       "use": "understandingMeter({ id, label, value, maximum, pending }) (blocks/gcsp/kit/understanding-meter.js)"
+    },
+    "buddy-status": {
+      "re": "el\\('p', 'gcsp-buddy-status'",
+      "flags": "g",
+      "use": "buddyStatus({ id, state }) (blocks/gcsp/kit/buddy-status.js)"
     }
   },
   "stylesheets": [
@@ -404,6 +410,10 @@
     {
       "path": "blocks/gcsp/kit/same-again.css",
       "max_lines": 8
+    },
+    {
+      "path": "blocks/gcsp/kit/buddy-status.css",
+      "max_lines": 5
     }
   ],
   "baseline": {

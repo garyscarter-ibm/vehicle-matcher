@@ -20,14 +20,14 @@ const counted = (n) => Object.fromEntries(ORDER.slice(0, n).map((key) => [key, C
 
 export const PREFERENCE_FIXTURE_STATES = Object.freeze(['empty', 'selected', 'body-open-unset', 'body-open-medium', 'body-high', 'comfort-midpoint',
   'remove-comfort', 'save-failed', 'stale', 'pending', 'rating-failed', 'same-again', 'same-again-high', 'same-again-failed',
-  ...Array.from({ length: 7 }, (_, n) => `count-${n}`)]);
+  'engage-pending', 'engage-failed', 'minimum-loss', 'validation', ...Array.from({ length: 7 }, (_, n) => `count-${n}`)]);
 
 /** In-memory stand-in for the brief transport: the same two calls and result shapes, no network. */
-export function previewPreferenceTransport(name, { rating, sameAgainReason } = {}) {
+export function previewPreferenceTransport(name, { rating, sameAgainReason, buddy: asked } = {}) {
   let draftVersion = 0; let stars = Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : null;
   let sameOn = ['same-again', 'same-again-high'].includes(name);
   const start = { 'body-open-unset': {}, empty: {}, 'body-high': { ...SELECTED, body: considered(['estate'], 'high') },
-    'comfort-midpoint': { ...SELECTED, comfort: considered(50) }, 'same-again-high': { body: considered(['estate'], 'high') },
+    'comfort-midpoint': { ...SELECTED, comfort: considered(50) }, validation: {}, 'same-again-high': { body: considered(['estate'], 'high') },
     ...(COUNT.test(name) ? { [name]: counted(Number(name.slice(6))) } : {}) }[name] ?? SELECTED;
   const categories = Object.fromEntries(ORDER.map((key) => [key, structuredClone(start[key] ?? { state: 'unset' })]));
   const again = () => (sameAgainReason ? { available: false, on: false, contractId: null, reason: sameAgainReason } : { available: true, on: sameOn, contractId: CURRENT_CONTRACT });
@@ -37,12 +37,32 @@ export function previewPreferenceTransport(name, { rating, sameAgainReason } = {
     return { considered: n, categories: structuredClone(categories), sameAgain: on, understanding: { kind: UNDERSTANDING.kind, value: on ? UNDERSTANDING.sameAgain : UNDERSTANDING.byConsidered[n],
       maximum: UNDERSTANDING.maximum, basis: on ? 'same-again' : 'categories', considered: n, policyKey: UNDERSTANDING.policyKey, policyVersion: 'preview' } };
   };
+  // Preview engagement: ?buddy= picks the start (unknown = the lane is missing); minimum-loss always starts engaged.
+  let engaged = name === 'minimum-loss' || asked === 'engaged'; let lost = false;
+  const buddyView = () => {
+    const n = readback().considered; const on = again().available && sameOn; const remaining = on ? 0 : Math.max(0, 3 - n);
+    return { state: engaged ? 'engaged' : 'disengaged', reason: !engaged && lost ? 'minimum-lost' : null, permissionVersion: 1, minimumCategories: 3,
+      considered: n, remaining, sameAgain: on, canEngage: !engaged && remaining === 0 };
+  };
   const refusal = name === 'save-failed' ? { status: 'unavailable', retryable: true } : name === 'stale' ? { status: 'stale-version', action: 'refresh' } : null;
   return {
     async loadEditor() {
       return { status: 'ok', value: { context: { accountPreferences: { order: ORDER, minimumCategories: 3, policyVersion: 'preview', categories: CATEGORIES,
         understanding: { ...UNDERSTANDING, byConsidered: [...UNDERSTANDING.byConsidered] } } },
-        initial: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars }, sameAgain: again(), accountPreferences: readback() }, selection: null } };
+        initial: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars }, sameAgain: again(), accountPreferences: readback(),
+          ...(asked === 'unknown' ? {} : { buddy: buddyView() }) }, selection: null } };
+    },
+    async engage() {
+      if (name === 'engage-pending') return new Promise(() => {});
+      if (name === 'engage-failed') return { status: 'unavailable', retryable: true };
+      const view = buddyView();
+      if (view.remaining > 0) return { status: 'invalid', code: 'engagement-minimum', remaining: view.remaining, considered: view.considered, minimumCategories: 3 };
+      engaged = true; lost = false; draftVersion += 1;
+      return { status: 'ok', value: { briefVersion: 1, draftVersion, buddy: buddyView() } };
+    },
+    async disengage() {
+      engaged = false; draftVersion += 1;
+      return { status: 'ok', value: { briefVersion: 1, draftVersion, buddy: buddyView() } };
     },
     async savePreferences({ changes, currentCarRating, sameAgain }) {
       if (name === 'pending') return new Promise(() => {}); // an in-flight save that never answers
@@ -59,7 +79,9 @@ export function previewPreferenceTransport(name, { rating, sameAgainReason } = {
       if (currentCarRating) stars = currentCarRating.value;
       if (sameAgain) sameOn = sameAgain.on;
       draftVersion += 1;
-      return { status: 'ok', value: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars }, sameAgain: again(), accountPreferences: readback() } };
+      const was = engaged; if (was && !buddyView().canEngage && buddyView().remaining > 0) { engaged = false; lost = true; }
+      return { status: 'ok', value: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars }, sameAgain: again(), accountPreferences: readback(),
+        ...(asked === 'unknown' ? {} : { buddy: buddyView(), buddyTransition: was && lost ? 'minimum-lost' : null }) } };
     },
   };
 }
@@ -72,4 +94,7 @@ export function drivePreferenceState(controller, name) {
   else if (name === 'remove-comfort') controller.requestRemove('comfort');
   else if (name === 'save-failed' || name === 'stale') controller.change('comfort', { value: 50 });
   else if (name === 'same-again-failed') controller.toggleSameAgain(true);
+  else if (name === 'minimum-loss') { controller.requestRemove('comfort'); controller.confirmRemove('comfort'); }
+  else if (name === 'validation') controller.engage();
+  else if (name === 'engage-pending' || name === 'engage-failed') controller.engage();
 }

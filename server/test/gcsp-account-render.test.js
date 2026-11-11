@@ -1453,3 +1453,24 @@ test('FUCQ-372: a refresh-required card offers neither Carry on nor Discard', as
     assert.equal(findButton(root, 'Carry on'), undefined); assert.equal(findButton(root, 'Discard'), undefined);
   } finally { destroy(); root.remove(); }
 });
+
+test('FUCQ-370: the Buddy lamp sits at the right of the head, survives quiet redraws, and the region order is unchanged', async () => {
+  const { mountAccountPreferences } = await import('../../blocks/gcsp/brief/account-preferences.js');
+  const { previewPreferenceTransport } = await import('../../blocks/gcsp/brief/account-preferences-fixtures.js');
+  let mounted;
+  const view = await domMount(readOnlyAdapter(), {
+    preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { signal, transport: previewPreferenceTransport('selected', { buddy: 'engaged' }) }); return mounted; } });
+  try {
+    await mounted.ready; await tick();
+    const head = view.root.querySelector('.gcsp-account-head'); const lamp = head.querySelector('.gcsp-buddy-status');
+    assert.ok(lamp); assert.equal(lamp.textContent, 'Buddy engaged'); assert.equal(head.lastElementChild, lamp, 'the lamp is the last item of the head');
+    assert.equal(head.querySelector('h1').textContent, 'Your cars');
+    const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert.ok(before(view.root.querySelector('.gcsp-feature'), view.root.querySelector('.gcsp-account-preferences')));
+    assert.ok(before(view.root.querySelector('.gcsp-account-preferences'), view.root.querySelector('.gcsp-account-history')));
+    await view.destroy.sync(); await tick();
+    assert.ok(head.isConnected || view.root.querySelector('.gcsp-buddy-status')); assert.equal(view.root.querySelectorAll('.gcsp-buddy-status').length, 1);
+  } finally { view.destroy(); view.root.remove(); }
+  const plain = await domMount(readOnlyAdapter());
+  try { assert.equal(plain.root.querySelector('.gcsp-buddy-status'), null, 'no preferences capability, no lamp'); } finally { plain.destroy(); plain.root.remove(); }
+});

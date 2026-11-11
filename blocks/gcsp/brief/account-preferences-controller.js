@@ -11,6 +11,14 @@ export const PREFERENCE_COPY = Object.freeze({
   readOnly: 'Your buddy found your car, so your preferences can no longer be changed.',
   sameAgainOn: 'More like your current car. Preferences save automatically.',
   sameAgainFailed: 'Same again was not saved.',
+  engagePending: 'Engaging Buddy.',
+  disengagePending: 'Disengaging Buddy.',
+  engageFailed: 'Buddy was not engaged. Try again.',
+  disengageFailed: 'Buddy was not disengaged. Try again.',
+  engaged: 'Buddy engaged. Your preferences will guide the search.',
+  disengaged: 'Buddy disengaged. Your preferences are kept.',
+  underMinimum: (n) => `Choose ${n} more ${n === 1 ? 'category' : 'categories'} to engage Buddy. Your preferences save automatically.`,
+  minimumLost: (n) => `Preferences saved. Buddy disengaged: choose at least ${n} categories to engage again.`,
 });
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -31,6 +39,11 @@ const fold = (older, newer) => {
   return out;
 };
 const unavailable = () => ({ status: 'unavailable', retryable: true });
+const count = (v) => Number.isSafeInteger(v) && v >= 0;
+// The server's buddy view when it is well formed; anything else leaves the lane unknown.
+const buddyOf = (v) => (object(v) && ['engaged', 'disengaged'].includes(v.state) && count(v.remaining) && count(v.minimumCategories)
+  ? { state: v.state, reason: ['paused', 'minimum-lost'].includes(v.reason) ? v.reason : null, remaining: v.remaining, minimumCategories: v.minimumCategories } : null);
+const lockFor = (outcome) => (outcome.status === 'access-required' ? { kind: 'access', text: ACCESS_LAPSED_MESSAGE } : { kind: 'restarted', text: RUN_RESTARTED_MESSAGE });
 
 /** DOM-free Account preferences state: optimistic view, one request in flight, edits coalesced behind it, truthful status. */
 export function createAccountPreferencesController({ transport, createCommandId, onChange } = {}) {
@@ -46,6 +59,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
   let rating = null; let ratingIntent = null;
   // Same again shares it too: `same` is the lane (null without one), sameIntent the newest unsent { on }; confirmedScore is the server's figure.
   let same = null; let sameIntent = null; let confirmedScore = null;
+  // Buddy lane: `buddy` is the server's view (null = unknown); buddyMsg is its status ('notice' = a success to act on).
+  let buddy = null; let quiet = false; let attempts = 0; let buddyCall = null; let buddyRetry = null; let buddyMsg = null; let buddyFailure = null;
 
   const category = (key) => projection?.categories?.[key] ?? null;
   const entryOf = (key) => view[key] ?? { state: 'unset' };
@@ -65,6 +80,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
     if (failure?.kind === 'save' && sameIntent) return { kind: 'failed', text: PREFERENCE_COPY.sameAgainFailed, actionLabel: 'Try again', action: 'retry' };
     if (reloading) return { kind: 'pending', text: PREFERENCE_COPY.loading };
     if ((inflight && (has(inflight.changes) || inflight.same)) || has(pending) || sameIntent) return { kind: 'pending', text: PREFERENCE_COPY.pending };
+    if (buddyCall) return { kind: 'pending', text: buddyCall.kind === 'engage' ? PREFERENCE_COPY.engagePending : PREFERENCE_COPY.disengagePending };
+    if (buddyMsg) return { ...buddyMsg };
     if (rejected) return { kind: 'failed', text: rejected === 'same' ? PREFERENCE_COPY.sameAgainFailed : PREFERENCE_COPY.rejected };
     if (saved) return { kind: 'saved', text: saved };
     return { kind: 'idle', text: same?.on ? PREFERENCE_COPY.sameAgainOn : counted() };
@@ -83,8 +100,12 @@ export function createAccountPreferencesController({ transport, createCommandId,
     const count = projection.order.filter((key) => entryOf(key).state === 'considered').length;
     return { value: same?.on ? policy.sameAgain : policy.byConsidered[count], maximum: policy.maximum, pending: true, failed: ['save', 'stale'].includes(failure?.kind) };
   }
+  // True while a category, rating or Same again change is unsent, in flight or failed: engagement waits for the queue to drain.
+  const queueBusy = () => Boolean(inflight || has(pending) || ratingIntent || sameIntent || failure);
+  const buddyView = () => ({ state: buddy?.state ?? 'unknown', pending: buddyCall?.kind ?? null, failed: Boolean(buddyFailure), remaining: buddy?.remaining ?? 0,
+    minimumCategories: buddy?.minimumCategories ?? projection?.minimumCategories ?? 3, reason: buddy?.reason ?? null, waiting: queueBusy() });
   const snapshot = () => clone({ phase, projection, categories: view, open, pendingRemoval, status: status(), disabled: phase !== 'ready' || locked(),
-    rating, sameAgain: same && { available: same.available, on: same.on, reason: same.reason, status: same.status }, understanding: understandingView(),
+    rating, sameAgain: same && { available: same.available, on: same.on, reason: same.reason, status: same.status }, understanding: understandingView(), buddy: buddyView(),
     briefVersion: versions.brief, draftVersion: versions.draft });
   function emit() {
     if (destroyed) return;
@@ -92,10 +113,10 @@ export function createAccountPreferencesController({ transport, createCommandId,
   }
 
   function stage(key, change) {
-    pending = fold(pending, { [key]: change }); rejected = false; saved = null; emit(); flush(false);
+    pending = fold(pending, { [key]: change }); rejected = false; saved = null; buddyMsg = null; buddyFailure = null; emit(); flush(false);
   }
   function flush(reuse) {
-    if (locked() || inflight || failure || (!has(pending) && !ratingIntent && !sameIntent)) return;
+    if (locked() || inflight || buddyCall || failure || (!has(pending) && !ratingIntent && !sameIntent)) return;
     send(reuse);
   }
   async function send(reuse) {
@@ -103,6 +124,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
     let again = sameIntent; sameIntent = null;
     // The server refuses edits while it holds Same again on, so queued edits go out with an explicit off and the on follows.
     if (same?.saved && has(changes) && again?.on === true) { sameIntent = again; again = { on: false }; }
+    buddyMsg = null; buddyFailure = null;
     const mark = signature(changes, intent, again); const ticket = epoch;
     let commandId = reuse && retryable?.signature === mark ? retryable.commandId : null;
     if (!commandId) { try { commandId = createCommandId('preferences'); } catch { commandId = null; } }
@@ -128,6 +150,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
       versions = { brief: fields.briefVersion, draft: fields.draftVersion }; confirmed = clone(fields.accountPreferences.categories);
       if (Number.isInteger(fields.accountPreferences.understanding?.value)) confirmedScore = fields.accountPreferences.understanding.value;
       adopt(fields.accountPreferences, true);
+      const answered = buddyOf(fields.buddy); if (answered) buddy = answered;
+      if (answered && fields.buddyTransition === 'minimum-lost') buddyMsg = { kind: 'notice', text: PREFERENCE_COPY.minimumLost(answered.minimumCategories) };
       failure = null; retryable = null; if (sent.same && rejected === 'same') rejected = false;
       if (has(sent.changes) || sent.same) {
         rejected = false;
@@ -140,8 +164,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
         if (!ratingIntent) rating.value = rating.saved;
       }
       if (rating && sent.rating && !ratingIntent) rating.status = 'saved';
-      const answered = sameFrom(fields.sameAgain);
-      if (answered) { same.saved = answered.on; if (!sameIntent) same.on = same.saved; }
+      const again = sameFrom(fields.sameAgain);
+      if (again) { same.saved = again.on; if (!sameIntent) same.on = same.saved; }
       // A newest choice that already matches the saved state needs no request.
       if (same && sameIntent && sameIntent.on === same.saved && !has(pending)) sameIntent = null;
       if (same && !sameIntent && same.status !== 'idle') { same.status = 'saved'; same.on = same.saved; }
@@ -218,6 +242,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
       ? { available: true, on: again.on, saved: again.on, contractId: again.contractId, reason: null, status: 'idle' }
       : object(again) && again.available === false ? { available: false, on: false, saved: false, contractId: null, reason: typeof again.reason === 'string' ? again.reason : 'no-current-car', status: 'idle' } : null;
     sameIntent = null;
+    buddy = buddyOf(initial.buddy); buddyCall = null; buddyRetry = null; buddyMsg = null; buddyFailure = null;
     lock = value.selection?.state === 'accepted' ? { kind: 'idle', text: PREFERENCE_COPY.readOnly } : null;
     return true;
   }
@@ -236,7 +261,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
   // The explicit reload drops unsent edits and reads the server record again.
   async function reload() {
     if (destroyed || phase !== 'ready' || reloading) return;
-    const ticket = ++epoch; reloading = true; pending = {}; ratingIntent = null; sameIntent = null; inflight = null; retryable = null; failure = null; saved = null; emit();
+    const ticket = ++epoch; reloading = true; pending = {}; ratingIntent = null; sameIntent = null; inflight = null; retryable = null; failure = null; saved = null;
+    buddyCall = null; buddyRetry = null; buddyMsg = null; buddyFailure = null; emit();
     const outcome = await fetchEditor();
     if (destroyed || ticket !== epoch) return;
     reloading = false;
@@ -270,6 +296,56 @@ export function createAccountPreferencesController({ transport, createCommandId,
       if (failure?.kind === 'save' && !has(pending) && !ratingIntent) { failure = null; retryable = null; }
     }
     emit(); flush(false);
+  }
+  // Engage and disengage share one lane: one request at a time, never ahead of unsent choices, retried under the same command ID.
+  async function engagement(kind) {
+    if (destroyed || phase !== 'ready' || locked() || buddyCall || !buddy || queueBusy()) return;
+    if (buddy.state === (kind === 'engage' ? 'engaged' : 'disengaged')) return;
+    if (kind === 'engage' && buddy.remaining > 0) {
+      buddyMsg = { kind: 'failed', text: PREFERENCE_COPY.underMinimum(buddy.remaining), focus: 'status', attempt: ++attempts }; emit(); return;
+    }
+    const ticket = epoch; const body = { expectedBriefVersion: versions.brief, expectedDraftVersion: versions.draft };
+    let commandId = buddyRetry?.kind === kind && buddyRetry.versions === `${body.expectedBriefVersion}.${body.expectedDraftVersion}` ? buddyRetry.commandId : null;
+    if (!commandId) { try { commandId = createCommandId(kind); } catch { commandId = null; } }
+    buddyCall = { kind }; buddyMsg = null; buddyFailure = null; emit();
+    let outcome;
+    try { outcome = text(commandId) && typeof transport[kind] === 'function' ? await transport[kind]({ commandId, ...body }) : unavailable(); } catch { outcome = unavailable(); }
+    if (destroyed || ticket !== epoch) return;
+    buddyCall = null; settleEngagement(kind, outcome, { commandId, versions: `${body.expectedBriefVersion}.${body.expectedDraftVersion}` });
+  }
+  function settleEngagement(kind, outcome, sent) {
+    const fields = outcome?.status === 'ok' ? outcome.value : null; const answered = buddyOf(fields?.buddy); const status = outcome?.status;
+    if (answered && answered.state === (kind === 'engage' ? 'engaged' : 'disengaged') && revision(fields.briefVersion) && revision(fields.draftVersion)) {
+      versions = { brief: fields.briefVersion, draft: fields.draftVersion }; buddy = answered; buddyRetry = null;
+      buddyMsg = { kind: 'saved', text: kind === 'engage' ? PREFERENCE_COPY.engaged : PREFERENCE_COPY.disengaged };
+    } else if (isRunRestarted(outcome)) { lock = lockFor(outcome); buddyRetry = null; }
+    else if (status === 'conflict' && outcome.reason === 'brief-read-only') { lock = { kind: 'idle', text: PREFERENCE_COPY.readOnly }; buddyRetry = null; }
+    else if (status === 'conflict' && buddyOf(outcome.buddy)) { buddy = buddyOf(outcome.buddy); buddyRetry = null; }
+    else if (status === 'stale-version' || status === 'conflict') { buddyRetry = null; emit(); reload(); return; }
+    else if (status === 'invalid' && outcome.code === 'engagement-minimum' && count(outcome.remaining)) {
+      buddy = { ...(buddy ?? { state: 'disengaged', reason: null }), remaining: outcome.remaining, minimumCategories: count(outcome.minimumCategories) ? outcome.minimumCategories : (buddy?.minimumCategories ?? 3) };
+      buddyRetry = null; buddyMsg = { kind: 'failed', text: PREFERENCE_COPY.underMinimum(outcome.remaining), focus: 'status', attempt: ++attempts };
+    } else {
+      buddyFailure = kind; buddyMsg = { kind: 'failed', text: kind === 'engage' ? PREFERENCE_COPY.engageFailed : PREFERENCE_COPY.disengageFailed };
+      buddyRetry = status === 'unavailable' ? { kind, ...sent } : null;
+    }
+    emit(); flush(false);
+  }
+  // Quiet re-read for the lamp (Account refresh): only when nothing is pending, and a loser of any race is dropped.
+  async function refreshBuddy() {
+    if (destroyed || phase !== 'ready' || locked() || buddyCall || queueBusy() || quiet) return;
+    const ticket = epoch; quiet = true;
+    const outcome = await fetchEditor(); quiet = false;
+    if (destroyed || ticket !== epoch || phase !== 'ready' || locked() || buddyCall || queueBusy()) return;
+    const found = outcome?.status === 'ok' ? outcome.value?.initial : null;
+    if (!object(found?.accountPreferences?.categories) || !revision(found.briefVersion) || !revision(found.draftVersion)) return;
+    const before = buddy?.state;
+    if (JSON.stringify(found.accountPreferences.categories) === JSON.stringify(confirmed) && found.accountPreferences.categories) {
+      versions = { brief: found.briefVersion, draft: found.draftVersion }; buddy = buddyOf(found.buddy);
+      if (buddyMsg && buddy?.state !== before) buddyMsg = null;
+      buddyRetry = null; emit(); return;
+    }
+    if (accept(outcome)) emit();
   }
   function openCategory(key) {
     const c = category(key); if (!c || locked() || same?.on) return;
@@ -312,7 +388,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
     pendingRemoval = null; view[key] = { state: 'unset' }; stage(key, null);
   }
 
-  return { load, open: openCategory, close() { if (open) { open = null; emit(); } }, change, requestRemove, keep, confirmRemove, retry, reload, rate, toggleSameAgain, snapshot,
+  return { load, open: openCategory, close() { if (open) { open = null; emit(); } }, change, requestRemove, keep, confirmRemove, retry, reload, rate, toggleSameAgain, engage: () => engagement('engage'), disengage: () => engagement('disengage'), refreshBuddy, snapshot,
     subscribe(listener) { if (destroyed) return () => {}; listeners.add(listener); return () => listeners.delete(listener); },
     destroy() { destroyed = true; listeners.clear(); } };
 }
