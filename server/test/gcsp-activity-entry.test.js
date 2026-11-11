@@ -44,8 +44,9 @@ test('a refresh preserves focus moved outside the body and account retry owns ac
   await settle(node,(r) => r.querySelector('.gcsp-action-trigger'));node.querySelector('.gcsp-action-trigger').focus();
   const pending=stop.refresh();assert.equal(document.activeElement,node.querySelector('main'));outside.focus();read.resolve(snapshot('paused'));await pending;
   assert.equal(document.activeElement,outside);
-  const refused=root();mount(refused,{adapter:{loadAccount:async () => ({status:'unavailable'}),readActivity:async () => snapshot()}});
-  await settle(refused,(r) => r.querySelector('.gcsp-activity'));assert.equal(refused.querySelector('.gcsp-activity button').disabled,true);
+  let accountReads=0;const refused=root();mount(refused,{adapter:{loadAccount:async () => (accountReads+=1,{status:'unavailable'}),readActivity:async () => snapshot()}});
+  await settle(refused,(r) => r.querySelector('.gcsp-activity'));assert.equal(refused.querySelector('.gcsp-account-retry'),null);
+  refused.querySelector('.gcsp-activity button').click();await settle(refused,() => accountReads===2);assert.equal(accountReads,2);
 });
 
 test('an adapter assigned before custom element definition survives upgrade and reads the injected account',async () => {

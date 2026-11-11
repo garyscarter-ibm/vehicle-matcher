@@ -1,5 +1,5 @@
 import { mountEmployee } from '../employee/gcsp-employee.js';
-import { statusScreen } from '../../vehicle-matcher/ui.js';
+import { button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { mountBriefBody } from './brief-view.js';
 import { createBriefTransport } from './brief-transport.js';
 
@@ -10,9 +10,12 @@ export function mountBrief(root, ctx = {}) {
   if (ctx.signal?.aborted) { ctx.signal.removeEventListener('abort', onAbort); return () => {}; }
   const transport = ctx.transport || createBriefTransport({ fetch: ctx.fetch, baseURL: ctx.baseURL, signal: abort.signal });
   const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', loadingLayout: 'form', signOut: ctx.signOut, notifications: ctx.notifications,
-    signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable,
-    renderBody(main, { account, view }) {
-      if (account.status !== 'ready') { main.replaceChildren(statusScreen({ title: 'Your preferences are unavailable', message: 'Load your account to review your preferences.' })); return undefined; }
+    signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable, accountFailure: 'page',
+    renderBody(main, { account, view, refresh }) {
+      if (account.status !== 'ready') {
+        main.replaceChildren(statusScreen({ title: 'Your preferences are unavailable', message: 'Refresh to try again.',
+          actions: [button({ label: 'Refresh', onClick: () => refresh?.() })] })); return undefined;
+      }
       if (view !== 'brief' && ctx.renderBody) return ctx.renderBody(main, { account, view });
       return mountBriefBody(main, { ...ctx, transport, loadEditor: ctx.loadEditor || transport.loadEditor, signal: abort.signal });
     },

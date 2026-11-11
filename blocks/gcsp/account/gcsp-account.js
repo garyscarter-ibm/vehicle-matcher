@@ -693,7 +693,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     } catch { if (!disposed) { confirming = false; discardFailed(failure); } }
     finally { pending = false; if (!disposed) { draw(done); if (!done) discardButton()?.focus(); } }
   }
-  const shellAdapter = { signOut, notifications, loadingLayout: 'feature', loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, notifications, loadingLayout: 'feature', accountFailure: 'page', loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
   const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };

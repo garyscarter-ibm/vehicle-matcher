@@ -21,7 +21,7 @@ const changeKey = (state) => JSON.stringify(state.phase === 'ready' ? [state.pro
   (key, value) => (key === 'asOf' ? undefined : value));
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
-function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload, announce }) {
+function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, refreshAccount, reload, announce }) {
   let body; let controller; let stopped = false; let focusKey = null; let helps = []; let acted = null;
   // A host's announce replaces this view's own region, so the view never has two.
   const content = el('div'); const own = typeof announce === 'function' ? null : viewStatus(); const say = own ? own.announce : announce;
@@ -43,7 +43,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
       body.append(screenIntro({ title: orderCopy.title, level }), runRestartedScreen({ reload }));
     } else {
       body = orderProgressBody({ progress: state.progress, car, pending: state.pending, message: state.message || undefined, messageSection: acted || undefined, level,
-        announce: say, onRetry: ready ? () => controller?.refresh() : undefined, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
+        announce: say, onRetry: ready ? () => controller?.refresh() : refreshAccount, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
         onAcceptAppointment: has('acceptAppointment'), onRequestReturn: has('requestReturn'), onAcceptReturn: has('acceptReturn'),
         mountHelp: (node) => { helps.push(mountHelp(node, { embedded: true, adapter: helpAdapter, headingLevel: Math.min(level + 2, 4), announce: say })); } });
     }
@@ -91,10 +91,11 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     return teardown;
   }
   stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, loadingLayout: 'timeline', signal: abort.signal,
-    onNavigate, notifications: adapter.notifications,
+    onNavigate, notifications: adapter.notifications, accountFailure: 'page',
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
-    renderBody(main, { account }) {
-      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready', reload, announce });
+    renderBody(main, { account, refresh }) {
+      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready',
+        refreshAccount: refresh, reload, announce });
       const own = stopBody; return () => { own(); if (stopBody === own) stopBody = null; };
     } });
   if (done) stopShell();

@@ -13,7 +13,7 @@ const facts = (rows) => factList(rows.map(([label, value, unit]) => ({ label, va
 export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', hint,
   onBack, onSupport, commandId, notifications, signOut = adapter.readOnly !== true } = {}) {
   const prefix = `gcsp-setup-${++sequence}`; const controls = {}; const fields = {};
-  let main; let panel; let summary; let state; let nodes; let status; const spoken = {}; let disposed = false; let actionPending = false; let emitted = null;
+  let main; let panel; let summary; let state; let nodes; let status; let reloadAll; const spoken = {}; let disposed = false; let actionPending = false; let emitted = null;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name,
     { detail, bubbles: true, composed: true }));
   const support = (route) => button({ label: route === 'hr-support' ? 'Correct employee details' : route === 'driver-support'
@@ -96,7 +96,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       if (panel) return;
       main.replaceChildren(statusScreen({ title: state.status === 'loading' ? 'Loading your choices' : 'Ordering choices unavailable',
         message: state.status === 'loading' ? 'Loading your account and saved choices.' : 'Review your account or retry. Your current car is unchanged.',
-        actions: [button({ label: 'Retry', onClick: () => controller.refresh() }), button({ label: 'Back to account', variant: 'ghost',
+        actions: [button({ label: 'Retry', onClick: () => (!state.account?.account && reloadAll ? reloadAll() : controller.refresh()) }), button({ label: 'Back to account', variant: 'ghost',
           onClick: () => { onBack?.(); notify('gcsp:setup-back', {}); } })] })); return;
     }
     if (!panel || !panel.isConnected) build();
@@ -173,11 +173,11 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       }
     } finally { actionPending = false; draw(); }
   }
-  const teardown = mountEmployee(root, { brand, signOut, notifications, loadAccount: async () => {
+  const teardown = mountEmployee(root, { brand, signOut, notifications, accountFailure: 'page', loadAccount: async () => {
     state = await controller.load({ hint }); const account = state.account?.account;
     return { status: account ? 'ready' : 'unavailable', ...accountIdentity(account),
       context: [account?.company, account?.gradeId && `Grade ${account.gradeId}`].filter(Boolean).join(', ') };
-  }, renderBody(target) { main = target; draw(); } });
+  }, renderBody(target, { refresh }) { main = target; reloadAll = refresh; draw(); } });
   const destroy = () => { disposed = true; controller.destroy(); teardown(); };
   destroy.controller = controller; destroy.refresh = (options) => controller.refresh(options);
   return destroy;

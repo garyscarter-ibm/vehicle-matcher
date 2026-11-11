@@ -135,7 +135,7 @@ function accountLinks(items) {
   return list;
 }
 
-function accountContent(state, retryButton, signOutButton, menuItems = []) {
+function accountContent(state, retryButton, signOutButton, menuItems = [], failureInPage = false) {
   const status = state?.status;
   if (status === 'signed-out') return { label: null, busy: false, signedOut: true, nodes: [] };
   if (status === 'ready' && state.name) {
@@ -161,6 +161,8 @@ function accountContent(state, retryButton, signOutButton, menuItems = []) {
   }
   // After a restart there is no account to show, and the page's own Reload is the one action that works.
   if (isRunRestarted(state)) return { label: null, busy: false, restarted: true, nodes: [] };
+  // A page that draws its own failure region says it once, with its own Refresh, so the header stays quiet.
+  if (status === 'unavailable' && failureInPage) return { label: null, busy: false, nodes: [] };
   if (status === 'unavailable' || status === 'ready') {
     const message = (status === 'unavailable' && state.message) || 'Your account could not be loaded.';
     const unavailable = el('span', 'gcsp-account-unavailable');
@@ -184,11 +186,12 @@ function accountContent(state, retryButton, signOutButton, menuItems = []) {
  * notifications (optional) adds the header bell: { connect(update) -> disconnect } or a static model; omitted, there is no bell.
  * navigation is an item list for accountNavigation; onNavigate(key) is called for available items only.
  * arrivalFocus focuses the main h1 on arrival, until the first user input.
+ * accountFailure 'page' keeps the header quiet on a failed read, for a page body that shows the failure itself.
  */
 export function portalShell({
   title = 'Group Car Schemes Portal', account = { status: 'loading' }, navigation = [], active = null,
   breadcrumbs = [], onNavigate, onRetryAccount, arrivalFocus = false, accountMenu = [],
-  signOut = true, notifications, sessionAdapter = createSessionHttpAdapter(), navigate, reload,
+  signOut = true, notifications, sessionAdapter = createSessionHttpAdapter(), navigate, reload, accountFailure = 'header',
 } = {}) {
   const id = `gcsp-shell-${++uid}`;
   const mainId = `${id}-main`;
@@ -312,7 +315,7 @@ export function portalShell({
     retry.type = 'button';
     const logout = signOut ? button({ label: 'Sign out', variant: 'ghost', disabled: signingOut }) : null;
     if (logout) logout.classList.add('gcsp-account-signout');
-    const view = accountContent(state, retry, logout, accountMenu);
+    const view = accountContent(state, retry, logout, accountMenu, accountFailure === 'page');
     if (view.label) accountBox.setAttribute('aria-label', view.label); else accountBox.removeAttribute('aria-label');
     accountBox.setAttribute('aria-busy', String(view.busy));
     accountBox.dataset.status = view.signedOut ? 'signed-out' : view.restarted ? 'restarted'

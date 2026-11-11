@@ -82,6 +82,7 @@ function after(ms, signal, produce) {
 }
 
 const withBody = (data) => (main, ctx) => renderRepresentativeBody(main, { ...ctx, data });
+// The representative body draws its own failure region, so every fixture keeps the header quiet on a failed read.
 
 /** Adapter for the named fixture, or null when the name is unknown. */
 export function fixtureAdapter(name) {
@@ -91,15 +92,17 @@ export function fixtureAdapter(name) {
     return {
       loadAccount: ({ signal } = {}) => after(400, signal, () => ({ ...REPRESENTATIVE_ACCOUNT })),
       renderBody: withBody(data),
+      accountFailure: 'page',
     };
   }
   if (name === 'representative-loading') {
-    return { loadAccount: ({ signal } = {}) => never(signal), renderBody: withBody(representativeData()) };
+    return { loadAccount: ({ signal } = {}) => never(signal), renderBody: withBody(representativeData()), accountFailure: 'page' };
   }
   if (name === 'representative-unavailable') {
     return {
       loadAccount: ({ signal } = {}) => after(300, signal, () => ({ status: 'unavailable', message: 'Your account could not be loaded.' })),
       renderBody: withBody(representativeData()),
+      accountFailure: 'page',
     };
   }
   return null;

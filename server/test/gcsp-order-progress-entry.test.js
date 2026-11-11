@@ -43,8 +43,9 @@ test('the shell waits for the account, then reads the latest order and shows onl
 
 test('an account that is not ready, another brand and an external abort never start or keep a read', async () => {
   const server = { name: 'appointment-requested' };
-  const refused = adapter(server, { loadAccount: async () => ({ status: 'unavailable' }) }); const one = root(); mount(one, { adapter: refused });
-  await settle(one, (r) => r.textContent.includes('Order progress unavailable')); assert.equal(refused.calls.length, 0); assert.equal(one.querySelector('.gcsp-order-progress button').disabled, true);
+  let accountReads = 0; const refused = adapter(server, { loadAccount: async () => { accountReads += 1; return { status: 'unavailable' }; } }); const one = root(); mount(one, { adapter: refused });
+  await settle(one, (r) => r.textContent.includes('Order progress unavailable')); assert.equal(refused.calls.length, 0); assert.equal(one.querySelector('.gcsp-account-retry'), null);
+  one.querySelector('.gcsp-order-progress button').click(); await settle(one, () => accountReads === 2); assert.equal(refused.calls.length, 0);
   const bad = adapter(server); const two = root(); mount(two, { brand: 'mini', adapter: bad }); assert.match(two.textContent, /Not available for this brand/); assert.equal(bad.calls.length, 0);
   const late = deferred(); const abort = new AbortController(); const slow = adapter(server); slow.readStages = (input) => { slow.signals.push(input.signal); return late.promise; };
   const three = root(); mount(three, { adapter: slow, signal: abort.signal }); await settle(three, () => slow.signals.length > 0);
