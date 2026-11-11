@@ -6,6 +6,8 @@ or claimed; it is a proposal to agree before any Story is raised. Mockups: open
 
 **Stats refinement, Gary, 11 November 2026:** replace the four headline counters with **Latest release**, **Total released**, **Unallocated**, **Buddy Allocated** and **Manually Allocated**. Latest release describes the newest batch; the other four describe the current run across all releases. Allocation totals include current reservations and confirmed selections, retain their Buddy/manual route, and stop counting a reservation after its release or expiry. Total released counts distinct released cars and equals Unallocated plus the two allocation totals. Keep model/colour/fuel/points detail in the charts. Rename that disclosure **Latest release stats** and show kit skeletons for its charts while a release and the following stats read are pending, preserving whether it was open. This is the authorised refinement to the earlier layout below; no original Story acceptance or status is changed.
 
+**Loading refinement, Gary, 11 November 2026:** show car-image skeletons from the start of a release through image preloading. Give the five-counter bar and Latest release stats their own matching placeholders. Keep the Latest release stats summary visible and preserve its open/closed state; chart skeletons appear below it in the same label/bar/count style as the data. This bounded presentation change leaves release data and business behaviour unchanged.
+
 ## What Gary asked for
 
 1. Keep everything the presenter controls do today, as a hidden **Advanced** mode.
