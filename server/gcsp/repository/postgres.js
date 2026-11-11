@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { withPostgresClient } from './postgres-client.js';
 import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
 
@@ -135,43 +136,45 @@ export function createPostgresRepository(options = {}) {
 
   async function run(context, work, write) {
     const key = String(context?.runId ?? '');
-    let client;
-    let begun = false;
     try {
       const cached = cache.get(key);
       if (!write && trustMs && cached && performance.now() < cached.trustedUntil) return await work(cached.state);
-      client = await pool.connect();
-      begun = true;
-      const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
-      const fingerprint = fingerprintOf(probe[2].rows);
-      const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
-      if (hit) remember(key, write ? hit : { ...hit, trustedUntil: until() });
-      // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
-      if (!write) {
-        begun = false;
-        if (hit) return await work(hit.state);
-        const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
-        const state = sealState(toState(fresh));
-        remember(key, { fingerprint: fingerprintOf(fresh), state, trustedUntil: until() });
-        return await work(state);
-      }
-      const before = hit ? hit.state : sealState(toState((await client.query(snapshotSql(context))).rows));
-      const state = shallowState(before);
-      const { commit, outcome } = await work(state);
-      if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
-      await flush(client, before, state);
-      const after = scopedCopy(state, context);
-      await client.query('COMMIT'); begun = false;
-      remember(key, { fingerprint: localFingerprint(after), state: after, trustedUntil: until() });
-      if (trustMs) refreshOthers(key, after.tables.runs);
-      return outcome;
+      return await withPostgresClient(pool, async (client) => {
+        let begun = false;
+        try {
+          begun = true;
+          const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
+          const fingerprint = fingerprintOf(probe[2].rows);
+          const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
+          if (hit) remember(key, write ? hit : { ...hit, trustedUntil: until() });
+          // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
+          if (!write) {
+            begun = false;
+            if (hit) return await work(hit.state);
+            const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
+            const state = sealState(toState(fresh));
+            remember(key, { fingerprint: fingerprintOf(fresh), state, trustedUntil: until() });
+            return await work(state);
+          }
+          const before = hit ? hit.state : sealState(toState((await client.query(snapshotSql(context))).rows));
+          const state = shallowState(before);
+          const { commit, outcome } = await work(state);
+          if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
+          await flush(client, before, state);
+          const after = scopedCopy(state, context);
+          await client.query('COMMIT'); begun = false;
+          remember(key, { fingerprint: localFingerprint(after), state: after, trustedUntil: until() });
+          if (trustMs) refreshOthers(key, after.tables.runs);
+          return outcome;
+        } catch (error) {
+          if (begun) await client.query('ROLLBACK').catch(() => {});
+          throw error;
+        }
+      });
     } catch (error) {
       cache.delete(key);
       for (const entry of cache.values()) entry.trustedUntil = 0;
-      if (begun) await client?.query('ROLLBACK').catch(() => {});
       return databaseFailure(error);
-    } finally {
-      client?.release();
     }
   }
 
