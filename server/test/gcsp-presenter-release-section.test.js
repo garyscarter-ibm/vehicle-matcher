@@ -19,6 +19,7 @@ const settle = async () => { for (let i = 0; i < 12; i++) await new Promise((res
 const car = (at, extra = {}) => ({ id: `car-${at}`, imageSrc: `/assets/${at}.webp`, imageAlt: `Car ${at}`, modelName: `Model ${at}`, modelLine: 'G20', colourName: `Colour ${at}`, ...extra });
 const latest = (runId = 'run-a', trancheId = 't1', n = 4, extra = {}) => ok({ runId, release: { windowId: 'w1', releasedAt: '2026-11-10T11:30:00.000Z', trancheId },
   cars: Array.from({ length: n }, (_, at) => car(at)), counts: { released: n, modelLines: 2, colours: 3, onScheme: 1200 }, modelLines: [{ modelLine: 'G20', count: 3 }, { modelLine: 'F70', count: 1 }], ...extra });
+const gate = () => { let open; const wait = new Promise((resolve) => { open = resolve; }); return { wait, open }; };
 const empty = ok({ runId: 'run-a', release: null, cars: [], counts: { released: 0, modelLines: 0, colours: 0, onScheme: 0 }, modelLines: [] });
 const mount = (reply, extra = {}) => {
   const host = document.createElement('div'); document.body.append(host); const adapter = { readLatestRelease: async () => (typeof reply === 'function' ? reply() : reply), ...extra };
@@ -131,5 +132,23 @@ test('an unavailable controls read hides the section with the feed, and a good r
 test('painted copy has no em dash or banned word', async () => {
   const f = mountConsole(); await f.api.ready; f.api.basic.release.click(); await settle();
   for (const root of [f.api.root.querySelector('.gcsp-console-release')]) { const shown = paint(root); assert.doesNotMatch(shown, /—/); assert.doesNotMatch(shown, /demo|demonstration|synthetic|fictional|example/i); }
+  f.api.destroy();
+});
+
+test('Today\'s release shows its own skeleton, not the empty state, until the first read lands', async () => {
+  const hold = gate(); const f = mount(null, { readLatestRelease: async () => { await hold.wait; return empty; } });
+  assert.ok(f.api.root.querySelector('.gcsp-skeleton')); assert.doesNotMatch(f.api.root.textContent, /No cars released yet/);
+  assert.equal(f.api.root.querySelector('.gcsp-release-totals'), null); assert.equal(f.api.root.querySelector('[role="status"]'), null);
+  const read = f.api.refresh(); hold.open(); await read;
+  assert.equal(f.api.root.querySelector('.gcsp-skeleton'), null); assert.match(f.api.root.textContent, /No cars released yet/);
+  f.api.destroy();
+});
+
+test('inside the console, a slow release read keeps its own skeleton, never the empty state, then shows its result', async () => {
+  const hold = gate(); const f = mountConsole({ adapter: { readLatestRelease: async () => { await hold.wait; return latest('run-a', 't1', 3); } } });
+  await f.api.ready; await settle(); const stage = f.api.root.querySelector('.gcsp-console-stage'); const section = stage.querySelector('.gcsp-console-release');
+  assert.ok(section.querySelector('.gcsp-skeleton')); assert.doesNotMatch(section.textContent, /No cars released yet|Waiting for 11:30am/);
+  hold.open(); await settle();
+  assert.equal(cells(stage).length, 3); assert.equal(section.querySelector('.gcsp-skeleton'), null);
   f.api.destroy();
 });

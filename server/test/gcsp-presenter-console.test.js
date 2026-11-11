@@ -31,6 +31,15 @@ const labelled = (root, label) => [...root.querySelectorAll('button')].find((nod
 const key = (node, name) => node.dispatchEvent(new window.KeyboardEvent('keydown', { key: name, bubbles: true }));
 const textNodes = (root) => { const out = []; const walk = (node) => { if (node.nodeType === 3) out.push(node.nodeValue); else node.childNodes.forEach(walk); }; walk(root); return out.join(' '); };
 
+// Records every value written to the h1, so a test can prove no interim heading is ever painted.
+function watchHeading(root) {
+  const h1 = root.querySelector('h1'); const seen = []; const own = Object.getOwnPropertyDescriptor(window.Node.prototype, 'textContent');
+  Object.defineProperty(h1, 'textContent', { configurable: true, get() { return own.get.call(this); }, set(value) { seen.push(value); own.set.call(this, value); } });
+  return seen;
+}
+const gate = () => { let open; const wait = new Promise((resolve) => { open = resolve; }); return { wait, open }; };
+const visibleSkeleton = (root) => root.querySelector('.gcsp-console-stage > .gcsp-skeleton');
+
 test('the console has no portal chrome and the page links only what it needs', () => {
   const f = setup();
   for (const selector of ['.gcsp-header', '.gcsp-nav', '.gcsp-rail', '.gcsp-presenter-flyout', '.gcsp-nav-presenter']) assert.equal(f.root.querySelector(selector), null, selector);
@@ -212,4 +221,35 @@ test('painted copy has no em dash and none of the banned words, and the adapter 
   assert.deepEqual(bad, []); assert.ok(names.includes('readControls'));
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/console.js', import.meta.url), 'utf8'), /createAccountHttpAdapter|createGregHttpAdapter|accountAdapter|gregAdapter|\/account\/|\/greg\//);
   g.api.destroy();
+});
+
+test('before the first read the page is a skeleton with one status line, and no heading has text', async () => {
+  const hold = gate(); const f = setup({ readControls: async () => { await hold.wait; return ok(readState()); } });
+  const skeleton = visibleSkeleton(f.root); assert.ok(skeleton); assert.equal(skeleton.dataset.layout, 'console');
+  assert.equal(f.root.querySelectorAll('[role="status"]').length, 2, 'the skeleton line and the action status');
+  assert.equal(skeleton.querySelector('[role="status"]').textContent, 'Loading the presenter console');
+  assert.equal(f.root.querySelector('h1').textContent, ''); assert.equal(f.root.querySelector('.gcsp-console-stage').hasAttribute('data-loading'), true);
+  hold.open(); await f.api.ready; await settle(); f.api.destroy();
+});
+
+test('without Basic options the heading is written once, after the read, and the skeleton goes', async () => {
+  const hold = gate(); const f = setup({ readControls: async () => { await hold.wait; return ok(readState()); } }); const seen = watchHeading(f.root);
+  await settle(); assert.deepEqual(seen, []); assert.ok(visibleSkeleton(f.root));
+  hold.open(); await f.api.ready; await settle();
+  assert.deepEqual(seen, ['Clock mechanics']); assert.equal(visibleSkeleton(f.root), null);
+  assert.equal(f.root.querySelector('.gcsp-console-stage').hasAttribute('data-loading'), false); f.api.destroy();
+});
+
+test('a slow onState keeps the skeleton and never shows the scenario name before the supplied headline', async () => {
+  const hold = gate(); const f = setup({}, { onState: async (state, basic) => { await hold.wait; basic.update({ headline: 'Ready for the next release' }); } });
+  const seen = watchHeading(f.root); await settle();
+  assert.deepEqual(seen, []); assert.ok(visibleSkeleton(f.root));
+  hold.open(); await f.api.ready; await settle();
+  assert.deepEqual(seen, ['Ready for the next release']); assert.equal(visibleSkeleton(f.root), null); f.api.destroy();
+});
+
+test('a failed read ends the skeleton on the error screen, with the title as the heading', async () => {
+  const f = setup({ readControls: async () => ({ status: 'unavailable' }) }); await f.api.ready;
+  assert.equal(visibleSkeleton(f.root), null); assert.ok(f.root.querySelector('.gcsp-console-screen .vm-status'));
+  assert.equal(f.root.querySelector('h1').textContent, 'Presenter console'); f.api.destroy();
 });

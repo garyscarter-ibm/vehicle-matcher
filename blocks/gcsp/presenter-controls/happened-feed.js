@@ -3,6 +3,7 @@ import { el, button } from '../../vehicle-matcher/ui.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { sideDrawer } from '../kit/side-drawer.js';
 import { friendlyTime } from '../kit/friendly-time.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 import { messageDetail } from '../presenter/message-list.js';
 import { releasedThisTick, currentEntry } from './basic-model.js';
 
@@ -39,7 +40,7 @@ function lapsedCount(tick) {
 /** Appends section.gcsp-happened to parent. Returns { root, update(controls), destroy() }. */
 export function mountHappenedFeed(parent, { adapter, storage } = {}) {
   const root = el('section', 'gcsp-happened'); root.hidden = true;
-  const slot = el('div', 'gcsp-happened-slot'); root.append(slot);
+  const slot = el('div', 'gcsp-happened-slot'); slot.append(loadingSkeleton({ label: 'Loading what happened', layout: 'section', role: null })); root.append(slot);
   parent.append(root);
   let runId = null; let history = []; let messages = []; let failed = false; let clock = { runId: null, start: null, promise: null };
   let turn = 0; let destroyed = false; let drawer = null; let heading = null;

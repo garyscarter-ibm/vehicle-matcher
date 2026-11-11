@@ -133,3 +133,13 @@ test('the page links the feed styles and the painted feed has no em dash', () =>
   for (const sheet of ['kit/activity-timeline.css', 'kit/side-drawer.css', 'presenter-controls/happened-feed.css']) assert.ok(html.includes(sheet), sheet);
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/happened-feed.css', import.meta.url), 'utf8'), /border-(left|right)\s*:\s*[2-9]|presenter\.css/);
 });
+
+test('What happened shows a skeleton from mount until its first paint, never an empty list', async () => {
+  const hold = { open: null }; const wait = new Promise((resolve) => { hold.open = resolve; });
+  const f = mount({ readOutbox: async () => { await wait; return ok({ runId: 'run-a', messages: [] }); } });
+  assert.ok(f.feed.root.querySelector('.gcsp-skeleton')); assert.equal(f.feed.root.querySelector('.gcsp-timeline-event'), null);
+  const pending = f.feed.update(controls()); await settle();
+  assert.equal(f.feed.root.hidden, false); assert.ok(f.feed.root.querySelector('.gcsp-skeleton')); assert.equal(f.feed.root.querySelector('.gcsp-timeline-event'), null);
+  hold.open(); await pending;
+  assert.equal(f.feed.root.querySelector('.gcsp-skeleton'), null); assert.equal(labels(f.feed.root).length, 1); f.feed.destroy();
+});
