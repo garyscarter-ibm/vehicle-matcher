@@ -16,7 +16,22 @@ export function createBriefRoutes(service, editorService) {
       if (!editorService || typeof editorService[operation] !== 'function') return result('unavailable', { reason: 'The brief editor has not been configured.', retryable: true });
       return editorService[operation](context, body);
     } });
+  // Legacy browser aliases use the same editor gate and version checks as Account.
+  const legacy = (path, operation) => ({ ...editor(path, 'POST', operation),
+    async handle({ context, body, searchParams }) {
+      if ([...searchParams.keys()].length || !body || typeof body !== 'object' || Array.isArray(body)
+        || typeof body.commandId !== 'string' || !body.commandId.trim() || !Number.isSafeInteger(body.expectedBriefVersion) || body.expectedBriefVersion < 0
+        || Object.keys(body).some((key) => !['commandId', 'expectedBriefVersion'].includes(key)))
+        return result('invalid', { code: 'invalid-command' });
+      if (typeof editorService?.readEditor !== 'function' || typeof editorService?.[operation] !== 'function') return result('unavailable', { retryable: true });
+      const current = await editorService.readEditor(context);
+      if (current?.status !== 'ok') return current ?? result('unavailable', { retryable: true });
+      const initial = current.value?.initial;
+      if (!Number.isSafeInteger(initial?.briefVersion) || !Number.isSafeInteger(initial?.draftVersion) || initial.briefVersion < 0 || initial.draftVersion < 0) return result('unavailable', { retryable: true });
+      if (body.expectedBriefVersion !== initial?.briefVersion) return result('stale-version', { action: 'refresh' });
+      return editorService[operation](context, { ...body, expectedDraftVersion: initial.draftVersion });
+    } });
   return [editor('/editor', 'GET', 'readEditor'), editor('/preview', 'POST', 'previewDraft'), editor('/preferences', 'POST', 'savePreferences'), editor('/engage', 'POST', 'engage'), editor('/disengage', 'POST', 'disengage'), route('', 'GET', 'readCurrent'), route('/history', 'GET', 'readHistory'), route('/draft', 'GET', 'readDraft'),
-    route('/draft', 'POST', 'saveDraft'), route('/confirm', 'POST', 'confirm'), route('/pause', 'POST', 'pause'),
-    route('/resume', 'POST', 'resume'), route('/change-after-decline', 'POST', 'changeAfterDecline')];
+    editor('/draft', 'POST', 'saveDraft'), editor('/confirm', 'POST', 'confirm'), legacy('/pause', 'disengage'),
+    legacy('/resume', 'engage'), route('/change-after-decline', 'POST', 'changeAfterDecline')];
 }

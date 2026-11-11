@@ -17,7 +17,9 @@ export function cookieOf(session) {
 }
 
 export async function startHttpServer(dependencies = {}, allowedOrigins = [EMPLOYEE_ORIGIN]) {
-  const server = buildServer({ gcspAllowedOrigins: allowedOrigins, ...dependencies });
+  // These HTTP tests own recommendation inputs; do not start unrelated retained-fleet readers.
+  const server = buildServer({ gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } },
+    gcspAllowedOrigins: allowedOrigins, ...dependencies });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   const request = async (path, options = {}) => {

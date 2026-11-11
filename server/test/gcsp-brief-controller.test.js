@@ -94,7 +94,7 @@ test('unknown/prototype/authority writes fail closed and inputs, callbacks and s
   assert.equal(c.snapshot().knownFacts.driver.value, 'Paula');
   assert.equal(observed.length, 1);
   const unsubscribe = c.subscribe((s) => { s.knownFacts.driver.value = 'Other'; });
-  c.setConsent({ search: false, hold: true }); unsubscribe();
+  c.setConsent({ search: true, hold: true }); unsubscribe();
   assert.equal(c.snapshot().knownFacts.driver.value, 'Paula');
   assert.throws(() => setup(t, { initial: { ...initial(), knownFacts: {} } }), /initial/);
   assert.throws(() => setup(t, { context: undefined }), TypeError);
@@ -166,9 +166,9 @@ test('missing/malformed success and failed preview remain unavailable, distinct 
   assert.equal(c.snapshot().preview.state, 'unavailable');
 });
 
-test('real FUCQ-91 response envelopes drive exact returned versions and explicit independent consent', async (t) => {
+test('real FUCQ-91 response envelopes drive exact returned versions and binary Buddy consent', async (t) => {
   const fixtures = JSON.parse(await readFile(new URL('./fixtures/gcsp-brief-outcomes.json', import.meta.url)));
-  for (const consent of [undefined, { search: true, hold: false }, { search: false, hold: true }]) {
+  for (const consent of [undefined, { search: true, hold: true }, { search: false, hold: false }]) {
     const commands = [];
     const c = setup(t, { transport: { saveDraft: async (command) => { commands.push(command); return fixtures.draft; },
       confirm: async (command) => { commands.push(command); return fixtures.confirmed; } } });
@@ -184,13 +184,30 @@ test('real FUCQ-91 response envelopes drive exact returned versions and explicit
   }
 });
 
+test('legacy controller treats partial and paused grants as off and rejects split permission edits', (t) => {
+  for (const initial of [{ consent: { search: true, hold: false } }, { consent: { search: true, hold: true }, buddy: { state: 'disengaged' } }]) {
+    const c = setup(t, { initial });
+    assert.deepEqual(c.snapshot().consent, { search: false, hold: false });
+    assert.equal(c.setConsent({ search: false, hold: true }).status, 'invalid');
+  }
+});
+
+test('legacy save chains the promoted autosave version and retains it if confirmation is unavailable', async (t) => {
+  let command;
+  const c = setup(t, { transport: { saveDraft: async () => ({ status: 'ok', value: { draftVersion: 2, baseBriefVersion: 0, confirmed: { briefVersion: 1 } } }),
+    confirm: async (input) => { command = input; return { status: 'unavailable' }; } } });
+  await c.save();
+  assert.equal(command.expectedBriefVersion, 1);
+  assert.deepEqual([c.snapshot().briefVersion, c.snapshot().draftVersion], [1, 2]);
+});
+
 test('save snapshots survive transport mutation and retain edits and consent made while saving; repeated calls are busy', async (t) => {
   const draft = deferred(); const confirm = deferred(); let sentDraft; let sentConfirm;
   const c = setup(t, { transport: { saveDraft: (command) => { sentDraft = structuredClone(command); command.brief.preferences.comfort.value = 1; return draft.promise; },
     confirm: (command) => { sentConfirm = command; command.consent.search = true; return confirm.promise; } } });
   c.updatePreference('comfort', { value: 90 });
   const saving = c.save(); assert.equal((await c.save()).status, 'busy');
-  c.updatePreference('comfort', { value: 95 }); c.setConsent({ search: false, hold: true });
+  c.updatePreference('comfort', { value: 95 }); c.setConsent({ search: true, hold: true });
   draft.resolve({ status: 'ok', value: { draftVersion: 7, baseBriefVersion: 0 } }); await settle();
   assert.equal(sentDraft.brief.preferences.comfort.value, 90); assert.equal(sentConfirm.expectedDraftVersion, 7);
   assert.equal(sentConfirm.consent.hold, false);
@@ -198,7 +215,7 @@ test('save snapshots survive transport mutation and retain edits and consent mad
   const outcome = await saving; outcome.value.brief.briefVersion = 100;
   assert.equal(c.snapshot().briefVersion, 4); assert.equal(c.snapshot().draftVersion, 7);
   assert.equal(c.snapshot().brief.preferences.comfort.value, 95); assert.equal(c.snapshot().dirty, true);
-  assert.deepEqual(c.snapshot().consent, { search: false, hold: true });
+  assert.deepEqual(c.snapshot().consent, { search: true, hold: true });
   assert.equal(c.snapshot().save.outcome.value.brief.briefVersion, 4);
 });
 

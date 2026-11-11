@@ -13,6 +13,10 @@ import { createRunStockProvider, createRunStockProviderFactory } from '../gcsp/s
 import { createReleaseGuarantee } from '../gcsp/stock/release-guarantee.js';
 import { STOCK_GENERATOR_NAMESPACE } from '../gcsp/vehicle-evidence/stock-generator.js';
 import { scorePreferences } from '../scenarios/employee/index.js';
+import { modelBrowseFacts } from '../gcsp/stock/demo-provider.js';
+import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
+import { context as recommendationContext, instant, currentCar, rating, preference, providerValue, provider, time }
+  from './helpers/employee-recommendation.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 const roots = [];
@@ -113,6 +117,56 @@ test('default run: generated stock, Next release at the first cadence window, re
   assert.deepEqual(again, first);
   assert.equal((await f.stock()).filter((row) => row.state === 'released').length, released.length);
   assert.equal(good(await f.controls.readState(f.context)).controls.nextRelease.at, windows[1]);
+});
+
+test('generated supported derivatives carry measured acceleration and applicable combustion economy', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-performance' });
+  const rows = generatedRows(await f.stock());
+  const mapping = good(await f.policy.getAssumption('stock.eligibilityModelKeys.v1', {
+    runId: f.runId, asOf: '2026-11-05T09:00:00.000Z' })).value;
+  const supported = new Set(Object.values(mapping));
+  assert.deepEqual(new Set(rows.map((row) => factOf(row, 'eligibilityModelKey'))), supported);
+  for (const row of rows) {
+    const key = factOf(row, 'eligibilityModelKey');
+    assert.ok(Number.isFinite(factOf(row, 'zeroTo62')) && factOf(row, 'zeroTo62') > 0, key);
+    assert.equal(row.facts.facts.zeroTo62.unit, 's');
+    if (factOf(row, 'fuel') === 'ev') assert.equal(factOf(row, 'mpg'), undefined, key);
+    else {
+      assert.ok(Number.isFinite(factOf(row, 'mpg')) && factOf(row, 'mpg') > 0, key);
+      assert.equal(row.facts.facts.mpg.unit, 'mpg-imperial');
+    }
+  }
+  const acceleration = (key) => modelBrowseFacts(key).zeroTo62.value;
+  assert.ok(acceleration('F70 Sports Hatch|M135') < acceleration('F70 Sports Hatch|120'));
+  assert.ok(acceleration('G42 Coupe|M240i') < acceleration('G42 Coupe|230i'));
+  assert.ok(acceleration('G42 Coupe|230i') < acceleration('G42 Coupe|220i'));
+  assert.equal(modelBrowseFacts('Unsupported|unknown'), null);
+});
+
+test('generated stock proves expressed Sportiness and Economy gains through the recommendation evaluator', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-improvement' });
+  const rows = generatedRows(await f.stock());
+  const evaluate = async (row, field) => {
+    const source = providerValue([{ orderUuid: row.orderUuid, configurationId: row.configurationId, snapshot: row.facts,
+      availability: { state: 'available', version: 'generated-regression', availableFrom: instant, availableUntil: '2027-01-01T00:00:00.000Z' } }]);
+    source.currentCar = currentCar();
+    const service = createEmployeeRecommendationService({ policy: createPolicyService(), provider: provider(source), time });
+    return good(await service.recommend(recommendationContext, { schemaVersion: 1, briefVersion: 1,
+      preferences: { [field]: preference(field === 'sportiness' ? 80 : 100) }, essentials: {}, currentCarRating: rating(5) }));
+  };
+  for (const [key, field] of [['G42 Coupe|M240i', 'sportiness'], ['F70 Sports Hatch|120', 'economy']]) {
+    const row = rows.find((candidate) => factOf(candidate, 'eligibilityModelKey') === key);
+    assert.ok(row, key);
+    const out = await evaluate(row, field);
+    assert.equal(out.decisions[0].feedback.improvement, 'proven', `${key}: ${JSON.stringify(out.decisions[0].feedback)}`);
+    assert.ok(out.recommendations.some((candidate) => candidate.orderUuid === row.orderUuid));
+    assert.ok(out.decisions[0].reasons.some((reason) => reason.code === 'feedback-improvement' && reason.keys.includes(field)));
+    const missing = structuredClone(row);
+    delete missing.facts.facts[field === 'sportiness' ? 'zeroTo62' : 'mpg'];
+    const unknown = await evaluate(missing, field);
+    assert.equal(unknown.decisions[0].feedback.improvement, 'unknown');
+    assert.equal(unknown.recommendations.length, 0, 'missing facts never pass the positive-rating improvement gate');
+  }
 });
 
 test('every generated car retains its configuration picture in its stock snapshot', async (t) => {

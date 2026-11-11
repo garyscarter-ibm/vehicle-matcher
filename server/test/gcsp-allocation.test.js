@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ok } from '../gcsp/repository/index.js';
+import { createBriefService } from '../gcsp/brief/index.js';
+import { createActivityService } from '../gcsp/brief/activity.js';
 import { allocationFixture } from './helpers/gcsp-allocation.js';
 import { stock, fact, rating, sameAgain } from './helpers/employee-recommendation.js';
 import { expandEvaluation, readAllocationEvaluation } from '../gcsp/allocation/evaluation-rows.js';
@@ -155,7 +157,7 @@ test('absent dependency, forged controller and unsupported policy fail closed', 
   assert.equal((await bad.service.allocate(bad.context, bad.event)).code, 'policy-invalid'); assert.equal(bad.calls.length, 0);
 });
 
-test('pause and consent are current; search-only consent evaluates without claiming', async () => {
+test('binary Buddy permission excludes paused and partial-consent records from evaluation and claims', async () => {
   const f = await allocationFixture({ cars: 4 });
   await f.write(async (tx) => {
     for (const [i, employee] of f.employees.entries()) {
@@ -166,10 +168,17 @@ test('pause and consent are current; search-only consent evaluates without claim
     }
     return ok({ changed: true });
   });
+  const partial = f.employees[1];
+  const brief = await createBriefService(f).readCurrent(partial);
+  assert.equal(brief.status, 'ok', JSON.stringify(brief));
+  assert.equal(brief.value.activity.canSearch, false);
+  assert.equal(brief.value.activity.canHold, false);
+  const activity = await createActivityService(f).readActivity(partial);
+  assert.equal(activity.status, 'ok', JSON.stringify(activity));
+  assert.equal(activity.value.permission.canSearch, false);
   const out = await f.service.allocate(f.context, { ...f.event, eventType: 'brief-changed' });
   assert.equal(out.status, 'ok', JSON.stringify(out)); assert.equal(out.value.state, 'no-assignment');
-  assert.equal(out.value.evaluations.length, 1); assert.equal(out.value.evaluations[0].employeeId, f.employees[1].employeeId);
-  assert.equal(out.value.evaluations[0].decisions.length, 4); assert.equal(f.calls.length, 0);
+  assert.equal(out.value.evaluations.length, 0); assert.equal(f.calls.length, 0);
 });
 
 test('relevant confirmed preference change reopens decline; provenance-only version does not', async () => {
@@ -313,7 +322,8 @@ async function feedbackFixture(options) {
   await f.write(async (tx) => {
     const emp = await tx.get({ table: 'employees', key: { runId: f.context.runId, employeeId: target.employeeId } });
     const [current] = emp.value.contract.manualContext.contracts;
-    const contracts = [{ ...current, contractId, source, vehicle: { modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', body: 'estate', fuel: 'petrol' } }];
+    // This synthetic baseline is explicitly bound to candidate 1's exact configuration.
+    const contracts = [{ ...current, contractId, source, vehicle: { modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', configurationId: 'RzIxOlMx', body: 'estate', fuel: 'petrol' } }];
     const saved = await tx.compareAndSwap({ table: 'employees', key: { runId: f.context.runId, employeeId: target.employeeId } }, emp.value.version,
       { contract: { manualContext: { ...emp.value.contract.manualContext, source, contracts } } });
     if (saved.status !== 'ok') return saved;
@@ -358,6 +368,7 @@ test('FUCQ-371: the frozen baseline replays to the same quote, and a request nev
   if (mine) assert.ok(mine.quote.reasons.some((r) => r.code === 'same-again-match') && mine.quote.versions.feedback.endsWith('+manual-records-v1'));
   const rows = (await x.f.repository.query(x.f.context, 'event_receipts', { consumerId: 'buddy-allocation-evaluation' })).value;
   const frozen = rows.find((r) => r.outcome.value.employeeId === x.target.employeeId).outcome.value.quoteInputs;
-  assert.equal(frozen.currentCar.contractId, x.contractId); assert.equal(frozen.request.currentCarRating.value, 4);
+  assert.equal(frozen.currentCar.contractId, x.contractId); assert.equal(frozen.currentCar.facts.configurationId.value, 'RzIxOlMx');
+  assert.equal(frozen.request.currentCarRating.value, 4);
   assert.equal(Object.hasOwn(frozen.request, 'currentCar'), false);
 });

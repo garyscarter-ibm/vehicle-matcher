@@ -30,12 +30,12 @@ test('actual live entry bootstraps the shared canonical account and current acti
     assert.equal(buddyState(await cars.readActivity()), 'unset');
     const post=async(path,body)=>(await request(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
     assert.equal((await post('/api/gcsp/brief/draft',{commandId:randomUUID(),expectedBriefVersion:0,expectedDraftVersion:0,
-      brief:{schemaVersion:1,preferences:{body:preference('estate')},essentials:{seats:essential(5)}}})).status,'ok');
+      brief:{schemaVersion:1,preferences:{body:preference(['estate']),sportiness:preference(50),economy:preference(50)},essentials:{seats:essential(5)}}})).status,'ok');
     assert.equal((await post('/api/gcsp/brief/confirm',{commandId:randomUUID(),expectedBriefVersion:0,expectedDraftVersion:1,consent:{search:true,hold:true}})).status,'ok');
     await controller.refresh();assert.equal(controller.getState().result.value.briefVersion,1);assert.equal(controller.getState().result.value.permission.canSearch,true);
     assert.equal(buddyState(await cars.readActivity()), 'active');
     await controller.pause();assert.equal(controller.getState().result.value.briefVersion,2);assert.equal(controller.getState().result.value.permission.canHold,false);
-    assert.equal(buddyState(await cars.readActivity()), 'paused');
+    assert.equal(buddyState(await cars.readActivity()), 'inactive');
     await controller.resume();assert.equal(controller.getState().result.value.briefVersion,3);assert.equal(controller.getState().result.value.permission.canSearch,true);
     assert.equal(buddyState(await cars.readActivity()), 'active');
     const fresh=await adapter.readActivity();assert.equal(fresh.value.briefVersion,3);assert.equal(fresh.value.lastSuccessfulCheck,null);assert.deepEqual(fresh.value.offers,[]);

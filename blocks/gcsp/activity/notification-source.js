@@ -8,8 +8,8 @@ import { respondBy } from './activity-copy.js';
 const MAX_ROWS = 6;
 const hhmm = (instant) => demoTime(instant).split(', ').pop();
 const by = (offer) => (respondBy(offer) ? `Respond by ${hhmm(offer.expiresAt)}` : null);
-const changeCopy = Object.freeze({ confirmed: 'Your buddy started searching', paused: 'Your buddy is paused',
-  resumed: 'Your buddy is searching again', 'changed-after-decline': 'Your preferences changed after a decline' });
+const changeCopy = Object.freeze({ confirmed: 'Preferences confirmed', paused: 'Buddy disengaged',
+  resumed: 'Buddy settings updated', engaged: 'Buddy engaged', disengaged: 'Buddy disengaged', 'changed-after-decline': 'Your preferences changed after a decline' });
 const processing = new Set(['decision-pending', 'release-pending']);
 const declined = new Set(['rejected', 'declined']);
 const ok = (value) => value && Array.isArray(value.offers) && Array.isArray(value.stateChanges);

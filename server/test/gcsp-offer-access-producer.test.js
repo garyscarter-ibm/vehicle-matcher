@@ -222,6 +222,15 @@ test('actual pinned quote expiry preserves decline before the unchanged active h
 });
 
 // FUCQ-371 AC4/AC6: a saved positive rating reaches the real Offer through the actual allocation and stays pinned after later changes.
+test('actual allocation under a poor rating explains the confirmed different car in the Offer', async (t) => {
+  const f = await setup(t, { briefExtra: { currentCarRating: rating(1, 'current:employee-paula') },
+    carFacts: { modelLine: fact('G20 Saloon'), body: fact('saloon') } });
+  const dto = passed(await f.exchange()).offer;
+  assert.ok(dto.quote.decision.reasons.some((r) => r.code === 'feedback-different'));
+  const card = toOfferPresentation({ status: 'ok', value: dto }).value.card.members[0];
+  assert.ok(card.decision.reasons.some((r) => r.text === 'Different from the current car you rated poorly.'));
+});
+
 test('actual allocation under a saved positive rating pins the feedback reason and revision, and a later brief change never rewrites the offer', async (t) => {
   const f = await setup(t, { briefExtra: { currentCarRating: rating(5, 'current:employee-paula') }, carFacts: { modelLine: fact('G21 Touring') } });
   const dto = passed(await f.exchange()).offer;

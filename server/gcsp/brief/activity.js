@@ -1,3 +1,4 @@
+import { isBuddyEngaged } from './permission.js';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { readAllocationEvaluation } from '../allocation/evaluation-rows.js';
@@ -32,7 +33,7 @@ function projectChange(receipt, history, context, now) {
     || event.previousBriefVersion !== brief.previousBriefVersion
     || event.operation === 'paused' && brief.buddy?.paused !== true
     || event.operation === 'resumed' && brief.buddy?.paused !== false
-    || event.operation === 'engaged' && !(brief.buddy?.searchConsent === true && brief.buddy.holdConsent === true && brief.buddy.paused === false)
+    || event.operation === 'engaged' && !isBuddyEngaged(brief.buddy)
     || event.operation === 'disengaged' && brief.buddy?.searchConsent !== false) return null;
   return { eventId: event.eventId, eventType: event.eventType, operation: event.operation,
     briefVersion: event.briefVersion, previousBriefVersion: event.previousBriefVersion, occurredAt: event.occurredAt };
@@ -138,8 +139,8 @@ export function createActivityService({ repository, identity, clock } = {}) {
           || ['searchConsent', 'holdConsent', 'paused'].some((key) => typeof brief.buddy[key] !== 'boolean'))) return unavailable('brief-invalid');
         const permission = brief ? { searchConsent: brief.buddy.searchConsent, holdConsent: brief.buddy.holdConsent,
           paused: brief.buddy.paused, permissionVersion: brief.buddy.permissionVersion,
-          canSearch: brief.buddy.searchConsent && !brief.buddy.paused,
-          canHold: brief.buddy.searchConsent && brief.buddy.holdConsent && !brief.buddy.paused } : null;
+          canSearch: isBuddyEngaged(brief.buddy),
+          canHold: isBuddyEngaged(brief.buddy) } : null;
         const offers = rows.offers.map(projectOffer); if (offers.some((offer) => !offer)) return unavailable('offer-invalid');
         offers.sort((a, b) => a.offerRef.offerId.localeCompare(b.offerRef.offerId));
         const newest = [...offers].sort((a, b) => String(b.createdAt ?? '').localeCompare(String(a.createdAt ?? ''))

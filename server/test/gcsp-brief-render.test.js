@@ -26,7 +26,7 @@ test('distilled body keeps draft provenance and complete checks in its disclosur
   assert.match(cards.textContent, /Less sporty than you prefer\./); assert.doesNotMatch(cards.textContent, /\d+%|% fit/); assert.match(cards.textContent, /Charging access is unknown/);
   assert.deepEqual(requests[0].brief, fixture.edited.value.initial.brief);
 });
-test('representative keeps independent axes, typed practical answers, unknown charging and independent consent', async (t) => {
+test('representative keeps independent axes, typed practical answers, unknown charging and binary Buddy consent', async (t) => {
   const main = document.createElement('main'); document.body.append(main);
   const previews = []; const saves = [];
   const teardown = mountBriefBody(main, { editor: fixture.edited.value, transport: { preview: async (v) => { previews.push(v); return fixture.preview; }, saveDraft: async (v) => { saves.push(v); return { status: 'unavailable' }; }, confirm: async () => ({ status: 'unavailable' }) }, createCommandId: (kind) => kind });
@@ -60,7 +60,7 @@ test('teardown cancels late load and missing adapter gives unavailable body', as
   resolve(fixture.edited); await Promise.resolve(); assert.equal(main.childElementCount, 0);
   const cleanup = mountBriefBody(main, {}); await Promise.resolve(); assert.match(main.textContent, /could not be loaded/); cleanup();
 });
-test('typed No answers and consent save independently; failed preview preserves the focused native input', async (t) => {
+test('typed No answers and one Buddy choice save together; failed preview preserves the focused native input', async (t) => {
   const main = document.createElement('main'); document.body.append(main); const drafts = []; const confirmations = [];
   const teardown = mountBriefBody(main, { editor: fixture.editor.value, transport: {
     preview: async () => ({ status: 'unavailable' }),
@@ -70,14 +70,16 @@ test('typed No answers and consent save independently; failed preview preserves 
   for (const label of ['Do you need to carry five people?', 'Do you need at least 430 litres of carrying space?', 'Do you need a towbar?']) {
     main.querySelector(`[aria-label="${label}"]`).querySelectorAll('button')[1].click();
   }
-  const hold = main.querySelector('[aria-label="Buddy permissions"]').querySelectorAll('button')[1]; hold.click();
+  const buddy = main.querySelector('[data-buddy-toggle]');
+  assert.equal(buddy.textContent, 'Engage Buddy'); assert.equal(buddy.hasAttribute('aria-label'), false);
+  buddy.click(); assert.equal(buddy.textContent, 'Disengage Buddy');
   const input = main.querySelector('[aria-label="Comfort: what you prefer"]'); input.focus(); input.value = '89'; input.dispatchEvent(new dom.window.Event('input'));
   await settle(); assert.equal(document.activeElement, input); assert.equal(main.querySelector('[aria-label="Comfort: what you prefer"]'), input);
   assert.match(main.textContent, /Preview unavailable/);
   main.querySelector('[data-save-brief]').click(); await settle();
-  assert.deepEqual(confirmations[0].consent, { search: false, hold: true });
+  assert.deepEqual(confirmations[0].consent, { search: true, hold: true });
   assert.deepEqual(['seats', 'boot', 'equipment'].map((key) => drafts[0].brief.essentials[key].value), [0, 0, []]);
-  assert.equal(drafts[0].brief.essentials.charging.value, null); assert.match(main.textContent, /Your buddy is off/);
+  assert.equal(drafts[0].brief.essentials.charging.value, null); assert.match(main.textContent, /Buddy engaged/);
 });
 test('retry stays under the original teardown and suppresses its late response', async () => {
   const main = document.createElement('main'); let attempts = 0; let resolve;
@@ -249,9 +251,9 @@ test('a saved brief with search on offers one onward step to buddy activity', as
   await settle();
   const onward = [...main.querySelectorAll('button')].find((node) => node.textContent === 'See your buddy at work');
   assert.equal(onward.hidden, true);
-  main.querySelector('[aria-label="Buddy permissions"] button').click();
+  main.querySelector('[data-buddy-toggle]').click();
   main.querySelector('[data-save-brief]').click(); await settle();
-  assert.match(main.textContent, /saved\. Your selected buddy permissions apply\./);
+  assert.match(main.textContent, /saved\. Buddy engaged\./);
   assert.equal(onward.hidden, false); onward.click(); assert.deepEqual(went, ['activity']);
 });
 test('a presenter action re-runs the preview on the current edits, and teardown unsubscribes', async (t) => {
@@ -282,7 +284,7 @@ test('the preferences page leads with essentials, hides importance until a value
   assert.equal(importance('fuel').hidden, true, 'an unset attribute shows no importance'); assert.equal(importance('sportiness').hidden, true);
   assert.equal(importance('body').hidden, false); assert.equal(importance('comfort').hidden, false);
   const save = main.querySelector('[aria-label="Save preferences"]');
-  assert.ok(save.querySelector('[aria-label="Buddy permissions"]') && save.querySelector('[data-save-brief]'), 'permissions and Save share one region');
+  assert.ok(save.querySelector('[data-buddy-toggle]') && save.querySelector('[data-save-brief]'), 'permissions and Save share one region');
   assert.equal(main.querySelectorAll('.gcsp-brief-section').length, 3);
 });
 test('after Save focus moves to the saved message, which is said once', async (t) => {

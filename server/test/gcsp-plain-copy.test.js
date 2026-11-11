@@ -61,10 +61,11 @@ test('current-car feedback codes read as their own sentences, never the generic 
   assert.equal(t('feedback-improvement', 'reasons', ['sportiness', 'comfort', 'size']), 'Better than your current car for sportiness, comfort and size.');
   assert.equal(t('feedback-improvement', 'reasons', []), 'Better than your current car for your preferences.');
   assert.equal(t('feedback-improvement', 'reasons', [7, null]), 'Better than your current car for your preferences.');
-  assert.equal(t('same-again-match', 'reasons'), 'The same model as your current car, as you asked.');
+  assert.equal(t('same-again-match', 'reasons'), 'The same model and specification as your current car, as you asked.');
+  assert.equal(t('feedback-different', 'reasons'), 'Different from the current car you rated poorly.');
   assert.equal(t('feedback-similar-omitted', 'blockers'), 'Too similar to your current car, which you rated poorly.');
   assert.equal(t('feedback-not-similar-or-better', 'blockers'), 'Neither similar to your current car nor better on your preferences.');
-  assert.equal(t('same-again-different', 'blockers'), 'Not the same model as your current car.');
+  assert.equal(t('same-again-different', 'blockers'), 'The same model and specification could not be confirmed.');
 });
 
 test('preference-fit reads in words for every preference key, with no percentage', () => {

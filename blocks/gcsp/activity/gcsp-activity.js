@@ -55,8 +55,8 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
         } else {
           body = activityBody({ announce: announcement.announce, result: state.result, pending: state.pending, offerDisplay: state.offerDisplay ?? offerDisplay,
             onRetry: account.status === 'ready' ? () => controller?.refresh() : refresh,
-            onPause: typeof adapter.pause === 'function' ? () => controller?.pause() : undefined,
-            onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,
+            onDisengage: typeof (adapter.disengage ?? adapter.pause) === 'function' ? () => controller?.disengage() : undefined,
+            onEngage: typeof (adapter.engage ?? adapter.resume) === 'function' ? () => controller?.engage() : undefined,
             onReviewBrief: typeof onNavigate === 'function' ? () => onNavigate('brief') : undefined });
         }
         keepScroll(root.ownerDocument.defaultView, () => content.replaceChildren(body)); announcement.announce(state.message);

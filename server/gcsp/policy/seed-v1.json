@@ -16272,7 +16272,7 @@
           "dimensions": ["modelLine", "body", "fuel"]
         },
         "sameAgain": {
-          "dimensions": ["eligibilityModelKey", "body", "fuel"]
+          "dimensions": ["eligibilityModelKey", "body", "fuel", "configurationId"]
         },
         "improvement": {
           "requireNoWorseOnAll": true,

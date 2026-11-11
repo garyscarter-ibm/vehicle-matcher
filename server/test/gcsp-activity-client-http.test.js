@@ -18,7 +18,7 @@ test('real client transport/controller follow BriefService pause/resume, stale v
     await controller.resume();assert.equal(controller.getState().result.value.briefVersion,3);assert.equal(controller.getState().result.value.permission.canSearch,true);assert.equal(controller.getState().result.value.permission.canHold,true);
     const outside=await runtime.brief.pause(runtime.context,{commandId:'outside-client',expectedBriefVersion:3});assert.equal(outside.status,'ok');
     await controller.pause();assert.equal(controller.getState().result.value.briefVersion,4);assert.equal(controller.getState().result.value.permission.paused,true);assert.match(controller.getState().message,/changed/i);
-    assert.deepEqual(calls.map((c) => c.method),['GET','POST','GET','POST','GET','POST','GET']);
+    assert.deepEqual(calls.map((c) => c.method),['GET','GET','POST','GET','GET','POST','GET','GET','GET']);
     const before=JSON.stringify(runtime.store.state);await controller.refresh();assert.equal(JSON.stringify(runtime.store.state),before);
     const state=(await runtime.clock.readState(runtime.presenter.context)).value;
     const reset=await runtime.clock.reset(runtime.presenter.context,{commandId:'reset-client-proof',expectedRunId:state.runId,
