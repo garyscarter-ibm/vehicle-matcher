@@ -16,6 +16,8 @@ import { indexJsonl } from '../gcsp/vehicle-evidence/indexed-jsonl.js';
 import { vehicleEvidenceDetails } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 import { createVehicleSnapshot } from '../vehicles/index.js';
 import { inputDigest } from '../gcsp/repository/core.js';
+import pg from 'pg';
+import { createPostgresRepository } from '../gcsp/repository/postgres.js';
 
 const good = (reply) => { assert.equal(reply?.status, 'ok', JSON.stringify(reply)); return reply.value; };
 const fact = (row, key) => row.facts.facts?.[key]?.value;
@@ -23,17 +25,36 @@ const fact = (row, key) => row.facts.facts?.[key]?.value;
 test('retained configuration facts survive actual generated stock, recommendation, new quote and offer access', async (t) => {
   const directory = await mkdtemp(join(tmpdir(), 'fucq382-producer-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
-  const repository = createMemoryRepository({ store: createMemoryStore() });
+  let admin; let schema;
+  if (process.env.GCSP_FUCQ393_NATIVE_PRODUCER === '1') {
+    assert.ok(process.env.GCSP_DATABASE_URL, 'native producer requires an explicit local database');
+    schema = `gcsp_producer_${process.pid}`;
+    admin = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, max: 1 }); admin.on('error', () => {});
+    await admin.query(`CREATE SCHEMA "${schema}"`);
+  }
+  const repository = admin ? createPostgresRepository({ schema, pool: admin, readTrustMs: 2000 })
+    : createMemoryRepository({ store: createMemoryStore() });
+  let runtime;
+  t.after(async () => {
+    try { await runtime?.close(); } finally {
+      if (admin) { try { await admin.query(`DROP SCHEMA "${schema}" CASCADE`); } finally { await admin.end(); } }
+    }
+  });
   const factory = createRunStockProviderFactory({ env: { GCSP_STOCK_INVENTORY_PATH: join(directory, 'inventory.json') } });
-  const runtime = good(await createGcspRuntime({ mode: 'memory', repository, stockProvider: factory,
+  runtime = good(await createGcspRuntime({ mode: 'memory', repository, stockProvider: factory,
     environmentId: 'fucq382-producer', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'f382-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z' }));
-  t.after(() => runtime.close());
   const presenter = good(await runtime.identity.createPresenterSession('f382-presenter')).context;
   const context = good(await runtime.identity.switchPrincipal(presenter, 'demo-paula', 'f382-paula')).context;
   good(await seedManualDemoContext({ repository, identity: runtime.identity, clock: runtime.clock, context }));
   assert.equal(factory.provider.describe(context.runId).source, 'generated');
   const rows = good(await repository.query(context, 'stock'));
+  if (admin) {
+    const storage = await admin.query(`SELECT (SELECT count(*)::int FROM "${schema}".vehicle_evidence_snapshots) AS snapshots,
+      (SELECT coalesce(sum(octet_length(data::text)),0)::bigint FROM "${schema}".stock) AS stock_bytes,
+      (SELECT coalesce(sum(octet_length(data::text)),0)::bigint FROM "${schema}".vehicle_evidence_snapshots) AS evidence_bytes`);
+    t.diagnostic(JSON.stringify({ generatedCars: rows.length, logicalStockBytes: rows.reduce((n, row) => n + Buffer.byteLength(JSON.stringify(row)), 0), ...storage.rows[0] }));
+  }
   const cars = rows.filter((row) => fact(row, 'eligibilityModelKey') === 'F70 Sports Hatch|120');
   assert.ok(cars.length > 1, 'real generator supplies the selected model');
   good(await runtime.stockRelease.register());

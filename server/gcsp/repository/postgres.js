@@ -2,6 +2,8 @@ import pg from 'pg';
 import { withPostgresClient } from './postgres-client.js';
 import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
+import { packEvidence, evidenceReferences, unpackEvidence, verifyEvidence, jsonBatches, DEFAULT_BATCH_BYTES,
+  writeEvidenceSnapshots, replaceEvidenceReferences } from './postgres-evidence.js';
 
 // Same sealing as memory.js (FUCQ-302): committed rows are deep-frozen and shared, so a stray in-place write throws.
 const deepFreeze = (value) => {
@@ -26,7 +28,7 @@ const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
-  const { schema = 'public', migrationsDirectory, now, pool: suppliedPool, readTrustMs = 0 } = options;
+  const { schema = 'public', migrationsDirectory, now, pool: suppliedPool, readTrustMs = 0, writeBatchBytes = DEFAULT_BATCH_BYTES } = options;
   // Opt-in (hosted only): for readTrustMs after a cache entry was last checked or committed, reads trust it without a probe.
   const trustMs = Number.isSafeInteger(readTrustMs) && readTrustMs > 0 ? readTrustMs : 0;
   const until = () => trustMs ? performance.now() + trustMs : 0;
@@ -45,6 +47,25 @@ export function createPostgresRepository(options = {}) {
   const fingerprintSql = (context, wide) => union(context, (t, from) =>
     `SELECT ${t} AS t, ${wide ? 'NULL::jsonb AS data, ' : ''}count(*) AS n, coalesce(sum(version), 0) AS v FROM ${from}`);
   const snapshotSql = (context, wide) => union(context, (t, from) => `SELECT ${t} AS t, data${wide ? ', NULL::bigint AS n, NULL::numeric AS v' : ''} FROM ${from}`);
+  // Hints come from validated core reads. Runs remain available for environment/history checks.
+  const selectedSql = (context, selection) => {
+    const parameters = [];
+    const runs = `SELECT 'runs' AS t, data FROM ${tableName('runs')}`;
+    if (selection.table === 'runs' || !FOUNDATION_TABLES.includes(selection.table)) return { sql: runs, parameters };
+    const table = selection.table;
+    parameters.push(String(context?.runId ?? ''));
+    const where = ['run_id = $1'];
+    for (const [key, value] of Object.entries(selection.filter)) {
+      if (TABLES[table].key.includes(key) && (key === 'briefVersion' ? Number.isSafeInteger(value) : typeof value === 'string')) {
+        parameters.push(value);
+        where.push(`${sqlName(column(key))} = $${parameters.length}`);
+      } else {
+        parameters.push(key, JSON.stringify(value));
+        where.push(`data -> $${parameters.length - 1}::text = $${parameters.length}::jsonb`);
+      }
+    }
+    return { sql: `${runs} UNION ALL SELECT ${pg.escapeLiteral(table)} AS t, data FROM ${tableName(table)} WHERE ${where.join(' AND ')}`, parameters };
+  };
   const lockSql = (context) => `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`)}, 0))`;
 
   const fingerprintOf = (rows) => {
@@ -53,9 +74,18 @@ export function createPostgresRepository(options = {}) {
   };
   const localFingerprint = (state) => FOUNDATION_TABLES.map((table) =>
     `${table}:${state.tables[table].length}:${state.tables[table].reduce((sum, row) => sum + Number(row.version), 0)}`).join('|');
-  const toState = (rows) => {
+  const toState = async (client, rows) => {
     const state = createState();
-    for (const { t, data } of rows) if (data != null) state.tables[t].push(data);
+    const snapshots = new Map();
+    for (const { data } of rows) if (data != null) {
+      for (const digest of evidenceReferences(data)) {
+        if (snapshots.has(digest)) continue;
+        // One immutable value per query bounds server-side materialization, including large configurations.
+        const found = await client.query(`SELECT data FROM ${tableName('vehicle_evidence_snapshots')} WHERE digest = $1`, [digest]);
+        snapshots.set(digest, verifyEvidence(digest, found.rows[0]?.data));
+      }
+    }
+    for (const { t, data } of rows) if (data != null) state.tables[t].push(unpackEvidence(data, snapshots));
     return state;
   };
   // Cache entry: the sealed snapshot scope (runs plus this run's rows), sharing frozen rows like memory.js (FUCQ-302).
@@ -75,16 +105,15 @@ export function createPostgresRepository(options = {}) {
   const refreshOthers = (key, runs) => {
     for (const [other, entry] of [...cache]) {
       if (other === key) continue;
-      if (!FOUNDATION_TABLES.every((table) => table === 'runs' || entry.state.tables[table].length === 0)) { cache.delete(other); continue; }
+      if (entry.selection?.table !== 'runs') { cache.delete(other); continue; }
       const state = sealState({ ...entry.state, tables: { ...entry.state.tables, runs } });
-      cache.set(other, { fingerprint: localFingerprint(state), state, trustedUntil: until() });
+      cache.set(other, { fingerprint: localFingerprint(state), state, selection: entry.selection, trustedUntil: until() });
     }
   };
 
   // Tables with partial unique indexes on mutable state keep ordered per-row updates.
   const ROW_UPDATE_TABLES = new Set(['runs', 'holds', 'claims']);
   const NUMERIC_KEYS = new Set(['briefVersion']);
-  const CHUNK = 500;
   const concurrentWrite = () => Object.assign(new Error('concurrent-write'), { code: '40001' });
 
   async function flush(client, before, after) {
@@ -103,8 +132,22 @@ export function createPostgresRepository(options = {}) {
         updates.push([table, row, old.version]);
       }
     }
+    // Keep the logical state/cache unchanged. Only the durable representation contains references.
+    const snapshots = new Map(); const references = new Map();
+    const encode = ([table, row, ...rest]) => {
+      const packed = packEvidence(row);
+      for (const [digest, data] of packed.snapshots) snapshots.set(digest, data);
+      const old = rest.length ? before.tables[table].find((entry) => keyOf(table, entry) === keyOf(table, row)) : undefined;
+      if (packed.references.size || old && packEvidence(old).references.size) {
+        const owners = references.get(table) ?? []; references.set(table, owners);
+        owners.push({ key: keyOf(table, row), digests: [...packed.references] });
+      }
+      return [table, packed.data, ...rest];
+    };
+    const encodedUpdates = updates.map(encode); const encodedInserts = inserts.map(encode);
+    await writeEvidenceSnapshots(client, tableName, snapshots);
     for (const table of FOUNDATION_TABLES) {
-      const rows = updates.filter(([name]) => name === table);
+      const rows = encodedUpdates.filter(([name]) => name === table);
       const keys = TABLES[table].key;
       if (ROW_UPDATE_TABLES.has(table)) {
         const where = keys.map((key, index) => `${sqlName(column(key))} = $${index + 2}`).join(' AND ');
@@ -116,47 +159,58 @@ export function createPostgresRepository(options = {}) {
         continue;
       }
       const where = keys.map((key) => `t.${sqlName(column(key))} = (v.data->>'${key}')${NUMERIC_KEYS.has(key) ? '::bigint' : ''}`).join(' AND ');
-      for (let offset = 0; offset < rows.length; offset += CHUNK) {
-        const chunk = rows.slice(offset, offset + CHUNK);
+      for (const json of jsonBatches(rows.map(([, row, old]) => ({ row, old })), writeBatchBytes)) {
         const updated = await client.query(`UPDATE ${tableName(table)} AS t SET data = v.data FROM (SELECT e->'row' AS data, (e->>'old')::bigint AS old
           FROM jsonb_array_elements($1::jsonb) AS e) AS v WHERE ${where} AND t.version = v.old`,
-        [JSON.stringify(chunk.map(([, row, old]) => ({ row, old })))]);
-        if (updated.rowCount !== chunk.length) throw concurrentWrite();
+        [json]);
+        if (updated.rowCount !== JSON.parse(json).length) throw concurrentWrite();
       }
     }
     // Updates release existing partial-index entries before replacement rows are inserted.
     for (const table of FOUNDATION_TABLES) {
-      const rows = inserts.filter(([name]) => name === table).map(([, row]) => row);
-      for (let offset = 0; offset < rows.length; offset += CHUNK) {
+      const rows = encodedInserts.filter(([name]) => name === table).map(([, row]) => row);
+      for (const json of jsonBatches(rows, writeBatchBytes)) {
         await client.query(`INSERT INTO ${tableName(table)} (data) SELECT value FROM jsonb_array_elements($1::jsonb) WITH ORDINALITY AS e(value, ordinality) ORDER BY ordinality`,
-          [JSON.stringify(rows.slice(offset, offset + CHUNK))]);
+          [json]);
       }
     }
+    await replaceEvidenceReferences(client, tableName, references, writeBatchBytes);
   }
 
-  async function run(context, work, write) {
-    const key = String(context?.runId ?? '');
+  async function run(context, work, write, selection) {
+    const runId = String(context?.runId ?? '');
+    const scopeKey = JSON.stringify([runId, null]);
+    const key = selection ? JSON.stringify([runId, inputDigest(selection)]) : scopeKey;
     try {
       const cached = cache.get(key);
       if (!write && trustMs && cached && performance.now() < cached.trustedUntil) return await work(cached.state);
+      const complete = !write ? cache.get(scopeKey) : undefined;
+      if (complete && trustMs && performance.now() < complete.trustedUntil) return await work(complete.state);
+      if (!write && selection?.table === 'runs' && trustMs) {
+        const recent = [...cache.values()].find((entry) => performance.now() < entry.trustedUntil);
+        if (recent) return await work(recent.state);
+      }
       return await withPostgresClient(pool, async (client) => {
         let begun = false;
         try {
           begun = true;
           const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
           const fingerprint = fingerprintOf(probe[2].rows);
-          const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
-          if (hit) remember(key, write ? hit : { ...hit, trustedUntil: until() });
+          const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
+            : complete?.fingerprint === fingerprint ? complete : undefined;
+          if (hit) remember(hit === complete ? scopeKey : key, write ? hit : { ...hit, trustedUntil: until() });
           // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
           if (!write) {
             begun = false;
             if (hit) return await work(hit.state);
-            const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
-            const state = sealState(toState(fresh));
-            remember(key, { fingerprint: fingerprintOf(fresh), state, trustedUntil: until() });
+            const selected = selection && selectedSql(context, selection);
+            const fresh = selected ? (await client.query(selected.sql, selected.parameters)).rows
+              : (await client.query(snapshotSql(context))).rows;
+            const state = sealState(await toState(client, fresh));
+            remember(key, { fingerprint, state, selection, trustedUntil: until() });
             return await work(state);
           }
-          const before = hit ? hit.state : sealState(toState((await client.query(snapshotSql(context))).rows));
+          const before = hit ? hit.state : sealState(await toState(client, (await client.query(snapshotSql(context))).rows));
           const state = shallowState(before);
           const { commit, outcome } = await work(state);
           if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
@@ -183,6 +237,7 @@ export function createPostgresRepository(options = {}) {
     supportedTables: FOUNDATION_TABLES,
     async open() {
       if (!validSchema(schema)) return invalid('invalid-schema', 'schema');
+      if (!Number.isSafeInteger(writeBatchBytes) || writeBatchBytes < 1024) return invalid('invalid-write-budget', 'writeBatchBytes');
       if (!pool) {
         const connectionString = options.connectionString ?? process.env.GCSP_DATABASE_URL;
         if (!connectionString) return invalid('missing-database-url', 'GCSP_DATABASE_URL');
@@ -200,7 +255,7 @@ export function createPostgresRepository(options = {}) {
       return status.status === 'ok' ? ok({ provider: 'postgresql', migrationStatus: status.value }) : status;
     },
     migrationStatus() { return migrationStatus(pool, migrationOptions); },
-    read(context, work) { return run(context, work, false); },
+    read(context, work, selection) { return run(context, work, false, selection); },
     transaction(context, work) { return run(context, work, true); },
     async close() {
       try {

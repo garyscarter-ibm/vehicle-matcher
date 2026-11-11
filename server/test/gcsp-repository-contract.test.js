@@ -566,8 +566,20 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       // Answers fingerprint (count, sum(version)) and snapshot parts of a UNION ALL, as PostgreSQL would.
       const answer = (statement) => statement.split(' UNION ALL ').flatMap((part) => {
         const [, name, scope] = part.match(/^SELECT '([a-z_]+)' AS t, .* FROM "[a-z_]+"\."[a-z_]+"( WHERE .*)?$/);
-        const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1];
-        const rows = data.tables[name].filter((row) => !scope || (scope !== ' WHERE false' && row.runId === runId));
+        const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1]
+          ?? (scope?.startsWith(' WHERE run_id = $1') ? values[0] : undefined);
+        const rows = data.tables[name].filter((row) => {
+          if (!scope) return true;
+          if (scope === ' WHERE false' || row.runId !== runId) return false;
+          for (const match of scope.matchAll(/AND "([a-z_]+)" = \$(\d+)/g)) {
+            const key = TABLES[name].key.find((key) => key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`) === match[1]);
+            if (row[key] !== values[Number(match[2]) - 1]) return false;
+          }
+          for (const match of scope.matchAll(/AND data -> \$(\d+)::text = \$(\d+)::jsonb/g)) {
+            if (JSON.stringify(row[values[Number(match[1]) - 1]]) !== values[Number(match[2]) - 1]) return false;
+          }
+          return true;
+        });
         if (part.includes('count(*)')) return [{ t: name, data: null, n: String(rows.length), v: String(rows.reduce((sum, row) => sum + row.version, 0)) }];
         return rows.map((row) => ({ t: name, data: structuredClone(row), n: null, v: null }));
       });
