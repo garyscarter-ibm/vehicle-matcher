@@ -37,3 +37,16 @@ Final affected checks include Account/tile rendering, editor command/service reg
 
 
 The final focused rerun passed 133/134 (Account/tile, service commands, controller, and all painted-copy checks). The remaining parity assertion identified the same new roles field in the separate Sam unsupported-scheme snapshot; after aligning both snapshots, its exact rerun passed 1/1. The tile's retained-grant paused state visibly reads Paused, while shared legacy status wording remains intact; the tile tests were rerun after that presentation correction. This is composite scoped evidence, with all observed failures retained above. Final browser acceptance remains unrun here.
+
+
+## Parent integrated browser review
+
+Integrated at `56117eee` with Presenter Allocation and the current role/navigation/engagement changes. Actual memory runtime and real HTTP adapters, 11 November 2026: Pause changed the tile to **Paused** and focused **Resume search**; Resume restored the active state and focused **Pause search**. Both were repeated with a held BMW offer: its identity, deadline and review link remained present. Same again and the understanding meter remained available. Existing preferences permissions remain authoritative.
+
+Held-offer, history and search-details drawers were inspected with real data. Escape restored the opening control, and the narrow drawer filled the screen without horizontal overflow. Desktop inspection at 1280/1440 and actual narrow inspection at 375px verified the compact tile beside preferences, responsive readable categories, retained Same again/meter and the two-item employee rail. Standalone activity source/routes remain. Screenshots are retained in the chat outputs: `buddy-tile-built-desktop.png`, `buddy-tile-built-mobile.png`, `buddy-history-built-mobile.png`.
+
+The live review caught inherited disengagement wording on actual pause/resume history events. The Account projection now says **Search paused** and **Search resumed**, preserving standalone engagement copy. The scoped Account Buddy test rerun passed **6/6**, checkpoint `aaa109f3737a29aaec8c0c56c097d2ac2b56bac17566818b902d3c02bd9b6b51`; log `.claude/test-runs/logs/20261111-193745-cj65aory`.
+
+Known Low **FUCQ-401** remains separately linked: stored offer creation time uses a different basis from DemoClock events, so it can sort above later search changes. The UI retains supplied timestamps rather than inventing a domain event time. This is not repaired in this Story. Accepted/finished and unavailable states have scoped state/UI evidence; a final real-browser acceptance decision was not run.
+
+Combined CSS ratchet: **141/142 passed**; the sole failure is unchanged console 44 lines versus cap39, **FUCQ-387**. Buddy15 and Presenter release17 pass. No cap was raised to hide existing debt. Log `.claude/test-runs/logs/20261111-193940-2utbused`. No full suite was run.

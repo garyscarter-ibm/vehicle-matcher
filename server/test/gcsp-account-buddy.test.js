@@ -40,7 +40,7 @@ test('events use actual projected changes, offers and latest check, deduplicate 
   value.currentOffer = { offerRef: { offerId: 'one' }, state: 'accepted', createdAt: '2026-11-05T09:31:00Z' };
   value.offers = [value.currentOffer]; value.stateChanges.push(value.stateChanges[0]);
   const events = buddyEvents(value);
-  assert.deepEqual(events.map((event) => event.label), ['Car offered', 'Cars checked', 'Buddy disengaged', 'Preferences confirmed']);
+  assert.deepEqual(events.map((event) => event.label), ['Car offered', 'Cars checked', 'Search paused', 'Preferences confirmed']);
   assert.equal(events[0].detail, 'Current offer status: Accepted.');
   assert.equal(events[0].occurredAt, '2026-11-05T09:31:00Z', 'does not invent an acceptance time');
   const tile = buddyTile(); tile.update({ phase: 'ready', result, events });
