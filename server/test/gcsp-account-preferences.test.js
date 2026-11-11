@@ -5,7 +5,8 @@ import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/in
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createBriefService } from '../gcsp/brief/index.js';
-import { createBriefEditorService } from '../gcsp/brief/editor.js';
+import { createBriefEditorService, briefSemantic } from '../gcsp/brief/editor.js';
+import { inputDigest } from '../gcsp/repository/index.js';
 import { createManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { scorePreferences, validateBriefContent } from '../scenarios/employee/index.js';
@@ -391,4 +392,206 @@ test('the browser transport and controller save through the real route and the e
   assert.equal(fresh.snapshot().status.kind, 'stale'); assert.equal(fresh.snapshot().categories.economy.value, 0);
   await fresh.reload(); assert.equal(fresh.snapshot().categories.economy.state, 'unset'); assert.equal(fresh.snapshot().categories.size.value, 100);
   fresh.destroy(); controller.destroy();
+});
+
+// FUCQ-367: the current-car star rating rides the same draft autosave.
+const carOf = async (f) => (await f.account.readAccount(f.context)).value.currentContract.contractId;
+const rate = (f, value, o = {}) => f.editor.savePreferences(f.context, { commandId: o.commandId ?? `rate-${++serial}`, expectedBriefVersion: o.briefVersion ?? 0,
+  expectedDraftVersion: o.draftVersion ?? 0, changes: o.changes ?? {}, currentCarRating: { contractId: o.contractId, value } });
+const rows = (f) => f.store.state.tables.event_receipts.filter((r) => r.consumerId.startsWith('brief:draft:'));
+
+test('a rating sets 1 and 5, replaces, clears with null and reads back through the editor', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  assert.deepEqual((await read(f)).initial.currentCarRating, { value: null, contractId });
+  let draftVersion = 0;
+  for (const value of [1, 5, 3, null, 4]) {
+    const out = await rate(f, value, { contractId, draftVersion });
+    assert.equal(out.status, 'ok', JSON.stringify(out));
+    assert.deepEqual(out.value.currentCarRating, { value, contractId });
+    draftVersion = out.value.draftVersion;
+    const stored = (await draftOf(f)).brief.currentCarRating;
+    assert.deepEqual([stored.value, stored.contractId, stored.source], [value, contractId, 'employee']);
+    assert.equal(stored.ratedAt, (await f.clock.now(f.context)).value.now);
+    assert.deepEqual((await read(f)).initial.currentCarRating, { value, contractId });
+  }
+  // A cleared rating is stored as an explicit null, not dropped.
+  const cleared = await rate(f, null, { contractId, draftVersion });
+  assert.equal(Object.hasOwn((await draftOf(f)).brief.currentCarRating, 'value'), true);
+  assert.equal(cleared.value.currentCarRating.value, null);
+});
+
+test('malformed ratings are invalid with the field named and write nothing', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f); const before = structuredClone(f.store.state);
+  const send = (currentCarRating) => f.editor.savePreferences(f.context, { commandId: 'bad', expectedBriefVersion: 0, expectedDraftVersion: 0, changes: {}, currentCarRating });
+  for (const value of [0, 6, 4.5, '4', true, -1, [3], {}, 'null']) {
+    const out = await send({ contractId, value });
+    assert.equal(out.status, 'invalid', String(value)); assert.equal(out.code, 'invalid-preferences'); assert.equal(out.reasons[0].field, 'currentCarRating');
+  }
+  assert.equal((await send({ contractId })).status, 'invalid');
+  // Non-JSON values are refused before any read (they cannot arrive over HTTP).
+  for (const value of [undefined, NaN, Infinity]) assert.equal((await send({ contractId, value })).status, 'invalid');
+  for (const bad of [{ value: 3 }, { contractId: '', value: 3 }, { contractId: 7, value: 3 }, { contractId: 'x'.repeat(129), value: 3 }, null, 3, []]) {
+    const out = await send(bad); assert.equal(out.status, 'invalid', JSON.stringify(bad)); assert.equal(out.reasons[0].field, 'currentCarRating');
+  }
+  for (const extra of ['source', 'ratedAt', 'employeeId', 'runId', 'buddy', 'consent', 'state']) {
+    const out = await send({ contractId, value: 3, [extra]: 'x' });
+    assert.equal(out.status, 'invalid', extra); assert.equal(out.reasons[0].field, 'currentCarRating');
+  }
+  // Empty changes are only acceptable alongside a rating.
+  const bare = await save(f, {}); assert.equal(bare.status, 'invalid'); assert.equal(bare.reasons[0].reason, 'Change at least one category.');
+  assert.equal((await f.editor.savePreferences(f.context, { commandId: 'b', expectedBriefVersion: 0, expectedDraftVersion: 0, currentCarRating: { contractId, value: 3 } })).status, 'invalid');
+  assert.equal((await send(undefined)).status, 'invalid');
+  assert.deepEqual(f.store.state, before);
+});
+
+test('a rating for another car or with no current car is a conflict that writes nothing', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  assert.equal((await rate(f, 3, { contractId, draftVersion: 0 })).status, 'ok');
+  const before = structuredClone(f.store.state);
+  const wrong = await rate(f, 4, { contractId: 'current:someone-else', draftVersion: 1 });
+  assert.equal(wrong.status, 'conflict'); assert.equal(wrong.reason, 'current-car-changed'); assert.deepEqual(wrong.current, { contractId });
+  assert.equal((await draftOf(f)).draftVersion, 1);
+  const none = createBriefEditorService({ ...f, account: { async readAccount(c) {
+    const r = await f.account.readAccount(c); r.value.currentContract = null; return r;
+  } } });
+  const absent = await none.savePreferences(f.context, { commandId: 'n', expectedBriefVersion: 0, expectedDraftVersion: 1, changes: {}, currentCarRating: { contractId, value: 2 } });
+  assert.equal(absent.status, 'conflict'); assert.equal(absent.reason, 'no-current-car');
+  assert.deepEqual(f.store.state, before);
+  // Without a current car a category save still works and the readback is null.
+  const sparse = await none.savePreferences(f.context, { commandId: 'c', expectedBriefVersion: 0, expectedDraftVersion: 1, changes: { size: { value: 50 } } });
+  assert.equal(sparse.status, 'ok'); assert.equal(sparse.value.currentCarRating, null);
+  assert.equal((await none.readEditor(f.context)).value.initial.currentCarRating, null);
+  assert.equal((await draftOf(f)).brief.currentCarRating.contractId, contractId);
+});
+
+test('a rating-only save leaves everything else byte-identical and a category save keeps the rating', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  const seed = { schemaVersion: 1, preferences: { comfort: preference(100, 100), body: preference('estate', 50) },
+    essentials: { seats: { value: 5, operator: 'gte', unit: 'count', state: 'draft', source: 'employee' } },
+    currentCarFeedback: { preserve: ['comfort'], change: ['size'], state: 'draft', source: 'employee' } };
+  assert.equal((await f.brief.saveDraft(f.context, { commandId: 'seed', expectedBriefVersion: 0, expectedDraftVersion: 0, brief: seed })).status, 'ok');
+  const before = (await draftOf(f)).brief; const countBefore = (await read(f)).initial.accountPreferences;
+  const out = await rate(f, 4, { contractId, draftVersion: 1 });
+  assert.equal(out.status, 'ok', JSON.stringify(out));
+  const { currentCarRating, ...after } = (await draftOf(f)).brief;
+  assert.deepEqual(after, before); assert.equal(currentCarRating.value, 4);
+  assert.deepEqual(out.value.accountPreferences, countBefore);
+  assert.equal((await f.brief.readCurrent(f.context)).status, 'not-found');
+  assert.deepEqual((await read(f)).initial.consent, { search: false, hold: false });
+  // A later category-only save never drops or alters the rating.
+  const kept = (await draftOf(f)).brief.currentCarRating;
+  assert.equal((await save(f, { size: { value: 100 } }, 2)).status, 'ok');
+  const final = (await draftOf(f)).brief;
+  assert.deepEqual(final.currentCarRating, kept); assert.deepEqual(final.currentCarFeedback, seed.currentCarFeedback);
+  // Rating and a category change in one write.
+  const both = await rate(f, 2, { contractId, draftVersion: 3, changes: { economy: { value: 0 } } });
+  assert.equal(both.status, 'ok'); assert.equal(both.value.accountPreferences.categories.economy.value, 0);
+  assert.equal((await draftOf(f)).brief.currentCarRating.value, 2);
+});
+
+test('a rating for another contract reads as unset, so a replacement car never inherits it', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  assert.equal((await rate(f, 5, { contractId })).status, 'ok');
+  const replaced = createBriefEditorService({ ...f, account: { async readAccount(c) {
+    const r = await f.account.readAccount(c); r.value.currentContract = { ...r.value.currentContract, contractId: 'replacement-contract' }; return r;
+  } } });
+  assert.deepEqual((await replaced.readEditor(f.context)).value.initial.currentCarRating, { value: null, contractId: 'replacement-contract' });
+  // A category save for the replacement keeps the old record in the draft and reports unset.
+  const out = await replaced.savePreferences(f.context, { commandId: 'rep', expectedBriefVersion: 0, expectedDraftVersion: 1, changes: { size: { value: 50 } } });
+  assert.deepEqual(out.value.currentCarRating, { value: null, contractId: 'replacement-contract' });
+  assert.deepEqual([(await draftOf(f)).brief.currentCarRating.contractId, (await draftOf(f)).brief.currentCarRating.value], [contractId, 5]);
+  // Rating the replacement replaces the stored record with that contract.
+  const next = await replaced.savePreferences(f.context, { commandId: 'rep2', expectedBriefVersion: 0, expectedDraftVersion: 2, changes: {}, currentCarRating: { contractId: 'replacement-contract', value: 2 } });
+  assert.deepEqual(next.value.currentCarRating, { value: 2, contractId: 'replacement-contract' });
+});
+
+test('rating saves obey stale versions, idempotent retries and the accepted-offer lock', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  assert.equal((await rate(f, 3, { contractId, commandId: 'r1' })).status, 'ok');
+  const before = structuredClone(f.store.state);
+  assert.equal((await rate(f, 5, { contractId, commandId: 'r2', draftVersion: 0 })).status, 'stale-version');
+  assert.equal((await rate(f, 5, { contractId, commandId: 'r3', draftVersion: 1, briefVersion: 4 })).status, 'stale-version');
+  const again = await rate(f, 3, { contractId, commandId: 'r1' });
+  assert.equal(again.status, 'ok'); assert.equal(again.value.draftVersion, 1);
+  assert.equal((await rate(f, 5, { contractId, commandId: 'r1' })).status, 'conflict');
+  assert.deepEqual(f.store.state, before); assert.equal(rows(f).length, 1);
+  assert.equal((await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1 })).status, 'ok');
+  const confirmed = (await f.brief.readCurrent(f.context)).value.brief;
+  assert.deepEqual([confirmed.currentCarRating.value, confirmed.currentCarRating.contractId], [3, contractId]);
+  assert.equal((await rate(f, 1, { contractId, draftVersion: 1, briefVersion: 1 })).status, 'ok');
+  const accepted = createBriefEditorService({ ...f, brief: { readDraft: (c) => f.brief.readDraft(c), readHistory: (c) => f.brief.readHistory(c),
+    saveDraft: (...a) => f.brief.saveDraft(...a), async readCurrent(c) {
+      const r = await f.brief.readCurrent(c); r.value.activity.existingOffers = [{ offerId: 'o1', state: 'accepted', briefVersion: 1 }]; return r;
+    } } });
+  const blocked = await accepted.savePreferences(f.context, { commandId: 'late', expectedBriefVersion: 1, expectedDraftVersion: 2, changes: {}, currentCarRating: { contractId, value: 5 } });
+  assert.equal(blocked.status, 'conflict'); assert.equal(blocked.reason, 'brief-read-only');
+  assert.equal((await rate({ ...f, editor: f.editor, context: f.presenter.value.context }, 1, { contractId })).status, 'forbidden');
+});
+
+test('legacy briefs without a rating stay valid and the semantic digest only changes when a rating exists', async (t) => {
+  const f = await setup(t);
+  const legacy = { schemaVersion: 1, preferences: { comfort: preference(100, 100) }, essentials: {},
+    currentCarFeedback: { preserve: ['comfort'], change: ['size'], state: 'draft', source: 'employee' } };
+  assert.equal((await f.brief.saveDraft(f.context, { commandId: 'legacy', expectedBriefVersion: 0, expectedDraftVersion: 0, brief: legacy })).status, 'ok');
+  const editor = await read(f);
+  assert.equal(Object.hasOwn(editor.initial.brief, 'currentCarRating'), false);
+  assert.equal(editor.initial.currentCarRating.value, null);
+  const semantic = briefSemantic({ ...legacy, preferences: { comfort: { ...preference(100, 100) } } });
+  assert.equal(Object.hasOwn(semantic, 'rating'), false);
+  assert.deepEqual(Object.keys(semantic), ['preferences', 'essentials', 'feedback']);
+  const rated = briefSemantic({ ...legacy, currentCarRating: { value: 3, contractId: 'c1', source: 'employee', ratedAt: '2026-11-05T12:00:00.000Z' } });
+  assert.deepEqual(rated.rating, { value: 3, contractId: 'c1' });
+  assert.notEqual(inputDigest(rated), inputDigest(semantic));
+  const timeOnly = briefSemantic({ ...legacy, currentCarRating: { value: 3, contractId: 'c1', source: 'employee', ratedAt: '2026-11-06T12:00:00.000Z' } });
+  assert.equal(inputDigest(timeOnly), inputDigest(rated));
+  assert.equal(inputDigest(briefSemantic({ ...legacy, preferences: {} })), inputDigest(briefSemantic({ ...legacy, preferences: {} })));
+});
+
+test('a rating never reaches scoring: a previewed rated draft scores like the same draft without it', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  const out = await rate(f, 5, { contractId, changes: { comfort: { value: 100, importance: 'high' } } });
+  assert.equal(out.status, 'ok', JSON.stringify(out));
+  const saved = (await read(f)).initial.brief; const { currentCarRating, ...plain } = saved;
+  const charging = { charging: { value: 'home', operator: 'equals', unit: null, state: 'draft', source: 'employee' } };
+  const preview = (brief) => f.editor.previewDraft(f.context, { kind: 'unsaved-draft', baseBriefVersion: 0, draftVersion: 1, brief: { ...brief, essentials: charging } });
+  const [withRating, without] = [await preview(saved), await preview(plain)];
+  assert.equal(withRating.status, 'ok', JSON.stringify(withRating));
+  assert.deepEqual(withRating.value.decisions.map((d) => [d.orderUuid, d.score]), without.value.decisions.map((d) => [d.orderUuid, d.score]));
+  assert.equal(JSON.stringify(withRating.value.decisions.map((d) => d.components)).includes('currentCarRating'), false);
+});
+
+test('real authenticated HTTP saves, clears and reads a rating and the persisted draft and confirmed brief carry it', async (t) => {
+  const f = await setup(t); const contractId = await carOf(f);
+  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
+  t.after(() => http.close());
+  const post = (body, options = {}) => http.request('/api/gcsp/brief/preferences', { session: f.acting, body, ...options });
+  const body = (value, extra = {}) => ({ commandId: `http-${++serial}`, expectedBriefVersion: 0, expectedDraftVersion: 0, changes: {}, currentCarRating: { contractId, value }, ...extra });
+  assert.equal((await post(body(3), { session: null })).status, 401);
+  assert.equal((await post(body(3), { session: f.presenter })).status, 403);
+  assert.equal((await post(body(3), { origin: 'https://hostile.test' })).status, 403);
+  assert.equal((await post(body(3, { currentCarRating: { contractId, value: 3, employeeId: 'x' } }))).status, 400);
+  assert.equal((await post(body(7))).status, 400);
+  assert.equal((await post(body(3, { currentCarRating: { contractId: 'other', value: 3 } }))).status, 409);
+  const saved = await post(body(4));
+  assert.equal(saved.status, 200, JSON.stringify(saved.json));
+  assert.deepEqual(saved.json.value.currentCarRating, { value: 4, contractId });
+  const editor = await http.request('/api/gcsp/brief/editor', { session: f.acting });
+  assert.deepEqual(editor.json.value.initial.currentCarRating, { value: 4, contractId });
+  // The persisted draft stream row, not only the projection.
+  const [row] = rows(f); assert.equal(rows(f).length, 1);
+  const persisted = row.outcome.value.brief.currentCarRating;
+  assert.deepEqual([persisted.value, persisted.contractId, persisted.source, typeof persisted.ratedAt], [4, contractId, 'employee', 'string']);
+  const stored = await http.request('/api/gcsp/brief/draft', { session: f.acting });
+  assert.deepEqual(stored.json.value.brief.currentCarRating, persisted);
+  const cleared = await post(body(null, { expectedDraftVersion: 1 }));
+  assert.deepEqual(cleared.json.value.currentCarRating, { value: null, contractId });
+  assert.equal((await http.request('/api/gcsp/brief/editor', { session: f.acting })).json.value.initial.currentCarRating.value, null);
+  assert.equal((await post(body(2, { expectedDraftVersion: 2 }))).status, 200);
+  const confirmed = await http.request('/api/gcsp/brief/confirm', { session: f.acting, body: { commandId: 'http-confirm', expectedBriefVersion: 0, expectedDraftVersion: 3 } });
+  assert.equal(confirmed.status, 200, JSON.stringify(confirmed.json));
+  const row1 = f.store.state.tables.briefs.find((b) => b.employeeId === f.context.employeeId && b.briefVersion === 1);
+  assert.deepEqual([row1.currentCarRating.value, row1.currentCarRating.contractId, row1.currentCarRating.source], [2, contractId, 'employee']);
+  const after = await http.request('/api/gcsp/brief/editor', { session: f.acting });
+  assert.deepEqual(after.json.value.initial.currentCarRating, { value: 2, contractId });
+  assert.equal(after.json.value.provenance.initial, 'approved-brief');
 });

@@ -2,6 +2,7 @@ import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { validateBriefContent, choiceList } from '../../scenarios/employee/index.js';
+import { currentCarRatingValid } from './rating.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -12,10 +13,15 @@ const unavailable = () => result('unavailable', { reason: 'The brief editor cont
 const invalid = (field) => result('invalid', { code: 'invalid-preview', reasons: [{ field, reason: 'Use the registered editable brief and current saved versions.' }] });
 const stale = (resource, expectedVersion, currentVersion) => result('stale-version', { resource, expectedVersion, currentVersion, action: 'refresh' });
 const editable = (b) => ({ schemaVersion: 1, preferences: b.preferences, essentials: b.essentials,
-  ...(b.currentCarFeedback === undefined ? {} : { currentCarFeedback: b.currentCarFeedback }) });
+  ...(b.currentCarFeedback === undefined ? {} : { currentCarFeedback: b.currentCarFeedback }),
+  ...(b.currentCarRating === undefined ? {} : { currentCarRating: b.currentCarRating }) });
 const semantic = (b) => ({ preferences: Object.fromEntries(Object.entries(b.preferences).map(([key, p]) => [key, { value: p.value, importance: p.importance }])),
   essentials: Object.fromEntries(Object.entries(b.essentials).map(([key, e]) => [key, { value: e.operator === 'includes' && Array.isArray(e.value) ? [...e.value].sort() : e.value, operator: e.operator, unit: e.unit }])),
-  feedback: b.currentCarFeedback ? { preserve: [...b.currentCarFeedback.preserve].sort(), change: [...b.currentCarFeedback.change].sort() } : null });
+  feedback: b.currentCarFeedback ? { preserve: [...b.currentCarFeedback.preserve].sort(), change: [...b.currentCarFeedback.change].sort() } : null,
+  // Added only when present, so every legacy digest stays identical.
+  ...(b.currentCarRating ? { rating: { value: b.currentCarRating.value, contractId: b.currentCarRating.contractId } } : {}) });
+
+export { semantic as briefSemantic };
 
 const LEVELS = ['medium', 'high'];
 const integer = (v) => Number.isSafeInteger(v);
@@ -84,6 +90,14 @@ function accountState(brief, a, slider) {
 }
 
 const PATCH_FIELDS = ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'changes'];
+const ratingRefusal = () => refusal('currentCarRating', 'Supply exactly the current contract and a 1 to 5 value, or null to clear.');
+// The saved rating as the client sees it: only a rating for the current car counts, so a replacement starts unset.
+const ratingView = (brief, account) => {
+  const contractId = account?.currentContract?.contractId;
+  if (!text(contractId)) return null;
+  const stored = brief.currentCarRating;
+  return stored?.contractId === contractId ? { value: stored.value, contractId } : { value: null, contractId };
+};
 const refusal = (field, reason) => result('invalid', { code: 'invalid-preferences', reasons: [{ field, reason }] });
 const validValue = (c, value) => c.kind === 'multi'
   ? Array.isArray(value) && value.length > 0 && value.every((v, i) => {
@@ -93,8 +107,8 @@ const validValue = (c, value) => c.kind === 'multi'
   : c.stops.some((o) => o.value === value);
 
 // Validates the sparse patch against the policy projection; returns a refusal, or null when acceptable.
-function checkChanges(changes, rules) {
-  if (!object(changes) || !Object.keys(changes).length) return refusal('changes', 'Change at least one category.');
+function checkChanges(changes, rules, ratingOnly = false) {
+  if (!object(changes) || !Object.keys(changes).length && !ratingOnly) return refusal('changes', 'Change at least one category.');
   for (const [key, change] of Object.entries(changes)) {
     const c = Object.hasOwn(rules.categories, key) ? rules.categories[key] : null;
     if (!c) return refusal(`changes.${key}`, 'Use one of the registered categories.');
@@ -135,8 +149,9 @@ function jsonCopy(value) {
 }
 
 function validateEditable(b, config, slider, lifecycle) {
-  if (!only(b, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback'])) return false;
-  const { currentCarFeedback, ...content } = b;
+  if (!only(b, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating'])) return false;
+  if (b.currentCarRating !== undefined && !currentCarRatingValid(b.currentCarRating)) return false;
+  const { currentCarFeedback, currentCarRating, ...content } = b;
   const errors = validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.charging } }, slider);
   if (errors.length) return false;
   const f = currentCarFeedback;
@@ -260,7 +275,8 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
           policyVersion: context.policyVersion, contextVersion, practicalQuestions: p.editor.practicalQuestions,
           unconfirmedLabel: p.editor.unconfirmedLabel, assumptions: p.assumptions,
           accountPreferences: accountProjection(p.rules, context.policyVersion) },
-        initial: { brief: initial, briefVersion, draftVersion, accountPreferences: accountState(initial, p.rules, p.slider), consent: {
+        initial: { brief: initial, briefVersion, draftVersion, accountPreferences: accountState(initial, p.rules, p.slider),
+          currentCarRating: ratingView(initial, p.account), consent: {
           search: current?.buddy?.searchConsent === true, hold: current?.buddy?.holdConsent === true,
         } }, versions: { policy: context.policyVersion, context: contextVersion, facts: p.source.factsVersion, clock: p.time.clockVersion },
         selection: p.state.accepted ? { state: 'accepted', briefVersion: p.state.accepted.briefVersion } : null,
@@ -269,24 +285,34 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     },
     async savePreferences(context, input) {
       try { input = jsonCopy(input); } catch { return refusal('input', 'Use plain JSON values.'); }
-      if (!only(input, PATCH_FIELDS) || PATCH_FIELDS.some((key) => !Object.hasOwn(input, key))
+      if (!only(input, [...PATCH_FIELDS, 'currentCarRating']) || PATCH_FIELDS.some((key) => !Object.hasOwn(input, key))
         || !text(input.commandId) || input.commandId.length > 128 || !revision(input.expectedBriefVersion)
         || !revision(input.expectedDraftVersion)) return refusal('command', 'Supply exactly a command ID, the expected versions and the changes.');
+      const rated = Object.hasOwn(input, 'currentCarRating');
+      if (rated) {
+        const r = input.currentCarRating;
+        if (!only(r, ['contractId', 'value']) || !Object.hasOwn(r, 'contractId') || !Object.hasOwn(r, 'value') || !text(r.contractId) || r.contractId.length > 128
+          || !(r.value === null || Number.isSafeInteger(r.value) && r.value >= 1 && r.value <= 5)) return ratingRefusal();
+      }
       try {
         const p = await prepare(context); if (p.error) return p.error;
-        const refused = checkChanges(input.changes, p.rules); if (refused) return refused;
+        const refused = checkChanges(input.changes, p.rules, rated); if (refused) return refused;
         if (p.state.accepted && p.state.current) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: p.state.briefVersion } });
+        const car = p.account.currentContract?.contractId;
+        if (rated && !text(car)) return result('conflict', { reason: 'no-current-car' });
+        if (rated && input.currentCarRating.contractId !== car) return result('conflict', { reason: 'current-car-changed', current: { contractId: car } });
         const resolved = await resolveInitial(context, p); if (resolved.error) return resolved.error;
         // A new employee starts sparse: policy essentials stay unconfirmed and no default preference is invented.
         const base = resolved.base ?? { ...resolved.fallback, preferences: {} };
         const merged = applyChanges(base, input.changes, p.rules, p.slider);
         if (merged.status) return merged;
+        if (rated) merged.currentCarRating = { value: input.currentCarRating.value, contractId: car, source: 'employee', ratedAt: p.time.now };
         if (!validateEditable(merged, p.config, p.slider, p.lifecycle)) return refusal('changes', 'Use the registered editable brief.');
         const saved = await brief.saveDraft(context, { commandId: input.commandId, expectedBriefVersion: input.expectedBriefVersion,
           expectedDraftVersion: input.expectedDraftVersion, brief: merged });
         if (saved?.status !== 'ok') return saved ?? unavailable();
         return ok(jsonCopy({ briefVersion: saved.value.baseBriefVersion, draftVersion: saved.value.draftVersion,
-          accountPreferences: accountState(saved.value.brief, p.rules, p.slider) }));
+          accountPreferences: accountState(saved.value.brief, p.rules, p.slider), currentCarRating: ratingView(saved.value.brief, p.account) }));
       } catch { return unavailable(); }
     },
     async previewDraft(context, input) {

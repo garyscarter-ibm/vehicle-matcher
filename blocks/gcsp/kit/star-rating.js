@@ -1,4 +1,4 @@
-import { el } from '../../vehicle-matcher/ui.js';
+import { el, button } from '../../vehicle-matcher/ui.js';
 import { svgIcon } from '../shell/portal-shell.js';
 import { helpTip } from './help-tip.js';
 import { viewStatus } from './view-status.js';
@@ -10,11 +10,13 @@ let sequence = 0;
 const clean = (value) => (Number.isInteger(value) && value >= 1 && value <= 5 ? value : null);
 
 /** Five-star rating, 1-5 or null; choosing the selected star clears it. The caller owns saving and reports it with update({ value, status }).
- * Returns { root, update({ value, status, disabled }), value(), focus(), destroy() }; sends no requests and stores nothing. */
-export function starRating({ label, value = null, help, labels = RATING_WORDS, onChange, announce, overlay = false, name, disabled = false } = {}) {
+ * A failed status shows a Try again button when onRetry is supplied. Returns { root, update({ value, status, disabled }), value(), focus(), destroy() }. */
+export function starRating({ label, value = null, help, labels = RATING_WORDS, onChange, onRetry, announce, overlay = false, name, disabled = false } = {}) {
   const id = ++sequence; const group = name ?? `gcsp-star-rating-${id}`;
   const root = el('fieldset', `gcsp-star-rating${overlay ? ' gcsp-star-rating-overlay' : ''}`); root.dataset.status = 'idle';
   root.append(el('legend', '', label));
+  const retry = onRetry ? button({ label: 'Try again', variant: 'ghost', onClick: () => onRetry() }) : null;
+  if (retry) { retry.hidden = true; root.append(retry); }
   const row = el('div', 'gcsp-star-row'); root.append(row);
   let current = clean(value); let status = 'idle'; let spoken = ''; let spaceHeld = false;
   const own = announce ? null : viewStatus(); if (own) root.append(own.root);
@@ -74,6 +76,7 @@ export function starRating({ label, value = null, help, labels = RATING_WORDS, o
     if (next.status === undefined) return;
     const was = status; status = STATUSES.includes(next.status) ? next.status : 'idle';
     root.dataset.status = status;
+    if (retry) retry.hidden = status !== 'failed';
     if (status === 'pending') root.setAttribute('aria-busy', 'true'); else root.removeAttribute('aria-busy');
     if (status === 'pending') { spoken = ''; own?.clear(); } else if (status === 'saved') say(current === null ? 'Rating cleared' : `Rating saved: ${current} of 5`);
     else if (status === 'failed') say('Rating not saved. Try again.');

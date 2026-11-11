@@ -16,8 +16,9 @@ const revision = (v) => Number.isSafeInteger(v) && v >= 0;
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 128;
 const clone = (v) => structuredClone(v);
 const has = (map) => Object.keys(map).length > 0;
-const signature = (changes) => JSON.stringify(Object.keys(changes).sort().map((key) => [key, changes[key] === null ? null
-  : { value: changes[key].value, importance: changes[key].importance }]));
+const stars = (v) => v === null || (Number.isInteger(v) && v >= 1 && v <= 5);
+const signature = (changes, intent) => JSON.stringify([Object.keys(changes).sort().map((key) => [key, changes[key] === null ? null
+  : { value: changes[key].value, importance: changes[key].importance }]), intent ? [intent.value] : 0]);
 // Newer edits win per category. A value after a removal restarts at medium, since the server would otherwise keep the old weight.
 const fold = (older, newer) => {
   const out = { ...older };
@@ -39,6 +40,8 @@ export function createAccountPreferencesController({ transport, createCommandId,
   let open = null; let pendingRemoval = null;
   let pending = {}; let inflight = null; let retryable = null;
   let failure = null; let lock = null; let rejected = false; let saved = null; let loadError = null;
+  // The current-car rating shares this queue; ratingIntent is the newest unsent value, { value } with value 1-5 or null.
+  let rating = null; let ratingIntent = null;
 
   const category = (key) => projection?.categories?.[key] ?? null;
   const entryOf = (key) => view[key] ?? { state: 'unset' };
@@ -50,13 +53,13 @@ export function createAccountPreferencesController({ transport, createCommandId,
     if (phase === 'failed') return { kind: 'failed', text: PREFERENCE_COPY.loadFailed, actionLabel: 'Try again', action: 'load' };
     if (failure?.kind === 'stale') return { kind: 'stale', text: PREFERENCE_COPY.stale, actionLabel: 'Reload preferences', action: 'reload' };
     if (failure?.kind === 'load') return { kind: 'failed', text: PREFERENCE_COPY.loadFailed, actionLabel: 'Try again', action: 'reload' };
-    if (failure?.kind === 'save') {
+    if (failure?.kind === 'save' && has(pending)) {
       const unsent = Object.keys(pending).filter((key) => category(key));
       const named = unsent.length === 1 ? `Your ${category(unsent[0]).label.toLowerCase()} change was not saved.` : PREFERENCE_COPY.failed;
       return { kind: 'failed', text: named, actionLabel: 'Try again', action: 'retry' };
     }
     if (reloading) return { kind: 'pending', text: PREFERENCE_COPY.loading };
-    if (inflight || has(pending)) return { kind: 'pending', text: PREFERENCE_COPY.pending };
+    if ((inflight && has(inflight.changes)) || has(pending)) return { kind: 'pending', text: PREFERENCE_COPY.pending };
     if (rejected) return { kind: 'failed', text: PREFERENCE_COPY.rejected };
     if (saved) return { kind: 'saved', text: saved };
     return { kind: 'idle', text: counted() };
@@ -68,7 +71,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
     return n >= min ? `${n} categories considered · Saved automatically` : `${n} of ${min} categories considered · Preferences save automatically`;
   }
   const snapshot = () => clone({ phase, projection, categories: view, open, pendingRemoval, status: status(), disabled: phase !== 'ready' || locked(),
-    briefVersion: versions.brief, draftVersion: versions.draft });
+    rating, briefVersion: versions.brief, draftVersion: versions.draft });
   function emit() {
     if (destroyed) return;
     for (const listener of [...listeners]) { try { listener(snapshot()); } catch { /* Observers cannot interrupt state transitions. */ } }
@@ -78,19 +81,20 @@ export function createAccountPreferencesController({ transport, createCommandId,
     pending = fold(pending, { [key]: change }); rejected = false; saved = null; emit(); flush(false);
   }
   function flush(reuse) {
-    if (locked() || inflight || failure || !has(pending)) return;
+    if (locked() || inflight || failure || (!has(pending) && !ratingIntent)) return;
     send(reuse);
   }
   async function send(reuse) {
-    const changes = pending; pending = {};
-    const mark = signature(changes); const ticket = epoch;
+    const changes = pending; pending = {}; const intent = ratingIntent; ratingIntent = null;
+    const mark = signature(changes, intent); const ticket = epoch;
     let commandId = reuse && retryable?.signature === mark ? retryable.commandId : null;
     if (!commandId) { try { commandId = createCommandId('preferences'); } catch { commandId = null; } }
-    inflight = { commandId, changes, signature: mark }; emit();
+    inflight = { commandId, changes, signature: mark, rating: intent }; emit();
     let outcome;
     try {
       outcome = text(commandId) ? await transport.savePreferences({ commandId, expectedBriefVersion: versions.brief,
-        expectedDraftVersion: versions.draft, changes: clone(changes) }) : unavailable();
+        expectedDraftVersion: versions.draft, changes: clone(changes),
+        ...(intent ? { currentCarRating: { contractId: rating.contractId, value: intent.value } } : {}) }) : unavailable();
     } catch { outcome = unavailable(); }
     if (destroyed || ticket !== epoch) return;
     settle(outcome);
@@ -102,24 +106,49 @@ export function createAccountPreferencesController({ transport, createCommandId,
   function settle(outcome) {
     const sent = inflight; inflight = null;
     const fields = outcome?.status === 'ok' ? outcome.value : null;
-    if (fields && revision(fields.briefVersion) && revision(fields.draftVersion) && object(fields.accountPreferences?.categories)) {
+    if (fields && revision(fields.briefVersion) && revision(fields.draftVersion) && object(fields.accountPreferences?.categories) && ratingAnswer(fields.currentCarRating, sent)) {
       versions = { brief: fields.briefVersion, draft: fields.draftVersion }; confirmed = clone(fields.accountPreferences.categories);
       adopt(fields.accountPreferences, true);
-      failure = null; retryable = null; rejected = false;
-      const removed = Object.keys(sent.changes).filter((key) => sent.changes[key] === null && !Object.hasOwn(pending, key)).pop();
-      saved = removed && category(removed) ? `${category(removed).label} preference removed. Saved automatically.` : PREFERENCE_COPY.saved;
+      failure = null; retryable = null;
+      if (has(sent.changes)) {
+        rejected = false;
+        const removed = Object.keys(sent.changes).filter((key) => sent.changes[key] === null && !Object.hasOwn(pending, key)).pop();
+        saved = removed && category(removed) ? `${category(removed).label} preference removed. Saved automatically.` : PREFERENCE_COPY.saved;
+      }
+      // A late answer never overwrites a newer choice; the visible value only follows the server when nothing newer waits.
+      if (rating && fields.currentCarRating?.contractId === rating.contractId) {
+        rating.saved = fields.currentCarRating.value;
+        if (!ratingIntent) rating.value = rating.saved;
+      }
+      if (rating && sent.rating && !ratingIntent) rating.status = 'saved';
       emit(); flush(false); return;
     }
     const status = outcome?.status;
     if (isRunRestarted(outcome)) lock = status === 'access-required' ? { kind: 'access', text: ACCESS_LAPSED_MESSAGE } : { kind: 'restarted', text: RUN_RESTARTED_MESSAGE };
     else if (status === 'conflict' && outcome.reason === 'brief-read-only') lock = { kind: 'idle', text: PREFERENCE_COPY.readOnly };
-    else if (status === 'stale-version' || status === 'conflict') { pending = fold(sent.changes, pending); failure = { kind: 'stale' }; }
+    else if (status === 'stale-version' || status === 'conflict') { pending = fold(sent.changes, pending); keepRating(sent); failure = { kind: 'stale' }; }
     else if (status === 'invalid' || status === 'forbidden') {
       // Not retryable: show the last confirmed state for what was refused.
       for (const key of Object.keys(sent.changes)) if (!Object.hasOwn(pending, key)) view[key] = clone(confirmedOf(key));
-      rejected = true; emit(); flush(false); return;
-    } else { pending = fold(sent.changes, pending); retryable = { commandId: sent.commandId, signature: sent.signature }; failure = { kind: 'save' }; }
-    saved = null; emit();
+      if (has(sent.changes)) rejected = true;
+      if (rating && sent.rating && !ratingIntent) { rating.value = rating.saved; rating.status = 'failed'; }
+      emit(); flush(false); return;
+    } else { pending = fold(sent.changes, pending); keepRating(sent); retryable = { commandId: sent.commandId, signature: sent.signature }; failure = { kind: 'save' }; }
+    if (lock && rating) { rating.value = rating.saved; rating.status = 'idle'; ratingIntent = null; }
+    if (has(sent.changes)) saved = null;
+    emit();
+  }
+  // A refused rating stays as the attempted value for retry or reload, marked failed, unless a newer choice already waits.
+  function keepRating(sent) {
+    if (!rating) return;
+    if (sent.rating && !ratingIntent) ratingIntent = { value: sent.rating.value };
+    if (ratingIntent) rating.status = 'failed';
+  }
+  // An ok answer is a save only when its rating is well formed and, if one was sent, names the same car.
+  function ratingAnswer(answer, sent) {
+    if (answer === undefined || answer === null) return !sent.rating;
+    if (!object(answer) || !stars(answer.value) || !text(answer.contractId)) return false;
+    return !rating || answer.contractId === rating.contractId;
   }
   let confirmed = {};
   const confirmedOf = (key) => confirmed[key] ?? { state: 'unset' };
@@ -139,6 +168,9 @@ export function createAccountPreferencesController({ transport, createCommandId,
     versions = { brief: initial.briefVersion, draft: initial.draftVersion };
     confirmed = clone(initial.accountPreferences.categories); view = {}; adopt(initial.accountPreferences, false);
     pending = {}; inflight = null; retryable = null; failure = null; rejected = false; saved = null; open = null; pendingRemoval = null;
+    const found = initial.currentCarRating;
+    rating = object(found) && text(found.contractId) && stars(found.value) ? { value: found.value, contractId: found.contractId, saved: found.value, status: 'idle' } : null;
+    ratingIntent = null;
     lock = value.selection?.state === 'accepted' ? { kind: 'idle', text: PREFERENCE_COPY.readOnly } : null;
     return true;
   }
@@ -157,7 +189,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
   // The explicit reload drops unsent edits and reads the server record again.
   async function reload() {
     if (destroyed || phase !== 'ready' || reloading) return;
-    const ticket = ++epoch; reloading = true; pending = {}; inflight = null; retryable = null; failure = null; saved = null; emit();
+    const ticket = ++epoch; reloading = true; pending = {}; ratingIntent = null; inflight = null; retryable = null; failure = null; saved = null; emit();
     const outcome = await fetchEditor();
     if (destroyed || ticket !== epoch) return;
     reloading = false;
@@ -169,8 +201,15 @@ export function createAccountPreferencesController({ transport, createCommandId,
   }
 
   function retry() {
-    if (destroyed || failure?.kind !== 'save') return;
+    if (destroyed) return;
+    if (failure?.kind === 'stale') { reload(); return; }
+    if (failure?.kind !== 'save') return;
+    if (rating && ratingIntent) rating.status = 'pending';
     failure = null; emit(); flush(true);
+  }
+  function rate(value, contractId) {
+    if (!rating || locked() || contractId !== rating.contractId || !stars(value)) return;
+    rating.value = value; ratingIntent = { value }; rating.status = failure ? 'failed' : 'pending'; emit(); flush(false);
   }
   function openCategory(key) {
     const c = category(key); if (!c || locked()) return;
@@ -213,7 +252,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
     pendingRemoval = null; view[key] = { state: 'unset' }; stage(key, null);
   }
 
-  return { load, open: openCategory, close() { if (open) { open = null; emit(); } }, change, requestRemove, keep, confirmRemove, retry, reload, snapshot,
+  return { load, open: openCategory, close() { if (open) { open = null; emit(); } }, change, requestRemove, keep, confirmRemove, retry, reload, rate, snapshot,
     subscribe(listener) { if (destroyed) return () => {}; listeners.add(listener); return () => listeners.delete(listener); },
     destroy() { destroyed = true; listeners.clear(); } };
 }

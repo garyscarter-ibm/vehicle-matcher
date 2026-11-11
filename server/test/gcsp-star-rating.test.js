@@ -215,3 +215,20 @@ test('the modules use no innerHTML, eval, new Function, string timers or em dash
     assert.doesNotMatch(source, /innerHTML|eval\(|new Function|setTimeout|setInterval/, file); assert.equal(source.includes('—'), false, `${file} em dash`);
   }
 });
+
+test('onRetry shows a Try again button only while failed, and calls it', () => {
+  let calls = 0;
+  const { rating } = mount({ value: 3, onRetry: () => { calls += 1; } });
+  const retry = rating.root.querySelector('.vm-btn');
+  assert.equal(retry.textContent, 'Try again'); assert.equal(retry.hidden, true); assert.equal(retry.type, 'button');
+  rating.update({ value: 3, status: 'failed' }); assert.equal(retry.hidden, false);
+  retry.click(); assert.equal(calls, 1);
+  rating.update({ status: 'pending' }); assert.equal(retry.hidden, true);
+  rating.update({ status: 'failed' }); assert.equal(retry.hidden, false);
+  rating.update({ status: 'saved' }); assert.equal(retry.hidden, true);
+});
+
+test('without onRetry a failed rating adds no button', () => {
+  const { rating } = mount({ value: 3 });
+  rating.update({ status: 'failed' }); assert.equal(rating.root.querySelector('.vm-btn'), null);
+});

@@ -9,3 +9,5 @@
 .gcsp .gcsp-star svg { width: 24px; height: 24px; color: var(--gcsp-text-muted); pointer-events: none; }
 .gcsp .gcsp-star.is-filled svg { color: var(--gcsp-warning); fill: var(--gcsp-warning); }
 .gcsp .gcsp-star:has(input:focus-visible) { outline: 2px solid var(--gcsp-focus); outline-offset: 1px; }
+.gcsp .gcsp-star-rating:has(> .vm-btn:not([hidden])) { display: flex; align-items: center; gap: var(--gcsp-space-2); }
+.gcsp .gcsp-star-rating > .vm-btn { background: var(--gcsp-surface); } .gcsp .gcsp-star-rating > .vm-btn[hidden] { display: none; }

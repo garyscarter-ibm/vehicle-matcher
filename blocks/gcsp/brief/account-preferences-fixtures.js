@@ -10,6 +10,7 @@ const CATEGORIES = {
   size: { label: 'Size', question: 'What size works for your life?', kind: 'stops', openDefault: 50, stops: stops('Compact', 'A bit of both', 'Spacious') },
 };
 const ORDER = Object.keys(CATEGORIES);
+const CURRENT_CONTRACT = 'current:employee-paula'; // the 'ready' Account fixture's current car
 const considered = (value, importance = 'medium') => ({ state: 'considered', value, importance, exact: true });
 const SELECTED = { body: considered(['estate']), fuel: considered(['petrol']), comfort: considered(100) };
 
@@ -17,8 +18,8 @@ export const PREFERENCE_FIXTURE_STATES = Object.freeze(['empty', 'selected', 'bo
   'remove-comfort', 'save-failed', 'stale', 'pending']);
 
 /** In-memory stand-in for the brief transport: the same two calls and result shapes, no network. */
-export function previewPreferenceTransport(name) {
-  let draftVersion = 0;
+export function previewPreferenceTransport(name, { rating } = {}) {
+  let draftVersion = 0; let stars = Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : null;
   const start = { 'body-open-unset': {}, empty: {}, 'body-high': { ...SELECTED, body: considered(['estate'], 'high') },
     'comfort-midpoint': { ...SELECTED, comfort: considered(50) } }[name] ?? SELECTED;
   const categories = Object.fromEntries(ORDER.map((key) => [key, structuredClone(start[key] ?? { state: 'unset' })]));
@@ -26,9 +27,10 @@ export function previewPreferenceTransport(name) {
   return {
     async loadEditor() {
       return { status: 'ok', value: { context: { accountPreferences: { order: ORDER, minimumCategories: 3, policyVersion: 'preview', categories: CATEGORIES } },
-        initial: { briefVersion: 1, draftVersion, accountPreferences: { considered: 0, categories: structuredClone(categories) } }, selection: null } };
+        initial: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars },
+          accountPreferences: { considered: 0, categories: structuredClone(categories) } }, selection: null } };
     },
-    async savePreferences({ changes }) {
+    async savePreferences({ changes, currentCarRating }) {
       if (name === 'pending') return new Promise(() => {}); // an in-flight save that never answers
       if (refusal) return structuredClone(refusal);
       for (const [key, change] of Object.entries(changes)) {
@@ -36,8 +38,9 @@ export function previewPreferenceTransport(name) {
         if (change === null) { categories[key] = { state: 'unset' }; continue; }
         categories[key] = considered(Object.hasOwn(change, 'value') ? change.value : was.value, change.importance ?? (was.state === 'considered' ? was.importance : 'medium'));
       }
+      if (currentCarRating) stars = currentCarRating.value;
       draftVersion += 1;
-      return { status: 'ok', value: { briefVersion: 1, draftVersion, accountPreferences: { considered: 0, categories: structuredClone(categories) } } };
+      return { status: 'ok', value: { briefVersion: 1, draftVersion, currentCarRating: { contractId: CURRENT_CONTRACT, value: stars }, accountPreferences: { considered: 0, categories: structuredClone(categories) } } };
     },
   };
 }

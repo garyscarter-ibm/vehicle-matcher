@@ -285,3 +285,20 @@ test('teardown from the saving notification prevents any new draft request', asy
   assert.equal((await c.save()).status, 'destroyed');
   assert.equal(drafts, 0);
 });
+
+test('a draft carrying currentCarRating validates and the field survives the brief page draft save', async (t) => {
+  const rating = { value: 4, contractId: 'current:demo-paula', source: 'employee', ratedAt: '2026-11-05T09:00:00.000Z' };
+  let sent;
+  const rated = (patch) => ({ ...initial(), brief: { ...initial().brief, currentCarRating: { ...rating, ...patch } } });
+  const c = setup(t, { initial: rated(), transport: { saveDraft: async (command) => { sent = structuredClone(command); return { status: 'ok', value: { draftVersion: 1, baseBriefVersion: 0 } }; } } });
+  assert.deepEqual(c.snapshot().brief.currentCarRating, rating);
+  c.updatePreference('comfort', { value: 90 });
+  assert.equal((await c.save()).status !== 'invalid', true);
+  assert.deepEqual(sent.brief.currentCarRating, rating); assert.equal(sent.brief.preferences.comfort.value, 90);
+  assert.deepEqual(c.snapshot().brief.currentCarRating, rating);
+  const cleared = setup(t, { initial: rated({ value: null }) });
+  assert.equal(cleared.snapshot().brief.currentCarRating.value, null);
+  for (const bad of [{ value: 0 }, { value: 6 }, { value: 4.5 }, { value: '4' }, { source: 'policy' }, { contractId: '' }, { ratedAt: 'soon' }, { extra: 1 }])
+    assert.throws(() => setup(t, { initial: rated(bad) }), TypeError, JSON.stringify(bad));
+  assert.doesNotThrow(() => setup(t, { initial: { ...rated(), currentCarRating: { value: 3, contractId: 'c1' } } }));
+});

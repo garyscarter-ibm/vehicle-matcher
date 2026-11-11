@@ -111,3 +111,89 @@ test('every named visual state mounts with its expected tiles, panel and status'
     destroy(); host.remove();
   }
 });
+
+// Current-car star rating on the bitmap (FUCQ-367 slice B).
+const stars = (host) => [...host.querySelectorAll('.gcsp-star-rating')];
+const radio = (host, n) => host.querySelector(`.gcsp-star-rating input[value="${n}"]`);
+const HELP = 'How highly do you rate your BMW 3 Series Touring 320i M Sport Petrol?';
+
+async function mountRated(state = 'selected', { fixture = 'ready', rating, wrap = (t) => t } = {}) {
+  const host = document.createElement('div'); document.body.append(host);
+  const inner = wrap(previewPreferenceTransport(state, { rating })); const calls = []; let mounted;
+  const spy = { loadEditor: () => inner.loadEditor(), savePreferences: (input) => { calls.push(structuredClone(input)); return inner.savePreferences(input); } };
+  const destroy = mountAccount(host, { adapter: { ...adapter(), readAccount: async () => accountFixture(fixture) },
+    preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { transport: spy, signal }); return mounted; } });
+  await tick(); await mounted.ready; await tick();
+  return { host, destroy, calls, controller: mounted.controller };
+}
+
+test('one rating mounts inside the current car image well with the heading and specification as its name and help', async () => {
+  const { host, destroy } = await mountRated('selected', { rating: 4 });
+  const found = stars(host); assert.equal(found.length, 1);
+  assert.equal(found[0].closest('.vm-card-media')?.classList.contains('gcsp-media-whole'), true);
+  assert.equal(found[0].closest('.gcsp-feature')?.dataset.contractId, 'current:employee-paula');
+  const car = found[0].closest('.gcsp-feature'); const heading = car.querySelector('.gcsp-h2').textContent; const spec = car.querySelector('.gcsp-account-spec')?.textContent;
+  const text = `How highly do you rate your ${[heading, spec].filter(Boolean).join(' ')}?`;
+  assert.equal(found[0].querySelector('legend').textContent, text); assert.equal(found[0].querySelector('[role=tooltip]').textContent, text);
+  assert.equal(radio(host, 4).checked, true);
+  assert.equal(host.querySelectorAll('.gcsp-history .gcsp-star-rating, .gcsp-account-secondary .gcsp-star-rating').length, 0);
+  assert.equal(found[0].querySelector('[role=status]'), null, 'the rating uses the Account live region, not its own');
+  destroy(); host.remove();
+});
+
+test('selecting saves only the rating; clearing by the same star saves unset; Account announces once per outcome', async () => {
+  const { host, destroy, calls } = await mountRated('selected');
+  const live = [...host.querySelectorAll('[role=status].gcsp-vh')].filter((node) => !node.closest('.gcsp-account-preferences'));
+  assert.equal(live.length, 1, 'one Account live region');
+  radio(host, 3).click(); await tick(); await tick();
+  assert.deepEqual(calls[0].changes, {}); assert.deepEqual(calls[0].currentCarRating, { contractId: 'current:employee-paula', value: 3 });
+  assert.equal(live[0].textContent, 'Rating saved: 3 of 5');
+  assert.equal(statusText(host.querySelector('.gcsp-account-preferences')), '3 categories considered · Saved automatically');
+  radio(host, 3).click(); await tick(); await tick();
+  assert.deepEqual(calls[1].currentCarRating, { contractId: 'current:employee-paula', value: null }); assert.equal(live[0].textContent, 'Rating cleared');
+  destroy(); host.remove();
+});
+
+test('the same rating instance and its focus survive an Account redraw; a failed save shows Try again that resends', async () => {
+  let fail = true;
+  const { host, destroy, calls } = await mountRated('selected', { rating: 2, wrap: (t) => ({ loadEditor: t.loadEditor, savePreferences: (i) => (fail ? { status: 'unavailable', retryable: true } : t.savePreferences(i)) }) });
+  const first = stars(host)[0]; radio(host, 5).focus(); radio(host, 5).click(); await tick(); await tick();
+  assert.equal(radio(host, 5).checked, true, 'the attempted value stays visible');
+  const retry = first.querySelector('.vm-btn'); assert.equal(retry.hidden, false);
+  await destroy.sync(); await tick();
+  assert.equal(stars(host)[0], first, 'the same node is re-appended'); assert.equal(stars(host).length, 1);
+  assert.equal(document.activeElement, radio(host, 5));
+  fail = false; retry.click(); await tick(); await tick();
+  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(first.querySelector('.vm-btn').hidden, true);
+  destroy(); host.remove();
+});
+
+test('stars are absent without a rating controller or without a rating lane', async () => {
+  const host = document.createElement('div'); document.body.append(host);
+  const destroy = mountAccount(host, { adapter: adapter(), preferences: (region) => { region.append(document.createElement('p')); return () => {}; } });
+  await tick(); await tick(); assert.equal(stars(host).length, 0); destroy(); host.remove();
+  const bare = document.createElement('div'); document.body.append(bare);
+  const off = mountAccount(bare, { adapter: adapter() }); await tick(); assert.equal(stars(bare).length, 0); off(); bare.remove();
+  const none = document.createElement('div'); document.body.append(none); let mounted;
+  const inner = previewPreferenceTransport('selected');
+  const noLane = mountAccount(none, { adapter: adapter(), preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { signal,
+    transport: { loadEditor: async () => { const r = await inner.loadEditor(); r.value.initial.currentCarRating = null; return r; }, savePreferences: inner.savePreferences } }); return mounted; } });
+  await tick(); await mounted.ready; await tick(); assert.equal(stars(none).length, 0); noLane(); none.remove();
+});
+
+test('the missing image fixture keeps its fallback text beside the stars, and the region order is unchanged', async () => {
+  const { host, destroy } = await mountRated('selected', { fixture: 'missing-image', rating: 5 });
+  const media = host.querySelector('.gcsp-feature .vm-card-media'); assert.equal(media.classList.contains('has-photo'), false);
+  assert.equal(media.querySelector('.vm-card-soon').textContent, 'No image available for your car'); assert.equal(media.querySelector('.gcsp-star-rating') !== null, true);
+  const after = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  const feature = host.querySelector('.gcsp-feature'); const region = host.querySelector('.gcsp-account-preferences');
+  assert.ok(after(feature, region) && after(region, host.querySelector('.gcsp-account-history')) && after(host.querySelector('.gcsp-account-history'), host.querySelector('.gcsp-account-secondary .gcsp-account-rows')));
+  assert.ok([...feature.querySelectorAll('button')].some((node) => node.textContent === 'Choose a replacement'));
+  destroy(); host.remove();
+});
+
+test('teardown removes the rating and its listeners', async () => {
+  const { host, destroy, controller } = await mountRated('selected', { rating: 1 });
+  const node = stars(host)[0]; destroy(); controller.rate(2, 'current:employee-paula');
+  assert.equal(node.querySelector('input[value="2"]').checked, false); host.remove();
+});

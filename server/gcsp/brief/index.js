@@ -4,6 +4,7 @@ import { validateBrief } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { applyConfirmedFeedbackChange } from '../../../blocks/vehicle-matcher/feedback-actions.js';
 import { FOLLOWUP_QUESTIONS_KEY, equipmentListValid } from '../offers/followup-policy.js';
+import { currentCarRatingValid } from './rating.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -50,7 +51,7 @@ export class BriefService {
   }
 
   #validate(brief, prepared, confirming = false) {
-    if (!only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback']) || brief.schemaVersion !== 1
+    if (!only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating']) || brief.schemaVersion !== 1
       || !object(brief.preferences) || !object(brief.essentials)) return invalid('brief', 'Supply schemaVersion, preferences and essentials.');
     const errors = validateBrief({ ...projection({ ...brief, briefVersion: 1 }),
       essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key, e]) => key !== 'charging' && e?.value !== null)) }, prepared.config, prepared.slider);
@@ -67,6 +68,7 @@ export class BriefService {
     if (feedback !== undefined && (!only(feedback, ['preserve', 'change', 'state', 'source'])
       || !['preserve', 'change'].every((key) => Array.isArray(feedback[key]) && feedback[key].every((v) => text(v) && Object.hasOwn(prepared.config.preferences, v)))
       || !['draft', 'inferred', 'confirmed'].includes(feedback.state) || !text(feedback.source))) return invalid('currentCarFeedback', 'Supply separate preserve/change preference keys and a source.');
+    if (brief.currentCarRating !== undefined && !currentCarRatingValid(brief.currentCarRating)) return invalid('currentCarRating', 'Supply a 1 to 5 rating or null, the current contract, the employee source and the rating time.');
     if (confirming && (Object.values(brief.preferences).some((p) => p.valueState === 'inferred' || p.importanceState === 'inferred')
       || Object.values(brief.essentials).some((e) => e.state === 'inferred') || feedback?.state === 'inferred')) {
       return invalid('brief', 'Review inferred suggestions in a new draft before confirming.', 'confirmation-required');
@@ -219,7 +221,8 @@ export class BriefService {
           applied.code === 'unchanged-value' ? 'Confirm a different value.' : 'Change an existing registered field with an explicitly confirmed value.');
         brief = applied.brief;
         const error = this.#validate({ schemaVersion: brief.schemaVersion, preferences: brief.preferences, essentials: brief.essentials,
-          ...(brief.currentCarFeedback ? { currentCarFeedback: brief.currentCarFeedback } : {}) }, prepared, true);
+          ...(brief.currentCarFeedback ? { currentCarFeedback: brief.currentCarFeedback } : {}),
+          ...(brief.currentCarRating ? { currentCarRating: brief.currentCarRating } : {}) }, prepared, true);
         if (error) return error;
         brief.postDeclineChange = { decisionId: input.decisionId, offerId: decision.value.offerId, fromBriefVersion: version,
           path: input.change.path, before: applied.before, after: applied.after, confirmedBy: context.principalId, confirmedAt: prepared.now };

@@ -203,3 +203,115 @@ test('a late answer after destroy changes nothing and notifies nobody', async ()
   controller.destroy(); saves[0].answer(ok(1, { comfort: considered(0) })); await settle();
   assert.equal(seen.length, count);
 });
+
+// Current-car star rating lane: it shares the one in-flight, coalesced queue with category autosave.
+const CAR = 'current:employee-paula';
+const rated = (value, extra = {}) => { const e = editor(extra.categories, extra.versions); e.value.initial.currentCarRating = { contractId: CAR, value }; return e; };
+const okRated = (draftVersion, value, categories = {}, contractId = CAR) => { const r = ok(draftVersion, categories); r.value.currentCarRating = { contractId, value }; return r; };
+
+test('rate saves only the rating and leaves the footer, consent and categories alone', async () => {
+  const { controller, saves, state } = harness(rated(null)); await controller.load();
+  assert.deepEqual(controller.snapshot().rating, { value: null, contractId: CAR, saved: null, status: 'idle' });
+  const before = controller.snapshot().status;
+  controller.rate(3, CAR);
+  assert.deepEqual(saves[0].input, { commandId: 'preferences:1', expectedBriefVersion: 1, expectedDraftVersion: 0, changes: {}, currentCarRating: { contractId: CAR, value: 3 } });
+  assert.equal(controller.snapshot().rating.value, 3); assert.equal(controller.snapshot().rating.status, 'pending');
+  assert.deepEqual(controller.snapshot().status, before, 'the preferences footer does not report a rating-only save');
+  saves[0].answer(okRated(1, 3)); await settle();
+  assert.deepEqual(controller.snapshot().rating, { value: 3, contractId: CAR, saved: 3, status: 'saved' });
+  assert.deepEqual(controller.snapshot().status, before); assert.equal(controller.snapshot().draftVersion, 1);
+  assert.equal(state.confirms, 0); assert.deepEqual(controller.snapshot().categories.body, { state: 'unset' });
+  controller.rate(null, CAR); assert.deepEqual(saves[1].input.currentCarRating, { contractId: CAR, value: null });
+  assert.equal(saves[1].input.expectedDraftVersion, 1);
+});
+
+test('a rating made during a category save coalesces into the next single request with its categories', async () => {
+  const { controller, saves } = harness(rated(null)); await controller.load();
+  controller.change('comfort', { value: 100 });
+  controller.rate(2, CAR); controller.change('body', { value: ['estate'] });
+  assert.equal(saves.length, 1); assert.equal('currentCarRating' in saves[0].input, false);
+  saves[0].answer(okRated(1, null, { comfort: considered(100) })); await settle();
+  assert.equal(saves.length, 2); assert.equal(controller.snapshot().rating.value, 2, 'the echo of an older answer keeps the newer choice');
+  assert.deepEqual(saves[1].input.changes, { body: { value: ['estate'] } }); assert.deepEqual(saves[1].input.currentCarRating, { contractId: CAR, value: 2 });
+  assert.equal(controller.snapshot().status.kind, 'pending');
+  saves[1].answer(okRated(2, 2, { body: considered(['estate']), comfort: considered(100) })); await settle();
+  assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.'); assert.equal(controller.snapshot().rating.status, 'saved');
+});
+
+test('rapid 3 then 5 then clear sends one follow-up with the newest, and a late answer for 3 cannot overwrite it', async () => {
+  const { controller, saves } = harness(rated(4)); await controller.load();
+  controller.rate(3, CAR); controller.rate(5, CAR); controller.rate(null, CAR);
+  assert.equal(saves.length, 1); assert.equal(controller.snapshot().rating.value, null);
+  saves[0].answer(okRated(1, 3)); await settle();
+  assert.equal(controller.snapshot().rating.value, null, 'visible value stays the newest');
+  assert.equal(controller.snapshot().rating.saved, 3); assert.equal(controller.snapshot().rating.status, 'pending');
+  assert.equal(saves.length, 2); assert.deepEqual(saves[1].input.currentCarRating, { contractId: CAR, value: null });
+  saves[1].answer(okRated(2, null)); await settle();
+  assert.deepEqual(controller.snapshot().rating, { value: null, contractId: CAR, saved: null, status: 'saved' }); assert.equal(saves.length, 2);
+});
+
+test('rate ignores a wrong car, an out of range value, a missing lane and a locked editor', async () => {
+  const { controller, saves } = harness(rated(null)); await controller.load();
+  for (const [value, id] of [[3, 'other:car'], [0, CAR], [6, CAR], [2.5, CAR], ['3', CAR], [undefined, CAR]]) controller.rate(value, id);
+  assert.equal(saves.length, 0);
+  const none = harness(editor()); await none.controller.load();
+  assert.equal(none.controller.snapshot().rating, null); none.controller.rate(3, CAR); assert.equal(none.saves.length, 0);
+  const nul = rated(null); nul.value.initial.currentCarRating = null; const bare = harness(nul); await bare.controller.load();
+  assert.equal(bare.controller.snapshot().rating, null);
+  const locked = rated(2); locked.value.selection = { state: 'accepted', briefVersion: 1 }; const l = harness(locked); await l.controller.load();
+  l.controller.rate(4, CAR); assert.equal(l.saves.length, 0); assert.equal(l.controller.snapshot().rating.value, 2);
+});
+
+test('a failed rating keeps the attempted value, retry resends the same command, a new value gets a new one', async () => {
+  const { controller, saves } = harness(rated(null)); await controller.load();
+  controller.rate(4, CAR); saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
+  assert.deepEqual(controller.snapshot().rating, { value: 4, contractId: CAR, saved: null, status: 'failed' });
+  assert.equal(controller.snapshot().status.kind, 'idle', 'the footer is not blamed for a rating failure');
+  assert.equal(saves.length, 1);
+  controller.retry(); assert.equal(saves.length, 2); assert.equal(controller.snapshot().rating.status, 'pending');
+  assert.deepEqual(saves[1].input, saves[0].input, 'same command and body');
+  saves[1].answer({ status: 'unavailable', retryable: true }); await settle();
+  controller.rate(5, CAR); assert.equal(saves.length, 2, 'no automatic resend while failed'); assert.equal(controller.snapshot().rating.value, 5);
+  controller.retry(); assert.notEqual(saves[2].input.commandId, saves[1].input.commandId); assert.deepEqual(saves[2].input.currentCarRating, { contractId: CAR, value: 5 });
+  saves[2].answer(okRated(1, 5)); await settle();
+  assert.deepEqual(controller.snapshot().rating, { value: 5, contractId: CAR, saved: 5, status: 'saved' });
+});
+
+test('stale and current-car-changed refusals ask for a reload, which shows the server rating', async () => {
+  for (const refusal of [{ status: 'stale-version', action: 'refresh' }, { status: 'conflict', reason: 'current-car-changed', current: { contractId: 'current:new' } }, { status: 'conflict', reason: 'no-current-car' }]) {
+    let fresh = rated(1, { versions: { draftVersion: 7 } });
+    const { controller, saves } = harness(() => fresh); await controller.load();
+    controller.rate(5, CAR); saves[0].answer(refusal); await settle();
+    let view = controller.snapshot();
+    assert.equal(view.status.kind, 'stale'); assert.equal(view.rating.value, 5); assert.equal(view.rating.status, 'failed'); assert.equal(view.disabled, true);
+    controller.rate(2, CAR); assert.equal(saves.length, 1);
+    await controller.reload(); view = controller.snapshot();
+    assert.deepEqual(view.rating, { value: 1, contractId: CAR, saved: 1, status: 'idle' }); assert.equal(view.draftVersion, 7);
+    assert.equal(view.status.kind, 'idle');
+  }
+});
+
+test('an invalid or forbidden rating reverts to the saved value and reports failed', async () => {
+  const { controller, saves } = harness(rated(2)); await controller.load();
+  controller.rate(5, CAR); saves[0].answer({ status: 'invalid', code: 'invalid-rating' }); await settle();
+  assert.deepEqual(controller.snapshot().rating, { value: 2, contractId: CAR, saved: 2, status: 'failed' });
+  assert.equal(controller.snapshot().status.kind, 'idle'); assert.equal(saves.length, 1);
+  controller.rate(1, CAR); saves[1].answer({ status: 'forbidden' }); await settle();
+  assert.equal(controller.snapshot().rating.value, 2);
+});
+
+test('a malformed or mismatched ok answer is a failure, not a save', async () => {
+  for (const answer of [undefined, { value: 9, contractId: CAR }, { value: 3 }, { value: 3, contractId: 'other:car' }, { value: '3', contractId: CAR }, 'x']) {
+    const { controller, saves } = harness(rated(null)); await controller.load();
+    controller.rate(3, CAR); const reply = ok(1, {}); if (answer !== undefined) reply.value.currentCarRating = answer; saves[0].answer(reply); await settle();
+    const view = controller.snapshot();
+    assert.equal(view.rating.status, 'failed', JSON.stringify(answer)); assert.equal(view.rating.saved, null); assert.equal(view.draftVersion, 0, 'versions do not advance');
+  }
+});
+
+test('a read-only refusal locks the stars without touching the saved value', async () => {
+  const { controller, saves } = harness(rated(4)); await controller.load();
+  controller.rate(1, CAR); saves[0].answer({ status: 'conflict', reason: 'brief-read-only' }); await settle();
+  const view = controller.snapshot();
+  assert.equal(view.disabled, true); assert.deepEqual(view.rating, { value: 4, contractId: CAR, saved: 4, status: 'idle' });
+});
