@@ -215,6 +215,8 @@ idempotency, so `stale-version`, `conflict`, `forbidden`, `stale-run` and `unava
 only: it never confirms, changes consent or `buddy`, or creates a search, hold or offer. Engagement remains the separate
 confirm and consent operation (FUCQ-370).
 
+Client semantics (`blocks/gcsp/brief/account-preferences-controller.js`, DOM-free): each intent updates the view at once and queues a sparse patch. One request is in flight; later intents merge into one pending patch (last write per category wins, `null` overrides, a value after a removal restarts at medium) and go out with the versions the previous success returned. A success adopts the server's categories only for categories with no newer pending edit. `saved` is shown only when everything sent is confirmed. A network or `unavailable` failure keeps the edits and `retry()` resends the same `commandId` while the merged changes are unchanged, else a new one. `stale-version` and `conflict` keep the edits until the explicit `reload()`; `access-required`, a restarted run and `brief-read-only` disable editing; `invalid` restores the last confirmed state. The controller never calls draft-confirm, consent or Buddy routes.
+
 ## LearningRecord schema v1 · FUCQ-113 bounded observed slice
 
 `server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and

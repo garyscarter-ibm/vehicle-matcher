@@ -11,7 +11,9 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { scorePreferences, validateBriefContent } from '../scenarios/employee/index.js';
 import { createBriefController } from '../../blocks/gcsp/brief/brief-controller.js';
 import { fact, preference, stock, providerValue } from './helpers/employee-recommendation.js';
-import { startHttpServer } from './helpers/employee-recommendation-http.js';
+import { startHttpServer, cookieOf, EMPLOYEE_ORIGIN } from './helpers/employee-recommendation-http.js';
+import { createBriefTransport } from '../../blocks/gcsp/brief/brief-transport.js';
+import { createAccountPreferencesController } from '../../blocks/gcsp/brief/account-preferences-controller.js';
 
 const KEY = 'brief.accountPreferences.v1';
 const SLIDERS = ['sportiness', 'comfort', 'economy', 'size'];
@@ -357,4 +359,36 @@ test('real authenticated HTTP saves a draft and the editor read returns the same
   const unconfigured = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief });
   t.after(() => unconfigured.close());
   assert.equal((await unconfigured.request('/api/gcsp/brief/preferences', { session: f.acting, body: body({ comfort: { value: 50 } }) })).status, 503);
+});
+
+test('the browser transport and controller save through the real route and the editor reads the same record back', async (t) => {
+  const f = await setup(t);
+  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
+  t.after(() => http.close());
+  const base = `http://127.0.0.1:${http.server.address().port}`;
+  const fetch = (url, init) => globalThis.fetch(url, { ...init, headers: { ...init.headers, Origin: EMPLOYEE_ORIGIN, cookie: cookieOf(f.acting) } });
+  const transport = createBriefTransport({ fetch, baseURL: base });
+  let id = 0; const controller = createAccountPreferencesController({ transport, createCommandId: (kind) => `${kind}-http-${++id}` });
+  await controller.load(); assert.equal(controller.snapshot().phase, 'ready'); assert.equal(controller.snapshot().status.kind, 'idle');
+  controller.change('body', { value: ['saloon'] }); controller.change('body', { value: ['saloon', 'estate'] }); controller.open('comfort'); controller.change('comfort', { importance: 'high' });
+  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
+  assert.deepEqual([controller.snapshot().status.kind, controller.snapshot().draftVersion], ['saved', 2]);
+  const readback = await read(f);
+  assert.equal(readback.initial.draftVersion, 2);
+  assert.deepEqual(readback.initial.accountPreferences.categories.body, { state: 'considered', value: ['saloon', 'estate'], importance: 'medium', exact: true });
+  assert.deepEqual(readback.initial.accountPreferences.categories.comfort, { state: 'considered', value: 50, importance: 'high', exact: true });
+  const fresh = createAccountPreferencesController({ transport, createCommandId: () => 'unused' }); await fresh.load();
+  assert.deepEqual(fresh.snapshot().categories, readback.initial.accountPreferences.categories);
+  controller.requestRemove('body'); controller.confirmRemove('body');
+  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
+  assert.equal(controller.snapshot().status.text, 'Body preference removed. Saved automatically.');
+  assert.deepEqual((await read(f)).initial.accountPreferences.categories.body, { state: 'unset' });
+  // A second window still on the old version is told to reload, and keeps what it had until it does.
+  controller.change('size', { value: 100 });
+  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
+  fresh.change('economy', { value: 0 });
+  for (let at = 0; at < 50 && fresh.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
+  assert.equal(fresh.snapshot().status.kind, 'stale'); assert.equal(fresh.snapshot().categories.economy.value, 0);
+  await fresh.reload(); assert.equal(fresh.snapshot().categories.economy.state, 'unset'); assert.equal(fresh.snapshot().categories.size.value, 100);
+  fresh.destroy(); controller.destroy();
 });
