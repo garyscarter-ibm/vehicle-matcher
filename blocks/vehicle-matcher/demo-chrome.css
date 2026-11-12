@@ -338,11 +338,10 @@
   padding: 110px var(--vm-space-6) 0;
   display: grid;
   grid-template-rows: 430px;
-  background-image: url('../../assets/brand-hero/RRSunsetHero.jpg');
+  background-image: url('../../assets/rrmc-opening/ProvA1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  /* Fill the width; 60% crops the overflow 60/40, more off the top than the bottom. */
-  background-position: center 60%;
+  background-position: center;
   background-color: #281432;
 }
 .vm-rrmc .demo-hero-inner {
@@ -392,6 +391,11 @@
   text-align: center;
 }
 .vm-rrmc .demo-hero-inner { display: inline-block; max-width: 100%; }
+/* The shader (A1S.png) is opaque grey, so it multiplies into the photo; its bottom edge is pinned to the hero's. */
+.vm-rrmc .demo-hero::before {
+  background: url('../../assets/rrmc-opening/A1S.png') center bottom / cover no-repeat;
+  mix-blend-mode: multiply;
+}
 .vm-rrmc .demo-hero-title {
   position: relative;
   max-width: none;
@@ -484,6 +488,9 @@
   color: #fff;
 }
 .rr-pill:hover { opacity: 0.85; }
+
+/* Full-width benefits image under the panel; the blurbs are part of the picture. */
+.rr-benefits { display: block; width: 100%; height: auto; }
 
 /* ================= tool section ================= */
 
