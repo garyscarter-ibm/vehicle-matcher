@@ -4,9 +4,6 @@
 .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused > .gcsp-media-gallery { grid-row: 1; height: auto; min-height: 0; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); overflow: hidden; }
 .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details { grid-column: 1; grid-row: 2; padding: 0; }
 .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details .gcsp-vehicle-overview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gcsp-space-4); border: 0; margin: 0 0 var(--gcsp-space-4); padding: 0; }
-.gcsp .gcsp-vehicle-disclosures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-2); }
-.gcsp .gcsp-vehicle-disclosures > .gcsp-details { border: 0; margin: 0; padding: 0; }
-.gcsp .gcsp-vehicle-disclosures > .gcsp-details[open] { grid-column: 1 / -1; }
 .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-saving { font-size: var(--gcsp-font-size-small); font-weight: normal; }
 .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-summary .gcsp-note { font-size: var(--gcsp-font-size-small); }
 .gcsp .gcsp-decision-deadline { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-3); border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-4); }

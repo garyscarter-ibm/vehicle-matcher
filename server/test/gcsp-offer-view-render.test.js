@@ -71,21 +71,23 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
 });
 
-test('41 supplied equipment labels use a closed native disclosure outside the compact facts grid', () => {
+test('41 supplied equipment labels stay complete in the shared details drawer outside the facts grid', () => {
   const { root, view, data } = render('pending');
   const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
   const card = structuredClone(data.card); const member = card.members[0];
   member.facts = member.facts.filter((row) => row.label !== 'Options');
   member.facts.push({ label: 'Options', value: labels.join(', '), items: labels, provenance: { sourceRef: 'retained-options' } });
   view.update({ ...data, card });
-  const disclosure = root.querySelector('details.gcsp-vehicle-equipment');
-  assert.ok(disclosure); assert.equal(disclosure.open, false);
-  assert.equal(disclosure.querySelector('summary').textContent, 'Selected equipment (41)');
+  root.querySelector('.gcsp-vehicle-details-entry').click();
+  const disclosure = root.querySelector('.gcsp-vehicle-equipment');
+  assert.ok(disclosure); assert.equal(disclosure.hidden, true);
+  assert.equal(root.querySelectorAll('[role="tab"]')[1].textContent, 'Selected equipment (41)');
   assert.deepEqual([...disclosure.querySelectorAll('li')].map((node) => node.textContent), labels);
   assert.equal(disclosure.closest('.vm-card-facts'), null);
   assert.doesNotMatch(root.querySelector('.vm-card-facts').textContent, /Supported equipment|Options/);
   assert.deepEqual(member.facts.at(-1).provenance, { sourceRef: 'retained-options' });
   assert.equal(member.facts.at(-1).items.length, 41);
+  view.destroy();
 });
 
 test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comparison and current-first identities', () => {
@@ -175,7 +177,7 @@ test('expired offer shows only its expiry and next step', () => {
 
 test('live announcements are bounded and refresh retains visible keyboard focus', () => {
   const { root, view, data } = render('pending');
-  const control = root.querySelector('.gcsp-vehicle-specification summary'); control.focus();
+  const control = root.querySelector('.gcsp-vehicle-details-entry'); control.focus();
   const card = root.querySelector('.vm-card');
   view.update({ ...data, state: 'pending', countdown: '4 minutes remaining', seconds: 240 });
   assert.equal(document.activeElement, control); assert.equal(root.querySelector('.vm-card'), card);
@@ -294,7 +296,7 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
     assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
     assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
-    const refresh = root.querySelector('.gcsp-vehicle-specification summary'); refresh.focus();
+    const refresh = root.querySelector('.gcsp-vehicle-details-entry'); refresh.focus();
     dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
     assert.equal(root.querySelector('[data-offer-comparison]'), comparison); assert.equal(document.activeElement, refresh);
     dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
@@ -656,7 +658,7 @@ test('projected access data paints recognised finish names without new shade fie
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root); view.update(outcome.value);
   const finishes = [...root.querySelectorAll('.gcsp-vehicle-summary .gcsp-finish')];
-  assert.deepEqual(finishes.map((node) => node.textContent), ['Portimao Blue metallic', 'Black Veganza']);
+  assert.deepEqual(finishes.map((node) => node.querySelector('.gcsp-finish-value').textContent), ['Portimao Blue metallic', 'Black Veganza']);
   assert.deepEqual(finishes.map((node) => node.querySelector('span').style.backgroundColor), ['rgb(51, 86, 125)', 'rgb(29, 29, 31)']);
   assert.equal(root.querySelectorAll('.gcsp-vehicle-summary .is-unknown').length, 0);
   view.destroy();

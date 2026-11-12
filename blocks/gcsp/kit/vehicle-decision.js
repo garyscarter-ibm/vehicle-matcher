@@ -2,15 +2,19 @@ import { el, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, SWATCH_HEX } from '../../vehicle-matcher/modes/result-card.js';
 import { finishShade } from './finish-shades.js';
 import { NEUTRAL_SWATCH } from '../../vehicle-matcher/modes/match-signal.js';
+import { vehicleDetails } from './vehicle-details.js';
 
 /** Readable finish with a supplied shade or shared decorative name mapping. */
-export function finishLabel({ label, value, shade } = {}) {
+export function finishLabel({ label, value, shade, labelled = false } = {}) {
   const root = el('p', 'gcsp-finish');
   const swatch = el('span', 'gcsp-finish-swatch'); swatch.setAttribute('aria-hidden', 'true');
   const colour = SWATCH_HEX[finishShade({ label, value, shade })];
   swatch.style.backgroundColor = colour || NEUTRAL_SWATCH;
   swatch.classList.toggle('is-unknown', !colour);
-  root.append(swatch, el('span', null, value || `${label} not supplied`));
+  const copy = el('span', labelled ? 'gcsp-finish-copy' : null);
+  if (labelled) copy.append(el('span', 'gcsp-finish-label', label));
+  copy.append(el('span', 'gcsp-finish-value', value || `${label} not supplied`));
+  root.append(swatch, copy);
   return root;
 }
 
@@ -29,7 +33,8 @@ export function vehicleDecisionCard({ view, media, actions, note, finishes = [],
   if (title !== summary) summary.append(title);
   if (kicker) title.append(el('p', `gcsp-vehicle-kicker${layout === 'focused' ? ' gcsp-vehicle-context' : ''}`, kicker));
   title.append(body.querySelector('.vm-card-head'));
-  const summaryFinishes = el('div', `gcsp-finishes${layout === 'focused' ? ' gcsp-vehicle-meta' : ''}`); summaryFinishes.append(...finishes.map(finishLabel));
+  const summaryFinishes = el('div', `gcsp-finishes${layout === 'focused' ? ' gcsp-vehicle-meta' : ''}`);
+  summaryFinishes.append(...finishes.map((finish) => finishLabel({ ...finish, labelled: layout === 'focused' })));
   title.append(summaryFinishes);
   const terms = body.querySelector('.vm-card-terms');
   const monthly = view.members[0].terms?.find((term) => term.kind === 'points-monthly');
@@ -44,7 +49,7 @@ export function vehicleDecisionCard({ view, media, actions, note, finishes = [],
   if (actions) summary.append(actions);
   if (note) summary.append(note);
   const details = el('div', 'gcsp-vehicle-details');
-  const disclosures = layout === 'focused' ? el('div', 'gcsp-vehicle-disclosures') : details;
+  let detailsView;
   const finishList = el('div', 'gcsp-finishes'); finishList.append(...finishes.map(finishLabel));
   const facts = body.querySelector('.vm-card-facts');
   const decision = body.querySelector('.vm-card-decision');
@@ -53,19 +58,19 @@ export function vehicleDecisionCard({ view, media, actions, note, finishes = [],
     const labels = ['Body style', 'Fuel', 'Boot', 'Available by', 'Collection from', 'Seats'];
     const overview = labels.map((label) => member.facts?.find((fact) => fact.label === label && fact.value != null)).filter(Boolean).slice(0, 4);
     if (overview.length) details.append(factList(overview, { className: 'vm-facts-pair gcsp-vehicle-overview' }));
-    const specification = el('details', 'gcsp-details gcsp-vehicle-specification');
-    specification.append(el('summary', 'gcsp-details-summary', 'Full specification'), facts, decision);
-    disclosures.append(specification); details.append(disclosures);
+    detailsView = vehicleDetails({ name: member.display.name, finishes, facts, decision, equipment: equipment?.items });
+    details.append(detailsView.root);
   } else details.append(facts, decision);
-  if (equipment) {
+  if (equipment && layout !== 'focused') {
     const disclosure = el('details', 'gcsp-details gcsp-vehicle-equipment');
     const list = el('ul'); list.append(...equipment.items.map((label) => el('li', null, label)));
     disclosure.append(el('summary', 'gcsp-details-summary', `Selected equipment (${equipment.items.length})`), list);
-    disclosures.append(disclosure);
+    details.append(disclosure);
   }
   card.replaceChildren(summary, mediaNode, details);
   card.querySelector('.vm-card[data-gate="eligible"] .vm-card-gate')?.remove();
   if (card.dataset.gate === 'eligible') card.querySelector('.vm-card-gate')?.remove();
+  card.destroy = () => detailsView?.destroy();
   return card;
 }
 

@@ -62,7 +62,7 @@ test('pending and accepted offers have no footer state check; background reads s
 
 test('background expiry removes decisions and retains the next step without a pending footer control', async () => {
   const m = mount(fixture('pending'), { cars: '/gcsp-account.html' }); await m.c.refresh();
-  const details = m.root.querySelector('.gcsp-vehicle-specification summary'); details.focus();
+  const details = m.root.querySelector('.gcsp-vehicle-details-entry'); details.focus();
   m.set(fixture('expired')); await m.c.refresh();
   assert.equal(m.root.querySelector('h1').textContent, 'Offer expired');
   assert.equal(m.root.querySelector('[data-offer-action="accept"], [data-offer-action="decline"], [data-offer-action="refresh"]'), null);
