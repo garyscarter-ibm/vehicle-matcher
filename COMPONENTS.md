@@ -576,3 +576,12 @@ The approved Option B in `docs/gcsp/mockups/offer-details-2026-11-12/` supersede
 ### Offer page spacing (12 November 2026)
 
 The focused decision summary uses 24px between content groups; the countdown keeps its own width. Supplied overview facts use four columns above 1200px and two below, giving long dates room at compact desktop widths. List highlights use 20px top/24px side padding, 12px after their heading and 16px vertical row padding. Comparison `dataTable` cells use 12px vertical padding for readable paired values. The shared offer header centres its title and Back control; the offer composition leaves 32px before the decision comparison and 24px between its heading, highlights and table. Reuse these shared presentations; existing focused-offer and comparison-table gallery examples show the spacing.
+
+### Presenter Car suitability
+
+`blocks/gcsp/presenter-controls/suitability-section.js` composes a collapsed disclosure below
+Allocation from `dataTable`, `labelledField`, `button`, `loadingSkeleton` and `statusScreen`.
+Rows are released cars; columns are engaged Buddies. Native cell buttons select recorded
+checks and allocation details. The table scrolls within its region at narrow widths.
+Paging covers eight cars and four Buddies; all/latest release is a native selector.
+Scoped Density-token styling lives in `suitability-section.css`. No new kit primitive.

@@ -300,6 +300,17 @@ test('HTTP transport sends credentialled exact JSON and keeps typed refusal dist
   const lost = http({ fetchImpl: async () => { throw new Error('offline'); } }); assert.equal((await lost.tick(payload)).lostResponse, true);
 });
 
+test('suitability transport sends only release/page selectors and keeps cancellation out of the URL', async () => {
+  const calls = []; const abort = new AbortController();
+  const adapter = http({ fetchImpl: async (...args) => { calls.push(args); return { ok: true, json: async () => ok({}) }; } });
+  await adapter.readSuitability({ page: 2, buddyPage: 3, release: 'latest', signal: abort.signal });
+  const [url, options] = calls[0]; const parsed = new URL(url, 'https://matrix.test');
+  assert.equal(parsed.pathname, '/api/gcsp/presenter/suitability');
+  assert.deepEqual(Object.fromEntries(parsed.searchParams), { page: '2', buddyPage: '3', release: 'latest' });
+  assert.equal(options.signal, abort.signal); assert.equal(options.method, 'GET'); assert.equal(options.credentials, 'include');
+  assert.ok(!options.body);
+});
+
 
 test('acknowledged reset with session-renewal failure still navigates and preserves committed receipt before navigation', async () => {
   let reads = 0; let contexts = 0;

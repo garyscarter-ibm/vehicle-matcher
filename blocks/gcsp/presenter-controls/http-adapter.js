@@ -27,6 +27,8 @@ export function createPresenterHttpAdapter({ base = '', fetchImpl = globalThis.f
     reset: (body, options) => request('presenter/scenarios/reset', body, options),
     switchPrincipal: (body, options) => request('session/switch', body, options),
     readLatestRelease: (options) => request('presenter/releases/latest', null, options),
+    readSuitability: ({ page = 1, buddyPage = 1, release = 'all', ...options } = {}) => request(
+      `presenter/suitability?${new URLSearchParams({ page, buddyPage, release })}`, null, options),
     listOrders: (options) => request('orders/progress/all', null, options),
   };
 }
