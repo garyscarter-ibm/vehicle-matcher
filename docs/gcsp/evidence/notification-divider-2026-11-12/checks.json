@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1440,
+    "collapsedByDefault": true,
+    "lastRow": true,
+    "innerBorder": false,
+    "extraTopPadding": false,
+    "keyboardDisclosure": true,
+    "keyboardSave": true,
+    "invalidFocus": true,
+    "clear": true,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "collapsedByDefault": true,
+    "lastRow": true,
+    "innerBorder": false,
+    "extraTopPadding": false,
+    "keyboardDisclosure": true,
+    "keyboardSave": true,
+    "invalidFocus": true,
+    "clear": true,
+    "overflow": false
+  }
+]
