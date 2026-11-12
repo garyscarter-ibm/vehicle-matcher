@@ -506,6 +506,10 @@
 
 /* Full-width benefits image under the panel; the blurbs are part of the picture. */
 .rr-benefits { display: block; width: 100%; height: auto; }
+.rr-benefits[hidden] { display: none; }
+
+/* "Begin your journey" page: one short paragraph, then a single pill 44px below it. */
+.rr-journey .rr-opening-copy { margin-bottom: 44px; }
 
 /* ================= tool section ================= */
 

@@ -193,6 +193,13 @@ main {
               <a class="rr-pill" href="#" onclick="return false">Contact a dealership</a>
             </div>
           </section>
+          <section class="rr-opening rr-journey" id="rr-journey" aria-labelledby="rr-journey-title" hidden>
+            <h2 class="rr-opening-title" id="rr-journey-title">Crafted once, coveted<br class="rr-br"> forever</h2>
+            <p class="rr-opening-copy">Allow us to walk you through a few simple questions. We’ll score your results and select your<br class="rr-br"> perfect match from our collection.</p>
+            <div class="rr-pills">
+              <a class="rr-pill" href="#demo-tool">Begin your journey</a>
+            </div>
+          </section>
           <img class="rr-benefits" src="assets/rrmc-opening/ProvB1.jpg" width="1440" height="809"
             alt="Six Provenance benefits: a prestigious invitation, official certification, unparalleled servicing, roadside assistance, Provenance warranty and enduring excellence." />`,
         // The official site's footer, column by column; rendered by rrFooter.
@@ -606,7 +613,18 @@ main {
         const reveal = () => { tool.hidden = false; };
         if (/[#&]m=/.test(window.location.hash)) reveal();
         else tool.hidden = true;
+        // "Find my perfect match" moves to the "Begin your journey" page; its pill opens the matcher.
+        const opening = root.querySelector('.rr-opening:not(.rr-journey)');
+        const journey = root.querySelector('.rr-journey');
+        const benefits = root.querySelector('.rr-benefits');
         root.querySelector('.rr-pill-primary').addEventListener('click', (e) => {
+          e.preventDefault();
+          opening.hidden = true;
+          benefits.hidden = true;
+          journey.hidden = false;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        journey.querySelector('.rr-pill').addEventListener('click', (e) => {
           e.preventDefault();
           reveal();
           tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
