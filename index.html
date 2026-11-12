@@ -179,10 +179,20 @@ main {
         label: 'RRMC',
         origin: 'www.rolls-roycemotorcars.com',
         navLinks: [],
-        heroTitle: 'Explore Ecstasy.',
-        heroTitleHtml: '<span style="letter-spacing:0.05em">Explore</span> <span style="font-weight:300;letter-spacing:0.05em">Ecstasy</span>.',
-        heroSubHtml: '<span style="letter-spacing:0.04em">Find the car that\'s waiting for you,</span><br><span style="letter-spacing:0.03em">matched to your driving style.</span>',
-        heroCta: 'Start the search',
+        heroTitle: 'Provenance',
+        heroSub: 'Certified Pre-Owned',
+        // The white panel under the hero: headline, two paragraphs, three pills.
+        openingHtml: `
+          <section class="rr-opening" aria-labelledby="rr-opening-title">
+            <h2 class="rr-opening-title" id="rr-opening-title">Crafted once, coveted<br class="rr-br"> forever</h2>
+            <p class="rr-opening-copy">An official welcome into the brand’s universe, Provenance is a recognition of your discerning<br class="rr-br"> appreciation for true automotive artistry.</p>
+            <p class="rr-opening-copy">Each motor car is a testament to enduring craftsmanship. A world-renowned team of technicians<br class="rr-br"> across the globe re-examine every Provenance motor car to ensure its future is as brilliant<br class="rr-br"> as its past.</p>
+            <div class="rr-pills">
+              <a class="rr-pill rr-pill-primary" href="#demo-tool">Find my perfect match</a>
+              <a class="rr-pill" href="#" onclick="return false">Discover our inventory</a>
+              <a class="rr-pill" href="#" onclick="return false">Contact a dealership</a>
+            </div>
+          </section>`,
         // The official site's footer, column by column; rendered by rrFooter.
         footerColumns: [
           ['Pre-owned', 'Find a dealer', 'Privacy', 'Language'],
@@ -414,9 +424,10 @@ main {
               ${b.heroKicker ? `<p class="demo-hero-kicker">${esc(b.heroKicker)}</p>` : ''}
               <h1 class="demo-hero-title">${b.heroTitleHtml || esc(b.heroTitle)}</h1>
               <p class="demo-hero-sub">${b.heroSubHtml || esc(b.heroSub)}</p>
-              <a class="demo-cta" href="#demo-tool">${esc(b.heroCta)}</a>
+              ${b.heroCta ? `<a class="demo-cta" href="#demo-tool">${esc(b.heroCta)}</a>` : ''}
             </div>
           </section>
+          ${b.openingHtml || ''}
 
           <section class="demo-tool" id="demo-tool">
             <div class="vehicle-matcher block" data-block-name="vehicle-matcher" data-api="${DEFAULT_API}">

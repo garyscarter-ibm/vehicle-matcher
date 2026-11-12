@@ -364,6 +364,109 @@
   justify-content: center;
 }
 
+/* ================= RRMC opening page (Figma "Opening Page", 1440 wide) ================= */
+
+/* Hero: 741px tall at 1440; the title block starts at 50% down and centres. */
+.vm-rrmc .demo-hero {
+  display: block;
+  min-height: clamp(420px, 51.5vw, 741px);
+  padding: clamp(200px, 25.7vw, 370px) var(--vm-space-6) 0;
+  text-align: center;
+}
+.vm-rrmc .demo-hero-inner { display: inline-block; max-width: 100%; }
+.vm-rrmc .demo-hero-title {
+  position: relative;
+  max-width: none;
+  margin: 0;
+  padding-bottom: 21px;
+  font-size: clamp(40px, 4.72vw, 68px);
+  font-weight: 300;
+  letter-spacing: 0.015em;
+  line-height: normal;
+  text-transform: uppercase;
+}
+/* The rule under the title: 463 of the title's 479px, inset 7px each side. */
+.vm-rrmc .demo-hero-title::after {
+  content: "";
+  position: absolute;
+  left: 1.5%;
+  right: 1.5%;
+  bottom: 0;
+  border-top: 1px solid #fff;
+}
+.vm-rrmc .demo-hero-sub {
+  margin: 11px 0 0;
+  max-width: none;
+  font-size: clamp(16px, 1.6vw, 23px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+/* White panel: headline, two paragraphs, three pills. 148px above and below at 1440. */
+.rr-opening {
+  padding: clamp(56px, 10.3vw, 148px) var(--vm-space-6);
+  background: #fff;
+  color: #000;
+  text-align: center;
+  font-family: 'Riviera Nights', sans-serif;
+  font-weight: 300;
+}
+.rr-opening-title {
+  max-width: 527px;
+  margin: 0 auto 32px;
+  font-size: clamp(24px, 2.36vw, 34px);
+  font-weight: 300;
+  letter-spacing: 0.075em;
+  line-height: 1.265;
+  text-transform: uppercase;
+}
+.rr-opening-copy {
+  max-width: 690px;
+  margin: 0 auto 14px;
+  font-size: 14px;
+  letter-spacing: 0.036em;
+  line-height: 28px;
+}
+.rr-opening-copy + .rr-opening-copy { margin-bottom: 35px; }
+/* Line breaks follow the Figma lines on wide screens and reflow naturally below. */
+@media (max-width: 760px) { .rr-br { display: none; } }
+
+.rr-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px 28px;
+}
+.rr-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 300px;
+  max-width: 100%;
+  height: 52px;
+  border: 1px solid #000;
+  border-radius: 30px;
+  color: #000;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+/* The filled pill is 360 wide (30px wider each side) and takes its own row. */
+.rr-pill-primary {
+  flex-basis: 100%;
+  width: 360px;
+  margin: 0 auto;
+  border-color: #281432;
+  background: #281432;
+  color: #fff;
+}
+.rr-pill:hover { opacity: 0.85; }
+
 /* ================= tool section ================= */
 
 /*
