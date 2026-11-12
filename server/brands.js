@@ -946,10 +946,9 @@ export const BRANDS = {
       drop: ['charging'],
       add: [
         {
-          // Filters on the retailer's region (rrmc-listing.js). The \n splits the
-          // title's two tracked lines; anywhere else it collapses to a space.
+          // Filters on the retailer's region (rrmc-listing.js).
           id: 'regions',
-          title: 'Which regions shall\nwe include?',
+          title: 'Which regions would you like to include?',
           insertAfter: 'primaryUse',
           multi: true,
           options: [

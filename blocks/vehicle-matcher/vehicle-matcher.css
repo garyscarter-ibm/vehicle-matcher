@@ -2168,21 +2168,8 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
    and a long unbroken model name in a card would otherwise push the whole track
    wider than the block. */
 
-@media (min-width: 720px) {
-  
-    
-    
-
-    
-}
-
 /* The shared option list carries the questionnaire's generous margins, which
    were measured for a full-width screen with one question on it. */
-
-@media (min-width: 720px) {
-    
-  
-}
 
 /* --- wide: the steps become ROWS, and the fold has to keep a peek ---
    Stacked one per row in a ~780px pane, the winner IS the fold: it measured
@@ -2197,19 +2184,6 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
    tied cars wrap 2 + 1 rather than squeezing into three ~240px columns — the
    third lands under the first at the same width with the same treatment, and
    the wrap is what puts it above the fold. */
-@media (min-width: 1080px) {
-  
-
-    
-
-  
-
-    
-  
-    
-    
-    
-}
 
 /* The rank eyebrow. The rule before the label is the quietest of the four rank
    signals and the one that survives any brand palette, because it inherits the
@@ -2290,40 +2264,13 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm-podium-reject-icon { line-height: 1; }
 .vm-podium-reject-label { letter-spacing: 0.2px; }
 
-
 /* Set by fitExtended (result-card.js) only when the full name would wrap. */
 .vm.vm-rrmc .vm-rrmc-extended { font-size: 16px; }
 
 /* Full width: the tail cards sit on the gold tile's purple, heading above it. */
-@media (min-width: 1080px) {
-  
-    
-  
-}
 
 /* Two 300px tiles + the 60px gap need 660px; any narrower and they stack, silver first,
    zoomed back up to fit the column (--vm-podium-zoom-stack). */
-@container (max-width: 659px) {
-  
-  
-    
-  
-  
-  
-  
-  
-}
-/* Wide gold: a name past two lines grows the tile down instead of running into "Why this one?".
-   The auto margin and 22px step put both lines exactly where the old bottom: 108/86px had them. */
-@container (min-width: 660px) {
-  
-  
-  
-   .vm-rrmc-presented) { position: static; order: 1; }
-  
-  
-}
-
 /* Driveline and mileage sub-lines beneath the model name */
 
 .vm.vm-rrmc .vm-rrmc-mileage {
@@ -2339,8 +2286,6 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   margin: 0;
   text-decoration: underline;
 }
-
-/* Tail tiles: likewise{ display: none; }
 
 /* RRMC: per-value letter-spacing on the people question */
 .vm.vm-rrmc [data-qid="people"] .vm-option[data-value="solo"] .vm-option-label,

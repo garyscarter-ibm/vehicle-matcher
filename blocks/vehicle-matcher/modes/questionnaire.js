@@ -1677,6 +1677,14 @@ function renderQuestion(root, ctx, index) {
   back.disabled = index === 0;
   back.addEventListener('click', () => ctx.showQuestion(index - 1));
   nav.append(back);
+  if (ctx.brand === 'rrmc') {
+    // One dot per question, the current one lit; the host page decides whether to show them.
+    const dots = el('div', 'vm-dots');
+    dots.setAttribute('role', 'img');
+    dots.setAttribute('aria-label', `Question ${index + 1} of ${questions.length}`);
+    questions.forEach((_, i) => dots.append(el('span', i === index ? 'vm-dot is-on' : 'vm-dot')));
+    nav.append(dots);
+  }
 
   const last = ctx.brand === 'rrmc' ? RRMC_COPY.lastNext : 'Explore my matches';
   const next = el('button', 'vm-btn vm-btn-primary', index + 1 === questions.length ? last : 'Next');

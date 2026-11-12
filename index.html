@@ -626,6 +626,7 @@ main {
         });
         journey.querySelector('.rr-pill').addEventListener('click', (e) => {
           e.preventDefault();
+          e.currentTarget.classList.add('is-active');
           reveal();
           tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });

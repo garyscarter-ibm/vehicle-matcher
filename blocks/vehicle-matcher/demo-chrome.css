@@ -511,6 +511,141 @@
 /* "Begin your journey" page: one short paragraph, then a single pill 44px below it. */
 .rr-journey .rr-opening-copy { margin-bottom: 44px; }
 
+/* ================= RRMC question panel (Figma "Location", 1440 wide) ================= */
+
+/* "Begin your journey" fills in purple (the frame's INV pill) once pressed. */
+.rr-pill.is-active { border-color: #281432; background: #281432; color: #fff; }
+
+/*
+ * Question screens only: a full-bleed blue panel, white type, outlined pills. The results page
+ * keeps the white surface. Blue gradient stands in for the frame's flag photo until it is exported.
+ */
+.vm-rrmc .demo-tool:has(.vm-screen[data-qid]) {
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(560px, 56.2vw, 809px);
+  padding: clamp(96px, 19.6vw, 282px) 0 clamp(32px, 3.2vw, 46px);
+  background: linear-gradient(180deg, #3d6194 0%, #2c4670 45%, #232b40 100%);
+}
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher.vm:has(> .vm-stage > .vm-screen[data-qid]) {
+  --vm-ink: #ffffff;
+  --vm-ink-muted: rgba(255, 255, 255, 0.85);
+  --vm-surface: transparent;
+  --vm-line: rgba(255, 255, 255, 0.6);
+  flex: 1 1 auto;
+  display: flex;
+  max-width: none;
+  padding: 0;
+  color: #ffffff;
+}
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-stage { display: flex; flex: 1 1 auto; flex-direction: column; }
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-screen[data-qid] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+/* The frame has no step line, answered pills or live shortlist; dots replace the bar. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] :is(.vm-progress, .vm-step, .vm-pills, .vm-preview) { display: none; }
+
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-question {
+  position: static;
+  left: auto;
+  width: auto;
+  max-width: 560px;
+  margin: 0 auto;
+  transform: none;
+  color: #ffffff;
+  font-size: clamp(28px, 2.78vw, 40px);
+  font-weight: 300;
+  letter-spacing: 0.075em;
+  line-height: 1.075;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  white-space: normal;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-help {
+  margin: 12px auto 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Answers: 300 x 52 outlined pills, two across with a 28px gap, 28px under the title. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-options {
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  justify-content: center;
+  gap: 28px;
+  margin: 28px auto 0;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option {
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #ffffff;
+  border-radius: 30px;
+  background: transparent;
+  color: #ffffff;
+  text-align: center;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option:hover { background: rgba(255, 255, 255, 0.14); }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option.is-selected { background: #ffffff; color: #281432; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option-label {
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.09em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+/* A pill has room for one line, so the long sub-lines stay out of it. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option-sub { display: none; }
+/* An odd last answer sits centred on its own row. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 300px;
+  max-width: 100%;
+}
+@media (max-width: 719px) {
+  .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-options { grid-template-columns: minmax(0, 300px); gap: 16px; }
+}
+
+/* Back left, Next right, 160 x 42 outlined pills; the dots sit between them. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav {
+  align-items: center;
+  max-width: none;
+  margin: auto 0 0;
+  padding-inline: clamp(20px, 6.1vw, 88px);
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav > .vm-btn {
+  min-width: 160px;
+  height: 42px;
+  padding: 0 24px;
+  border: 1px solid #ffffff;
+  border-radius: 30px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav > .vm-btn:not(:disabled):hover { background: rgba(255, 255, 255, 0.14); }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-dots { display: flex; gap: 14px; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-dot.is-on { background: #ffffff; }
+@media (max-width: 719px) {
+  .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-dots { display: none; }
+  .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav > .vm-btn { min-width: 120px; }
+}
+
 /* ================= tool section ================= */
 
 /*

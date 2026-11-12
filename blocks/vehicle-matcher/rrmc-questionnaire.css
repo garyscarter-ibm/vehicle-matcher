@@ -25,6 +25,9 @@
   line-height: 1;
 }
 
+/* The dots are opt-in: the demo page's question panel shows them (demo-chrome.css). */
+.vm.vm-rrmc .vm-dots { display: none; }
+
 /* ---- progress: the 8px rose-gold bar ---- */
 .vm.vm-rrmc .vm-stage .vm-screen > .vm-progress { height: 8px; }
 
