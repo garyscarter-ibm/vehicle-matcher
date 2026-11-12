@@ -1,0 +1,66 @@
+/* Static discussion screens. Uses the current shared GCSP Density tokens. */
+body { margin: 0; }
+.study { padding: 28px 32px 36px; }
+.study-head, .study main { width: 100%; max-width: 1120px; margin-inline: auto; }
+.study-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+.study-head h1 { font-size: var(--gcsp-font-size-title); line-height: var(--gcsp-font-line-title); margin: 0; }
+.study-head p { color: var(--gcsp-text-muted); margin: 0; font-size: var(--gcsp-font-size-label); }
+.study h2 { font: var(--gcsp-font-strong-weight) var(--gcsp-font-size-heading)/var(--gcsp-font-line-heading) var(--gcsp-font); margin: 0 0 16px; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; }
+figure { margin: 0; min-width: 0; }
+figcaption { margin-bottom: 12px; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.title-pair .identity { max-width: 420px; }
+.identity { background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); padding: 24px; }
+.identity p { margin: 0; }
+.identity .context { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.identity h3 { font: var(--gcsp-font-strong-weight) var(--gcsp-font-size-title)/var(--gcsp-font-line-title) var(--gcsp-font); margin: 0; }
+.current { display: grid; gap: 4px; }
+.current .finishes { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.finish { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
+.finish i { width: 16px; height: 16px; flex: 0 0 16px; border-radius: 50%; border: 1px solid var(--gcsp-text-muted); background: #1d1d1f; }
+.proposed .identity-title { display: grid; gap: 8px; }
+.proposed .finishes { display: grid; gap: 16px; margin-top: 20px; }
+.proposed .finish { align-items: start; gap: 12px; }
+.proposed .finish i { margin-top: 21px; }
+.proposed .finish-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); margin-bottom: 4px; }
+.details-study { margin-top: 36px; }
+.detail-example { min-height: 195px; }
+.overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.overview span, .overview strong { display: block; }
+.overview span { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); margin-bottom: 4px; }
+.overview strong { font-weight: var(--gcsp-font-strong-weight); }
+.accordion-row { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 16px 0; border-top: 1px solid var(--gcsp-divider); color: var(--gcsp-accent); }
+.accordion-row:last-child { border-bottom: 1px solid var(--gcsp-divider); }
+.accordion-row strong { font-weight: var(--gcsp-font-strong-weight); }
+.count { color: var(--gcsp-text-muted); font-weight: var(--gcsp-font-weight); margin-left: 8px; }
+.details-entry { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 20px; color: var(--gcsp-accent); text-decoration: none; border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface-raised); }
+.details-entry strong, .details-entry small { display: block; }
+.details-entry strong { font-weight: var(--gcsp-font-strong-weight); }
+.details-entry small { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); margin-top: 4px; }
+.entry-arrow { font-size: 22px; }
+.details-entry:focus-visible, .drawer-back:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.option-note { margin: 12px 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-small); }
+.recommendation { margin-left: 8px; color: var(--gcsp-accent); font-weight: var(--gcsp-font-strong-weight); }
+.drawer-scene { min-height: 100vh; }
+.scene-header { height: 56px; display: flex; align-items: center; gap: 16px; padding: 8px 24px; border-bottom: 1px solid var(--gcsp-divider); background: var(--gcsp-surface-raised); }
+.scene-header img { width: 145px; height: 36px; object-fit: contain; }
+.scene-header .scene-account { margin-left: auto; color: var(--gcsp-accent); }
+.scene-body { padding: 40px 48px; }
+.scene-body h1 { font-size: var(--gcsp-font-size-title); }
+.scene-body .identity { width: 420px; margin-top: 32px; }
+.drawer-scrim { position: fixed; inset: 0; background: var(--gcsp-backdrop); }
+.drawer { position: fixed; inset: 0 0 0 auto; width: 480px; background: var(--gcsp-surface-raised); box-shadow: var(--gcsp-elevation-overlay); overflow-y: auto; }
+.drawer-head { display: flex; align-items: start; justify-content: space-between; padding: 24px; gap: 24px; border-bottom: 1px solid var(--gcsp-divider); }
+.drawer-context { margin: 0 0 4px; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.drawer-head h1 { margin: 0; font: var(--gcsp-font-strong-weight) var(--gcsp-font-size-title)/var(--gcsp-font-line-title) var(--gcsp-font); }
+.drawer-back { color: var(--gcsp-accent); text-decoration: none; font-size: 24px; line-height: 28px; }
+.drawer-body { padding: 24px; }
+.drawer-body h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); margin: 0 0 24px; }
+.drawer-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--gcsp-divider); margin: 0 0 28px; }
+.drawer-tabs span { padding: 0 0 12px; }
+.drawer-tabs .selected { color: var(--gcsp-accent); border-bottom: 2px solid var(--gcsp-accent); font-weight: var(--gcsp-font-strong-weight); }
+.spec { margin: 0; }
+.spec > div { padding: 16px 0; border-bottom: 1px solid var(--gcsp-divider); }
+.spec dt { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); margin-bottom: 4px; }
+.spec dd { margin: 0; }
+@media (max-width: 850px) { .study { padding: 24px; } .study-head { display: block; } .study-head p { margin-top: 8px; } .pair { gap: 24px; } }
