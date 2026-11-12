@@ -1,0 +1,85 @@
+# FUCQ-426: replacement timing refinement
+
+12 November 2026. Discussion record in response to: what do we still need to know, what additional data sources would help, and could this be demonstrated in the original long-running population simulation with automated time?
+
+**Working recommendation:** save preferences at handover, monitor when a replacement is likely to be needed, and start the permitted search early enough to secure a suitable replacement. Demonstrate an individual employee within the wider population. The timing rule and simulation extensions below are proposals for collaborator refinement, not agreed acceptance criteria or an implementation specification. Jira updates remain paused; no Stories, claims, policy or product behaviour are changed.
+
+## What is already established
+
+- FUCQ-426's published intention is personalised replacement-search timing using available mileage and contract timing, reusing the brief/current-car/renewal contracts and preserving employee control. Native readback on 12 November confirmed **To Do**, unassigned, related to FUCQ-86/110/338. See the [approved feedback record](bmw-client-feedback-proposals-2026-11-12.md).
+- The supplied **June 2024** Choices guide already describes a three-month reminder, ordering advice, calendar-based opening of the order window, mileage constraints and a 14-day timing nuance: [§3.3 and §6.1](sources/choices-car-scheme-guidelines-v1.6.md). These are dated evidence, not verified 2026 rules. The October 2024 eligibility baseline does not validate current timing rules. A generic reminder would add little; mileage-sensitive forecasting and coordinated activation are the proposed delta.
+- [SAN-010, SAN-012 and SAN-019](questions-for-sandeep.md) already ask about timing flexibility, employee-to-VIN linkage, connected-data availability/freshness/permitted use and contract/window semantics. No answers should be inferred from the new Epic.
+
+## Decisions and evidence we still need
+
+| Question | Why the answer changes the product |
+| --- | --- |
+| What defines the replacement date and the permitted search/order/collection windows? | Establish the authoritative agreement end, mileage basis and limits, any minimum tenure/mileage, calendar windows and exceptions. A forecast can identify risk; it cannot authorise an early order, return or extension. |
+| What does “start search” mean? | Distinguish saving preferences, monitoring timing, inviting the employee, active matching, reserving and ordering. Recommended default: activate at the window only where current employee permission already covers it; otherwise invite engagement. A deliberate pause remains effective. |
+| How much lead time is needed? | Separate time to find suitable stock, release cadence, production/availability dates, employee decision time and collection/return capacity. A three-month buffer may be adequate for one employee and inadequate for another. Which available-to-collect dates are useful also matters: do not hold today's scarce car for someone months away from replacement. |
+| What mileage observations exist, and how trustworthy are they? | We need dated readings, units, vehicle identity and the handover baseline. Agreement miles may differ from lifetime odometer miles. Two comparable readings allow a rate estimate; a single reading needs a baseline or an explicit employee estimate. Stale, missing and zero are different states. |
+| What changes the forecast? | Changed commuting or planned use, new readings, agreement changes and replacement supply delays can move the window. Decide how material a change must be before notifying again; avoid repeated activation or conflicting dates. Present a range when the inputs warrant one. |
+| What happens when replacement is at risk? | Reuse the owned renewal-help route for no suitable supply, uncertain data or a deadline inside the expected lead time. Identify the scheme-team action and employee message. Do not invent an automatic extension, early-return permission, essential relaxation or allocation advantage. |
+| How does the next cycle begin? | Bind observations and timing to the employee's actual entitlement slot, agreement and vehicle. Only confirmed handover completion/return changes the current-car relationship; acceptance alone does not. Review retained preferences and permissions, and establish the next agreement/odometer baseline. |
+
+The primary proposed outcome is **a suitable replacement before the applicable deadline, with less employee effort**. Resale-driven voluntary early replacement remains FUCQ-427; market-aware order planning remains FUCQ-428. Those objectives may later influence a timing scenario after agreement. The choice of primary objective remains for collaborator agreement.
+
+A simple candidate rule to trial is:
+
+1. Estimate the date at which agreement mileage reaches its applicable upper limit, using dated observations or an explicit fallback assumption.
+2. Compare that with the authoritative agreement return-by date to identify the likely replacement need and its uncertainty.
+3. Work backwards by a configurable search-to-collection lead time, then apply the actual permission and scheme windows. If the useful search date precedes the permitted window, surface the risk rather than silently changing eligibility.
+
+For illustration only, if 2,000 agreement miles remain and use is 1,000 miles/month, the mileage horizon is roughly two months even if the agreement ends in four. That is an input to planning, not an exact return prediction. Assumed rates, freshness thresholds, buffers and rule choices belong in the canonical `PolicyService` source, with units, provenance and versions, as required by the [build rules](build-rules.md).
+
+## Data sources worth pursuing
+
+| Source | Minimum useful information and current boundary |
+| --- | --- |
+| GCSP/GCSO and Alphabet agreement/account records | Current agreement, employee/slot/vehicle linkage, actual handover, starting odometer, end date, agreement mileage and applicable windows/overrides. Existing context contracts are foundations; live field coverage and authority remain to be established. |
+| Potential BMW connected-vehicle source | Dated odometer readings are sufficient for the first forecast. SAN-012's vehicle-data-owner enquiry is the first route to pursue; access remains unverified and VIN specification lookup does not provide usage history. Journey traces are unnecessary for the initial timing capability. |
+| BMW CarData, as an alternative to qualify | BMW's [official CarData description](https://www.bmwgroup.com/en/general/regulations/cardata.html) includes mileage in consent-controlled telematics sharing with third parties. This establishes a potential route, not our access: scheme-vehicle coverage, customer/keeper authority, region and service entitlement need confirmation. We have not connected to it. |
+| Employee-provided reading or expected use | A dated manual odometer reading and expected mileage offer a practical fallback and a way to explain changed use. Keep declared estimates distinct from observed readings; confirm what monitoring is permitted separately from Buddy engagement. |
+| Stock, confirmed supply and appointment records | Availability dates, planned releases, production acknowledgements and collection/return capacity make lead times realistic. Requested supply is not confirmed supply; an appointment request is not a booking. Reuse existing adapters. |
+| Previous renewal and offer outcomes | Actual search-to-offer, decision, order-to-ready and booking delays help calibrate the buffer and reveal missed deadlines. Useful later; not a prerequisite for a demo using declared assumptions. Avoid treating constrained historic choices as employees' ideal preferences. |
+
+**No new external feed is required for the first demonstration.** Use realistic, repeatable dated usage and operational events behind replaceable adapters. Live data would validate coverage and improve calibration; the demonstration must not imply a BMW integration has been established. Source ownership and permissions, rather than a catalogue of unrelated public datasets, are the important next discovery steps.
+
+## Demonstrating it in the long-running population
+
+Recommend two views of **one simulated world**: follow Paula's next replacement while Greg sees population demand and approaching deadlines. For the first extension, keep order mix and allocation rules fixed so the effect of search timing can be assessed.
+
+1. **Start at confirmed handover.** Paula saves her preferences and chooses Buddy permission; her agreement, current vehicle and starting mileage are visible in the run.
+2. **Advance through ordinary use.** The population has staggered agreements, different mileage rates and different needs. Dated usage readings arrive; low-use employees remain outside their window while a high-use employee's likely need moves earlier.
+3. **Show the trigger and explanation.** Paula reaches the calculated window. Show the date/range, the reason and what happens next. A permitted search starts, or she receives an invitation when permission is absent. Include a deliberately paused employee.
+4. **Let the existing services produce the offer.** Extend the population scenario to exercise due stock releases, matching, scarce-car allocation, holds, captured notifications, decline and subsequent search through actual application rules. The existing comparison replay does not rerun allocation after decline/expiry; that extension is proposed work. Include a no-suitable-car case and its owned renewal help.
+5. **Complete a cycle truthfully.** The scenario supplies confirmed readiness/collection/return events through the existing boundaries. Only then establish the new current car/agreement and continue into another replacement cycle. Simulated employee decisions are explicit scenario inputs, not real employee approval.
+6. **Compare outcomes on identical inputs.** First compare fixed-window Buddy with personalised-window Buddy, using the same population, stock, usage trajectories, policy and random seeds. Keep the existing manual-versus-Buddy comparison as a separate axis. Report suitable replacements secured in time, confirmed collection before deadline, timing/mileage misses, employee actions, early or idle holds and results by mileage/access cohort. Do not guarantee an improvement or equate calculated fit with observed satisfaction.
+
+“Full population” needs an explicit definition: model **employees, entitlement slots, current vehicles, replacement stock and inbound supply**, with consistent identities and dates. The [10,000 retained configurations](fucq-61-downstream-impact-2026-11-07.md) are vehicle specifications, not 10,000 active agreements or available cars. The [existing comparison](demo-brief.md#compare-1000-fictional-employees) covers 1,000 fictional employees; neither count establishes actual BMW fleet size. Use that employee cohort as a candidate first scale, with suitable configuration coverage; confirm any intended larger fleet count separately. No large run was launched for this refinement.
+
+The inspected [comparison generator](../../server/gcsp/comparison/generator.js) and checked-in [policy defaults](../../server/gcsp/policy/seed-v1.json) specify a 90-day horizon, one renewal date per employee and four structural configuration fixtures. They do not model mileage progression or repeated replacement cycles, or select the 10,000-configuration corpus. No deployed active-policy version was inspected. The comparison runs on its own isolated clock, so its results do not advance the hosted employee scenario.
+
+For a meeting, pair a short live timing/offer scenario with saved whole-population results from the same rules and pinned inputs. A [previous recorded 1,000-employee, three-seed comparison](overnight-log-2026-11-08.md) took 21.5 minutes and peaked at 1.85 GiB; that is historical evidence, not a forecast for the proposed simulation. Qualify the new run before promising live full-population acceleration. The longer simulation should run offline in bounded chunks; the presenter can inspect outcomes and interesting events without waiting through every calculation.
+
+## Passage of time and existing work
+
+The code already has a durable canonical `DemoClock`, explicit advance/tick/reset and due handlers: [clock implementation](../../server/gcsp/clock/index.js), [HTTP boundary](../../server/gcsp/clock/http.js). The presenter deliberately advances time/release processing today. Source inspection found no autonomous clock runner or vehicle-mileage progression in the comparison generator.
+
+Native readback on 12 November confirms **FUCQ-336 — Advance the scenario clock and buddy processing automatically** is **To Do**. It already owns accelerated autonomous time, real release/search/offer processing and refinement of pacing, start/pause/reset and ownership/reconnect. Reuse that scope; do not duplicate it under 426. FUCQ-338, also To Do, owns exact current-car configuration and minimal supported history, not a new telemetry-history product. See the [status reconciliation](story-status-reconciliation-2026-11-12.md).
+
+Recommended clock-control refinements to discuss against FUCQ-336 are Play/Pause, speed and Next event, with quiet periods accelerated and employee decisions slow or paused. One run controller would own progression, and an audience browser could reconnect without creating a second scheduler. These are proposed refinements, not adopted additions to its acceptance criteria.
+
+The separate population-simulation proposal would schedule mileage observations, window changes, releases, responses, hold expiries and lifecycle events in chronological order, using the canonical simulated time and checkpointing completed batches. Jumping to a date must not skip a two-hour hold. This population event scheduling and repeated-cycle work is not silently assigned to FUCQ-336.
+
+A reusable **continuous population lifecycle** is additional work: it needs usage trajectories, completed-cycle turnover and consistent follow-on agreements, beyond the existing process-comparison result and autonomous clock Story. Agree a separate bounded capability before authoring implementation Stories. FUCQ-426 would supply the timing decisions; FUCQ-336 would supply autonomous time; the population scenario would exercise them together. A short narrated run could pause at the interesting events, while a bounded offline run explores at least two replacement cycles. Full-population timing/performance remains unproven.
+
+## Evidence and validation receipt
+
+Run `fucq426-refinement-20261112`. Changed paths: this document and its GCSP index reference. Scope is discovery/refinement only; no implementation, Jira write, Story acceptance change, policy activation or simulation execution. Selected checks before writing: read-only FUCQ-426/336/338 readback; dated source and contract comparison; independent simulation/code audit; local Markdown links; whitespace and proposed-versus-agreed scope review. Application tests, browser/UI critique, affected-code coverage runs, model training, database and load checks are excluded because executable/UI behaviour is unchanged. Their exclusion makes no claim about product acceptance or live-system health.
+
+Hubie independently audited the clock, presenter, comparison generator, current-car and mileage boundaries, then checked the draft. Their actionable wording/scope findings are incorporated: connected access remains unverified, decline/expiry replay is proposed, clock controls and population scheduling retain separate scope, To Do capabilities use future tense, and current-car events use their confirmed semantics. Requested scoper/Haiku mapped through `tiers spawn` to selected `gpt-6-luna` / `high`, with no fallback; effective runtime settings were not independently confirmed. No descendants, generated fixtures, browser profiles or test scratch were allocated. Retain this note as the evidence; disposable allocation is zero. Unrelated existing workspace changes remain outside this task.
+
+The new document's local targets and the new index reference pass. A broader index link check found seven missing evidence targets already present in `HEAD`: `evidence/fucq-6`, `fucq-79`, `fucq-86-90`, `fucq-110`, `fucq-132`, `fucq-74-75` and `fucq-13-19`, each ending in `/story-publication.json`. This is a pre-existing documentation navigation issue, provisionally Low impact; no product failure was established. Reproduce by resolving the README's local links on this checkout; the same targets are missing before and after this edit. Originating Story is unresolved. Retained here for reconciliation while Jira writes are paused; repair and a native Bug are not claimed.
+
+An exploratory structure check failed because the checker expected seven subsections where the note has six; that assertion was discarded as irrelevant to correctness. The final scoped check covers actual local targets, trailing whitespace, the new index reference and `git diff --check`.
