@@ -618,19 +618,20 @@ main {
         soe.alt = '';
         soe.className = 'demo-nav-logo-soe';
         nav.querySelector('.demo-nav-logo').append(soe);
-        // Menu and search icons from the Figma header (inert, like the rest of the chrome).
-        const navIcon = (cls, label, svg) => {
+        // Menu and search icons from the Rolls-Royce site (white Lottie-exported SVGs), inert like the rest of the chrome.
+        const navIcon = (cls, label, src) => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = `demo-nav-icon ${cls}`;
           btn.setAttribute('aria-label', label);
-          btn.innerHTML = svg;
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          btn.append(img);
           return btn;
         };
-        nav.prepend(navIcon('demo-nav-icon-menu', 'Menu',
-          '<svg viewBox="0 0 32 33" aria-hidden="true"><path d="M3 9h26M3 16.5h26M3 24h26"/></svg>'));
-        nav.append(navIcon('demo-nav-icon-search', 'Search',
-          '<svg viewBox="0 0 34 33" aria-hidden="true"><circle cx="15" cy="15" r="10.5"/><path d="M23 23l7 7"/></svg>'));
+        nav.prepend(navIcon('demo-nav-icon-menu', 'Menu', 'assets/rrmc-opening/icons/menu-icon.svg'));
+        nav.append(navIcon('demo-nav-icon-search', 'Search', 'assets/rrmc-opening/icons/search-icon.svg'));
         // "Why this one?" panel (result-card.js): the bar's blur extends down the screen and
         // its rule drops in as the panel rolls on, and both reverse as it rolls off.
         const veil = document.createElement('div');
