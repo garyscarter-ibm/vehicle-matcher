@@ -4,7 +4,7 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-**Performance tuning backlog, 12 November:** Russell requested a performance Epic and iterative Stories capped at eight points. The [authoring and publication record](performance-tuning-stories-2026-11-12.md) contains the 17-Story split, actual interface dependencies and bounded validation expectations. Publication status is recorded there; no implementation or overnight run is started. The general Jira-write pause continues outside this specifically authorised publication.
+**Performance tuning backlog, 12 November:** [FUCQ-408](https://ibm-consulting.atlassian.net/browse/FUCQ-408) and its 17 Stories, FUCQ-409–425, are published and verified, each capped at eight points (102 provisional points total). The [authoring and publication record](performance-tuning-stories-2026-11-12.md) contains the split, actual interface dependencies and bounded validation expectations. All remain unassigned and To Do; no implementation or overnight run is started. The general Jira-write pause continues outside this specifically authorised publication.
 
 **Presenter car suitability, 12 November:** the approved [Match matrix](presenter-suitability.md)
 adds a collapsed section below Allocation with recorded fit, required checks and per-pair explanations.
