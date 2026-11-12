@@ -4,6 +4,8 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+**BMW client feedback, 12 November:** [FUCQ-426–430 and the evidence/decision record](bmw-client-feedback-proposals-2026-11-12.md) capture the five approved Epic intentions: replacement timing, voluntary earlier replacement, used-market-aware order planning, fuel/energy cost comparison and fair-access refinement. All are unassigned and To Do, with 15 non-blocking overlap links. Historical development failures were not duplicated as new Bugs. Publication does not start implementation or adopt new allocation policy; unrelated Jira writes remain paused. The [publication receipt](bmw-client-feedback-publication-2026-11-12.json) records verified fields and relationships.
+
 **Performance tuning backlog, 12 November:** [FUCQ-408](https://ibm-consulting.atlassian.net/browse/FUCQ-408) and its 17 Stories, FUCQ-409–425, are published and verified, each capped at eight points (102 provisional points total). The [authoring and publication record](performance-tuning-stories-2026-11-12.md) contains the split, actual interface dependencies and bounded validation expectations. All remain unassigned and To Do; no implementation or overnight run is started. The general Jira-write pause continues outside this specifically authorised publication.
 
 **Presenter car suitability, 12 November:** the approved [Match matrix](presenter-suitability.md)

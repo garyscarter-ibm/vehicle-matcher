@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-12T12:20:20.968Z",
+  "observed_at": "2026-11-12T16:39:39Z",
   "version": 1,
   "stories": [
     {
@@ -5707,6 +5707,56 @@
       "jira_observed_at": "2026-11-12T15:48:40.051Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
       "observed_at": "2026-11-12T15:50:40Z"
+    },
+    {
+      "id": "FUCQ-426",
+      "title": "Start replacement search at the right time",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-12T16:39:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-426"
+    },
+    {
+      "id": "FUCQ-427",
+      "title": "Offer earlier replacement when a current car is wanted for resale",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-12T16:39:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-427"
+    },
+    {
+      "id": "FUCQ-428",
+      "title": "Plan scheme orders against used-market and employee demand",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-12T16:39:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-428"
+    },
+    {
+      "id": "FUCQ-429",
+      "title": "Compare estimated fuel and energy running costs",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-12T16:39:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-429"
+    },
+    {
+      "id": "FUCQ-430",
+      "title": "Refine fair access and acceptable-offer policy",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-12T16:39:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-430"
     }
   ]
 }

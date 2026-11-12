@@ -1,6 +1,6 @@
 # BMW client feedback: proposed capabilities and potential defects
 
-12 November 2026. **For collaborator agreement only.** No backlog items, Jira writes, policy changes or implementation are authorised by this note. The collaborator has conditionally authorised creating the agreed items on the backlog and in Jira once their scope is agreed. That agreement has not yet occurred; the subsequent clarification about development-failure narration does not approve these proposals. Publication of the selected, agreed items will be a bounded exception to the project-wide Jira-write pause; the pause remains in force for unrelated work.
+12 November 2026. **Agreed and published to the Jira backlog.** After reviewing the proposals, the collaborator instructed: “Great. Push to jira pls”. E1–E4 and E5's fairness-refinement intention are now FUCQ-426–430, with 15 non-blocking `Relates` links to existing work. This is a bounded exception to the project-wide Jira-write pause; the pause remains in force for unrelated work. Publication does not adopt a new allocation policy, expand existing claimed acceptance criteria or start implementation. The [publication receipt](bmw-client-feedback-publication-2026-11-12.json) retains the approved payload and verified identities.
 
 ## Reading the evidence
 
@@ -14,7 +14,7 @@ Source identity: SHA-256 `c5d518b0c6e33bc6580e6d2c94b6bf2a51a64788742801cf5e19f2
 
 ## Recommended Epic intentions
 
-These are bounded capability proposals, not implementation specifications or additions to already-claimed acceptance criteria. The first four have a distinct remaining intention; the fifth should reconcile the existing fairness proposal before any new record is created. No priority or delivery date was agreed in the meeting.
+These are bounded capability intentions, not implementation specifications or additions to already-claimed acceptance criteria. The first four have a distinct remaining intention; the fifth carries the existing fairness and Touring proposals into one refinement Epic, requiring reconciliation before choosing a rule. No priority or delivery date was agreed in the meeting.
 
 | Proposal | Intended outcome and transcript evidence | Existing overlap | Proposed treatment |
 | --- | --- | --- | --- |
@@ -24,7 +24,7 @@ These are bounded capability proposals, not implementation specifications or add
 | **E4 — Compare estimated fuel and energy running costs** | Help an employee understand what the offered car might cost to run, alongside their current car where supported. **20:15–20:43:** “running costs” and the average fuel-cost suggestion. | Fuel-economy preferences and catalogue facts already exist. FUCQ-337 supplies exact-car comparison foundations; FUCQ-338 supplies current-car context. A preference score or an economy figure is not a personalised cost estimate. No matching running-cost capability was identified in the reviewed backlog. | **New bounded Epic.** Use supported consumption, mileage and fuel/charging price assumptions, making the estimate and its basis understandable. The feedback does not ask for tax, finance, insurance or a complete total-cost-of-ownership calculator. |
 | **E5 — Agree fair access and an acceptable offer policy** | Preserve access for employees who cannot leave a production line for release time; decide what constitutes a sufficiently good offer and how repeated competition losses/rejections affect future chances. **10:38–11:23; 13:38–15:17; 26:27–27:29.** | FUCQ-87 already allocates/holds scarce cars; FUCQ-86/88/89 already provide delegation, notification and decisions. FUCQ-132 compares routes. The [11 November fairness proposal](buddy-release-fairness-review-2026-11-11.md) already discusses queue order, competition misses, rejection, manual admission and deterministic assignment. The separate [Touring diagnosis and proposals](paula-touring-match-diagnosis-2026-11-11.md) covers permission for a different body style and reaffirming an existing preference after decline. Neither proposal establishes a new minimum preference-score rule. | **Reconcile and refine those existing proposals first.** A new duplicate Buddy/fairness Epic would obscure the actual decisions. Separate minimum acceptable preference fit from allocation priority. Validate the experience with manufacturing/shift staff and ordering stakeholders; don't claim the current two-hour response window solves every access problem. |
 
-My recommended agreement is **E1–E4 as four distinct Epic intentions, plus refinement of the existing fairness proposal under E5**. This is a suggested grouping, not a recorded BMW decision. The business-purpose disagreement makes E3 and E5 particularly important to settle before presenting one optimisation goal as universally accepted.
+The collaborator approved **E1–E4 as four distinct Epic intentions, plus refinement of the existing fairness proposal under E5** for backlog publication. This grouping is a collaborator decision after the event, not recorded audience consensus. The business-purpose disagreement makes E3 and E5 particularly important to settle before presenting one optimisation goal as universally accepted.
 
 Preserve the stated employee outcome: **“at least as satisfied” with their car, “but with less effort” (19:47–19:54)**. Desired versus actual choices are identified as useful evidence at **20:02–20:14**. Use those outcomes to assess the proposals and user trials; no measured satisfaction uplift or agreed numerical target is supplied by this recording.
 
@@ -52,12 +52,21 @@ No new live prototype defect is established by this recording. It contains histo
 
 The recording also acknowledges release delays at **06:50–06:57**. It supplies no measured duration or new failure mode; existing FUCQ-177/408 are the overlap. Possible configurator overload remains an integration risk, not D6.
 
-## Decisions needed before backlog publication
+## Publication decision and remaining scope
 
-1. Select, combine or reject E1–E4, and decide whether to progress E5's existing fairness proposal.
-2. Keep the alternatives/retail/Alphabet leads parked or authorise separate discovery; none is implied by approving the four main intentions.
-3. Confirm the disposition of D1–D5: reuse existing reports, preserve regression evidence, and separately verify the production-access and policy-description questions. No repairs or expanded claimed ACs follow automatically.
-4. Once the selected scope is agreed, use the collaborator's existing conditional authorisation to publish those agreed items only. Preserve the wider Jira pause and all unrelated claims/statuses; approval does not start implementation. Jira FUCQ is the configured backlog; this note is a proposal record, not a second backlog.
+| Reference | Published Epic |
+| --- | --- |
+| E1 | [FUCQ-426 — Start replacement search at the right time](https://ibm-consulting.atlassian.net/browse/FUCQ-426) |
+| E2 | [FUCQ-427 — Offer earlier replacement when a current car is wanted for resale](https://ibm-consulting.atlassian.net/browse/FUCQ-427) |
+| E3 | [FUCQ-428 — Plan scheme orders against used-market and employee demand](https://ibm-consulting.atlassian.net/browse/FUCQ-428) |
+| E4 | [FUCQ-429 — Compare estimated fuel and energy running costs](https://ibm-consulting.atlassian.net/browse/FUCQ-429) |
+| E5 | [FUCQ-430 — Refine fair access and acceptable-offer policy](https://ibm-consulting.atlassian.net/browse/FUCQ-430) |
+
+Native readback verified all five as unassigned Epics in **To Do**, with the approved descriptions and labels and exactly the 15 intended `Relates` links. Priority is Jira's default **Medium**, not an agreed delivery ranking. There are no new implementation Stories or Bugs in this publication.
+
+The alternatives, retail, Alphabet, Velocity and production-capacity leads remain parked. D1–D3 retain their existing reports and historical regression evidence; D4 remains a separate unverified production-owner lead; D5 is carried into E5's refinement. No new live prototype defect was established, so historical development failures were not duplicated as Bugs. Further verification, repairs and policy choices require their own scope.
+
+Jira FUCQ is the configured backlog; this document is the evidence and decision record. The publication authorisation preserves the wider Jira pause and unrelated claims/statuses and does not start implementation.
 
 ## Review, validation and resource receipt
 
@@ -65,4 +74,8 @@ Run identity: `bmw-feedback-20261112`. Changed path: this proposal document only
 
 Goofy independently read the complete transcript and reviewed the completed draft's classification, timestamp anchors, scope and pause boundaries. Their two recommendations, the explicit satisfaction/effort guardrail and provisional severity for D4, are incorporated. Minnie Mouse independently audited local contracts, prior proposals and backlog overlap; the additional Touring proposal overlap is incorporated. Both reviewer/Opus requests selected `gpt-6.1-sol` / `high` through `tiers spawn`, with no fallback; effective runtime settings were not independently verified. Both reported setting their assigned chat title. This review does not establish product acceptance or current production health.
 
-Final local-link, whitespace, unique-reference and presenter-clarification checks passed. No test/proof/build scratch, browser profiles, downloaded inputs, archives, background services or large generated outputs were created. The supplied transcript stayed in its original private location; it was not copied into the repository. Disposable allocation is zero; no compatibility exception or owned scratch leftovers. Retained output is this small proposal summary. Documentation commit/push follows the project's standing authorisation; it does not publish Jira items.
+Final local-link, whitespace, unique-reference and presenter-clarification checks passed for the initial analysis, committed as `297d67cd`. The subsequent publication run, `bmw-feedback-publication-20261112`, adds this decision record, its bounded JSON receipt, the index link and product-map metadata. Native issue/relationship readbacks and independent publication review passed. Existing product-map facts, slice plans and worker claims are preserved; the five Epics are references rather than implementation Story assignments. No served-map refresh is claimed.
+
+Lightning McQueen independently reviewed the approved payload and then read back all five published Epics, returning PASS for descriptions, elapsed evidence anchors, status/type/labels, unassigned state and all 15 relationships. The complete publication-label query returned exactly these five Epics and no Bugs. Requested/selected reviewer pair: `gpt-6.1-sol` / `high`, no fallback; effective runtime settings were not independently verified.
+
+No test/proof/build scratch, browser profiles, downloaded inputs, archives, background services or large generated outputs were created in either run. The supplied transcript stayed in its original private location; it was not copied into the repository. Disposable allocation is zero; no compatibility exception or owned scratch leftovers. All three reviewers have completed. Retained outputs are the small evidence/decision records and existing product-map metadata. Documentation commit/push follows the project's standing authorisation.

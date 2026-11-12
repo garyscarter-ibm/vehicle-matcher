@@ -1,0 +1,359 @@
+{
+  "run_id": "bmw-feedback-publication-20261112",
+  "approved_date": "2026-11-12",
+  "authorisation": "Great. Push to jira pls",
+  "project": "FUCQ",
+  "cloud_id": "9024e134-9d2e-4f15-af8d-4df1fd4c2cb1",
+  "source_record": "docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md",
+  "labels": [
+    "backlog",
+    "bmw-client-feedback-2026-11-12"
+  ],
+  "items": [
+    {
+      "ref": "E1",
+      "summary": "Start replacement search at the right time",
+      "description": "Let an employee establish their vehicle preferences when they receive their current car, then use available mileage and contract timing to identify an appropriate replacement-search window. Help them plan before a vehicle release or offer email while retaining their control over Buddy engagement and any order.\n\nAgree the permitted inputs and employee permission, and the meaning of the replacement window. Reuse the saved brief, current-car and renewal contracts; predictive timing is the additional capability.\n\nOverlap: FUCQ-86 already saves preferences and engages Buddy; FUCQ-110 covers renewal help and lifecycle; FUCQ-338 covers a specific current-car configuration and supported history. None of these references is an automatic dependency or expanded acceptance contract.\n\nEvidence: 00:15:20–00:16:14 and 00:16:38–00:16:53.\n\nApproved for backlog publication by the collaborator on 12 November 2026 after review of docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md. This is a bounded exception to the Jira-write pause for these feedback items only; unrelated writes remain paused. Epic intent only; implementation and changes to existing claimed acceptance remain separate.\n\nSource: BMW Client Event_ 10.30-12.10 UK time.vtt; elapsed recording positions below. Audience feedback is unattributed because the microphone was shared. Russell/GC's narrated development failures are historical context, not newly reported live defects.\n\nFeedback reference: E1; bmw-client-feedback-2026-11-12\n\nAdded by: usget",
+      "related": [
+        "FUCQ-86",
+        "FUCQ-110",
+        "FUCQ-338"
+      ],
+      "components": [
+        "brief",
+        "renewal-help",
+        "vehicle-identity"
+      ]
+    },
+    {
+      "ref": "E2",
+      "summary": "Offer earlier replacement when a current car is wanted for resale",
+      "description": "When young-used-car demand favours an employee's current vehicle or specification, identify a suitable earlier replacement opportunity and invite the employee to change voluntarily.\n\nKeep this distinct from normal renewal. The opportunity depends on scheme authority, suitable replacement supply and a worthwhile commercial outcome; the feedback does not authorise automatic contract shortening or vehicle return.\n\nOverlap: FUCQ-110 supplies replacement handover and old-car return planning; FUCQ-74 supplies future scheme-order planning. The used-market-triggered early replacement opportunity is additional intent.\n\nEvidence: 00:16:17–00:16:32.\n\nApproved for backlog publication by the collaborator on 12 November 2026 after review of docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md. This is a bounded exception to the Jira-write pause for these feedback items only; unrelated writes remain paused. Epic intent only; implementation and changes to existing claimed acceptance remain separate.\n\nSource: BMW Client Event_ 10.30-12.10 UK time.vtt; elapsed recording positions below. Audience feedback is unattributed because the microphone was shared. Russell/GC's narrated development failures are historical context, not newly reported live defects.\n\nFeedback reference: E2; bmw-client-feedback-2026-11-12\n\nAdded by: usget",
+      "related": [
+        "FUCQ-110",
+        "FUCQ-74"
+      ],
+      "components": [
+        "post-selection",
+        "demand-planning"
+      ]
+    },
+    {
+      "ref": "E3",
+      "summary": "Plan scheme orders against used-market and employee demand",
+      "description": "Make future used-market demand an explicit input to scheme model, specification and return-timing decisions alongside employee preferences. Help the scheme team understand the trade-off between suitable employee choices and the vehicles future used-car customers want to buy.\n\nEstablish the actual market inputs and business objectives and show how they change the planning decision. Preserve employee suitability. A presenter's provisional option-desirability weights are not verified market valuations.\n\nOverlap: FUCQ-74 already covers learned employee demand, constrained quantities, stock/inbound supply, business objectives and intentional submission; FUCQ-90 covers demand/outcome visibility and order tracking; FUCQ-337 covers meaningful exact-option comparisons. This item captures the remaining used-market input and objective capability, reusing that work without duplicating the dashboard or rewriting its claimed acceptance. Prior discussion is in docs/gcsp/business-model-exploration.md.\n\nEvidence: 00:12:11–00:13:15, 00:21:00–00:21:35, 00:23:13–00:24:39 and 00:27:30–00:27:54. The discussion contains differing views of scheme purpose, not unanimous agreement on one optimisation objective.\n\nApproved for backlog publication by the collaborator on 12 November 2026 after review of docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md. This is a bounded exception to the Jira-write pause for these feedback items only; unrelated writes remain paused. Epic intent only; implementation and changes to existing claimed acceptance remain separate.\n\nSource: BMW Client Event_ 10.30-12.10 UK time.vtt; elapsed recording positions below. Audience feedback is unattributed because the microphone was shared. Russell/GC's narrated development failures are historical context, not newly reported live defects.\n\nFeedback reference: E3; bmw-client-feedback-2026-11-12\n\nAdded by: usget",
+      "related": [
+        "FUCQ-74",
+        "FUCQ-90",
+        "FUCQ-337"
+      ],
+      "components": [
+        "demand-planning",
+        "greg-operations"
+      ]
+    },
+    {
+      "ref": "E4",
+      "summary": "Compare estimated fuel and energy running costs",
+      "description": "Help an employee understand what an offered car might cost in fuel or electricity, alongside their current car where supported, using mileage, consumption and dated fuel/charging-price assumptions. Make the estimate, units and basis understandable.\n\nReuse the available vehicle facts and current-versus-offered comparison. An economy preference or consumption figure alone is not a monetary running-cost estimate. The requested capability does not include tax, finance, insurance or a complete total-cost-of-ownership calculator.\n\nOverlap: FUCQ-337 supplies meaningful exact-configuration comparison and FUCQ-338 supplies current-car context. Existing fuel-economy preferences remain useful inputs rather than a substitute for this estimate.\n\nEvidence: 00:20:15–00:20:43.\n\nApproved for backlog publication by the collaborator on 12 November 2026 after review of docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md. This is a bounded exception to the Jira-write pause for these feedback items only; unrelated writes remain paused. Epic intent only; implementation and changes to existing claimed acceptance remain separate.\n\nSource: BMW Client Event_ 10.30-12.10 UK time.vtt; elapsed recording positions below. Audience feedback is unattributed because the microphone was shared. Russell/GC's narrated development failures are historical context, not newly reported live defects.\n\nFeedback reference: E4; bmw-client-feedback-2026-11-12\n\nAdded by: usget",
+      "related": [
+        "FUCQ-337",
+        "FUCQ-338"
+      ],
+      "components": [
+        "recommendation",
+        "offer-journey"
+      ]
+    },
+    {
+      "ref": "E5",
+      "summary": "Refine fair access and acceptable-offer policy",
+      "description": "Refine the existing fair-access and offer-suitability proposals using feedback from manufacturing and shift employees who cannot join the release-time rush. Preserve the aim of being at least as satisfied with the car obtained, with less employee effort.\n\nReconcile docs/gcsp/buddy-release-fairness-review-2026-11-11.md and docs/gcsp/paula-touring-match-diagnosis-2026-11-11.md before choosing a rule. Agree the treatment of competition misses, renewal urgency, rejection, manual access and acceptable preference fit. Distinguish allocation priority from minimum acceptable fit, and test the proposed experience with representative employees and ordering stakeholders.\n\nThe current recorded rule is renewal date, then fit, then a seeded tie-break. The narrated queue adjustments, penalties, thresholds and guarantees are proposals, not adopted BMW policy or unmet existing acceptance criteria. Backlog capture does not implement or adopt a particular lottery, rejection penalty, minimum score, extra hold or automatic priority guarantee. A two-hour response window is not proven to meet every shift-worker need.\n\nOverlap: FUCQ-87 covers scarce-stock allocation and holds; FUCQ-86/88/89 cover delegation, notification and decisions; FUCQ-132 compares routes. Carry forward the existing proposals rather than creating another basic Buddy implementation.\n\nEvidence: 00:10:38–00:11:23, 00:13:38–00:15:17, 00:19:47–00:20:14 and 00:26:27–00:27:29.\n\nApproved for backlog publication by the collaborator on 12 November 2026 after review of docs/gcsp/bmw-client-feedback-proposals-2026-11-12.md. This is a bounded exception to the Jira-write pause for these feedback items only; unrelated writes remain paused. Epic intent only; implementation and changes to existing claimed acceptance remain separate.\n\nSource: BMW Client Event_ 10.30-12.10 UK time.vtt; elapsed recording positions below. Audience feedback is unattributed because the microphone was shared. Russell/GC's narrated development failures are historical context, not newly reported live defects.\n\nFeedback reference: E5; bmw-client-feedback-2026-11-12\n\nAdded by: usget",
+      "related": [
+        "FUCQ-87",
+        "FUCQ-86",
+        "FUCQ-88",
+        "FUCQ-89",
+        "FUCQ-132"
+      ],
+      "components": [
+        "allocation",
+        "brief",
+        "route-comparison"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "1505180",
+      "key": "FUCQ-426",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-426",
+      "feedback_ref": "E1",
+      "fields": {
+        "summary": "Start replacement search at the right time",
+        "status": {
+          "name": "To Do",
+          "statusCategory": {
+            "name": "To Do"
+          }
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "bmw-client-feedback-2026-11-12"
+        ]
+      },
+      "verification": {
+        "description": "Matches approved payload after Markdown underscore unescaping",
+        "priority": "Medium",
+        "created": "2026-11-12T10:37:53.137-0600",
+        "updated": "2026-11-12T10:38:34.473-0600"
+      }
+    },
+    {
+      "id": "1505181",
+      "key": "FUCQ-427",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-427",
+      "feedback_ref": "E2",
+      "fields": {
+        "summary": "Offer earlier replacement when a current car is wanted for resale",
+        "status": {
+          "name": "To Do",
+          "statusCategory": {
+            "name": "To Do"
+          }
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "bmw-client-feedback-2026-11-12"
+        ]
+      },
+      "verification": {
+        "description": "Matches approved payload after Markdown underscore unescaping",
+        "priority": "Medium",
+        "created": "2026-11-12T10:38:17.845-0600",
+        "updated": "2026-11-12T10:38:36.215-0600"
+      }
+    },
+    {
+      "id": "1505182",
+      "key": "FUCQ-428",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-428",
+      "feedback_ref": "E3",
+      "fields": {
+        "summary": "Plan scheme orders against used-market and employee demand",
+        "status": {
+          "name": "To Do",
+          "statusCategory": {
+            "name": "To Do"
+          }
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "bmw-client-feedback-2026-11-12"
+        ]
+      },
+      "verification": {
+        "description": "Matches approved payload after Markdown underscore unescaping",
+        "priority": "Medium",
+        "created": "2026-11-12T10:38:18.946-0600",
+        "updated": "2026-11-12T10:38:38.893-0600"
+      }
+    },
+    {
+      "id": "1505183",
+      "key": "FUCQ-429",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-429",
+      "feedback_ref": "E4",
+      "fields": {
+        "summary": "Compare estimated fuel and energy running costs",
+        "status": {
+          "name": "To Do",
+          "statusCategory": {
+            "name": "To Do"
+          }
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "bmw-client-feedback-2026-11-12"
+        ]
+      },
+      "verification": {
+        "description": "Matches approved payload after Markdown underscore unescaping",
+        "priority": "Medium",
+        "created": "2026-11-12T10:38:20.050-0600",
+        "updated": "2026-11-12T10:38:40.592-0600"
+      }
+    },
+    {
+      "id": "1505184",
+      "key": "FUCQ-430",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-430",
+      "feedback_ref": "E5",
+      "fields": {
+        "summary": "Refine fair access and acceptable-offer policy",
+        "status": {
+          "name": "To Do",
+          "statusCategory": {
+            "name": "To Do"
+          }
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "bmw-client-feedback-2026-11-12"
+        ]
+      },
+      "verification": {
+        "description": "Matches approved payload after Markdown underscore unescaping",
+        "priority": "Medium",
+        "created": "2026-11-12T10:38:21.194-0600",
+        "updated": "2026-11-12T10:38:44.948-0600"
+      }
+    }
+  ],
+  "links": [
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-426",
+      "outwardIssue": "FUCQ-86",
+      "created": true,
+      "id": "340517"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-426",
+      "outwardIssue": "FUCQ-110",
+      "created": true,
+      "id": "340518"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-426",
+      "outwardIssue": "FUCQ-338",
+      "created": true,
+      "id": "340519"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-427",
+      "outwardIssue": "FUCQ-110",
+      "created": true,
+      "id": "340520"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-427",
+      "outwardIssue": "FUCQ-74",
+      "created": true,
+      "id": "340521"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-428",
+      "outwardIssue": "FUCQ-74",
+      "created": true,
+      "id": "340522"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-428",
+      "outwardIssue": "FUCQ-90",
+      "created": true,
+      "id": "340523"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-428",
+      "outwardIssue": "FUCQ-337",
+      "created": true,
+      "id": "340524"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-429",
+      "outwardIssue": "FUCQ-337",
+      "created": true,
+      "id": "340525"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-429",
+      "outwardIssue": "FUCQ-338",
+      "created": true,
+      "id": "340526"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-430",
+      "outwardIssue": "FUCQ-87",
+      "created": true,
+      "id": "340527"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-430",
+      "outwardIssue": "FUCQ-86",
+      "created": true,
+      "id": "340528"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-430",
+      "outwardIssue": "FUCQ-88",
+      "created": true,
+      "id": "340529"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-430",
+      "outwardIssue": "FUCQ-89",
+      "created": true,
+      "id": "340530"
+    },
+    {
+      "type": "Relates",
+      "inwardIssue": "FUCQ-430",
+      "outwardIssue": "FUCQ-132",
+      "created": true,
+      "id": "340531"
+    }
+  ],
+  "validation": {
+    "scope": "Authoring and publication only: payload/source review, native readback of created fields and non-blocking links, map metadata preservation, JSON and whitespace checks.",
+    "excluded": "No implementation, code/UI changes, tests, browser work, load runs, live database actions or poller. Historical failures and unverified production-access lead are not new Bugs.",
+    "scratch": "None; this bounded retained publication record is not disposable scratch.",
+    "review": "PASS — independent reviewer Lightning McQueen, gpt-6.1-sol/high requested and selected; no material scope corrections, no fallback.",
+    "native_readback": "PASS — five Epics are To Do and unassigned with approved descriptions/labels; all 15 expected Relates links verified. Site default priority Medium was not explicitly set. Only Markdown filename underscore escaping differs from the submitted text.",
+    "create_recovery": "Initial E1 create was rejected with HTTP 400 for an empty assignee accountId; retry omitted assignee and succeeded. Label searches before create returned no matching issues.",
+    "publication_review": "PASS — Lightning McQueen independently read FUCQ-426–430 and the complete publication-label query: exactly the five approved Epics, descriptions matching after Markdown underscore unescaping, correct status/type/labels/unassigned, and all 15 non-blocking Relates links; no Bugs.",
+    "map": {
+      "result": "PASS",
+      "previous_story_count": 245,
+      "preserved_work_sha256": "46bf20b62054c65aa882c7d7c3f97ef8f721bed198a1b7d5c4491151c4b0e10c",
+      "new_epics": 5,
+      "component_references_added": 12,
+      "scope": "Imported verified Jira identity/status metadata using the official product-map CLI; all 245 prior rows, slice plans and worker claims preserved. Existing component metadata preserved except the 12 approved Epic references. No new Story associations or public-map refresh claimed."
+    },
+    "resource_receipt": "No tests, scratch, browser profiles, downloaded inputs, archives, background processes or large outputs created. Disposable allocation and owned scratch leftovers: zero. Reviewers complete; no compatibility exception. Existing unrelated user files preserved.",
+    "local_checks": "PASS — JSON structure, five identity/payload records, 15 unique relationship IDs, map preservation hash, exact component references, changed-document links and whitespace. An optional whole-index link scan stopped at pre-existing missing docs/gcsp/evidence/fucq-6/story-publication.json; the same link exists in HEAD. New links were checked separately and pass; unrelated index debt was left unchanged."
+  }
+}
