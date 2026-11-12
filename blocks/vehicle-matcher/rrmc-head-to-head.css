@@ -432,6 +432,15 @@
   grid-auto-columns: minmax(0, 1fr);
   overflow: hidden;
 }
+/* The purple backing runs over the side cushions to the window edges; the tiles stay put (24px padding
+   plus the distance the strip sits in). measureBleed (ui.js) sets --vm-bleed-l / -r on the strip. */
+@media (min-width: 1080px) {
+  .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid {
+    margin-inline: calc(var(--vm-bleed-l, 0px) * -1) calc(var(--vm-bleed-r, 0px) * -1);
+    padding-inline: calc(var(--vm-bleed-l, 0px) + var(--vm-space-6)) calc(var(--vm-bleed-r, 0px) + var(--vm-space-6));
+    border-radius: 0;
+  }
+}
 /* Where even that can't seat every tile at 160px, the row keeps only the whole tiles that fit. */
 @container (max-width: 1067px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 6) { display: none; } }
 @container (max-width: 895px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 5) { display: none; } }

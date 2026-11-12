@@ -35,7 +35,7 @@
 import {
   apiGetQuestions, apiField, apiMatch, apiPreview,
 } from '../engine.js';
-import { el, cardinal, centreOnPage } from '../ui.js';
+import { el, cardinal, centreOnPage, measureBleed } from '../ui.js';
 import {
   WEAK_SCORE,
   budgetBandsFromQuestion, useTilesFromQuestion,
@@ -968,6 +968,8 @@ function mount(root, ctx) {
     tail.append(el('h3', 'vm-subhead vm-podium-tail-head', copy.tailHeading), tailGrid);
     // Wider than the seed column and centred on the page, with equal space either side.
     centreOnPage(tail);
+    // The purple backing runs on out to the window edges (CSS reads these distances).
+    measureBleed(tail);
     let tailKey = null;
     let tailTimer = 0;
     let tailSeq = 0;

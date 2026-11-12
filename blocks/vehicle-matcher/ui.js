@@ -64,6 +64,35 @@ export function keepOneRow(container) {
 }
 
 /**
+ * Publish how far `node` sits from each window edge as --vm-bleed-l / --vm-bleed-r (px), so CSS can
+ * widen a child's backing out to the window. Re-measured on resize until the node is removed.
+ */
+export function measureBleed(node) {
+  if (typeof ResizeObserver === 'undefined') return;
+  const page = document.documentElement;
+  let placed = false;
+  const fit = () => {
+    if (!node.isConnected) {
+      if (!placed) return;
+      observer.disconnect();
+      window.removeEventListener('resize', fit);
+      return;
+    }
+    placed = true;
+    if (node.hidden) return;
+    const box = node.getBoundingClientRect();
+    node.style.setProperty('--vm-bleed-l', `${Math.max(0, Math.round(box.left))}px`);
+    node.style.setProperty('--vm-bleed-r', `${Math.max(0, Math.round(page.clientWidth - box.right))}px`);
+  };
+  const observer = new ResizeObserver(fit);
+  observer.observe(node);
+  observer.observe(page);
+  window.addEventListener('resize', fit, { passive: true });
+  // The first measure can land before centreOnPage has placed the node; settle on the next frame.
+  requestAnimationFrame(fit);
+}
+
+/**
  * Size `node` to the page (less `gutter` each side, at most `maxWidth`) and centre it on the page
  * whatever its parent's offset, so the space either side is equal. The width excludes any scroll
  * bar (clientWidth, not 100vw). Re-measured as the page or node resizes, until the node is removed.
