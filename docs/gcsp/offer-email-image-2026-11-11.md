@@ -53,3 +53,17 @@ These checks use a local renderer and stubbed provider. No new live email was se
 appearance in Outlook/Gmail and live Render deployment are unverified. Mail clients can block
 remote images; vehicle name, points, deadline and action remain readable without the photo.
 No Jira writes were made while the project-wide pause remains in effect.
+
+## First-name heading refinement
+
+Gary requested removal of the separate greeting and a heading beginning with the first name.
+New HTML and plain-text offer messages now open **Paula, your vehicle offer is ready to review**;
+expired messages use **Paula, your vehicle offer has expired**. The name comes from the employee
+record, is escaped in HTML and falls back to the ordinary heading when absent. Recipient metadata
+retains the full name. The email subject remains unchanged.
+
+Scoped outbox/transport and local browser checks passed **87 tests, 0 failed, 0 skipped** at
+`ea602fc1`; final desktop/narrow captures above were refreshed and visually inspected. Receipt:
+`.claude/test-runs/targeted-774efeed2b18780055bcc04faccc9c68861423c442e3335b9aff4f8440eede07-default-1794440316231859000.json`.
+Supervisor-owned scratch was removed. The branch then fast-forwarded to `9d8c295e`, whose only
+additional content is unrelated paint documentation. No live email was sent for this refinement.

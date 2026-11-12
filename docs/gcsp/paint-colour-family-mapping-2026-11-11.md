@@ -18,6 +18,8 @@ The audited selection manifest is `/Users/usget/Library/CloudStorage/OneDrive-IB
 
 Consequently, the initial table supplies families for 9,239 of the cohort's primary paint selections; 761 await the actual specific Individual shade. If a later adapter supplies that selected code, the table already includes the 154 retained `PI…` identifiers needed to resolve it.
 
+**Live sample check, 11 November:** an exact i5 Touring and iX1 `P0490` selection both restored successfully in BMW's current configurator, preserving every factory code and showing the generic Individual label with a rainbow swatch. Neither resolved to a named shade or requested one in the inspected colour panel. An Alpine White control restored its named paint correctly. This confirms the public configurator permits a generic selection; it does not establish how a production order records the eventual shade. Keep the family unknown. See the [sample evidence and limits](evidence/paint-live-sample-2026-11-11/README.md).
+
 ## Mapping table
 
 | Code | Retained paint name | Family | Basis / alternative | 10k primary selections |

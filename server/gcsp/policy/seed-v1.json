@@ -15067,6 +15067,66 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "presentation.finishShades.v1",
+      "value": {
+        "schemaVersion": 1,
+        "paintAliases": {
+          "Alpine White solid": "P0300",
+          "Black Sapphire metallic": "P0475",
+          "Mineral White metallic": "P0A96",
+          "Portimao Blue metallic": "P0C31",
+          "Brooklyn Grey metallic": "P0C4P",
+          "Skyscraper Grey metallic": "P0C4W",
+          "Frozen Pure Grey metallic": "P0X1F",
+          "BMW Individual Frozen Portimao Blue metallic": "P0C6R"
+        },
+        "upholsteryFamilyByCode": {
+          "FEPMI": "black",
+          "FKHG6": null,
+          "FKHRI": "brown",
+          "FKHSW": "black",
+          "FMAH7": "black",
+          "FMAL3": "black",
+          "FMANL": "black",
+          "FMAOI": "beige",
+          "FKTNL": "black",
+          "FKUSW": "black",
+          "FBLAT": "grey",
+          "FECI2": "blue",
+          "FKUCX": "beige",
+          "FKUKP": null,
+          "FKUMY": "brown",
+          "FKSFU": "white",
+          "FKSJX": "brown",
+          "FKSSW": "black",
+          "FKTSW": "black",
+          "FLKSW": "black",
+          "FVCJL": null,
+          "FVCJN": null,
+          "FVCJM": null
+        },
+        "upholsteryAliases": {
+          "Black Veganza": "black",
+          "Black upholstery": "black",
+          "Black leather": "black",
+          "Oyster Veganza": "beige",
+          "Cognac Sensatec": "brown",
+          "Coral Red/Black Veganza": null
+        },
+        "unknownPaintLabels": [
+          "BMW Individual Paintwork",
+          "Individual Paintwork"
+        ]
+      },
+      "unit": "broad decorative family by exact recognised finish name or retained upholstery code",
+      "status": "assumed",
+      "basis": "Gary authorised shared demo finish mapping on 11 November 2026. Existing stock.optionLabels.v1 supplies names and stock.paintColourFamilies.v1 supplies exterior families. Upholstery assignments are revisable visual assumptions: named main material colour takes precedence over explicitly described contrast stitching/piping. Labels with no clear main colour or two main colours stay unknown. Aliases enumerate known display variants, never arbitrary word matching. Circles are broad decorative accents, not exact paint samples or fitted-equipment verification.",
+      "source": "docs/gcsp/demo-finish-shades-2026-11-11.md",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "stock.paintColourFamilies.v1",
       "value": {
         "schemaVersion": 1,

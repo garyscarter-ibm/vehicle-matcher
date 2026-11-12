@@ -177,7 +177,7 @@
     },
     {
       "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 52
+      "max_lines": 51
     },
     {
       "path": "blocks/vehicle-matcher/question-controls.css",
@@ -453,7 +453,11 @@
     },
     {
       "path": "blocks/gcsp/kit/focused-decision.css",
-      "max_lines": 44
+      "max_lines": 42
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-summary.css",
+      "max_lines": 7
     }
   ],
   "baseline": {

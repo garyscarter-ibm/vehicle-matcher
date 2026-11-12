@@ -1,12 +1,13 @@
 import { el, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, SWATCH_HEX } from '../../vehicle-matcher/modes/result-card.js';
+import { finishShade } from './finish-shades.js';
 import { NEUTRAL_SWATCH } from '../../vehicle-matcher/modes/match-signal.js';
 
-/** A finish stays readable; only a supported supplied shade paints its decorative swatch. */
+/** Readable finish with a supplied shade or shared decorative name mapping. */
 export function finishLabel({ label, value, shade } = {}) {
   const root = el('p', 'gcsp-finish');
   const swatch = el('span', 'gcsp-finish-swatch'); swatch.setAttribute('aria-hidden', 'true');
-  const colour = SWATCH_HEX[typeof shade === 'string' ? shade.toLowerCase() : ''];
+  const colour = SWATCH_HEX[finishShade({ label, value, shade })];
   swatch.style.backgroundColor = colour || NEUTRAL_SWATCH;
   swatch.classList.toggle('is-unknown', !colour);
   root.append(swatch, el('span', null, value || `${label} not supplied`));
@@ -22,11 +23,14 @@ export function vehicleDecisionCard({ view, media, actions, note, finishes = [],
   card.classList.add('gcsp-vehicle-decision');
   if (layout === 'focused') card.classList.add('gcsp-vehicle-focused');
   const body = card.querySelector('.vm-card-body'); const mediaNode = media || card.querySelector('.vm-card-media');
-  const summary = el('div', 'gcsp-vehicle-summary');
-  if (kicker) summary.append(el('p', 'gcsp-vehicle-kicker', kicker));
-  summary.append(body.querySelector('.vm-card-head'));
-  const summaryFinishes = el('div', 'gcsp-finishes'); summaryFinishes.append(...finishes.map(finishLabel));
-  summary.append(summaryFinishes);
+  const summary = el('div', `gcsp-vehicle-summary${layout === 'focused' ? ' gcsp-vehicle-copy' : ''}`);
+  if (layout === 'focused') body.querySelector('.vm-card-name').classList.add('gcsp-vehicle-title');
+  const title = layout === 'focused' ? el('div', 'gcsp-vehicle-heading') : summary;
+  if (title !== summary) summary.append(title);
+  if (kicker) title.append(el('p', `gcsp-vehicle-kicker${layout === 'focused' ? ' gcsp-vehicle-context' : ''}`, kicker));
+  title.append(body.querySelector('.vm-card-head'));
+  const summaryFinishes = el('div', `gcsp-finishes${layout === 'focused' ? ' gcsp-vehicle-meta' : ''}`); summaryFinishes.append(...finishes.map(finishLabel));
+  title.append(summaryFinishes);
   const terms = body.querySelector('.vm-card-terms');
   const monthly = view.members[0].terms?.find((term) => term.kind === 'points-monthly');
   if (Number.isFinite(monthly?.value)) {

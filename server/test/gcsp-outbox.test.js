@@ -363,7 +363,7 @@ const offer = { state: 'active', expiresAt: '2026-11-05T11:30:00.000Z' };
 const render = (patch = {}) => renderOfferMessage({ offer, quote: buddyQuote, employee: { employeeId: 'employee-paula', name: 'Paula Mason' },
   offerLink: link, now: '2026-11-05T09:00:00.000Z', ...patch });
 
-test('the offer email names the car and monthly points, gives the deadline in words and greets without the fixture marker', () => {
+test('the offer email personalises its heading with the first name and gives the car, points and deadline', () => {
   const message = render();
   const document = new JSDOM(message.htmlBody).window.document;
   assert.equal(document.querySelector('h2').textContent, 'BMW 320i Touring');
@@ -371,14 +371,18 @@ test('the offer email names the car and monthly points, gives the deadline in wo
   assert.match(message.textBody, /BMW 320i Touring\n\n1,250 points a month\n\nRespond by 11:30 on Thursday 5 November\./);
   assert.match(document.body.textContent, /Respond by 11:30 on Thursday 5 November\./);
   assert.doesNotMatch(message.textBody + message.htmlBody, /2026-11-05T11|Your scheme vehicle|available until/);
-  assert.match(message.textBody, /^Hello Paula Mason,\n/);
-  assert.match(message.htmlBody, /<p>Hello Paula Mason,<\/p>/);
-  assert.doesNotMatch(message.textBody + message.htmlBody, /Hello Paula \(fictional\)/);
+  assert.equal(document.querySelector('h1').textContent, 'Paula, your vehicle offer is ready to review');
+  assert.match(message.textBody, /^Paula, your vehicle offer is ready to review\n/);
+  assert.doesNotMatch(message.textBody + message.htmlBody, /Hello|Paula Mason/);
+  assert.equal(message.subject, 'Your vehicle offer is ready to review');
   assert.deepEqual(message.recipient, { employeeId: 'employee-paula', name: 'Paula Mason', fictional: true });
   assert.doesNotMatch(message.textBody + message.htmlBody, /fictional employee|demonstration/);
   assert.doesNotMatch(message.textBody + message.htmlBody + message.subject, /\u2014/);
-  assert.match(render({ employee: {} }).textBody, /^Hello,\n/);
+  assert.match(render({ employee: {} }).textBody, /^Your vehicle offer is ready to review\n/);
   assert.equal(render({ employee: {} }).recipient.name, 'Scheme employee');
+  const expired = render({ offer: { ...offer, state: 'expired' } });
+  assert.equal(new JSDOM(expired.htmlBody).window.document.querySelector('h1').textContent, 'Paula, your vehicle offer has expired');
+  assert.match(expired.textBody, /^Paula, your vehicle offer has expired\n/);
 });
 
 test('offer image uses the approved primary vehicle source and an escaped vehicle-name alternative', () => {
