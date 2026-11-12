@@ -1,7 +1,7 @@
 @import "./gcsp-kit.css";
 .gcsp .is-compare .gcsp-table { table-layout: fixed; }
 .gcsp .is-compare:not(.has-equal-columns) .gcsp-table-th:first-child { width: 30%; }
-.gcsp .is-compare .gcsp-table-th, .gcsp .is-compare .gcsp-table-rowhead, .gcsp .is-compare .gcsp-table-td { min-width: 0; overflow-wrap: anywhere; vertical-align: top; }
+.gcsp .is-compare .gcsp-table-th, .gcsp .is-compare .gcsp-table-rowhead, .gcsp .is-compare .gcsp-table-td { min-width: 0; overflow-wrap: anywhere; vertical-align: top; padding-block: var(--gcsp-space-3); }
 .gcsp .is-compare .gcsp-table-rowhead { font-weight: var(--gcsp-font-weight); color: var(--gcsp-text-muted); }
 .gcsp .gcsp-table-th-sub { display: block; margin-top: var(--gcsp-space-half); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }
 @media (max-width: 640px) { .gcsp .is-compare .gcsp-table-th-sub { display: none; } .gcsp .has-equal-columns .gcsp-table-th-sub { display: block; font-size: 0.6875rem; font-weight: var(--gcsp-font-weight); } }

@@ -31,7 +31,7 @@
 .gcsp .gcsp-highlight-number { font-size: var(--gcsp-font-size-figure); }
 .gcsp .gcsp-highlight-detail { margin: var(--gcsp-space-2) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-small); }
 .gcsp .gcsp-highlight-empty { grid-column: 1 / -1; margin: 0; padding: var(--gcsp-space-4); }
-.gcsp .gcsp-offer-header { display: flex; align-items: start; justify-content: space-between; gap: var(--gcsp-space-4); }
+.gcsp .gcsp-offer-header { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-offer-header .vm-intro { margin: 0; }
 .gcsp .gcsp-offer-header .vm-title { margin: 0; }
 .gcsp .gcsp-offer-clock { display: flex; align-items: center; gap: var(--gcsp-space-3); flex-shrink: 0; }
