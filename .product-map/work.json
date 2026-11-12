@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-12T12:07:38Z",
+  "observed_at": "2026-11-12T12:20:20.968Z",
   "version": 1,
   "stories": [
     {
@@ -5126,13 +5126,13 @@
     {
       "id": "FUCQ-405",
       "title": "Refine Your cars layout and focus notifications on offers",
-      "status": "In Progress",
+      "status": "Done",
       "type": "Story",
       "assignee": "Gary Carter",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-405",
       "branch": "dev/fucq-405-your-cars",
       "workers": [],
-      "observed_at": "2026-11-11T22:35:43Z",
+      "observed_at": "2026-11-12T12:20:20.968Z",
       "slices": [
         {
           "id": "page",
@@ -5156,7 +5156,8 @@
           "evidence": "docs/gcsp/your-cars-fucq405.md: desktop and keyboard runtime review complete; phone/tablet excluded by Gary. Baseline fixture and Presenter ratchet failures disclosed. Jira frozen; no merge/deployment."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "original_status": "Done"
     },
     {
       "id": "FUCQ-250",
@@ -5407,6 +5408,50 @@
       "type": "Story",
       "observed_at": "2026-11-12T12:07:38Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-375"
+    },
+    {
+      "id": "FUCQ-273",
+      "title": "Proposal: Reset leaves the presenter on a blank page with focus lost",
+      "status": "Done",
+      "original_status": "Done",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-12T12:20:20.968Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-273",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-274",
+      "title": "Proposal: The open presenter strip is a 1,250 px wall that hides the page",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-12T12:20:20.968Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-274",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-276",
+      "title": "Proposal: On a phone the offer is 3,800 px long and Accept is at the very bottom",
+      "status": "Done",
+      "original_status": "Done",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-12T12:20:20.968Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-276",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-306",
+      "title": "Presenter strip re-mounts and re-reads on every screen change",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-12T12:20:20.968Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-306",
+      "unsliced": true
     }
   ]
 }
