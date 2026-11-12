@@ -72,7 +72,7 @@ export function basicModel({ controls, scenario = null, orders = null } = {}) {
   }
   if (allocation.offers > 0) {
     return { ...base, phase: 'offered', headline: cars ?? 'Cars released',
-      sub: `Matches and offers show only in each employee's own portal. Next release: ${next}.`,
+      sub: `Open Car suitability below to explain the Buddy decisions. Next release: ${next}.`,
       release: { label: londonDaysBetween(now, at) === 1 ? "Release the next day's cars" : `Release ${weekdayName(at)}'s cars`,
         disabled: false, reason: '', body } };
   }

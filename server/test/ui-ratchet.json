@@ -462,6 +462,10 @@
     {
       "path": "blocks/gcsp/kit/vehicle-details.css",
       "max_lines": 19
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/suitability-section.css",
+      "max_lines": 18
     }
   ],
   "baseline": {
