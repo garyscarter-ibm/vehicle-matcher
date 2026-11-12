@@ -125,10 +125,14 @@ function mountConsole(options = {}) {
 
 test('the console mounts the section just before the feed and refreshes it after Release', async () => {
   const f = mountConsole(); await f.api.ready; await settle();
-  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
+  const stage = f.api.root.querySelector('.gcsp-console-stage');
+  const suitability = stage.querySelector('.gcsp-console-release').nextElementSibling;
+  assert.equal(suitability.className, 'gcsp-suitability'); assert.equal(suitability.nextElementSibling?.className, 'gcsp-happened');
   assert.match(stage.textContent, /Waiting for 11:30am/);
   f.api.basic.release.click(); await settle();
-  assert.equal(cells(stage).length, 5); assert.match(stage.textContent, /Released Tue 10 Nov, 11:30am/); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
+  assert.equal(cells(stage).length, 5); assert.match(stage.textContent, /Released Tue 10 Nov, 11:30am/);
+  assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling, suitability);
+  assert.equal(suitability.nextElementSibling?.className, 'gcsp-happened');
   f.api.destroy(); assert.equal(document.querySelector('.gcsp-console-release'), null);
 });
 
@@ -178,7 +182,9 @@ test('through the Basic options the section follows Release, Start again and kee
   const f = mountConsole({ basic: true }); await f.api.ready; await settle();
   f.api.basic.release.click(); await settle(); assert.equal(cells(f.api.root).length, 5);
   f.api.basic.startAgain.click(); await settle();
-  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
+  const stage = f.api.root.querySelector('.gcsp-console-stage');
+  const suitability = stage.querySelector('.gcsp-console-release').nextElementSibling;
+  assert.equal(suitability.className, 'gcsp-suitability'); assert.equal(suitability.nextElementSibling?.className, 'gcsp-happened');
   assert.ok(stage.querySelector('.gcsp-console-confirm').compareDocumentPosition(stage.querySelector('.gcsp-console-release')) & window.Node.DOCUMENT_POSITION_FOLLOWING);
   stage.querySelector('.gcsp-console-confirm button').click(); await settle();
   assert.equal(cells(f.api.root).length, 0); assert.match(stage.textContent, /No cars released yet/); assert.match(stage.textContent, /Waiting for 11:30am/);

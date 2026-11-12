@@ -6,6 +6,10 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 **Performance tuning backlog, 12 November:** Russell requested a performance Epic and iterative Stories capped at eight points. The [authoring and publication record](performance-tuning-stories-2026-11-12.md) contains the 17-Story split, actual interface dependencies and bounded validation expectations. Publication status is recorded there; no implementation or overnight run is started. The general Jira-write pause continues outside this specifically authorised publication.
 
+**Presenter car suitability, 12 November:** the approved [Match matrix](presenter-suitability.md)
+adds a collapsed section below Allocation with recorded fit, required checks and per-pair explanations.
+The delivery record contains desktop/narrow evidence, scoped validation and separate baseline test debt.
+
 **Paint colour families, 11 November:** the [183-code mapping table](paint-colour-family-mapping-2026-11-11.md) records named and Individual shades in shared policy, with revisable broad families. Named Individual colours resolve normally; the inspected 10k cohort's 761 generic `P0490` selections retain no specific companion shade. This adds lookup data; colour preferences and matching integration remain separate.
 
 **Paula's Touring feedback, 11 November:** the [diagnosis and proposed rule changes](paula-touring-match-diagnosis-2026-11-11.md) explain the inspected Touring eligibility blockers, the SUV's zero body fit and why the follow-up refuses her already-saved Estate preference. Proposals await collaborator approval; no product or employee data was changed.
