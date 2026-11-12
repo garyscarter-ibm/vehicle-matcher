@@ -28,10 +28,9 @@ export function buddyEvents(value = {}) {
     - (validTime(a.occurredAt) ? Date.parse(a.occurredAt) : -Infinity));
 }
 
-export function mountAccountBuddy(region, { adapter, signal, onChanged, onPreferences, openDrawer = sideDrawer } = {}) {
+export function mountAccountBuddy(region, { adapter, signal, onChanged, openDrawer = sideDrawer } = {}) {
   let state; let drawer; let drawerKind; let drawerBody; let disposed = false;
   const live = viewStatus();
-  const review = () => { drawer?.close(); onPreferences?.(); };
   function drawerContent() {
     const value = state?.result?.value;
     if (!value) return [el('p', 'gcsp-note', 'Activity unavailable. Close and try again.')];
@@ -54,7 +53,7 @@ export function mountAccountBuddy(region, { adapter, signal, onChanged, onPrefer
   }
   const pause = adapter?.pauseSearch ?? adapter?.pause; const resume = adapter?.resumeSearch ?? adapter?.resume;
   const tile = buddyTile({ id: 'gcsp-account-buddy-status', onPause: typeof pause === 'function' ? async () => { await controller.pauseSearch(); onChanged?.(); } : undefined,
-    onResume: typeof resume === 'function' ? async () => { await controller.resumeSearch(); onChanged?.(); } : undefined, onRetry: () => controller.refresh(), onPreferences: review,
+    onResume: typeof resume === 'function' ? async () => { await controller.resumeSearch(); onChanged?.(); } : undefined, onRetry: () => controller.refresh(),
     onHistory: () => open('history', 'buddy-history'), onOffer: () => open('offer', 'buddy-offer'), orderHref: PORTAL_ROUTES['order-progress'] });
   region.append(tile.root, live.root);
   const controller = createActivityController({ adapter: { ...adapter, pauseSearch: pause, resumeSearch: resume }, onChange: (next) => {

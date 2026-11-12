@@ -569,10 +569,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (!buddyRegion) {
       buddyRegion = el('div', 'gcsp-account-buddy');
       stopBuddy = mountAccountBuddy(buddyRegion, { adapter: activityAdapter, signal: abort.signal,
-        onChanged: () => rater?.refreshBuddy?.(), onPreferences: () => {
-          const target = region?.querySelector('h2');
-          if (target) { target.tabIndex = -1; target.focus(); target.scrollIntoView?.({ block: 'nearest' }); }
-        } });
+        onChanged: () => rater?.refreshBuddy?.() });
     }
     return buddyRegion;
   }

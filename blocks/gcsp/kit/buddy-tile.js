@@ -8,7 +8,7 @@ const descriptions = { paused: 'New searches and holds have stopped.',
   inactive: 'Search permission is off. Engage Buddy in your preferences to search again.', unavailable: 'Search status is unavailable. Try again.' };
 
 // Presentation only. The host supplies authoritative activity, commands and drawer actions.
-export function buddyTile({ id = `gcsp-buddy-tile-${++sequence}`, onPause, onResume, onRetry, onHistory, onOffer, onPreferences, orderHref } = {}) {
+export function buddyTile({ id = `gcsp-buddy-tile-${++sequence}`, onPause, onResume, onRetry, onHistory, onOffer, orderHref } = {}) {
   const root = el('section', 'gcsp-buddy-tile'); const title = el('h2', 'gcsp-h2', 'Your buddy');
   title.id = `${id}-title`; root.setAttribute('aria-labelledby', title.id);
   let focusKey;
@@ -35,7 +35,6 @@ export function buddyTile({ id = `gcsp-buddy-tile-${++sequence}`, onPause, onRes
     const commands = el('div', 'gcsp-buddy-tile-actions');
     if (['active', 'paused'].includes(state)) commands.append(action(state === 'paused' ? 'Resume search' : 'Pause search', 'buddy-search-action', state === 'paused' ? onResume : onPause, pending));
     else if (state === 'unavailable') commands.append(action('Try again', 'buddy-retry', onRetry, pending));
-    else if (state === 'unset' || state === 'inactive') commands.append(action('Review your preferences', 'buddy-preferences', onPreferences));
     else if (state === 'finished' && orderHref) {
       const track = button({ label: 'Track your order', href: orderHref, variant: 'ghost' }); track.dataset.focusKey = 'buddy-order'; commands.append(track);
     }
