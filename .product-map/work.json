@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-11T15:28:13Z",
+  "observed_at": "2026-11-12T11:46:46Z",
   "version": 1,
   "stories": [
     {
@@ -3896,22 +3896,22 @@
     {
       "id": "FUCQ-324",
       "title": "Separate presenter controls from the normal employee journey",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "Rejected",
+      "original_status": "Rejected",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:21Z",
+      "observed_at": "2026-11-12T11:46:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-324",
       "unsliced": true
     },
     {
       "id": "FUCQ-325",
       "title": "Connect employee profile, preferences, activity and recommendations through visible navigation",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "Rejected",
+      "original_status": "Rejected",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:22Z",
+      "observed_at": "2026-11-12T11:46:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-325",
       "unsliced": true
     },
@@ -3929,11 +3929,11 @@
     {
       "id": "FUCQ-327",
       "title": "Improve Your Cars hierarchy and prominence of allowance and points",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "Rejected",
+      "original_status": "Rejected",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:22Z",
+      "observed_at": "2026-11-12T11:46:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-327",
       "unsliced": true
     },
@@ -3962,22 +3962,22 @@
     {
       "id": "FUCQ-330",
       "title": "Clarify each preference value and its separate importance",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "Rejected",
+      "original_status": "Rejected",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:22Z",
+      "observed_at": "2026-11-12T11:46:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-330",
       "unsliced": true
     },
     {
       "id": "FUCQ-331",
       "title": "Refresh saved preference displays consistently across browsers for the same user and run",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "Rejected",
+      "original_status": "Rejected",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:22Z",
+      "observed_at": "2026-11-12T11:46:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-331",
       "unsliced": true
     },
@@ -5154,6 +5154,26 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-250",
+      "title": "Every car in the demo journey shows \"No image for this car yet\" because demo stock carries no approved corpus images",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "Gary Carter",
+      "type": "Bug",
+      "observed_at": "2026-11-12T11:46:46Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-250"
+    },
+    {
+      "id": "FUCQ-399",
+      "title": "Generated stock lacks zeroTo62 and mpg, so a positive current-car rating can't prove an improvement",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-12T11:46:46Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-399"
     }
   ]
 }

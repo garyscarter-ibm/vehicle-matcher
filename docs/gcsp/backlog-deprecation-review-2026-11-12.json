@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "run_id": "backlog-deprecation-20261112",
+  "observed_at": "2026-11-12T11:44:55Z",
+  "reviewed_commit": "3b6e51f109ce8d7161a1f7fc5645e2a76801ee7d",
+  "source_query": "project = FUCQ AND issuetype = Bug AND status = \"To Do\" ORDER BY key ASC",
+  "original_todo_count": 24,
+  "remaining_todo_count": 17,
+  "remaining_todo_keys": [
+    "FUCQ-266",
+    "FUCQ-329",
+    "FUCQ-344",
+    "FUCQ-349",
+    "FUCQ-376",
+    "FUCQ-377",
+    "FUCQ-387",
+    "FUCQ-388",
+    "FUCQ-391",
+    "FUCQ-392",
+    "FUCQ-393",
+    "FUCQ-395",
+    "FUCQ-396",
+    "FUCQ-400",
+    "FUCQ-401",
+    "FUCQ-404",
+    "FUCQ-406"
+  ],
+  "authorization": "Direct collaborator request on 12 November 2026 authorizes these specific Rejected transitions; the wider Jira write pause is preserved.",
+  "issues": [
+    {
+      "key": "FUCQ-250",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-250",
+      "fields": {
+        "summary": "Every car in the demo journey shows \"No image for this car yet\" because demo stock carries no approved corpus images",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": {
+          "displayName": "Gary Carter"
+        }
+      }
+    },
+    {
+      "key": "FUCQ-324",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-324",
+      "fields": {
+        "summary": "Separate presenter controls from the normal employee journey",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    },
+    {
+      "key": "FUCQ-325",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-325",
+      "fields": {
+        "summary": "Connect employee profile, preferences, activity and recommendations through visible navigation",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    },
+    {
+      "key": "FUCQ-327",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-327",
+      "fields": {
+        "summary": "Improve Your Cars hierarchy and prominence of allowance and points",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    },
+    {
+      "key": "FUCQ-330",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-330",
+      "fields": {
+        "summary": "Clarify each preference value and its separate importance",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    },
+    {
+      "key": "FUCQ-331",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-331",
+      "fields": {
+        "summary": "Refresh saved preference displays consistently across browsers for the same user and run",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    },
+    {
+      "key": "FUCQ-399",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-399",
+      "fields": {
+        "summary": "Generated stock lacks zeroTo62 and mpg, so a positive current-car rating can't prove an improvement",
+        "issuetype": {
+          "name": "Bug"
+        },
+        "status": {
+          "id": "10797",
+          "name": "Rejected"
+        },
+        "assignee": null
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "key": "FUCQ-250",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:42:58.418-0600",
+      "superseded_by": [
+        "FUCQ-323",
+        "FUCQ-373"
+      ]
+    },
+    {
+      "key": "FUCQ-324",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:42:59.995-0600",
+      "superseded_by": [
+        "FUCQ-322",
+        "FUCQ-360",
+        "FUCQ-361"
+      ]
+    },
+    {
+      "key": "FUCQ-325",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:43:01.603-0600",
+      "superseded_by": [
+        "FUCQ-368",
+        "FUCQ-375",
+        "FUCQ-397",
+        "FUCQ-405"
+      ]
+    },
+    {
+      "key": "FUCQ-327",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:43:03.223-0600",
+      "superseded_by": [
+        "FUCQ-359",
+        "FUCQ-405"
+      ]
+    },
+    {
+      "key": "FUCQ-330",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:43:04.276-0600",
+      "superseded_by": [
+        "FUCQ-368",
+        "FUCQ-369",
+        "FUCQ-405"
+      ]
+    },
+    {
+      "key": "FUCQ-331",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:43:05.726-0600",
+      "superseded_by": [
+        "FUCQ-322",
+        "FUCQ-368",
+        "FUCQ-370",
+        "FUCQ-371"
+      ]
+    },
+    {
+      "key": "FUCQ-399",
+      "from": "To Do",
+      "to": "Rejected",
+      "transition_id": "2",
+      "write_http_status": 204,
+      "readback_http_status": 200,
+      "verified": true,
+      "labels_preserved": true,
+      "updated": "2026-11-12T05:43:07.123-0600",
+      "superseded_by": [
+        "FUCQ-370",
+        "FUCQ-371"
+      ]
+    }
+  ],
+  "validation": [
+    {
+      "scope": "preference controls, mounted autosave, employee navigation and standalone presenter",
+      "passed": 130,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 3.3,
+      "checkpoint": "bc8098815c3180088a93ca83be228fabf10b8c6526657cf8b541ce9c6fb8d865",
+      "manifest": "6a6923c9267441e88cd6175a29e6abb7",
+      "peak_rss_bytes": 321060864,
+      "peak_scratch_bytes": 0,
+      "scratch_removed": true,
+      "command": "node --test --test-concurrency=1 server/test/gcsp-category-preferences.test.js server/test/gcsp-account-preferences-controller.test.js server/test/gcsp-account-preferences-mount.test.js server/test/gcsp-shell-navigation.test.js server/test/gcsp-presenter-console.test.js"
+    },
+    {
+      "scope": "two real authenticated HTTP/fresh-controller readback tests",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.8,
+      "checkpoint": "ad9210541c341148f97ffda2d461a5c6c9ff25a00ce03c1932f34e851c78e873",
+      "manifest": "613b4940189849d3abb81687825b13a7",
+      "peak_rss_bytes": 199770112,
+      "peak_scratch_bytes": 0,
+      "scratch_removed": true,
+      "command": "node --test --test-concurrency=1 --test-name-pattern=\"real authenticated HTTP saves a draft|the browser transport and controller save through the real route\" server/test/gcsp-account-preferences.test.js"
+    },
+    {
+      "scope": "generated/retained stock facts and current-car improvement",
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 67.8,
+      "checkpoint": "72329111259596e1a591124b666dd11b844101696abeefbbebf3709f19de36cb",
+      "manifest": "1f449167706047a8bb97a6d338cf39ca",
+      "peak_rss_bytes": 1480785920,
+      "peak_scratch_bytes": 9020992,
+      "scratch_removed": true,
+      "command": "node --test --test-concurrency=1 server/test/gcsp-run-stock.test.js server/test/gcsp-retained-model-facts.test.js"
+    }
+  ],
+  "limitations": [
+    "Scoped validation only; no full suite or new browser/visual-conformance pass.",
+    "No new managed PostgreSQL or deployed shared-state trial.",
+    "No Jira comments, descriptions, links, labels, assignments or other issue statuses changed.",
+    "Native Rejected has no resolution requirement; only the discovered status transition was requested."
+  ],
+  "local_queue_records": [
+    {
+      "key": "FUCQ-324",
+      "from": "_dev/code-inbox/DEV-2026-11-10-GC-005.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-GC-005.md"
+    },
+    {
+      "key": "FUCQ-325",
+      "from": "_dev/code-inbox/DEV-2026-11-10-GC-006.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-GC-006.md"
+    },
+    {
+      "key": "FUCQ-327",
+      "from": "_dev/code-inbox/DEV-2026-11-10-GC-008.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-GC-008.md"
+    },
+    {
+      "key": "FUCQ-330",
+      "from": "_dev/code-inbox/DEV-2026-11-10-GC-011.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-GC-011.md"
+    },
+    {
+      "key": "FUCQ-331",
+      "from": "_dev/code-inbox/DEV-2026-11-10-GC-012.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-GC-012.md"
+    }
+  ],
+  "cleanup": {
+    "roots": [
+      {
+        "root": "/private/tmp/test-stamp-shard-6a6923c9267441e88cd6175a29e6abb7",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/6a6923c9267441e88cd6175a29e6abb7.json",
+        "absent": true,
+        "live_owned_process_groups": 0,
+        "peak_scratch_bytes": 0,
+        "peak_rss_bytes": 321060864
+      },
+      {
+        "root": "/private/tmp/test-stamp-shard-613b4940189849d3abb81687825b13a7",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/613b4940189849d3abb81687825b13a7.json",
+        "absent": true,
+        "live_owned_process_groups": 0,
+        "peak_scratch_bytes": 0,
+        "peak_rss_bytes": 199770112
+      },
+      {
+        "root": "/private/tmp/test-stamp-shard-1f449167706047a8bb97a6d338cf39ca",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/1f449167706047a8bb97a6d338cf39ca.json",
+        "absent": true,
+        "live_owned_process_groups": 0,
+        "peak_scratch_bytes": 9020992,
+        "peak_rss_bytes": 1480785920
+      }
+    ],
+    "measured_peak_disposable_bytes_removed": 9020992,
+    "leftovers": [],
+    "compatibility_exception": null,
+    "large_or_cloud_output": false
+  },
+  "impact_receipt": ".claude/test-runs/impact/backlog-deprecation-20261112-0d2963392100fcbb.json"
+}
