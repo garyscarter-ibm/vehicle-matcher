@@ -38,7 +38,7 @@ The [structured publication record](performance-tuning-stories-2026-11-12.json) 
 
 The local lookup, policy and immutable-data changes can be delivered independently, with shared-file ownership coordinated. The genuine chains are compact evaluation → static reuse, selected receipt reads → pending-trigger consumption, and mutation journal → PostgreSQL flush → scoped receipt hydration. Jira dependencies are context; technical readiness is assessed from actual agreed interfaces at pickup.
 
-The eight-point scopes deliberately exclude ranking changes, top-K truncation, dynamic-gate caching, distributed caches, a scheduler replacement, all-at-once legacy removal and general partial hydration of every transaction. Story 16 targets small receipt/cursor commands; broader domain hydration needs separate future scope. Evidence batching is independent and bounds both digest count and bytes.
+The eight-point scopes deliberately exclude ranking changes, top-K truncation, dynamic-gate caching, distributed caches, a scheduler replacement, all-at-once legacy removal and general partial hydration of every transaction. Story 16 targets existing small receipt commands; a future consumption cursor is not a prerequisite or deliverable, and broader domain hydration needs separate future scope. Evidence batching is independent and bounds both digest count and bytes.
 
 ## Acceptance and validation
 
@@ -50,9 +50,9 @@ Authoring verification is limited to payload consistency, estimates, actual sour
 
 ## Publication and resources
 
-Publication is prepared. The authenticated background Jira UI is available, but click handling pauses in an inactive tab; the Jira connector is unavailable. A request to briefly focus Jira is pending. No Epic or Story has yet been created. Restore the original task tab to the board after publication and preserve the user's other tabs.
+Publication is prepared and **not yet performed**. Russell declined foreground browser publication and requested Jira reconnection. The configured Atlassian server is enabled with OAuth, but its runtime tools are absent from this chat. A no-browser CLI login reached Atlassian account selection in the existing inactive Jira tab; the required user sign-in is pending. No foreground switch or Jira write has occurred. The original tab URL is the FUCQ board (2336); preserve the user's other tabs and restore that URL when reconnection finishes.
 
-Resource plan: retained records under 1 MiB, bounded page extracts under 25 KiB per call, no test workers, no scratch roots or generated large files. No cleanup allocation is required. Independent decomposition and sizing review: Taz, requested/selected `gpt-6.1-sol` with `high` effort, no fallback or descendants; no runtime calls, tests or scratch.
+Resource plan: retained records under 1 MiB, bounded page extracts under 25 KiB per call, no test workers, no scratch roots or generated large files. No cleanup allocation is required. Independent decomposition, sizing and payload review: Taz, requested/selected `gpt-6.1-sol` with `high` effort, no fallback or descendants; no runtime calls, tests or scratch. Review corrections preserve current price ambiguity and first-match allowance semantics, exact stock identity (including existing rejection of VIN-bearing stock snapshots), activeCodes invalidation and existing-only transaction mutation scope.
 
 Added by: Russell Gowers, authored with Codex.
 
