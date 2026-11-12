@@ -153,7 +153,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
   let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let reasonNode; let decisionWasOpen = false;
   let followupRoot; let followupKey; let cleanupFollowup; let accepting = false;
-  let gallery;
+  let gallery; let vehicleCard;
   const clearFollowup = () => {
     const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
@@ -193,6 +193,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
     const inPage = content.contains(root.ownerDocument.activeElement);
     clearFollowup(); followupRoot = undefined;
+    vehicleCard?.destroy(); vehicleCard = undefined;
     gallery?.destroy(); gallery = undefined;
     content.replaceChildren(); if (!checking) showCheck('');
     const state = model.state;
@@ -281,9 +282,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
         const clock = el('div', 'gcsp-decision-clock'); clockNode = el('p', 'gcsp-countdown');
         clockNode.setAttribute('aria-label', 'Time left to decide');
         clock.append(clockNode, el('p', 'gcsp-decision-date', 'left to decide')); deadline.append(held, clock);
-        offer.append(vehicleDecisionCard({ view: card, media: gallery.root, actions: pendingActions,
+        vehicleCard = vehicleDecisionCard({ view: card, media: gallery.root, actions: pendingActions,
           note: handoffNote, finishes, layout: 'focused', deadline, kicker: 'Your buddy found a car for you',
-          pointsDifference: points ? `${points.delta.toLocaleString('en-GB')} fewer than your current car` : null }));
+          pointsDifference: points ? `${points.delta.toLocaleString('en-GB')} fewer than your current car` : null });
+        offer.append(vehicleCard);
       } else offer.append(matchCard(null, { view: card, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
       columns.append(offer, comparison(model.card.members[0], model.currentCar)); content.append(columns);
     }
@@ -355,7 +357,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
       content.querySelector('[data-offer-action="decline"]').disabled = !model.canDecline;
       const focused = root.ownerDocument.activeElement;
       if (focused?.disabled && content.contains(focused)) {
-        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"], .gcsp-vehicle-specification summary')?.focus();
+        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"], .gcsp-vehicle-details-entry')?.focus();
       }
     }
     const key = `${titleFor(model)}:${model.reference?.offerId || ''}`;
@@ -364,5 +366,5 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     else if (!checking && previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
-  return { update, destroy() { drawer.destroy(); gallery?.destroy(); clearFollowup(); page.remove(); } };
+  return { update, destroy() { drawer.destroy(); vehicleCard?.destroy(); gallery?.destroy(); clearFollowup(); page.remove(); } };
 }

@@ -1,0 +1,18 @@
+@import "./side-drawer.css"; @import "./tabs.css";
+.gcsp .gcsp-vehicle-focused .gcsp-vehicle-heading { gap: var(--gcsp-space-2); }
+.gcsp .gcsp-vehicle-focused .gcsp-finishes.gcsp-vehicle-meta { display: grid; gap: var(--gcsp-space-4); margin-top: var(--gcsp-space-3); }
+.gcsp .gcsp-vehicle-focused .gcsp-finish { align-items: flex-start; gap: var(--gcsp-space-3); }
+.gcsp .gcsp-vehicle-focused .gcsp-finish-swatch { margin-top: calc(var(--gcsp-font-line-label) + var(--gcsp-space-1) + 1px); }
+.gcsp .gcsp-finish-copy { display: grid; gap: var(--gcsp-space-1); min-width: 0; }
+.gcsp .gcsp-finish-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.gcsp .gcsp-vehicle-details-control { min-width: 0; }
+.gcsp .vm-btn.gcsp-vehicle-details-entry { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-5); width: 100%; padding: var(--gcsp-space-4) var(--gcsp-space-5); text-align: left; white-space: normal; border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface-raised); }
+.gcsp .gcsp-vehicle-details-entry strong, .gcsp .gcsp-vehicle-details-hint { display: block; }
+.gcsp .gcsp-vehicle-details-hint { margin-top: var(--gcsp-space-1); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-vehicle-details-arrow { font-size: var(--gcsp-font-size-title); }
+.gcsp .gcsp-vehicle-drawer-content[hidden] { display: none; }
+.gcsp .gcsp-vehicle-drawer-content > h3 { margin-bottom: var(--gcsp-space-6); }
+.gcsp .gcsp-vehicle-details .gcsp-vehicle-drawer-content .vm-facts { grid-template-columns: minmax(0, 1fr); margin: 0; padding: 0; border: 0; gap: 0; }
+.gcsp .gcsp-vehicle-drawer-content .vm-fact { padding: var(--gcsp-space-4) 0; border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-vehicle-drawer-content .gcsp-vehicle-equipment ul { columns: 1; margin: 0; }
+.gcsp .gcsp-vehicle-drawer-content .gcsp-vehicle-equipment li { padding-block: var(--gcsp-space-2); }

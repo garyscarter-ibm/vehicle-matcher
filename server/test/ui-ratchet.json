@@ -453,11 +453,15 @@
     },
     {
       "path": "blocks/gcsp/kit/focused-decision.css",
-      "max_lines": 42
+      "max_lines": 39
     },
     {
       "path": "blocks/gcsp/kit/vehicle-summary.css",
       "max_lines": 7
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-details.css",
+      "max_lines": 19
     }
   ],
   "baseline": {

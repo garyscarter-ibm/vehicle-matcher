@@ -174,7 +174,7 @@ test('actual producer to access HTTP to offer view preserves authority, custody,
     passed(await producer.start()); const beforeQuoteExpiry = business();
     await advanceTo(allocated.quote.validUntil, 'view-quote-expiry'); await tick('view-quote-expiry-tick');
     assert.equal(business() === beforeQuoteExpiry, true);
-    const cardNode = root.querySelector('.vm-card'); const refreshNode = root.querySelector('.gcsp-vehicle-specification summary'); refreshNode.focus();
+    const cardNode = root.querySelector('.vm-card'); const refreshNode = root.querySelector('.gcsp-vehicle-details-entry'); refreshNode.focus();
     const [id, callback] = scheduled.entries().next().value; scheduled.delete(id); callback(); await reading;
     const decline = controller.snapshot();
     assert.equal(decline.state, 'pending'); assert.deepEqual(decline.actions, { accept: false, decline: true });

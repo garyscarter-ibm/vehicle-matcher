@@ -18,6 +18,7 @@ import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
 import { vehicleDecisionCard, decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
 import { mediaGalleryExamples } from '../gcsp/kit/media-gallery-examples.js';
+import { mediaGallery } from '../gcsp/kit/media-gallery.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { presenterBar } from '../gcsp/kit/presenter-bar.js';
 import { activityTimeline } from '../gcsp/kit/activity-timeline.js';
@@ -267,6 +268,14 @@ function gregKitExamples() {
   currentSummary.append(el('p', 'gcsp-vehicle-context', 'Current car'), el('h2', 'gcsp-vehicle-title', 'BMW 320i M Sport Saloon'), el('p', 'gcsp-vehicle-meta', 'Automatic · Petrol'));
   group('Vehicle summary: shared current car typography').append(currentSummary);
   group('Focused offer: decision panel').append(vehicleDecisionCard({ view: focused, layout: 'focused', kicker: 'Your buddy found a car for you' }));
+  const longDetails = structuredClone(focused);
+  longDetails.members[0].display.name = 'BMW X2 M35i in Black Sapphire';
+  longDetails.members[0].facts = longDetails.members[0].facts.filter((fact) => !['Colour', 'Interior', 'Options'].includes(fact.label));
+  longDetails.members[0].facts.push({ label: 'Options', items: Array.from({ length: 57 }, (_, index) => `Supplied equipment item ${index + 1}`) });
+  group('Focused offer: long finish and 57-item car details drawer').append(vehicleDecisionCard({ view: longDetails, layout: 'focused',
+    media: mediaGallery({ name: longDetails.members[0].display.name, images: [], presentation: 'picker' }).root,
+    kicker: 'Your buddy found a car for you', finishes: [{ label: 'Paint', value: 'Black Sapphire' },
+      { label: 'Upholstery', value: 'M Alcantara Veganza combination Black contrast stitching' }] }));
   group('Focused offer: four benefits and five tradeoffs').append(decisionHighlights({ layout: 'list',
     benefits: [{ number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, ...focused.members[0].decision.reasons.map((title) => ({ title }))],
     tradeoffs: [{ number: '30', title: 'litres less', detail: 'Boot space compared with your current car' }, ...focused.members[0].decision.tradeOffs.map((title) => ({ title }))] }));
