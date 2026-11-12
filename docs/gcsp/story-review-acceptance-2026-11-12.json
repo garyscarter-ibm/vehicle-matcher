@@ -1,0 +1,6279 @@
+{
+  "version": 1,
+  "run_id": "story-review-acceptance-20261112",
+  "started_at": "2026-11-12T11:59:38.129Z",
+  "project": "FUCQ",
+  "reviewed_repo_commit": "833e6547b07a463bfeca7fcc469dcc671c0108b8",
+  "authorization": {
+    "date": "2026-11-12",
+    "request": "any User Stories which are in Review, please move to Done, me and GC have reviewed. Leave any Bugs in In Review and we'll look separately",
+    "basis": "Direct collaborator acceptance after review with GC.",
+    "scope": "Only native Story issues currently In Review are authorised for native Done. Bugs and all other issue types are excluded; the wider Jira write pause remains."
+  },
+  "source_query": "project = FUCQ AND issuetype = Story AND status = \"In Review\" ORDER BY key ASC",
+  "source_pages": 2,
+  "original_story_count": 104,
+  "candidate_stories": [
+    {
+      "key": "FUCQ-27",
+      "title": "Share pure recommendation evaluation behind the retail compatibility layer",
+      "status": "In Review",
+      "updated": "2026-11-10T02:59:31.657-0600"
+    },
+    {
+      "key": "FUCQ-28",
+      "title": "Build grouped result views from complete exact-car decisions",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:07.339-0600"
+    },
+    {
+      "key": "FUCQ-46",
+      "title": "Resolve a live catalogue configuration behind the snapshot contract",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:38.320-0600"
+    },
+    {
+      "key": "FUCQ-47",
+      "title": "Bound live catalogue failures and preserve truthful fallback",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:41.124-0600"
+    },
+    {
+      "key": "FUCQ-48",
+      "title": "Verify the selected live catalogue provider with redacted evidence",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:43.955-0600"
+    },
+    {
+      "key": "FUCQ-58",
+      "title": "Qualify fleet coverage and budgets before collecting configurations",
+      "status": "In Review",
+      "updated": "2026-11-07T06:43:44.455-0600"
+    },
+    {
+      "key": "FUCQ-59",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "status": "In Review",
+      "updated": "2026-11-07T06:48:55.476-0600"
+    },
+    {
+      "key": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "In Review",
+      "updated": "2026-11-11T06:15:10.740-0600"
+    },
+    {
+      "key": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "status": "In Review",
+      "updated": "2026-11-07T08:33:00.323-0600"
+    },
+    {
+      "key": "FUCQ-62",
+      "title": "Publish the configuration corpus and generate stock by order reference",
+      "status": "In Review",
+      "updated": "2026-11-11T11:26:35.863-0600"
+    },
+    {
+      "key": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "status": "In Review",
+      "updated": "2026-11-07T08:33:03.584-0600"
+    },
+    {
+      "key": "FUCQ-66",
+      "title": "Persist exact manual claims and expiry through a shared authority",
+      "status": "In Review",
+      "updated": "2026-11-07T09:55:48.225-0600"
+    },
+    {
+      "key": "FUCQ-69",
+      "title": "Browse released cars with visual cards and complete vehicle details",
+      "status": "In Review",
+      "updated": "2026-11-07T09:21:15.749-0600"
+    },
+    {
+      "key": "FUCQ-70",
+      "title": "Review a claimed car with contact details and return mileage",
+      "status": "In Review",
+      "updated": "2026-11-10T09:57:25.164-0600"
+    },
+    {
+      "key": "FUCQ-71",
+      "title": "Submit manual selections through an idempotent ordering adapter",
+      "status": "In Review",
+      "updated": "2026-11-07T12:17:47.507-0600"
+    },
+    {
+      "key": "FUCQ-72",
+      "title": "Review declarations and show the actual order handoff outcome",
+      "status": "In Review",
+      "updated": "2026-11-10T09:57:25.840-0600"
+    },
+    {
+      "key": "FUCQ-73",
+      "title": "Verify the complete manual journey and its employee entry contract",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:50.025-0600"
+    },
+    {
+      "key": "FUCQ-77",
+      "title": "Verify scheme coverage using the collected BMW configuration corpus",
+      "status": "In Review",
+      "updated": "2026-11-08T17:53:53.847-0600"
+    },
+    {
+      "key": "FUCQ-78",
+      "title": "Shape synthetic scheme stock from real stock-locator aggregates",
+      "status": "In Review",
+      "updated": "2026-11-08T17:43:47.301-0600"
+    },
+    {
+      "key": "FUCQ-92",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "status": "In Review",
+      "updated": "2026-11-10T05:30:04.423-0600"
+    },
+    {
+      "key": "FUCQ-95",
+      "title": "Show buddy activity and pause or resume the search",
+      "status": "In Review",
+      "updated": "2026-11-07T11:16:09.515-0600"
+    },
+    {
+      "key": "FUCQ-96",
+      "title": "Allocate released cars across competing briefs by the policy tie-break",
+      "status": "In Review",
+      "updated": "2026-11-11T15:12:23.884-0600"
+    },
+    {
+      "key": "FUCQ-98",
+      "title": "Send offer emails through one real transport once a sender is set up",
+      "status": "In Review",
+      "updated": "2026-11-09T06:35:52.178-0600"
+    },
+    {
+      "key": "FUCQ-100",
+      "title": "Hold the allocated car and create its offer and outbox job in one transaction",
+      "status": "In Review",
+      "updated": "2026-11-07T10:12:11.914-0600"
+    },
+    {
+      "key": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
+      "status": "In Review",
+      "updated": "2026-11-07T09:28:34.623-0600"
+    },
+    {
+      "key": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "status": "In Review",
+      "updated": "2026-11-07T15:29:51.484-0600"
+    },
+    {
+      "key": "FUCQ-105",
+      "title": "Show the offer's exact quote, current-car comparison and countdown",
+      "status": "In Review",
+      "updated": "2026-11-11T08:48:51.908-0600"
+    },
+    {
+      "key": "FUCQ-106",
+      "title": "Accept, decline or expire an offer with idempotent outcomes",
+      "status": "In Review",
+      "updated": "2026-11-11T06:15:14.201-0600"
+    },
+    {
+      "key": "FUCQ-107",
+      "title": "Confirm one preference change after declining and receive a second offer",
+      "status": "In Review",
+      "updated": "2026-11-11T07:25:43.104-0600"
+    },
+    {
+      "key": "FUCQ-108",
+      "title": "Hand off a selected buddy offer through the ordering adapter",
+      "status": "In Review",
+      "updated": "2026-11-11T06:15:15.679-0600"
+    },
+    {
+      "key": "FUCQ-109",
+      "title": "Verify Paula's critical path end to end with browser evidence",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:56.316-0600"
+    },
+    {
+      "key": "FUCQ-111",
+      "title": "Progress a selected order through the target approval states on presenter ticks",
+      "status": "In Review",
+      "updated": "2026-11-07T09:44:11.057-0600"
+    },
+    {
+      "key": "FUCQ-113",
+      "title": "Record learning records for Greg's demand model, observed and synthetic",
+      "status": "In Review",
+      "updated": "2026-11-08T18:56:03.000-0600"
+    },
+    {
+      "key": "FUCQ-114",
+      "title": "Request and confirm a replacement handover appointment",
+      "status": "In Review",
+      "updated": "2026-11-10T03:00:59.528-0600"
+    },
+    {
+      "key": "FUCQ-115",
+      "title": "Train the choice model offline and evaluate it on held-out cycles",
+      "status": "In Review",
+      "updated": "2026-11-08T18:56:02.585-0600"
+    },
+    {
+      "key": "FUCQ-116",
+      "title": "Track documents and vehicle readiness with a named owner for each",
+      "status": "In Review",
+      "updated": "2026-11-07T09:51:22.591-0600"
+    },
+    {
+      "key": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "status": "In Review",
+      "updated": "2026-11-07T14:04:22.032-0600"
+    },
+    {
+      "key": "FUCQ-118",
+      "title": "Plan and schedule the old car's separate return",
+      "status": "In Review",
+      "updated": "2026-11-10T03:01:02.254-0600"
+    },
+    {
+      "key": "FUCQ-119",
+      "title": "Preview a replan after constraint edits and submit the plan as a request",
+      "status": "In Review",
+      "updated": "2026-11-10T03:02:18.122-0600"
+    },
+    {
+      "key": "FUCQ-120",
+      "title": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
+      "status": "In Review",
+      "updated": "2026-11-10T03:23:10.778-0600"
+    },
+    {
+      "key": "FUCQ-121",
+      "title": "Show Greg's recommended order plan as a panel on his dashboard",
+      "status": "In Review",
+      "updated": "2026-11-10T03:23:13.797-0600"
+    },
+    {
+      "key": "FUCQ-122",
+      "title": "Let Paula find help and see named case ownership and status",
+      "status": "In Review",
+      "updated": "2026-11-08T02:14:22.754-0600"
+    },
+    {
+      "key": "FUCQ-123",
+      "title": "Forecast demand with the learned model, shown beside the baseline plan",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:41.057-0600"
+    },
+    {
+      "key": "FUCQ-124",
+      "title": "Verify approval, documents and confirmed handover and return planning end to end",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:43.766-0600"
+    },
+    {
+      "key": "FUCQ-126",
+      "title": "Operate the main demo with tick, release, reset and role controls",
+      "status": "In Review",
+      "updated": "2026-11-10T05:30:02.835-0600"
+    },
+    {
+      "key": "FUCQ-127",
+      "title": "Replay the no-suitable-match scenario",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:46.680-0600"
+    },
+    {
+      "key": "FUCQ-128",
+      "title": "Replay decline, one confirmed change and a matching second offer",
+      "status": "In Review",
+      "updated": "2026-11-10T05:30:13.043-0600"
+    },
+    {
+      "key": "FUCQ-129",
+      "title": "Replay the offer-expiry scenario",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:52.255-0600"
+    },
+    {
+      "key": "FUCQ-130",
+      "title": "Replay the unavailable-data scenario",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:55.225-0600"
+    },
+    {
+      "key": "FUCQ-131",
+      "title": "Replay the uncertain-handoff scenario",
+      "status": "In Review",
+      "updated": "2026-11-10T03:04:58.081-0600"
+    },
+    {
+      "key": "FUCQ-134",
+      "title": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+      "status": "In Review",
+      "updated": "2026-11-08T09:40:56.202-0600"
+    },
+    {
+      "key": "FUCQ-135",
+      "title": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+      "status": "In Review",
+      "updated": "2026-11-10T03:05:25.960-0600"
+    },
+    {
+      "key": "FUCQ-136",
+      "title": "Measure the process comparison across seeds and store immutable results",
+      "status": "In Review",
+      "updated": "2026-11-10T03:05:28.686-0600"
+    },
+    {
+      "key": "FUCQ-137",
+      "title": "Run the process comparison offline and read its stored result",
+      "status": "In Review",
+      "updated": "2026-11-10T03:05:31.538-0600"
+    },
+    {
+      "key": "FUCQ-138",
+      "title": "Show the stored process comparison and assumptions on Greg's dashboard",
+      "status": "In Review",
+      "updated": "2026-11-10T03:05:34.811-0600"
+    },
+    {
+      "key": "FUCQ-149",
+      "title": "Resume the saved manual journey through the current claim",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:27.423-0600"
+    },
+    {
+      "key": "FUCQ-167",
+      "title": "Record handover completion, no-show and rebooking",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:22.097-0600"
+    },
+    {
+      "key": "FUCQ-168",
+      "title": "Confirm an old-car return or missed return and update the current-car relationship",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:24.884-0600"
+    },
+    {
+      "key": "FUCQ-169",
+      "title": "Show physical handover and return outcomes with rebooking actions",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:27.772-0600"
+    },
+    {
+      "key": "FUCQ-170",
+      "title": "Work the renewal-risk queue, remedies and advanced employee case interactions",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:30.576-0600"
+    },
+    {
+      "key": "FUCQ-171",
+      "title": "Verify terminal handover, return and advanced renewal-help scenarios",
+      "status": "In Review",
+      "updated": "2026-11-10T03:09:37.680-0600"
+    },
+    {
+      "key": "FUCQ-172",
+      "title": "Choose and reset the wider presenter scenario catalogue",
+      "status": "In Review",
+      "updated": "2026-11-10T03:23:16.572-0600"
+    },
+    {
+      "key": "FUCQ-173",
+      "title": "Replay a confirmed preference change while no second car is available",
+      "status": "In Review",
+      "updated": "2026-11-10T03:11:15.072-0600"
+    },
+    {
+      "key": "FUCQ-174",
+      "title": "Compare alternative order mixes, points and buddy hold durations",
+      "status": "In Review",
+      "updated": "2026-11-10T03:11:17.848-0600"
+    },
+    {
+      "key": "FUCQ-175",
+      "title": "Start and monitor responsive comparison worker jobs from the browser",
+      "status": "In Review",
+      "updated": "2026-11-10T07:18:34.147-0600"
+    },
+    {
+      "key": "FUCQ-176",
+      "title": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard",
+      "status": "In Review",
+      "updated": "2026-11-10T03:11:23.242-0600"
+    },
+    {
+      "key": "FUCQ-178",
+      "title": "After the demo: run the live data collection for FUCQ-77 and FUCQ-78",
+      "status": "In Review",
+      "updated": "2026-11-10T03:11:28.743-0600"
+    },
+    {
+      "key": "FUCQ-180",
+      "title": "Run the full GCSP runtime on the hosted Render backend, so the demo needs no local launcher",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:25.439-0600"
+    },
+    {
+      "key": "FUCQ-181",
+      "title": "After the demo: same-site hosting for GCSP, with the static pages back on gcsp-site and a design rule recorded",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:28.330-0600"
+    },
+    {
+      "key": "FUCQ-218",
+      "title": "Show real scheme display names in order history and the account page",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:10.126-0600"
+    },
+    {
+      "key": "FUCQ-219",
+      "title": "When nothing matches, Buddy activity names the excluding essential and offers next steps",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:12.735-0600"
+    },
+    {
+      "key": "FUCQ-220",
+      "title": "Generate a separate order reference for each order and show it everywhere",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:15.386-0600"
+    },
+    {
+      "key": "FUCQ-247",
+      "title": "Performance review of the GCSP demo journeys, with prioritised recommendations to speed up the applications",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:49.630-0600"
+    },
+    {
+      "key": "FUCQ-248",
+      "title": "UI and UX review of the GCSP demo journeys, with prioritised improvement recommendations",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:52.276-0600"
+    },
+    {
+      "key": "FUCQ-303",
+      "title": "Make GCSP static assets cacheable (ETag and no-cache) and compress them on the local host",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:26.208-0600"
+    },
+    {
+      "key": "FUCQ-304",
+      "title": "Gallery fetches the 960 KB manual stock twice for 6 cards, mostly repeated copies",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:28.761-0600"
+    },
+    {
+      "key": "FUCQ-321",
+      "title": "Remove demo, synthetic and example-data disclaimers from the screens and the email",
+      "status": "In Review",
+      "updated": "2026-11-10T06:10:45.510-0600"
+    },
+    {
+      "key": "FUCQ-322",
+      "title": "Sign in as a demo user and retain their stored account throughout the live site",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:31.611-0600"
+    },
+    {
+      "key": "FUCQ-351",
+      "title": "Presenter shortcut: reset and switch to Greg in one action",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:11.568-0600"
+    },
+    {
+      "key": "FUCQ-354",
+      "title": "Show UK local time on Paula's screens, with no \"UTC\" labels",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:12.558-0600"
+    },
+    {
+      "key": "FUCQ-359",
+      "title": "Give Account a wider current-car presentation",
+      "status": "In Review",
+      "updated": "2026-11-11T14:42:49.509-0600"
+    },
+    {
+      "key": "FUCQ-360",
+      "title": "Presenter console on its own page with Basic and Advanced modes",
+      "status": "In Review",
+      "updated": "2026-11-11T13:33:03.373-0600"
+    },
+    {
+      "key": "FUCQ-361",
+      "title": "Remove presenter controls from Paula's and Greg's pages",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:33.615-0600"
+    },
+    {
+      "key": "FUCQ-362",
+      "title": "Basic presenter console: friendly time and journey-driven Release button",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:34.005-0600"
+    },
+    {
+      "key": "FUCQ-363",
+      "title": "Main successful journey releases 100 different cars every weekday",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:34.378-0600"
+    },
+    {
+      "key": "FUCQ-364",
+      "title": "Presenter read of the latest release and how the buddy narrowed it",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:34.794-0600"
+    },
+    {
+      "key": "FUCQ-365",
+      "title": "Animated release visual on the presenter console",
+      "status": "In Review",
+      "updated": "2026-11-11T06:34:31.367-0600"
+    },
+    {
+      "key": "FUCQ-366",
+      "title": "What happened feed on the presenter console, with captured emails",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:35.648-0600"
+    },
+    {
+      "key": "FUCQ-367",
+      "title": "Save a current-car star rating from Account",
+      "status": "In Review",
+      "updated": "2026-11-10T20:43:42.415-0600"
+    },
+    {
+      "key": "FUCQ-368",
+      "title": "Edit and autosave compact category preferences",
+      "status": "In Review",
+      "updated": "2026-11-10T19:46:44.729-0600"
+    },
+    {
+      "key": "FUCQ-369",
+      "title": "Choose Same again and show Buddy understanding",
+      "status": "In Review",
+      "updated": "2026-11-11T05:16:19.814-0600"
+    },
+    {
+      "key": "FUCQ-370",
+      "title": "Engage Buddy explicitly from Account",
+      "status": "In Review",
+      "updated": "2026-11-11T10:06:56.782-0600"
+    },
+    {
+      "key": "FUCQ-371",
+      "title": "Use current-car feedback in suitable recommendations",
+      "status": "In Review",
+      "updated": "2026-11-11T11:33:57.532-0600"
+    },
+    {
+      "key": "FUCQ-372",
+      "title": "Let Paula discard a saved replacement journey, in plain words",
+      "status": "In Review",
+      "updated": "2026-11-10T14:52:45.403-0600"
+    },
+    {
+      "key": "FUCQ-373",
+      "title": "Remove representative-image disclaimers from car images on every screen",
+      "status": "In Review",
+      "updated": "2026-11-10T15:27:58.001-0600"
+    },
+    {
+      "key": "FUCQ-374",
+      "title": "Load GCSP pages without the module round-trip waterfall",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:36.026-0600"
+    },
+    {
+      "key": "FUCQ-375",
+      "title": "Notification bell in the portal header for buddy offers",
+      "status": "In Review",
+      "updated": "2026-11-10T17:39:22.295-0600"
+    },
+    {
+      "key": "FUCQ-383",
+      "title": "Show a full-width offer with benefits, tradeoffs and time to decide",
+      "status": "In Review",
+      "updated": "2026-11-11T14:13:52.832-0600"
+    },
+    {
+      "key": "FUCQ-384",
+      "title": "Resolve selected configuration codes from a seeded local definition index",
+      "status": "In Review",
+      "updated": "2026-11-11T09:11:04.563-0600"
+    },
+    {
+      "key": "FUCQ-385",
+      "title": "Show a seeded three-view vehicle gallery with an enlarged image viewer",
+      "status": "In Review",
+      "updated": "2026-11-11T14:13:53.714-0600"
+    },
+    {
+      "key": "FUCQ-386",
+      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+      "status": "In Review",
+      "updated": "2026-11-11T09:27:01.587-0600"
+    },
+    {
+      "key": "FUCQ-389",
+      "title": "Show consistent Buddy status on Your cars and visible search controls",
+      "status": "In Review",
+      "updated": "2026-11-11T07:56:45.847-0600"
+    },
+    {
+      "key": "FUCQ-397",
+      "title": "Bring Buddy controls and recent history into Your cars",
+      "status": "In Review",
+      "updated": "2026-11-11T13:45:26.213-0600"
+    },
+    {
+      "key": "FUCQ-398",
+      "title": "Show run-scoped Buddy allocation outcomes on Presenter",
+      "status": "In Review",
+      "updated": "2026-11-11T13:45:25.803-0600"
+    }
+  ],
+  "review_bug_query": "project = FUCQ AND issuetype = Bug AND status = \"In Review\" ORDER BY key ASC",
+  "review_bug_pages": 2,
+  "original_review_bug_count": 163,
+  "review_bug_baseline": [
+    {
+      "key": "FUCQ-139",
+      "status": "In Review",
+      "updated": "2026-11-10T03:06:58.374-0600"
+    },
+    {
+      "key": "FUCQ-140",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:01.511-0600"
+    },
+    {
+      "key": "FUCQ-141",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:04.335-0600"
+    },
+    {
+      "key": "FUCQ-142",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:07.109-0600"
+    },
+    {
+      "key": "FUCQ-143",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:09.978-0600"
+    },
+    {
+      "key": "FUCQ-144",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:12.842-0600"
+    },
+    {
+      "key": "FUCQ-145",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:15.622-0600"
+    },
+    {
+      "key": "FUCQ-146",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:18.919-0600"
+    },
+    {
+      "key": "FUCQ-147",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:22.069-0600"
+    },
+    {
+      "key": "FUCQ-148",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:24.761-0600"
+    },
+    {
+      "key": "FUCQ-150",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:30.120-0600"
+    },
+    {
+      "key": "FUCQ-151",
+      "status": "In Review",
+      "updated": "2026-11-08T21:04:00.843-0600"
+    },
+    {
+      "key": "FUCQ-152",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:34.174-0600"
+    },
+    {
+      "key": "FUCQ-153",
+      "status": "In Review",
+      "updated": "2026-11-08T19:50:23.198-0600"
+    },
+    {
+      "key": "FUCQ-154",
+      "status": "In Review",
+      "updated": "2026-11-08T19:50:24.978-0600"
+    },
+    {
+      "key": "FUCQ-155",
+      "status": "In Review",
+      "updated": "2026-11-08T19:50:25.366-0600"
+    },
+    {
+      "key": "FUCQ-156",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:37.360-0600"
+    },
+    {
+      "key": "FUCQ-157",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:40.224-0600"
+    },
+    {
+      "key": "FUCQ-158",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:42.920-0600"
+    },
+    {
+      "key": "FUCQ-159",
+      "status": "In Review",
+      "updated": "2026-11-10T03:07:59.635-0600"
+    },
+    {
+      "key": "FUCQ-160",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:02.377-0600"
+    },
+    {
+      "key": "FUCQ-161",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:05.163-0600"
+    },
+    {
+      "key": "FUCQ-162",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:07.859-0600"
+    },
+    {
+      "key": "FUCQ-163",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:10.405-0600"
+    },
+    {
+      "key": "FUCQ-164",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:13.439-0600"
+    },
+    {
+      "key": "FUCQ-165",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:16.236-0600"
+    },
+    {
+      "key": "FUCQ-166",
+      "status": "In Review",
+      "updated": "2026-11-10T03:08:19.040-0600"
+    },
+    {
+      "key": "FUCQ-177",
+      "status": "In Review",
+      "updated": "2026-11-11T15:12:23.856-0600"
+    },
+    {
+      "key": "FUCQ-179",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:22.648-0600"
+    },
+    {
+      "key": "FUCQ-182",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:31.447-0600"
+    },
+    {
+      "key": "FUCQ-183",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:34.068-0600"
+    },
+    {
+      "key": "FUCQ-184",
+      "status": "In Review",
+      "updated": "2026-11-08T08:12:51.345-0600"
+    },
+    {
+      "key": "FUCQ-185",
+      "status": "In Review",
+      "updated": "2026-11-08T08:12:52.069-0600"
+    },
+    {
+      "key": "FUCQ-186",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:36.828-0600"
+    },
+    {
+      "key": "FUCQ-187",
+      "status": "In Review",
+      "updated": "2026-11-11T02:09:33.078-0600"
+    },
+    {
+      "key": "FUCQ-188",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:47.450-0600"
+    },
+    {
+      "key": "FUCQ-189",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:44.844-0600"
+    },
+    {
+      "key": "FUCQ-190",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:47.290-0600"
+    },
+    {
+      "key": "FUCQ-191",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:50.137-0600"
+    },
+    {
+      "key": "FUCQ-192",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:53.035-0600"
+    },
+    {
+      "key": "FUCQ-193",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:55.797-0600"
+    },
+    {
+      "key": "FUCQ-194",
+      "status": "In Review",
+      "updated": "2026-11-10T03:12:58.607-0600"
+    },
+    {
+      "key": "FUCQ-195",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:01.202-0600"
+    },
+    {
+      "key": "FUCQ-196",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:03.884-0600"
+    },
+    {
+      "key": "FUCQ-197",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:06.807-0600"
+    },
+    {
+      "key": "FUCQ-198",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:09.707-0600"
+    },
+    {
+      "key": "FUCQ-199",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:12.613-0600"
+    },
+    {
+      "key": "FUCQ-200",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:15.434-0600"
+    },
+    {
+      "key": "FUCQ-201",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:22.254-0600"
+    },
+    {
+      "key": "FUCQ-202",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:25.163-0600"
+    },
+    {
+      "key": "FUCQ-203",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:27.910-0600"
+    },
+    {
+      "key": "FUCQ-204",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:30.759-0600"
+    },
+    {
+      "key": "FUCQ-205",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:33.483-0600"
+    },
+    {
+      "key": "FUCQ-206",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:36.029-0600"
+    },
+    {
+      "key": "FUCQ-207",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:39.022-0600"
+    },
+    {
+      "key": "FUCQ-208",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:41.989-0600"
+    },
+    {
+      "key": "FUCQ-209",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:44.735-0600"
+    },
+    {
+      "key": "FUCQ-210",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:47.440-0600"
+    },
+    {
+      "key": "FUCQ-211",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:50.247-0600"
+    },
+    {
+      "key": "FUCQ-212",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:52.950-0600"
+    },
+    {
+      "key": "FUCQ-213",
+      "status": "In Review",
+      "updated": "2026-11-10T03:13:55.764-0600"
+    },
+    {
+      "key": "FUCQ-214",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:55.358-0600"
+    },
+    {
+      "key": "FUCQ-215",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:01.247-0600"
+    },
+    {
+      "key": "FUCQ-216",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:04.049-0600"
+    },
+    {
+      "key": "FUCQ-217",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:07.090-0600"
+    },
+    {
+      "key": "FUCQ-221",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:23.309-0600"
+    },
+    {
+      "key": "FUCQ-222",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:26.146-0600"
+    },
+    {
+      "key": "FUCQ-223",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:28.653-0600"
+    },
+    {
+      "key": "FUCQ-224",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:31.363-0600"
+    },
+    {
+      "key": "FUCQ-225",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:34.198-0600"
+    },
+    {
+      "key": "FUCQ-226",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:37.017-0600"
+    },
+    {
+      "key": "FUCQ-227",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:39.509-0600"
+    },
+    {
+      "key": "FUCQ-228",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:42.225-0600"
+    },
+    {
+      "key": "FUCQ-229",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:44.995-0600"
+    },
+    {
+      "key": "FUCQ-230",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:48.004-0600"
+    },
+    {
+      "key": "FUCQ-231",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:50.528-0600"
+    },
+    {
+      "key": "FUCQ-232",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:53.139-0600"
+    },
+    {
+      "key": "FUCQ-233",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:55.784-0600"
+    },
+    {
+      "key": "FUCQ-234",
+      "status": "In Review",
+      "updated": "2026-11-10T03:14:58.814-0600"
+    },
+    {
+      "key": "FUCQ-235",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:01.541-0600"
+    },
+    {
+      "key": "FUCQ-236",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:04.450-0600"
+    },
+    {
+      "key": "FUCQ-237",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:07.163-0600"
+    },
+    {
+      "key": "FUCQ-238",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:09.894-0600"
+    },
+    {
+      "key": "FUCQ-239",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:12.503-0600"
+    },
+    {
+      "key": "FUCQ-240",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:15.156-0600"
+    },
+    {
+      "key": "FUCQ-241",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:32.044-0600"
+    },
+    {
+      "key": "FUCQ-242",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:34.766-0600"
+    },
+    {
+      "key": "FUCQ-243",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:38.052-0600"
+    },
+    {
+      "key": "FUCQ-244",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:40.963-0600"
+    },
+    {
+      "key": "FUCQ-245",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:43.911-0600"
+    },
+    {
+      "key": "FUCQ-246",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:46.908-0600"
+    },
+    {
+      "key": "FUCQ-249",
+      "status": "In Review",
+      "updated": "2026-11-10T03:15:54.855-0600"
+    },
+    {
+      "key": "FUCQ-251",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:00.295-0600"
+    },
+    {
+      "key": "FUCQ-252",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:03.161-0600"
+    },
+    {
+      "key": "FUCQ-253",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:05.936-0600"
+    },
+    {
+      "key": "FUCQ-254",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:08.714-0600"
+    },
+    {
+      "key": "FUCQ-256",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:11.414-0600"
+    },
+    {
+      "key": "FUCQ-257",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:14.244-0600"
+    },
+    {
+      "key": "FUCQ-258",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:17.099-0600"
+    },
+    {
+      "key": "FUCQ-259",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:20.042-0600"
+    },
+    {
+      "key": "FUCQ-260",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:22.686-0600"
+    },
+    {
+      "key": "FUCQ-261",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:25.344-0600"
+    },
+    {
+      "key": "FUCQ-262",
+      "status": "In Review",
+      "updated": "2026-11-10T03:16:59.683-0600"
+    },
+    {
+      "key": "FUCQ-263",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:02.448-0600"
+    },
+    {
+      "key": "FUCQ-264",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:05.585-0600"
+    },
+    {
+      "key": "FUCQ-265",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:08.103-0600"
+    },
+    {
+      "key": "FUCQ-267",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:10.835-0600"
+    },
+    {
+      "key": "FUCQ-268",
+      "status": "In Review",
+      "updated": "2026-11-10T05:30:11.644-0600"
+    },
+    {
+      "key": "FUCQ-269",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:16.449-0600"
+    },
+    {
+      "key": "FUCQ-270",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:48.092-0600"
+    },
+    {
+      "key": "FUCQ-271",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:21.829-0600"
+    },
+    {
+      "key": "FUCQ-272",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:24.397-0600"
+    },
+    {
+      "key": "FUCQ-275",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:26.792-0600"
+    },
+    {
+      "key": "FUCQ-277",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:39.358-0600"
+    },
+    {
+      "key": "FUCQ-278",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:32.462-0600"
+    },
+    {
+      "key": "FUCQ-279",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:35.060-0600"
+    },
+    {
+      "key": "FUCQ-280",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:37.688-0600"
+    },
+    {
+      "key": "FUCQ-282",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:40.478-0600"
+    },
+    {
+      "key": "FUCQ-284",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:35.861-0600"
+    },
+    {
+      "key": "FUCQ-285",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:45.930-0600"
+    },
+    {
+      "key": "FUCQ-286",
+      "status": "In Review",
+      "updated": "2026-11-10T09:57:27.717-0600"
+    },
+    {
+      "key": "FUCQ-287",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:51.420-0600"
+    },
+    {
+      "key": "FUCQ-288",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:54.341-0600"
+    },
+    {
+      "key": "FUCQ-289",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:57.165-0600"
+    },
+    {
+      "key": "FUCQ-290",
+      "status": "In Review",
+      "updated": "2026-11-10T03:17:59.782-0600"
+    },
+    {
+      "key": "FUCQ-291",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:02.414-0600"
+    },
+    {
+      "key": "FUCQ-292",
+      "status": "In Review",
+      "updated": "2026-11-10T05:30:00.872-0600"
+    },
+    {
+      "key": "FUCQ-293",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:07.570-0600"
+    },
+    {
+      "key": "FUCQ-295",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:10.103-0600"
+    },
+    {
+      "key": "FUCQ-297",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:12.677-0600"
+    },
+    {
+      "key": "FUCQ-299",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:15.336-0600"
+    },
+    {
+      "key": "FUCQ-300",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:18.259-0600"
+    },
+    {
+      "key": "FUCQ-301",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:21.071-0600"
+    },
+    {
+      "key": "FUCQ-302",
+      "status": "In Review",
+      "updated": "2026-11-11T04:39:13.375-0600"
+    },
+    {
+      "key": "FUCQ-309",
+      "status": "In Review",
+      "updated": "2026-11-10T13:06:20.527-0600"
+    },
+    {
+      "key": "FUCQ-310",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:31.309-0600"
+    },
+    {
+      "key": "FUCQ-311",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:33.889-0600"
+    },
+    {
+      "key": "FUCQ-312",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:36.697-0600"
+    },
+    {
+      "key": "FUCQ-313",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:39.376-0600"
+    },
+    {
+      "key": "FUCQ-314",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:42.189-0600"
+    },
+    {
+      "key": "FUCQ-315",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:05.525-0600"
+    },
+    {
+      "key": "FUCQ-316",
+      "status": "In Review",
+      "updated": "2026-11-10T05:29:40.004-0600"
+    },
+    {
+      "key": "FUCQ-317",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:47.884-0600"
+    },
+    {
+      "key": "FUCQ-318",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:50.503-0600"
+    },
+    {
+      "key": "FUCQ-319",
+      "status": "In Review",
+      "updated": "2026-11-10T03:18:53.224-0600"
+    },
+    {
+      "key": "FUCQ-323",
+      "status": "In Review",
+      "updated": "2026-11-11T06:15:11.542-0600"
+    },
+    {
+      "key": "FUCQ-326",
+      "status": "In Review",
+      "updated": "2026-11-10T07:02:54.124-0600"
+    },
+    {
+      "key": "FUCQ-328",
+      "status": "In Review",
+      "updated": "2026-11-10T15:57:26.009-0600"
+    },
+    {
+      "key": "FUCQ-332",
+      "status": "In Review",
+      "updated": "2026-11-10T07:30:16.540-0600"
+    },
+    {
+      "key": "FUCQ-333",
+      "status": "In Review",
+      "updated": "2026-11-10T06:04:06.900-0600"
+    },
+    {
+      "key": "FUCQ-342",
+      "status": "In Review",
+      "updated": "2026-11-10T08:16:47.710-0600"
+    },
+    {
+      "key": "FUCQ-343",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:32.318-0600"
+    },
+    {
+      "key": "FUCQ-345",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:01.957-0600"
+    },
+    {
+      "key": "FUCQ-346",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:30.808-0600"
+    },
+    {
+      "key": "FUCQ-347",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:09.587-0600"
+    },
+    {
+      "key": "FUCQ-348",
+      "status": "In Review",
+      "updated": "2026-11-11T04:06:32.736-0600"
+    },
+    {
+      "key": "FUCQ-378",
+      "status": "In Review",
+      "updated": "2026-11-11T04:12:20.435-0600"
+    },
+    {
+      "key": "FUCQ-379",
+      "status": "In Review",
+      "updated": "2026-11-11T05:51:53.951-0600"
+    },
+    {
+      "key": "FUCQ-381",
+      "status": "In Review",
+      "updated": "2026-11-11T05:39:00.369-0600"
+    },
+    {
+      "key": "FUCQ-382",
+      "status": "In Review",
+      "updated": "2026-11-11T08:59:26.823-0600"
+    },
+    {
+      "key": "FUCQ-390",
+      "status": "In Review",
+      "updated": "2026-11-11T09:03:02.089-0600"
+    },
+    {
+      "key": "FUCQ-402",
+      "status": "In Review",
+      "updated": "2026-11-11T14:18:00.105-0600"
+    },
+    {
+      "key": "FUCQ-403",
+      "status": "In Review",
+      "updated": "2026-11-11T14:50:06.071-0600"
+    }
+  ],
+  "validation_plan": {
+    "changed_paths": [
+      "docs/gcsp/story-review-acceptance-2026-11-12.md",
+      "docs/gcsp/story-review-acceptance-2026-11-12.json",
+      ".product-map/work.json",
+      "_dev/code-inbox/DEV-2026-11-10-014.md",
+      "_dev/done/2026-11/DEV-2026-11-10-014.md"
+    ],
+    "checks": [
+      "Complete paginated Story and Bug baseline queries",
+      "Re-read each target and require FUCQ Story in native In Review",
+      "Discover each transition by native target Done",
+      "POST status-only transition and GET independent readback",
+      "Check labels and assignee preserved",
+      "Complete final review-Story query and Bug baseline comparison",
+      "Check receipt consistency, unrelated map-row preservation and whitespace"
+    ],
+    "excluded": [
+      "Application test suites",
+      "New visual reviews",
+      "New implementation or deployment acceptance"
+    ],
+    "reason": "Administrative acceptance explicitly confirmed by the collaborator; no product or test code changes."
+  },
+  "transitions": [
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-27",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:46.990Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:45.979-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-28",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:48.780Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:47.955-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-46",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:50.135Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:49.573-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-47",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:51.480Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:50.831-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-48",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:52.580Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:52.046-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-58",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:53.884Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:53.164-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-59",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:55.033Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:54.540-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-60",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:01:56.470Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:01:55.607-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-61",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:13.511Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:12.891-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-62",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:14.640Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:14.085-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-63",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:15.557Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:14.995-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-66",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:16.563Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:15.995-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-69",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:17.597Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:16.949-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-70",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:18.827Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:18.305-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-71",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:20.037Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:19.203-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-72",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:21.593Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:20.844-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-73",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:23.339Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:22.785-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-77",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:24.468Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:23.936-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-78",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:25.791Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:25.026-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-92",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:26.909Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:26.336-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-95",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:28.084Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:27.509-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-96",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:29.159Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:28.677-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-98",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:30.233Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:29.712-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-100",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:31.347Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:30.802-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-102",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:40.505Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:39.964-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-104",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:41.369Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:40.862-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-105",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:42.386Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:41.717-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-106",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:43.278Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:42.708-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-107",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:44.156Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:43.627-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-108",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:45.220Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:44.744-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-109",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:46.244Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:45.578-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-111",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:47.082Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:46.594-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-113",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:48.521Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:48.001-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-114",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:49.603Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:48.893-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-115",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:50.435Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:49.951-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-116",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:51.350Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:50.777-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-117",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:52.283Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:51.701-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-118",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:53.349Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:52.687-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-119",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:54.303Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:53.750-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-120",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:02:55.570Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:02:54.858-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-121",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:09.068Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:08.281-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-122",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:10.115Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:09.523-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-123",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:11.086Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:10.527-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-124",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:12.009Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:11.464-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-126",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:12.987Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:12.343-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-127",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:14.034Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:13.360-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-128",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:15.383Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:14.760-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-129",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:16.448Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:15.818-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-130",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:18.227Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:17.405-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-131",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:19.276Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:18.781-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-134",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:20.171Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:19.637-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-135",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:21.119Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:20.509-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-136",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:22.195Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:21.631-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-137",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:23.123Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:22.575-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-138",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:24.307Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:23.795-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-149",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:25.566Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:24.703-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-167",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:34.802Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:34.153-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-168",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:35.862Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:35.176-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-169",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:36.801Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:36.255-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-170",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:38.215Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:37.317-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-171",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:39.262Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:38.626-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-172",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:40.312Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:39.623-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-173",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:41.362Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:40.665-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-174",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:42.410Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:41.694-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-175",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:43.677Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:43.210-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-176",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:44.805Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:44.141-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-178",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:45.825Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:45.328-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-180",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:46.873Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:46.174-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-181",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:47.783Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:47.244-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-218",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:48.848Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:48.169-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-219",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:49.744Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:49.206-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-220",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:50.561Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:50.085-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-247",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:58.811Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:58.081-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-248",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:03:59.645Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:59.148-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-303",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:00.524Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:03:59.987-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-304",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:01.510Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:00.872-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-321",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:02.594Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:01.923-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-322",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:03.494Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:02.961-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-351",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:04.428Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:03.870-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-354",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:05.263Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:04.778-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-359",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:06.820Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:05.991-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-360",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:07.737Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:07.166-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-361",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:08.630Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:08.084-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-362",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:09.611Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:09.018-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-363",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:10.496Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:09.983-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-364",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:11.395Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:10.861-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-365",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:12.495Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:11.836-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-366",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:13.817Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:12.893-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-367",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:22.733Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:21.947-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-368",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:23.783Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:23.123-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-369",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:24.696Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:24.161-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-370",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:25.541Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:25.051-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-371",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:26.418Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:25.892-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-372",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:27.297Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:26.752-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-373",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:28.210Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:27.636-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-374",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:29.238Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:28.589-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-375",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:30.790Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:30.257-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-383",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:32.171Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:31.374-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-384",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:33.366Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:32.549-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-385",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:34.268Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:33.732-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-386",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:35.370Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:34.711-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-389",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:36.376Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:35.747-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-397",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:37.287Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:36.731-0600",
+      "verified": true,
+      "write_http_status": 204
+    },
+    {
+      "assignee_preserved": true,
+      "from": "In Review",
+      "key": "FUCQ-398",
+      "labels_preserved": true,
+      "observed_at": "2026-11-12T12:04:38.258Z",
+      "readback_http_status": 200,
+      "to": "Done",
+      "transition_id": "31",
+      "updated": "2026-11-12T06:04:37.622-0600",
+      "verified": true,
+      "write_http_status": 204
+    }
+  ],
+  "issues": [
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Share pure recommendation evaluation behind the retail compatibility layer"
+      },
+      "key": "FUCQ-27",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-27"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Build grouped result views from complete exact-car decisions"
+      },
+      "key": "FUCQ-28",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-28"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Resolve a live catalogue configuration behind the snapshot contract"
+      },
+      "key": "FUCQ-46",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-46"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Bound live catalogue failures and preserve truthful fallback"
+      },
+      "key": "FUCQ-47",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-47"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify the selected live catalogue provider with redacted evidence"
+      },
+      "key": "FUCQ-48",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-48"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Qualify fleet coverage and budgets before collecting configurations"
+      },
+      "key": "FUCQ-58",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-58"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Collect distinct constructible configurations with resumable batches"
+      },
+      "key": "FUCQ-59",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Enrich resolved fleet configurations with matching facts and images"
+      },
+      "key": "FUCQ-60",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Collect and validate 10,000 genuinely distinct BMW configurations"
+      },
+      "key": "FUCQ-61",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Publish the configuration corpus and generate stock by order reference"
+      },
+      "key": "FUCQ-62",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Prove full-corpus lookup and offline recovery through the port"
+      },
+      "key": "FUCQ-63",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Persist exact manual claims and expiry through a shared authority"
+      },
+      "key": "FUCQ-66",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Browse released cars with visual cards and complete vehicle details"
+      },
+      "key": "FUCQ-69",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Review a claimed car with contact details and return mileage"
+      },
+      "key": "FUCQ-70",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Submit manual selections through an idempotent ordering adapter"
+      },
+      "key": "FUCQ-71",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Review declarations and show the actual order handoff outcome"
+      },
+      "key": "FUCQ-72",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-72"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify the complete manual journey and its employee entry contract"
+      },
+      "key": "FUCQ-73",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-73"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify scheme coverage using the collected BMW configuration corpus"
+      },
+      "key": "FUCQ-77",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Shape synthetic scheme stock from real stock-locator aggregates"
+      },
+      "key": "FUCQ-78",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Release synthetic stock on a presenter tick from the next pull"
+      },
+      "key": "FUCQ-92",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show buddy activity and pause or resume the search"
+      },
+      "key": "FUCQ-95",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Allocate released cars across competing briefs by the policy tie-break"
+      },
+      "key": "FUCQ-96",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-96"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Send offer emails through one real transport once a sender is set up"
+      },
+      "key": "FUCQ-98",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-98"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Hold the allocated car and create its offer and outbox job in one transaction"
+      },
+      "key": "FUCQ-100",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Open an offer from a run-bound link that shows its current state"
+      },
+      "key": "FUCQ-102",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Track order requests from requested to confirmed to released"
+      },
+      "key": "FUCQ-104",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show the offer's exact quote, current-car comparison and countdown"
+      },
+      "key": "FUCQ-105",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Accept, decline or expire an offer with idempotent outcomes"
+      },
+      "key": "FUCQ-106",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Confirm one preference change after declining and receive a second offer"
+      },
+      "key": "FUCQ-107",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Hand off a selected buddy offer through the ordering adapter"
+      },
+      "key": "FUCQ-108",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-108"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify Paula's critical path end to end with browser evidence"
+      },
+      "key": "FUCQ-109",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-109"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Progress a selected order through the target approval states on presenter ticks"
+      },
+      "key": "FUCQ-111",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-111"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Record learning records for Greg's demand model, observed and synthetic"
+      },
+      "key": "FUCQ-113",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Request and confirm a replacement handover appointment"
+      },
+      "key": "FUCQ-114",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-114"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Train the choice model offline and evaluate it on held-out cycles"
+      },
+      "key": "FUCQ-115",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Track documents and vehicle readiness with a named owner for each"
+      },
+      "key": "FUCQ-116",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-116"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Plan feasible order quantities from expressed demand, supply and policy"
+      },
+      "key": "FUCQ-117",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Plan and schedule the old car's separate return"
+      },
+      "key": "FUCQ-118",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-118"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Preview a replan after constraint edits and submit the plan as a request"
+      },
+      "key": "FUCQ-119",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-119"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show Paula order progress, outstanding actions and confirmed handover and return plans"
+      },
+      "key": "FUCQ-120",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-120"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show Greg's recommended order plan as a panel on his dashboard"
+      },
+      "key": "FUCQ-121",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-121"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Let Paula find help and see named case ownership and status"
+      },
+      "key": "FUCQ-122",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Forecast demand with the learned model, shown beside the baseline plan"
+      },
+      "key": "FUCQ-123",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-123"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify approval, documents and confirmed handover and return planning end to end"
+      },
+      "key": "FUCQ-124",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-124"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Operate the main demo with tick, release, reset and role controls"
+      },
+      "key": "FUCQ-126",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay the no-suitable-match scenario"
+      },
+      "key": "FUCQ-127",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-127"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay decline, one confirmed change and a matching second offer"
+      },
+      "key": "FUCQ-128",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-128"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay the offer-expiry scenario"
+      },
+      "key": "FUCQ-129",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-129"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay the unavailable-data scenario"
+      },
+      "key": "FUCQ-130",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-130"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay the uncertain-handoff scenario"
+      },
+      "key": "FUCQ-131",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-131"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay today's first-come-first-served release for a seeded cohort in an isolated run"
+      },
+      "key": "FUCQ-134",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay the buddy route for the same cohort through allocation, holds and decisions"
+      },
+      "key": "FUCQ-135",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-135"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Measure the process comparison across seeds and store immutable results"
+      },
+      "key": "FUCQ-136",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-136"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Run the process comparison offline and read its stored result"
+      },
+      "key": "FUCQ-137",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-137"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show the stored process comparison and assumptions on Greg's dashboard"
+      },
+      "key": "FUCQ-138",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Resume the saved manual journey through the current claim"
+      },
+      "key": "FUCQ-149",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-149"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Record handover completion, no-show and rebooking"
+      },
+      "key": "FUCQ-167",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-167"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Confirm an old-car return or missed return and update the current-car relationship"
+      },
+      "key": "FUCQ-168",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-168"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show physical handover and return outcomes with rebooking actions"
+      },
+      "key": "FUCQ-169",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-169"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Work the renewal-risk queue, remedies and advanced employee case interactions"
+      },
+      "key": "FUCQ-170",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-170"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Verify terminal handover, return and advanced renewal-help scenarios"
+      },
+      "key": "FUCQ-171",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-171"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Choose and reset the wider presenter scenario catalogue"
+      },
+      "key": "FUCQ-172",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-172"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Replay a confirmed preference change while no second car is available"
+      },
+      "key": "FUCQ-173",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-173"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Compare alternative order mixes, points and buddy hold durations"
+      },
+      "key": "FUCQ-174",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-174"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Start and monitor responsive comparison worker jobs from the browser"
+      },
+      "key": "FUCQ-175",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-175"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard"
+      },
+      "key": "FUCQ-176",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-176"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "After the demo: run the live data collection for FUCQ-77 and FUCQ-78"
+      },
+      "key": "FUCQ-178",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-178"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Run the full GCSP runtime on the hosted Render backend, so the demo needs no local launcher"
+      },
+      "key": "FUCQ-180",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-180"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "After the demo: same-site hosting for GCSP, with the static pages back on gcsp-site and a design rule recorded"
+      },
+      "key": "FUCQ-181",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-181"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show real scheme display names in order history and the account page"
+      },
+      "key": "FUCQ-218",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-218"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "When nothing matches, Buddy activity names the excluding essential and offers next steps"
+      },
+      "key": "FUCQ-219",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-219"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Generate a separate order reference for each order and show it everywhere"
+      },
+      "key": "FUCQ-220",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-220"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Performance review of the GCSP demo journeys, with prioritised recommendations to speed up the applications"
+      },
+      "key": "FUCQ-247",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-247"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "UI and UX review of the GCSP demo journeys, with prioritised improvement recommendations"
+      },
+      "key": "FUCQ-248",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-248"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Make GCSP static assets cacheable (ETag and no-cache) and compress them on the local host"
+      },
+      "key": "FUCQ-303",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-303"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Gallery fetches the 960 KB manual stock twice for 6 cards, mostly repeated copies"
+      },
+      "key": "FUCQ-304",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-304"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Remove demo, synthetic and example-data disclaimers from the screens and the email"
+      },
+      "key": "FUCQ-321",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-321"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Sign in as a demo user and retain their stored account throughout the live site"
+      },
+      "key": "FUCQ-322",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-322"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Presenter shortcut: reset and switch to Greg in one action"
+      },
+      "key": "FUCQ-351",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-351"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show UK local time on Paula's screens, with no \"UTC\" labels"
+      },
+      "key": "FUCQ-354",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-354"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Give Account a wider current-car presentation"
+      },
+      "key": "FUCQ-359",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-359"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Presenter console on its own page with Basic and Advanced modes"
+      },
+      "key": "FUCQ-360",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-360"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Remove presenter controls from Paula's and Greg's pages"
+      },
+      "key": "FUCQ-361",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-361"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Basic presenter console: friendly time and journey-driven Release button"
+      },
+      "key": "FUCQ-362",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-362"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Main successful journey releases 100 different cars every weekday"
+      },
+      "key": "FUCQ-363",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-363"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Presenter read of the latest release and how the buddy narrowed it"
+      },
+      "key": "FUCQ-364",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-364"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Animated release visual on the presenter console"
+      },
+      "key": "FUCQ-365",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-365"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "What happened feed on the presenter console, with captured emails"
+      },
+      "key": "FUCQ-366",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-366"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Save a current-car star rating from Account"
+      },
+      "key": "FUCQ-367",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-367"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Edit and autosave compact category preferences"
+      },
+      "key": "FUCQ-368",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-368"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Choose Same again and show Buddy understanding"
+      },
+      "key": "FUCQ-369",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Engage Buddy explicitly from Account"
+      },
+      "key": "FUCQ-370",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-370"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Use current-car feedback in suitable recommendations"
+      },
+      "key": "FUCQ-371",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Let Paula discard a saved replacement journey, in plain words"
+      },
+      "key": "FUCQ-372",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-372"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Remove representative-image disclaimers from car images on every screen"
+      },
+      "key": "FUCQ-373",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-373"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Load GCSP pages without the module round-trip waterfall"
+      },
+      "key": "FUCQ-374",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-374"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Notification bell in the portal header for buddy offers"
+      },
+      "key": "FUCQ-375",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-375"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show a full-width offer with benefits, tradeoffs and time to decide"
+      },
+      "key": "FUCQ-383",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-383"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Resolve selected configuration codes from a seeded local definition index"
+      },
+      "key": "FUCQ-384",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show a seeded three-view vehicle gallery with an enlarged image viewer"
+      },
+      "key": "FUCQ-385",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Confirm offer acceptance or fixed-reason decline in a side drawer"
+      },
+      "key": "FUCQ-386",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show consistent Buddy status on Your cars and visible search controls"
+      },
+      "key": "FUCQ-389",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-389"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Bring Buddy controls and recent history into Your cars"
+      },
+      "key": "FUCQ-397",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-397"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "status": {
+          "id": "10018",
+          "name": "Done"
+        },
+        "summary": "Show run-scoped Buddy allocation outcomes on Presenter"
+      },
+      "key": "FUCQ-398",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-398"
+    }
+  ],
+  "result": {
+    "state": "complete",
+    "verified_done": 104,
+    "remaining_stories_in_review": 0,
+    "review_bugs_unchanged": true,
+    "review_bug_count": 163
+  },
+  "resources": {
+    "scratch_roots": [],
+    "owned_workers": 0,
+    "large_output": false,
+    "compatibility_exception": null,
+    "leftovers": []
+  },
+  "last_checkpoint_at": "2026-11-12T12:04:38.258Z",
+  "final_verification": {
+    "observed_at": "2026-11-12T12:05:02.295Z",
+    "remaining_stories": {
+      "complete": true,
+      "count": 0,
+      "http": 200,
+      "isLast": true,
+      "issues": [],
+      "jql": "project = FUCQ AND issuetype = Story AND status = \"In Review\" ORDER BY key ASC",
+      "pages": 1
+    },
+    "review_bugs": {
+      "complete": true,
+      "count": 163,
+      "http": 200,
+      "isLast": true,
+      "issues": [
+        {
+          "key": "FUCQ-139",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:06:58.374-0600"
+        },
+        {
+          "key": "FUCQ-140",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:01.511-0600"
+        },
+        {
+          "key": "FUCQ-141",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:04.335-0600"
+        },
+        {
+          "key": "FUCQ-142",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:07.109-0600"
+        },
+        {
+          "key": "FUCQ-143",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:09.978-0600"
+        },
+        {
+          "key": "FUCQ-144",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:12.842-0600"
+        },
+        {
+          "key": "FUCQ-145",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:15.622-0600"
+        },
+        {
+          "key": "FUCQ-146",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:18.919-0600"
+        },
+        {
+          "key": "FUCQ-147",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:22.069-0600"
+        },
+        {
+          "key": "FUCQ-148",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:24.761-0600"
+        },
+        {
+          "key": "FUCQ-150",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:30.120-0600"
+        },
+        {
+          "key": "FUCQ-151",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T21:04:00.843-0600"
+        },
+        {
+          "key": "FUCQ-152",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:34.174-0600"
+        },
+        {
+          "key": "FUCQ-153",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T19:50:23.198-0600"
+        },
+        {
+          "key": "FUCQ-154",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T19:50:24.978-0600"
+        },
+        {
+          "key": "FUCQ-155",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T19:50:25.366-0600"
+        },
+        {
+          "key": "FUCQ-156",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:37.360-0600"
+        },
+        {
+          "key": "FUCQ-157",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:40.224-0600"
+        },
+        {
+          "key": "FUCQ-158",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:42.920-0600"
+        },
+        {
+          "key": "FUCQ-159",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:07:59.635-0600"
+        },
+        {
+          "key": "FUCQ-160",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:02.377-0600"
+        },
+        {
+          "key": "FUCQ-161",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:05.163-0600"
+        },
+        {
+          "key": "FUCQ-162",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:07.859-0600"
+        },
+        {
+          "key": "FUCQ-163",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:10.405-0600"
+        },
+        {
+          "key": "FUCQ-164",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:13.439-0600"
+        },
+        {
+          "key": "FUCQ-165",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:16.236-0600"
+        },
+        {
+          "key": "FUCQ-166",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:08:19.040-0600"
+        },
+        {
+          "key": "FUCQ-177",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T15:12:23.856-0600"
+        },
+        {
+          "key": "FUCQ-179",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:22.648-0600"
+        },
+        {
+          "key": "FUCQ-182",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:31.447-0600"
+        },
+        {
+          "key": "FUCQ-183",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:34.068-0600"
+        },
+        {
+          "key": "FUCQ-184",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T08:12:51.345-0600"
+        },
+        {
+          "key": "FUCQ-185",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-08T08:12:52.069-0600"
+        },
+        {
+          "key": "FUCQ-186",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:36.828-0600"
+        },
+        {
+          "key": "FUCQ-187",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T02:09:33.078-0600"
+        },
+        {
+          "key": "FUCQ-188",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:47.450-0600"
+        },
+        {
+          "key": "FUCQ-189",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:44.844-0600"
+        },
+        {
+          "key": "FUCQ-190",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:47.290-0600"
+        },
+        {
+          "key": "FUCQ-191",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:50.137-0600"
+        },
+        {
+          "key": "FUCQ-192",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:53.035-0600"
+        },
+        {
+          "key": "FUCQ-193",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:55.797-0600"
+        },
+        {
+          "key": "FUCQ-194",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:12:58.607-0600"
+        },
+        {
+          "key": "FUCQ-195",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:01.202-0600"
+        },
+        {
+          "key": "FUCQ-196",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:03.884-0600"
+        },
+        {
+          "key": "FUCQ-197",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:06.807-0600"
+        },
+        {
+          "key": "FUCQ-198",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:09.707-0600"
+        },
+        {
+          "key": "FUCQ-199",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:12.613-0600"
+        },
+        {
+          "key": "FUCQ-200",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:15.434-0600"
+        },
+        {
+          "key": "FUCQ-201",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:22.254-0600"
+        },
+        {
+          "key": "FUCQ-202",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:25.163-0600"
+        },
+        {
+          "key": "FUCQ-203",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:27.910-0600"
+        },
+        {
+          "key": "FUCQ-204",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:30.759-0600"
+        },
+        {
+          "key": "FUCQ-205",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:33.483-0600"
+        },
+        {
+          "key": "FUCQ-206",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:36.029-0600"
+        },
+        {
+          "key": "FUCQ-207",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:39.022-0600"
+        },
+        {
+          "key": "FUCQ-208",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:41.989-0600"
+        },
+        {
+          "key": "FUCQ-209",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:44.735-0600"
+        },
+        {
+          "key": "FUCQ-210",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:47.440-0600"
+        },
+        {
+          "key": "FUCQ-211",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:50.247-0600"
+        },
+        {
+          "key": "FUCQ-212",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:52.950-0600"
+        },
+        {
+          "key": "FUCQ-213",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:13:55.764-0600"
+        },
+        {
+          "key": "FUCQ-214",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:55.358-0600"
+        },
+        {
+          "key": "FUCQ-215",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:01.247-0600"
+        },
+        {
+          "key": "FUCQ-216",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:04.049-0600"
+        },
+        {
+          "key": "FUCQ-217",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:07.090-0600"
+        },
+        {
+          "key": "FUCQ-221",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:23.309-0600"
+        },
+        {
+          "key": "FUCQ-222",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:26.146-0600"
+        },
+        {
+          "key": "FUCQ-223",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:28.653-0600"
+        },
+        {
+          "key": "FUCQ-224",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:31.363-0600"
+        },
+        {
+          "key": "FUCQ-225",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:34.198-0600"
+        },
+        {
+          "key": "FUCQ-226",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:37.017-0600"
+        },
+        {
+          "key": "FUCQ-227",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:39.509-0600"
+        },
+        {
+          "key": "FUCQ-228",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:42.225-0600"
+        },
+        {
+          "key": "FUCQ-229",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:44.995-0600"
+        },
+        {
+          "key": "FUCQ-230",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:48.004-0600"
+        },
+        {
+          "key": "FUCQ-231",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:50.528-0600"
+        },
+        {
+          "key": "FUCQ-232",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:53.139-0600"
+        },
+        {
+          "key": "FUCQ-233",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:55.784-0600"
+        },
+        {
+          "key": "FUCQ-234",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:14:58.814-0600"
+        },
+        {
+          "key": "FUCQ-235",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:01.541-0600"
+        },
+        {
+          "key": "FUCQ-236",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:04.450-0600"
+        },
+        {
+          "key": "FUCQ-237",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:07.163-0600"
+        },
+        {
+          "key": "FUCQ-238",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:09.894-0600"
+        },
+        {
+          "key": "FUCQ-239",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:12.503-0600"
+        },
+        {
+          "key": "FUCQ-240",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:15.156-0600"
+        },
+        {
+          "key": "FUCQ-241",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:32.044-0600"
+        },
+        {
+          "key": "FUCQ-242",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:34.766-0600"
+        },
+        {
+          "key": "FUCQ-243",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:38.052-0600"
+        },
+        {
+          "key": "FUCQ-244",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:40.963-0600"
+        },
+        {
+          "key": "FUCQ-245",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:43.911-0600"
+        },
+        {
+          "key": "FUCQ-246",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:46.908-0600"
+        },
+        {
+          "key": "FUCQ-249",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:15:54.855-0600"
+        },
+        {
+          "key": "FUCQ-251",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:00.295-0600"
+        },
+        {
+          "key": "FUCQ-252",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:03.161-0600"
+        },
+        {
+          "key": "FUCQ-253",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:05.936-0600"
+        },
+        {
+          "key": "FUCQ-254",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:08.714-0600"
+        },
+        {
+          "key": "FUCQ-256",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:11.414-0600"
+        },
+        {
+          "key": "FUCQ-257",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:14.244-0600"
+        },
+        {
+          "key": "FUCQ-258",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:17.099-0600"
+        },
+        {
+          "key": "FUCQ-259",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:20.042-0600"
+        },
+        {
+          "key": "FUCQ-260",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:22.686-0600"
+        },
+        {
+          "key": "FUCQ-261",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:25.344-0600"
+        },
+        {
+          "key": "FUCQ-262",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:16:59.683-0600"
+        },
+        {
+          "key": "FUCQ-263",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:02.448-0600"
+        },
+        {
+          "key": "FUCQ-264",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:05.585-0600"
+        },
+        {
+          "key": "FUCQ-265",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:08.103-0600"
+        },
+        {
+          "key": "FUCQ-267",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:10.835-0600"
+        },
+        {
+          "key": "FUCQ-268",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:30:11.644-0600"
+        },
+        {
+          "key": "FUCQ-269",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:16.449-0600"
+        },
+        {
+          "key": "FUCQ-270",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:48.092-0600"
+        },
+        {
+          "key": "FUCQ-271",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:21.829-0600"
+        },
+        {
+          "key": "FUCQ-272",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:24.397-0600"
+        },
+        {
+          "key": "FUCQ-275",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:26.792-0600"
+        },
+        {
+          "key": "FUCQ-277",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:39.358-0600"
+        },
+        {
+          "key": "FUCQ-278",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:32.462-0600"
+        },
+        {
+          "key": "FUCQ-279",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:35.060-0600"
+        },
+        {
+          "key": "FUCQ-280",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:37.688-0600"
+        },
+        {
+          "key": "FUCQ-282",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:40.478-0600"
+        },
+        {
+          "key": "FUCQ-284",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:35.861-0600"
+        },
+        {
+          "key": "FUCQ-285",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:45.930-0600"
+        },
+        {
+          "key": "FUCQ-286",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T09:57:27.717-0600"
+        },
+        {
+          "key": "FUCQ-287",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:51.420-0600"
+        },
+        {
+          "key": "FUCQ-288",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:54.341-0600"
+        },
+        {
+          "key": "FUCQ-289",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:57.165-0600"
+        },
+        {
+          "key": "FUCQ-290",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:17:59.782-0600"
+        },
+        {
+          "key": "FUCQ-291",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:02.414-0600"
+        },
+        {
+          "key": "FUCQ-292",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:30:00.872-0600"
+        },
+        {
+          "key": "FUCQ-293",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:07.570-0600"
+        },
+        {
+          "key": "FUCQ-295",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:10.103-0600"
+        },
+        {
+          "key": "FUCQ-297",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:12.677-0600"
+        },
+        {
+          "key": "FUCQ-299",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:15.336-0600"
+        },
+        {
+          "key": "FUCQ-300",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:18.259-0600"
+        },
+        {
+          "key": "FUCQ-301",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:21.071-0600"
+        },
+        {
+          "key": "FUCQ-302",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:39:13.375-0600"
+        },
+        {
+          "key": "FUCQ-309",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T13:06:20.527-0600"
+        },
+        {
+          "key": "FUCQ-310",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:31.309-0600"
+        },
+        {
+          "key": "FUCQ-311",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:33.889-0600"
+        },
+        {
+          "key": "FUCQ-312",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:36.697-0600"
+        },
+        {
+          "key": "FUCQ-313",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:39.376-0600"
+        },
+        {
+          "key": "FUCQ-314",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:42.189-0600"
+        },
+        {
+          "key": "FUCQ-315",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:05.525-0600"
+        },
+        {
+          "key": "FUCQ-316",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T05:29:40.004-0600"
+        },
+        {
+          "key": "FUCQ-317",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:47.884-0600"
+        },
+        {
+          "key": "FUCQ-318",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:50.503-0600"
+        },
+        {
+          "key": "FUCQ-319",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T03:18:53.224-0600"
+        },
+        {
+          "key": "FUCQ-323",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T06:15:11.542-0600"
+        },
+        {
+          "key": "FUCQ-326",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T07:02:54.124-0600"
+        },
+        {
+          "key": "FUCQ-328",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T15:57:26.009-0600"
+        },
+        {
+          "key": "FUCQ-332",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T07:30:16.540-0600"
+        },
+        {
+          "key": "FUCQ-333",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T06:04:06.900-0600"
+        },
+        {
+          "key": "FUCQ-342",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-10T08:16:47.710-0600"
+        },
+        {
+          "key": "FUCQ-343",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:32.318-0600"
+        },
+        {
+          "key": "FUCQ-345",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:01.957-0600"
+        },
+        {
+          "key": "FUCQ-346",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:30.808-0600"
+        },
+        {
+          "key": "FUCQ-347",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:09.587-0600"
+        },
+        {
+          "key": "FUCQ-348",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:06:32.736-0600"
+        },
+        {
+          "key": "FUCQ-378",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T04:12:20.435-0600"
+        },
+        {
+          "key": "FUCQ-379",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T05:51:53.951-0600"
+        },
+        {
+          "key": "FUCQ-381",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T05:39:00.369-0600"
+        },
+        {
+          "key": "FUCQ-382",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T08:59:26.823-0600"
+        },
+        {
+          "key": "FUCQ-390",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T09:03:02.089-0600"
+        },
+        {
+          "key": "FUCQ-402",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T14:18:00.105-0600"
+        },
+        {
+          "key": "FUCQ-403",
+          "status": "In Review",
+          "type": "Bug",
+          "updated": "2026-11-11T14:50:06.071-0600"
+        }
+      ],
+      "jql": "project = FUCQ AND issuetype = Bug AND status = \"In Review\" ORDER BY key ASC",
+      "pages": 2
+    },
+    "target_stories": {
+      "complete": true,
+      "count": 104,
+      "http": 200,
+      "isLast": true,
+      "issues": [
+        {
+          "key": "FUCQ-27",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:45.979-0600"
+        },
+        {
+          "key": "FUCQ-28",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:47.955-0600"
+        },
+        {
+          "key": "FUCQ-46",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:49.573-0600"
+        },
+        {
+          "key": "FUCQ-47",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:50.831-0600"
+        },
+        {
+          "key": "FUCQ-48",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:52.046-0600"
+        },
+        {
+          "key": "FUCQ-58",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:53.164-0600"
+        },
+        {
+          "key": "FUCQ-59",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:54.540-0600"
+        },
+        {
+          "key": "FUCQ-60",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:01:55.607-0600"
+        },
+        {
+          "key": "FUCQ-61",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:12.891-0600"
+        },
+        {
+          "key": "FUCQ-62",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:14.085-0600"
+        },
+        {
+          "key": "FUCQ-63",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:14.995-0600"
+        },
+        {
+          "key": "FUCQ-66",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:15.995-0600"
+        },
+        {
+          "key": "FUCQ-69",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:16.949-0600"
+        },
+        {
+          "key": "FUCQ-70",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:18.305-0600"
+        },
+        {
+          "key": "FUCQ-71",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:19.203-0600"
+        },
+        {
+          "key": "FUCQ-72",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:20.844-0600"
+        },
+        {
+          "key": "FUCQ-73",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:22.785-0600"
+        },
+        {
+          "key": "FUCQ-77",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:23.936-0600"
+        },
+        {
+          "key": "FUCQ-78",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:25.026-0600"
+        },
+        {
+          "key": "FUCQ-92",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:26.336-0600"
+        },
+        {
+          "key": "FUCQ-95",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:27.509-0600"
+        },
+        {
+          "key": "FUCQ-96",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:28.677-0600"
+        },
+        {
+          "key": "FUCQ-98",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:29.712-0600"
+        },
+        {
+          "key": "FUCQ-100",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:30.802-0600"
+        },
+        {
+          "key": "FUCQ-102",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:39.964-0600"
+        },
+        {
+          "key": "FUCQ-104",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:40.862-0600"
+        },
+        {
+          "key": "FUCQ-105",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:41.717-0600"
+        },
+        {
+          "key": "FUCQ-106",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:42.708-0600"
+        },
+        {
+          "key": "FUCQ-107",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:43.627-0600"
+        },
+        {
+          "key": "FUCQ-108",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:44.744-0600"
+        },
+        {
+          "key": "FUCQ-109",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:45.578-0600"
+        },
+        {
+          "key": "FUCQ-111",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:46.594-0600"
+        },
+        {
+          "key": "FUCQ-113",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:48.001-0600"
+        },
+        {
+          "key": "FUCQ-114",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:48.893-0600"
+        },
+        {
+          "key": "FUCQ-115",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:49.951-0600"
+        },
+        {
+          "key": "FUCQ-116",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:50.777-0600"
+        },
+        {
+          "key": "FUCQ-117",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:51.701-0600"
+        },
+        {
+          "key": "FUCQ-118",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:52.687-0600"
+        },
+        {
+          "key": "FUCQ-119",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:53.750-0600"
+        },
+        {
+          "key": "FUCQ-120",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:02:54.858-0600"
+        },
+        {
+          "key": "FUCQ-121",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:08.281-0600"
+        },
+        {
+          "key": "FUCQ-122",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:09.523-0600"
+        },
+        {
+          "key": "FUCQ-123",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:10.527-0600"
+        },
+        {
+          "key": "FUCQ-124",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:11.464-0600"
+        },
+        {
+          "key": "FUCQ-126",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:12.343-0600"
+        },
+        {
+          "key": "FUCQ-127",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:13.360-0600"
+        },
+        {
+          "key": "FUCQ-128",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:14.760-0600"
+        },
+        {
+          "key": "FUCQ-129",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:15.818-0600"
+        },
+        {
+          "key": "FUCQ-130",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:17.405-0600"
+        },
+        {
+          "key": "FUCQ-131",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:18.781-0600"
+        },
+        {
+          "key": "FUCQ-134",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:19.637-0600"
+        },
+        {
+          "key": "FUCQ-135",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:20.509-0600"
+        },
+        {
+          "key": "FUCQ-136",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:21.631-0600"
+        },
+        {
+          "key": "FUCQ-137",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:22.575-0600"
+        },
+        {
+          "key": "FUCQ-138",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:23.795-0600"
+        },
+        {
+          "key": "FUCQ-149",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:24.703-0600"
+        },
+        {
+          "key": "FUCQ-167",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:34.153-0600"
+        },
+        {
+          "key": "FUCQ-168",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:35.176-0600"
+        },
+        {
+          "key": "FUCQ-169",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:36.255-0600"
+        },
+        {
+          "key": "FUCQ-170",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:37.317-0600"
+        },
+        {
+          "key": "FUCQ-171",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:38.626-0600"
+        },
+        {
+          "key": "FUCQ-172",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:39.623-0600"
+        },
+        {
+          "key": "FUCQ-173",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:40.665-0600"
+        },
+        {
+          "key": "FUCQ-174",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:41.694-0600"
+        },
+        {
+          "key": "FUCQ-175",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:43.210-0600"
+        },
+        {
+          "key": "FUCQ-176",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:44.141-0600"
+        },
+        {
+          "key": "FUCQ-178",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:45.328-0600"
+        },
+        {
+          "key": "FUCQ-180",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:46.174-0600"
+        },
+        {
+          "key": "FUCQ-181",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:47.244-0600"
+        },
+        {
+          "key": "FUCQ-218",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:48.169-0600"
+        },
+        {
+          "key": "FUCQ-219",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:49.206-0600"
+        },
+        {
+          "key": "FUCQ-220",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:50.085-0600"
+        },
+        {
+          "key": "FUCQ-247",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:58.081-0600"
+        },
+        {
+          "key": "FUCQ-248",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:59.148-0600"
+        },
+        {
+          "key": "FUCQ-303",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:03:59.987-0600"
+        },
+        {
+          "key": "FUCQ-304",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:00.872-0600"
+        },
+        {
+          "key": "FUCQ-321",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:01.923-0600"
+        },
+        {
+          "key": "FUCQ-322",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:02.961-0600"
+        },
+        {
+          "key": "FUCQ-351",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:03.870-0600"
+        },
+        {
+          "key": "FUCQ-354",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:04.778-0600"
+        },
+        {
+          "key": "FUCQ-359",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:05.991-0600"
+        },
+        {
+          "key": "FUCQ-360",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:07.166-0600"
+        },
+        {
+          "key": "FUCQ-361",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:08.084-0600"
+        },
+        {
+          "key": "FUCQ-362",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:09.018-0600"
+        },
+        {
+          "key": "FUCQ-363",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:09.983-0600"
+        },
+        {
+          "key": "FUCQ-364",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:10.861-0600"
+        },
+        {
+          "key": "FUCQ-365",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:11.836-0600"
+        },
+        {
+          "key": "FUCQ-366",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:12.893-0600"
+        },
+        {
+          "key": "FUCQ-367",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:21.947-0600"
+        },
+        {
+          "key": "FUCQ-368",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:23.123-0600"
+        },
+        {
+          "key": "FUCQ-369",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:24.161-0600"
+        },
+        {
+          "key": "FUCQ-370",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:25.051-0600"
+        },
+        {
+          "key": "FUCQ-371",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:25.892-0600"
+        },
+        {
+          "key": "FUCQ-372",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:26.752-0600"
+        },
+        {
+          "key": "FUCQ-373",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:27.636-0600"
+        },
+        {
+          "key": "FUCQ-374",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:28.589-0600"
+        },
+        {
+          "key": "FUCQ-375",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:30.257-0600"
+        },
+        {
+          "key": "FUCQ-383",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:31.374-0600"
+        },
+        {
+          "key": "FUCQ-384",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:32.549-0600"
+        },
+        {
+          "key": "FUCQ-385",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:33.732-0600"
+        },
+        {
+          "key": "FUCQ-386",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:34.711-0600"
+        },
+        {
+          "key": "FUCQ-389",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:35.747-0600"
+        },
+        {
+          "key": "FUCQ-397",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:36.731-0600"
+        },
+        {
+          "key": "FUCQ-398",
+          "status": "Done",
+          "type": "Story",
+          "updated": "2026-11-12T06:04:37.622-0600"
+        }
+      ],
+      "jql": "project = FUCQ AND key in (FUCQ-27,FUCQ-28,FUCQ-46,FUCQ-47,FUCQ-48,FUCQ-58,FUCQ-59,FUCQ-60,FUCQ-61,FUCQ-62,FUCQ-63,FUCQ-66,FUCQ-69,FUCQ-70,FUCQ-71,FUCQ-72,FUCQ-73,FUCQ-77,FUCQ-78,FUCQ-92,FUCQ-95,FUCQ-96,FUCQ-98,FUCQ-100,FUCQ-102,FUCQ-104,FUCQ-105,FUCQ-106,FUCQ-107,FUCQ-108,FUCQ-109,FUCQ-111,FUCQ-113,FUCQ-114,FUCQ-115,FUCQ-116,FUCQ-117,FUCQ-118,FUCQ-119,FUCQ-120,FUCQ-121,FUCQ-122,FUCQ-123,FUCQ-124,FUCQ-126,FUCQ-127,FUCQ-128,FUCQ-129,FUCQ-130,FUCQ-131,FUCQ-134,FUCQ-135,FUCQ-136,FUCQ-137,FUCQ-138,FUCQ-149,FUCQ-167,FUCQ-168,FUCQ-169,FUCQ-170,FUCQ-171,FUCQ-172,FUCQ-173,FUCQ-174,FUCQ-175,FUCQ-176,FUCQ-178,FUCQ-180,FUCQ-181,FUCQ-218,FUCQ-219,FUCQ-220,FUCQ-247,FUCQ-248,FUCQ-303,FUCQ-304,FUCQ-321,FUCQ-322,FUCQ-351,FUCQ-354,FUCQ-359,FUCQ-360,FUCQ-361,FUCQ-362,FUCQ-363,FUCQ-364,FUCQ-365,FUCQ-366,FUCQ-367,FUCQ-368,FUCQ-369,FUCQ-370,FUCQ-371,FUCQ-372,FUCQ-373,FUCQ-374,FUCQ-375,FUCQ-383,FUCQ-384,FUCQ-385,FUCQ-386,FUCQ-389,FUCQ-397,FUCQ-398) ORDER BY key ASC",
+      "pages": 2
+    },
+    "bug_comparison": {
+      "unchanged": true,
+      "missing": [],
+      "added": [],
+      "modified": []
+    }
+  },
+  "finished_at": "2026-11-12T12:05:02.295Z",
+  "local_queue_records": [
+    {
+      "key": "FUCQ-372",
+      "from": "_dev/code-inbox/DEV-2026-11-10-014.md",
+      "to": "_dev/done/2026-11/DEV-2026-11-10-014.md",
+      "disposition": "Accepted; stale waiting record retired",
+      "active_remote_story_lease": false
+    }
+  ],
+  "metadata_reconciliation": {
+    "product_map_import": "official _tools/product_map.py import-jira",
+    "imported_verified_stories": 104,
+    "unrelated_rows_preserved": true,
+    "existing_slice_worker_metadata_preserved": true,
+    "before_sha256": "d0d55ff4b9600572c2cad4a79e1eea8b9b042fd53010f21f4765ec74167053be",
+    "public_publication_verified": false
+  }
+}
