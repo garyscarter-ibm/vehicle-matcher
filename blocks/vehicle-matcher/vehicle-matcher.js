@@ -1,29 +1,12 @@
 /*
- * Vehicle Matcher — Adobe Edge Delivery Services (EDS) block. The shell.
+ * Vehicle Matcher: Adobe EDS block shell. Reads authored config (brand, retailer,
+ * copy overrides, API base), applies the brand theme and mounts the questionnaire.
  *
- * A brand-agnostic matcher: the brand (BMW, MINI, …) is authored config, not
- * baked in. This file is the SHELL around one or more interchangeable interface
- * "modes" (see modes/) that all drive the same engine (server/, via engine.js):
- *
- *   - It reads authored block config (brand, retailer, copy overrides, API base).
- *   - It applies the brand theme and builds the mode switcher + a stage element.
- *   - It picks which mode to mount:
- *       • a "Mode" config row (or ?mode=) locks the block to one interface and
- *         hides the switcher — the production case, one interface per page;
- *       • with no lock, every registered mode gets a switcher tab and the
- *         visitor can flip between them — the showcase case.
- *
- * The shell knows nothing about any mode's internals: a mode is just
- * { key, label, mount(root, ctx) }. Adding an interface touches modes/, not here.
- *
- * The API base comes from an authored "API" config row when running on EDS
- * (authored content can set config rows but not HTML attributes), or from a
- * `data-api` attribute for the local harness and the GitHub Pages build,
- * falling back to http://localhost:8787 for local preview. See apiBase.
+ * The API base comes from an authored "API" config row on EDS, or a `data-api`
+ * attribute for the local harness and Pages build, else http://localhost:8787.
  */
 
-import { MODES, DEFAULT_MODE, modeByKey } from './modes/index.js';
-import { renderRrmcIntro } from './modes/rrmc-intro.js';
+import { DEFAULT_MODE } from './modes/index.js';
 
 const DEFAULT_API = 'http://localhost:8787';
 
@@ -136,21 +119,8 @@ function brand(block) {
   return KNOWN_BRANDS.includes(b) ? b : DEFAULT_BRAND;
 }
 
-/**
- * Which stock pool this block searches:
- *   - 'dealer'   — the Retailer ID's own forecourt;
- *   - 'national' — every retailer of the brand.
- * An authored "Scope" config row, overridable with ?scope= (like ?mode=) so one
- * deployed page can demo both. Anything absent, blank or unrecognised is
- * 'dealer', because a block authored onto one retailer's page must never
- * silently answer for the whole country — of the two ways to get this wrong,
- * offering a user only the cars they can actually go and see is the safe one.
- *
- * Only BMW and MINI have two pools to choose between; the fixtures-backed brands
- * serve their one file whatever this says. Mirrors SCOPES/normalizeScope in
- * server/stock.js, which validates the value again on arrival — the client copy
- * exists so the Retailer Name row can be authored to match (see retailerName).
- */
+// Stock pool: 'dealer' (one forecourt) or 'national'. Authored "Scope" row, ?scope= overrides;
+// anything unrecognised is 'dealer'. Mirrors SCOPES in server/stock.js.
 const SCOPES = ['dealer', 'national'];
 const DEFAULT_SCOPE = 'dealer';
 
@@ -161,77 +131,11 @@ function resolveScope(block) {
   return SCOPES.includes(requested) ? requested : DEFAULT_SCOPE;
 }
 
-/**
- * Which interface mode to run, and whether the switcher is shown:
- *   - an authored "Mode" config row, or a ?mode= query override, LOCKS the
- *     block to that mode (switcher hidden) — the production case;
- *   - anything absent/blank/unrecognised leaves it unlocked (switcher shown,
- *     defaulting to DEFAULT_MODE) — the showcase case.
- * ?mode= wins over the authored row so a single deployed page can demo any mode
- * by URL. Returns { mode, locked }.
- */
-function resolveMode(block) {
-  const params = new URLSearchParams(window.location.search);
-  const requested = (params.get('mode') || readBlockConfig(block).mode || '').toLowerCase();
-  const locked = modeByKey(requested);
-  return locked ? { mode: locked, locked: true } : { mode: DEFAULT_MODE, locked: false };
-}
-
-/**
- * The mode switcher: a compact dropdown, not a row of tabs, so it never
- * competes with a mode's own header for screen space (podium in particular
- * reclaims that space for its own title/progress — see vm-podium-head in
- * vehicle-matcher.css). Only rendered when the block is unlocked and there's
- * more than one mode to choose between — a single mode needs no switch.
- */
-const BRAND_DISABLED_MODES = { rrmc: ['swipe'] };
-const BRAND_DEFAULT_MODES = { rrmc: 'podium' };
-
-/** Mount `mode` into the stage. RRMC opens every mode with the questionnaire's intro (which owns its own). */
+/** Mount the questionnaire into the stage. The stage is named so a brand's CSS can lay it out. */
 function startMode(mode, stage, ctx) {
   stage.replaceChildren();
-  // Named on the stage so a brand's CSS can lay a mode out (intro included) without reaching into it.
   stage.dataset.mode = mode.key;
-  delete stage.dataset.intro;
-  if (ctx.brand !== 'rrmc' || mode.key === 'questionnaire') {
-    mode.mount(stage, ctx);
-    return;
-  }
-  // Flagged while the intro shows, so podium's opening screen can be laid out apart from podium.
-  stage.dataset.intro = '';
-  renderRrmcIntro(stage, ctx, () => {
-    delete stage.dataset.intro;
-    stage.replaceChildren();
-    mode.mount(stage, ctx);
-  }, { progress: true });
-}
-
-function renderSwitcher(block, stage, ctx, current) {
-  const disabled = BRAND_DISABLED_MODES[ctx.brand] || [];
-  const modes = MODES.filter((m) => !disabled.includes(m.key));
-  if (modes.length < 2) return null;
-  const bar = document.createElement('div');
-  bar.className = 'vm-switcher';
-
-  const select = document.createElement('select');
-  select.className = 'vm-switcher-select';
-  select.setAttribute('aria-label', 'Matching interface');
-  modes.forEach((mode) => {
-    const option = document.createElement('option');
-    option.value = mode.key;
-    option.textContent = mode.label;
-    select.append(option);
-  });
-  select.value = current.key;
-
-  select.addEventListener('change', () => {
-    const next = modeByKey(select.value);
-    if (!next) return;
-    startMode(next, stage, ctx);
-  });
-
-  bar.append(select);
-  return bar;
+  mode.mount(stage, ctx);
 }
 
 export default async function decorate(block) {
@@ -243,10 +147,6 @@ export default async function decorate(block) {
   const brandKey = brand(block);
   const overrides = copyOverrides(block);
   const scope = resolveScope(block);
-  const { mode: resolvedMode, locked } = resolveMode(block);
-  const mode = !locked && BRAND_DEFAULT_MODES[brandKey]
-    ? (modeByKey(BRAND_DEFAULT_MODES[brandKey]) || resolvedMode)
-    : resolvedMode;
 
   block.replaceChildren();
   // Base class + brand theme class ('vm-bmw' | 'vm-mini' | 'vm-ford' | …). Each
@@ -254,34 +154,20 @@ export default async function decorate(block) {
   // own .vm-<brand> scope; the base .vm block is the BMW-default look.
   block.classList.add('vm', `vm-${brandKey}`);
 
-  // The context every mode receives. Config the shell resolved once; each mode
-  // hangs its own per-run UI state (answers, questions, preview…) off this.
+  // Config the shell resolved once; the mode hangs its own per-run UI state off this.
   const ctx = {
     api,
     retailer,
     retailerLabel,
     brand: brandKey,
-    // 'dealer' | 'national' — which pool every stock request asks for. Sent on
-    // each call rather than read once, so a mode swap can't leave two modes
-    // disagreeing about it.
+    // 'dealer' | 'national': which pool every stock request asks for.
     scope,
     // Authored copy overrides (title / kicker / disclaimer) — see copyRow.
     overrides,
   };
 
-  // The stage the active mode renders into — its own element so a switcher can
-  // sit above it and survive a mode swap (a mode may replaceChildren() the
-  // stage, but never the block).
   const stage = document.createElement('div');
   stage.className = 'vm-stage';
-
-  // Unlocked: offer the switcher above the stage. Locked (authored Mode row or
-  // ?mode=): mount that one mode with no switcher, so a production page looks
-  // exactly as it did before modes existed.
-  if (!locked) {
-    const switcher = renderSwitcher(block, stage, ctx, mode);
-    if (switcher) block.append(switcher);
-  }
   block.append(stage);
 
   // Deliberately NOT awaited. EDS awaits every block's decorate() before it
@@ -291,5 +177,5 @@ export default async function decorate(block) {
   // dead. A mode paints its own skeleton immediately and swaps in the real
   // thing when its data lands, so decorate() returns now and lets the page
   // finish loading.
-  startMode(mode, stage, ctx);
+  startMode(DEFAULT_MODE, stage, ctx);
 }

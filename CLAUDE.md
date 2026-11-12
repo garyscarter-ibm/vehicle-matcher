@@ -56,12 +56,10 @@ authoring/config-row model. `docs/how-it-works.md` is the whole system on one pa
 
 ### The block is a shell + interchangeable "modes"
 `vehicle-matcher.js` is only a shell: it reads authored config, applies the brand theme class,
-and mounts one **mode** into a stage (with a switcher when unlocked). A mode is a plain object
+and mounts the **questionnaire** into a stage (no mode switcher). A mode is a plain object
 `{ key, label, mount(root, ctx) }` registered in `blocks/vehicle-matcher/modes/index.js`
-(currently `questionnaire`, `swipe`, `head-to-head`, `podium`, `guess-who`; first is the
-default). **Two keys differ from their filenames**: `swipe` lives in `mingle.js` and
-`head-to-head` in `knockout.js`. The old `?mode=mingle` / `?mode=knockout` are retired — the
-key is what `?mode=` matches, not the file. Modes share
+(only `questionnaire` today; the first entry is the default). The swipe, head-to-head, podium
+and guess-who modes were removed. Modes share
 `engine.js` (HTTP client), `ui.js` (primitives), `question-ui.js`, `result-card.js`, and
 `brand-copy.js`. **Add an interface** = a new `modes/<key>.js` + one import/array entry; the
 shell needs no change.

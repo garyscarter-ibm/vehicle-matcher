@@ -1,23 +1,6 @@
 /*
- * Shared "signal" helpers for the game modes (Swipe / MINI Mingle and the
- * Head-to-head / MINI Knockout championship). Both modes do the same core job:
- * they let a player express taste over a deck of real stock, then turn that taste
- * into the SAME answer keys the questionnaire mode produces and hand them to the real
- * engine. The engine — not the game — picks the match (see the mode docs).
- *
- * These helpers are the mode-agnostic, brand-safe pieces of that job:
- *   - display: SHADE_HEX / swatchFor / priceLabel / gbpShort / cap
- *   - deck:    shuffle
- *   - reading: modal / rankByFrequency
- *   - seed:    budgetBandsFromQuestion / useTilesFromQuestion
- *   - infer:   swipesToAnswers (swipe) / bracketToAnswers (knockout)
- *   - reveal:  celebrate (the shared confetti crescendo)
- *
- * They were originally private to mingle.js; extracted here so the two game modes
- * share ONE tuning surface for how taste becomes answers, rather than a drifting
- * copy. Nothing here is brand-specific: the inference only ever emits values it
- * actually observed on real cards, so it can never emit a value the brand's engine
- * would reject (MINI has no saloon/coupe/mpv/diesel — those are brands:['bmw']).
+ * Taste-to-answers helpers left over from the removed swipe and head-to-head modes.
+ * Only ageInYears/registrationDate are still used (server/test/age.test.js).
  */
 
 import { el, gbp } from '../ui.js';

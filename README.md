@@ -102,7 +102,7 @@ default), so bookmark/share the URL *with* the param.
 ```
 blocks/vehicle-matcher/
   vehicle-matcher.js  # EDS block SHELL: decorate(block) — config, brand theme,
-                      #   mode switcher + stage; picks which interface to mount
+                      #   stage; mounts the questionnaire
   vehicle-matcher.css # scoped styles (.vm), mobile-first, auto-loaded by EDS
   engine.js           # shared engine client (apiMatch/apiNearby/… over HTTP)
   ui.js               # shared UI primitives (el, cardinal, gbp)
@@ -112,9 +112,6 @@ blocks/vehicle-matcher/
   modes/              # interchangeable interfaces over the shared engine:
     index.js          #   mode registry — { key, label, mount(root, ctx) }[]
     questionnaire.js  #   the question-by-question interface (default)
-    mingle.js         #   'swipe' — a swipe game
-    knockout.js       #   'head-to-head' — pick between two cars
-    podium.js         #   'podium' — a live-narrowing results podium
 server/
   index.js          # zero-dep Node API: /api/questions, /api/match, /health
   engine.js         # brand-agnostic scoring engine (reads per-brand tuning)
@@ -156,12 +153,6 @@ after the block, self-contained folder), so porting is a copy-paste:
    - **Brand** — one of `BMW`, `MINI`, `Ford`, `Honda`, `Motorrad`, `Ferrari`
      (defaults to BMW). The block is brand-agnostic; this row is the only thing
      that themes it and picks which live feed it sources from.
-   - **Mode** — which interface to show, and whether visitors can switch. Set it
-     to a mode key to **lock** the page to that one interface and hide the
-     switcher — the production case. Keys: `questionnaire` (default), `swipe`,
-     `head-to-head`, `podium`. Leave it blank/absent to show every registered
-     mode with a switcher (the showcase). Mode keys live in
-     `blocks/vehicle-matcher/modes/index.js`.
    - **Retailer ID** — the retailer's `retailer_site` ID (e.g. `96`); omit to
      fall back to the brand's default (`defaultRetailer` in `server/brands.js`).
      It does two jobs: at dealer **Scope** it is the pool, and at either scope it
@@ -171,8 +162,7 @@ after the block, self-contained folder), so porting is a copy-paste:
      have both — the other brands' feeds are a single national programme, so the
      row does nothing there. Dealer scope is the default because a block authored
      onto one retailer's page should answer for that retailer; national scope is
-     the group/programme case, and turns on Guess Who's Distance filter (with one
-     forecourt there is nothing to sort by distance, so it hides itself).
+     the group/programme case.
    - **Retailer Name** — the display name shown in copy, for the pool that was
      searched. Author it to match **Scope**: at dealer scope that is the branch
      (`Grassicks Garage`), at national scope the programme (`BMW Approved Used`).
@@ -208,8 +198,7 @@ Example authored table:
 | Title |  |
 
 (The blank **Title** row above suppresses the block's own headline, for when it
-sits under the page's own "FIND YOUR MINI." section heading. The **Mode** row
-locks the page to the questionnaire interface with no switcher. **Scope** and
+sits under the page's own "FIND YOUR MINI." section heading. **Scope** and
 **Retailer Name** agree, so the copy names the forecourt it actually searched.)
 
 The block ships **no font files**: it names the host site's licensed families
@@ -221,8 +210,8 @@ The standalone `block.html` harness uses a `data-api` attribute + `?api=`
 override instead (no DA needed); `?retailer=<id>` tries a different retailer
 without editing the file. Both paths resolve through the same `apiBase()`.
 
-`?mode=<key>` and `?scope=dealer|national` are read straight from the query
-string by the block, so they override an authored row and need none of their own.
+`?scope=dealer|national` is read straight from the query
+string by the block, so it overrides an authored row and need none of their own.
 That is what lets one deployed page demo both scopes: compare
 `?brand=mini&retailer=92&scope=dealer` with `?brand=mini&scope=national`. The
 harness re-derives **Retailer Name** from whichever brand and scope are in the

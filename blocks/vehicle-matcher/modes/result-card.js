@@ -470,7 +470,7 @@ function fitExtended(nameEl, full, line = false) {
  * `big` adds the "why it suits you" reasons; `compact` is the carousel tile —
  * same anatomy, but trades the blurb and reasons for a distance line.
  *
- * `showScore` and `showPaint` exist for the hard-filter mode (modes/guess-who.js),
+ * `showScore` and `showPaint` exist for a hard-filter view,
  * which is not a recommender:
  *  - showScore: false — there is no score. A hard filter says yes or no, so a
  *    badge would either print "undefined%" or invent a 100% the engine never

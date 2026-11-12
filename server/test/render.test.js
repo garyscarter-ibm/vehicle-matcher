@@ -1,21 +1,9 @@
 /*
- * Headless render tests — every interface mode, every brand, actually mounted.
+ * Headless render tests: the questionnaire, every brand, actually mounted.
  *
- * The api/engine/brand suites prove the server. These prove the CLIENT: that
- * each mode's mount(root, ctx) paints real content in a real DOM, for each
- * brand, driving the true engine over a real (in-process) server. This is the
- * machine check that stands in for eyeballing `?brand=<key>&mode=<key>` in a
- * browser after onboarding a brand — a mode that throws on mount, or renders
- * nothing for a new brand, fails here.
- *
- * See dom-harness.js for how the DOM + server are stood up. Only the live feed
- * is faked; the mode, the engine client, the endpoints and the engine are all
- * production code.
- *
- * Coverage note (testing gap this closes): before this file, no test mounted a
- * client mode at all — client render regressions were caught only by manual
- * browser checks. New brands are added to BRANDS below so their client render
- * is guarded from the day they land, not just their server-side mapping.
+ * Proves the CLIENT paints real content in a real DOM for each brand, over a real
+ * in-process server (see dom-harness.js). Only the live feed is faked.
+ * New brands are added to BRANDS below so their render is guarded from day one.
  */
 
 import { test, before, after, beforeEach } from 'node:test';
@@ -23,6 +11,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+import { SHOW_IF } from '../../blocks/vehicle-matcher/quiz-meta.js';
 import {
   installDom, resetDom, startModeServer, loadMode, mountMode, settle,
 } from './dom-harness.js';
@@ -30,16 +19,8 @@ import {
   bmwPool, miniPool, hondaPool, fordPool, motorradPool, ferrariPool,
 } from './helpers.js';
 
-// Brands under render test, each with a stock pool and the marque name. The
-// wordmark is asserted only where a mode actually shows it: the questionnaire
-// intro names the brand for every marque ("Find your perfect BMW"), whereas the
-// two game modes lead with a neutral, brand-agnostic seed screen ("Car Match" /
-// "Head to Head" on BMW) and reveal the brand voice later, by design (see the
-// mode requirement docs). So the universal render check is "paints + correct
-// theme + no em dashes"; the wordmark check is scoped to questionnaire.
-// Motorrad is the first non-car brand: its pool is BIKES (motorrad-bikes.json),
-// but the mapped shape is identical, so the same render matrix applies. Its
-// wordmark on the questionnaire intro is "BMW Motorrad".
+// Brands under render test: a stock pool and the marque name the intro must show.
+// Motorrad's pool is bikes, but the mapped shape is identical.
 const BRANDS = [
   { key: 'bmw', pool: () => bmwPool(20), name: /BMW/i },
   { key: 'mini', pool: () => miniPool(8), name: /MINI/i },
@@ -49,7 +30,7 @@ const BRANDS = [
   { key: 'ferrari', pool: () => ferrariPool(20), name: /Ferrari/i },
 ];
 
-const MODES = ['questionnaire', 'mingle', 'knockout', 'podium', 'guess-who'];
+const MODES = ['questionnaire'];
 
 let server;
 let modes;
@@ -83,15 +64,8 @@ for (const mode of MODES) {
         text.replace(/\s/g, '').length > 20,
         `${mode}/${brand.key} rendered no meaningful text`,
       );
-      // Brand copy resolved on the questionnaire intro, which names the marque for
-      // every brand. The game modes lead with a neutral seed screen by design,
-      // so their wordmark is checked in their own reveal, not here.
-      if (mode === 'questionnaire') {
-        assert.match(
-          text, brand.name,
-          `questionnaire/${brand.key} did not show the brand wordmark`,
-        );
-      }
+      // The intro names the marque for every brand.
+      assert.match(text, brand.name, `${mode}/${brand.key} did not show the brand wordmark`);
       // The stage carries the brand theme class the CSS hangs off.
       assert.ok(
         stage.classList.contains(`vm-${brand.key}`),
@@ -106,125 +80,14 @@ for (const mode of MODES) {
   }
 }
 
-/*
- * Podium's two locked rules, neither of which the mount matrix above can see
- * (it only asserts the first paint).
- *
- * 1. The conditional questions are spliced IN PLACE. A rebuild of the pane is
- *    one line and it throws away scroll position and focus, so the check is
- *    that the removed block is gone AND that a neighbouring block is the same
- *    DOM node it was before the answer changed.
- * 2. "Not this one" only offers a reason whose follow-up can move the result
- *    FOR THIS BRAND. MINI drops the mileage question in brands.js, so MINI must
- *    not offer Mileage; a button that looks like it did something but cannot is
- *    worse than no button.
- */
-test('podium splices a conditional question out in place', async () => {
-  const stage = mountMode(modes.podium, { base: server.base, brand: 'bmw' });
-  // `charging` shows while fuel is unanswered (SHOW_IF.charging).
-  await settle(stage, (s) => s.querySelector('.vm-podium-q[data-qid="charging"]'));
-
-  const budgetBefore = stage.querySelector('.vm-podium-q[data-qid="budget"]');
-  const fuel = stage.querySelector('.vm-podium-q[data-qid="fuel"]');
-  const petrol = [...fuel.querySelectorAll('.vm-option')]
-    .find((b) => b.textContent.includes('Petrol'));
-  petrol.click();
-
-  assert.equal(
-    stage.querySelector('.vm-podium-q[data-qid="charging"]'), null,
-    'charging survived a petrol-only answer',
-  );
-  assert.equal(
-    stage.querySelector('.vm-podium-q[data-qid="budget"]'), budgetBefore,
-    'the pane was rebuilt rather than spliced: the budget block is a new node',
-  );
-});
-
-test('podium only offers a dismissal reason the brand can act on', async () => {
-  const reasonsFor = async (brand) => {
-    resetDom();
-    const stage = mountMode(modes.podium, { base: server.base, brand });
-    // The reject trigger only exists once a live podium has painted.
-    await settle(stage, (s) => s.querySelector('.vm-podium-reject'));
-    stage.querySelector('.vm-podium-reject').click();
-    return [...stage.querySelectorAll('.vm-podium-pop-reason')].map((b) => b.textContent);
-  };
-
-  const bmw = await reasonsFor('bmw');
-  assert.ok(bmw.includes('Price'), 'BMW was not offered the price branch');
-  assert.ok(bmw.includes('Mileage'), 'BMW asks about mileage, so it must offer that branch');
-
-  const mini = await reasonsFor('mini');
-  assert.ok(mini.includes('Price'), 'MINI was not offered the price branch');
-  assert.ok(
-    !mini.includes('Mileage'),
-    'MINI drops the mileage question, so the branch has nowhere to write',
-  );
-});
-
-/*
- * Podium's third locked rule, and the load-bearing one: a medal is a claim that
- * one car beat another, so the podium must never invent a ranking the engine
- * did not make. When the engine is not decisive the tied cars are joint first;
- * nothing is labelled 2nd or 3rd.
- *
- * Written as an invariant that holds in BOTH states rather than as a test that
- * forces a tie, because whether a given pool ties is a property of the engine's
- * scoring and would make this a brittle assertion about fixture data. Either
- * branch is meaningful: the tied branch catches a fabricated runner-up, the
- * decisive branch catches a podium that lost its single clear winner. Run over
- * every brand so a tie is genuinely exercised somewhere in the matrix.
- */
-test('podium never labels a runner-up unless the engine ranked one', async () => {
-  for (const brand of BRANDS) {
-    resetDom();
-    // eslint-disable-next-line no-await-in-loop
-    const stage = mountMode(modes.podium, { base: server.base, brand: brand.key });
-    // eslint-disable-next-line no-await-in-loop
-    await settle(stage, (s) => s.querySelector('.vm-podium-step'));
-
-    const steps = stage.querySelector('.vm-podium-steps');
-    const all = [...stage.querySelectorAll('.vm-podium-step')];
-    const count = (cls) => all.filter((s) => s.classList.contains(cls)).length;
-
-    // No step may carry two rank classes at once, tied or not.
-    for (const step of all) {
-      const ranks = ['is-gold', 'is-silver', 'is-bronze']
-        .filter((c) => step.classList.contains(c));
-      assert.equal(
-        ranks.length, 1,
-        `${brand.key}: a step carried ${ranks.length} rank classes (${ranks.join(', ')})`,
-      );
-    }
-
-    if (steps.classList.contains('is-tied')) {
-      assert.equal(
-        count('is-gold'), all.length,
-        `${brand.key}: a tied podium left a step without joint first`,
-      );
-      assert.equal(
-        count('is-silver') + count('is-bronze'), 0,
-        `${brand.key}: a tied podium fabricated a runner-up the engine did not rank`,
-      );
-    } else {
-      assert.equal(
-        count('is-gold'), 1,
-        `${brand.key}: a decisive podium did not have exactly one winner`,
-      );
-    }
-  }
-});
-
-// A re-mount (switching tabs re-calls mount) must start clean, not stack a
-// second interface on top of the first. Mount twice into the same stage-owning
-// body and assert the second run replaced rather than appended.
+// A re-mount must start clean, not stack a second interface on top of the first.
 test('re-mounting a mode starts a clean run', async () => {
   const first = mountMode(modes.questionnaire, { base: server.base, brand: 'bmw' });
   await settle(first, (s) => s.textContent.replace(/\s/g, '').length > 20);
 
   // The shell re-mounts by handing the mode a fresh stage; simulate that.
   resetDom();
-  const second = mountMode(modes.mingle, { base: server.base, brand: 'bmw' });
+  const second = mountMode(modes.questionnaire, { base: server.base, brand: 'bmw' });
   await settle(second, (s) => s.textContent.replace(/\s/g, '').length > 20);
 
   // Exactly one stage in the body — the old one is gone.
@@ -233,44 +96,50 @@ test('re-mounting a mode starts a clean run', async () => {
 });
 
 /*
- * Scope plumbing — ctx.scope has to reach the wire, and nothing on screen shows
- * whether it did.
- *
- * A mode handed the national scope but silently asking for the dealer's stock
- * paints perfectly: right theme, right copy, real cars, just the wrong pool. So
- * these two tests watch the server's own record of what it was asked for rather
- * than the DOM. Guess Who is the mode driven here because it reads the pool on
- * mount with no playthrough; the other four are covered by the source guard
- * below, which is what actually catches a positional-argument slip.
+ * Scope plumbing: ctx.scope has to reach the wire, and nothing on screen shows
+ * whether it did. A wrong-pool run paints perfectly, so these watch the server's
+ * own record of what it was asked for. A shared #m= link makes the questionnaire
+ * read the pool on mount with no playthrough.
  */
-test('a mode mounted at national scope asks the server for the national pool', async () => {
-  // Its own server: stockCalls is cumulative, and the suite's shared instance has
-  // every other test's requests in it.
+async function openSharedRun(base, scope) {
+  const res = await fetch(`${base}/api/questions?brand=bmw`);
+  const { questions } = await res.json();
+  const answers = {};
+  for (const q of questions) {
+    if (q.conditional && SHOW_IF[q.id] && !SHOW_IF[q.id](answers)) continue;
+    if (q.type === 'slider') answers[q.id] = q.range ? q.default : (q.default ?? q.min);
+    else if (q.multi) answers[q.id] = [q.options[0].value];
+    else answers[q.id] = q.options[0].value;
+  }
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(answers))))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  window.location.hash = `#m=${encoded}`;
+  return mountMode(modes.questionnaire, { base, brand: 'bmw', scope });
+}
+
+async function stockScopes(scope) {
+  // Its own server: stockCalls is cumulative across the shared instance.
   const own = await startModeServer({ bmw: bmwPool() });
   try {
-    const stage = mountMode(modes['guess-who'], { base: own.base, brand: 'bmw', scope: 'national' });
-    await settle(stage, (s) => s.textContent.replace(/\s/g, '').length > 20);
-    assert.ok(own.stockCalls.length > 0, 'guess-who must read the pool on mount');
-    for (const call of own.stockCalls) {
-      assert.equal(call.scope, 'national', 'ctx.scope did not reach the request');
-    }
+    const stage = await openSharedRun(own.base, scope);
+    await settle(stage, () => own.stockCalls.length > 0);
+    return own.stockCalls.map((c) => c.scope);
   } finally {
+    window.location.hash = '';
     await own.close();
   }
+}
+
+test('a mode mounted at national scope asks the server for the national pool', async () => {
+  const scopes = await stockScopes('national');
+  assert.ok(scopes.length > 0, 'the shared run must read the pool');
+  for (const s of scopes) assert.equal(s, 'national', 'ctx.scope did not reach the request');
 });
 
 test('a mode mounted with no scope gets the dealer pool, the way an embed with no ?scope= does', async () => {
-  const own = await startModeServer({ bmw: bmwPool() });
-  try {
-    const stage = mountMode(modes['guess-who'], { base: own.base, brand: 'bmw' });
-    await settle(stage, (s) => s.textContent.replace(/\s/g, '').length > 20);
-    assert.ok(own.stockCalls.length > 0, 'guess-who must read the pool on mount');
-    for (const call of own.stockCalls) {
-      assert.equal(call.scope, 'dealer', 'an unset scope must resolve to the dealer, not the network');
-    }
-  } finally {
-    await own.close();
-  }
+  const scopes = await stockScopes(undefined);
+  assert.ok(scopes.length > 0, 'the shared run must read the pool');
+  for (const s of scopes) assert.equal(s, 'dealer', 'an unset scope must resolve to the dealer, not the network');
 });
 
 /*
@@ -284,10 +153,7 @@ test('a mode mounted with no scope gets the dealer pool, the way an embed with n
  * source: find each stock call and require the word scope inside its arguments.
  */
 test('every mode stock call passes a scope', () => {
-  const MODE_FILES = [
-    'modes/questionnaire.js', 'modes/mingle.js', 'modes/knockout.js',
-    'modes/podium.js', 'modes/guess-who.js', 'modes/preview-feed.js',
-  ];
+  const MODE_FILES = ['modes/questionnaire.js', 'modes/preview-feed.js'];
   // The engine calls that read stock, plus the shared preview scheduler that
   // wraps one of them. apiNearby is absent on purpose: it searches OTHER
   // retailers by distance, which is not a pool this block chooses.
@@ -341,27 +207,12 @@ test('no em dashes in painted copy', async () => {
   }
 });
 
-// The painted-copy test above only sees the FIRST screen of each mode. The house
-// rule (no em dashes in user-facing copy) also has to hold on the later-flow
-// screens a render test can't cheaply reach without a full playthrough: deck
-// instructions, per-tie verdicts, weak/thin notes, empty-deck ledes, result CTAs.
-// Those all live in static copy tables in the mode source, so we guard them at
-// the source: scan each client file for an em dash inside a string literal. This
-// caught real violations in the BMW/MINI mingle + knockout copy that the painted
-// check never reached (they only appear on the result/verdict/empty screens), and
-// it stops any future edit from reintroducing one on any screen.
-//
-// Comments and dev-only console diagnostics are out of scope (the rule is about
-// on-screen copy), so pure-comment lines are skipped and CSS/JS content strings
-// are the target. This is a source scan, not a runtime paint, so it needs no
-// server or DOM — it stands alone.
+// The painted-copy test only sees the first screen. Later-flow copy lives in static
+// tables, so scan each client file for an em dash inside a string literal.
+// Comments and console diagnostics are out of scope (the rule is for on-screen copy).
 test('no em dashes in any string literal across the client copy surface', () => {
   const CLIENT_FILES = [
-    'modes/questionnaire.js', 'modes/mingle.js', 'modes/knockout.js',
-    'modes/podium.js', 'modes/guess-who.js', 'modes/match-signal.js',
-    // The shared render modules lifted out of questionnaire.js. Their string
-    // literals are on-screen copy for every mode that renders a card or a
-    // question, so they belong in the same guard.
+    'modes/questionnaire.js', 'modes/match-signal.js',
     'modes/result-card.js', 'modes/question-ui.js', 'modes/brand-copy.js',
     'modes/preview-feed.js',
     'vehicle-matcher.js', 'quiz-meta.js',

@@ -88,16 +88,10 @@
            ?scope=dealer|national — that retailer's own forecourt, or every
                                retailer of the brand (BMW/MINI only; default
                                dealer)
-           ?mode=<key>       — lock to one interface, else the switcher shows.
-                               Keys: questionnaire, swipe, head-to-head, podium,
-                               guess-who. Note the keys differ from the file
-                               names for two of them (swipe is mingle.js,
-                               head-to-head is knockout.js).
            ?api=<url>        — point at a deployed backend
 
-         No "Mode" or "Scope" row is authored here on purpose: both are read
-         from the query string by the block itself, and unlocked the block shows
-         its mode switcher — this page IS the multi-interface showcase.
+         No "Scope" row is authored here on purpose: it is read from the
+         query string by the block itself.
 
          Retailer Name is authored to match the DEFAULT scope, but the script
          below re-derives it whenever brand or scope changes, because one
@@ -133,8 +127,8 @@
 
     // Rewrite an authored config row's value in place, found by its label so
     // the right row is hit regardless of order. Used by the ?brand / ?retailer
-    // overrides below. (?mode and ?scope are read by the block itself from the
-    // query string, so they need no row here.)
+    // overrides below. (?scope is read by the block itself from the
+    // query string, so it needs no row here.)
     const findRow = (label) => [...block.children].find(
       (r) => r.firstElementChild?.textContent.trim().toLowerCase() === label,
     );

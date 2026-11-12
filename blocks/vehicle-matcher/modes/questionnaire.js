@@ -1310,41 +1310,6 @@ function refinementAxes(groups) {
 
 /* ------------------------------ screens ------------------------------ */
 
-/** Is this mode still the one in the stage? The shell reuses the stage on a switch, so an await that
- *  lands late must check before it paints. A locked page has no switcher and is always mounted. */
-function stillMounted(root) {
-  const select = root.previousElementSibling?.querySelector?.('.vm-switcher-select');
-  return !select || select.value === 'questionnaire';
-}
-// RRMC-only for now, so other brands' timing is exactly as it was.
-const staleRrmc = (root, ctx) => ctx.brand === 'rrmc' && !stillMounted(root);
-
-/**
- * RRMC: the progress bar rides the switcher row, as the podium's does, kept across screens so it
- * glides. Returns false when there is no switcher (a locked page) so the screen keeps its own.
- */
-function rrmcProgress(root, ctx, fraction) {
-  const switcher = root.previousElementSibling;
-  if (!switcher?.classList.contains('vm-switcher')) return false;
-  // A late boot after a mode switch must not put its bar in another mode's row.
-  if (!stillMounted(root)) return true;
-  let progress = ctx.rrmcProgress;
-  if (!progress?.isConnected) {
-    progress = el('div', 'vm-progress');
-    progress.append(el('div', 'vm-progress-bar'));
-    switcher.classList.add('has-progress');
-    switcher.prepend(progress);
-    ctx.rrmcProgress = progress;
-    // The next mode may already have put its own bar in, so the row keeps its class for it.
-    switcher.querySelector('.vm-switcher-select')?.addEventListener('change', () => {
-      progress.remove();
-      if (!switcher.querySelector('.vm-podium-progress')) switcher.classList.remove('has-progress');
-    }, { once: true });
-  }
-  progress.firstChild.style.width = `${fraction * 100}%`;
-  return true;
-}
-
 function renderIntro(root, ctx) {
   root.replaceChildren();
   const intro = el('div', 'vm-intro');
@@ -1360,9 +1325,7 @@ function renderIntro(root, ctx) {
   const kicker = kickerOverride === undefined ? (copy.kicker || 'The unofficial UK matchmaker') : kickerOverride;
   const title = titleOverride === undefined ? copy.title : titleOverride;
   if (ctx.brand === 'rrmc') {
-    // Shared with every other RRMC mode (the shell opens them with it); this bar glides on into the questions.
     renderRrmcIntro(root, ctx, () => ctx.showQuestion(0));
-    rrmcProgress(root, ctx, 0);
     return;
   }
   if (kicker) intro.append(el('p', 'vm-kicker', kicker));
@@ -1522,8 +1485,6 @@ function schedulePreviewRefresh(ctx) {
   const run = ctx.preview.seq;
   ctx.previewFeed.schedule(ctx.answers, (matches) => {
     if (run !== ctx.preview.seq) return;
-    // A guess landing after a mode switch must not mount its strip in another mode's screen.
-    if (ctx.qRoot && staleRrmc(ctx.qRoot, ctx)) return;
     ctx.preview.matches = matches;
     ctx.preview.loaded = true; // first (and every) response has now landed
     showPreview(ctx);
@@ -1595,13 +1556,11 @@ function renderQuestion(root, ctx, index) {
   screen.dataset.qid = q.id;
 
   const done = (index + 1) / questions.length;
-  if (!(ctx.brand === 'rrmc' && rrmcProgress(root, ctx, done))) {
-    const progress = el('div', 'vm-progress');
-    const bar = el('div', 'vm-progress-bar');
-    bar.style.width = `${done * 100}%`;
-    progress.append(bar);
-    screen.append(progress);
-  }
+  const progress = el('div', 'vm-progress');
+  const bar = el('div', 'vm-progress-bar');
+  bar.style.width = `${done * 100}%`;
+  progress.append(bar);
+  screen.append(progress);
   screen.append(el('p', 'vm-step', `Question ${index + 1} of ${questions.length}`));
 
   // Summary pills for every question already answered before this one. Each is
@@ -1951,11 +1910,9 @@ function fillNearbyBand(band, ctx, nearby) {
 }
 
 async function renderResults(root, ctx, answers) {
-  if (staleRrmc(root, ctx)) return;
   renderResultsSkeleton(root);
   // RRMC's "Why this one?" panel phrases each car against these.
   setRrmcAnswers(answers, ctx.questions);
-  if (ctx.brand === 'rrmc') rrmcProgress(root, ctx, 1);
 
   // Two-phase load. The retailer's own matches (fast: one feed) render first;
   // the nearby-retailer carousel (slow: a national distance search) is fetched
@@ -2005,7 +1962,6 @@ async function renderResults(root, ctx, answers) {
       alternatives = [], unmet: retailerUnmet = {}, searched = null,
     } = await apiMatch(ctx.api, answers, ctx.retailer, ctx.brand, ctx.scope));
   } catch {
-    if (staleRrmc(root, ctx)) return;
     renderStatus(root, {
       kicker: 'Sorry',
       title: 'We couldn’t reach the matcher.',
@@ -2031,8 +1987,6 @@ async function renderResults(root, ctx, answers) {
     nearbyPromise.catch(() => null),
     new Promise((resolve) => { setTimeout(() => resolve(null), GRACE_MS); }),
   ]);
-  // The shell reuses this stage for the next mode, so a late answer must not paint over it.
-  if (staleRrmc(root, ctx)) return;
 
   root.replaceChildren();
   const screen = el('div', 'vm-screen vm-results');
@@ -2364,8 +2318,6 @@ function mount(root, ctx) {
   // the Back/Next nav.
   ctx.mountPreview = (screen, section) => screen.append(section);
 
-  // The stage, so a late preview can tell whether this mode is still the one in it.
-  ctx.qRoot = root;
   ctx.showIntro = () => renderIntro(root, ctx);
   ctx.showQuestion = (i) => renderQuestion(root, ctx, i);
   ctx.showResults = (answers, { updateHash = false } = {}) => {
@@ -2383,11 +2335,8 @@ function mount(root, ctx) {
     renderIntroSkeleton(root);
     try {
       const meta = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
-      // Switched away while loading: the stage, switcher row and RRMC answers now belong to another mode.
-      if (staleRrmc(root, ctx)) return;
       ctx.questions = meta.questions;
     } catch {
-      if (staleRrmc(root, ctx)) return;
       renderStatus(root, {
         kicker: 'Sorry',
         title: 'We couldn’t load the matcher',

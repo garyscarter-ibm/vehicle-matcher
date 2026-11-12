@@ -25,13 +25,7 @@
   line-height: 1;
 }
 
-/* ---- progress: the podium's 8px rose-gold bar, in the switcher row (questionnaire.js rrmcProgress) ---- */
-.vm.vm-rrmc .vm-switcher.has-progress > .vm-progress {
-  flex: 1 1 auto;
-  height: 8px;
-  margin: 0 var(--vm-space-4) 0 0;
-}
-/* A locked page has no switcher row, so the bar stays on the screen at the same weight. */
+/* ---- progress: the 8px rose-gold bar ---- */
 .vm.vm-rrmc .vm-stage .vm-screen > .vm-progress { height: 8px; }
 
 /* ---- answered pills: the question pill's outline in the tail heading's small tracked caps ---- */

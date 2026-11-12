@@ -365,7 +365,7 @@ main {
         // These are plain links that reload the page, so a hand-built
         // `?brand=x` silently dropped every other param: ?api= pointed the demo
         // at a specific backend, then the first tile click sent it back to the
-        // default. ?retailer=, ?retailerName= and ?mode= were lost the same way.
+        // default. ?retailer= and ?retailerName= were lost the same way.
         // ?key= is already stripped from params below (it moves into
         // sessionStorage), so the password cannot leak back into a URL here.
         const query = new URLSearchParams(params);
@@ -483,8 +483,7 @@ main {
       const retailerId = retailerOverride || BRAND_RETAILER_IDS[brandKey] || '';
       setRow('retailer name', params.get('retailerName') || poolNameFor(brandKey, retailerId));
       // Title is already authored to "none" in the shell markup to suppress the
-      // block's own H1 (the hero owns the headline). ?mode= is read by the block
-      // itself, so it needs no row here.
+      // block's own H1 (the hero owns the headline).
     }
 
     // ------------------------------------------------------------------
