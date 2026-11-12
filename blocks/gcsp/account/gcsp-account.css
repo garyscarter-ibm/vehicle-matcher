@@ -1,7 +1,7 @@
 @import "../employee/gcsp-employee.css"; @import "../kit/buddy-status.css"; @import "../kit/buddy-tile.css"; @import "../kit/activity-timeline.css"; @import "../activity/activity-offer.css";
 @import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; the page layout below is scoped to the account body. */
 @import "../kit/gcsp-kit.css"; @import "../kit/vehicle-summary.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css"; @import "../kit/understanding-meter.css"; @import "../kit/same-again.css"; @import "../kit/star-rating.css"; @import "../kit/help-tip.css"; @import "../kit/form-controls.css";
-gcsp-account { display: block; } .gcsp .gcsp-notification-email { display: grid; gap: var(--gcsp-space-2); max-width: 32rem; } .gcsp .gcsp-notification-email-actions { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2); } .gcsp .gcsp-details.gcsp-account-email-settings { border: 0; padding: 0; max-width: 32rem; }
+gcsp-account { display: block; } .gcsp .gcsp-notification-email { display: grid; gap: var(--gcsp-space-2); max-width: 32rem; } .gcsp .gcsp-notification-email-actions { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2); } .gcsp .gcsp-account-row > .gcsp-account-email-settings { grid-column: 1 / -1; border: 0; padding: 0; }
 .gcsp .gcsp-rep.gcsp-account-body { width: 100%; max-width: 1680px; margin-inline: auto; padding-top: var(--gcsp-space-6); min-width: 0; overflow-wrap: anywhere; }
 .gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: var(--gcsp-space-4); }
 .gcsp .gcsp-account-body :is(dl, dd:not(.vm-fact-value)) { margin: 0; }
@@ -19,7 +19,7 @@ gcsp-account { display: block; } .gcsp .gcsp-notification-email { display: grid;
 .gcsp .gcsp-account-section, .gcsp .gcsp-account-history { display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
 .gcsp .gcsp-account-history .gcsp-table-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); padding: 0; } /* the h2 already titles the table */
 .gcsp .gcsp-account-rows { margin: 0; padding: 0; list-style: none; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
-.gcsp .gcsp-account-row { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; align-items: start; gap: var(--gcsp-space-4); padding: var(--gcsp-space-4); }
+.gcsp .gcsp-account-row { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: start; gap: var(--gcsp-space-4); padding: var(--gcsp-space-4); }
 .gcsp .gcsp-account-row + .gcsp-account-row { border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-account-row-label { margin: 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
 .gcsp .gcsp-account-lines { display: flex; flex-direction: column; gap: var(--gcsp-space-1); min-width: 0; }

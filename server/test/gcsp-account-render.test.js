@@ -1354,7 +1354,7 @@ test('order history is one table across schemes with a status word per row, and 
   try { assert.equal(none.root.querySelector('.gcsp-account-history p').textContent, 'No order history.'); } finally { none.destroy(); none.root.remove(); }
 });
 
-test('Your details is two rows, each with its help button, showing supplied values only', async () => {
+test('Your details shows supplied employee and driver facts without help actions', async () => {
   const input = unnamed('ready'); input.value.account.allowanceOverride = null;
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
@@ -1365,19 +1365,17 @@ test('Your details is two rows, each with its help button, showing supplied valu
     assert.equal(rows[0].querySelector('strong').textContent, 'Paula Mason');
     assert.equal(rows[0].querySelector('.gcsp-account-lines').textContent,
       'Paula Mason · Employee number E749057 · Band G7paula.mason@gcsp-demo.com · 01632 96000027 Ashdown Road, Bracknell, RG12 9ZZ');
-    assert.deepEqual([...rows[0].querySelectorAll('button')].map((n) => n.textContent), ['Get help with your details']);
+    assert.equal(rows[0].querySelectorAll('button').length, 0);
     assert.deepEqual([...rows[1].querySelectorAll('.gcsp-account-line')].map((n) => n.textContent), [
       'Paula Mason · You · Car licence valid until 1 January 2030 · MASON900000PM9XX',
       'Casey Ward · Nominated driver, spouse · Car licence valid until 1 January 2030 · WARD9900000CW9XX']);
-    assert.deepEqual([...rows[1].querySelectorAll('button')].map((n) => n.textContent), ['Get help with drivers']);
-    let route; root.addEventListener('gcsp:support', (event) => { route = event.detail.route; });
-    rows[1].querySelector('button').click(); assert.equal(route, 'driver-support');
+    assert.equal(rows[1].querySelectorAll('button').length, 0);
   } finally { destroy(); root.remove(); }
   const bare = accountFixture('ready'); bare.value.drivers = [];
   const empty = await domMount({ ...readOnlyAdapter(), readAccount: async () => bare });
   try {
     const row = detailsRow(empty.root, 'Drivers (0)');
-    assert.match(row.textContent, /No driver or licence details supplied\./); assert.ok(row.querySelector('button'));
+    assert.match(row.textContent, /No driver or licence details supplied\./); assert.equal(row.querySelector('button'), null);
   } finally { empty.destroy(); empty.root.remove(); }
 });
 
