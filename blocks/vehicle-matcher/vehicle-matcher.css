@@ -2290,25 +2290,6 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm-podium-reject-icon { line-height: 1; }
 .vm-podium-reject-label { letter-spacing: 0.2px; }
 
-/* RRMC tagline above the tiles; zooms with them (--vm-podium-zoom). */
-.vm.vm-rrmc .vm-rrmc-tagline {
-  font-size: 48px;
-  letter-spacing: 0.05em;
-  text-align: left;
-  line-height: 1.1;
-  margin: 40px 0 12px;
-  zoom: var(--vm-podium-zoom, 1);
-}
-.vm.vm-rrmc .vm-rrmc-tagline-sub {
-  font-size: 16px;
-  text-align: left;
-  line-height: 1.5;
-  max-width: 612px;
-  margin: 0 0 40px;
-  zoom: var(--vm-podium-zoom, 1);
-}
-.vm.vm-rrmc .vm-rrmc-sub-a { letter-spacing: 0.01em; }
-.vm.vm-rrmc .vm-rrmc-sub-b { letter-spacing: 0.04em; }
 
 /* Set by fitExtended (result-card.js) only when the full name would wrap. */
 .vm.vm-rrmc .vm-rrmc-extended { font-size: 16px; }

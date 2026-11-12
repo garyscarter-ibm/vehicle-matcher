@@ -163,18 +163,6 @@ export function mediaWell(car, extraClass = '') {
   return { media, showPhoto };
 }
 
-/** RRMC's tagline and its two-part sub line, shown above the top tiles in podium and questionnaire. */
-export function rrmcTaglines() {
-  const tagline = el('p', 'vm-rrmc-tagline', "It doesn't have to take forever...");
-  const sub = el('p', 'vm-rrmc-tagline-sub');
-  sub.append(
-    el('span', 'vm-rrmc-sub-a', "Answer these simple questions to the best of your ability.  We'll shortlist options from"),
-    document.createTextNode(' '),
-    el('span', 'vm-rrmc-sub-b', 'our Provenance collection, and match you to the one that is best suited to you.'),
-  );
-  return [tagline, sub];
-}
-
 const DRIVE_PROSE = { lhd: 'Left-Hand-Drive', rhd: 'Right-Hand-Drive' };
 
 /** Tells the host page the panel is rolling on or off, so its chrome can move in step (index.html). */

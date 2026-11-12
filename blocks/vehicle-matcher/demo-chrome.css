@@ -242,14 +242,15 @@
   --nav-shrink: 0;
   min-height: calc(110px - 55px * var(--nav-shrink));
   padding-block: calc(var(--vm-space-4) * (1 - 0.5 * var(--nav-shrink)));
+  padding-inline: clamp(20px, 3.9vw, 56px);
   transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
 }
-/* 1px rule under the bar, inset 80px; --nav-rule (1 to 0) fades it over the hero's first half. */
+/* 1px rule under the bar, inset 170px at 1440; --nav-rule (1 to 0) fades it over the hero's first half. */
 .vm-rrmc .demo-nav::after {
   content: '';
   position: absolute;
-  left: 80px;
-  right: 80px;
+  left: clamp(24px, 11.8vw, 170px);
+  right: clamp(24px, 11.8vw, 170px);
   bottom: 0;
   height: 1px;
   background: #ffffff;
@@ -301,7 +302,7 @@
 .vm-rrmc .demo-nav-logo img {
   width: 68px;
   height: 84px;
-  transform: scale(calc(0.855 * (1 - 0.5 * var(--nav-shrink))));
+  transform: scale(calc(1 - 0.5 * var(--nav-shrink)));
   opacity: calc(1 - var(--nav-swap, 0));
 }
 /* Same height as the RR mark (width follows its shape), stacked on it; --nav-swap fades it in. */
@@ -311,11 +312,27 @@
   left: 50%;
   width: auto;
   height: 84px;
-  transform: translate(-50%, -50%) scale(calc(0.855 * (1 - 0.5 * var(--nav-shrink))));
+  transform: translate(-50%, -50%) scale(calc(1 - 0.5 * var(--nav-shrink)));
   opacity: var(--nav-swap, 0);
 }
 .vm-rrmc .demo-nav-links a,
 .vm-rrmc .demo-logo-text { color: #ffffff; }
+/* Menu left, search right, as in the Figma header; the demo's "Back to" link gives way. */
+.vm-rrmc .demo-nav-back { display: none; }
+.vm-rrmc .demo-nav-icon {
+  display: flex;
+  flex: none;
+  width: 32px;
+  height: 33px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+.vm-rrmc .demo-nav-icon svg { width: 100%; height: 100%; fill: none; stroke: currentcolor; stroke-width: 1.5; stroke-linecap: round; }
+.vm-rrmc .demo-nav-icon-search { width: 34px; }
+.vm-rrmc .demo-nav-icon:hover { opacity: 0.7; }
 .vm-rrmc .demo-hero {
   /* Top padding clears the 110px nav overlay; total height stays 540px. */
   padding: 110px var(--vm-space-6) 0;
@@ -343,6 +360,7 @@
 /* Podium progress bar sits 10px below the hero — remove the tool section's
    top padding and replace it with 10px on the block itself. */
 .vm-rrmc .demo-tool { padding-top: 0; }
+.vm-rrmc .demo-tool[hidden] { display: none; }
 .vm-rrmc .demo-tool > .vehicle-matcher.vm { padding-top: 10px; }
 /* Pin the question pane to the window top so it slides under the sticky nav (z-index 100). */
 .vm-rrmc .demo-tool > .vehicle-matcher.vm { --vm-podium-sticky-top: 0px; }
@@ -456,11 +474,11 @@
   text-decoration: none;
   text-transform: uppercase;
 }
-/* The filled pill is 360 wide (30px wider each side) and takes its own row. */
+/* The filled pill is 360 wide (30px wider each side); side margins fill the row so it sits alone. */
 .rr-pill-primary {
-  flex-basis: 100%;
+  flex: 0 0 360px;
   width: 360px;
-  margin: 0 auto;
+  margin-inline: max(0px, calc(50% - 180px));
   border-color: #281432;
   background: #281432;
   color: #fff;

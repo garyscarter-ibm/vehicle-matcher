@@ -226,9 +226,5 @@
 }
 .vm.vm-rrmc .vm-results .vm-nearby-lede { font-size: 16px; line-height: 1.5; }
 
-/* Before any results, the intro is all there is on the page, so it sits centred: taglines and CTA. */
-.vm.vm-rrmc .vm-stage .vm-intro { text-align: center; }
-.vm.vm-rrmc .vm-stage .vm-intro :is(.vm-rrmc-tagline, .vm-rrmc-tagline-sub) { text-align: center; margin-inline: auto; }
-
 /* The live shortlist never scrolls sideways: it shows the tiles that fit (keepOneRow trims the rest). */
 .vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track { overflow-x: hidden; scroll-snap-type: none; }

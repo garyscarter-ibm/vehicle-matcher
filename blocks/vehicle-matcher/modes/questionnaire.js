@@ -26,7 +26,6 @@ import {
 import {
   CONCEPT_LABELS, FUEL_SPEC, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
 } from './result-card.js';
-import { renderRrmcIntro } from './rrmc-intro.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList, renderBudgetDrawer,
 } from './question-ui.js';
@@ -1324,8 +1323,9 @@ function renderIntro(root, ctx) {
   const { title: titleOverride, kicker: kickerOverride } = ctx.overrides;
   const kicker = kickerOverride === undefined ? (copy.kicker || 'The unofficial UK matchmaker') : kickerOverride;
   const title = titleOverride === undefined ? copy.title : titleOverride;
+  // RRMC's opening page lives in the host page, so it goes straight to question 1.
   if (ctx.brand === 'rrmc') {
-    renderRrmcIntro(root, ctx, () => ctx.showQuestion(0));
+    ctx.showQuestion(0);
     return;
   }
   if (kicker) intro.append(el('p', 'vm-kicker', kicker));
@@ -2332,7 +2332,7 @@ function mount(root, ctx) {
     // Skeleton the intro while the question set loads — reads as the page
     // arriving rather than a "Loading…" status. (A deep-link run swaps to the
     // results skeleton a moment later inside renderResults.)
-    renderIntroSkeleton(root);
+    if (ctx.brand !== 'rrmc') renderIntroSkeleton(root);
     try {
       const meta = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
       ctx.questions = meta.questions;
