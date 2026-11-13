@@ -6029,9 +6029,39 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-13T22:03:54Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-454",
-      "unsliced": true
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "artifact",
+          "status": "complete",
+          "title": "Pinned Quarkus JVM artifact, config, readiness, shutdown and context endpoint",
+          "observed_at": "2026-11-13T22:02:43Z",
+          "evidence": "Lead-reviewed services/gcsp-api: ./mvnw -B verify 16/16 pass (JDK 21.0.13, Quarkus 3.40.1.2, Maven 3.9.16); two clean builds byte-identical over 128 files"
+        },
+        {
+          "id": "local-startup",
+          "status": "complete",
+          "title": "Startup outside Render with java -jar and env config",
+          "observed_at": "2026-11-13T22:02:43Z",
+          "evidence": "java -jar quarkus-run.jar with PORT env: started 0.319s, ready 200, context 401/503 JSON, unknown route 404 JSON, CORS exact origin; SIGTERM stopped in 0.009s; prod launch refuses fixed-test/unknown provider"
+        },
+        {
+          "id": "render-hosted",
+          "status": "blocked",
+          "title": "Run the artifact on Render dev environment",
+          "observed_at": "2026-11-13T22:02:43Z",
+          "evidence": "Gary's isolated Render dev environment does not exist yet; proposed block in services/gcsp-api/render-service.proposed.yaml awaits GC as render.gcsp.yaml writer; Docker image build unrun locally (no daemon)"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story-level lead review and delivery record",
+          "observed_at": "2026-11-13T22:03:54Z",
+          "evidence": "Lead review and Result block at dev/DEV-2026-11-13-022 4289983d: 16/16 tests, local startup/shutdown evidence; Render slice blocked on external environment"
+        }
+      ]
     },
     {
       "id": "FUCQ-455",

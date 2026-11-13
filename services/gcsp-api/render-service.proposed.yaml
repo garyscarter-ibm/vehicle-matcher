@@ -1,0 +1,29 @@
+# PROPOSED for render.gcsp.yaml (GC is its single writer; this file is not read by Render).
+# Add under `services:` in the dev blueprint. Render has no native Java runtime, so it builds
+# the Dockerfile; buildCommand/startCommand do not apply to runtime: docker.
+  - type: web
+    name: gcsp-java-api
+    runtime: docker
+    # plan: deliberately unset; no tier is selected. Measured idle RSS is about 115 MB.
+    region: frankfurt
+    branch: gcsp-poc-dev
+    dockerfilePath: ./services/gcsp-api/Dockerfile
+    dockerContext: ./services/gcsp-api
+    healthCheckPath: /q/health/ready
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - services/gcsp-api/**
+      ignoredPaths:
+        - services/gcsp-api/README.md
+        - services/gcsp-api/render-service.proposed.yaml
+    envVars:
+      # PORT is injected by Render; the service binds to it.
+      - key: GCSP_IDENTITY_PROVIDER
+        value: none            # refuses every context call until FUCQ-455 adds oidc
+      - key: GCSP_ALLOWED_ORIGINS
+        sync: false            # exact static-site origin(s), comma separated (FUCQ-435)
+      - key: GCSP_SHUTDOWN_TIMEOUT
+        value: 10s
+      - key: JAVA_OPTS
+        value: -XX:MaxRAMPercentage=75
