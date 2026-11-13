@@ -58,3 +58,34 @@ Official documentation checked on 13 November 2026:
 - [Render custom domains](https://render.com/docs/custom-domains): custom domains are supported for both static sites and web services.
 - [Render static sites](https://render.com/docs/static-sites): static artifacts are served through its CDN.
 - [MDN Request credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials) and [credentialed CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS): separate origins require explicit credential handling and an explicit allowed origin.
+
+## Follow-up: all hosting on Cloudflare Free
+
+Gary asked whether all hosting could move to Cloudflare's free tier. This remains discussion and feasibility assessment, with no authorisation inferred for a migration, new dependencies, service provisioning or Jira writes. Current source observation is `e6303e7fe`; no application code changed since the source assessed above.
+
+**Assessment:** a Cloudflare-only version is plausible, but the existing Node/PostgreSQL deployment does not establish that it will fit the free tier. It needs a backend/storage port and representative resource/transaction proof. The original 4–8 day estimate covers the static-frontend/API separation; it does not cover this full platform migration. There is insufficient implementation or workload evidence to give a firm estimate for the larger port.
+
+| Responsibility | Possible Cloudflare placement | Implication for this app |
+|---|---|---|
+| Static HTML, modules, styles and small images | Workers Static Assets, alongside a Worker on a supplied hostname | Direct static-asset requests are free and unlimited. One public origin can serve static files and `/api/*`; session/bootstrap work above still applies. |
+| HTTP API | Workers | Free allowance: 100,000 requests/day, 10 ms CPU/request and 128 MB memory/isolate. Waiting for I/O is separate from CPU time. Recommendation/release work must be measured and placed or split appropriately. |
+| Durable transactions and policy | D1 or SQLite-backed Durable Objects, selected after a port trial | D1 is SQLite-compatible, not PostgreSQL. A replacement repository/policy adapter, migrations and data transfer must preserve exclusive holds, command receipts, pinned policy/quotes and reset/recovery. Neither product is already integrated. Do not put competing authorities in both stores. |
+| Stateful coordination and heavier work | SQLite-backed Durable Objects; bounded resumable operations where needed | Available on Free with their own request, duration and storage allowances. Their documented default CPU budget is 30 seconds per request, so the ordinary Worker's 10 ms limit alone does not rule out an all-free design. Worker memory limits still matter. This is a candidate adaptation, not a proved fit. |
+| Vehicle corpus and large objects | R2 Standard or suitable static-asset partitions | R2 includes 10 GB-month storage, 1 million Class A and 10 million Class B operations/month. This is a metered allowance with charges beyond it, not a guaranteed zero bill. Runtime filesystem lookups/publication need an object-storage/bundled-data adapter. |
+| Comparison jobs | A replacement bounded job mechanism | Current `comparison/jobs.js` uses Node `worker_threads`; that execution path needs replacement/compatibility proof. Retaining an offline-prepared stored result is possible only within the existing authorised capability boundary; it does not fulfil interactive rerun acceptance. |
+
+Specific code evidence: `server/gcsp/repository/postgres.js` and `policy/postgres-provider.js` use JSONB, explicit SQL transactions and PostgreSQL advisory locks. `vehicle-evidence/indexed-jsonl.js`, registry/publication and VIN allocation use local filesystem contracts. `host.js` owns the long-running runtime composition. Pure JavaScript service logic and browser components remain reuse candidates. Cloudflare supports many Node APIs, including HTTP and a virtual filesystem; the compatibility question is actual lifecycle, durable storage and execution semantics, not merely whether a `node:` import exists.
+
+D1 Free currently permits 500 MB per database and 5 GB aggregate storage, with 5 million rows read and 100,000 rows written/day. These are row-operation limits, not equivalent API request counts. Existing broad run snapshot/fingerprint patterns make query shape relevant; no current live database size or D1 usage was measured. Hyperdrive can connect Workers to an existing external PostgreSQL database, but that keeps an external database host and does not meet the literal Cloudflare-only objective.
+
+The Render blueprint records a historical startup RSS near 500 MB. That is not a Worker isolate heap measurement and does not prove a port cannot fit 128 MB; it does justify measuring the real population/corpus and avoiding a blanket fit claim. Cloudflare Containers could retain more Node/server behaviour, but its published pricing requires the $5/month Workers Paid plan plus applicable usage; it is not a Free-plan deployment.
+
+The next useful feasibility proof, if commissioned, is a small port covering sign-in/account state, one representative stock release/allocation, concurrent competing claims, replay/recovery and corpus lookup. Measure CPU, memory, durable bytes and database operations at the intended demo population. Preserve existing product behaviour and data; no live reset, migration or release is authorised by this discussion. The simple frontend/proxy move remains the smaller route, while a successful full port could remove the Render dependency.
+
+No Cloudflare build, compatibility harness, deployment, database export or workload benchmark was run. This follow-up uses repository inspection and the official product documentation checked on 13 November 2026:
+
+- [Static Assets billing](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) and [Workers limits](https://developers.cloudflare.com/workers/platform/limits/).
+- [D1 overview](https://developers.cloudflare.com/d1/), [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/) and [D1 limits](https://developers.cloudflare.com/d1/platform/limits/).
+- [Durable Objects pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/) and [limits](https://developers.cloudflare.com/durable-objects/platform/limits/).
+- [R2 pricing](https://developers.cloudflare.com/r2/pricing/), [Node compatibility](https://developers.cloudflare.com/workers/runtime-apis/nodejs/) and [virtual filesystem](https://developers.cloudflare.com/workers/runtime-apis/nodejs/fs/).
+- [Hyperdrive](https://developers.cloudflare.com/hyperdrive/) and [Containers pricing](https://developers.cloudflare.com/containers/platform/pricing/).
