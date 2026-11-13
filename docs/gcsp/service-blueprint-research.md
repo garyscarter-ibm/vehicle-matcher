@@ -1,5 +1,7 @@
 # Paula blueprint: evidence behind revision 4
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Reviewed 1 November 2026 for [FUCQ-3](service-blueprint.html). This records desk research and design decisions, not interviews with employees or a tested production design.
 
 ## Her precise current car

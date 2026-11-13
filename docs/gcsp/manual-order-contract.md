@@ -1,5 +1,7 @@
 # Common selection ordering port · FUCQ-71 checkpoint
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Employee login and server ownership replace legacy cookie authority. Preserve exact quote/declarations, one conversion, durable intent before remote I/O, original command receipts and reconciliation. Authentication renewal/sign-in recovery returns to saved progress without automatically submitting an unfinished order. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 This isolated backend checkpoint implements the agreed ordering component in `docs/design/gcsp-high-level-design.md`. It has no HTTP/startup composition or screen. `docs/gcsp/build-rules.md`, `experience-quality.md`, F64 `a7fc178`, the supplied shell references and `COMPONENTS.md` govern its later consumer. Rendered outcomes belong to FUCQ-72. The whole story remains incomplete until the gates below pass.
 
 ## Composition

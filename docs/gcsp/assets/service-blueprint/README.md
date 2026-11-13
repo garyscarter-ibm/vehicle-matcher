@@ -1,5 +1,7 @@
 # Service blueprint design assets
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../../../design/migration-decisions-2026-11-13.md) and [replacement contracts](../../migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 The blueprint uses IBM Carbon's **White** theme, a light theme selected by Russell on 1 November 2026. This document styling applies to the blueprint only; it does not establish the GCSP application's visual reference.
 
 - `carbon.css`: compiled from the official `@carbon/styles` **1.118.0** npm package. Includes theme/layer/layout foundations and button, tag, select, text-input, text-area, data-table and link styles. Source: [Carbon repository](https://github.com/carbon-design-system/carbon/tree/main/packages/styles). Licence: `carbon-LICENSE.txt` (Apache 2.0).

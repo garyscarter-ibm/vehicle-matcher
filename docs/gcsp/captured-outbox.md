@@ -1,5 +1,7 @@
 # Captured notification dispatch · FUCQ-93
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 `server/gcsp/notify/index.js` supplies `NotificationDispatcher` and the `MailTransport` port. Its default `CapturedTransport` stores a fictional employee's rendered message in the existing run-scoped `notification_outbox.outcome.message`. It creates no external email, address, credential, sender, infrastructure or second store. There is no viewer or token minting here. FUCQ-100 owns the committed hold/offer/job producer and FUCQ-97 owns the later presenter viewer.
 
 ## Trusted composition and lifecycle

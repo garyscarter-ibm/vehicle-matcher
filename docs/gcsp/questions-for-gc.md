@@ -1,5 +1,22 @@
 # Questions for GC: deployment and path to live
 
+## Dispositions from migration refinement — 13 November 2026
+
+These were the original questions, not a current unanswered checklist. [Current decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) now settle:
+
+| Question | Agreed disposition / remaining evidence |
+| --- | --- |
+| GC-001 | One Render blueprint; separate static Angular 21 and Java 21/Quarkus 3.x API artifacts. Gary creates dev from `gcsp-poc-dev` with its own database and performs final merge into `gcsp-poc`. Actual hosted settings/capacity still need proof; minimize cost, no paid tier/domain selected. |
+| GC-002 | Preserve retail and its supported shared launcher/brand handoffs. Angular owns GCSP routing and public deployment API/OIDC config. No legacy GCSP URL/API compatibility required. |
+| GC-003 | Java owns runtime jobs and PostgreSQL state/receipts/recovery. Preserve explicit clock/tick and notification-dispatch semantics; no unattended scheduler is newly agreed. New state/links survive ordinary restarts. |
+| GC-004 | Reuse existing ports/semantic contracts in Java; startup-selected local/remote providers, no silent synthetic fallback. FUCQ-467 completes remote decisions; FUCQ-481 proves full substitution. No Node business execution for deployed GCSP. |
+| GC-005 | Configured backend mail adapter must deliver to an agreed test recipient in both connected proofs; capture alone is insufficient. New links require OIDC sign-in and employee ownership. Actual sender/configuration/access still need validation. |
+| GC-006 | Angular 21, Java 21, Quarkus 3.x and OIDC bearer JWT confirmed. Real test-provider browser login first; BMW service/SSO activation follows with access/contracts and further supplied standards. |
+| GC-007 | Whole hosted dev review at the end; no interim human checkpoints. Preserve business/visual outcomes and normal app/SQL recovery. Gary's merge triggers immediate replacement; downtime allowed and no retained-deployment rollback rehearsal. |
+| GC-008 | No new comparable-human-team delivery evidence was supplied by this refinement. Existing evidence limits remain. |
+
+The original observations/questions below remain dated source context. Their final “all open” statement describes that earlier record only.
+
 Prepared 1 November 2026 for Russell's discussion with Gary Carter on Tuesday 3 November. No message has been sent to Gary. Russell owns the human presentation practicalities; these questions concern technical deployment and later integration.
 
 ## Observed deployment

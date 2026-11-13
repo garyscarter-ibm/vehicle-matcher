@@ -1,5 +1,7 @@
 # Greg policy projection, preview and publication · FUCQ-103
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 `createGregPublishService({ repository, policy, clock, identity })` in
 `server/gcsp/greg/publish/index.js` exposes `readPolicy(context)`, `preview(context, input)`
 and `publish(context, input)`. All require the actual DemoIdentityAdapter's Greg guard and

@@ -109,7 +109,23 @@ export function findReceipt(index, receipts, runId, consumerId, eventId) {
 }
 const RECEIPT_KEY = Object.freeze(['consumerId', 'eventId', 'runId']);
 
-export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES, receiptIndex = undefined) {
+// One entry per changed row identity, in first-write order; later writes keep the first type and
+// expectedVersion (the version stored before this transaction) and replace `row` with the final row.
+export function createMutationJournal() {
+  const entries = new Map();
+  return Object.freeze({
+    record(type, table, row, expectedVersion) {
+      const key = Object.fromEntries(TABLES[table].key.map((field) => [field, row[field]]));
+      const id = JSON.stringify([table, ...Object.values(key)]);
+      const entry = entries.get(id);
+      if (entry) entry.row = row;
+      else entries.set(id, { type, table, key, row, ...(type === 'update' ? { expectedVersion } : {}) });
+    },
+    entries: () => Object.freeze([...entries.values()].map((entry) => Object.freeze({ ...entry, key: Object.freeze({ ...entry.key }) }))),
+  });
+}
+
+export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES, receiptIndex = undefined, journal = createMutationJournal()) {
   let failure;
   let active = true;
   const changedTables = new Set();
@@ -203,15 +219,18 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const violation = constraint(table, row);
     if (violation) return violation;
     state.tables[table].push(row);
+    journal.record('insert', table, row);
     changedTables.add(table);
     if (table !== 'event_receipts') {
       const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
       // Shallow snapshots (those with a receipt index) never mutate a stored row, so the receipt can share it.
       const outcome = receiptIndex && !omitLink ? ok(row) : cloneJson(ok(row));
       if (omitLink) delete outcome.value.payload.offerLink;
-      state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
+      const receipt = { runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
         inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
-        version: 1, createdAt: timestamp, updatedAt: timestamp });
+        version: 1, createdAt: timestamp, updatedAt: timestamp };
+      state.tables.event_receipts.push(receipt);
+      journal.record('insert', 'event_receipts', receipt);
       changedTables.add('event_receipts');
     }
     return ok(row);
@@ -234,6 +253,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (violation) return violation;
     const position = state.tables[ref.table].indexOf(previous);
     state.tables[ref.table][position] = row;
+    journal.record('update', ref.table, row, previous.version);
     changedTables.add(ref.table);
     if (receiptIndex && ref.table === 'event_receipts' && position === receiptIndex.count - 1) receiptIndex.last = row;
     return ok(row);
@@ -295,6 +315,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
       recordReceipt: guarded(recordReceipt), enqueueNotification: guarded(enqueue) }),
     finish: () => { active = false; return failure; },
     changedTables: () => [...changedTables],
+    mutations: () => journal.entries(),
   };
 }
 
@@ -350,10 +371,11 @@ export function createRepository(backend) {
           return { commit: false, outcome: result('stale-run', { reason: 'The current run has changed' }) };
         }
         if (state.tables.runs.some((row) => row.runId === nextRun.runId)) return { commit: false, outcome: conflict('run-id-exists') };
+        const journal = createMutationJournal();
         const deliveryEmails = new Map(current ? state.tables.employees
           .filter((employee) => employee.runId === current.runId).map((employee) => [employee.employeeId, employee]) : []);
         if (current) {
-          const previous = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
+          const previous = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
           const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
           if (retired.status !== 'ok') return { commit: false, outcome: retired };
           // Only reset crosses historical scopes. Retire outstanding jobs in
@@ -366,7 +388,7 @@ export function createRepository(backend) {
           previous.finish();
         }
         const nextContext = { ...context, runId: nextRun.runId };
-        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables, backend.receiptIndex);
+        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         let outcome = await seed.tx.insert('runs', nextRun);
         for (const [table, row] of rows) {
           if (outcome.status !== 'ok') break;
@@ -379,10 +401,11 @@ export function createRepository(backend) {
         const failure = seed.finish();
         if (failure || outcome.status !== 'ok') return { commit: false, outcome: failure || outcome };
         const stored = ok({ previousRunId: expectedCurrentRunId, runId: nextRun.runId, now: nextRun.clockInstant ?? null, versions: nextRun.versions ?? {} });
-        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         const recorded = await recorder.tx.recordReceipt({ consumerId: 'command:reset-run', eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: stored });
         recorder.finish();
-        return { commit: recorded.status === 'ok', outcome: recorded.status === 'ok' ? stored : recorded };
+        // Adapters may ignore `mutations`; it is offered only with a commit.
+        return recorded.status === 'ok' ? { commit: true, outcome: stored, mutations: journal.entries() } : { commit: false, outcome: recorded };
       }));
     },
     async transaction(context, command, work) {
@@ -399,7 +422,8 @@ export function createRepository(backend) {
         if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest ? cloneJson(receipt.outcome) : conflict('idempotency-input-changed') };
         const historical = contextError(context, state, true);
         if (historical) return { commit: false, outcome: historical };
-        const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
+        const journal = createMutationJournal();
+        const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         let outcome;
         try { outcome = await work(session.tx); } catch (error) { diagnose('transaction.work', error); session.finish(); return { commit: false, outcome: unavailable() }; }
         const failure = session.finish();
@@ -408,12 +432,12 @@ export function createRepository(backend) {
         if (!['ok', 'pending'].includes(outcome.status)) return { commit: false, outcome: { ...outcome, contractVersion: CONTRACT_VERSION } };
         if ((outcome.status === 'ok' && !Object.hasOwn(outcome, 'value')) || (outcome.status === 'pending' && !['operationId', 'operationType', 'lastKnownState'].every((key) => identifier(outcome[key])))) return { commit: false, outcome: invalid('invalid-outcome', 'work', 'Callback must return a complete contract outcome') };
         const storedOutcome = { ...cloneJson(outcome), contractVersion: CONTRACT_VERSION };
-        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
         committed = recorded.status === 'ok';
         changedTables = [...new Set([...session.changedTables(), ...recorder.changedTables()])];
-        return committed ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
+        return committed ? { commit: true, outcome: storedOutcome, mutations: journal.entries() } : { commit: false, outcome: recorded };
       }));
       if (committed && ['ok', 'pending'].includes(outcome.status)) {
         await Promise.allSettled([...commitObservers].map((observer) => Promise.resolve().then(() => observer({

@@ -1,5 +1,7 @@
 # BMW Density theme and source reference
 
+> **Migration design overlay — 13 November 2026.** The [current decisions](../../design/migration-decisions-2026-11-13.md) and [replacement contracts](../migration-replacement-contracts-2026-11-13.md) govern the target. Preserve frozen capability/visual semantics; Angular 21 owns screens, Java 21/Quarkus 3.x owns runtime calculations/jobs and source adapters. Offline JS training/preparation may remain. OIDC bearer JWT replaces legacy cookie/password authority, each employee/Greg uses their own login and presenter has controls/inspection only. The dated implementation, approved references and native acceptance below remain historical evidence, not proof of replacement delivery.
+
 Verified 5 November 2026. Gary reports that the client has authorised use of Density but cannot supply it. Public BMW applications provide enough real visual tokens to implement its look and feel through our existing shared kit.
 
 Gary subsequently instructed us to fetch the correct fonts and make Density the main app's default. Every GCSP consumer now inherits the theme through `gcsp-tokens.css`, without a class or page-specific stylesheet. The separate retail brand themes retain their existing styling.

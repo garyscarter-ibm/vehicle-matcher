@@ -1,5 +1,7 @@
 # Employee notification email, 11 November 2026
 
+> **Migration design overlay — 13 November 2026.** The [current decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the target. Preserve frozen capability/visual semantics; Angular 21 owns screens, Java 21/Quarkus 3.x owns runtime calculations/jobs and source adapters. Offline JS training/preparation may remain. OIDC bearer JWT replaces legacy cookie/password authority, each employee/Greg uses their own login and presenter has controls/inspection only. The dated implementation, approved references and native acceptance below remain historical evidence, not proof of replacement delivery.
+
 Gary reported that mail was not being delivered from the hosted presenter and requested recipients
 from employee records, choosing a separate delivery address rather than changing sign-in emails.
 He also paused every Jira write project-wide until explicitly unpaused. The pause is committed in

@@ -1,5 +1,11 @@
 # BMW system context — 11 November 2026
 
+## Current application design — 13 November 2026
+
+The synchronized diagrams now show **Angular 21 static frontend → Java 21 / Quarkus 3.x API**, deployment-selected adapters and authoritative PostgreSQL. Interim delivery stays on Render from `gcsp-poc-dev` with its own database; future BMW hosting and service contracts remain to confirm. Real test OIDC/bearer JWT proves the interchangeable identity seam. BMW corporate SSO uses OAuth 2.0/OIDC/JWT; exact issuer/claims/provider mappings remain unknown and Entra remains a candidate, not a selected tenant.
+
+Employees and Greg use their respective logins. Presenter has dedicated scenario controls and allowed inspection, no impersonation/business commands. New offer links require sign-in and ownership. Actual configured test email is required alongside local and remote substitutes; missing remote offer acceptance/decline is FUCQ-467. Retain VSS/configurator source selections and explicit unsupported/pending outcomes; no diagram claims a live BMW integration. [Full decisions](migration-decisions-2026-11-13.md) and [engineering contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) take precedence over historical demo-provider descriptions below. All three share PNGs are re-exported from the aligned canonical XML.
+
 [Editable draw.io share export](bmw-system-context.drawio) · [Overview PNG](bmw-system-context.png) · [Data adapters PNG](bmw-data-adapters.png) · [Action adapters PNG](bmw-action-adapters.png)
 
 The three pages also appear as **10 BMW system context**, **11 BMW data adapters** and **12 BMW action adapters** in the [canonical high-level design](high-level-design.drawio). The smaller share export contains those same pages; maintain them in the canonical design and refresh the share export together. The existing twelve architecture pages are preserved.

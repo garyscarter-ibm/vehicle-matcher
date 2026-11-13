@@ -1,5 +1,7 @@
 # Static frontend and backend API assessment — 13 November 2026
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. The cookie/sibling-domain Node proposal and Cloudflare exploration below are historical alternatives. Gary selected Angular 21, Java 21/Quarkus 3.x and OIDC bearer JWT, retained Render and rejected Cloudflare. Prefer existing Render hostnames and prove their actual browser/provider topology; no custom-domain requirement or paid tier is selected. No legacy GCSP link/API compatibility or old-deployment rollback rehearsal is required. Its 4–8-day estimate covers the earlier unchanged-stack proposal, not the agreed migration. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Requested by Gary: what would it take to return GCSP to the originally planned static frontend calling a backend API?
 
 This is an assessment against `gcsp-poc` at `f04f763c2`, not approval to implement, change hosting, alter claimed acceptance criteria or resume Jira writes. Jira remains paused. No application code, configuration, data or external deployment was changed for this assessment.
@@ -8,7 +10,7 @@ This is an assessment against `gcsp-poc` at `f04f763c2`, not approval to impleme
 
 The product already has most of this separation. Its HTML pages load browser ES modules and shared components; the application services, identity, policy and PostgreSQL repository sit behind HTTP routes. The migration is primarily deployment and session-boundary work. Existing screens and domain services can be reused; a frontend framework, new backend language, separate repository or database migration is not inherently required.
 
-The original separate Render static-site/API plan is recorded in the [HLD review](../design/hld-review-gc.md), Q1. The [current HLD hosting decision](../design/gcsp-high-level-design.md#technical-deployment-and-recovery), dated 9 November, deliberately selected same-origin hosting to avoid cross-site session-cookie failures between the two `onrender.com` addresses. It already identifies sibling custom domains as the route for eventual integration.
+The original separate Render static-site/API plan is recorded in the [HLD review](../design/hld-review-gc.md), Q1. In the assessed revision, the HLD hosting decision dated 9 November deliberately selected same-origin hosting to avoid cross-site session-cookie failures between the two `onrender.com` addresses. It already identifies sibling custom domains as the route for eventual integration.
 
 Current implementation evidence:
 

@@ -1,5 +1,9 @@
 # GCSO, ISA and GCSP platform context
 
+## Our portable replacement target — agreed 13 November 2026
+
+BMW's platform history below remains source evidence; it does not establish completion of its mainframe modernization. Separately, **our GCSP app** targets Angular 21 and Java 21/Quarkus 3.x, with OIDC bearer JWT and dedicated backend adapters. The interim host is Render (separate static/API builds and dev PostgreSQL), designed to accept BMW configuration/adapters and additional supplied standards later. Real test OIDC and realistic local/remote substitutes prove our boundary, not live BMW systems. Read the [current migration decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md).
+
 Russell supplied this clarification and two slide screenshots on **2 November 2026**. His accompanying explanation establishes the current platform baseline below. The slides are supporting source material; their wording is recorded separately and does not authorise implementation or backlog changes.
 
 ## Current baseline confirmed by Russell

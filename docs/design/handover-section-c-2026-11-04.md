@@ -1,5 +1,7 @@
 # Handover: author the missing GCSP Epics and Stories (section C)
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](migration-decisions-2026-11-13.md) and [replacement contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 4 November 2026, from the HLD story-readiness session. Branch `gcsp-poc`, head `3525ae6` or later. Jira FUCQ on `ibm-consulting.atlassian.net` (cloudId `9024e134-9d2e-4f15-af8d-4df1fd4c2cb1`).
 
 ## Goal

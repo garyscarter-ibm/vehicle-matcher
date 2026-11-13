@@ -1,5 +1,7 @@
 # Handover: pre-build consistency pass and design update, 4 November 2026
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](migration-decisions-2026-11-13.md) and [replacement contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 For a fresh Claude Code session. Two jobs: (A) a consistency pass over the GCSP backlog in Jira FUCQ, and (B) bring
 the draw.io high-level design up to date with it. **Do not start the dev poller** and do not run a Jira pull
 (`jira_sync.py pull`): Gary will start the build himself. Story authoring and design only: no application code.

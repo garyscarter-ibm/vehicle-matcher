@@ -1,5 +1,9 @@
 # Components
 
+## GCSP Angular migration — 13 November 2026
+
+This catalogue describes existing shared primitives and remains the reuse baseline. The [agreed GCSP target](docs/design/migration-decisions-2026-11-13.md) uses **Angular 21** in `apps/gcsp-web/`, owning screens/routing rather than permanently wrapping legacy screen controllers. Adapt compatible primitives, styling and semantic tokens at the first consuming Story; keep reusable Angular pieces shared within the new app and catalogue them here as they are built. Preserve existing Used Cars imports and behavior. The vanilla/no-build description below applies to the existing retail kit, not the Angular application. Extend gallery/ratchet coverage to actual Angular paths and retain rendered/browser evidence under the [experience contract](docs/gcsp/experience-quality.md).
+
 The catalogue of shared UI for the vehicle-matcher block. Read this before building or changing any view (a mode in `blocks/vehicle-matcher/modes/` or the shell `vehicle-matcher.js`). Gallery page: [`components.html`](components.html). Stack: vanilla JS ES modules, no build step, no component library. Import the kit with relative ES imports (`import { el, gbp } from '../ui.js'`, `import { matchCard } from './result-card.js'`). Styles live in `blocks/vehicle-matcher/vehicle-matcher.css`, with design tokens (`--vm-*`) in `tokens.css`.
 
 ## The rule

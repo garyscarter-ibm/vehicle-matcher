@@ -1,5 +1,7 @@
 # Central runtime and manual journey: exact source proposal
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. Authoring checkpoint only.
 Accepted product base is `38be4f5d95823b5f010a56c3d4b6cbda4eca55e8`.
 The five authorised central/entry changes are now applied as actual product source. The

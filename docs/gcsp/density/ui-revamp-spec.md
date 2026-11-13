@@ -1,5 +1,7 @@
 # GCSP UI revamp spec, 10 November 2026
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../../design/migration-decisions-2026-11-13.md) and [replacement contracts](../migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Gary's direction: match the current GCSP portal screens (`docs/gcsp/screens/*`) first. Where they don't show something, use Density tokens. This is a visual pass. Copy and behaviour stay as they are; the UX revamp comes later.
 
 ## What the screens show

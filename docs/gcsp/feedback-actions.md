@@ -1,5 +1,7 @@
 # Scoped local feedback (FUCQ-30)
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 The canonical action contract is `blocks/vehicle-matcher/feedback-actions.js`. Retail questionnaire refinement and the read-only employee draft adapter use the same serialisable actions and atomic local reducer. Other retail modes retain their existing state machines. Actions contain no predicate closures.
 
 An action has `schemaVersion: 1`, a local unique `id`, `type`, `target`, human-readable `reason`, `scope: { kind, id }` and `expectedVersion`. Scope kind is `browse` or `employee-draft`. The reducer rejects a mismatched scope or stale version without returning a new state. Success explicitly returns `nextVersion` and a new state. Inputs are unchanged.

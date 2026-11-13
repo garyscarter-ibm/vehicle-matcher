@@ -1,5 +1,7 @@
 # Questions about the GCSP front-end and backend migration to AWS
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](migration-decisions-2026-11-13.md) and [replacement contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 ## What this document is for
 
 IBM is building a **demonstration** of a next-generation front end for the BMW company car scheme (GCSP). In the
