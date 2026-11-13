@@ -1,0 +1,108 @@
+{
+  "story": "FUCQ-434",
+  "run": "final-evidence",
+  "ownerPid": 64529,
+  "observedAt": "2026-11-13T21:11:25.915435+00:00",
+  "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/final-evidence-scratch",
+  "selected": [
+    "node --max-old-space-size=128 docs/gcsp/migration-baseline-2026-11-13/collect.mjs",
+    "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py"
+  ],
+  "expected": {
+    "workers": 1,
+    "heapMiB": 128,
+    "scratchMiB": 2,
+    "outputMiB": 3,
+    "timeoutSecondsPerCommand": 120
+  },
+  "exclusions": "No application suite, browser, PostgreSQL, external provider, mail or deployment; documentation-only inventory",
+  "results": [
+    {
+      "command": "node --max-old-space-size=128 docs/gcsp/migration-baseline-2026-11-13/collect.mjs",
+      "exitCode": 0,
+      "elapsedSeconds": 0.919,
+      "stdout": "{\"output\":\"docs/gcsp/migration-baseline-2026-11-13/inventory.json\",\"sourceFiles\":672,\"routes\":100,\"factories\":26,\"retainedAndVisualFiles\":1048,\"bytes\":553884,\"sourceAggregateSha256\":\"212a8e7ca88891b0dcddeff7ba0b5c13a9248af97584612458e04b45fabf89df\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+      "exitCode": 1,
+      "elapsedSeconds": 0.796,
+      "stdout": "{\"passed\": false, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": [\"capability replacement coverage\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+      "exitCode": 0,
+      "elapsedSeconds": 0.801,
+      "stdout": "{\"passed\": true, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": []}\n",
+      "stderr": ""
+    }
+  ],
+  "elapsedSeconds": 1.716,
+  "maxChildRssBytes": 168017920,
+  "scratchAbsent": true,
+  "largeOutputs": "none; streamed input hashes only",
+  "compatibilityExceptions": "none",
+  "dependency": "Read-only launcher pg module import; no installation/connection",
+  "priorFailure": "Initial collector import failed ERR_MODULE_NOT_FOUND pg; corrected by explicit read-only import resolution, then passed",
+  "correction": "Verifier now expands documented slash/range Story shorthand; initial coverage failure retained.",
+  "correctionScratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/coverage-correction-scratch",
+  "devbaseReconciliation": {
+    "remoteRef": "origin/gcsp-poc-dev",
+    "observedTip": "72b12a547e426071efc2a6ab721ae1486e2cc289",
+    "frozenInputsUnchanged": true,
+    "baseBranch": "gcsp-poc-dev",
+    "meaning": "Latest intake/coordination metadata read; no worker rebase/merge or source refresh required"
+  },
+  "reviewAdjustment": {
+    "reason": "Foxy distinguished clock startup stages from full server startup delivery",
+    "source": [
+      "server/index.js:923\u2013930",
+      "server/gcsp/notify/index.js:37\u201351"
+    ],
+    "change": "Baseline/HLD preserve pending due-job drain and after-commit outbox observer; no application change",
+    "validation": "Affected prose checked against source; working diff whitespace passed; unchanged inventory hashes reused"
+  },
+  "finalReview": {
+    "result": "PASS \u2014 no blocking or major issues found.",
+    "record": "review.md",
+    "independentHashes": 1720,
+    "independentPeakRssBytes": 23101440,
+    "scratchAllocated": false,
+    "finalChangedDocReferencesAndWhitespace": "passed",
+    "hashEvidenceReused": "Frozen inputs unchanged; only prose, review receipt and map completion updated"
+  },
+  "integratedD1D2": {
+    "story": "FUCQ-434",
+    "run": "integrated-d2",
+    "ownerPid": 74518,
+    "observedAt": "2026-11-13T21:22:09.294102+00:00",
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/integrated-d2-scratch",
+    "selected": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+    "base": "8e9741e5d681534242b5fee73902b505a5285508",
+    "integratedCommit": "8f3e54dc4c38ff8595df24a1011e1f947391f67a",
+    "budget": {
+      "workers": 1,
+      "ramMiB": 128,
+      "scratchMiB": 2,
+      "outputMiB": 1,
+      "timeoutSeconds": 120
+    },
+    "exclusions": "No app suite/browser/database/provider/mail/deploy; source inventory unchanged, latest base intake/coordination only",
+    "results": [
+      {
+        "exitCode": 0,
+        "stdout": "{\"passed\": true, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": []}\n",
+        "stderr": ""
+      }
+    ],
+    "elapsedSeconds": 1.0,
+    "maxChildRssBytes": 21839872,
+    "scratchAbsent": true,
+    "compatibilityExceptions": "none",
+    "largeOutputs": "none",
+    "preservedOtherMapRecords": 301,
+    "mergeConflicts": []
+  }
+}
