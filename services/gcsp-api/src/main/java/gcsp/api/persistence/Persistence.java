@@ -29,6 +29,7 @@ public class Persistence {
 
     private volatile TransactionRunner runner;
     private volatile EnvironmentGuard guard;
+    private volatile RunReset reset;
 
     public boolean active() {
         return active;
@@ -47,6 +48,12 @@ public class Persistence {
                     resetAllowed);
         }
         return guard;
+    }
+
+    public synchronized RunReset reset() {
+        if (!active) throw new IllegalStateException("Persistence is not configured");
+        if (reset == null) reset = new RunReset(dataSource.get(), expectedDatabase.orElse(""), environmentId.orElse(""));
+        return reset;
     }
 
     void onStart(@Observes StartupEvent event) {

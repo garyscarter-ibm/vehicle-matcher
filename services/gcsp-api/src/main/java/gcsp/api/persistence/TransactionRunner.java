@@ -100,7 +100,7 @@ public final class TransactionRunner {
         throw new IllegalStateException("Command work failed", e);
     }
 
-    private static Outcome mapSql(SQLException e) {
+    static Outcome mapSql(SQLException e) {
         String state = e.getSQLState();
         String constraint = e instanceof PSQLException p && p.getServerErrorMessage() != null
                 ? p.getServerErrorMessage().getConstraint()

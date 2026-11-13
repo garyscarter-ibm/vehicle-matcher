@@ -20,21 +20,28 @@ final class PgFixture implements AutoCloseable {
 
     final String url;
     final String schema;
+    final String env;
 
-    private PgFixture(String url, String schema) {
+    private PgFixture(String url, String schema, String env) {
         this.url = url;
         this.schema = schema;
+        this.env = env;
     }
 
     /** Skips only when GCSP_TEST_DATABASE_URL is unset; a set but unreachable URL fails. */
     static PgFixture create() throws SQLException {
-        String url = System.getenv("GCSP_TEST_DATABASE_URL");
-        Assumptions.assumeTrue(url != null && !url.isBlank(), "GCSP_TEST_DATABASE_URL is not set");
+        return create("GCSP_TEST_DATABASE_URL", ENV);
+    }
+
+    /** Skips only when the named variable is unset; env is the environment id a claimed fixture will carry. */
+    static PgFixture create(String urlVariable, String env) throws SQLException {
+        String url = System.getenv(urlVariable);
+        Assumptions.assumeTrue(url != null && !url.isBlank(), urlVariable + " is not set");
         String schema = "gcsp_t_" + Long.toHexString(System.nanoTime()) + "_" + Integer.toHexString(RUNS.incrementAndGet());
         PGSimpleDataSource admin = plain(url);
         Flyway.configure().dataSource(admin).schemas(schema).defaultSchema(schema).createSchemas(true)
                 .locations("classpath:db/migration").load().migrate();
-        return new PgFixture(url, schema);
+        return new PgFixture(url, schema, env);
     }
 
     /** Migrated schema plus the claimed identity and an active run-1, as EnvironmentGuard would leave it. */
@@ -45,8 +52,55 @@ final class PgFixture implements AutoCloseable {
         return f;
     }
 
+    /** Claimed like createClaimed, but in the named database variable with its own environment and reset flag. */
+    static PgFixture createClaimed(String urlVariable, String env, boolean resetAllowed) throws SQLException {
+        PgFixture f = create(urlVariable, env);
+        f.update("INSERT INTO environment_identity (environment_id, reset_allowed) VALUES (?, ?)", env, resetAllowed);
+        f.update("INSERT INTO runs (environment_id, run_id, status) VALUES (?, 'run-1', 'active')", env);
+        return f;
+    }
+
     RunContext ctx() {
-        return new RunContext(ENV, "run-1", "actor-1");
+        return new RunContext(env, "run-1", "actor-1");
+    }
+
+    RunContext ctx(String runId) {
+        return new RunContext(env, runId, "actor-1");
+    }
+
+    String database() throws SQLException {
+        try (Connection c = pool().getConnection(); var rs = c.createStatement().executeQuery("SELECT current_database()")) {
+            rs.next();
+            return rs.getString(1);
+        }
+    }
+
+    /** MD5 of every row's text, ordered, across the tables a reset must not touch in another database. */
+    String stateDigest() throws SQLException {
+        StringBuilder all = new StringBuilder();
+        for (String t : new String[] {"environment_identity", "runs", "run_resets", "command_receipts", "outbox_events",
+            "employees", "entitlement_slots", "stock_cars", "custody_holds", "pending_operations"}) {
+            try (Connection c = pool().getConnection(); var rs = c.createStatement().executeQuery(
+                    "SELECT coalesce(string_agg(x::text, '|' ORDER BY x::text), '') FROM " + t + " x")) {
+                rs.next();
+                all.append(t).append('=').append(rs.getString(1)).append('\n');
+            }
+        }
+        try {
+            return java.util.HexFormat.of().formatHex(
+                    java.security.MessageDigest.getInstance("MD5").digest(all.toString().getBytes()));
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    String text(String sql, Object... params) throws SQLException {
+        try (Connection c = pool().getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) ps.setObject(i + 1, params[i]);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getString(1) : null;
+            }
+        }
     }
 
     static PGSimpleDataSource plain(String url) throws SQLException {
