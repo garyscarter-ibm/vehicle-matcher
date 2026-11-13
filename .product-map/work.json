@@ -6004,7 +6004,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T22:02:43Z",
+      "observed_at": "2026-11-13T22:03:54Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-454",
       "unsliced": false,
       "slices": [
@@ -6031,8 +6031,10 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Story-level lead review and delivery record"
+          "status": "complete",
+          "title": "Story-level lead review and delivery record",
+          "observed_at": "2026-11-13T22:03:54Z",
+          "evidence": "Lead review and Result block at dev/DEV-2026-11-13-022 4289983d: 16/16 tests, local startup/shutdown evidence; Render slice blocked on external environment"
         }
       ]
     },
