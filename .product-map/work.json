@@ -6568,7 +6568,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T23:00:26Z",
+      "observed_at": "2026-11-13T23:10:57Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
       "unsliced": false,
       "slices": [
@@ -6597,10 +6597,10 @@
           "name": "Porky Pig",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T23:00:24.666089+00:00",
-          "expires_at": "2026-11-13T23:00:24.666089+00:00",
-          "status": "foundation review checkpoint returned; inactive",
-          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; lead directly prepared independently reviewable checkpoint against shared0ab125ae; no original AC completion claim"
+          "observed_at": "2026-11-13T23:10:32.152631+00:00",
+          "expires_at": "2026-11-13T23:10:32.152631+00:00",
+          "status": "review evidence prepared; handoff inactive",
+          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; actualF455 compatible without source adaptation; failed review/MediumF486/openAC retained"
         },
         {
           "name": "Mulan",
@@ -6610,9 +6610,18 @@
           "expires_at": "2026-11-13T21:56:25Z",
           "status": "checkpoint reported; inactive",
           "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
+        },
+        {
+          "name": "Sylvester Jr",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:10:32.152631+00:00",
+          "expires_at": "2026-11-13T23:10:32.152631+00:00",
+          "status": "review returned; inactive",
+          "source": "thread 01a1d725-c45d-7f11-a0f9-18f7db388af7; pinnedb117 reviewFAILED; MAJOR/MediumF486; requested/selected/effectiveSol-high verified actualturncontext8; savedtitleverified"
         }
       ],
-      "note": "Foundation ready for independent integration review after latest-shared synca13b51e1. Original F439 acceptance remains open; not built/InReview/Done. F436 packaging separate; actual productionOIDC Java configuration pendingF455."
+      "note": "Independent foundation review FAILED: one MAJOR/Medium retained-route reauthorization finding linked as backlog Bug FUCQ-486, independent prioritization/no repair or merge dependency. Original F439 AC open; not built/InReview/Done. Actual JavaOIDC contract compatible; real provider registration/browser/hosted proof pending. F436 packaging separate."
     }
   ]
 }
