@@ -6379,10 +6379,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Connected-outcomes-and-independent-review",
-          "observed_at": "2026-11-13T22:10:23Z",
-          "evidence": "Runtime 7 pass/1 PostgreSQL skip; six lead-inspected desktop/narrow main release/history and no-match captures durable in docs/gcsp/evidence/fucq-409. Conflict readback timeout unresolved; focused fresh-session diagnostic and stable offer capture running; independent review pending."
+          "observed_at": "2026-11-13T22:29:51Z",
+          "evidence": "38 distinct automated passes/1 native PostgreSQL skip; 14 desktop/narrow captures independently reviewed by Cool Cat, verdict passed; real stale-version fallback and exact replay with unchanged 502 stock rows; final 16-manifest cleanup audit. docs/gcsp/fucq-409-allocation-index-2026-11-13.md; docs/gcsp/evidence/fucq-409/independent-review.md. No collaborator acceptance/Done inferred."
         }
       ],
       "workers": [
@@ -6390,10 +6390,10 @@
           "name": "Charlie Dog",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T21:30:50.822554+00:00",
-          "expires_at": "2026-11-13T23:30:50.822554+00:00",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
           "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
-          "status": "active"
+          "status": "completed; built handoff, dispatcher publication/integration pending"
         },
         {
           "name": "Goopy Geer",
@@ -6408,15 +6408,24 @@
           "name": "Dibble",
           "harness": "codex",
           "role": "runner",
-          "observed_at": "2026-11-13T21:42:17.333482+00:00",
-          "expires_at": "2026-11-13T22:42:17.333482+00:00",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
           "source": "chat 01a1d6db-e6f1-7ae0-8614-851a7ca2c194; requested/selected/effective gpt-6-luna/high; title verified",
-          "status": "active connected verification"
+          "status": "completed; Jira/runtime/browser checks, lead completed final browser correction"
+        },
+        {
+          "name": "Cool Cat",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "source": "chat 01a1d702-b216-79d0-b864-c322cdfef3cd; requested/selected/effective gpt-6.1-sol/high; title/runtime verified",
+          "status": "completed; independent review passed, AC1–4 supported"
         }
       ],
       "jira_observed_at": "2026-11-13T21:43:43Z",
-      "note": "Claim ef586adf; native Jira read In Progress with identical four AC/no comments/no hold; no acceptance inferred.",
-      "observed_at": "2026-11-13T22:10:23Z",
+      "note": "Claim ef586adf; built, all original AC supported; independent review passed. Native Jira read remains In Progress at 21:43:43Z on 13 Nov, original four AC/no hold; dispatcher owns publication/integration/transition. No collaborator acceptance/Done inferred.",
+      "observed_at": "2026-11-13T22:31:32Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
