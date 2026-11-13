@@ -1,0 +1,127 @@
+@if (!scope()) {
+  <gcsp-status-screen title="Your account is not available" [message]="authMessage()">
+    <button gcspButton type="button" (click)="signIn()">Sign in</button>
+  </gcsp-status-screen>
+} @else if (loading() || !model()) {
+  <gcsp-status-screen title="Loading your account" message="Reading your cars and saved journey." [busy]="true" />
+} @else if (model(); as account) {
+  <div class="account-screen" [attr.aria-busy]="busy() ? 'true' : null">
+    <div class="account-head">
+      <gcsp-screen-intro title="Your cars" />
+      @if (message() || stateNotice() || saved()?.requiresRefresh || (draft() && draft()?.status !== 'ok' && draft()?.status !== 'not-found')) {
+        <button gcspButton variant="ghost" type="button" [disabled]="busy() || emailBusy()" (click)="refresh()">Refresh</button>
+      }
+    </div>
+    @if (message(); as notice) { <gcsp-status-screen [title]="notice.title" [message]="notice.text" [level]="2" announcement="alert" /> }
+    @if (stateNotice(); as notice) {
+      <gcsp-status-screen [title]="notice.title" [message]="notice.text" [level]="2">
+        @if (account.state === 'authentication-required') { <button gcspButton type="button" (click)="signIn()">Sign in</button> }
+        @if (account.state !== 'authentication-required' && account.state !== 'restarted') { <a gcspButton variant="ghost" routerLink="/help">Contact support</a> }
+        @if (account.state === 'restarted') { <button gcspButton type="button" (click)="refreshSession()">Refresh session</button> }
+      </gcsp-status-screen>
+    }
+    @if (saved(); as savedJourney) {
+      <section class="account-summary" aria-labelledby="saved-journey-title">
+        <h2 id="saved-journey-title">{{ savedJourney.choices.mode === 'replacement' ? 'You started choosing a replacement' : 'You started a new car order' }}</h2>
+        <p class="gcsp-note">{{ savedJourney.draftStage === 'intent' ? 'Nothing is held or ordered yet.' : 'Your order choices are saved. Nothing is ordered yet.' }}</p>
+        @if (savedJourney.requiresRefresh) { <p class="gcsp-note">Your saved context has changed. Refresh, review the account below, then start the permitted journey again.</p> }
+        @else if (confirmingDiscard()) {
+          <div class="discard-confirm" role="group" tabindex="-1" aria-labelledby="discard-question" (keydown.escape)="keepDraft()">
+            <p id="discard-question">Discard this journey? Your current car and any offers are not affected.</p>
+            <div class="gcsp-actions"><button gcspButton type="button" [disabled]="busy()" (click)="discard()">Discard journey</button><button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="keepDraft()">Keep it</button></div>
+          </div>
+        } @else {
+          <div class="gcsp-actions"><button gcspButton type="button" [disabled]="!canStart()" (click)="resume()">Carry on</button><button gcspButton variant="ghost" data-discard type="button" [disabled]="!canStart()" (click)="askDiscard()">Discard</button></div>
+        }
+      </section>
+    } @else if (draft() && draft()?.status !== 'not-found') {
+      <gcsp-status-screen title="Saved journey could not be read" message="Refresh before starting or resuming a journey." [level]="2" />
+    }
+    @if (pendingIntent()) {
+      <section class="account-summary review-choices" aria-labelledby="review-choices-title">
+        <h2 id="review-choices-title" tabindex="-1">Review choices</h2>
+        <p class="gcsp-note">Your journey is saved. Review your order choices before choosing a car.</p>
+        <button gcspButton variant="ghost" type="button" (click)="pendingIntent.set(null)">Back to account</button>
+      </section>
+    }
+    @if (account.account; as identity) {
+      @for (car of account.currentContracts; track car.contractId) {
+        <section class="current-car" [attr.aria-labelledby]="'car-title-' + $index">
+          <div class="car-media">
+            @if (image(car); as src) { <img [src]="src" [alt]="shown(car.media?.['alt']) || car.model || 'Current car'" (error)="imageFailed(car)" /> }
+            @else { <p class="image-placeholder">No image available for your car</p> }
+          </div>
+          <div class="car-copy">
+            <p class="gcsp-note">Current car</p><h2 [id]="'car-title-' + $index">{{ carName(car) }}</h2>
+            @if (vehicleSpec(car)) { <p class="gcsp-note">{{ vehicleSpec(car) }}</p> }
+            <p class="contract-countdown">{{ countdown(car) }}</p>
+            <dl class="car-facts">
+              <div><dt>{{ termsLabel(car) }}</dt><dd>{{ terms(car) }}</dd></div>
+              @if (car.registration) { <div><dt>Registration</dt><dd>{{ car.registration }}</dd></div> }
+              @if (shown(car.currentOdometer); as mileage) { <div><dt>Current mileage</dt><dd>{{ mileage }}</dd></div> }
+              @if (schemeName(car.schemeId); as scheme) { <div><dt>Scheme</dt><dd>{{ scheme }}</dd></div> }
+            </dl>
+            @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}@if (date(identity.allowanceOverrideEndDate); as end) {, ends {{ end }}}</p> }
+            <div class="gcsp-actions">
+              <button gcspButton variant="ghost" type="button" (click)="openRecord(car, $event)">View car record</button>
+              @if (car.action; as action) { <button gcspButton type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> }
+            </div>
+            @if (!car.action && !stateNotice()) { <p class="gcsp-note">Replacement is not available for this car.</p> }
+          </div>
+        </section>
+      }
+      @for (car of account.currentOrders; track car.orderUuid) {
+        <section class="account-summary"><h2>Your current car</h2><p class="gcsp-note">Your car has been handed over.</p>
+          @if (car.vin) { <p>Delivered VIN: {{ car.vin }}</p> }
+          @if (car.collectedAt) { <p>Collected: {{ car.collectedAt }}</p> }
+          <a gcspButton variant="ghost" routerLink="/orders">View order progress</a>
+        </section>
+      }
+      @if (account.contractState === 'no-current-car') {
+        <gcsp-status-screen title="No current car" [level]="2" [message]="account.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.' : ''" />
+        @if (shown(account.allowance?.['status'] !== 'unknown' ? (account.allowance?.['monthlyPoints'] ?? account.allowance?.['value']) : null); as allowance) { <p class="gcsp-note">Your allowance is {{ allowance }} points a month.</p> }
+        @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}</p> }
+      }
+      @for (action of account.actions; track $index) { @if (action.action === 'order') { <button gcspButton type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> } }
+      <section class="account-summary account-preferences" aria-labelledby="preferences-title">
+        <h2 id="preferences-title">Your preferences</h2><p class="gcsp-note">Tell your buddy what matters in your next car.</p>
+        <a gcspButton variant="ghost" routerLink="/preferences">Edit your preferences</a>
+      </section>
+      <section class="account-history" aria-labelledby="history-title">
+        <h2 id="history-title">Order history</h2>
+        @if (account.historyState === 'no-history') { <p class="gcsp-note">No order history.</p> }
+        @else {
+          <table><caption class="visually-hidden">Order history</caption><thead><tr><th scope="col">Car</th><th scope="col">Scheme</th><th scope="col">Collected</th><th scope="col">Ended</th><th scope="col">Status</th><th scope="col">Record</th></tr></thead>
+            <tbody>@for (history of account.histories; track history.schemeId) { @for (car of history.entries; track car.contractId) {
+              <tr><th scope="row" data-label="Car">{{ carName(car) }}</th><td data-label="Scheme">{{ historyScheme(history.schemeId) }}</td><td data-label="Collected">{{ date(car.actualCollectionDate) || 'Not supplied' }}</td><td data-label="Ended">{{ date(car.returnedDate || car.contractEndDate) || 'Not supplied' }}</td><td data-label="Status">{{ status(car.status) || 'Not supplied' }}</td><td data-label="Record"><button gcspButton variant="ghost" type="button" [attr.aria-label]="'View record for ' + carName(car) + ', ' + historyScheme(history.schemeId)" (click)="openRecord(car, $event)">View record</button></td></tr>
+            } }</tbody>
+          </table>
+          @for (history of account.histories; track history.schemeId) { @if (history.count && history['orderingSupported'] === false) { <p class="gcsp-note">{{ historyScheme(history.schemeId) }} shows history only; you cannot order through it here. {{ history.count }} {{ history.count === 1 ? 'record' : 'records' }}.</p> } }
+        }
+      </section>
+      <section class="account-details" aria-labelledby="details-title"><h2 id="details-title">Your details</h2>
+        <div class="details-row"><h3>Employee</h3><div><strong>{{ identity.name || 'Employee' }}</strong><dl>@for (row of identityRows(); track row.label) { <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div> }</dl></div></div>
+        <div class="details-row"><h3>Drivers ({{ account.drivers.length }})</h3><div>@for (driver of account.drivers; track driver.driverId) { <p><strong>{{ driver.name || 'Driver' }}</strong> · {{ driverLines(driver).join(' · ') }}</p> } @empty { <p class="gcsp-note">No driver or licence details supplied.</p> }</div></div>
+        <details class="notification-settings"><summary>Notification email</summary>
+          <form novalidate (submit)="saveEmail($event)" [attr.aria-busy]="emailBusy() ? 'true' : null">
+            <gcsp-error-summary [errors]="emailError() ? [{ controlId: 'notification-email', message: emailError() }] : []" />
+            <gcsp-labelled-field controlId="notification-email" label="Email address" hint="Used for car offers and updates. Clear it to stop email notifications." [error]="emailError()">
+              <input id="notification-email" type="email" autocomplete="email" maxlength="254" [value]="emailInput()" (input)="updateEmail($event)" [disabled]="emailBusy() || emailLocked() || !email()" [attr.aria-invalid]="emailError() ? 'true' : null" [attr.aria-describedby]="emailError() ? 'notification-email-hint notification-email-error' : 'notification-email-hint'" />
+            </gcsp-labelled-field>
+            <div class="gcsp-actions"><button gcspButton variant="ghost" type="submit" [disabled]="emailBusy() || emailLocked() || !email()">Save email</button>@if (emailLocked() || !email()) { <button gcspButton variant="ghost" type="button" [disabled]="emailBusy()" (click)="reloadEmail()">Reload email</button> }</div>
+            <p class="gcsp-note" role="status">{{ emailMessage() }}</p>
+          </form>
+        </details>
+      </section>
+    }
+  </div>
+}
+@if (currentScope() && selectedRecord(); as car) {
+  <dialog #recordDrawer class="record-drawer" aria-labelledby="record-title" aria-describedby="record-context" (cancel)="closeRecord($event)" (keydown)="drawerKey($event)">
+    <header><div><p id="record-context" class="gcsp-note">Car record@if (schemeName(car.schemeId); as scheme) { · {{ scheme }}}</p><h2 id="record-title">{{ carName(car) }}</h2></div><button gcspButton variant="ghost" type="button" (click)="closeRecord()">Close</button></header>
+    <div class="record-content"><p class="print-context">Car record@if (schemeName(car.schemeId); as scheme) { · {{ scheme }}}</p><h2 class="print-context">{{ carName(car) }}</h2>
+      @for (section of recordSections(car); track section.title) { <section><h3>{{ section.title }}</h3>@if (section.note) { <p class="gcsp-note">{{ section.note }}</p> }<dl>@for (row of section.rows; track row.label) { <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div> } @empty { <p class="gcsp-note">Not supplied for this car.</p> }</dl></section> }
+    </div>
+    <footer><button gcspButton variant="ghost" type="button" (click)="printRecord()">Print record</button></footer>
+  </dialog>
+}
