@@ -6419,7 +6419,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-13T22:23:44Z",
+      "observed_at": "2026-11-13T22:53:06Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
       "unsliced": false,
       "branch": "dev/DEV-2026-11-13-004",
@@ -6429,30 +6429,35 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-13T22:11:02.979073+00:00",
-          "expires_at": "2026-11-14T00:11:02.979073+00:00",
+          "expires_at": "2026-11-13T22:53:05.750998+00:00",
           "source": "Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; saved title/runtime verified by dispatcher",
-          "status": "implementing"
+          "status": "stopped; blocked handoff recorded"
         }
       ],
       "slices": [
         {
           "id": "artifact",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets",
-          "observed_at": "2026-11-13T22:23:44Z"
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
         },
         {
           "id": "runtime",
           "status": "in-progress",
           "title": "Public-config-and-route-cache-CSP-referrer-policy",
-          "observed_at": "2026-11-13T22:11:03Z"
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "Strict producer/schema and static route/cache/CSP/referrer policy passed local tests; dynamic offer entry and actual hosted identity/header behavior remain incomplete."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates"
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "No isolated hosted Java/OIDC environment or actual response-header/deployment-trigger proof; Safari/private and full identity/accessibility gates unrun. Original Story AC remain unchecked."
         }
-      ]
+      ],
+      "tracker_observed_at": "2026-11-13T22:23:44Z"
     }
   ]
 }

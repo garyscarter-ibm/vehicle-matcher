@@ -1,0 +1,525 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-436",
+  "observedAt": "2026-11-13T22:46:37.818175+00:00",
+  "scope": "local proof only; does not establish Render behavior or deployed acceptance",
+  "source": {
+    "revision": "e58b36a53213c89da8eb3c15bb7be7653a2757a0",
+    "branch": "dev/DEV-2026-11-13-007",
+    "application": "apps/gcsp-web",
+    "cleanBeforeAndAfter": true,
+    "basis": "proof harness assertTreeClean before and after compiler/assembly/HTTP run"
+  },
+  "assembler": {
+    "revision": "5c78b52da530ef9ea72e679718d180b2a1d4da1d",
+    "path": "scripts/build-gcsp-static.mjs",
+    "sha256": "33e63aed807a8852c45551fce135d2530da60217f598455869c59a8a4b0c5f7c"
+  },
+  "tools": {
+    "node": "v24.22.3",
+    "npm": "11.19.1"
+  },
+  "compiler": {
+    "command": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-007/apps/gcsp-web/.tools/node/bin/node",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-007/apps/gcsp-web/node_modules/@angular/cli/bin/ng.js",
+      "build",
+      "gcsp-web",
+      "--configuration",
+      "production",
+      "--output-path",
+      "../../../../test-runs/fucq436/scratch/kronk-local-proof/compiled",
+      "--progress=false"
+    ],
+    "result": "passed",
+    "files": [
+      {
+        "path": "assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+        "bytes": 6479
+      },
+      {
+        "path": "chunk-R2STEVLN.js",
+        "sha256": "9a9589e1b81db24e02a7a336aba9bb390f28a63216f2157f0307d05b99217e9b",
+        "bytes": 135676
+      },
+      {
+        "path": "chunk-WZ5TRCMY.js",
+        "sha256": "ace37d8d40f8e19debdbf81266c97f01a1735ae7e7147c00b22d75315496dd10",
+        "bytes": 3670
+      },
+      {
+        "path": "index.html",
+        "sha256": "5ab484f2318ee5e79a172a7a9e16c0d028c5c42a5d5f11ddd2556a1e080f7c49",
+        "bytes": 521
+      },
+      {
+        "path": "main-YGNF7WFW.js",
+        "sha256": "b23dde105bf26025afb92cef65b42ec7350c24516c73bae21728e3cd5ae1a4d5",
+        "bytes": 198712
+      },
+      {
+        "path": "media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "bytes": 86076
+      },
+      {
+        "path": "media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2",
+        "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "bytes": 59964
+      },
+      {
+        "path": "styles-NMNSLER6.css",
+        "sha256": "b44df9d2d3676f355f8fa0f309721245914d4b5f3d0fde57a1330023d784d566",
+        "bytes": 43328
+      }
+    ],
+    "inputs": {
+      "tools": {
+        "node": "v24.22.3",
+        "npm": "11.19.1"
+      },
+      "declaredEngines": {
+        "node": "24.22.3",
+        "npm": "11.19.1"
+      },
+      "dependencies": {
+        "@angular/common": "21.2.26",
+        "@angular/compiler": "21.2.26",
+        "@angular/core": "21.2.26",
+        "@angular/platform-browser": "21.2.26",
+        "@angular/router": "21.2.26",
+        "oidc-client-ts": "3.5.0",
+        "rxjs": "7.8.2",
+        "tslib": "2.9.1"
+      },
+      "devDependencies": {
+        "@angular/build": "21.2.30",
+        "@angular/cli": "21.2.30",
+        "@angular/compiler-cli": "21.2.26",
+        "jsdom": "27.4.0",
+        "typescript": "5.9.3",
+        "vitest": "4.0.18"
+      },
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "db4427099ecdc0197ed991efb68cf22631b02087ba42a09eb0dbdd976568e540"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "fb9ba0a4b7c8f0f4bcb33ccbbd8059a2d57593325f7aff085d0248917fbfa5a3"
+        },
+        {
+          "path": "angular.json",
+          "sha256": "98eb7a518eca9aa1dfb0b13873f7968dd1f25fb55e8288f31e6f3ace91cffef8"
+        }
+      ]
+    },
+    "comparisonWithExistingDist": {
+      "equal": true,
+      "missing": [],
+      "extra": [],
+      "mismatched": []
+    },
+    "comparisonWithPreviousAssemblyReceipt": {
+      "equal": true,
+      "missing": [],
+      "extra": [],
+      "mismatched": []
+    }
+  },
+  "assembly": {
+    "configurations": "two synthetic HTTPS API/OIDC registrations; no provider calls",
+    "variants": [
+      {
+        "environmentId": "local-proof-a",
+        "environment": "deployed",
+        "fileCount": 9,
+        "dependencyCount": 8,
+        "index": {
+          "path": "gcsp/index.html",
+          "sha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130",
+          "bytes": 849
+        },
+        "runtimeConfig": {
+          "path": "gcsp/runtime-config.json",
+          "sha256": "681d184963928bb9d8a4f35e241da57e9b77ecf389e8d182305299dd0212e829",
+          "bytes": 386
+        }
+      },
+      {
+        "environmentId": "local-proof-b",
+        "environment": "deployed",
+        "fileCount": 9,
+        "dependencyCount": 8,
+        "index": {
+          "path": "gcsp/index.html",
+          "sha256": "bd266543042a047518be24bbc5f965d24feffa8820117818d3a2dc17ddfdd110",
+          "bytes": 849
+        },
+        "runtimeConfig": {
+          "path": "gcsp/runtime-config.json",
+          "sha256": "c350dd4a121537b77b3ced4efa808b734c77f0e131f1ac3cca71bc0cca2b7d6f",
+          "bytes": 386
+        }
+      }
+    ],
+    "dependencies": [
+      {
+        "from": "chunk-WZ5TRCMY.js",
+        "to": "chunk-R2STEVLN.js"
+      },
+      {
+        "from": "index.html",
+        "to": "chunk-R2STEVLN.js"
+      },
+      {
+        "from": "index.html",
+        "to": "main-YGNF7WFW.js"
+      },
+      {
+        "from": "index.html",
+        "to": "styles-NMNSLER6.css"
+      },
+      {
+        "from": "main-YGNF7WFW.js",
+        "to": "chunk-R2STEVLN.js"
+      },
+      {
+        "from": "main-YGNF7WFW.js",
+        "to": "chunk-WZ5TRCMY.js"
+      },
+      {
+        "from": "styles-NMNSLER6.css",
+        "to": "media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff"
+      },
+      {
+        "from": "styles-NMNSLER6.css",
+        "to": "media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2"
+      }
+    ],
+    "stableAssets": [
+      {
+        "path": "gcsp/assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+        "bytes": 6479
+      },
+      {
+        "path": "gcsp/chunk-R2STEVLN.js",
+        "sha256": "9a9589e1b81db24e02a7a336aba9bb390f28a63216f2157f0307d05b99217e9b",
+        "bytes": 135676
+      },
+      {
+        "path": "gcsp/chunk-WZ5TRCMY.js",
+        "sha256": "ace37d8d40f8e19debdbf81266c97f01a1735ae7e7147c00b22d75315496dd10",
+        "bytes": 3670
+      },
+      {
+        "path": "gcsp/main-YGNF7WFW.js",
+        "sha256": "b23dde105bf26025afb92cef65b42ec7350c24516c73bae21728e3cd5ae1a4d5",
+        "bytes": 198712
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "bytes": 86076
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2",
+        "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "bytes": 59964
+      },
+      {
+        "path": "gcsp/styles-NMNSLER6.css",
+        "sha256": "b44df9d2d3676f355f8fa0f309721245914d4b5f3d0fde57a1330023d784d566",
+        "bytes": 43328
+      }
+    ],
+    "stableIdentityComparison": {
+      "equal": true,
+      "missing": [],
+      "extra": [],
+      "mismatched": []
+    }
+  },
+  "http": {
+    "server": "Node built-in HTTP; ephemeral loopback port; no request-time HTML mutation",
+    "manifestedFiles": [
+      {
+        "path": "gcsp/assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+        "bytes": 6479,
+        "contentType": "image/svg+xml"
+      },
+      {
+        "path": "gcsp/chunk-R2STEVLN.js",
+        "sha256": "9a9589e1b81db24e02a7a336aba9bb390f28a63216f2157f0307d05b99217e9b",
+        "bytes": 135676,
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "path": "gcsp/chunk-WZ5TRCMY.js",
+        "sha256": "ace37d8d40f8e19debdbf81266c97f01a1735ae7e7147c00b22d75315496dd10",
+        "bytes": 3670,
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "path": "gcsp/index.html",
+        "sha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130",
+        "bytes": 849,
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "path": "gcsp/main-YGNF7WFW.js",
+        "sha256": "b23dde105bf26025afb92cef65b42ec7350c24516c73bae21728e3cd5ae1a4d5",
+        "bytes": 198712,
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "bytes": 86076,
+        "contentType": "font/woff"
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2",
+        "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "bytes": 59964,
+        "contentType": "font/woff2"
+      },
+      {
+        "path": "gcsp/runtime-config.json",
+        "sha256": "681d184963928bb9d8a4f35e241da57e9b77ecf389e8d182305299dd0212e829",
+        "bytes": 386,
+        "contentType": "application/json; charset=utf-8"
+      },
+      {
+        "path": "gcsp/styles-NMNSLER6.css",
+        "sha256": "b44df9d2d3676f355f8fa0f309721245914d4b5f3d0fde57a1330023d784d566",
+        "bytes": 43328,
+        "contentType": "text/css; charset=utf-8"
+      }
+    ],
+    "runtimeConfig": {
+      "status": 200,
+      "config": {
+        "schemaVersion": 1,
+        "environmentId": "local-proof-a",
+        "apiBaseUrl": "https://api-a.example.test/api/gcsp/v1",
+        "oidc": {
+          "authority": "https://issuer-a.example.test",
+          "clientId": "public-client-a",
+          "scope": "openid profile",
+          "redirectUri": "https://gcsp-a.example.test/gcsp/auth/callback",
+          "postLogoutRedirectUri": "https://gcsp-a.example.test/gcsp/"
+        }
+      }
+    },
+    "staticManifest": {
+      "status": 200,
+      "fileCount": 9,
+      "dependencyCount": 8
+    },
+    "fixedRoutes": [
+      {
+        "route": "/gcsp/",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/sign-in",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/auth/callback",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/account",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/preferences",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/stock",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/manual/review",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/manual/summary",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/activity",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/orders",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/help",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/greg",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/greg/cases",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/presenter",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/presenter/outbox",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/components",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/access-denied",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      },
+      {
+        "route": "/gcsp/unavailable",
+        "status": 200,
+        "bodySha256": "e37729c4b1cccb7caa72d995dfed276111ea47c4dd790a8753488ba16836c130"
+      }
+    ],
+    "negativeProbes": [
+      {
+        "probe": "missingConfig",
+        "path": "/gcsp/runtime-config.json",
+        "status": 404
+      },
+      {
+        "probe": "missingJs",
+        "path": "/gcsp/chunk-R2STEVLN.js",
+        "status": 404
+      },
+      {
+        "probe": "missingCss",
+        "path": "/gcsp/styles-NMNSLER6.css",
+        "status": 404
+      },
+      {
+        "probe": "missingFont",
+        "path": "/gcsp/media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "status": 404
+      },
+      {
+        "probe": "missingOfferAsset",
+        "path": "/gcsp/offers/missing.js",
+        "status": 404
+      },
+      {
+        "probe": "unknownPage",
+        "path": "/gcsp/unlisted-page",
+        "status": 404
+      }
+    ],
+    "fixedRouteAfterNegativeProbes": {
+      "path": "/gcsp/sign-in",
+      "status": 200
+    }
+  },
+  "browser": {
+    "scope": "Local static assembly of pinned FUCQ-439 output; synthetic public configuration; modeled local host headers and exact rewrites. No real provider, Java or Render deployment proof.",
+    "sourceRevision": "e58b36a53213c89da8eb3c15bb7be7653a2757a0",
+    "packagingRevision": "5c78b52da530ef9ea72e679718d180b2a1d4da1d",
+    "browser": "Codex in-app browser, temporary hidden tab 1",
+    "observations": [
+      "Desktop 1280x720: rendered Sign in heading/button, shared portal header and brand logo; document width1280, no horizontal overflow.",
+      "Narrow390x844: rendered Sign in screen and readable button without clipping; document width390, no horizontal overflow.",
+      "Tab from route heading reached Sign in BUTTON; visible computed focus outline rgb(2,145,183) solid2px; screenshot inspected.",
+      "Direct /gcsp/components loaded lazy gallery chunk and rendered component/status examples; reload preserved gallery.",
+      "At390px gallery document width390; document.fonts.status loaded; heading uses BMWGroupTNCondensedPro-Medium.",
+      "Logo natural width300 and complete; initial JS/CSS, lazy chunk, runtime config, SVG logo and WOFF2 returned200 in server request receipt.",
+      "Generated CSP meta was present before protected resources with exact local API and synthetic issuer connect origins. Browser error/warning log query returned empty.",
+      "Removing only owned scratch runtime-config.json and opening sign-in returned404 for that JSON and rendered Account unavailable with Try again; config was not rewritten to HTML.",
+      "Browser's implicit /favicon.ico probe returned404; index declares no favicon. This is not evidence that a required referenced asset is absent."
+    ],
+    "remaining": [
+      "Actual Render response headers/cache/rewrite precedence and independent deployment triggers",
+      "Real Java/OIDC HTTPS/CORS/callback/renewal/sign-out and dynamic emailed offer entry",
+      "Safari/private browsing and complete relevant accessibility/keyboard/identity journeys",
+      "FUCQ-439 producer integration/acceptance; these screens remain its unfinished foundation"
+    ],
+    "cleanup": {
+      "temporaryTabClosed": true,
+      "viewportOverrideReset": true,
+      "ownedServerClosed": true,
+      "scratchRemoved": true,
+      "receipt": "lead-browser-live.json",
+      "requests": "lead-browser-requests.json",
+      "sampledPeakScratchBytes": 539948,
+      "elapsedSeconds": 136.12,
+      "nodeChildPeakRssBytes": 68468736,
+      "browserMemory": "Native tool-managed browser process not included in child RSS; owned temporary tab closed",
+      "screenshots": "Captured and visually inspected in the CUA tool history; no image files retained"
+    }
+  },
+  "targetedValidation": {
+    "command": "node --test --test-concurrency=1 server/test/gcsp-static-angular.test.js server/test/render-blueprint.test.js",
+    "result": "passed",
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "variant": "default",
+    "base": "gcsp-poc-dev",
+    "baseCommit": "c6cfebbe9be03c18cff60959e74cad0644a0f097",
+    "headBeforeDeltaCommit": "5c78b52da530ef9ea72e679718d180b2a1d4da1d",
+    "dirtyAtRun": true,
+    "testedTree": "29981062ca76739912af7feebde5054bb975b0a0",
+    "codeKey": "5ffabd12c683b93a1fa4f3cc4b8915c66a610ccfa6c3ba8af955fe5aae141c17",
+    "evidence": "targeted-5ffabd12c683b93a1fa4f3cc4b8915c66a610ccfa6c3ba8af955fe5aae141c17-default-1794610175170526000.json",
+    "meaning": "targeted only; no full-suite stamp; later changes are documentation/map facts"
+  },
+  "compilerResources": {
+    "elapsed_seconds": 5.492,
+    "sampled_peak_scratch_bytes": 9175761,
+    "children_peak_rss_bytes": 1136295936,
+    "scratch_absent": true
+  },
+  "acceptance": "both original Story criteria remain incomplete; local compiler/artifact delivery only",
+  "finalResourceAudit": {
+    "observedAt": "2026-11-13T22:52:41.880131+00:00",
+    "supervisedChunks": 10,
+    "targetedStampChunks": 2,
+    "allRecordedScratchAbsent": true,
+    "matchingOwnedProcesses": [],
+    "peakObservedScratchBytes": 277134049,
+    "peakChildRssBytes": 1136295936,
+    "lateCleanup": "lead-late-scratch-cleanup.json: 16 disposable files/14,812 bytes observed after earlier absence receipt; exact owned root removed again, cause unresolved",
+    "receipt": "lead-final-resource-check.json",
+    "retainedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq436"
+  }
+}
