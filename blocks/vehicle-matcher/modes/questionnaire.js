@@ -36,7 +36,7 @@ const HASH_KEY = 'm';
 // RRMC wording only this mode uses, in podium.js's RRMC register. BRAND_COPY.rrmc also feeds the
 // podium, so the questionnaire's own lines live here rather than there.
 const RRMC_COPY = {
-  lastNext: 'Find my perfect match',
+  lastNext: 'Finish',
   previewHeading: 'Your shortlist so far',
   previewRegion: ({ retailer }) => `Your shortlist so far, from ${retailer}`,
   tailHeading: 'Explore the full range of Rolls-Royce provenance',

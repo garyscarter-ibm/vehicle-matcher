@@ -668,6 +668,8 @@
 }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option:hover { background: rgba(255, 255, 255, 0.14); }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option.is-selected { background: #ffffff; color: #281432; }
+/* The price screen's chosen answer: 90% white with navy text, as the Yes frame shows. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid="budgetGate"] .vm-option.is-selected { background: rgba(255, 255, 255, 0.9); color: #0a0441; }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option-label {
   font-size: 15px;
   font-weight: 300;
@@ -788,6 +790,15 @@
 }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-label { font-size: 15px; letter-spacing: 0.06em; line-height: 19px; }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-value { margin-top: 8px; font-size: 20px; letter-spacing: 0.08em; line-height: 24px; }
+/* The price card is navy (#0a0441) on this screen's backing: text, fill, handles and their lilac outline. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card { color: #0a0441; --vm-ink: #0a0441; --vm-accent: #0a0441; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-range-fill,
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-slider-input::-webkit-slider-thumb { background: #0a0441; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-slider-input::-moz-range-thumb { background: #0a0441; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-slider-input::-webkit-slider-thumb,
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-slider-input::-moz-range-thumb { border-color: #5c5692; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-slider-bounds,
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer .vm-range-card .vm-budget-range { color: #0a0441; }
 /* On the price screen the card sits inside the rolling drawer, which must not clip its corners. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer-inner { padding-inline: 2px; }
 
