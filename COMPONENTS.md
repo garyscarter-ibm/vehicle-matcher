@@ -589,3 +589,18 @@ Rows are released cars; columns are engaged Buddies. Native cell buttons select 
 checks and allocation details. The table scrolls within its region at narrow widths.
 Paging covers eight cars and four Buddies; all/latest release is a native selector.
 Scoped Density-token styling lives in `suitability-section.css`. No new kit primitive.
+
+## GCSP Angular shared kit (`apps/gcsp-web/src/app/kit/`)
+
+FUCQ-439 introduces native standalone Angular equivalents because the DOM factories do not own Angular routes or authentication. Reuses the current portal header/rail, existing `blocks/gcsp/shell/` Density semantic CSS and packaged brand/font artwork without importing legacy controllers. The employee rail stays **Your cars, Order progress**; Greg adds **Employee car ordering**, both roles compose, and presenter keeps its dedicated controls. Reference: `docs/gcsp/screens/00-employee-account.webp` and kickoff baseline `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`.
+
+| Angular primitive | Use and semantics |
+| --- | --- |
+| `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. |
+| `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2 level. Page h1 accepts arrival focus. |
+| `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. |
+| `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
+| `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
+| `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
+
+App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
