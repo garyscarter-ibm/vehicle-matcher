@@ -5838,53 +5838,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435"
     },
     {
-      "id": "FUCQ-436",
-      "title": "Build and publish the static GCSP artifact",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-13T23:10:11Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
-      "unsliced": false,
-      "branch": "dev/DEV-2026-11-13-004",
-      "workers": [
-        {
-          "name": "Rapunzel",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-13T23:07:54.875258+00:00",
-          "expires_at": "2026-11-13T23:10:11.056151+00:00",
-          "source": "Existing Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59 resumed by dispatcher for F455 configuration contract only",
-          "status": "stopped; F455 identity configuration reconciled, hosted gate blocked"
-        }
-      ],
-      "slices": [
-        {
-          "id": "artifact",
-          "status": "complete",
-          "title": "Independent-static-Angular-artifact-and-required-assets",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
-        },
-        {
-          "id": "runtime",
-          "status": "in-progress",
-          "title": "Public-config-and-route-cache-CSP-referrer-policy",
-          "observed_at": "2026-11-13T23:10:11Z",
-          "evidence": "F455 identity contract reconciled in shared blueprint; unchanged exact public schema accepts realm authority and required gcsp-api scope, excludes backend settings. Focused 18/18 passed; dynamic offer and hosted policy/identity remain incomplete."
-        },
-        {
-          "id": "integration",
-          "status": "blocked",
-          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
-          "observed_at": "2026-11-13T23:10:11Z",
-          "evidence": "Keycloak selected but unhosted/unregistered; no live Render headers/independent deployment/Java-OIDC browser evidence. Original AC unchecked; no new browser or full-suite allocation for configuration-only delta."
-        }
-      ],
-      "tracker_observed_at": "2026-11-13T22:23:44Z"
-    },
-    {
       "assignee": "",
       "id": "FUCQ-437",
       "observed_at": "2026-11-13T20:22:18.041Z",
@@ -6706,6 +6659,53 @@
       ],
       "note": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
       "jira_observed_at": "2026-11-13T23:18:25.492855+00:00"
+    },
+    {
+      "id": "FUCQ-436",
+      "title": "Build and publish the static GCSP artifact",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-13T23:31:36Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-13-004",
+      "workers": [
+        {
+          "name": "Rapunzel",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:30:09.579373+00:00",
+          "expires_at": "2026-11-13T23:31:35.589448+00:00",
+          "source": "Existing chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; dispatcher resumed actual integrated foundation composition after shared mutex release",
+          "status": "stopped; integrated foundation root assembly verified, hosted gates open"
+        }
+      ],
+      "slices": [
+        {
+          "id": "artifact",
+          "status": "complete",
+          "title": "Independent-static-Angular-artifact-and-required-assets",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Actual F439 foundation composed through published gcsp-poc-dev base09a13e78/merge70d86d5f; root npm assembly uses default integrated app inputs, two F455-compatible public configs,9 files/8 dependencies each,7 stable assets. Compiler/browser and18-check evidence reused with exact matching inputs. See delivery record and companion proof JSON."
+        },
+        {
+          "id": "runtime",
+          "status": "in-progress",
+          "title": "Public-config-and-route-cache-CSP-referrer-policy",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Public schema/producer unchanged and proven compatible with actual integrated foundation via root CLI; backend settings excluded. Actual hosted cache/CSP/referrer and identity/dynamic-offer flow remain incomplete."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Actual Angular foundation is published and locally composed; Keycloak unhosted/unregistered, real Java/OIDC/CORS/PG/Safari/private/Render gates unavailable. Medium F486 route recovery remains separate backlog, source-verified/not browser reproduced, no repair scope or new merge dependency. Original AC unchecked."
+        }
+      ],
+      "tracker_observed_at": "2026-11-13T22:23:44Z"
     }
   ],
   "version": 1

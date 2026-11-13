@@ -521,5 +521,273 @@
     "lateCleanup": "lead-late-scratch-cleanup.json: 16 disposable files/14,812 bytes observed after earlier absence receipt; exact owned root removed again, cause unresolved",
     "receipt": "lead-final-resource-check.json",
     "retainedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq436"
+  },
+  "integratedFoundationComposition": {
+    "observedAt": "2026-11-13T23:30:11.909386+00:00",
+    "status": "passed",
+    "scope": "Actual integrated Angular foundation composition; parent confirms foundation952605ea/base09a13e78 published after initial serialization wait; no new compiler/browser/provider proof",
+    "integrationBase": "09a13e787e0e5858106a74e92c3ee09e54d8b532",
+    "foundationWorker": "27d4c205",
+    "workerMerge": "70d86d5f19def7d368e955f860e8fac6348a9387",
+    "sourceChangesSincePriorCompiler": [
+      "apps/gcsp-web/README.md"
+    ],
+    "evidenceReuse": "All application sources, shared CSS/fonts, compiler package/lock/build settings, and COMPONENTS are byte-identical to the passed pinned production proof; only README changed.",
+    "tools": {
+      "node": "v24.22.3",
+      "npm": "11.19.1"
+    },
+    "executedCommands": [
+      {
+        "command": "npm",
+        "args": [
+          "run",
+          "gcsp:assemble",
+          "--",
+          "--browser",
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-007/apps/gcsp-web/dist/gcsp-web/browser",
+          "--output",
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq436/scratch/lead-integrated-foundation-proof/variant-a",
+          "--environment",
+          "deployed",
+          "--revision",
+          "70d86d5f19def7d368e955f860e8fac6348a9387"
+        ],
+        "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-004",
+        "defaultAppRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-004/apps/gcsp-web"
+      },
+      {
+        "command": "npm",
+        "args": [
+          "run",
+          "gcsp:assemble",
+          "--",
+          "--browser",
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-007/apps/gcsp-web/dist/gcsp-web/browser",
+          "--output",
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq436/scratch/lead-integrated-foundation-proof/variant-b",
+          "--environment",
+          "deployed",
+          "--revision",
+          "70d86d5f19def7d368e955f860e8fac6348a9387"
+        ],
+        "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-004",
+        "defaultAppRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-004/apps/gcsp-web"
+      }
+    ],
+    "defaultAppRootWasIntegratedSource": true,
+    "compiledFiles": [
+      {
+        "path": "assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+        "bytes": 6479
+      },
+      {
+        "path": "chunk-R2STEVLN.js",
+        "sha256": "9a9589e1b81db24e02a7a336aba9bb390f28a63216f2157f0307d05b99217e9b",
+        "bytes": 135676
+      },
+      {
+        "path": "chunk-WZ5TRCMY.js",
+        "sha256": "ace37d8d40f8e19debdbf81266c97f01a1735ae7e7147c00b22d75315496dd10",
+        "bytes": 3670
+      },
+      {
+        "path": "index.html",
+        "sha256": "5ab484f2318ee5e79a172a7a9e16c0d028c5c42a5d5f11ddd2556a1e080f7c49",
+        "bytes": 521
+      },
+      {
+        "path": "main-YGNF7WFW.js",
+        "sha256": "b23dde105bf26025afb92cef65b42ec7350c24516c73bae21728e3cd5ae1a4d5",
+        "bytes": 198712
+      },
+      {
+        "path": "media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "bytes": 86076
+      },
+      {
+        "path": "media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2",
+        "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "bytes": 59964
+      },
+      {
+        "path": "styles-NMNSLER6.css",
+        "sha256": "b44df9d2d3676f355f8fa0f309721245914d4b5f3d0fde57a1330023d784d566",
+        "bytes": 43328
+      }
+    ],
+    "compilerInputs": [
+      {
+        "path": "package.json",
+        "sha256": "db4427099ecdc0197ed991efb68cf22631b02087ba42a09eb0dbdd976568e540"
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "fb9ba0a4b7c8f0f4bcb33ccbbd8059a2d57593325f7aff085d0248917fbfa5a3"
+      },
+      {
+        "path": "angular.json",
+        "sha256": "98eb7a518eca9aa1dfb0b13873f7968dd1f25fb55e8288f31e6f3ace91cffef8"
+      }
+    ],
+    "variants": [
+      {
+        "environmentId": "foundation-a",
+        "sourceRevision": "70d86d5f19def7d368e955f860e8fac6348a9387",
+        "files": 9,
+        "dependencies": 8,
+        "changedFiles": [
+          {
+            "path": "gcsp/index.html",
+            "sha256": "55a62464b1ce3b17a34b1edfbf42f9907f6f7e329623037a09bbdb6d81dbc9a7",
+            "bytes": 851
+          },
+          {
+            "path": "gcsp/runtime-config.json",
+            "sha256": "8cac39de4b88722a4a5e0134a8d5c36ceb9fac374d89e458a0f2427deb460a4d",
+            "bytes": 424
+          }
+        ]
+      },
+      {
+        "environmentId": "foundation-b",
+        "sourceRevision": "70d86d5f19def7d368e955f860e8fac6348a9387",
+        "files": 9,
+        "dependencies": 8,
+        "changedFiles": [
+          {
+            "path": "gcsp/index.html",
+            "sha256": "567b1a1c332d2c50fb9f028812ece6bacc4f80858a469c7208d0eecad7111b07",
+            "bytes": 851
+          },
+          {
+            "path": "gcsp/runtime-config.json",
+            "sha256": "ee5ed9f969e8d477b79f95433d6a91521e7f443a790a4eb575537e23160743cc",
+            "bytes": 424
+          }
+        ]
+      }
+    ],
+    "stableAssets": [
+      {
+        "path": "gcsp/assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+        "bytes": 6479
+      },
+      {
+        "path": "gcsp/chunk-R2STEVLN.js",
+        "sha256": "9a9589e1b81db24e02a7a336aba9bb390f28a63216f2157f0307d05b99217e9b",
+        "bytes": 135676
+      },
+      {
+        "path": "gcsp/chunk-WZ5TRCMY.js",
+        "sha256": "ace37d8d40f8e19debdbf81266c97f01a1735ae7e7147c00b22d75315496dd10",
+        "bytes": 3670
+      },
+      {
+        "path": "gcsp/main-YGNF7WFW.js",
+        "sha256": "b23dde105bf26025afb92cef65b42ec7350c24516c73bae21728e3cd5ae1a4d5",
+        "bytes": 198712
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-QFG3Y5CY.woff",
+        "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "bytes": 86076
+      },
+      {
+        "path": "gcsp/media/BMWGroupTNCondensedPro-Medium-TKG5LGWR.woff2",
+        "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "bytes": 59964
+      },
+      {
+        "path": "gcsp/styles-NMNSLER6.css",
+        "sha256": "b44df9d2d3676f355f8fa0f309721245914d4b5f3d0fde57a1330023d784d566",
+        "bytes": 43328
+      }
+    ],
+    "checkpoints": {
+      "inputReuse": "passed",
+      "defaultAppRootCli": "passed: actual root npm script and integrated app package/lock/config, two public environments",
+      "assetIdentity": "passed: all output bytes match manifests; seven JS/CSS/font/logo assets unchanged across environments and prior compiler proof"
+    },
+    "harnessSha256": "c6ff64aecb91a7862ab76ac4e9437825616898407891645fd0e73d761f004d9e",
+    "resources": {
+      "elapsed_seconds": 1.816,
+      "sampled_peak_scratch_bytes": 852869,
+      "children_peak_rss_bytes": 73842688,
+      "scratch_absent": true
+    },
+    "finalAudit": {
+      "observedAt": "2026-11-13T23:30:54.208380+00:00",
+      "outerAllocations": 12,
+      "innerAllocations": 3,
+      "allRecordedScratchAbsent": true,
+      "matchingOwnedProcesses": [],
+      "receipt": "lead-integrated-foundation-final-resource-check.json"
+    },
+    "remaining": [
+      "Parent confirms base09a13e78 published; this F436 composition checkpoint awaits dispatcher publication",
+      "Real Render headers/release independence, Keycloak host/registration/users and Java/OIDC/PG/Safari/private acceptance",
+      "Medium F486 route recovery remains separate backlog defect; no repair or browser reproduction here"
+    ],
+    "reusedScopedValidation": {
+      "result": "18 passed / 0 failed / 0 skipped / 0 cancelled",
+      "evidence": "targeted-cbf91a0c7b89fcf7106a1fe39fd6bb21f1c1036e440deb3fdfc01dc83cf323c2-default-1794611332066372000.json",
+      "basis": "All selected tests and their static/config/legacy-host inputs unchanged from the verified identity checkpoint; no rerun solely for base/docs/claim changes",
+      "identities": [
+        {
+          "path": "server/test/gcsp-static-angular.test.js",
+          "sha256": "b6ea48251de4acd3a421ce48edc10728c0f2bd96f960fa7afbb321a9fb886bf8",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "server/test/render-blueprint.test.js",
+          "sha256": "eb8ad8471df2cf37339037dffbc8545c16893e42029db4d7f24edd6f11f0e2bb",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "render.gcsp.yaml",
+          "sha256": "99f48d6a526bb4668e5143c3b0aef67447d4909e19809b3c5f3ec31238b6f20f",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "scripts/assemble-site.mjs",
+          "sha256": "1ab02d2f50107b40d6ef39f45e6c6e4a2caf0a4b2edd1b2b4a1f9433af8f487d",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "scripts/build-gcsp-static.mjs",
+          "sha256": "33e63aed807a8852c45551fce135d2530da60217f598455869c59a8a4b0c5f7c",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "scripts/gcsp-runtime-config.mjs",
+          "sha256": "5fe3ce2184942d518ae6acb0ee69dd3ceec4d7617b121d819eacb3aa3590168c",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "_config/gcsp-runtime-config.schema.json",
+          "sha256": "de68f5165753cd0969bd91061baf99fb54aab158c12a7b7f6ec97ce9ff5af16b",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "package.json",
+          "sha256": "3dfdb7d1b133ea3eeab0c7431f599f67021727ace403e4bb1e615b9ac4190490",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "server/gcsp/host.js",
+          "sha256": "b7787aea7a831e534414e330f5e90962610a70e3d50b38c9ecf1f9cfeb827c64",
+          "unchangedFrom": "3197d1d8"
+        },
+        {
+          "path": "services/gcsp-api/render-service.proposed.yaml",
+          "sha256": "3463948706f47d63d912967c1a8f8f1c70a02223ade97a5d91b24933e447737e",
+          "unchangedFrom": "3197d1d8"
+        }
+      ]
+    }
   }
 }
