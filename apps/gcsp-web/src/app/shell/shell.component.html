@@ -1,0 +1,28 @@
+<div class="gcsp" [class.gcsp-menu-open]="menuOpen" (keydown.escape)="closeMenu($event)">
+  <a class="gcsp-skip" href="#gcsp-main" (click)="skipToMain($event)">Skip to content</a>
+  <header class="gcsp-header">
+    @if (navigation().length) { <button class="gcsp-menu-toggle" type="button" aria-label="Menu" aria-controls="portal-navigation" [attr.aria-expanded]="menuOpen" (click)="menuOpen = !menuOpen"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button> }
+    <div class="gcsp-marks"><img class="gcsp-mark" src="assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22" /></div>
+    <div class="gcsp-title">Group Car Schemes Portal</div>
+    <div class="gcsp-account" aria-live="polite">
+      @if (context(); as account) {
+        <details class="gcsp-account-details" (keydown.escape)="closeAccount($event)">
+          <summary class="gcsp-account-summary" aria-label="Account details"><span class="gcsp-avatar" aria-hidden="true">{{ initials() }}</span><span class="gcsp-account-name">{{ account.displayName || 'Account' }}</span><span aria-hidden="true">⌄</span></summary>
+          <div class="gcsp-account-panel"><span class="gcsp-account-detail-name">{{ account.displayName || 'Your account' }}</span>@if (account.email) { <span class="gcsp-account-email">{{ account.email }}</span> }
+            @if (employee()) { <ul class="gcsp-account-links"><li><a routerLink="/help" class="gcsp-account-link" (click)="closeAccount($event)">Renewal help</a></li></ul> }
+            <button gcspButton variant="ghost" class="gcsp-account-signout" type="button" [disabled]="signOutBusy" (click)="signOut()">Sign out</button>
+            @if (signOutFailed) { <p role="alert" class="gcsp-account-signout-error">Sign-out could not be completed. Please try again.</p> }
+          </div>
+        </details>
+      } @else if (auth.state().status === 'loading') { <span class="gcsp-vh">Loading your account</span><span class="gcsp-skel gcsp-skel-name" aria-hidden="true"></span> }
+    </div>
+  </header>
+  <div class="gcsp-body">
+    @if (navigation().length) {
+      <nav class="gcsp-nav" id="portal-navigation" aria-label="Portal" [attr.data-expanded]="expanded"><ul class="gcsp-nav-list">
+        @for (item of navigation(); track item.path) { <li class="gcsp-nav-item"><a class="gcsp-nav-btn" [routerLink]="'/' + item.path" routerLinkActive="active" ariaCurrentWhenActive="page" [title]="item.label"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">@for (path of item.icon; track path) { <path [attr.d]="path" /> }</svg><span class="gcsp-nav-label">{{ item.label }}</span></a></li> }
+      </ul><button class="gcsp-nav-toggle" type="button" [attr.aria-expanded]="expanded" (click)="expanded = !expanded"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M9 6l6 6-6 6" /></svg><span class="gcsp-nav-label">{{ expanded ? 'Hide labels' : 'Show labels' }}</span></button></nav>
+    }
+    <div class="gcsp-content"><main id="gcsp-main" class="gcsp-main" tabindex="-1">@if (auth.recovery(); as recovery) { <p role="status" class="gcsp-panel">{{ recovery.message }}</p> }<router-outlet /></main></div>
+  </div>
+</div>
