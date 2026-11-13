@@ -1,0 +1,2066 @@
+{
+  "source_commit": "23f6ce3313916f41264c3157d70188d79287d511",
+  "authorization": [
+    "Gary: Write our new stories to Jira",
+    "Gary: You can stop the wider pause too"
+  ],
+  "expected_epics": 3,
+  "expected_stories": 49,
+  "phase": "verified",
+  "created": [
+    {
+      "local_id": "E1",
+      "key": "FUCQ-431",
+      "id": "1505946",
+      "created_at": "2026-11-13T20:19:27.155Z",
+      "description_sha256": "57c1bae4c1f48bca740af7f275c599847b90b6949296716d4d451129c5c587cd",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2",
+      "key": "FUCQ-432",
+      "id": "1505947",
+      "created_at": "2026-11-13T20:19:28.511Z",
+      "description_sha256": "91297b4d198ed8c97312cdf4d16d640840dcd6a52ec508f63ef07c1d47faa2be",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3",
+      "key": "FUCQ-433",
+      "id": "1505948",
+      "created_at": "2026-11-13T20:19:30.222Z",
+      "description_sha256": "8f06127fd56ed1d0480a141c4677833a5e79672e0c0c1ff7c7b90bdfc596666d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E1.S01",
+      "key": "FUCQ-434",
+      "id": "1505949",
+      "parent": "FUCQ-431",
+      "created_at": "2026-11-13T20:19:52.133Z",
+      "description_sha256": "90957cd1ff68e5375c0d9887493246ba18f06e05ee8e6f5881b44ff79056caba",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E1.S02",
+      "key": "FUCQ-435",
+      "id": "1505950",
+      "parent": "FUCQ-431",
+      "created_at": "2026-11-13T20:19:57.518Z",
+      "description_sha256": "4fd1d53f8f553c1f4f81d4f5e833449ff82f5e4f102269f1ac2bc1c55efdd39b",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E1.S03",
+      "key": "FUCQ-436",
+      "id": "1505951",
+      "parent": "FUCQ-431",
+      "created_at": "2026-11-13T20:19:59.008Z",
+      "description_sha256": "60bad3556363c89a22b44a3a910e2587455695d52f6d5330f21e4c293efcb962",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E1.S04",
+      "key": "FUCQ-437",
+      "id": "1505952",
+      "parent": "FUCQ-431",
+      "created_at": "2026-11-13T20:20:00.388Z",
+      "description_sha256": "5327ce0566dda3df7dded2de93b3cfef324dd2659b8a21997dd94bbc9eeac2b5",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E1.S05",
+      "key": "FUCQ-438",
+      "id": "1505953",
+      "parent": "FUCQ-431",
+      "created_at": "2026-11-13T20:20:01.753Z",
+      "description_sha256": "bb973377ee804b74f940c5aa3a547c9c548269bf3bd624708755477bbee1c64b",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S01",
+      "key": "FUCQ-439",
+      "id": "1505954",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:06.749Z",
+      "description_sha256": "15368f3f2a65fa095981aae36c14048bda43ce0b5157df7307eee0b641dc43d5",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S02",
+      "key": "FUCQ-440",
+      "id": "1505955",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:08.085Z",
+      "description_sha256": "16031844d3b1115387c3384cee9ebbbbbca3f7215c956448a6426cce711cc91d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S03",
+      "key": "FUCQ-441",
+      "id": "1505956",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:09.785Z",
+      "description_sha256": "79dd4d3c7f954d3136bc8f7ec787dc50eb09d6114513f2bbaff36c07f2d09994",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S04",
+      "key": "FUCQ-442",
+      "id": "1505957",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:11.225Z",
+      "description_sha256": "fea78715d6cbd55843b77a96b56993a0c608ab51101f65e9d59d6547384b3521",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S05",
+      "key": "FUCQ-443",
+      "id": "1505958",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:12.623Z",
+      "description_sha256": "1765547fae9ac6c87ce23c9f74f52d44df852fe194d66deae4b202072e1ffe0c",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S06",
+      "key": "FUCQ-444",
+      "id": "1505959",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:14.166Z",
+      "description_sha256": "c863a986aa423f118ab2d012754024f47966bded08b155fb8c132367789285cb",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S07",
+      "key": "FUCQ-445",
+      "id": "1505960",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:15.605Z",
+      "description_sha256": "93b657ec9cd2eaabfb21d037ff03cd8897f1b6800b34f5b1fb8696f0b7194b50",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S08",
+      "key": "FUCQ-446",
+      "id": "1505961",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:17.210Z",
+      "description_sha256": "495b2d088123f1450c2d446b53d2844c77a25ddbaabb481180e065efc23d745f",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S09",
+      "key": "FUCQ-447",
+      "id": "1505962",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:23.653Z",
+      "description_sha256": "0633a164291f082fe8d8cc38b4b144d797566ba96ea6821fb27c3016a5cd1f17",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S10",
+      "key": "FUCQ-448",
+      "id": "1505963",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:25.017Z",
+      "description_sha256": "34601558239f0c0687f24a62106e3e934fffae6970111d3725d3c1ecbec698a1",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S11",
+      "key": "FUCQ-449",
+      "id": "1505964",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:26.958Z",
+      "description_sha256": "3e1e50400540bb9fc067a0e2dfe43ac59610a183fc67d90ddb2ce288e95d20ab",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S12",
+      "key": "FUCQ-450",
+      "id": "1505965",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:28.411Z",
+      "description_sha256": "a80a53fea4acb4c1d54ba94c035a6b58c7e699db746c7be9d5563a54ba8cd2cf",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S13",
+      "key": "FUCQ-451",
+      "id": "1505966",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:30.169Z",
+      "description_sha256": "691d974fc2d62f207546a55dee00c4c9113bd8d80470b74f66fd78598d44d78d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S14",
+      "key": "FUCQ-452",
+      "id": "1505967",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:31.637Z",
+      "description_sha256": "b189a152b5fb50f3520f1b9f22d6e5aaf6462e3eb65ee0503a9261c2ddb06acb",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E2.S15",
+      "key": "FUCQ-453",
+      "id": "1505968",
+      "parent": "FUCQ-432",
+      "created_at": "2026-11-13T20:20:32.921Z",
+      "description_sha256": "ad9b9e330202acc69d088b055e08d18962d34c32f942e6f2ead4c8a19b8f9c41",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S01",
+      "key": "FUCQ-454",
+      "id": "1505969",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:39.938Z",
+      "description_sha256": "f395852cc55b34293135381ebc8445ada8eb835c323ea259cf23a6e1ea5b60d2",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S02",
+      "key": "FUCQ-455",
+      "id": "1505970",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:41.483Z",
+      "description_sha256": "7edb19430e21955e95c46c2838944261c06e97b69d094346d5424d40ada096aa",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S03",
+      "key": "FUCQ-456",
+      "id": "1505971",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:47.929Z",
+      "description_sha256": "8012c1746fa42c008110e2bcbe4d08c3391c4e4302ef7bf74d7176daaf6608aa",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S04",
+      "key": "FUCQ-457",
+      "id": "1505972",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:49.312Z",
+      "description_sha256": "9444f45dbb7e3d0bea8d42e7d59d26bd3487706a7bcfa90e9fa9ef84b25e4c08",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S05",
+      "key": "FUCQ-458",
+      "id": "1505973",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:50.685Z",
+      "description_sha256": "1e753b2c16dd114664c393c02a9b7eacb626392c6ae76d38e74130515bfc6e0d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S06",
+      "key": "FUCQ-459",
+      "id": "1505974",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:52.207Z",
+      "description_sha256": "636637b6f4137f4da83acb1f485072415d8a0bd3e1ee656edbc7caff3f115333",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S07",
+      "key": "FUCQ-460",
+      "id": "1505975",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:53.743Z",
+      "description_sha256": "d30c5168ca6acb07573f58afb637a9d26d3b69841ddafc52d98198c24dfe0c52",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S08",
+      "key": "FUCQ-461",
+      "id": "1505976",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:20:55.174Z",
+      "description_sha256": "d8d843b1a585b7bbc69778e021297268e4596ef8440743d90b949f74a79d2fd7",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S09",
+      "key": "FUCQ-462",
+      "id": "1505977",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:00.261Z",
+      "description_sha256": "ba84804d31737b82e385bab8f4586dd5ccd2dd024edb5c5ac0e1c092f3799886",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S10",
+      "key": "FUCQ-463",
+      "id": "1505978",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:02.086Z",
+      "description_sha256": "5a12036400f08d92a1c6fe4aa15b259b97ede130354369d91924c6753d91274f",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S11",
+      "key": "FUCQ-464",
+      "id": "1505979",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:03.479Z",
+      "description_sha256": "0984a5a65fea346c4e6ef4c87db7515a2c23aca2cf607df62fd0a1b97b305039",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S12",
+      "key": "FUCQ-465",
+      "id": "1505980",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:05.089Z",
+      "description_sha256": "b10c21094bc12ec0171515530389040e5073e2cfdc36b8a9fad2aa84ff4ab77d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S13",
+      "key": "FUCQ-466",
+      "id": "1505981",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:06.701Z",
+      "description_sha256": "d354204930d8b30fc16bd65553fe85770594c0b428a5be172705e9f51093738a",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S14",
+      "key": "FUCQ-467",
+      "id": "1505982",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:08.008Z",
+      "description_sha256": "e56f6a891a61cd7c4ba64028ef5a37d421670eb9e6d5dec3f346d10cb988cdc7",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S15",
+      "key": "FUCQ-468",
+      "id": "1505983",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:09.560Z",
+      "description_sha256": "fd733310b3a2b3e0da4c0868baf2d15f5b40fb4db6286b64d467494b203762f6",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S16",
+      "key": "FUCQ-469",
+      "id": "1505984",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:10.977Z",
+      "description_sha256": "f8b0259fe926c2870b3092379da173f74ce5cc7389a5b09b44f02ab816104ac9",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S17",
+      "key": "FUCQ-470",
+      "id": "1505985",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:15.927Z",
+      "description_sha256": "5582997a835bb44781347fc6e974e51a592a95c1873795b4add9426b3c9d9927",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S18",
+      "key": "FUCQ-471",
+      "id": "1505986",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:17.600Z",
+      "description_sha256": "e7a351d92030d99e7ddddccdad2a91e1623e183437af24a50b810ee8ae05e681",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S19",
+      "key": "FUCQ-472",
+      "id": "1505987",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:18.896Z",
+      "description_sha256": "9964367a7f98855ce001496ab2fe6a731a337ef2c62a56cdeb8a7f149b002206",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S20",
+      "key": "FUCQ-473",
+      "id": "1505988",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:20.204Z",
+      "description_sha256": "df180380efb1a4519d46535d28dcdc2348e5c7404d259fe24727c57cd12c6654",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S21",
+      "key": "FUCQ-474",
+      "id": "1505989",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:21.538Z",
+      "description_sha256": "b205d4b60fd4a1202b5216cba25e91ac4f9358be3060aedcc79908ae16b3fc11",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S22",
+      "key": "FUCQ-475",
+      "id": "1505990",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:22.905Z",
+      "description_sha256": "aa8d67e123964e2ec0640d7713b08dbf0f843683cc7765268a7f85dae1804dd2",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S23",
+      "key": "FUCQ-476",
+      "id": "1505991",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:24.285Z",
+      "description_sha256": "593d6d98d4a176bbf84547b21946349bd62168d811dcd9baae6e5be5254c567d",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S24",
+      "key": "FUCQ-477",
+      "id": "1505992",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:30.799Z",
+      "description_sha256": "0e0493497fbd0c4c8a6ca75161ebd6dde4b5dcd701af42dfbe4e1abe43c0e991",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S25",
+      "key": "FUCQ-478",
+      "id": "1505993",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:32.220Z",
+      "description_sha256": "832367d000aff8b043b9e5fb0a67261be8e565201959e823bb85365fce404a97",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S26",
+      "key": "FUCQ-479",
+      "id": "1505994",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:33.848Z",
+      "description_sha256": "2ce902f4952ae6e1145c93cd3aa97de2187c48486df0f69110bdb19b42b7512c",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S27",
+      "key": "FUCQ-480",
+      "id": "1505995",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:35.214Z",
+      "description_sha256": "6f06ad07f5cb0266e0652af75e9dfa635b3891f04f1b0d22d73ca71767211c70",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S28",
+      "key": "FUCQ-481",
+      "id": "1505996",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:36.646Z",
+      "description_sha256": "abd9c5c46ec18b9815f5937f75bbb5cd7cb36f7aee427bbc65828bcfd0cd25ae",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    },
+    {
+      "local_id": "E3.S29",
+      "key": "FUCQ-482",
+      "id": "1505997",
+      "parent": "FUCQ-433",
+      "created_at": "2026-11-13T20:21:38.157Z",
+      "description_sha256": "cd22675dd3d221b8877ca895c8e57f6b0beb1fae68d9e37c3b46dd0a8b14f08a",
+      "creation_cloud_id": "ibm-consulting.atlassian.net"
+    }
+  ],
+  "diagnostics": [
+    {
+      "local_id": "E1",
+      "attempt": 1,
+      "observed_at": "2026-11-13T20:19:08.070Z",
+      "error": {
+        "content": [
+          {
+            "type": "text",
+            "text": "tool call error: tool call failed for `atlassian/createJiraIssue`\n\nCaused by:\n    Mcp error: -32001: mcp-remote: fetch failed"
+          }
+        ],
+        "isError": true
+      },
+      "recovery": "Read-only label/local-ID search found no duplicate; one retry using configured site hostname returned FUCQ-431."
+    }
+  ],
+  "verified": [
+    {
+      "local_id": "E1",
+      "key": "FUCQ-431",
+      "summary": "Run GCSP through an independently hosted frontend and backend API",
+      "type": "Epic",
+      "parent": null,
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "57c1bae4c1f48bca740af7f275c599847b90b6949296716d4d451129c5c587cd",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2",
+      "key": "FUCQ-432",
+      "summary": "Deliver the GCSP experience in Angular",
+      "type": "Epic",
+      "parent": null,
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "91297b4d198ed8c97312cdf4d16d640840dcd6a52ec508f63ef07c1d47faa2be",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3",
+      "key": "FUCQ-433",
+      "summary": "Run the GCSP backend on Java 21 and Quarkus 3.x with replaceable adapters",
+      "type": "Epic",
+      "parent": null,
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "8f06127fd56ed1d0480a141c4677833a5e79672e0c0c1ff7c7b90bdfc596666d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E1.S01",
+      "key": "FUCQ-434",
+      "summary": "Record the target architecture and implemented baseline",
+      "type": "Story",
+      "parent": "FUCQ-431",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1-s01",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "90957cd1ff68e5375c0d9887493246ba18f06e05ee8e6f5881b44ff79056caba",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E1.S02",
+      "key": "FUCQ-435",
+      "summary": "Call the separately hosted API with bearer authentication",
+      "type": "Story",
+      "parent": "FUCQ-431",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1-s02",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "4fd1d53f8f553c1f4f81d4f5e833449ff82f5e4f102269f1ac2bc1c55efdd39b",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E1.S03",
+      "key": "FUCQ-436",
+      "summary": "Build and publish the static GCSP artifact",
+      "type": "Story",
+      "parent": "FUCQ-431",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1-s03",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "60bad3556363c89a22b44a3a910e2587455695d52f6d5330f21e4c293efcb962",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E1.S04",
+      "key": "FUCQ-437",
+      "summary": "Enter and refresh replacement frontend routes",
+      "type": "Story",
+      "parent": "FUCQ-431",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1-s04",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "5327ce0566dda3df7dded2de93b3cfef324dd2659b8a21997dd94bbc9eeac2b5",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E1.S05",
+      "key": "FUCQ-438",
+      "summary": "Release independent artifacts and hand over the final switch",
+      "type": "Story",
+      "parent": "FUCQ-431",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e1-s05",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "bb973377ee804b74f940c5aa3a547c9c548269bf3bd624708755477bbee1c64b",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S01",
+      "key": "FUCQ-439",
+      "summary": "Sign in and navigate through the Angular shell",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s01",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "15368f3f2a65fa095981aae36c14048bda43ce0b5157df7307eee0b641dc43d5",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S02",
+      "key": "FUCQ-440",
+      "summary": "Show employee account and current-vehicle information",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s02",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "16031844d3b1115387c3384cee9ebbbbbca3f7215c956448a6426cce711cc91d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S03",
+      "key": "FUCQ-441",
+      "summary": "Edit preferences and control Buddy delegation",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s03",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "79dd4d3c7f954d3136bc8f7ec787dc50eb09d6114513f2bbaff36c07f2d09994",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S04",
+      "key": "FUCQ-442",
+      "summary": "Browse released stock and inspect an exact vehicle",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s04",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "fea78715d6cbd55843b77a96b56993a0c608ab51101f65e9d59d6547384b3521",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S05",
+      "key": "FUCQ-443",
+      "summary": "Review and intentionally submit a manual selection",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s05",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "1765547fae9ac6c87ce23c9f74f52d44df852fe194d66deae4b202072e1ffe0c",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S06",
+      "key": "FUCQ-444",
+      "summary": "Show Buddy activity and search outcomes",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s06",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "c863a986aa423f118ab2d012754024f47966bded08b155fb8c132367789285cb",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S07",
+      "key": "FUCQ-445",
+      "summary": "Open an offer and accept or decline",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s07",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "93b657ec9cd2eaabfb21d037ff03cd8897f1b6800b34f5b1fb8696f0b7194b50",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S08",
+      "key": "FUCQ-446",
+      "summary": "Track the existing order and lifecycle journey",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s08",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "495b2d088123f1450c2d446b53d2844c77a25ddbaabb481180e065efc23d745f",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S09",
+      "key": "FUCQ-447",
+      "summary": "Use employee help and Greg's case queue",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s09",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "0633a164291f082fe8d8cc38b4b144d797566ba96ea6821fb27c3016a5cd1f17",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S10",
+      "key": "FUCQ-448",
+      "summary": "Show Greg's demand and preview/publish controls",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s10",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "34601558239f0c0687f24a62106e3e934fffae6970111d3725d3c1ecbec698a1",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S11",
+      "key": "FUCQ-449",
+      "summary": "Plan Greg's order and track Production responses",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s11",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "3e1e50400540bb9fc067a0e2dfe43ac59610a183fc67d90ddb2ce288e95d20ab",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S12",
+      "key": "FUCQ-450",
+      "summary": "Operate presenter scenarios",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s12",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "a80a53fea4acb4c1d54ba94c035a6b58c7e699db746c7be9d5563a54ba8cd2cf",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S13",
+      "key": "FUCQ-451",
+      "summary": "Inspect notifications and follow delivered offer links",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s13",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "691d974fc2d62f207546a55dee00c4c9113bd8d80470b74f66fd78598d44d78d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S14",
+      "key": "FUCQ-452",
+      "summary": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s14",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "b189a152b5fb50f3520f1b9f22d6e5aaf6462e3eb65ee0503a9261c2ddb06acb",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E2.S15",
+      "key": "FUCQ-453",
+      "summary": "Retire replaced GCSP frontend entry points",
+      "type": "Story",
+      "parent": "FUCQ-432",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e2-s15",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "ad9b9e330202acc69d088b055e08d18962d34c32f942e6f2ead4c8a19b8f9c41",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S01",
+      "key": "FUCQ-454",
+      "summary": "Build and run the portable Java API artifact",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s01",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "f395852cc55b34293135381ebc8445ada8eb835c323ea259cf23a6e1ea5b60d2",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S02",
+      "key": "FUCQ-455",
+      "summary": "Authenticate OIDC/JWT users and enforce roles",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s02",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "7edb19430e21955e95c46c2838944261c06e97b69d094346d5424d40ada096aa",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S03",
+      "key": "FUCQ-456",
+      "summary": "Persist state in isolated development PostgreSQL",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s03",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "8012c1746fa42c008110e2bcbe4d08c3391c4e4302ef7bf74d7176daaf6608aa",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S04",
+      "key": "FUCQ-457",
+      "summary": "Read and publish canonical versioned policy",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s04",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "9444f45dbb7e3d0bea8d42e7d59d26bd3487706a7bcfa90e9fa9ef84b25e4c08",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S05",
+      "key": "FUCQ-458",
+      "summary": "Resolve employee/account context through replaceable ports",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s05",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "1e753b2c16dd114664c393c02a9b7eacb626392c6ae76d38e74130515bfc6e0d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S06",
+      "key": "FUCQ-459",
+      "summary": "Serve exact vehicle evidence from retained artifacts",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s06",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "636637b6f4137f4da83acb1f485072415d8a0bd3e1ee656edbc7caff3f115333",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S07",
+      "key": "FUCQ-460",
+      "summary": "Save preferences, feedback and delegation",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s07",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "d30c5168ca6acb07573f58afb637a9d26d3b69841ddafc52d98198c24dfe0c52",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S08",
+      "key": "FUCQ-461",
+      "summary": "Compute equivalent eligibility, quotes and recommendations",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s08",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "d8d843b1a585b7bbc69778e021297268e4596ef8440743d90b949f74a79d2fd7",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S09",
+      "key": "FUCQ-462",
+      "summary": "Release stock through the selected supply provider",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s09",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "ba84804d31737b82e385bab8f4586dd5ccd2dd024edb5c5ac0e1c092f3799886",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S10",
+      "key": "FUCQ-463",
+      "summary": "Claim and release manual selections safely",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s10",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "5a12036400f08d92a1c6fe4aa15b259b97ede130354369d91924c6753d91274f",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S11",
+      "key": "FUCQ-464",
+      "summary": "Allocate Buddy offers and reconcile holds",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s11",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "0984a5a65fea346c4e6ef4c87db7515a2c23aca2cf607df62fd0a1b97b305039",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S12",
+      "key": "FUCQ-465",
+      "summary": "Resolve offer links under OIDC ownership",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s12",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "b10c21094bc12ec0171515530389040e5073e2cfdc36b8a9fad2aa84ff4ab77d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S13",
+      "key": "FUCQ-466",
+      "summary": "Apply local offer decisions and follow-up",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s13",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "d354204930d8b30fc16bd65553fe85770594c0b428a5be172705e9f51093738a",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S14",
+      "key": "FUCQ-467",
+      "summary": "Complete remote offer acceptance and decline",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s14",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "e56f6a891a61cd7c4ba64028ef5a37d421670eb9e6d5dec3f346d10cb988cdc7",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S15",
+      "key": "FUCQ-468",
+      "summary": "Submit and reconcile employee ordering handoffs",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s15",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "fd733310b3a2b3e0da4c0868baf2d15f5b40fb4db6286b64d467494b203762f6",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S16",
+      "key": "FUCQ-469",
+      "summary": "Capture and deliver notifications through the selected transport",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s16",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "f8b0259fe926c2870b3092379da173f74ce5cc7389a5b09b44f02ab816104ac9",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S17",
+      "key": "FUCQ-470",
+      "summary": "Reconcile approvals and ordering status",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s17",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "5582997a835bb44781347fc6e974e51a592a95c1873795b4add9426b3c9d9927",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S18",
+      "key": "FUCQ-471",
+      "summary": "Read and acknowledge documents/readiness",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s18",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "e7a351d92030d99e7ddddccdad2a91e1623e183437af24a50b810ee8ae05e681",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S19",
+      "key": "FUCQ-472",
+      "summary": "Plan supported handover appointments",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s19",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "9964367a7f98855ce001496ab2fe6a731a337ef2c62a56cdeb8a7f149b002206",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S20",
+      "key": "FUCQ-473",
+      "summary": "Plan and reconcile supported old-car returns",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s20",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "df180380efb1a4519d46535d28dcdc2348e5c7404d259fe24727c57cd12c6654",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S21",
+      "key": "FUCQ-474",
+      "summary": "Maintain owned help/renewal cases and remedies",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s21",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "b205d4b60fd4a1202b5216cba25e91ac4f9358be3060aedcc79908ae16b3fc11",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S22",
+      "key": "FUCQ-475",
+      "summary": "Calculate Greg's demand and operational projections",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s22",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "aa8d67e123964e2ec0640d7713b08dbf0f843683cc7765268a7f85dae1804dd2",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S23",
+      "key": "FUCQ-476",
+      "summary": "Consume learned artifacts and capture new learning records",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s23",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "593d6d98d4a176bbf84547b21946349bd62168d811dcd9baae6e5be5254c567d",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S24",
+      "key": "FUCQ-477",
+      "summary": "Calculate Greg's constrained next-order plan",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s24",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "0e0493497fbd0c4c8a6ca75161ebd6dde4b5dcd701af42dfbe4e1abe43c0e991",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S25",
+      "key": "FUCQ-478",
+      "summary": "Submit Production requests and reconcile responses",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s25",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "832367d000aff8b043b9e5fb0a67261be8e565201959e823bb85365fce404a97",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S26",
+      "key": "FUCQ-479",
+      "summary": "Run clock, scenarios and presenter operations",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s26",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "2ce902f4952ae6e1145c93cd3aa97de2187c48486df0f69110bdb19b42b7512c",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S27",
+      "key": "FUCQ-480",
+      "summary": "Retain comparison results and supported job behaviour",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s27",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "6f06ad07f5cb0266e0652af75e9dfa635b3891f04f1b0d22d73ca71767211c70",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S28",
+      "key": "FUCQ-481",
+      "summary": "Prove provider composition and complete substitution",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s28",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "abd9c5c46ec18b9815f5937f75bbb5cd7cb36f7aee427bbc65828bcfd0cd25ae",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    },
+    {
+      "local_id": "E3.S29",
+      "key": "FUCQ-482",
+      "summary": "Rehearse fresh-state cutover and retire GCSP Node runtime",
+      "type": "Story",
+      "parent": "FUCQ-433",
+      "status": "To Do",
+      "assignee": null,
+      "points": {
+        "id": "customfield_10016"
+      },
+      "labels": [
+        "backlog",
+        "e3-s29",
+        "gcsp-angular-java-20261113"
+      ],
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "description_sha256": "cd22675dd3d221b8877ca895c8e57f6b0beb1fae68d9e37c3b46dd0a8b14f08a",
+      "checks": {
+        "summary": true,
+        "description": true,
+        "type": true,
+        "parent": true,
+        "status": true,
+        "unassigned": true,
+        "unestimated": true,
+        "labels": true
+      }
+    }
+  ],
+  "description_comparison": "Exact text after whitespace and Markdown bullet-marker normalization",
+  "verification_note": "Every known created key read back directly or through full-description search. Immediate search indexing lag was not treated as missing publication; known-key GETs filled the remainder.",
+  "final_search_inventory": {
+    "observed_at": "2026-11-13T20:25:23.322Z",
+    "jql": "project = FUCQ AND labels = \"gcsp-angular-java-20261113\" ORDER BY key ASC",
+    "isLast": true,
+    "count": 52,
+    "keys": [
+      "FUCQ-431",
+      "FUCQ-432",
+      "FUCQ-433",
+      "FUCQ-434",
+      "FUCQ-435",
+      "FUCQ-436",
+      "FUCQ-437",
+      "FUCQ-438",
+      "FUCQ-439",
+      "FUCQ-440",
+      "FUCQ-441",
+      "FUCQ-442",
+      "FUCQ-443",
+      "FUCQ-444",
+      "FUCQ-445",
+      "FUCQ-446",
+      "FUCQ-447",
+      "FUCQ-448",
+      "FUCQ-449",
+      "FUCQ-450",
+      "FUCQ-451",
+      "FUCQ-452",
+      "FUCQ-453",
+      "FUCQ-454",
+      "FUCQ-455",
+      "FUCQ-456",
+      "FUCQ-457",
+      "FUCQ-458",
+      "FUCQ-459",
+      "FUCQ-460",
+      "FUCQ-461",
+      "FUCQ-462",
+      "FUCQ-463",
+      "FUCQ-464",
+      "FUCQ-465",
+      "FUCQ-466",
+      "FUCQ-467",
+      "FUCQ-468",
+      "FUCQ-469",
+      "FUCQ-470",
+      "FUCQ-471",
+      "FUCQ-472",
+      "FUCQ-473",
+      "FUCQ-474",
+      "FUCQ-475",
+      "FUCQ-476",
+      "FUCQ-477",
+      "FUCQ-478",
+      "FUCQ-479",
+      "FUCQ-480",
+      "FUCQ-481",
+      "FUCQ-482"
+    ]
+  }
+}

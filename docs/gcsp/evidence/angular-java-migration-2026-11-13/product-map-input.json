@@ -1,0 +1,1045 @@
+{
+  "observed_at": "2026-11-13T20:22:18.041Z",
+  "issues": [
+    {
+      "key": "FUCQ-431",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-431",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Run GCSP through an independently hosted frontend and backend API",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-432",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-432",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Deliver the GCSP experience in Angular",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-433",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-433",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Run the GCSP backend on Java 21 and Quarkus 3.x with replaceable adapters",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Epic"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-434",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-434",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Record the target architecture and implemented baseline",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1-s01",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-435",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Call the separately hosted API with bearer authentication",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1-s02",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-436",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Build and publish the static GCSP artifact",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1-s03",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-437",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Enter and refresh replacement frontend routes",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1-s04",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-438",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Release independent artifacts and hand over the final switch",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e1-s05",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-439",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Sign in and navigate through the Angular shell",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s01",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-440",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Show employee account and current-vehicle information",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s02",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-441",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-441",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Edit preferences and control Buddy delegation",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s03",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-442",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Browse released stock and inspect an exact vehicle",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s04",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-443",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Review and intentionally submit a manual selection",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s05",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-444",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Show Buddy activity and search outcomes",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s06",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-445",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-445",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Open an offer and accept or decline",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s07",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-446",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-446",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Track the existing order and lifecycle journey",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s08",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-447",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Use employee help and Greg's case queue",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s09",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-448",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Show Greg's demand and preview/publish controls",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s10",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-449",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-449",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Plan Greg's order and track Production responses",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s11",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-450",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-450",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Operate presenter scenarios",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s12",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-451",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Inspect notifications and follow delivered offer links",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s13",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-452",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Inspect and run supported process comparisons",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s14",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-453",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-453",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Retire replaced GCSP frontend entry points",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e2-s15",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-454",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-454",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Build and run the portable Java API artifact",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s01",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-455",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-455",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Authenticate OIDC/JWT users and enforce roles",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s02",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-456",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-456",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Persist state in isolated development PostgreSQL",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s03",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-457",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-457",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Read and publish canonical versioned policy",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s04",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-458",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Resolve employee/account context through replaceable ports",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s05",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-459",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-459",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Serve exact vehicle evidence from retained artifacts",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s06",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-460",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Save preferences, feedback and delegation",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s07",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-461",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Compute equivalent eligibility, quotes and recommendations",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s08",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-462",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-462",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Release stock through the selected supply provider",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s09",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-463",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Claim and release manual selections safely",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s10",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-464",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-464",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Allocate Buddy offers and reconcile holds",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s11",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-465",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Resolve offer links under OIDC ownership",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s12",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-466",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-466",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Apply local offer decisions and follow-up",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s13",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-467",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Complete remote offer acceptance and decline",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s14",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-468",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-468",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Submit and reconcile employee ordering handoffs",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s15",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-469",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Capture and deliver notifications through the selected transport",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s16",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-470",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Reconcile approvals and ordering status",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s17",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-471",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Read and acknowledge documents/readiness",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s18",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-472",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-472",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Plan supported handover appointments",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s19",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-473",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Plan and reconcile supported old-car returns",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s20",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-474",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-474",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Maintain owned help/renewal cases and remedies",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s21",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-475",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-475",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Calculate Greg's demand and operational projections",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s22",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-476",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Consume learned artifacts and capture new learning records",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s23",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-477",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Calculate Greg's constrained next-order plan",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s24",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-478",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-478",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Submit Production requests and reconcile responses",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s25",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-479",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Run clock, scenarios and presenter operations",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s26",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-480",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Retain comparison results and supported job behaviour",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s27",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-481",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Prove provider composition and complete substitution",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s28",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    },
+    {
+      "key": "FUCQ-482",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-482",
+      "observed_at": "2026-11-13T20:22:18.041Z",
+      "fields": {
+        "summary": "Rehearse fresh-state cutover and retire GCSP Node runtime",
+        "status": {
+          "name": "To Do"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "assignee": null,
+        "labels": [
+          "backlog",
+          "e3-s29",
+          "gcsp-angular-java-20261113"
+        ]
+      }
+    }
+  ]
+}

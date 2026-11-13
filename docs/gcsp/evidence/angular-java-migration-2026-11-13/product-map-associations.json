@@ -1,0 +1,481 @@
+{
+  "observed_at": "2026-11-13T20:22:18.041Z",
+  "mode": "actions",
+  "data_branch": "gcsp-poc",
+  "facts_branch": "gcsp-poc-dev",
+  "associations": [
+    {
+      "local_id": "E1.S01",
+      "key": "FUCQ-434",
+      "components": [
+        "entry",
+        "shared-experience",
+        "transaction-store",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E1.S02",
+      "key": "FUCQ-435",
+      "components": [
+        "shared-experience",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E1.S03",
+      "key": "FUCQ-436",
+      "components": [
+        "shared-experience"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E1.S04",
+      "key": "FUCQ-437",
+      "components": [
+        "entry",
+        "offer-journey"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E1.S05",
+      "key": "FUCQ-438",
+      "components": [
+        "shared-experience",
+        "transaction-store"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S01",
+      "key": "FUCQ-439",
+      "components": [
+        "entry",
+        "shared-experience",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S02",
+      "key": "FUCQ-440",
+      "components": [
+        "manual-journey"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S03",
+      "key": "FUCQ-441",
+      "components": [
+        "brief"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S04",
+      "key": "FUCQ-442",
+      "components": [
+        "manual-journey"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S05",
+      "key": "FUCQ-443",
+      "components": [
+        "manual-journey",
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S06",
+      "key": "FUCQ-444",
+      "components": [
+        "brief",
+        "allocation"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S07",
+      "key": "FUCQ-445",
+      "components": [
+        "offer-journey"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S08",
+      "key": "FUCQ-446",
+      "components": [
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S09",
+      "key": "FUCQ-447",
+      "components": [
+        "renewal-help"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S10",
+      "key": "FUCQ-448",
+      "components": [
+        "greg-operations",
+        "policy"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S11",
+      "key": "FUCQ-449",
+      "components": [
+        "demand-planning"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S12",
+      "key": "FUCQ-450",
+      "components": [
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S13",
+      "key": "FUCQ-451",
+      "components": [
+        "notifications"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S14",
+      "key": "FUCQ-452",
+      "components": [
+        "route-comparison"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E2.S15",
+      "key": "FUCQ-453",
+      "components": [
+        "entry",
+        "shared-experience"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S01",
+      "key": "FUCQ-454",
+      "components": [
+        "transaction-store",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S02",
+      "key": "FUCQ-455",
+      "components": [
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S03",
+      "key": "FUCQ-456",
+      "components": [
+        "transaction-store"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S04",
+      "key": "FUCQ-457",
+      "components": [
+        "policy"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S05",
+      "key": "FUCQ-458",
+      "components": [
+        "manual-journey",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S06",
+      "key": "FUCQ-459",
+      "components": [
+        "catalogue",
+        "imagery",
+        "vehicle-identity",
+        "configuration-corpus"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S07",
+      "key": "FUCQ-460",
+      "components": [
+        "brief"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S08",
+      "key": "FUCQ-461",
+      "components": [
+        "recommendation",
+        "policy"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S09",
+      "key": "FUCQ-462",
+      "components": [
+        "allocation",
+        "configuration-corpus"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S10",
+      "key": "FUCQ-463",
+      "components": [
+        "manual-journey",
+        "allocation"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S11",
+      "key": "FUCQ-464",
+      "components": [
+        "allocation"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S12",
+      "key": "FUCQ-465",
+      "components": [
+        "offer-journey",
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S13",
+      "key": "FUCQ-466",
+      "components": [
+        "offer-journey"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S14",
+      "key": "FUCQ-467",
+      "components": [
+        "offer-journey",
+        "allocation"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S15",
+      "key": "FUCQ-468",
+      "components": [
+        "manual-journey",
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S16",
+      "key": "FUCQ-469",
+      "components": [
+        "notifications"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S17",
+      "key": "FUCQ-470",
+      "components": [
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S18",
+      "key": "FUCQ-471",
+      "components": [
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S19",
+      "key": "FUCQ-472",
+      "components": [
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S20",
+      "key": "FUCQ-473",
+      "components": [
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S21",
+      "key": "FUCQ-474",
+      "components": [
+        "renewal-help"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S22",
+      "key": "FUCQ-475",
+      "components": [
+        "greg-operations"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S23",
+      "key": "FUCQ-476",
+      "components": [
+        "demand-planning"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S24",
+      "key": "FUCQ-477",
+      "components": [
+        "demand-planning"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S25",
+      "key": "FUCQ-478",
+      "components": [
+        "demand-planning",
+        "greg-operations"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S26",
+      "key": "FUCQ-479",
+      "components": [
+        "demo-control"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S27",
+      "key": "FUCQ-480",
+      "components": [
+        "route-comparison"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S28",
+      "key": "FUCQ-481",
+      "components": [
+        "transaction-store",
+        "demo-control",
+        "manual-journey",
+        "offer-journey",
+        "notifications",
+        "post-selection"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    },
+    {
+      "local_id": "E3.S29",
+      "key": "FUCQ-482",
+      "components": [
+        "entry",
+        "shared-experience",
+        "transaction-store"
+      ],
+      "status": "To Do",
+      "unsliced": true
+    }
+  ],
+  "note": "Verified identities only; no slice plan, worker claim, acceptance or completion inferred. Source read-back timestamps restored after CLI import. Public projection refresh not verified by this publication."
+}

@@ -1,0 +1,36 @@
+{
+  "verified_issues": 52,
+  "verified_epics": 3,
+  "verified_stories": 49,
+  "source_cards": 49,
+  "questions": 42,
+  "report_mapping_rows": 49,
+  "local_file_links": 186,
+  "preexisting_index_missing_targets": [
+    "evidence/fucq-110/story-publication.json",
+    "evidence/fucq-13-19/story-publication.json",
+    "evidence/fucq-132/story-publication.json",
+    "evidence/fucq-6/story-publication.json",
+    "evidence/fucq-74-75/story-publication.json",
+    "evidence/fucq-79/story-publication.json",
+    "evidence/fucq-86-90/story-publication.json"
+  ],
+  "new_missing_local_targets": [],
+  "existing_product_map_facts_preserved": true,
+  "product_map_build": "20 components; 6 diagnostics",
+  "product_map_scope": "--no-branches; current working/index/commit facts only",
+  "interrupted_check": "Full branch-scanning snapshot stopped after approximately 30 seconds; bounded local build used for this publication. No full cross-branch refresh claimed.",
+  "runtime_validation": "unrun; authoring/publication only",
+  "scratch": "TemporaryDirectory cleaned on completion",
+  "product_map_diagnostics": [
+    "stories FUCQ-58: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-59: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-60: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-61: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-62: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-63: conflicting active-branch facts; reconcile the records"
+  ],
+  "new_map_story_count": 49,
+  "new_map_story_conflicts": [],
+  "new_map_story_status": "To Do; explicit unsliced state; no acceptance or worker claims"
+}
