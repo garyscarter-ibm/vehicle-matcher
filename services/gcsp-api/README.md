@@ -49,10 +49,32 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_OIDC_ACCOUNTS` | none | oidc: required JSON array `[{"subject","roles":["employee"|"greg"|"presenter"],"employeeId"?}]`. Not secret, never commit real subjects. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` | none | oidc: required; interim environment context until later Stories persist run state. |
 | `JAVA_OPTS` | `-XX:MaxRAMPercentage=75` (image) | JVM options for the container start command. |
+| `GCSP_DATABASE_URL` | unset | JDBC URL of this environment's own PostgreSQL. Unset leaves persistence off (readiness `not-configured`). |
+| `GCSP_DATABASE_USER`, `GCSP_DATABASE_PASSWORD` | empty | Database credentials, from the host's secret store only. |
+| `GCSP_EXPECTED_DATABASE` | empty | Must equal `current_database()`, or startup and reset refuse. |
+| `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
+| `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
+| `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
 
-No secret is read: the JWKS and the accounts mapping are public data. Database and mail settings arrive with FUCQ-456 and FUCQ-469.
+No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
 The test provider registration and claim mapping are in
 [`docs/gcsp/oidc-test-provider-2026-11-13.md`](../../docs/gcsp/oidc-test-provider-2026-11-13.md).
+
+## Persistence (FUCQ-456)
+
+Design: [`docs/gcsp/java-persistence-design-2026-11-13.md`](../../docs/gcsp/java-persistence-design-2026-11-13.md).
+Flyway applies `src/main/resources/db/migration/V<n>__*.sql` into schema `gcsp_app` at start; applied files never
+change. `gcsp.api.persistence.TransactionRunner` runs one command per short transaction (receipt replay, explicit
+SQL, version CAS, revision bump, receipt and outbox), `RunReset` retires and activates runs after the identity check,
+and `PendingOperations` holds external-call intent for CAS finalization.
+
+Native tests need a PostgreSQL 17 you own (never a Render database). Unset URLs skip them:
+
+```sh
+GCSP_TEST_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_dev?user=gcsp' \
+GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_running?user=gcsp' \
+./mvnw -B test -Dtest='gcsp.api.persistence.**'
+```
 
 ## Endpoints
 
