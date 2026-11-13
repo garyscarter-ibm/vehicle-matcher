@@ -6177,9 +6177,26 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-13T23:43:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
-      "unsliced": true
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "core-endpoint",
+          "status": "not-started",
+          "title": "Account ports, projection, policy port, HR snapshot provider, GET /api/gcsp/v1/manual/account, ownership, startup selection, Node goldens"
+        },
+        {
+          "id": "repository-provider",
+          "status": "not-started",
+          "title": "PostgreSQL records provider and two-shape parity with native tests"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merge base, full Java verify, README and story result"
+        }
+      ]
     },
     {
       "id": "FUCQ-459",
