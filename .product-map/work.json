@@ -6381,8 +6381,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Connected-outcomes-and-independent-review",
-          "observed_at": "2026-11-13T21:41:45Z",
-          "evidence": "Dibble runner selected gpt-6-luna/high for native Jira read, selected runtime modules and connected desktop+narrow inspection; independent review pending"
+          "observed_at": "2026-11-13T22:10:23Z",
+          "evidence": "Runtime 7 pass/1 PostgreSQL skip; six lead-inspected desktop/narrow main release/history and no-match captures durable in docs/gcsp/evidence/fucq-409. Conflict readback timeout unresolved; focused fresh-session diagnostic and stable offer capture running; independent review pending."
         }
       ],
       "workers": [
@@ -6416,7 +6416,7 @@
       ],
       "jira_observed_at": "2026-11-13T21:43:43Z",
       "note": "Claim ef586adf; native Jira read In Progress with identical four AC/no comments/no hold; no acceptance inferred.",
-      "observed_at": "2026-11-13T21:47:17Z",
+      "observed_at": "2026-11-13T22:10:23Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
