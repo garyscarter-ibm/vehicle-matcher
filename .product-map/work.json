@@ -5536,12 +5536,54 @@
       "assignee": "",
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "reuse",
+          "status": "in-progress",
+          "title": "Validated-immutable-snapshot-reuse",
+          "observed_at": "2026-11-13T22:37:32Z"
+        },
+        {
+          "id": "proof",
+          "status": "not-started",
+          "title": "Semantic-equivalence-and-operation-count-proof"
+        },
+        {
+          "id": "connected",
+          "status": "not-started",
+          "title": "Connected-release-offer-history-integration"
+        },
+        {
+          "id": "review",
+          "status": "not-started",
+          "title": "Independent-final-review"
+        }
+      ],
+      "workers": [
+        {
+          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
+          "name": "Foghorn Leghorn",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-14T00:37:32Z",
+          "source": "explicit linked-chat assignment; active lead observation"
+        },
+        {
+          "id": "/root/mr_potato_head",
+          "name": "Mr Potato Head",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-13T23:37:32Z",
+          "source": "collaboration.spawn_agent accepted; reuse/proof slice"
+        }
+      ],
       "jira_observed_at": "2026-11-12T15:47:57.529Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z"
+      "note": "Claimed FUCQ-414/DEV-2026-11-13-GC-007 at806d4816; fixed four native AC. Independent implementation readiness confirmed from validateSource/createVehicleSnapshot. Connected/native/rendered integration and independent final review remain required. No Jira status or acceptance inferred.",
+      "observed_at": "2026-11-13T22:37:32Z",
+      "branch": "dev/DEV-2026-11-13-GC-007"
     },
     {
       "id": "FUCQ-415",
