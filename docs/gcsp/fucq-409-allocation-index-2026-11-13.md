@@ -24,8 +24,12 @@ Run owner: Charlie Dog. Local plan, logs, identity checkpoints and ownership rec
 
 ## Evidence and acceptance
 
-Pending implementation, connected inspection and independent review. No acceptance or completion is claimed by this plan.
+Lookup slice implemented and reviewed. Production changes are four added lines and one replacement: build the first-write Map from each employee-visible pool, then replace the candidate find with Map.get after the unchanged eligibility/consent/lapse guard. Date selection and blockers stay inside that original guard. Required modules passed separately for the implementer (23 allocation; 5 ownership) and together at the lead boundary (`lead-lookup`: 28/28, zero skipped, 12.636 seconds, sampled peak RSS 299,384,832 bytes). No full-suite stamp is claimed.
+
+Two focused service regressions preserve hidden-duplicate behavior before and after the visible row, stock version 13 versus hidden version 29, retained revision/provenance, pending retry and completed replay, plus missing/ambiguous dates (0/2 current contracts) with mixed eligible/ineligible stock. The existing recommendation provider rejects two visible duplicate IDs before allocation; the operations slice will test first-match compatibility at the actual source boundary. This is an existing input guard, not a newly introduced refusal.
+
+Initial attempts are retained honestly in `lookup-slice-summary.json`: missing worker `pg` prevented tests from loading; existing root/server dependencies were reused through ignored symlinks. Two test-fixture assumptions then failed (visible duplicates refused upstream; employee IDs returned in stable sorted order); tests were corrected without changing production guards. The first supervisor used one shared log filename and overwrote early verbose output; exact failures are retained in the summary and subsequent logs use per-run directories. All seven lookup-run scratch roots were removed with filesystem receipts and no live owned process groups. Connected inspection, bounded operation counts and independent review remain pending.
 
 ## Agents
 
-Charlie Dog requested/selected/effective `gpt-6.1-sol` / `high`, no fallback; title verified saved. Goopy Geer requested/selected `gpt-6.1-sol` / `medium` through `tiers spawn implementer`, no fallback; runtime/title verification pending. One child at a time. No descendants or external messages authorised.
+Charlie Dog requested/selected/effective `gpt-6.1-sol` / `high`, no fallback; title verified saved. Goopy Geer requested/selected `gpt-6.1-sol` / `medium` through `tiers spawn implementer`, no fallback; title verified saved; effective runtime to be independently checked. The same implementer continues the operations slice; a Sam Sheepdog tier reservation was unused, with no agent spawned. One child at a time. No descendants or external messages authorised.
