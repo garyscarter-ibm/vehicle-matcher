@@ -185,23 +185,28 @@ main {
         openingHtml: `
           <section class="rr-opening" aria-labelledby="rr-opening-title">
             <h2 class="rr-opening-title" id="rr-opening-title">Crafted once, coveted<br class="rr-br"> forever</h2>
-            <p class="rr-opening-copy">An official welcome into the brand’s universe, Provenance is a recognition of your discerning<br class="rr-br"> appreciation for true automotive artistry.</p>
-            <p class="rr-opening-copy">Each motor car is a testament to enduring craftsmanship. A world-renowned team of technicians<br class="rr-br"> across the globe re-examine every Provenance motor car to ensure its future is as brilliant<br class="rr-br"> as its past.</p>
-            <div class="rr-pills">
-              <a class="rr-pill rr-pill-primary" href="#demo-tool">Find my perfect match</a>
-              <a class="rr-pill" href="#" onclick="return false">Discover our inventory</a>
-              <a class="rr-pill" href="#" onclick="return false">Contact a dealership</a>
+            <div class="rr-views">
+              <div class="rr-view is-current" data-view="intro">
+                <p class="rr-opening-copy">An official welcome into the brand’s universe, Provenance is a recognition of your discerning<br class="rr-br"> appreciation for true automotive artistry.</p>
+                <p class="rr-opening-copy">Each motor car is a testament to enduring craftsmanship. A world-renowned team of technicians<br class="rr-br"> across the globe re-examine every Provenance motor car to ensure its future is as brilliant<br class="rr-br"> as its past.</p>
+                <div class="rr-pills">
+                  <a class="rr-pill rr-pill-primary" href="#demo-tool">Find my perfect match</a>
+                  <a class="rr-pill" href="#" onclick="return false">Discover our inventory</a>
+                  <a class="rr-pill" href="#" onclick="return false">Contact a dealership</a>
+                </div>
+              </div>
+              <div class="rr-view rr-view-journey" data-view="journey" inert>
+                <p class="rr-opening-copy">Allow us to walk you through a few simple questions. We’ll score your results and select your<br class="rr-br"> perfect match from our collection.</p>
+                <div class="rr-pills">
+                  <a class="rr-pill" href="#demo-tool">Begin your journey</a>
+                </div>
+              </div>
             </div>
           </section>
-          <section class="rr-opening rr-journey" id="rr-journey" aria-labelledby="rr-journey-title" hidden>
-            <h2 class="rr-opening-title" id="rr-journey-title">Crafted once, coveted<br class="rr-br"> forever</h2>
-            <p class="rr-opening-copy">Allow us to walk you through a few simple questions. We’ll score your results and select your<br class="rr-br"> perfect match from our collection.</p>
-            <div class="rr-pills">
-              <a class="rr-pill" href="#demo-tool">Begin your journey</a>
-            </div>
-          </section>
-          <img class="rr-benefits" src="assets/rrmc-opening/ProvB1.jpg" width="1440" height="809"
-            alt="Six Provenance benefits: a prestigious invitation, official certification, unparalleled servicing, roadside assistance, Provenance warranty and enduring excellence." />`,
+          <div class="rr-benefits-wrap"><div class="rr-benefits-inner">
+            <img class="rr-benefits" src="assets/rrmc-opening/ProvB1.jpg" width="1440" height="809"
+              alt="Six Provenance benefits: a prestigious invitation, official certification, unparalleled servicing, roadside assistance, Provenance warranty and enduring excellence." />
+          </div></div>`,
         // The official site's footer, column by column; rendered by rrFooter.
         footerColumns: [
           ['Pre-owned', 'Find a dealer', 'Privacy', 'Language'],
@@ -610,9 +615,11 @@ main {
       if (brandKey === 'rrmc') {
         // The matcher stays out of sight until "Begin your journey"; a shared #m= link opens it.
         const tool = document.getElementById('demo-tool');
-        const opening = root.querySelector('.rr-opening:not(.rr-journey)');
-        const journey = root.querySelector('.rr-journey');
-        const benefits = root.querySelector('.rr-benefits');
+        const opening = root.querySelector('.rr-opening');
+        const introView = root.querySelector('.rr-view[data-view="intro"]');
+        const journeyView = root.querySelector('.rr-view[data-view="journey"]');
+        const benefits = root.querySelector('.rr-benefits-wrap');
+        const views = root.querySelector('.rr-views');
         // One backing layer per question step; the current one fades in over the previous for 0.5s.
         const backings = document.createElement('div');
         backings.className = 'rr-backings';
@@ -649,7 +656,8 @@ main {
           shownStep = step;
         };
         new MutationObserver(showBacking).observe(tool, { childList: true, subtree: true });
-        // The opening panel and ProvB1 never share the screen with the matcher.
+        // The opening panel and ProvB1 never share the screen with the matcher; until then only the
+        // panel's copy and pills change, under the same headline and with the page where it is.
         const reveal = () => {
           opening.hidden = true;
           benefits.hidden = true;
@@ -657,14 +665,29 @@ main {
         };
         if (/[#&]m=/.test(window.location.hash)) reveal();
         else tool.hidden = true;
+        // The panel is exactly as tall as the view on show, so it can shrink to the second banner's height.
+        const fitViews = () => {
+          const current = views.querySelector('.rr-view.is-current');
+          const h = current ? current.getBoundingClientRect().height : 0;
+          if (h) views.style.height = `${Math.ceil(h)}px`;
+        };
+        fitViews();
+        const fitWatch = new ResizeObserver(fitViews);
+        views.querySelectorAll('.rr-view').forEach((v) => fitWatch.observe(v));
         root.querySelector('.rr-pill-primary').addEventListener('click', (e) => {
           e.preventDefault();
-          opening.hidden = true;
-          benefits.hidden = true;
-          journey.hidden = false;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Banner and benefits image move together: the bottom edge rises while ProvB1 folds away.
+          views.classList.add('is-morphing');
+          benefits.classList.add('is-collapsed');
+          introView.classList.remove('is-current');
+          introView.inert = true;
+          journeyView.inert = false;
+          journeyView.classList.add('is-current');
+          fitViews();
+          setTimeout(() => views.classList.remove('is-morphing'), 500);
+          journeyView.querySelector('.rr-pill').focus({ preventScroll: true });
         });
-        journey.querySelector('.rr-pill').addEventListener('click', (e) => {
+        journeyView.querySelector('.rr-pill').addEventListener('click', (e) => {
           e.preventDefault();
           e.currentTarget.classList.add('is-active');
           reveal();

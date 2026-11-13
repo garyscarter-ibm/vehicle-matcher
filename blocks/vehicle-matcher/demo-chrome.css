@@ -504,12 +504,40 @@
 }
 .rr-pill:hover { opacity: 0.85; }
 
-/* Full-width benefits image under the panel; the blurbs are part of the picture. */
+/* Full-width benefits image under the panel; the blurbs are part of the picture. It folds away
+   (0fr) over the same 0.45s as the banner's height, so the footer rises with the banner's edge. */
 .rr-benefits { display: block; width: 100%; height: auto; }
-.rr-benefits[hidden] { display: none; }
+.rr-benefits-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.rr-benefits-wrap.is-collapsed { grid-template-rows: 0fr; }
+.rr-benefits-wrap[hidden] { display: none; }
+.rr-benefits-inner { min-height: 0; overflow: hidden; }
 
-/* "Begin your journey" page: one short paragraph, then a single pill 44px below it. */
-.rr-journey .rr-opening-copy { margin-bottom: 44px; }
+/* The panel's two views share one cell, so its height is the taller one's and nothing below moves.
+   The old view fades out first, then the new one in: only the copy and pills change. */
+.rr-views { display: grid; align-items: start; overflow: hidden; margin-block: -6px; }
+/* 6px of room inside the clip, so a pill's 1px stroke and a focus ring are never cut off. */
+.rr-view { padding-block: 6px; }
+.rr-views.is-morphing { transition: height 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.rr-view {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s 0.2s;
+}
+.rr-view.is-current {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease 0.2s, visibility 0s 0.2s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr-view, .rr-view.is-current, .rr-views.is-morphing, .rr-benefits-wrap { transition: none; }
+}
+/* "Begin your journey": one short paragraph, then a single pill 44px below it. */
+.rr-view-journey .rr-opening-copy { margin-bottom: 44px; }
 
 /* ================= RRMC question panel (Figma "Location", 1440 wide) ================= */
 
