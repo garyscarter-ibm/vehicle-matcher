@@ -6364,7 +6364,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T21:36:28Z",
+      "observed_at": "2026-11-13T21:56:56Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
       "unsliced": false,
       "slices": [
@@ -6376,8 +6376,10 @@
         },
         {
           "id": "auth",
-          "status": "not-started",
-          "title": "OIDC-context-recovery-and-account-isolation"
+          "status": "in-progress",
+          "title": "OIDC-context-recovery-and-account-isolation",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md."
         },
         {
           "id": "integration",
@@ -6391,19 +6393,19 @@
           "name": "Porky Pig",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T21:27:24.528075+00:00",
-          "expires_at": "2026-11-13T22:27:24.528075+00:00",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "expires_at": "2026-11-13T22:56:25Z",
           "status": "active",
-          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; direct running session observation"
+          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; independent final51/51 and active lead integration"
         },
         {
           "name": "Mulan",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-13T21:27:24.528075+00:00",
-          "expires_at": "2026-11-13T21:36:28.209703+00:00",
-          "status": "slice reported; inactive pending next brief",
-          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; parent verified active shell slice"
+          "observed_at": "2026-11-13T21:56:25Z",
+          "expires_at": "2026-11-13T21:56:25Z",
+          "status": "checkpoint reported; inactive",
+          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
         }
       ]
     }

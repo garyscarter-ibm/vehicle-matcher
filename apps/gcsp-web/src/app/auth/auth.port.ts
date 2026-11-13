@@ -18,7 +18,7 @@ export abstract class AuthPort {
   abstract readonly recovery: Signal<RecoveryNotice | null>;
   // Implementations coalesce initialization; retry explicitly refreshes the authoritative context.
   abstract initialize(): Promise<void>;
-  abstract retry(): Promise<void>;
+  abstract retry(): Promise<string | void>;
   abstract getAccessToken(): Promise<string | null>;
   abstract signIn(returnTo: string): Promise<void>;
   abstract completeSignIn(): Promise<string | void>;

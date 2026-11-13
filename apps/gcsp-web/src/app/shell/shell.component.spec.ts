@@ -1,13 +1,28 @@
-import { signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
+import { sessionGuard } from '../auth/route.guards';
+import { StatePageComponent } from '../pages/state-page.component';
 import { ShellComponent } from './shell.component';
+@Component({ template: '<p>Private saved car for Alice</p>' })
+class PrivateBody {}
 describe('native portal shell', () => {
   const state = signal<SessionState>({ status: 'signed-out' });
   const signOut = vi.fn(async () => {});
-  beforeEach(() => { signOut.mockClear(); state.set({ status: 'signed-out' }); TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: AuthPort, useValue: { state, recovery: signal(null), signOut } }] }); });
+  beforeEach(() => { signOut.mockClear(); state.set({ status: 'signed-out' }); TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'private', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } }]), { provide: AuthPort, useValue: { state, recovery: signal(null), signOut, initialize: async () => {}, retry: async () => {}, signIn: async () => {} } }] }); });
+  it('removes a guarded private body immediately when auth is invalidated before navigation', async () => {
+    state.set({ status: 'ready', context: { subject: 'alice', roles: ['employee'], environmentId: 'isolated', runId: 'run', policyVersion: 'v1', capabilities: [] } });
+    const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); const router = TestBed.inject(Router); await router.navigateByUrl('/private'); await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toContain('Private saved car for Alice');
+    state.set({ status: 'loading' }); window.dispatchEvent(new Event('pagehide')); expect(fixture.nativeElement.textContent).not.toContain('Private saved car for Alice'); await fixture.whenStable(); expect(fixture.nativeElement.textContent).toContain('Loading your account'); expect(router.url).toBe('/private');
+    state.set({ status: 'unavailable', message: 'Cannot reach your account. Please try again.', retryable: true }); await fixture.whenStable(); expect(fixture.nativeElement.textContent).toContain('Account unavailable'); expect(fixture.nativeElement.textContent).toContain('Try again'); expect(fixture.nativeElement.textContent).not.toContain('Private saved car for Alice');
+    state.set({ status: 'signed-out' }); await fixture.whenStable(); expect(fixture.nativeElement.textContent).toContain('Sign in'); expect(fixture.nativeElement.textContent).not.toContain('Private saved car for Alice');
+  });
+  it('shows unavailable on direct private entry with the full shell', async () => {
+    state.set({ status: 'unavailable', message: 'No connection', retryable: true }); const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); await TestBed.inject(Router).navigateByUrl('/private'); await fixture.whenStable(); expect(fixture.nativeElement.textContent).toContain('Account unavailable'); expect(fixture.nativeElement.textContent).toContain('Try again');
+  });
   it('does not show private identity or navigation without trusted ready context', async () => { const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); expect(fixture.nativeElement.querySelector('nav')).toBeNull(); expect(fixture.nativeElement.querySelector('details')).toBeNull(); expect(fixture.nativeElement.querySelector('.gcsp-skip').getAttribute('href')).toBe('#gcsp-main'); });
   it('composes the real roles, discloses account actions and clears when context changes', async () => {
     state.set({ status: 'ready', context: { subject: 'own', roles: ['employee', 'greg'], environmentId: 'isolated', runId: 'run', policyVersion: 'v1', capabilities: [], displayName: 'A person' } });

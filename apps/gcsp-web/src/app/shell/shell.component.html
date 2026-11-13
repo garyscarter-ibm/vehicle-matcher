@@ -23,6 +23,11 @@
         @for (item of navigation(); track item.path) { <li class="gcsp-nav-item"><a class="gcsp-nav-btn" [routerLink]="'/' + item.path" routerLinkActive="active" ariaCurrentWhenActive="page" [title]="item.label"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">@for (path of item.icon; track path) { <path [attr.d]="path" /> }</svg><span class="gcsp-nav-label">{{ item.label }}</span></a></li> }
       </ul><button class="gcsp-nav-toggle" type="button" [attr.aria-expanded]="expanded" (click)="expanded = !expanded"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M9 6l6 6-6 6" /></svg><span class="gcsp-nav-label">{{ expanded ? 'Hide labels' : 'Show labels' }}</span></button></nav>
     }
-    <div class="gcsp-content"><main id="gcsp-main" class="gcsp-main" tabindex="-1">@if (auth.recovery(); as recovery) { <p role="status" class="gcsp-panel">{{ recovery.message }}</p> }<router-outlet /></main></div>
+    <div class="gcsp-content"><main id="gcsp-main" class="gcsp-main" tabindex="-1">@if (auth.recovery(); as recovery) { <p role="status" class="gcsp-panel">{{ recovery.message }}</p> }@if (!privateRoute() || context()) { <router-outlet /> } @else { @let state = auth.state(); @switch (state.status) {
+        @case ('loading') { <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" /> }
+        @case ('unavailable') { <gcsp-status-screen title="Account unavailable" [message]="state.message"><button gcspButton type="button" (click)="retryAccount()">Try again</button></gcsp-status-screen> }
+        @case ('denied') { <gcsp-status-screen title="Access not available" [message]="state.message"><button gcspButton type="button" (click)="signOut()">Sign out</button></gcsp-status-screen> }
+        @default { <gcsp-status-screen title="Sign in" message="Sign in to continue with your saved progress."><button gcspButton type="button" (click)="signIn()">Sign in</button></gcsp-status-screen> }
+      } }</main></div>
   </div>
 </div>
