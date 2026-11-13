@@ -5753,7 +5753,7 @@
       "id": "FUCQ-425",
       "jira_observed_at": "2026-11-12T15:48:40.051Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-13T23:11:48Z",
+      "observed_at": "2026-11-13T23:13:01Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -5772,9 +5772,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation on native PostgreSQL and delivery record",
-          "observed_at": "2026-11-13T23:11:48Z"
+          "observed_at": "2026-11-13T23:13:01Z",
+          "evidence": "validate commands and 6 affected caller suites on native PG17 at merged b80c8e73 match base; Result block in story file"
         }
       ],
       "status": "To Do",
