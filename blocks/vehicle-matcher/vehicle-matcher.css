@@ -2287,6 +2287,92 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   text-decoration: underline;
 }
 
+/* RRMC sliders: mint accent (track fill and handles). */
+.vm.vm-rrmc .vm-range,
+.vm.vm-rrmc .vm-slider-input { --vm-accent: #6fdbc7; }
+.vm.vm-rrmc .vm-range-fill,
+.vm.vm-rrmc .vm-slider-input::-webkit-slider-thumb,
+.vm.vm-rrmc .vm-slider-input::-moz-range-thumb { background: #6fdbc7; }
+.vm.vm-rrmc .vm-slider-input::-webkit-slider-thumb { box-shadow: 0 0 0 1px #6fdbc7; }
+.vm.vm-rrmc .vm-slider-input::-moz-range-thumb { box-shadow: 0 0 0 1px #6fdbc7; }
+.vm.vm-rrmc .vm-slider-input::-moz-range-progress { background: #6fdbc7; }
+/* RRMC two-handle sliders: each handle sits outside its value (the low one to the left, the high
+   one to the right), so at the budget's £20k minimum gap they meet edge to edge instead of
+   overlapping, and both stay grabbable. 10px = half the 18px handle plus its 1px ring; the track
+   is inset by that much so a handle at either end still has room. */
+.vm.vm-rrmc .vm-range { --vm-thumb-half: 9px; margin-inline: 10px; }
+.vm.vm-rrmc .vm-range-min::-webkit-slider-thumb { transform: translateX(-10px); }
+.vm.vm-rrmc .vm-range-max::-webkit-slider-thumb { transform: translateX(10px); }
+.vm.vm-rrmc .vm-range-min::-moz-range-thumb { transform: translateX(-10px); }
+.vm.vm-rrmc .vm-range-max::-moz-range-thumb { transform: translateX(10px); }
+/* The shared hover grow keeps each handle's outward shift rather than snapping it back. */
+.vm.vm-rrmc .vm-range-min:hover::-webkit-slider-thumb { transform: translateX(-10px) scale(1.12); }
+.vm.vm-rrmc .vm-range-max:hover::-webkit-slider-thumb { transform: translateX(10px) scale(1.12); }
+@media (prefers-reduced-motion: reduce) {
+  .vm.vm-rrmc .vm-range-min:hover::-webkit-slider-thumb { transform: translateX(-10px); }
+  .vm.vm-rrmc .vm-range-max:hover::-webkit-slider-thumb { transform: translateX(10px); }
+}
+/* Sliders take the same centred two-pill width, readout centred over the track. */
+.vm.vm-rrmc .vm-screen[data-qid] .vm-options.vm-slider {
+  max-width: calc(2 * 260px + var(--vm-space-2));
+  margin-inline: auto;
+}
+/* The budget slider rolls down beneath "Is there an ideal price range?" on Yes (question-ui.js
+   renderBudgetDrawer, whose DRAWER_MS matches the 0.45s); 0fr to 1fr rolls it to its own height. */
+.vm.vm-rrmc .vm-budget-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.45s ease;
+}
+.vm.vm-rrmc .vm-budget-drawer.is-open { grid-template-rows: 1fr; opacity: 1; }
+.vm.vm-rrmc .vm-budget-drawer-inner { min-height: 0; overflow: hidden; }
+/* Room above and below the track so the handles and their ring aren't clipped by the roll. */
+.vm.vm-rrmc .vm-budget-drawer-inner > .vm-options { margin-top: var(--vm-space-6); padding: 4px 2px 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .vm.vm-rrmc .vm-budget-drawer { transition: none; }
+}
+/* No figures on the rolled-down budget: a minus and a plus above the track's ends instead. The
+   readout and bounds stay in the DOM (and each handle keeps its aria-valuetext) for screen readers. */
+.vm.vm-rrmc .vm-budget-drawer .vm-options.vm-slider { display: flex; flex-direction: column; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-value {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-bounds {
+  order: -1;
+  /* Inset like the track (RRMC .vm-range), so the minus and plus sit over its ends. */
+  margin: 0 10px var(--vm-space-3);
+  font-size: 0;
+  line-height: 1;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-bounds > span::before { font-size: 24px; font-weight: 300; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-min::before { content: '−'; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-max::before { content: '+'; }
+/* "Current Range:" in a 300 x 70 purple tile centred beneath the slider, copy left-aligned. */
+.vm.vm-rrmc .vm-budget-range {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 300px;
+  max-width: 100%;
+  height: 70px;
+  margin: var(--vm-space-2) auto 4px;
+  padding: 0 var(--vm-space-4);
+  background: #281432;
+  color: #ffffff;
+  text-align: left;
+}
+.vm.vm-rrmc .vm-budget-range-label { font-size: 15px; letter-spacing: 0.06em; line-height: 1.3; }
+.vm.vm-rrmc .vm-budget-range-value { font-size: 20px; font-weight: 300; letter-spacing: 0.08em; line-height: 1.3; }
+
 /* RRMC: per-value letter-spacing on the people question */
 .vm.vm-rrmc [data-qid="people"] .vm-option[data-value="solo"] .vm-option-label,
 .vm.vm-rrmc [data-qid="people"] .vm-option[data-value="family"] .vm-option-label {

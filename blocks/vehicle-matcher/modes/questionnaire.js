@@ -27,7 +27,7 @@ import {
   CONCEPT_LABELS, FUEL_SPEC, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
 } from './result-card.js';
 import {
-  isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList, renderBudgetDrawer,
+  isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, rangeCard, renderOptionList, renderBudgetDrawer,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
 
@@ -1532,6 +1532,7 @@ function rrmcPillLabel(q, ctx) {
   const range = budgetQ && ctx.answers.budget;
   // Worded as the drawer's "Current Range" tile words it.
   if (Array.isArray(range)) return range.map((n) => formatSliderValue(n, budgetQ)).join(' - ');
+  if (q.type === 'slider' && Array.isArray(value)) return `${value.map((n) => formatSliderValue(n, q)).join(' - ')} a year`;
   if (q.type === 'slider' && typeof value === 'number') {
     return `${formatSliderValue(value, q)}${q.id === 'mileage' ? ' a year' : ''}`;
   }
@@ -1630,6 +1631,7 @@ function renderQuestion(root, ctx, index) {
   // group, so it gets a bare container; an option list builds its own and
   // arrives with the group role already on it (see question-ui.js).
   let list;
+  let card = null;
   // The option list's live selection, which is what the Next button below is
   // enabled by. A slider always has a value, so it has no such set.
   let selected = null;
@@ -1639,6 +1641,8 @@ function renderQuestion(root, ctx, index) {
     // Dual-thumb range (budget): two overlaid inputs writing a [min, max] pair.
     list = el('div', 'vm-options vm-slider');
     renderRangeSlider(list, q, ctx.answers, { onChange: () => schedulePreviewRefresh(ctx) });
+    // RRMC's own range questions (annual mileage) get the same card and "Current Range" tile as the budget.
+    if (ctx.brand === 'rrmc' && q.id !== 'budget') card = rangeCard(list, q, ctx.answers);
   } else if (isSlider) {
     // A range input plus a live value readout. The whole thing writes a number
     // to ctx.answers[q.id] and, unlike a single-select, never auto-advances —
@@ -1698,7 +1702,7 @@ function renderQuestion(root, ctx, index) {
     const middle = list.querySelector(':scope > .vm-option[data-value="3"]');
     if (middle) list.append(middle);
   }
-  screen.append(list);
+  screen.append(card || list);
   // RRMC: Yes on "Is there an ideal price range?" rolls the budget slider down right here.
   const budgetQ = ctx.brand === 'rrmc' && q.id === 'budgetGate' && ctx.questions.find((x) => x.id === 'budget');
   if (budgetQ) {

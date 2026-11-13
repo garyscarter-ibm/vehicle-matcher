@@ -654,7 +654,7 @@
 /* Centring: equal auto space above the question and below the last block before the nav. This sits
    after the margin shorthand above so it is not reset. The price screen's drawer is that last block. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-question { margin-top: auto; }
-.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] > :is(.vm-options, .vm-budget-drawer):has(+ .vm-nav) { margin-bottom: auto; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] > :is(.vm-options, .vm-range-card, .vm-budget-drawer):has(+ .vm-nav) { margin-bottom: auto; }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option {
   align-items: center;
   justify-content: center;
@@ -687,6 +687,109 @@
 @media (max-width: 719px) {
   .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-options { grid-template-columns: minmax(0, 300px); gap: 16px; }
 }
+
+/*
+ * Range questions (annual mileage, and the price range when opened): one 409 x 154 card, white at
+ * 90% with 30px corners. Minus and plus sit over the track's ends, then the range in words below.
+ * Everything inherited from the option grid is reset here: gap, margins, the handle's offset.
+ */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card {
+  box-sizing: border-box;
+  width: min(409px, 100%);
+  min-height: 154px;
+  margin: 28px auto 0;
+  padding: 18px 24px 31px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #383c46;
+  --vm-ink: #383c46;
+  --vm-accent: #383c46;
+  --vm-line: #d9d9d9;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-options.vm-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+/* The figures are in the tile below the track; the big readout stays for screen readers only. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-value {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-bounds {
+  order: -1;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0 18px;
+  font-size: 0;
+  line-height: 1;
+  color: #383c46;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-bounds > span {
+  display: block;
+  height: 26px;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-bounds > span::before {
+  display: block;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 26px;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-min::before { content: '\2212'; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-max::before { content: '+'; }
+/* Track 5px high; the 15px square handles are the track's height cell, so they sit centred on it. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range { --vm-thumb-half: 7.5px; height: 15px; margin: 0; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range::before { height: 5px; background: #d9d9d9; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-fill { height: 5px; background: #383c46; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range .vm-slider-input { height: 15px; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-input::-webkit-slider-runnable-track { height: 15px; background: transparent; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-input::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  margin-top: 0;
+  border: 1px solid #70777f;
+  border-radius: 0;
+  background: #383c46;
+  box-shadow: none;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-input::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #70777f;
+  border-radius: 0;
+  background: #383c46;
+  box-shadow: none;
+}
+/* Each handle sits just outside its own value, as before, now at the 15px handle's half width. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-min::-webkit-slider-thumb,
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-min:hover::-webkit-slider-thumb { transform: translateX(-7.5px); }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-max::-webkit-slider-thumb,
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-max:hover::-webkit-slider-thumb { transform: translateX(7.5px); }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-min::-moz-range-thumb { transform: translateX(-7.5px); }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-range-max::-moz-range-thumb { transform: translateX(7.5px); }
+/* "Current Range:" and the figures: plain text on the card, 54px in from its edge as in the frame. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range {
+  width: auto;
+  height: auto;
+  margin: 17px 0 0;
+  padding: 0 0 0 54px;
+  background: none;
+  color: #383c46;
+  text-align: left;
+}
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-label { font-size: 15px; letter-spacing: 0.06em; line-height: 19px; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-value { margin-top: 4px; font-size: 20px; letter-spacing: 0.08em; line-height: 24px; }
+/* On the price screen the card sits inside the rolling drawer, which must not clip its corners. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer-inner { padding-inline: 2px; }
 
 /* Back left, Next right, 160 x 42 outlined pills; the dots sit between them. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav {

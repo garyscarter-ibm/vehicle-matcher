@@ -80,7 +80,9 @@ export function budgetRange(answers) {
  */
 function mileageFraction(answers, tuning) {
   const { lowMiles, highMiles } = tuning.mileage;
-  const m = answers.mileage;
+  const a = answers.mileage;
+  // A range answer (RRMC) counts as the middle of the bracket.
+  const m = Array.isArray(a) && a.length === 2 && a.every(Number.isFinite) ? (a[0] + a[1]) / 2 : a;
   if (typeof m === 'number') return clamp((m - lowMiles) / (highMiles - lowMiles));
   // Legacy string bands (old shared links / tests).
   return { low: 0, mid: 0.35, high: 0.7, vhigh: 1 }[m] ?? 0;

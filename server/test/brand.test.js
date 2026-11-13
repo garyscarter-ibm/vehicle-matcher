@@ -1549,3 +1549,15 @@ test('RRMC asks its nine screens in the set order, with no drive-side question',
   // Other brands keep the shared order: the list is RRMC's alone.
   assert.equal(questionsForBrand('bmw')[0].id, 'budget');
 });
+
+test('RRMC mileage is a range, and the engine reads the middle of it', () => {
+  const q = questionsForBrand('rrmc').find((x) => x.id === 'mileage');
+  assert.equal(q.range, true);
+  assert.deepEqual(q.default, [5000, 15000]);
+  assert.equal(questionsForBrand('bmw').find((x) => x.id === 'mileage').range, undefined);
+  const car = (name) => ({ ...mapRRMCRaw({ id: name, name, price: 300000 }), id: name });
+  const cars = [car('Ghost'), car('Phantom')];
+  const score = (mileage) => rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'no', mileage }), cars, brandTuning('rrmc'))
+    .map((m) => m.score);
+  assert.deepEqual(score([6000, 14000]), score(10000), 'a range scores as its midpoint');
+});

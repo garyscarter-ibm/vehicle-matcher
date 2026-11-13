@@ -452,7 +452,11 @@ const BRAND_COPY = {
         5: { label: 'Sporting' },
       },
     },
-    mileage: { title: 'How far will you drive in a year?' },
+    // A two-handle range: the engine reads its midpoint (see mileageFraction).
+    mileage: {
+      title: 'How far will you drive in a year?',
+      slider: { range: true, default: [5000, 15000] },
+    },
   },
 };
 
@@ -483,6 +487,7 @@ export function questionsForBrand(brand = 'bmw') {
       const out = { ...q };
       if (c.title) out.title = c.title;
       if (c.help) out.help = c.help;
+      if (c.slider) Object.assign(out, c.slider);
       if (c.conditional != null) out.conditional = c.conditional;
       // Budget slider bounds from the registry (only the fields it specifies).
       if (q.id === 'budget' && budget) Object.assign(out, budget);

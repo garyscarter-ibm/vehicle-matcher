@@ -131,6 +131,31 @@ export function renderRangeSlider(list, q, answers, { onChange } = {}) {
   list.append(readout, track, bounds);
 }
 
+/**
+ * "Current Range:" and the range in words, beneath a range slider's track. Screen readers already
+ * hear the values from the handles, so the tile is hidden from them. Repaints as `box` is dragged.
+ */
+export function rangeTile(box, q, answers) {
+  const value = el('span', 'vm-budget-range-value');
+  const tile = el('div', 'vm-budget-range');
+  tile.setAttribute('aria-hidden', 'true');
+  tile.append(el('span', 'vm-budget-range-label', 'Current Range:'), value);
+  const paint = () => {
+    const [lo, hi] = answers[q.id] || [];
+    value.textContent = `${formatSliderValue(lo, q)} - ${formatSliderValue(hi, q)}`;
+  };
+  paint();
+  box.addEventListener('input', paint);
+  return tile;
+}
+
+/** The range slider and its "Current Range" tile as one card, so a host page styles them as a unit. */
+export function rangeCard(box, q, answers) {
+  const card = el('div', 'vm-range-card');
+  card.append(box, rangeTile(box, q, answers));
+  return card;
+}
+
 // Matches the drawer's CSS roll (vehicle-matcher.css .vm-budget-drawer).
 const DRAWER_MS = 450;
 
@@ -153,18 +178,7 @@ export function renderBudgetDrawer(budgetQ, answers, { onChange } = {}) {
       if (!inner.firstChild) {
         const box = el('div', 'vm-options vm-slider');
         renderRangeSlider(box, budgetQ, answers, { onChange });
-        // The range in words, beneath the track; screen readers already hear it from the handles.
-        const value = el('span', 'vm-budget-range-value');
-        const range = el('div', 'vm-budget-range');
-        range.setAttribute('aria-hidden', 'true');
-        range.append(el('span', 'vm-budget-range-label', 'Current Range:'), value);
-        const paint = () => {
-          const [lo, hi] = answers[budgetQ.id] || [];
-          value.textContent = `${formatSliderValue(lo, budgetQ)} - ${formatSliderValue(hi, budgetQ)}`;
-        };
-        paint();
-        box.addEventListener('input', paint);
-        inner.append(box, range);
+        inner.append(rangeCard(box, budgetQ, answers));
       }
       return;
     }
