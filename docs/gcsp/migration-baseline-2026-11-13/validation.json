@@ -72,5 +72,37 @@
     "scratchAllocated": false,
     "finalChangedDocReferencesAndWhitespace": "passed",
     "hashEvidenceReused": "Frozen inputs unchanged; only prose, review receipt and map completion updated"
+  },
+  "integratedD1D2": {
+    "story": "FUCQ-434",
+    "run": "integrated-d2",
+    "ownerPid": 74518,
+    "observedAt": "2026-11-13T21:22:09.294102+00:00",
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/integrated-d2-scratch",
+    "selected": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+    "base": "8e9741e5d681534242b5fee73902b505a5285508",
+    "integratedCommit": "8f3e54dc4c38ff8595df24a1011e1f947391f67a",
+    "budget": {
+      "workers": 1,
+      "ramMiB": 128,
+      "scratchMiB": 2,
+      "outputMiB": 1,
+      "timeoutSeconds": 120
+    },
+    "exclusions": "No app suite/browser/database/provider/mail/deploy; source inventory unchanged, latest base intake/coordination only",
+    "results": [
+      {
+        "exitCode": 0,
+        "stdout": "{\"passed\": true, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": []}\n",
+        "stderr": ""
+      }
+    ],
+    "elapsedSeconds": 1.0,
+    "maxChildRssBytes": 21839872,
+    "scratchAbsent": true,
+    "compatibilityExceptions": "none",
+    "largeOutputs": "none",
+    "preservedOtherMapRecords": 301,
+    "mergeConflicts": []
   }
 }

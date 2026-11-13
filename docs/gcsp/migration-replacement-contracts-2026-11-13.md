@@ -16,7 +16,7 @@ Engineering contract for the authorised 13 November 2026 migration. This records
 
 Directory ownership is a starting lane, not perpetual ownership of every later file. The dispatcher records each narrower assignment before parallel work. The architecture Story leaves existing sources/contracts/artifacts read-only. FUCQ-439 and FUCQ-454 may start against this contract without waiting for inventory prose polish; their hosted/login acceptance still requires actual integration and external setup.
 
-At this observation, GC and Russ dispatchers are coordinating a proposed frontend/backend split. That proposal is not a confirmed human assignment or a lease on shared files; consult the live claim and named file writer before pickup.
+The dispatchers confirmed the split in FUCQ-434 comment `3629354` on 13 November: GC takes FUCQ-439/frontend and native computation FUCQ-409–418; Russ takes Java FUCQ-454 onward, early FUCQ-456 and native repository FUCQ-419–425 (FUCQ-422 already active). This supersedes the initial proposed split in comment `3629351` and the coordination record's initial-publication observation. The split does not replace live Story leases or named shared-file writers; consult both before pickup. It changes no acceptance criterion or architecture scope.
 
 Delivery order is foundation → real sign-in/account → Buddy matching → real test email → signed-in employee-owned decision → order/status using local substitutes; remaining capabilities and remote transactional proof follow. FUCQ-467 and FUCQ-481 complete the remote boundary before final migration acceptance. There is no interim human checkpoint.
 
