@@ -6734,7 +6734,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-13T23:31:36Z",
+      "observed_at": "2026-11-13T23:45:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
       "unsliced": false,
       "branch": "dev/DEV-2026-11-13-004",
@@ -6743,10 +6743,19 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T23:30:09.579373+00:00",
-          "expires_at": "2026-11-13T23:31:35.589448+00:00",
-          "source": "Existing chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; dispatcher resumed actual integrated foundation composition after shared mutex release",
-          "status": "stopped; integrated foundation root assembly verified, hosted gates open"
+          "observed_at": "2026-11-13T23:45:04.033059+00:00",
+          "expires_at": "2026-11-13T23:45:04.033059+00:00",
+          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
+          "status": "checkpoint review complete; observed worker expired"
+        },
+        {
+          "name": "Yosemite Sam",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:45:04.033059+00:00",
+          "expires_at": "2026-11-13T23:45:04.033059+00:00",
+          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
+          "status": "checkpoint review complete; observed worker expired"
         }
       ],
       "slices": [
