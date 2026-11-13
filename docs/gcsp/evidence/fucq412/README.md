@@ -31,7 +31,7 @@ To trigger a deterministic conflict, the browser increases its outgoing expected
 
 Lead also directly inspected the temporary settled narrow pending-offer probe before removal. It shows one header at the top and no lower branded strip. DOM evidence records one sticky `.gcsp-header` at y=0–56, scroll position zero, no running animations and nine loaded images. The earlier strip is a capture-state/compositor artifact, not an established product defect. Probe metadata/hash remain in `header-probe-release-offer.json`.
 
-All required states have been independently inspected. Original AC4 remains **unmet** because existing Low FUCQ-400 is unresolved; no completion waiver or Done status is claimed. No UI source was changed. The dispatcher owns its Jira linking/disposition and integration decision. FUCQ-484 separately tracks the existing Medium migration-test assertion failure.
+All required states have been independently inspected. Original AC4 remains **unchecked and unmet** because existing Low FUCQ-400 is unresolved; no completion waiver or Done status is claimed. FUCQ-484 separately tracks the existing Medium migration-test assertion failure, and four native PostgreSQL checks remain skipped. Under `docs/gcsp/build-rules.md`, “Demo delivery and scope control,” neither below-High defect blocks review/merge or creates a dependency: the coherent checkpoint is ready for dispatcher-serialized integration after FUCQ-409 while full acceptance/claim lifecycle remains open. No UI repair or interim human checkpoint is requested. Further integrated-base validation waits for the dispatcher-supplied post-F409 base.
 
 ## Retention and cleanup
 

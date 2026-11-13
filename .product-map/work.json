@@ -6372,10 +6372,10 @@
         },
         {
           "id": "integration",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Lead affected-consumer and connected presentation validation",
-          "observed_at": "2026-11-13T22:30:31Z",
-          "evidence": "Lead inspected actual HTTPS release/offer/history/no-match and stale-version conflict/replay at 1440/375; 12 final captures. Original AC4 unmet: existing Low FUCQ-400 narrow Presenter overlap remains; no completion waiver. FUCQ-484 baseline failure and four native skips retained. Delivery record docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md. Dispatcher owns publication/merge/acceptance."
+          "observed_at": "2026-11-13T22:41:24Z",
+          "evidence": "Coherent checkpoint ready for dispatcher-serialized integration after F409 under standing build-rules policy. All connected states independently reviewed; original AC4 unchecked, F400 Low unresolved, F484 Medium failing assertion and four PG skips retained. Neither Bug blocks review/merge or adds a dependency. No Done/waiver/UI repair. Await dispatcher post-F409 base before further validation."
         }
       ],
       "workers": [
@@ -6388,8 +6388,8 @@
         }
       ],
       "jira_observed_at": "2026-11-12T15:47:45.907Z",
-      "note": "Claim 3b8820c8; B-Bot handoff. Compiler implementation and targeted evidence ready; original AC4 remains unmet due existing FUCQ-400. Native Jira status/timestamp preserved; no Done or acceptance inferred. Dispatcher owns disposition/publication/merge.",
-      "observed_at": "2026-11-13T22:30:31Z",
+      "note": "Integration checkpoint ready; full acceptance incomplete. Existing F400 Low/F484 Medium do not block review/merge or add dependencies. Original AC4 unchecked, failed assertion/four PG skips preserved. Dispatcher owns serialized post-F409 integration and open acceptance/claim lifecycle; no Done/waiver. Worker observation stays expired.",
+      "observed_at": "2026-11-13T22:41:24Z",
       "branch": "dev/DEV-2026-11-13-GC-005"
     }
   ]
