@@ -5499,21 +5499,6 @@
       "observed_at": "2026-11-12T15:50:39Z"
     },
     {
-      "id": "FUCQ-412",
-      "title": "Compile immutable eligibility rules for direct lookup",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
-      "jira_observed_at": "2026-11-12T15:47:45.907Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z"
-    },
-    {
       "id": "FUCQ-413",
       "title": "Compile immutable price and allowance lookups",
       "status": "To Do",
@@ -6367,6 +6352,42 @@
           "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
         }
       ]
+    },
+    {
+      "id": "FUCQ-412",
+      "title": "Compile immutable eligibility rules for direct lookup",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "eligibility",
+          "status": "in-progress",
+          "title": "Compile immutable eligibility and prove exact semantics/version boundaries",
+          "observed_at": "2026-11-13T21:32:27Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Lead affected-consumer and connected presentation validation"
+        }
+      ],
+      "workers": [
+        {
+          "name": "B-Bot",
+          "harness": "codex",
+          "status": "active",
+          "observed_at": "2026-11-13T21:32:27.159269Z",
+          "expires_at": "2026-11-14T00:32:27.159269Z"
+        }
+      ],
+      "jira_observed_at": "2026-11-12T15:47:45.907Z",
+      "note": "Claim 3b8820c8; B-Bot lead. Eligibility-only compilation; public PolicyService contract unchanged. Native Jira status remains independently observed; connected gate stays open until inspected.",
+      "observed_at": "2026-11-13T21:32:27Z",
+      "branch": "dev/DEV-2026-11-13-GC-005"
     }
   ]
 }
