@@ -5656,12 +5656,34 @@
       "assignee": "",
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-422",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "journal",
+          "status": "in-progress",
+          "title": "Core mutation journal with focused semantic tests",
+          "observed_at": "2026-11-13T21:30:41Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Story validation, native PostgreSQL compatibility and delivery record"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Chester",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T21:30:41Z",
+          "expires_at": "2026-11-14T00:30:41Z",
+          "source": "dev poller story-lead for DEV-2026-11-13-GC-015, branch dev/DEV-2026-11-13-GC-015",
+          "status": "building journal slice"
+        }
+      ],
       "jira_observed_at": "2026-11-12T15:48:33.609Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:40Z"
+      "observed_at": "2026-11-13T21:30:41Z"
     },
     {
       "id": "FUCQ-423",
