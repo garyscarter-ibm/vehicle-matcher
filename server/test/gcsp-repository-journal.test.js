@@ -214,3 +214,17 @@ test('adapters that ignore the journal see the same commit/outcome contract', as
   unsubscribe();
   assert.deepEqual(seen, [['changedTables', 'commandId', 'context']], 'commit observers keep their existing event shape');
 });
+
+test('journal size tracks changed rows, not accumulated run rows', async () => {
+  const f = await seeded();
+  for (let batch = 0; batch < 3; batch += 1) {
+    await f.repository.transaction(ctx(), command(), async (tx) => {
+      for (let i = 0; i < 50; i += 1) await tx.insert('stock', { runId: 'run-a', orderUuid: `bulk-${batch}-${i}`, orderNumber: `B${batch}-${i}` });
+      return ok(batch);
+    });
+    assert.equal(f.last().mutations.length, 101, '50 rows, 50 insert receipts, 1 command receipt');
+  }
+  await f.repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { revision: 'small' }));
+  assert.equal(f.last().after.tables.event_receipts.length > 150, true);
+  assert.equal(f.last().mutations.length, 2, 'a small update stays two entries however large the run grows');
+});
