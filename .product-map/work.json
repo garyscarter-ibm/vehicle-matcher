@@ -6410,13 +6410,13 @@
           "role": "runner",
           "observed_at": "2026-11-13T21:42:17.333482+00:00",
           "expires_at": "2026-11-13T22:42:17.333482+00:00",
-          "source": "collaboration /root/dibble; requested/selected gpt-6-luna/high; effective runtime pending verification",
+          "source": "chat 01a1d6db-e6f1-7ae0-8614-851a7ca2c194; requested/selected/effective gpt-6-luna/high; title verified",
           "status": "active connected verification"
         }
       ],
-      "jira_observed_at": "2026-11-12T15:47:39.682Z",
-      "note": "Claim ef586adf; lead Charlie Dog; direct allocation index only. Native status supplied by dispatcher; no acceptance inferred.",
-      "observed_at": "2026-11-13T21:42:17Z",
+      "jira_observed_at": "2026-11-13T21:43:43Z",
+      "note": "Claim ef586adf; native Jira read In Progress with identical four AC/no comments/no hold; no acceptance inferred.",
+      "observed_at": "2026-11-13T21:47:17Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
