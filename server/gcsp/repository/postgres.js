@@ -33,6 +33,7 @@ const column = (name) => name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCa
 const unavailable = () => result('unavailable', { reason: 'database-unavailable', retryable: true });
 const invalid = (code, field) => result('invalid', { code, reasons: [{ field, reason: 'Invalid backend configuration' }] });
 const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[key]));
+const EVIDENCE_BATCH_DIGESTS = 500;
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
@@ -82,17 +83,35 @@ export function createPostgresRepository(options = {}) {
   };
   const localFingerprint = (state) => FOUNDATION_TABLES.map((table) =>
     `${table}:${state.tables[table].length}:${state.tables[table].reduce((sum, row) => sum + Number(row.version), 0)}`).join('|');
+  // Loads only digests the selected rows reference, sequentially, in batches bounded by digest count and response bytes.
+  // Sizes come from a small probe first; a value larger than the budget travels alone, untruncated.
+  const hydrateEvidence = async (client, digests) => {
+    const snapshots = new Map(); const from = tableName('vehicle_evidence_snapshots');
+    const fetch = async (group) => {
+      const found = new Map((await client.query(`SELECT digest, data FROM ${from} WHERE digest = ANY($1::text[])`, [group])).rows.map(({ digest, data }) => [digest, data]));
+      for (const digest of group) snapshots.set(digest, verifyEvidence(digest, found.get(digest)));
+    };
+    if (digests.length === 1) { await fetch(digests); return snapshots; }
+    for (let at = 0; at < digests.length; at += EVIDENCE_BATCH_DIGESTS) {
+      const chunk = digests.slice(at, at + EVIDENCE_BATCH_DIGESTS);
+      const sizes = new Map((await client.query(`SELECT digest, octet_length(data::text)::bigint AS bytes FROM ${from} WHERE digest = ANY($1::text[])`, [chunk]))
+        .rows.map(({ digest, bytes }) => [digest, Number(bytes)]));
+      let group = []; let bytes = 0;
+      for (const digest of chunk) {
+        // A missing digest still joins a fetch so verification refuses it, as before.
+        const size = sizes.get(digest) ?? 0;
+        if (group.length && bytes + size > writeBatchBytes) { await fetch(group); group = []; bytes = 0; }
+        group.push(digest); bytes += size;
+      }
+      if (group.length) await fetch(group);
+    }
+    return snapshots;
+  };
   const toState = async (client, rows) => {
     const state = createState();
-    const snapshots = new Map();
-    for (const { data } of rows) if (data != null) {
-      for (const digest of evidenceReferences(data)) {
-        if (snapshots.has(digest)) continue;
-        // One immutable value per query bounds server-side materialization, including large configurations.
-        const found = await client.query(`SELECT data FROM ${tableName('vehicle_evidence_snapshots')} WHERE digest = $1`, [digest]);
-        snapshots.set(digest, verifyEvidence(digest, found.rows[0]?.data));
-      }
-    }
+    const digests = new Set();
+    for (const { data } of rows) if (data != null) for (const digest of evidenceReferences(data)) digests.add(digest);
+    const snapshots = digests.size ? await hydrateEvidence(client, [...digests]) : new Map();
     for (const { t, data } of rows) if (data != null) state.tables[t].push(unpackEvidence(data, snapshots));
     return state;
   };
