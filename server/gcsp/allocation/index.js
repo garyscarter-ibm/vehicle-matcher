@@ -164,6 +164,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
       if (employeeContext.runId !== context.runId || employeeContext.employeeId !== employee.employeeId
         || employeeContext.policyVersion !== context.policyVersion) return unavailable('employee-context-invalid');
       const available = pool.filter((r) => visible(r, employee));
+      const stockByOrderId = new Map();
+      // Preserve the first visible row selected by the former find when IDs repeat.
+      for (const stock of available) if (!stockByOrderId.has(stock.orderUuid)) stockByOrderId.set(stock.orderUuid, stock);
       const facts = structuredClone(employee.contract?.manualContext?.employeeFacts ?? {});
       const driver = employee.contract?.manualContext?.drivers?.find((d) => d.employeeId === employee.employeeId && d.kind === 'employee');
       if (facts.driverEligible === undefined && driver?.eligible) facts.driverEligible = structuredClone(driver.eligible);
@@ -198,7 +201,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push({ code: 'declined-unchanged' });
         }
         if (decision.gateStatus !== 'eligible' || brief.buddy.holdConsent !== true || letLapse.has(`${employee.employeeId}|${decision.orderUuid}`)) continue;
-        const stock = available.find((s) => s.orderUuid === decision.orderUuid);
+        const stock = stockByOrderId.get(decision.orderUuid);
         const currentContracts = employee.contract?.manualContext?.contracts?.filter((c) => c.status === 'current'
           && c.employeeId === employee.employeeId && c.schemeId === employee.schemeId && c.slotId === slot.entitlementSlotId);
         const currentContract = currentContracts?.length === 1 ? currentContracts[0] : null;
