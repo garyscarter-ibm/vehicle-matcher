@@ -6096,12 +6096,56 @@
     {
       "assignee": "",
       "id": "FUCQ-455",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-13T22:54:44Z",
       "original_status": "To Do",
+      "slices": [
+        {
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); OidcContextTest 24 HTTP cases with real RS256 JWTs and loopback JWKS: issuer/audience/expiry/nbf/signature/alg none/HS256/malformed refusals",
+          "id": "token-validation",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "complete",
+          "title": "Validate bearer JWT signature, issuer, audience and lifetime against JWKS"
+        },
+        {
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); employee/greg/presenter contexts, role intersect with deployment mapping, subject-not-mapped, presenter without employeeId, A-B-A account switch",
+          "id": "role-account-mapping",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "complete",
+          "title": "Map role claim and trusted subject to employee/greg/presenter context"
+        },
+        {
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); gcsp.api.auth BearerAuthentication/Role/Access with AccessTest 5 cases",
+          "id": "authorization-helper",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "complete",
+          "title": "Reusable role and ownership authorization helper"
+        },
+        {
+          "evidence": "docs/gcsp/oidc-test-provider-2026-11-13.md at ede3fd9b: Keycloak recommendation, claim mapping, Angular contract, Gary registration list",
+          "id": "provider-doc",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "complete",
+          "title": "Test OIDC provider and claim-mapping record for Gary and GC"
+        },
+        {
+          "evidence": "Not done: needs Gary's test provider registration (no Keycloak host; no Docker daemon here) and FUCQ-439 login integration",
+          "id": "browser-login",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "blocked",
+          "title": "Real browser login against the test provider (needs registration + F439)"
+        },
+        {
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); Result block on dev/DEV-2026-11-13-023; browser-login slice blocked on external registration",
+          "id": "integration",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "status": "complete",
+          "title": "Story-level lead review and delivery record"
+        }
+      ],
       "status": "To Do",
       "title": "Authenticate OIDC/JWT users and enforce roles",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-455"
     },
     {
