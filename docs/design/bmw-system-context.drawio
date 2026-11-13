@@ -1,38 +1,34 @@
-<?xml version='1.0' encoding='utf-8'?>
-<mxfile host="app.diagrams.net" agent="BMW context share export" version="29.0.0">
+<mxfile host="Electron" agent="BMW context share export" pages="3">
   <diagram id="bmw-context-20261111" name="10 BMW system context">
-    <mxGraphModel dx="2160" dy="1420" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1420" math="0" shadow="0" background="#FFFFFF">
+    <mxGraphModel dx="2203" dy="1439" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1420" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="kicker" value="BMW GROUP CAR SCHEMES  /  SYSTEM CONTEXT  /  11 NOVEMBER 2026" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=20;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#007D79;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="25" width="2040" height="38" as="geometry" />
+        <mxCell id="kicker" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=20;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#007D79;spacing=0;rounded=0;" value="BMW GROUP CAR SCHEMES - BUDDY PROPOSAL&amp;nbsp; /  SYSTEM CONTEXT  /  12 NOVEMBER 2026" vertex="1">
+          <mxGeometry height="38" width="2040" x="40" y="25" as="geometry" />
         </mxCell>
-        <mxCell id="title" value="Build on GCSP. Connect through replaceable adapters." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=44;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#172B4D;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="75" width="2040" height="68" as="geometry" />
+        <mxCell id="title" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=44;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#172B4D;spacing=0;rounded=0;" value="Build on GCSP. Connect through replaceable adapters." vertex="1">
+          <mxGeometry height="68" width="2040" x="40" y="75" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="Proposed BMW integration view • known system roles are separated from candidate services; production interfaces still need confirmation." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontColor=#66788A;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="148" width="2040" height="65" as="geometry" />
+        <mxCell id="experience-boundary" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F0F6FC;strokeColor=#A3BCD7;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;verticalAlign=top;" value="" vertex="1">
+          <mxGeometry height="1020" width="1100" x="520" y="260" as="geometry" />
         </mxCell>
-        <mxCell id="experience-boundary" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F0F6FC;strokeColor=#A3BCD7;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="520" y="260" width="1100" height="1020" as="geometry" />
+        <mxCell id="boundary-title" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#0057B8;spacing=0;rounded=0;" value="OUR EXPERIENCE + SERVICES" vertex="1">
+          <mxGeometry height="52" width="1040" x="550" y="277" as="geometry" />
         </mxCell>
-        <mxCell id="boundary-title" value="OUR EXPERIENCE + SERVICES" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontStyle=1;fontColor=#0057B8;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="550" y="277" width="1040" height="52" as="geometry" />
+        <mxCell id="employee" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=center;verticalAlign=middle;spacing=20;fontStyle=1;" value="Employee · nominates drivers" vertex="1">
+          <mxGeometry height="58" width="310" x="635" y="212" as="geometry" />
         </mxCell>
-        <mxCell id="employee" value="Employee · nominates drivers" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=center;verticalAlign=middle;spacing=20;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="635" y="212" width="310" height="58" as="geometry" />
+        <mxCell id="vehicle-ordering-team" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=center;verticalAlign=middle;spacing=20;fontStyle=1;" value="Vehicle Ordering Team" vertex="1">
+          <mxGeometry height="58" width="310" x="1180" y="212" as="geometry" />
         </mxCell>
-        <mxCell id="vehicle-ordering-team" value="Vehicle Ordering Team" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=center;verticalAlign=middle;spacing=20;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1180" y="212" width="310" height="58" as="geometry" />
+        <mxCell id="core" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=25;fontFamily=IBM Plex Sans;align=center;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Next-generation&lt;br&gt;GCSP experience&lt;/b&gt;&lt;br&gt;&lt;br&gt;Employee choices&lt;br&gt;Preferences + matching&lt;br&gt;Buddy offers&lt;br&gt;Order progress&lt;br&gt;&lt;br&gt;Demand +&lt;br&gt;order planning" vertex="1">
+          <mxGeometry height="445" width="270" x="935" y="390" as="geometry" />
         </mxCell>
-        <mxCell id="core" value="&lt;b&gt;Next-generation&lt;br&gt;GCSP experience&lt;/b&gt;&lt;br&gt;&lt;br&gt;Employee choices&lt;br&gt;Preferences + matching&lt;br&gt;Buddy offers&lt;br&gt;Order progress&lt;br&gt;&lt;br&gt;Demand +&lt;br&gt;order planning" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=25;fontFamily=Arial;align=center;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="935" y="390" width="270" height="445" as="geometry" />
+        <mxCell id="state" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=IBM Plex Sans;align=center;verticalAlign=middle;spacing=20;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=18;" value="&lt;b&gt;Our shared state&lt;/b&gt;&lt;br&gt;&lt;br&gt;Briefs · offers · audit&lt;br&gt;Versioned policy&lt;br&gt;Forecasts · outbox" vertex="1">
+          <mxGeometry height="230" width="270" x="935" y="925" as="geometry" />
         </mxCell>
-        <mxCell id="state" value="&lt;b&gt;Our shared state&lt;/b&gt;&lt;br&gt;&lt;br&gt;Briefs · offers · audit&lt;br&gt;Versioned policy&lt;br&gt;Forecasts · outbox" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=center;verticalAlign=middle;spacing=20;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=18;" vertex="1" parent="1">
-          <mxGeometry x="935" y="925" width="270" height="230" as="geometry" />
-        </mxCell>
-        <mxCell id="employee-journey" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.25;entryY=0;jettySize=20;" edge="1" parent="1" source="employee" target="core">
+        <mxCell id="employee-journey" edge="1" parent="1" source="employee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.25;entryY=0;jettySize=20;" target="core" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="790" y="275" />
@@ -41,34 +37,34 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ordering-team-journey" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.75;entryY=0;jettySize=20;" edge="1" parent="1" source="vehicle-ordering-team" target="core">
+        <mxCell id="ordering-team-journey" edge="1" parent="1" source="vehicle-ordering-team" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.75;entryY=0;jettySize=20;" target="core" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="state-link" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="core" target="state">
+        <mxCell id="state-link" edge="1" parent="1" source="core" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;jettySize=20;startArrow=block;startFill=1;" target="state" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gcsp" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW scheme systems&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;GCSP: ordering + handover UI&lt;br&gt;GCSO / ISA: mainframe functions&lt;br&gt;IVS / IVS-R: stock + release roles&lt;br&gt;Orders, approval + appointments&lt;br&gt;&lt;br&gt;Current owners + supported&lt;br&gt;interfaces to confirm.&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="40" y="355" width="370" height="390" as="geometry" />
+        <mxCell id="gcsp" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW scheme systems&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;GCSP: ordering + handover UI, mainframe functions&lt;br&gt;IVS / IVS-R: stock + release roles&lt;br&gt;Orders, approval + appointments&lt;br&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="315" width="370" x="40" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="gcsp-ports" value="&lt;b&gt;Scheme operations adapters&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Stock + release pull&lt;br&gt;Exclusive hold / release&lt;br&gt;Selection / order handoff&lt;br&gt;Status + documents&lt;br&gt;Appointment / return&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="550" y="355" width="320" height="390" as="geometry" />
+        <mxCell id="gcsp-ports" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=23;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Scheme operations adapters&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Stock + release pull&lt;br&gt;Exclusive hold / release&lt;br&gt;Selection / order handoff&lt;br&gt;Status + documents&lt;br&gt;Appointment / return&lt;/font&gt;" vertex="1">
+          <mxGeometry height="390" width="320" x="550" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="gcsp-interface" value="Read / act" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="gcsp" target="gcsp-ports">
+        <mxCell id="gcsp-interface" edge="1" parent="1" source="gcsp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" target="gcsp-ports" value="Read / act">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="gcsp-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.4;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="gcsp-ports" target="core">
+        <mxCell id="gcsp-core" edge="1" parent="1" source="gcsp-ports" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.4;jettySize=20;startArrow=block;startFill=1;" target="core" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="hr" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;SAP HR / employee sources&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee existence referenced&lt;br&gt;Account + eligibility joins&lt;br&gt;and owners to confirm&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="40" y="790" width="370" height="170" as="geometry" />
+        <mxCell id="hr" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;SAP HR / employee sources&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee existence referenced&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Account + eligibility joins&lt;br&gt;and owners to confirm&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="370" x="40" y="735" as="geometry" />
         </mxCell>
-        <mxCell id="hr-port" value="&lt;b&gt;Employee context adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee + scheme&lt;br&gt;Drivers + current car&lt;br&gt;Join owners to confirm&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="550" y="790" width="320" height="170" as="geometry" />
+        <mxCell id="hr-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Employee context adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee + scheme&lt;br&gt;Drivers + current car&lt;br&gt;Join owners to confirm&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="320" x="550" y="790" as="geometry" />
         </mxCell>
-        <mxCell id="hr-interface" value="Account" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" edge="1" parent="1" source="hr" target="hr-port">
+        <mxCell id="hr-interface" edge="1" parent="1" source="hr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" target="hr-port" value="Account">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="hr-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.72;jettySize=20;" edge="1" parent="1" source="hr-port" target="core">
+        <mxCell id="hr-core" edge="1" parent="1" source="hr-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.72;jettySize=20;" target="core" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="900" y="875" />
@@ -76,16 +72,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rules" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;Scheme policy / rule owners&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Eligibility · allowance · points&lt;br&gt;Dated rules and approvals&lt;br&gt;Authoritative service to confirm&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="40" y="1005" width="370" height="170" as="geometry" />
+        <mxCell id="rules" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;KNOWN ROLE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;Scheme policy / rule owners&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Eligibility · allowance · points&lt;br&gt;Dated rules and approvals&lt;br&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="370" x="40" y="1005" as="geometry" />
         </mxCell>
-        <mxCell id="rules-port" value="&lt;b&gt;Scheme terms adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Versioned eligibility&lt;br&gt;Allowance + points quotes&lt;br&gt;Scheme-specific rules&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="550" y="1005" width="320" height="170" as="geometry" />
+        <mxCell id="rules-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Scheme terms adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Versioned eligibility&lt;br&gt;Allowance + points quotes&lt;br&gt;Scheme-specific rules&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="320" x="550" y="1005" as="geometry" />
         </mxCell>
-        <mxCell id="rules-interface" value="Terms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" edge="1" parent="1" source="rules" target="rules-port">
+        <mxCell id="rules-interface" edge="1" parent="1" source="rules" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" target="rules-port" value="Terms">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="rules-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.9;jettySize=20;" edge="1" parent="1" source="rules-port" target="core">
+        <mxCell id="rules-core" edge="1" parent="1" source="rules-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.9;jettySize=20;" target="core" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="920" y="1090" />
@@ -93,40 +89,40 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="identity" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW corporate identity&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Microsoft Entra ID candidate&lt;br&gt;Trusted sign-in + subject&lt;br&gt;BMW roles / tenant to confirm&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1730" y="355" width="390" height="170" as="geometry" />
+        <mxCell id="identity" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW corporate identity&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Microsoft Entra ID candidate&lt;br&gt;Trusted sign-in + subject&lt;br&gt;BMW roles / tenant to confirm&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="390" x="1730" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="identity-port" value="&lt;b&gt;Identity adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee / scheme / roles&lt;br&gt;Server-owned context&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="355" width="310" height="170" as="geometry" />
+        <mxCell id="identity-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Identity adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Employee / scheme / roles&lt;br&gt;Server-owned context&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="310" x="1280" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="identity-interface" value="Identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jettySize=20;" edge="1" parent="1" source="identity" target="identity-port">
+        <mxCell id="identity-interface" edge="1" parent="1" source="identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jettySize=20;" target="identity-port" value="Identity">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="identity-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.15;jettySize=20;" edge="1" parent="1" source="identity-port" target="core">
+        <mxCell id="identity-core" edge="1" parent="1" source="identity-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.15;jettySize=20;" target="core" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mail" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW-approved mail service&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Graph + Exchange Online candidate&lt;br&gt;Sender + permissions to confirm&lt;br&gt;Approved relay is an alternative&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1730" y="565" width="390" height="170" as="geometry" />
+        <mxCell id="mail" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW mail service&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Graph + Exchange Online candidate&lt;br&gt;Sender + permissions to confirm&lt;br&gt;&lt;br&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="390" x="1730" y="565" as="geometry" />
         </mxCell>
-        <mxCell id="mail-port" value="&lt;b&gt;Mail transport adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Offer email + secure link&lt;br&gt;Retry + delivery reference&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="565" width="310" height="170" as="geometry" />
+        <mxCell id="mail-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Mail transport adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Offer email + secure link&lt;br&gt;Retry + delivery reference&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="310" x="1280" y="565" as="geometry" />
         </mxCell>
-        <mxCell id="mail-interface" value="Email" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" edge="1" parent="1" source="mail-port" target="mail">
+        <mxCell id="mail-interface" edge="1" parent="1" source="mail-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;" target="mail" value="Email">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mail-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.42;entryX=0;entryY=0.5;jettySize=20;" edge="1" parent="1" source="core" target="mail-port">
+        <mxCell id="mail-core" edge="1" parent="1" source="core" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.42;entryX=0;entryY=0.5;jettySize=20;" target="mail-port" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="vehicles" value="&lt;font color=&quot;#007D79&quot;&gt;&lt;b&gt;CONFIRMED SOURCES&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW vehicle data + imagery&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;VSS: vehicle data + information&lt;br&gt;Live configurator API: imagery&lt;br&gt;Production access to arrange&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1730" y="775" width="390" height="170" as="geometry" />
+        <mxCell id="vehicles" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EAF5F2;strokeColor=#77AAA0;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;&lt;font color=&quot;#007d79&quot;&gt;KNOWN ROLE&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;BMW vehicle data + imagery&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;VSS: vehicle data + information&lt;br&gt;Live configurator API: imagery&lt;br&gt;Production access to arrange&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="170" width="390" x="1730" y="775" as="geometry" />
         </mxCell>
-        <mxCell id="vehicles-port" value="&lt;b&gt;Vehicle evidence adapters&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Exact configuration / VIN facts&lt;br&gt;Specifications + vehicle imagery&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="775" width="310" height="170" as="geometry" />
+        <mxCell id="vehicles-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Vehicle evidence adapters&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Exact configuration / VIN facts&lt;br&gt;Specifications + vehicle imagery&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="310" x="1280" y="775" as="geometry" />
         </mxCell>
-        <mxCell id="vehicles-interface" value="Evidence" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="vehicles" target="vehicles-port">
+        <mxCell id="vehicles-interface" edge="1" parent="1" source="vehicles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" target="vehicles-port" value="Evidence">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="vehicles-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.72;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="vehicles-port" target="core">
+        <mxCell id="vehicles-core" edge="1" parent="1" source="vehicles-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.72;jettySize=20;startArrow=block;startFill=1;" target="core" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1245" y="860" />
@@ -134,16 +130,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="production" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW Production / supply planning&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Order requests + responses&lt;br&gt;Confirmed supply + availability&lt;br&gt;Owning system / API to confirm&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1730" y="985" width="390" height="170" as="geometry" />
+        <mxCell id="production" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E9;strokeColor=#C9A766;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;font color=&quot;#966313&quot;&gt;&lt;b&gt;CANDIDATE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;b&gt;BMW Production / supply planning&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Order requests + responses&lt;br&gt;Confirmed supply + availability&lt;br&gt;Owning system / API to confirm&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="390" x="1730" y="985" as="geometry" />
         </mxCell>
-        <mxCell id="production-port" value="&lt;b&gt;Production adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Vehicle Ordering Team submits&lt;br&gt;Confirmations → future supply&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="1280" y="985" width="310" height="170" as="geometry" />
+        <mxCell id="production-port" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0057B8;strokeWidth=2;fontColor=#172B4D;fontSize=22;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Production adapter&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:21px&quot;&gt;Vehicle Ordering Team submits&lt;br&gt;Confirmations → future supply&lt;/font&gt;" vertex="1">
+          <mxGeometry height="170" width="310" x="1280" y="985" as="geometry" />
         </mxCell>
-        <mxCell id="production-interface" value="Supply" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="production-port" target="production">
+        <mxCell id="production-interface" edge="1" parent="1" source="production-port" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" target="production" value="Supply">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="production-core" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=Arial;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.9;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" edge="1" parent="1" source="core" target="production-port">
+        <mxCell id="production-core" edge="1" parent="1" source="core" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#0057B8;strokeWidth=2;fontSize=19;fontColor=#172B4D;fontFamily=IBM Plex Sans;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.9;entryX=0;entryY=0.5;jettySize=20;startArrow=block;startFill=1;" target="production-port" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1225" y="790.5" />
@@ -151,14 +147,11 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="hosting" value="Target: BMW AWS platform • frontend host, durable storage and reliable runner to agree" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontColor=#66788A;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="550" y="1210" width="1040" height="47" as="geometry" />
+        <mxCell id="hosting" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;fontColor=#66788A;spacing=0;rounded=0;" value="Target: BMW AWS platform • frontend host, durable storage and reliable runner to agree" vertex="1">
+          <mxGeometry height="47" width="1040" x="550" y="1210" as="geometry" />
         </mxCell>
-        <mxCell id="optional" value="&lt;b&gt;Optional extension:&lt;/b&gt; consented connected-use summaries via a BMW-approved connected-vehicle service. No live provider identified; see data adapter map." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F6F8;strokeColor=#C9D5E2;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;" vertex="1" parent="1">
-          <mxGeometry x="40" y="1310" width="2080" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="footer" value="System roles are evidence-based. Arrows are required capabilities, not verified BMW APIs. Release pull is implemented in the demo; push events remain unconfirmed." style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=2;fontColor=#172B4D;fontSize=19;fontFamily=Arial;align=left;verticalAlign=middle;spacing=20;fontColor=#66788A;spacing=0;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="1385" width="2080" height="28" as="geometry" />
+        <mxCell id="optional" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F6F8;strokeColor=#C9D5E2;strokeWidth=2;fontColor=#172B4D;fontSize=21;fontFamily=IBM Plex Sans;align=left;verticalAlign=middle;spacing=20;" value="&lt;b&gt;Not shown:&lt;/b&gt;&amp;nbsp;connected-use summaries for employee vehicles via a BMW ConnectedDrive- see data adapter map." vertex="1">
+          <mxGeometry height="65" width="1100" x="520" y="1310" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
