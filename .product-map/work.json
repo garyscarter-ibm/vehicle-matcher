@@ -6663,7 +6663,7 @@
     {
       "assignee": "",
       "id": "FUCQ-440",
-      "observed_at": "2026-11-13T23:43:45Z",
+      "observed_at": "2026-11-13T23:55:25Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Show employee account and current-vehicle information",
@@ -6689,6 +6689,15 @@
           "expires_at": "2026-11-13T23:43:44.865713+00:00",
           "status": "complete; editing stopped",
           "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed"
+        },
+        {
+          "name": "Lord Business",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "expires_at": "2026-11-13T23:55:25.071818+00:00",
+          "status": "complete; editing stopped",
+          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed"
         }
       ],
       "slices": [
@@ -6701,13 +6710,30 @@
         },
         {
           "id": "screen",
+          "status": "in-progress",
+          "title": "Native-account-current-car-and-existing-actions",
+          "observed_at": "2026-11-13T23:48:46.647242+00:00"
+        },
+        {
+          "id": "choices",
+          "title": "Native-policy-backed-manual-choices-before-stock",
+          "status": "complete",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record"
+        },
+        {
+          "id": "previews",
+          "title": "Original-owned-offer-order-preview-composition",
           "status": "not-started",
-          "title": "Native-account-current-car-and-existing-actions"
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "evidence": "Frozen baseline parity discovery; dispatcher confirmed same semantic API suffix contracts"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
+          "status": "in-progress",
+          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "evidence": "Rendered fixture proof being prepared; actual Java/OIDC still unrun"
         }
       ],
       "jira_observed_at": "2026-11-13T20:22:18.041Z"

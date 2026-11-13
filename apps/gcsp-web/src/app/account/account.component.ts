@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthPort } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
@@ -7,6 +7,7 @@ import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { AccountClient } from './account.client';
+import { AccountChoicesComponent } from './account-choices.component';
 import { contractTerms, journeyIntent, toAccountView } from './account.projection';
 import { AccountAction, AccountDriver, AccountFailure, AccountProjection, AccountResult, ContractView, EvidenceRecord, JourneyIntent,
   ManualDraft, NotificationEmail, SaveNotificationEmailCommand } from './account.types';
@@ -31,12 +32,13 @@ const states: Record<string, Notice> = {
 
 @Component({
   selector: 'gcsp-account',
-  imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent],
+  imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, AccountChoicesComponent],
   templateUrl: './account.component.html', styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnDestroy {
   private readonly auth = inject(AuthPort);
   private readonly client = inject(AccountClient);
+  private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   @ViewChild('recordDrawer') private drawer?: ElementRef<HTMLDialogElement>;
@@ -95,6 +97,8 @@ export class AccountComponent implements OnDestroy {
   }
   private live(generation: number): boolean { return !this.disposed && generation === this.generation && this.scope() === this.loadedScope(); }
   async refresh(): Promise<void> { if (!this.loading() && !this.busy() && !this.emailBusy()) await this.load(true); }
+  async choicesBack(): Promise<void> { this.pendingIntent.set(null); await this.refresh(); this.focus('h1'); }
+  async choicesContinue(): Promise<void> { if (this.currentScope()) await this.router.navigateByUrl('/stock'); }
   private async load(reviewed: boolean): Promise<void> {
     const scope = this.scope(); if (!scope || this.disposed) return;
     this.invalidate(); this.loadedScope.set(scope); this.loading.set(true);

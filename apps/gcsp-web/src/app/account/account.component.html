@@ -38,10 +38,8 @@
       <gcsp-status-screen title="Saved journey could not be read" message="Refresh before starting or resuming a journey." [level]="2" />
     }
     @if (pendingIntent()) {
-      <section class="account-summary review-choices" aria-labelledby="review-choices-title">
-        <h2 id="review-choices-title" tabindex="-1">Review choices</h2>
-        <p class="gcsp-note">Your journey is saved. Review your order choices before choosing a car.</p>
-        <button gcspButton variant="ghost" type="button" (click)="pendingIntent.set(null)">Back to account</button>
+      <section class="account-summary review-choices" aria-labelledby="choices-heading">
+        <gcsp-account-choices [account]="projection()!" [savedDraft]="saved()" [intent]="pendingIntent()!" (back)="choicesBack()" (continueToStock)="choicesContinue()" />
       </section>
     }
     @if (account.account; as identity) {

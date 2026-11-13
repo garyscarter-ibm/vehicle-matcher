@@ -1,0 +1,11 @@
+:host { display: block; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.choices-legend { font-weight: var(--gcsp-font-strong-weight); margin-top: var(--gcsp-space-5); }
+.choices-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gcsp-space-5); }
+select, textarea { box-sizing: border-box; width: 100%; min-height: 44px; padding: var(--gcsp-space-2) var(--gcsp-space-3); border: 1px solid var(--gcsp-input-border); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); font: inherit; }
+textarea { resize: vertical; }
+select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--gcsp-danger); }
+.choices-review { padding: var(--gcsp-space-4); background: var(--gcsp-surface-muted); border: 1px solid var(--gcsp-divider); }
+.choices-review .gcsp-actions { margin-top: var(--gcsp-space-3); }
+.choices-actions { margin-top: var(--gcsp-space-5); }
+@media (max-width: 640px) { .choices-grid { grid-template-columns: minmax(0, 1fr); } }
