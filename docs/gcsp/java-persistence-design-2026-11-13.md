@@ -91,9 +91,20 @@ FUCQ-409–418 (allocation and recommendation computation) are untouched here.
 
 ## Evidence
 
-Native PostgreSQL tests in `services/gcsp-api` (see its README) cover commit and rollback, failed version checks,
-competing connections for one exact car and one slot unit, same and changed replay, concurrent duplicate command
-ids, uncertain commit, restart with a new pool, atomic reset, reset refusal on identity mismatch, isolation between
-two databases, stale-run refusal and statement counts. `EXPLAIN` plans for the representative statements are kept in
-the Story result. The hosted Render dev database does not exist yet; its connection and reset evidence awaits Gary's
-dev environment.
+Native PostgreSQL 17.12, local throwaway cluster, code `0dd710eb`. Full record in the Story result
+(`_dev/in-progress/DEV-2026-11-13-024.md`).
+
+- `services/gcsp-api` tests, `gcsp.api.persistence.**`: commit, rollback, failed version, no-op, competing
+  connections for one exact car and for one slot unit, capacity refusal, same and changed replay, concurrent duplicate
+  command id, uncertain commit (committed and not committed), restart with a new pool, stale run, atomic reset,
+  reset all-or-nothing, reset replay, reset refusals (database name, environment identity, `reset_allowed`),
+  two-database isolation, intent with CAS finalize and late acknowledgement, app wiring and readiness.
+- Running-app proof: two real API JVMs (dev database with reset allowed, stand-in running database without),
+  one command in each, a dev reset while both ran. The running database's row digest was identical before and after,
+  a dev-configured reset aimed at it and a reset on it were both refused, the restarted dev JVM kept run, receipts and
+  holds, and a JVM pointed at the wrong database refused to start.
+- SQL scope: a hold command issues eight statements (receipt read, active-run check, car version read, hold insert,
+  car CAS, revision bump, receipt insert, commit), independent of run size. Exact-car read and CAS use `stock_cars_pkey` at 5,000 cars;
+  receipt lookup uses its primary key; the revision bump uses `runs_one_active`; pending outbox uses its partial index.
+
+The hosted Render dev database does not exist yet. Its connection and reset evidence awaits Gary's dev environment.

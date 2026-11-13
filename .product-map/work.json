@@ -6081,7 +6081,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T22:30:18Z",
+      "observed_at": "2026-11-13T22:40:05Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-456",
       "unsliced": false,
       "slices": [
@@ -6094,14 +6094,17 @@
         },
         {
           "id": "s2-reset-isolation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence",
-          "observed_at": "2026-11-13T22:30:18Z"
+          "observed_at": "2026-11-13T22:35:13Z",
+          "evidence": "3706cac6 reviewed by story-lead; 37 native PG17 persistence tests pass incl. atomic reset, isolation refusals, two-database isolation, intent/CAS finalize"
         },
         {
           "id": "s3-integration",
-          "status": "not-started",
-          "title": "Story-level validation, alignment record and result"
+          "status": "complete",
+          "title": "Story-level validation, alignment record and result",
+          "observed_at": "2026-11-13T22:40:05Z",
+          "evidence": "story-lead: 54 module tests pass at 0dd710eb on native PG17; two-JVM running-app reset isolation and restart proof; EXPLAIN scope; hosted dev awaits Gary"
         }
       ]
     },
