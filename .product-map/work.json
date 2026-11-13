@@ -5483,21 +5483,6 @@
       "workers": []
     },
     {
-      "assignee": "",
-      "id": "FUCQ-413",
-      "jira_observed_at": "2026-11-12T15:47:47.844Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Compile immutable price and allowance lookups",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
-      "workers": []
-    },
-    {
       "id": "FUCQ-414",
       "title": "Reuse validated immutable stock snapshots across employees",
       "status": "In Progress",
@@ -6737,6 +6722,51 @@
       ],
       "note": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
       "jira_observed_at": "2026-11-13T23:18:25.492855+00:00"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-413",
+      "jira_observed_at": "2026-11-12T15:47:47.844Z",
+      "note": "Claimed FUCQ-413 implementation; original four criteria fixed, connected/native gates remain open. See docs/gcsp/fucq-413-price-allowance-2026-11-13.md.",
+      "observed_at": "2026-11-13T23:47:40Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "prices",
+          "status": "in-progress",
+          "title": "Compile-price-equality-lookups",
+          "observed_at": "2026-11-13T23:47:40Z",
+          "evidence": "FUCQ-413 assigned worker a5dd9630, original price criterion; manifest .claude/test-runs/fucq413/manifest.json"
+        },
+        {
+          "id": "allowances",
+          "status": "in-progress",
+          "title": "Compile-context-allowance-lookups",
+          "observed_at": "2026-11-13T23:47:40Z",
+          "evidence": "FUCQ-413 assigned worker a5dd9630, original allowance criterion; additive PolicyService compilation"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Independent-review-and-connected-delivery"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Compile immutable price and allowance lookups",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
+      "workers": [
+        {
+          "id": "01a1d74d-7330-7252-a6d3-1caf36d2ab98",
+          "name": "Lightning McQueen",
+          "harness": "codex",
+          "observed_at": "2026-11-13T23:47:40.362170+00:00",
+          "expires_at": "2026-11-14T01:47:40.362170+00:00",
+          "source": "dispatcher-authorized linked Story chat"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-006"
     }
   ],
   "version": 1
