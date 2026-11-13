@@ -6728,7 +6728,7 @@
       "id": "FUCQ-413",
       "jira_observed_at": "2026-11-12T15:47:47.844Z",
       "note": "Claimed FUCQ-413 implementation; original four criteria fixed, connected/native gates remain open. See docs/gcsp/fucq-413-price-allowance-2026-11-13.md.",
-      "observed_at": "2026-11-13T23:52:03Z",
+      "observed_at": "2026-11-13T23:56:26Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -6740,10 +6740,10 @@
         },
         {
           "id": "allowances",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Compile-context-allowance-lookups",
-          "observed_at": "2026-11-13T23:47:40Z",
-          "evidence": "FUCQ-413 assigned worker a5dd9630, original allowance criterion; additive PolicyService compilation"
+          "observed_at": "2026-11-13T23:56:26Z",
+          "evidence": "Lead reviewed full source/test diff; focused10 and service21 pass, zero fail/skip; policy bcb722c4, focused a8cce951; maximus and lead-allowance receipts; docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
         },
         {
           "id": "integration",

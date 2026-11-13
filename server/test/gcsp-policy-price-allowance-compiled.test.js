@@ -173,3 +173,156 @@ test('bounded price evaluation visits the collection only during compilation of 
     Array.prototype.filter = filter; Array.prototype[Symbol.iterator] = iterator;
   }
 });
+
+const allowance = (id, companyId, schemeId, gradeId, extra = {}) => row(`compiled-allowance-${id}`, 250, {
+  allowanceId: id, companyId, schemeId, gradeId, monthlyPoints: 250, unit: 'points/month',
+  provenance: { evidence: [id], context: { companyId, schemeId, gradeId } }, ...extra,
+});
+function allowanceSeed() {
+  const fixture = seed();
+  fixture.assumptions[0].value.push({ schemeId: '__proto__', companyId: '__proto__', gradeIds: ['__proto__'], sourceMatrix: 'prototype-fixture' });
+  fixture.allowances = [
+    allowance('a-a', 'company-a', 'scheme-a', 'grade-a'),
+    allowance('a-b', 'company-a', 'scheme-a', 'grade-b', { monthlyPoints: 275, value: 275 }),
+    allowance('b-a', 'company-b', 'scheme-b', 'grade-a', { monthlyPoints: 300, value: 300 }),
+    allowance('prototype', '__proto__', '__proto__', '__proto__'),
+  ];
+  return fixture;
+}
+const allowanceContexts = [context, { ...context, gradeId: 'grade-b' },
+  { ...context, companyId: 'company-b', schemeId: 'scheme-b' }, { ...context, schemeId: 'scheme-empty' },
+  { ...context, companyId: '__proto__', schemeId: '__proto__', gradeId: '__proto__' }];
+
+// Independent old allowance scan, including context failure order and complete source rows.
+function expectedAllowance(fixture, ctx, policyRead) {
+  const at = Date.parse(Object.hasOwn(policyRead, 'policyVersion') ? fixture.effectiveFrom : policyRead.asOf);
+  const version = fixture.policyVersion;
+  if (!ctx || typeof ctx !== 'object' || Array.isArray(ctx)) return invalid(version, 'invalid-context', 'context', 'Supply a company, scheme and grade.');
+  if (Object.hasOwn(ctx, 'runId') && ctx.runId !== policyRead.runId) return invalid(version, 'run-mismatch', 'runId', 'Context and policy read must use the same run.');
+  const mapping = fixture.assumptions.filter((entry) => active(entry, at)).find(({ key }) => key === 'eligibility.context.mapping');
+  if (!mapping) return invalid(version, 'policy-configuration-unavailable', 'eligibility.context.mapping', 'The context mapping is not effective.');
+  const scheme = mapping.value.find((entry) => entry.schemeId === ctx.schemeId);
+  if (!scheme) return invalid(version, 'unknown-scheme', 'schemeId', 'Unknown scheme.');
+  if (scheme.companyId !== ctx.companyId) return invalid(version, 'unknown-company', 'companyId', 'Company is not mapped to this scheme.');
+  if (!scheme.gradeIds.includes(ctx.gradeId)) return invalid(version, 'unknown-grade', 'gradeId', 'Grade is not mapped to this scheme.');
+  const match = fixture.allowances.filter((entry) => active(entry, at)).find((entry) => entry.companyId === ctx.companyId
+    && entry.schemeId === ctx.schemeId && entry.gradeId === ctx.gradeId);
+  return match ? outcome('ok', version, { value: match }) : outcome('not-found', version, {
+    code: 'allowance-not-found', resourceType: 'allowance', reasons: [{ field: 'allowance', reason: 'No effective allowance for this context.' }],
+  });
+}
+
+test('compiled allowances equal the old scan across complete contexts, missing rows and provenance', async () => {
+  const fixture = allowanceSeed(); const policy = policyFor(fixture);
+  for (const ctx of [...allowanceContexts, { companyId: context.companyId, schemeId: context.schemeId, gradeId: context.gradeId }]) {
+    for (const policyRead of [read, pin()]) assert.deepEqual(await policy.getAllowance(ctx, policyRead), expectedAllowance(fixture, ctx, policyRead));
+  }
+  const empty = allowanceSeed(); empty.allowances = [];
+  for (const policyRead of [read, pin()]) assert.deepEqual(await policyFor(empty).getAllowance(context, policyRead), expectedAllowance(empty, context, policyRead));
+});
+
+test('compiled allowances preserve typed context and read errors in their original precedence', async () => {
+  const fixture = allowanceSeed(); const policy = policyFor(fixture);
+  for (const ctx of [undefined, null, [], 'invalid', 0, false, {},
+    { ...context, runId: 'other', schemeId: 'missing' }, { ...context, schemeId: 'missing', companyId: 'missing' },
+    { ...context, companyId: 'missing', gradeId: 'missing' }, { ...context, gradeId: 'missing' }]) {
+    for (const policyRead of [read, pin()]) assert.deepEqual(await policy.getAllowance(ctx, policyRead), expectedAllowance(fixture, ctx, policyRead));
+  }
+  fixture.assumptions[0].effectiveTo = change;
+  const later = { ...read, asOf: change };
+  assert.deepEqual(await policyFor(fixture).getAllowance(context, later), expectedAllowance(fixture, context, later));
+  for (const badRead of [undefined, null, {}, { ...read, runId: '' }, { ...read, asOf: 'invalid' },
+    { ...read, policyVersion: '' }, { ...read, policyVersion: undefined }]) {
+    assert.deepEqual(await policy.getAllowance(null, badRead), invalid(null, 'invalid-read', 'read', 'Supply runId, ISO asOf and an optional nonempty policyVersion.'));
+  }
+  for (const policyRead of [{ ...read, policyVersion: 'missing' }, { ...read, asOf: '2026-11-03T00:00:00Z' }]) {
+    assert.deepEqual(await policy.getAllowance(null, policyRead), outcome('not-found', null, {
+      code: 'policy-version-not-found', resourceType: 'policy-version', reasons: [{ field: 'policyVersion', reason: 'No matching retained policy version.' }],
+    }));
+  }
+  const invalidSeed = allowanceSeed(); invalidSeed.allowances[0].value = -1;
+  assert.deepEqual(await policyFor(invalidSeed).getAllowance(null, read), outcome('invalid', null, {
+    code: 'source-invalid', reasons: [{ field: 'source', reason: 'The policy source could not be loaded and validated.' }],
+  }));
+  const unavailable = new PolicyService({ provider: { async loadVersions() { throw Error('offline'); } } });
+  assert.deepEqual(await unavailable.getAllowance(null, read), outcome('unavailable', null, {
+    code: 'source-unavailable', reason: 'The policy source is unavailable.', retryable: true,
+    reasons: [{ field: 'source', reason: 'The policy source could not be loaded and validated.' }],
+  }));
+});
+
+test('allowance intervals preserve first effective source order, exclusive ends, gaps and historical pins', async () => {
+  const fixture = allowanceSeed();
+  fixture.allowances[0].effectiveTo = change;
+  fixture.allowances[1].effectiveFrom = change;
+  fixture.allowances[2].effectiveTo = change;
+  fixture.allowances.unshift(allowance('a-a-later', 'company-a', 'scheme-a', 'grade-a', {
+    effectiveFrom: '2026-11-06T00:00:00Z', monthlyPoints: 325, value: 325,
+  }));
+  const policy = policyFor(fixture);
+  for (const asOf of [start, '2026-11-04T23:59:59.999Z', change, '2026-11-05T23:59:59.999Z', '2026-11-06T00:00:00Z', read.asOf]) {
+    for (const ctx of allowanceContexts) {
+      for (const policyRead of [{ ...read, asOf }, pin({ ...read, asOf })]) {
+        assert.deepEqual(await policy.getAllowance(ctx, policyRead), expectedAllowance(fixture, ctx, policyRead));
+      }
+    }
+  }
+});
+
+test('allowance successor activation, repeated identities and mutations preserve immutable snapshots', async () => {
+  const first = allowanceSeed(); const next = allowanceSeed();
+  next.policyVersion = 'compiled-v2'; next.effectiveFrom = change;
+  for (const table of ['allowances', 'pricePlans', 'assumptions']) for (const entry of next[table]) entry.policyVersion = next.policyVersion;
+  next.allowances[0].monthlyPoints = 400; next.allowances[0].value = 400;
+  let supplied = [first]; let loads = 0;
+  const policy = new PolicyService({ provider: { async loadVersions() { loads += 1; return supplied; } } });
+  const later = { ...read, asOf: change };
+  await policy.withReadScope(async () => {
+    assert.deepEqual(await policy.getAllowance(context, pin()), expectedAllowance(first, context, pin()));
+    assert.deepEqual(await policy.getAllowance(context, later), expectedAllowance(first, context, later));
+    supplied = [first, next];
+    assert.deepEqual(await policy.getAllowance(context, later), expectedAllowance(next, context, later));
+    assert.deepEqual(await policy.getAllowance(context, pin(later)), expectedAllowance(first, context, pin(later)));
+    assert.equal(loads, 3);
+  });
+  const reset = allowanceSeed(); reset.allowances[0].monthlyPoints = 450; reset.allowances[0].value = 450;
+  supplied = [reset];
+  const resetRead = { ...pin(), runId: 'allowance-reset-run' }; const resetContext = { ...context, runId: resetRead.runId };
+  const result = await policy.getAllowance(resetContext, resetRead);
+  assert.deepEqual(result, expectedAllowance(reset, resetContext, resetRead));
+  const retained = structuredClone(result);
+  result.value.provenance.evidence.push('caller-mutation'); result.value.monthlyPoints = 999;
+  reset.allowances[0].provenance.evidence.push('provider-mutation'); reset.allowances[0].monthlyPoints = 999;
+  assert.deepEqual(await policy.getAllowance(resetContext, resetRead), retained);
+  assert.deepEqual(await policyFor(allowanceSeed()).getAllowance(context, pin()), expectedAllowance(allowanceSeed(), context, pin()));
+});
+
+test('bounded allowance evaluation visits the collection only while compiling each immutable interval', async (t) => {
+  const fixture = allowanceSeed(); fixture.allowances[1].effectiveFrom = change;
+  const policy = policyFor(fixture); await policy.getActiveVersion(read);
+  const filter = Array.prototype.filter; const find = Array.prototype.find;
+  const iterator = Array.prototype[Symbol.iterator]; let visits = 0;
+  const record = (array) => {
+    if (typeof array[0]?.key === 'string' && array[0].key.startsWith('compiled-allowance-')) visits += array.length;
+  };
+  try {
+    Array.prototype.filter = function (...args) { record(this); return Reflect.apply(filter, this, args); };
+    Array.prototype.find = function (...args) { record(this); return Reflect.apply(find, this, args); };
+    Array.prototype[Symbol.iterator] = function () { record(this); return Reflect.apply(iterator, this, []); };
+    await policy.getAllowance(context, pin()); const firstCompilation = visits;
+    assert.ok(firstCompilation > 0 && firstCompilation <= fixture.allowances.length * 3, String(firstCompilation));
+    for (let pair = 0; pair < 32; pair += 1) {
+      await policy.getAllowance(allowanceContexts[pair % allowanceContexts.length], pin());
+      await policy.getAllowance(allowanceContexts[pair % allowanceContexts.length], { ...read, asOf: '2026-11-04T20:00:00Z' });
+    }
+    assert.equal(visits, firstCompilation); const after64RepeatedCalls = visits;
+    await policy.getAllowance(context, { ...read, asOf: change });
+    assert.ok(visits > firstCompilation && visits <= firstCompilation + fixture.allowances.length * 2);
+    const nextIntervalCompilation = visits;
+    for (let call = 0; call < 32; call += 1) await policy.getAllowance(allowanceContexts[call % allowanceContexts.length], { ...read, asOf: change });
+    await policy.getAllowance(context, pin()); assert.equal(visits, nextIntervalCompilation);
+    t.diagnostic(JSON.stringify({ firstCompilation, after64RepeatedCalls, nextIntervalCompilation, after32NextIntervalCallsAndPin: visits }));
+  } finally {
+    Array.prototype.filter = filter; Array.prototype.find = find; Array.prototype[Symbol.iterator] = iterator;
+  }
+});
