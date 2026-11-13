@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createVehicleSnapshot, freezeVehicleData } from '../vehicles/index.js';
 import { createEmployeeRecommendationService, createStoredSubjectRecommendationEvaluator } from '../gcsp/recommendation/index.js';
-import { context, instant, brief, stock, fact, essential, providerValue, provider, time, policy, currentCar, rating } from './helpers/employee-recommendation.js';
+import { context, instant, brief, stock, fact, essential, preference, providerValue, provider, time, policy, currentCar, rating } from './helpers/employee-recommendation.js';
 
 const ports = (source, extra = {}) => ({ provider: provider(source), policy: policy(), time, ...extra });
 const recommend = (source, request = brief(), extra = {}) => createEmployeeRecommendationService(ports(source, extra)).recommend(context, request);
@@ -282,4 +282,60 @@ test('hidden snapshot fields are never admitted around provider structuredClone 
     if (expected.status === 'ok') assert.notEqual(first(await recommend(source)).snapshot, first(await recommend(source)).snapshot);
     else assert.equal(expected.code, 'employee-source-invalid');
   }
+});
+
+
+test('real allocation prepares one immutable snapshot from mutable transaction reads for two employees', async (t) => {
+  const { createGcspRuntime } = await import('../gcsp/runtime.js');
+  const { seedManualDemoContext } = await import('../gcsp/manual-context/fixtures.js');
+  const { inputDigest } = await import('../gcsp/repository/index.js');
+  const good = (outcome) => { assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
+  const runtime = good(await createGcspRuntime({ mode: 'memory', environmentId: 'fucq414-real-boundary',
+    policyAsOf: instant, commandId: 'f414-bootstrap', sessionNow: () => instant }));
+  t.after(() => runtime.close());
+  const presenter = good(await runtime.identity.createPresenterSession('f414-presenter')).context;
+  const employees = [];
+  for (const name of ['paula', 'alex']) {
+    const employee = good(await runtime.identity.switchPrincipal(presenter, `demo-${name}`, `f414-${name}`)).context;
+    employees.push(employee);
+    good(await seedManualDemoContext({ ...runtime, context: employee }));
+    good(await runtime.brief.saveDraft(employee, { commandId: `f414-${name}-draft`, expectedBriefVersion: 0, expectedDraftVersion: 0,
+      brief: { schemaVersion: 1, preferences: { body: preference('estate'), comfort: preference(50), sportiness: preference(50) },
+        essentials: { seats: essential(99) } } }));
+    good(await runtime.brief.confirm(employee, { commandId: `f414-${name}-confirm`, expectedBriefVersion: 0, expectedDraftVersion: 1,
+      consent: { search: true, hold: true } }));
+  }
+  const car = stock();
+  good(await runtime.repository.transaction(presenter, { commandId: 'f414-stock', inputDigest: inputDigest('f414-stock') },
+    (tx) => tx.insert('stock', { runId: presenter.runId, orderUuid: car.orderUuid, orderNumber: '0123456',
+      configurationId: car.configurationId, state: 'released', available: true, held: false, allocated: false,
+      facts: car.snapshot, release: { eventId: 'f414-release', availability: car.availability },
+      visibility: { companyIds: [...new Set(employees.map((e) => e.companyId))], schemeIds: [...new Set(employees.map((e) => e.schemeId))], employeeIds: null } })));
+  let transactionSnapshot;
+  good(await runtime.repository.transaction(presenter, { commandId: 'f414-read', inputDigest: inputDigest('f414-read') }, async (tx) => {
+    transactionSnapshot = good(await tx.list('stock'))[0].facts; return { status: 'ok', value: true };
+  }));
+  assert.equal(Object.isFrozen(transactionSnapshot), false, 'real tx.list returns mutable detached data');
+  const originalKeys = Object.keys; const originalClone = globalThis.structuredClone;
+  const counts = { validated: 0, wholeSourceClones: 0 };
+  Object.keys = (value) => {
+    if (snapshotShape(value) && new Error().stack.includes('at createVehicleSnapshot')) counts.validated += 1;
+    return originalKeys(value);
+  };
+  globalThis.structuredClone = (value, ...options) => {
+    if (value?.stock?.some((row) => snapshotShape(row.snapshot)) && new Error().stack.includes('at cloneSource')) counts.wholeSourceClones += 1;
+    return originalClone(value, ...options);
+  };
+  let outcome;
+  try {
+    const now = good(await runtime.clock.now(presenter)).now;
+    outcome = good(await runtime.allocation.allocate(presenter, { eventId: 'f414-release', eventType: 'stock-released',
+      runId: presenter.runId, occurredAt: now, orderUuids: [car.orderUuid], sourceEventId: 'f414-source' }));
+  } finally { Object.keys = originalKeys; globalThis.structuredClone = originalClone; }
+  assert.equal(outcome.evaluations.length, 2);
+  assert.equal(outcome.assignments.length, 0);
+  assert.ok(outcome.evaluations.every((evaluation) => evaluation.decisions[0].gateStatus === 'ineligible'));
+  t.diagnostic(`real repository/allocation, two employees: ${JSON.stringify(counts)}`);
+  assert.deepEqual(counts, { validated: 1, wholeSourceClones: 0 });
+  assert.equal(Object.isFrozen(transactionSnapshot), false, 'preparation leaves caller-owned mutable reads untouched');
 });
