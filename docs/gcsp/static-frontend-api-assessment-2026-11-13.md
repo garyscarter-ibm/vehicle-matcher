@@ -59,7 +59,9 @@ Official documentation checked on 13 November 2026:
 - [Render static sites](https://render.com/docs/static-sites): static artifacts are served through its CDN.
 - [MDN Request credentials](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials) and [credentialed CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS): separate origins require explicit credential handling and an explicit allowed origin.
 
-## Follow-up: all hosting on Cloudflare Free
+## Dropped option: all hosting on Cloudflare Free
+
+**Decision, Gary, 13 November 2026:** "Okay scrap the Cloudflare idea." Cloudflare is no longer a proposed hosting direction. The assessment below is retained as historical discussion; its candidate proof and migration work are not to proceed. Render remains the hosting direction for the original static-frontend/API discussion, which has not authorised implementation. No Cloudflare infrastructure, application code or dependencies were introduced.
 
 Gary asked whether all hosting could move to Cloudflare's free tier. This remains discussion and feasibility assessment, with no authorisation inferred for a migration, new dependencies, service provisioning or Jira writes. Current source observation is `e6303e7fe`; no application code changed since the source assessed above.
 
