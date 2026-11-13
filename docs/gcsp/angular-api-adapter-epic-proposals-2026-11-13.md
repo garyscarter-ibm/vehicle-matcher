@@ -10,7 +10,7 @@ The intended outcome is a GCSP experience delivered as a static Angular applicat
 | --- | --- | --- |
 | **E1 — Run GCSP through an independently hosted frontend and backend API** | Restore the planned deployment and responsibility split while retaining working sessions and journeys. | Can we publish the frontend separately, with all application data and actions crossing the API boundary? |
 | **E2 — Deliver the GCSP experience in Angular** | Angular owns the application's screens, navigation and presentation state, preserving the existing experience and behaviour. | Can employees, Greg and the presenter complete the existing supported journeys in the Angular application? |
-| **E3 — Replace external service providers without changing the GCSP experience** | Dedicated backend adapter contracts isolate external data and operations; replaceable providers use the same application services. | Can we change provider implementations through composition, with contract and journey evidence showing the application still works? |
+| **E3 — Complete and prove GCSP's replaceable service adapters** | Finish the existing provider boundaries and demonstrate replacement through the same application services. | Can we change provider implementations through composition, with contract and journey evidence showing the application still works? |
 | **E4 — Run the GCSP backend on Java 21 and Quarkus 3.x** | Replace the Node backend runtime while preserving API behaviour, business decisions and durable state. | Can the same frontend journeys run against Quarkus, with equivalent results and proven transactional behaviour? |
 
 Keep these as four bounded outcomes. A static/API split can work before Angular, an Angular migration alone would not establish replaceable external services, and a Java port needs its own parity evidence. Implement through small connected journeys rather than four large rewrites. This document proposes Epic-level acceptance; implementation Story slicing and estimates follow refinement.
@@ -87,9 +87,11 @@ Replay the agreed journeys against the backend, with retained state across reloa
 
 **Design delta:** [HLD review Q18](../design/hld-review-gc.md) and the experience contract currently require custom elements embeddable in a future Angular host. This proposal goes further: Angular becomes our GCSP frontend. Reconcile the canonical HLD and embedding requirement before implementation; do not silently treat the old custom-element acceptance as equivalent to the new end state.
 
-## E3 — Replace external service providers without changing the GCSP experience
+## E3 — Complete and prove GCSP's replaceable service adapters
 
 **Intent:** As the team integrating GCSP, we can connect an authorized external service by implementing its adapter and configuring the backend, while preserving the Angular API contract and the application's existing decision logic.
+
+**Existing baseline, assessed 13 November:** [the adapter-readiness assessment](adapter-readiness-assessment-2026-11-13.md) confirms substantial implementation and passing selected substitution/protocol tests. Employee/identity reads, vehicle evidence, policy/storage, remote manual/Buddy claims, ordering and mail already have boundaries. Remaining work includes full provider composition separated from demo preparation, remote offer acceptance/decline and connected replacement evidence. This Epic credits that existing work; it does not commission a new adapter architecture or claim every criterion starts unbuilt. Constructing a synthetic provider in the composition root is not itself a coupling defect.
 
 ### decided / proposed scope
 
@@ -181,9 +183,9 @@ Apply the [build rules](build-rules.md), [demo brief](demo-brief.md) and [experi
 
 ## Authoring validation
 
-Documentation-only work. Validation is local Markdown links, proposal/scope consistency and `git diff --check`; application tests, browser trials, deployed-origin checks and provider substitution runs are not performed for this draft. The acceptance sections describe future delivery evidence, not results achieved by authoring the Epics. No Jira writes, service provisioning, dependency installation, application-state changes or external messages are part of this work.
+Initial Epic authoring was documentation-only: local Markdown links, proposal/scope consistency and `git diff --check`, without application tests, browser trials, deployed-origin checks or provider substitution runs. The subsequent adapter-readiness assessment above records its separate focused 11-test run against unchanged runtime code. The acceptance sections describe future delivery evidence, not results achieved by authoring the Epics. No Jira writes, service provisioning, dependency installation, application-state changes or external messages are part of this work.
 
-The draft's 21 local file links passed. A wider check of this document and the index checked 122 links and failed on seven existing index targets, all also missing at baseline `d4e9518ea`: `evidence/{fucq-6,fucq-79,fucq-86-90,fucq-110,fucq-132,fucq-74-75,fucq-13-19}/story-publication.json`, relative to `docs/gcsp/`. Expected: index links resolve to evidence files. Observed: those targets are absent in this checkout; the links are unchanged by this task. Provisional severity: Low, documentation navigation only; originating Story unresolved from this bounded check. Retain for separate reconciliation/repair; Jira Bug capture is deferred by the explicit write pause. This is not a passing whole-index check or a repaired defect.
+The initial draft's 21 local file links passed. A wider initial check of this document and the index checked 122 links and failed on seven existing index targets, all also missing at baseline `d4e9518ea`: `evidence/{fucq-6,fucq-79,fucq-86-90,fucq-110,fucq-132,fucq-74-75,fucq-13-19}/story-publication.json`, relative to `docs/gcsp/`. Expected: index links resolve to evidence files. Observed: those targets are absent in this checkout; the links are unchanged by this task. Provisional severity: Low, documentation navigation only; originating Story unresolved from this bounded check. Retain for separate reconciliation/repair; Jira Bug capture is deferred by the explicit write pause. This is not a passing whole-index check or a repaired defect.
 
 Technical reference checked on 13 November 2026: Angular's official deployment guidance supports static client-rendered delivery and requires deep-link fallback configuration; its routing guidance requires server-side authorization in addition to client guards. References: `https://angular.dev/tools/cli/deployment` and `https://angular.dev/guide/routing/route-guards`. No Angular version has been selected by this draft.
 
