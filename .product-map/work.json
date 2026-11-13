@@ -5498,19 +5498,86 @@
       "workers": []
     },
     {
-      "assignee": "",
       "id": "FUCQ-414",
-      "jira_observed_at": "2026-11-12T15:47:57.529Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
       "title": "Reuse validated immutable stock snapshots across employees",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
       "type": "Story",
-      "unsliced": true,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
-      "workers": []
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "reuse",
+          "status": "complete",
+          "title": "Validated-immutable-snapshot-reuse",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record."
+        },
+        {
+          "id": "proof",
+          "status": "complete",
+          "title": "Semantic-equivalence-and-operation-count-proof",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record."
+        },
+        {
+          "id": "connected",
+          "status": "blocked",
+          "title": "Connected-release-offer-history-integration",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent-final-review",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained."
+        }
+      ],
+      "workers": [
+        {
+          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
+          "name": "Foghorn Leghorn",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/mr_potato_head",
+          "name": "Mr Potato Head",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/pugh",
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-13T22:52:38Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:16:27Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        }
+      ],
+      "jira_observed_at": "2026-11-13T22:36:19.647Z",
+      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
+      "observed_at": "2026-11-13T23:34:17Z",
+      "branch": "dev/DEV-2026-11-13-GC-007"
     },
     {
       "assignee": "",
