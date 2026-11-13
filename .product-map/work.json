@@ -5753,13 +5753,35 @@
       "id": "FUCQ-425",
       "jira_observed_at": "2026-11-12T15:48:40.051Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:40Z",
+      "observed_at": "2026-11-13T23:13:01Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "hydrate",
+          "status": "complete",
+          "title": "Batch evidence hydration in postgres.js within byte and digest bounds",
+          "observed_at": "2026-11-13T23:11:48Z",
+          "evidence": "Lead review of postgres.js batched hydration: referenced digests only, sequential, <=500 digests and writeBatchBytes per fetch, oversized alone"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Native semantic-equivalence and query-count regression tests",
+          "observed_at": "2026-11-13T23:11:48Z",
+          "evidence": "gcsp-postgres-evidence 11/11 native PG17: oracle equivalence, 64 digests in 9 round trips vs 64, byte-bounded fetches, fail-closed missing/corrupt"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL and delivery record",
+          "observed_at": "2026-11-13T23:13:01Z",
+          "evidence": "validate commands and 6 affected caller suites on native PG17 at merged b80c8e73 match base; Result block in story file"
+        }
+      ],
       "status": "To Do",
       "title": "Batch PostgreSQL evidence hydration within memory bounds",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-425",
       "workers": []
     },
