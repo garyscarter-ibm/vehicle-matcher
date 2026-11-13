@@ -5872,17 +5872,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-440",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Show employee account and current-vehicle information",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-441",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -6670,6 +6659,58 @@
       ],
       "note": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
       "jira_observed_at": "2026-11-13T23:18:25.492855+00:00"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-440",
+      "observed_at": "2026-11-13T23:43:45Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Show employee account and current-vehicle information",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
+      "branch": "dev/DEV-2026-11-13-008",
+      "workers": [
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:31:23.186693+00:00",
+          "expires_at": "2026-11-14T01:31:23.186693+00:00",
+          "status": "active",
+          "source": "thread 01a1d73e-195c-7dd3-8470-e5c514fd5fd9; dispatcher claim09a13e78"
+        },
+        {
+          "name": "Toothless",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:43:44.865713+00:00",
+          "expires_at": "2026-11-13T23:43:44.865713+00:00",
+          "status": "complete; editing stopped",
+          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed"
+        }
+      ],
+      "slices": [
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "Typed-account-projection-and-bearer-client",
+          "observed_at": "2026-11-13T23:43:44Z",
+          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "id": "screen",
+          "status": "not-started",
+          "title": "Native-account-current-car-and-existing-actions"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
+        }
+      ],
+      "jira_observed_at": "2026-11-13T20:22:18.041Z"
     }
   ],
   "version": 1
