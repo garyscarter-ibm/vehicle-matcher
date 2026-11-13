@@ -52,11 +52,26 @@ function compileEligibility(resolved) {
   return { field, precedence, mapping, schemes };
 }
 
+function compilePrices(resolved) {
+  const schemes = new Map();
+  for (const row of resolved.rows('pricePlans')) {
+    if (!schemes.has(row.schemeId)) schemes.set(row.schemeId, new Map());
+    const fields = schemes.get(row.schemeId);
+    const field = row.configurationId !== undefined ? 'configurationId' : row.matchField;
+    const value = row.configurationId !== undefined ? row.configurationId : row.matchValue;
+    if (!fields.has(field)) fields.set(field, new Map());
+    const values = fields.get(field);
+    const cell = values.get(value) ?? { row, count: 0 };
+    cell.count += 1; values.set(value, cell);
+  }
+  return schemes;
+}
+
 export class PolicyService {
   #provider;
   #identity; #clock; #repository;
   #snapshots = new WeakMap(); #pinnedRows = new WeakMap();
-  #eligibilityIndexes = new WeakMap();
+  #eligibilityIndexes = new WeakMap(); #priceIndexes = new WeakMap();
   #readScopes = new AsyncLocalStorage();
 
   constructor({ provider = new FilePolicyProvider(), identity, clock, repository } = {}) {
@@ -171,12 +186,15 @@ export class PolicyService {
     if (resolved.error) return resolved.error;
     const error = this.#context(context, read, resolved);
     if (error) return error;
-    const rows = resolved.rows('pricePlans').filter((entry) => entry.schemeId === context.schemeId);
-    const matches = rows.filter((entry) => car && (entry.configurationId !== undefined
-      ? Object.hasOwn(car, 'configurationId') && car.configurationId === entry.configurationId
-      : Object.hasOwn(car, entry.matchField) && car[entry.matchField] === entry.matchValue));
-    if (matches.length > 1) return invalid(resolved.seed.policyVersion, 'ambiguous-price', 'car', 'Multiple effective prices match the supplied car facts.');
-    const [row] = matches;
+    const fields = this.#priceIndex(resolved).get(context.schemeId);
+    let row; let count = 0;
+    if (car && fields) {
+      for (const [field, values] of fields) {
+        const match = Object.hasOwn(car, field) ? values.get(car[field]) : undefined;
+        if (match) { row = match.row; count += match.count; }
+      }
+    }
+    if (count > 1) return invalid(resolved.seed.policyVersion, 'ambiguous-price', 'car', 'Multiple effective prices match the supplied car facts.');
     return row ? ok(resolved.seed.policyVersion, row)
       : outcome('not-found', resolved.seed.policyVersion, { code: 'price-not-found', resourceType: 'price', reasons: [{ field: 'car', reason: 'No exact effective monthly points price.' }] });
   }
@@ -207,6 +225,27 @@ export class PolicyService {
       reasons: [excluded ? 'explicit-exclude' : eligible ? 'explicit-include' : text(fact) ? 'no-applicable-include' : 'missing-model-fact'],
       provenance: { rules: matches, schemeRuleLinks: match?.links ?? [], assumptions: [field, precedence, mapping] },
     });
+  }
+
+  #priceIndex(resolved) {
+    const { seed, at } = resolved;
+    let cache = this.#priceIndexes.get(seed);
+    if (!cache) {
+      const boundaries = new Set();
+      for (const row of seed.pricePlans) {
+        boundaries.add(Date.parse(row.effectiveFrom));
+        if (row.effectiveTo !== undefined) boundaries.add(Date.parse(row.effectiveTo));
+      }
+      cache = { boundaries: [...boundaries].sort((a, b) => a - b), intervals: new Map() };
+      this.#priceIndexes.set(seed, cache);
+    }
+    let low = 0; let high = cache.boundaries.length;
+    while (low < high) {
+      const mid = (low + high) >>> 1;
+      if (cache.boundaries[mid] <= at) low = mid + 1; else high = mid;
+    }
+    if (!cache.intervals.has(low)) cache.intervals.set(low, compilePrices(resolved));
+    return cache.intervals.get(low);
   }
 
   #eligibilityIndex(resolved) {

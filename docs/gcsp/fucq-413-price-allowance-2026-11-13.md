@@ -32,3 +32,11 @@ Native PostgreSQL 16.15 binaries exist locally. The dispatcher reserved the next
 - Price implementer Heihei: requested/selected/effective `gpt-6.1-sol` / `medium`, saved rollout line 8 and own title verified; one child at a time, no fallback.
 
 Implementation and independent review are in progress. Original acceptance remains open; no Built, Done, waiver or closure is claimed. Visual references remain `docs/gcsp/screens/README.md`, `COMPONENTS.md` and frozen baseline `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, under `docs/gcsp/experience-quality.md` and the scope rules in `docs/gcsp/build-rules.md`.
+
+## Price delivery checkpoint
+
+The price compiler groups effective rows by scheme, field and exact value, keeping row/count cells so simultaneous model/configuration matches and generic `configurationId` equality remain ambiguous. The seed-keyed cache is bounded by effective starts/ends. The new regression compares complete outcomes with the old scan across primitives, inherited facts, arbitrary fields, scheme/context errors, dated intervals, active successors, historical pins, run reset and mutation isolation.
+
+Heihei passed five new cases, 21 service cases and five eligibility cases. Lead review read the stat/diff, complete new oracle tests and actual recommendation callers, then reran the five focused and 21 service cases: **26 pass, zero fail/skip**. First compilation visits 23 price rows across instrumentation; 64 repeated pinned/unpinned calls leave that at 23. The next interval raises it to 39; 32 more calls and a historical pin leave it at 39. This measures collection work, not a wall-clock speedup. Tested policy SHA-256: `e1ce7e6de7c2d475d7783833672a1183799d2f29612076fc9d6a4c07a1ae1690`.
+
+The first attempt failed before tests with `ERR_MODULE_NOT_FOUND` for `pg`; it remains in `heihei-initial-price.log` and the initial receipt. Successful checks used a manifest-owned temporary worker dependency link to the installed root `server/node_modules`. Both implementer and lead receipts verify scratch/link absence and unchanged `pg/package.json` target. Implementer peak sampled scratch was 965,561 bytes and direct-child RSS 178,782,208 bytes. Retained receipts are `heihei-receipt.json` and `lead-price-receipt.json` under the shared resource directory. No native/browser allocation occurred in this checkpoint.

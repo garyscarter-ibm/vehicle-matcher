@@ -6728,15 +6728,15 @@
       "id": "FUCQ-413",
       "jira_observed_at": "2026-11-12T15:47:47.844Z",
       "note": "Claimed FUCQ-413 implementation; original four criteria fixed, connected/native gates remain open. See docs/gcsp/fucq-413-price-allowance-2026-11-13.md.",
-      "observed_at": "2026-11-13T23:47:40Z",
+      "observed_at": "2026-11-13T23:52:03Z",
       "original_status": "In Progress",
       "slices": [
         {
           "id": "prices",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Compile-price-equality-lookups",
-          "observed_at": "2026-11-13T23:47:40Z",
-          "evidence": "FUCQ-413 assigned worker a5dd9630, original price criterion; manifest .claude/test-runs/fucq413/manifest.json"
+          "observed_at": "2026-11-13T23:52:03Z",
+          "evidence": "Lead reviewed complete price diff, callers and scan oracle; 5 focused and21 policy service passes at e1ce7e6d policy hash; heihei and lead-price receipts, docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
         },
         {
           "id": "allowances",
