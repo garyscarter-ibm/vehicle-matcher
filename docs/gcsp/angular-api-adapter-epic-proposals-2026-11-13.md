@@ -1,8 +1,8 @@
-# Static Angular frontend and replaceable service adapters — Epic proposals
+# Static Angular frontend, Java backend and replaceable adapters — Epic proposals
 
 Gary's refinement request, 13 November 2026. **Draft for discussion; no Jira items published and no implementation started.** Jira writes remain paused. These proposals preserve existing Story contracts, claims and acceptance decisions.
 
-The intended outcome is a GCSP experience delivered as a static Angular application, calling a separately deployable backend API whose external dependencies can be replaced through explicit adapters.
+The intended outcome is a GCSP experience delivered as a static Angular application, calling a separately deployable **Java 21 / Quarkus 3.x backend API** whose external dependencies can be replaced through explicit adapters.
 
 ## Recommended boundaries
 
@@ -11,14 +11,19 @@ The intended outcome is a GCSP experience delivered as a static Angular applicat
 | **E1 — Run GCSP through an independently hosted frontend and backend API** | Restore the planned deployment and responsibility split while retaining working sessions and journeys. | Can we publish the frontend separately, with all application data and actions crossing the API boundary? |
 | **E2 — Deliver the GCSP experience in Angular** | Angular owns the application's screens, navigation and presentation state, preserving the existing experience and behaviour. | Can employees, Greg and the presenter complete the existing supported journeys in the Angular application? |
 | **E3 — Replace external service providers without changing the GCSP experience** | Dedicated backend adapter contracts isolate external data and operations; replaceable providers use the same application services. | Can we change provider implementations through composition, with contract and journey evidence showing the application still works? |
+| **E4 — Run the GCSP backend on Java 21 and Quarkus 3.x** | Replace the Node backend runtime while preserving API behaviour, business decisions and durable state. | Can the same frontend journeys run against Quarkus, with equivalent results and proven transactional behaviour? |
 
-Keep these as three bounded outcomes. A static/API split can work before Angular, and an Angular migration alone would not establish replaceable external services. Implement through small connected journeys rather than three large rewrites. This document proposes Epic-level acceptance; implementation Story slicing and estimates follow refinement.
+Keep these as four bounded outcomes. A static/API split can work before Angular, an Angular migration alone would not establish replaceable external services, and a Java port needs its own parity evidence. Implement through small connected journeys rather than four large rewrites. This document proposes Epic-level acceptance; implementation Story slicing and estimates follow refinement.
 
 **Confirmed by Gary, 13 November 2026:** the migration covers **GCSP only**, and **Angular owns the frontend**, including screens and navigation. Existing custom elements may support the migration. Used Cars remains a separate consumer of shared assets and logic, with its existing frontend and behaviour preserved. These two scope decisions do not constitute acceptance of every proposed criterion below.
 
+**Additional direction, Gary, 13 November 2026:** port the backend to **Java 21 using Quarkus 3.x**. E4 adds that requested outcome; the initial three-Epic draft did not include a backend language migration. This is authoring scope, not an instruction to begin the port.
+
 ## The claim we should be able to demonstrate
 
-> The Angular frontend obtains application data and performs business actions through our backend API. Every external system dependency sits behind a dedicated backend adapter contract. Our demonstration uses synthetic or recorded providers where live services are unavailable. A conforming live adapter can replace a provider without changing the frontend or core application logic, provided the live service supplies the required data and capabilities.
+> The Angular frontend obtains application data and performs business actions through our Java 21 / Quarkus backend API. Every external system dependency sits behind a dedicated backend adapter contract. Our demonstration uses synthetic or recorded providers where live services are unavailable. A conforming live adapter can replace a provider without changing the frontend or core application logic, provided the live service supplies the required data and capabilities.
+
+This is the target completion claim to prove, not a statement that the current application already satisfies it. The Java port changes the backend implementation once; later provider substitutions should preserve that implementation's application logic.
 
 There are two different boundaries: **Angular API clients** connect the browser to our backend; **backend service adapters** connect application services to external systems. The frontend never selects a real or mock upstream provider. External authentication redirects and approved image/static-asset delivery may use their own hosts; application data and business commands still follow the backend boundary.
 
@@ -51,7 +56,7 @@ Application-owned state, employee-entered preferences and calculated recommendat
 
 Use the existing route inventory and manual acceptance scenarios. Exercise the selected HTTPS topology in supported browsers, including Safari and private browsing, rather than relying on loopback or CORS inspection alone. Cover login/context, presenter setup/reset, saved preferences, manual claims, offer exchange/decisions and Greg's operations; retain server authorization checks. Record actual results, failures and unrun cases. E2 supplies Angular-specific routing acceptance when its screens replace the current frontend.
 
-**Boundary:** no new backend language, microservices, repository split, database migration or Cloudflare move. This Epic preserves existing behaviour; it does not absorb performance tuning or new product features.
+**Boundary:** backend language conversion belongs to E4. E1 introduces no microservices, repository split, database migration or Cloudflare move. It preserves existing behaviour and does not absorb performance tuning or new product features.
 
 ## E2 — Deliver the GCSP experience in Angular
 
@@ -119,13 +124,42 @@ This is a coverage checklist, not a requirement for six services or six adapters
 
 Reuse existing adapter, service, HTTP and journey checks. Exercise the actual runtime composition, not just constructors in isolation. Include at least an employee-context/stock-to-recommendation flow and a claim-to-order/status flow, plus the relevant failure/retry cases. For ports not used by those two journeys, retain focused contract evidence and an explicit coverage record. Keep fixture reset and synthetic-identifier protections isolated from any real integration. Contract mismatch or missing upstream capability is a recorded integration gap, not a passing mock test.
 
-**Boundary:** this Epic establishes and proves replacement seams for existing capabilities. It does not commission every live BMW adapter, invent missing APIs, convert the backend to Java, migrate hosting to AWS or establish production readiness. Actual live integrations remain separately scoped capabilities, including the existing live catalogue/imagery work.
+**Boundary:** this Epic establishes and proves replacement seams for existing capabilities. It does not commission every live BMW adapter, invent missing APIs, migrate hosting to AWS or establish production readiness. Java runtime implementation belongs to E4; actual live integrations remain separately scoped capabilities, including the existing live catalogue/imagery work.
+
+## E4 — Run the GCSP backend on Java 21 and Quarkus 3.x
+
+**Intent:** As the team maintaining and integrating GCSP, we can operate its backend on the requested Java platform while the same frontend and provider contracts retain their meaning and users retain their data and working journeys.
+
+### decided / proposed scope
+
+- Implement the GCSP backend runtime in Java 21 with a pinned Quarkus 3.x release. Include the supported API routes, application services, policy/recommendation/allocation logic, repository, provider adapters and existing clock, notification and job responsibilities. Maintain static frontend delivery under E1; Quarkus does not become an HTML-rendering frontend.
+- Establish an explicit API/behaviour baseline from the currently supported Node implementation. Preserve paths, methods, payloads, status/error meanings, identifiers, dates, session/cookie and offer-token handling, role/resource checks and applicable version/command semantics. Any necessary incompatible change is separately agreed and sequenced.
+- Retain PostgreSQL data and schema compatibility wherever practical. Prove the existing guarantees for exclusive claims/holds, pinned policies/quotes, idempotent commands, pending external outcomes and recovery. Document and rehearse any necessary data/schema transition and rollback; do not reset employee state to simplify the port.
+- Translate decision logic with shared reference inputs and expected outcomes. Preserve eligibility, ranking/tie-break decisions, explanations and calculations. Retail's JavaScript implementation remains supported; cross-language contract/parity evidence replaces assumptions that Java can import the existing JavaScript modules.
+- Replace Node-specific runtime facilities where they are used, including comparison workers and filesystem-backed corpus/model reads. Preserve the supported capabilities and lifecycle; introducing an autonomous scheduler or new event platform is separate scope.
+- Implement E3's adapter boundaries through Java interfaces and trusted Quarkus composition. A temporary Node coexistence route can support migration, but the final in-scope backend runs in Java; permanently forwarding business operations to Node does not complete the port.
+- Supply a reproducible JVM build, runtime configuration, health/readiness and Render deployment/rollback path. Pin Java 21 and the chosen supported Quarkus 3.x version at implementation refinement. A native-image build is not required by this proposal.
+
+### acceptance
+
+1. The in-scope backend builds and runs on Java 21 / Quarkus 3.x. A capability matrix accounts for all currently supported Node backend responsibilities and their Java replacements; omitted or unimplemented backlog work is identified explicitly.
+2. The same supported frontend journeys pass against Quarkus using the agreed API contract. Session expiry, authorization denials, offer entry, errors and source-unavailable cases retain their observable meaning. No frontend business rewrite is needed merely to change backend language.
+3. Reference inputs produce equivalent eligibility, rankings, allocations, explanations and persisted transitions. Numeric representation differences are resolved against the existing contract; no silent rule changes or per-employee exceptions are introduced.
+4. PostgreSQL integration proves competing claims, duplicate/retried commands, uncertain writes, expiry/reset and interrupted-work recovery preserve existing guarantees. Persisted records, active offers and historical policy/quote references remain readable and correct across the rehearsed cutover.
+5. The Java runtime uses E3's provider boundaries and supports its substitution demonstration. Mock-backed journeys function through Java application services; API-compatible Node forwarding is identified as a temporary migration state.
+6. A representative hosted workload demonstrates usable existing journeys and jobs within the selected Render resources. Release, readiness, compatible-state rollback and retirement of the in-scope Node runtime are demonstrated. Any required hosting-plan/cost change is made explicit before provisioning; no performance improvement is claimed without measurement.
+
+### validate
+
+Reuse current API contracts, manual scenarios and decision fixtures as the baseline. Run the same HTTP/journey checks against Node and Quarkus on isolated equivalent state; compare business outputs and error behaviour. Add Java service/repository checks where existing JavaScript tests exercise implementation directly, rather than treating those old tests as proof of the Java code. Use actual PostgreSQL for transaction/concurrency/restart evidence and replay provider refusal/uncertainty paths without live external actions. Rehearse deployment and rollback on non-production state, then record the actual hosted smoke/workload results and limitations. Existing checks remain authoritative evidence of intended behaviour, not a mandate to create a new general validation framework.
+
+**Boundary:** the port preserves implemented GCSP capabilities and introduces no new product rules, BMW integration, database-engine change, AWS move, microservice split, native-image requirement or Used Cars backend migration. Java/Quarkus does not by itself prove production-platform compatibility or resolve the separately tracked performance/reliability work.
 
 ## Existing foundations and overlap
 
 Observation baseline: `gcsp-poc` at `d4e9518ea`, 13 November 2026. These are code/document observations, not a fresh Jira status audit.
 
-- [The static/API assessment](static-frontend-api-assessment-2026-11-13.md) identifies existing page hosting, mixed API transports, presenter-cookie setup and the 9 November same-origin decision. E1 supplies the remaining migration outcome. Its earlier 4–8 day indication excludes Angular migration and the adapter-completeness work; it is not an estimate for these three Epics.
+- [The static/API assessment](static-frontend-api-assessment-2026-11-13.md) identifies existing page hosting, mixed API transports, presenter-cookie setup and the 9 November same-origin decision. E1 supplies the remaining migration outcome. Its earlier 4–8 day indication excludes Angular migration, adapter-completeness work and the Java backend port; it is not an estimate for these four Epics.
 - [Runtime composition](../../server/gcsp/runtime.js) already accepts identity/stock and other dependencies, but directly constructs synthetic manual-stock, ordering, status, document, appointment and return providers. [Manual context](../../server/gcsp/manual-context/index.js) has source-aware ports, with [scenario fixture preparation](../../server/gcsp/manual-context/fixtures.js). E3 should complete/select existing seams before proposing new ones.
 - [The repository](../../server/gcsp/repository/index.js), [PolicyService](../../server/gcsp/policy/index.js) and [mail transport configuration](../../server/gcsp/notify/config.js) demonstrate that adapters have different purposes and evidence levels. Preserve existing authority and failure behaviour.
 - [FUCQ-6 / the HLD](../design/gcsp-high-level-design.md) owns architecture agreement; [FUCQ-8](shared-recommendation-design.md) owns shared recommendation contracts; [FUCQ-13](fucq-12-stories.md) owns compatible entry/routing. [The vehicle-adapter map](bmw-interface-stories.md) retains FUCQ-14–20, including access-gated live catalogue/imagery. Reconcile overlap at Story authoring; retain their acceptance and avoid duplicate delivery claims.
@@ -135,9 +169,13 @@ Observation baseline: `gcsp-poc` at `d4e9518ea`, 13 November 2026. These are cod
 
 Gary has confirmed GCSP-only scope and Angular-owned screens/navigation. Align the canonical [draw.io HLD](../design/high-level-design.drawio) and its existing design records with that delta before architecture rewiring. This proposal document is not a replacement HLD.
 
+The additional Java/Quarkus direction also changes the backend implementation baseline. Carry the same API, provider and state responsibilities into that HLD update; the language change does not relocate business authority into Angular.
+
 Use an initial connected slice to prove Angular sign-in/context against the separate API and the chosen HTTPS session arrangement. Continue by supported journey, sharing E1's transport work and E3's provider contracts. Provider inventory and backend contract work can proceed independently of screen migration where the interfaces already exist. Do not require completing every Epic before a coherent increment can be integrated.
 
-Before Story pickup, agree the route baseline, target Angular/toolchain constraints, domain/routing topology and the required capabilities for each provider. Assess technical dependencies from actual interfaces under [the readiness policy](technical-readiness-2026-11-05.md); Jira links alone are not automatic gates. Capture any separate live-service access gap without making all mock-backed migration work depend on it.
+Establish the API/decision baseline before rewriting its implementation. Prove an initial Quarkus read/context slice against the same frontend contract, then migrate transactional journeys and background responsibilities with explicit state ownership. E3 specifies application-facing provider behaviour independently of JavaScript types; implement its remaining production seams in the Java slices where practical rather than requiring two complete adapter refactors. Avoid two runtimes independently mutating the same live business state during migration.
+
+Before Story pickup, agree the route/capability baseline, target Angular/toolchain constraints, Quarkus 3.x version/build constraints, domain/routing topology and the required capabilities for each provider. Assess technical dependencies from actual interfaces under [the readiness policy](technical-readiness-2026-11-05.md); Jira links alone are not automatic gates. Capture any separate live-service access gap without making all mock-backed migration work depend on it.
 
 Apply the [build rules](build-rules.md), [demo brief](demo-brief.md) and [experience contract](experience-quality.md) when refining Stories. Retain canonical policy, pinned quotes, backend permissions, durable state and the existing synthetic-data boundaries. No existing claimed Story's acceptance changes through this document.
 
@@ -148,3 +186,5 @@ Documentation-only work. Validation is local Markdown links, proposal/scope cons
 The draft's 21 local file links passed. A wider check of this document and the index checked 122 links and failed on seven existing index targets, all also missing at baseline `d4e9518ea`: `evidence/{fucq-6,fucq-79,fucq-86-90,fucq-110,fucq-132,fucq-74-75,fucq-13-19}/story-publication.json`, relative to `docs/gcsp/`. Expected: index links resolve to evidence files. Observed: those targets are absent in this checkout; the links are unchanged by this task. Provisional severity: Low, documentation navigation only; originating Story unresolved from this bounded check. Retain for separate reconciliation/repair; Jira Bug capture is deferred by the explicit write pause. This is not a passing whole-index check or a repaired defect.
 
 Technical reference checked on 13 November 2026: Angular's official deployment guidance supports static client-rendered delivery and requires deep-link fallback configuration; its routing guidance requires server-side authorization in addition to client guards. References: `https://angular.dev/tools/cli/deployment` and `https://angular.dev/guide/routing/route-guards`. No Angular version has been selected by this draft.
+
+Quarkus's official 3.x overview identifies Java 21 support, and its datasource/transaction guides describe PostgreSQL and Jakarta transaction facilities. These establish available framework facilities, not compatibility of our unported code. References: `https://quarkus.io/quarkus3/`, `https://quarkus.io/guides/datasource/` and `https://quarkus.io/guides/transaction/`, checked on 13 November 2026. No precise Quarkus 3.x release, Java build or deployment artifact has been selected or tested by this draft.
