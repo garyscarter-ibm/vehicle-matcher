@@ -5701,13 +5701,35 @@
       "id": "FUCQ-423",
       "jira_observed_at": "2026-11-12T15:49:02.356Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:40Z",
+      "observed_at": "2026-11-13T22:54:10Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "evidence": "Lead review of postgres.js journal flush; contract/evidence/journal suites pass on native PG17 with only the base F71 failures",
+          "id": "flush",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "status": "complete",
+          "title": "Flush PostgreSQL commits from the mutation journal"
+        },
+        {
+          "evidence": "gcsp-postgres-write-set 5/5 native: equivalence with memory, constant statements and rows at 47 vs 4047 history rows, rollback, competing instances, replay",
+          "id": "evidence",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "status": "complete",
+          "title": "Focused semantic-equivalence and native query-count tests"
+        },
+        {
+          "evidence": "validate commands and 6 affected caller suites on native PG17 match base; Result block in story file",
+          "id": "integration",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL and delivery record"
+        }
+      ],
       "status": "To Do",
       "title": "Flush PostgreSQL changes from explicit mutation sets",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-423",
       "workers": []
     },
