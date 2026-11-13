@@ -6372,14 +6372,17 @@
         },
         {
           "id": "operations",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Bounded-linear-lookup-proof",
-          "observed_at": "2026-11-13T21:37:38Z"
+          "observed_at": "2026-11-13T21:41:45Z",
+          "evidence": "Lead accepted production-fragment identity and bounded counts; operations-focused3/3 and targeted lead-operations3/3, zero skipped; SHA256 9c6153bbdd4e32ebcf5d2e87a2fd251472ef0980e1ea8279d980ebbf6efe4b1c"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Connected-outcomes-and-independent-review"
+          "status": "in-progress",
+          "title": "Connected-outcomes-and-independent-review",
+          "observed_at": "2026-11-13T21:41:45Z",
+          "evidence": "Dibble runner selected gpt-6-luna/high for native Jira read, selected runtime modules and connected desktop+narrow inspection; independent review pending"
         }
       ],
       "workers": [
@@ -6397,14 +6400,23 @@
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-13T21:37:38.588540+00:00",
-          "expires_at": "2026-11-13T22:37:38.588540+00:00",
+          "expires_at": "2026-11-13T21:42:17.333482+00:00",
           "source": "collaboration /root/goopy_geer",
-          "status": "operations slice active; lookup reviewed"
+          "status": "completed; both implementation slices accepted by lead"
+        },
+        {
+          "name": "Dibble",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-13T21:42:17.333482+00:00",
+          "expires_at": "2026-11-13T22:42:17.333482+00:00",
+          "source": "collaboration /root/dibble; requested/selected gpt-6-luna/high; effective runtime pending verification",
+          "status": "active connected verification"
         }
       ],
       "jira_observed_at": "2026-11-12T15:47:39.682Z",
       "note": "Claim ef586adf; lead Charlie Dog; direct allocation index only. Native status supplied by dispatcher; no acceptance inferred.",
-      "observed_at": "2026-11-13T21:37:38Z",
+      "observed_at": "2026-11-13T21:42:17Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
