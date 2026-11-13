@@ -51,7 +51,7 @@
     "merge": "auto",
     "owner": "Russell"
   },
-  "base_branch": "gcsp-poc",
+  "base_branch": "gcsp-poc-dev",
   "team": {
     "mode": "team",
     "owner": "usget",
