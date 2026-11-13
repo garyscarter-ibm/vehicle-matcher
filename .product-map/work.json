@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-005",
       "id": "FUCQ-412",
       "jira_observed_at": "2026-11-12T15:47:45.907Z",
-      "note": "Integration checkpoint ready; full acceptance incomplete. Existing F400 Low/F484 Medium do not block review/merge or add dependencies. Original AC4 unchecked, failed assertion/four PG skips preserved. Dispatcher owns serialized post-F409 integration and open acceptance/claim lifecycle; no Done/waiver. Worker observation stays expired.",
-      "observed_at": "2026-11-13T22:41:24Z",
+      "note": "Integration checkpoint ready on 0ab125ae/F423; full acceptance open. Original AC4 unchecked, F400 Low and F484 Medium unresolved; four distinct PG skips retained. Fresh affected boundary checks 22pass/0fail/1skip, unchanged earlier scoped evidence retained. Dispatcher owns publication/shared merge/Jira/claim lifecycle. No Done/waiver; worker observation stays expired.",
+      "observed_at": "2026-11-13T23:02:07Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -5499,9 +5499,9 @@
           "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
         },
         {
-          "evidence": "Coherent checkpoint ready for dispatcher-serialized integration after F409 under standing build-rules policy. All connected states independently reviewed; original AC4 unchecked, F400 Low unresolved, F484 Medium failing assertion and four PG skips retained. Neither Bug blocks review/merge or adds a dependency. No Done/waiver/UI repair. Await dispatcher post-F409 base before further validation.",
+          "evidence": "Latest base 0ab125ae merged as 2f16eba4. Fresh journal9/disconnect7/runtime6 pass, one native skip; unaffected prior module evidence retained at 262a278d. Integration checkpoint ready, full acceptance open: AC4 unchecked, F400 Low/F484 Medium unresolved, four distinct PG skips. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md.",
           "id": "integration",
-          "observed_at": "2026-11-13T22:41:24Z",
+          "observed_at": "2026-11-13T23:02:07Z",
           "status": "in-progress",
           "title": "Lead affected-consumer and connected presentation validation"
         }
