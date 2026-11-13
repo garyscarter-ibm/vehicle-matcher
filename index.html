@@ -443,14 +443,16 @@ main {
           </section>
           ${b.openingHtml || ''}
 
-          <section class="demo-tool" id="demo-tool">
-            <div class="vehicle-matcher block" data-block-name="vehicle-matcher" data-api="${DEFAULT_API}">
-              <div><div>Brand</div><div>${brandKey}</div></div>
-              <div><div>Retailer ID</div><div>${esc(retailerId)}</div></div>
-              <div><div>Retailer Name</div><div>${esc(retailerName)}</div></div>
-              <div><div>Title</div><div>none</div></div>
-            </div>
-          </section>
+          <div class="demo-tool-roll" id="demo-tool-roll"><div class="demo-tool-roll-inner">
+            <section class="demo-tool" id="demo-tool">
+              <div class="vehicle-matcher block" data-block-name="vehicle-matcher" data-api="${DEFAULT_API}">
+                <div><div>Brand</div><div>${brandKey}</div></div>
+                <div><div>Retailer ID</div><div>${esc(retailerId)}</div></div>
+                <div><div>Retailer Name</div><div>${esc(retailerName)}</div></div>
+                <div><div>Title</div><div>none</div></div>
+              </div>
+            </section>
+          </div></div>
 
           <footer class="demo-footer">
             <div class="demo-footer-inner">
@@ -656,15 +658,41 @@ main {
           shownStep = step;
         };
         new MutationObserver(showBacking).observe(tool, { childList: true, subtree: true });
-        // The opening panel and ProvB1 never share the screen with the matcher; until then only the
-        // panel's copy and pills change, under the same headline and with the page where it is.
-        const reveal = () => {
-          opening.hidden = true;
-          benefits.hidden = true;
-          tool.hidden = false;
+        // The white middle section stays; the question panel rolls out from its bottom edge. ProvB1 is
+        // gone by then (folded away when the journey view opened), so the panel meets the section.
+        const roll = document.getElementById('demo-tool-roll');
+        const rollInner = roll.firstElementChild;
+        rollInner.inert = true;
+        const reveal = (animate = true) => {
+          benefits.classList.add('is-collapsed');
+          rollInner.inert = false;
+          if (!animate) { roll.classList.add('is-instant'); roll.classList.add('is-open'); return; }
+          const start = window.scrollY;
+          roll.classList.add('is-open');
+          // Keep the growing panel in view: its bottom edge at the window's bottom, its top clear of the nav.
+          const top = roll.getBoundingClientRect().top + start;
+          const want = top + rollInner.scrollHeight - window.innerHeight;
+          const target = Math.min(Math.max(want, start), top - 110);
+          if (target <= start || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            if (target > start) window.scrollTo(0, target);
+            return;
+          }
+          const t0 = performance.now();
+          const step = (now) => {
+            const k = Math.min((now - t0) / 600, 1);
+            window.scrollTo(0, start + (target - start) * (1 - (1 - k) ** 3));
+            if (k < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
         };
-        if (/[#&]m=/.test(window.location.hash)) reveal();
-        else tool.hidden = true;
+        if (/[#&]m=/.test(window.location.hash)) {
+          // A shared link skips the opening: the journey view shows and the panel is already open.
+          introView.classList.remove('is-current');
+          introView.inert = true;
+          journeyView.inert = false;
+          journeyView.classList.add('is-current');
+          reveal(false);
+        }
         // The panel is exactly as tall as the view on show, so it can shrink to the second banner's height.
         const fitViews = () => {
           const current = views.querySelector('.rr-view.is-current');
@@ -691,7 +719,6 @@ main {
           e.preventDefault();
           e.currentTarget.classList.add('is-active');
           reveal();
-          tool.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
         const nav = root.querySelector('.demo-nav');
         // The Spirit of Ecstasy cross-fades in over the RR mark as the bar shrinks.

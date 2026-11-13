@@ -374,7 +374,6 @@
 /* Podium progress bar sits 10px below the hero — remove the tool section's
    top padding and replace it with 10px on the block itself. */
 .vm-rrmc .demo-tool { padding-top: 0; }
-.vm-rrmc .demo-tool[hidden] { display: none; }
 .vm-rrmc .demo-tool > .vehicle-matcher.vm { padding-top: 10px; }
 /* Pin the question pane to the window top so it slides under the sticky nav (z-index 100). */
 .vm-rrmc .demo-tool > .vehicle-matcher.vm { --vm-podium-sticky-top: 0px; }
@@ -541,6 +540,22 @@
 
 /* ================= RRMC question panel (Figma "Location", 1440 wide) ================= */
 
+/* Other brands: the wrapper is transparent to layout, so the tool still stretches in the shell. */
+.demo-tool-roll { display: flex; flex: 1 1 auto; flex-direction: column; }
+.demo-tool-roll-inner { display: flex; flex: 1 1 auto; flex-direction: column; }
+.demo-tool-roll-inner > .demo-tool { flex: 1 1 auto; }
+
+/* The panel rolls out from the white section's bottom edge: 0fr to 1fr grows it to its own height. */
+.vm-rrmc .demo-tool-roll {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vm-rrmc .demo-tool-roll.is-open { grid-template-rows: 1fr; }
+.vm-rrmc .demo-tool-roll.is-instant { transition: none; }
+.vm-rrmc .demo-tool-roll-inner { min-height: 0; overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .vm-rrmc .demo-tool-roll { transition: none; } }
+
 /* "Begin your journey" fills in purple (the frame's INV pill) once pressed. */
 .rr-pill.is-active { border-color: #281432; background: #281432; color: #fff; }
 
@@ -552,7 +567,7 @@
 .vm-rrmc .demo-tool:has(.vm-screen[data-step="1"]),
 .vm-rrmc .demo-tool:has(.vm-screen[data-step="2"]),
 .vm-rrmc .demo-tool:has(.vm-screen[data-step="3"]) { --q-h: 56.11vw; }
-.vm-rrmc .demo-tool:not([hidden]):has(.vm-screen[data-qid]) {
+.vm-rrmc .demo-tool:has(.vm-screen[data-qid]) {
   position: relative;
   display: flex;
   flex-direction: column;
