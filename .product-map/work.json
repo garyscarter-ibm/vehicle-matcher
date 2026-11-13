@@ -5540,14 +5540,17 @@
       "slices": [
         {
           "id": "reuse",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Validated-immutable-snapshot-reuse",
-          "observed_at": "2026-11-13T22:37:32Z"
+          "observed_at": "2026-11-13T22:51:21Z",
+          "evidence": "Lead source/caller review; final implementer scoped77 and independent lead34 passed, zero skips; docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md. Connected/review gates still pending."
         },
         {
           "id": "proof",
-          "status": "not-started",
-          "title": "Semantic-equivalence-and-operation-count-proof"
+          "status": "complete",
+          "title": "Semantic-equivalence-and-operation-count-proof",
+          "observed_at": "2026-11-13T22:51:21Z",
+          "evidence": "Lead source/caller review; final implementer scoped77 and independent lead34 passed, zero skips; docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md. Connected/review gates still pending."
         },
         {
           "id": "connected",
@@ -5576,13 +5579,13 @@
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-13T22:37:32Z",
-          "expires_at": "2026-11-13T23:37:32Z",
-          "source": "collaboration.spawn_agent accepted; reuse/proof slice"
+          "expires_at": "2026-11-13T22:51:21Z",
+          "source": "Implementer final report received; source frozen, no active edits"
         }
       ],
       "jira_observed_at": "2026-11-12T15:47:57.529Z",
-      "note": "Claimed FUCQ-414/DEV-2026-11-13-GC-007 at806d4816; fixed four native AC. Independent implementation readiness confirmed from validateSource/createVehicleSnapshot. Connected/native/rendered integration and independent final review remain required. No Jira status or acceptance inferred.",
-      "observed_at": "2026-11-13T22:37:32Z",
+      "note": "Implementation and scoped proof checkpoint: final77+independent34 passed. Fixed original AC; connected/native outcomes and independent final review pending. No Jira transition or acceptance inferred.",
+      "observed_at": "2026-11-13T22:51:21Z",
       "branch": "dev/DEV-2026-11-13-GC-007"
     },
     {
