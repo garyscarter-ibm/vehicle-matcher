@@ -1,5 +1,7 @@
 # Dated policy versions · FUCQ-83
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Implemented and validated on 5 November 2026. Configured managed PostgreSQL proof passed the complete policy contract21/21, the added explicit-schema factory assertion1/1 and repository boundary61/61, with no skips. Unchanged consumer boundaries passed 93/93 with database settings unset. The exact combined FUCQ-83/FUCQ-50 offline `npm test` passed 1,235 total/1,230 passed/0 failed/5 native skips; strict stamp `07aea3ec1a62` matched immediately in the same process/environment. [Current evidence](evidence/fucq83/README.md) distinguishes those offline skips from the separate completed native checks.
 
 ## Implementation choices

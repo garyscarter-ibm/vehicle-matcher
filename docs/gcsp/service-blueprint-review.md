@@ -1,5 +1,7 @@
 # FUCQ-3 — Paula service blueprint, version 4
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 1 November 2026. [Open the blueprint](service-blueprint.html). Proposed service for review, using the agreed Carbon White document design. The [version 3 record](service-blueprint-review-v3.md) preserves earlier verification.
 
 ## Changes from Russell’s review

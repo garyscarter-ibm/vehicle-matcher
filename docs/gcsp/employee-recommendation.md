@@ -1,5 +1,7 @@
 # Read-only employee recommendations · FUCQ-29
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 This first employee consumer evaluates exact cars against the confirmed practical brief and the server-owned scheme context. It calls the existing `rankCars()` curves after the hard gates; shared evaluator extraction remains FUCQ-27/28 after 12 November. Saving a brief, claiming stock, allocating or creating an offer and sending mail belong to separate services.
 
 ## Authority and composition

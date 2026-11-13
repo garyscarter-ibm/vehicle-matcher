@@ -1,5 +1,7 @@
 # FUCQ-115 offline choice model contract
 
+> **Migration design overlay — 13 November 2026.** The [current decisions](../../design/migration-decisions-2026-11-13.md) and [replacement contracts](../migration-replacement-contracts-2026-11-13.md) govern the target. Preserve frozen capability/visual semantics; Angular 21 owns screens, Java 21/Quarkus 3.x owns runtime calculations/jobs and source adapters. Offline JS training/preparation may remain. OIDC bearer JWT replaces legacy cookie/password authority, each employee/Greg uses their own login and presenter has controls/inspection only. The dated implementation, approved references and native acceptance below remain historical evidence, not proof of replacement delivery.
+
 5 November 2026. Independent implementation under Gary's technical-readiness direction.
 Story DEV-2026-11-04-092, branch `dev/DEV-2026-11-04-092`, base
 `fc1e283a079aa2ffe6e0a78fe74ba3002e7b9cda`. This records implementation contracts and

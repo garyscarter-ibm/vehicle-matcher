@@ -1,5 +1,7 @@
 # One-offer access · FUCQ-102
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. The token-exchange/scoped offer-cookie authority below is legacy and is not ported. New `/gcsp/offers/:offerId` links require real OIDC sign-in, return and backend employee ownership on every read/command; opaque lookup material grants no authority. Do not preserve old link compatibility. New links and offer state survive normal replacement-app restarts, while legacy links may be discarded at final switch. Renew or sign in again safely without automatic order submission. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Contract proposal, 5 November 2026. Independent modules belong to FUCQ-102;
 FUCQ-100 owns token production, FUCQ-103 central registration, FUCQ-105 the page,
 and FUCQ-106 decisions. This checkpoint is a contract, not integrated runtime proof.

@@ -1,5 +1,7 @@
 # HLD readiness for story breakdown — 4 November 2026
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](migration-decisions-2026-11-13.md) and [replacement contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Assessment of the GCSP HLD on `origin/gcsp-poc` at `c7cfa9d` (`gcsp-high-level-design.md`, `high-level-design.drawio`, `hld-review-gc.md`, `../gcsp/hld-agreement-2026-11-04.md`) against the initial requirements: the [demo brief](../gcsp/demo-brief.md), the [22 capability proposals](../gcsp/capability-breakdown.md) and the [build rules](../gcsp/build-rules.md). The Jira FUCQ backlog was read on the same date. Nothing was changed in Jira or the design.
 
 ## Verdict

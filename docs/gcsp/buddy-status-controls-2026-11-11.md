@@ -1,5 +1,7 @@
 # Buddy status and visible search controls
 
+> **Migration design overlay — 13 November 2026.** The [current decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the target. Preserve frozen capability/visual semantics; Angular 21 owns screens, Java 21/Quarkus 3.x owns runtime calculations/jobs and source adapters. Offline JS training/preparation may remain. OIDC bearer JWT replaces legacy cookie/password authority, each employee/Greg uses their own login and presenter has controls/inspection only. The dated implementation, approved references and native acceptance below remain historical evidence, not proof of replacement delivery.
+
 FUCQ-389. Gary approved Option A and authorised build on 11 November 2026. The approved reference is [Option A](mockups/buddy-status-2026-11-11/consistency.html).
 
 Your cars gains one compact, outlined account-level Buddy indicator with the original chevron. The entire link opens Buddy activity. Active and Paused share their green/amber dot and wording with the activity header; unconfigured reads Set up your buddy. The activity header replaces the ellipsis with separate named Pause search / Resume search controls, or setup navigation. No View buddy wording.

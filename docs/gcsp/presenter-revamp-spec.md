@@ -1,5 +1,9 @@
 # Presenter console revamp: spec and mockups
 
+## Migration role refinement — 13 November 2026
+
+Preserve the frozen implemented console design and supported controls, subject to the [new identity boundary](../design/migration-decisions-2026-11-13.md): a dedicated OIDC presenter login owns clock/releases/scenarios/resets/faults/retry and authorized read-only inspection (outbox/comparisons). Remove principal switching and any employee/Greg actions from Basic or Advanced modes. Employees/Greg use their own logins; Greg starts/reruns comparisons and submits business requests. A scenario can prepare/advance demo state through backend controls without impersonating a user. Angular 21 owns the final presenter screen/router, Java owns services/jobs; provider selection is deployment/startup configuration. No auto-issued presenter cookie or unauthenticated console in the target. Earlier mockup/source/approval observations below remain historical; consult the FUCQ-434 baseline for what is implemented, not their original 'unbuilt' wording.
+
 **Approved by Gary, 10 November 2026** (user-agnostic mockup at commit 00ddf9fe). Originally drafted the same day. Branch `claude/presenter-controls-revamp-627251`. Nothing here is built
 or claimed; it is a proposal to agree before any Story is raised. Mockups: open
 [`docs/gcsp/mockups/presenter-console.html`](mockups/presenter-console.html) through `npm run serve`.

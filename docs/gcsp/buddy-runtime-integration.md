@@ -1,5 +1,7 @@
 # Local buddy runtime composition
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. The dispatcher granted the source-composition
 checkpoint from published0478b501 against shared329c522. Shared7051e01 was read back during this
 checkpoint: its `server/` and bootstrap-host bytes have no delta from329c522. This is an ordinary

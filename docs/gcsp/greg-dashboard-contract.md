@@ -1,5 +1,7 @@
 # GCSP Greg dashboard contract
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Greg uses his own OIDC login for fleet/policy/planning/comparison commands. Presenter can inspect authorized read-only views, never execute Greg's actions. Preserve frozen capabilities/visuals; unapproved later Greg mockups are separate product proposals. Java owns business calculations/jobs; no Node execution or permanent legacy controllers. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-101 (DEV-2026-11-04-064). Greg's demand and supply view over FUCQ-99's projection ([greg-demand.md](greg-demand.md)). It reads only; nothing is published, ordered or saved.
 
 ## Element

@@ -1,5 +1,7 @@
 # GCSP email login and durable account context
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Shared-password/HttpOnly-cookie login, unauthenticated presenter entry and acting-session issuance below are legacy only. Real test OIDC bearer JWT, individual employee/Greg logins, dedicated presenter login, owned signed-in offers and safe recovery/logout replace them. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Authorised by Russell on 10 November 2026 (FUCQ-322).
 
 ## Behaviour

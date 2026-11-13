@@ -1,5 +1,7 @@
 # Stock pull and release — FUCQ-92
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Isolated backend checkpoint, 5 November 2026. This implements the existing HLD stock-pull responsibility inside the existing backend. It adds no screen, store, queue, service process or live BMW connection. The source fixtures are explicitly small TEST FIXTURES; they establish neither FUCQ-78 synthetic stock delivery nor FUCQ-77 real configuration coverage.
 
 ## Composition and shared authority

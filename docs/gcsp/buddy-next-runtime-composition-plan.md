@@ -1,5 +1,7 @@
 # Next runtime composition: immutable handoff and case readiness
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. **Read-only planning checkpoint.**
 Root independently accepted runtime `95d77416361f54eb558bbcb40b382cbb45149c27`: 273 checks PASS,
 158 source/installed paths, six executables and 49 owned manifests. Root receipt:

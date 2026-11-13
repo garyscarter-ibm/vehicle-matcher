@@ -1,5 +1,7 @@
 # Manual host clock and context notification boundary
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-100 / FUCQ-126 coordination, 6 November 2026. Static source facts and bounded proposal only.
 Product source remains f179ae6. Owned C1 harness repair9c890d9/cataloguec6a977a0 is frozen separately
 for delta review. This note changes no product, test, TEST profile, installed dependency or harness.

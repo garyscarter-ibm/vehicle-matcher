@@ -1,5 +1,7 @@
 # FUCQ-7 · Modern manual GCSP selection journey
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Refinement requested by Russell, 1 November 2026. This is the working manual route beside the proposed buddy experience. Preserve the information, choices and business commitments evidenced by the current journey while redesigning its body. Do not recreate the dense portal or seven-step wizard.
 
 The binding references are [the demo brief](demo-brief.md), [experience quality contract](experience-quality.md), [screens](screens/README.md), [component catalogue](../../COMPONENTS.md) and canonical [HLD](../design/README.md). [Implementation stories](fucq-6-stories.md) and [structured records](fucq-6-stories.json) carry the acceptance criteria. This refinement does not implement the journey.

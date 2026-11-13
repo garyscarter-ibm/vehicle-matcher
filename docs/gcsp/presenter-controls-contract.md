@@ -1,5 +1,7 @@
 # Presenter controls backend contract · FUCQ-126
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. The controls domain survives in Java, but the independent presenter cookie, auto-bootstrap and `/session/switch` below are legacy. The target requires a dedicated OIDC presenter login/role. Retain clock, releases, scenarios, resets, faults/retry and authorized read-only inspection; remove principal selection/issuance and all employee/Greg commands. Greg alone starts/reruns comparisons. A reset changes the active run without granting an acting identity. Runtime adapter selection is deployment/startup configuration, not a presenter switch. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Additive contract, 5 November 2026. FUCQ-84 remains the identity/session authority;
 FUCQ-85 owns clock/tick mechanics; FUCQ-125 owns catalogue/reset preparation.
 No new store, migration, browser authority or business producer is introduced.
