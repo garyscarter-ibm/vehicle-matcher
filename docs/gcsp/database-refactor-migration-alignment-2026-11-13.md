@@ -1,5 +1,7 @@
 # Database refactor and Angular/Java migration alignment
 
+**Current Jira direction, 13 November 2026:** after requesting publication, Gary explicitly lifted the wider Jira-write pause (“You can stop the wider pause too”). Earlier pause statements below are historical. Current shared policy is in `AGENTS.md`, “Jira updates resumed”. This does not start implementation or amend existing FUCQ-408 acceptance.
+
 Gary requested alignment and a priority call on 13 November 2026 while refining the [migration Stories](angular-java-migration-stories-2026-11-13.md). This is a read-only assessment and delivery recommendation. Jira writes remain paused; no existing Story is reparented, revised, claimed, accepted or closed, and no implementation is started.
 
 ## Recommendation

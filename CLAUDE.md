@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
-### Jira writes paused
+### Jira updates resumed
 
-Follow `AGENTS.md`, section "Jira writes paused": no Jira writes from any session, agent, poller or
-sync until a collaborator explicitly unpauses them. This overrides automatic backlog and defect updates.
+Follow `AGENTS.md`, section “Jira updates resumed”: Gary explicitly lifted the project-wide pause on
+13 November 2026. Resume Jira writes within authorised task scope and normal workflows; preserve Story-specific
+holds, source/access limits, claims and acceptance boundaries. This does not start pollers or implementation.
 
 ### Equal collaborator authority
 

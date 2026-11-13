@@ -1,6 +1,8 @@
 # Static Angular frontend, Java backend and replaceable adapters — Epic proposals
 
-Gary's refinement request, 13 November 2026. **Refinement complete; Gary has authorized publication of these three Epics and their 49 Stories.** Native publication/read-back is pending; no implementation has started. The wider Jira-write pause continues outside this bounded publication. These proposals preserve existing Story contracts, claims and acceptance decisions.
+**Current Jira direction, 13 November 2026:** after requesting publication, Gary explicitly lifted the wider Jira-write pause (“You can stop the wider pause too”). Earlier pause statements below are historical. Current shared policy is in `AGENTS.md`, “Jira updates resumed”. This does not start implementation or amend existing FUCQ-408 acceptance.
+
+Gary's refinement request, 13 November 2026. **Refinement complete; Gary has authorized publication of these three Epics and their 49 Stories.** Native publication/read-back is pending; no implementation has started. Gary has also explicitly lifted the wider Jira-write pause. These proposals preserve existing Story contracts, claims and acceptance decisions.
 
 The intended outcome is a GCSP experience delivered as a static Angular 21 application, calling a separately deployable **Java 21 / Quarkus 3.x backend API** whose external dependencies can be replaced through explicit adapters.
 

@@ -1,14 +1,14 @@
-## Jira writes paused
+## Jira updates resumed
 
-Gary's project-wide direction, 11 November 2026: stop updating Jira until a collaborator explicitly
-unpauses Jira updates. This applies to every session, harness, agent, poller and synchronisation tool.
+Gary explicitly lifted the project-wide Jira-write pause on 13 November 2026: “You can stop the wider pause too.”
+This supersedes the 11 November pause for every session, harness, agent, poller and synchronisation tool.
 
-- Do not create, edit, comment on, link, transition, assign or otherwise write to Jira while paused.
-- Read-only Jira lookups remain allowed. Continue authorised project work and retain decisions, findings
-  and validation evidence in the repository for reconciliation after the pause is lifted.
-- This direction overrides backlog, defect, story, claim, product-map and automation instructions that
-  would write to Jira. Do not restart Jira writes automatically or infer unpausing from other work.
-- Pass this pause in every delegated brief. Only an explicit collaborator instruction lifts it.
+- Jira writes may resume within the collaborator-authorised task scope and normal project workflows.
+- Historical pause notices in discovery documents and receipts describe the policy at that time; this shared
+  direction governs current work. Existing Story-specific holds, source/access restrictions, claims and acceptance
+  boundaries remain binding.
+- Resuming Jira writes does not itself start a poller, claim work, authorise implementation or expand a task.
+- Pass this current direction in delegated briefs.
 
 ## Equal collaborator authority
 
