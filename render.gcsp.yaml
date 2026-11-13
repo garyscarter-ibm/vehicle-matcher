@@ -141,3 +141,228 @@ services:
     envVars:
       - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com
+
+  # Independent migration checkpoint; the existing gcsp-poc services above stay supported.
+  - type: web
+    name: gcsp-java-api
+    runtime: docker
+    # plan: deliberately unset; no tier is selected. Measured idle RSS is about 115 MB.
+    region: frankfurt
+    branch: gcsp-poc-dev
+    dockerfilePath: ./services/gcsp-api/Dockerfile
+    dockerContext: ./services/gcsp-api
+    healthCheckPath: /q/health/ready
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - services/gcsp-api/**
+      ignoredPaths:
+        - services/gcsp-api/README.md
+        - services/gcsp-api/render-service.proposed.yaml
+    envVars:
+      # PORT is injected by Render; the service binds to it.
+      - key: GCSP_IDENTITY_PROVIDER
+        value: none            # refuses every context call until FUCQ-455 adds oidc
+      - key: GCSP_ALLOWED_ORIGINS
+        sync: false            # exact static-site origin(s), comma separated (FUCQ-435)
+      - key: GCSP_SHUTDOWN_TIMEOUT
+        value: 10s
+      - key: JAVA_OPTS
+        value: -XX:MaxRAMPercentage=75
+
+  - type: web
+    name: gcsp-angular-dev
+    runtime: static
+    branch: gcsp-poc-dev
+    autoDeployTrigger: commit
+    buildCommand: >-
+      npm install --global npm@11.19.1 &&
+      npm ci --prefix apps/gcsp-web &&
+      npm run gcsp:compile &&
+      npm run gcsp:assemble --
+      --browser apps/gcsp-web/dist/gcsp-web/browser
+      --output _gcsp-site --environment deployed --revision "$RENDER_GIT_COMMIT"
+    staticPublishPath: _gcsp-site
+    buildFilter:
+      paths:
+        - apps/gcsp-web/**
+        - blocks/gcsp/shell/**
+        - designs/**
+        - scripts/build-gcsp-static.mjs
+        - scripts/assemble-site.mjs
+        - scripts/gcsp-runtime-config.mjs
+        - _config/gcsp-runtime-config.schema.json
+        - package.json
+        - package-lock.json
+        - render.gcsp.yaml
+      ignoredPaths:
+        - apps/gcsp-web/**/*.spec.ts
+        - apps/gcsp-web/**/*.md
+        - apps/gcsp-web/vitest.config.ts
+        - apps/gcsp-web/tsconfig.spec.json
+    # Exact paths avoid returning HTML for unknown/missing assets. Dynamic offers await FUCQ-437.
+    routes:
+      - type: redirect
+        source: /gcsp
+        destination: /gcsp/
+      - type: rewrite
+        source: /gcsp/
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/sign-in
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/auth/callback
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/account
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/preferences
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/stock
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/manual/review
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/manual/summary
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/activity
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/orders
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/help
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/greg
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/greg/cases
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/presenter
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/presenter/outbox
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/components
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/access-denied
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/unavailable
+        destination: /gcsp/index.html
+    headers:
+      - path: /gcsp/*
+        name: Content-Security-Policy
+        value: "frame-ancestors 'none'"
+      - path: /gcsp/*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /gcsp/*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /gcsp
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/index.html
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/runtime-config.json
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/sign-in
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/auth/callback
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/account
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/preferences
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/stock
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/manual/review
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/manual/summary
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/activity
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/orders
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/help
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg/cases
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/presenter
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/presenter/outbox
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/components
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/access-denied
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/unavailable
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/media/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/assets/*
+        name: Cache-Control
+        value: no-cache
+      - path: /gcsp/static-manifest.json
+        name: Cache-Control
+        value: no-cache
+    envVars:
+      - key: NODE_VERSION
+        value: "24.22.3"
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+      - key: GCSP_PUBLIC_ENVIRONMENT_ID
+        sync: false
+      - key: GCSP_PUBLIC_API_BASE_URL
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_AUTHORITY
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_CLIENT_ID
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_SCOPE
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_REDIRECT_URI
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI
+        sync: false

@@ -6419,7 +6419,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-13T22:11:03Z",
+      "observed_at": "2026-11-13T22:23:44Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
       "unsliced": false,
       "branch": "dev/DEV-2026-11-13-004",
@@ -6437,8 +6437,9 @@
       "slices": [
         {
           "id": "artifact",
-          "status": "not-started",
-          "title": "Independent-static-Angular-artifact-and-required-assets"
+          "status": "in-progress",
+          "title": "Independent-static-Angular-artifact-and-required-assets",
+          "observed_at": "2026-11-13T22:23:44Z"
         },
         {
           "id": "runtime",
