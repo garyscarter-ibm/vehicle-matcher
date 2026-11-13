@@ -259,7 +259,15 @@ test('artifact: incomplete producer output cannot omit bootstrap, stylesheet or 
 test('artifact: dev blueprint has independent builds, exact fixed routes and disjoint cache policies', async () => {
   const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
-  assert.ok(yaml.includes(proposed.slice(proposed.indexOf('  - type: web'))), 'Java service remains exactly the supplied proposal');
+  const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
+  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web')).trimEnd()), 'supplied Java service foundation is preserved before its persistence delta');
+  assert.match(java, /branch: gcsp-poc-dev/u);
+  assert.doesNotMatch(java, /^\s+plan:|fromDatabase:|name: gcsp-db\b|apps\/gcsp-web|gcsp:compile/mu);
+  for (const key of ['GCSP_DATABASE_URL', 'GCSP_DATABASE_USER', 'GCSP_DATABASE_PASSWORD', 'GCSP_EXPECTED_DATABASE', 'GCSP_ENVIRONMENT_ID']) {
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} must be supplied for the isolated Java database`);
+  }
+  assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
+  assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);

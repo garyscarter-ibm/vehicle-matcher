@@ -169,6 +169,23 @@ services:
         value: 10s
       - key: JAVA_OPTS
         value: -XX:MaxRAMPercentage=75
+      # FUCQ-456 / FUCQ-434 comment 3629372: isolated Java dev persistence.
+      # Supply JDBC jdbc:postgresql://host:5432/db from its own database details;
+      # never reuse gcsp-db above. Flyway owns the gcsp_app schema.
+      - key: GCSP_DATABASE_URL
+        sync: false
+      - key: GCSP_DATABASE_USER
+        sync: false
+      - key: GCSP_DATABASE_PASSWORD
+        sync: false
+      - key: GCSP_EXPECTED_DATABASE
+        sync: false            # exact database name; mismatch refuses startup/reset
+      - key: GCSP_ENVIRONMENT_ID
+        sync: false            # isolated dev identity, e.g. gcsp-dev
+      - key: GCSP_RESET_ALLOWED
+        value: "true"          # this dev service only; fixed at the database's first claim
+      - key: GCSP_DATABASE_POOL_SIZE
+        value: "10"            # application's default maximum connections
 
   - type: web
     name: gcsp-angular-dev
