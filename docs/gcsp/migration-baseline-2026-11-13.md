@@ -6,7 +6,7 @@ This is source and retained-artifact evidence. A route, provider implementation,
 
 ## Reproducible evidence
 
-[inventory.json](migration-baseline-2026-11-13/inventory.json) contains every method/path, route factory/custom handler, replacement Story and deliberate delta; SHA-256 and byte size for source, current visual references, local corpus/model/reference assets; all eight code-approved fleet release descriptors; workload defaults; and the stored comparison manifest. [collect.mjs](migration-baseline-2026-11-13/collect.mjs) imports route factories without starting services and streams file hashes. It does not connect to a database, invoke providers, restore a corpus, send mail or launch a browser. [validation.json](migration-baseline-2026-11-13/validation.json) records the scoped checks and resource cleanup.
+[inventory.json](migration-baseline-2026-11-13/inventory.json) contains every method/path, route factory/custom handler, replacement Story and deliberate delta; SHA-256 and byte size for source, current visual references, local corpus/model/reference assets; all eight code-approved fleet release descriptors; workload defaults; and the stored comparison manifest. [collect.mjs](migration-baseline-2026-11-13/collect.mjs) imports route factories without starting services and streams file hashes. It does not connect to a database, invoke providers, restore a corpus, send mail or launch a browser. [validation.json](migration-baseline-2026-11-13/validation.json) records the scoped checks and resource cleanup; [independent review](migration-baseline-2026-11-13/review.md) records the final source/documentation review and its limits.
 
 The inventory has 26 route factories and **100 unique GCSP method/path operations**: 87 factory routes plus 13 custom identity, offer and vehicle-evidence/image handlers. `server/index.js` imports and registers those factories and invokes the custom handlers. `/health` and `/health/vehicle-evidence` are separate shared infrastructure reads, outside the 100. The list is finite; no public comparison cancel/restart operation is implied.
 
@@ -59,7 +59,7 @@ The exact HTTP operation mapping is `routes[]` in the inventory, including metho
 
 ## Jobs, ticks and workloads
 
-No unattended scheduler is assumed. `server/index.js` registers clock consumers and `clock/index.js` orders stage first, then stable handler ID. Canonical `seed-v1.json` specifies stages `release-pull → manual-expiry → buddy-expiry → pending-reconciliation → buddy-allocation → outbox-dispatch`. Startup runs only expiry and pending reconciliation stages; it does not pull new stock, allocate new offers or dispatch new mail.
+No unattended scheduler is assumed. `server/index.js` registers clock consumers and `clock/index.js` orders stage first, then stable handler ID. Canonical `seed-v1.json` specifies stages `release-pull → manual-expiry → buddy-expiry → pending-reconciliation → buddy-allocation → outbox-dispatch`. The clock's startup reconciliation runs only expiry and pending reconciliation stages, without pulling new stock, allocating offers or invoking its outbox stage. Separately, full server startup calls `notify.start()` to drain already committed due jobs; the dispatcher's after-commit observer also reacts to durable outbox changes (`notify/index.js`). Preserve that recovery/event-driven delivery as well as explicit ticks.
 
 | Handler identity | Source / behavior | Replacement |
 | --- | --- | --- |

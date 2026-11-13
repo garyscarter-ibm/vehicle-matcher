@@ -6323,7 +6323,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T21:12:09Z",
+      "observed_at": "2026-11-13T21:15:46Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-434",
       "unsliced": false,
       "slices": [
@@ -6350,9 +6350,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Coverage validation and independent review",
-          "observed_at": "2026-11-13T21:12:09Z"
+          "observed_at": "2026-11-13T21:15:45Z",
+          "evidence": "10 scoped checks passed; Foxy independent source/hash/route review PASS incl corrected startup nuance; docs/gcsp/migration-baseline-2026-11-13/review.md"
         }
       ],
       "workers": [
@@ -6360,9 +6361,9 @@
           "name": "Woody",
           "harness": "codex",
           "role": "story-lead",
-          "status": "active",
-          "observed_at": "2026-11-13T21:11:56Z",
-          "expires_at": "2026-11-13T23:00:00Z",
+          "status": "complete",
+          "observed_at": "2026-11-13T21:15:46Z",
+          "expires_at": "2026-11-13T21:15:46Z",
           "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
         }
       ]
