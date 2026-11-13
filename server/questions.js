@@ -399,7 +399,7 @@ const BRAND_COPY = {
   rrmc: {
     budget: { conditional: true },
     bodyStyles: {
-      title: 'Let your dreams take shape in the form of a...',
+      title: 'Which bodywork are you most drawn to?',
       options: {
         saloon: { label: 'Saloon', sub: 'Phantom or Ghost — the art of arrival' },
         suv: { label: 'SUV', sub: 'The high-riding adventurer' },
@@ -425,7 +425,7 @@ const BRAND_COPY = {
       ],
     },
     people: {
-      title: 'How many passengers are there likely to be?',
+      title: 'How many passengers will there be?',
       optionsOverride: [
         { value: 'solo', label: 'Just me, driving myself' },
         { value: 'family', label: 'Just me, being driven' },
@@ -452,7 +452,7 @@ const BRAND_COPY = {
         5: { label: 'Sporting' },
       },
     },
-    mileage: { title: 'How far will you travel in a year?' },
+    mileage: { title: 'How far will you drive in a year?' },
   },
 };
 
@@ -522,6 +522,12 @@ export function questionsForBrand(brand = 'bmw') {
   for (const id of brandQuestions?.moveLast || []) {
     const idx = base.findIndex((q) => q.id === id);
     if (idx >= 0) base.push(...base.splice(idx, 1));
+  }
+  // `order` lists ids front to back; anything unlisted keeps its place after them.
+  const order = brandQuestions?.order;
+  if (order) {
+    const rank = (q) => (order.includes(q.id) ? order.indexOf(q.id) : order.length);
+    base.sort((a, b) => rank(a) - rank(b));
   }
 
   return base;

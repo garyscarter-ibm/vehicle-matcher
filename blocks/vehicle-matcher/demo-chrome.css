@@ -520,7 +520,7 @@
  * Question screens only: a full-bleed blue panel, white type, outlined pills. The results page
  * keeps the white surface. Blue gradient stands in for the frame's flag photo until it is exported.
  */
-.vm-rrmc .demo-tool:has(.vm-screen[data-qid]) {
+.vm-rrmc .demo-tool:not([hidden]):has(.vm-screen[data-qid]) {
   display: flex;
   flex-direction: column;
   min-height: clamp(560px, 56.2vw, 809px);
@@ -564,12 +564,6 @@
   text-transform: uppercase;
   text-wrap: balance;
   white-space: normal;
-}
-.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-help {
-  margin: 12px auto 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
-  text-align: center;
 }
 
 /* Answers: 300 x 52 outlined pills, two across with a 28px gap, 28px under the title. */

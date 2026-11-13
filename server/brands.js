@@ -949,7 +949,6 @@ export const BRANDS = {
           // Filters on the retailer's region (rrmc-listing.js).
           id: 'regions',
           title: 'Which regions would you like to include?',
-          insertAfter: 'primaryUse',
           multi: true,
           options: [
             { value: 'europe', label: 'The UK & Europe' },
@@ -959,25 +958,19 @@ export const BRANDS = {
           ],
         },
         {
-          id: 'handDrive',
-          title: 'Which is your preferred driving configuration?',
-          insertAfter: 'regions',
-          // Left before right, so each pill sits on the side it names.
-          options: [
-            { value: 'lhd', label: 'Left Hand Drive' },
-            { value: 'rhd', label: 'Right Hand Drive' },
-          ],
-        },
-        {
           id: 'budgetGate',
-          title: 'Lastly, is there an ideal price range?',
+          title: 'Is there an ideal price range?',
           options: [
             { value: 'yes', label: 'Yes, let me select it' },
             { value: 'no', label: 'No parameters' },
           ],
         },
       ],
-      moveLast: ['budgetGate', 'budget'],
+      // The nine screens, front to back; the budget slider rides inside the price-range screen.
+      order: [
+        'regions', 'bodyStyles', 'fuel', 'people', 'primaryUse',
+        'mileage', 'style', 'priorities', 'budgetGate', 'budget',
+      ],
     },
   },
 };

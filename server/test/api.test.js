@@ -686,7 +686,7 @@ test('GET /api/pool ships every column index-aligned to n', async () => {
   });
 });
 
-// Guess Who's RRMC cards need POA, drive side and region per car, plus the brand's price range.
+// RRMC's pool carries POA, drive side and region per car, plus the brand's price range.
 test('GET /api/pool ships RRMC poa/handDrive/region columns and price range, and only for RRMC', async () => {
   const rrmc = [
     mapRRMCRaw({ id: 'a', name: 'Cullinan', price: 310000, year: 2021, handDrive: 'rhd', region: 'europe' }),
@@ -704,7 +704,8 @@ test('GET /api/pool ships RRMC poa/handDrive/region columns and price range, and
     assert.equal(json.handDrives[json.handDrive[0]], 'rhd');
     assert.equal(json.regions[json.region[1]], 'mea');
     assert.equal(json.handDrives[json.handDrive[2]], null, 'an unknown side stays unknown');
-    assert.equal(json.labels.handDrive.rhd, 'Right Hand Drive');
+    // Drive side is no longer asked, so it ships as data with no question labels.
+    assert.deepEqual(json.labels.handDrive, {});
     assert.equal(json.labels.region.europe, 'The UK & Europe');
     assert.deepEqual(json.priceRange, { min: 60000, max: 1000000, step: 1000, minGap: 20000 });
   });

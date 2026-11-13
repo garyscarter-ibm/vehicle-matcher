@@ -1539,3 +1539,13 @@ test('RRMC passengers: being driven favours the Extended cars, more people the l
   const drivenRanked = rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'no', people: 'family' }), cars, brandTuning('rrmc'));
   assert.ok(fitOf(drivenRanked, 'Ghost Extended') - fitOf(drivenRanked, 'Ghost') > fitOf(solo, 'Ghost Extended') - fitOf(solo, 'Ghost'));
 });
+
+test('RRMC asks its nine screens in the set order, with no drive-side question', () => {
+  const ids = questionsForBrand('rrmc').map((q) => q.id);
+  assert.deepEqual(ids, [
+    'regions', 'bodyStyles', 'fuel', 'people', 'primaryUse',
+    'mileage', 'style', 'priorities', 'budgetGate', 'budget',
+  ]);
+  // Other brands keep the shared order: the list is RRMC's alone.
+  assert.equal(questionsForBrand('bmw')[0].id, 'budget');
+});

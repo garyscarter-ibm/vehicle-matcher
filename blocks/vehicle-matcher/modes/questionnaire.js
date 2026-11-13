@@ -1570,7 +1570,8 @@ function renderQuestion(root, ctx, index) {
   if (answeredPills) screen.append(answeredPills);
 
   screen.append(el('h2', 'vm-question', q.title));
-  if (q.help) screen.append(el('p', 'vm-help', q.help));
+  // RRMC's question screens carry the title alone, no sub-heading.
+  if (q.help && ctx.brand !== 'rrmc') screen.append(el('p', 'vm-help', q.help));
 
   const advance = () => {
     const total = visibleQuestions(flowQuestions(ctx), ctx.answers).length;

@@ -608,15 +608,19 @@ main {
       decorate(block);
 
       if (brandKey === 'rrmc') {
-        // The matcher stays out of sight until "Find my perfect match"; a shared #m= link opens it.
+        // The matcher stays out of sight until "Begin your journey"; a shared #m= link opens it.
         const tool = document.getElementById('demo-tool');
-        const reveal = () => { tool.hidden = false; };
-        if (/[#&]m=/.test(window.location.hash)) reveal();
-        else tool.hidden = true;
-        // "Find my perfect match" moves to the "Begin your journey" page; its pill opens the matcher.
         const opening = root.querySelector('.rr-opening:not(.rr-journey)');
         const journey = root.querySelector('.rr-journey');
         const benefits = root.querySelector('.rr-benefits');
+        // The opening panel and ProvB1 never share the screen with the matcher.
+        const reveal = () => {
+          opening.hidden = true;
+          benefits.hidden = true;
+          tool.hidden = false;
+        };
+        if (/[#&]m=/.test(window.location.hash)) reveal();
+        else tool.hidden = true;
         root.querySelector('.rr-pill-primary').addEventListener('click', (e) => {
           e.preventDefault();
           opening.hidden = true;
