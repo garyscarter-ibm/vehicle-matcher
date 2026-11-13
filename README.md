@@ -1,5 +1,9 @@
 # Vehicle Matcher
 
+## GCSP architecture
+
+GCSP's agreed replacement is **static Angular 21 → Java 21 / Quarkus 3.x API**, with bearer-JWT OIDC, isolated PostgreSQL state and replaceable backend service adapters. Used Cars keeps its existing frontend and Node API. Start with the [design index](docs/design/README.md), [migration decisions](docs/design/migration-decisions-2026-11-13.md) and [FUCQ-434 baseline/contracts](docs/gcsp/migration-replacement-contracts-2026-11-13.md). Legacy GCSP Node/cookie/host setup below remains baseline guidance until replaced in its implementation Story; it does not specify the target. Dev uses `gcsp-poc-dev` and a separate database; Gary performs the final `gcsp-poc` merge after hosted-dev review.
+
 A consumer-facing car-matcher for the UK market: answer a few quick questions
 about your budget, lifestyle and driving, and get matched with the approved-used
 cars your retailer actually has — with a plain-English explanation of *why* each

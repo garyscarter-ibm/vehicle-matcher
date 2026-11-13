@@ -1,5 +1,7 @@
 # Offer display contract and delivery gates · FUCQ-105
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Angular owns the offer view at `/gcsp/offers/:offerId`, requiring OIDC sign-in/return and employee ownership instead of link-only cookies. Preserve the frozen view states, imagery, pinned explanation and explicit decisions. Actual email and owned sign-in return must be proved; no automatic order submission after recovery. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 5 November 2026. Independent delivery contract. Approved FUCQ-102 DTO bindings are implemented below; actual producer/access/decision/host integration and full story acceptance remain open. Earlier requested fields remain historical requirements where the approved DTO does not yet supply them.
 
 ## Boundaries

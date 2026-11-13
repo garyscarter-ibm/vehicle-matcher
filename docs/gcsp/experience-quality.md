@@ -22,9 +22,17 @@ The missing-reference blocker is cleared by this direction. Use the existing rep
 
 Use the project's available product-design or Impeccable guidance to develop and critique the redesigned body. Later agents follow the supplied shell references, this direction and the resulting reviewed implementation reference. Raise deliberate departures through the same design review. The IBM Carbon service blueprint remains a separate explanatory artifact.
 
-## Embeddable blocks
+<a id="embeddable-blocks"></a>
 
-Employee and Greg UI are separate GCSP blocks that import the shared kit; `vehicle-matcher` stays retail-only (HLD review Q8). Each GCSP block also mounts as a standard custom element, so it can drop into the target platform's Angular app (Q18). That app's content security policy forbids inline scripts and `eval`, so GCSP blocks and their pages use no inline `<script>` bodies, inline event-handler attributes (`onclick=` and the like), `eval`, `new Function` or string timers. UI stories state this in `acceptance` and check it in `validate`.
+## Angular ownership and shared components — updated 13 November 2026
+
+The [migration decisions](../design/migration-decisions-2026-11-13.md) supersede the original Q18 custom-element embedding target. **Angular 21 owns final GCSP screens, routing and presentation state** in `apps/gcsp-web/`. Existing custom elements may help during migration; permanent legacy screen/controller wrappers do not meet completion. Used Cars' `vehicle-matcher` remains retail-only, with its frontend and supported shared consumers preserved.
+
+Use the [FUCQ-434 frozen capability/visual baseline](migration-baseline-2026-11-13.md) at `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, approved view references and COMPONENTS. Adapt reusable primitives/tokens into Angular; do not redesign the product or adopt unapproved Greg concepts as parity requirements. Authentication/presenter changes are intentional: own employee/Greg login, dedicated controls-only presenter, signed-in offer ownership, safe renewal/return and logout/account separation.
+
+Existing CSP obligations continue: no inline event-handler attributes, inline business scripts, `eval`, `new Function` or string timers. Review and extend ratchet/component coverage for the new Angular paths; legacy JS-path checks alone do not establish Angular compliance. Retain desktop/narrow, Safari/private-browsing, keyboard/focus, reduced-motion and accessibility evidence. Incorporate further BMW standards when supplied.
+
+Gary reviews the complete hosted dev build at the end; no intermediate human layout or journey checkpoint is required. Engineering checks and rendered inspection continue with each affected change. The historical November demo sequencing above does not impose an additional migration review gate.
 
 ## Author and brief each story
 

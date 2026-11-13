@@ -1,5 +1,7 @@
 # Order planning — FUCQ-117
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Java owns model inference, constraints and plan calculations; offline JS training/preparation can remain. Greg's own OIDC login authorizes intentional publish/submit/replan; presenter inspection/scenario stepping grants no Greg commands. Preserve reference/model/policy identities, numeric-result invariants and normal new-app durability. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 This is an additive contract inside the agreed Node prediction component (HLD, **Greg's next best order**). It introduces no process, store, runtime dependency, stock write or order submission. `planOrder(input)` is synchronous and pure. Its service wrapper uses the server-owned context, DemoClock and typed PolicyService. The panel remains FUCQ-119; no screen changes or screenshots are needed here. Feasible, infeasible and alternative presentation fixtures belong to `server/test/fixtures/gcsp-order-plan-outcomes.json`.
 
 ## Input and trust boundary

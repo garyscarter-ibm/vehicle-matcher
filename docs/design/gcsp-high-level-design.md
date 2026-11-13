@@ -4,7 +4,7 @@ Current architecture contract: FUCQ-434, 13 November 2026. This reconciles the e
 
 The exact implementation kickoff is `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38` on `gcsp-poc-dev`. The [capability, route, job, visual and artifact baseline](../gcsp/migration-baseline-2026-11-13.md) traces implemented behavior to source and replacement Stories. The [replacement contracts](../gcsp/migration-replacement-contracts-2026-11-13.md) define the versioned API, ownership, errors, provider seams and persistence obligations. Existing claimed acceptance criteria remain fixed. Unfinished product backlog stays separate from migration parity.
 
-The existing canonical [draw.io HLD](high-level-design.drawio) remains the design's diagram artifact. Its earlier Node, embedded custom-element, cookie/principal-switch, `gcsp-poc` and proposed/unbuilt labels are historical views, superseded for this migration by this record and the frozen source evidence. It has not been recoloured or rendered in FUCQ-434. No box or status in it proves implementation. Earlier review/history remains in [the 4 November review](hld-review-gc.md), [agreement](../gcsp/hld-agreement-2026-11-04.md) and Git history; those records do not override the current migration decisions.
+The canonical [draw.io HLD](high-level-design.drawio) and synchronized [BMW share views](bmw-system-context.drawio) now reflect the agreed migration, with [refreshed exports and a view index](README.md). Pages 00/02/04/05/09 describe current target responsibilities and delivery; retained detail pages explicitly mark historical status labels, and page 01 remains the historical retail baseline. The [consolidated decision ledger](migration-decisions-2026-11-13.md) explains the changes and superseded alternatives. Diagram maintenance follows FUCQ-434; it does not change its recorded source evidence or claim a built replacement. No box or status proves implementation. Earlier review/history remains in [the 4 November review](hld-review-gc.md), [agreement](../gcsp/hld-agreement-2026-11-04.md) and Git history; those records do not override the current migration decisions.
 
 ## Purpose and constraints
 
@@ -13,6 +13,8 @@ Build the complete, working GCSP experience through replaceable adapters while p
 GCSP alone migrates. Used Cars retains its frontend, Node backend, brand/link/API/export contracts and supported shared consumers. Angular 21 owns GCSP screens/navigation. Java 21 with Quarkus 3.x owns GCSP APIs, business execution, inference and runtime jobs without invoking Node business code. Offline corpus generators/trainers may remain JavaScript. Exact compatible package/tool versions are pinned by the foundation Stories, not invented here.
 
 Real test OIDC browser login and bearer JWT replace the demonstration identity authority. Employees and Greg use their own logins; presenter operates scenarios/clock/releases/reset/faults/retry and permitted inspection, with no impersonation or employee/Greg commands. Greg retains comparison commands. Legacy GCSP URL/API compatibility is unnecessary. Implemented business outcomes and current visual design are otherwise the baseline.
+
+<a id="technical-deployment-and-recovery"></a>
 
 ## Deployment and request path
 
@@ -41,6 +43,11 @@ The [operation inventory](../gcsp/migration-baseline-2026-11-13/inventory.json) 
 
 Commands carry scoped `commandId` and expected versions. Same identity/input replays the original receipt; changed canonical input conflicts. JSON outcomes distinguish confirmed success, pending/uncertain operation, invalid input, unauthenticated, forbidden, not found, stale/conflict, unsupported capability, unavailable/retryable and internal failure. Their HTTP mapping is 200/202/400/401/403/404/409/422/503/500 in the contract. Errors retain stable codes, relevant version/action hints and durable operation identity without leaking other accounts or upstream secrets. Transport retry and authentication renewal do not authorise resubmission of business intent.
 
+<a id="vehicle-evidence-and-adapter-contracts"></a>
+<a id="gregs-next-best-order-fucq-74"></a>
+<a id="gregs-next-best-order-fucq-73"></a>
+<a id="gregs-supply-loop-and-the-commitment-boundary"></a>
+
 ## Business and provider responsibilities
 
 | Domain | Java application authority | Provider boundary / preserved facts |
@@ -57,6 +64,9 @@ Commands carry scoped `commandId` and expected versions. Same identity/input rep
 Existing seams are credited in `manual-context/ports.js`, `stock/port.js`, `manual-claims/index.js`, `offers/buddy-remote.js`, `notify/port.js`, lifecycle ports and `runtime.js` composition. Java selects adapters at deployment/startup; no browser switch selects source authority and no failed provider silently falls back to synthetic success. The full responsibility table and source anchors are in the replacement contract. FUCQ-481 proves complete substitution through the actual Java composition, not a wrapper around Node services.
 
 Exact stock is `orderUuid`; shared immutable configuration is `configurationId`; VIN belongs to delivered/current cars. Preserve source/provenance and the established configuration encoding until real BMW confirmation. Two cars with the same configuration remain distinct. Synthetic stock identity is never sent to a live decoder as a real VIN.
+
+<a id="transaction-and-event-invariants"></a>
+<a id="the-1000-employee-comparison"></a>
 
 ## Persistence and background execution
 

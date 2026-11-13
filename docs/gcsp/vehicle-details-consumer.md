@@ -1,5 +1,7 @@
 # Application vehicle-details port
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-56 follows the leading 4 November Q7/Q13 Jira rescope. The application calls FUCQ-55's public lookup port **in process**. The historical HTTP-adapter criteria are superseded; the real HTTP route remains an external boundary proved by ephemeral contract tests. No new route, screen, service, database or runtime dependency is added.
 
 ```js

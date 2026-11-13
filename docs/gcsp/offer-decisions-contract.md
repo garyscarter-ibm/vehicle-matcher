@@ -1,5 +1,7 @@
 # Offer decisions · FUCQ-106
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve owned explicit accept/decline, pinned terms, guards, exclusivity, idempotent receipts and uncertain-operation reconciliation. Replace scoped-link/session authority with signed-in employee ownership. Remote accept/decline completion is **FUCQ-467**, separate from FUCQ-106's historical delivered exclusions; safe remote refusal below is not full substitution proof. Do not automatically submit an unfinished decision/order after authentication recovery. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Contract checkpoint, 5 November, with actual memory integration on 6 November
 2026. The approved producer/private-access/stored-subject/decision/expiry composition
 has 12 scoped passes. Canonical policy, remote/downstream, runtime and native/full

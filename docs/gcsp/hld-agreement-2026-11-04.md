@@ -1,5 +1,7 @@
 # GCSP HLD agreement — 4 November 2026
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Russell accepted Gary's recommendations on all five FUCQ-6 review items referred for his agreement: **“I will follow GC's recommendations on each.”** This answers Gary's review comment `132017`, updated on 4 November 2026. The review is recorded in `docs/design/hld-review-gc.md` on branch `claude/hld-review-questions-310ecd`, commit `dbc4f18`.
 
 These decisions take precedence over conflicting wording in the earlier HLD, blueprint and story-authoring records. Apply them when aligning the canonical design and existing implementation stories through the normal workflow.

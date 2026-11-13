@@ -1,5 +1,7 @@
 # Manual claims backend · FUCQ-66
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Implementation contract, 5 November 2026. This adds manual rules to the existing transaction authority; it adds no repository, schema, migration, runtime dependency, screen or buddy behaviour. The canonical [shared contracts](shared-contracts.md), [build rules](build-rules.md), [manual context](manual-journey-refinement.md#implemented-manual-context-contract--fucq-65) and [experience contract](experience-quality.md) remain binding. Managed PostgreSQL execution is still a completion gate: an unset `GCSP_DATABASE_URL` is explicitly remaining work, regardless of memory/driver-double passes.
 
 ## Composition and authority

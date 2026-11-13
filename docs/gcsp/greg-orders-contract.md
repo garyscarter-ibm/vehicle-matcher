@@ -1,5 +1,7 @@
 # Greg order requests and production acknowledgements — FUCQ-104
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Greg uses his own OIDC login and authorized intentional request/submission. Presenter has scenario controls and permitted read-only inspection, not Greg's business authority. Production substitute stepping is separate from Greg request submission. Preserve preview/submit/response distinctions and durable uncertain-operation recovery in Java. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 This implements the existing HLD supply loop inside the Node backend and F81 repository. The service, upstream adapter and repository connection already exist in the agreed architecture; there is no new process, store, queue or live BMW write. A synthetic request is intent; a provider acknowledgement is confirmed supply; existing exact stock and successful F92 receipts establish release.
 
 ## Durable records and native startup

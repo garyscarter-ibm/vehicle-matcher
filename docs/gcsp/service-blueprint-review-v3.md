@@ -1,5 +1,7 @@
 # FUCQ-3 — Paula service blueprint, version 3
 
+> **Historical design record — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Original Node/embedding, cookie/password, presenter-switch, legacy-link and release/rollback instructions are superseded where they conflict with the current target. Keep the business reasoning, approved visual intent and recorded evidence at their original scope. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Historical record: its generic 5 Series premise is superseded by the screen-identified G21 320i M Sport Touring in version 4.
 
 1 November 2026. [Open the blueprint](service-blueprint.html). Proposed continuing service for review; BMW rules and production integrations still require confirmation.
