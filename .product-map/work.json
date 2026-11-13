@@ -5454,21 +5454,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-409",
-      "title": "Resolve allocation stock rows through an order-ID index",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
-      "jira_observed_at": "2026-11-12T15:47:39.682Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z"
-    },
-    {
       "id": "FUCQ-410",
       "title": "Resolve decline exclusions through indexed history",
       "status": "To Do",
@@ -6367,6 +6352,49 @@
           "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
         }
       ]
+    },
+    {
+      "id": "FUCQ-409",
+      "title": "Resolve allocation stock rows through an order-ID index",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "lookup",
+          "status": "in-progress",
+          "title": "Direct-lookup-and-semantic-equivalence",
+          "observed_at": "2026-11-13T21:30:51Z"
+        },
+        {
+          "id": "operations",
+          "status": "not-started",
+          "title": "Bounded-linear-lookup-proof"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected-outcomes-and-independent-review"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T21:30:50.822554+00:00",
+          "expires_at": "2026-11-13T23:30:50.822554+00:00",
+          "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
+          "status": "active"
+        }
+      ],
+      "jira_observed_at": "2026-11-12T15:47:39.682Z",
+      "note": "Claim ef586adf; lead Charlie Dog; direct allocation index only. Native status supplied by dispatcher; no acceptance inferred.",
+      "observed_at": "2026-11-13T21:30:51Z",
+      "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
 }
