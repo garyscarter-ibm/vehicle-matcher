@@ -1546,14 +1546,48 @@ function flowQuestions(ctx) {
   return ctx.brand === 'rrmc' ? ctx.questions.filter((q) => q.id !== 'budget') : ctx.questions;
 }
 
+const ROLL_MS = 500;
+const ROLL_EASE = 'cubic-bezier(0.22, 0.61, 0.24, 1)';
+
+/** RRMC: the old question and pills roll off as the new ones roll on from the right (dir 1; -1
+ *  mirrors it). The nav stays put, and the old screen follows the new in the DOM so lookups find the new. */
+function rollScreens(root, leaving, entering, dir) {
+  leaving.classList.add('is-leaving');
+  leaving.inert = true;
+  leaving.setAttribute('aria-hidden', 'true');
+  root.append(leaving);
+  entering.style.animation = 'none';
+  // Each piece travels the stage width, so it starts and ends beyond the screen edge.
+  const span = root.getBoundingClientRect().width || window.innerWidth;
+  const timing = { duration: ROLL_MS, easing: ROLL_EASE };
+  const movers = (screen) => [...screen.children].filter((c) => !c.classList.contains('vm-nav'));
+  movers(entering).forEach((n) => n.animate(
+    [{ transform: `translateX(${dir * span}px)` }, { transform: 'none' }],
+    { ...timing, fill: 'backwards' },
+  ));
+  const leaves = movers(leaving).map((n) => n.animate(
+    [{ transform: 'none' }, { transform: `translateX(${dir * -span}px)` }],
+    { ...timing, fill: 'forwards' },
+  ));
+  Promise.all(leaves.map((a) => a.finished)).then(() => leaving.remove(), () => {});
+}
+
 function renderQuestion(root, ctx, index) {
   const questions = visibleQuestions(flowQuestions(ctx), ctx.answers);
   const q = questions[index];
+
+  // The screen on show now, kept for the roll; a roll still under way is settled where it stands.
+  const leaving = ctx.brand === 'rrmc' ? root.querySelector(':scope > .vm-screen[data-qid]') : null;
+  leaving?.getAnimations?.({ subtree: true }).forEach((a) => a.cancel());
+  const rollDir = index >= (ctx.questionIndex ?? 0) ? 1 : -1;
+  ctx.questionIndex = index;
 
   root.replaceChildren();
   const screen = el('div', 'vm-screen');
   // Same per-question hook as the podium's blocks, so brand CSS keyed by data-qid reaches both.
   screen.dataset.qid = q.id;
+  // 1-based position, so a host page can theme the Nth screen (RRMC's per-step photo).
+  screen.dataset.step = String(index + 1);
 
   const done = (index + 1) / questions.length;
   const progress = el('div', 'vm-progress');
@@ -1702,6 +1736,10 @@ function renderQuestion(root, ctx, index) {
   root.append(screen);
   screen.querySelector('.vm-question').setAttribute('tabindex', '-1');
   screen.querySelector('.vm-question').focus({ preventScroll: true });
+  if (leaving && typeof screen.animate === 'function'
+    && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    rollScreens(root, leaving, screen, rollDir);
+  }
 
   // Live "best guess" strip. If we already have matches cached (navigating
   // Back/Next), mount it straight away so it doesn't flash out and back in;

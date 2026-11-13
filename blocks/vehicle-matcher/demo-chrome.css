@@ -517,16 +517,87 @@
 .rr-pill.is-active { border-color: #281432; background: #281432; color: #fff; }
 
 /*
- * Question screens only: a full-bleed blue panel, white type, outlined pills. The results page
- * keeps the white surface. Blue gradient stands in for the frame's flag photo until it is exported.
+ * Question screens only: a full-bleed panel, white type, outlined pills. The results page keeps
+ * the white surface. Each step has its own backing layer (photo Q<n>.jpg under shader Q<n>S.png,
+ * both pinned to the top edge); index.html fades the new layer in over the old for 0.5s.
  */
+.vm-rrmc .demo-tool:has(.vm-screen[data-step="1"]),
+.vm-rrmc .demo-tool:has(.vm-screen[data-step="2"]),
+.vm-rrmc .demo-tool:has(.vm-screen[data-step="3"]) { --q-h: 56.11vw; }
 .vm-rrmc .demo-tool:not([hidden]):has(.vm-screen[data-qid]) {
+  position: relative;
   display: flex;
   flex-direction: column;
-  min-height: clamp(560px, 56.2vw, 809px);
-  padding: clamp(96px, 19.6vw, 282px) 0 clamp(32px, 3.2vw, 46px);
-  background: linear-gradient(180deg, #3d6194 0%, #2c4670 45%, #232b40 100%);
+  min-height: var(--q-h, 56.39vw);
+  padding: clamp(32px, 3.2vw, 46px) 0;
+  background: #262c38;
+  /* Questions roll in from beyond the right edge; nothing may scroll the page sideways. */
+  overflow-x: clip;
 }
+.vm-rrmc .demo-tool:not(:has(.vm-screen[data-qid])) .rr-backings { display: none; }
+.rr-backings { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+/* The photos are 1437 to 1458px exports with a white keyline; 6px is cropped off each side.
+   Each shader ends opaque in its own base colour, which also fills below it on a taller panel. */
+.rr-backing { position: absolute; inset: 0; opacity: 0; z-index: 0; transition: opacity 0.5s ease; }
+.rr-backing.is-previous { opacity: 1; z-index: 1; }
+.rr-backing.is-current { opacity: 1; z-index: 2; }
+.rr-backing.is-instant { transition: none; }
+@media (prefers-reduced-motion: reduce) { .rr-backing { transition: none; } }
+.rr-backing[data-step="1"] {
+  background:
+    url('../../assets/rrmc-opening/Q1S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q1.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #262c38;
+}
+.rr-backing[data-step="2"] {
+  background:
+    url('../../assets/rrmc-opening/Q2S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q2.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #262c38;
+}
+.rr-backing[data-step="3"] {
+  background:
+    url('../../assets/rrmc-opening/Q3S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q3.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #171f25;
+}
+.rr-backing[data-step="4"] {
+  background:
+    url('../../assets/rrmc-opening/Q4S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q4.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #787a77;
+}
+.rr-backing[data-step="5"] {
+  background:
+    url('../../assets/rrmc-opening/Q5S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q5.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #2a202a;
+}
+.rr-backing[data-step="6"] {
+  background:
+    url('../../assets/rrmc-opening/Q6S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q6.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #202228;
+}
+.rr-backing[data-step="7"] {
+  background:
+    url('../../assets/rrmc-opening/Q7S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q7.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #343637;
+}
+.rr-backing[data-step="8"] {
+  background:
+    url('../../assets/rrmc-opening/Q8S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q8.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #541a21;
+}
+.rr-backing[data-step="9"] {
+  background:
+    url('../../assets/rrmc-opening/Q9S.png') center top / 100% auto no-repeat,
+    url('../../assets/rrmc-opening/Q9.jpg') center -6px / calc(100% + 12px) auto no-repeat,
+    #0a0441;
+}
+.vm-rrmc .demo-tool > .vehicle-matcher { position: relative; z-index: 1; }
 .demo-shell.vm-rrmc .demo-tool .vehicle-matcher.vm:has(> .vm-stage > .vm-screen[data-qid]) {
   --vm-ink: #ffffff;
   --vm-ink-muted: rgba(255, 255, 255, 0.85);
@@ -538,12 +609,19 @@
   padding: 0;
   color: #ffffff;
 }
-.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-stage { display: flex; flex: 1 1 auto; flex-direction: column; }
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-stage { position: relative; display: flex; flex: 1 1 auto; flex-direction: column; }
 .demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-screen[data-qid] {
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  /* 66px each side = the nav row (42px pill + 24px gap), so the content centres in the whole panel. */
+  padding-block: 66px;
 }
+/* The question leaving the screen: out of the flow at full stage size, so it never stacks under the
+   new one. Its nav is hidden; the new screen's own nav is already in the same place. */
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-screen[data-qid].is-leaving { position: absolute; inset: 0; animation: none; pointer-events: none; }
+.demo-shell.vm-rrmc .demo-tool .vehicle-matcher .vm-screen[data-qid].is-leaving .vm-nav { visibility: hidden; }
 
 /* The frame has no step line, answered pills or live shortlist; dots replace the bar. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] :is(.vm-progress, .vm-step, .vm-pills, .vm-preview) { display: none; }
@@ -573,6 +651,10 @@
   gap: 28px;
   margin: 28px auto 0;
 }
+/* Centring: equal auto space above the question and below the last block before the nav. This sits
+   after the margin shorthand above so it is not reset. The price screen's drawer is that last block. */
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-question { margin-top: auto; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] > :is(.vm-options, .vm-budget-drawer):has(+ .vm-nav) { margin-bottom: auto; }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-option {
   align-items: center;
   justify-content: center;
@@ -608,10 +690,12 @@
 
 /* Back left, Next right, 160 x 42 outlined pills; the dots sit between them. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav {
+  position: absolute;
+  inset: auto 0 0;
   align-items: center;
   max-width: none;
-  margin: auto 0 0;
-  padding-inline: clamp(20px, 6.1vw, 88px);
+  margin: 0;
+  padding: 24px clamp(20px, 6.1vw, 88px) 0;
 }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-nav > .vm-btn {
   min-width: 160px;

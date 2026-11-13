@@ -613,6 +613,42 @@ main {
         const opening = root.querySelector('.rr-opening:not(.rr-journey)');
         const journey = root.querySelector('.rr-journey');
         const benefits = root.querySelector('.rr-benefits');
+        // One backing layer per question step; the current one fades in over the previous for 0.5s.
+        const backings = document.createElement('div');
+        backings.className = 'rr-backings';
+        backings.setAttribute('aria-hidden', 'true');
+        const layerFor = {};
+        for (let n = 1; n <= 9; n += 1) {
+          const layer = document.createElement('div');
+          layer.className = 'rr-backing';
+          layer.dataset.step = String(n);
+          backings.append(layer);
+          layerFor[n] = layer;
+        }
+        tool.prepend(backings);
+        let shownStep = null;
+        let fadeTimer = 0;
+        const showBacking = () => {
+          const step = tool.querySelector('.vm-screen[data-step]')?.dataset.step || null;
+          if (step === shownStep) return;
+          const out = layerFor[shownStep];
+          const into = layerFor[step];
+          clearTimeout(fadeTimer);
+          backings.querySelectorAll('.is-previous').forEach((l) => l.classList.remove('is-previous'));
+          if (out) { out.classList.remove('is-current'); out.classList.add('is-previous'); }
+          if (into) {
+            // The first layer after the panel opens appears at once; only step-to-step changes fade.
+            into.classList.toggle('is-instant', !out);
+            void into.offsetWidth;
+            into.classList.add('is-current');
+          }
+          fadeTimer = setTimeout(() => {
+            backings.querySelectorAll('.is-previous').forEach((l) => l.classList.remove('is-previous'));
+            if (!into) backings.querySelectorAll('.is-current').forEach((l) => l.classList.remove('is-current'));
+          }, 500);
+          shownStep = step;
+        };
+        new MutationObserver(showBacking).observe(tool, { childList: true, subtree: true });
         // The opening panel and ProvB1 never share the screen with the matcher.
         const reveal = () => {
           opening.hidden = true;
