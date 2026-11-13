@@ -696,9 +696,9 @@
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card {
   box-sizing: border-box;
   width: min(409px, 100%);
-  min-height: 154px;
+  min-height: 190px;
   margin: 28px auto 0;
-  padding: 18px 24px 31px;
+  padding: 28px 28px 36px;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.9);
   color: #383c46;
@@ -728,7 +728,7 @@
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-slider-bounds {
   order: -1;
   justify-content: space-between;
-  margin: 0;
+  margin: 0 0 12px;
   padding: 0 18px;
   font-size: 0;
   line-height: 1;
@@ -780,14 +780,14 @@
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range {
   width: auto;
   height: auto;
-  margin: 17px 0 0;
+  margin: 28px 0 0;
   padding: 0 0 0 54px;
   background: none;
   color: #383c46;
   text-align: left;
 }
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-label { font-size: 15px; letter-spacing: 0.06em; line-height: 19px; }
-.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-value { margin-top: 4px; font-size: 20px; letter-spacing: 0.08em; line-height: 24px; }
+.demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-range-card .vm-budget-range-value { margin-top: 8px; font-size: 20px; letter-spacing: 0.08em; line-height: 24px; }
 /* On the price screen the card sits inside the rolling drawer, which must not clip its corners. */
 .demo-shell.vm-rrmc .demo-tool .vm-screen[data-qid] .vm-budget-drawer-inner { padding-inline: 2px; }
 
