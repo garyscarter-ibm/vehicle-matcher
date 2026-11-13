@@ -5484,45 +5484,6 @@
     },
     {
       "assignee": "",
-      "branch": "dev/DEV-2026-11-13-GC-005",
-      "id": "FUCQ-412",
-      "jira_observed_at": "2026-11-12T15:47:45.907Z",
-      "note": "Checkpoint ready on 04d23d17; full acceptance open. Node identities unchanged, scoped validation reused. AC4 unchecked/F400 Low/F484 Medium/four PG skips retained. Policy-source ownership released upon parent integration for F413; no further policy writes without coordination. Parent owns native/file In Progress/lease, publication/shared integration/Jira/cleanup; no Done/waiver.",
-      "observed_at": "2026-11-13T23:05:55Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Lead reviewed unchanged public semantics, effective dates and immutable-seed cache; service21/21 and focused5/5; original baseline fails only the new operation regression as intended. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md. Versions12pass/1 existing fixture fail/3 native skips retained; integration gate separate.",
-          "id": "eligibility",
-          "observed_at": "2026-11-13T21:46:37Z",
-          "status": "complete",
-          "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
-        },
-        {
-          "evidence": "Latest base 04d23d17 integrated; Node source/config/test/fixture identities match tested 2f16eba4, scoped evidence reused without new tests. Integration checkpoint ready, full acceptance open: AC4/F400/F484/four PG skips retained. Policy-source ownership released upon parent integration for F413; no further writes without coordination. Native/file In Progress/lease stays parent-owned. See delivery record.",
-          "id": "integration",
-          "observed_at": "2026-11-13T23:05:55Z",
-          "status": "in-progress",
-          "title": "Lead affected-consumer and connected presentation validation"
-        }
-      ],
-      "status": "To Do",
-      "title": "Compile immutable eligibility rules for direct lookup",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
-      "workers": [
-        {
-          "expires_at": "2026-11-13T22:30:31.426411Z",
-          "harness": "codex",
-          "name": "B-Bot",
-          "observed_at": "2026-11-13T21:32:27.159269Z",
-          "status": "handed-off"
-        }
-      ]
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-413",
       "jira_observed_at": "2026-11-12T15:47:47.844Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
@@ -5908,68 +5869,6 @@
       "type": "Story",
       "unsliced": true,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438"
-    },
-    {
-      "id": "FUCQ-439",
-      "title": "Sign in and navigate through the Angular shell",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-13T23:10:57Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
-      "unsliced": false,
-      "slices": [
-        {
-          "id": "shell",
-          "status": "in-progress",
-          "title": "Angular21-toolchain-native-shell-and-router",
-          "observed_at": "2026-11-13T21:24:46Z"
-        },
-        {
-          "id": "auth",
-          "status": "in-progress",
-          "title": "OIDC-context-recovery-and-account-isolation",
-          "observed_at": "2026-11-13T21:56:25Z",
-          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md."
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Actual-Java-OIDC-browser-accessibility-and-hosted-gates"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-007",
-      "workers": [
-        {
-          "name": "Porky Pig",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-13T23:10:32.152631+00:00",
-          "expires_at": "2026-11-13T23:10:32.152631+00:00",
-          "status": "review evidence prepared; handoff inactive",
-          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; actualF455 compatible without source adaptation; failed review/MediumF486/openAC retained"
-        },
-        {
-          "name": "Mulan",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-13T21:56:25Z",
-          "expires_at": "2026-11-13T21:56:25Z",
-          "status": "checkpoint reported; inactive",
-          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
-        },
-        {
-          "name": "Sylvester Jr",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-13T23:10:32.152631+00:00",
-          "expires_at": "2026-11-13T23:10:32.152631+00:00",
-          "status": "review returned; inactive",
-          "source": "thread 01a1d725-c45d-7f11-a0f9-18f7db388af7; pinnedb117 reviewFAILED; MAJOR/MediumF486; requested/selected/effectiveSol-high verified actualturncontext8; savedtitleverified"
-        }
-      ],
-      "note": "Independent foundation review FAILED: one MAJOR/Medium retained-route reauthorization finding linked as backlog Bug FUCQ-486, independent prioritization/no repair or merge dependency. Original F439 AC open; not built/InReview/Done. Actual JavaOIDC contract compatible; real provider registration/browser/hosted proof pending. F436 packaging separate."
     },
     {
       "assignee": "",
@@ -6667,6 +6566,110 @@
           "status": "completed; independent review passed, AC1–4 supported"
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-13-GC-005",
+      "id": "FUCQ-412",
+      "jira_observed_at": "2026-11-13T23:18:25.492855+00:00",
+      "note": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
+      "observed_at": "2026-11-13T23:18:48Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead reviewed unchanged public semantics, effective dates and immutable-seed cache; service21/21 and focused5/5; original baseline fails only the new operation regression as intended. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md. Versions12pass/1 existing fixture fail/3 native skips retained; integration gate separate.",
+          "id": "eligibility",
+          "observed_at": "2026-11-13T21:46:37Z",
+          "status": "complete",
+          "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
+        },
+        {
+          "evidence": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
+          "id": "integration",
+          "observed_at": "2026-11-13T23:18:25.492855+00:00",
+          "status": "in-progress",
+          "title": "Lead affected-consumer and connected presentation validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Compile immutable eligibility rules for direct lookup",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
+      "workers": [
+        {
+          "expires_at": "2026-11-13T23:18:25.492855+00:00",
+          "harness": "codex",
+          "name": "B-Bot",
+          "observed_at": "2026-11-13T23:18:25.492855+00:00",
+          "status": "checkpoint integrated/published; inactive"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-439",
+      "title": "Sign in and navigate through the Angular shell",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-13T23:24:32Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "shell",
+          "status": "in-progress",
+          "title": "Angular21-toolchain-native-shell-and-router",
+          "observed_at": "2026-11-13T21:24:46Z"
+        },
+        {
+          "id": "auth",
+          "status": "in-progress",
+          "title": "OIDC-context-recovery-and-account-isolation",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual-Java-OIDC-browser-accessibility-and-hosted-gates",
+          "evidence": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
+          "observed_at": "2026-11-13T23:18:25.492855+00:00"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-007",
+      "workers": [
+        {
+          "name": "Porky Pig",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:10:32.152631+00:00",
+          "expires_at": "2026-11-13T23:10:32.152631+00:00",
+          "status": "review evidence prepared; handoff inactive",
+          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; actualF455 compatible without source adaptation; failed review/MediumF486/openAC retained"
+        },
+        {
+          "name": "Mulan",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "expires_at": "2026-11-13T21:56:25Z",
+          "status": "checkpoint reported; inactive",
+          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
+        },
+        {
+          "name": "Sylvester Jr",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:10:32.152631+00:00",
+          "expires_at": "2026-11-13T23:10:32.152631+00:00",
+          "status": "review returned; inactive",
+          "source": "thread 01a1d725-c45d-7f11-a0f9-18f7db388af7; pinnedb117 reviewFAILED; MAJOR/MediumF486; requested/selected/effectiveSol-high verified actualturncontext8; savedtitleverified"
+        }
+      ],
+      "note": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
+      "jira_observed_at": "2026-11-13T23:18:25.492855+00:00"
     }
   ],
   "version": 1
