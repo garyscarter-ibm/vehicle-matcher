@@ -372,3 +372,85 @@ test('FUCQ-371: the frozen baseline replays to the same quote, and a request nev
   assert.equal(frozen.request.currentCarRating.value, 4);
   assert.equal(Object.hasOwn(frozen.request, 'currentCar'), false);
 });
+
+test('order-ID lookup uses the visible duplicate stock row and preserves frozen quote provenance', async (t) => {
+  // Recommendation rejects two visible rows with the same ID; exercise duplicates across the visibility boundary.
+  for (const hiddenFirst of [true, false]) {
+    let pending = true;
+    const f = await allocationFixture({ cars: 1, claimResult: (_, input) => pending
+      ? { status: 'unavailable' } : ok({ claimId: input.operationId }) });
+    t.after(async () => { await f.repository.close(); await f.policy.close(); });
+    let snapshots = 0;
+    const repository = { ...f.repository, transaction(context, command, work) {
+      return f.repository.transaction(context, command, (tx) => work({ ...tx, async list(table) {
+        const found = await tx.list(table);
+        if (table !== 'stock' || found.status !== 'ok') return found;
+        snapshots += 1;
+        const visible = { ...structuredClone(found.value[0]), version: 13, revision: 'visible-revision' };
+        visible.facts.facts.body.provenance.sourceRef = 'visible-row';
+        const hidden = { ...structuredClone(visible), version: 29, revision: 'hidden-revision',
+          visibility: { ...visible.visibility, employeeIds: [] } };
+        hidden.facts.facts.body.provenance.sourceRef = 'hidden-row';
+        return ok(hiddenFirst ? [hidden, visible] : [visible, hidden]);
+      } }));
+    } };
+    const service = f.create({ repository });
+    assert.equal((await service.allocate(f.context, f.event)).code, 'claim-pending');
+    assert.equal(snapshots, 1);
+    const receipt = (await f.repository.query(f.context, 'event_receipts', { consumerId: 'buddy-allocation' })).value[0];
+    const plan = receipt.outcome.value.plan;
+    assert.deepEqual(plan.contenders.map((c) => c.employeeId), f.employees.map((e) => e.employeeId));
+    assert.ok(plan.contenders.every((c) => c.expectedVersions.stock === 13), 'lookup uses only employee-visible stock');
+    const versions = [{ version: 13, revision: 'visible-revision' }, { version: 29, revision: 'hidden-revision' }];
+    assert.deepEqual(plan.inputVersions.stock.map(({ version, revision }) => ({ version, revision })),
+      hiddenFirst ? [...versions].reverse() : versions);
+    // Preserve the independent, existing last-write entries map used for quote reconstruction.
+    assert.equal(f.calls[0].input.quote.snapshot.facts.body.provenance.sourceRef, hiddenFirst ? 'visible-row' : 'hidden-row');
+    assert.equal(f.calls[0].input.quote.versions.availability, hiddenFirst ? '13' : '29');
+    const frozen = structuredClone(f.calls[0].input);
+    pending = false;
+    const completed = await f.create({ repository }).allocate(f.context, f.event);
+    assert.equal(completed.status, 'ok', JSON.stringify(completed));
+    assert.deepEqual(f.calls[1].input, frozen, 'retry preserves the exact candidate, versions, quote and provenance');
+    assert.equal(snapshots, 1, 'retry uses the frozen plan');
+    const calls = f.calls.length;
+    assert.deepEqual(await f.create({ repository }).allocate(f.context, f.event), completed);
+    assert.equal(f.calls.length, calls);
+  }
+});
+
+test('missing and ambiguous dates add renewal blockers only to otherwise eligible decisions', async (t) => {
+  for (const currentContracts of [0, 2]) {
+    const f = await allocationFixture({ cars: 2 });
+    t.after(async () => { await f.repository.close(); await f.policy.close(); });
+    await f.write(async (tx) => {
+      for (const employee of f.employees) {
+        const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: employee.employeeId } };
+        const row = (await tx.get(ref)).value; const contract = structuredClone(row.contract);
+        const current = contract.manualContext.contracts[0];
+        contract.manualContext.contracts = Array.from({ length: currentContracts }, () => structuredClone(current));
+        const changed = await tx.compareAndSwap(ref, row.version, { contract });
+        if (changed.status !== 'ok') return changed;
+      }
+      const ref = { table: 'stock', key: { runId: f.context.runId, orderUuid: f.stock(2).orderUuid } };
+      const row = (await tx.get(ref)).value; const facts = structuredClone(row.facts);
+      facts.facts.seats = fact(2, 'count');
+      return tx.compareAndSwap(ref, row.version, { facts });
+    });
+    const out = await f.service.allocate(f.context, f.event);
+    assert.equal(out.status, 'ok', JSON.stringify(out));
+    assert.equal(out.value.state, 'no-assignment'); assert.equal(f.calls.length, 0);
+    assert.deepEqual(out.value.excluded.map((e) => e.employeeId), f.employees.map((e) => e.employeeId).sort());
+    for (const evaluation of out.value.evaluations) {
+      const eligible = evaluation.decisions.find((d) => d.orderUuid === f.stock(1).orderUuid);
+      const ineligible = evaluation.decisions.find((d) => d.orderUuid === f.stock(2).orderUuid);
+      assert.equal(eligible.gateStatus, 'eligible');
+      assert.deepEqual(eligible.blockers.filter((b) => b.code === 'renewal-deadline-unknown'), [
+        { code: 'renewal-deadline-unknown', currentContracts },
+      ]);
+      assert.equal(ineligible.gateStatus, 'ineligible');
+      assert.ok(ineligible.blockers.length > 0);
+      assert.equal(ineligible.blockers.some((b) => b.code === 'renewal-deadline-unknown'), false);
+    }
+  }
+});

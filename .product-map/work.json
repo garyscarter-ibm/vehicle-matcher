@@ -5454,21 +5454,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-409",
-      "title": "Resolve allocation stock rows through an order-ID index",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
-      "jira_observed_at": "2026-11-12T15:47:39.682Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z"
-    },
-    {
       "id": "FUCQ-410",
       "title": "Resolve decline exclusions through indexed history",
       "status": "To Do",
@@ -6445,6 +6430,81 @@
           "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
         }
       ]
+    },
+    {
+      "id": "FUCQ-409",
+      "title": "Resolve allocation stock rows through an order-ID index",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "lookup",
+          "status": "complete",
+          "title": "Direct-lookup-and-semantic-equivalence",
+          "observed_at": "2026-11-13T21:37:38Z",
+          "evidence": "Lead diff/caller review plus 28/28 allocation+ownership checks passed; docs/gcsp/fucq-409-allocation-index-2026-11-13.md; run lead-lookup. Duplicate isolated boundary proof remains operations."
+        },
+        {
+          "id": "operations",
+          "status": "complete",
+          "title": "Bounded-linear-lookup-proof",
+          "observed_at": "2026-11-13T21:41:45Z",
+          "evidence": "Lead accepted production-fragment identity and bounded counts; operations-focused3/3 and targeted lead-operations3/3, zero skipped; SHA256 9c6153bbdd4e32ebcf5d2e87a2fd251472ef0980e1ea8279d980ebbf6efe4b1c"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Connected-outcomes-and-independent-review",
+          "observed_at": "2026-11-13T22:48:31Z",
+          "evidence": "Base c6cfebbe merged at c8df2936. Full Node/UI/tools/package/test-config objects match validated 2003405b; reuse 38 pass/1 native PG skip and 14 reviewed captures. Separate Java persistence affects no original boundary; no rerun/new test allocation. All 301 other map rows/all other base files and 17 removed resources preserved. docs/gcsp/evidence/fucq-409/base-c6cfebbe.md. No acceptance/Done inferred."
+        }
+      ],
+      "workers": [
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:48:31.316643+00:00",
+          "expires_at": "2026-11-13T22:48:31.316643+00:00",
+          "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
+          "status": "completed; Java-only base c6cfebbe at c8df2936 reassessed; prior passing Node evidence reused"
+        },
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T21:37:38.588540+00:00",
+          "expires_at": "2026-11-13T21:42:17.333482+00:00",
+          "source": "collaboration /root/goopy_geer",
+          "status": "completed; both implementation slices accepted by lead"
+        },
+        {
+          "name": "Dibble",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "source": "chat 01a1d6db-e6f1-7ae0-8614-851a7ca2c194; requested/selected/effective gpt-6-luna/high; title verified",
+          "status": "completed; Jira/runtime/browser checks, lead completed final browser correction"
+        },
+        {
+          "name": "Cool Cat",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "source": "chat 01a1d702-b216-79d0-b864-c322cdfef3cd; requested/selected/effective gpt-6.1-sol/high; title/runtime verified",
+          "status": "completed; independent review passed, AC1–4 supported"
+        }
+      ],
+      "jira_observed_at": "2026-11-13T21:43:43Z",
+      "note": "Built; base c6cfebbe at c8df2936 does not affect original four AC; complete Node/UI/tool/package/test-config identities match validated 2003405b. All other map/base files preserved. Jira observation remains 21:43:43Z In Progress; dispatcher integration pending; no acceptance/Done inferred.",
+      "observed_at": "2026-11-13T22:48:31Z",
+      "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
 }
