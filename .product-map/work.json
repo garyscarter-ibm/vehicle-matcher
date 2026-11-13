@@ -5825,17 +5825,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-436",
-      "title": "Build and publish the static GCSP artifact",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
-      "unsliced": true
-    },
-    {
       "id": "FUCQ-437",
       "title": "Enter and refresh replacement frontend routes",
       "status": "To Do",
@@ -6420,6 +6409,47 @@
           "observed_at": "2026-11-13T21:15:46Z",
           "expires_at": "2026-11-13T21:15:46Z",
           "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-436",
+      "title": "Build and publish the static GCSP artifact",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-13T22:11:03Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-13-004",
+      "workers": [
+        {
+          "name": "Rapunzel",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:11:02.979073+00:00",
+          "expires_at": "2026-11-14T00:11:02.979073+00:00",
+          "source": "Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; saved title/runtime verified by dispatcher",
+          "status": "implementing"
+        }
+      ],
+      "slices": [
+        {
+          "id": "artifact",
+          "status": "not-started",
+          "title": "Independent-static-Angular-artifact-and-required-assets"
+        },
+        {
+          "id": "runtime",
+          "status": "in-progress",
+          "title": "Public-config-and-route-cache-CSP-referrer-policy",
+          "observed_at": "2026-11-13T22:11:03Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates"
         }
       ]
     }
