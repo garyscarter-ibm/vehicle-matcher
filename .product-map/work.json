@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4753,14 +4753,14 @@
           "status": "complete",
           "title": "Server-derived hours and minutes countdown",
           "observed_at": "2026-11-11T14:54:26Z",
-          "evidence": "Original AC2: actual presenter HTTP clock/readback 7200\u21927140\u219260\u21920 on unchanged offer/deadline, reload and second context; labelled zero immediate-reread/missing-timing faults. Current authority blobs verified identical. docs/gcsp/evidence/fucq383/final-validation.md"
+          "evidence": "Original AC2: actual presenter HTTP clock/readback 7200→7140→60→0 on unchanged offer/deadline, reload and second context; labelled zero immediate-reread/missing-timing faults. Current authority blobs verified identical. docs/gcsp/evidence/fucq383/final-validation.md"
         },
         {
           "id": "integration",
           "status": "complete",
           "title": "Actual offer read, all states and rendered review",
           "observed_at": "2026-11-11T14:54:26Z",
-          "evidence": "Original AC1\u20136 complete at local generated-stock/HTTPS boundary: actual decisions/expiry/refusal, corrected independent PASS and offer regressions; later F390 navigation checks/critique cover the changed seam. No deployed/BFCache/full-suite/collaborator acceptance claim. docs/gcsp/evidence/fucq383/final-validation.md"
+          "evidence": "Original AC1–6 complete at local generated-stock/HTTPS boundary: actual decisions/expiry/refusal, corrected independent PASS and offer regressions; later F390 navigation checks/critique cover the changed seam. No deployed/BFCache/full-suite/collaborator acceptance claim. docs/gcsp/evidence/fucq383/final-validation.md"
         }
       ],
       "unsliced": false,
@@ -4852,7 +4852,7 @@
       "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
       "unsliced": false,
-      "note": "Repair authorised on 11 November 2026; original AC1\u20133 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
       "slices": [
         {
           "id": "source",
@@ -4873,7 +4873,7 @@
           "status": "complete",
           "title": "Real-producer-to-pinned-offer-and-rendered-review",
           "observed_at": "2026-11-11T14:42:07Z",
-          "evidence": "Original AC1\u20133 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
+          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
         }
       ],
       "workers": [],
@@ -5865,58 +5865,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-439",
-      "title": "Sign in and navigate through the Angular shell",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-13T22:00:48Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
-      "unsliced": false,
-      "slices": [
-        {
-          "id": "shell",
-          "status": "in-progress",
-          "title": "Angular21-toolchain-native-shell-and-router",
-          "observed_at": "2026-11-13T21:24:46Z"
-        },
-        {
-          "id": "auth",
-          "status": "in-progress",
-          "title": "OIDC-context-recovery-and-account-isolation",
-          "observed_at": "2026-11-13T21:56:25Z",
-          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md."
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Actual-Java-OIDC-browser-accessibility-and-hosted-gates"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-007",
-      "workers": [
-        {
-          "name": "Porky Pig",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-13T22:00:07Z",
-          "expires_at": "2026-11-13T22:00:07Z",
-          "status": "integrated checkpoint returned; inactive",
-          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; direct final checkpoint after integration5037e20f; actual provider/Java/browser acceptance open"
-        },
-        {
-          "name": "Mulan",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-13T21:56:25Z",
-          "expires_at": "2026-11-13T21:56:25Z",
-          "status": "checkpoint reported; inactive",
-          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
-        }
-      ]
-    },
-    {
       "id": "FUCQ-440",
       "title": "Show employee account and current-vehicle information",
       "status": "To Do",
@@ -6561,13 +6509,66 @@
           "observed_at": "2026-11-13T22:29:52.192657+00:00",
           "expires_at": "2026-11-13T22:29:52.192657+00:00",
           "source": "chat 01a1d702-b216-79d0-b864-c322cdfef3cd; requested/selected/effective gpt-6.1-sol/high; title/runtime verified",
-          "status": "completed; independent review passed, AC1\u20134 supported"
+          "status": "completed; independent review passed, AC1–4 supported"
         }
       ],
       "jira_observed_at": "2026-11-13T21:43:43Z",
       "note": "Built; base c6cfebbe at c8df2936 does not affect original four AC; complete Node/UI/tool/package/test-config identities match validated 2003405b. All other map/base files preserved. Jira observation remains 21:43:43Z In Progress; dispatcher integration pending; no acceptance/Done inferred.",
       "observed_at": "2026-11-13T22:48:31Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
+    },
+    {
+      "id": "FUCQ-439",
+      "title": "Sign in and navigate through the Angular shell",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-13T23:00:26Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-439",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "shell",
+          "status": "in-progress",
+          "title": "Angular21-toolchain-native-shell-and-router",
+          "observed_at": "2026-11-13T21:24:46Z"
+        },
+        {
+          "id": "auth",
+          "status": "in-progress",
+          "title": "OIDC-context-recovery-and-account-isolation",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual-Java-OIDC-browser-accessibility-and-hosted-gates"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-007",
+      "workers": [
+        {
+          "name": "Porky Pig",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:00:24.666089+00:00",
+          "expires_at": "2026-11-13T23:00:24.666089+00:00",
+          "status": "foundation review checkpoint returned; inactive",
+          "source": "thread 01a1d6ca-6fb3-7513-935e-df2361f3dcf5; lead directly prepared independently reviewable checkpoint against shared0ab125ae; no original AC completion claim"
+        },
+        {
+          "name": "Mulan",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T21:56:25Z",
+          "expires_at": "2026-11-13T21:56:25Z",
+          "status": "checkpoint reported; inactive",
+          "source": "thread 01a1d6cc-e3ef-72f1-86b1-185846c0bf17; STOP EDITS and final checkpoint directly received"
+        }
+      ],
+      "note": "Foundation ready for independent integration review after latest-shared synca13b51e1. Original F439 acceptance remains open; not built/InReview/Done. F436 packaging separate; actual productionOIDC Java configuration pendingF455."
     }
   ]
 }

@@ -29,3 +29,11 @@ Logout clears visible identity and private route components immediately, removes
 Scoped `npm audit --omit=dev --json` passed on 13 November 2026: 0 production vulnerabilities (10 production dependencies). Receipt/log: `.claude/test-runs/fucq439/auth-production-audit.receipt.json` and `.log` in the launching clone. Development dependencies were excluded from this scoped audit.
 
 Remaining acceptance: real test OIDC and Java bearer context, renewal/expiry/sign-out/account separation, native saved progress, deployed origin/deep-link/CSP proof, desktop/narrow/Safari/private/keyboard/focus inspection and hosted review. App tests and builds do not establish these integrations.
+
+## Foundation integration review
+
+The shell, router, shared Angular kit, runtime-config consumer and OIDC adapter form an independently reviewable development checkpoint. Their integration does not depend on the whole FUCQ-455 Story being complete. FUCQ-436 can compile this package and consume `dist/gcsp-web/browser` using the public config interface above; its root build, static assembly, blueprint and config producer/schema remain separately owned.
+
+The shared Java foundation now contains `ContextResource` and `IdentityPort`, with the same context envelope consumed here. Its production selection currently supports `none`; `fixed-test` is restricted to automated tests. Real authentication therefore still needs FUCQ-455's configured provider, public registration/scopes/audience, trusted subject/role mapping and actual browser-to-Java proof. The frontend does not invent those values or turn a test principal into a deployed login.
+
+The delivery record `_dev/in-progress/DEV-2026-11-13-007.md` contains the reviewed checkpoint identities, selected 51/51 module result, prior router/kit checks, production AOT/boundary/audit evidence, rendered unavailable-state observations, failures and resource receipts. Source/build inputs are unchanged by the shared-branch sync. This checkpoint is ready for independent integration review while all original Story acceptance remains open; it is not a built, In Review or Done claim.
