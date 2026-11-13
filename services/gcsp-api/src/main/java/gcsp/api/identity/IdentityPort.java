@@ -2,7 +2,7 @@ package gcsp.api.identity;
 
 /**
  * Resolves a bearer access token into a server-owned principal. Selected at startup by
- * {@code gcsp.identity.provider}; FUCQ-455 adds the OIDC/JWT implementation.
+ * {@code gcsp.identity.provider}.
  */
 public interface IdentityPort {
 
