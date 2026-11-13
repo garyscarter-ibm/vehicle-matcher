@@ -5500,8 +5500,8 @@
     {
       "id": "FUCQ-414",
       "title": "Reuse validated immutable stock snapshots across employees",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "In Progress",
+      "original_status": "In Progress",
       "assignee": "",
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
@@ -5574,9 +5574,9 @@
           "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
         }
       ],
-      "jira_observed_at": "2026-11-12T15:47:57.529Z",
-      "note": "Implementation and independent review PASS; acceptance remains open, not Built. Final e4 integrated81 pass/0 fail/1 nativePG skip and connected memory39/39 with10 captures. NativePG/FUCQ106/Safari/fullaccessibility and later F425native combination unverified. Metadata-only handoff resumed after shared repair; dispatcher retains integration/lifecycle.",
-      "observed_at": "2026-11-13T23:29:49Z",
+      "jira_observed_at": "2026-11-13T22:36:19.647Z",
+      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
+      "observed_at": "2026-11-13T23:34:17Z",
       "branch": "dev/DEV-2026-11-13-GC-007"
     },
     {

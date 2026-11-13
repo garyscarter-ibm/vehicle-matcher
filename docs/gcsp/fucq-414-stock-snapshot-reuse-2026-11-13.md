@@ -33,8 +33,8 @@ The launcher owns resource finalisation. Evidence is outside disposable scratch 
 
 ## Agents and observations
 
-- Lead: Foghorn Leghorn, saved title verified by `set_thread_title`; chat `01a1d70b-7e3d-74c2-ba6d-d52f3181668e`. Requested/selected `gpt-6.1-sol` / `high`, no fallback; effective runtime pair is not independently exposed by that title response.
-- Implementer: Mr Potato Head, `/root/mr_potato_head`; fresh capacity reported `can_start=3`, then authoritative tier routing selected requested `gpt-6.1-sol` / `medium`, no fallback. One reuse/proof slice, no descendants. Saved title confirmed; effective runtime settings are not independently exposed. Final report received and worker observation expired.
+- Lead: Foghorn Leghorn, saved title verified by `set_thread_title`; chat `01a1d70b-7e3d-74c2-ba6d-d52f3181668e`. Requested/selected `gpt-6.1-sol` / `high`, no fallback; the title response alone did not expose runtime settings; saved turn-context verification below now confirms the requested pair.
+- Implementer: Mr Potato Head, `/root/mr_potato_head`; fresh capacity reported `can_start=3`, then authoritative tier routing selected requested `gpt-6.1-sol` / `medium`, no fallback. One reuse/proof slice, no descendants. Saved title confirmed; runtime settings had not yet been independently inspected at that stage; see the final saved-context verification below. Final report received and worker observation expired.
 
 ## Delivery evidence
 
@@ -96,7 +96,7 @@ Final source SHA256:
 - allocation: `fe5814ad4f243bbc449eb451be1cf03bcb8516249f8747994a3025ff927a0905`
 - focused test: `f0fd15f7157772095a8b4d082ff66e23e475dfe35879636dfc9b90fa40ab2b75`
 
-Additional delegated observations: Pugh requested/selected `gpt-6-luna` / `high`, no fallback, completed the bounded integration runs; Speedy Gonzales requested/selected `gpt-6.1-sol` / `high`, no fallback, read-only independent review. Their saved titles were verified. No reviewer test allocation or descendants were requested. Effective runtime settings are not independently exposed. All delegated briefs retained the original project scope, resource duties, equal collaborator authority, Jira resumption, false422 handling and demo-delivery rules.
+Additional delegated observations: Pugh requested/selected `gpt-6-luna` / `high`, no fallback, completed the bounded integration runs; Speedy Gonzales requested/selected `gpt-6.1-sol` / `high`, no fallback, read-only independent review. Their saved titles were verified. No reviewer test allocation or descendants were requested. Saved turn-context verification below now confirms these settings. All delegated briefs retained the original project scope, resource duties, equal collaborator authority, Jira resumption, false422 handling and demo-delivery rules.
 
 
 ## Final review and handoff
@@ -115,4 +115,22 @@ Outstanding collaborator check: the dispatcher should arrange the remaining appr
 
 The first documentation/map commit attempt was refused by shared checkout mutex contention (30-second timeout). The dispatcher completed metadata repair at `90d328dc`, published the F440 claim at `09a13e78`, and resumed this worker for the scoped records commit. The original handoff patch remains retained as diagnostic history. No lock bypass, worker push or shared merge was attempted.
 
-Final metadata reconciliation preserves all **301 other Story rows exactly** from shared `09a13e787e0e5858106a74e92c3ee09e54d8b532`; only F414 delivery observations are applied. Parent resource audit `.claude/fucq414-parent-resource-check-2300.json` independently inspected13 manifests and confirmed8 distinct owned scratch/profile roots absent. Existing model/effort and saved-title evidence remains as recorded above; no effective-runtime assertion or new agent/test allocation is added. Source hashes still match the final tested e4 integration manifest. This resumed step changes documentation, the own Result and map only; F425 native PostgreSQL and all remaining acceptance limits remain open.
+Final metadata reconciliation preserves all **301 other Story rows exactly** from shared `09a13e787e0e5858106a74e92c3ee09e54d8b532`; only F414 delivery observations are applied. Parent resource audit `.claude/fucq414-parent-resource-check-2300.json` independently inspected13 manifests and confirmed8 distinct owned scratch/profile roots absent. Existing requested/selected model and effort evidence is retained; final saved-context verification below adds actual runtime confirmation without a new agent or test allocation. Source hashes still match the final tested e4 integration manifest. This resumed step changes documentation, the own Result and map only; F425 native PostgreSQL and all remaining acceptance limits remain open.
+
+
+## Published-base sync and saved runtime verification
+
+Published `gcsp-poc-dev` at `09a13e787e0e5858106a74e92c3ee09e54d8b532` is now an ancestor of this worker via merge `1057ccf2b2355edee917c403a09c447865e93ab2`. The adapter/mutex merge resolved only the product-map conflict, retaining F414 observations and all301 other Story rows exactly. F414 recommendation, vehicles, allocation and regression hashes remain identical to the final tested e4 manifest. The published delta's only Node runtime change since e4 is F425's PostgreSQL hydration; its unrun native combination remains explicit. No new tests or source changes were made for the sync. The full staged whitespace check failed on inherited foreign `_dev` files and brand SVG whitespace; F414-owned paths passed. Foreign content was retained unchanged.
+
+Read-only inspection of `~/.codex/sessions/2026/11/13/` matched each session's parent/path metadata and actual saved `turn_context` records. Requested and selected settings now match independently observed saved settings (no fallback):
+
+| Saved title | Session ID | Requested / selected / observed | Saved turn contexts |
+| --- | --- | --- | ---: |
+| Mr Potato Head | `01a1d70e-32ee-75f2-8e24-047be3d3f163` | `gpt-6.1-sol` / `medium` | 1 |
+| Pugh | `01a1d71c-6783-7662-92ea-56b69c0e1f8f` | `gpt-6-luna` / `high` | 2 |
+| Speedy Gonzales | `01a1d729-3c69-7fe2-8e8a-ce21fee8da84` | `gpt-6.1-sol` / `high` | 1 |
+| Foghorn Leghorn | `01a1d70b-7e3d-74c2-ba6d-d52f3181668e` | `gpt-6.1-sol` / `high` | 6 at inspection |
+
+All three child saved titles were independently re-read through Codex `read_thread` and match the table. `agent-settings-verification.json` retains exact session paths, line numbers, timestamps, turn IDs and record hashes; no settings were altered. This supersedes the earlier limitation that the runtime pair had not been independently exposed.
+
+The final native read reports **FUCQ-414 In Progress**; its own file remains `_dev/in-progress/DEV-2026-11-13-GC-007.md`. The remote Story lease remains held by `garyscarter-ibm` (client `516ca3553159`, taken `2026-11-13T22:32:06Z`, lease commit `5d5f61f9727c874c8fcd7d9748d2c0305ff65e1e`). Native status, file location, lease and all four original AC remain unchanged; this worker only records the current observation. The local Result remains blocked on acceptance evidence: native PostgreSQL/FUCQ106, Safari and full accessibility are open, with no Built/Done transition. Exact read receipts are `final-native-status.json`, `final-lease-read.json` and `base-sync.json`. Parent retains publication, checkpoint integration, lifecycle and allocation reservation/release.
