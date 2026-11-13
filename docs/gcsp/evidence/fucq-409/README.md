@@ -1,5 +1,7 @@
 # FUCQ-409 rendered evidence
 
+Current integrated checkpoint: `2003405b` includes base `806d4816`; fresh scoped validation passed 38 cases/one native PostgreSQL skip. All 20 recorded browser source/input identities match. Reuse these 14 reviewed captures; see `integrated-base806.md` for current preservation and resource evidence.
+
 Production SHA256 `9c6153bbdd4e32ebcf5d2e87a2fd251472ef0980e1ea8279d980ebbf6efe4b1c`. Main/no-match tested at `e445b2ed`; final conflict/replay at `3575614b`. Intervening commits change documentation/product-map only.
 
 External artifacts: `/Users/garycarter/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/fucq409/rendered`. Verified local OneDrive copies; cloud upload/sharing unverified. `manifest.json` includes complete image hashes, geometry and bounded text. The dispatcher can open these absolute paths on this machine.

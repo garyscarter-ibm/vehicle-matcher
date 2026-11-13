@@ -6436,8 +6436,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Connected-outcomes-and-independent-review",
-          "observed_at": "2026-11-13T22:29:51Z",
-          "evidence": "38 distinct automated passes/1 native PostgreSQL skip; 14 desktop/narrow captures independently reviewed by Cool Cat, verdict passed; real stale-version fallback and exact replay with unchanged 502 stock rows; final 16-manifest cleanup audit. docs/gcsp/fucq-409-allocation-index-2026-11-13.md; docs/gcsp/evidence/fucq-409/independent-review.md. No collaborator acceptance/Done inferred."
+          "observed_at": "2026-11-13T22:44:13Z",
+          "evidence": "Integrated merge 2003405b includes dispatcher base 806d4816. Fresh five modules: 38 pass/1 native PG skip/0 fail, 106.146s. All 301 other map rows/421 other base _dev blobs preserved; 20 recorded browser input hashes unchanged, 14 reviewed captures reused. All 17 resource manifests removed. docs/gcsp/evidence/fucq-409/integrated-base806.md. Original review/model/effort/title receipts retained; no acceptance/Done inferred."
         }
       ],
       "workers": [
@@ -6445,10 +6445,10 @@
           "name": "Charlie Dog",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T22:29:52.192657+00:00",
-          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "observed_at": "2026-11-13T22:44:13.677126+00:00",
+          "expires_at": "2026-11-13T22:44:13.677126+00:00",
           "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
-          "status": "completed; built handoff, dispatcher publication/integration pending"
+          "status": "completed; integrated base 806d4816 at 2003405b, 38 pass/1 PG skip; dispatcher handoff"
         },
         {
           "name": "Goopy Geer",
@@ -6479,8 +6479,8 @@
         }
       ],
       "jira_observed_at": "2026-11-13T21:43:43Z",
-      "note": "Claim ef586adf; built, all original AC supported; independent review passed. Native Jira read remains In Progress at 21:43:43Z on 13 Nov, original four AC/no hold; dispatcher owns publication/integration/transition. No collaborator acceptance/Done inferred.",
-      "observed_at": "2026-11-13T22:31:32Z",
+      "note": "Built; original four AC supported after integrated base 806d4816 validation at 2003405b; newer other-Story claims/observations preserved. Jira observation still 21:43:43Z In Progress; dispatcher publication/integration/transition pending. No acceptance/Done inferred.",
+      "observed_at": "2026-11-13T22:45:07Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
