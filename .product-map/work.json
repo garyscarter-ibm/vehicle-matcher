@@ -6459,8 +6459,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Connected-outcomes-and-independent-review",
-          "observed_at": "2026-11-13T22:44:13Z",
-          "evidence": "Integrated merge 2003405b includes dispatcher base 806d4816. Fresh five modules: 38 pass/1 native PG skip/0 fail, 106.146s. All 301 other map rows/421 other base _dev blobs preserved; 20 recorded browser input hashes unchanged, 14 reviewed captures reused. All 17 resource manifests removed. docs/gcsp/evidence/fucq-409/integrated-base806.md. Original review/model/effort/title receipts retained; no acceptance/Done inferred."
+          "observed_at": "2026-11-13T22:48:31Z",
+          "evidence": "Base c6cfebbe merged at c8df2936. Full Node/UI/tools/package/test-config objects match validated 2003405b; reuse 38 pass/1 native PG skip and 14 reviewed captures. Separate Java persistence affects no original boundary; no rerun/new test allocation. All 301 other map rows/all other base files and 17 removed resources preserved. docs/gcsp/evidence/fucq-409/base-c6cfebbe.md. No acceptance/Done inferred."
         }
       ],
       "workers": [
@@ -6468,10 +6468,10 @@
           "name": "Charlie Dog",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T22:44:13.677126+00:00",
-          "expires_at": "2026-11-13T22:44:13.677126+00:00",
+          "observed_at": "2026-11-13T22:48:31.316643+00:00",
+          "expires_at": "2026-11-13T22:48:31.316643+00:00",
           "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
-          "status": "completed; integrated base 806d4816 at 2003405b, 38 pass/1 PG skip; dispatcher handoff"
+          "status": "completed; Java-only base c6cfebbe at c8df2936 reassessed; prior passing Node evidence reused"
         },
         {
           "name": "Goopy Geer",
@@ -6502,8 +6502,8 @@
         }
       ],
       "jira_observed_at": "2026-11-13T21:43:43Z",
-      "note": "Built; original four AC supported after integrated base 806d4816 validation at 2003405b; newer other-Story claims/observations preserved. Jira observation still 21:43:43Z In Progress; dispatcher publication/integration/transition pending. No acceptance/Done inferred.",
-      "observed_at": "2026-11-13T22:45:07Z",
+      "note": "Built; base c6cfebbe at c8df2936 does not affect original four AC; complete Node/UI/tool/package/test-config identities match validated 2003405b. All other map/base files preserved. Jira observation remains 21:43:43Z In Progress; dispatcher integration pending; no acceptance/Done inferred.",
+      "observed_at": "2026-11-13T22:48:31Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]

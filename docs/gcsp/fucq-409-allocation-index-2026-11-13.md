@@ -2,7 +2,7 @@
 
 Story: `DEV-2026-11-13-GC-002`; branch `dev/DEV-2026-11-13-GC-002`; claim `ef586adf` (3 points). Lead: Charlie Dog, chat `01a1d6cf-fee5-7992-be1d-7d5c6e563a99`.
 
-Current handoff includes dispatcher-selected base `806d4816` through worker merge `2003405b`. All 38 scoped cases passed again with one native PostgreSQL skip; all newer other-Story records/claims are preserved. See `docs/gcsp/evidence/fucq-409/integrated-base806.md` for the current integration/resource receipt.
+Current handoff includes dispatcher-selected base `c6cfebbe` through worker merge `c8df2936`, after validated merge `2003405b` and handoff `86f6c47c`. The new changes are separate Java persistence/Story/map files; all Node source/tests, UI, tools, packages and test configuration match the validated tree. Reuse 38 scoped passes/one native PostgreSQL skip; no rerun solely for this Java change. All other base files and 301 other Story map rows are preserved. Current assessment: `docs/gcsp/evidence/fucq-409/base-c6cfebbe.md`; prior executed validation: `integrated-base806.md`.
 
 ## Fixed scope and readiness
 
@@ -55,6 +55,10 @@ Final documentation checks passed: `dev_mail.py check-story`, `git diff --check`
 ## Integrated base checkpoint
 
 After the dispatcher requested synchronization, the worker merged `806d4816` without conflict at `2003405b`. A fresh one-worker run of allocation, ownership, operation proof, runtime and main-journey modules passed 38 cases with one native PostgreSQL skip and zero failures/cancellations. The FUCQ-422 repository journal is the relevant newly inherited Node boundary; all 20 recorded browser input hashes still match, so the 14 reviewed captures and original independent source/UI review are reused with this fresh runtime evidence. All 301 other Story map rows and 421 other base `_dev` blobs match the selected base. Final audit now covers all 17 removed ownership manifests. Detailed commands, identities, 106.146-second/704,577,536-byte RSS result and review/resource model/title receipts are in `docs/gcsp/evidence/fucq-409/integrated-base806.md`. No additional product change, full-suite run, child launch, publication or Jira transition occurred.
+
+## Java-only base reassessment
+
+Dispatcher-selected `c6cfebbe` merged without conflict at `c8df2936`. Complete Git object checks for server, blocks, scripts, tools, package/lock files and test configuration match validated `2003405b`, as do all selected source hashes and 20 recorded browser inputs. The new FUCQ-456 Java persistence changes do not affect a prescribed FUCQ-409 boundary. No test rerun, Java acceptance, new independent review or validation-resource allocation is claimed. Reuse the 38-pass/one-PG-skip result and 14 reviewed captures; all other base files, 301 other map rows, original AC/claim and prior lead/reviewer receipts are preserved. All 17 ownership manifests remain removed with roots/groups absent. See `docs/gcsp/evidence/fucq-409/base-c6cfebbe.md` for the actual assessment and machine-readable retrieval route.
 
 ## Agents
 

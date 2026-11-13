@@ -1,6 +1,6 @@
 # FUCQ-409 rendered evidence
 
-Current integrated checkpoint: `2003405b` includes base `806d4816`; fresh scoped validation passed 38 cases/one native PostgreSQL skip. All 20 recorded browser source/input identities match. Reuse these 14 reviewed captures; see `integrated-base806.md` for current preservation and resource evidence.
+Current worker merge `c8df2936` includes base `c6cfebbe`. The Java-only update leaves all Node/UI/test/package boundaries identical to validated `2003405b`; reuse its 38 passes/one native PostgreSQL skip and these 14 reviewed captures. All 20 recorded browser source/input identities match. See `base-c6cfebbe.md` for current preservation/resource reassessment and `integrated-base806.md` for the executed validation.
 
 Production SHA256 `9c6153bbdd4e32ebcf5d2e87a2fd251472ef0980e1ea8279d980ebbf6efe4b1c`. Main/no-match tested at `e445b2ed`; final conflict/replay at `3575614b`. Intervening commits change documentation/product-map only.
 
