@@ -5454,21 +5454,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-409",
-      "title": "Resolve allocation stock rows through an order-ID index",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
-      "unsliced": true,
-      "slices": [],
-      "workers": [],
-      "jira_observed_at": "2026-11-12T15:47:39.682Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z"
-    },
-    {
       "id": "FUCQ-410",
       "title": "Resolve decline exclusions through indexed history",
       "status": "To Do",
@@ -5696,12 +5681,34 @@
       "assignee": "",
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-423",
-      "unsliced": true,
-      "slices": [],
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "flush",
+          "status": "complete",
+          "title": "Flush PostgreSQL commits from the mutation journal",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "evidence": "Lead review of postgres.js journal flush; contract/evidence/journal suites pass on native PG17 with only the base F71 failures"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Focused semantic-equivalence and native query-count tests",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "evidence": "gcsp-postgres-write-set 5/5 native: equivalence with memory, constant statements and rows at 47 vs 4047 history rows, rollback, competing instances, replay"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL and delivery record",
+          "observed_at": "2026-11-13T22:54:10Z",
+          "evidence": "validate commands and 6 affected caller suites on native PG17 match base; Result block in story file"
+        }
+      ],
       "workers": [],
       "jira_observed_at": "2026-11-12T15:49:02.356Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:40Z"
+      "observed_at": "2026-11-13T22:54:10Z"
     },
     {
       "id": "FUCQ-424",
@@ -5823,6 +5830,53 @@
       "observed_at": "2026-11-13T20:22:18.041Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
       "unsliced": true
+    },
+    {
+      "id": "FUCQ-436",
+      "title": "Build and publish the static GCSP artifact",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-13T22:53:06Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-13-004",
+      "workers": [
+        {
+          "name": "Rapunzel",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:11:02.979073+00:00",
+          "expires_at": "2026-11-13T22:53:05.750998+00:00",
+          "source": "Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; saved title/runtime verified by dispatcher",
+          "status": "stopped; blocked handoff recorded"
+        }
+      ],
+      "slices": [
+        {
+          "id": "artifact",
+          "status": "complete",
+          "title": "Independent-static-Angular-artifact-and-required-assets",
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
+        },
+        {
+          "id": "runtime",
+          "status": "in-progress",
+          "title": "Public-config-and-route-cache-CSP-referrer-policy",
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "Strict producer/schema and static route/cache/CSP/referrer policy passed local tests; dynamic offer entry and actual hosted identity/header behavior remain incomplete."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "No isolated hosted Java/OIDC environment or actual response-header/deployment-trigger proof; Safari/private and full identity/accessibility gates unrun. Original Story AC remain unchecked."
+        }
+      ],
+      "tracker_observed_at": "2026-11-13T22:23:44Z"
     },
     {
       "id": "FUCQ-437",
@@ -6059,9 +6113,53 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-13T22:54:44Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-455",
-      "unsliced": true
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "token-validation",
+          "status": "complete",
+          "title": "Validate bearer JWT signature, issuer, audience and lifetime against JWKS",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); OidcContextTest 24 HTTP cases with real RS256 JWTs and loopback JWKS: issuer/audience/expiry/nbf/signature/alg none/HS256/malformed refusals"
+        },
+        {
+          "id": "role-account-mapping",
+          "status": "complete",
+          "title": "Map role claim and trusted subject to employee/greg/presenter context",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); employee/greg/presenter contexts, role intersect with deployment mapping, subject-not-mapped, presenter without employeeId, A-B-A account switch"
+        },
+        {
+          "id": "authorization-helper",
+          "status": "complete",
+          "title": "Reusable role and ownership authorization helper",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); gcsp.api.auth BearerAuthentication/Role/Access with AccessTest 5 cases"
+        },
+        {
+          "id": "provider-doc",
+          "status": "complete",
+          "title": "Test OIDC provider and claim-mapping record for Gary and GC",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "docs/gcsp/oidc-test-provider-2026-11-13.md at ede3fd9b: Keycloak recommendation, claim mapping, Angular contract, Gary registration list"
+        },
+        {
+          "id": "browser-login",
+          "status": "blocked",
+          "title": "Real browser login against the test provider (needs registration + F439)",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "Not done: needs Gary's test provider registration (no Keycloak host; no Docker daemon here) and FUCQ-439 login integration"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story-level lead review and delivery record",
+          "observed_at": "2026-11-13T22:54:44Z",
+          "evidence": "Lead-reviewed dev/DEV-2026-11-13-023 ede3fd9b: ./mvnw -B verify 52/52 (JDK 21, Quarkus 3.40.1.2, jose4j 0.9.6); Result block on dev/DEV-2026-11-13-023; browser-login slice blocked on external registration"
+        }
+      ]
     },
     {
       "id": "FUCQ-456",
@@ -6070,9 +6168,32 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-13T22:40:05Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-456",
-      "unsliced": true
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Design, V1 schema and transactional repository core with native tests",
+          "observed_at": "2026-11-13T22:30:18Z",
+          "evidence": "b990c1a8 reviewed by story-lead; 23 native PG17 persistence tests pass (commit/rollback/CAS/no-op/competing custody/replay/uncertain/new-pool restart/stale-run/wiring)"
+        },
+        {
+          "id": "s2-reset-isolation",
+          "status": "complete",
+          "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence",
+          "observed_at": "2026-11-13T22:35:13Z",
+          "evidence": "3706cac6 reviewed by story-lead; 37 native PG17 persistence tests pass incl. atomic reset, isolation refusals, two-database isolation, intent/CAS finalize"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story-level validation, alignment record and result",
+          "observed_at": "2026-11-13T22:40:05Z",
+          "evidence": "story-lead: 54 module tests pass at 0dd710eb on native PG17; two-JVM running-app reset isolation and restart proof; EXPLAIN scope; hosted dev awaits Gary"
+        }
+      ]
     },
     {
       "id": "FUCQ-457",
@@ -6413,51 +6534,79 @@
       ]
     },
     {
-      "id": "FUCQ-436",
-      "title": "Build and publish the static GCSP artifact",
+      "id": "FUCQ-409",
+      "title": "Resolve allocation stock rows through an order-ID index",
       "status": "In Progress",
       "original_status": "In Progress",
-      "assignee": "Gary Carter",
+      "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T22:53:06Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-409",
       "unsliced": false,
-      "branch": "dev/DEV-2026-11-13-004",
-      "workers": [
-        {
-          "name": "Rapunzel",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-13T22:11:02.979073+00:00",
-          "expires_at": "2026-11-13T22:53:05.750998+00:00",
-          "source": "Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; saved title/runtime verified by dispatcher",
-          "status": "stopped; blocked handoff recorded"
-        }
-      ],
       "slices": [
         {
-          "id": "artifact",
+          "id": "lookup",
           "status": "complete",
-          "title": "Independent-static-Angular-artifact-and-required-assets",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
+          "title": "Direct-lookup-and-semantic-equivalence",
+          "observed_at": "2026-11-13T21:37:38Z",
+          "evidence": "Lead diff/caller review plus 28/28 allocation+ownership checks passed; docs/gcsp/fucq-409-allocation-index-2026-11-13.md; run lead-lookup. Duplicate isolated boundary proof remains operations."
         },
         {
-          "id": "runtime",
-          "status": "in-progress",
-          "title": "Public-config-and-route-cache-CSP-referrer-policy",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "Strict producer/schema and static route/cache/CSP/referrer policy passed local tests; dynamic offer entry and actual hosted identity/header behavior remain incomplete."
+          "id": "operations",
+          "status": "complete",
+          "title": "Bounded-linear-lookup-proof",
+          "observed_at": "2026-11-13T21:41:45Z",
+          "evidence": "Lead accepted production-fragment identity and bounded counts; operations-focused3/3 and targeted lead-operations3/3, zero skipped; SHA256 9c6153bbdd4e32ebcf5d2e87a2fd251472ef0980e1ea8279d980ebbf6efe4b1c"
         },
         {
           "id": "integration",
-          "status": "blocked",
-          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "No isolated hosted Java/OIDC environment or actual response-header/deployment-trigger proof; Safari/private and full identity/accessibility gates unrun. Original Story AC remain unchecked."
+          "status": "complete",
+          "title": "Connected-outcomes-and-independent-review",
+          "observed_at": "2026-11-13T22:48:31Z",
+          "evidence": "Base c6cfebbe merged at c8df2936. Full Node/UI/tools/package/test-config objects match validated 2003405b; reuse 38 pass/1 native PG skip and 14 reviewed captures. Separate Java persistence affects no original boundary; no rerun/new test allocation. All 301 other map rows/all other base files and 17 removed resources preserved. docs/gcsp/evidence/fucq-409/base-c6cfebbe.md. No acceptance/Done inferred."
         }
       ],
-      "tracker_observed_at": "2026-11-13T22:23:44Z"
+      "workers": [
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:48:31.316643+00:00",
+          "expires_at": "2026-11-13T22:48:31.316643+00:00",
+          "source": "chat 01a1d6cf-fee5-7992-be1d-7d5c6e563a99",
+          "status": "completed; Java-only base c6cfebbe at c8df2936 reassessed; prior passing Node evidence reused"
+        },
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T21:37:38.588540+00:00",
+          "expires_at": "2026-11-13T21:42:17.333482+00:00",
+          "source": "collaboration /root/goopy_geer",
+          "status": "completed; both implementation slices accepted by lead"
+        },
+        {
+          "name": "Dibble",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "source": "chat 01a1d6db-e6f1-7ae0-8614-851a7ca2c194; requested/selected/effective gpt-6-luna/high; title verified",
+          "status": "completed; Jira/runtime/browser checks, lead completed final browser correction"
+        },
+        {
+          "name": "Cool Cat",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T22:29:52.192657+00:00",
+          "expires_at": "2026-11-13T22:29:52.192657+00:00",
+          "source": "chat 01a1d702-b216-79d0-b864-c322cdfef3cd; requested/selected/effective gpt-6.1-sol/high; title/runtime verified",
+          "status": "completed; independent review passed, AC1–4 supported"
+        }
+      ],
+      "jira_observed_at": "2026-11-13T21:43:43Z",
+      "note": "Built; base c6cfebbe at c8df2936 does not affect original four AC; complete Node/UI/tool/package/test-config identities match validated 2003405b. All other map/base files preserved. Jira observation remains 21:43:43Z In Progress; dispatcher integration pending; no acceptance/Done inferred.",
+      "observed_at": "2026-11-13T22:48:31Z",
+      "branch": "dev/DEV-2026-11-13-GC-002"
     }
   ]
 }
