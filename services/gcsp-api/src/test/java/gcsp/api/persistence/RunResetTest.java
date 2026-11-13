@@ -144,6 +144,17 @@ class RunResetTest {
     }
 
     @Test
+    void aRetiredRunIsRefusedBeforeItsWorkCanHitAConstraint() throws Exception {
+        TransactionRunner runner = new TransactionRunner(f.pool());
+        assertInstanceOf(Outcome.Committed.class, runner.execute(f.ctx(), cmd("add", "dup-1", input("e", "e7")),
+                tx -> { Custody.insertEmployee(tx, "e7"); return WorkResult.ok(PgFixture.obj()); }));
+        assertInstanceOf(Outcome.Committed.class, reset.reset(DEV, "actor-1", "r-10", "run-1", "run-2"));
+        Outcome late = runner.execute(f.ctx(), cmd("add", "dup-2", input("e", "e7")),
+                tx -> { Custody.insertEmployee(tx, "e7"); return WorkResult.ok(PgFixture.obj()); });
+        assertEquals("stale-run", assertInstanceOf(Outcome.Conflict.class, late).code());
+    }
+
+    @Test
     void aNewPoolSeesTheNewRunAndReplayingTheResetReturnsTheOriginal() throws Exception {
         Outcome.Committed first = assertInstanceOf(Outcome.Committed.class,
                 reset.reset(DEV, "actor-1", "r-9", "run-1", "run-2"));

@@ -42,6 +42,12 @@ public final class TransactionRunner {
                 return answer(existing, digest);
             }
 
+            // Refuse a retired run before its work can hit constraints; the final bump still guards a racing reset.
+            if (!runActive(c, ctx)) {
+                c.rollback();
+                return new Outcome.Conflict("stale-run", "The run is retired or does not exist", false);
+            }
+
             Tx tx = new Tx(c, ctx, cmd.commandId());
             WorkResult wr = work.run(tx);
             if (wr instanceof WorkResult.Refuse refuse) {
@@ -143,6 +149,17 @@ public final class TransactionRunner {
                 } catch (java.io.IOException e) {
                     throw new SQLException("Stored receipt is unreadable");
                 }
+            }
+        }
+    }
+
+    private static boolean runActive(Connection c, RunContext ctx) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement(
+                "SELECT 1 FROM runs WHERE environment_id = ? AND run_id = ? AND status = 'active'")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
             }
         }
     }
