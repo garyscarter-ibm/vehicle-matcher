@@ -197,7 +197,8 @@ BEGIN
 END $$;
 CREATE TRIGGER custody_holds_guard BEFORE UPDATE ON custody_holds FOR EACH ROW EXECUTE FUNCTION custody_holds_guard();
 
-CREATE FUNCTION custody_holds_slot_unit() RETURNS trigger LANGUAGE plpgsql AS $$
+CREATE FUNCTION custody_holds_slot_unit() RETURNS trigger LANGUAGE plpgsql
+  SET search_path FROM CURRENT AS $$
 BEGIN
   IF NEW.slot_unit > (SELECT capacity FROM entitlement_slots s WHERE s.environment_id = NEW.environment_id
                       AND s.run_id = NEW.run_id AND s.slot_id = NEW.slot_id) THEN
