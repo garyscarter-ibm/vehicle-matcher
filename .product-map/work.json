@@ -6663,7 +6663,7 @@
     {
       "assignee": "",
       "id": "FUCQ-440",
-      "observed_at": "2026-11-13T23:55:25Z",
+      "observed_at": "2026-11-13T23:59:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Show employee account and current-vehicle information",
@@ -6698,6 +6698,15 @@
           "expires_at": "2026-11-13T23:55:25.071818+00:00",
           "status": "complete; editing stopped",
           "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed"
+        },
+        {
+          "name": "Merlin the Magic Mouse",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "expires_at": "2026-11-14T01:59:46.910501+00:00",
+          "status": "active",
+          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed"
         }
       ],
       "slices": [
@@ -6724,16 +6733,16 @@
         {
           "id": "previews",
           "title": "Original-owned-offer-order-preview-composition",
-          "status": "not-started",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "evidence": "Frozen baseline parity discovery; dispatcher confirmed same semantic API suffix contracts"
+          "status": "in-progress",
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "evidence": "Merlin explicit active report; first focused preview run51/51; lead review and final render pending"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "evidence": "Rendered fixture proof being prepared; actual Java/OIDC still unrun"
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "evidence": "Actual Angular/Chrome fixture render ui-proof-02 passed; lead inspected desktop/narrow/drawer/choices/incomplete/error/denied/loading captures. Preview final render and actual Java/OIDC still pending"
         }
       ],
       "jira_observed_at": "2026-11-13T20:22:18.041Z"
