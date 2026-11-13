@@ -1,5 +1,7 @@
 # Offline Driver’s Guide provider contract — FUCQ-44 / FUCQ-45
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Preserve business semantics and provenance from the frozen baseline; port them into Java services and Angular presentation. Legacy `/api/gcsp/*` paths become versioned `/api/gcsp/v1/*` semantics under the replacement contract; legacy custom-element controllers and cookie authority are not target requirements. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Implemented inside the existing Node vehicle-evidence component. `createBmwDriversGuideAdapter` in
 `server/vehicle-evidence/bmw-drivers-guide-provider.js` is the only exported entry. It returns the existing
 FUCQ-43 adapter contract. Its raw provider is private and cannot be selected separately to bypass the guard.

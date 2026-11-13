@@ -1,5 +1,9 @@
 # GCSP build rules
 
+## Migration application of these rules — 13 November 2026
+
+The [decision ledger](../design/migration-decisions-2026-11-13.md), [current HLD](../design/gcsp-high-level-design.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular/Java target. Preserve the [frozen implemented baseline](migration-baseline-2026-11-13.md), rather than treating unfinished historical backlog as new migration scope. Canonical policy keys/versioning, transaction guarantees, realistic inputs and honest evidence remain binding. Node file paths below identify the existing source/semantic contract; port that authority through Java's single PolicyService and selected providers, not parallel scattered defaults. Native performance Stories retain their authored Node acceptance in the combined run. No interim human review gate or old-deployment rollback rehearsal is added; transaction rollback/recovery remains required.
+
 Binding direction from Russell, 2 November 2026. Every GCSP story author, designer, implementer and reviewer reads this file and passes the relevant rules to child agents. These decisions supersede earlier scope-reduction suggestions and requirements to settle every demo policy before building.
 
 ## Scope split decision, 7 November 2026
@@ -49,7 +53,7 @@ All planned capabilities in the candidate demonstration journey and HLD must wor
 
 **Agreed exception, Gary, 4 November 2026 (equal-authority rule, `AGENTS.md`):** the demo data route is real configurations with synthetic stock on top. FUCQ-77 collects at least 200 real, constructible configurations covering every scheme model line, and FUCQ-78 generates synthetic scheme stock on them. FUCQ-61's 10,000-configuration run moves to **after 12 November 2026** if still wanted; FUCQ-62 keeps corpus publication.
 
-**Runtime dependencies (review Q4, 4 November 2026):** the zero-runtime-dependency convention is relaxed for `pg` only, for the GCSP PostgreSQL repository. Any other runtime dependency needs Gary's approval first.
+**Runtime dependencies:** the 4 November `pg`-only exception describes the legacy Node build. Gary's 13 November decisions explicitly authorize the **Angular 21 / Java 21 / Quarkus 3.x** migration stack and the compatible dependencies needed for it. Foundation Stories pin compatible tool/package versions and reconcile further BMW standards when supplied. This does not authorize arbitrary additional product libraries or changes to the retail runtime; apply the normal collaborator scope rules to those choices.
 
 The existing distinction between functioning demonstration behaviour through adapters and future authorised BMW integration remains in force. Architecture review, backlog authoring and execution follow the agreed workflow; recording this direction does not start pollers or publish Jira changes.
 

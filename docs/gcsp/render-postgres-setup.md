@@ -1,5 +1,15 @@
 # GCSP on Render: end-to-end setup
 
+## Target Render environment — agreed 13 November 2026
+
+Use this guide's remaining commands only for the **legacy Node environment**. The target keeps one `render.gcsp.yaml` blueprint with independently built static Angular 21 and Java 21/Quarkus 3.x API services and a dedicated PostgreSQL database. Gary creates the dev environment from **`gcsp-poc-dev`**; its service/database names and actual connection identity must be distinct from running `gcsp-poc`. Do not apply legacy names blindly or reset a shared database. Exact target build/start commands, filters and migrations belong to FUCQ-436/438/454/456 and must match their actual artifacts.
+
+The static host owns `/gcsp/` router fallback and public deployment API/OIDC config; Java owns `/api/gcsp/v1` and JSON errors. Prove exact-origin CORS/Authorization preflights, real test OIDC callbacks/logout, deep links and actual offer-email sign-in return. Existing Render hostnames are preferred; no custom domain or paid tier is selected. [Cost options](angular-java-story-refinement-2026-11-13.md#interim-render-cost-options--checked-13-november-2026) are dated planning inputs, with actual scenario/comparison capacity still to measure. Cloudflare is out of scope.
+
+Preserve new-app state/new offer links through compatible releases/restarts. Gary's final merge into `gcsp-poc` replaces the old app immediately; downtime is acceptable, no retained old deployment or deployment rollback rehearsal. Retain source/reference/model/baseline artifacts and apply only the authorized legacy operational reset. [Full decisions](../design/migration-decisions-2026-11-13.md) and [replacement contract](migration-replacement-contracts-2026-11-13.md) supersede old cookie, redirect-to-Node, plan/branch and deployment rollback instructions below.
+
+## Legacy environment procedure and observations — retained
+
 For Gary, 5 November 2026. This puts the `gcsp-poc` branch on Render as its own environment, separate from the
 retail demo: a PostgreSQL database, a backend web service and a static site (HLD review Q1 and Q2). One Blueprint
 file, [`render.gcsp.yaml`](../../render.gcsp.yaml), describes all three, so you apply it once. Allow 20 to 30 minutes,

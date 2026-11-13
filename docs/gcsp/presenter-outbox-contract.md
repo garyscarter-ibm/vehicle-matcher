@@ -1,5 +1,7 @@
 # GCSP presenter outbox contract
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Retain presenter-only safe outbox inspection/filtering and status truth under a dedicated OIDC login, not auto-issued presenter cookies. No employee/Greg impersonation. Both connected migration proofs require actual test-recipient delivery and signed-in owned-offer return; captured content/provider acceptance alone is insufficient. Comparison jobs remain captured-mail only. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 FUCQ-97 (DEV-2026-11-04-062). A presenter-only viewer for the captured offer emails of FUCQ-93 ([captured-outbox.md](captured-outbox.md)). It sends nothing and creates no token or link; it only displays what the dispatcher stored.
 
 ## Route

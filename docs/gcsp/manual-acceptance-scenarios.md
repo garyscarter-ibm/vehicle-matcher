@@ -1,5 +1,13 @@
 # Repeatable manual acceptance scenarios
 
+## Migration scenario overlay — 13 November 2026
+
+Replay the [frozen implemented capabilities](migration-baseline-2026-11-13.md) through Angular 21 and Java 21/Quarkus 3.x using the [replacement contracts](migration-replacement-contracts-2026-11-13.md). Legacy cookie issuance, presenter switching, link-only access and route names in the dated walkthroughs below are baseline mechanics, not target setup. Use real employee/Greg logins; a dedicated presenter login controls scenarios/clock/reset/faults and authorized inspection only. Greg owns comparison commands. New offer links require employee sign-in/ownership; test renewal/sign-in return and logout/account separation, with no automatic unfinished order submission.
+
+After auth/account, exercise Buddy → real test email → signed-in acceptance → order/status with local substitutes, then full remote substitution including FUCQ-467 before final acceptance. Both connected proofs need actual agreed-recipient delivery, not capture alone; simulation/comparison mail stays captured. Preserve existing browser/accessibility/CSP and native SQL concurrency/recovery obligations. Numeric tolerances may not alter displayed values or business decisions. Validate separate dev database/reset isolation and ordinary new-app restart/new-link persistence.
+
+Continuous checks/agent visual review are required; Gary checks the full hosted dev build at the end with **no interim human checkpoint**. Final switch is Gary's merge to `gcsp-poc`, with downtime/immediate old retirement allowed and no deployment rollback rehearsal. Existing dated observations, failed/skipped checks and claimed native acceptance below remain intact; this overlay does not make them passing replacement evidence.
+
 2 November 2026. [FUCQ-75](https://ibm-consulting.atlassian.net/browse/FUCQ-75) records Russell's request for scenarios he can click through after the first build, see what happens and refine through trial and improvement. This opening section records the original approach. The FUCQ-125 section below records delivered backend setup and capability refusals separately from later runnable journey replays. [Authoring and verification record](evidence/fucq-74/README.md).
 
 ## Shared capability and per-Epic coverage

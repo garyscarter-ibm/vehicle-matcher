@@ -1,5 +1,11 @@
 # Local GCSP HTTPS host
 
+## Replacement local topology — 13 November 2026
+
+The instructions below operate the legacy same-origin Node/cookie host. The Angular/Java target uses a separately served Angular 21 app and Quarkus API with public API/OIDC configuration, real test-provider browser login and bearer JWT. Employees/Greg sign in individually; presenter signs into controls separately and cannot switch identity. New offer links require sign-in and ownership. Validate separate HTTPS origins, CORS/preflights, callbacks and direct-entry returns; a single-origin legacy run cannot prove them. The selected foundations supply actual target launch commands; do not invent them from this guide. [Replacement contracts](migration-replacement-contracts-2026-11-13.md) govern endpoints/roles and policy preparation through Greg's own authority. Transaction, policy and reset isolation still apply.
+
+## Legacy Node host instructions
+
 `scripts/gcsp-demo.mjs` serves the GCSP account, brief, activity and offer entry on one `https://localhost:<port>` origin. It requires an explicitly supplied localhost certificate and matching private key. Certificate provisioning and browser trust are external setup; the host does not generate keys, install trust or downgrade to HTTP.
 
 Set `GCSP_TLS_KEY_FILE` and `GCSP_TLS_CERT_FILE` to absolute paths outside the repository. The certificate must cover `localhost` and be trusted by the intended client. An encrypted key can use `GCSP_TLS_KEY_PASSPHRASE`. Keep all key contents and passphrases outside source control and logs. TLS 1.2 is the minimum supported version.

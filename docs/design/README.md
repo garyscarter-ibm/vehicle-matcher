@@ -1,4 +1,46 @@
-# Vehicle Matcher high-level design
+# Vehicle Matcher and GCSP design
+
+Start with the [current GCSP HLD](gcsp-high-level-design.md), [agreed migration decisions](migration-decisions-2026-11-13.md) and [replacement API/provider/persistence contracts](../gcsp/migration-replacement-contracts-2026-11-13.md). The implementation baseline is **`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`**, recorded by [FUCQ-434](../gcsp/migration-baseline-2026-11-13.md). This is a target design, not a deployment or acceptance claim.
+
+GCSP becomes a **static Angular 21 application → bearer-JWT Java 21 / Quarkus 3.x API → PostgreSQL and dedicated service adapters**. Angular owns its screens/navigation; Java owns business execution and runtime jobs. Offline preparation/training may remain JavaScript. Used Cars retains its frontend, Node runtime and shared contracts. One repository and one Render blueprint build/release frontend and API independently, with deployment-supplied public frontend configuration. Gary provisions dev from `gcsp-poc-dev` with its own database and ultimately replaces `gcsp-poc` by merge after reviewing hosted dev. No Cloudflare, chosen paid tier/domain, interim human checkpoint or retained-deployment rollback requirement.
+
+Real test OIDC replaces legacy cookie/password/link-only identity. Employees and Greg use their own accounts; presenter gets dedicated scenario controls and permitted read-only inspection. Presenter cannot impersonate or perform Greg/employee actions. Every new offer link requires sign-in and employee ownership. See the [role and recovery decisions](migration-decisions-2026-11-13.md#agreed-design).
+
+## Editable views and exports
+
+The canonical source is [high-level-design.drawio](high-level-design.drawio). The [BMW share source](bmw-system-context.drawio) duplicates its pages 10–12 and is synchronized from that source. All PNGs listed here are refreshed from the aligned XML on 13 November 2026. Target views use responsibility colors; older detail pages explicitly distinguish retained business semantics from historical implementation labels. Page 01 is a historical **retail** baseline and does not describe the GCSP target. No diagram color establishes a Story's status.
+
+| Page | Current purpose | Export |
+| --- | --- | --- |
+| 00 GCSP architecture | Angular/API boundary, real OIDC identities, Java responsibilities, adapters, SQL and retained retail | [PNG](gcsp-architecture.png) |
+| 01 Current implementation | Historical retail EDS/Node/source context | [PNG](current-implementation.png) |
+| 02 Shared recommendation target | Preserved semantic contracts across separate retail Node and GCSP Java runtimes | [PNG](shared-recommendation-target.png) |
+| 03 Employee data and actions | Navigation into retained data and transaction detail | [PNG](employee-overview.png) |
+| Employee data adapters | Inputs/provenance; Java ports reuse these logical responsibilities | [PNG](employee-data-adapters.png) |
+| Employee transactions | Java state/transactions and dedicated presenter role; no acting identity | [PNG](employee-transactions.png) |
+| 04 Migration and regression protection | Four-Epic order, early persistence, parallel file lanes and final hosted proof | [PNG](migration-and-regression.png) |
+| 05 Deployment and future integration | Separate static/API artifacts, isolated dev database, runtime config and Gary's final switch | [PNG](deployment-and-integration.png) |
+| 06 Vehicle evidence providers | Exact identities, retained corpus and authorized vehicle source ports in Java | [PNG](vehicle-evidence-providers.png) |
+| 07 Planning and lifecycle | Preserved business stages and authoritative acknowledgements | [PNG](planning-and-lifecycle.png) |
+| 08 Predictive order planning | Java inference/planning with retained immutable model; offline JS training allowed | [PNG](predictive-order-planning.png) |
+| 09 1,000-employee comparison | Java runtime jobs, Greg commands, presenter inspection, isolated captured notifications | [PNG](comparison-runtime.png) |
+| 10 BMW system context | Current target runtime with known/candidate BMW system mappings | [PNG](bmw-system-context.png) |
+| 11 BMW data adapters | Test OIDC and source ports; actual BMW access/claims remain pending | [PNG](bmw-data-adapters.png) |
+| 12 BMW action adapters | Exclusive remote authority, dedicated offer-decision completion and actual mail proof | [PNG](bmw-action-adapters.png) |
+
+[Decision ledger](migration-decisions-2026-11-13.md) · [BMW mapping context](bmw-system-context.md) · [design alignment validation](migration-design-alignment-validation-2026-11-13.md).
+
+## Delivery and evidence
+
+The combined run includes performance FUCQ-408 and migration FUCQ-431/432/433: **66 Stories**. Persistence design comes early; Angular and Java foundations may proceed in independent lanes. First connected journey after auth/account is Buddy → real email → signed-in owned acceptance → order/status, local substitutes first and full remote proof before final acceptance. Required Node-specific performance acceptance remains intact. Completing all Node tuning is not a gate for all migration work. Use the [combined kickoff](../gcsp/angular-java-dev-poller-kickoff-2026-11-13.md) and [database alignment](../gcsp/database-refactor-migration-alignment-2026-11-13.md).
+
+Legacy operational state may reset at final switch; retained corpus/reference/model/baseline artifacts and normal replacement-app restart persistence remain required. Native PostgreSQL evidence, actual test-provider login and actual test-recipient delivery are not replaced by document validation. No live BMW integration or current resource capacity is inferred.
+
+The notes below retain dated design and implementation evidence. Their Node/embedding, legacy cookie/switching, future-kickoff, old hosting and deployment rollback instructions are superseded for GCSP by the current documents above. Their original measurements and acceptance limits remain historical facts; do not read their status words as a current Jira/worker snapshot.
+
+---
+
+## Historical design notes and implementation receipts through 11 November 2026
 
 Canonical editable artifact: [high-level-design.drawio](high-level-design.drawio). Updated for FUCQ-6 on 1 November 2026 and the approved FUCQ-74 predictive order-planning capability on 2 November. The draw.io tab is named for this repository. This is one design with current and proposed views. Start with **00 GCSP architecture** and the [whole-demo design record](gcsp-high-level-design.md).
 
@@ -8,7 +50,7 @@ The target is a **shared pure recommendation core with separate retail and emplo
 
 **Review update, 4 November 2026.** Gary's architecture review ([hld-review-gc.md](hld-review-gc.md)) is applied to the draw.io file on pages 00, 02, 04 to 08 and both employee pages. The PNG exports below predate that update. Re-export them from draw.io before using them. The pre-build pass on 5 November added the backlog's named components (DemoIdentityAdapter, DemoClock and ticks, scenario catalogue, presenter controls, offer link access, outbox viewer, lifecycle adapters) to 00, Employee transactions and 07. Those pages and the 03 overview were re-exported on 5 November; the other PNGs still predate the review update.
 
-## Views
+### Views
 
 **BMW discussion view, 11 November 2026:** [system context and adapter map](bmw-system-context.md) provides a three-page [editable draw.io share export](bmw-system-context.drawio), with [overview PNG](bmw-system-context.png), [data adapter map](bmw-data-adapters.png) and [action adapter map](bmw-action-adapters.png). The same pages are added to the canonical design as 10–12. Known BMW system roles, candidate services and unconfirmed interfaces are labelled separately; this is not evidence of live BMW integration.
 
@@ -32,7 +74,7 @@ The target is a **shared pure recommendation core with separate retail and emplo
 
 The employee overview was split into area pages to keep connectors readable. Reference stubs denote the same component on another page; they do not create another service. Diagrams show dependencies and named data/actions rather than a complete sequence diagram. Repeated objects across distinct views refer to the same logical object.
 
-## Status and boundaries
+### Status and boundaries
 
 Pages **10–12** use their own integration key: green identifies a known/referenced system role or confirmed source selection, and amber a candidate mapping. The vehicle box is green following the 11 November collaborator confirmation of VSS for vehicle data/information and selection of the live configurator API for imagery. Blue identifies our experience and logical adapters on those pages; it does not claim that a BMW connection is built or verified. The build-progress colours below describe the earlier implementation/target views.
 
@@ -55,9 +97,9 @@ Boundaries that must survive implementation:
 - Synthetic and eventual BMW inputs use the same application logic. No fixture may hard-code a winner or dashboard result.
 - FUCQ-74 separates learned choice probabilities from deterministic fit scores and order optimisation. Hard gates remain authoritative; forecasts never reserve stock. The canonical policy source owns objectives, bounds and the active immutable model reference. Synthetic model evaluation is labelled separately from real BMW validation.
 
-## Deployment facts and open conditions
+### Deployment facts and open conditions
 
-GCSP runs in its own Render environment built from `gcsp-poc`: a backend service, a static site and managed PostgreSQL (review Q1, Q2). The retail frontend stays on GitHub Pages from `main`, pointing at the existing Render backend; evidence is [the Pages workflow](../../.github/workflows/pages.yml), [render.yaml](../../render.yaml) and [the block's API resolution](../../blocks/vehicle-matcher/vehicle-matcher.js#L27). Pages, `main` and [EDS repository sync](../../.github/workflows/sync-block.yml) stay retail-only until after the demo. Gary must still confirm the retail dashboard facts (GC-001). The [release procedure](gcsp-high-level-design.md#technical-deployment-and-recovery) and [GC questions](../gcsp/questions-for-gc.md) retain those decisions.
+GCSP runs in its own Render environment built from `gcsp-poc`: a backend service, a static site and managed PostgreSQL (review Q1, Q2). The retail frontend stays on GitHub Pages from `main`, pointing at the existing Render backend; evidence is [the Pages workflow](../../.github/workflows/pages.yml), [render.yaml](../../render.yaml) and [the block's API resolution](../../blocks/vehicle-matcher/vehicle-matcher.js#L27). Pages, `main` and [EDS repository sync](../../.github/workflows/sync-block.yml) stay retail-only until after the demo. Gary must still confirm the retail dashboard facts (GC-001). The [release procedure](gcsp-high-level-design.md#deployment-and-request-path) and [GC questions](../gcsp/questions-for-gc.md) retain those decisions.
 
 Durable shared briefs/holds/offers use managed PostgreSQL behind the repository adapter (Q2); it is not provisioned yet. Background work is presenter ticks, with no unattended runner (Q3). A captured-outbox viewer always ships, plus one Microsoft or Brevo transport if the sender is ready (Q11). No email was sent.
 
@@ -75,7 +117,7 @@ readiness. The existing retail workflows/blueprint and diagram statuses are
 unchanged. Missing direct offer UI remains an explicit release gate until its
 actual block/page is integrated; a source branch preview is separate evidence.
 
-## Validation and review
+### Validation and review
 
 The as-built view was independently reverse-engineered from source. The expanded design received an independent architecture review; corrections included notification atomicity, durable-brief migration order and preserving the configured retail blend. Requested/selected pairs: as-built implementer `gpt-6.1-sol` / `medium`; design reviewers `gpt-6.1-sol` / `high`, no fallback or descendants. Effective runtime selections were not independently inspected.
 

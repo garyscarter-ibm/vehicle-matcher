@@ -1,5 +1,11 @@
 # Brevo email handoff for FUCQ-88
 
+## Migration mail and link design — 13 November 2026
+
+Port notification runtime/jobs to Java behind the existing logical MailTransport contract. Keep transport credentials on the API service; select the adapter at deployment/startup. Preserve committed outbox intent, stable provider identity, safe uncertain acknowledgement/retry/restart and pinned recipient. Employee notification email remains an owned account setting, separate from the OIDC sign-in address. Provider acceptance is not inbox delivery.
+
+Both local and remote connected migration proofs require **actual delivery to an agreed test recipient**, then a new Angular `/gcsp/offers/:offerId` link, real OIDC sign-in/return and employee ownership. Opaque link material grants no authority; legacy offer-cookie/token exchange and old-URL compatibility below are not target requirements. New links survive ordinary restarts; old legacy links may reset at final switch. Simulations/comparisons keep captured mail and never send real email. FUCQ-109's historic capture-only evidence remains valid for its native scope but does not satisfy migration acceptance. BMW mail activation awaits approved service/sender access. [Full decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the target; Node/Brevo-specific implementation evidence below remains dated.
+
 Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setup notes and Deckhead implementation. This is implementation background for [FUCQ-98](https://ibm-consulting.atlassian.net/browse/FUCQ-98), with the boundaries for FUCQ-93 and FUCQ-97 below. It does not start a poller, provision a sender or send email.
 
 **Resumed by Russell, 5 November 2026:** "Yes resume it, I just gave the Brevo details in another session" (Codex chat `01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3`). This explicitly supersedes Gary's earlier pause in Jira comment `132470`; the story's `paused:` line is removed. Implementation can proceed using this handoff. Verify the configured sender/API key, approved demo-recipient mapping and public offer URL before the story's deliberate real-send check. The captured outbox remains available throughout.

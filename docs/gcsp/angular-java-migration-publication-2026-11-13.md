@@ -1,5 +1,7 @@
 # Angular/Java migration — Jira publication
 
+**Current design context — 13 November 2026:** the [FUCQ-434 baseline](migration-baseline-2026-11-13.md) now freezes implementation at **`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`**; the [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern implementation. Earlier publication statuses and “not started” statements below are timestamped authoring observations, not current worker/status claims. Gary's [combined run](angular-java-dev-poller-kickoff-2026-11-13.md) includes **all four Epics / 66 Stories**, including all 17 native FUCQ-408 performance Stories. Their Node-specific acceptance remains required; Java-only work does not close them. Completing all Node tuning is not a gate for all migration. Read the [consolidated decisions](../design/migration-decisions-2026-11-13.md); published Story acceptance below is preserved.
+
 Gary requested “Write our new stories to Jira” on 13 November 2026, then explicitly lifted the wider Jira-write pause: “You can stop the wider pause too”. The current shared direction is recorded in `AGENTS.md` and `CLAUDE.md`. Publication does not start implementation, a poller, provisioning, deployment, data reset, email sending or the final merge.
 
 **Published and verified: three Epics and 49 child Stories, FUCQ-431–482.** Every issue is To Do, unassigned and unestimated. No priority, sprint, start date, estimate or adoption transition was set. Native Jira applies its default priority; recommended delivery order is in the descriptions and source decisions.

@@ -1,5 +1,7 @@
 # GCSP performance tuning backlog — 12 November 2026
 
+**Migration alignment — 13 November 2026:** Gary included **all of FUCQ-408 / FUCQ-409–425** in the [combined four-Epic / 66-Story run](angular-java-dev-poller-kickoff-2026-11-13.md). Native Node-specific acceptance, claimed scope and required evidence remain intact; Java-only work cannot close them. Reconcile [persistence design early](database-refactor-migration-alignment-2026-11-13.md), apply relevant outcomes/cases in Java and coordinate parallel file lanes. Finishing all Node tuning is not a gate for all Angular/Java migration. The [decision ledger](../design/migration-decisions-2026-11-13.md) governs design; publication-era pause/status observations below remain historical and are not a live claim audit.
+
 Russell requested a performance tuning Epic if none existed, with the source-derived improvements split into User Stories of at most eight points. This request specifically authorises this Epic/Story publication; the project-wide pause remains in place for unrelated Jira writes. This is backlog authoring only. No implementation, poller, load run or overnight execution is started.
 
 ## Basis and overlap

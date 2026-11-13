@@ -1,5 +1,7 @@
 # GCSP employee entry contract
 
+> **Migration design overlay — 13 November 2026.** The [current architecture decisions](../design/migration-decisions-2026-11-13.md) and [replacement contracts](migration-replacement-contracts-2026-11-13.md) govern the Angular 21 / Java 21 / Quarkus 3.x target. Angular router/context bootstrap replaces request-time Node HTML/session gates. Static shells are public-safe; Java enforces bearer JWT, role/resource ownership and trusted account mapping. Employees/Greg use their own login; no fictional fallback. Preserve supported shared retail handoffs; no legacy GCSP URL compatibility is required. The material below retains its original source, implementation and acceptance evidence; this overlay does not amend a claimed Story's acceptance or prove replacement delivery.
+
 Slice 1 of FUCQ-64 (DEV-2026-11-04-037). This is the surface FUCQ-35 consumes. FUCQ-64 does not depend on FUCQ-35, and the public launcher stays unavailable: `ENTRY_REGISTRY.employeeAvailable` in `blocks/demo-launcher/entry-context.js` remains `false`. The entry never reads `history`, and the existing route serializer in that file is the only one. It touches `location` only for the default rail routing described under Navigation context.
 
 ## Element
