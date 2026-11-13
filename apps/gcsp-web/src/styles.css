@@ -1,0 +1,24 @@
+html, body { margin: 0; min-height: 100%; }
+gcsp-root, gcsp-screen-intro, gcsp-status-screen, gcsp-labelled-field { display: block; }
+.gcsp a { color: var(--gcsp-link); }
+.gcsp a:hover { color: var(--gcsp-link-hover); }
+.gcsp :focus-visible { outline: 2px solid var(--gcsp-text); outline-offset: 3px; }
+.gcsp .gcsp-nav-btn, .gcsp .gcsp-account-link { text-decoration: none; }
+.gcsp .gcsp-nav-btn[aria-current="page"] { border-left-color: var(--gcsp-selected-bar); background: var(--gcsp-selected); color: var(--gcsp-link); }
+.gcsp-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: var(--gcsp-space-2) var(--gcsp-space-4); border: 1px solid var(--gcsp-accent); border-radius: var(--gcsp-radius); background: var(--gcsp-accent); color: var(--gcsp-on-accent); font: var(--gcsp-font-button-weight) var(--gcsp-font-size-regular)/var(--gcsp-font-line-regular) var(--gcsp-font); text-decoration: none; cursor: pointer; }
+.gcsp-button:hover { background: var(--gcsp-accent-strong); }
+.gcsp .gcsp-button-ghost { background: var(--gcsp-surface); color: var(--gcsp-link); }
+.gcsp .gcsp-button-ghost:hover { background: var(--gcsp-ghost-hover); }
+.gcsp-button:disabled { background: var(--gcsp-disabled-surface); border-color: var(--gcsp-divider); color: var(--gcsp-text-muted); cursor: not-allowed; }
+.gcsp-actions { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-3); }
+.gcsp-actions:empty { display: none; }
+.gcsp-status { max-width: 720px; }
+.gcsp-status .gcsp-actions { margin-top: var(--gcsp-space-5); }
+gcsp-status-screen + gcsp-status-screen, gcsp-gallery > section, gcsp-gallery > gcsp-status-screen { margin-top: var(--gcsp-space-5); }
+.gcsp-field { display: grid; gap: var(--gcsp-space-2); margin-top: var(--gcsp-space-5); max-width: 480px; }
+.gcsp-field label { font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-field input { width: 100%; min-height: 44px; border: 1px solid var(--gcsp-input-border); border-radius: var(--gcsp-radius); padding: var(--gcsp-space-2) var(--gcsp-space-3); font: inherit; background: var(--gcsp-surface); color: var(--gcsp-text); }
+.gcsp-field input[aria-invalid="true"] { border-color: var(--gcsp-danger); }
+.gcsp-field-error { color: var(--gcsp-danger); margin: 0; }
+.gcsp-error-summary { margin-top: var(--gcsp-space-5); padding: var(--gcsp-space-4); border: 2px solid var(--gcsp-danger); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

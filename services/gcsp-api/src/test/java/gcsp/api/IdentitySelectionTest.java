@@ -29,6 +29,12 @@ class IdentitySelectionTest {
 
     @Test
     void unknownProviderStopsStartup() {
+        assertThrows(IllegalStateException.class, () -> IdentitySelection.select("ldap", LaunchMode.NORMAL, null));
+    }
+
+    @Test
+    void oidcWithoutConfigStopsStartup() {
         assertThrows(IllegalStateException.class, () -> IdentitySelection.select("oidc", LaunchMode.NORMAL, null));
+        assertThrows(IllegalStateException.class, () -> IdentitySelection.select("oidc", LaunchMode.TEST, null));
     }
 }
