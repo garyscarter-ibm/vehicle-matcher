@@ -2,6 +2,8 @@
 
 Gary asked how close the application already is to proposed Epic 3, because replaceable adapters were an original requirement. Source baseline: `84742c4ce`, current checkout `gcsp-poc-dev`. This is a bounded code/contract assessment and focused validation, not a live-integration or exhaustive path audit. No runtime code, data, provider configuration or Jira issue changed.
 
+**Later refinement, 13 November:** this assessment used the original numbering, in which Epic 3 covered adapters. The [current Epic draft](angular-api-adapter-epic-proposals-2026-11-13.md) now recommends three Epics, folding adapter completion and proof into the Java/Quarkus Epic (now E3, formerly E4). The findings and test receipt below are unchanged; their residual scope remains explicit in the consolidated draft. This recommendation does not authorize implementation or change existing Story acceptance.
+
 ## Finding
 
 **The adapter architecture is substantially present, with executable substitution evidence.** The [original brief](demo-brief.md#binding-boundaries) already requires replaceable external-data/system adapters and the same application logic for fixture-backed and real-backed inputs. Epic 3 should complete and prove that existing architecture, rather than imply a new adapter layer must be built from scratch.
@@ -32,7 +34,7 @@ Actual BMW identity, HR, stock, ordering and lifecycle integrations still need t
 
 ## Epic refinement
 
-Recommended title: **Complete and prove GCSP's replaceable service adapters**. Its starting point is implemented ports and working provider protocols, with the residual scope above. Existing tests and capabilities count as evidence rather than being commissioned again. Reconcile remaining work with the original capability/Story records before authoring new Stories; retain previously agreed exclusions and acceptance decisions.
+Initial recommendation, before consolidation: **Complete and prove GCSP's replaceable service adapters**. This is now the adapter workstream within the proposed Java/Quarkus Epic. Its starting point is implemented ports and working provider protocols, with the residual scope above. Existing tests and capabilities count as evidence rather than being commissioned again. Reconcile remaining work with the original capability/Story records before authoring new Stories; retain previously agreed exclusions and acceptance decisions.
 
 The Java/Quarkus port should carry forward these contracts and decision fixtures. Where practical, complete remaining provider-composition and protocol work in those Java slices, preserving any working Node journeys until cutover. A wholesale JavaScript adapter refactor before that port is not established as necessary by this assessment.
 
