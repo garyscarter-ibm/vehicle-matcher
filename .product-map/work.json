@@ -5832,53 +5832,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-436",
-      "title": "Build and publish the static GCSP artifact",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-13T22:53:06Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
-      "unsliced": false,
-      "branch": "dev/DEV-2026-11-13-004",
-      "workers": [
-        {
-          "name": "Rapunzel",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-13T22:11:02.979073+00:00",
-          "expires_at": "2026-11-13T22:53:05.750998+00:00",
-          "source": "Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59; saved title/runtime verified by dispatcher",
-          "status": "stopped; blocked handoff recorded"
-        }
-      ],
-      "slices": [
-        {
-          "id": "artifact",
-          "status": "complete",
-          "title": "Independent-static-Angular-artifact-and-required-assets",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
-        },
-        {
-          "id": "runtime",
-          "status": "in-progress",
-          "title": "Public-config-and-route-cache-CSP-referrer-policy",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "Strict producer/schema and static route/cache/CSP/referrer policy passed local tests; dynamic offer entry and actual hosted identity/header behavior remain incomplete."
-        },
-        {
-          "id": "integration",
-          "status": "blocked",
-          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
-          "observed_at": "2026-11-13T22:53:06Z",
-          "evidence": "No isolated hosted Java/OIDC environment or actual response-header/deployment-trigger proof; Safari/private and full identity/accessibility gates unrun. Original Story AC remain unchecked."
-        }
-      ],
-      "tracker_observed_at": "2026-11-13T22:23:44Z"
-    },
-    {
       "id": "FUCQ-437",
       "title": "Enter and refresh replacement frontend routes",
       "status": "To Do",
@@ -6607,6 +6560,53 @@
       "note": "Built; base c6cfebbe at c8df2936 does not affect original four AC; complete Node/UI/tool/package/test-config identities match validated 2003405b. All other map/base files preserved. Jira observation remains 21:43:43Z In Progress; dispatcher integration pending; no acceptance/Done inferred.",
       "observed_at": "2026-11-13T22:48:31Z",
       "branch": "dev/DEV-2026-11-13-GC-002"
+    },
+    {
+      "id": "FUCQ-436",
+      "title": "Build and publish the static GCSP artifact",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-13T23:10:11Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-13-004",
+      "workers": [
+        {
+          "name": "Rapunzel",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:07:54.875258+00:00",
+          "expires_at": "2026-11-13T23:10:11.056151+00:00",
+          "source": "Existing Codex chat 01a1d6f3-f119-7cb2-a8b9-51d34bc7de59 resumed by dispatcher for F455 configuration contract only",
+          "status": "stopped; F455 identity configuration reconciled, hosted gate blocked"
+        }
+      ],
+      "slices": [
+        {
+          "id": "artifact",
+          "status": "complete",
+          "title": "Independent-static-Angular-artifact-and-required-assets",
+          "observed_at": "2026-11-13T22:53:06Z",
+          "evidence": "Lead-reviewed local delivery: docs/gcsp/fucq-436-static-artifact-2026-11-13.md and companion local-proof JSON; fresh pinned compiler, exact assembly with required assets, stable hashes and independent build definitions passed. Actual hosted release remains required integration slice."
+        },
+        {
+          "id": "runtime",
+          "status": "in-progress",
+          "title": "Public-config-and-route-cache-CSP-referrer-policy",
+          "observed_at": "2026-11-13T23:10:11Z",
+          "evidence": "F455 identity contract reconciled in shared blueprint; unchanged exact public schema accepts realm authority and required gcsp-api scope, excludes backend settings. Focused 18/18 passed; dynamic offer and hosted policy/identity remain incomplete."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
+          "observed_at": "2026-11-13T23:10:11Z",
+          "evidence": "Keycloak selected but unhosted/unregistered; no live Render headers/independent deployment/Java-OIDC browser evidence. Original AC unchecked; no new browser or full-suite allocation for configuration-only delta."
+        }
+      ],
+      "tracker_observed_at": "2026-11-13T22:23:44Z"
     }
   ]
 }

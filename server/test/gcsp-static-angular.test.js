@@ -18,13 +18,20 @@ const envFor = (value) => Object.fromEntries(Object.entries(PUBLIC_ENV_KEYS).map
 
 test('runtime: two public environments map exactly and leave their inputs unchanged', () => {
   for (const id of ['isolated-dev', 'second-dev']) {
-    const value = config(id); const original = structuredClone(value);
-    const parsed = runtimeConfigFromEnv({ ...envFor(value), DATABASE_PASSWORD: 'never-public', GCSP_CLIENT_SECRET: 'never-public' });
+    const value = config(id); value.oidc.scope = 'openid profile gcsp-api';
+    const original = structuredClone(value);
+    const parsed = runtimeConfigFromEnv({ ...envFor(value), DATABASE_PASSWORD: 'never-public', GCSP_CLIENT_SECRET: 'never-public',
+      GCSP_IDENTITY_PROVIDER: 'oidc', GCSP_OIDC_ISSUER: value.oidc.authority,
+      GCSP_OIDC_JWKS_URI: `${value.oidc.authority}/protocol/openid-connect/certs`,
+      GCSP_OIDC_AUDIENCE: 'backend-only-audience', GCSP_OIDC_AUTHORIZED_PARTY: value.oidc.clientId,
+      GCSP_OIDC_REQUIRED_SCOPES: 'gcsp-api', GCSP_OIDC_ROLE_CLAIM: 'realm_access.roles',
+      GCSP_OIDC_ACCOUNTS: '[{"subject":"backend-only-subject","roles":["greg"]}]',
+      GCSP_ENVIRONMENT_ID: id, GCSP_RUN_ID: 'backend-only-run', GCSP_POLICY_VERSION: 'backend-only-policy' });
     assert.deepEqual(parsed, value);
     assert.deepEqual(validateRuntimeConfig(value), value);
     assert.deepEqual(value, original);
     assert.notEqual(parsed.oidc, value.oidc);
-    assert.doesNotMatch(JSON.stringify(parsed), /never-public|PASSWORD|SECRET/u);
+    assert.doesNotMatch(JSON.stringify(parsed), /never-public|PASSWORD|SECRET|backend-only|GCSP_OIDC|realm_access/u);
   }
   const missing = envFor(config()); delete missing.GCSP_PUBLIC_OIDC_CLIENT_ID;
   assert.throws(() => runtimeConfigFromEnv(missing), /GCSP_PUBLIC_OIDC_CLIENT_ID is required/u);
@@ -45,7 +52,7 @@ test('runtime: local HTTP is explicit and restricted to loopback URLs', () => {
 });
 
 test('runtime: unsupported and secret-bearing configuration fields fail closed', () => {
-  for (const field of ['clientSecret', 'accessToken', 'refreshToken', 'databaseUrl', 'unexpected']) {
+  for (const field of ['clientSecret', 'accessToken', 'refreshToken', 'databaseUrl', 'audience', 'jwksUri', 'accounts', 'roleClaim', 'unexpected']) {
     for (const target of ['root', 'oidc']) {
       const value = config(); (target === 'root' ? value : value.oidc)[field] = 'sensitive-value';
       assert.throws(() => validateRuntimeConfig(value), (error) => /unsupported field/u.test(error.message) && !error.message.includes('sensitive-value'));
@@ -260,7 +267,14 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
   const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
-  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web')).trimEnd()), 'supplied Java service foundation is preserved before its persistence delta');
+  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    envVars:'))), 'supplied Java build/runtime foundation is preserved');
+  const javaKeys = [...java.matchAll(/^      - key: (GCSP_[A-Z_]+|JAVA_OPTS)$/gmu)].map((match) => match[1]);
+  assert.equal(new Set(javaKeys).size, javaKeys.length, 'identity and persistence share one environment setting');
+  const proposedIdentityKeys = [...proposed.matchAll(/^      # - key: (GCSP_[A-Z_]+)$/gmu)].map((match) => match[1]);
+  assert.equal(proposedIdentityKeys.length, 10, 'inspect a changed authoritative identity contract before updating the blueprint');
+  for (const key of ['GCSP_IDENTITY_PROVIDER', ...proposedIdentityKeys]) {
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} remains deployment-supplied`);
+  }
   assert.match(java, /branch: gcsp-poc-dev/u);
   assert.doesNotMatch(java, /^\s+plan:|fromDatabase:|name: gcsp-db\b|apps\/gcsp-web|gcsp:compile/mu);
   for (const key of ['GCSP_DATABASE_URL', 'GCSP_DATABASE_USER', 'GCSP_DATABASE_PASSWORD', 'GCSP_EXPECTED_DATABASE', 'GCSP_ENVIRONMENT_ID']) {
