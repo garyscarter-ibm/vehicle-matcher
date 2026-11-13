@@ -109,17 +109,17 @@ export function findReceipt(index, receipts, runId, consumerId, eventId) {
 }
 const RECEIPT_KEY = Object.freeze(['consumerId', 'eventId', 'runId']);
 
-// One entry per changed row identity, in first-write order; later writes keep the first type and
-// expectedVersion (the version stored before this transaction) and replace `row` with the final row.
+// One entry per changed row identity, in first-write order; later writes keep the first type, expectedVersion
+// and previous (the version and row stored before this transaction) and replace `row` with the final row.
 export function createMutationJournal() {
   const entries = new Map();
   return Object.freeze({
-    record(type, table, row, expectedVersion) {
+    record(type, table, row, expectedVersion, previous) {
       const key = Object.fromEntries(TABLES[table].key.map((field) => [field, row[field]]));
       const id = JSON.stringify([table, ...Object.values(key)]);
       const entry = entries.get(id);
       if (entry) entry.row = row;
-      else entries.set(id, { type, table, key, row, ...(type === 'update' ? { expectedVersion } : {}) });
+      else entries.set(id, { type, table, key, row, ...(type === 'update' ? { expectedVersion, previous } : {}) });
     },
     entries: () => Object.freeze([...entries.values()].map((entry) => Object.freeze({ ...entry, key: Object.freeze({ ...entry.key }) }))),
   });
@@ -253,7 +253,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (violation) return violation;
     const position = state.tables[ref.table].indexOf(previous);
     state.tables[ref.table][position] = row;
-    journal.record('update', ref.table, row, previous.version);
+    journal.record('update', ref.table, row, previous.version, previous);
     changedTables.add(ref.table);
     if (receiptIndex && ref.table === 'event_receipts' && position === receiptIndex.count - 1) receiptIndex.last = row;
     return ok(row);
