@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-005",
       "id": "FUCQ-412",
       "jira_observed_at": "2026-11-12T15:47:45.907Z",
-      "note": "Integration checkpoint ready on 0ab125ae/F423; full acceptance open. Original AC4 unchecked, F400 Low and F484 Medium unresolved; four distinct PG skips retained. Fresh affected boundary checks 22pass/0fail/1skip, unchanged earlier scoped evidence retained. Dispatcher owns publication/shared merge/Jira/claim lifecycle. No Done/waiver; worker observation stays expired.",
-      "observed_at": "2026-11-13T23:02:07Z",
+      "note": "Checkpoint ready on 04d23d17; full acceptance open. Node identities unchanged, scoped validation reused. AC4 unchecked/F400 Low/F484 Medium/four PG skips retained. Policy-source ownership released upon parent integration for F413; no further policy writes without coordination. Parent owns native/file In Progress/lease, publication/shared integration/Jira/cleanup; no Done/waiver.",
+      "observed_at": "2026-11-13T23:05:55Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -5499,9 +5499,9 @@
           "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
         },
         {
-          "evidence": "Latest base 0ab125ae merged as 2f16eba4. Fresh journal9/disconnect7/runtime6 pass, one native skip; unaffected prior module evidence retained at 262a278d. Integration checkpoint ready, full acceptance open: AC4 unchecked, F400 Low/F484 Medium unresolved, four distinct PG skips. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md.",
+          "evidence": "Latest base 04d23d17 integrated; Node source/config/test/fixture identities match tested 2f16eba4, scoped evidence reused without new tests. Integration checkpoint ready, full acceptance open: AC4/F400/F484/four PG skips retained. Policy-source ownership released upon parent integration for F413; no further writes without coordination. Native/file In Progress/lease stays parent-owned. See delivery record.",
           "id": "integration",
-          "observed_at": "2026-11-13T23:02:07Z",
+          "observed_at": "2026-11-13T23:05:55Z",
           "status": "in-progress",
           "title": "Lead affected-consumer and connected presentation validation"
         }
