@@ -16,6 +16,8 @@ Engineering contract for the authorised 13 November 2026 migration. This records
 
 Directory ownership is a starting lane, not perpetual ownership of every later file. The dispatcher records each narrower assignment before parallel work. The architecture Story leaves existing sources/contracts/artifacts read-only. FUCQ-439 and FUCQ-454 may start against this contract without waiting for inventory prose polish; their hosted/login acceptance still requires actual integration and external setup.
 
+At this observation, GC and Russ dispatchers are coordinating a proposed frontend/backend split. That proposal is not a confirmed human assignment or a lease on shared files; consult the live claim and named file writer before pickup.
+
 Delivery order is foundation → real sign-in/account → Buddy matching → real test email → signed-in employee-owned decision → order/status using local substitutes; remaining capabilities and remote transactional proof follow. FUCQ-467 and FUCQ-481 complete the remote boundary before final migration acceptance. There is no interim human checkpoint.
 
 ## Browser and API surface
@@ -34,7 +36,7 @@ For the remaining inventory operations, the initial replacement rule is **same m
 
 | Operation family | Replacement / responsibility | Story |
 | --- | --- | --- |
-| Legacy session login/logout/switch/principals | Real browser OIDC login/logout replaces password/cookie endpoints. No principal-switch endpoint. Context uses the endpoint above. | FUCQ-439/455 |
+| Legacy session login/logout/switch | Real browser OIDC login/logout replaces password/cookie endpoints. No principal-switch endpoint. Context uses the endpoint above. | FUCQ-439/455 |
 | Account and manual context | `/manual/account`, draft save/discard, released stock; server-owned employee/driver/contract/evidence projections. Notification email remains an owned account update. | FUCQ-440/458/459 |
 | Brief/editor/preferences/feedback | `/brief/*` semantic operations including preview, confirm, engagement, history and one confirmed change after decline. Drop old `/brief/pause` and `/brief/resume` aliases in favour of explicit engagement/search operations. | FUCQ-441/460/461 |
 | Manual claims/review/order | `/manual/*` with exact stock, current versions, declarations and deliberate submit/reconcile; preview and review remain distinct from final handoff. | FUCQ-442/443/463/468 |
@@ -82,13 +84,13 @@ Providers are selected at deployment/startup. Separate upstream authentication, 
 | Employee/contract/driver/current car/usage (`manual-context/ports.js`) | Provenance-linked account facts and explicit absence | Account projection, practical gates, employee edits and privacy; FUCQ-458 |
 | Configuration/specification/imagery/VIN/handbook (`vehicle-evidence/`) | Exact retained artifacts or authorised source mapping, no synthetic ID leakage | Identity/provenance validation and bounded projection; FUCQ-459 |
 | Released stock/supply (`stock/`, `supply/`) | Exact stock/revision/source events, confirmed supply and supported pull | Deduplication, release visibility and stock state; FUCQ-462 |
-| Manual/Buddy claim and release (`providers/`, `adapters/manual-stock.js`, `offers/buddy-remote.js`) | Explicit execute/reconcile acknowledgements and authoritative custody | Eligibility, versions, exclusive employee/slot/car authority and durable intent; FUCQ-463/464 |
+| Manual/Buddy claim and release (`adapters/manual-stock.js`, `offers/buddy-remote.js`, `manual-claims/index.js`) | Explicit execute/reconcile acknowledgements and authoritative custody | Eligibility, versions, exclusive employee/slot/car authority and durable intent; FUCQ-463/464 |
 | Offer decision (`offers/decision.js`, `buddy-remote.js`) | Supported remote accept/conversion/decline/release acknowledgements | Owned explicit decision, pinned terms, current guards, one follow-up/handoff; FUCQ-466/467. Remote decision remains a known missing Node capability, not an already delivered success. |
 | Ordering/status (`adapters/synthetic-ordering*.js`) | Durable provider request/status references and actual acknowledgements | One manual/Buddy conversion path, declarations, pending intent and reconciliation; FUCQ-468/470 |
 | Documents/readiness (`lifecycle/documents/`) | Available documents and supported acknowledgement capability | Required gates, owned tasks and truthful readiness; FUCQ-471 |
 | Appointments/handover (`lifecycle/appointments/`) | Availability, request/confirmation and supported outcomes | Readiness/ownership, requested versus confirmed versus completed; FUCQ-472 |
 | Return outcomes (`lifecycle/return-plan/`) | Separate old-car plan and supported physical outcome | Current-car relationship changes only at authoritative outcomes; FUCQ-473 |
-| Mail (`notify/transports/`) | Configured capture/Brevo or another authorised transport with actual delivery outcome | Message/recipient/content after committed state, retry, secure offer URL and outbox; FUCQ-469 |
+| Mail (`notify/port.js`, `notify/brevo.js`, `notify/captured.js`) | Configured capture/Brevo or another authorised transport with actual delivery outcome | Message/recipient/content after committed state, retry, secure offer URL and outbox; FUCQ-469 |
 | Production (`supply/synthetic-production.js`) | Request/response shapes, quantities and supported confirmed supply | Greg intentional submission, version checks and response-driven replan; FUCQ-478 |
 | Models/comparison (`predict/`, `comparison/`) | Retained immutable model/baseline artifacts; offline preparation allowed | Java inference, planning, runtime jobs and new-run provenance; FUCQ-476/477/480 |
 | Scenario preparation (`scenarios/`, fixtures) | Explicit isolated demo seed/preparation only | Separate from provider composition; non-demo configuration does not seed fictional users/data; FUCQ-479/481 |

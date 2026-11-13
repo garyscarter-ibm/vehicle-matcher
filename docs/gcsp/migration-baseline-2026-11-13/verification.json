@@ -1,0 +1,94 @@
+{
+  "story": "FUCQ-434",
+  "scope": "source/reference/hash coverage only",
+  "passed": true,
+  "checks": [
+    {
+      "check": "recorded file hashes",
+      "passed": true,
+      "detail": {
+        "files": 1720,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "source aggregate",
+      "passed": true,
+      "detail": "212a8e7ca88891b0dcddeff7ba0b5c13a9248af97584612458e04b45fabf89df"
+    },
+    {
+      "check": "route count and uniqueness",
+      "passed": true,
+      "detail": {
+        "routes": 100,
+        "factoryRoutes": 87,
+        "customRoutes": 13
+      }
+    },
+    {
+      "check": "registered route factory coverage",
+      "passed": true,
+      "detail": {
+        "factories": 26,
+        "missing": [],
+        "extra": []
+      }
+    },
+    {
+      "check": "route source and replacement story coverage",
+      "passed": true,
+      "detail": "All operations name an existing source and replacement Story"
+    },
+    {
+      "check": "page coverage",
+      "passed": true,
+      "detail": [
+        "gcsp-account.html",
+        "gcsp-activity-live.html",
+        "gcsp-activity.html",
+        "gcsp-brief-live.html",
+        "gcsp-brief.html",
+        "gcsp-case-queue.html",
+        "gcsp-employee.html",
+        "gcsp-greg.html",
+        "gcsp-help.html",
+        "gcsp-login.html",
+        "gcsp-manual-gallery.html",
+        "gcsp-manual-setup.html",
+        "gcsp-offer.html",
+        "gcsp-order-progress-live.html",
+        "gcsp-order-progress.html",
+        "gcsp-outbox.html",
+        "gcsp-presenter.html"
+      ]
+    },
+    {
+      "check": "capability replacement coverage",
+      "passed": true,
+      "detail": {
+        "requiredStories": 41,
+        "missing": []
+      }
+    },
+    {
+      "check": "local Markdown references",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "check": "frozen source and retained inputs unchanged",
+      "passed": true,
+      "detail": {
+        "changed": [],
+        "error": ""
+      }
+    },
+    {
+      "check": "working diff whitespace",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "sourceAggregateSha256": "212a8e7ca88891b0dcddeff7ba0b5c13a9248af97584612458e04b45fabf89df",
+  "failures": []
+}

@@ -5789,40 +5789,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-433"
     },
     {
-      "id": "FUCQ-434",
-      "title": "Record the target architecture and implemented baseline",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-13T20:58:45Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-434",
-      "unsliced": false,
-      "slices": [
-        {
-          "id": "inventory",
-          "status": "in-progress",
-          "title": "Source and retained artifact baseline",
-          "observed_at": "2026-11-13T20:58:45Z"
-        },
-        {
-          "id": "contracts",
-          "status": "not-started",
-          "title": "API provider persistence and ownership contracts"
-        },
-        {
-          "id": "hld",
-          "status": "not-started",
-          "title": "Canonical architecture reconciliation"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Coverage validation and independent review"
-        }
-      ]
-    },
-    {
       "id": "FUCQ-435",
       "title": "Call the separately hosted API with bearer authentication",
       "status": "To Do",
@@ -6349,6 +6315,57 @@
       "observed_at": "2026-11-13T20:22:18.041Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-482",
       "unsliced": true
+    },
+    {
+      "id": "FUCQ-434",
+      "title": "Record the target architecture and implemented baseline",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-13T21:12:09Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-434",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "inventory",
+          "status": "complete",
+          "title": "Source and retained artifact baseline",
+          "observed_at": "2026-11-13T21:12:08Z",
+          "evidence": "Baseline and 1720 hashed source/retained entries; 100 routes and 26 factories; source freeze check passed in migration-baseline-2026-11-13/verification.json"
+        },
+        {
+          "id": "contracts",
+          "status": "complete",
+          "title": "API provider persistence and ownership contracts",
+          "observed_at": "2026-11-13T21:12:08Z",
+          "evidence": "Replacement API/provider/error/identity/persistence/deployment contracts reconciled with native performance objectives; source/reference checks passed"
+        },
+        {
+          "id": "hld",
+          "status": "complete",
+          "title": "Canonical architecture reconciliation",
+          "observed_at": "2026-11-13T21:12:08Z",
+          "evidence": "Canonical HLD reconciled to Angular21 Java21/Quarkus bearer OIDC fresh-state deployment; historical drawio explicitly distinguished; local references passed"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Coverage validation and independent review",
+          "observed_at": "2026-11-13T21:12:09Z"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Woody",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "active",
+          "observed_at": "2026-11-13T21:11:56Z",
+          "expires_at": "2026-11-13T23:00:00Z",
+          "source": "DEV-2026-11-13-GC-001 claim; verified child session 01a1d6b4-09c2-7c73-92c0-c76447eff8e5"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,51 @@
+{
+  "story": "FUCQ-434",
+  "run": "final-evidence",
+  "ownerPid": 64529,
+  "observedAt": "2026-11-13T21:11:25.915435+00:00",
+  "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/final-evidence-scratch",
+  "selected": [
+    "node --max-old-space-size=128 docs/gcsp/migration-baseline-2026-11-13/collect.mjs",
+    "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py"
+  ],
+  "expected": {
+    "workers": 1,
+    "heapMiB": 128,
+    "scratchMiB": 2,
+    "outputMiB": 3,
+    "timeoutSecondsPerCommand": 120
+  },
+  "exclusions": "No application suite, browser, PostgreSQL, external provider, mail or deployment; documentation-only inventory",
+  "results": [
+    {
+      "command": "node --max-old-space-size=128 docs/gcsp/migration-baseline-2026-11-13/collect.mjs",
+      "exitCode": 0,
+      "elapsedSeconds": 0.919,
+      "stdout": "{\"output\":\"docs/gcsp/migration-baseline-2026-11-13/inventory.json\",\"sourceFiles\":672,\"routes\":100,\"factories\":26,\"retainedAndVisualFiles\":1048,\"bytes\":553884,\"sourceAggregateSha256\":\"212a8e7ca88891b0dcddeff7ba0b5c13a9248af97584612458e04b45fabf89df\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+      "exitCode": 1,
+      "elapsedSeconds": 0.796,
+      "stdout": "{\"passed\": false, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": [\"capability replacement coverage\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 docs/gcsp/migration-baseline-2026-11-13/verify.py",
+      "exitCode": 0,
+      "elapsedSeconds": 0.801,
+      "stdout": "{\"passed\": true, \"checks\": 10, \"files\": 1720, \"routes\": 100, \"failures\": []}\n",
+      "stderr": ""
+    }
+  ],
+  "elapsedSeconds": 1.716,
+  "maxChildRssBytes": 168017920,
+  "scratchAbsent": true,
+  "largeOutputs": "none; streamed input hashes only",
+  "compatibilityExceptions": "none",
+  "dependency": "Read-only launcher pg module import; no installation/connection",
+  "priorFailure": "Initial collector import failed ERR_MODULE_NOT_FOUND pg; corrected by explicit read-only import resolution, then passed",
+  "correction": "Verifier now expands documented slash/range Story shorthand; initial coverage failure retained.",
+  "correctionScratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq434/coverage-correction-scratch"
+}
