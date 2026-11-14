@@ -83,6 +83,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
+| `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).
@@ -617,6 +618,26 @@ run's clock when absent). The bound `lifecycle-documents` handler and, with a pu
 are now driven by presenter ticks on every such deployment, and `lifecycle-documents` also runs in the startup tick.
 Documents read the run clock instead of answering unavailable. The startup tick never pulls releases or dispatches
 mail; `GCSP_SCENARIO_PROVIDER` stays `none` unless set.
+## Production requests (FUCQ-478)
+
+Package `gcsp.api.production`. Greg submits his plan with `POST /api/gcsp/v1/greg/production/requests` (body `{commandId, planId, versions}`;
+the only request path) and tracks it with `GET /greg/production` and `GET /greg/production/supply-activity` (Greg or presenter, read-only
+for the presenter). The presenter has scenario controls only: `POST /presenter/production/responses` (`{requestId, action: confirm|delay|refuse,
+quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
+(`{limit?}`). Employees get 403 everywhere.
+
+- One operation per request line: the request id is the provider operation id. Intent is stored before anything is sent, and a retry
+  reconciles with the provider before it resubmits, so a lost answer never creates a second order.
+- Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
+  supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
+- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
+  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
+  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
+  so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
+- Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,
+  reconcile and retries leave those rows untouched and report `provider-mode-changed` (retry submit answers 409).
+
 ## Ordering (FUCQ-468)
 
 `gcsp.api.ordering` hands an employee's selection on to ordering exactly once. The operation id is deterministic per
