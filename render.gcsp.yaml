@@ -141,3 +141,299 @@ services:
     envVars:
       - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com
+
+  # Independent migration checkpoint; the existing gcsp-poc services above stay supported.
+  - type: web
+    name: gcsp-java-api
+    runtime: docker
+    # plan: deliberately unset; no tier is selected. Measured idle RSS is about 115 MB.
+    region: frankfurt
+    branch: gcsp-poc-dev
+    dockerfilePath: ./services/gcsp-api/Dockerfile
+    dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
+    healthCheckPath: /q/health/ready
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - services/gcsp-api/**
+        - server/gcsp/policy/seed-v1.json
+        - server/gcsp/policy/reviewed/**
+        - server/gcsp/predict/records/policy-definitions.json
+      ignoredPaths:
+        - services/gcsp-api/README.md
+        - services/gcsp-api/render-service.proposed.yaml
+    envVars:
+      # PORT is injected by Render; the service binds to it.
+      - key: GCSP_IDENTITY_PROVIDER
+        sync: false            # none until registered; oidc requires the settings below
+      - key: GCSP_ALLOWED_ORIGINS
+        sync: false            # exact static-site origin(s), comma separated (FUCQ-435)
+      # FUCQ-455 / FUCQ-434 comment 3629378: deployment-only identity configuration.
+      # Keycloak is selected but unhosted/unregistered; no real subjects are committed.
+      - key: GCSP_OIDC_ISSUER
+        sync: false            # exact realm issuer; same as frontend oidc.authority
+      - key: GCSP_OIDC_JWKS_URI
+        sync: false            # HTTPS issuer JWKS endpoint
+      - key: GCSP_OIDC_AUDIENCE
+        sync: false            # access-token audience, supplied by provider mapper
+      - key: GCSP_OIDC_AUTHORIZED_PARTY
+        sync: false            # browser public client id; same as frontend oidc.clientId
+      - key: GCSP_OIDC_REQUIRED_SCOPES
+        sync: false            # included in frontend oidc.scope, e.g. gcsp-api
+      - key: GCSP_OIDC_ROLE_CLAIM
+        sync: false            # Keycloak default realm_access.roles
+      - key: GCSP_OIDC_ACCOUNTS
+        sync: false            # trusted deployment subject/role/employee mapping JSON
+      - key: GCSP_RUN_ID
+        sync: false
+      - key: GCSP_POLICY_VERSION
+        sync: false
+      - key: GCSP_SHUTDOWN_TIMEOUT
+        value: 10s
+      - key: JAVA_OPTS
+        value: -XX:MaxRAMPercentage=75
+      # FUCQ-456 / FUCQ-434 comment 3629372: isolated Java dev persistence.
+      # Supply JDBC jdbc:postgresql://host:5432/db from its own database details;
+      # never reuse gcsp-db above. Flyway owns the gcsp_app schema.
+      - key: GCSP_DATABASE_URL
+        sync: false
+      - key: GCSP_DATABASE_USER
+        sync: false
+      - key: GCSP_DATABASE_PASSWORD
+        sync: false
+      - key: GCSP_EXPECTED_DATABASE
+        sync: false            # exact database name; mismatch refuses startup/reset
+      - key: GCSP_ENVIRONMENT_ID
+        sync: false            # shared identity/persistence context; same as public environmentId
+      - key: GCSP_RESET_ALLOWED
+        value: "true"          # this dev service only; fixed at the database's first claim
+      - key: GCSP_DATABASE_POOL_SIZE
+        value: "10"            # application's default maximum connections
+      # Optional Java adapters retain their existing unavailable defaults.
+      - key: GCSP_SUPPLY_PROVIDER
+        value: none            # none | tranche-plan
+      # tranche-plan requires a deployment-supplied plan; this image ships neither file.
+      # Empty supply policy keeps releases pending as policy-unavailable.
+      # - key: GCSP_SUPPLY_TRANCHE_PLAN_FILE
+      #   sync: false
+      # - key: GCSP_SUPPLY_POLICY_FILE
+      #   sync: false
+      - key: GCSP_ACCOUNT_PROVIDER
+        value: none            # none | hr-snapshot | repository
+      # hr-snapshot requires a deployment-supplied export; repository needs the isolated DB above.
+      # - key: GCSP_ACCOUNT_HR_SNAPSHOT_PATH
+      #   sync: false
+      - key: GCSP_DOCUMENTS_PROVIDER
+        value: none            # synthetic enables fictional demo evidence
+      # Mail stays captured when unset; brevo requires every mail setting below.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   value: brevo
+      # Use the Angular HTTPS base serving /gcsp/offers/:offerId, not the API host.
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
+      # Optional notification drain interval: 1s to 10m; unset defaults to 5s.
+      # - key: GCSP_NOTIFY_DRAIN_INTERVAL
+      #   value: 5s
+
+  - type: web
+    name: gcsp-angular-dev
+    runtime: static
+    branch: gcsp-poc-dev
+    autoDeployTrigger: commit
+    buildCommand: >-
+      npm install --global npm@11.19.1 &&
+      npm ci --prefix apps/gcsp-web &&
+      npm run gcsp:compile &&
+      npm run gcsp:assemble --
+      --browser apps/gcsp-web/dist/gcsp-web/browser
+      --output _gcsp-site --environment deployed --revision "$RENDER_GIT_COMMIT"
+    staticPublishPath: _gcsp-site
+    buildFilter:
+      paths:
+        - apps/gcsp-web/**
+        - blocks/gcsp/shell/**
+        - designs/**
+        - scripts/build-gcsp-static.mjs
+        - scripts/assemble-site.mjs
+        - scripts/gcsp-runtime-config.mjs
+        - _config/gcsp-runtime-config.schema.json
+        - package.json
+        - package-lock.json
+        - render.gcsp.yaml
+      ignoredPaths:
+        - apps/gcsp-web/**/*.spec.ts
+        - apps/gcsp-web/**/*.md
+        - apps/gcsp-web/vitest.config.ts
+        - apps/gcsp-web/tsconfig.spec.json
+    # Exact paths avoid returning HTML for unknown/missing assets. Dynamic offers await FUCQ-437.
+    routes:
+      - type: redirect
+        source: /gcsp
+        destination: /gcsp/
+      - type: rewrite
+        source: /gcsp/
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/sign-in
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/auth/callback
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/account
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/preferences
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/stock
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/manual/review
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/manual/summary
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/activity
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/orders
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/help
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/greg
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/greg/cases
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/presenter
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/presenter/outbox
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/components
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/access-denied
+        destination: /gcsp/index.html
+      - type: rewrite
+        source: /gcsp/unavailable
+        destination: /gcsp/index.html
+    headers:
+      - path: /gcsp/*
+        name: Content-Security-Policy
+        value: "frame-ancestors 'none'"
+      - path: /gcsp/*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /gcsp/*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /gcsp
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/index.html
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/runtime-config.json
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/sign-in
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/auth/callback
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/account
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/preferences
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/stock
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/manual/review
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/manual/summary
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/activity
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/orders
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/help
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg/cases
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/presenter
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/presenter/outbox
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/components
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/access-denied
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/unavailable
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/media/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /gcsp/assets/*
+        name: Cache-Control
+        value: no-cache
+      - path: /gcsp/static-manifest.json
+        name: Cache-Control
+        value: no-cache
+    envVars:
+      - key: NODE_VERSION
+        value: "24.22.3"
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+      - key: GCSP_PUBLIC_ENVIRONMENT_ID
+        sync: false
+      - key: GCSP_PUBLIC_API_BASE_URL
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_AUTHORITY
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_CLIENT_ID
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_SCOPE
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_REDIRECT_URI
+        sync: false
+      - key: GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI
+        sync: false

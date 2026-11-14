@@ -1,4 +1,4 @@
-import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
+import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData, reusableVehicleSnapshot } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
@@ -21,6 +21,72 @@ function configurationValid(config, slider) {
     && ['confirmedAssurances', 'plugInFuels', 'chargingAccess', 'availabilityStates'].every((key) => Array.isArray(config[key]) && config[key].every(text))
     && config.preferences && config.essentials && config.tuning?.weights && config.tuning?.hardFilter
     && Number.isFinite(slider.minimum) && Number.isFinite(slider.maximum) && slider.minimum === 0 && slider.maximum === 100;
+}
+
+const plainDataRecord = (value) => value && typeof value === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(value))
+  && Reflect.ownKeys(value).every((key) => Object.hasOwn(Object.getOwnPropertyDescriptor(value, key), 'value'));
+
+function jsonData(value, visiting = new WeakSet()) {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean'
+    || typeof value === 'number' && Number.isFinite(value)) return true;
+  if (!value || typeof value !== 'object' || visiting.has(value)) return false;
+  visiting.add(value);
+  const array = Array.isArray(value);
+  if (array ? Object.getPrototypeOf(value) !== Array.prototype
+    : ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false;
+  const keys = Reflect.ownKeys(value);
+  if (keys.some((key) => typeof key !== 'string')) return false;
+  if (array) {
+    if (keys.length !== value.length + 1 || !keys.includes('length')) return false;
+    for (let index = 0; index < value.length; index++) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value') || !jsonData(descriptor.value, visiting)) return false;
+    }
+  } else {
+    for (const key of keys) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value') || !jsonData(descriptor.value, visiting)) return false;
+    }
+  }
+  visiting.delete(value);
+  return true;
+}
+
+function prepareOptionEvidenceConfig(config) {
+  try {
+    const keys = config && typeof config === 'object' ? Reflect.ownKeys(config) : [];
+    if (!plainDataRecord(config) || keys.some((key) => typeof key !== 'string'
+      || !Object.getOwnPropertyDescriptor(config, key).enumerable) || !Object.hasOwn(config, 'preferences')
+      || ['optionEvidence', 'driverEligibilityRequired', 'retailBudgetEnabled', 'displayLimit', 'termValiditySeconds',
+        'confirmedAssurances', 'plugInFuels', 'chargingAccess', 'availabilityStates', 'essentials', 'tuning',
+        'preferenceWeights', 'ranking'].some((key) => key in config && !Object.hasOwn(config, key))
+      || !jsonData(config.preferences)
+      || config.optionEvidence !== undefined && !jsonData(config.optionEvidence)) return config;
+    const preferences = freezeVehicleData(structuredClone(config.preferences));
+    return { ...config, preferences, ...(config.optionEvidence === undefined ? {} : {
+      optionEvidence: freezeVehicleData(structuredClone(config.optionEvidence)),
+    }) };
+  } catch { return config; }
+}
+
+function cloneSource(source) {
+  if (!plainDataRecord(source)) return structuredClone(source);
+  const stock = Object.getOwnPropertyDescriptor(source, 'stock');
+  if (!stock?.enumerable || !Object.hasOwn(stock, 'value') || !Array.isArray(stock.value)) return structuredClone(source);
+  if (Object.getPrototypeOf(stock.value) !== Array.prototype || Reflect.ownKeys(stock.value).some((key) => key !== 'length'
+    && (typeof key !== 'string' || !/^(0|[1-9]\d*)$/.test(key) || Number(key) >= stock.value.length
+      || !Object.getOwnPropertyDescriptor(stock.value, key).enumerable
+      || !Object.hasOwn(Object.getOwnPropertyDescriptor(stock.value, key), 'value')))) return structuredClone(source);
+  if (!stock.value.every(plainDataRecord)) return structuredClone(source);
+  const snapshots = stock.value.map((row) => {
+    const snapshot = Object.getOwnPropertyDescriptor(row, 'snapshot');
+    return snapshot?.enumerable && Object.hasOwn(snapshot, 'value') ? reusableVehicleSnapshot(snapshot.value) : undefined;
+  });
+  if (!snapshots.some(Boolean)) return structuredClone(source);
+  // Exclude only admitted snapshot graphs; clone all employee and operational facts together as before.
+  const copy = structuredClone({ ...source, stock: stock.value.map((row, index) => snapshots[index] ? { ...row, snapshot: null } : row) });
+  snapshots.forEach((snapshot, index) => { if (snapshot) copy.stock[index].snapshot = snapshot; });
+  return copy;
 }
 
 function validateSource(source) {
@@ -117,7 +183,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
           'eligibility.homeCharging.requiredForPlugIn'].map((key) => policy.getAssumption(key, read)));
         if (assumptionResults.some((row) => row.status !== 'ok' || row.policyVersion !== allowance.policyVersion)) return unavailable('policy-configuration-unavailable');
         const [calibration, minimum, maximum, charging] = assumptionResults.map((row) => row.value);
-        const config = calibration.value; const slider = { minimum: minimum.value, maximum: maximum.value };
+        const config = prepareOptionEvidenceConfig(calibration.value); const slider = { minimum: minimum.value, maximum: maximum.value };
         if (!configurationValid(config, slider) || typeof charging.value !== 'boolean') return unavailable('policy-configuration-invalid');
         // Typed current-car feedback rides beside the brief; the strict brief validator never sees it.
         const typed = {}; let content = request;
@@ -149,7 +215,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
         const provided = await provider.resolve(context);
         if (provided?.status === 'stale-run' || provided?.status === 'forbidden') return provided;
         if (provided?.status !== 'ok') return unavailable('employee-source-unavailable');
-        const source = structuredClone(provided.value);
+        const source = cloneSource(provided.value);
         if (['runId', 'environmentId', 'employeeId'].some((key) => source?.[key] !== context[key])) return refused();
         const candidates = validateSource(source);
         if (preview && !unselectedPracticalAnswer(preview.charging)) {

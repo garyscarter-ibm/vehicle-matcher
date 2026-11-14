@@ -13,6 +13,7 @@ public class IdentitySelection {
 
     public static final String NONE = "none";
     public static final String FIXED_TEST = "fixed-test";
+    public static final String OIDC = "oidc";
     private static final Logger LOG = Logger.getLogger(IdentitySelection.class);
 
     @Produces
@@ -37,9 +38,11 @@ public class IdentitySelection {
                             "gcsp.identity.provider=fixed-test is only allowed in automated tests");
                 }
                 return fixedTest(config);
+            case OIDC:
+                return OidcIdentity.fromConfig(config, mode);
             default:
                 throw new IllegalStateException("Unknown gcsp.identity.provider '" + name
-                        + "'; supported: none" + (mode == LaunchMode.TEST ? ", fixed-test" : ""));
+                        + "'; supported: none, oidc" + (mode == LaunchMode.TEST ? ", fixed-test" : ""));
         }
     }
 

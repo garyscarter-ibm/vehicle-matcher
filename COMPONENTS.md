@@ -589,3 +589,47 @@ Rows are released cars; columns are engaged Buddies. Native cell buttons select 
 checks and allocation details. The table scrolls within its region at narrow widths.
 Paging covers eight cars and four Buddies; all/latest release is a native selector.
 Scoped Density-token styling lives in `suitability-section.css`. No new kit primitive.
+
+## GCSP Angular shared kit (`apps/gcsp-web/src/app/kit/`)
+
+FUCQ-439 introduces native standalone Angular equivalents because the DOM factories do not own Angular routes or authentication. Reuses the current portal header/rail, existing `blocks/gcsp/shell/` Density semantic CSS and packaged brand/font artwork without importing legacy controllers. The employee rail stays **Your cars, Order progress**; Greg adds **Employee car ordering**, both roles compose, and presenter keeps its dedicated controls. Reference: `docs/gcsp/screens/00-employee-account.webp` and kickoff baseline `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`.
+
+| Angular primitive | Use and semantics |
+| --- | --- |
+| `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. |
+| `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2 level. Page h1 accepts arrival focus. |
+| `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. |
+| `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
+| `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
+| `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
+
+App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
+
+### Angular preferences and rating (FUCQ-441)
+
+`gcsp-preference-category` and `gcsp-star-rating` in the Angular kit are native standalone
+presenters. Category inputs are the server definition, considered/unset state, open/removing and
+disabled flags. Outputs express value/importance changes, open, request removal, remove and keep.
+Multi choices use checkboxes; stops and medium/high importance use separate radio groups. Unset
+categories read Not important. Removal requires an explicit Remove preference action with a Keep
+preference alternative. Stars use a named native radio group for 1–5 and a Clear rating button.
+Tab, Space and the native radio arrow keys operate these controls; focus outlines remain visible.
+Disabled states retain readable answers. Gallery: **Preference categories and current-car rating**,
+including high importance, removal, unset/disabled, selected stars and an unconfirmed-save message.
+
+`gcsp-account-preferences` and `gcsp-current-car-rating` compose those presenters with the shared
+root `BriefEditorStore`. Account inputs are `carDescription`, and `contractId` for rating. Rating
+is hidden unless the editor's current contract matches exactly. The compact editor contains no
+recommendations. Its meter is server-projected input completeness and labels unsaved projections.
+Same again keeps the categories and prevents category edits while selected. Preferences, rating
+and Same again share a versioned save queue; unavailable outcomes retain retryable intent, stale
+outcomes require explicit reload, and identity/run changes clear the local state. Full preferences
+uses the same scoped editor resource, native position/importance/practical inputs, read-only facts,
+server preview decisions and explicit draft-save/confirmation. These fixture checks do not establish
+Java, OIDC, database, hosted-browser or accessibility acceptance.
+
+`gcsp-buddy-controls` presents the saved server Buddy view and native Engage, Pause search, Resume
+search and Disengage actions. It reports paused search separately from withdrawn consent, keeps
+uncertain requests available for an explicit same-command retry, and provides a status reload. Its
+gallery states use inert projections with actions disabled; the live compact and full preferences
+views bind its outputs to the shared `BriefEditorStore` command lane.

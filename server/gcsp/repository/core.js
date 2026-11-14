@@ -109,17 +109,48 @@ export function findReceipt(index, receipts, runId, consumerId, eventId) {
 }
 const RECEIPT_KEY = Object.freeze(['consumerId', 'eventId', 'runId']);
 
-// One entry per changed row identity, in first-write order; later writes keep the first type and
-// expectedVersion (the version stored before this transaction) and replace `row` with the final row.
+// FUCQ-424: a backend may hand core a partial state carrying `scope`; anything outside it is a miss, never "empty".
+export const SCOPED_TABLES = Object.freeze(['event_receipts', 'tick_runs']);
+class ScopeMiss extends Error { constructor() { super('scope-miss'); this.name = 'ScopeMiss'; } }
+export const isScopeMiss = (error) => error instanceof ScopeMiss;
+const refId = (table, key) => JSON.stringify([table, ...TABLES[table].key.map((field) => key[field])]);
+const coverageOf = (scope) => { const ids = new Set(scope.map(({ table, key }) => refId(table, key))); return (table, key) => ids.has(refId(table, key)); };
+// The declared refs plus the replay receipt `insert` looks up for each, and the command receipt with its own.
+function expandScope(context, command, declared) {
+  const refs = new Map();
+  const add = (table, key) => refs.set(refId(table, key), { table, key });
+  const withReplay = (table, key) => {
+    add(table, key);
+    const keyed = Object.fromEntries(TABLES[table].key.map((field) => [field, key[field]]));
+    add('event_receipts', { runId: context.runId, consumerId: `repository:insert:${table}`, eventId: inputDigest(keyed) });
+  };
+  for (const { table, key } of declared) withReplay(table, Object.fromEntries(TABLES[table].key.map((field) => [field, key[field]])));
+  withReplay('event_receipts', { runId: context.runId, consumerId: 'command:transaction', eventId: command.commandId });
+  return [...refs.values()];
+}
+function validateScope(context, options) {
+  if (options === undefined || options === null || (plain(options) && options.scope === undefined)) return undefined;
+  const bad = (reason) => invalid('invalid-scope', 'scope', reason);
+  if (!plain(options) || !Array.isArray(options.scope)) return bad('Expected { scope: [{ table, key }] }');
+  for (const ref of options.scope) {
+    if (validateRef(ref)) return bad('Each scope entry needs a table and complete primary key');
+    if (!SCOPED_TABLES.includes(ref.table)) return bad('Scope supports only event_receipts and tick_runs');
+    if (ref.key.runId !== context?.runId) return bad('Scope must stay inside the context run');
+  }
+  return null;
+}
+
+// One entry per changed row identity, in first-write order; later writes keep the first type, expectedVersion
+// and previous (the version and row stored before this transaction) and replace `row` with the final row.
 export function createMutationJournal() {
   const entries = new Map();
   return Object.freeze({
-    record(type, table, row, expectedVersion) {
+    record(type, table, row, expectedVersion, previous) {
       const key = Object.fromEntries(TABLES[table].key.map((field) => [field, row[field]]));
       const id = JSON.stringify([table, ...Object.values(key)]);
       const entry = entries.get(id);
       if (entry) entry.row = row;
-      else entries.set(id, { type, table, key, row, ...(type === 'update' ? { expectedVersion } : {}) });
+      else entries.set(id, { type, table, key, row, ...(type === 'update' ? { expectedVersion, previous } : {}) });
     },
     entries: () => Object.freeze([...entries.values()].map((entry) => Object.freeze({ ...entry, key: Object.freeze({ ...entry.key }) }))),
   });
@@ -128,6 +159,9 @@ export function createMutationJournal() {
 export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES, receiptIndex = undefined, journal = createMutationJournal()) {
   let failure;
   let active = true;
+  let missed = false;
+  const covered = state.scope ? coverageOf(state.scope) : undefined;
+  const miss = () => { throw new ScopeMiss(); };
   const changedTables = new Set();
   const remember = (outcome, lookup = false) => {
     if (outcome.status !== 'ok' && outcome.status !== 'pending' && !(lookup && outcome.status === 'not-found')) failure ||= outcome;
@@ -136,16 +170,22 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
   const guarded = (operation, lookup = false) => async (...args) => {
     if (!active) return invalid('transaction-closed', 'transaction', 'Transaction has finished');
     if (failure) return cloneJson(failure);
-    return remember(operation(...args), lookup);
+    try { return remember(operation(...args), lookup); } catch (error) {
+      if (!isScopeMiss(error)) throw error;
+      missed = true; failure ||= result('unavailable', { reason: 'scope-miss', retryable: true });
+      return cloneJson(failure);
+    }
   };
   const supported = (table) => TABLES[table] && !supportedTables.includes(table) ? invalid('unsupported-table', 'table', 'Table requires an additional migration') : null;
-  const rows = (table) => state.tables[table].filter((row) => row.runId === context.runId);
-  const receiptPosition = (consumerId, eventId) => findReceipt(receiptIndex, state.tables.event_receipts, context.runId, consumerId, eventId);
+  const scan = (table) => state.tables[table].filter((row) => row.runId === context.runId);
+  const rows = (table) => covered && table !== 'runs' ? miss() : scan(table);
+  const receiptPosition = (consumerId, eventId) => covered && !covered('event_receipts', { runId: context.runId, consumerId, eventId }) ? miss() : findReceipt(receiptIndex, state.tables.event_receipts, context.runId, consumerId, eventId);
   // An exact receipt key in this run, looked up through the index; any other key keeps the plain scan.
   const exactReceipt = (table, key) => table === 'event_receipts' && key.runId === context.runId
     && Object.keys(key).sort().join() === RECEIPT_KEY.join() && typeof key.consumerId === 'string' && typeof key.eventId === 'string';
   const locate = (table, key) => {
-    if (!exactReceipt(table, key)) return rows(table).find((item) => matches(item, key));
+    if (covered && table !== 'runs' && !covered(table, key)) return miss();
+    if (!exactReceipt(table, key)) return scan(table).find((item) => matches(item, key));
     const position = receiptPosition(key.consumerId, key.eventId);
     return position < 0 ? undefined : state.tables.event_receipts[position];
   };
@@ -212,7 +252,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
       return outcome;
     }
     const keyOf = Object.fromEntries(schema.key.map((key) => [key, input[key]]));
-    const existing = exactReceipt(table, keyOf) ? locate(table, keyOf) : rows(table).find((row) => schema.key.every((key) => equal(row[key], input[key])));
+    const existing = locate(table, keyOf);
     if (existing) return equal(contentRow(existing), contentRow(input)) ? ok(existing) : conflict('duplicate-key', summary(existing));
     const timestamp = now();
     const row = { ...cloneJson(input), version: input.version ?? 1, createdAt: input.createdAt ?? timestamp, updatedAt: input.updatedAt ?? timestamp };
@@ -253,7 +293,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (violation) return violation;
     const position = state.tables[ref.table].indexOf(previous);
     state.tables[ref.table][position] = row;
-    journal.record('update', ref.table, row, previous.version);
+    journal.record('update', ref.table, row, previous.version, previous);
     changedTables.add(ref.table);
     if (receiptIndex && ref.table === 'event_receipts' && position === receiptIndex.count - 1) receiptIndex.last = row;
     return ok(row);
@@ -316,6 +356,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     finish: () => { active = false; return failure; },
     changedTables: () => [...changedTables],
     mutations: () => journal.entries(),
+    missed: () => missed,
   };
 }
 
@@ -408,15 +449,20 @@ export function createRepository(backend) {
         return recorded.status === 'ok' ? { commit: true, outcome: stored, mutations: journal.entries() } : { commit: false, outcome: recorded };
       }));
     },
-    async transaction(context, command, work) {
+    // `options.scope` (FUCQ-424) declares the receipt-table keys the work touches; the backend may load only those.
+    async transaction(context, command, work, options) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
+      const declared = validateScope(context, options);
+      if (declared) return declared;
+      const expanded = declared === null ? expandScope(context, command, options.scope) : undefined;
       let committed = false;
       let changedTables = [];
       const outcome = await safe('transaction', () => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const consumerId = 'command:transaction';
+        if (state.scope && !coverageOf(state.scope)('event_receipts', { runId: context.runId, consumerId, eventId: command.commandId })) throw new ScopeMiss();
         const receiptAt = findReceipt(backend.receiptIndex, state.tables.event_receipts, context.runId, consumerId, command.commandId);
         const receipt = receiptAt < 0 ? undefined : state.tables.event_receipts[receiptAt];
         if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest ? cloneJson(receipt.outcome) : conflict('idempotency-input-changed') };
@@ -425,8 +471,13 @@ export function createRepository(backend) {
         const journal = createMutationJournal();
         const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         let outcome;
-        try { outcome = await work(session.tx); } catch (error) { diagnose('transaction.work', error); session.finish(); return { commit: false, outcome: unavailable() }; }
+        try { outcome = await work(session.tx); } catch (error) {
+          session.finish();
+          if (session.missed()) throw new ScopeMiss();
+          diagnose('transaction.work', error); return { commit: false, outcome: unavailable() };
+        }
         const failure = session.finish();
+        if (session.missed()) throw new ScopeMiss();
         if (failure) return { commit: false, outcome: failure };
         if (!plain(outcome) || !identifier(outcome.status) || !jsonValue(outcome)) return { commit: false, outcome: invalid('invalid-outcome', 'work', 'Callback must return a contract outcome') };
         if (!['ok', 'pending'].includes(outcome.status)) return { commit: false, outcome: { ...outcome, contractVersion: CONTRACT_VERSION } };
@@ -435,10 +486,11 @@ export function createRepository(backend) {
         const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex, journal);
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
+        if (recorder.missed()) throw new ScopeMiss();
         committed = recorded.status === 'ok';
         changedTables = [...new Set([...session.changedTables(), ...recorder.changedTables()])];
         return committed ? { commit: true, outcome: storedOutcome, mutations: journal.entries() } : { commit: false, outcome: recorded };
-      }));
+      }, expanded));
       if (committed && ['ok', 'pending'].includes(outcome.status)) {
         await Promise.allSettled([...commitObservers].map((observer) => Promise.resolve().then(() => observer({
           context: structuredClone(context), commandId: command.commandId, changedTables: [...changedTables],

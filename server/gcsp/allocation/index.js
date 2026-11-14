@@ -2,6 +2,7 @@ import { isBuddyEngaged } from '../brief/permission.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
 import { intentValue, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
@@ -43,9 +44,14 @@ const visible = (row, employee) => Array.isArray(row.visibility?.companyIds) && 
 const lottery = (seed, runId, employeeId, orderUuid) => createHash('sha256').update(JSON.stringify([seed, runId, employeeId, orderUuid])).digest('hex');
 const ordinal = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 const byStableId = (a, b) => ordinal(a.employeeId, b.employeeId) || ordinal(a.orderUuid, b.orderUuid);
-const entryOf = (r) => ({ orderUuid: r.orderUuid, configurationId: r.configurationId, snapshot: r.facts,
-  availability: { ...r.release?.availability, state: 'available', availableFrom: r.release?.availability?.availableFrom ?? r.release?.releasedAt,
-    version: String(r.version) } });
+const entryOf = (r) => {
+  // Transaction reads are mutable copies. Prepare a detached immutable snapshot once for this pool entry.
+  let snapshot = r.facts;
+  try { snapshot = createVehicleSnapshot(snapshot); } catch { /* Preserve malformed input for the evaluator's existing rejection path. */ }
+  return { orderUuid: r.orderUuid, configurationId: r.configurationId, snapshot,
+    availability: { ...r.release?.availability, state: 'available', availableFrom: r.release?.availability?.availableFrom ?? r.release?.releasedAt,
+      version: String(r.version) } };
+};
 const quoteOf = (decision) => ({ orderUuid: decision.orderUuid, configurationId: decision.configurationId, snapshot: decision.snapshot, terms: decision.terms,
   employeeFacts: decision.employeeFacts, versions: decision.versions, reasons: decision.reasons, tradeOffs: decision.tradeOffs });
 function compare(rule) {
@@ -164,6 +170,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
       if (employeeContext.runId !== context.runId || employeeContext.employeeId !== employee.employeeId
         || employeeContext.policyVersion !== context.policyVersion) return unavailable('employee-context-invalid');
       const available = pool.filter((r) => visible(r, employee));
+      const stockByOrderId = new Map();
+      // Preserve the first visible row selected by the former find when IDs repeat.
+      for (const stock of available) if (!stockByOrderId.has(stock.orderUuid)) stockByOrderId.set(stock.orderUuid, stock);
       const facts = structuredClone(employee.contract?.manualContext?.employeeFacts ?? {});
       const driver = employee.contract?.manualContext?.drivers?.find((d) => d.employeeId === employee.employeeId && d.kind === 'employee');
       if (facts.driverEligible === undefined && driver?.eligible) facts.driverEligible = structuredClone(driver.eligible);
@@ -198,7 +207,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push({ code: 'declined-unchanged' });
         }
         if (decision.gateStatus !== 'eligible' || brief.buddy.holdConsent !== true || letLapse.has(`${employee.employeeId}|${decision.orderUuid}`)) continue;
-        const stock = available.find((s) => s.orderUuid === decision.orderUuid);
+        const stock = stockByOrderId.get(decision.orderUuid);
         const currentContracts = employee.contract?.manualContext?.contracts?.filter((c) => c.status === 'current'
           && c.employeeId === employee.employeeId && c.schemeId === employee.schemeId && c.slotId === slot.entitlementSlotId);
         const currentContract = currentContracts?.length === 1 ? currentContracts[0] : null;
@@ -246,7 +255,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
       const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
         inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });
       return saved.status === 'ok' ? ok({ prepared: event.eventId }) : saved;
-    });
+    }, { scope: [ref(context, event.eventId, ALLOCATION_CURSOR_CONSUMER), ...slices.map((slice) => sliceRef(context, event.eventId, slice.employeeId)), ref(context, event.eventId)] });
   }
 
   const service = {
@@ -341,7 +350,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
         if (cursor.status === 'not-found') cursor = await repository.transaction(context, command(`allocation:cursor:${event.eventId}`, event),
           (tx) => tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
             inputVersions: row.inputVersions, state: 'pending', outcome: ok({ next: row.outcome.value.next,
-              assignments: row.outcome.value.assignments, attempts: row.outcome.value.attempts }) }));
+              assignments: row.outcome.value.assignments, attempts: row.outcome.value.attempts }) }), { scope: [cursorRef] });
         if (cursor.status !== 'ok') return cursor;
         const progress = cursor.value.outcome.value; let version = cursor.value.version; let next = progress.next;
         // A cursor written before FUCQ-217 carries every attempt inline and keeps doing so.
@@ -397,7 +406,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
                 }
                 const swapped = await tx.compareAndSwap(cursorRef, version, { outcome: ok(saved) });
                 return swapped.status === 'ok' ? ok({ version: swapped.value.version }) : swapped;
-              });
+              }, { scope: [cursorRef, attemptRef(context, event.eventId, attempts.length - 1)] });
             if (advanced.status !== 'ok') return advanced;
             version = advanced.value.version;
           }
@@ -411,7 +420,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const closed = await tx.compareAndSwap(cursorRef, version, { state: 'completed' }); if (closed.status !== 'ok') return closed;
           const done = await tx.compareAndSwap(ref(context, event.eventId), row.version, { state: 'completed', outcome });
           return done.status === 'ok' ? ok({ completed: event.eventId }) : done;
-        });
+        }, { scope: [cursorRef, ref(context, event.eventId)] });
         if (finished.status !== 'ok') return finished;
         const completed = await repository.read(context, ref(context, event.eventId));
         return completed.status === 'ok' ? (summary ? summarizeAllocation(completed.value.outcome)

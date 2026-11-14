@@ -1,0 +1,82 @@
+{
+  "accepted" : {
+    "http" : 200,
+    "body" : {
+      "status" : "ok",
+      "value" : {
+        "accepted" : true,
+        "policyVersion" : "<new>",
+        "effectiveFrom" : "<now>",
+        "publisher" : "sub-greg",
+        "publishedAt" : "<now>",
+        "activationRequired" : false,
+        "activation" : {
+          "status" : "active",
+          "policyVersion" : "<new>",
+          "asOf" : "<now>",
+          "publishedVersionActive" : true
+        },
+        "state" : "published",
+        "heldOffers" : {
+          "count" : null,
+          "unit" : "offers",
+          "message" : "Refresh to see active offers keeping their earlier terms."
+        }
+      }
+    }
+  },
+  "invalid" : {
+    "http" : 400,
+    "body" : {
+      "status" : "invalid",
+      "code" : "invalid-editable-field",
+      "reason" : "Use each published price or recommendation weight once, with a nonnegative safe integer.",
+      "retryable" : false,
+      "reasons" : [ {
+        "field" : "changes",
+        "reason" : "Use each published price or recommendation weight once, with a nonnegative safe integer."
+      } ],
+      "accepted" : false
+    }
+  },
+  "stale" : {
+    "http" : 409,
+    "body" : {
+      "status" : "stale-version",
+      "code" : "stale-version",
+      "reason" : "The policy changed. Refresh and try again.",
+      "retryable" : false,
+      "accepted" : false,
+      "expectedVersion" : "<old>",
+      "currentVersion" : "<new>",
+      "action" : "refresh"
+    }
+  },
+  "forbidden" : {
+    "http" : 403,
+    "body" : {
+      "status" : "forbidden",
+      "code" : "role-required",
+      "reason" : "Your account cannot use this action.",
+      "retryable" : false
+    }
+  },
+  "unauthenticated" : {
+    "http" : 401,
+    "body" : {
+      "status" : "unauthenticated",
+      "code" : "bearer-missing",
+      "reason" : "Sign in to continue.",
+      "retryable" : false
+    }
+  },
+  "previewUnavailable" : {
+    "http" : 422,
+    "body" : {
+      "status" : "unsupported",
+      "code" : "preview-unavailable",
+      "reason" : "Policy preview is not available on this service yet.",
+      "retryable" : false
+    }
+  }
+}

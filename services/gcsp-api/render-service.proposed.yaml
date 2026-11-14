@@ -8,21 +8,56 @@
     region: frankfurt
     branch: gcsp-poc-dev
     dockerfilePath: ./services/gcsp-api/Dockerfile
-    dockerContext: ./services/gcsp-api
+    dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
     healthCheckPath: /q/health/ready
     autoDeployTrigger: commit
     buildFilter:
       paths:
         - services/gcsp-api/**
+        - server/gcsp/policy/seed-v1.json
+        - server/gcsp/policy/reviewed/**
+        - server/gcsp/predict/records/policy-definitions.json
       ignoredPaths:
         - services/gcsp-api/README.md
         - services/gcsp-api/render-service.proposed.yaml
     envVars:
       # PORT is injected by Render; the service binds to it.
       - key: GCSP_IDENTITY_PROVIDER
-        value: none            # refuses every context call until FUCQ-455 adds oidc
+        value: none            # refuses every context call; set oidc with the GCSP_OIDC_* values below
       - key: GCSP_ALLOWED_ORIGINS
         sync: false            # exact static-site origin(s), comma separated (FUCQ-435)
+      # Needed when GCSP_IDENTITY_PROVIDER=oidc (FUCQ-455); values are public settings, not secrets.
+      # - key: GCSP_OIDC_ISSUER
+      #   sync: false
+      # - key: GCSP_OIDC_JWKS_URI
+      #   sync: false
+      # - key: GCSP_OIDC_AUDIENCE
+      #   sync: false
+      # - key: GCSP_OIDC_AUTHORIZED_PARTY
+      #   sync: false
+      # - key: GCSP_OIDC_REQUIRED_SCOPES
+      #   sync: false
+      # - key: GCSP_OIDC_ROLE_CLAIM
+      #   sync: false
+      # - key: GCSP_OIDC_ACCOUNTS
+      #   sync: false
+      # - key: GCSP_ENVIRONMENT_ID
+      #   sync: false
+      # - key: GCSP_RUN_ID
+      #   sync: false
+      # - key: GCSP_POLICY_VERSION
+      #   sync: false
+      # Notifications (FUCQ-469): unset GCSP_MAIL_TRANSPORT keeps mail captured; brevo needs the rest.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   sync: false
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS

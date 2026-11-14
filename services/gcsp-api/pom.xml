@@ -42,6 +42,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-health</artifactId>
     </dependency>
+    <!-- FUCQ-455 identity -->
+    <dependency>
+      <groupId>org.bitbucket.b_c</groupId>
+      <artifactId>jose4j</artifactId>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
@@ -71,6 +76,27 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <!-- Retained policy data is read in place from server/gcsp, never copied into this module. -->
+      <resource>
+        <directory>${project.basedir}/../../server/gcsp/policy</directory>
+        <targetPath>gcsp/policy</targetPath>
+        <includes>
+          <include>seed-v1.json</include>
+          <include>reviewed/*.json</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/../../server/gcsp/predict/records</directory>
+        <targetPath>gcsp/policy/records</targetPath>
+        <includes>
+          <include>policy-definitions.json</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
