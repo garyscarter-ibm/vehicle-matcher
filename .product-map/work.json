@@ -5744,7 +5744,7 @@
       "id": "FUCQ-420",
       "jira_observed_at": "2026-11-12T15:49:01.766Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-14T09:08:15Z",
+      "observed_at": "2026-11-14T09:18:58Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -5755,8 +5755,9 @@
         },
         {
           "id": "evidence",
-          "status": "not-started",
-          "title": "Consecutive-release, recovery, conflict and legacy regressions on memory and native PostgreSQL"
+          "status": "in-progress",
+          "title": "Consecutive-release, recovery, conflict and legacy regressions on memory and native PostgreSQL",
+          "observed_at": "2026-11-14T09:18:58Z"
         },
         {
           "id": "integration",
