@@ -35,7 +35,8 @@ public final class ComparisonJobProfiles {
     }
 
     static String schema(String tag) {
-        return "gcsp_cj_" + tag + "_" + Long.toHexString(System.nanoTime());
+        // The pid, not a clock: Quarkus and the test load this class in different classloaders.
+        return "gcsp_cj_" + tag + "_" + ProcessHandle.current().pid();
     }
 
     /** Reruns on, with the synthetic replay. */
