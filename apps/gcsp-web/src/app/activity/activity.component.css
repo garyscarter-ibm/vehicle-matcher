@@ -1,0 +1,41 @@
+.activity-page { display: flex; flex-direction: column; gap: var(--gcsp-space-6); max-width: 1120px; min-width: 0; }
+.activity-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); }
+.activity-header gcsp-screen-intro { min-width: 0; }
+.activity-live, .activity-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.activity-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gcsp-space-4); }
+.activity-badge { display: inline-flex; align-items: center; gap: var(--gcsp-space-2); margin: 0; font-weight: var(--gcsp-font-strong-weight); }
+.activity-status-dot { width: 10px; height: 10px; flex: 0 0 10px; border-radius: 50%; background: var(--gcsp-text-muted); }
+.activity-badge.is-engaged .activity-status-dot { background: var(--gcsp-success); }
+.activity-badge.is-finished .activity-status-dot { background: var(--gcsp-success); }
+.activity-control { max-width: 100%; }
+.activity-consequence { margin: calc(-1 * var(--gcsp-space-3)) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
+.activity-offer { min-width: 0; }
+.activity-section-title { margin: 0 0 var(--gcsp-space-4); font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
+.activity-offer-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(220px, 1fr); gap: var(--gcsp-space-6); }
+.activity-offer-visual, .activity-offer-details { min-width: 0; }
+.activity-image-frame { display: grid; min-height: 240px; place-items: center; overflow: hidden; border-radius: var(--gcsp-radius); background: var(--gcsp-surface-muted); color: var(--gcsp-text-muted); text-align: center; }
+.activity-image-frame img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.activity-image-frame p { margin: var(--gcsp-space-4); }
+.activity-image-caption { margin: var(--gcsp-space-2) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.activity-image-controls, .activity-next-steps { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gcsp-space-2); margin-top: var(--gcsp-space-3); }
+.activity-image-controls [aria-pressed="true"] { background: var(--gcsp-accent-soft); }
+.activity-offer-name { margin: 0 0 var(--gcsp-space-4); overflow-wrap: anywhere; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
+.activity-offer-state, .activity-offer-deadline { margin: 0 0 var(--gcsp-space-3); color: var(--gcsp-text-muted); }
+.activity-checks { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2) var(--gcsp-space-6); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
+.activity-checks p, .activity-exclusions p, .activity-timeline p { margin: 0; }
+.activity-exclusions { display: grid; gap: var(--gcsp-space-3); color: var(--gcsp-text-muted); }
+.activity-acknowledgement, .activity-secondary { margin: var(--gcsp-space-3) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
+.activity-notice { margin: 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
+.activity-timeline { min-width: 0; }
+.activity-timeline-list { display: grid; gap: var(--gcsp-space-4); margin: 0; padding: 0; list-style: none; }
+.activity-timeline-list li { display: grid; grid-template-columns: minmax(140px, 190px) minmax(0, 1fr); gap: var(--gcsp-space-4); padding-top: var(--gcsp-space-3); border-top: 1px solid var(--gcsp-divider); }
+.activity-timeline-time { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); font-variant-numeric: tabular-nums; }
+.activity-page :where(a, button) { max-width: 100%; }
+
+@media (max-width: 700px) {
+  .activity-page { gap: var(--gcsp-space-5); }
+  .activity-header { align-items: flex-start; }
+  .activity-offer-grid { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-4); }
+  .activity-image-frame { min-height: 190px; }
+  .activity-timeline-list li { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-2); }
+}

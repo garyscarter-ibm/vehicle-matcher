@@ -69,6 +69,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
+| `GCSP_ORDERING_PROVIDER` | `none` | Employee ordering handoff provider: `none` refuses every submit (503 `ordering-provider-not-configured`) while terms and reads still work, `synthetic` is a labelled fictional provider kept in the same database. Unknown values stop startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 | `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
@@ -317,6 +318,32 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
 
+## Greg demand and presenter suitability (FUCQ-475)
+
+| Path | Role | Result |
+| --- | --- | --- |
+| `GET /api/gcsp/v1/greg/demand` | Greg only | `{"status":"ok","value":<saved-demand projection>}` for the principal's run. |
+| `GET /api/gcsp/v1/presenter/suitability?page=&buddyPage=&release=` | Presenter only | Recorded allocation decisions per engaged buddy and released car; cars 8 per page, buddies 4. |
+
+Scope (environment, run, policy version) comes only from the bearer principal. Both responses send
+`Cache-Control: no-store`. Demand takes no query parameter. Suitability takes `page` and `buddyPage` (`^[1-9]\d{0,6}$`,
+default 1, clamped to the last page) and `release` (`all` or `latest`, default `all`), each at most once. Both read in one
+read-only repeatable-read snapshot, and opening them never evaluates, claims or writes anything.
+
+Refusals: 400 `unsupported-query`; 401/403 as above (`role-required` for the wrong role); 409 `stale-run`; 503
+`persistence-not-configured`, `demand-unavailable` (incomplete principal context), `privacy-policy-unavailable`,
+`evaluation-unavailable`, `brief-owner-unavailable`, `source-invalid`, and `suitability-unavailable` (retryable).
+
+Privacy: a count below N is published as a band ("fewer than N"), and the complementary "N or more" count is withheld
+wherever it would let a band be solved by subtraction. N is `greg.demand.smallCountThreshold`, read from the canonical
+PolicyService (`PolicyDemandAdapter`, with `offer.declineReasons.v1`, `offer.declinedCar.exclusion`,
+`employee.recommendation.v1` and `allocation.tieBreak.rule`). Missing or invalid policy is 503 `privacy-policy-unavailable`.
+
+The default ports are truthful refusals or empty results: demand answers 503 `evaluation-unavailable` until the
+FUCQ-461/466 adapters exist (and `privacy-policy-unavailable` while the active policy lacks the reviewed
+`offer.declineReasons.v1`), and suitability shows every cell `not-evaluated`
+until FUCQ-464 records allocations (`DemandDefaults.NoAllocationRecords`).
+
 ## Vehicle evidence (FUCQ-459)
 
 `gcsp.api.evidence` ports the Node vehicle-evidence library: a validated corpus store, retained display imagery, the
@@ -391,9 +418,9 @@ Reads then use an index and do not rescan the 45 MB file.
 selected `ApprovalStatusProvider` for a decision outside any transaction and settles it only on a matching confirmation;
 elapsed ticks only make a decision due. `ApprovalSelection` picks the provider and policy once at startup with no silent
 fallback. Policy comes from the canonical PolicyService (`PolicyApprovalAdapter`, reporting `canonical`) unless
-`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source (FUCQ-468) and handover (FUCQ-472) are
-`@DefaultBean` ports (`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured`
-(503) and no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
+`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source is bound by [Ordering (FUCQ-468)](#ordering-fucq-468) and the handover (FUCQ-472) is a
+`@DefaultBean` port (`ApprovalDefaults`): without persistence the order source is `order-source-not-configured`
+(503) and until a real handover bean exists no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
 run (else 409 `stale-run`). With persistence on and a provider other than `none`, startup finishes up to 100 open
 decisions once (it never counts ticks or starts orders) and logs a one-line count; a failure is logged, not fatal.
 
@@ -469,6 +496,34 @@ quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production
 - Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
   `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
   deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+
+## Ordering (FUCQ-468)
+
+`gcsp.api.ordering` hands an employee's selection on to ordering exactly once. The operation id is deterministic per
+run, employee and entitlement slot; `pending_operations` has a unique idempotency key and `selection_orders_one_per_slot`
+makes a second selection impossible. A lease plus a version compare-and-set claim comes before any provider call, a
+repeat or restart reconciles before it executes, and the outcome is finalized by compare-and-set. `pending` means the
+handoff is not settled (resend the same body or GET to reconcile, never choose again; after an unreachable or unknown
+provider a retry is held back for 5 seconds, and inside that window a GET only reads), `acknowledged` carries the provider
+reference, `refused` means ordering rejected it. Source converters (`SelectionConversionPort`, one per source type) are
+unavailable (`selection-source-unsupported`) until FUCQ-463 (cart) and FUCQ-464/466 (buddy-offer) provide their own bean;
+no code here changes. Approvals' order source is now bound to the acknowledged selections (`ActiveOrderSource`, replacing
+the `ApprovalDefaults` default). The employee's slot is never sent: it is the `ordering.enabled` slot of their own account
+projection (503 `account-unavailable`, 409 `entitlement-unavailable`). Scope is the bearer principal and must equal the
+active run (else 409 `stale-run`). No endpoint resumes a draft into an order: every submit is an explicit employee command.
+With persistence on and a provider other than `none`, startup reconciles up to 100 open handoffs once (it completes an employee-confirmed
+handoff and never creates a new order intent) and logs a one-line count; receipts record the actual driver (the employee,
+`presenter:<subject>` or `ordering-startup`); a failure is logged, not fatal.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/manual/order/terms` | Employee only: `{status:"ok",value}` with `termsDigest`, `declarations`, `approvalStages`. |
+| `POST /api/gcsp/v1/manual/order` | Employee only: `{commandId, source:{type:"cart",holdId,expectedHoldVersion,expectedDraftVersion}, expectedQuoteId, expectedStockVersion, termsDigest, declarations}`. 200 acknowledged (`replayed: true` on a repeat), 202 `handoff-pending` with `operationId`, 400 `invalid` with `reasons`, 403, 404, 409 (`active-selection-exists`, `terms-changed`, `claim-changed`, `quote-changed`, `stock-changed`, `entitlement-unavailable`, `stale-run`), 503 retryable. |
+| `GET /api/gcsp/v1/manual/order` | Employee only: the caller's own selection, reconciling a pending handoff first; 200, 202, 404 `not-found`. Never creates a new selection. |
+| `POST /api/gcsp/v1/presenter/ordering/reconcile` | Presenter only: `{}` or `{limit}` (1..100, default 100); `{status:"ok",value:{examined,settled,stillPending}}`. Others get 403 `role-required`. |
+
+Any query parameter is 400 `unsupported-query`. 503 codes: `persistence-not-configured`, `ordering-provider-not-configured`,
+`selection-source-unsupported`, `account-unavailable`, `database-unavailable`, `ordering-policy-unavailable`.
 
 ## Render
 

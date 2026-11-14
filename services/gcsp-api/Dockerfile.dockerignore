@@ -7,3 +7,11 @@
 !server/gcsp/policy/seed-v1.json
 !server/gcsp/policy/reviewed
 !server/gcsp/predict/records/policy-definitions.json
+!server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json
+!server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json
+!server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json
+!server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884
+!server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043
+!server/data/gcsp/vehicle-evidence/display-images.v1.json
+!server/data/gcsp/vehicle-evidence/configuration-definitions.v1.json
+!assets/gcsp-vehicle-evidence
