@@ -7322,7 +7322,7 @@
     {
       "assignee": "",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T05:12:58Z",
+      "observed_at": "2026-11-14T05:14:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Show Buddy activity and search outcomes",
@@ -7339,13 +7339,23 @@
           "expires_at": "2026-11-14T07:12:57.824036+00:00",
           "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
           "status": "planning"
+        },
+        {
+          "name": "Doug the Dog",
+          "harness": "codex",
+          "role": "mechanic client slice",
+          "observed_at": "2026-11-14T05:14:42.372226+00:00",
+          "expires_at": "2026-11-14T06:14:42.372226+00:00",
+          "source": "collaboration agent /root/doug_the_dog",
+          "status": "working"
         }
       ],
       "slices": [
         {
           "id": "client",
-          "status": "not-started",
-          "title": "Scoped native activity and command client"
+          "status": "in-progress",
+          "title": "Scoped native activity and command client",
+          "observed_at": "2026-11-14T05:14:42Z"
         },
         {
           "id": "view",

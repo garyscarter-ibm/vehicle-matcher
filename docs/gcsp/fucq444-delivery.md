@@ -23,3 +23,9 @@ Run manifest: root `.claude/test-runs/fucq444/manifest.json`. Each check registe
 ## Outstanding acceptance
 
 Production route wiring is parent-owned and not yet requested at a reviewable checkpoint. Actual Java activity/offer/brief producers, real OIDC employee session, native PostgreSQL, release-to-activity API/reload comparison, hosted and Safari/private evidence remain unrun. Substitutes and isolated mounting do not close either native AC. Existing separately captured defects remain unfixed and outside this Story.
+
+## Current execution
+
+Dispatcher confirmed adoption on 14 November: native In Progress, Gary assigned, 8 points, Start date 14 November 2026, original description/2 AC unchanged, coordination comment 3629423. Plan checkpoint 8272d8b7 awaits parent serial publication.
+
+Client slice delegated to Doug the Dog at 05:13 GMT: capacity can_start=2; authoritative mechanic tier requested/selected gpt-6-luna/high, no fallback. Unlaunched tier probes Egghead Jr are not worker evidence. Effective runtime/title proof pending child result.
