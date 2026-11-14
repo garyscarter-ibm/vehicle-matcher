@@ -7172,13 +7172,43 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T09:23:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463",
+      "slices": [
+        {
+          "id": "claims-local",
+          "status": "complete",
+          "title": "Local manual claims: schema, exact-car/slot exclusivity, review, release, convert, expiry",
+          "observed_at": "2026-11-14T08:25:52Z",
+          "evidence": "Lead review of local claim/review/release/convert/expiry; gcsp.api.claims 42 tests and gcsp-api verify 578/0 on native PG17"
+        },
+        {
+          "id": "claims-remote",
+          "status": "complete",
+          "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart",
+          "observed_at": "2026-11-14T08:55:07Z",
+          "evidence": "Lead review of remote intent/execute/reconcile/finalize; gcsp.api.claims 55 tests incl. 13 remote (response loss, restart, late ack after reset) on native PG17"
+        },
+        {
+          "id": "claims-http",
+          "status": "complete",
+          "title": "Employee HTTP routes, provider selection, expiry sweep and README",
+          "observed_at": "2026-11-14T09:03:59Z",
+          "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T09:23:07Z",
+          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+        }
+      ]
     },
     {
       "assignee": "",
