@@ -117,6 +117,11 @@ final class ClaimFixture implements AutoCloseable {
         return new ManualClaims(pool(), clock, new ForwardingTiming(this), selection, offers);
     }
 
+    /** A service over a brand-new pool and the given stock port (a restart, when the port shares a ledger). */
+    ManualClaims newClaims(ClaimStockPort stock) throws SQLException {
+        return new ManualClaims(pool(), clock, new ForwardingTiming(this), selection, offers, stock);
+    }
+
     /** Reads the fixture's current timing at call time so a test can swap it. */
     private record ForwardingTiming(ClaimFixture f) implements ClaimTimingPort {
         @Override

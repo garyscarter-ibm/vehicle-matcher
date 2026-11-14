@@ -6697,7 +6697,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T08:25:52Z",
+      "observed_at": "2026-11-14T08:55:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -6714,14 +6714,16 @@
         },
         {
           "id": "claims-remote",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart",
-          "observed_at": "2026-11-14T08:25:52Z"
+          "observed_at": "2026-11-14T08:55:07Z",
+          "evidence": "Lead review of remote intent/execute/reconcile/finalize; gcsp.api.claims 55 tests incl. 13 remote (response loss, restart, late ack after reset) on native PG17"
         },
         {
           "id": "claims-http",
-          "status": "not-started",
-          "title": "Employee HTTP routes, provider selection, expiry sweep and README"
+          "status": "in-progress",
+          "title": "Employee HTTP routes, provider selection, expiry sweep and README",
+          "observed_at": "2026-11-14T08:55:07Z"
         },
         {
           "id": "integration",

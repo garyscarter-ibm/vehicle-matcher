@@ -29,12 +29,16 @@ public class ManualClaimsHolder {
     @Inject
     SlotOccupancyPort occupancy;
 
+    @Inject
+    ClaimStockPort stock;
+
     private ManualClaims claims;
 
     public synchronized Optional<ManualClaims> claims() {
         if (!persistence.active()) return Optional.empty();
         if (claims == null) {
-            claims = new ManualClaims(dataSource.get(), persistence.runner(), clock, timing, selection, occupancy);
+            claims = new ManualClaims(dataSource.get(), persistence.runner(), clock, timing, selection, occupancy,
+                    stock);
         }
         return Optional.of(claims);
     }

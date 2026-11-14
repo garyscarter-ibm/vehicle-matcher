@@ -7,8 +7,10 @@ import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Inspection;
 import gcsp.api.persistence.Outcome;
+import gcsp.api.persistence.PendingOperations;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.TransactionRunner;
+import gcsp.api.persistence.TxConflict;
 import gcsp.api.persistence.Tx;
 import gcsp.api.persistence.Work;
 import gcsp.api.persistence.WorkResult;
@@ -23,13 +25,18 @@ import java.util.Set;
 import javax.sql.DataSource;
 
 /**
- * Manual (cart) claims, local mode: a port of server/gcsp/manual-claims. The V1 custody_holds unique indexes
- * give exclusivity (shared with Buddy holds); each command is one TransactionRunner transaction, so a repeat replays.
+ * Manual (cart) claims, a port of server/gcsp/manual-claims. custody_holds unique indexes give exclusivity; each
+ * command is one transaction. Remote mode commits an intent first, calls stock outside any transaction, then finalizes.
  */
 public final class ManualClaims {
 
     static final ObjectMapper JSON = new ObjectMapper();
     static final String LOCAL = "local";
+    private static final String REMOTE = "remote";
+    private static final String CLAIM_OP = "manual-claim";
+    private static final String RELEASE_OP = "manual-release";
+    private static final String ALLOCATE_OP = "manual-allocate";
+    private static final String PENDING_STATES = "'claim-pending', 'release-pending', 'selection-pending'";
     private static final List<String> CLAIM_FIELDS = List.of("commandId", "orderUuid", "expectedStockVersion",
             "expectedDraftVersion", "expectedContextVersion", "expectedTermsDigest");
     private static final List<String> ACTION_FIELDS =
@@ -45,14 +52,27 @@ public final class ManualClaims {
     private final ClaimTimingPort timing;
     private final ManualSelectionPort selection;
     private final SlotOccupancyPort occupancy;
+    private final ClaimStockPort stock;
 
+    /** Local mode, as before the remote port existed. */
     public ManualClaims(DataSource dataSource, ClaimClock clock, ClaimTimingPort timing,
             ManualSelectionPort selection, SlotOccupancyPort occupancy) {
-        this(dataSource, new TransactionRunner(dataSource), clock, timing, selection, occupancy);
+        this(dataSource, new TransactionRunner(dataSource), clock, timing, selection, occupancy, new LocalClaimStock());
     }
 
     public ManualClaims(DataSource dataSource, TransactionRunner runner, ClaimClock clock, ClaimTimingPort timing,
             ManualSelectionPort selection, SlotOccupancyPort occupancy) {
+        this(dataSource, runner, clock, timing, selection, occupancy, new LocalClaimStock());
+    }
+
+    public ManualClaims(DataSource dataSource, ClaimClock clock, ClaimTimingPort timing,
+            ManualSelectionPort selection, SlotOccupancyPort occupancy, ClaimStockPort stock) {
+        this(dataSource, new TransactionRunner(dataSource), clock, timing, selection, occupancy, stock);
+    }
+
+    public ManualClaims(DataSource dataSource, TransactionRunner runner, ClaimClock clock, ClaimTimingPort timing,
+            ManualSelectionPort selection, SlotOccupancyPort occupancy, ClaimStockPort stock) {
+        this.stock = stock;
         this.dataSource = dataSource;
         this.runner = runner;
         this.clock = clock;
@@ -80,10 +100,11 @@ public final class ManualClaims {
         long expectedDraft = input.get("expectedDraftVersion").longValue();
         Command cmd = command("manual-claim.claim", input);
         try {
-            ClaimResult replay = replay(scope, cmd);
+            ClaimResult replay = replay(scope, cmd, CLAIM_OP);
             if (replay != null) return replay;
             Instant now = now(scope);
             if (now == null) return new ClaimResult.Unavailable("clock-unavailable", true);
+            driveOwn(scope);
             ManualSelectionPort.Claimant who = selection.claimant(scope);
             if (who instanceof ManualSelectionPort.NoClaimant n) return unavailable(n.code());
             ManualSelectionPort.Known claimant = (ManualSelectionPort.Known) who;
@@ -111,8 +132,10 @@ public final class ManualClaims {
             if (!expectedDigest.equals(digest)) throw stale("manual-terms", expectedDigest, digest);
             if (!decision.validUntil().isAfter(now)) throw conflict("quote-expired", "The quote has expired.");
             String id = Canonical.digest(JSON.createArrayNode().add(scope.runId()).add(scope.actorId()).add(cmd.commandId()));
-            return answer(runner.execute(scope.context(), cmd, claimWork(scope, input, claimant, times, decision,
-                    digest, "manual-hold:" + id, now)), cmd);
+            String holdId = "manual-hold:" + id;
+            if (remote()) expireDueFor(scope, orderUuid, claimant.slotId(), now);
+            return done(scope, runner.execute(scope.context(), cmd, claimWork(scope, input, claimant, times, decision,
+                    digest, holdId, now, cmd)), cmd, CLAIM_OP, holdId, now);
         } catch (Refusal r) {
             return r.result();
         }
@@ -128,10 +151,11 @@ public final class ManualClaims {
         long expectedDraft = input.get("expectedDraftVersion").longValue();
         Command cmd = command("manual-claim.review", input);
         try {
-            ClaimResult replay = replay(scope, cmd);
+            ClaimResult replay = replay(scope, cmd, null);
             if (replay != null) return replay;
             Instant now = now(scope);
             if (now == null) return new ClaimResult.Unavailable("clock-unavailable", true);
+            driveOwn(scope);
             ClaimRow row = ownRow(scope, holdId);
             checkActive(row, expectedHold, expectedDraft, now);
             revalidate(scope, row, expectedDraft, now);
@@ -171,17 +195,19 @@ public final class ManualClaims {
         String reason = input.get("reason").textValue();
         Command cmd = command("manual-claim.release", input);
         try {
-            ClaimResult replay = replay(scope, cmd);
+            ClaimResult replay = replay(scope, cmd, RELEASE_OP);
             if (replay != null) return replay;
             Instant now = now(scope);
             if (now == null) return new ClaimResult.Unavailable("clock-unavailable", true);
+            driveOwn(scope);
             checkActive(ownRow(scope, holdId), expectedHold, expectedDraft, now);
-            return answer(runner.execute(scope.context(), cmd, tx -> {
+            return done(scope, runner.execute(scope.context(), cmd, tx -> {
                 ClaimRow r = locked(tx, scope, holdId);
                 checkActive(r, expectedHold, expectedDraft, now);
-                finish(tx, r, "released", reason);
+                if (remote()) pend(tx, r, cmd, RELEASE_OP, "released", reason, "release-pending");
+                else finish(tx, r, "released", reason);
                 return WorkResult.ok(reread(tx, holdId, now));
-            }), cmd);
+            }), cmd, RELEASE_OP, holdId, now);
         } catch (Refusal r) {
             return r.result();
         }
@@ -198,15 +224,16 @@ public final class ManualClaims {
         long expectedDraft = input.get("expectedDraftVersion").longValue();
         Command cmd = command("manual-claim.allocate", input);
         try {
-            ClaimResult replay = replay(scope, cmd);
+            ClaimResult replay = replay(scope, cmd, ALLOCATE_OP);
             if (replay != null) return replay;
             Instant now = now(scope);
             if (now == null) return new ClaimResult.Unavailable("clock-unavailable", true);
+            driveOwn(scope);
             ClaimRow row = ownRow(scope, holdId);
             checkActive(row, expectedHold, expectedDraft, now);
             requireReview(row);
             revalidate(scope, row, expectedDraft, now);
-            return answer(runner.execute(scope.context(), cmd, tx -> {
+            return done(scope, runner.execute(scope.context(), cmd, tx -> {
                 ClaimRow r = locked(tx, scope, holdId);
                 checkActive(r, expectedHold, expectedDraft, now);
                 requireReview(r);
@@ -214,9 +241,10 @@ public final class ManualClaims {
                 if (done instanceof WorkResult.Refuse refuse) {
                     throw new Refusal(new ClaimResult.Conflict(refuse.code(), refuse.message(), null));
                 }
-                finish(tx, r, "allocated", null);
+                if (remote()) pend(tx, r, cmd, ALLOCATE_OP, "allocated", null, "selection-pending");
+                else finish(tx, r, "allocated", null);
                 return WorkResult.ok(reread(tx, holdId, now));
-            }), cmd);
+            }), cmd, ALLOCATE_OP, holdId, now);
         } catch (Refusal r) {
             return r.result();
         }
@@ -227,6 +255,7 @@ public final class ManualClaims {
         try (Connection c = dataSource.getConnection()) {
             Instant now = now(scope);
             if (now == null) return new ClaimResult.Unavailable("clock-unavailable", true);
+            driveOwn(scope);
             Optional<ClaimRow> found = ClaimRow.latest(c, scope.environmentId(), scope.runId(), scope.employeeId());
             if (found.isEmpty()) return new ClaimResult.NotFound("This employee has no claim.", true);
             ClaimRow row = found.get();
@@ -284,6 +313,29 @@ public final class ManualClaims {
         return expired;
     }
 
+    /** Remote mode: reconciles up to limit open operations, oldest update first; returns how many finalized. */
+    public int reconcileOpen(ClaimScope systemScope, int limit) {
+        if (limit <= 0 || !remote()) return 0;
+        List<String> open;
+        try (Connection c = dataSource.getConnection()) {
+            open = Db.list(c, "SELECT operation_id FROM pending_operations WHERE environment_id = ? AND run_id = ? "
+                    + "AND state IN ('intent', 'pending') AND operation_type IN (?, ?, ?) "
+                    + "ORDER BY updated_at, operation_id LIMIT ?", rs -> rs.getString(1), systemScope.environmentId(),
+                    systemScope.runId(), CLAIM_OP, RELEASE_OP, ALLOCATE_OP, limit);
+        } catch (SQLException e) {
+            return 0;
+        }
+        int done = 0;
+        for (String operationId : open) {
+            if (drive(systemScope.context(), operationId, false)) done++;
+        }
+        return done;
+    }
+
+    private boolean remote() {
+        return stock.mode() == ClaimStockPort.Mode.REMOTE;
+    }
+
     // ---- claim transaction ----
 
     private record Car(String state, long version, String configurationId, JsonNode attributes) {}
@@ -292,7 +344,7 @@ public final class ManualClaims {
 
     private Work claimWork(ClaimScope scope, JsonNode input, ManualSelectionPort.Known claimant,
             ClaimTimingPort.Known times, ManualSelectionPort.Eligible decision, String digest, String holdId,
-            Instant now) {
+            Instant now, Command cmd) {
         String order = input.get("orderUuid").textValue();
         long expectedStock = input.get("expectedStockVersion").longValue();
         return tx -> {
@@ -319,7 +371,7 @@ public final class ManualClaims {
             Occupant cart = null;
             boolean allocated = false;
             for (Occupant o : held) {
-                boolean due = "cart".equals(o.type()) && "active".equals(o.state()) && !o.expiresAt().isAfter(now);
+                boolean due = !remote() && "cart".equals(o.type()) && "active".equals(o.state()) && !o.expiresAt().isAfter(now);
                 if (due && expireInTx(tx, o.holdId(), now)) {
                     if (o.orderUuid().equals(order)) bumps++;
                 } else if ("allocated".equals(o.state())) {
@@ -339,20 +391,24 @@ public final class ManualClaims {
             }
             if (cart != null) throw conflict("release-required", "Release the current claim before choosing another car.");
             if (allocated) throw conflict("entitlement-unavailable", "This entitlement already has an allocated car.");
-            for (String dueId : Db.list(c, "SELECT hold_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
-                    + "AND order_uuid = ? AND hold_type = 'cart' AND state = 'active' AND expires_at <= ? "
-                    + "ORDER BY hold_id LIMIT 5", rs -> rs.getString(1), x.environmentId(), x.runId(), order, now)) {
-                if (expireInTx(tx, dueId, now)) bumps++;
+            if (!remote()) {
+                for (String dueId : Db.list(c, "SELECT hold_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                        + "AND order_uuid = ? AND hold_type = 'cart' AND state = 'active' AND expires_at <= ? "
+                        + "ORDER BY hold_id LIMIT 5", rs -> rs.getString(1), x.environmentId(), x.runId(), order, now)) {
+                    if (expireInTx(tx, dueId, now)) bumps++;
+                }
             }
             if (car.version() != expectedStock) throw stale("stock", text(expectedStock), text(car.version()));
             if (!"released".equals(car.state())) throw conflict("stock-unavailable", "That car is no longer in stock.");
             if (!car.configurationId().equals(decision.configurationId()) || !factsMatch(car.attributes(), decision.facts())) {
                 throw conflict("stock-facts-changed", "The car's details changed since it was shown.");
             }
+            Instant expires = now.plusSeconds(times.previewSeconds());
+            String opId = remote() ? operationId(cmd.commandId(), CLAIM_OP) : null;
             tx.write("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, "
-                    + "slot_unit, hold_type, state, expires_at) VALUES (?, ?, ?, ?, ?, ?, 1, 'cart', 'active', ?)",
+                    + "slot_unit, hold_type, state, expires_at, operation_id) VALUES (?, ?, ?, ?, ?, ?, 1, 'cart', ?, ?, ?)",
                     x.environmentId(), x.runId(), holdId, order, scope.employeeId(), slot,
-                    now.plusSeconds(times.previewSeconds()));
+                    remote() ? "claim-pending" : "active", expires, opId);
             tx.cas("UPDATE stock_cars SET version = version + 1, updated_at = now() WHERE environment_id = ? "
                     + "AND run_id = ? AND order_uuid = ? AND version = ?", x.environmentId(), x.runId(), order,
                     car.version() + bumps);
@@ -360,9 +416,11 @@ public final class ManualClaims {
             tx.write("INSERT INTO manual_claims (environment_id, run_id, hold_id, employee_id, slot_id, order_uuid, "
                     + "mode, phase, policy_version, draft_version, context_version, terms_digest, quote, quoted_at, "
                     + "valid_until) VALUES (?, ?, ?, ?, ?, ?, ?, 'preview', ?, ?, ?, ?, ?, ?, ?)", x.environmentId(),
-                    x.runId(), holdId, scope.employeeId(), slot, order, LOCAL, claimant.policyVersion(),
+                    x.runId(), holdId, scope.employeeId(), slot, order, remote() ? REMOTE : LOCAL, claimant.policyVersion(),
                     claimant.draftVersion(), claimant.contextVersion(), digest, quote, now, decision.validUntil());
-            emit(tx, holdId, 1, "active");
+            if (remote()) intent(tx, cmd, CLAIM_OP, holdId, "active", null, payload(order, scope.employeeId(), slot,
+                    holdId, expires, "active", null, quote));
+            emit(tx, holdId, 1, remote() ? "claim-pending" : "active");
             return WorkResult.ok(reread(tx, holdId, now));
         };
     }
@@ -404,6 +462,216 @@ public final class ManualClaims {
             }
         }
         return true;
+    }
+
+// ---- remote operations ----
+
+    private record Op(String id, String type, String holdId, String target, String reason, JsonNode payload,
+            long version) {}
+
+    static String operationId(String commandId, String operationType) {
+        return "manual-op:" + Canonical.digest(JSON.createArrayNode().add(commandId).add(operationType));
+    }
+
+    private static ObjectNode payload(String order, String employeeId, String slot, String holdId, Instant expiresAt,
+            String target, String reason, JsonNode quote) {
+        ObjectNode p = JSON.createObjectNode();
+        p.put("orderUuid", order);
+        p.put("employeeId", employeeId);
+        p.put("slotId", slot);
+        p.put("holdId", holdId);
+        p.put("expiresAt", PolicyClock.iso(expiresAt));
+        p.put("target", target);
+        if (reason == null) p.putNull("reason"); else p.put("reason", reason);
+        p.set("quote", quote.deepCopy());
+        return p;
+    }
+
+    /** The intent: pending_operations plus its manual detail row, in the command's own transaction. */
+    private static void intent(Tx tx, Command cmd, String type, String holdId, String target, String reason,
+            JsonNode payload) throws SQLException {
+        RunContext x = tx.context();
+        String opId = operationId(cmd.commandId(), type);
+        PendingOperations.recordIntent(tx, opId, type, cmd.commandId(), cmd.input());
+        tx.write("INSERT INTO manual_claim_operations (environment_id, run_id, operation_id, operation_type, hold_id, "
+                + "target_state, reason, payload) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", x.environmentId(), x.runId(), opId,
+                type, holdId, target, reason, payload);
+    }
+
+    /** Remote release, expiry or allocation: the hold waits in a pending state, still occupying, with the intent. */
+    private void pend(Tx tx, ClaimRow r, Command cmd, String type, String target, String reason, String pendingState)
+            throws SQLException {
+        RunContext x = tx.context();
+        tx.cas("UPDATE custody_holds SET state = ?, operation_id = ?, version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ?", pendingState,
+                operationId(cmd.commandId(), type), x.environmentId(), x.runId(), r.holdId(), r.version());
+        intent(tx, cmd, type, r.holdId(), target, reason, payload(r.orderUuid(), r.employeeId(), r.slotId(),
+                r.holdId(), r.expiresAt(), target, reason, r.quote()));
+        emit(tx, r.holdId(), r.version() + 1, pendingState);
+    }
+
+    /** Answers a command that committed an intent: drives it once with execute, then reports where it stands. */
+    private ClaimResult done(ClaimScope scope, Outcome o, Command cmd, String type, String holdId, Instant now) {
+        ClaimResult r = answer(o, cmd);
+        if (!remote() || !(o instanceof Outcome.Committed c) || c.replayed() || !c.changed()) return r;
+        String opId = operationId(cmd.commandId(), type);
+        drive(scope.context(), opId, true);
+        String state = operationState(scope.context(), opId);
+        if (state == null || "intent".equals(state) || "pending".equals(state)) return new ClaimResult.Pending(opId, false);
+        try (Connection conn = dataSource.getConnection()) {
+            return ClaimRow.byHold(conn, scope.environmentId(), scope.runId(), holdId, false)
+                    .<ClaimResult>map(row -> new ClaimResult.Ok(row.view(now), false)).orElse(r);
+        } catch (SQLException e) {
+            return r;
+        }
+    }
+
+    private String operationState(RunContext ctx, String opId) {
+        try (Connection c = dataSource.getConnection()) {
+            return Db.first(c, "SELECT state FROM pending_operations WHERE environment_id = ? AND run_id = ? "
+                    + "AND operation_id = ?", rs -> rs.getString(1), ctx.environmentId(), ctx.runId(), opId).orElse(null);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    /** The caller's own open remote operations are driven before their command or read continues. */
+    private void driveOwn(ClaimScope scope) {
+        if (!remote()) return;
+        List<String> open;
+        try (Connection c = dataSource.getConnection()) {
+            open = Db.list(c, "SELECT operation_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                    + "AND employee_id = ? AND hold_type = 'cart' AND operation_id IS NOT NULL AND state IN ("
+                    + PENDING_STATES + ") ORDER BY hold_id LIMIT 5", rs -> rs.getString(1), scope.environmentId(),
+                    scope.runId(), scope.employeeId());
+        } catch (SQLException e) {
+            return;
+        }
+        for (String opId : open) drive(scope.context(), opId, false);
+    }
+
+    private Op readOpen(RunContext ctx, String opId) {
+        try (Connection c = dataSource.getConnection()) {
+            return Db.first(c, "SELECT o.operation_id, m.operation_type, m.hold_id, m.target_state, m.reason, "
+                    + "m.payload::text, o.version FROM pending_operations o JOIN manual_claim_operations m "
+                    + "ON m.environment_id = o.environment_id AND m.run_id = o.run_id AND m.operation_id = o.operation_id "
+                    + "WHERE o.environment_id = ? AND o.run_id = ? AND o.operation_id = ? "
+                    + "AND o.state IN ('intent', 'pending')", rs -> new Op(rs.getString(1), rs.getString(2),
+                    rs.getString(3), rs.getString(4), rs.getString(5), json(rs.getString(6)), rs.getLong(7)),
+                    ctx.environmentId(), ctx.runId(), opId).orElse(null);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    /** Calls stock outside any transaction: execute first time, else reconcile then execute only on NotFound. */
+    boolean drive(RunContext ctx, String opId, boolean first) {
+        Op op = readOpen(ctx, opId);
+        if (op == null) return false;
+        ClaimStockPort.Operation call = new ClaimStockPort.Operation(op.id(), op.type(), op.holdId(),
+                op.payload().path("orderUuid").asText(), op.payload().path("employeeId").asText(),
+                op.payload().path("slotId").asText(), Instant.parse(op.payload().path("expiresAt").asText()),
+                op.target(), op.reason(), ctx.runId(), op.payload().get("quote"));
+        ClaimStockPort.Ack ack = ask(call, first);
+        if (ack == null) {
+            markAttempt(ctx, op);
+            return false;
+        }
+        return finalizeAck(ctx, op, ack);
+    }
+
+    private ClaimStockPort.Ack ask(ClaimStockPort.Operation call, boolean first) {
+        try {
+            ClaimStockPort.Ack ack = first ? stock.execute(call) : stock.reconcile(call);
+            if (!first && matches(ack, call) && ack instanceof ClaimStockPort.NotFound) ack = stock.execute(call);
+            return matches(ack, call) && !(ack instanceof ClaimStockPort.NotFound) ? ack : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static boolean matches(ClaimStockPort.Ack ack, ClaimStockPort.Operation call) {
+        return ack != null && call.operationId().equals(ack.operationId()) && call.runId().equals(ack.runId())
+                && call.orderUuid().equals(ack.orderUuid());
+    }
+
+    /** An unknown answer keeps the operation and its hold open; the attempt only moves it to the back of the queue. */
+    private void markAttempt(RunContext ctx, Op op) {
+        ObjectNode in = JSON.createObjectNode();
+        in.put("operationId", op.id());
+        in.put("version", op.version());
+        try {
+            runner.execute(ctx, new Command("manual-claim.attempt", "manual:attempt:" + Canonical.digest(in), in), tx -> {
+                PendingOperations.markPending(tx, op.id(), op.version(), JSON.createObjectNode().put("status", "unknown"));
+                return WorkResult.ok(in);
+            });
+        } catch (RuntimeException ignored) {
+            // a missed attempt record changes nothing: the operation stays open
+        }
+    }
+
+    /** Second command: the ack's own id makes a duplicate a replay, and every write is a version CAS. */
+    private boolean finalizeAck(RunContext ctx, Op op, ClaimStockPort.Ack ack) {
+        boolean confirmed = ack instanceof ClaimStockPort.Confirmed;
+        String status = confirmed ? "confirmed" : "rejected";
+        ObjectNode in = JSON.createObjectNode();
+        in.put("operationId", op.id());
+        in.put("status", status);
+        String reference = ack instanceof ClaimStockPort.Confirmed c ? c.providerReference() : null;
+        Outcome o = runner.execute(ctx, new Command("manual-claim.ack",
+                "manual:ack:" + Canonical.digest(JSON.createArrayNode().add(op.id()).add(status)), in), tx -> {
+            RunContext x = tx.context();
+            Optional<long[]> open = tx.first("SELECT version FROM pending_operations WHERE environment_id = ? "
+                    + "AND run_id = ? AND operation_id = ? AND state IN ('intent', 'pending') FOR UPDATE",
+                    rs -> new long[] {rs.getLong(1)}, x.environmentId(), x.runId(), op.id());
+            if (open.isEmpty()) return WorkResult.ok(in);
+            ClaimRow hold = ClaimRow.byHold(tx.connection(), x.environmentId(), x.runId(), op.holdId(), true).orElse(null);
+            String waiting = switch (op.type()) {
+                case CLAIM_OP -> "claim-pending";
+                case RELEASE_OP -> "release-pending";
+                default -> "selection-pending";
+            };
+            if (hold == null || !op.id().equals(hold.operationId()) || !waiting.equals(hold.state())) {
+                return WorkResult.refuse("operation-superseded", "A newer operation replaced this one.");
+            }
+            if (confirmed) {
+                if (CLAIM_OP.equals(op.type())) activate(tx, hold); else finish(tx, hold, op.target(), op.reason());
+            } else if (CLAIM_OP.equals(op.type())) {
+                finish(tx, hold, "claim-failed", null);
+            } else {
+                activate(tx, hold);
+            }
+            PendingOperations.finalize(tx, op.id(), open.get()[0], confirmed ? "acknowledged" : "refused", reference,
+                    JSON.createObjectNode().put("status", status));
+            return WorkResult.ok(in);
+        });
+        return o instanceof Outcome.Committed c && c.changed();
+    }
+
+    /** Pending hold back to (or onto) active: a confirmed claim, or a rejected release or allocation. */
+    private void activate(Tx tx, ClaimRow r) throws SQLException {
+        RunContext x = tx.context();
+        tx.cas("UPDATE custody_holds SET state = 'active', version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ?", x.environmentId(), x.runId(),
+                r.holdId(), r.version());
+        emit(tx, r.holdId(), r.version() + 1, "active");
+    }
+
+    /** Before a remote claim, the employee's and the car's due holds go through the remote expiry path. */
+    private void expireDueFor(ClaimScope scope, String order, String slot, Instant now) {
+        List<String> due = new java.util.ArrayList<>();
+        try (Connection c = dataSource.getConnection()) {
+            due.addAll(Db.list(c, "SELECT hold_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                    + "AND order_uuid = ? AND hold_type = 'cart' AND state = 'active' AND expires_at <= ? "
+                    + "ORDER BY hold_id LIMIT 5", rs -> rs.getString(1), scope.environmentId(), scope.runId(), order, now));
+            due.addAll(Db.list(c, "SELECT hold_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                    + "AND employee_id = ? AND slot_id = ? AND hold_type = 'cart' AND state = 'active' "
+                    + "AND expires_at <= ? ORDER BY hold_id LIMIT 5", rs -> rs.getString(1), scope.environmentId(),
+                    scope.runId(), scope.employeeId(), slot, now));
+        } catch (SQLException e) {
+            return;
+        }
+        for (String holdId : new java.util.LinkedHashSet<>(due)) expireOne(scope.context(), holdId, now);
     }
 
     // ---- shared transaction steps ----
@@ -453,7 +721,23 @@ public final class ManualClaims {
         in.put("expiresAt", expiresAt);
         in.put("version", version);
         String id = "manual-claims:expiry:" + Canonical.digest(in);
-        Outcome o = runner.execute(ctx, new Command("manual-claim.expire", id, in), tx -> {
+        Command cmd = new Command("manual-claim.expire", id, in);
+        if (remote()) {
+            // Remote expiry is a release intent on the hold; the car frees only once the stock authority confirms.
+            Outcome o = runner.execute(ctx, cmd, tx -> {
+                Optional<ClaimRow> row = ClaimRow.byHold(tx.connection(), ctx.environmentId(), ctx.runId(), holdId, true);
+                if (row.isPresent() && "cart".equals(row.get().holdType()) && "active".equals(row.get().state())
+                        && row.get().due(now)) {
+                    pend(tx, row.get(), cmd, RELEASE_OP, "expired", "expiry", "release-pending");
+                }
+                return WorkResult.ok(in);
+            });
+            if (!(o instanceof Outcome.Committed c) || !c.changed() || c.replayed()) return false;
+            String opId = operationId(id, RELEASE_OP);
+            drive(ctx, opId, true);
+            return "acknowledged".equals(operationState(ctx, opId));
+        }
+        Outcome o = runner.execute(ctx, cmd, tx -> {
             expireInTx(tx, holdId, now);
             return WorkResult.ok(in);
         });
@@ -550,13 +834,18 @@ public final class ManualClaims {
     }
 
     /** A command id that already committed answers from its receipt, before any live check can disagree with it. */
-    private ClaimResult replay(ClaimScope scope, Command cmd) {
+    private ClaimResult replay(ClaimScope scope, Command cmd, String operationType) {
         Inspection seen = runner.inspect(scope.context(), cmd.commandId());
         if (seen instanceof Inspection.Unavailable) return new ClaimResult.Unavailable("database-unavailable", true);
         if (!(seen instanceof Inspection.Committed)) return null;
-        return answer(runner.execute(scope.context(), cmd, tx -> {
+        ClaimResult receipt = answer(runner.execute(scope.context(), cmd, tx -> {
             throw new IllegalStateException("a committed command id is answered from its receipt");
         }), cmd);
+        // A committed remote intent that is still open is driven once (reconcile first); the receipt is the answer.
+        if (operationType != null && remote() && receipt instanceof ClaimResult.Ok) {
+            drive(scope.context(), operationId(cmd.commandId(), operationType), false);
+        }
+        return receipt;
     }
 
     private ClaimResult answer(Outcome o, Command cmd) {

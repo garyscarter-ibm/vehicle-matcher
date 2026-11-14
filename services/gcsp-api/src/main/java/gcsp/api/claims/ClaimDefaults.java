@@ -39,4 +39,12 @@ public class ClaimDefaults {
     ClaimClock claimClock(PolicyClock clock) {
         return new PolicyClaimClock(clock);
     }
+
+    /** Stock is decided locally until a remote stock authority is connected. */
+    @Produces
+    @DefaultBean
+    @ApplicationScoped
+    ClaimStockPort claimStock() {
+        return new LocalClaimStock();
+    }
 }
