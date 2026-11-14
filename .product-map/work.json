@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T06:25:06Z",
+      "observed_at": "2026-11-14T06:37:02Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Open an offer and accept or decline",
@@ -7332,9 +7332,10 @@
       "slices": [
         {
           "id": "typed-contract",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Typed offer and follow-up client",
-          "evidence": "814d67e1 client 12/12 audited; lead found source parity gaps in partial comparison and ordering receipt selection; correction required before slice completion."
+          "evidence": "Lead source-backed review at 2043c8c6; 24/24 client tests, 3 actual memory producer cases and 3/3 exact fixture matches; resource/hash audit0634. Scoped typed boundary only; original AC and integration open; docs/gcsp/fucq445-delivery-2026-11-14.md.",
+          "observed_at": "2026-11-14T06:37:02Z"
         },
         {
           "id": "offer-view",
@@ -7361,9 +7362,9 @@
         {
           "name": "Mugsy",
           "harness": "codex",
-          "observed_at": "2026-11-14T06:02:42Z",
-          "expires_at": "2026-11-14T08:02:42Z",
-          "source": "Authorised linked lead 01a1d8a4-979f-7cc2-b4ec-897119fa9afe"
+          "observed_at": "2026-11-14T06:37:02Z",
+          "expires_at": "2026-11-14T08:37:02Z",
+          "source": "Active linked lead 01a1d8a4-979f-7cc2-b4ec-897119fa9afe; source review completed; next allocated kit slice pending child launch"
         }
       ]
     }
