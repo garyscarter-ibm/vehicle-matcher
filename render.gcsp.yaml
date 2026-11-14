@@ -159,6 +159,14 @@ services:
         - server/gcsp/policy/seed-v1.json
         - server/gcsp/policy/reviewed/**
         - server/gcsp/predict/records/policy-definitions.json
+        - server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json
+        - server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json
+        - server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json
+        - server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/**
+        - server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/**
+        - server/data/gcsp/vehicle-evidence/display-images.v1.json
+        - server/data/gcsp/vehicle-evidence/configuration-definitions.v1.json
+        - assets/gcsp-vehicle-evidence/**
       ignoredPaths:
         - services/gcsp-api/README.md
         - services/gcsp-api/render-service.proposed.yaml
@@ -225,6 +233,26 @@ services:
       #   sync: false
       - key: GCSP_DOCUMENTS_PROVIDER
         value: none            # synthetic enables fictional demo evidence
+      # Keep none until image startup, readiness and retained-image checks pass.
+      - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
+        value: none            # lookup | alternate-offline; no alternate file is shipped
+      - key: GCSP_VEHICLE_EVIDENCE_STORE
+        value: /app/data/vehicle-evidence/fleet-source.v1
+      - key: GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR
+        value: /app/data/vehicle-evidence
+      - key: GCSP_VEHICLE_ASSETS_ROOT
+        value: /app
+      # - key: GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE
+      #   sync: false
+      - key: GCSP_VEHICLE_IMAGES_PUBLIC
+        value: "false"         # retained images still require a bearer
+      - key: GCSP_APPOINTMENTS_PROVIDER
+        value: none            # synthetic is fictional; live remains unsupported
+      - key: GCSP_RETURNS_PROVIDER
+        value: none            # synthetic is fictional; live-stub remains unsupported
+      # Optional retained return policy; unset is unavailable, with no canonical fallback.
+      # - key: GCSP_RETURNS_POLICY_FILE
+      #   sync: false
       # Mail stays captured when unset; brevo requires every mail setting below.
       # - key: GCSP_MAIL_TRANSPORT
       #   value: brevo
