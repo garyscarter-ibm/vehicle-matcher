@@ -6505,7 +6505,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T03:16:47Z",
+      "observed_at": "2026-11-14T07:42:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -6529,14 +6529,16 @@
         },
         {
           "id": "s3-outcomes",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Return outcomes, current-car change at the outcome boundary, reconcile and restart",
-          "observed_at": "2026-11-14T03:16:47Z"
+          "observed_at": "2026-11-14T07:42:50Z",
+          "evidence": "552ffc0bd reviewed by lead: 75 returns tests, 217 full Java tests pass on native PG 17"
         },
         {
           "id": "s4-http",
-          "status": "not-started",
-          "title": "v1 HTTP endpoints, startup adapter selection and README"
+          "status": "in-progress",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T07:42:50Z"
         },
         {
           "id": "s5-integration",
