@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { CONTRACT_VERSION, TABLES, FOUNDATION_TABLES, OCCUPYING_STATES } from './schema.js';
+import { RECEIPT_PROJECTIONS, projectReceipt } from './receipt-projections.js';
 export { CONTRACT_VERSION, TABLES, FOUNDATION_TABLES, OCCUPYING_STATES, createState } from './schema.js';
 export const result = (status, content = {}) => ({ status, ...content, contractVersion: CONTRACT_VERSION });
 export const ok = (value) => result('ok', { value });
@@ -363,6 +364,19 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
 // Callers still get only `unavailable`; the log names the operation and a class-like error name, never messages or rows.
 const diagnose = (operation, error) => { try { const name = error?.name;
   console.error(`gcsp-repository unavailable: operation=${operation} error=${typeof name === 'string' && /^[A-Za-z][\w.]{0,63}$/.test(name) ? name : 'unrecognised'}`); } catch { /* never mask the safe result */ } };
+const ordinalOf = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+const RECEIPT_READ_LIMITS = Object.freeze({ consumers: 16, events: 500 });
+function receiptSelection(request) {
+  if (!plain(request) || Object.keys(request).some((key) => !['consumerIds', 'eventIds', 'state', 'projection'].includes(key))) return null;
+  const { consumerIds, eventIds, state, projection } = request;
+  const ids = (value, limit) => Array.isArray(value) && value.length > 0 && value.length <= limit && value.every(identifier);
+  if (!ids(consumerIds, RECEIPT_READ_LIMITS.consumers) || eventIds !== undefined && !ids(eventIds, RECEIPT_READ_LIMITS.events)
+    || state !== undefined && !identifier(state) || projection !== undefined && !Object.hasOwn(RECEIPT_PROJECTIONS, projection)) return null;
+  return { consumerIds: [...new Set(consumerIds)].sort(), ...(eventIds && { eventIds: [...new Set(eventIds)].sort() }),
+    ...(state !== undefined && { state }), ...(projection !== undefined && { projection }) };
+}
+export { RECEIPT_READ_LIMITS };
+
 export function createRepository(backend) {
   let opened = false;
   const commitObservers = new Set();
@@ -506,6 +520,23 @@ export function createRepository(backend) {
         const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const outcome = await session.tx.get(ref); session.finish(); return outcome;
       }, validateRef(ref) ? { table: 'runs', filter: {} } : { table: ref.table, filter: ref.key }));
+    },
+    // FUCQ-419: this run's receipts for named consumers (and optional exact event IDs/state), optionally projected.
+    // A backend that already projected marks its state `projection`; otherwise core projects the full rows here.
+    async readReceipts(context, request) {
+      if (!opened) return unavailable();
+      const selection = receiptSelection(request);
+      if (!selection) return invalid('invalid-receipt-read', 'request', 'Supply 1-16 consumer IDs, up to 500 event IDs, a state and a known projection');
+      return safe('readReceipts', () => backend.read(context, async (state) => {
+        const error = contextError(context, state);
+        if (error) return error;
+        const consumers = new Set(selection.consumerIds); const events = selection.eventIds && new Set(selection.eventIds);
+        const rows = state.tables.event_receipts.filter((row) => row.runId === context.runId && consumers.has(row.consumerId)
+          && (!events || events.has(row.eventId)) && (selection.state === undefined || row.state === selection.state));
+        const projected = selection.projection && state.projection !== selection.projection ? rows.map((row) => projectReceipt(selection.projection, row)) : rows;
+        // Primary-key order on every backend, independent of insertion or heap order.
+        return ok(cloneJson(projected).sort((a, b) => ordinalOf(a.consumerId, b.consumerId) || ordinalOf(a.eventId, b.eventId)));
+      }, { table: 'event_receipts', filter: {}, receipts: selection }));
     },
     async query(context, table, filter = {}) {
       if (!opened) return unavailable();

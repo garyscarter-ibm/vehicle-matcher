@@ -1,0 +1,260 @@
+{
+ "baseline": [
+  {
+   "imageId": "bmw-display-aec7549b5055b0576fac",
+   "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+   "bytes": 39558,
+   "sha256": "aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3",
+   "width": 1200,
+   "height": 675,
+   "observedDate": "2026-11-10",
+   "sourceKind": "dated-snapshot",
+   "sourceSha256": "3b218db344fa0f5d999f5adb7561189eb98b332dfd3a16b0c45b33e7e1bb0dfb",
+   "sourceSize": [
+    2560,
+    1646
+   ],
+   "crop": [
+    0,
+    380,
+    1920,
+    1460
+   ],
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "role": "representative-configuration",
+   "fidelity": "representative-configuration",
+   "viewpoint": "FRONTLEFT",
+   "label": "Front exterior"
+  },
+  {
+   "asset": "assets/gcsp-vehicle-evidence/74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031.webp",
+   "bytes": 30544,
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "fidelity": "representative-configuration",
+   "height": 675,
+   "imageId": "bmw-display-74df1f592aa49d6d5d9c",
+   "label": "Rear exterior",
+   "observedDate": "2026-11-11",
+   "role": "representative-configuration",
+   "sha256": "74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031",
+   "sourceKind": "dated-snapshot",
+   "viewpoint": "REARLEFT",
+   "width": 1200,
+   "sourceSha256": "2a446890baffa921fe60c49993ab11f0eb150e00d394eb10db54d6fb4bdd818e",
+   "sourceAsset": "assets/gcsp-vehicle-evidence/2a446890baffa921fe60c49993ab11f0eb150e00d394eb10db54d6fb4bdd818e.webp",
+   "sourceSize": [
+    2560,
+    1646
+   ],
+   "crop": [
+    0,
+    380,
+    1920,
+    1460
+   ]
+  },
+  {
+   "asset": "assets/gcsp-vehicle-evidence/65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1.webp",
+   "bytes": 208036,
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "fidelity": "representative-model",
+   "height": 1536,
+   "imageId": "bmw-display-65e368406081329afb92",
+   "label": "Interior",
+   "observedDate": "2026-11-11",
+   "role": "representative-model",
+   "sha256": "65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1",
+   "sourceKind": "dated-snapshot",
+   "viewpoint": "DASH",
+   "width": 2560
+  }
+ ],
+ "cases": [
+  {
+   "name": "wrong bytes, first view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+   "kind": "flip",
+   "gallery": []
+  },
+  {
+   "name": "wrong bytes, second view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031.webp",
+   "kind": "flip",
+   "gallery": [
+    {
+     "imageId": "bmw-display-aec7549b5055b0576fac",
+     "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+     "bytes": 39558,
+     "sha256": "aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3",
+     "width": 1200,
+     "height": 675,
+     "observedDate": "2026-11-10",
+     "sourceKind": "dated-snapshot",
+     "sourceSha256": "3b218db344fa0f5d999f5adb7561189eb98b332dfd3a16b0c45b33e7e1bb0dfb",
+     "sourceSize": [
+      2560,
+      1646
+     ],
+     "crop": [
+      0,
+      380,
+      1920,
+      1460
+     ],
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "role": "representative-configuration",
+     "fidelity": "representative-configuration",
+     "viewpoint": "FRONTLEFT",
+     "label": "Front exterior"
+    },
+    {
+     "asset": "assets/gcsp-vehicle-evidence/65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1.webp",
+     "bytes": 208036,
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "fidelity": "representative-model",
+     "height": 1536,
+     "imageId": "bmw-display-65e368406081329afb92",
+     "label": "Interior",
+     "observedDate": "2026-11-11",
+     "role": "representative-model",
+     "sha256": "65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1",
+     "sourceKind": "dated-snapshot",
+     "viewpoint": "DASH",
+     "width": 2560
+    }
+   ]
+  },
+  {
+   "name": "size mismatch, second view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031.webp",
+   "kind": "truncate",
+   "gallery": [
+    {
+     "imageId": "bmw-display-aec7549b5055b0576fac",
+     "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+     "bytes": 39558,
+     "sha256": "aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3",
+     "width": 1200,
+     "height": 675,
+     "observedDate": "2026-11-10",
+     "sourceKind": "dated-snapshot",
+     "sourceSha256": "3b218db344fa0f5d999f5adb7561189eb98b332dfd3a16b0c45b33e7e1bb0dfb",
+     "sourceSize": [
+      2560,
+      1646
+     ],
+     "crop": [
+      0,
+      380,
+      1920,
+      1460
+     ],
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "role": "representative-configuration",
+     "fidelity": "representative-configuration",
+     "viewpoint": "FRONTLEFT",
+     "label": "Front exterior"
+    },
+    {
+     "asset": "assets/gcsp-vehicle-evidence/65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1.webp",
+     "bytes": 208036,
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "fidelity": "representative-model",
+     "height": 1536,
+     "imageId": "bmw-display-65e368406081329afb92",
+     "label": "Interior",
+     "observedDate": "2026-11-11",
+     "role": "representative-model",
+     "sha256": "65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1",
+     "sourceKind": "dated-snapshot",
+     "viewpoint": "DASH",
+     "width": 2560
+    }
+   ]
+  },
+  {
+   "name": "size mismatch, first view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+   "kind": "truncate",
+   "gallery": []
+  },
+  {
+   "name": "unreadable asset, third view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1.webp",
+   "kind": "throw",
+   "gallery": []
+  },
+  {
+   "name": "wrong bytes, third view",
+   "store": "fleet-source.v1",
+   "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+   "asset": "assets/gcsp-vehicle-evidence/65e368406081329afb92b99ded1215f864e13edcbcce4b8589365c8a95c999a1.webp",
+   "kind": "flip",
+   "gallery": [
+    {
+     "imageId": "bmw-display-aec7549b5055b0576fac",
+     "asset": "assets/gcsp-vehicle-evidence/aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3.webp",
+     "bytes": 39558,
+     "sha256": "aec7549b5055b0576faca4bc44baf54443f847806b2b546774d49a07aa7da5b3",
+     "width": 1200,
+     "height": 675,
+     "observedDate": "2026-11-10",
+     "sourceKind": "dated-snapshot",
+     "sourceSha256": "3b218db344fa0f5d999f5adb7561189eb98b332dfd3a16b0c45b33e7e1bb0dfb",
+     "sourceSize": [
+      2560,
+      1646
+     ],
+     "crop": [
+      0,
+      380,
+      1920,
+      1460
+     ],
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "role": "representative-configuration",
+     "fidelity": "representative-configuration",
+     "viewpoint": "FRONTLEFT",
+     "label": "Front exterior"
+    },
+    {
+     "asset": "assets/gcsp-vehicle-evidence/74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031.webp",
+     "bytes": 30544,
+     "configurationId": "MlBNQjpGTUFOTCxQMDQ3NSxTMDFDQixTMDFERixTMDFEWixTMDFXMixTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWTCxTMDMwMixTMDMzNyxTMDQyOCxTMDQzMSxTMDQzVyxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRORSxTMDRVUixTMDUzNCxTMDU0NCxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxMCxTMDcxNSxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNSxTMDlRWA==",
+     "fidelity": "representative-configuration",
+     "height": 675,
+     "imageId": "bmw-display-74df1f592aa49d6d5d9c",
+     "label": "Rear exterior",
+     "observedDate": "2026-11-11",
+     "role": "representative-configuration",
+     "sha256": "74df1f592aa49d6d5d9cc96a76254eac478ec9b45c1d4d697315aa8dfe23c031",
+     "sourceKind": "dated-snapshot",
+     "viewpoint": "REARLEFT",
+     "width": 1200,
+     "sourceSha256": "2a446890baffa921fe60c49993ab11f0eb150e00d394eb10db54d6fb4bdd818e",
+     "sourceAsset": "assets/gcsp-vehicle-evidence/2a446890baffa921fe60c49993ab11f0eb150e00d394eb10db54d6fb4bdd818e.webp",
+     "sourceSize": [
+      2560,
+      1646
+     ],
+     "crop": [
+      0,
+      380,
+      1920,
+      1460
+     ]
+    }
+   ]
+  }
+ ]
+}

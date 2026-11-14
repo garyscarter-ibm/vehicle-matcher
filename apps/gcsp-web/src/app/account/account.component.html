@@ -81,6 +81,7 @@
               @if (schemeName(car.schemeId); as scheme) { <div><dt>Scheme</dt><dd>{{ scheme }}</dd></div> }
             </dl>
             @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}@if (date(identity.allowanceOverrideEndDate); as end) {, ends {{ end }}}</p> }
+            <gcsp-current-car-rating [contractId]="car.contractId" [carDescription]="carName(car)" />
             <div class="gcsp-actions">
               <button gcspButton variant="ghost" type="button" (click)="openRecord(car, $event)">View car record</button>
               @if (car.action; as action) { <button gcspButton type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> }
@@ -106,8 +107,8 @@
         @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}</p> }
       }
       @for (action of account.actions; track $index) { @if (action.action === 'order') { <button gcspButton type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> } }
-      <section class="account-summary account-preferences" aria-labelledby="preferences-title">
-        <h2 id="preferences-title">Your preferences</h2><p class="gcsp-note">Tell your buddy what matters in your next car.</p>
+      <section class="account-summary account-preferences" aria-label="Your preferences">
+        <gcsp-account-preferences [carDescription]="preferenceCarDescription()" />
         <a gcspButton variant="ghost" routerLink="/preferences">Edit your preferences</a>
       </section>
       <section class="account-history" aria-labelledby="history-title">

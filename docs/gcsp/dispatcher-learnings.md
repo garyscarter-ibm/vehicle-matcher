@@ -1,0 +1,209 @@
+# Shared dispatcher learnings
+
+Started at Gary's request on 14 November 2026. Both pollers record delivery issues and their resolution here,
+so improvements can be carried into agent-scaffolding. This log is shared through `gcsp-poc-dev`.
+
+Append an event when an issue is identified, mitigated, resolved, recurs or its diagnosis changes. Use a unique
+ID such as `DL-20261114-GC-001` or `DL-20261114-RG-001`, then reuse it for later events. Preserve earlier entries;
+correct them with a new event. Include UTC time, poller, impact, evidence, cause/uncertainty, action, outcome and
+framework follow-up. Keep raw logs, credentials, private data and personal coordination files elsewhere.
+
+States: **identified**, **mitigating**, **verified resolved**, **reopened**. A proposed framework change remains
+a proposal until implemented and checked; record its eventual commit/check evidence against the same ID.
+The log does not replace required defect records, expand Stories or add a delivery gate. Pull before writing;
+commit and push named paths through the existing helper, preserving concurrent appends from the other poller.
+
+## 2026-11-14 16:51 UTC · GC Codex · DL-20261114-GC-001 · identified
+
+- **Issue/impact:** dispatch overhead and scheduling holds reduced useful parallel delivery. At the 16:32
+  observation only FUCQ-447 was confirmed active; FUCQ-442 and FUCQ-446 were held by GC scheduling.
+- **Cause/evidence:** repeated separate source, test-preparation, review and runtime-release handoffs are
+  recorded in FUCQ-434 coordination comments 3629457/3629458 and the Story delivery histories. The capacity
+  tool at 16:50 reported `can_start=3`; resource capacity did not require keeping both independent Stories held.
+- **Action/outcome:** identified as a dispatcher process problem. Existing resource ownership, original
+  acceptance criteria and conflict protection remain necessary; they do not require a new permission round
+  for every routine implementation/test step.
+- **Framework follow-up:** make a bounded Story release include implementation and proportionate checks;
+  recheck runnable existing work against actual capacity and file conflicts, rather than waiting for an
+  unrelated checkpoint. Measure useful delivery before calling this resolved.
+
+## 2026-11-14 16:52 UTC · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Action:** resumed the existing FUCQ-442 lead for its original stock screen, minimal vehicle card and
+  compact media support, with source and selected checks authorised together. Exact allocated files exclude
+  the FUCQ-447 worker's table, routes and catalogue/gallery edits; parent integrates shared wiring serially.
+- **Evidence/outcome:** owned clean worker fast-forwarded and published at
+  `8cbcfe7580785dacf77cb7b8ddff598d712756ae`. App API confirmed both Emmet/FUCQ-442 and Hubie/FUCQ-447 executing.
+  Two active workers is a scheduling improvement; this release has no completed validation/delivery result yet.
+- **Framework follow-up:** validate that the simpler release produces coherent tested integrations without
+  widening the original Story or repeating preparation rounds. Framework implementation remains proposed.
+
+## 2026-11-14 16:50 UTC · GC Codex · DL-20261114-GC-002 · mitigating
+
+- **Issue/impact:** a global "active" count can be mistaken for complete visibility across both pollers.
+- **Cause/evidence:** all 18 native In Progress Stories had leases, but nine belonged to the other poller
+  without fresh execution evidence available here. Its latest observed FUCQ-434 coordination comment was
+  3629458 at 10:29:52 UTC. A lease or native In Progress status cannot establish current execution or inactivity.
+- **Action/outcome:** apply Gary's six exclusive buckets: To do, active, held, blocked, in review and done.
+  Label those nine reservations **held — execution unverified**, with the observation time. Preserve native
+  Jira statuses. Fresh native query and lease reconciliation still cover exactly the authorised 66 Stories.
+- **Framework follow-up:** exchange small expiring execution observations between pollers, separate from
+  leases and tracker status. Reporting semantics are applied locally; shared execution visibility is unresolved.
+
+## 2026-11-14 16:35 UTC · GC Codex · DL-20261114-GC-003 · mitigating
+
+- **Issue/impact:** the global Jira lifecycle planner took approximately eight minutes and produced 198
+  proposals when only FUCQ-417's lifecycle needed action.
+- **Cause/evidence:** the planner scanned historical adoption dates across Git refs for unrelated Stories.
+  Only the authorised FUCQ-417 operation was applied; the Story is native In Review and cleaned up. Its
+  acceptance disposition and evidence map are in `docs/gcsp/evidence/fucq417/`.
+- **Action/outcome:** GC's local adapter now accepts an explicit issue scope before planning and rejects
+  acknowledgements for foreign keys. Syntax was checked; the scoped runtime has not yet been exercised.
+- **Framework follow-up:** add native scoped lifecycle planning to agent-scaffolding and verify it against
+  both selected and excluded issues. Do not call the performance problem resolved from syntax checking alone.
+
+## 2026-11-14 16:54 UTC · GC Codex · DL-20261114-GC-004 · mitigating
+
+- **Issue/impact:** inherited output-placement and cleanup instructions conflict with Gary's explicit
+  prohibition on all OneDrive access, including reads and cleanup verification.
+- **Cause/evidence:** historical resource instructions require large outputs in synced storage. They cannot
+  override the later human restriction. Historical observations retained locally are not fresh cloud audits.
+- **Action/outcome:** current worker releases prohibit all such access and use bounded local scratch with
+  the resource helper's explicit local reason and `/private/tmp` output root. Persisted the restriction in
+  shared `AGENTS.md` and linked it from `CLAUDE.md`; no OneDrive inspection or cleanup was performed for this log.
+- **Framework follow-up:** make explicit forbidden storage locations binding throughout allocation, imports,
+  finalizers and audits; support local output policy without a cloud-aware runner. Do not verify this by
+  probing a forbidden location. Future checks must retain resource limits and report any resulting limitation.
+
+## 2026-11-14 16:54 UTC · GC Codex · DL-20261114-GC-005 · mitigating
+
+- **Issue/impact:** scope and validation requirements can grow while an existing Story is being delivered.
+- **Cause/evidence:** Gary reaffirmed strict bounds after today's stalled-work concern. Shared policy commit
+  `2855b2f837a4392ac81d4c887867e1e4dee5c7fe` fixes the original criteria, applicable contracts and named files;
+  lower-severity defects remain independent backlog work. Existing unmet criteria remain actual Story work.
+- **Action/outcome:** current FUCQ-442/FUCQ-447 briefs carry exact original criteria, finite source allocations,
+  selected checks and remaining acceptance gaps. Five GC Stories, FUCQ-412–415 and FUCQ-417, have since reached
+  native In Review with integrated/pushed evidence. This does not prove all stalled work is resolved or accepted.
+- **Framework follow-up:** carry the claimed contract through build and review; distinguish original gaps
+  from proposed additions and reuse unchanged applicable evidence. Keep optional hardening off delivery gates.
+
+## 2026-11-14 16:55 UTC · GC Codex · DL-20261114-GC-006 · identified
+
+- **Issue/impact:** the installed headless browser could not establish rendered evidence for the new
+  FUCQ-447 queue/detail UI. Desktop, narrow-screen and browser keyboard checks remain unverified.
+- **Evidence/cause:** Hubie's current worker report says all 61 selected tests passed, but the Chrome
+  attempt printed a blank page and failed to exit within 30 seconds, with display/process-policy errors.
+  These results are worker-reported pending the parent receipt audit; the precise browser cause is unresolved.
+- **Action/outcome:** the worker reports stopping its process group and removing owned local scratch,
+  preserving the failed check and continuing the bounded source checkpoint without a browser repair campaign.
+  Tests alone do not establish rendered or whole-Story acceptance.
+- **Framework follow-up:** detect supported installed browser capability before allocating a rendered run,
+  retain a bounded failure and stop/join its owned process group. Avoid repeatedly releasing the same failed
+  environment without a causal correction. This entry neither authorises browser repair nor waives original checks.
+
+## 2026-11-14 16:57 UTC · GC Codex · DL-20261114-GC-002 · mitigating
+
+- **Correction/evidence:** a full coordination-comment read confirms 3629458 at 10:29:52 UTC was authored by
+  GC, not the other poller. The latest Russell-authored update observed is 3629446 at 09:23:23 UTC. Preserve
+  author identity as well as the timestamp when describing peer evidence. The nine execution-unverified
+  reservations remain held; this correction establishes neither activity nor inactivity.
+- **Action/outcome:** at Gary's explicit request, coordination comment 3629463 now asks the peer for a
+  current per-Story execution/blocker/last-progress/next-action report, the overall bottleneck and any help
+  needed from GC. No response has yet been observed. The earlier comment's author attribution was corrected.
+- **Framework follow-up:** attach source author and observation time to cross-poller status evidence;
+  distinguish an outbound request, a peer reply and a verified worker observation.
+
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Evidence/outcome:** FUCQ-447's bounded queue/table release produced compilation and 64/64 selected
+  passing tests. Parent matched all 127 inputs and resource receipts; independent review found no actionable
+  issue. Exact worker `8f539829506ec1c0491edb279b33caf781e93e44` is integrated/pushed as `b0c5ff37b1d10c6b23e6efde108e6a535742275e`.
+- **Action:** publish the coherent increment promptly while retaining the original Story's unchecked
+  criteria and failed/unrun browser/connected checks. FUCQ-442 continues its separate allocated screen work.
+- **Framework follow-up:** this is direct evidence for a useful combined implementation/check release;
+  it does not establish sustained throughput or resolve the framework scheduling problem. Current measured
+  `can_start=2` remains below the three-slot new-Story-lead budget, so no new reservation was taken.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-004 · mitigating
+
+- **Evidence/outcome:** the parent audited the current FUCQ-447 local runner/receipts, selected dependency
+  identities and actual local teardown. All owned scratch/processes/tokens were absent at 17:05 UTC; the
+  unrelated reservation was preserved. The audit used only explicit allowed local paths.
+- **Action/follow-up:** the local mitigation worked for this increment; inherited forbidden-storage
+  instructions remain overridden. No forbidden path was probed, and no framework implementation fix is claimed.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-006 · identified
+
+- **Confirmed evidence:** independent review and parent audit retain native-2's incomplete Chrome
+  about:blank attempt (blank DOM, 30-second timeout, display/process-policy errors). Native-3 passed 64
+  tests only; it did not repeat or pass rendering. Product browser and keyboard evidence remain open.
+- **Action/follow-up:** publish the source increment with this precise limit; avoid repeating a failed
+  browser release without a causal change. No browser repair or acceptance waiver was introduced.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-007 · mitigating
+
+- **Issue/evidence:** FUCQ-442 reports Chrome starts, but its isolated fixture initially could not
+  bootstrap Angular's partially compiled libraries. This is worker-reported fixture setup evidence, not
+  a production defect. Native ngc compilation passed; a fixture-only compiler import enabled 17 reported
+  browser checks. Parent pin/resource audit and the final checkpoint are still pending.
+- **Action/outcome:** the worker continues the same bounded release, correcting a missing original
+  monthly-points summary found during visual inspection. No new feature or test-framework expansion.
+- **Framework follow-up:** distinguish fixture bootstrap failures from product failures, retain each
+  attempt, and require the final source identity for any reused visual evidence. Do not call this verified yet.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-008 · verified resolved
+
+- **Issue/cause:** parent and reviewer source audits attempted to read a binary input through
+  scaffold_git's text-output wrapper, raising UnicodeDecodeError before finishing pin verification.
+- **Action/evidence/outcome:** parent used SHA-256 of exact local bytes plus tracked-file/clean frozen-HEAD
+  comparison; reviewer used immutable Git blob IDs plus byte hashes. Both independently completed all 127
+  pins. Parent receipt SHA-256 `ebef098dad6a1e45a1578b68e48f245d0eee4d991425efe7a039f448c74b57a4`.
+- **Framework follow-up:** provide a binary-safe immutable-object audit API. The local audit failure
+  is resolved; no shared framework patch, product source change or extra runtime was needed.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Evidence/outcome:** the FUCQ-442 finite screen/card/media release reached reviewed, audited and pushed partial integration `db1d00e8d`, with 33 selected tests and 17 actual-source fixture browser checks. Existing FUCQ-446 lifecycle work resumed as soon as measured capacity reached three; the same lead is implementing the employee screen/actions. No new Story was reserved for this pass.
+- **Action/follow-up:** continue complete source/check increments and prompt serial publication, then technically ready pickup within the fixed 66. Existing original route/connected acceptance gaps stay visible. This is measured local progress, not proof that scheduling overhead is globally resolved.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-003 · mitigating
+
+- **Evidence/outcome:** the explicitly scoped FUCQ-447 lifecycle planner was exercised at runtime and returned an empty operation list, exit 0. No operations, writes or acknowledgements were required.
+- **Action/follow-up:** this verifies the scoped no-op path for one Story; it does not measure broad performance or verify the nonempty write/acknowledgement path. Native framework scoped planning remains a proposal.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-007 · verified resolved locally
+
+- **Evidence/outcome:** corrected FUCQ-442 fixture bootstrap/tool invocation produced 33 selected test passes and 17 browser checks on both matching 167-input receipts. Parent audited the final pins and local teardown; an independent reviewer matched immutable blobs and viewed all nine final captures. The screen increment is pushed at `db1d00e8d`.
+- **Qualification:** retain initial TS2339/TS7006, native-esbuild invocation and partial-Angular-library/timeout failures, plus the earlier scrolled-capture compositor artifact. Their local fixture causes were corrected; this proves neither production CSP/AOT nor integrated router/Java/OIDC/native-PostgreSQL acceptance. No generic framework repair was performed.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-009 · identified
+
+- **Issue/impact:** FUCQ-442's test runner samples command descendants but omits its Python supervisor from peak RSS. Earlier browser1–5 also omitted detached Chrome groups. Full aggregate historical peak cannot be established from those receipts.
+- **Cause/evidence:** read-only inspection of local-run.py shows sampling rooted at the command PID; the supervisor is outside that set. Final browser6 correctly walks recursive command descendants and records their groups. Retained selected/browser combined peaks are approximately 1.43/1.39 GB; the omission establishes uncertainty, not a demonstrated overrun.
+- **Action/outcome:** independently verified nine local scratch roots, 23 groups, supervisors, link and canonical tokens absent, plus borrowed identities/caches unchanged. Preserve the peak limitation in delivery evidence. No test was rerun merely to improve the receipt; no extra product or Story scope was introduced.
+- **Framework follow-up:** shared resource supervision should include its own RSS, recursive descendants and detached groups in aggregate accounting, while preserving bounded local-only allocation and Gary's absolute forbidden-storage restriction. This remains a proposed framework improvement.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-005 · mitigating
+
+- **Evidence/outcome:** FUCQ-442 independent review found two below-High source issues. They were promptly captured as separate linked backlog Bugs FUCQ-504 Medium and FUCQ-505 Low, left To Do/unassigned/unclaimed/unfixed, and did not expand the frozen screen increment. Existing FUCQ-499 remains open.
+- **Action/follow-up:** preserve source-only versus runtime reproduction, actual impact and original unmet criteria. Apply the same rule in both pollers so ordinary review findings do not silently become extra Story scope or unnecessary merge gates.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-008 · verified resolved locally
+
+- **Issue/cause:** the first FUCQ-442 parent audit checked new worker files in the parent checkout before the increment was merged, causing FileNotFoundError. This was an audit path error, not a mismatching product input.
+- **Action/evidence:** corrected the audit root to the clean frozen worker and completed both 167-input sets, original Story/map preservation and actual local teardown. Receipt: `.claude/fucq442-stock-parent-audit-1700.json`. Following integration, only the expected newer FUCQ-447 input differences remained.
+- **Framework follow-up:** bind audits explicitly to frozen checkout and commit; do not confuse an unmerged file's absence in the parent with a failed worker source check.
+
+## 2026-11-14 17:22 UTC · GC Codex · DL-20261114-GC-010 · identified / correcting
+
+- **Issue/impact:** FUCQ-446's first employee-screen/action check stopped during compilation, before any tests ran. No passing-test or rendered-journey claim follows.
+- **Evidence/cause:** Bertie's current worker report identifies one new client type error and an isolated fixture that copied unrelated OIDC specs without their dependency closure. Exact compiler output and receipts remain with the active worker pending frozen checkpoint audit; this entry is worker-reported, not an independent runtime diagnosis.
+- **Action/outcome:** the same worker is correcting its allocated client type and limiting fixture inputs to the selected import graph, retaining failed evidence and reporting owned cleanup/borrowed-input checks passed. No extra Story, dependency installation, backend repair or generic harness project was started. Resolution is not yet verified.
+- **Framework follow-up:** selected compilation must include the actual transitive source dependencies while excluding unrelated specs; a test failure before discovery is zero executed tests. Preserve source identity, exact failure and teardown, and reuse the corrected bounded runner.
+
+## 2026-11-14 17:22 UTC · GC Codex · DL-20261114-GC-010 · mitigating / validation incomplete
+
+- **New evidence:** Bertie reports compilation now succeeds far enough to execute the selected checks: **103 passed, 11 component tests failed**. This supersedes zero executed tests for the latest attempt only; the earlier compilation failure remains retained. Parent has not yet audited the frozen receipts.
+- **Cause/status:** the worker attributes the 11 failures to fixture assertions preceding asynchronous controller reads. That is the current diagnosis, pending a corrected check and parent audit; no green result or product-fix conclusion is claimed.
+- **Action:** the same bounded worker is making fixtures await observed controller state and continuing relevant existing role/authentication coverage. Exact failed evidence, current source pins, owned teardown and original acceptance obligations remain required. No new scope or framework implementation is authorised.

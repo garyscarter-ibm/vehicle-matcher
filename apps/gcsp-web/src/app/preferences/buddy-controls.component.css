@@ -1,0 +1,5 @@
+:host { display: block; }
+.buddy-controls { display: grid; gap: var(--gcsp-space-2); padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface-muted); }
+.buddy-controls h3, .buddy-controls p { margin: 0; }
+.buddy-state { font-weight: var(--gcsp-font-strong-weight); }
+.buddy-status:focus { outline: 2px solid var(--gcsp-text); outline-offset: 3px; }

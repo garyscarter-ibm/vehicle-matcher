@@ -1,0 +1,42 @@
+<button gcspButton type="button" variant="ghost" class="gcsp-vehicle-details-entry" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="openDrawerFromEvent($event)">
+  <span class="gcsp-vehicle-details-copy">
+    <strong>View car details</strong>
+    <span class="gcsp-vehicle-details-hint">{{ equipment().length ? 'Full specification · ' + equipment().length + ' selected equipment ' + (equipment().length === 1 ? 'item' : 'items') : 'Equipment not supplied' }}</span>
+  </span>
+  <span class="gcsp-vehicle-details-arrow" aria-hidden="true">→</span>
+</button>
+
+<gcsp-side-drawer title="Car details" context="Your offer" (closed)="onDrawerClosed()">
+  <div class="gcsp-vehicle-details-body">
+    <h3>{{ name() }}</h3>
+    <gcsp-tabs label="Car details" [items]="tabItems()" initialSelectedId="specification" />
+  </div>
+</gcsp-side-drawer>
+
+<ng-template #specificationTemplate>
+  <section class="gcsp-vehicle-specification" aria-label="Specification">
+    @if (finishes().length) {
+      <h4>Finishes</h4>
+      <dl>
+        @for (row of finishes(); track $index) { <div class="gcsp-vehicle-detail-row"><dt>{{ row.label }}</dt><dd>{{ displayValue(row) }}</dd></div> }
+      </dl>
+    }
+    @if (facts().length) {
+      <h4>Vehicle facts</h4>
+      <dl>
+        @for (row of facts(); track $index) { <div class="gcsp-vehicle-detail-row"><dt>{{ row.label }}</dt><dd>{{ displayValue(row) }}</dd></div> }
+      </dl>
+    }
+    @if (additionalDetails(); as details) { <ng-container [ngTemplateOutlet]="details" /> }
+  </section>
+</ng-template>
+
+<ng-template #equipmentTemplate>
+  @if (equipment().length) {
+    <ul class="gcsp-vehicle-equipment">
+      @for (item of equipment(); track $index) { <li>{{ item }}</li> }
+    </ul>
+  } @else {
+    <p class="gcsp-vehicle-equipment-empty">Equipment not supplied</p>
+  }
+</ng-template>

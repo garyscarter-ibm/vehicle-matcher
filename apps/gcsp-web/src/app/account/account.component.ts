@@ -6,6 +6,9 @@ import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { AccountPreferencesComponent } from '../preferences/account-preferences.component';
+import { BriefEditorStore } from '../preferences/brief-editor.store';
+import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
 import { AccountOffers, AccountOrders, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
 import { AccountClient } from './account.client';
 import { AccountChoicesComponent } from './account-choices.component';
@@ -33,12 +36,14 @@ const states: Record<string, Notice> = {
 
 @Component({
   selector: 'gcsp-account',
-  imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, AccountChoicesComponent],
+  imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent,
+    AccountChoicesComponent, AccountPreferencesComponent, CurrentCarRatingComponent],
   templateUrl: './account.component.html', styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnDestroy {
   private readonly auth = inject(AuthPort);
   private readonly client = inject(AccountClient);
+  private readonly brief = inject(BriefEditorStore);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -66,6 +71,10 @@ export class AccountComponent implements OnDestroy {
   });
   readonly currentScope = computed(() => !!this.scope() && this.scope() === this.loadedScope());
   readonly model = computed(() => this.currentScope() && this.accountResult() ? toAccountView(this.accountResult()!, { draft: this.draft() }) : null);
+  readonly preferenceCarDescription = computed(() => {
+    const car = this.model()?.primaryContract;
+    return car && car.contractId === this.brief.editor()?.initial.sameAgain.contractId ? this.carName(car) : '';
+  });
   readonly saved = computed(() => this.currentScope() && this.draft()?.status === 'ok' ? (this.draft() as { status: 'ok'; value: ManualDraft }).value : null);
   readonly loading = signal(false);
   readonly busy = signal(false);

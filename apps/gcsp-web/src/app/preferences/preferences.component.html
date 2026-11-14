@@ -1,0 +1,58 @@
+<gcsp-screen-intro title="Your preferences" lede="Choose what you enjoy and what your next car needs to do." />
+@if (store.editor(); as editor) {
+  <p class="gcsp-note">{{ store.fullDirty() ? 'Unsaved draft' : 'Your saved preferences' }} · Version {{ store.briefVersion() }}</p>
+  @if (editor.selection?.state === 'accepted') { <p role="status">Your buddy found your car. These are your saved preferences and are read only.</p> }
+  <details class="known-facts"><summary>Your scheme and starting answers</summary><dl>@for (fact of knownFacts(); track fact.label) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl><p class="gcsp-note">These facts are read-only. Starting answers are confirmed when saved.</p></details>
+  <div class="brief-layout"><form class="brief-form" (submit)="$event.preventDefault(); store.saveFull()">
+    <gcsp-error-summary [errors]="errors()" />
+    <section class="gcsp-panel"><h2>What matters to you</h2><p class="gcsp-note">Set each preference and its importance. Comfort and sportiness can both be high.</p>
+    @for (entry of preferenceEntries(false); track entry[0]) { <ng-container [ngTemplateOutlet]="preferenceControl" [ngTemplateOutletContext]="{ $implicit: entry }" /> }
+    <details><summary>Anything else?</summary>@for (entry of preferenceEntries(true); track entry[0]) { <ng-container [ngTemplateOutlet]="preferenceControl" [ngTemplateOutletContext]="{ $implicit: entry }" /> }</details>
+    <ng-template #preferenceControl let-entry>
+      <fieldset class="full-preference" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || !entry[1].editable"><legend>{{ entry[1].label }}</legend>
+        @if (entry[1].type === 'slider') {
+          <gcsp-labelled-field [controlId]="'preference-' + entry[0]" label="Preference" hint="Less to more, independent of importance."><input [id]="'preference-' + entry[0]" type="range" [min]="editor.context.slider.minimum" [max]="editor.context.slider.maximum" step="1" [value]="store.brief().preferences[entry[0]]?.value ?? editor.context.slider.minimum" [attr.aria-describedby]="'preference-' + entry[0] + '-hint'" (input)="store.updatePreference(entry[0], { value: number($event) })" /></gcsp-labelled-field>
+        } @else {
+          <div [id]="'preference-' + entry[0]" tabindex="-1">@for (option of entry[1].values ?? []; track $index) {
+            <label class="native-choice"><input [type]="entry[1].multiple ? 'checkbox' : 'radio'" [name]="'preference-' + entry[0]" [checked]="selected(entry[0], option)" (change)="choose(entry[0], option, $event)" />{{ choice(option) }}</label>
+          }</div>
+        }
+        <gcsp-labelled-field [controlId]="'importance-' + entry[0]" label="Importance" hint="Not important to very important."><input [id]="'importance-' + entry[0]" type="range" [min]="editor.context.slider.minimum" [max]="editor.context.slider.maximum" step="1" [disabled]="!store.brief().preferences[entry[0]]" [value]="store.brief().preferences[entry[0]]?.importance ?? editor.context.slider.minimum" [attr.aria-describedby]="'importance-' + entry[0] + '-hint'" (input)="store.updatePreference(entry[0], { importance: number($event) })" /></gcsp-labelled-field>
+        <button gcspButton variant="ghost" type="button" [disabled]="!store.brief().preferences[entry[0]]" [attr.aria-pressed]="store.brief().preferences[entry[0]]?.importance === editor.context.slider.minimum" (click)="store.updatePreference(entry[0], { importance: editor.context.slider.minimum })">I don't mind</button>
+        <p class="gcsp-note">{{ store.brief().preferences[entry[0]] ? shown(store.brief().preferences[entry[0]].value) + ' · Importance ' + store.brief().preferences[entry[0]].importance : 'Not set' }}</p>
+      </fieldset>
+    </ng-template></section>
+    <section class="gcsp-panel"><h2>What your car needs to do</h2><p class="gcsp-note">Not sure yet leaves that need unconfirmed.</p>
+    @for (entry of entries(editor.context.practicalQuestions); track entry[0]) {
+      <fieldset class="practical-question" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || !editor.context.essentials[entry[0]]?.editable"><legend>{{ entry[1].label }}</legend>
+        <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'yes'" (change)="practical(entry[0], entry[1], 'yes')" />Yes</label>
+        <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'no'" (change)="practical(entry[0], entry[1], 'no')" />No</label>
+        <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'unknown'" (change)="practical(entry[0], entry[1], 'unknown')" />Not sure yet</label>
+        @if (entry[0] === 'charging' && answer(entry[0], entry[1]) === 'yes') { <fieldset><legend>Where can you charge?</legend>@for (place of charging(entry[1]); track $index) { <label class="native-choice"><input type="radio" name="charging-place" [checked]="store.brief().essentials[entry[0]]?.value === place" (change)="store.updateEssential(entry[0], place)" />{{ place === 'either' ? 'Home or work' : words(shown(place)) }}</label> }</fieldset> }
+        @if (answer(entry[0], entry[1]) === 'unknown') { <p class="gcsp-note">Needs confirmation.</p> }
+        @if (answer(entry[0], entry[1]) === 'review') { <p class="gcsp-note">Current answer {{ shown(store.brief().essentials[entry[0]]?.value) }} needs review.</p> }
+      </fieldset>
+    }</section>
+    @if (store.brief().currentCarFeedback) { <section class="gcsp-panel"><h2>Your current-car feedback</h2><dl><dt>Preserve</dt><dd>{{ feedback('preserve') }}</dd><dt>Change</dt><dd>{{ feedback('change') }}</dd></dl></section> }
+    <section class="gcsp-panel"><h2>Save preferences</h2><p>Review your inputs, then save and confirm them.</p>
+      <fieldset class="buddy-choice" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || store.fullBusy()"><legend>Buddy engagement</legend>
+        <label class="native-choice"><input type="radio" name="buddy-engagement" [checked]="store.consent().search && store.consent().hold" (change)="store.setConsent(true)" />Engage Buddy</label>
+        <label class="native-choice"><input type="radio" name="buddy-engagement" [checked]="!store.consent().search && !store.consent().hold" (change)="store.setConsent(false)" />Disengage Buddy</label>
+      </fieldset>
+      <p class="gcsp-note">Buddy will be {{ store.consent().search && store.consent().hold ? 'engaged' : 'disengaged' }} when you save. Save your preferences to apply this choice. Engaging lets Buddy search and hold a suitable car.</p>
+      <gcsp-buddy-controls [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
+      <div class="gcsp-actions"><button gcspButton type="submit" [disabled]="store.locked() || store.queueBusy() || store.fullBusy() || store.buddyResolutionRequired()">{{ store.fullBusy() ? 'Saving your preferences...' : 'Save your preferences' }}</button>@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }<button gcspButton variant="ghost" type="button" [disabled]="store.fullBusy() || store.saving()" (click)="replace.set(true)">Refresh and review</button></div>
+      <p role="status" tabindex="-1">{{ store.fullMessage() || (store.failure() ? store.message() : '') }}</p>
+      @if (replace()) { <div class="replace-confirm"><p>Replace your edits and permissions with your saved preferences?</p><button gcspButton type="button" (click)="reload()">Replace draft with saved preferences</button><button gcspButton variant="ghost" type="button" (click)="replace.set(false)">Keep editing</button></div> }
+    </section>
+  </form><section class="preview gcsp-panel"><h2>Cars for your preferences</h2><button gcspButton variant="ghost" type="button" [disabled]="store.locked() || store.queueBusy() || store.fullBusy() || store.previewLoading()" (click)="store.requestPreview()">{{ store.previewLoading() ? 'Updating cars...' : 'Update preview' }}</button>
+    <div [attr.aria-busy]="store.previewLoading()"><p role="status">@if (store.previewLoading()) { Updating cars... } @else if (store.preview(); as result) { @if (result.status === 'ok') { {{ previewSummary(result.value) }} } @else { Preview unavailable. Your edits are kept. } } @else { Preview not calculated. }</p>
+      @if (store.preview(); as result) { @if (result.status === 'ok') { @for (decision of result.value.decisions; track decision.orderUuid) {
+        <article class="decision"><figure>@if (photo(decision); as src) { @if (!mediaFailed(decision)) { <img [src]="src" [alt]="decisionName(decision)" (error)="failMedia(decision)" />@if (caption(decision); as caption) { <figcaption>{{ caption }}</figcaption> } } @else { <p>No image for this car yet.</p> } } @else { <p>No image for this car yet.</p> }</figure><h3>{{ decisionName(decision) }}</h3><p>{{ decisionLine(decision) }}</p><p>{{ decision.gateStatus === 'eligible' ? 'Eligible' : decision.gateStatus === 'needs-confirmation' ? 'Needs confirmation' : 'Not eligible' }}</p>
+          <p>Points per month: {{ points(decision) }} · Allowance: {{ allowance(decision) }}</p>
+          <dl>@for (fact of facts(decision); track fact.label) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl>
+          @for (group of reasonGroups(decision); track group.label) { @if (group.entries.length) { <section class="decision-reasons"><h4>{{ group.label }}</h4><ul>@for (reason of group.entries; track $index) { <li>{{ this.reason(reason, group.kind) }}</li> }</ul></section> } }
+        </article>
+      } @empty { <p>No stock is available for this preview.</p> } } }
+    </div></section></div>
+} @else { <gcsp-status-screen title="Your preferences" [level]="2" [busy]="store.loading()" [message]="store.loading() ? 'Loading your preferences.' : store.message() || 'Your preferences are unavailable.'">@if (!store.loading()) { <button gcspButton type="button" (click)="store.load()">Try again</button> }</gcsp-status-screen> }

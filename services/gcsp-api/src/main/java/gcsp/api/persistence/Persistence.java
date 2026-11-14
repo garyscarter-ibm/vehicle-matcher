@@ -52,7 +52,8 @@ public class Persistence {
 
     public synchronized RunReset reset() {
         if (!active) throw new IllegalStateException("Persistence is not configured");
-        if (reset == null) reset = new RunReset(dataSource.get(), expectedDatabase.orElse(""), environmentId.orElse(""));
+        if (reset == null) reset = new RunReset(dataSource.get(), expectedDatabase.orElse(""), environmentId.orElse(""),
+                resetAllowed);
         return reset;
     }
 

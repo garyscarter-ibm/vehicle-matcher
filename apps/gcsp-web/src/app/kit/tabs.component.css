@@ -1,0 +1,10 @@
+:host { display: block; min-width: 0; }
+.gcsp-tabs { display: grid; gap: var(--gcsp-space-4); min-width: 0; }
+.gcsp-tabs-list { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-1); border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp-tab { min-height: var(--gcsp-control-height); margin-bottom: -1px; padding: 0 var(--gcsp-control-inline); border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--gcsp-text-muted); font: inherit; font-size: var(--gcsp-font-size-button); font-weight: var(--gcsp-font-button-weight); cursor: pointer; }
+.gcsp-tab:hover { background: var(--gcsp-hover); color: var(--gcsp-text); }
+.gcsp-tab[aria-selected="true"] { border-bottom-color: var(--gcsp-accent); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-tab:focus-visible, .gcsp-tab-panel:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp-tab-panel { min-width: 0; }
+.gcsp-tab-panel[hidden] { display: none; }
+@media (max-width: 600px) { .gcsp-tab { min-height: 44px; } }

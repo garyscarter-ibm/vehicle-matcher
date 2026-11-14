@@ -70,6 +70,7 @@ async function fixture(t) {
 const isFull = ({ sql }) => /'stock' AS t, data FROM/.test(sql);
 const isScopedLoad = ({ sql }) => /^SELECT 'runs' AS t, data FROM/.test(sql) && sql.includes('jsonb_array_elements') && !isFull({ sql });
 const isFingerprint = ({ sql }) => /count\(\*\) AS n/.test(sql);
+const isProbe = (statement) => isFingerprint(statement) || /"repository_revisions"/.test(statement.sql);
 const written = (statements) => statements.filter(({ sql }) => /^(INSERT|UPDATE|DELETE)/.test(sql.trimStart()));
 const load = (statements) => ({ rows: statements.reduce((sum, { rows }) => sum + rows, 0), bytes: statements.reduce((sum, { responseBytes }) => sum + responseBytes, 0) });
 
@@ -199,7 +200,7 @@ test('native: a cold declared receipt update loads a bounded set while the undec
   assert.deepEqual(scoped.value, expected, 'the outcome equals the memory backend');
   assert.ok(!scoped.statements.some(isFull), 'no statement loaded the full snapshot');
   assert.equal(scoped.statements.filter(isScopedLoad).length, 1);
-  assert.ok(!scoped.statements.some(isFingerprint), 'a cold scoped write skips the fingerprint probe');
+  assert.ok(!scoped.statements.some(isFingerprint), 'a cold scoped write skips the wide fingerprint probe');
   assert.ok(wide.statements.some(isFull));
   const [small, big] = [load(scoped.statements), load(wide.statements)];
   assert.ok(small.rows <= 12 && small.bytes < 8192, JSON.stringify(small));
@@ -301,11 +302,11 @@ test('native: mixed scoped and full instances and trusted reads always see the s
   await must(b.transaction(ctx(), command(), tickWork('tick-2', 'eb2'), tickScope('tick-2', 'eb2')));
   const stale = await f.measure(() => a.transaction(ctx(), command(), tickWork('tick-3', 'ea3'), tickScope('tick-3', 'ea3')));
   assert.equal(stale.value.status, 'ok');
-  assert.ok(stale.statements.some(isFingerprint) && stale.statements.some(isScopedLoad) && !stale.statements.some(isFull));
+  assert.ok(stale.statements.some(isProbe) && stale.statements.some(isScopedLoad) && !stale.statements.some(isFull));
   // A matching cache entry is a hit: no scoped load, no full load.
   await must(a.transaction(ctx(), command(), (tx) => tx.get(tickRef('tick-1'))));
   const hit = await f.measure(() => a.transaction(ctx(), command(), tickWork('tick-1', 'ea1'), tickScope('tick-1', 'ea1')));
-  assert.equal(hit.value.status, 'ok'); assert.ok(!hit.statements.some((s) => isScopedLoad(s) || isFull(s)) && hit.statements.some(isFingerprint));
+  assert.equal(hit.value.status, 'ok'); assert.ok(!hit.statements.some((s) => isScopedLoad(s) || isFull(s)) && hit.statements.some(isProbe));
   // Same instance with trusted reads: the scoped commit must not leave a pre-commit row behind.
   const trusted = await f.open({ readTrustMs: 60000 });
   assert.equal((await trusted.read(ctx(), tickRef('tick-1'))).value.version, 3);

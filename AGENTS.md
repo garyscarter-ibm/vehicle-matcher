@@ -1,3 +1,30 @@
+## OneDrive access — explicit human restriction, 14 November 2026
+
+Gary says: "Don't touch my onedrive please". Do not access his OneDrive locations: no reads, writes,
+existence checks, copies, moves, deletion, cleanup or sync operations. This overrides inherited scaffolding
+instructions to place archives or generated output in OneDrive, including the 256 MiB rule, and existing
+runtime/audit releases. Use bounded local scratch outside synced folders where authorised. Preserve resource
+limits and report any check that cannot proceed under this restriction. Pass this restriction to every
+delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
+local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
+
+## Shared dispatcher learnings
+
+Gary's direction, 14 November 2026: both pollers maintain `docs/gcsp/dispatcher-learnings.md` so observed
+delivery issues and their resolutions can inform improvements to agent-scaffolding.
+
+- Read the log at dispatcher startup/resume. Whenever an issue is identified, resolved, recurs or a diagnosis
+  changes, promptly append a dated event with the poller, evidence, impact, cause or uncertainty, action,
+  observed outcome and proposed framework improvement. Reuse the issue's ID; preserve earlier observations.
+- Distinguish a proposed fix, an applied mitigation and a verified resolution. Record actual failures,
+  skipped/unrun checks and remaining limitations; an instruction change alone does not prove delivery improved.
+- Both pollers may append through the normal Git helper on `gcsp-poc-dev`. Pull before writing, preserve the
+  other poller's entries, and reconcile concurrent appends without replacing history. Commit and push promptly.
+- Pass the log path in worker briefs; workers include identified issues and resolution evidence in their
+  result for their dispatcher to record. Keep personal coordination and sensitive/runtime output out of the log.
+- Logging creates no new Story scope, acceptance gate, Jira change or framework implementation authority.
+  Keep entries brief and use existing evidence; do not add a reporting, test or approval round to write one.
+
 ## Jira updates resumed
 
 Gary explicitly lifted the project-wide Jira-write pause on 13 November 2026: “You can stop the wider pause too.”
@@ -53,6 +80,14 @@ Follow the full policy in `docs/gcsp/build-rules.md`, section "Demo delivery and
   distinguish an unmet original criterion from a proposed addition.
 - Record actual failed, skipped and unrun checks, known defects and any authorised merge exception. A merged
   integration checkpoint does not establish full acceptance or authorise a Done transition.
+
+Gary reaffirmed strict Story scope on 14 November 2026. At pickup and in every delegated brief, identify the
+original acceptance criteria, the applicable existing contracts and exact allocated files. Build, validate and
+review against that bounded contract. Do not turn a shared quality document into additional unrelated checks,
+require a broader migration or deployment campaign for a narrower Story, or add features, refactoring or
+hardening to its completion gates. Reuse matching evidence. Record any necessary work outside the contract
+separately for collaborator review before pickup; report an unmet original criterion as remaining Story work.
+Dispatcher or reviewer approval cannot expand the scope. Apply the existing severity policy to separate Bugs.
 
 Pass these rules and their document path in every delegated brief. Changes to project policy belong in shared
 project instructions; Gary's personal polling setup and local coordination files remain local.
