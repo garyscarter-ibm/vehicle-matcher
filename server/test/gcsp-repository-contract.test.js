@@ -551,20 +551,29 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
   let exists = false;
   let savepoint;
   let ddlExecutions = 0;
+  // Models 0010's triggers: one revision bump per scope per transaction ('runs' or 'run:<id>').
+  let revisions = {}; let touched = new Set();
+  const bump = (table, rows) => {
+    for (const scope of rows.map((row) => table === 'runs' ? 'runs' : `run:${row.runId}`)) {
+      if (!touched.has(scope)) { touched.add(scope); revisions[scope] = (revisions[scope] ?? 0) + 1; }
+    }
+  };
   const queries = [];
   const client = {
     async query(sql, values = []) {
       queries.push(sql);
-      if (sql === 'BEGIN') { savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists }; return { rows: [] }; }
-      if (sql === 'ROLLBACK') { if (savepoint) ({ data, applied, exists } = savepoint); savepoint = undefined; return { rows: [] }; }
+      if (sql === 'BEGIN') { savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists, revisions: { ...revisions } }; touched = new Set(); return { rows: [] }; }
+      if (sql === 'ROLLBACK') { if (savepoint) ({ data, applied, exists, revisions } = savepoint); savepoint = undefined; touched = new Set(); return { rows: [] }; }
       const commit = () => {
-        savepoint = undefined;
+        savepoint = undefined; touched = new Set();
         if (uncertainCommit && data.tables.holds.length) { uncertainCommit = false; throw new Error('PRIVATE_DATABASE_DETAIL'); }
         return { rows: [] };
       };
       if (sql === 'COMMIT') return commit();
       // Answers fingerprint (count, sum(version)) and snapshot parts of a UNION ALL, as PostgreSQL would.
-      const answer = (statement) => statement.split(' UNION ALL ').flatMap((part) => {
+      const answer = (statement) => statement.includes('repository_revisions') ? [(([runs, run]) => ({ t: 'revision',
+        runs: String(revisions[runs] ?? 0), run: run === undefined ? null : String(revisions[run] ?? 0) }))(statement.match(/scope IN \((.*)\)$/)[1].split(', ').map((scope) => scope.slice(1, -1)))]
+        : statement.split(' UNION ALL ').flatMap((part) => {
         const [, name, scope] = part.match(/^SELECT '([a-z_]+)' AS t, .* FROM "[a-z_]+"\."[a-z_]+"( WHERE .*)?$/);
         const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1]
           ?? (scope?.startsWith(' WHERE run_id = $1') ? values[0] : undefined);
@@ -585,7 +594,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       });
       if (sql.startsWith('BEGIN; SELECT pg_advisory_xact_lock')) {
         // Simple-protocol multi-statement: BEGIN, lock, one UNION ALL fingerprint, optional COMMIT.
-        savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists };
+        savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists, revisions: { ...revisions } }; touched = new Set();
         return [{ rows: [] }, { rows: [] }, { rows: answer(sql.split('; ')[2]) }, ...(sql.endsWith('; COMMIT') ? [commit()] : [])];
       }
       if (sql.startsWith("SELECT '")) return { rows: answer(sql) };
@@ -603,13 +612,13 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       const table = sql.match(/(?:FROM|INTO|UPDATE) "[a-z_0-9]+"\."([a-z_]+)"/)?.[1];
       if (sql.startsWith('INSERT INTO') && table) {
         if (table === failTable) throw new Error('PRIVATE_DATABASE_DETAIL');
-        const rows = JSON.parse(values[0]); data.tables[table].push(...rows); return { rowCount: rows.length, rows: [] };
+        const rows = JSON.parse(values[0]); data.tables[table].push(...rows); bump(table, rows); return { rowCount: rows.length, rows: [] };
       }
       if (sql.startsWith('UPDATE') && table && sql.includes('jsonb_array_elements')) {
         let rowCount = 0;
         for (const { row, old } of JSON.parse(values[0])) {
           const index = data.tables[table].findIndex((current) => TABLES[table].key.every((key) => current[key] === row[key]) && current.version === old);
-          if (index >= 0) { data.tables[table][index] = row; rowCount += 1; }
+          if (index >= 0) { data.tables[table][index] = row; rowCount += 1; bump(table, [row]); }
         }
         return { rowCount, rows: [] };
       }
@@ -617,7 +626,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
         const replacement = JSON.parse(values[0]);
         const index = data.tables[table].findIndex((row) => TABLES[table].key.every((key, i) => row[key] === values[i + 1]) && row.version === values.at(-1));
         if (index < 0) return { rowCount: 0, rows: [] };
-        data.tables[table][index] = replacement; return { rowCount: 1, rows: [] };
+        data.tables[table][index] = replacement; bump(table, [replacement]); return { rowCount: 1, rows: [] };
       }
       return { rows: [] };
     },

@@ -8,12 +8,15 @@
     region: frankfurt
     branch: gcsp-poc-dev
     dockerfilePath: ./services/gcsp-api/Dockerfile
-    dockerContext: ./services/gcsp-api
+    dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
     healthCheckPath: /q/health/ready
     autoDeployTrigger: commit
     buildFilter:
       paths:
         - services/gcsp-api/**
+        - server/gcsp/policy/seed-v1.json
+        - server/gcsp/policy/reviewed/**
+        - server/gcsp/predict/records/policy-definitions.json
       ignoredPaths:
         - services/gcsp-api/README.md
         - services/gcsp-api/render-service.proposed.yaml
@@ -44,6 +47,31 @@
       #   sync: false
       # - key: GCSP_POLICY_VERSION
       #   sync: false
+      # Notifications (FUCQ-469): unset GCSP_MAIL_TRANSPORT keeps mail captured; brevo needs the rest.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   sync: false
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
+      # Vehicle evidence (FUCQ-459, proposed for GC): provider none until the retained files are in the image or on a disk.
+      # The paths below are absolute in the container; see README "Artifacts and hosting" for what to copy.
+      - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
+        value: none            # lookup | alternate-offline once the files below exist
+      # - key: GCSP_VEHICLE_EVIDENCE_STORE
+      #   value: /app/data/vehicle-evidence/fleet-source.v1
+      # - key: GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR
+      #   value: /app/data/vehicle-evidence
+      # - key: GCSP_VEHICLE_ASSETS_ROOT
+      #   value: /app
+      # - key: GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE   # alternate-offline only
+      #   sync: false
+      # - key: GCSP_VEHICLE_IMAGES_PUBLIC             # opt in only if images must load without a bearer
+      #   value: "false"
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS
