@@ -5728,13 +5728,35 @@
       "id": "FUCQ-421",
       "jira_observed_at": "2026-11-12T15:48:24.304Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T02:04:07Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "revision",
+          "status": "complete",
+          "title": "Run revision migration and PostgreSQL adapter with legacy fallback",
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "Lead review of 0010 triggers and postgres.js revision probe at c4052f3c; native PG17 trigger probe (insert/update/delete/truncate/zero-row) and contract 97/3 pre-existing F71"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Native revision regression: probe cost, two-instance concurrency, rollback, replay, reset, legacy init",
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "gcsp-postgres-run-revision.test.js 4/4 native PG17 at c6430b2c; two mutations (probe ignores run revision; trigger skips UPDATE) each fail it"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL 17 and delivery record",
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "validate on merged tree fb31d459: contract 97 pass/3 F71 pre-existing (same on base), disconnect 7/7, read-window 4/4; affected callers identical to base; story Result block"
+        }
+      ],
       "status": "To Do",
       "title": "Maintain a transactional run revision for freshness checks",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-421",
       "workers": []
     },
@@ -7159,6 +7181,53 @@
       ]
     },
     {
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-13-004",
+      "id": "FUCQ-436",
+      "observed_at": "2026-11-14T02:43:05Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Local static artifact checkpoint retained. Java packaging47f127c4 adds documentsnone and disabled brevo/mail/5s templates;18/18focusedchecks and Sulley independentPASS. Hosted release/identity gates remain open; see14November delivery record.",
+          "id": "artifact",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "status": "complete",
+          "title": "Independent-static-Angular-artifact-and-required-assets"
+        },
+        {
+          "evidence": "Public schema/producer unchanged and proven compatible with actual integrated foundation via root CLI; backend settings excluded. Actual hosted cache/CSP/referrer and identity/dynamic-offer flow remain incomplete.",
+          "id": "runtime",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "status": "in-progress",
+          "title": "Public-config-and-route-cache-CSP-referrer-policy"
+        },
+        {
+          "evidence": "Actual Angular foundation is published and locally composed; Keycloak unhosted/unregistered, real Java/OIDC/CORS/PG/Safari/private/Render gates unavailable. Medium F486 route recovery remains separate backlog, source-verified/not browser reproduced, no repair scope or new merge dependency. Original AC unchecked.",
+          "id": "integration",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Build and publish the static GCSP artifact",
+      "tracker_observed_at": "2026-11-13T22:23:44Z",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
+      "workers": [
+        {
+          "name": "Rapunzel",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T02:43:05.896143+00:00",
+          "expires_at": "2026-11-14T02:43:05.896143+00:00",
+          "source": "Sulley PASS47f127c4 documents/mail packaging; originalAC/nativeInProgress/lease unchanged; dispatcher owns integration",
+          "status": "reviewed documents/mail checkpoint; observation expired"
+        }
+      ]
+    },
+    {
       "assignee": "",
       "branch": "dev/DEV-2026-11-13-GC-006",
       "id": "FUCQ-413",
@@ -7203,53 +7272,6 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
-        }
-      ]
-    },
-    {
-      "assignee": "Gary Carter",
-      "branch": "dev/DEV-2026-11-13-004",
-      "id": "FUCQ-436",
-      "observed_at": "2026-11-14T02:43:05Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Local static artifact checkpoint retained. Java packaging47f127c4 adds documentsnone and disabled brevo/mail/5s templates;18/18focusedchecks and Sulley independentPASS. Hosted release/identity gates remain open; see14November delivery record.",
-          "id": "artifact",
-          "observed_at": "2026-11-13T23:31:36Z",
-          "status": "complete",
-          "title": "Independent-static-Angular-artifact-and-required-assets"
-        },
-        {
-          "evidence": "Public schema/producer unchanged and proven compatible with actual integrated foundation via root CLI; backend settings excluded. Actual hosted cache/CSP/referrer and identity/dynamic-offer flow remain incomplete.",
-          "id": "runtime",
-          "observed_at": "2026-11-13T23:31:36Z",
-          "status": "in-progress",
-          "title": "Public-config-and-route-cache-CSP-referrer-policy"
-        },
-        {
-          "evidence": "Actual Angular foundation is published and locally composed; Keycloak unhosted/unregistered, real Java/OIDC/CORS/PG/Safari/private/Render gates unavailable. Medium F486 route recovery remains separate backlog, source-verified/not browser reproduced, no repair scope or new merge dependency. Original AC unchecked.",
-          "id": "integration",
-          "observed_at": "2026-11-13T23:31:36Z",
-          "status": "blocked",
-          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Build and publish the static GCSP artifact",
-      "tracker_observed_at": "2026-11-13T22:23:44Z",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
-      "workers": [
-        {
-          "name": "Rapunzel",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-14T02:43:05.896143+00:00",
-          "expires_at": "2026-11-14T02:43:05.896143+00:00",
-          "source": "Sulley PASS47f127c4 documents/mail packaging; originalAC/nativeInProgress/lease unchanged; dispatcher owns integration",
-          "status": "reviewed documents/mail checkpoint; observation expired"
         }
       ]
     }

@@ -34,6 +34,7 @@ const unavailable = () => result('unavailable', { reason: 'database-unavailable'
 const invalid = (code, field) => result('invalid', { code, reasons: [{ field, reason: 'Invalid backend configuration' }] });
 const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[key]));
 const EVIDENCE_BATCH_DIGESTS = 500;
+const REVISION_MIGRATION = '0010';
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
@@ -49,7 +50,7 @@ export function createPostgresRepository(options = {}) {
     ? result('conflict', { reason: error.code === '23505' ? 'database-constraint-conflict' : 'missing-reference', current: {} })
     : unavailable();
 
-  // Per table: all rows (runs) or this run's rows. Fingerprint: count and sum(version), which strictly rise on any write.
+  // Legacy fingerprint per table: all rows (runs) or this run's rows, as count and sum(version), which rise on any write.
   const scopeSql = (context, table) => table === 'runs' ? ''
     : context?.runId == null ? ' WHERE false' : ` WHERE run_id = ${pg.escapeLiteral(String(context.runId))}`;
   const union = (context, select) => FOUNDATION_TABLES.map((table) => select(pg.escapeLiteral(table), `${tableName(table)}${scopeSql(context, table)}`)).join(' UNION ALL ');
@@ -86,9 +87,20 @@ export function createPostgresRepository(options = {}) {
     }
     return { sql: parts.join(' UNION ALL '), parameters };
   };
+  // FUCQ-421: with 0010 applied, freshness is the runs revision plus this run's revision, read by primary key.
+  const revisionSql = (context) => {
+    const scopes = ['runs', ...(context?.runId == null ? [] : [`run:${context.runId}`])].map((scope) => pg.escapeLiteral(scope));
+    return `SELECT 'revision' AS t, coalesce(max(revision) FILTER (WHERE scope = 'runs'), 0) AS runs, ${scopes[1] ? `coalesce(max(revision) FILTER (WHERE scope = ${scopes[1]}), 0)` : 'NULL::bigint'} AS run FROM ${tableName('repository_revisions')} WHERE scope IN (${scopes.join(', ')})`;
+  };
+  let revisions = false;
+  const probeSql = (context) => revisions ? revisionSql(context) : fingerprintSql(context);
   const lockSql = (context) => `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`)}, 0))`;
 
   const fingerprintOf = (rows) => {
+    if (revisions) {
+      const [row] = rows; if (row?.t !== 'revision') throw new Error('fingerprint-incomplete');
+      return `revision:${BigInt(row.runs)}:${row.run == null ? '-' : BigInt(row.run)}`;
+    }
     const seen = new Map(rows.filter((row) => row.n != null).map(({ t, n, v }) => [t, `${t}:${BigInt(n)}:${BigInt(v)}`]));
     return FOUNDATION_TABLES.map((table) => seen.get(table) ?? (() => { throw new Error('fingerprint-incomplete'); })()).join('|');
   };
@@ -140,12 +152,15 @@ export function createPostgresRepository(options = {}) {
     if (cache.size > 4) cache.delete(cache.keys().next().value);
   };
   // After an own commit, a runs-only entry (the current-run read) takes the committed runs; other run scopes reload.
-  const refreshOthers = (key, runs) => {
+  // Revisions: a runs-only entry takes the committed runs revision and keeps its own run part (same run: the committed one).
+  const refreshOthers = (key, runs, committed) => {
     for (const [other, entry] of [...cache]) {
       if (other === key) continue;
       if (entry.selection?.table !== 'runs') { cache.delete(other); continue; }
       const state = sealState({ ...entry.state, tables: { ...entry.state.tables, runs } });
-      cache.set(other, { fingerprint: localFingerprint(state), state, selection: entry.selection, trustedUntil: until() });
+      const fingerprint = !revisions ? localFingerprint(state) : JSON.parse(other)[0] === JSON.parse(key)[0] ? committed
+        : `revision:${committed.split(':')[1]}:${entry.fingerprint.split(':')[2]}`;
+      cache.set(other, { fingerprint, state, selection: entry.selection, trustedUntil: until() });
     }
   };
 
@@ -202,6 +217,13 @@ export function createPostgresRepository(options = {}) {
   }
   // A cache hit matched the locked probe, so its committed fingerprint is the probe plus the write set's deltas.
   const advance = (fingerprint, context, mutations) => {
+    // Triggers add one per scope per transaction; a concurrent runs bump only makes this lower, so the next probe reloads.
+    if (revisions) {
+      const [, runs, own] = fingerprint.split(':');
+      const touched = (test) => mutations.some(test) ? 1n : 0n;
+      const run = own === '-' ? '-' : BigInt(own) + touched(({ table, key }) => table !== 'runs' && key.runId === context?.runId);
+      return `revision:${BigInt(runs) + touched(({ table }) => table === 'runs')}:${run}`;
+    }
     const parts = new Map(fingerprint.split('|').map((part) => { const [t, n, v] = part.split(':'); return [t, [BigInt(n), BigInt(v)]]; }));
     for (const { type, table, key, row, expectedVersion } of mutations) {
       if (table !== 'runs' && (context?.runId == null || key.runId !== context.runId)) continue;
@@ -228,9 +250,9 @@ export function createPostgresRepository(options = {}) {
         let begun = false;
         try {
           begun = true;
-          // A scoped write with no cache entry cannot hit, so it takes the lock without the fingerprint probe.
-          const lockOnly = write && scope && !cache.has(key);
-          const probe = await client.query(lockOnly ? lockSql(context) : `${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
+          // A legacy scoped write with no cache entry cannot hit, so it skips the wide probe; the revision probe is a key read.
+          const lockOnly = !revisions && write && scope && !cache.has(key);
+          const probe = await client.query(lockOnly ? lockSql(context) : `${lockSql(context)}; ${probeSql(context)}${write ? '' : '; COMMIT'}`);
           const fingerprint = lockOnly ? undefined : fingerprintOf(probe[2].rows);
           const hit = lockOnly ? undefined : cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
             : complete?.fingerprint === fingerprint ? complete : undefined;
@@ -267,14 +289,16 @@ export function createPostgresRepository(options = {}) {
             // Partial state is never cached; trusted reads must not serve pre-commit rows.
             await client.query('COMMIT'); begun = false;
             cache.delete(key);
-            if (trustMs) refreshOthers(key, state.tables.runs);
+            if (trustMs) refreshOthers(key, state.tables.runs, revisions ? advance(fingerprint, context, mutations) : undefined);
             return outcome;
           }
           // Only resetRun writes outside the cached scope (the next run's seed), so only it needs a filtered copy.
           const after = mutations.some(({ table, key: { runId } }) => table !== 'runs' && runId !== context?.runId) ? scopedCopy(state, context) : committedState(before, state, mutations);
           await client.query('COMMIT'); begun = false;
-          remember(key, { fingerprint: hit ? advance(fingerprint, context, mutations) : localFingerprint(after), state: after, trustedUntil: until() });
-          if (trustMs) refreshOthers(key, after.tables.runs);
+          // Revisions: the locked probe plus this commit's trigger bumps, whether or not the cache hit.
+          const committed = revisions || hit ? advance(fingerprint, context, mutations) : localFingerprint(after);
+          remember(key, { fingerprint: committed, state: after, trustedUntil: until() });
+          if (trustMs) refreshOthers(key, after.tables.runs, committed);
           return outcome;
         } catch (error) {
           if (begun) await client.query('ROLLBACK').catch(() => {});
@@ -308,6 +332,8 @@ export function createPostgresRepository(options = {}) {
       }
       if (typeof pool.connect !== 'function') return invalid('invalid-pool', 'pool');
       const status = options.migrate === false ? await migrationStatus(pool, migrationOptions) : await migrate(pool, migrationOptions);
+      // Without 0010 applied (a deferred migration) the legacy fingerprint stays the freshness check.
+      revisions = status.status === 'ok' && status.value.appliedVersions.includes(REVISION_MIGRATION);
       return status.status === 'ok' ? ok({ provider: 'postgresql', migrationStatus: status.value }) : status;
     },
     migrationStatus() { return migrationStatus(pool, migrationOptions); },

@@ -65,7 +65,8 @@ async function fixture() {
       if (sql.includes('to_regclass')) return { rows: [{ name: 'public.schema_migrations' }] };
       if (sql.includes('SELECT version, filename, checksum')) return { rows: migrations };
       const fingerprints = FOUNDATION_TABLES.map((t) => ({ t, n: '0', v: '0', data: null }));
-      if (sql.startsWith('BEGIN; SELECT')) return [{ rows: [] }, { rows: [] }, { rows: fingerprints }, { rows: [] }];
+      const probe = sql.includes('repository_revisions') ? [{ t: 'revision', runs: '0', run: '0' }] : fingerprints;
+      if (sql.startsWith('BEGIN; SELECT')) return [{ rows: [] }, { rows: [] }, { rows: probe }, { rows: [] }];
       if (sql.startsWith("SELECT '")) return { rows: sql.includes('count(*)') ? fingerprints : [] };
       if (sql.includes('AS "seedDigest"')) return { rows: [{ policyVersion: seed.policyVersion, seedDigest }] };
       if (sql.startsWith('SELECT data')) {
