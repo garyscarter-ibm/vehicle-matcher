@@ -137,3 +137,55 @@ The dispatcher guarded-published the API checkpoint
 resource receipts/source identities; parent receipt is
 `.claude/fucq441-parent-resource-api-client.json`. No application sync is needed
 for the reported disjoint allocation/clock/repository/claim changes.
+
+## Reviewed native editor checkpoint
+
+Road Runner delivered the native shared editor store, compact Account preferences
+and contract-gated current-car rating, full preferences screen, source preview,
+additive category/rating kit presenters and gallery/catalogue, plus guarded lazy
+route. No Account owner file changed. Current-car preserve/change feedback is
+retained and read back; the source has no additional feedback editing controls.
+The shared store clears on trusted subject/environment/run/employee changes,
+cancels requests and checks captured context before sending, coalesces supported
+edits and versions, and retains explicit retry IDs. Full save retains partial draft
+success separately from confirmation and readback success/failure.
+
+The lead reviewed all 20 changed/new files, source service/callers and selected
+checks. Review found and returned original-scope gaps: preview media/line/allowance/
+units/check grouping/unknown count, adoption of newer final-readback versions, and
+hidden readback failure copy. The same implementer corrected these, preserving
+source order and exact supplied display fields without suitability calculations.
+Clean readback now adopts authoritative versions/content/consent; concurrent local
+edits survive and require explicit refresh when readback has advanced.
+
+Prior scoped run: client 10, store 13, components 6, all passing (29/29).
+The initial compiler failure and successful iteration receipts remain retained.
+Correction command: `npm --prefix apps/gcsp-web test -- --include=src/app/preferences/brief-editor.store.spec.ts --include=src/app/preferences/preferences.component.spec.ts`.
+Revision 1 ran 24/25; a new assertion expected different source copy. Revision 2
+passed 25/25; final copy review prompted a further warning regression. Revision 3
+passed 25/25 (store 16, components 9), with `git diff --check` passing.
+The client source/tests/validators are unchanged since their separate 10/10 pass;
+its fixture functions match their earlier hash after normalizing the type-only
+BriefPreview import added for the representative presentation fixture.
+
+Final revision receipt/source identity:
+`.claude/test-runs/fucq441/editor-feedback/revision-final-receipt.json`,
+`6e8a4185fca7431cb572a43f997c0f8a6d01a5a5db084c767a022376fcdd5fdc`.
+Lead verification: `editor-feedback/lead-revision-verification.json` under that
+receipt root. All edited/source/check hashes matched; all three revision scratch
+roots and owned links are absent; borrowed dependency/runtime identities match.
+Final run 4.21 seconds, RSS 878,854,144 bytes and scratch 9,961,696 bytes.
+Earlier 29/29 evidence is retained for its own prior tree, not relabelled as a new run.
+
+Stable tested exports for the Account owner:
+- `AccountPreferencesComponent` from `preferences/account-preferences.component.ts`,
+  selector `gcsp-account-preferences`, optional `carDescription: string`.
+- `CurrentCarRatingComponent` from `preferences/current-car-rating.component.ts`,
+  selector `gcsp-current-car-rating`, required `contractId: string` and optional
+  `carDescription: string`. It renders only for the exact server current contract.
+- Both inject the root `BriefEditorStore`; do not add an Account-local provider.
+
+These scoped proofs do not complete native acceptance. Buddy command controls,
+production AOT/boundaries and actual rendered/Java/OIDC/native PostgreSQL/reload/
+restart/Safari/private/accessibility/hosted checks remain open. Both original AC
+remain unchecked and Story In Progress.

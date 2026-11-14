@@ -241,6 +241,10 @@ export interface BriefFailure {
   readonly code?: string;
   readonly reason?: string;
   readonly reasons?: unknown;
+  readonly buddy?: BuddyView;
+  readonly remaining?: number;
+  readonly considered?: number;
+  readonly minimumCategories?: number;
   readonly retryable?: boolean;
   readonly resource?: string | BriefResourceReference;
   readonly resourceType?: string;
@@ -306,5 +310,26 @@ export interface BriefEngagementValue {
   readonly briefVersion: number;
   readonly draftVersion: number;
   readonly buddy: BuddyView;
+  readonly [evidence: string]: unknown;
+}
+
+export interface BriefDecision {
+  readonly orderUuid: string;
+  readonly gateStatus: 'eligible' | 'ineligible' | 'needs-confirmation';
+  readonly reasons: readonly Readonly<Record<string, unknown>>[];
+  readonly tradeOffs: readonly Readonly<Record<string, unknown>>[];
+  readonly blockers: readonly Readonly<Record<string, unknown>>[];
+  readonly unknowns: readonly Readonly<Record<string, unknown>>[];
+  readonly versions: Readonly<Record<string, unknown>>;
+  readonly snapshot?: { readonly display?: Readonly<Record<string, unknown>>; readonly facts?: Readonly<Record<string, unknown>> };
+  readonly terms?: Readonly<Record<string, unknown>>;
+  readonly [evidence: string]: unknown;
+}
+export interface BriefPreview {
+  readonly state: 'recommendations' | 'no-stock' | 'no-viable-stock';
+  readonly eligibleCount: number;
+  readonly decisions: readonly BriefDecision[];
+  readonly recommendations: readonly BriefDecision[];
+  readonly versions: Readonly<Record<string, unknown>>;
   readonly [evidence: string]: unknown;
 }

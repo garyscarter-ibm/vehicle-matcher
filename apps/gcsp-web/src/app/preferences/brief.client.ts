@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
+import { accountProjection, accountState, briefShape, buddyView, previewShape, ratingView, sameView } from './brief.validation';
 import { AuthPort } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
 import {
   BriefCurrentValue,
+  BriefPreview,
   BriefDraftRecord,
   BriefEditor,
   BriefFailure,
@@ -14,6 +16,8 @@ import {
   EditableBrief,
   BriefVersioned,
 } from './brief.types';
+
+export interface BriefRequestOptions { readonly signal?: AbortSignal; readonly expectedContextKey?: string }
 
 export interface BriefVersionCommand {
   readonly commandId: string;
@@ -88,7 +92,7 @@ function versionCommand(value: unknown): value is BriefVersionCommand {
 
 function editableBrief(value: unknown): value is EditableBrief {
   return hasOnlyKeys(value, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain'])
-    && value['schemaVersion'] === 1 && object(value['preferences']) && object(value['essentials']);
+    && briefShape(value);
 }
 
 function validPreview(value: unknown): value is BriefPreviewInput {
@@ -150,9 +154,14 @@ function readEditor(value: unknown): value is BriefEditor {
     || typeof context['slider']['maximum'] !== 'number' || context['slider']['minimum'] > context['slider']['maximum']
     || !object(context['knownFacts']) || !object(context['permissions']) || !text(context['policyVersion'])
     || !text(context['contextVersion']) || !object(context['practicalQuestions']) || !text(context['unconfirmedLabel'])
-    || !Array.isArray(context['assumptions']) || !object(context['accountPreferences'])) return false;
+    || !Array.isArray(context['assumptions']) || !accountProjection(context['accountPreferences'])
+    || !Object.values(context['preferences']).every((d) => object(d) && text(d['label']) && ['slider', 'enum', 'boolean', 'number', 'string'].includes(String(d['type'])) && typeof d['editable'] === 'boolean' && (d['type'] !== 'enum' || Array.isArray(d['values'])))
+    || !Object.values(context['essentials']).every((d) => object(d) && text(d['type']) && text(d['operator']) && (d['unit'] === null || text(d['unit'])) && typeof d['editable'] === 'boolean')
+    || !Object.values(context['practicalQuestions']).every((q) => object(q) && text(q['label']) && Object.hasOwn(q, 'yes') && Object.hasOwn(q, 'no') && q['unknown'] === null)
+    || !Object.values(context['knownFacts']).every((f) => object(f) && Object.hasOwn(f, 'value') && f['editable'] === false)) return false;
   if (!object(initial) || !validEditableBrief(initial['brief']) || !revision(initial['briefVersion'])
-    || !revision(initial['draftVersion']) || !object(initial['accountPreferences'])
+    || !revision(initial['draftVersion']) || !accountState(initial['accountPreferences'])
+    || !ratingView(initial['currentCarRating']) || !sameView(initial['sameAgain']) || !buddyView(initial['buddy'])
     || !(initial['currentCarRating'] === null || object(initial['currentCarRating'])
       && (initial['currentCarRating']['value'] === null || Number.isSafeInteger(initial['currentCarRating']['value']))
       && text(initial['currentCarRating']['contractId']))
@@ -167,11 +176,13 @@ function readEditor(value: unknown): value is BriefEditor {
 
 function versionedBrief(value: unknown): value is BriefVersioned {
   return object(value) && value['schemaVersion'] === 1 && revision(value['briefVersion'])
-    && text(value['status']) && object(value['preferences']) && object(value['essentials']);
+    && text(value['status']) && briefShape(value);
 }
 
 function currentValue(value: unknown): value is BriefCurrentValue {
-  return object(value) && versionedBrief(value['brief']) && object(value['activity']) && object(value['validation']);
+  return object(value) && versionedBrief(value['brief']) && object(value['activity']) && ['canSearch', 'canHold', 'existingOffersUnaffected'].every((k) => typeof (value['activity'] as Record<string, unknown>)[k] === 'boolean')
+    && Array.isArray(value['activity']['existingOffers']) && object(value['validation']) && text(value['validation']['policyVersion'])
+    && Array.isArray(value['validation']['unknownEssentials']) && Array.isArray(value['validation']['assumptions']);
 }
 
 function historyValue(value: unknown): value is BriefHistoryValue {
@@ -183,7 +194,7 @@ function draftValue(value: unknown): value is BriefDraftRecord {
 }
 
 function preferenceSaveValue(value: unknown): value is BriefPreferenceSaveValue {
-  return object(value) && revision(value['briefVersion']) && revision(value['draftVersion']) && object(value['buddy']);
+  return object(value) && revision(value['briefVersion']) && revision(value['draftVersion']) && buddyView(value['buddy']) && accountState(value['accountPreferences']) && ratingView(value['currentCarRating']) && sameView(value['sameAgain']);
 }
 
 function parseFailure(value: unknown): BriefFailure | null {
@@ -192,9 +203,10 @@ function parseFailure(value: unknown): BriefFailure | null {
   for (const key of ['code', 'reason', 'action', 'operationId', 'resourceType', 'contractVersion']) {
     if (value[key] !== undefined && !text(value[key])) return null;
   }
-  for (const key of ['expectedVersion', 'currentVersion', 'currentBriefVersion', 'currentDraftVersion']) {
+  for (const key of ['expectedVersion', 'currentVersion', 'currentBriefVersion', 'currentDraftVersion', 'remaining', 'considered', 'minimumCategories']) {
     if (value[key] !== undefined && !revision(value[key])) return null;
   }
+  if (value['buddy'] !== undefined && !buddyView(value['buddy'])) return null;
   if (value['retryable'] !== undefined && typeof value['retryable'] !== 'boolean') return null;
   const current = value['current'];
   const currentVersions = value['currentVersions'];
@@ -206,6 +218,10 @@ function parseFailure(value: unknown): BriefFailure | null {
     ...(value['code'] === undefined ? {} : { code: value['code'] as string }),
     ...(value['reason'] === undefined ? {} : { reason: value['reason'] as string }),
     ...(value['reasons'] === undefined ? {} : { reasons: value['reasons'] }),
+    ...(value['buddy'] === undefined ? {} : { buddy: value['buddy'] as import('./brief.types').BuddyView }),
+    ...(value['remaining'] === undefined ? {} : { remaining: value['remaining'] as number }),
+    ...(value['considered'] === undefined ? {} : { considered: value['considered'] as number }),
+    ...(value['minimumCategories'] === undefined ? {} : { minimumCategories: value['minimumCategories'] as number }),
     ...(value['retryable'] === undefined ? {} : { retryable: value['retryable'] as boolean }),
     ...(resource === undefined ? {} : { resource: resource as string | BriefResourceReference }),
     ...(value['resourceType'] === undefined ? {} : { resourceType: value['resourceType'] as string }),
@@ -234,66 +250,77 @@ export class BriefClient {
   private readonly runtime = inject(RuntimeConfigService);
   private readonly fetcher = inject(PORTAL_FETCH);
 
-  readEditor(): Promise<BriefResult<BriefEditor>> { return this.read('/brief/editor', readEditor); }
-  readCurrent(): Promise<BriefResult<BriefCurrentValue>> { return this.read('/brief', currentValue); }
-  readHistory(): Promise<BriefResult<BriefHistoryValue>> { return this.read('/brief/history', historyValue); }
-  readDraft(): Promise<BriefResult<BriefDraftRecord>> { return this.read('/brief/draft', draftValue); }
+  readEditor(options: BriefRequestOptions = {}): Promise<BriefResult<BriefEditor>> { return this.read('/brief/editor', readEditor, options); }
+  readCurrent(options: BriefRequestOptions = {}): Promise<BriefResult<BriefCurrentValue>> { return this.read('/brief', currentValue, options); }
+  readHistory(options: BriefRequestOptions = {}): Promise<BriefResult<BriefHistoryValue>> { return this.read('/brief/history', historyValue, options); }
+  readDraft(options: BriefRequestOptions = {}): Promise<BriefResult<BriefDraftRecord>> { return this.read('/brief/draft', draftValue, options); }
 
-  preview(input: BriefPreviewInput): Promise<BriefResult<unknown>> {
-    return validPreview(input) && !carriesAuthority(input) ? this.post('/brief/preview', input, object) : Promise.resolve(invalidRequest);
+  preview(input: BriefPreviewInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefPreview>> {
+    return validPreview(input) && !carriesAuthority(input) ? this.post('/brief/preview', input, previewShape, options) : Promise.resolve(invalidRequest);
   }
 
-  savePreferences(input: BriefPreferencesInput): Promise<BriefResult<BriefPreferenceSaveValue>> {
+  savePreferences(input: BriefPreferencesInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefPreferenceSaveValue>> {
     return validPreferences(input) && !carriesAuthority(input)
-      ? this.post('/brief/preferences', input, preferenceSaveValue)
+      ? this.post('/brief/preferences', input, preferenceSaveValue, options)
       : Promise.resolve(invalidRequest);
   }
 
-  saveDraft(input: BriefDraftInput): Promise<BriefResult<BriefDraftRecord>> {
+  saveDraft(input: BriefDraftInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefDraftRecord>> {
     return validDraft(input) && validEditableBrief(input.brief)
-      ? this.post('/brief/draft', input, draftValue)
+      ? this.post('/brief/draft', input, draftValue, options)
       : Promise.resolve(invalidRequest);
   }
 
-  confirm(input: BriefConfirmInput): Promise<BriefResult<BriefCurrentValue>> {
+  confirm(input: BriefConfirmInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefCurrentValue>> {
     return validConfirm(input) && !carriesAuthority(input)
-      ? this.post('/brief/confirm', input, currentValue)
+      ? this.post('/brief/confirm', input, currentValue, options)
       : Promise.resolve(invalidRequest);
   }
 
-  engage(input: BriefVersionCommand): Promise<BriefResult<unknown>> { return this.command('/brief/engage', input); }
-  pauseSearch(input: BriefVersionCommand): Promise<BriefResult<unknown>> { return this.command('/brief/pause-search', input); }
-  resumeSearch(input: BriefVersionCommand): Promise<BriefResult<unknown>> { return this.command('/brief/resume-search', input); }
-  disengage(input: BriefVersionCommand): Promise<BriefResult<unknown>> { return this.command('/brief/disengage', input); }
+  engage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/engage', input, options); }
+  pauseSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/pause-search', input, options); }
+  resumeSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/resume-search', input, options); }
+  disengage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/disengage', input, options); }
 
-  changeAfterDecline(input: BriefDeclineChangeInput): Promise<BriefResult<BriefCurrentValue>> {
+  changeAfterDecline(input: BriefDeclineChangeInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefCurrentValue>> {
     return validDeclineChange(input) && !carriesAuthority(input)
-      ? this.post('/brief/change-after-decline', input, currentValue)
+      ? this.post('/brief/change-after-decline', input, currentValue, options)
       : Promise.resolve(invalidRequest);
   }
 
-  private command(path: string, input: BriefVersionCommand): Promise<BriefResult<unknown>> {
-    return versionCommand(input) && !carriesAuthority(input) ? this.post(path, input, object) : Promise.resolve(invalidRequest);
+  private command(path: string, input: BriefVersionCommand, options: BriefRequestOptions): Promise<BriefResult<unknown>> {
+    return versionCommand(input) && !carriesAuthority(input) ? this.post(path, input, object, options) : Promise.resolve(invalidRequest);
   }
 
-  private async read<T>(path: string, validate: (value: unknown) => value is T): Promise<BriefResult<T>> {
-    return this.call(path, undefined, validate);
+  private async read<T>(path: string, validate: (value: unknown) => value is T, options: BriefRequestOptions): Promise<BriefResult<T>> {
+    return this.call(path, undefined, validate, options);
   }
 
-  private async post<T>(path: string, input: object, validate: (value: unknown) => value is T): Promise<BriefResult<T>> {
+  private async post<T>(path: string, input: object, validate: (value: unknown) => value is T, options: BriefRequestOptions): Promise<BriefResult<T>> {
     if (!validObjectPayload(input)) return invalidRequest;
-    return this.call(path, input, validate);
+    return this.call(path, input, validate, options);
   }
 
-  private async call<T>(path: string, input: object | undefined, validate: (value: unknown) => value is T): Promise<BriefResult<T>> {
+  private async call<T>(path: string, input: object | undefined, validate: (value: unknown) => value is T, options: BriefRequestOptions): Promise<BriefResult<T>> {
+    const cancelled = () => {
+      if (options.signal?.aborted) return true;
+      if (options.expectedContextKey === undefined) return false;
+      const state = this.auth.state();
+      return state.status !== 'ready' || JSON.stringify([state.context.subject, state.context.environmentId, state.context.runId, state.context.employeeId]) !== options.expectedContextKey;
+    };
+    if (cancelled()) return unavailable('brief-cancelled');
     let token: string | null;
     try { token = await this.auth.getAccessToken(); } catch { return AUTH_REQUIRED; }
+    if (cancelled()) return unavailable('brief-cancelled');
     if (!token || /\s/.test(token)) return AUTH_REQUIRED;
 
     let config;
     try { config = await this.runtime.load(); } catch { return unavailable('brief-config-unavailable'); }
 
+    if (cancelled()) return unavailable('brief-cancelled');
     const controller = new AbortController();
+    const abort = () => controller.abort();
+    options.signal?.addEventListener('abort', abort, { once: true });
     const timeout = setTimeout(() => controller.abort(), 10000);
     try {
       const response = await this.fetcher(`${config.apiBaseUrl}${path}`, {
@@ -329,6 +356,7 @@ export class BriefClient {
       return unavailable('brief-unavailable');
     } finally {
       clearTimeout(timeout);
+      options.signal?.removeEventListener('abort', abort);
     }
   }
 }
