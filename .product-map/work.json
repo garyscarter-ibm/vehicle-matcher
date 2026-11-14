@@ -6847,7 +6847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T02:34:03Z",
+      "observed_at": "2026-11-14T03:10:51Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -6864,14 +6864,16 @@
         },
         {
           "id": "s2-planning",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Read, request, confirmation progress and proposed-change acceptance on native PostgreSQL",
-          "observed_at": "2026-11-14T02:34:03Z"
+          "observed_at": "2026-11-14T03:10:51Z",
+          "evidence": "Lead-reviewed ca709d85 + 97697720: AppointmentService read/request/accept/tick/startup reconcile on native PG17; 54 appointments tests incl. uncertain/lost/hang/refused, ownership, restart with new pool, run isolation, fixed statement count; ./mvnw -B verify 196/196"
         },
         {
           "id": "s3-completion",
-          "status": "not-started",
-          "title": "Readiness-gated completion, outcome timing, startup reconcile-only"
+          "status": "in-progress",
+          "title": "Readiness-gated completion, outcome timing, startup reconcile-only",
+          "observed_at": "2026-11-14T03:10:51Z"
         },
         {
           "id": "s4-http",
