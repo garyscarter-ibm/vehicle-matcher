@@ -92,6 +92,26 @@ reads the seed (validated once, kept for the process), so the default profile ne
 `src/test/resources/policy-parity/cases.json` (`node services/gcsp-api/src/test/parity/policy-parity.mjs` from the
 repository root; needs `server/node_modules`) and `PolicyParityTest` replays every case without Node.
 
+### Publication and activation (FUCQ-457 slice 2)
+
+`PolicyService.publishPolicyVersion(Principal, JsonNode changeSet)` ports the Node publish rules (`PolicyPublication`) and
+writes through `TransactionRunner` as command `policy.publish` (the change set's `commandId` is the idempotency key).
+There are no HTTP endpoints in this slice. With persistence on, `PostgresPolicySource` replaces the file source:
+tables `policy_documents` (content-addressed by SHA-256 of canonical JSON, immutable), `policy_versions` (per run,
+immutable) and `policy_run_activation` (version CAS), added by `V2__policy_versions.sql`. A run's base version is
+copied from the retained file on its first read, so edits to the file reach new runs only. `PolicyActivation.activate`
+records the version in force at the clock's now and `activatedPolicyVersion(env, run)` reads it back.
+
+- Role seam: `PolicyAuthority.mayPublish` requires the `greg` role (`forbidden`, code `role-required`); a principal whose
+  environment differs from `gcsp.environment-id` is `forbidden` with code `environment-mismatch`. Integration may replace it.
+- Clock: `PolicyClock.now(RunContext)` defaults to the wall clock (`WallPolicyClock`). The presenter demo clock arrives
+  in a later story and replaces the bean.
+- Conflict code: a reused `commandId` with different input is `conflict` / `command-input-changed` (the persistence
+  runner's code), replacing Node's `idempotency-input-changed`.
+- The file source stays read-only: publication is `invalid` / `unsupported-operation`, as in Node.
+- `principal.policyVersion` is still the configured interim value; consumers wanting the run's activated version call
+  `activatedPolicyVersion`.
+
 ## Endpoints
 
 | Path | Result |

@@ -8,7 +8,9 @@ import gcsp.api.policy.PolicyVersion.Cell;
 import gcsp.api.policy.PolicyVersion.Compiled;
 import gcsp.api.policy.PolicyVersion.Row;
 import gcsp.api.policy.PolicyVersion.Scheme;
+import gcsp.api.identity.Principal;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -39,10 +41,29 @@ public class PolicyService {
 
     private final PolicySource source;
     private volatile Snapshot last;
+    private volatile PolicyPublisher publisher;
+
+    @Inject
+    Instance<PolicyPublisher> publishers;
 
     @Inject
     public PolicyService(PolicySource source) {
         this.source = source;
+    }
+
+    /** Plain (non-CDI) wiring: the publisher this service delegates publishPolicyVersion to. */
+    public PolicyService withPublisher(PolicyPublisher publisher) {
+        this.publisher = publisher;
+        return this;
+    }
+
+    /**
+     * Publishes a successor policy version for the principal's run (greg role), then activates the run. Without
+     * persistence the file source is read-only and the outcome is invalid/unsupported-operation.
+     */
+    public PolicyResult publishPolicyVersion(Principal principal, JsonNode changeSet) {
+        PolicyPublisher selected = publisher != null ? publisher : publishers == null ? null : publishers.get();
+        return selected == null ? PolicyPublisher.unsupported() : selected.publish(principal, changeSet);
     }
 
     private static boolean text(String value) {

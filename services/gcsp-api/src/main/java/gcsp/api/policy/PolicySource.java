@@ -7,4 +7,8 @@ import java.util.List;
 public interface PolicySource {
 
     List<JsonNode> loadVersions(String runId) throws PolicySourceException;
+
+    /** Drops anything cached for the run; the next load re-checks the store. */
+    default void invalidate(String runId) {
+    }
 }
