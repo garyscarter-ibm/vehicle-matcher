@@ -103,7 +103,7 @@ repository root; needs `server/node_modules`) and `PolicyParityTest` replays eve
 writes through `TransactionRunner` as command `policy.publish` (the change set's `commandId` is the idempotency key).
 There are no HTTP endpoints in this slice. With persistence on, `PostgresPolicySource` replaces the file source:
 tables `policy_documents` (content-addressed by SHA-256 of canonical JSON, immutable), `policy_versions` (per run,
-immutable) and `policy_run_activation` (version CAS), added by `V2__policy_versions.sql`. A run's base version is
+immutable) and `policy_run_activation` (version CAS), added by `V457_1__policy_versions.sql`. A run's base version is
 copied from the retained file on its first read, so edits to the file reach new runs only. `PolicyActivation.activate`
 records the version in force at the clock's now and `activatedPolicyVersion(env, run)` reads it back.
 
