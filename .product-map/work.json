@@ -6255,17 +6255,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-442",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Browse released stock and inspect an exact vehicle",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-443",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -7327,6 +7316,57 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-442",
+      "observed_at": "2026-11-14T07:43:28Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Browse released stock and inspect an exact vehicle",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442",
+      "branch": "dev/DEV-2026-11-13-010",
+      "workers": [
+        {
+          "id": "01a1d901-2715-7062-8602-8b96ff614b2e",
+          "name": "Emmet",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T07:43:27.751554+00:00",
+          "expires_at": "2026-11-14T08:13:27.751554+00:00",
+          "source": "direct active lead observation; claimed Story delegated by dispatcher"
+        }
+      ],
+      "slices": [
+        {
+          "id": "typed-projection",
+          "status": "in-progress",
+          "title": "Typed-source-backed-exact-stock-projection",
+          "observed_at": "2026-11-14T07:43:28Z"
+        },
+        {
+          "id": "browse-state",
+          "status": "not-started",
+          "title": "Browse-history-and-detail-state"
+        },
+        {
+          "id": "view-parity",
+          "status": "not-started",
+          "title": "Native-Angular-view-parity"
+        },
+        {
+          "id": "review-proof",
+          "status": "not-started",
+          "title": "Selected-proof-and-independent-review"
+        },
+        {
+          "id": "java-integration",
+          "status": "not-started",
+          "title": "Actual-Java-and-journey-integration"
         }
       ]
     }
