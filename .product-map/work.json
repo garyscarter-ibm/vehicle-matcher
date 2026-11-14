@@ -6733,7 +6733,7 @@
     {
       "assignee": "",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-14T07:33:53Z",
+      "observed_at": "2026-11-14T07:46:40Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve offer links under OIDC ownership",
@@ -6750,13 +6750,16 @@
         },
         {
           "id": "postgres",
-          "status": "not-started",
-          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof"
+          "status": "complete",
+          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
+          "observed_at": "2026-11-14T07:46:40Z",
+          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation"
+          "status": "in-progress",
+          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T07:46:40Z"
         }
       ]
     },

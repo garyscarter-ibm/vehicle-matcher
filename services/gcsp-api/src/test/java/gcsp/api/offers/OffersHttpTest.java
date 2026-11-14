@@ -110,6 +110,14 @@ class OffersHttpTest {
     }
 
     @Test
+    void theEmailLinkEncodingResolvesToTheOwnersOffer() throws Exception {
+        // The client must not re-encode: the link carries %3A exactly as NotificationIntent builds it.
+        given().urlEncodingEnabled(false).header("Authorization", "Bearer " + ownerToken()).when()
+                .get(BASE + "/" + MINE.replace(":", "%3A")).then().statusCode(200)
+                .body("value.offerId", equalTo(MINE)).body("value.state", equalTo("pending"));
+    }
+
+    @Test
     void anotherEmployeeIsRefusedWithoutFacts() throws Exception {
         String body = get(token("sub-employee-b", "employee"), "/" + MINE).statusCode(403)
                 .body("status", equalTo("forbidden")).body("code", equalTo("offer-not-owned"))
