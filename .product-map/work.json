@@ -6277,17 +6277,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-444",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Show Buddy activity and search outcomes",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-445",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -7327,6 +7316,51 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-444",
+      "observed_at": "2026-11-14T05:12:58Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Show Buddy activity and search outcomes",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
+      "branch": "dev/DEV-2026-11-13-012",
+      "workers": [
+        {
+          "name": "Rocky",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-14T05:12:57.824036+00:00",
+          "expires_at": "2026-11-14T07:12:57.824036+00:00",
+          "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
+          "status": "planning"
+        }
+      ],
+      "slices": [
+        {
+          "id": "client",
+          "status": "not-started",
+          "title": "Scoped native activity and command client"
+        },
+        {
+          "id": "view",
+          "status": "not-started",
+          "title": "Server-projected Angular Buddy activity and controls"
+        },
+        {
+          "id": "proof",
+          "status": "not-started",
+          "title": "Selected state and desktop/narrow browser review"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected route Java OIDC PostgreSQL acceptance"
         }
       ]
     }
