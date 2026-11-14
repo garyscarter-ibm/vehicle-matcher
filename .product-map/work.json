@@ -6896,7 +6896,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T09:03:59Z",
+      "observed_at": "2026-11-14T09:23:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -6927,9 +6927,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration: base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T09:03:59Z"
+          "observed_at": "2026-11-14T09:23:07Z",
+          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
         }
       ]
     },
