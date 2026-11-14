@@ -1,5 +1,5 @@
 // Offline generator for the Java evidence goldens and fixture stores (FUCQ-459). One function per slice.
-// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1]
+// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1|s2]
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,6 +10,8 @@ import { createLocalVehicleEvidenceLookup } from '../../../../../server/gcsp/veh
 import { APPROVED_CORPUS_IMAGES } from '../../../../../server/gcsp/vehicle-evidence/registered-corpus-images.js';
 import { DEFAULT_ARTIFACT_ROOT, releaseLimits } from '../../../../../server/gcsp/vehicle-evidence/fleet-release.js';
 import { createPolicyService, FilePolicyProvider } from '../../../../../server/gcsp/policy/index.js';
+import { createVehicleEvidenceLookup, canonicalVehicleIdentifier } from '../../../../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
+import { createVehicleSnapshot } from '../../../../../server/vehicles/index.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../../..');
 const EVIDENCE = join(ROOT, 'services/gcsp-api/src/test/resources/evidence');
@@ -170,6 +172,330 @@ async function s1() {
   pretty(join(GOLDEN, 's1-stores.json'), out);
 }
 
-const slices = { s1 };
+// ---- s2: exact lookup and evidence projection -------------------------------------------------------------------
+const compact = (path, head, cases) => writeFileSync(path, `{${head}"cases":[\n${cases.map((c) => JSON.stringify(c)).join(',\n')}\n]}\n`);
+const ORDER = '1d736acd-674c-4bb1-8b6b-45dc56906442';
+const OTHER_ORDER = '6ff0feca-90cd-4e6f-903c-41fad1ef9b91';
+const CONTEXT = { runId: 'lookup-run', environmentId: 'lookup-test', principalId: 'fictional-reader', roles: ['employee'] };
+const b64 = (text) => Buffer.from(text).toString('base64');
+const OK_CONFIG = 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==';
+const storeRows = (store) => { const dir = selectedDir(join(REAL, store));
+  return { configurations: lines(join(dir, 'configurations.jsonl')).map((l) => JSON.parse(l)),
+    vins: existsSync(join(dir, 'vins.jsonl')) ? lines(join(dir, 'vins.jsonl')).map((l) => JSON.parse(l)) : [],
+    manifest: JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8')) }; };
+const registries = new Map();
+async function loadedRegistry(store) {
+  if (!registries.has(store)) { const registry = createRegistry(join(REAL, store)); await registry.load(); registries.set(store, registry); }
+  return registries.get(store);
+}
+const pathParts = (path) => path.split('.');
+function patchValue(target, path, apply) {
+  const parts = pathParts(path); let node = target;
+  for (const part of parts.slice(0, -1)) node = node?.[part];
+  if (node !== null && typeof node === 'object') apply(node, parts.at(-1));
+}
+// The flat registry result is patched by dotted paths; the Java test applies the same spec to its flat source.
+function applyRegistry(registry, spec) {
+  if (!spec) return registry;
+  const wrap = (read) => async (id) => {
+    if (spec.throws) throw new Error('registry failure');
+    if (spec.fixed) return structuredClone(spec.fixed);
+    const result = structuredClone(await read(id));
+    for (const [path, value] of spec.set ?? []) patchValue(result, path, (node, key) => { node[key] = structuredClone(value); });
+    for (const path of spec.delete ?? []) patchValue(result, path, (node, key) => { delete node[key]; });
+    return result;
+  };
+  return { getConfiguration: wrap((id) => registry.getConfiguration(id)), getVin: wrap((id) => registry.getVin(id)) };
+}
+function repositoryFor(spec) {
+  const state = { currentRun: 0, read: 0 };
+  if (!spec) return { repository: undefined, state };
+  const repository = {
+    async currentRun() {
+      const step = spec.currentRuns[Math.min(state.currentRun++, spec.currentRuns.length - 1)];
+      if (step.throws) throw new Error('run lookup failure');
+      return step.status === 'ok' ? { status: 'ok', value: { runId: step.runId } } : { status: step.status };
+    },
+    async read() {
+      state.read++;
+      if (spec.read.throws) throw new Error('stock read failure');
+      return spec.read.status === 'ok' ? { status: 'ok', value: spec.read.record } : { status: spec.read.status };
+    },
+  };
+  return { repository, state };
+}
+// Successful results are large; only cases marked `full` keep the whole result, the rest keep its canonical digest.
+async function runCase(entry) {
+  const registry = entry.store === null ? undefined : applyRegistry(await loadedRegistry(entry.store), entry.registry);
+  const { repository, state } = repositoryFor(entry.stock);
+  const result = JSON.parse(JSON.stringify(await createVehicleEvidenceLookup({ registry, repository }).resolve(entry.request, { context: entry.context })));
+  const { full, ...rest } = entry;
+  const kept = full || !['complete', 'partial'].includes(result.status) ? { result } : { resultStatus: result.status, resultDigest: inputDigest(result) };
+  const out = { ...rest, ...kept };
+  if (entry.stock) out.calls = { ...state };
+  return out;
+}
+function identifierVectors() {
+  const sig = (text) => b64(text);
+  const codes = (n) => Array.from({ length: n }, (_, i) => `C${String(i).padStart(3, '0')}`);
+  const wide = (n) => sig(`MODEL:${codes(n).join(',')}`);
+  const configurations = [REF_IDS.configurationId, OK_CONFIG, sig('T5MJ:FKSFU,P0300,S0337'), sig('T5MJ:S0337,P0300'), sig('t5mj:P0300'),
+    sig('T5MJ:p0300'), sig('T5MJ:P0300,P0300'), sig('T5MJ:P0300,'), sig('T5MJ:'), sig(':P0300'), sig('T5MJ:P0300:S0337'),
+    sig('A:B'), sig('AB:CD'), sig('A'.repeat(17) + ':P0300'), sig('T5MJ:' + 'P'.repeat(17)), sig('T5MJ:P0300 '), sig('T5MJ:P0300\n'),
+    wide(1), wide(255), wide(256), wide(257), sig('MODEL:' + codes(256).reverse().join(',')),
+    sig('T5MJ:P0300').replace(/=+$/, ''), sig('T5MJ:P0300') + '=', ` ${sig('T5MJ:P0300')}`, `${sig('T5MJ:P0300')} `, sig('T5MJ:P0300').toLowerCase(),
+    sig('T5MJ:P0300').replace('+', '-').replace('/', '_'), 'AAAA', 'A===', '====', '', 'x'.repeat(8192), 'QUJD'.repeat(2049), 'QUJD'.repeat(2048),
+    Buffer.from([0xff, 0xfe, 0x41, 0x42]).toString('base64'), Buffer.from([0xc3, 0x28, 0x41, 0x42]).toString('base64'),
+    Buffer.from('T5MJ:P0300é').toString('base64'), Buffer.from('T5MJ:P03\u0000').toString('base64'),
+    sig('T5MJ:P0300').slice(0, -2) + 'A=', sig('T5MJ:P03000').replace(/=+$/, '') + '==', null, undefined, 42, {}, []];
+  const vins = [REF_IDS.vin17, REF_IDS.vin17.toLowerCase(), `  ${REF_IDS.vin17.toLowerCase()}  `, `\t${REF_IDS.vin17}\n`,
+    ` ${REF_IDS.vin17} `, `﻿${REF_IDS.vin17}`, `​${REF_IDS.vin17}`, '  zzzzzzzz0zz000000  ', 'ZZZZZZZZ0ZZ000000',
+    'ZZZZZZZZIZ0000000', 'ZZZZZZZZOZ0000000', 'ZZZZZZZZQZ0000000', 'zzzzzzzziz0000000', 'ZZZZZZZZ0ZZ00000!', 'ZZZZZZZZ0ZZ 00000',
+    'ZZZZZZZZ0ZZ00000', 'ZZZZZZZZ0ZZ0000000', '1234567', '', '   ', 'ZZZZZZZZ0ZZ000000é', 'ZZZZZZZZ0ZZ00000ß', 'Z'.repeat(4096),
+    'Z'.repeat(4097), ' '.repeat(4090) + REF_IDS.vin17, ' '.repeat(4079) + REF_IDS.vin17, ' '.repeat(4080) + REF_IDS.vin17, ' '.repeat(4096) + REF_IDS.vin17, `\u2028${REF_IDS.vin17}\u2029`, null, undefined, 17, {}];
+  const stocks = [ORDER, OTHER_ORDER, ORDER.toUpperCase(), ORDER.replace('-4bb1-', '-1bb1-'), ORDER.replace('-8b6b-', '-cb6b-'),
+    ORDER.replace('-8b6b-', '-ab6b-'), ` ${ORDER}`, `${ORDER}\n`, '0000123', '', ORDER.slice(1), ORDER + '0', ORDER.replace(/-/g, ''),
+    '00000000-0000-4000-8000-000000000000', '00000000-0000-5000-8000-000000000000', 'g' + ORDER.slice(1), null, undefined, 7];
+  const out = [];
+  for (const [kind, ids] of [['configuration', configurations], ['vin', vins], ['stock', stocks], ['bogus', [ORDER]], [undefined, [ORDER]]]) {
+    for (const id of ids) {
+      const canonical = canonicalVehicleIdentifier(kind, id);
+      out.push({ kind: kind ?? null, id: id === undefined ? { undefined: true } : id, canonical });
+    }
+  }
+  return out;
+}
+const snapshotFor = (identity, over = {}) => createVehicleSnapshot({ sourceNamespace: 'synthetic:stock-generator.v1', identityKind: 'exact-stock',
+  sourceKeys: { stockId: ORDER }, snapshotVersion: 'stock-generator.v1:fixture-policy', observedAt: '2026-11-11T00:00:00.000Z',
+  display: { name: 'Exact generated stock' }, facts: { syntheticIdentity: { status: 'known', value: identity, unit: null,
+    provenance: { sourceRef: 'generator:stock-generator.v1', observedAt: '2026-11-11T00:00:00.000Z',
+      version: 'stock-generator.v1:fixture-policy', assurance: 'synthetic-scenario' } } }, ...over });
+
+async function s2() {
+  mkdirSync(GOLDEN, { recursive: true });
+  for (const name of readdirSync(GOLDEN)) if (/^s2-.*\.json$/.test(name)) rmSync(join(GOLDEN, name));
+  pretty(join(GOLDEN, 's2-identifiers.json'), { vectors: identifierVectors() });
+  const ref = storeRows(REF); const fleet = storeRows('fleet-source.v1'); const demo = storeRows('demo-fleet.v1');
+  const configRow = (rows, id) => rows.configurations.find((r) => r.configurationId === id);
+  const refRow = configRow(ref, REF_IDS.configurationId); const okRow = configRow(ref, OK_CONFIG);
+  const vin = ref.vins[0];
+  const supplementId = fleet.manifest.technicalSupplements[0].configurationId;
+  const partial = (rows, schema) => rows.configurations.find((r) => r.catalogue?.status === 'partial' && r.catalogue.schemaVersion === schema
+    && r.configurationId !== supplementId);
+  const fleetPartial2 = partial(fleet, '2');
+  const demoRow = demo.configurations.find((r) => r.configurationId !== supplementId && r.catalogue?.status === 'partial');
+  const fleetNone = fleet.configurations.find((r) => !r.catalogue?.status);
+  const cfg = (store, id, extra = {}) => ({ store, request: { kind: 'configuration', id }, context: null, full: true, ...extra });
+  const full = [
+    { name: 'ref configuration', ...cfg(REF, REF_IDS.configurationId) },
+    { name: 'ref second configuration (catalogue ok)', ...cfg(REF, OK_CONFIG) },
+    { name: 'ref VIN', store: REF, request: { kind: 'vin', id: vin.vin17 }, context: null, full: true },
+    { name: 'ref VIN lowercase with spaces', store: REF, request: { kind: 'vin', id: `  ${vin.vin17.toLowerCase()}  ` }, context: null, full: true },
+    { name: 'ref VIN with context', store: REF, request: { kind: 'vin', id: vin.vin17 }, context: CONTEXT, full: true },
+    { name: 'fleet reference configuration', ...cfg('fleet-source.v1', fleetNone.configurationId) },
+    { name: 'fleet VIN', store: 'fleet-source.v1', request: { kind: 'vin', id: vin.vin17 }, context: null, full: true },
+    { name: 'fleet catalogue ok', ...cfg('fleet-source.v1', OK_CONFIG) },
+    { name: 'fleet technical supplement', ...cfg('fleet-source.v1', supplementId) },
+    { name: 'fleet partial schema 2', ...cfg('fleet-source.v1', fleetPartial2.configurationId) },
+    { name: 'demo fleet partial', ...cfg('demo-fleet.v1', demoRow.configurationId) },
+    { name: 'demo fleet supplement', ...cfg('demo-fleet.v1', supplementId) },
+    { name: 'demo fleet VIN is absent', store: 'demo-fleet.v1', request: { kind: 'vin', id: vin.vin17 }, context: null },
+  ];
+  const pins = (store, id, kind, row, extra = {}) => {
+    const pin = (expected) => ({ store, request: { kind, id, expected }, context: null, ...extra });
+    return [
+      ['matching configurationId', { configurationId: row.configurationId }], ['mismatching configurationId', { configurationId: 'other' }],
+      ['matching market', { market: row.configuration.market }], ['mismatching market', { market: 'ZZ' }],
+      ['matching bodyType', { bodyType: row.configuration.body }], ['mismatching bodyType', { bodyType: 'Touring' }],
+      ['matching snapshotVersion', { snapshotVersion: row.snapshotVersion }], ['mismatching snapshotVersion', { snapshotVersion: 'other.v9' }],
+      ['matching profileId', { profileId: 'wba-430i-convertible-my2026' }], ['mismatching profileId', { profileId: 'not-the-retained-profile' }],
+      ['all matching', { configurationId: row.configurationId, market: row.configuration.market, bodyType: row.configuration.body,
+        snapshotVersion: row.snapshotVersion }],
+      ['unknown pin key', { colour: 'red' }], ['empty pin value', { market: '' }], ['empty pins', {}],
+    ].map(([label, expected]) => ({ name: `${kind} pin ${label}`, ...pin(expected) }));
+  };
+  full.push(...pins(REF, REF_IDS.configurationId, 'configuration', refRow), ...pins(REF, vin.vin17, 'vin', refRow));
+  const trio = (kind, missing, invalid) => [
+    { name: `${kind} not found`, store: REF, request: { kind, id: missing }, context: CONTEXT },
+    { name: `${kind} invalid`, store: REF, request: { kind, id: invalid }, context: CONTEXT },
+    { name: `${kind} unavailable (no registry or repository)`, store: null, request: { kind, id: missing }, context: CONTEXT },
+  ];
+  full.push(...trio('configuration', b64('UNKNOWN:CODE'), 'invalid'), ...trio('vin', 'ZZZZZZZZ0ZZ000000', 'invalid'),
+    ...trio('stock', OTHER_ORDER, 'invalid'));
+  full.push(
+    { name: 'null request', store: REF, request: null, context: null },
+    { name: 'string request', store: REF, request: 'configuration', context: null },
+    { name: 'array request', store: REF, request: [], context: null },
+    { name: 'extra request key', store: REF, request: { kind: 'vin', id: vin.vin17, provider: 'live', identityKind: 'real' }, context: null },
+    { name: 'expected not an object', store: REF, request: { kind: 'vin', id: vin.vin17, expected: 'x' }, context: null },
+    { name: 'expected null', store: REF, request: { kind: 'vin', id: vin.vin17, expected: null }, context: null },
+    { name: 'expected array', store: REF, request: { kind: 'vin', id: vin.vin17, expected: ['market'] }, context: null },
+    { name: 'expected value not text', store: REF, request: { kind: 'vin', id: vin.vin17, expected: { market: 7 } }, context: null },
+    { name: 'unknown kind', store: REF, request: { kind: 'bogus', id: vin.vin17 }, context: null },
+    { name: 'missing kind', store: REF, request: { id: vin.vin17 }, context: null },
+    { name: 'kind not text', store: REF, request: { kind: 7, id: vin.vin17 }, context: null },
+    { name: 'id not text', store: REF, request: { kind: 'vin', id: 17 }, context: null },
+    { name: 'stock without repository', store: REF, request: { kind: 'stock', id: ORDER }, context: CONTEXT },
+    { name: 'vin 7-character form is invalid', store: REF, request: { kind: 'vin', id: vin.vin17.slice(-7) }, context: null },
+    { name: 'vin unknown but well formed', store: REF, request: { kind: 'vin', id: 'WBA33DB08TC499999' }, context: null },
+    { name: 'configuration unknown but canonical', store: REF, request: { kind: 'configuration', id: b64('REF1:NOPE') }, context: null },
+    { name: 'no registry', store: null, request: { kind: 'configuration', id: REF_IDS.configurationId }, context: null });
+  const doubles = [
+    ['status unsupported', { fixed: { status: 'unsupported', failure: { message: 'private source detail' } } }],
+    ['status identity-mismatch', { fixed: { status: 'identity-mismatch', failure: { message: 'private source detail' } } }],
+    ['status not-found', { fixed: { status: 'not-found' } }], ['status invalid-input', { fixed: { status: 'invalid-input' } }],
+    ['status unknown value', { fixed: { status: 'conflict' } }], ['status missing', { fixed: {} }], ['registry throws', { throws: true }],
+    ['catalogue unsupported', { set: [['record.catalogue.status', 'unsupported']] }],
+    ['catalogue identity-mismatch', { set: [['record.catalogue.status', 'identity-mismatch']] }],
+    ['record configurationId differs', { set: [['record.configurationId', 'other']] }],
+    ['source without active', { delete: ['active'] }], ['source without images', { delete: ['images'] }],
+    ['image with wrong configuration', { set: [['images.0.configurationId', 'other']] }],
+    ['sourceRefs not an array', { set: [['record.sourceContext.sourceRefs', 'x']] }],
+    ['unresolvedFacts not an array', { delete: ['record.sourceContext.unresolvedFacts'] }],
+    ['no canonicalIdentity', { delete: ['record.canonicalIdentity'] }],
+    ['configuration not an object', { set: [['record.configuration', []]] }],
+    ['selected equipment known, definitions not an array', { set: [['record.catalogue.equipment.selected.state', 'known'], ['record.catalogue.equipment.definitions', {}]] }],
+    ['definition resolution with swatches', { set: [['definitionResolution', { state: 'resolved', resolvedCount: 2, selectedCount: 3, unresolved: [] }]] }],
+    ['definition resolution without resolved codes', { set: [['definitionResolution', { state: 'unknown', resolvedCount: 0, reason: 'definition-seed-unavailable' }]] }],
+    ['catalogue without equipment', { delete: ['record.catalogue.equipment'] }],
+    ['catalogue removed', { delete: ['record.catalogue'] }],
+    ['technical fact with wrong unit', { set: [['record.catalogue.facts.luggageNormal.unit', 'GALLONS']] }],
+    ['technical fact with unknown state', { set: [['record.catalogue.facts.luggageNormal.state', 'guess']] }],
+    ['configuration description values removed', { delete: ['record.configuration.model', 'record.configuration.derivative', 'record.configuration.body'] }],
+    ['configuration description values null', { set: [['record.configuration.model', null], ['record.configuration.derivative', 0]] }],
+  ];
+  for (const [label, registry] of doubles) {
+    const onVin = (r) => ({ ...r, registry: r.registry });
+    full.push({ name: `double ${label} (configuration)`, store: REF, registry, request: { kind: 'configuration', id: OK_CONFIG }, context: null });
+    full.push(onVin({ name: `double ${label} (vin)`, store: REF, registry, request: { kind: 'vin', id: vin.vin17 }, context: null }));
+  }
+  const vinDoubles = [
+    ['vin17 differs', { set: [['vehicle.vin17', 'ZZZZZZZZ0ZZ000000']] }], ['vehicle absent', { delete: ['vehicle'] }],
+    ['usage delivered-car', { set: [['vehicle.usage', 'delivered-car']] }], ['usage current-car', { set: [['vehicle.usage', 'current-car']] }],
+    ['usage unknown', { set: [['vehicle.usage', 'rental']] }], ['usage missing', { delete: ['vehicle.usage'] }],
+    ['identityKind real', { set: [['vehicle.identityKind', 'real']] }], ['configurationHash substituted', { set: [['vehicle.configurationHash', 'substituted']] }],
+    ['vehicle snapshotVersion differs', { set: [['vehicle.snapshotVersion', 'other.v9']] }], ['vehicle configurationId differs', { set: [['vehicle.configurationId', 'other']] }],
+    ['vehicle fields beyond the profile', { set: [['vehicle.registrationDate', '2026-01-01'], ['vehicle.generatorVersion', 'g1']] }],
+    ['vehicle profile without registry version', { delete: ['vehicle.profile.registryVersion'] }],
+  ];
+  for (const [label, registry] of vinDoubles) {
+    full.push({ name: `double ${label} (vin)`, store: REF, registry, request: { kind: 'vin', id: vin.vin17 }, context: null });
+  }
+  const image = (configurationId, role, over = {}) => ({ imageId: `image-${role}`, asset: `assets/gcsp-vehicle-evidence/${role}.webp`, configurationId,
+    role, fidelity: role, sourceKind: 'dated-snapshot', observedDate: '2026-11-01', ...over });
+  const imageDoubles = (id, label) => [
+    [`two images ${label}`, [image(id, 'representative-model'), image(id, 'representative-configuration')]],
+    [`image of another configuration ${label}`, [image('other', 'representative-model')]],
+    [`image role differs from fidelity ${label}`, [image(id, 'representative-model', { fidelity: 'representative-configuration' })]],
+    [`image role unsupported ${label}`, [image(id, 'hero', { fidelity: 'hero' })]],
+    [`image not an object ${label}`, ['image.webp']],
+    [`image with extra members ${label}`, [image(id, 'representative-model', { viewpoint: 'front', label: 'Front' })]],
+  ];
+  for (const [label, images] of imageDoubles(OK_CONFIG, '(configuration)')) {
+    full.push({ name: `double ${label}`, store: REF, registry: { set: [['images', images]] }, request: { kind: 'configuration', id: OK_CONFIG }, context: null, full: label.startsWith('two images') });
+  }
+  for (const [label, images] of imageDoubles(REF_IDS.configurationId, '(vin)')) {
+    full.push({ name: `double ${label}`, store: REF, registry: { set: [['images', images]] }, request: { kind: 'vin', id: vin.vin17 }, context: null });
+  }
+  const results = [];
+  for (const entry of full) results.push(await runCase(entry));
+  compact(join(GOLDEN, 's2-full.json'), '', results);
+
+  // Stock cases: one repository double per case, rebuilt in Java from the recorded spec.
+  const hashOf = (row) => inputDigest(row.configuration);
+  const identityFor = (row, over = {}) => ({ vehicleId: 'fictional-stock-car', identityKind: 'synthetic', originatingDatasetId: 'lookup-fixture',
+    snapshotVersion: row.snapshotVersion, configurationHash: hashOf(row), ...over });
+  const stockRow = (row, over = {}) => ({ runId: CONTEXT.runId, orderUuid: ORDER, orderNumber: '0000123', configurationId: row.configurationId,
+    corpusVersion: 'reference-corpus.v1', facts: { syntheticIdentity: identityFor(row) }, ...over });
+  const runOk = [{ status: 'ok', runId: CONTEXT.runId }];
+  const spec = (record, over = {}) => ({ currentRuns: runOk, read: { status: 'ok', record }, ...over });
+  const canonicalFacts = (row, identityOver = {}, snapshotOver = {}) => snapshotFor(identityFor(row, identityOver), snapshotOver);
+  const stockCase = (name, stock, over = {}) => ({ name, store: REF, request: { kind: 'stock', id: ORDER }, context: CONTEXT, stock,
+    full: name === 'legacy envelope' || name === 'canonical exact-stock snapshot', ...over });
+  const stocks = [
+    stockCase('legacy envelope', spec(stockRow(refRow))),
+    stockCase('legacy envelope, catalogue ok configuration', spec(stockRow(okRow))),
+    stockCase('legacy envelope, empty role list', spec(stockRow(refRow)), { context: { ...CONTEXT, roles: [] } }),
+    stockCase('canonical exact-stock snapshot', spec(stockRow(refRow, { facts: canonicalFacts(refRow) }))),
+    stockCase('canonical exact-stock snapshot, catalogue ok configuration', spec(stockRow(okRow, { facts: canonicalFacts(okRow) }))),
+    stockCase('legacy envelope with matching pins', spec(stockRow(refRow)), { request: { kind: 'stock', id: ORDER, expected: {
+      configurationId: refRow.configurationId, market: refRow.configuration.market, bodyType: refRow.configuration.body, snapshotVersion: refRow.snapshotVersion } } }),
+    stockCase('legacy envelope with mismatching pin', spec(stockRow(refRow)), { request: { kind: 'stock', id: ORDER, expected: { market: 'ZZ' } } }),
+    stockCase('legacy envelope with profile pin (no vehicle)', spec(stockRow(refRow)), { request: { kind: 'stock', id: ORDER, expected: { profileId: 'x' } } }),
+    stockCase('canonical, empty facts', spec(stockRow(refRow, { facts: { ...canonicalFacts(refRow), facts: {} } }))),
+    stockCase('canonical, wrong stockId', spec(stockRow(refRow, { facts: { ...canonicalFacts(refRow), sourceKeys: { stockId: OTHER_ORDER } } }))),
+    stockCase('canonical, legacy-record identityKind', spec(stockRow(refRow, { facts: { ...canonicalFacts(refRow), identityKind: 'legacy-record' } }))),
+    stockCase('canonical, unknown fact status', spec(stockRow(refRow, { facts: { ...canonicalFacts(refRow), facts: { syntheticIdentity: {
+      ...canonicalFacts(refRow).facts.syntheticIdentity, status: 'unknown', value: null } } } }))),
+    stockCase('canonical, substituted configurationHash', spec(stockRow(refRow, { facts: canonicalFacts(refRow, { configurationHash: 'substituted' }) }))),
+    stockCase('canonical, value not an object', spec(stockRow(refRow, { facts: { ...canonicalFacts(refRow), facts: { syntheticIdentity: {
+      ...canonicalFacts(refRow).facts.syntheticIdentity, value: 'x' } } } }))),
+    stockCase('legacy, configurationHash substituted', spec(stockRow(refRow, { facts: { syntheticIdentity: identityFor(refRow, { configurationHash: 'x' }) } }))),
+    stockCase('legacy, snapshotVersion differs', spec(stockRow(refRow, { facts: { syntheticIdentity: identityFor(refRow, { snapshotVersion: 'other.v9' }) } }))),
+    stockCase('legacy, identityKind real', spec(stockRow(refRow, { facts: { syntheticIdentity: identityFor(refRow, { identityKind: 'real' }) } }))),
+    stockCase('legacy, vehicleId missing', spec(stockRow(refRow, { facts: { syntheticIdentity: identityFor(refRow, { vehicleId: undefined }) } }))),
+    stockCase('legacy, originatingDatasetId empty', spec(stockRow(refRow, { facts: { syntheticIdentity: identityFor(refRow, { originatingDatasetId: '' }) } }))),
+    stockCase('legacy, hash of another configuration', spec(stockRow(okRow, { facts: { syntheticIdentity: identityFor(refRow) } }))),
+    stockCase('empty facts', spec(stockRow(refRow, { facts: {} }))),
+    stockCase('facts absent', spec(stockRow(refRow, { facts: undefined }))),
+    stockCase('wrong orderUuid on the row', spec(stockRow(refRow, { orderUuid: OTHER_ORDER }))),
+    stockCase('wrong runId on the row', spec(stockRow(refRow, { runId: 'next-run' }))),
+    stockCase('orderNumber too short', spec(stockRow(refRow, { orderNumber: '123' }))),
+    stockCase('orderNumber not digits', spec(stockRow(refRow, { orderNumber: '00001a3' }))),
+    stockCase('orderNumber absent', spec(stockRow(refRow, { orderNumber: undefined }))),
+    stockCase('configurationId empty', spec(stockRow(refRow, { configurationId: '' }))),
+    stockCase('configurationId absent from the corpus', spec(stockRow(refRow, { configurationId: 'no-such-configuration' }))),
+    stockCase('read ok without a row', { currentRuns: runOk, read: { status: 'ok', record: undefined } }),
+    stockCase('read not-found', { currentRuns: runOk, read: { status: 'not-found' } }),
+    stockCase('read invalid-input', { currentRuns: runOk, read: { status: 'invalid-input' } }),
+    stockCase('read unsupported', { currentRuns: runOk, read: { status: 'unsupported' } }),
+    stockCase('read identity-mismatch', { currentRuns: runOk, read: { status: 'identity-mismatch' } }),
+    stockCase('read conflict (unknown status)', { currentRuns: runOk, read: { status: 'conflict' } }),
+    stockCase('read throws', { currentRuns: runOk, read: { throws: true } }),
+    stockCase('run lookup not ok', { currentRuns: [{ status: 'not-found' }], read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run lookup throws', { currentRuns: [{ throws: true }], read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run changed before read', { currentRuns: [{ status: 'ok', runId: 'next-run' }], read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run changed between read and re-check', { currentRuns: [{ status: 'ok', runId: CONTEXT.runId }, { status: 'ok', runId: 'next-run' }],
+      read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run unavailable at re-check', { currentRuns: [{ status: 'ok', runId: CONTEXT.runId }, { status: 'not-found' }],
+      read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run lookup throws at re-check', { currentRuns: [{ status: 'ok', runId: CONTEXT.runId }, { throws: true }],
+      read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('run restored at re-check', { currentRuns: [{ status: 'ok', runId: CONTEXT.runId }, { status: 'ok', runId: CONTEXT.runId }],
+      read: { status: 'ok', record: stockRow(refRow) } }),
+    stockCase('missing context', spec(stockRow(refRow)), { context: null }),
+    stockCase('context without runId', spec(stockRow(refRow)), { context: { ...CONTEXT, runId: undefined } }),
+    stockCase('context with empty principalId', spec(stockRow(refRow)), { context: { ...CONTEXT, principalId: '' } }),
+    stockCase('context with a non-text role', spec(stockRow(refRow)), { context: { ...CONTEXT, roles: ['employee', 7] } }),
+    stockCase('context with an empty role', spec(stockRow(refRow)), { context: { ...CONTEXT, roles: [''] } }),
+    stockCase('context roles not an array', spec(stockRow(refRow)), { context: { ...CONTEXT, roles: 'employee' } }),
+    stockCase('context not an object', spec(stockRow(refRow)), { context: 'lookup-run' }),
+    stockCase('missing repository', null),
+    stockCase('no registry', spec(stockRow(refRow)), { store: null }),
+    stockCase('invalid stock id', spec(stockRow(refRow)), { request: { kind: 'stock', id: ORDER.toUpperCase() } }),
+    stockCase('registry double unsupported', spec(stockRow(refRow)), { registry: { fixed: { status: 'unsupported' } } }),
+    stockCase('registry double not-found', spec(stockRow(refRow)), { registry: { fixed: { status: 'not-found' } } }),
+    stockCase('registry double throws', spec(stockRow(refRow)), { registry: { throws: true } }),
+    stockCase('catalogue unsupported', spec(stockRow(okRow)), { registry: { set: [['record.catalogue.status', 'unsupported']] } }),
+    stockCase('invalid source (no active)', spec(stockRow(refRow)), { registry: { delete: ['active'] } }),
+  ];
+  const stockResults = [];
+  for (const entry of stocks) stockResults.push(await runCase(entry));
+  compact(join(GOLDEN, 's2-stock.json'), '', stockResults);
+
+  // Digests are in configurations.jsonl row order; idsDigest pins that order so the Java side can read ids in place.
+  const digests = {};
+  for (const [store, rows] of [[REF, ref], ['demo-fleet.v1', demo], ['fleet-source.v1', fleet]]) {
+    const lookup = createVehicleEvidenceLookup({ registry: await loadedRegistry(store) });
+    const configurations = []; const vins = [];
+    for (const row of rows.configurations) configurations.push(inputDigest(await lookup.resolve({ kind: 'configuration', id: row.configurationId })));
+    for (const row of rows.vins) vins.push({ vin17: row.vin17, digest: inputDigest(await lookup.resolve({ kind: 'vin', id: row.vin17 })) });
+    digests[store] = { idsDigest: inputDigest(rows.configurations.map((r) => r.configurationId)), configurations, vins };
+  }
+  write(join(GOLDEN, 's2-digests.json'), digests);
+}
+
+const slices = { s1, s2 };
 const only = process.argv[2];
 for (const [name, run] of Object.entries(slices)) if (!only || only === name) await run();
+
