@@ -147,6 +147,16 @@ public final class NotificationDispatcher {
             return Flow.NEXT;
         }
 
+        // A confirmed provider acknowledgement wins even if the offer expired since.
+        boolean accepted = false;
+        try {
+            accepted = transport.alreadyAccepted(ctx, cand.eventId());
+        } catch (Exception e) {
+            return finishFailed(ctx, rule, cand, attemptNo, version, now,
+                    new Failure(MailFailureCodes.TRANSPORT_UNAVAILABLE, true), counts);
+        }
+        if (accepted) return finishSent(ctx, cand, attemptNo, version, now, counts);
+
         Failure failure = null;
         OfferMessage message = null;
         Object prepared = prepare(ctx, cand, now);

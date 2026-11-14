@@ -55,8 +55,11 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
-| `GCSP_MAIL_TRANSPORT` | unset (captured) | Unset keeps mail captured in the outbox. `brevo` arrives with its own slice; any other value stops startup. |
-| `GCSP_PUBLIC_BASE_URL` | unset | https base for absolute emailed offer links; unset keeps them relative. |
+| `GCSP_MAIL_TRANSPORT` | unset (captured) | Unset keeps mail captured in the outbox; `brevo` sends real email; any other value stops startup. |
+| `GCSP_PUBLIC_BASE_URL` | unset | https base for absolute emailed offer links; unset keeps them relative. Required with `brevo`: the public https origin/path that serves `/gcsp/offers/:offerId` (the Angular static site). |
+| `GCSP_BREVO_API_KEY` | empty | Brevo API key (secret, host secret store only). Required with `brevo`; startup fails without it. |
+| `GCSP_MAIL_FROM` | empty | Sender address. Required with `brevo`. |
+| `GCSP_MAIL_FROM_NAME` | empty | Sender display name. Required with `brevo`. |
 | `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -87,6 +90,9 @@ that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAI
 `pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
 Its policy key is `notify.delivery.v1`. Rules and offer facts are not yet bound, so delivery stays `pending` and
 nothing is claimed, until the policy and offer Stories bind them. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
+retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
+Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
 

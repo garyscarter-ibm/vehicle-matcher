@@ -195,6 +195,7 @@ public class NotificationEmailResource {
         return (ObjectNode) node;
     }
 
+    /** The one delivery-email rule, shared with the Brevo transport. */
     static boolean validEmail(String value) {
         return value.equals(value.strip()) && value.length() <= 254 && EMAIL.matcher(value).matches();
     }

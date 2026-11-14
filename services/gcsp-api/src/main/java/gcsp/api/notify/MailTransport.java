@@ -10,6 +10,11 @@ public interface MailTransport {
     /** "captured" or "configured": stored on the delivery when the message is accepted. */
     String name();
 
+    /** True when the provider already acknowledged this notification, so the delivery can finish without a send. */
+    default boolean alreadyAccepted(RunContext ctx, String eventId) {
+        return false;
+    }
+
     sealed interface Result permits Accepted, Failed, StaleRun {}
 
     record Accepted() implements Result {}
