@@ -6847,7 +6847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T03:22:05Z",
+      "observed_at": "2026-11-14T07:57:53Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -6878,14 +6878,16 @@
         },
         {
           "id": "s4-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "v1 HTTP endpoints, startup adapter selection and README",
-          "observed_at": "2026-11-14T03:22:05Z"
+          "observed_at": "2026-11-14T07:57:52Z",
+          "evidence": "Lead-reviewed 18d317f8: v1 endpoints over real JWTs (employee own, greg complete, presenter read/tick only), provider selection none/synthetic/live, startup reconcile, PolicyService adapter; 83 appointments tests, ./mvnw -B verify 583/583"
         },
         {
           "id": "s5-integration",
-          "status": "not-started",
-          "title": "Story validation, base merge, full Java verify and result"
+          "status": "in-progress",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T07:57:53Z"
         }
       ]
     },
