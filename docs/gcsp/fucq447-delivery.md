@@ -1,8 +1,72 @@
 # FUCQ-447 delivery checkpoint
 
+## Contracts validation checkpoint — 14 November 2026
+
+**Current disposition: scoped26/26 passed and parent teardown audit passed; metadata-only checkpoint,HOLD for dispatcher review/publication.**
+Frozen tested source remains `d75d369ce14193252bf53154905a8a9282befa19`. This current result supersedes
+historical untested/source-audit/runtime-release statements below for exactly the
+consumed two-spec run. The full stable six-slice plan and original2AC are unchanged.
+`contracts` remains in-progress; `client`,`employee-help`,`greg-queue`,`composition`
+and `integration` remain not-started. Native/file In Progress,Gary Carter claim/lease
+and thirteen points remain; no acceptance,In Review,Done or closure.
+
+The exact ONE released command,from
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-015`:
+
+```sh
+/usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq447/contracts-shared-budget/supervisor.py run
+```
+
+`case.projection.spec.ts`:19 passed; `help.projection.spec.ts`:7 passed.
+Total26 passed,0 failed,0 skipped/pending,0 TODO. The five source/spec SHA-256
+pins in the table below remain exact; no source or additional runtime is part of
+this metadata checkpoint. SAME Wakko independent source review1027 passed with
+separate F501,executable audit1050 passed,and parent
+`.claude/fucq447-contracts-runtime-parent-audit-1058.json` independently passed the
+retained full structured result,pins,borrowed metadata and actual teardown.
+
+The run copied only41 packages/610 regular files/32,768,718 bytes plus five source
+files and minimal metadata to independent owned inodes,no links/hardlinks.
+Vite config,bundling/default caches,TMP/npm/XDG were owned. One Vitest worker used
+the canonical shared HostBudget across both apps:normal2GiB RAM/disk grant,
+121 telemetry updates. Total11.059s includes preflight,copies and cleanup;
+sampled peak RSS235,061,248B and owned disk34,688,064B. Parent verified
+supervisor PID99221,group99343,all14 scratch/cache paths and token
+`fucq447-contracts-497d2c99-daf1-4a54-8163-41b6ea7c52e0` absent; reservation released.
+No large output,OneDrive artifact,browser,database,service or F412/B-Bot runtime.
+
+Retained under root `.claude/test-runs/fucq447/contracts-shared-budget/`:
+
+| Evidence | SHA-256 |
+| --- | --- |
+| `receipt-shared-budget.json` | `51774feab6d2dc8b2a574862ae89666839029a9ec11d0dc7df04cef6a20794f3` |
+| `test-report-shared-budget.json` (full26-assertion JSON) | `85398192ec6061761d9ec2a421139d052140d8e18ec0787c02d135d5b855acad` |
+| `allocation-shared-budget.json` and `checkpoint-shared-budget.json` | `9803a00cffa41a01eaf81cb46911c0043ab1e0a40eec9b06ee3ab038d45effdd` |
+
+The840B successful text log was removed with scratch by the frozen finalizer and
+is unavailable. No failure tail was created; no transcript was reconstructed and
+no runtime was repeated. Historical harness files remain unchanged. All63 source/
+input pins,610 selected hashes and Node/helper pins matched. Full borrowed lstat
+metadata matched; this does not establish unselected whole-tree byte immutability.
+
+FUCQ-501 remains a separate linked Medium/P2 backlog Bug,unassigned/unclaimed/
+unfixed/nonblocking,outside66:Z-only instant validation rejects Java-preserved
+numeric-offset later-release times. Source mechanism established; runtime
+reproduction UNRUN. Passing these26 specs does not repair or waive the defect.
+
+Typecheck,AOT/build,composed client/screens/routes/kit/host behavior,desktop/narrow,
+Safari/private,keyboard/focus,CSP/accessibility,actual Java/real OIDC/native
+PostgreSQL/restart/concurrency,hosted/email and both full originalACs remain open.
+Shared source,account/auth/kit/routes/build/Java files are untouched. The original
+six-slice outcomes and required integration gate below remain binding. Parent owns
+exact metadata review and guarded publication/integration only to `gcsp-poc-dev`;
+this finite release authorizes no sync,push,merge,Jira/state/lifecycle transition,
+new source work,descendants,deploy,email or final switch. Hubie retains Sol/high,
+no fallback/children; HOLD after this checkpoint.
+
 ## Contracts source checkpoint — 14 November 2026
 
-**Current disposition: source authored, untested; HOLD for parent source audit and runtime release.**
+**Historical source-checkpoint disposition: authored, untested; then held for audit/runtime release.**
 The dispatcher audited plan `5bc8d6524e7952b668fb254273e963493b3b2e7d`, reconciled it
 with root `6c1628e21` and officially published worker base
 `eaabe0186d14ea9b48d3c75785ea71fe33d2d294`. This worker verified that exact clean
