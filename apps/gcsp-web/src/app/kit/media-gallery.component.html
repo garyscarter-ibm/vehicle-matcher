@@ -1,0 +1,59 @@
+<div class="gcsp-media-gallery" role="group" [attr.aria-label]="name() + ' images'">
+  <div class="gcsp-media-feature" [attr.aria-busy]="featureLoading() && images().length ? 'true' : null">
+    @if (currentImage(); as image) {
+      @if (isFailed(selectedIndex())) {
+        <div class="gcsp-media-unavailable" role="status">Image unavailable</div>
+      } @else {
+        <img class="gcsp-media-feature-image" [src]="image.src" [alt]="image.alt || name()" (load)="onFeatureLoad(image)" (error)="markFailed(image)" />
+        @if (featureLoading()) { <div class="gcsp-media-loading" role="status">Loading image</div> }
+      }
+      <button #enlargeButton gcspButton type="button" variant="ghost" class="gcsp-media-enlarge" [disabled]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()) + ' image'" (click)="openViewer()"><span aria-hidden="true">⌕</span></button>
+      @if (image.caption) { <p class="gcsp-media-caption">{{ image.caption }}</p> }
+    } @else {
+      <div class="gcsp-media-placeholder" role="img" [attr.aria-label]="name() + ': ' + placeholder()">{{ placeholder() }}</div>
+    }
+  </div>
+
+  @if (images().length > 1) {
+    <div class="gcsp-media-thumbnails" role="group" [attr.aria-label]="name() + ' image views'">
+      @for (image of images(); track $index; let index = $index) {
+        <button gcspButton type="button" variant="ghost" class="gcsp-media-thumb" [attr.aria-label]="viewLabel(image, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
+          @if (isFailed(index)) { <span class="gcsp-media-thumb-unavailable">Image unavailable</span> }
+          @else { <img [src]="image.src" alt="" loading="lazy" (error)="markFailed(image)" /> }
+          <span class="gcsp-media-thumb-label">{{ viewLabel(image, index) }}</span>
+        </button>
+      }
+    </div>
+  }
+</div>
+
+<dialog #viewer class="gcsp-media-viewer" [attr.aria-labelledby]="viewerTitleId" (cancel)="onCancel($event)" (keydown)="onViewerKeydown($event)">
+  @if (currentImage(); as image) {
+    <header class="gcsp-media-viewer-header">
+      <h2 [id]="viewerTitleId">{{ viewLabel(image, selectedIndex()) }}</h2>
+      <button #viewerClose gcspButton type="button" variant="ghost" class="gcsp-media-viewer-close" aria-label="Close image viewer" (click)="closeViewer()">Close</button>
+    </header>
+    <div class="gcsp-media-viewer-stage">
+      @if (isFailed(selectedIndex())) { <div class="gcsp-media-unavailable" role="status">Image unavailable</div> }
+      @else { <img class="gcsp-media-viewer-image" [src]="image.src" [alt]="image.alt || name()" (error)="markFailed(image)" /> }
+      @if (images().length > 1) {
+        <button gcspButton type="button" variant="ghost" class="gcsp-media-viewer-previous" aria-label="Previous image" (click)="step(-1)"><span aria-hidden="true">‹</span></button>
+        <button gcspButton type="button" variant="ghost" class="gcsp-media-viewer-next" aria-label="Next image" (click)="step(1)"><span aria-hidden="true">›</span></button>
+      }
+    </div>
+    <footer class="gcsp-media-viewer-footer">
+      <p class="gcsp-media-counter" aria-live="polite">{{ selectedIndex() + 1 }} of {{ images().length }}</p>
+      @if (images().length > 1) {
+        <div class="gcsp-media-viewer-thumbnails" role="group" [attr.aria-label]="name() + ' image views'">
+          @for (view of images(); track $index; let index = $index) {
+            <button gcspButton type="button" variant="ghost" class="gcsp-media-thumb" [attr.aria-label]="viewLabel(view, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
+              @if (isFailed(index)) { <span class="gcsp-media-thumb-unavailable">Image unavailable</span> }
+              @else { <img [src]="view.src" alt="" loading="lazy" (error)="markFailed(view)" /> }
+              <span class="gcsp-media-thumb-label">{{ viewLabel(view, index) }}</span>
+            </button>
+          }
+        </div>
+      }
+    </footer>
+  }
+</dialog>
