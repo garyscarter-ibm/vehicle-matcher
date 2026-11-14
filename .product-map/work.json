@@ -5744,13 +5744,30 @@
       "id": "FUCQ-420",
       "jira_observed_at": "2026-11-12T15:49:01.766Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T09:08:15Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "consumption",
+          "status": "in-progress",
+          "title": "Pending-first trigger consumption with validated completed summaries",
+          "observed_at": "2026-11-14T09:08:15Z"
+        },
+        {
+          "id": "evidence",
+          "status": "not-started",
+          "title": "Consecutive-release, recovery, conflict and legacy regressions on memory and native PostgreSQL"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Story validation on native PostgreSQL 17 and delivery record"
+        }
+      ],
       "status": "To Do",
       "title": "Consume pending triggers without replaying unchanged history",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-420",
       "workers": []
     },
