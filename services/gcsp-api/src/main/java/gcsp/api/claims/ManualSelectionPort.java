@@ -10,6 +10,9 @@ public interface ManualSelectionPort {
 
     Decision decide(ClaimScope scope, String orderUuid);
 
+    /** The employee's current order draft (mode, driver, contact, versions) for ordering's snapshot. */
+    OrderDraft orderDraft(ClaimScope scope);
+
     sealed interface Claimant {}
 
     /** The employee's slot, the context and draft versions their claim is checked against, and their policy version. */
@@ -25,5 +28,11 @@ public interface ManualSelectionPort {
 
     record NotEligible(String reason) implements Decision {}
 
-    record NoDecision(String code) implements Decision {}
+    sealed interface OrderDraft {}
+
+    /** mode is new or replacement; the nodes are stored as given in the order selection. */
+    record Draft(String mode, JsonNode driver, JsonNode contact, JsonNode employee, JsonNode sourceVersions)
+            implements OrderDraft {}
+
+    record NoDecision(String code) implements Decision, OrderDraft {}
 }

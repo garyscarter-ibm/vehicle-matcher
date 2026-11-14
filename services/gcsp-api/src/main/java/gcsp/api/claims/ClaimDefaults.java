@@ -18,12 +18,12 @@ public class ClaimDefaults {
         return new UnconfiguredManualSelection();
     }
 
-    /** No buddy offers table is connected yet (FUCQ-464), so a held slot reports no offer id. */
+    /** The offer id comes from the Buddy hold's attributes (FUCQ-464 writes offerId there). */
     @Produces
     @DefaultBean
     @ApplicationScoped
     SlotOccupancyPort occupancy() {
-        return new NoOfferLookup();
+        return new HoldOfferLookup();
     }
 
     @Produces

@@ -79,6 +79,13 @@ final class ClaimFixture implements AutoCloseable {
             return new Eligible("cfg-1", facts(), terms.deepCopy(), validUntil);
         }
 
+        @Override
+        public OrderDraft orderDraft(ClaimScope scope) {
+            return new Draft("new", JSON.createObjectNode().put("name", "Test Driver"),
+                    JSON.createObjectNode().put("email", "d@example.test"),
+                    JSON.createObjectNode().put("employeeId", scope.employeeId()), JSON.createObjectNode().put("draft", 1));
+        }
+
         static ObjectNode facts() {
             return JSON.createObjectNode().put("colour", "red");
         }
@@ -151,10 +158,15 @@ final class ClaimFixture implements AutoCloseable {
                 + "VALUES (?, ?, ?, ?, 1)", ENV, RUN, "slot-" + id, id);
     }
 
-    /** A released car at version 1 with the shared facts. */
+    /** A released car at version 1 with the shared facts and a stable 7-digit order number. */
     void car(String orderUuid) throws SQLException {
+        ObjectNode attributes = Selection.facts().put("orderNumber", orderNumber(orderUuid));
         update("INSERT INTO stock_cars (environment_id, run_id, order_uuid, configuration_id, state, attributes) "
-                + "VALUES (?, ?, ?, 'cfg-1', 'released', ?::jsonb)", ENV, RUN, orderUuid, Selection.facts().toString());
+                + "VALUES (?, ?, ?, 'cfg-1', 'released', ?::jsonb)", ENV, RUN, orderUuid, attributes.toString());
+    }
+
+    static String orderNumber(String orderUuid) {
+        return String.valueOf(1_000_000 + Math.floorMod(orderUuid.hashCode(), 9_000_000));
     }
 
     /** A Buddy hold written straight to the table, as FUCQ-464 would. */

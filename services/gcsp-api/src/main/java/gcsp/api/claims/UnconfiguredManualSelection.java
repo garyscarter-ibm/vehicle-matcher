@@ -14,4 +14,9 @@ public final class UnconfiguredManualSelection implements ManualSelectionPort {
     public Decision decide(ClaimScope scope, String orderUuid) {
         return new NoDecision(CODE);
     }
+
+    @Override
+    public OrderDraft orderDraft(ClaimScope scope) {
+        return new NoDecision(CODE);
+    }
 }

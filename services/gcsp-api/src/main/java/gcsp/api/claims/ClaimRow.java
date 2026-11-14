@@ -101,11 +101,18 @@ record ClaimRow(String holdId, String orderUuid, String employeeId, String slotI
         return o;
     }
 
+    /** The stored quote plus its derived id, which the client sends back to order (the stored row is immutable). */
+    ObjectNode quoteView() {
+        ObjectNode q = quote.isObject() ? ((ObjectNode) quote).deepCopy() : JSON.createObjectNode();
+        q.put("quoteId", ManualClaims.quoteId(holdId));
+        return q;
+    }
+
     ObjectNode view(Instant now) {
         ObjectNode v = JSON.createObjectNode();
         v.put("state", viewState());
         v.set("hold", hold());
-        v.set("quote", quote);
+        v.set("quote", quoteView());
         v.set("pendingOperation", pendingOperation());
         v.put("now", PolicyClock.iso(now));
         v.set("view", ClaimResult.viewOf(pending() ? "pending" : viewState(), action()));

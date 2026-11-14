@@ -325,11 +325,14 @@ class ClaimLifecycleTest {
         assertEquals("local", v.mode());
         assertNull(f.claims.claimForOrdering(f.scope("e2"), id));
         assertNull(f.claims.claimForOrdering(f.scope("e1"), "manual-hold:nope"));
-        assertTrue(owns("e1", id, h.get("version").asLong()));
-        assertFalse(owns("e2", id, h.get("version").asLong()));
-        assertFalse(owns("e1", id, h.get("version").asLong() + 1));
-        f.clock.now = ClaimFixture.T0.plusSeconds(120);
-        assertFalse(owns("e1", id, h.get("version").asLong()), "an overdue hold is not an active claim");
+        assertFalse(owns("e1", id, h.get("version").asLong()), "a preview claim is not yet an order-review claim");
+        JsonNode reviewed = ClaimFixture.value(review(h)).get("hold");
+        long version = reviewed.get("version").asLong();
+        assertTrue(owns("e1", id, version));
+        assertFalse(owns("e2", id, version));
+        assertFalse(owns("e1", id, version + 1));
+        f.clock.now = ClaimFixture.T0.plusSeconds(721);
+        assertFalse(owns("e1", id, version), "an overdue hold is not an active claim");
     }
 
     private boolean owns(String employee, String holdId, long version) throws Exception {
@@ -362,7 +365,7 @@ class ClaimLifecycleTest {
 
     @Test
     void anUnconfiguredSelectionIsUnavailableAndWritesNothing() throws Exception {
-        ManualClaims bare = new ManualClaims(f.pool(), f.clock, f.timing, new UnconfiguredManualSelection(), new NoOfferLookup());
+        ManualClaims bare = new ManualClaims(f.pool(), f.clock, f.timing, new UnconfiguredManualSelection(), new HoldOfferLookup());
         ClaimResult.Unavailable u = assertInstanceOf(ClaimResult.Unavailable.class, bare.claim(f.scope("e1"), f.claimInput("car-1")));
         assertEquals("manual-selection-not-configured", u.code());
         assertFalse(u.retryable());

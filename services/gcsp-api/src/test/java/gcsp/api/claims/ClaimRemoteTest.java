@@ -223,16 +223,10 @@ class ClaimRemoteTest {
     }
 
     @Test
-    void aDuplicateAckChangesNothingAndASupersededOperationIsRefused() throws Exception {
+    void aDuplicateAckChangesNothing() throws Exception {
         stock.onExecute(THROW_BEFORE);
         ClaimResult.Pending p = assertInstanceOf(ClaimResult.Pending.class,
                 f.claims.claim(f.scope("e1"), f.claimInput("car-1")));
-        // The hold now answers to a different operation: a late ack for this one must not touch it.
-        f.update("UPDATE custody_holds SET operation_id = 'manual-op:other'");
-        assertFalse(f.claims.drive(f.scope("e1").context(), p.operationId(), false));
-        assertEquals("claim-pending", holdState());
-        assertEquals("pending", opState());
-        f.update("UPDATE custody_holds SET operation_id = ?", p.operationId());
         assertTrue(f.claims.drive(f.scope("e1").context(), p.operationId(), false));
         long revision = f.revision();
         String before = f.text("SELECT version || state FROM custody_holds");
@@ -241,6 +235,22 @@ class ClaimRemoteTest {
         assertEquals(revision, f.revision());
         assertEquals(before, f.text("SELECT version || state FROM custody_holds"));
         assertEquals(1, stock.ledger.totalEffects());
+    }
+
+    @Test
+    void aSupersededOperationClosesAsRefusedWithoutTouchingTheHoldAndIsNotRetried() throws Exception {
+        stock.onExecute(THROW_BEFORE);
+        ClaimResult.Pending p = assertInstanceOf(ClaimResult.Pending.class,
+                f.claims.claim(f.scope("e1"), f.claimInput("car-1")));
+        // The hold now answers to a different operation: a late ack for this one must not touch it.
+        f.update("UPDATE custody_holds SET operation_id = 'manual-op:other'");
+        String hold = f.text("SELECT version || state || operation_id FROM custody_holds");
+        assertTrue(f.claims.drive(f.scope("e1").context(), p.operationId(), false));
+        assertEquals(hold, f.text("SELECT version || state || operation_id FROM custody_holds"));
+        assertEquals("refused", opState());
+        assertEquals("true", f.text("SELECT outcome->>'superseded' FROM pending_operations WHERE operation_id = ?", p.operationId()));
+        assertEquals(0, f.claims.reconcileOpen(f.system(), 10));
+        assertEquals(0, f.claims.reconcileOpen(f.system(), 10));
     }
 
     @Test

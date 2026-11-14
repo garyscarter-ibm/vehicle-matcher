@@ -27,6 +27,12 @@ public final class ClaimHttpPorts {
         public Decision decide(ClaimScope scope, String orderUuid) {
             return new Eligible("cfg-1", FACTS.deepCopy(), TERMS.deepCopy(), Instant.now().plusSeconds(86_400));
         }
+
+        @Override
+        public OrderDraft orderDraft(ClaimScope scope) {
+            return new Draft("new", JSON.createObjectNode(), JSON.createObjectNode(), JSON.createObjectNode(),
+                    JSON.createObjectNode());
+        }
     }
 
     @Alternative

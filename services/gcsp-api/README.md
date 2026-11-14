@@ -122,7 +122,8 @@ Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/
 `gcsp.api.claims.ManualClaims` takes the exact car for one employee (employee only; the principal needs an `employeeId`).
 Routes under `/api/gcsp/v1`: `GET /manual/claim`, `POST /manual/claim`, `POST /manual/claim/review`, `POST /manual/claim/release`.
 Any query is `400 unsupported-query`; a principal from an earlier run is `409 stale-run`. There is deliberately no public
-allocate route: `convertSelection` is ordering's backend call (FUCQ-468), with `claimForOrdering` and `ownsActiveClaim`.
+allocate route: ordering reaches the claim through `CartSelectionConversion` (the `cart` `SelectionConversionPort` bean), which
+locks and allocates the hold and car inside ordering's own transaction; `quoteId` (`manual-hold:d` is `manual-quote:d`) is in the claim view.
 
 - Exclusivity is the `custody_holds` unique indexes; the slot and hold rows are read `FOR UPDATE`, and each command is one
   transaction. Idempotency is the command receipt (a changed body under the same `commandId` is `409
@@ -130,8 +131,12 @@ allocate route: `convertSelection` is ordering's backend call (FUCQ-468), with `
 - Remote mode commits an intent, calls `ClaimStockPort` outside any transaction, then finalizes. Only `LocalClaimStock`
   ships; remote is proven with a test double, and no live remote stock authority exists.
 - `ClaimSweep` expires due holds and reconciles open remote operations every `GCSP_CLAIMS_SWEEP_INTERVAL` (actor `system:manual-claims`).
-- Still unbound: `ManualSelectionPort` (every claim is `503 manual-selection-not-configured` until Java manual
-  browse and eligibility, FUCQ-461/442, land) and `SlotOccupancyPort` (to bind to FUCQ-464's `buddy_offers` by `hold_id`).
+- In remote mode the local review deadline governs: the remote authority still holds the preview deadline sent with the
+  claim, so remote deadlines are advisory and release or expiry always go through an explicit operation. A remote
+  allocation submitted through ordering is recorded in `selection-pending` and driven by `ClaimSweep` after ordering commits.
+- `SlotOccupancyPort` reads `offerId` from the Buddy hold's `attributes` (FUCQ-464 writes it there). Still unbound:
+  `ManualSelectionPort` (every claim is `503 manual-selection-not-configured` until Java manual browse, eligibility and
+  order draft, FUCQ-461/442, land).
 
 ## Policy (FUCQ-457)
 

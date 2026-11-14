@@ -3,6 +3,8 @@ package gcsp.api.claims;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.ordering.SelectionConversionPort.ConversionRequest;
+import gcsp.api.ordering.SelectionConversionPort.Converted;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Inspection;
@@ -164,6 +166,7 @@ public final class ManualClaims {
                 ClaimRow r = locked(tx, scope, holdId);
                 checkActive(r, expectedHold, expectedDraft, now);
                 if ("preview".equals(r.phase()) && r.reviewStartedAt() == null) {
+                    // Node parity: only the local hold is extended; a remote authority keeps the preview deadline.
                     Instant expires = now.plusSeconds(review);
                     RunContext x = tx.context();
                     tx.cas("UPDATE custody_holds SET expires_at = ?, version = version + 1, updated_at = now() "
@@ -241,8 +244,7 @@ public final class ManualClaims {
                 if (done instanceof WorkResult.Refuse refuse) {
                     throw new Refusal(new ClaimResult.Conflict(refuse.code(), refuse.message(), null));
                 }
-                if (remote()) pend(tx, r, cmd, ALLOCATE_OP, "allocated", null, "selection-pending");
-                else finish(tx, r, "allocated", null);
+                allocate(tx, r, cmd);
                 return WorkResult.ok(reread(tx, holdId, now));
             }), cmd, ALLOCATE_OP, holdId, now);
         } catch (Refusal r) {
@@ -280,7 +282,7 @@ public final class ManualClaims {
         }
     }
 
-    /** For ordering, inside its own transaction: is this an unexpired active manual claim of the employee at that version? */
+    /** Inside a caller's transaction: locks the hold and says if it is the employee's live order-review claim at that version. */
     public boolean ownsActiveClaim(Tx tx, String employeeId, String holdId, long expectedHoldVersion)
             throws SQLException {
         RunContext x = tx.context();
@@ -288,8 +290,85 @@ public final class ManualClaims {
         return tx.first("SELECT 1 FROM custody_holds h JOIN manual_claims c ON c.environment_id = h.environment_id "
                 + "AND c.run_id = h.run_id AND c.hold_id = h.hold_id WHERE h.environment_id = ? AND h.run_id = ? "
                 + "AND h.hold_id = ? AND h.employee_id = ? AND h.hold_type = 'cart' AND h.state = 'active' "
-                + "AND h.version = ? AND h.expires_at > ?", rs -> 1, x.environmentId(), x.runId(), holdId,
-                employeeId, expectedHoldVersion, now).isPresent();
+                + "AND h.version = ? AND h.expires_at > ? AND c.phase = 'order-review' AND c.valid_until > ? "
+                + "FOR UPDATE OF h", rs -> 1, x.environmentId(), x.runId(), holdId, employeeId, expectedHoldVersion, now,
+                now).isPresent();
+    }
+
+    /** Ordering's prepare step, outside any transaction: null when the hold is the scope's live review claim, else the refusal code. */
+    String readyForOrdering(ClaimScope scope, String slotId, String holdId, long expectedHold, long expectedDraft) {
+        Instant now = now(scope);
+        if (now == null) return "clock-unavailable";
+        try (Connection c = dataSource.getConnection()) {
+            ClaimRow r = ClaimRow.byHold(c, scope.environmentId(), scope.runId(), holdId, false).orElse(null);
+            if (r == null || !r.employeeId().equals(scope.employeeId()) || !"cart".equals(r.holdType())
+                    || !r.slotId().equals(slotId)) {
+                return "forbidden";
+            }
+            checkActive(r, expectedHold, expectedDraft, now);
+            requireReview(r);
+            return null;
+        } catch (Refusal e) {
+            return orderingCode(e.result());
+        } catch (SQLException e) {
+            return "selection-source-unavailable";
+        }
+    }
+
+    ManualSelectionPort.OrderDraft orderDraft(ClaimScope scope) {
+        return selection.orderDraft(scope);
+    }
+
+    /** The deterministic quote id of a hold: manual-hold:d is manual-quote:d (Node parity). */
+    static String quoteId(String holdId) {
+        String prefix = "manual-hold:";
+        return "manual-quote:" + (holdId.startsWith(prefix) ? holdId.substring(prefix.length()) : holdId);
+    }
+
+    /** The refusal code ordering understands for a claim refusal. */
+    static String orderingCode(ClaimResult r) {
+        return switch (r.code()) {
+            case "stale-version", "claim-not-active" -> "claim-changed";
+            case "not-found" -> "forbidden";
+            default -> r.code();
+        };
+    }
+
+    /**
+     * Ordering's allocation, inside ordering's transaction: locks the hold and car, revalidates, then takes the shared
+     * allocation step. Business refusals throw Refusal; remote mode only records the intent (ClaimSweep drives it).
+     */
+    Converted allocateForOrdering(Tx tx, ClaimScope scope, String slotId, ConversionRequest q) throws SQLException {
+        RunContext x = tx.context();
+        ClaimRow r = ClaimRow.byHold(tx.connection(), x.environmentId(), x.runId(), q.holdId(), true)
+                .orElseThrow(() -> new Refusal(new ClaimResult.Forbidden("No such claim.")));
+        owner(scope, r);
+        if (!r.slotId().equals(slotId)) throw new Refusal(new ClaimResult.Forbidden("This claim belongs to another entitlement."));
+        checkActive(r, q.expectedHoldVersion(), q.expectedDraftVersion(), q.now());
+        requireReview(r);
+        if (!r.validUntil().isAfter(q.now())) throw conflict("quote-expired", "The quote has expired.");
+        if (!quoteId(r.holdId()).equals(q.expectedQuoteId())) throw conflict("quote-changed", "The quote changed.");
+        Car car = Db.first(tx.connection(), "SELECT state, version, configuration_id, attributes::text FROM stock_cars "
+                + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ? FOR UPDATE", rs -> new Car(rs.getString(1),
+                rs.getLong(2), rs.getString(3), json(rs.getString(4))), x.environmentId(), x.runId(), r.orderUuid())
+                .orElseThrow(() -> conflict("stock-changed", "The car changed."));
+        String number = car.attributes().path("orderNumber").asText("");
+        if (car.version() != q.expectedStockVersion() || !"released".equals(car.state()) || !number.matches("\\d{7}")) {
+            throw conflict("stock-changed", "The car changed.");
+        }
+        ObjectNode in = JSON.createObjectNode().put("holdId", r.holdId()).put("operationId", q.operationId());
+        allocate(tx, r, new Command("manual-claim.allocate", q.operationId(), in));
+        ObjectNode quote = r.quote().deepCopy();
+        quote.put("quoteId", quoteId(r.holdId()));
+        JsonNode renewal = quote.path("renewalId");
+        return new Converted(r.orderUuid(), number, car.configurationId(), quote, r.quote().path("facts").deepCopy(),
+                renewal.isTextual() ? renewal.textValue() : null);
+    }
+
+    /** The one allocation path: local finishes the hold and car, remote waits in selection-pending for its operation. */
+    private void allocate(Tx tx, ClaimRow r, Command cmd) throws SQLException {
+        if (remote()) pend(tx, r, cmd, ALLOCATE_OP, "allocated", null, "selection-pending");
+        else finish(tx, r, "allocated", null);
     }
 
     /** Expires up to limit due preview or review holds, one short transaction each; returns how many expired. */
@@ -632,7 +711,10 @@ public final class ManualClaims {
                 default -> "selection-pending";
             };
             if (hold == null || !op.id().equals(hold.operationId()) || !waiting.equals(hold.state())) {
-                return WorkResult.refuse("operation-superseded", "A newer operation replaced this one.");
+                // A newer operation owns the hold: close this one without touching it.
+                PendingOperations.finalize(tx, op.id(), open.get()[0], "refused", null,
+                        JSON.createObjectNode().put("status", status).put("superseded", true));
+                return WorkResult.ok(in);
             }
             if (confirmed) {
                 if (CLAIM_OP.equals(op.type())) activate(tx, hold); else finish(tx, hold, op.target(), op.reason());

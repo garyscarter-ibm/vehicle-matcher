@@ -53,6 +53,20 @@ class ClaimExclusivityTest {
     }
 
     @Test
+    void theDefaultLookupReadsTheOfferIdFromTheBuddyHoldsAttributes() throws Exception {
+        f.buddyHold("buddy-1", "car-2", "e1");
+        f.update("UPDATE custody_holds SET attributes = '{\"offerId\":\"offer-1\"}'::jsonb WHERE hold_id = 'buddy-1'");
+        ManualClaims real = new ManualClaims(f.pool(), f.clock, f.timing, f.selection, new HoldOfferLookup());
+        ClaimResult.Conflict c = assertInstanceOf(ClaimResult.Conflict.class, real.claim(f.scope("e1"), f.claimInput("car-1")));
+        assertEquals("offer-held", c.code());
+        assertEquals("offer-1", c.extra().get("offerId").asText());
+        assertEquals("buddy-1", c.extra().get("holdId").asText());
+        f.update("UPDATE custody_holds SET attributes = '{}'::jsonb WHERE hold_id = 'buddy-1'");
+        assertTrue(assertInstanceOf(ClaimResult.Conflict.class, real.claim(f.scope("e1"), f.claimInput("car-1")))
+                .extra().get("offerId").isNull());
+    }
+
+    @Test
     void offerHeldWithoutALookupHasANullOfferId() throws Exception {
         f.buddyHold("buddy-1", "car-2", "e1");
         ClaimResult.Conflict c = assertInstanceOf(ClaimResult.Conflict.class,
