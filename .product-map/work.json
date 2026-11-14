@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T05:32:16Z",
+      "observed_at": "2026-11-14T05:35:01Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -7348,6 +7348,15 @@
           "expires_at": "2026-11-14T05:32:15.556431+00:00",
           "source": "collaboration agent /root/doug_the_dog",
           "status": "client slice complete; inactive"
+        },
+        {
+          "name": "Sally Carrera",
+          "harness": "codex",
+          "role": "mechanic view slice",
+          "observed_at": "2026-11-14T05:35:00.600741+00:00",
+          "expires_at": "2026-11-14T07:35:00.600741+00:00",
+          "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
+          "status": "working"
         }
       ],
       "slices": [
@@ -7360,8 +7369,9 @@
         },
         {
           "id": "view",
-          "status": "not-started",
-          "title": "Server-projected Angular Buddy activity and controls"
+          "status": "in-progress",
+          "title": "Server-projected Angular Buddy activity and controls",
+          "observed_at": "2026-11-14T05:35:01Z"
         },
         {
           "id": "proof",
