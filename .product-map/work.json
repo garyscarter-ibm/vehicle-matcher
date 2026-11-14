@@ -6137,37 +6137,51 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T23:17:02Z",
+      "observed_at": "2026-11-14T03:05:02Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-459",
       "unsliced": false,
       "slices": [
         {
           "id": "s1-corpus",
-          "status": "not-started",
-          "title": "Java retained corpus store, canonical digest and integrity fallback"
+          "status": "complete",
+          "title": "Java retained corpus store, canonical digest and integrity fallback",
+          "observed_at": "2026-11-14T00:11:09Z",
+          "evidence": "5f31e1be reviewed by story-lead; 29 evidence tests pass incl 13 fixture + 3 retained stores equal to Node goldens; fleet-source load 611 ms, 3 MB heap"
         },
         {
           "id": "s2-lookup",
-          "status": "not-started",
-          "title": "Exact lookup, projection, imagery and definitions with Node golden parity"
+          "status": "complete",
+          "title": "Exact lookup and evidence projection with Node golden parity",
+          "observed_at": "2026-11-14T00:41:37Z",
+          "evidence": "story-lead reviewed; 38 evidence tests; all 2667 retained configs and VINs digest-equal to Node lookup"
         },
         {
-          "id": "s3-providers",
-          "status": "not-started",
-          "title": "Lookup and alternate-offline providers, routing, consumer and startup selection"
+          "id": "s3-decorators",
+          "status": "complete",
+          "title": "Retained display imagery and configuration definitions parity",
+          "observed_at": "2026-11-14T01:16:20Z",
+          "evidence": "story-lead reviewed; 50 evidence tests; 2667 decorated configs/VINs digest-equal to Node production lookup; 680 retained images byte-verified"
         },
         {
-          "id": "s4-http",
-          "status": "not-started",
-          "title": "v1 vehicle-evidence and image endpoints, readiness and artifact packaging docs"
+          "id": "s4-providers",
+          "status": "complete",
+          "title": "Lookup and alternate-offline providers, routing, consumer contract, startup selection",
+          "observed_at": "2026-11-14T03:05:01Z",
+          "evidence": "story-lead reviewed; 63 evidence tests; 187 Node contract matrix cases and 158 URL vectors equal; both provider shapes same vehicle minus imagery"
         },
         {
-          "id": "s5-stock",
+          "id": "s5-http",
+          "status": "in-progress",
+          "title": "v1 vehicle-evidence and image endpoints, readiness and artifact packaging docs",
+          "observed_at": "2026-11-14T03:05:02Z"
+        },
+        {
+          "id": "s6-stock",
           "status": "not-started",
           "title": "Exact stock identity through persistence with native PG check"
         },
         {
-          "id": "s6-integration",
+          "id": "s7-integration",
           "status": "not-started",
           "title": "Base merge, full Java verify and result"
         }
