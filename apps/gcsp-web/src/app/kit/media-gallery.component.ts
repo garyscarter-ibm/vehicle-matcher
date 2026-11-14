@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, OnDestroy, ViewChild, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { ButtonDirective } from './button.directive';
 
 export interface MediaGalleryImage {
@@ -34,6 +34,7 @@ export class MediaGalleryComponent implements OnDestroy {
   readonly selectedIndex = signal(0);
   readonly currentImage = computed(() => this.images()[this.selectedIndex()] ?? null);
   readonly failedIndices = signal<ReadonlySet<number>>(new Set());
+  readonly healthyImageCount = computed(() => this.images().filter((_, index) => !this.isFailed(index)).length);
   readonly featureLoading = signal(true);
   readonly viewerOpen = signal(false);
   readonly viewerTitleId = `gcsp-media-viewer-title-${++mediaGallerySequence}`;
@@ -43,6 +44,7 @@ export class MediaGalleryComponent implements OnDestroy {
   @ViewChild('viewerClose', { static: false }) private viewerCloseRef?: ElementRef<HTMLButtonElement>;
   private readonly document = inject(DOCUMENT);
   private previousImages: readonly MediaGalleryImage[] | null = null;
+  private previousName: string | null = null;
   private opener: HTMLElement | null = null;
   private previousBodyOverflow: string | null = null;
   private destroyed = false;
@@ -50,12 +52,17 @@ export class MediaGalleryComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const images = this.images();
-      if (!this.previousImages || !sameImages(this.previousImages, images)) {
-        this.selectedIndex.set(images.length ? Math.min(this.selectedIndex(), images.length - 1) : 0);
-        this.failedIndices.set(new Set());
-        this.featureLoading.set(Boolean(images[this.selectedIndex()]?.src.trim()));
+      const name = this.name();
+      if (!this.previousImages || this.previousName !== name || !sameImages(this.previousImages, images)) {
+        untracked(() => {
+          this.closeViewer();
+          this.selectedIndex.set(images.length ? Math.min(this.selectedIndex(), images.length - 1) : 0);
+          this.failedIndices.set(new Set());
+          this.featureLoading.set(Boolean(images[this.selectedIndex()]?.src.trim()));
+        });
       }
       this.previousImages = images.map((image) => ({ ...image }));
+      this.previousName = name;
     });
   }
 
@@ -116,6 +123,11 @@ export class MediaGalleryComponent implements OnDestroy {
     this.finishViewerClose(restoreFocus);
   }
 
+  onViewerClose(): void {
+    // Native close events are queued; an old event must not close a reopened viewer.
+    if (!this.viewerRef.nativeElement.open) this.finishViewerClose(true);
+  }
+
   onCancel(event: Event): void {
     event.preventDefault();
     this.closeViewer();
@@ -131,8 +143,13 @@ export class MediaGalleryComponent implements OnDestroy {
 
   step(direction: -1 | 1): void {
     const length = this.images().length;
-    if (length < 2) return;
-    this.select((this.selectedIndex() + direction + length) % length);
+    for (let distance = 1; distance <= length; distance += 1) {
+      const index = (this.selectedIndex() + direction * distance + length) % length;
+      if (!this.isFailed(index)) {
+        this.select(index);
+        return;
+      }
+    }
   }
 
   ngOnDestroy(): void {
