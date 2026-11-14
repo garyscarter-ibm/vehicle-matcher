@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T06:14:34Z",
+      "observed_at": "2026-11-14T08:24:01Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -7335,10 +7335,10 @@
           "name": "Rocky",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-14T06:14:03.067095+00:00",
-          "expires_at": "2026-11-14T08:14:03.067095+00:00",
+          "observed_at": "2026-11-14T08:24:01.540216+00:00",
+          "expires_at": "2026-11-14T08:24:01.540216+00:00",
           "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
-          "status": "client/view lead-reviewed; rendered proof next"
+          "status": "local proof checkpoint lead-reviewed; inactive awaiting dispatcher publication"
         },
         {
           "name": "Doug the Dog",
@@ -7371,10 +7371,10 @@
           "name": "Spike",
           "harness": "codex",
           "role": "runner rendered activity proof",
-          "observed_at": "2026-11-14T06:14:34.043395+00:00",
-          "expires_at": "2026-11-14T07:14:34.043395+00:00",
-          "source": "lead assigned runner via authoritative tier; launch/runtime verification pending",
-          "status": "assigned"
+          "observed_at": "2026-11-14T08:15:21.799691+00:00",
+          "expires_at": "2026-11-14T08:15:21.799691+00:00",
+          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; requested/selected/effective gpt-6-luna/high and saved title verified; attempt-8-summary.json",
+          "status": "attempt 8 local proof complete; inactive"
         }
       ],
       "slices": [
@@ -7394,10 +7394,10 @@
         },
         {
           "id": "proof",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Selected state and desktop/narrow browser review",
-          "observed_at": "2026-11-14T06:14:34Z",
-          "evidence": "Lead assigned isolated rendered proof to Spike after view source/caller/unit review; final proof/review not yet established."
+          "observed_at": "2026-11-14T08:24:01Z",
+          "evidence": "Lead source and all10 desktop/narrow capture reviews completed at 7f8e947: attempt8 59/59 assertions, zero failed waits/unrun; exact route/auth/no-replay and cleanup verified. docs/gcsp/fucq444-delivery.md; lead-attempt8-review.json c40b0956. F487/F495 remain Medium independent open/unfixed; independent reviewer and connected integration remain outstanding."
         },
         {
           "id": "integration",
