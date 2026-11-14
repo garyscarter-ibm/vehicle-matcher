@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T08:50:10Z",
+      "observed_at": "2026-11-14T08:59:32Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Open an offer and accept or decline",
@@ -7341,8 +7341,8 @@
           "id": "offer-view",
           "status": "in-progress",
           "title": "Current offer state and vehicle presentation",
-          "observed_at": "2026-11-14T08:50:10.012675Z",
-          "evidence": "Lead-reviewed read screen 0244f6a2: 33/33 selected tests, matching 26 test/55 browser inputs, real fixture-boundary Chrome desktop/narrow/native modal proof and five captures inspected; resources removed. Frozen duration-label reconciliation and unobserved AuthPort history remain original gaps. No commands/route/live integration acceptance; docs/gcsp/fucq445-delivery-2026-11-14.md."
+          "observed_at": "2026-11-14T08:59:32.476909Z",
+          "evidence": "Lead-reviewed read screen 0244f6a2; frozen duration labels corrected at f1c6b073 with 1 failed/8 passed before and final9PASS/0skip; immutable checkpoint recovered after shared mutex without rerun.25 input hashes and cleanup match. Prior33PASS/rendered captures retained historically. Unobserved AuthPort history and commands/route/live integration acceptance remain open; docs/gcsp/fucq445-delivery-2026-11-14.md."
         },
         {
           "id": "decision-followup",
@@ -7364,9 +7364,9 @@
         {
           "name": "Mugsy",
           "harness": "codex",
-          "observed_at": "2026-11-14T08:50:10.012675Z",
-          "expires_at": "2026-11-14T08:50:10.012675Z",
-          "source": "Read-screen source/rendered/evidence review complete. All source/helper/receipt writers released; yielding exact metadata checkpoint for dispatcher publication. No active source worker inferred."
+          "observed_at": "2026-11-14T08:59:32.476909Z",
+          "expires_at": "2026-11-14T08:59:32.476909Z",
+          "source": "Direct bounded duration correction/review complete; source/helper/receipt writes released. Exact metadata checkpoint yielded for dispatcher publication; no active source worker inferred."
         }
       ]
     }
