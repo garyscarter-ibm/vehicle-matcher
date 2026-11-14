@@ -6697,7 +6697,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T07:51:49Z",
+      "observed_at": "2026-11-14T08:25:52Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -6707,14 +6707,16 @@
       "slices": [
         {
           "id": "claims-local",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Local manual claims: schema, exact-car/slot exclusivity, review, release, convert, expiry",
-          "observed_at": "2026-11-14T07:51:49Z"
+          "observed_at": "2026-11-14T08:25:52Z",
+          "evidence": "Lead review of local claim/review/release/convert/expiry; gcsp.api.claims 42 tests and gcsp-api verify 578/0 on native PG17"
         },
         {
           "id": "claims-remote",
-          "status": "not-started",
-          "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart"
+          "status": "in-progress",
+          "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart",
+          "observed_at": "2026-11-14T08:25:52Z"
         },
         {
           "id": "claims-http",
