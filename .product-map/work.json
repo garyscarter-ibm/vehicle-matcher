@@ -6505,13 +6505,41 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:29:27Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "in-progress",
+          "title": "Returns schema, ports, current-car relationship store and retained return policy",
+          "observed_at": "2026-11-14T01:29:27Z"
+        },
+        {
+          "id": "s2-plan",
+          "status": "not-started",
+          "title": "Return plan read, request, confirmation progress and proposal acceptance on native PostgreSQL"
+        },
+        {
+          "id": "s3-outcomes",
+          "status": "not-started",
+          "title": "Return outcomes, current-car change at the outcome boundary, reconcile and restart"
+        },
+        {
+          "id": "s4-http",
+          "status": "not-started",
+          "title": "v1 HTTP endpoints, startup adapter selection and README"
+        },
+        {
+          "id": "s5-integration",
+          "status": "not-started",
+          "title": "Story validation, base merge, full Java verify and result"
+        }
+      ]
     },
     {
       "assignee": "",
