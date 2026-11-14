@@ -6298,15 +6298,92 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T08:24:01Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
+      "branch": "dev/DEV-2026-11-13-012",
+      "workers": [
+        {
+          "name": "Rocky",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-14T08:24:01.540216+00:00",
+          "expires_at": "2026-11-14T08:24:01.540216+00:00",
+          "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
+          "status": "local proof checkpoint lead-reviewed; inactive awaiting dispatcher publication"
+        },
+        {
+          "name": "Doug the Dog",
+          "harness": "codex",
+          "role": "mechanic client slice",
+          "observed_at": "2026-11-14T05:14:42.372226+00:00",
+          "expires_at": "2026-11-14T05:32:15.556431+00:00",
+          "source": "collaboration agent /root/doug_the_dog",
+          "status": "client slice complete; inactive"
+        },
+        {
+          "name": "Sally Carrera",
+          "harness": "codex",
+          "role": "mechanic view slice",
+          "observed_at": "2026-11-14T05:35:00.600741+00:00",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
+          "status": "view slice complete; inactive"
+        },
+        {
+          "name": "Mushu",
+          "harness": "codex",
+          "role": "implementer supported-follow-up correction",
+          "observed_at": "2026-11-14T06:08:53Z",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
+          "status": "correction reviewed; inactive"
+        },
+        {
+          "name": "Spike",
+          "harness": "codex",
+          "role": "runner rendered activity proof",
+          "observed_at": "2026-11-14T08:15:21.799691+00:00",
+          "expires_at": "2026-11-14T08:15:21.799691+00:00",
+          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; requested/selected/effective gpt-6-luna/high and saved title verified; attempt-8-summary.json",
+          "status": "attempt 8 local proof complete; inactive"
+        }
+      ],
+      "slices": [
+        {
+          "id": "client",
+          "status": "complete",
+          "title": "Scoped native activity and command client",
+          "observed_at": "2026-11-14T05:32:16Z",
+          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
+        },
+        {
+          "id": "view",
+          "status": "complete",
+          "title": "Server-projected Angular Buddy activity and controls",
+          "observed_at": "2026-11-14T06:14:03Z",
+          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
+        },
+        {
+          "id": "proof",
+          "status": "complete",
+          "title": "Selected state and desktop/narrow browser review",
+          "observed_at": "2026-11-14T08:24:01Z",
+          "evidence": "Lead source and all10 desktop/narrow capture reviews completed at 7f8e947: attempt8 59/59 assertions, zero failed waits/unrun; exact route/auth/no-replay and cleanup verified. docs/gcsp/fucq444-delivery.md; lead-attempt8-review.json c40b0956. F487/F495 remain Medium independent open/unfixed; independent reviewer and connected integration remain outstanding."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected route Java OIDC PostgreSQL acceptance"
+        }
+      ],
+      "tracker_observed_at": "2026-11-14T05:11:48Z"
     },
     {
       "assignee": "",

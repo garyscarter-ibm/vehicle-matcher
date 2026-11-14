@@ -1,0 +1,199 @@
+<section class="activity-page" [attr.aria-busy]="view().pending ? 'true' : null">
+  <header class="activity-header">
+    <gcsp-screen-intro [title]="'Your buddy'" />
+    @if (showRefresh()) {
+      <button gcspButton type="button" variant="ghost" data-focus-key="activity-refresh"
+        [disabled]="refreshDisabled()" [attr.aria-describedby]="refreshDisabled() ? 'activity-refresh-help' : null"
+        (click)="refreshActivity()">Refresh activity</button>
+      @if (refreshDisabled()) { <span id="activity-refresh-help" class="activity-visually-hidden">Activity is loading or an update is in progress.</span> }
+    }
+  </header>
+  <p class="activity-live" aria-live="polite" aria-atomic="true">{{ liveMessage() }}</p>
+
+  @switch (view().phase) {
+    @case ('auth-loading') {
+      <gcsp-status-screen title="Your buddy" [message]="view().message" [busy]="true" [level]="2" [announcement]="null" />
+    }
+    @case ('signed-out') {
+      <gcsp-status-screen title="Sign in" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" (click)="signIn()">Sign in</button>
+      </gcsp-status-screen>
+    }
+    @case ('auth-unavailable') {
+      <gcsp-status-screen title="Sign-in unavailable" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" (click)="retrySignIn()">Try again</button>
+      </gcsp-status-screen>
+    }
+    @case ('access-denied') {
+      <gcsp-status-screen title="Access denied" [message]="view().message" [level]="2" [announcement]="null">
+        <a gcspButton variant="ghost" [routerLink]="['/']">Go to home</a>
+      </gcsp-status-screen>
+    }
+    @case ('auth-required') {
+      <gcsp-status-screen title="Sign in again" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" (click)="signIn()">Sign in</button>
+        <button gcspButton type="button" variant="ghost" data-focus-key="auth-refresh" (click)="refreshActivity()">Refresh activity</button>
+      </gcsp-status-screen>
+    }
+    @case ('loading') {
+      <gcsp-status-screen title="Loading activity" [message]="view().message || 'Loading your Buddy activity.'"
+        [busy]="true" [level]="2" [announcement]="null" />
+    }
+    @case ('unavailable') {
+      <gcsp-status-screen title="Activity unavailable" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" data-focus-key="recovery-refresh" (click)="refreshActivity()">Refresh activity</button>
+      </gcsp-status-screen>
+    }
+    @case ('denied') {
+      <gcsp-status-screen title="Access denied" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" data-focus-key="recovery-refresh" (click)="refreshActivity()">Refresh activity</button>
+      </gcsp-status-screen>
+    }
+    @case ('refused') {
+      <gcsp-status-screen title="Activity access refused" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" data-focus-key="recovery-refresh" (click)="refreshActivity()">Refresh activity</button>
+      </gcsp-status-screen>
+    }
+    @case ('restarted') {
+      <gcsp-status-screen title="Session changed" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" data-focus-key="recovery-refresh" (click)="refreshActivity()">Refresh activity</button>
+      </gcsp-status-screen>
+    }
+    @case ('conflict') {
+      <gcsp-status-screen title="Activity changed" [message]="view().message" [level]="2" [announcement]="null">
+        <button gcspButton type="button" data-focus-key="recovery-refresh" (click)="refreshActivity()">Refresh activity</button>
+        @if (view().retryAvailable) {
+          <button gcspButton type="button" variant="ghost" data-focus-key="retry-update" (click)="retryUpdate()">Retry update</button>
+        }
+      </gcsp-status-screen>
+    }
+    @case ('recovery') {
+      <gcsp-status-screen title="Update not confirmed" [message]="view().message" [level]="2" [announcement]="null">
+        @if (view().retryAvailable) {
+          <button gcspButton type="button" data-focus-key="retry-update" [disabled]="view().pending"
+            [attr.aria-describedby]="view().pending ? 'retry-update-help' : null" (click)="retryUpdate()">Retry update</button>
+          @if (view().pending) { <span id="retry-update-help" class="activity-visually-hidden">The Buddy update is in progress.</span> }
+        }
+        <button gcspButton type="button" variant="ghost" data-focus-key="recovery-refresh"
+          [disabled]="view().pending" [attr.aria-describedby]="view().pending ? 'recovery-refresh-help' : null"
+          (click)="refreshActivity()">Refresh activity</button>
+        @if (view().pending) { <span id="recovery-refresh-help" class="activity-visually-hidden">The Buddy update is in progress.</span> }
+      </gcsp-status-screen>
+      @if (view().projection) { <ng-container *ngTemplateOutlet="activityContent" /> }
+    }
+    @case ('ready') { <ng-container *ngTemplateOutlet="activityContent" /> }
+  }
+</section>
+
+<ng-template #activityContent>
+  @if (projection(); as activity) {
+    <section class="activity-summary" aria-label="Buddy status">
+      <p class="activity-badge" [class.is-engaged]="buddyLabel() === 'Buddy engaged'"
+        [class.is-finished]="buddyLabel() === 'Search finished'">
+        <span class="activity-status-dot" aria-hidden="true"></span>
+        <span>{{ buddyLabel() }}</span>
+      </p>
+        @if (view().showControls && view().controlOperation) {
+        <button gcspButton type="button" variant="ghost" class="activity-control" data-focus-key="buddy-control"
+          [disabled]="view().pending" [attr.aria-describedby]="view().pending ? 'buddy-control-help' : null"
+          (click)="toggleBuddy()">
+          {{ view().controlOperation === 'engage' ? 'Engage Buddy' : 'Disengage Buddy' }}
+        </button>
+        @if (view().pending) { <span id="buddy-control-help" class="activity-visually-hidden">Updating Buddy. The displayed status will refresh when the update is confirmed.</span> }
+      }
+    </section>
+
+    @if (activity.permission === null) {
+      <gcsp-status-screen title="Set up your buddy" message="Choose your preferences to get started."
+        [level]="2" [announcement]="null">
+        <a gcspButton variant="ghost" data-focus-key="review-preferences" [routerLink]="['/preferences']">Review your preferences</a>
+      </gcsp-status-screen>
+    } @else {
+      @if (currentOffer(); as offer) {
+        <section class="activity-offer" aria-labelledby="activity-offer-heading">
+          <h2 id="activity-offer-heading" class="activity-section-title">{{ offerHeading() }}</h2>
+          <div class="activity-offer-grid">
+            <div class="activity-offer-visual">
+              <div class="activity-image-frame">
+                @if (currentImage(); as image) {
+                  @if (!imageFailed()) {
+                    <img [src]="image.src" [alt]="image.alt" (error)="imageError()" />
+                  } @else {
+                    <p>{{ 'No image for this car yet' }}</p>
+                  }
+                  @if (imageCaption(); as caption) { <p class="activity-image-caption">{{ caption }}</p> }
+                } @else {
+                  <p>No image for this car yet</p>
+                }
+              </div>
+              @if (images().length > 1) {
+                <div class="activity-image-controls" role="group" aria-label="Vehicle images">
+                  @for (image of images(); track image.src; let index = $index) {
+                    <button gcspButton type="button" variant="ghost" [attr.aria-pressed]="imageIndex() === index"
+                      [attr.data-focus-key]="'vehicle-image-' + index" (click)="selectImage(index)">Image {{ index + 1 }}</button>
+                  }
+                </div>
+              }
+            </div>
+            <div class="activity-offer-details">
+              @if (offerTitle(); as title) { <h3 class="activity-offer-name">{{ title }}</h3> }
+              <p class="activity-offer-state">{{ offerStatus() }}</p>
+              @if (offerDeadline(); as deadline) { <p class="activity-offer-deadline">{{ deadline }}</p> }
+              <a gcspButton [routerLink]="['/offers', offer.offerRef.offerId]">View offer</a>
+            </div>
+          </div>
+        </section>
+      }
+
+      @if (!isEngaged()) {
+        <p class="activity-consequence">
+          {{ copy.pausedDetail }}
+          @if (currentOffer()?.state === 'active') { {{ ' ' + copy.pausedOffer }} }
+        </p>
+      }
+
+      @if (searchStatus().length) {
+        <section class="activity-checks" aria-label="Search activity">
+          @for (line of searchStatus(); track $index) { <p>{{ line }}</p> }
+        </section>
+      }
+
+      @if (exclusions().length) {
+        <section class="activity-exclusions" aria-label="Why no car matched">
+          @for (line of exclusions(); track $index) { <p>{{ line }}</p> }
+          <div class="activity-next-steps">
+            @if (keepAcknowledged()) {
+              <p class="activity-acknowledgement">{{ copy.keepNote }}</p>
+            } @else {
+              <button gcspButton type="button" variant="ghost" (click)="keepSearching()">Keep searching</button>
+            }
+            <a gcspButton variant="ghost" data-focus-key="review-preferences" [routerLink]="['/preferences']">Review your preferences</a>
+          </div>
+        </section>
+      }
+
+      @if (view().message && view().phase === 'ready') { <p class="activity-notice" aria-live="off">{{ view().message }}</p> }
+
+      <section class="activity-timeline" aria-labelledby="activity-timeline-heading">
+        <h2 id="activity-timeline-heading" class="activity-section-title">Activity</h2>
+        @if (!events().length) {
+          <p>No activity is recorded.</p>
+        } @else {
+          <ol class="activity-timeline-list">
+            @for (event of events(); track event.id) {
+              <li>
+                <div class="activity-timeline-time">
+                  @if (isValidTime(event.occurredAt)) {
+                    <time [attr.datetime]="event.occurredAt">{{ formatTime(event.occurredAt) }}</time>
+                  } @else { <span>Time not available</span> }
+                </div>
+                <p>{{ event.label }}</p>
+              </li>
+            }
+          </ol>
+        }
+        @if (hasIncompleteEvents()) { <p class="activity-secondary">Some activity could not be verified.</p> }
+      </section>
+    }
+  }
+</ng-template>
