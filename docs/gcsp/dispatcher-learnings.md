@@ -161,3 +161,36 @@ commit and push named paths through the existing helper, preserving concurrent a
   pins. Parent receipt SHA-256 `ebef098dad6a1e45a1578b68e48f245d0eee4d991425efe7a039f448c74b57a4`.
 - **Framework follow-up:** provide a binary-safe immutable-object audit API. The local audit failure
   is resolved; no shared framework patch, product source change or extra runtime was needed.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Evidence/outcome:** the FUCQ-442 finite screen/card/media release reached reviewed, audited and pushed partial integration `db1d00e8d`, with 33 selected tests and 17 actual-source fixture browser checks. Existing FUCQ-446 lifecycle work resumed as soon as measured capacity reached three; the same lead is implementing the employee screen/actions. No new Story was reserved for this pass.
+- **Action/follow-up:** continue complete source/check increments and prompt serial publication, then technically ready pickup within the fixed 66. Existing original route/connected acceptance gaps stay visible. This is measured local progress, not proof that scheduling overhead is globally resolved.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-003 · mitigating
+
+- **Evidence/outcome:** the explicitly scoped FUCQ-447 lifecycle planner was exercised at runtime and returned an empty operation list, exit 0. No operations, writes or acknowledgements were required.
+- **Action/follow-up:** this verifies the scoped no-op path for one Story; it does not measure broad performance or verify the nonempty write/acknowledgement path. Native framework scoped planning remains a proposal.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-007 · verified resolved locally
+
+- **Evidence/outcome:** corrected FUCQ-442 fixture bootstrap/tool invocation produced 33 selected test passes and 17 browser checks on both matching 167-input receipts. Parent audited the final pins and local teardown; an independent reviewer matched immutable blobs and viewed all nine final captures. The screen increment is pushed at `db1d00e8d`.
+- **Qualification:** retain initial TS2339/TS7006, native-esbuild invocation and partial-Angular-library/timeout failures, plus the earlier scrolled-capture compositor artifact. Their local fixture causes were corrected; this proves neither production CSP/AOT nor integrated router/Java/OIDC/native-PostgreSQL acceptance. No generic framework repair was performed.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-009 · identified
+
+- **Issue/impact:** FUCQ-442's test runner samples command descendants but omits its Python supervisor from peak RSS. Earlier browser1–5 also omitted detached Chrome groups. Full aggregate historical peak cannot be established from those receipts.
+- **Cause/evidence:** read-only inspection of local-run.py shows sampling rooted at the command PID; the supervisor is outside that set. Final browser6 correctly walks recursive command descendants and records their groups. Retained selected/browser combined peaks are approximately 1.43/1.39 GB; the omission establishes uncertainty, not a demonstrated overrun.
+- **Action/outcome:** independently verified nine local scratch roots, 23 groups, supervisors, link and canonical tokens absent, plus borrowed identities/caches unchanged. Preserve the peak limitation in delivery evidence. No test was rerun merely to improve the receipt; no extra product or Story scope was introduced.
+- **Framework follow-up:** shared resource supervision should include its own RSS, recursive descendants and detached groups in aggregate accounting, while preserving bounded local-only allocation and Gary's absolute forbidden-storage restriction. This remains a proposed framework improvement.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-005 · mitigating
+
+- **Evidence/outcome:** FUCQ-442 independent review found two below-High source issues. They were promptly captured as separate linked backlog Bugs FUCQ-504 Medium and FUCQ-505 Low, left To Do/unassigned/unclaimed/unfixed, and did not expand the frozen screen increment. Existing FUCQ-499 remains open.
+- **Action/follow-up:** preserve source-only versus runtime reproduction, actual impact and original unmet criteria. Apply the same rule in both pollers so ordinary review findings do not silently become extra Story scope or unnecessary merge gates.
+
+## 2026-11-14 17:19 UTC · GC Codex · DL-20261114-GC-008 · verified resolved locally
+
+- **Issue/cause:** the first FUCQ-442 parent audit checked new worker files in the parent checkout before the increment was merged, causing FileNotFoundError. This was an audit path error, not a mismatching product input.
+- **Action/evidence:** corrected the audit root to the clean frozen worker and completed both 167-input sets, original Story/map preservation and actual local teardown. Receipt: `.claude/fucq442-stock-parent-audit-1700.json`. Following integration, only the expected newer FUCQ-447 input differences remained.
+- **Framework follow-up:** bind audits explicitly to frozen checkout and commit; do not confuse an unmerged file's absence in the parent with a failed worker source check.
