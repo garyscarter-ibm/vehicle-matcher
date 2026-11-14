@@ -6664,15 +6664,59 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T10:06:47Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447",
+      "slices": [
+        {
+          "id": "contracts",
+          "status": "not-started",
+          "title": "Case/help contracts and pure display projections"
+        },
+        {
+          "id": "client",
+          "status": "not-started",
+          "title": "Scoped six-operation Java case client"
+        },
+        {
+          "id": "employee-help",
+          "status": "not-started",
+          "title": "Employee help, confirmation and current readback"
+        },
+        {
+          "id": "greg-queue",
+          "status": "not-started",
+          "title": "Greg queue, feasible remedies and reviewed updates"
+        },
+        {
+          "id": "composition",
+          "status": "not-started",
+          "title": "Feature exports and dispatcher-owned shared composition"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual Java/OIDC/PostgreSQL journey and rendered acceptance"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-015",
+      "workers": [
+        {
+          "name": "Hubie",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "waiting for dispatcher review of plan; source held",
+          "observed_at": "2026-11-14T10:06:47Z",
+          "expires_at": "2026-11-14T10:06:47Z",
+          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; dispatcher 01a1d6ae-1c69-7240-888b-98af7b3562bd; saved title and effective gpt-6.1-sol/high verified; no children or runtime; docs/gcsp/fucq447-delivery.md"
+        }
+      ]
     },
     {
       "assignee": "",
