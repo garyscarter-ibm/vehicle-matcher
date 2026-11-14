@@ -6924,13 +6924,31 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T07:33:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479",
+      "slices": [
+        {
+          "id": "a-clock",
+          "status": "in-progress",
+          "title": "Clock service, ticks, handler registry and presenter clock controls",
+          "observed_at": "2026-11-14T07:33:07Z"
+        },
+        {
+          "id": "b-scenarios",
+          "status": "not-started",
+          "title": "Scenario preparation, isolated reset, faults/retry and restart"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merge base, full Java verify and story result"
+        }
+      ]
     },
     {
       "assignee": "",
