@@ -23,11 +23,8 @@ public interface DocumentProviderPort {
     record Acknowledgement(String operationId, String runId, String orderUuid, String itemId, String actorId,
             Instant at) {}
 
-    /**
-     * start: accepted | unsupported | unavailable. progress: in-progress | complete | failed | unsupported |
-     * unavailable. acknowledge: acknowledged | refused | pending | unsupported | unavailable. evidence is the
-     * provider's acknowledgement record (acknowledged only).
-     */
+    /** start: accepted|unsupported|unavailable; progress: in-progress|complete|failed|unsupported|unavailable;
+     *  acknowledge: acknowledged (with evidence)|refused|pending|unsupported|unavailable. */
     record Result(String status, String operationId, String providerReference, String reason, JsonNode evidence) {}
 
     Result start(Operation op);
