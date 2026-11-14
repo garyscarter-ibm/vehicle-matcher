@@ -74,6 +74,27 @@ final class ApptFixture implements AutoCloseable {
         }
     }
 
+    String stringOf(String sql, Object... params) throws SQLException {
+        try (Connection c = pool().getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) ps.setObject(i + 1, params[i]);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getString(1) : null;
+            }
+        }
+    }
+
+    /** The EXPLAIN text with sequential scans discouraged, so a usable partial index is the planner's choice. */
+    String plan(String sql) throws SQLException {
+        try (Connection c = pool().getConnection(); var st = c.createStatement()) {
+            st.execute("SET enable_seqscan = off");
+            StringBuilder out = new StringBuilder();
+            try (ResultSet rs = st.executeQuery("EXPLAIN " + sql)) {
+                while (rs.next()) out.append(rs.getString(1)).append('\n');
+            }
+            return out.toString();
+        }
+    }
+
     void update(String sql, Object... params) throws SQLException {
         try (Connection c = pool().getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) ps.setObject(i + 1, params[i]);
