@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T05:35:01Z",
+      "observed_at": "2026-11-14T06:14:03Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -7335,10 +7335,10 @@
           "name": "Rocky",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-14T05:32:15.556431+00:00",
-          "expires_at": "2026-11-14T07:32:15.556431+00:00",
+          "observed_at": "2026-11-14T06:14:03.067095+00:00",
+          "expires_at": "2026-11-14T08:14:03.067095+00:00",
           "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
-          "status": "client reviewed; view scoping"
+          "status": "client/view lead-reviewed; rendered proof next"
         },
         {
           "name": "Doug the Dog",
@@ -7354,9 +7354,18 @@
           "harness": "codex",
           "role": "mechanic view slice",
           "observed_at": "2026-11-14T05:35:00.600741+00:00",
-          "expires_at": "2026-11-14T07:35:00.600741+00:00",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
           "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
-          "status": "working"
+          "status": "view slice complete; inactive"
+        },
+        {
+          "name": "Mushu",
+          "harness": "codex",
+          "role": "implementer supported-follow-up correction",
+          "observed_at": "2026-11-14T06:08:53Z",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
+          "status": "correction reviewed; inactive"
         }
       ],
       "slices": [
@@ -7369,9 +7378,10 @@
         },
         {
           "id": "view",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Server-projected Angular Buddy activity and controls",
-          "observed_at": "2026-11-14T05:35:01Z"
+          "observed_at": "2026-11-14T06:14:03Z",
+          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
         },
         {
           "id": "proof",
