@@ -92,7 +92,7 @@ public class CaseHttpProfile implements QuarkusTestProfile {
 
     @Override
     public Set<Class<?>> getEnabledAlternatives() {
-        return Set.of(CaseHttpPorts.SeedPolicy.class, CaseHttpPorts.KnownRenewal.class);
+        return Set.of(CaseHttpPorts.KnownRenewal.class);
     }
 
     @Override

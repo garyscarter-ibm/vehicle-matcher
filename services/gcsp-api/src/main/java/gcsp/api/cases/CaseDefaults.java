@@ -1,26 +1,13 @@
 package gcsp.api.cases;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /** Production defaults until the real adapters exist; each is replaced by providing another bean. */
 public final class CaseDefaults {
 
     private CaseDefaults() {}
-
-    /** No copy of policy and no fallback: until the PolicyService adapter exists every case operation is unavailable. */
-    @DefaultBean
-    @ApplicationScoped
-    public static class UnconfiguredPolicy implements CasePolicyPort {
-        @Override
-        public Optional<Map<String, JsonNode>> assumptions(String policyVersion) {
-            return Optional.empty();
-        }
-    }
 
     /** No Java recommendation or suitability service exists yet, so no car can be proposed. */
     @DefaultBean

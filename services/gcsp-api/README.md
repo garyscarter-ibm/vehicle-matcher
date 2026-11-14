@@ -303,9 +303,9 @@ role approve or decline directly. Employee or Greg on a presenter endpoint is 40
 
 Package `gcsp.api.cases`: owned renewal cases in the V474_1 tables (`renewal_cases`, `renewal_case_history`).
 `CaseService` runs each command as one transaction and `CaseResource` serves the six endpoints above; scope comes only
-from the bearer principal. Ports and production defaults: `CasePolicyPort` is unconfigured until the PolicyService
-adapter exists, so every case call that reaches the service is 503 `case-unavailable`; `CaseAccountPort` reads the
-account records port; each change queues outbox event `renewal-case-update` for `gcsp.api.notify` (FUCQ-469) to
+from the bearer principal. Ports and production defaults: `PolicyCaseAdapter` reads the nine `renewalCase.*` rows
+of the pinned version from the canonical PolicyService (any missing or invalid row is 503 `case-unavailable`);
+`CaseAccountPort` reads the account records port (`GCSP_ACCOUNT_PROVIDER`, else 503); each change queues outbox event `renewal-case-update` for `gcsp.api.notify` (FUCQ-469) to
 deliver. Car suitability is not connected, so alternative-car proposals are 503, and preference relaxation needs a
 recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
 ported yet. No new environment variables.
