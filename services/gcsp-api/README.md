@@ -70,6 +70,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
+| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
 | `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
@@ -232,6 +233,46 @@ parameters except `after` and `limit` on `/stock`; anything else is 400 `unsuppo
 | 404 | `tick-not-found`. |
 | 409 | `tick-input-changed`, `release-clock-changed`, `stock-identity-changed`, `tranche-input-changed`, `unreleased-stock-occupied`, `stale-run`. |
 | 503 | Pending and retryable (`supply-provider-not-configured`, `policy-unavailable`, `stock-source-unavailable`, `stock-source-stale`, `database-unavailable`), with `state: pending`; or refused evidence (`invalid-stock-pull`, `supply-not-queued`, `supply-before-lead-time`) with `retryable: false`, `state: refused`; or `persistence-not-configured`. |
+
+## Appointments (FUCQ-472)
+
+`gcsp.api.appointments` ports the Node handover appointments. Routes, all under `/api/gcsp/v1` and scoped to the
+server's active run (never to the request); any unknown or repeated query parameter is 400 `unsupported-query`:
+
+| Route | Who | Meaning |
+| --- | --- | --- |
+| `GET /appointments?orderUuid=` | owning employee, greg, presenter | Read model `lifecycle.appointments.v1`, with offered slots while nothing is requested. |
+| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request. |
+| `POST /appointments/accept` | employee (own order) | `{commandId, orderUuid, proposalId, expectedVersion}`: accepts the provider's proposed change. |
+| `POST /appointments/complete` | greg | `{commandId, orderUuid, expectedVersion}`: records the handover outcome. |
+| `POST /presenter/appointments/ticks` | presenter | `{tickId, now}`: sets the appointment clock, then progresses every actionable appointment; answers `{tick, summary}`. |
+
+Results: 200 `ok`; 202 `pending` (`provider-outcome-uncertain` with `operationId` and the read model, or an uncertain commit
+with `outcome-uncertain`), never to be resent as a new command; 400 `invalid-appointment-command` (with `reasons`) or
+`unsupported-query`; 403 (`role-required`, `not-resource-owner`); 404 (`order-not-found`, `appointment-not-found`); 409
+(`stale-version` with `currentVersion`, `command-input-changed`, `appointment-already-requested`, `appointment-not-eligible`,
+`no-change-proposed`, `handover-not-ready` with `readiness` and `appointment`, `appointment-outcome-too-early` with
+`availableFrom`); 422 (the provider's own refusal, e.g. `live-appointments-unsupported`); 503 (`appointments-provider-not-configured`,
+`appointments-clock-unavailable`, `appointment-policy-unavailable`, `handover-readiness-unavailable`, `persistence-not-configured`).
+Every body carries `status`, `code` (when not ok), `reason` and `retryable`; tokens and upstream errors are never echoed.
+
+Ports, each with an explicit unconfigured default that answers unavailable (no silent fallback): `AppointmentProvider`,
+`OrderStagePort` (FUCQ-470 replaces it), `HandoverReadinessPort` (FUCQ-471 replaces it), `AppointmentPolicy` and
+`AppointmentClock`. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
+(`PolicyServiceAppointmentPolicy`); any gap or a wrong pin is 503 `appointment-policy-unavailable`, never a default.
+Appointment time is the latest presenter tick, never the wall clock.
+
+`AppointmentsWiring` picks the provider once at startup from `gcsp.appointments.provider` and builds the service when
+persistence is on. `synthetic` is labelled fictional in every read. A provider answer is checked exactly; a throw or a
+timeout (policy `providerTimeoutMs`) is an unknown outcome that stays open and is reconciled before any write is repeated.
+Presenter ticks page the `appointments_actionable` partial index by a keyset cursor (100 a page). With persistence on and a
+provider other than `none`, `AppointmentsStartup` reconciles open provider writes once (it never writes, confirms or
+retries) and logs a one-line summary; a failure is logged, not fatal.
+
+Completion is greg only. It needs the readiness port to say ready (else 409 `handover-not-ready`) and the booked slot to have
+started (policy `completeAfterSlotStartSeconds`), then commits the outcome and the outbox event `appointment-completed`
+(`orderUuid`, `employeeId`, `occurredAt`, `providerReference`, `slotId`) in one transaction; FUCQ-473 consumes the event.
+Not ported: no-show and rebooking, and the return purpose and current-car change (FUCQ-473).
 
 ## Identity seam
 

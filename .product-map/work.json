@@ -6937,13 +6937,50 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:04:36Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-472"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-472",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Appointments schema, ports, synthetic/live providers and retained policy",
+          "observed_at": "2026-11-14T02:34:03Z",
+          "evidence": "Lead-reviewed bd5f88d5: ports, retained-file policy validation, synthetic/live/unconfigured providers, stage classification, Node id/reference parity; 35 appointments tests (native PG17) and ./mvnw -B verify 177/177"
+        },
+        {
+          "id": "s2-planning",
+          "status": "complete",
+          "title": "Read, request, confirmation progress and proposed-change acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T03:10:51Z",
+          "evidence": "Lead-reviewed ca709d85 + 97697720: AppointmentService read/request/accept/tick/startup reconcile on native PG17; 54 appointments tests incl. uncertain/lost/hang/refused, ownership, restart with new pool, run isolation, fixed statement count; ./mvnw -B verify 196/196"
+        },
+        {
+          "id": "s3-completion",
+          "status": "complete",
+          "title": "Readiness-gated completion, outcome timing, startup reconcile-only",
+          "observed_at": "2026-11-14T03:22:05Z",
+          "evidence": "Lead-reviewed 85588818: greg-only readiness-gated completion, outcome timing, refused/uncertain (lost/throw-after/hang) recovery, startup reconcile-only, completed final by DB guard, appointment-completed outbox; 67 appointments tests (native PG17), ./mvnw -B verify 567/567"
+        },
+        {
+          "id": "s4-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T07:57:52Z",
+          "evidence": "Lead-reviewed 18d317f8: v1 endpoints over real JWTs (employee own, greg complete, presenter read/tick only), provider selection none/synthetic/live, startup reconcile, PolicyService adapter; 83 appointments tests, ./mvnw -B verify 583/583"
+        },
+        {
+          "id": "s5-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:04:36Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
