@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
-      "observed_at": "2026-11-13T23:34:17Z",
+      "note": "Independent143/143 accepted-state/private proof atc9a393d7/product8c045bf2; API-only acceptance setup. Earlier179/181,91/92 failures retained. F494unfixed; pending/narrow/Escape/Safari/nativeAT/F106 remain open. ProfileIDs unrecorded; ownedroot/groups absent. Original AC/native status/lease unchanged; delivery note.",
+      "observed_at": "2026-11-14T04:01:02Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -5506,9 +5506,9 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference.",
+          "evidence": "Independent c9a393d7/product8c045bf2 nativePG/Chrome143/143: accepted-offer/history1440/375 keyboard+DOM/ARIA/focus; sequential cookie/session/storage isolation. API-only acceptance setup, notUI proof. Earlier179/181,91/92 retained; F494unfixed/pending-narrow/Escape/Safari/nativeAT/F106 open. ProfileIDs unrecorded; ownedroot/groups absent. No full acceptance; delivery note.",
           "id": "connected",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T04:00:02.381095+00:00",
           "status": "blocked",
           "title": "Connected-release-offer-history-integration"
         },
@@ -5527,13 +5527,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
       "workers": [
         {
-          "expires_at": "2026-11-13T23:19:26Z",
+          "expires_at": "2026-11-14T04:00:02.381095+00:00",
           "harness": "codex",
           "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
           "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-13T22:37:32Z",
+          "observed_at": "2026-11-14T03:55:59.716831+00:00",
           "role": "story-lead",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+          "source": "Independent143/143 selected proof/audit complete; resources cleaned. Sol/high retained, no new descendants. Profile identity instrumentation gap retained. Parent owns evidence publication/lifecycle."
         },
         {
           "expires_at": "2026-11-13T23:19:26Z",
@@ -5561,6 +5561,15 @@
           "observed_at": "2026-11-13T23:16:27Z",
           "role": "reviewer",
           "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
+          "name": "Timone",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
+          "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
         }
       ]
     },
@@ -6845,13 +6854,43 @@
     {
       "assignee": "",
       "id": "FUCQ-470",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T03:05:25Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Reconcile approvals and ordering status",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470",
+      "slices": [
+        {
+          "id": "s1-ports",
+          "status": "complete",
+          "title": "Approval ports, retained policy validation, V470_1 schema and synthetic, unsupported and unconfigured status providers",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of V470_1 and ports; gcsp.api.approvals tests 19/19 on native PG17 at base b1be1d59c"
+        },
+        {
+          "id": "s2-service",
+          "status": "complete",
+          "title": "Tick-driven provider progression and reads with native PostgreSQL replay, uncertain, refusal, decline, scoping and restart tests",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of ApprovalService/Commands/Store; ApprovalLifecycleTest 8, ApprovalAccessTest 5 on native PG17"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "Order progress reads and presenter approval tick endpoints, startup selection and reconcile, role and ownership HTTP tests",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7250,13 +7289,13 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T02:43:05Z",
+      "observed_at": "2026-11-14T03:22:52Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java packaging47f127c4 adds documentsnone and disabled brevo/mail/5s templates;18/18focusedchecks and Sulley independentPASS. Hosted release/identity gates remain open; see14November delivery record.",
+          "evidence": "Local static artifact checkpoint retained. Java approvals packaging cfde7fc7 keeps none and unset canonical-policy override; 18/18 focused checks and Wile E. Coyote independent PASS. Hosted release/identity gates remain open; see 14 November delivery record.",
           "id": "artifact",
-          "observed_at": "2026-11-13T23:31:36Z",
+          "observed_at": "2026-11-14T03:22:52.694579+00:00",
           "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets"
         },
@@ -7286,10 +7325,10 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T02:43:05.896143+00:00",
-          "expires_at": "2026-11-14T02:43:05.896143+00:00",
-          "source": "Sulley PASS47f127c4 documents/mail packaging; originalAC/nativeInProgress/lease unchanged; dispatcher owns integration",
-          "status": "reviewed documents/mail checkpoint; observation expired"
+          "observed_at": "2026-11-14T03:11:19.622616+00:00",
+          "expires_at": "2026-11-14T03:22:52.694579+00:00",
+          "source": "Wile E. Coyote PASS on cfde7fc7; parent owns publication/integration; original AC open",
+          "status": "expired after approvals packaging handoff"
         }
       ]
     },

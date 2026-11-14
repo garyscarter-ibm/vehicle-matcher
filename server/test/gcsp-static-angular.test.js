@@ -290,10 +290,10 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   }
   assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
   assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
-  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER']) {
+  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER', 'GCSP_APPROVALS_PROVIDER']) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: none`, 'u'), `${key} keeps its existing unavailable default`);
   }
-  for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH']) {
+  for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH', 'GCSP_APPROVALS_POLICY_FILE']) {
     assert.doesNotMatch(java, new RegExp(`^      - key: ${key}$`, 'mu'), `${key} is not a required deployment input`);
     assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} is documented for optional deployment configuration`);
   }
@@ -312,6 +312,8 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   assert.match(properties, /^gcsp\.documents\.provider=\$\{GCSP_DOCUMENTS_PROVIDER:none\}$/mu);
   assert.match(properties, /^gcsp\.mail\.transport=\$\{GCSP_MAIL_TRANSPORT:\}$/mu);
   assert.match(properties, /^gcsp\.notify\.drain-interval=\$\{GCSP_NOTIFY_DRAIN_INTERVAL:5s\}$/mu);
+  assert.match(properties, /^gcsp\.approvals\.provider=\$\{GCSP_APPROVALS_PROVIDER:none\}$/mu);
+  assert.match(properties, /^gcsp\.approvals\.policy-file=\$\{GCSP_APPROVALS_POLICY_FILE:\}$/mu);
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);
