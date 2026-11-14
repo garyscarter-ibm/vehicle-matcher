@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
-      "observed_at": "2026-11-13T23:34:17Z",
+      "note": "Independent143/143 accepted-state/private proof atc9a393d7/product8c045bf2; API-only acceptance setup. Earlier179/181,91/92 failures retained. F494unfixed; pending/narrow/Escape/Safari/nativeAT/F106 remain open. ProfileIDs unrecorded; ownedroot/groups absent. Original AC/native status/lease unchanged; delivery note.",
+      "observed_at": "2026-11-14T04:01:02Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -5506,9 +5506,9 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference.",
+          "evidence": "Independent c9a393d7/product8c045bf2 nativePG/Chrome143/143: accepted-offer/history1440/375 keyboard+DOM/ARIA/focus; sequential cookie/session/storage isolation. API-only acceptance setup, notUI proof. Earlier179/181,91/92 retained; F494unfixed/pending-narrow/Escape/Safari/nativeAT/F106 open. ProfileIDs unrecorded; ownedroot/groups absent. No full acceptance; delivery note.",
           "id": "connected",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T04:00:02.381095+00:00",
           "status": "blocked",
           "title": "Connected-release-offer-history-integration"
         },
@@ -5527,13 +5527,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
       "workers": [
         {
-          "expires_at": "2026-11-13T23:19:26Z",
+          "expires_at": "2026-11-14T04:00:02.381095+00:00",
           "harness": "codex",
           "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
           "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-13T22:37:32Z",
+          "observed_at": "2026-11-14T03:55:59.716831+00:00",
           "role": "story-lead",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+          "source": "Independent143/143 selected proof/audit complete; resources cleaned. Sol/high retained, no new descendants. Profile identity instrumentation gap retained. Parent owns evidence publication/lifecycle."
         },
         {
           "expires_at": "2026-11-13T23:19:26Z",
@@ -5561,6 +5561,15 @@
           "observed_at": "2026-11-13T23:16:27Z",
           "role": "reviewer",
           "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
+          "name": "Timone",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
+          "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
         }
       ]
     },
@@ -6047,7 +6056,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-14T00:23:00Z",
+      "observed_at": "2026-11-14T02:54:50Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -6079,9 +6088,16 @@
           "title": "Original-owned-offer-order-preview-composition"
         },
         {
-          "evidence": "Mater independent review passed exact9b995759..401b9972 implementation checkpoint; normal production/static packaging and fixture Angular/Chrome proof passed; actual Java/OIDC/PG ownership/parity/durable-state runtime unavailable, Safari/private/a11y/print/hosted acceptance unrun. Original AC open; inherited Medium draft-discard restart FUCQ-488 and FUCQ-487 contrast remain independently prioritised.",
+          "id": "preference-coupling",
+          "title": "Published-compact-preferences-and-exact-current-car-rating",
+          "status": "complete",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
+        },
+        {
+          "evidence": "Mater passed original401b9972; Stanley passed exact98490dca..f8d478b1 partial checkpoint. Fixture/scoped/AOT/static evidence supports implementation only. Both original AC remain open: actual Java version DTO gap,OIDC/PG ownership/parity/durable-state/restart and Safari/private/a11y/print/hosted gates unproven. F487/488/491 independently prioritised.",
           "id": "integration",
-          "observed_at": "2026-11-14T00:21:50.433978+00:00",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
           "status": "blocked",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
@@ -6093,13 +6109,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
       "workers": [
         {
-          "expires_at": "2026-11-14T00:13:43.535381+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
           "harness": "codex",
           "name": "Marvin the Martian",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
           "role": "story-lead",
-          "source": "thread 01a1d73e-195c-7dd3-8470-e5c514fd5fd9; dispatcher claim09a13e78",
-          "status": "complete; source edits stopped; actual acceptance open"
+          "source": "existing lead requested/selected/effective gpt-6.1-sol/high; verified source f8d478b1; final metadata handoff only, dispatcher owns publication/sync/integration/lifecycle",
+          "status": "coupling checkpoint reviewed and complete; source stopped; actual integration blocked"
         },
         {
           "expires_at": "2026-11-13T23:43:44.865713+00:00",
@@ -6136,6 +6152,15 @@
           "role": "reviewer",
           "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
           "status": "review passed implementation checkpoint; stopped; actual acceptance open"
+        },
+        {
+          "name": "Stanley Tiger",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
+          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
+          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
         }
       ]
     },
@@ -6591,15 +6616,66 @@
       ]
     },
     {
-      "assignee": "",
       "id": "FUCQ-459",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
       "title": "Serve exact vehicle evidence from retained artifacts",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-459"
+      "observed_at": "2026-11-14T07:44:19Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-459",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "s1-corpus",
+          "status": "complete",
+          "title": "Java retained corpus store, canonical digest and integrity fallback",
+          "observed_at": "2026-11-14T00:11:09Z",
+          "evidence": "5f31e1be reviewed by story-lead; 29 evidence tests pass incl 13 fixture + 3 retained stores equal to Node goldens; fleet-source load 611 ms, 3 MB heap"
+        },
+        {
+          "id": "s2-lookup",
+          "status": "complete",
+          "title": "Exact lookup and evidence projection with Node golden parity",
+          "observed_at": "2026-11-14T00:41:37Z",
+          "evidence": "story-lead reviewed; 38 evidence tests; all 2667 retained configs and VINs digest-equal to Node lookup"
+        },
+        {
+          "id": "s3-decorators",
+          "status": "complete",
+          "title": "Retained display imagery and configuration definitions parity",
+          "observed_at": "2026-11-14T01:16:20Z",
+          "evidence": "story-lead reviewed; 50 evidence tests; 2667 decorated configs/VINs digest-equal to Node production lookup; 680 retained images byte-verified"
+        },
+        {
+          "id": "s4-providers",
+          "status": "complete",
+          "title": "Lookup and alternate-offline providers, routing, consumer contract, startup selection",
+          "observed_at": "2026-11-14T03:05:01Z",
+          "evidence": "story-lead reviewed; 63 evidence tests; 187 Node contract matrix cases and 158 URL vectors equal; both provider shapes same vehicle minus imagery"
+        },
+        {
+          "id": "s5-http",
+          "status": "complete",
+          "title": "v1 vehicle-evidence and image endpoints, readiness and artifact packaging docs",
+          "observed_at": "2026-11-14T03:27:32Z",
+          "evidence": "story-lead reviewed; 89 evidence tests incl QuarkusTest HTTP for lookup, alternate, none, corrupt, fleet images; full verify 589 run 0 fail"
+        },
+        {
+          "id": "s6-stock",
+          "status": "complete",
+          "title": "Exact stock identity through persistence with native PG check",
+          "observed_at": "2026-11-14T07:39:23Z",
+          "evidence": "story-lead reviewed; native PG17 full verify 598 run 0 fail 0 skip; stock read Index Scan stock_cars_pkey shared hit=4 at 10k cars"
+        },
+        {
+          "id": "s7-integration",
+          "status": "complete",
+          "title": "Base merge, full Java verify and result",
+          "observed_at": "2026-11-14T07:44:19Z",
+          "evidence": "merged origin/gcsp-poc-dev at cfe26c1b8; full ./mvnw -B verify with native PG17 634 run 0 fail 0 skip; story-lead reviewed all slices"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6797,13 +6873,43 @@
     {
       "assignee": "",
       "id": "FUCQ-470",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T03:05:25Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Reconcile approvals and ordering status",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470",
+      "slices": [
+        {
+          "id": "s1-ports",
+          "status": "complete",
+          "title": "Approval ports, retained policy validation, V470_1 schema and synthetic, unsupported and unconfigured status providers",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of V470_1 and ports; gcsp.api.approvals tests 19/19 on native PG17 at base b1be1d59c"
+        },
+        {
+          "id": "s2-service",
+          "status": "complete",
+          "title": "Tick-driven provider progression and reads with native PostgreSQL replay, uncertain, refusal, decline, scoping and restart tests",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of ApprovalService/Commands/Store; ApprovalLifecycleTest 8, ApprovalAccessTest 5 on native PG17"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "Order progress reads and presenter approval tick endpoints, startup selection and reconcile, role and ownership HTTP tests",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6871,13 +6977,36 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T07:37:09Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-474"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-474",
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Case schema V474_1, CaseService (ownership, transitions, permitted remedies, policy/notification ports) with native PG tests",
+          "observed_at": "2026-11-14T02:25:12Z",
+          "evidence": "Lead-reviewed 682f6fb8: V474_1 renewal_cases (partial unique one active per employee/renewal) + immutable renewal_case_history; CaseService help/own/list/options/request/update with ports; 30 native PG17 cases tests rerun by lead (concurrency 5x2, replay, stale, remedies); verify 299/0/0/0"
+        },
+        {
+          "id": "s2-http",
+          "status": "complete",
+          "title": "/api/gcsp/v1 help and scheme-team case HTTP, role/ownership guards, JSON refusals, wiring tests, README",
+          "observed_at": "2026-11-14T03:31:11Z",
+          "evidence": "Lead-reviewed f0c3c26f (+lead fixes: class @Path routing, per-JVM tag across classloaders): CaseResource six /api/gcsp/v1 help, cases and scheme-team/cases endpoints; employee own-only, Greg only (presenter/employee 403 role-required), unsupported-query, 401/503; real OIDC JWKS test tokens; 12 HTTP tests + 30 service tests green on native PG17"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story-level validation, merge with gcsp-poc-dev, result block",
+          "observed_at": "2026-11-14T07:37:09Z",
+          "evidence": "c5f676d6 after merge a8c1ca1d of origin/gcsp-poc-dev: PolicyCaseAdapter over canonical PolicyService; cases 44/44 native PG17 (HTTP on real OIDC JWKS + canonical policy); ./mvnw -B verify 580 run 0 fail 0 skip; Flyway 1,2,457.1,458.1,460.1,469.1,470.1,471.1,474.1"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7202,13 +7331,13 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T02:26:06Z",
+      "observed_at": "2026-11-14T03:22:52Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java producer packaging5f92381e reconciles rootDockercontext,3policyfilters,optionalnoneproviders;18/18focusedchecks and independentPASS. Hosted release/identity gates remain open; see delivery record14November continuation.",
+          "evidence": "Local static artifact checkpoint retained. Java approvals packaging cfde7fc7 keeps none and unset canonical-policy override; 18/18 focused checks and Wile E. Coyote independent PASS. Hosted release/identity gates remain open; see 14 November delivery record.",
           "id": "artifact",
-          "observed_at": "2026-11-13T23:31:36Z",
+          "observed_at": "2026-11-14T03:22:52.694579+00:00",
           "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets"
         },
@@ -7238,10 +7367,10 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T02:26:05.937586+00:00",
-          "expires_at": "2026-11-14T02:26:05.937586+00:00",
-          "source": "Buzz Lightyear PASS5f92381e; native InProgress/originalAC/lease unchanged; dispatcher owns integration",
-          "status": "provider packaging checkpoint reviewed; observation expired"
+          "observed_at": "2026-11-14T03:11:19.622616+00:00",
+          "expires_at": "2026-11-14T03:22:52.694579+00:00",
+          "source": "Wile E. Coyote PASS on cfde7fc7; parent owns publication/integration; original AC open",
+          "status": "expired after approvals packaging handoff"
         }
       ]
     },
