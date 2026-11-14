@@ -7320,11 +7320,11 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T07:43:28Z",
+      "observed_at": "2026-11-14T07:54:37Z",
       "original_status": "To Do",
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
       "type": "Story",
       "unsliced": false,
@@ -7336,17 +7336,27 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T07:43:27.751554+00:00",
-          "expires_at": "2026-11-14T08:13:27.751554+00:00",
-          "source": "direct active lead observation; claimed Story delegated by dispatcher"
+          "observed_at": "2026-11-14T07:54:37.273554+00:00",
+          "expires_at": "2026-11-14T08:24:37.273554+00:00",
+          "source": "direct active lead review observation; pending dispatcher publication"
+        },
+        {
+          "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
+          "name": "Imhotep",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T07:54:37.273554+00:00",
+          "expires_at": "2026-11-14T07:54:37.273554+00:00",
+          "source": "verified final result; idle, source checkpoint0c547fdb, runtime Sol/medium"
         }
       ],
       "slices": [
         {
           "id": "typed-projection",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Typed-source-backed-exact-stock-projection",
-          "observed_at": "2026-11-14T07:43:28Z"
+          "observed_at": "2026-11-14T07:54:37Z",
+          "evidence": "Lead source/producer/caller review PASS at pure typed boundary on0c547fdb; 50/50 named spec; tested tree e3668979; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-projection-review.json. Actual Java integration remains open."
         },
         {
           "id": "browse-state",
@@ -7368,7 +7378,9 @@
           "status": "not-started",
           "title": "Actual-Java-and-journey-integration"
         }
-      ]
+      ],
+      "story_points": 13,
+      "started_at": "2026-11-14"
     }
   ],
   "version": 1
