@@ -6576,13 +6576,35 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T03:31:11Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-474"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-474",
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Case schema V474_1, CaseService (ownership, transitions, permitted remedies, policy/notification ports) with native PG tests",
+          "observed_at": "2026-11-14T02:25:12Z",
+          "evidence": "Lead-reviewed 682f6fb8: V474_1 renewal_cases (partial unique one active per employee/renewal) + immutable renewal_case_history; CaseService help/own/list/options/request/update with ports; 30 native PG17 cases tests rerun by lead (concurrency 5x2, replay, stale, remedies); verify 299/0/0/0"
+        },
+        {
+          "id": "s2-http",
+          "status": "complete",
+          "title": "/api/gcsp/v1 help and scheme-team case HTTP, role/ownership guards, JSON refusals, wiring tests, README",
+          "observed_at": "2026-11-14T03:31:11Z",
+          "evidence": "Lead-reviewed f0c3c26f (+lead fixes: class @Path routing, per-JVM tag across classloaders): CaseResource six /api/gcsp/v1 help, cases and scheme-team/cases endpoints; employee own-only, Greg only (presenter/employee 403 role-required), unsupported-query, 401/503; real OIDC JWKS test tokens; 12 HTTP tests + 30 service tests green on native PG17"
+        },
+        {
+          "id": "s3-integration",
+          "status": "in-progress",
+          "title": "Story-level validation, merge with gcsp-poc-dev, result block",
+          "observed_at": "2026-11-14T03:31:11Z"
+        }
+      ]
     },
     {
       "assignee": "",
