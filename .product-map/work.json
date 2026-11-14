@@ -7144,13 +7144,40 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:39:10Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480",
+      "slices": [
+        {
+          "id": "retained-results",
+          "status": "not-started",
+          "title": "Retained baseline import and stored-result reads"
+        },
+        {
+          "id": "seeded-inputs",
+          "status": "not-started",
+          "title": "Seeded comparison inputs from Java policy at existing sizes"
+        },
+        {
+          "id": "measures-experiments",
+          "status": "not-started",
+          "title": "Measures, result assembly and experiment checks"
+        },
+        {
+          "id": "jobs-recovery",
+          "status": "not-started",
+          "title": "Greg job start, progress, failure and restart recovery"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merge base, full Java verify, README and result"
+        }
+      ]
     },
     {
       "assignee": "",
