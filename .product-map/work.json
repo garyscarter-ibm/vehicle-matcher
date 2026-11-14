@@ -5659,7 +5659,7 @@
       "id": "FUCQ-421",
       "jira_observed_at": "2026-11-12T15:48:24.304Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-14T01:57:03Z",
+      "observed_at": "2026-11-14T02:03:27Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -5670,8 +5670,9 @@
         },
         {
           "id": "evidence",
-          "status": "not-started",
-          "title": "Native revision regression: probe cost, two-instance concurrency, rollback, replay, reset, legacy init"
+          "status": "in-progress",
+          "title": "Native revision regression: probe cost, two-instance concurrency, rollback, replay, reset, legacy init",
+          "observed_at": "2026-11-14T02:03:27Z"
         },
         {
           "id": "integration",
