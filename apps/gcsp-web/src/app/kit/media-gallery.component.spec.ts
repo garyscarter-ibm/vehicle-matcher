@@ -10,12 +10,13 @@ const imageC: MediaGalleryImage = { src: 'data:image/gif;base64,R0lGODlhAQABAAD/
 
 @Component({
   imports: [MediaGalleryComponent],
-  template: '<gcsp-media-gallery [name]="name()" [images]="images()" [placeholder]="placeholder" />',
+  template: '<gcsp-media-gallery [name]="name()" [images]="images()" [placeholder]="placeholder" [compact]="compact()" />',
 })
 class GalleryHost {
   readonly name = signal('BMW X2 M35i');
   readonly images = signal<readonly MediaGalleryImage[]>([]);
   placeholder = 'No image is available';
+  readonly compact = signal(false);
 }
 
 function stubDialog(dialog: HTMLDialogElement): void {
@@ -337,5 +338,24 @@ describe('MediaGalleryComponent', () => {
     expect(dialog.open).toBe(false);
     expect(focus).not.toHaveBeenCalled();
     root.remove();
+  });
+});
+
+describe('compact stock media', () => {
+  it('retains the supplied primary image and fallback without card picker or enlarge controls', async () => {
+    const fixture = TestBed.createComponent(GalleryHost); fixture.componentInstance.compact.set(true);
+    fixture.componentInstance.images.set([imageA, imageB]); await fixture.whenStable(); fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('.gcsp-media-gallery')?.classList.contains('is-compact')).toBe(true);
+    expect(root.querySelector('.gcsp-media-feature-image')?.getAttribute('src')).toBe(imageA.src);
+    expect(root.querySelector('.gcsp-media-enlarge, .gcsp-media-thumbnails, .gcsp-media-caption')).toBeNull();
+    root.querySelector('img')!.dispatchEvent(new Event('error')); fixture.detectChanges();
+    expect(root.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable'); fixture.destroy();
+  });
+  it('closes an existing viewer on compact transition and guards programmatic opening', async () => {
+    const { fixture, component, dialog } = await openedGallery();
+    expect(dialog.open).toBe(true); fixture.componentInstance.compact.set(true); await fixture.whenStable(); fixture.detectChanges();
+    expect(dialog.open).toBe(false); expect(component.viewerOpen()).toBe(false); expect(document.body.style.overflow).toBe('scroll');
+    component.openViewer(); expect(dialog.open).toBe(false);
   });
 });
