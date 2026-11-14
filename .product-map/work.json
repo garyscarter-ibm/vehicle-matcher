@@ -7127,7 +7127,7 @@
     {
       "assignee": "",
       "id": "FUCQ-461",
-      "observed_at": "2026-11-14T09:10:07Z",
+      "observed_at": "2026-11-14T22:13:41Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Compute equivalent eligibility, quotes and recommendations",
@@ -7151,13 +7151,17 @@
         },
         {
           "id": "s3-source-http",
-          "status": "not-started",
-          "title": "Released-stock and account source adapter, vehicle evidence port stub and employee-own HTTP endpoint"
+          "status": "complete",
+          "title": "Released-stock and account source adapter, vehicle evidence port stub and employee-own HTTP endpoint",
+          "observed_at": "2026-11-14T22:13:40Z",
+          "evidence": "fd1fbdbd0 reviewed by story-lead: released-stock/account source adapter (Node-generated source cases), VehicleEvidencePort stub, POST /api/gcsp/v1/recommendations employee-own; 18 recommendation tests 0F on native PG17"
         },
         {
           "id": "s4-integration",
-          "status": "not-started",
-          "title": "Story validation, Used Cars parity check, base merge, bounds record and result"
+          "status": "complete",
+          "title": "Story validation, Used Cars parity check, base merge, bounds record and result",
+          "observed_at": "2026-11-14T22:13:41Z",
+          "evidence": "merged origin/gcsp-poc-dev at abc8e1701; recommendation 18/0F; clean verify 1377 ran, 1 failure in unrelated gcsp.api.appointments (passes alone, order-dependent); result block in story file"
         }
       ]
     },
