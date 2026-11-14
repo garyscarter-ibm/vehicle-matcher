@@ -49,12 +49,24 @@ final class ComparisonValidation {
     /** JS trim().length > 0: any character outside the JS whitespace and line terminator set. */
     static boolean jsText(String s) {
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            boolean space = (c >= 9 && c <= 13) || c == 0xFEFF || c == 0x2028 || c == 0x2029
-                    || Character.getType(c) == Character.SPACE_SEPARATOR;
-            if (!space) return true;
+            if (!jsSpace(s.charAt(i))) return true;
         }
         return false;
+    }
+
+    /** A JS whitespace or line terminator code unit, the set String.prototype.trim removes. */
+    static boolean jsSpace(char c) {
+        return (c >= 9 && c <= 13) || c == 0xFEFF || c == 0x2028 || c == 0x2029
+                || Character.getType(c) == Character.SPACE_SEPARATOR;
+    }
+
+    /** JS String.prototype.trim. */
+    static String jsTrim(String s) {
+        int start = 0;
+        int end = s.length();
+        while (start < end && jsSpace(s.charAt(start))) start++;
+        while (end > start && jsSpace(s.charAt(end - 1))) end--;
+        return s.substring(start, end);
     }
 
     static boolean finite(JsonNode n) {
