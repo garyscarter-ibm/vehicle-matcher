@@ -6279,13 +6279,31 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T00:06:08Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-462"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-462",
+      "slices": [
+        {
+          "id": "s1-release-core",
+          "status": "in-progress",
+          "title": "Release schema, tick consumption, provider port and released-stock read on native PostgreSQL",
+          "observed_at": "2026-11-14T00:06:08Z"
+        },
+        {
+          "id": "s2-http-startup",
+          "status": "not-started",
+          "title": "Startup provider selection, presenter release endpoints and startup reconciliation"
+        },
+        {
+          "id": "s3-integration",
+          "status": "not-started",
+          "title": "Story validation, base merge, migration number and result"
+        }
+      ]
     },
     {
       "assignee": "",
