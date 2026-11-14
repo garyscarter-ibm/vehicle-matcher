@@ -601,6 +601,7 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
+| `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
 
 App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.

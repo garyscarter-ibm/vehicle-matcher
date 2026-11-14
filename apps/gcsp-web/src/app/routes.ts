@@ -12,7 +12,7 @@ export const routes: Routes = [
   feature('stock', 'Choose a car', ['employee']), feature('manual/review', 'Review your selection', ['employee']), feature('manual/summary', 'Order summary', ['employee']),
   { path: 'activity', loadComponent: () => import('./activity/activity.component').then((m) => m.ActivityComponent), canActivate: [sessionGuard], data: { title: 'Buddy activity', roles: ['employee'] } },
   { path: 'offers/:offerId', loadComponent: () => import('./offers/offer-route.component').then((m) => m.OfferRouteComponent), canActivate: [sessionGuard], data: { title: 'Your offer', roles: ['employee'] } }, feature('orders', 'Order progress', ['employee']), { path: 'help', loadComponent: () => import('./help/help.component').then((m) => m.HelpComponent), canActivate: [sessionGuard], data: { title: 'Renewal help', roles: ['employee'] } },
-  feature('greg', 'Employee car ordering', ['greg']), feature('greg/cases', 'Employee cases', ['greg']),
+  feature('greg', 'Employee car ordering', ['greg']), { path: 'greg/cases', loadComponent: () => import('./cases/case-queue.component').then((m) => m.CaseQueueComponent), canActivate: [sessionGuard], data: { title: 'Employee cases', roles: ['greg'] } },
   feature('presenter', 'Presenter controls', ['presenter']), feature('presenter/outbox', 'Outbox', ['presenter']),
   { path: 'components', loadComponent: () => import('./pages/gallery.component').then((m) => m.GalleryComponent) },
   { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } },

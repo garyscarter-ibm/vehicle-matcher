@@ -1,5 +1,36 @@
 # FUCQ-447 delivery checkpoint
 
+## Greg queue implementation checkpoint — 14 November 2026
+
+The bounded native Greg queue/detail/options → review → Confirm → authoritative
+queue/options readback is implemented at `greg/cases`, with the new shared Angular table
+and additive gallery/catalogue entry. Only the Greg route placeholder expression changes;
+all other routes, existing Help/client/projections and backend bytes are preserved.
+Full scope, source pins, results, failures and local teardown evidence:
+[Greg queue checkpoint](fucq447-greg-queue-2026-11-14.md).
+
+Final selected native Angular compile/bundle PASS; **64/64 tests PASS**, zero failures,
+skips/pending/TODO (store27, component/route15, table3, existing Help9/policy5/guards5).
+Initial TypeScript compile failure and earlier61-pass run remain separate historical results.
+Installed headless Chrome printed blank DOM but timed out at30s with display/process-policy
+errors; its owned runtime was stopped, no repair/rerun attempted. Product rendered/browser
+checks and actual Java/realOIDC/nativePG/hosted/full original acceptance remain open.
+
+All three chunks used explicitly local scratch under Gary's OneDrive prohibition, one
+worker, canonical2GiBdisk/RAM,480work/600inclusive and5GiBreserve. Max inclusive disk
+320667161B/RSS1315471360B/duration66.916s. Independent local audit:127 final project pins
+match; all owned local roots/supervisors/groups/command lines/tokens absent; strict locked
+canonical ledger0entries; borrowed metadata/23008 hashes/Node identity unchanged. No
+OneDrive operation or new cloud-cleanup observation. Local full receipts are retained at
+root `.claude/test-runs/fucq447/greg-queue-local/`.
+
+Original2AC unchecked;Story InProgress/13points/Garyclaim retained. Greg slice now
+in-progress;other five stable slices/native observations unchanged. F501Medium/F502Low
+remain separate/unclaimed/unfixed/nonblocking. Parent owns review/integration/publication,
+Jira/native lifecycle and sync;worker commits allocated paths then HOLD/releases route
+writer, without worker push/merge/rebase/newpickup. Shared log issues/evidence are returned
+for the dispatcher to append, with no worker edit of that log.
+
 ## Employee Help source checkpoint — 14 November 2026
 
 **Source only: six new native Help files, no runtime, HOLD for independent review.**

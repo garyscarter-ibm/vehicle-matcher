@@ -6711,8 +6711,10 @@
         },
         {
           "id": "greg-queue",
-          "status": "not-started",
-          "title": "Greg queue, feasible remedies and reviewed updates"
+          "status": "in-progress",
+          "title": "Greg queue, feasible remedies and reviewed updates",
+          "observed_at": "2026-11-14T16:57:58Z",
+          "evidence": "Partial native Greg queue/detail/current options/review/Confirm/readback+shared table;final scoped compiler+64testsPASS(0fail/skip/TODO). Browser smoke blankDOM/30stimeout;actualJava/realOIDC/nativePG/rendered/full2AC open. Parent review/integration pending;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
         },
         {
           "id": "composition",
@@ -6733,13 +6735,13 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "INACTIVE/HOLD; reviewed Help route integrated; no runtime/source allocation",
-          "observed_at": "2026-11-14T15:19:32.070107+00:00",
-          "expires_at": "2026-11-14T15:19:32.070107+00:00",
-          "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2;SAME gpt-6.1-sol/high,no fallback/children;route-corrected-1417/native-1;docs/gcsp/fucq447-route-2026-11-14.md"
+          "status": "INACTIVE/HOLD; partial Greg queue checkpoint; route writer released",
+          "observed_at": "2026-11-14T16:57:58.163632+00:00",
+          "expires_at": "2026-11-14T16:57:58.163632+00:00",
+          "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2;SAME gpt-6.1-sol/high;no fallback/children;Greg native-3 64PASS;docs/gcsp/fucq447-greg-queue-2026-11-14.md"
         }
       ],
-      "note": "Help route integrated/pushed88403ac62 after independent source PASS and parent local-only audit:19/19 scoped native tests,115 project/23009 closure pins verified;no source changes/rerun/cloud access. Both original AC/InProgress/claim retained;Greg queue and full original connected/experience obligations remain incomplete. F501Medium/F502Low remain separate/unfixed/nonblocking. docs/gcsp/fucq447-route-2026-11-14.md"
+      "note": "Partial original Greg queue/detail/options/review/Confirm/readback and shared table authored;selected native compiler+64testsPASS;headlessChrome blankDOM/30stimeout retained;rendered/actualJava/realOIDC/nativePG/full2AC open. Original native observations/claim/13points retained. F501Medium/F502Low separate/unfixed/nonblocking. Parent owns integration/publication/lifecycle;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
     },
     {
       "assignee": "",
