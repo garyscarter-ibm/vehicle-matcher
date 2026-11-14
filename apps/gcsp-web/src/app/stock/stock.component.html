@@ -1,5 +1,6 @@
 <section class="gcsp-stock">
   <gcsp-screen-intro kicker="Choose your car" title="Released cars" lede="Browse the available cars. Review one to reserve it while you check the details." />
+  @if (reviewUnavailableReason()) { <p class="gcsp-note" role="status">{{ reviewUnavailableReason() }}</p> }
   @if (store.allCars().length) { <p class="gcsp-stock-allowance">{{ allowance() }}</p> }
   @if (store.releaseHistory(); as release) {
     <section aria-label="Release history">
@@ -38,8 +39,8 @@
           } @else { <p class="gcsp-note">Allowance not supplied</p> }
         </div>
         <gcsp-fact-list [rows]="detailRows()" />
-        <button gcspButton type="button" [disabled]="!car.reviewAvailable" (click)="reviewDetail()">Review this car</button>
-        <p class="gcsp-note">{{ car.reviewDisabledReason || 'Reviewing reserves this exact car while you check its details.' }}</p>
+        <button gcspButton type="button" [disabled]="!car.reviewAvailable || !!reviewUnavailableReason()" (click)="reviewDetail()">Review this car</button>
+        <p class="gcsp-note">{{ car.reviewDisabledReason || reviewUnavailableReason() || 'Reviewing reserves this exact car while you check its details.' }}</p>
         @for (section of detailSections(); track section.title) {
           <details><summary>{{ section.title }}</summary><gcsp-fact-list [rows]="section.rows" /></details>
         }
@@ -59,7 +60,7 @@
     }
     <div class="gcsp-stock-grid">
       @for (car of store.pageCars(); track car.id) {
-        <gcsp-vehicle-card [memberId]="car.id" [name]="car.name" [line]="line(car)" [orderNumber]="car.identity.orderNumber" [images]="images(car)" [points]="car.cost.value" [allowance]="car.cost.allowance" [contribution]="car.contribution" [eligibility]="eligibility(car)" [reviewDisabled]="!car.reviewAvailable" [disabledReason]="car.reviewDisabledReason" [facts]="cardFacts(car)" (action)="activate($event)" />
+        <gcsp-vehicle-card [memberId]="car.id" [name]="car.name" [line]="line(car)" [orderNumber]="car.identity.orderNumber" [images]="images(car)" [points]="car.cost.value" [allowance]="car.cost.allowance" [contribution]="car.contribution" [eligibility]="eligibility(car)" [reviewDisabled]="!car.reviewAvailable || !!reviewUnavailableReason()" [disabledReason]="car.reviewDisabledReason || reviewUnavailableReason()" [facts]="cardFacts(car)" (action)="activate($event)" />
       }
     </div>
     @if (store.cars().length > store.pageSize()) {

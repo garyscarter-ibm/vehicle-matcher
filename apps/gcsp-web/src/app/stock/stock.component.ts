@@ -39,6 +39,7 @@ const states: Readonly<Record<string, readonly [string, string]>> = {
 export class StockComponent {
   readonly store = inject(StockStore);
   readonly navigation = input<unknown>(null);
+  readonly reviewUnavailableReason = input<string | null>(null);
   readonly navigationChange = output<{ readonly snapshot: StockNavigationSnapshot | null; readonly replace: boolean }>();
   readonly review = output<StockCar['review']>();
   readonly back = output<void>();
@@ -135,7 +136,7 @@ export class StockComponent {
   activate(event: VehicleCardAction): void {
     const car = this.store.allCars().find(car => car.id === event.memberId);
     if (!car) return;
-    if (event.action === 'review') { if (car.reviewAvailable) this.review.emit(car.review); return; }
+    if (event.action === 'review') { if (car.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); return; }
     this.detailOrigin = car.id; this.store.openDetail(car.id); this.publish();
     this.focus(() => this.host.nativeElement.querySelector<HTMLElement>('[data-detail-heading]'));
   }
@@ -146,7 +147,7 @@ export class StockComponent {
       ?? this.host.nativeElement.querySelector<HTMLElement>('#stock-query'));
   }
   async reload(): Promise<void> { await this.store.reload(); }
-  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable) this.review.emit(car.review); }
+  reviewDetail(): void { const car = this.store.selectedCar(); if (car?.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); }
   private publish(): void {
     const snapshot = this.store.navigationSnapshot();
     this.lastNavigation = JSON.stringify(snapshot);
