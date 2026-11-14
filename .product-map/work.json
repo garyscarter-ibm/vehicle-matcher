@@ -6937,7 +6937,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T07:57:53Z",
+      "observed_at": "2026-11-14T08:04:36Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -6975,9 +6975,10 @@
         },
         {
           "id": "s5-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation, base merge, full Java verify and result",
-          "observed_at": "2026-11-14T07:57:53Z"
+          "observed_at": "2026-11-14T08:04:36Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
         }
       ]
     },
