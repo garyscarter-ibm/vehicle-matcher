@@ -6697,7 +6697,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T08:55:07Z",
+      "observed_at": "2026-11-14T09:03:59Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -6721,14 +6721,16 @@
         },
         {
           "id": "claims-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Employee HTTP routes, provider selection, expiry sweep and README",
-          "observed_at": "2026-11-14T08:55:07Z"
+          "observed_at": "2026-11-14T09:03:59Z",
+          "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration: base merge, Java verify and native PostgreSQL validation"
+          "status": "in-progress",
+          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T09:03:59Z"
         }
       ]
     },

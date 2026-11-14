@@ -64,6 +64,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_MAIL_FROM` | empty | Sender address. Required with `brevo`. |
 | `GCSP_MAIL_FROM_NAME` | empty | Sender display name. Required with `brevo`. |
 | `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
+| `GCSP_CLAIMS_SWEEP_INTERVAL` | `5s` | How often due manual claims expire and open remote claim operations reconcile, from `1s` to `10m`. |
 | `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
@@ -104,6 +105,22 @@ retry never changes either. Brevo's idempotency window is 30 minutes of wall tim
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
+
+## Manual claims (FUCQ-463)
+
+`gcsp.api.claims.ManualClaims` takes the exact car for one employee (employee only; the principal needs an `employeeId`).
+Routes under `/api/gcsp/v1`: `GET /manual/claim`, `POST /manual/claim`, `POST /manual/claim/review`, `POST /manual/claim/release`.
+Any query is `400 unsupported-query`; a principal from an earlier run is `409 stale-run`. There is deliberately no public
+allocate route: `convertSelection` is ordering's backend call (FUCQ-468), with `claimForOrdering` and `ownsActiveClaim`.
+
+- Exclusivity is the `custody_holds` unique indexes; the slot and hold rows are read `FOR UPDATE`, and each command is one
+  transaction. Idempotency is the command receipt (a changed body under the same `commandId` is `409
+  idempotency-input-changed`) and, remotely, the operation id.
+- Remote mode commits an intent, calls `ClaimStockPort` outside any transaction, then finalizes. Only `LocalClaimStock`
+  ships; remote is proven with a test double, and no live remote stock authority exists.
+- `ClaimSweep` expires due holds and reconciles open remote operations every `GCSP_CLAIMS_SWEEP_INTERVAL` (actor `system:manual-claims`).
+- Still unbound: `ManualSelectionPort` (every claim is `503 manual-selection-not-configured` until Java manual
+  browse and eligibility, FUCQ-461/442, land) and `SlotOccupancyPort` (to bind to FUCQ-464's `buddy_offers` by `hold_id`).
 
 ## Policy (FUCQ-457)
 
