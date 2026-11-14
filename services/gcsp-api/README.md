@@ -108,8 +108,8 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
 that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
 `pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
-Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts are not yet
-bound, so each attempt retries as `transport-unavailable` until the Java offer Story binds `OfferFacts`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts come from
+`PostgresOfferFacts` (FUCQ-465); an offer with no record fails as `message-facts-unavailable`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
 With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
 retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
@@ -440,6 +440,23 @@ retained images served. Any copy must be byte-exact: a changed catalogue, defini
 Measured on `fleet-source.v1` (2,425 configurations): the store, catalogue and definitions load in about 0.7 to 0.9 s
 at startup and add about 12 MB of heap after a full GC (the s1 measurement of the store alone was about 0.6 s and 3 MB).
 Reads then use an index and do not rescan the 45 MB file.
+## Offers (FUCQ-465)
+
+The emailed link is `/gcsp/offers/{offerId}`. The id is a plain identifier, not a secret or token, and grants nothing on
+its own: the reader must sign in (OIDC bearer) as an `employee` whose `employeeId` owns the offer. `OfferAccess` is
+the only place that decides this, and `authorizeDecision(principal, offerId, expectedOfferVersion)` is the check
+accept/decline (FUCQ-466) builds on. Offers are read from `buddy_offers`, `custody_holds` and `buddy_quotes`
+(FUCQ-464) in the environment's active run, so a link stays valid across restarts; legacy hashed Node links are not
+honoured. Responses carry `Cache-Control: no-store` and `Referrer-Policy: no-referrer`; any query parameter is refused.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/offers/{offerId}` | The owner's offer with its actual state (`pending`, `accepted`, `declined`, `superseded`, `expired`, `released`), `reason`, versions, quote and `availableActions`. Terminal offers read 200 with no actions. |
+| `GET /api/gcsp/v1/offers/current` | The owner's offers in this run, newest first, at most 20. |
+
+Refusals: 400 `invalid-offer-reference`, `unsupported-query`; 401 as above; 403 `role-required` (presenter, Greg, no
+`employeeId`), `offer-not-owned` (another employee; no offer facts returned); 404 `offer-not-found`; 409
+`offer-from-earlier-run`; 503 `offer-access-unavailable` (retryable) and `offer-state-inconsistent`.
 
 ## Order approvals (FUCQ-470)
 
