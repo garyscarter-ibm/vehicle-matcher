@@ -41,7 +41,7 @@ class AppointmentPolicyTest {
     }
 
     void unavailable(Consumer<ObjectNode> edit, String why) throws Exception {
-        PolicyResult<AppointmentConfig> r = policy(edit).config(V, T0);
+        PolicyResult<AppointmentConfig> r = policy(edit).config("run-1", V, T0);
         PolicyResult.Unavailable<AppointmentConfig> u = assertInstanceOf(PolicyResult.Unavailable.class, r, why);
         assertEquals("appointment-policy-unavailable", u.code(), why);
         assertTrue(u.retryable(), why);
@@ -50,7 +50,7 @@ class AppointmentPolicyTest {
 
     @Test
     void happyPathReadsEveryRule() throws Exception {
-        AppointmentConfig c = ((PolicyResult.Ok<AppointmentConfig>) policy(d -> {}).config(V, T0)).value();
+        AppointmentConfig c = ((PolicyResult.Ok<AppointmentConfig>) policy(d -> {}).config("run-1", V, T0)).value();
         assertEquals(V, c.policyVersion());
         assertEquals("sent to ordering", c.openingStage());
         assertEquals("approved", c.openingState());
@@ -78,27 +78,27 @@ class AppointmentPolicyTest {
 
     @Test
     void outcomeTimingIsRead() throws Exception {
-        OutcomeTiming t = ((PolicyResult.Ok<OutcomeTiming>) policy(d -> {}).timing(V, T0)).value();
+        OutcomeTiming t = ((PolicyResult.Ok<OutcomeTiming>) policy(d -> {}).timing("run-1", V, T0)).value();
         assertEquals(0, t.completeAfterSlotStartSeconds());
         assertEquals(0, t.noShowAfterSlotStartSeconds());
         assertEquals("retailer", t.tooEarly().owner());
         assertInstanceOf(PolicyResult.Unavailable.class,
                 policy(d -> value(d, "lifecycle.appointments.outcomeTiming.v1").put("completeAfterSlotStartSeconds", 86401))
-                        .timing(V, T0));
+                        .timing("run-1", V, T0));
         assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> value(d, "lifecycle.appointments.outcomeTiming.v1")
-                .with("tooEarly").put("owner", "nobody")).timing(V, T0));
+                .with("tooEarly").put("owner", "nobody")).timing("run-1", V, T0));
         assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> value(d, "lifecycle.appointments.outcomeTiming.v1")
-                .with("tooEarly").put("nextStep", "Wait — please")).timing(V, T0));
+                .with("tooEarly").put("nextStep", "Wait — please")).timing("run-1", V, T0));
         assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> value(d, "lifecycle.appointments.outcomeTiming.v1")
-                .remove("tooEarly")).timing(V, T0));
+                .remove("tooEarly")).timing("run-1", V, T0));
     }
 
     @Test
     void everyMissingKeyIsUnavailable() throws Exception {
         JsonNode original = ApptFixture.resource("policy.json");
-        for (String key : new String[] {RetainedFileAppointmentPolicy.SLOTS, RetainedFileAppointmentPolicy.CONFIRMATION,
-                RetainedFileAppointmentPolicy.SCENARIO, RetainedFileAppointmentPolicy.OWNERSHIP,
-                RetainedFileAppointmentPolicy.OUTCOMES}) {
+        for (String key : new String[] {AppointmentRules.SLOTS, AppointmentRules.CONFIRMATION,
+                AppointmentRules.SCENARIO, AppointmentRules.OWNERSHIP,
+                AppointmentRules.OUTCOMES}) {
             unavailable(d -> {
                 ArrayNode kept = d.putArray("assumptions");
                 for (JsonNode r : original.get("assumptions")) if (!key.equals(r.get("key").asText())) kept.add(r);
@@ -112,26 +112,26 @@ class AppointmentPolicyTest {
 
     @Test
     void wrongPinnedVersionOrFileVersionIsUnavailable() throws Exception {
-        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> {}).config("gcsp-policy-v2", T0));
-        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> d.put("policyVersion", "gcsp-policy-v2")).config(V, T0));
-        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> {}).config(null, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> {}).config("run-1", "gcsp-policy-v2", T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> d.put("policyVersion", "gcsp-policy-v2")).config("run-1", V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, policy(d -> {}).config("run-1", null, T0));
     }
 
     @Test
     void notYetOrNoLongerEffectiveIsUnavailable() throws Exception {
         unavailable(d -> d.put("effectiveFrom", "2026-11-06T00:00:00.000Z"), "file not yet effective");
-        unavailable(d -> row(d, RetainedFileAppointmentPolicy.SLOTS).put("effectiveFrom", "2026-11-06T00:00:00.000Z"),
+        unavailable(d -> row(d, AppointmentRules.SLOTS).put("effectiveFrom", "2026-11-06T00:00:00.000Z"),
                 "row not yet effective");
-        unavailable(d -> row(d, RetainedFileAppointmentPolicy.SLOTS).put("effectiveTo", "2026-11-05T09:00:00.000Z"),
+        unavailable(d -> row(d, AppointmentRules.SLOTS).put("effectiveTo", "2026-11-05T09:00:00.000Z"),
                 "row ended");
-        unavailable(d -> row(d, RetainedFileAppointmentPolicy.SLOTS).put("effectiveFrom", "garbage"), "bad row date");
-        assertInstanceOf(PolicyResult.Ok.class, policy(d -> row(d, RetainedFileAppointmentPolicy.SLOTS)
-                .put("effectiveTo", "2026-11-05T09:00:00.001Z")).config(V, T0));
+        unavailable(d -> row(d, AppointmentRules.SLOTS).put("effectiveFrom", "garbage"), "bad row date");
+        assertInstanceOf(PolicyResult.Ok.class, policy(d -> row(d, AppointmentRules.SLOTS)
+                .put("effectiveTo", "2026-11-05T09:00:00.001Z")).config("run-1", V, T0));
     }
 
     @Test
     void badSlotRulesAreUnavailable() throws Exception {
-        String k = RetainedFileAppointmentPolicy.SLOTS;
+        String k = AppointmentRules.SLOTS;
         unavailable(d -> value(d, k).put("openingState", "pending"), "opening state");
         unavailable(d -> value(d, k).put("openingStage", ""), "opening stage");
         unavailable(d -> value(d, k).put("earliestLeadDays", 61), "lead high");
@@ -150,16 +150,16 @@ class AppointmentPolicyTest {
 
     @Test
     void badConfirmationScenarioAndOwnershipAreUnavailable() throws Exception {
-        String conf = RetainedFileAppointmentPolicy.CONFIRMATION;
+        String conf = AppointmentRules.CONFIRMATION;
         unavailable(d -> value(d, conf).put("confirmDelaySeconds", -1), "delay low");
         unavailable(d -> value(d, conf).put("confirmDelaySeconds", 30 * 86400 + 1), "delay high");
         unavailable(d -> value(d, conf).put("providerTimeoutMs", 0), "timeout low");
         unavailable(d -> value(d, conf).put("providerTimeoutMs", 60001), "timeout high");
-        String sc = RetainedFileAppointmentPolicy.SCENARIO;
+        String sc = AppointmentRules.SCENARIO;
         unavailable(d -> value(d, sc).put("proposeChange", "no"), "propose not boolean");
         unavailable(d -> value(d, sc).put("proposedSlot", "same"), "proposed slot rule");
         unavailable(d -> value(d, sc).put("proposalReason", "Another time — sorry"), "reason em dash");
-        String own = RetainedFileAppointmentPolicy.OWNERSHIP;
+        String own = AppointmentRules.OWNERSHIP;
         unavailable(d -> value(d, own).with("states").with("requested").put("owner", "nobody"), "bad owner");
         unavailable(d -> value(d, own).with("states").with("requested").put("nextStep", "Wait — soon"), "step em dash");
         unavailable(d -> value(d, own).with("states").with("scheduled").put("nextStep", ""), "blank step");
@@ -171,7 +171,7 @@ class AppointmentPolicyTest {
 
     @Test
     void outcomesRulesAreRequired() throws Exception {
-        String k = RetainedFileAppointmentPolicy.OUTCOMES;
+        String k = AppointmentRules.OUTCOMES;
         unavailable(d -> value(d, k).remove("notReady"), "missing notReady");
         unavailable(d -> value(d, k).with("notReady").put("owner", "nobody"), "bad notReady owner");
         unavailable(d -> value(d, k).with("states").remove("no-show"), "missing no-show");
@@ -182,18 +182,18 @@ class AppointmentPolicyTest {
 
     @Test
     void unreadableOrUnconfiguredIsUnavailable() throws Exception {
-        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(dir.resolve("absent.json")).config(V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(dir.resolve("absent.json")).config("run-1", V, T0));
         Path junk = dir.resolve("junk.json");
         Files.writeString(junk, "{not json");
-        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(junk).config(V, T0));
-        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(junk).timing(V, T0));
-        assertInstanceOf(PolicyResult.Unavailable.class, new UnconfiguredAppointmentPolicy().config(V, T0));
-        assertInstanceOf(PolicyResult.Unavailable.class, new UnconfiguredAppointmentPolicy().timing(V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(junk).config("run-1", V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, new RetainedFileAppointmentPolicy(junk).timing("run-1", V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, new UnconfiguredAppointmentPolicy().config("run-1", V, T0));
+        assertInstanceOf(PolicyResult.Unavailable.class, new UnconfiguredAppointmentPolicy().timing("run-1", V, T0));
     }
 
     @Test
     void repeatedKeyIsUnavailable() throws Exception {
-        unavailable(d -> ((ArrayNode) d.get("assumptions")).add(row(d, RetainedFileAppointmentPolicy.SLOTS).deepCopy()),
+        unavailable(d -> ((ArrayNode) d.get("assumptions")).add(row(d, AppointmentRules.SLOTS).deepCopy()),
                 "duplicate row");
     }
 }

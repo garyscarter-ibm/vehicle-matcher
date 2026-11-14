@@ -248,7 +248,7 @@ public final class AppointmentService implements AutoCloseable {
 
     /** One appointment's tick step: an open op is reconciled first; an awaiting-confirmation one gets its confirm write. */
     private AppointmentResult progress(RunContext sys, Instant now, boolean startup, Row row) throws SQLException {
-        Got<AppointmentConfig> cfg = config(row.policyVersion(), now);
+        Got<AppointmentConfig> cfg = config(sys.runId(), row.policyVersion(), now);
         if (cfg.error != null) return cfg.error;
         if (row.pendingOperationId() != null) {
             Optional<Op> op = loadOp(sys, row.pendingOperationId());
@@ -336,7 +336,7 @@ public final class AppointmentService implements AutoCloseable {
                 return readModel(who, run, prep, orderUuid);
             }
             if (expected != 0) return stale(0);
-            Got<AppointmentConfig> cfg = config(who.policyVersion(), prep.now);
+            Got<AppointmentConfig> cfg = config(run.runId(), who.policyVersion(), prep.now);
             if (cfg.error != null) return cfg.error;
             Seen seen = observe(run, orderUuid, cfg.value);
             if (seen.error != null) return seen.error;
@@ -413,7 +413,7 @@ public final class AppointmentService implements AutoCloseable {
             }
             prior = AppointmentStore.op(c, ctx, opId);
         }
-        Got<AppointmentConfig> cfg = config(p.policyVersion(), prep.now);
+        Got<AppointmentConfig> cfg = config(run.runId(), p.policyVersion(), prep.now);
         if (cfg.error != null) return cfg.error;
         if (prior.isPresent()) {
             String label = "refused".equals(prior.get().state()) ? "blocked" : "repeat";
@@ -469,7 +469,7 @@ public final class AppointmentService implements AutoCloseable {
             }
             prior = AppointmentStore.op(c, ctx, opId);
         }
-        Got<AppointmentConfig> cfg = config(p.policyVersion(), prep.now);
+        Got<AppointmentConfig> cfg = config(run.runId(), p.policyVersion(), prep.now);
         if (cfg.error != null) return cfg.error;
         if (prior.isPresent()) {
             if (!prior.get().open()) return after(who, run, prep, orderUuid, "refused".equals(prior.get().state()) ? "blocked" : "repeat");
@@ -481,7 +481,7 @@ public final class AppointmentService implements AutoCloseable {
             return new AppointmentResult.Unavailable("handover-readiness-unavailable", READINESS_DOWN, true);
         }
         if (!ok.ready()) return notReady(who, run, prep, orderUuid, cfg.value, ok);
-        PolicyResult<OutcomeTiming> timing = policy.timing(p.policyVersion(), prep.now);
+        PolicyResult<OutcomeTiming> timing = policy.timing(run.runId(), p.policyVersion(), prep.now);
         if (timing instanceof PolicyResult.Unavailable<OutcomeTiming> u) {
             return new AppointmentResult.Unavailable(u.code(), u.reason(), u.retryable());
         }
@@ -680,11 +680,11 @@ public final class AppointmentService implements AutoCloseable {
         if (found.isPresent()) {
             Row p = found.get();
             if (employee && !Access.owns(who, p.employeeId())) return foreignAppointment();
-            Got<AppointmentConfig> cfg = config(p.policyVersion(), prep.now);
+            Got<AppointmentConfig> cfg = config(run.runId(), p.policyVersion(), prep.now);
             if (cfg.error != null) return cfg.error;
             return model(run, p, cfg.value, ReadModel.Eligibility.OPEN, List.of(), null);
         }
-        Got<AppointmentConfig> cfg = config(who.policyVersion(), prep.now);
+        Got<AppointmentConfig> cfg = config(run.runId(), who.policyVersion(), prep.now);
         if (cfg.error != null) return cfg.error;
         Seen seen = observe(run, orderUuid, cfg.value);
         if (seen.error != null) return seen.error;
@@ -722,8 +722,8 @@ public final class AppointmentService implements AutoCloseable {
         return now.isEmpty() ? new Prep(null, clockDown()) : new Prep(now.get(), null);
     }
 
-    private Got<AppointmentConfig> config(String policyVersion, Instant asOf) {
-        PolicyResult<AppointmentConfig> r = policy.config(policyVersion, asOf);
+    private Got<AppointmentConfig> config(String runId, String policyVersion, Instant asOf) {
+        PolicyResult<AppointmentConfig> r = policy.config(runId, policyVersion, asOf);
         if (r instanceof PolicyResult.Ok<AppointmentConfig> ok) return new Got<>(ok.value(), null);
         PolicyResult.Unavailable<AppointmentConfig> u = (PolicyResult.Unavailable<AppointmentConfig>) r;
         return new Got<>(null, new AppointmentResult.Unavailable(u.code(), u.reason(), u.retryable()));
@@ -846,7 +846,7 @@ public final class AppointmentService implements AutoCloseable {
                 "Appointment time is not set yet. Ask the presenter to start the clock.", true);
     }
 
-    private static AppointmentResult notConfigured() {
+    static AppointmentResult notConfigured() {
         return new AppointmentResult.Unavailable("appointments-provider-not-configured",
                 "Appointments are not set up in this environment yet.", false);
     }

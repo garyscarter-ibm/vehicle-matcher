@@ -6,12 +6,12 @@ import java.time.Instant;
 public final class UnconfiguredAppointmentPolicy implements AppointmentPolicy {
 
     @Override
-    public PolicyResult<AppointmentConfig> config(String policyVersion, Instant asOf) {
+    public PolicyResult<AppointmentConfig> config(String runId, String policyVersion, Instant asOf) {
         return PolicyResult.unavailable();
     }
 
     @Override
-    public PolicyResult<OutcomeTiming> timing(String policyVersion, Instant asOf) {
+    public PolicyResult<OutcomeTiming> timing(String runId, String policyVersion, Instant asOf) {
         return PolicyResult.unavailable();
     }
 }
