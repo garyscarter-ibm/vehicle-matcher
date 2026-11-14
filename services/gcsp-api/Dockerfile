@@ -11,6 +11,7 @@ COPY services/gcsp-api/src/ src/
 COPY server/gcsp/policy/seed-v1.json /src/server/gcsp/policy/seed-v1.json
 COPY server/gcsp/policy/reviewed/ /src/server/gcsp/policy/reviewed/
 COPY server/gcsp/predict/records/policy-definitions.json /src/server/gcsp/predict/records/policy-definitions.json
+COPY server/data/gcsp/comparison/process-only.json /src/server/data/gcsp/comparison/process-only.json
 RUN ./mvnw -B package -DskipTests
 
 FROM eclipse-temurin:21.0.13_9-jre-noble@sha256:0d57a8e90c2bb844c5a8e1b2b71e11eff06dad7edcfd803cd21ed4ae203b2515

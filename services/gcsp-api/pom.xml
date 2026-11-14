@@ -96,6 +96,13 @@
           <include>policy-definitions.json</include>
         </includes>
       </resource>
+      <resource>
+        <directory>${project.basedir}/../../server/data/gcsp/comparison</directory>
+        <targetPath>gcsp/comparison</targetPath>
+        <includes>
+          <include>process-only.json</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>

@@ -7,3 +7,4 @@
 !server/gcsp/policy/seed-v1.json
 !server/gcsp/policy/reviewed
 !server/gcsp/predict/records/policy-definitions.json
+!server/data/gcsp/comparison/process-only.json
