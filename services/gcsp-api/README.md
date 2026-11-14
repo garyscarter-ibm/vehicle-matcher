@@ -94,8 +94,8 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
 that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
 `pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
-Its policy key is `notify.delivery.v1`. Rules and offer facts are not yet bound, so delivery stays `pending` and
-nothing is claimed, until the policy and offer Stories bind them. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts are not yet
+bound, so each attempt retries as `transport-unavailable` until the Java offer Story binds `OfferFacts`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
 With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
 retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.

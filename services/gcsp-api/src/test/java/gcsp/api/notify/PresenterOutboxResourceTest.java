@@ -3,7 +3,6 @@ package gcsp.api.notify;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.hamcrest.Matchers.equalTo;
@@ -100,7 +99,7 @@ class PresenterOutboxResourceTest {
     }
 
     @Test
-    void drainLeavesNotificationsPendingWhileRulesAreUnbound() throws SQLException {
+    void drainReadsPolicyRulesAndRetriesWhileOfferFactsAreUnbound() throws SQLException {
         requireDatabase();
         RunContext run = NotifySeed.run(persistence);
         AgroalDataSource ds = dataSource.get();
@@ -110,12 +109,15 @@ class PresenterOutboxResourceTest {
 
         drain.drainNow();
 
-        assertInstanceOf(DispatchResult.Unavailable.class, notifications.dispatcher().dispatchPending());
+        // notify.delivery.v1 comes from PolicyService; offer facts are unbound, so the attempt truthfully retries.
+        String where = " FROM notification_deliveries WHERE environment_id = ? AND run_id = ? AND event_id = ?";
+        assertEquals("retrying", NotifySeed.text(ds, "SELECT state" + where, run.environmentId(), run.runId(), eventId));
+        assertEquals("transport-unavailable",
+                NotifySeed.text(ds, "SELECT error" + where, run.environmentId(), run.runId(), eventId));
+        assertEquals("30", NotifySeed.text(ds, "SELECT extract(epoch FROM next_attempt_at - attempted_at)::int" + where,
+                run.environmentId(), run.runId(), eventId));
         assertEquals("pending", NotifySeed.text(ds,
                 "SELECT state FROM outbox_events WHERE environment_id = ? AND run_id = ? AND event_id = ?",
-                run.environmentId(), run.runId(), eventId));
-        assertEquals("0", NotifySeed.text(ds,
-                "SELECT count(*) FROM notification_deliveries WHERE environment_id = ? AND run_id = ? AND event_id = ?",
                 run.environmentId(), run.runId(), eventId));
     }
 

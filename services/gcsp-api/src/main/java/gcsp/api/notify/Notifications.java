@@ -1,6 +1,7 @@
 package gcsp.api.notify;
 
 import gcsp.api.persistence.Persistence;
+import gcsp.api.policy.PolicyService;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.TransactionRunner;
 import io.agroal.api.AgroalDataSource;
@@ -17,6 +18,9 @@ public class Notifications {
 
     @Inject
     Persistence persistence;
+
+    @Inject
+    PolicyService policy;
 
     @Inject
     MailTransportSelection transports;
@@ -54,8 +58,8 @@ public class Notifications {
     /** Built once, on first use. */
     public synchronized NotificationDispatcher dispatcher() {
         if (dispatcher == null) {
-            // Rules and offer facts are bound by the policy and offer Stories; until then delivery stays pending.
-            dispatcher = new NotificationDispatcher(dataSource(), new UnconfiguredDeliveryRules(),
+            // Offer facts are bound by the Java offer Story; until then every delivery retries as unavailable.
+            dispatcher = new NotificationDispatcher(dataSource(), new PolicyDeliveryRules(policy),
                     new UnconfiguredOfferFacts(), transports.transport(), InstantSource.system(),
                     environmentId.orElse(""), publicBaseUrl.filter(url -> !url.isBlank()));
         }
