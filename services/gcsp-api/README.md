@@ -55,8 +55,12 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_MAIL_TRANSPORT` | unset (captured) | Unset keeps mail captured in the outbox. `brevo` arrives with its own slice; any other value stops startup. |
+| `GCSP_PUBLIC_BASE_URL` | unset | https base for absolute emailed offer links; unset keeps them relative. |
+| `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
 
-No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
+No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
+[Notifications (FUCQ-469)](#notifications-fucq-469).
 The test provider registration and claim mapping are in
 [`docs/gcsp/oidc-test-provider-2026-11-13.md`](../../docs/gcsp/oidc-test-provider-2026-11-13.md).
 
@@ -76,6 +80,16 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 ./mvnw -B test -Dtest='gcsp.api.persistence.**'
 ```
 
+## Notifications (FUCQ-469)
+
+Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
+that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
+`pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
+Its policy key is `notify.delivery.v1`. Rules and offer facts are not yet bound, so delivery stays `pending` and
+nothing is claimed, until the policy and offer Stories bind them. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
+(employee, own address only).
+
 ## Endpoints
 
 | Path | Result |
@@ -83,6 +97,8 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `GET /api/gcsp/v1/presenter/outbox` | Presenter only, read-only. Safe notification fields, never a payload or an address. |
+| `GET`, `POST /api/gcsp/v1/manual/notification-email` | Employee only, own address only. POST sets it with `expectedVersion`. |
 
 Every other path, and every refusal, is a JSON body `{status, code, reason, retryable}` (500s add a
 `reference`), never HTML. Context refusals:
