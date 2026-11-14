@@ -101,19 +101,10 @@ final class GoldenFixture {
     }
 
     AccountService service() {
-        AccountRecordsPort records = new AccountRecordsPort() {
-            public SourceResult readEmployeeContract(AccountScope s) {
-                return contractReader.apply(input);
-            }
+        return service(nodeShapedRecords());
+    }
 
-            public SourceResult readDrivers(AccountScope s) {
-                return driverReader.apply(input);
-            }
-
-            public SourceResult readEmployment(String environmentId, String runId, String employeeId) {
-                return employment;
-            }
-        };
+    AccountService service(AccountRecordsPort records) {
         AccountPolicyPort policy = new AccountPolicyPort() {
             public PolicyOutcome manualRules(PolicyRead r) {
                 return manualRules;
@@ -128,6 +119,22 @@ final class GoldenFixture {
             }
         };
         return new AccountService(records, policy, s -> clock.now(s), s -> cars);
+    }
+
+    private AccountRecordsPort nodeShapedRecords() {
+        return new AccountRecordsPort() {
+            public SourceResult readEmployeeContract(AccountScope s) {
+                return contractReader.apply(input);
+            }
+
+            public SourceResult readDrivers(AccountScope s) {
+                return driverReader.apply(input);
+            }
+
+            public SourceResult readEmployment(String environmentId, String runId, String employeeId) {
+                return employment;
+            }
+        };
     }
 
     AccountOutcome read() {
