@@ -6356,7 +6356,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T17:10:58Z",
+      "observed_at": "2026-11-14T17:30:04Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -6370,9 +6370,9 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T17:10:57Z",
-          "expires_at": "2026-11-14T17:10:57Z",
-          "source": "stock screen source 7f764575df52579aec74333163a23d0971783652;33 tests/17 Chrome checks and independent input/local-resource audit complete",
+          "observed_at": "2026-11-14T17:30:03Z",
+          "expires_at": "2026-11-14T17:30:03Z",
+          "source": "stock host/history 31589e3f4c57445744c6652edd5f4ed8353fd41a;27selected/15browser checks and local input/resource audit complete",
           "status": "inactive awaiting dispatcher audit/publication"
         },
         {
@@ -6433,8 +6433,8 @@
           "id": "view-parity",
           "status": "in-progress",
           "title": "Native-Angular-view-parity",
-          "observed_at": "2026-11-14T17:10:58Z",
-          "evidence": "Stock screen 7f764575d;33 selected PASS,17 Chrome fixture checks,167 final pins and local cleanup verified. docs/gcsp/fucq442-stock-screen-2026-11-14.md. Routes/shared gallery and actual Java/original AC remain open; F499Low unresolved."
+          "observed_at": "2026-11-14T17:30:04Z",
+          "evidence": "Host/history 31589e3f4;27selectedPASS,15actualChrome router checks,178pinsmatch/localcleanupverified; route/gallery wired. Original reviewconsumer/Java/wholeStoryproof open;F504/F505/F499 separateunfixed. docs/gcsp/fucq442-stock-screen-2026-11-14.md"
         },
         {
           "id": "review-proof",
@@ -6449,7 +6449,7 @@
       ],
       "story_points": 13,
       "started_at": "2026-11-14",
-      "note": "Stock screen source 7f764575d;33 selected PASS,17 actual Chrome checks,167 final pins match and local cleanup audited. Route/history/shared catalogue plus actual Java and original AC open. F499Low unresolved; full boundary historicallyFAIL. Held for dispatcher publication."
+      "note": "Stock host/history source 31589e3f4;27 selectedPASS,15actual router Chromechecks,178finalpinsmatch; route/gallery now wired. Reviewconsumer + actualJava/originalAC remainopen. F504Medium/F505Low/F499Low separateunfixed. Heldfordispatcherpublication."
     },
     {
       "assignee": "",
