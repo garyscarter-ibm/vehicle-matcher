@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GCSP public runtime configuration",
+  "description": "Build-time public settings only. The producer additionally enforces deployed HTTPS, local loopback HTTP, valid URL parsing and matching frontend redirect origins.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "environmentId", "apiBaseUrl", "oidc"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "environmentId": { "$ref": "#/$defs/publicString" },
+    "apiBaseUrl": { "allOf": [{ "$ref": "#/$defs/publicUrl" }, { "pattern": "/api/gcsp/v1$" }] },
+    "oidc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "clientId", "scope", "redirectUri", "postLogoutRedirectUri"],
+      "properties": {
+        "authority": { "$ref": "#/$defs/publicUrl" },
+        "clientId": { "$ref": "#/$defs/publicString" },
+        "scope": { "allOf": [{ "$ref": "#/$defs/publicString" }, { "pattern": "(^| )openid( |$)" }, { "pattern": "^[\\x21\\x23-\\x5b\\x5d-\\x7e ]+$" }] },
+        "redirectUri": { "allOf": [{ "$ref": "#/$defs/publicUrl" }, { "pattern": "^https?://[^/]+/gcsp/auth/callback$" }] },
+        "postLogoutRedirectUri": { "allOf": [{ "$ref": "#/$defs/publicUrl" }, { "pattern": "^https?://[^/]+/gcsp/$" }] }
+      }
+    }
+  },
+  "$defs": {
+    "publicString": { "type": "string", "minLength": 1, "maxLength": 2048, "pattern": "^(?!\\s)(?![\\s\\S]*[\\u0000-\\u001f\\u007f-\\u009f])[\\s\\S]*\\S$" },
+    "publicUrl": { "allOf": [{ "$ref": "#/$defs/publicString" }], "format": "uri", "pattern": "^https?://[^/?#@\\\\\\s]+(?:/[^?#\\\\\\s]*)?$" }
+  }
+}

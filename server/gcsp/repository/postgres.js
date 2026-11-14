@@ -1,6 +1,6 @@
 import pg from 'pg';
 import { withPostgresClient } from './postgres-client.js';
-import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
+import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, isScopeMiss, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
 import { packEvidence, evidenceReferences, unpackEvidence, verifyEvidence, jsonBatches, DEFAULT_BATCH_BYTES,
   writeEvidenceSnapshots, replaceEvidenceReferences } from './postgres-evidence.js';
@@ -33,6 +33,7 @@ const column = (name) => name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCa
 const unavailable = () => result('unavailable', { reason: 'database-unavailable', retryable: true });
 const invalid = (code, field) => result('invalid', { code, reasons: [{ field, reason: 'Invalid backend configuration' }] });
 const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[key]));
+const EVIDENCE_BATCH_DIGESTS = 500;
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
@@ -74,6 +75,17 @@ export function createPostgresRepository(options = {}) {
     }
     return { sql: `${runs} UNION ALL SELECT ${pg.escapeLiteral(table)} AS t, data FROM ${tableName(table)} WHERE ${where.join(' AND ')}`, parameters };
   };
+  // FUCQ-424: all runs plus only the declared exact keys of this run, in one round trip.
+  const scopedSql = (context, scope) => {
+    const parameters = [String(context?.runId ?? '')]; const parts = [`SELECT 'runs' AS t, data FROM ${tableName('runs')}`];
+    for (const table of [...new Set(scope.map((ref) => ref.table))]) {
+      const fields = TABLES[table].key.filter((field) => field !== 'runId');
+      parameters.push(JSON.stringify(scope.filter((ref) => ref.table === table).map(({ key }) => Object.fromEntries(fields.map((field) => [field, key[field]])))));
+      const join = fields.map((field) => `r.${sqlName(column(field))} = k.e->>'${field}'`).join(' AND ');
+      parts.push(`SELECT ${pg.escapeLiteral(table)} AS t, r.data FROM ${tableName(table)} AS r JOIN jsonb_array_elements($${parameters.length}::jsonb) AS k(e) ON r.run_id = $1 AND ${join}`);
+    }
+    return { sql: parts.join(' UNION ALL '), parameters };
+  };
   const lockSql = (context) => `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`)}, 0))`;
 
   const fingerprintOf = (rows) => {
@@ -82,17 +94,35 @@ export function createPostgresRepository(options = {}) {
   };
   const localFingerprint = (state) => FOUNDATION_TABLES.map((table) =>
     `${table}:${state.tables[table].length}:${state.tables[table].reduce((sum, row) => sum + Number(row.version), 0)}`).join('|');
+  // Loads only digests the selected rows reference, sequentially, in batches bounded by digest count and response bytes.
+  // Sizes come from a small probe first; a value larger than the budget travels alone, untruncated.
+  const hydrateEvidence = async (client, digests) => {
+    const snapshots = new Map(); const from = tableName('vehicle_evidence_snapshots');
+    const fetch = async (group) => {
+      const found = new Map((await client.query(`SELECT digest, data FROM ${from} WHERE digest = ANY($1::text[])`, [group])).rows.map(({ digest, data }) => [digest, data]));
+      for (const digest of group) snapshots.set(digest, verifyEvidence(digest, found.get(digest)));
+    };
+    if (digests.length === 1) { await fetch(digests); return snapshots; }
+    for (let at = 0; at < digests.length; at += EVIDENCE_BATCH_DIGESTS) {
+      const chunk = digests.slice(at, at + EVIDENCE_BATCH_DIGESTS);
+      const sizes = new Map((await client.query(`SELECT digest, octet_length(data::text)::bigint AS bytes FROM ${from} WHERE digest = ANY($1::text[])`, [chunk]))
+        .rows.map(({ digest, bytes }) => [digest, Number(bytes)]));
+      let group = []; let bytes = 0;
+      for (const digest of chunk) {
+        // A missing digest still joins a fetch so verification refuses it, as before.
+        const size = sizes.get(digest) ?? 0;
+        if (group.length && bytes + size > writeBatchBytes) { await fetch(group); group = []; bytes = 0; }
+        group.push(digest); bytes += size;
+      }
+      if (group.length) await fetch(group);
+    }
+    return snapshots;
+  };
   const toState = async (client, rows) => {
     const state = createState();
-    const snapshots = new Map();
-    for (const { data } of rows) if (data != null) {
-      for (const digest of evidenceReferences(data)) {
-        if (snapshots.has(digest)) continue;
-        // One immutable value per query bounds server-side materialization, including large configurations.
-        const found = await client.query(`SELECT data FROM ${tableName('vehicle_evidence_snapshots')} WHERE digest = $1`, [digest]);
-        snapshots.set(digest, verifyEvidence(digest, found.rows[0]?.data));
-      }
-    }
+    const digests = new Set();
+    for (const { data } of rows) if (data != null) for (const digest of evidenceReferences(data)) digests.add(digest);
+    const snapshots = digests.size ? await hydrateEvidence(client, [...digests]) : new Map();
     for (const { t, data } of rows) if (data != null) state.tables[t].push(unpackEvidence(data, snapshots));
     return state;
   };
@@ -181,7 +211,7 @@ export function createPostgresRepository(options = {}) {
     return FOUNDATION_TABLES.map((table) => `${table}:${parts.get(table)[0]}:${parts.get(table)[1]}`).join('|');
   };
 
-  async function run(context, work, write, selection) {
+  async function run(context, work, write, selection, scope) {
     const runId = String(context?.runId ?? '');
     const scopeKey = JSON.stringify([runId, null]);
     const key = selection ? JSON.stringify([runId, inputDigest(selection)]) : scopeKey;
@@ -198,9 +228,11 @@ export function createPostgresRepository(options = {}) {
         let begun = false;
         try {
           begun = true;
-          const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
-          const fingerprint = fingerprintOf(probe[2].rows);
-          const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
+          // A scoped write with no cache entry cannot hit, so it takes the lock without the fingerprint probe.
+          const lockOnly = write && scope && !cache.has(key);
+          const probe = await client.query(lockOnly ? lockSql(context) : `${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
+          const fingerprint = lockOnly ? undefined : fingerprintOf(probe[2].rows);
+          const hit = lockOnly ? undefined : cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
             : complete?.fingerprint === fingerprint ? complete : undefined;
           if (hit) remember(hit === complete ? scopeKey : key, write ? hit : { ...hit, trustedUntil: until() });
           // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
@@ -214,12 +246,30 @@ export function createPostgresRepository(options = {}) {
             remember(key, { fingerprint, state, selection, trustedUntil: until() });
             return await work(state);
           }
-          const before = hit ? hit.state : sealState(await toState(client, (await client.query(snapshotSql(context))).rows));
-          const state = shallowState(before);
-          const { commit, outcome, mutations } = await work(state);
+          let before; let state; let done; let partial = false;
+          if (scope && !hit) {
+            const selected = scopedSql(context, scope);
+            const loaded = await toState(client, (await client.query(selected.sql, selected.parameters)).rows);
+            state = shallowState(sealState(Object.assign(loaded, { scope })));
+            try { done = await work(state); partial = true; } catch (error) { if (!isScopeMiss(error)) throw error; }
+          }
+          // An under-declared transaction reruns on the full state in this same locked transaction; nothing was flushed yet.
+          if (!partial) {
+            before = hit ? hit.state : sealState(await toState(client, (await client.query(snapshotSql(context))).rows));
+            state = shallowState(before);
+            done = await work(state);
+          }
+          const { commit, outcome, mutations } = done;
           if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
           if (!Array.isArray(mutations)) throw new Error('missing-mutations');
           await flush(client, mutations);
+          if (partial) {
+            // Partial state is never cached; trusted reads must not serve pre-commit rows.
+            await client.query('COMMIT'); begun = false;
+            cache.delete(key);
+            if (trustMs) refreshOthers(key, state.tables.runs);
+            return outcome;
+          }
           // Only resetRun writes outside the cached scope (the next run's seed), so only it needs a filtered copy.
           const after = mutations.some(({ table, key: { runId } }) => table !== 'runs' && runId !== context?.runId) ? scopedCopy(state, context) : committedState(before, state, mutations);
           await client.query('COMMIT'); begun = false;
@@ -262,7 +312,7 @@ export function createPostgresRepository(options = {}) {
     },
     migrationStatus() { return migrationStatus(pool, migrationOptions); },
     read(context, work, selection) { return run(context, work, false, selection); },
-    transaction(context, work) { return run(context, work, true); },
+    transaction(context, work, scope) { return run(context, work, true, undefined, scope); },
     async close() {
       try {
         if (owned && pool) await pool.end();

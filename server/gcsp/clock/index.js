@@ -137,7 +137,7 @@ export class DemoClock {
       if (!Number.isSafeInteger(Number(clockVersion))) return unavailable();
       const changed = await tx.compareAndSwap(ref('runs', context), run.version, { clockInstant: now, clockVersion });
       return changed.status === 'ok' ? ok({ runId: run.runId, now, clockVersion }) : changed;
-    });
+    }, { scope: [] });
   }
 
   async readControlsConfiguration(context) {
@@ -279,7 +279,7 @@ export class DemoClock {
       if (inserted.status !== 'ok') return inserted;
       const updated = await tx.compareAndSwap(ref('runs', context), run.value.version, { versions: { ...run.value.versions, lastTickId: tickId } });
       return updated.status === 'ok' ? inserted : updated;
-    });
+    }, { scope: [tickRef] });
     if (initialized.status !== 'ok') return initialized;
     let tick = await this.#repository.read(context, tickRef);
     if (tick.status !== 'ok') return tick;
@@ -323,7 +323,7 @@ export class DemoClock {
         outcomes.push({ ...entry, outcome });
         const changed = await tx.compareAndSwap(tickRef, state.value.version, { outcomes, state: 'running' });
         return changed.status === 'ok' ? ok({ outcome }) : changed;
-      });
+      }, { scope: [tickRef, ref('event_receipts', context, { consumerId: `clock:handler:${entry.handlerId}`, eventId: tickId })] });
       if (handled.status !== 'ok') return this.#interrupted(context, tickRef, entry, handled);
     }
     return this.#repository.transaction(context, { commandId: `clock:tick:finish:${tickId}`, inputDigest: digest }, async (tx) => {
@@ -334,7 +334,7 @@ export class DemoClock {
         outcomes: compactAllocationOutcomes(state.value.outcomes),
       });
       return changed.status === 'ok' ? ok(this.#tickValue(changed.value)) : changed;
-    });
+    }, { scope: [tickRef] });
   }
 
   async #interrupted(context, tickRef, entry, outcome) {
@@ -347,7 +347,7 @@ export class DemoClock {
         const outcomes = compactAllocationOutcomes(tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId));
         outcomes.push({ ...entry, outcome });
         return tx.compareAndSwap(tickRef, tick.value.version, { state: 'interrupted', outcomes });
-      });
+      }, { scope: [tickRef] });
     return marked.status === 'ok' ? result('unavailable', { tickId: tickRef.key.tickId, handlerId: entry.handlerId,
       reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true, handlerOutcome: outcome }) : marked;
   }

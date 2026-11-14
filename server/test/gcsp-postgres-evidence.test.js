@@ -14,11 +14,11 @@ const { createPostgresRepository } = await import(process.env.GCSP_MEMORY_BASELI
   ? pathToFileURL(process.env.GCSP_MEMORY_BASELINE_MODULE).href : '../gcsp/repository/postgres.js');
 const provenance = { sourceRef: 'exact-source', observedAt: '2026-11-07T00:00:00.000Z', version: 'definitions-1', assurance: 'model-reference' };
 const known = (value) => ({ status: 'known', value, unit: null, provenance });
-const snapshot = (id, version = 'v1') => ({ contractVersion: 'vehicle-snapshot-v1', identityKind: 'exact-stock',
+const snapshot = (id, version = 'v1', definitions = 60) => ({ contractVersion: 'vehicle-snapshot-v1', identityKind: 'exact-stock',
   sourceKeys: { stockId: id }, snapshotVersion: version, observedAt: '2026-11-07T00:00:00.000Z',
   display: { name: 'Exact car', images: [{ src: '/retained.webp' }] },
   facts: { configurationEvidence: known({ identity: { configurationId: 'config-a' }, versions: { snapshot: version },
-    equipment: { definitions: Array.from({ length: 60 }, (_, i) => ({ code: `option-${i}`, label: 'Exact option '.repeat(60), provenance })) } }),
+    equipment: { definitions: Array.from({ length: definitions }, (_, i) => ({ code: `option-${i}`, label: 'Exact option '.repeat(60), provenance })) } }),
   options: known(['Exact option']), colour: known('Blue'), interior: known('Black'), optionSelection: known({ codes: ['option-1'], complete: true }),
   syntheticIdentity: known({ vehicleId: id }), plannedRelease: known({ releaseId: 'release-1' }) } });
 
@@ -64,7 +64,7 @@ async function fixture(t, { writeBatchBytes = 64 * 1024, readTrustMs = 0 } = {})
   const traced = { async connect() {
     const client = await pool.connect(); const query = client.query;
     client.query = function(sql, values, ...rest) {
-      queries.push({ sql, bytes: (values ?? []).reduce((sum, value) => sum + Buffer.byteLength(typeof value === 'string' ? value : JSON.stringify(value)), 0) });
+      queries.push({ sql, values, bytes: (values ?? []).reduce((sum, value) => sum + Buffer.byteLength(typeof value === 'string' ? value : JSON.stringify(value)), 0) });
       return query.call(this, sql, values, ...rest);
     };
     const release = client.release;
@@ -222,4 +222,81 @@ test('native evidence: maintenance CLI persists and resumes a private checkpoint
   assert.equal(checkpoint.schema, f.schema); assert.equal(checkpoint.done, true);
   assert.match(checkpoint.databaseIdentity, /^[a-f0-9]{64}$/);
   assert.equal(JSON.stringify(checkpoint).includes(process.env.GCSP_DATABASE_URL), false);
+});
+
+// FUCQ-425: the per-digest loop this story replaced, kept as the semantic oracle.
+async function perDigestOracle(pool, schema, runId) {
+  const rows = (await pool.query(`SELECT data FROM "${schema}".stock WHERE run_id = $1`, [runId])).rows.map(({ data }) => data);
+  const snapshots = new Map();
+  for (const row of rows) for (const digest of evidenceReferences(row)) {
+    if (snapshots.has(digest)) continue;
+    const found = await pool.query(`SELECT data FROM "${schema}".vehicle_evidence_snapshots WHERE digest = $1`, [digest]);
+    snapshots.set(digest, verifyEvidence(digest, found.rows[0]?.data));
+  }
+  return { rows: rows.map((row) => unpackEvidence(row, snapshots)), digests: snapshots.size };
+}
+
+test('native evidence: hydration batches many small snapshots, keeps mixed and oversized values within the byte budget, and matches per-digest reads', native, async (t) => {
+  const budget = 64 * 1024;
+  const f = await fixture(t, { writeBatchBytes: budget }); const { context, command, pool, schema, queries } = f;
+  const inputs = [];
+  for (let i = 0; i < 60; i += 1) {
+    inputs.push({ orderUuid: `small-${i}`, facts: snapshot(`small-${i}`, `s${i}`, 1) });
+    if (i % 20 === 4) inputs.push({ orderUuid: `large-${i}`, facts: snapshot(`large-${i}`, `l${i}`, 60) });
+  }
+  inputs.push({ orderUuid: 'oversized', facts: snapshot('oversized', 'o1', 140) }, { orderUuid: 'shared', facts: snapshot('shared-twin', 's3', 1) });
+  const saved = await f.repository.transaction(context, command(), async (tx) => {
+    for (const row of inputs) await tx.insert('stock', { runId: context.runId, configurationId: 'config-a', ...row });
+    return ok({});
+  });
+  assert.equal(saved.status, 'ok', JSON.stringify(saved));
+  const legacy = { runId: context.runId, orderUuid: 'legacy', configurationId: 'config-a', facts: snapshot('legacy', 'g1', 1),
+    version: 1, createdAt: '2026-11-07T00:00:00.000Z', updatedAt: '2026-11-07T00:00:00.000Z' };
+  await pool.query(`INSERT INTO "${schema}".stock (data) VALUES ($1::jsonb)`, [JSON.stringify(legacy)]);
+  const sizes = new Map((await pool.query(`SELECT digest, octet_length(data::text)::int AS n FROM "${schema}".vehicle_evidence_snapshots`)).rows.map(({ digest, n }) => [digest, n]));
+  assert.ok([...sizes.values()].some((n) => n > budget), 'the fixture includes a snapshot larger than the whole budget');
+
+  const reader = await f.open(); const at = queries.length;
+  const listed = await reader.query(context, 'stock');
+  assert.equal(listed.status, 'ok', JSON.stringify(listed));
+  const evidence = queries.slice(at).filter(({ sql }) => sql.includes('vehicle_evidence_snapshots'));
+  const oracle = await perDigestOracle(pool, schema, context.runId);
+  assert.deepEqual(listed.value, oracle.rows, 'same rows, same order, same expanded facts as the per-digest reads');
+  const byId = new Map(listed.value.map((row) => [row.orderUuid, row]));
+  for (const row of inputs) assert.deepEqual(byId.get(row.orderUuid).facts, row.facts, `${row.orderUuid} is restored untruncated`);
+  assert.deepEqual(byId.get('legacy'), legacy, 'legacy inline evidence is returned unchanged');
+
+  const fetches = evidence.filter(({ sql }) => /SELECT digest, data FROM/.test(sql));
+  assert.equal(fetches.reduce((n, { values }) => n + values[0].length, 0), oracle.digests, 'each referenced digest is fetched exactly once');
+  for (const { values: [group] } of fetches) {
+    const bytes = group.reduce((n, digest) => n + sizes.get(digest), 0);
+    assert.ok(bytes <= budget || group.length === 1, `a fetch of ${group.length} snapshots carried ${bytes} bytes`);
+  }
+  assert.ok(evidence.length * 4 < oracle.digests, `${evidence.length} evidence round trips for ${oracle.digests} digests`);
+  assert.ok(!evidence.some(({ sql }) => !/= ANY\(\$1::text\[\]\)/.test(sql)), 'no evidence query reads the table without a digest list');
+  t.diagnostic(JSON.stringify({ digests: oracle.digests, perDigestRoundTrips: oracle.digests, batchedRoundTrips: evidence.length,
+    fetchSizes: fetches.map(({ values: [group] }) => group.length) }));
+
+  const single = await f.open(); const before = queries.length;
+  assert.deepEqual((await single.read(context, f.ref('stock', { orderUuid: 'oversized' }))).value.facts, byId.get('oversized').facts);
+  assert.equal(queries.slice(before).filter(({ sql }) => sql.includes('vehicle_evidence_snapshots')).length, 1, 'a one-row read keeps a single evidence query');
+});
+
+test('native evidence: batched hydration fails closed when any referenced snapshot is missing or corrupt', native, async (t) => {
+  const f = await fixture(t); const { context, command, pool, schema } = f;
+  assert.equal((await f.repository.transaction(context, command(), async (tx) => {
+    for (let i = 0; i < 5; i += 1) await tx.insert('stock', { runId: context.runId, orderUuid: `car-${i}`, facts: snapshot(`car-${i}`, `v${i}`, 1) });
+    return ok({});
+  })).status, 'ok');
+  assert.equal((await (await f.open()).query(context, 'stock')).status, 'ok');
+  const missing = packEvidence({ runId: context.runId, orderUuid: 'missing', facts: snapshot('missing', 'gone', 1), version: 1,
+    createdAt: '2026-11-07T00:00:00.000Z', updatedAt: '2026-11-07T00:00:00.000Z' });
+  await pool.query(`INSERT INTO "${schema}".stock (data) VALUES ($1::jsonb)`, [JSON.stringify(missing.data)]);
+  assert.equal((await (await f.open()).query(context, 'stock')).status, 'unavailable', 'a missing snapshot refuses the whole read');
+  const [[digest, data]] = [...missing.snapshots];
+  await pool.query(`INSERT INTO "${schema}".vehicle_evidence_snapshots (digest, data) VALUES ($1, $2::jsonb)`, [digest, JSON.stringify({ ...data, colour: known('Altered') })]);
+  assert.equal((await (await f.open()).query(context, 'stock')).status, 'unavailable', 'a snapshot failing its digest refuses the whole read');
+  await pool.query(`DELETE FROM "${schema}".vehicle_evidence_snapshots WHERE digest = $1`, [digest]);
+  await pool.query(`INSERT INTO "${schema}".vehicle_evidence_snapshots (digest, data) VALUES ($1, $2::jsonb)`, [digest, JSON.stringify(data)]);
+  assert.equal((await (await f.open()).query(context, 'stock')).value.length, 6, 'the same rows read once the exact snapshot exists');
 });
