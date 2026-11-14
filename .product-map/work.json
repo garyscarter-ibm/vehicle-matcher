@@ -5673,6 +5673,70 @@
       "workers": []
     },
     {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-417",
+      "jira_observed_at": "2026-11-14T07:59:15.577Z",
+      "note": "Calculation and allocation/evidence slices lead-reviewed; code cebac278c5b59acac9fa9a45dc3bc9ea1c37a385. Allocation39pass/0fail/1 nativePG skip; prior65 calculation checks reused. Native PostgreSQL and connected original gates remain open; five AC unchecked. docs/gcsp/evidence/fucq417/allocation-checkpoint.md",
+      "observed_at": "2026-11-14T08:33:36Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "calculation",
+          "status": "complete",
+          "title": "Shared compact calculation and unchanged gallery projection",
+          "observed_at": "2026-11-14T08:22:17Z",
+          "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
+        },
+        {
+          "id": "allocation",
+          "status": "complete",
+          "title": "Compact planning and frozen attempted-claim quote reconstruction",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "evidence": "Lead semantic review PASS cebac278c5b59acac9fa9a45dc3bc9ea1c37a385; four dispatch changes only; F414/F424 preserved. Actual outcomes/claim inputs equal gallery baseline; complete fallback, frozen resume and legacy quotes pass. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Semantic equivalence and scoped construction/sort evidence",
+          "observed_at": "2026-11-14T08:33:36Z",
+          "evidence": "Actual allocator: 24 pairs under both tie-break policies, gallery27 terms/12 gallery sorts/1 global sort vs compact3/0/1, equal full outcomes/quotes. Four modules39pass/0fail/1 nativePG skip,14 inputs verified per command, cleanup independently verified. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story validation and connected release-offer-history gates",
+          "observed_at": "2026-11-14T08:33:36Z",
+          "evidence": "Original four validate commands covered with retained matching calculation results and allocation/runtime results. NativePG test skipped: URL unset; connected desktop/narrow release/offer/history no-match/conflict/replay unrun. No whole-Story acceptance."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Evaluate allocation candidates without building a gallery",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-417",
+      "workers": [
+        {
+          "name": "Wyldstyle",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "expires_at": "2026-11-14T08:33:35Z",
+          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
+          "status": "allocation reviewed; parked after metadata checkpoint for guarded publication"
+        },
+        {
+          "name": "Grub",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "expires_at": "2026-11-14T08:33:35Z",
+          "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
+          "status": "completed allocation; inactive; four owned groups/scratch absent"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-010"
+    },
+    {
       "assignee": "",
       "id": "FUCQ-418",
       "jira_observed_at": "2026-11-12T15:49:01.144Z",
@@ -6283,15 +6347,92 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T08:24:01Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
+      "branch": "dev/DEV-2026-11-13-012",
+      "workers": [
+        {
+          "name": "Rocky",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-14T08:24:01.540216+00:00",
+          "expires_at": "2026-11-14T08:24:01.540216+00:00",
+          "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
+          "status": "local proof checkpoint lead-reviewed; inactive awaiting dispatcher publication"
+        },
+        {
+          "name": "Doug the Dog",
+          "harness": "codex",
+          "role": "mechanic client slice",
+          "observed_at": "2026-11-14T05:14:42.372226+00:00",
+          "expires_at": "2026-11-14T05:32:15.556431+00:00",
+          "source": "collaboration agent /root/doug_the_dog",
+          "status": "client slice complete; inactive"
+        },
+        {
+          "name": "Sally Carrera",
+          "harness": "codex",
+          "role": "mechanic view slice",
+          "observed_at": "2026-11-14T05:35:00.600741+00:00",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
+          "status": "view slice complete; inactive"
+        },
+        {
+          "name": "Mushu",
+          "harness": "codex",
+          "role": "implementer supported-follow-up correction",
+          "observed_at": "2026-11-14T06:08:53Z",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
+          "status": "correction reviewed; inactive"
+        },
+        {
+          "name": "Spike",
+          "harness": "codex",
+          "role": "runner rendered activity proof",
+          "observed_at": "2026-11-14T08:15:21.799691+00:00",
+          "expires_at": "2026-11-14T08:15:21.799691+00:00",
+          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; requested/selected/effective gpt-6-luna/high and saved title verified; attempt-8-summary.json",
+          "status": "attempt 8 local proof complete; inactive"
+        }
+      ],
+      "slices": [
+        {
+          "id": "client",
+          "status": "complete",
+          "title": "Scoped native activity and command client",
+          "observed_at": "2026-11-14T05:32:16Z",
+          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
+        },
+        {
+          "id": "view",
+          "status": "complete",
+          "title": "Server-projected Angular Buddy activity and controls",
+          "observed_at": "2026-11-14T06:14:03Z",
+          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
+        },
+        {
+          "id": "proof",
+          "status": "complete",
+          "title": "Selected state and desktop/narrow browser review",
+          "observed_at": "2026-11-14T08:24:01Z",
+          "evidence": "Lead source and all10 desktop/narrow capture reviews completed at 7f8e947: attempt8 59/59 assertions, zero failed waits/unrun; exact route/auth/no-replay and cleanup verified. docs/gcsp/fucq444-delivery.md; lead-attempt8-review.json c40b0956. F487/F495 remain Medium independent open/unfixed; independent reviewer and connected integration remain outstanding."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected route Java OIDC PostgreSQL acceptance"
+        }
+      ],
+      "tracker_observed_at": "2026-11-14T05:11:48Z"
     },
     {
       "assignee": "",
@@ -7428,13 +7569,13 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T03:22:52Z",
+      "observed_at": "2026-11-14T08:36:29Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java approvals packaging cfde7fc7 keeps none and unset canonical-policy override; 18/18 focused checks and Wile E. Coyote independent PASS. Hosted release/identity gates remain open; see 14 November delivery record.",
+          "evidence": "Exact retained evidence Docker packaging and safe appointments/returns defaults; 19/19 targeted checks and local 936-file/172369439-byte staging/hash proof passed. Actual Docker build/UID1001/startup/readiness/images/hosted acceptance remain unrun; parent coordinates independent review.",
           "id": "artifact",
-          "observed_at": "2026-11-14T03:22:52.694579+00:00",
+          "observed_at": "2026-11-14T08:36:29.062487+00:00",
           "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets"
         },
@@ -7464,10 +7605,10 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T03:11:19.622616+00:00",
-          "expires_at": "2026-11-14T03:22:52.694579+00:00",
-          "source": "Wile E. Coyote PASS on cfde7fc7; parent owns publication/integration; original AC open",
-          "status": "expired after approvals packaging handoff"
+          "observed_at": "2026-11-14T08:23:18.255823+00:00",
+          "expires_at": "2026-11-14T08:36:29.062487+00:00",
+          "source": "19 targeted checks and exact minimal-copy proof passed; actual Docker/hosted proof unrun; parent coordinates review/publication",
+          "status": "expired at retained-evidence packaging checkpoint"
         }
       ]
     },
@@ -7518,70 +7659,6 @@
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
         }
       ]
-    },
-    {
-      "assignee": "Gary Carter",
-      "id": "FUCQ-417",
-      "jira_observed_at": "2026-11-14T07:59:15.577Z",
-      "note": "Calculation and allocation/evidence slices lead-reviewed; code cebac278c5b59acac9fa9a45dc3bc9ea1c37a385. Allocation39pass/0fail/1 nativePG skip; prior65 calculation checks reused. Native PostgreSQL and connected original gates remain open; five AC unchecked. docs/gcsp/evidence/fucq417/allocation-checkpoint.md",
-      "observed_at": "2026-11-14T08:33:36Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "calculation",
-          "status": "complete",
-          "title": "Shared compact calculation and unchanged gallery projection",
-          "observed_at": "2026-11-14T08:22:17Z",
-          "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
-        },
-        {
-          "id": "allocation",
-          "status": "complete",
-          "title": "Compact planning and frozen attempted-claim quote reconstruction",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "evidence": "Lead semantic review PASS cebac278c5b59acac9fa9a45dc3bc9ea1c37a385; four dispatch changes only; F414/F424 preserved. Actual outcomes/claim inputs equal gallery baseline; complete fallback, frozen resume and legacy quotes pass. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
-        },
-        {
-          "id": "evidence",
-          "status": "complete",
-          "title": "Semantic equivalence and scoped construction/sort evidence",
-          "observed_at": "2026-11-14T08:33:36Z",
-          "evidence": "Actual allocator: 24 pairs under both tie-break policies, gallery27 terms/12 gallery sorts/1 global sort vs compact3/0/1, equal full outcomes/quotes. Four modules39pass/0fail/1 nativePG skip,14 inputs verified per command, cleanup independently verified. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Story validation and connected release-offer-history gates",
-          "observed_at": "2026-11-14T08:33:36Z",
-          "evidence": "Original four validate commands covered with retained matching calculation results and allocation/runtime results. NativePG test skipped: URL unset; connected desktop/narrow release/offer/history no-match/conflict/replay unrun. No whole-Story acceptance."
-        }
-      ],
-      "status": "In Progress",
-      "title": "Evaluate allocation candidates without building a gallery",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-417",
-      "workers": [
-        {
-          "name": "Wyldstyle",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "expires_at": "2026-11-14T08:33:35Z",
-          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
-          "status": "allocation reviewed; parked after metadata checkpoint for guarded publication"
-        },
-        {
-          "name": "Grub",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "expires_at": "2026-11-14T08:33:35Z",
-          "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
-          "status": "completed allocation; inactive; four owned groups/scratch absent"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-GC-010"
     }
   ],
   "version": 1
