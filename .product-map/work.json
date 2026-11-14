@@ -5659,13 +5659,30 @@
       "id": "FUCQ-421",
       "jira_observed_at": "2026-11-12T15:48:24.304Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T01:57:03Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "revision",
+          "status": "in-progress",
+          "title": "Run revision migration and PostgreSQL adapter with legacy fallback",
+          "observed_at": "2026-11-14T01:57:03Z"
+        },
+        {
+          "id": "evidence",
+          "status": "not-started",
+          "title": "Native revision regression: probe cost, two-instance concurrency, rollback, replay, reset, legacy init"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Story validation on native PostgreSQL 17 and delivery record"
+        }
+      ],
       "status": "To Do",
       "title": "Maintain a transactional run revision for freshness checks",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-421",
       "workers": []
     },
