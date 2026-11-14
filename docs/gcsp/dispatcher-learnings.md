@@ -86,3 +86,17 @@ commit and push named paths through the existing helper, preserving concurrent a
   native In Review with integrated/pushed evidence. This does not prove all stalled work is resolved or accepted.
 - **Framework follow-up:** carry the claimed contract through build and review; distinguish original gaps
   from proposed additions and reuse unchanged applicable evidence. Keep optional hardening off delivery gates.
+
+## 2026-11-14 16:55 UTC · GC Codex · DL-20261114-GC-006 · identified
+
+- **Issue/impact:** the installed headless browser could not establish rendered evidence for the new
+  FUCQ-447 queue/detail UI. Desktop, narrow-screen and browser keyboard checks remain unverified.
+- **Evidence/cause:** Hubie's current worker report says all 61 selected tests passed, but the Chrome
+  attempt printed a blank page and failed to exit within 30 seconds, with display/process-policy errors.
+  These results are worker-reported pending the parent receipt audit; the precise browser cause is unresolved.
+- **Action/outcome:** the worker reports stopping its process group and removing owned local scratch,
+  preserving the failed check and continuing the bounded source checkpoint without a browser repair campaign.
+  Tests alone do not establish rendered or whole-Story acceptance.
+- **Framework follow-up:** detect supported installed browser capability before allocating a rendered run,
+  retain a bounded failure and stop/join its owned process group. Avoid repeatedly releasing the same failed
+  environment without a causal correction. This entry neither authorises browser repair nor waives original checks.
