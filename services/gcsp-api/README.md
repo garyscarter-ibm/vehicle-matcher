@@ -113,6 +113,11 @@ but pending ticks once (it never pulls new releases) and logs a one-line count; 
 Readiness check `supply-release` is always UP and reports `provider`, `policy`, `pendingTicks` and
 `latestTrancheId`; only a database error makes it DOWN. Confirmed-supply queueing has no endpoint here (FUCQ-478).
 
+Trigger reads follow FUCQ-419/420 by design (Java equivalents, not delivery of the Node Stories): pending ticks are
+consumed by a keyset cursor over the `supply_release_ticks_pending` partial index, the clock check uses
+`supply_release_ticks_clock`, and tranche and tick receipts are read by primary key; no full history is replayed.
+The allocator (FUCQ-461/464) consumes `ReleasedStock.page` over `stock_cars_released` plus the `stock-released` outbox event.
+
 All endpoints are presenter-only, scoped to the server's active run (never to the request), and accept no query
 parameters except `after` and `limit` on `/stock`; anything else is 400 `unsupported-query`.
 
