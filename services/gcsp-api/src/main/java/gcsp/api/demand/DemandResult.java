@@ -19,6 +19,10 @@ public sealed interface DemandResult {
             return new Refusal(503, "unavailable", code, "The saved-demand projection is unavailable.", true);
         }
 
+        static Refusal suitabilityUnavailable() {
+            return new Refusal(503, "unavailable", "suitability-unavailable", "Car suitability could not be read. Try again.", true);
+        }
+
         static Refusal staleRun() {
             return new Refusal(409, "stale-run", "stale-run", "The run is retired or does not exist. Refresh.", false);
         }

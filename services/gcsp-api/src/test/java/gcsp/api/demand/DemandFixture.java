@@ -3,6 +3,7 @@ package gcsp.api.demand;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.demand.AllocationRecordsPort.RecordedDecision;
 import gcsp.api.demand.DemandPolicyPort.DemandPolicy;
 import gcsp.api.demand.OfferRecordsPort.DecisionRow;
 import gcsp.api.demand.OfferRecordsPort.OfferRecords;
@@ -121,11 +122,15 @@ final class DemandFixture implements AutoCloseable {
 
     /** Appends confirmed brief version v and moves the head to it (a lower head leaves later rows as history). */
     void brief(String employee, int version, ObjectNode content) throws SQLException {
+        brief(employee, version, content, json("{}"));
+    }
+
+    void brief(String employee, int version, ObjectNode content, ObjectNode buddy) throws SQLException {
         update("INSERT INTO brief_heads (environment_id, run_id, employee_id) VALUES (?, ?, ?) ON CONFLICT DO NOTHING", ENV, RUN, employee);
         update("INSERT INTO briefs (environment_id, run_id, employee_id, brief_version, previous_brief_version, operation, content, "
                 + "buddy, semantic_digest, policy_version, confirmed_by, confirmed_at, command_id) "
-                + "VALUES (?, ?, ?, ?, ?, 'confirmed', ?, '{}'::jsonb, ?, ?, 'p', now(), ?)", ENV, RUN, employee, version,
-                version == 1 ? null : version - 1, content, "a".repeat(64), POLICY, "cmd-" + employee + "-" + version);
+                + "VALUES (?, ?, ?, ?, ?, 'confirmed', ?, ?, ?, ?, 'p', now(), ?)", ENV, RUN, employee, version,
+                version == 1 ? null : version - 1, content, buddy, "a".repeat(64), POLICY, "cmd-" + employee + "-" + version);
         update("UPDATE brief_heads SET brief_version = ? WHERE environment_id = ? AND run_id = ? AND employee_id = ?",
                 version, ENV, RUN, employee);
     }
@@ -178,6 +183,37 @@ final class DemandFixture implements AutoCloseable {
         update("INSERT INTO supply_release_ticks (environment_id, run_id, tick_id, tick_now, clock_version, input_digest, state, "
                 + "last_outcome) VALUES (?, ?, ?, now(), ?, ?, ?, ?)", ENV, RUN, id, clock, "c".repeat(64), state,
                 outcome == null ? null : json(outcome));
+    }
+
+    /** A released-tranche receipt over these cars (its tick row is created for the foreign key). */
+    void release(String tranche, String releasedAt, String... uuids) throws SQLException {
+        String tick = "tick-" + tranche;
+        update("INSERT INTO supply_release_ticks (environment_id, run_id, tick_id, tick_now, clock_version, input_digest, state, "
+                + "last_outcome) VALUES (?, ?, ?, now(), ?, ?, 'completed', ?)", ENV, RUN, tick, ++clockVersion, "c".repeat(64),
+                json("{\"status\":\"ok\"}"));
+        update("INSERT INTO stock_releases (environment_id, run_id, tranche_id, window_id, tick_id, released_at, policy_version, "
+                + "source, input_digest, order_uuids, visible_order_uuids, outcome) VALUES (?, ?, ?, 'w', ?, ?::timestamptz, ?, "
+                + "'{}'::jsonb, ?, ?, '[]'::jsonb, '{}'::jsonb)", ENV, RUN, tranche, tick, releasedAt, POLICY, "d".repeat(64),
+                M.valueToTree(uuids));
+    }
+
+    private int clockVersion;
+
+    /** A stock car with the given attributes JSON (display, colour and order number for the suitability view). */
+    void stock(String uuid, String state, String attributes) throws SQLException {
+        update("INSERT INTO stock_cars (environment_id, run_id, order_uuid, configuration_id, state, attributes) "
+                + "VALUES (?, ?, ?, 'cfg', ?, ?)", ENV, RUN, uuid, state, json(attributes));
+    }
+
+    void setEmployee(String id, String attributes, long version) throws SQLException {
+        update("UPDATE employees SET attributes = ?, version = ? WHERE environment_id = ? AND run_id = ? AND employee_id = ?",
+                json(attributes), version, ENV, RUN, id);
+    }
+
+    final Records records = new Records();
+
+    SuitabilityService suitability() throws SQLException {
+        return new SuitabilityService(pool(), policy, records, Clock.fixed(NOW, ZoneOffset.UTC));
     }
 
     DemandResult read() {
@@ -246,6 +282,27 @@ final class DemandFixture implements AutoCloseable {
             Map<String, List<CarDecision>> out = new java.util.HashMap<>();
             candidates.forEach(c -> out.put(c.employeeId(), rule.apply(c)));
             return new Evaluation.Ok(out);
+        }
+    }
+
+    /** Recorded allocation decisions the test sets; counts calls and checks it is handed the snapshot. */
+    static final class Records implements AllocationRecordsPort {
+        final List<RecordedDecision> decisions = new ArrayList<>();
+        volatile boolean absent;
+        volatile boolean sawSnapshot;
+        volatile List<String> lastEmployees = List.of();
+        volatile List<String> lastCars = List.of();
+        final AtomicInteger calls = new AtomicInteger();
+
+        @Override
+        public Optional<List<RecordedDecision>> read(Connection snapshot, DemandScope scope, List<String> employeeIds,
+                List<String> orderUuids) throws SQLException {
+            calls.incrementAndGet();
+            lastEmployees = employeeIds;
+            lastCars = orderUuids;
+            sawSnapshot = !snapshot.getAutoCommit() && snapshot.isReadOnly()
+                    && snapshot.getTransactionIsolation() == Connection.TRANSACTION_REPEATABLE_READ;
+            return absent ? Optional.empty() : Optional.of(List.copyOf(decisions));
         }
     }
 

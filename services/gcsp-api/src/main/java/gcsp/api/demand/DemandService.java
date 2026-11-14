@@ -576,7 +576,7 @@ public final class DemandService {
     }
 
     /** Exactly one status per car: allocated, else held, else available while the source interval is open, else unavailable. */
-    private static String status(Car car, Set<String> allocated, Set<String> held, Instant asOf) {
+    static String status(Car car, Set<String> allocated, Set<String> held, Instant asOf) {
         if (allocated.contains(car.orderUuid())) return "allocated";
         if (held.contains(car.orderUuid())) return "held";
         JsonNode a = car.availability();
