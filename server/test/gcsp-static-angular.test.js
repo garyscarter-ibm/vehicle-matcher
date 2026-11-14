@@ -278,7 +278,7 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   }
   const javaKeys = [...java.matchAll(/^      - key: (GCSP_[A-Z_]+|JAVA_OPTS)$/gmu)].map((match) => match[1]);
   assert.equal(new Set(javaKeys).size, javaKeys.length, 'identity and persistence share one environment setting');
-  const proposedIdentityKeys = [...proposed.matchAll(/^      # - key: (GCSP_[A-Z_]+)$/gmu)].map((match) => match[1]);
+  const proposedIdentityKeys = [...proposed.matchAll(/^      # - key: (GCSP_(?:OIDC_[A-Z_]+|ENVIRONMENT_ID|RUN_ID|POLICY_VERSION))$/gmu)].map((match) => match[1]);
   assert.equal(proposedIdentityKeys.length, 10, 'inspect a changed authoritative identity contract before updating the blueprint');
   for (const key of ['GCSP_IDENTITY_PROVIDER', ...proposedIdentityKeys]) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} remains deployment-supplied`);
@@ -290,13 +290,28 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   }
   assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
   assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
-  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER']) {
+  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER']) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: none`, 'u'), `${key} keeps its existing unavailable default`);
   }
   for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH']) {
     assert.doesNotMatch(java, new RegExp(`^      - key: ${key}$`, 'mu'), `${key} is not a required deployment input`);
     assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} is documented for optional deployment configuration`);
   }
+  const proposedMailKeys = [...proposed.matchAll(/^      # - key: (GCSP_(?:MAIL_[A-Z_]+|PUBLIC_BASE_URL|BREVO_API_KEY))$/gmu)].map((match) => match[1]);
+  assert.deepEqual(proposedMailKeys, ['GCSP_MAIL_TRANSPORT', 'GCSP_PUBLIC_BASE_URL', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY']);
+  for (const key of [...proposedMailKeys, 'GCSP_NOTIFY_DRAIN_INTERVAL']) {
+    assert.ok(!javaKeys.includes(key), `${key} remains an unselected option`);
+  }
+  assert.match(java, /^      # - key: GCSP_MAIL_TRANSPORT\n      #   value: brevo$/mu);
+  for (const key of proposedMailKeys.filter((key) => key !== 'GCSP_MAIL_TRANSPORT')) {
+    assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} has no committed value`);
+  }
+  assert.match(java, /Angular HTTPS base serving \/gcsp\/offers\/:offerId, not the API host/u);
+  assert.match(java, /^      # - key: GCSP_NOTIFY_DRAIN_INTERVAL\n      #   value: 5s$/mu);
+  const properties = await readFile(new URL('../../services/gcsp-api/src/main/resources/application.properties', import.meta.url), 'utf8');
+  assert.match(properties, /^gcsp\.documents\.provider=\$\{GCSP_DOCUMENTS_PROVIDER:none\}$/mu);
+  assert.match(properties, /^gcsp\.mail\.transport=\$\{GCSP_MAIL_TRANSPORT:\}$/mu);
+  assert.match(properties, /^gcsp\.notify\.drain-interval=\$\{GCSP_NOTIFY_DRAIN_INTERVAL:5s\}$/mu);
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);
