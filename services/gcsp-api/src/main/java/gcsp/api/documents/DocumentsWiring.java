@@ -55,7 +55,7 @@ public class DocumentsWiring {
     }
 
     /** Null while persistence is off, so callers answer unavailable instead of guessing. */
-    synchronized DocumentService service() {
+    public synchronized DocumentService service() {
         if (service == null && persistence.active()) {
             service = new DocumentService(persistence.runner(), dataSource.get(), policy.get(), cases.get(),
                     clock.get(), provider());

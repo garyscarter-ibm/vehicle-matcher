@@ -8,4 +8,9 @@ public interface TickHandler {
     String stage();
 
     HandlerOutcome handle(TickRequest request);
+
+    /** False leaves the handler unregistered, so its stage is a missing stage (as Node, which registers only with a source). */
+    default boolean enabled() {
+        return true;
+    }
 }

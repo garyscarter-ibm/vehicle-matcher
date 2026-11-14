@@ -1,5 +1,6 @@
 package gcsp.api.clock;
 
+import gcsp.api.persistence.EnvironmentGuard;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.policy.PolicyService;
@@ -49,12 +50,29 @@ public class RunClockHolder {
     public synchronized RunClock clock() {
         if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
         if (clock == null) {
-            List<TickHandler> found = new ArrayList<>();
-            handlers.forEach(found::add);
+            List<TickHandler> found = enabledHandlers();
             AgroalDataSource source = dataSource.get();
             clock = new RunClock(source, persistence.runner(), policy, found, InstantSource.system());
         }
         return clock;
+    }
+
+    private List<TickHandler> enabledHandlers() {
+        List<TickHandler> found = new ArrayList<>();
+        handlers.forEach(h -> {
+            if (h.enabled()) found.add(h);
+        });
+        return found;
+    }
+
+    /** The ids of the registered handlers, sorted. */
+    public List<String> handlerIds() {
+        return enabledHandlers().stream().map(TickHandler::handlerId).sorted().toList();
+    }
+
+    /** The active run as stored now; throws IllegalStateException when the database cannot say. */
+    public EnvironmentGuard.RunState activeRun() {
+        return persistence.guard().currentRun();
     }
 
     /** The active run's scope for this actor; a caller never chooses the environment or run. */

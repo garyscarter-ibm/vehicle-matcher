@@ -130,6 +130,49 @@ public final class RunClock {
         }
     }
 
+    /** The state plus the presenter controls: policy version, step, named times and the next release cue. */
+    public ClockResult controls(RunContext scope) {
+        ClockResult state = state(scope);
+        if (!(state instanceof ClockResult.Ok ok)) return state;
+        try {
+            ClockRows.Lookup run = lookup(scope);
+            if (run.clock() == null) return notInitialized();
+            ClockConfiguration.Loaded loaded = ClockConfiguration.read(policy, scope.runId(), run.clock().now());
+            if (!loaded.ok()) return ClockResult.unavailable(POLICY_CODE, loaded.problem(), true);
+            ClockConfiguration config = loaded.configuration();
+            ObjectNode controls = NODES.objectNode().put("policyVersion", config.policyVersion());
+            controls.putObject("step").put("value", config.stepSeconds()).put("unit", "seconds");
+            ObjectNode named = controls.putObject("namedTimes");
+            run.clock().namedTimes().forEach((name, at) -> named.put(name, Instants.format(at)));
+            Instant release = run.clock().namedTimes().get("release");
+            ObjectNode next = controls.putObject("nextRelease");
+            if (release != null && release.isAfter(run.clock().now())) {
+                next.put("status", "available").put("to", "release").put("at", Instants.format(release));
+            } else {
+                next.put("status", "unavailable").put("reason", "No future release cue is configured.");
+            }
+            ObjectNode value = ((ObjectNode) ok.value()).deepCopy();
+            value.set("controls", controls);
+            return ClockResult.ok(value);
+        } catch (SQLException e) {
+            return databaseDown();
+        }
+    }
+
+    /** One stored tick of the run, or tick-not-found. */
+    public ClockResult tickView(RunContext scope, String tickId) {
+        if (!Digests.validTickId(tickId)) return ClockResult.notFound("tick-not-found", "No such tick for the active run.");
+        try (Connection c = dataSource.getConnection()) {
+            ClockRows.Lookup run = ClockRows.lookup(c, scope.environmentId(), scope.runId());
+            if (!run.exists() || !run.active()) return ClockResult.staleRun();
+            Optional<ClockRows.Tick> tick = ClockRows.tick(c, scope.environmentId(), scope.runId(), tickId);
+            return tick.isEmpty() ? ClockResult.notFound("tick-not-found", "No such tick for the active run.")
+                    : ClockResult.ok(tick.get().view(scope.runId()));
+        } catch (SQLException e) {
+            return databaseDown();
+        }
+    }
+
     /** Moves the clock forward by seconds or to a named time or UTC instant; give exactly one of the two. */
     public ClockResult advance(RunContext scope, String commandId, long expectedClockVersion, Long bySeconds, String to) {
         if (!Digests.validCommandId(commandId) || expectedClockVersion <= 0 || (bySeconds == null) == (to == null)) {
