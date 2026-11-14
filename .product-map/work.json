@@ -6339,7 +6339,7 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-14T01:07:51Z",
+      "observed_at": "2026-11-14T01:10:39Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
@@ -6370,9 +6370,10 @@
         },
         {
           "id": "s4-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story-level validation, merge, migration number and result",
-          "observed_at": "2026-11-14T01:07:51Z"
+          "observed_at": "2026-11-14T01:10:39Z",
+          "evidence": "82faf72e merged with origin/gcsp-poc-dev; clean verify 219/0/0/0 on native PG17, Flyway 1,2,460.1; result block committed"
         }
       ]
     },
