@@ -7161,7 +7161,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-14T02:40:20Z",
+      "observed_at": "2026-11-14T02:54:50Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -7195,14 +7195,14 @@
         {
           "id": "preference-coupling",
           "title": "Published-compact-preferences-and-exact-current-car-rating",
-          "status": "in-progress",
-          "observed_at": "2026-11-14T02:40:19.679353+00:00",
-          "evidence": "Resumed original existing-account-actions coupling against published F441 components/root store; scoped DOM/HTTP and affected rendered validation planned; no version invention or real integration inference."
+          "status": "complete",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
         },
         {
-          "evidence": "Mater independent review passed exact9b995759..401b9972 implementation checkpoint; normal production/static packaging and fixture Angular/Chrome proof passed; actual Java/OIDC/PG ownership/parity/durable-state runtime unavailable, Safari/private/a11y/print/hosted acceptance unrun. Original AC open; inherited Medium draft-discard restart FUCQ-488 and FUCQ-487 contrast remain independently prioritised.",
+          "evidence": "Mater passed original401b9972; Stanley passed exact98490dca..f8d478b1 partial checkpoint. Fixture/scoped/AOT/static evidence supports implementation only. Both original AC remain open: actual Java version DTO gap,OIDC/PG ownership/parity/durable-state/restart and Safari/private/a11y/print/hosted gates unproven. F487/488/491 independently prioritised.",
           "id": "integration",
-          "observed_at": "2026-11-14T00:21:50.433978+00:00",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
           "status": "blocked",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
@@ -7214,13 +7214,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
       "workers": [
         {
-          "expires_at": "2026-11-14T03:25:19.679353+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
           "harness": "codex",
           "name": "Marvin the Martian",
-          "observed_at": "2026-11-14T02:40:19.679353+00:00",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
           "role": "story-lead",
-          "source": "existing lead resumed by dispatcher; source98490dca; gpt-6.1-sol/high saved runtime/title preserved",
-          "status": "active; narrow Account preference coupling; actual acceptance open"
+          "source": "existing lead requested/selected/effective gpt-6.1-sol/high; verified source f8d478b1; final metadata handoff only, dispatcher owns publication/sync/integration/lifecycle",
+          "status": "coupling checkpoint reviewed and complete; source stopped; actual integration blocked"
         },
         {
           "expires_at": "2026-11-13T23:43:44.865713+00:00",
@@ -7257,6 +7257,15 @@
           "role": "reviewer",
           "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
           "status": "review passed implementation checkpoint; stopped; actual acceptance open"
+        },
+        {
+          "name": "Stanley Tiger",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
+          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
+          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
         }
       ]
     }
