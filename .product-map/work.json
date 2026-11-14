@@ -5673,19 +5673,68 @@
       "workers": []
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-417",
-      "jira_observed_at": "2026-11-12T15:48:05.171Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
+      "jira_observed_at": "2026-11-14T07:59:15.577Z",
+      "note": "Calculation and allocation/evidence slices lead-reviewed; code cebac278c5b59acac9fa9a45dc3bc9ea1c37a385. Allocation39pass/0fail/1 nativePG skip; prior65 calculation checks reused. Native PostgreSQL and connected original gates remain open; five AC unchecked. docs/gcsp/evidence/fucq417/allocation-checkpoint.md",
+      "observed_at": "2026-11-14T08:33:36Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "calculation",
+          "status": "complete",
+          "title": "Shared compact calculation and unchanged gallery projection",
+          "observed_at": "2026-11-14T08:22:17Z",
+          "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
+        },
+        {
+          "id": "allocation",
+          "status": "complete",
+          "title": "Compact planning and frozen attempted-claim quote reconstruction",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "evidence": "Lead semantic review PASS cebac278c5b59acac9fa9a45dc3bc9ea1c37a385; four dispatch changes only; F414/F424 preserved. Actual outcomes/claim inputs equal gallery baseline; complete fallback, frozen resume and legacy quotes pass. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Semantic equivalence and scoped construction/sort evidence",
+          "observed_at": "2026-11-14T08:33:36Z",
+          "evidence": "Actual allocator: 24 pairs under both tie-break policies, gallery27 terms/12 gallery sorts/1 global sort vs compact3/0/1, equal full outcomes/quotes. Four modules39pass/0fail/1 nativePG skip,14 inputs verified per command, cleanup independently verified. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story validation and connected release-offer-history gates",
+          "observed_at": "2026-11-14T08:33:36Z",
+          "evidence": "Original four validate commands covered with retained matching calculation results and allocation/runtime results. NativePG test skipped: URL unset; connected desktop/narrow release/offer/history no-match/conflict/replay unrun. No whole-Story acceptance."
+        }
+      ],
+      "status": "In Progress",
       "title": "Evaluate allocation candidates without building a gallery",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-417",
-      "workers": []
+      "workers": [
+        {
+          "name": "Wyldstyle",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "expires_at": "2026-11-14T08:33:35Z",
+          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
+          "status": "allocation reviewed; parked after metadata checkpoint for guarded publication"
+        },
+        {
+          "name": "Grub",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:33:35Z",
+          "expires_at": "2026-11-14T08:33:35Z",
+          "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
+          "status": "completed allocation; inactive; four owned groups/scratch absent"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-010"
     },
     {
       "assignee": "",
