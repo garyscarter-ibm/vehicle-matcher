@@ -134,7 +134,7 @@ public final class AllocationService {
     }
 
     /** Runs a command; an uncertain commit is inspected, never assumed (absent is retried once). */
-    private Outcome settle(TransactionRunner runner, RunContext ctx, String commandId, Supplier<Outcome> attempt) {
+    static Outcome settle(TransactionRunner runner, RunContext ctx, String commandId, Supplier<Outcome> attempt) {
         Outcome o = attempt.get();
         for (int retries = 0; o instanceof Outcome.Uncertain; retries++) {
             Inspection seen = runner.inspect(ctx, commandId);
@@ -151,7 +151,7 @@ public final class AllocationService {
         return failure(o, null);
     }
 
-    private static AllocationResult failure(Outcome o, String operationId) {
+    static AllocationResult failure(Outcome o, String operationId) {
         if (o instanceof Outcome.Refused r) return new AllocationResult.Refused(r.code(), r.message());
         if (o instanceof Outcome.Conflict c) {
             return "command-input-changed".equals(c.code())

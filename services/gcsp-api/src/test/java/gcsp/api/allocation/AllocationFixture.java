@@ -162,6 +162,49 @@ final class AllocationFixture implements AutoCloseable {
                 ENV, RUN, "o-" + key, "h-" + key, "q-" + key, employeeId, orderUuid, briefVersion, POLICY);
     }
 
+    /** An active Buddy hold with its pinned quote and active offer, expiring at {@code expiresAt} (ISO text). */
+    void buddyHold(String holdId, String orderUuid, String employeeId, int unit, String expiresAt) throws SQLException {
+        String quote = "q-" + holdId;
+        String offer = "o-" + holdId;
+        update("INSERT INTO allocation_runs (environment_id, run_id, allocation_id, trigger_type, source_event_id, "
+                + "input_digest, state, evaluated_at, clock_version, policy_version, plan, contender_count) "
+                + "VALUES (?, ?, 'alloc-old', 'stock-released', 'evt-old', ?, 'pending', now(), 1, ?, '{}'::jsonb, 0) "
+                + "ON CONFLICT DO NOTHING", ENV, RUN, digest("old"), POLICY);
+        update("INSERT INTO buddy_quotes (environment_id, run_id, quote_id, allocation_id, order_uuid, employee_id, "
+                + "slot_id, configuration_id, policy_version, quoted_at, quote) VALUES (?, ?, ?, 'alloc-old', ?, ?, ?, ?, ?, "
+                + "now(), '{}'::jsonb)", ENV, RUN, quote, orderUuid, employeeId, "slot-" + employeeId, "cfg-" + orderUuid,
+                POLICY);
+        String attrs = "{\"quoteId\":\"" + quote + "\",\"offerId\":\"" + offer + "\",\"policyVersion\":\"" + POLICY
+                + "\"}";
+        update("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, slot_unit, "
+                + "hold_type, state, expires_at, attributes) VALUES (?, ?, ?, ?, ?, ?, ?, 'buddy-offer', 'active', "
+                + "?::timestamptz, ?::jsonb)", ENV, RUN, holdId, orderUuid, employeeId, "slot-" + employeeId, unit,
+                expiresAt, attrs);
+        update("INSERT INTO buddy_offers (environment_id, run_id, offer_id, hold_id, quote_id, employee_id, order_uuid, "
+                + "state, brief_version, policy_version, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'active', 1, ?, "
+                + "?::timestamptz)", ENV, RUN, offer, holdId, quote, employeeId, orderUuid, POLICY, expiresAt);
+    }
+
+    /** Commits one outbox event of the given type, as the producing Story's command would (one revision each). */
+    void emit(String eventType, String eventId, String payload) {
+        gcsp.api.persistence.Outcome o = new gcsp.api.persistence.TransactionRunner(poolOrThrow()).execute(ctx(),
+                new gcsp.api.persistence.Command("test.emit", "emit:" + eventId, json(payload)), tx -> {
+                    tx.write("UPDATE stock_cars SET updated_at = now() WHERE environment_id = ? AND run_id = ? "
+                            + "AND order_uuid = (SELECT min(order_uuid) FROM stock_cars)", ENV, RUN);
+                    tx.emit(eventId, eventType, json(payload));
+                    return gcsp.api.persistence.WorkResult.ok(null);
+                });
+        if (!(o instanceof gcsp.api.persistence.Outcome.Committed)) throw new IllegalStateException(o.toString());
+    }
+
+    private PGSimpleDataSource poolOrThrow() {
+        try {
+            return pool();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     static String digest(String seed) {
         return gcsp.api.persistence.Canonical.digest(JSON.getNodeFactory().textNode(seed));
     }
