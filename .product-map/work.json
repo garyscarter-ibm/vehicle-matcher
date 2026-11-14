@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
-      "observed_at": "2026-11-13T23:34:17Z",
+      "note": "Focused proof partial179/181 then91/92. Medium drawer focus BugFUCQ-494(ToDo,F380), parent-verified RelatesF386/F414 and PNGattachment937794. No fix/pickup/merge dependency. Private/Safari/remaining keyboard gates unrun; original AC/status unchanged.",
+      "observed_at": "2026-11-14T03:43:47Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -5506,9 +5506,9 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference.",
+          "evidence": "No-match/release keyboard+DOM/ARIA pass1440/375; pendingdesktop reverse sequence skipsClose. MediumBugFUCQ-494(ToDo,F380), RelatesoriginF386/discoveryF414 verified; attempt2 PNGattachment937794(233332bytes),SHA256 0819356d729224ad1749b7222575cba1de22ed5d4a266e60cd0ecd63b80848ad. Attempts179/181 and91/92; no overallpass. Remaining/private/Safari unrun. No fix/pickup/merge dependency.",
           "id": "connected",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
           "status": "blocked",
           "title": "Connected-release-offer-history-integration"
         },
@@ -5527,13 +5527,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
       "workers": [
         {
-          "expires_at": "2026-11-13T23:19:26Z",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
           "harness": "codex",
           "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
           "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-13T22:37:32Z",
+          "observed_at": "2026-11-14T03:10:11.467133+00:00",
           "role": "story-lead",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+          "source": "Proof stopped at recorded product assertion; owned resources cleaned and partial evidence handed to parent. No acceptance/lifecycle change."
         },
         {
           "expires_at": "2026-11-13T23:19:26Z",
@@ -5561,6 +5561,15 @@
           "observed_at": "2026-11-13T23:16:27Z",
           "role": "reviewer",
           "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
+          "name": "Timone",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
+          "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
         }
       ]
     },
