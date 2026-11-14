@@ -6697,13 +6697,36 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T07:51:49Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463",
+      "slices": [
+        {
+          "id": "claims-local",
+          "status": "in-progress",
+          "title": "Local manual claims: schema, exact-car/slot exclusivity, review, release, convert, expiry",
+          "observed_at": "2026-11-14T07:51:49Z"
+        },
+        {
+          "id": "claims-remote",
+          "status": "not-started",
+          "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart"
+        },
+        {
+          "id": "claims-http",
+          "status": "not-started",
+          "title": "Employee HTTP routes, provider selection, expiry sweep and README"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration: base merge, Java verify and native PostgreSQL validation"
+        }
+      ]
     },
     {
       "assignee": "",
