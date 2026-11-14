@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T08:00:53Z",
+      "observed_at": "2026-11-14T08:12:56Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -7336,9 +7336,9 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T07:54:37.273554+00:00",
-          "expires_at": "2026-11-14T08:24:37.273554+00:00",
-          "source": "direct active lead review observation; pending dispatcher publication"
+          "observed_at": "2026-11-14T08:12:55.257765+00:00",
+          "expires_at": "2026-11-14T08:42:55.257765+00:00",
+          "source": "direct active substantive browse-state review; holding reviewed checkpoint for dispatcher publication"
         },
         {
           "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
@@ -7348,6 +7348,15 @@
           "observed_at": "2026-11-14T07:54:37.273554+00:00",
           "expires_at": "2026-11-14T07:54:37.273554+00:00",
           "source": "verified final result; idle, source checkpoint0c547fdb, runtime Sol/medium"
+        },
+        {
+          "id": "01a1d914-f018-7810-ac0d-9c54e7484979",
+          "name": "Hugh",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:12:55.257765+00:00",
+          "expires_at": "2026-11-14T08:12:55.257765+00:00",
+          "source": "verified final/idle; source 3e6551e3; effective Sol/medium; saved title and parentage verified"
         }
       ],
       "slices": [
@@ -7360,9 +7369,10 @@
         },
         {
           "id": "browse-state",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Browse-history-and-detail-state",
-          "observed_at": "2026-11-14T08:00:53Z"
+          "observed_at": "2026-11-14T08:12:56Z",
+          "evidence": "Lead full source/spec/frozen-gallery/auth-client review PASS at frontend state boundary on 3e6551e3; 51/51 named spec; tested tree 310aabc0; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-browse-state-review.json. Actual routes/rendered/Java integration remain open."
         },
         {
           "id": "view-parity",
