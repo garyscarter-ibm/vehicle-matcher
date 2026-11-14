@@ -6924,7 +6924,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T07:33:07Z",
+      "observed_at": "2026-11-14T07:40:26Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -6935,8 +6935,13 @@
         {
           "id": "a-clock",
           "status": "in-progress",
-          "title": "Clock service, ticks, handler registry and presenter clock controls",
+          "title": "Clock core: persisted run clock, advance, idempotent tick with ordered handler registry, startup reconcile",
           "observed_at": "2026-11-14T07:33:07Z"
+        },
+        {
+          "id": "a2-handlers-http",
+          "status": "not-started",
+          "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP"
         },
         {
           "id": "b-scenarios",
