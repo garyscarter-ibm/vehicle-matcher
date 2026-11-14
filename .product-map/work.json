@@ -6177,7 +6177,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-14T00:59:11Z",
+      "observed_at": "2026-11-14T01:09:34Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
       "unsliced": false,
       "slices": [
@@ -6197,14 +6197,16 @@
         },
         {
           "id": "repository-provider",
-          "status": "in-progress",
+          "status": "complete",
           "title": "PostgreSQL records provider with native parity and plan evidence",
-          "observed_at": "2026-11-14T00:59:11Z"
+          "observed_at": "2026-11-14T01:09:34Z",
+          "evidence": "Lead-reviewed 574a9a04+fix: V458_1 employee_account_records + entitlement_slots_employee index; RepositoryAccountRecords read-only parameterised reads; RepositoryParityTest 11 goldens exact from native PG17; changed input/absent/source-failure cases; HTTP repository provider; EXPLAIN ANALYZE at 5000 employees: two index scans, 6 buffer hits, 0.03 ms; account tests 47/47 native; verify 137/137 native"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Merge base, policy binding status, README, full Java verify and story result"
+          "status": "in-progress",
+          "title": "Merge base, policy binding status, README, full Java verify and story result",
+          "observed_at": "2026-11-14T01:09:34Z"
         }
       ]
     },
