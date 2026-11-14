@@ -194,3 +194,10 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Issue/cause:** the first FUCQ-442 parent audit checked new worker files in the parent checkout before the increment was merged, causing FileNotFoundError. This was an audit path error, not a mismatching product input.
 - **Action/evidence:** corrected the audit root to the clean frozen worker and completed both 167-input sets, original Story/map preservation and actual local teardown. Receipt: `.claude/fucq442-stock-parent-audit-1700.json`. Following integration, only the expected newer FUCQ-447 input differences remained.
 - **Framework follow-up:** bind audits explicitly to frozen checkout and commit; do not confuse an unmerged file's absence in the parent with a failed worker source check.
+
+## 2026-11-14 17:22 UTC · GC Codex · DL-20261114-GC-010 · identified / correcting
+
+- **Issue/impact:** FUCQ-446's first employee-screen/action check stopped during compilation, before any tests ran. No passing-test or rendered-journey claim follows.
+- **Evidence/cause:** Bertie's current worker report identifies one new client type error and an isolated fixture that copied unrelated OIDC specs without their dependency closure. Exact compiler output and receipts remain with the active worker pending frozen checkpoint audit; this entry is worker-reported, not an independent runtime diagnosis.
+- **Action/outcome:** the same worker is correcting its allocated client type and limiting fixture inputs to the selected import graph, retaining failed evidence and reporting owned cleanup/borrowed-input checks passed. No extra Story, dependency installation, backend repair or generic harness project was started. Resolution is not yet verified.
+- **Framework follow-up:** selected compilation must include the actual transitive source dependencies while excluding unrelated specs; a test failure before discovery is zero executed tests. Preserve source identity, exact failure and teardown, and reuse the corrected bounded runner.
