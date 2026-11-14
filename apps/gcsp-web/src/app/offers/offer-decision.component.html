@@ -1,0 +1,63 @@
+@if (offer(); as current) {
+  <div class="decision-actions">
+    @if (current.state === 'pending' && !state().decision) {
+      <button gcspButton type="button" data-offer-action="accept" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
+      <button gcspButton type="button" variant="ghost" data-offer-action="decline" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
+    }
+    @if (!busy()) { <button gcspButton type="button" variant="ghost" data-offer-action="check" (click)="store.checkCurrent()">Check current state</button> }
+  </div>
+  <p role="status" aria-live="polite" aria-atomic="true">{{ feedback() }}</p>
+  <gcsp-side-drawer context="Your vehicle offer" [title]="state().review === 'decline' ? 'Decline your offer' : 'Accept your offer'" [dismissible]="!busy()" (closed)="store.closeReview()">
+    @if (state().review; as kind) {
+      <div class="decision-content" [attr.aria-busy]="busy()">
+        <section><h3>{{ current.quote.facts.display.name }}</h3><p>{{ current.quote.terms.points.value.toLocaleString('en-GB') }} points a month</p></section>
+        @if (kind === 'accept') {
+          @if (current.handoff; as handoff) {
+            @if (acceptNote()) { <p role="alert">{{ acceptNote() }}</p> }
+            <section><h3>Your contact details</h3><dl><div><dt>Email</dt><dd>{{ handoff.contact?.email ?? 'To confirm' }}</dd></div><div><dt>Phone</dt><dd>{{ handoff.contact?.phone ?? 'To confirm' }}</dd></div></dl></section>
+            <section><h3>Driver and licence</h3><dl>
+              <div><dt>Nominated driver</dt><dd>{{ handoff.driver?.name ?? 'To confirm' }}</dd></div>
+              <div><dt>Licence number</dt><dd>{{ handoff.driver?.licence?.displayNumber ?? 'To confirm' }}</dd></div>
+              <div><dt>Valid from</dt><dd>{{ date(handoff.driver?.licence?.validFrom) }}</dd></div>
+              <div><dt>Valid until</dt><dd>{{ date(handoff.driver?.licence?.validUntil) }}</dd></div>
+              <div><dt>Licence categories</dt><dd>{{ handoff.driver?.licence?.categories?.join(', ') || 'To confirm' }}</dd></div>
+            </dl></section>
+            @if (handoff.mode === 'replacement') {
+              <section><h3>The car you will return</h3><p>{{ handoff.returnCar?.model ?? 'To confirm' }}</p><dl>
+                <div><dt>Contract ends</dt><dd>{{ date(handoff.returnCar?.contractEndDate) }}</dd></div>
+                <div><dt>Recorded mileage</dt><dd>{{ handoff.returnCar?.currentOdometer?.value ?? 'To confirm' }} {{ handoff.returnCar?.currentOdometer?.unit }}</dd></div>
+              </dl><p>Arrange its return after your new car is confirmed.</p>
+              <gcsp-labelled-field [controlId]="prefix + '-mileage'" label="Expected return mileage (miles)" hint="The mileage your current car will have when you return it." [error]="state().mileage ? store.mileageError() : ''">
+                <input [id]="prefix + '-mileage'" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="16" required [value]="state().mileage" [disabled]="busy()" [attr.aria-invalid]="!!state().mileage && !!store.mileageError()" [attr.aria-describedby]="prefix + '-mileage-hint' + (state().mileage && store.mileageError() ? ' ' + prefix + '-mileage-error' : '')" (input)="store.setMileage($any($event.target).value)" />
+              </gcsp-labelled-field></section>
+            }
+            <details><summary>Scheme terms</summary><p>{{ handoff.wording ?? 'Scheme terms are unavailable.' }}</p><p>Terms version {{ handoff.termsVersion }}</p></details>
+            <fieldset [disabled]="busy()"><legend>Before you accept</legend>
+              @for (declaration of handoff.declarations; track declaration.id; let index = $index) {
+                <label class="decision-choice" [for]="prefix + '-declaration-' + index"><input type="checkbox" [id]="prefix + '-declaration-' + index" [checked]="state().declarations[declaration.id] === true" (change)="store.tick(declaration.id, $any($event.target).checked)" />{{ declaration.label }}</label>
+              }
+            </fieldset>
+          }
+        } @else {
+          <fieldset [disabled]="busy() || state().reasons.phase !== 'ready'"><legend>Why are you declining?</legend>
+            <p>Your feedback helps your car buddy look again.</p>
+            @for (reason of state().reasons.choices; track reason.code; let index = $index) {
+              <label class="decision-choice" [for]="prefix + '-reason-' + index"><input type="radio" [id]="prefix + '-reason-' + index" [name]="prefix + '-reason'" [value]="reason.code" [checked]="state().reasons.selected === reason.code" (change)="store.selectReason(reason.code)" />{{ reason.label }}</label>
+            }
+          </fieldset>
+          @if (state().reasons.phase === 'loading') { <p role="status">Loading reasons.</p> }
+          @if (state().reasons.phase === 'failed') { <p role="status">Reasons are unavailable.</p><button gcspButton type="button" variant="ghost" (click)="store.refreshReasons()">Check reasons again</button> }
+        }
+        @if (state().error) { <p role="alert">{{ state().error }}</p> }
+        @if (busy()) { <p role="status">Checking your decision. Please wait.</p> }
+      </div>
+    }
+    <div drawer-footer class="decision-footer">
+      @if (state().review; as kind) {
+        <p>{{ kind === 'accept' ? 'Accepting sends your selection for scheme checks. Confirm each declaration to continue.' : 'Declining releases your reserved car. Your buddy will use your feedback to look again.' }}</p>
+        <button gcspButton type="button" data-offer-action="confirm" [disabled]="busy() || (kind === 'accept' ? !store.canAccept() : state().reasons.phase !== 'ready' || !state().reasons.selected)" (click)="store.submitDecision()">{{ busy() ? 'Checking your decision' : kind === 'accept' ? 'Accept offer' : 'Confirm decline' }}</button>
+        <button gcspButton type="button" variant="ghost" [disabled]="busy()" (click)="close()">{{ kind === 'accept' ? 'Keep reviewing' : 'Keep this offer' }}</button>
+      }
+    </div>
+  </gcsp-side-drawer>
+}
