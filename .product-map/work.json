@@ -7520,13 +7520,13 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T03:22:52Z",
+      "observed_at": "2026-11-14T08:36:29Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java approvals packaging cfde7fc7 keeps none and unset canonical-policy override; 18/18 focused checks and Wile E. Coyote independent PASS. Hosted release/identity gates remain open; see 14 November delivery record.",
+          "evidence": "Exact retained evidence Docker packaging and safe appointments/returns defaults; 19/19 targeted checks and local 936-file/172369439-byte staging/hash proof passed. Actual Docker build/UID1001/startup/readiness/images/hosted acceptance remain unrun; parent coordinates independent review.",
           "id": "artifact",
-          "observed_at": "2026-11-14T03:22:52.694579+00:00",
+          "observed_at": "2026-11-14T08:36:29.062487+00:00",
           "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets"
         },
@@ -7556,10 +7556,10 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T03:11:19.622616+00:00",
-          "expires_at": "2026-11-14T03:22:52.694579+00:00",
-          "source": "Wile E. Coyote PASS on cfde7fc7; parent owns publication/integration; original AC open",
-          "status": "expired after approvals packaging handoff"
+          "observed_at": "2026-11-14T08:23:18.255823+00:00",
+          "expires_at": "2026-11-14T08:36:29.062487+00:00",
+          "source": "19 targeted checks and exact minimal-copy proof passed; actual Docker/hosted proof unrun; parent coordinates review/publication",
+          "status": "expired at retained-evidence packaging checkpoint"
         }
       ]
     },
