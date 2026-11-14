@@ -353,3 +353,113 @@ hold. Preserve all 301 foreign map records/raw bytes/order and outside-own-row b
 Both original AC and the complete original Story contract remain unchanged. Dispatcher
 alone owns native lifecycle updates, exact-SHA publication and the next explicit release.
 No worker push/sync/merge/deploy/final switch has occurred.
+
+
+## Read-only controller source checkpoint — 14 November 2026
+
+This checkpoint is based on dispatcher-published worker
+`7a3ff1e5ac4691ca16240dd2951ae39760c4b164`, with integrated FUCQ-440 root
+`6c1628e21b665e259237947f7b2a01f825a1ba47`. Dispatcher released only three new files:
+`orders.read-port.ts`, `orders.controller.ts` and `orders.controller.spec.ts`.
+Existing types/projection/spec, all shared Account/auth/kit/routes/build files and all
+backend/Node files remain unchanged. The earlier source/readiness observations above
+are historical; this section states the current bounded implementation and open gaps.
+
+The injected read port uses `Pick<AccountClient, 'readOrders' | 'readOrder'>` and derives
+both result types from those exact shared methods. The shared client now owns the full
+complete-list pagination and accepts the flat Java snapshot identity as well as matching
+nested stock identity. This removes those concrete frontend contract blockers at this
+base. The controller has no page/filter engine, HTTP/auth code, arbitrary request method,
+commands, timer, default synthetic adapter or UI/route caller. Its four named lifecycle
+reads are contracts only; a shared authenticated lifecycle facade and host injection still
+need dispatcher release. Configured backend providers and live integration remain unproved.
+
+The host supplies trusted subject/environment/run/employee identity and employee authority.
+An explicit load reads the shared complete list and snapshot independently; exact selection
+through the existing projector then starts four independent lifecycle reads. Producer
+results publish as they arrive; one unavailable/refused/pending/unsupported section does
+not replace another. Settled describes completion of these reads, not successful providers
+or Story acceptance. Complete-list failures retain their original partial/failedAfter/page
+and operation evidence and never become a successful list or an invented empty order.
+
+Controller state retains the exact raw shared list/snapshot envelopes by reference, including
+202 operationId, typed value, explicit null or absence. The existing held LifecycleResult
+accepts typed optional snapshot data but cannot represent explicit null. The projector view
+therefore contains a validated snapshot value or undefined while state.snapshot keeps the
+raw null/unknown extension intact. List failure views also exclude an unknown value extension
+without dropping their raw/partial evidence. No unsafe cast or held-type edit is used. If a
+future host requires exact null within projection.snapshot itself, the smallest requested
+contract release is `LifecycleResult<T>` failure `value?: T | null`; that dependent contract
+change and UI consumption remain held. Raw evidence is already available on controller state.
+
+Each load/refresh replaces an object-identity generation, aborts preceding reads and clears
+old facts. Every request start and completion checks captured trusted scalar identity,
+including authority. The copied context prevents same-object host mutations from changing
+a generation's scope. The host must call contextChanged promptly on sign-out/account/context
+changes; it clears/aborts without starting replacement reads. Completion guards also detect
+an unnotified change. Disposal permanently prevents reads. Controller waits settle on abort
+even when a port ignores the signal, while late resolution/rejection handlers stay attached
+and cannot publish into a newer generation. Rejected/thrown port calls produce only their
+own safe unavailable envelope; observer errors are outside that provider catch boundary.
+
+All lifecycle values pass through existing pure projectOrders joins. Foreign order/run/
+employee evidence cannot populate the selected sections. Only host employee authority and
+provider facts feed existing action hints; this controller exposes no action implementation.
+Reload rereads the return-plan relationship. Scheduled/returned labels never fabricate a
+physical current-car transition, display name or image.
+
+### Source-only review and unrun checks
+
+The new controller spec is written for the complete-list/exact/newest boundary, partial
+failure and proven empty/not-found states, flat/nested/absent/pending-value/pending-null
+snapshot evidence, independent producer outcomes/loading, exact identity joins, isolated
+read rejection, order changes and same-order refresh, ignored cancellation, each trusted
+context field, same-object mutation/equivalent copies, prompt context notification,
+disposal/late rejection and relationship reconstruction through reload.
+
+**All new tests, the combined selected check, typecheck/compiler and builds are UNRUN.**
+This was a source-only release. Historical 18-pass projection evidence above covers only
+that earlier selected pure test run; it is not proof of the controller or the current combined
+tree. Source review, exact path/held-byte checks, unchanged Story acceptance and own-map-row
+preservation are the only checks for this checkpoint. There is no runtime/test acceptance.
+
+Proposed later selected command, requiring separate dispatcher runtime release:
+
+```sh
+npm --prefix apps/gcsp-web test -- --include=src/app/orders/orders.controller.spec.ts --include=src/app/orders/orders.projection.spec.ts
+```
+
+Ignored proposal (not a runner or allocation): root-local
+`.claude/test-runs/fucq446/controller-runtime-plan-1008.json`. It pins 19 source/config inputs
+and 15 borrowed tool/package inputs and describes an owned dependency facade with owned Vite
+temporary/cache paths, supervisor/finalizer and ownership manifest before allocation, one
+worker, initial 2 GiB RAM/scratch and 600 seconds, 5 GiB reserve/adaptation below 30 GiB,
+OneDrive destination above 256 MiB, checkpoints and final filesystem/process/port teardown.
+No links, scratch, manifests, supervisors, processes, ports or services were allocated.
+Worker node_modules/.angular/out-tsc/dist were observed absent. Borrowed dependencies and
+tool binaries were only read for pins; no borrowed Node/npm or compiler/test executable was invoked.
+Parent retains responsibility for the later allocation and final receipt.
+
+No descendants, Jira writes, source sync/rebase, worker push, merge, browser, deployment or
+FUCQ-412 replay occurred. Requested/selected/effective Sol/high remains parent-verified,
+without fallback. Equal collaborator authority, resumed Jira policy within authorised scope,
+false child422 diagnostic handling and docs/gcsp/build-rules.md scope/defect policy remain
+binding. No new defect is established here: rebooking source parity coordination3629452
+remains unresolved; historical Low FUCQ-499 is unchanged/unfixed/unrun.
+
+| New source | SHA256 (written, not runtime tested) |
+| --- | --- |
+| `orders.read-port.ts` | `b8c6695e07ae0c6eb2b37964e6a1480c8bd3daf9f8518bc2c25aea331d5d00ca` |
+| `orders.controller.ts` | `d8624525019b24387c4dbc34d7dfc03ae9c8bd072f03c91222840358886ffb22` |
+| `orders.controller.spec.ts` | `3cd8296ada5d6c6de2abba4fee57a9a8d9fa73ebec8841a2552009a690f3d4b9` |
+
+`progress-read` remains **in-progress/PARTIAL**. The other four stable slices are still
+not-started, with both original acceptance criteria unchecked. Actual commands, screen and
+route integration, rendered desktop/narrow/Safari/private/keyboard/CSP/accessibility,
+real Java/OIDC/native PostgreSQL/persistence/restart/concurrency and hosted acceptance
+remain open. The map changes only FUCQ-446 and expires this worker observation at the hold;
+301 foreign rows, ordering, outer metadata and every byte outside the own object are preserved.
+
+Commit this released source and own metadata through scaffold_git with the Codex trailer,
+then HOLD its exact SHA for dispatcher audit/publication and later runtime release. The
+source-only commit does not authorise acceptance, a Done transition or broader implementation.
