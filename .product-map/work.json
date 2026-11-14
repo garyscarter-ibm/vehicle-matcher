@@ -7122,13 +7122,42 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T09:59:21Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-478"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-478",
+      "slices": [
+        {
+          "id": "s1-submit",
+          "status": "complete",
+          "title": "Production schema, ports, providers and intentional submission with one durable operation",
+          "observed_at": "2026-11-14T09:17:56Z",
+          "evidence": "Lead-reviewed c7235cdf0: V478_1 schema, provider port (none/synthetic/live-stub), plan-snapshot and clock ports, intentional submit with plan/version checks, intent-before-send, reconcile-before-resubmit, CAS settle; 20 production tests on native PG17 (lost response, provider down, restart new pool, uncertain commit, concurrency)"
+        },
+        {
+          "id": "s2-responses",
+          "status": "complete",
+          "title": "Response reconciliation, confirmed supply queueing, replan trigger and Greg status",
+          "observed_at": "2026-11-14T09:38:30Z",
+          "evidence": "Lead-reviewed 3774c45ac: reconcile pass (provider.reconcile only, never submit), applyAnswer emits production.supply-changed outbox event, confirmations queued into merged StockRelease.queueConfirmedSupply via SupplyQueuePort, Greg status with request/confirmed/queued/released separate, supplyActivity with supplyVersion and replan; 32 production + 24 StockReleaseTest pass on native PG17"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup selection and reconcile, README",
+          "observed_at": "2026-11-14T09:59:21Z",
+          "evidence": "Lead-reviewed 2c86e4b34: ProductionResource v1 routes (Greg-only submit, Greg/presenter read, presenter scenario script and reconcile), startup selection none/synthetic/live-stub, startup reconcile-only pass, README and properties; 49 production tests; ./mvnw -B verify 895/895 on native PG17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "in-progress",
+          "title": "Story validation on native PostgreSQL, merged-tree verify and result",
+          "observed_at": "2026-11-14T09:59:21Z"
+        }
+      ]
     },
     {
       "assignee": "",
