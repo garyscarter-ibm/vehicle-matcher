@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { accountSnapshot } from './account.test-data';
-import { latestOrder, orderVehicle, placedOrderRecord, validOffers, validOrders, validOrderSnapshot } from './account.preview';
+import { latestOrder, orderVehicle, placedOrderRecord, validOffers, validOrders, validOrdersPage, validOrderSnapshot } from './account.preview';
 
 describe('account offer and order previews', () => {
   it('selects newest source receipt then descending exact stock identity without changing the list', () => {
@@ -30,5 +30,26 @@ describe('account offer and order previews', () => {
     expect(validOrders({ orders: [{ orderUuid: 'id', entitlementSlotId: 'slot', source: { receivedAt: 'supplied', orderNumber: 123 } }] })).toBe(false);
     expect(validOrderSnapshot({ selection: { stock: { orderUuid: 'id', facts: { display: { name: 123 } } } } })).toBe(false);
     expect(validOrderSnapshot({ selection: { stock: { orderUuid: 'id', facts: { display: { name: 'Car', extra: 'evidence' } } } } })).toBe(true);
+  });
+  it('accepts Java flat selection facts and only coherent optional legacy display evidence', () => {
+    const flat = { status: 'acknowledged', selection: { orderUuid: 'order', orderNumber: null, configurationId: 'config', receivedAt: null } };
+    expect(validOrderSnapshot(flat)).toBe(true); expect(orderVehicle(flat, 'order')).toBeNull();
+    const stock = { orderUuid: 'order', facts: { display: { name: 'Supplied car', photo: '/car.webp' } } };
+    const hybrid = { selection: { orderUuid: 'order', stock } };
+    expect(validOrderSnapshot(hybrid)).toBe(true); expect(orderVehicle(hybrid, 'order')).toEqual({ name: 'Supplied car', photo: '/car.webp' });
+    expect(orderVehicle(hybrid, 'config')).toBeNull();
+    const mismatch = { selection: { orderUuid: 'different', stock } };
+    expect(validOrderSnapshot(mismatch)).toBe(false); expect(orderVehicle(mismatch, 'order')).toBeNull();
+    for (const selection of [{}, { orderUuid: null }, { orderUuid: 'order', stock: {} }, { orderUuid: 'order', orderNumber: 123 }]) {
+      expect(validOrderSnapshot({ selection })).toBe(false);
+    }
+  });
+  it('requires explicit page completion and exact failure counts while accepting nullable optional evidence', () => {
+    const page = { orders: [], failed: [], failedCount: 0, nextAfter: null };
+    expect(validOrdersPage(page)).toBe(true); expect(validOrdersPage({ ...page, nextAfter: 'cursor', asOf: null })).toBe(true);
+    expect(validOrdersPage({ ...page, failed: [{ orderUuid: 'id', status: 'unavailable', code: 'selection-source-invalid' }], failedCount: 30 })).toBe(true);
+    for (const invalid of [{ orders: [] }, { ...page, nextAfter: undefined }, { ...page, nextAfter: '' }, { ...page, nextAfter: 'x'.repeat(201) },
+      { ...page, failedCount: 1.5 }, { ...page, failedCount: -1 }, { ...page, failed: [{}] },
+      { ...page, failed: [{ orderUuid: 'id', status: 'unavailable', code: 'bad' }] }]) expect(validOrdersPage(invalid)).toBe(false);
   });
 });
