@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApplicationContext, AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { AccountClient } from './account.client';
+import { AccountOrder, AccountOrdersPage, latestOrder, orderVehicle } from './account.preview';
 import { accountSnapshot, savedDraft } from './account.test-data';
 import { DiscardDraftCommand, SaveDraftCommand, SaveNotificationEmailCommand } from './account.types';
 
@@ -13,6 +14,7 @@ const config: RuntimePublicConfig = { schemaVersion: 1, environmentId: 'isolated
   oidc: { authority: 'https://issuer.example', clientId: 'public-client', scope: 'openid', redirectUri: 'https://portal.example/gcsp/auth/callback', postLogoutRedirectUri: 'https://portal.example/gcsp/' } };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const ok = (value: unknown) => json({ status: 'ok', value });
+const page = (orders: readonly AccountOrder[] = [], extra: Partial<AccountOrdersPage> = {}): AccountOrdersPage => ({ orders, failed: [], failedCount: 0, nextAfter: null, ...extra });
 function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { promise, resolve }; }
 const command = (): SaveDraftCommand => ({ commandId: 'deliberate-command', expectedDraftVersion: 2,
   expectedContextVersion: accountSnapshot().contextVersion!, choices: savedDraft().choices });
@@ -44,19 +46,19 @@ describe('native signed-in account client', () => {
   });
   it('reads preview paths through the same bearer boundary and uses only the trusted run for owned offer detail', async () => {
     const offers = { offers: [{ offerId: 'offer/id?with-query', runId: context.runId }] };
-    const orders = { orders: [{ orderUuid: 'exact-stock', entitlementSlotId: 'slot', source: { orderNumber: 'supplied' } }] };
+    const orders = page([{ orderUuid: 'exact-stock', entitlementSlotId: 'slot', source: { orderNumber: 'supplied' } }]);
     const snapshot = { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4' } } } }, retainedFact: 'source' };
     fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok({ state: 'pending', runId: context.runId }))
       .mockResolvedValueOnce(ok(orders)).mockResolvedValueOnce(ok(snapshot));
     expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
-    expect(await client.readOrders()).toEqual({ status: 'ok', value: orders }); expect(await client.readOrder()).toEqual({ status: 'ok', value: snapshot });
+    expect(await client.readOrders()).toEqual({ status: 'ok', value: { ...orders, pageEvidence: [{ after: null, nextAfter: null, failedCount: 0 }] } }); expect(await client.readOrder()).toEqual({ status: 'ok', value: snapshot });
     expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`${config.apiBaseUrl}/offers/current`,
       `${config.apiBaseUrl}/offers/offer%2Fid%3Fwith-query?runId=${encodeURIComponent(context.runId)}`, `${config.apiBaseUrl}/orders/progress/all`, `${config.apiBaseUrl}/manual/order`]);
     for (const [, options] of fetcher.mock.calls) { expect(options).toMatchObject({ method: 'GET', credentials: 'omit', headers: { Authorization: 'Bearer access-token' } }); expect(options?.body).toBeUndefined(); }
   });
   it('keeps empty previews distinct from failed reads and rejects embedded foreign offer authority before detail fetch', async () => {
-    fetcher.mockResolvedValueOnce(ok({ offers: [] })).mockResolvedValueOnce(ok({ orders: [] }));
-    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [] } }); expect(await client.readOrders()).toEqual({ status: 'ok', value: { orders: [] } });
+    fetcher.mockResolvedValueOnce(ok({ offers: [] })).mockResolvedValueOnce(ok(page()));
+    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [] } }); expect(await client.readOrders()).toEqual({ status: 'ok', value: { orders: [], failed: [], failedCount: 0, nextAfter: null, pageEvidence: [{ after: null, nextAfter: null, failedCount: 0 }] } });
     fetcher.mockClear(); fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'private', runId: 'foreign-run' }] }));
     expect(await client.readOffers()).toEqual({ status: 'unavailable', code: 'account-response-scope-mismatch', retryable: false }); expect(fetcher).toHaveBeenCalledOnce();
     fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'own', runId: context.runId }] })).mockResolvedValueOnce(json({ status: 'forbidden', contractVersion: '1' }, 403));
@@ -72,6 +74,141 @@ describe('native signed-in account client', () => {
     expect((await pending).status).toBe('account-changed');
     state.set({ status: 'ready', context }); fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'private', entitlementSlotId: 'slot', source: { employeeId: 'foreign' } }] }));
     expect((await client.readOrders()).status).toBe('unavailable');
+  });
+  it('reads an encoded, immutable page query without caller-selected authority', async () => {
+    const token = deferred<string | null>(); getAccessToken.mockReturnValueOnce(token.promise);
+    const query = { after: 'uuid/with?query&unicode=é', limit: 100 }; fetcher.mockResolvedValueOnce(ok(page()));
+    const pending = client.readOrdersPage(query); query.after = 'changed'; query.limit = 1; token.resolve('access-token');
+    expect(await pending).toEqual({ status: 'ok', value: page() });
+    const [url, options] = fetcher.mock.calls[0];
+    expect(url).toBe(`${config.apiBaseUrl}/orders/progress/all?after=uuid%2Fwith%3Fquery%26unicode%3D%C3%A9&limit=100`);
+    expect(options).toMatchObject({ method: 'GET', credentials: 'omit', cache: 'no-store', redirect: 'error', headers: { Authorization: 'Bearer access-token' } });
+    expect(options?.body).toBeUndefined();
+    fetcher.mockClear();
+    for (const bad of [{ after: '' }, { after: 'x'.repeat(201) }, { after: 'bad\n' }, { after: null },
+      { limit: 0 }, { limit: 101 }, { limit: 1.5 }, { employeeId: 'other' }, { runId: 'old' }]) {
+      expect((await client.readOrdersPage(bad as Parameters<AccountClient['readOrdersPage']>[0])).status).toBe('invalid');
+    }
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+  it('continues through empty owned pages and selects newest only from the exhausted collection', async () => {
+    const old = { orderUuid: 'z-old', entitlementSlotId: 'slot', source: { receivedAt: '2026-11-01T00:00:00Z' } };
+    const newest = { orderUuid: 'a-new', entitlementSlotId: 'slot', source: { receivedAt: '2026-11-02T00:00:00Z' } };
+    fetcher.mockResolvedValueOnce(ok(page([], { nextAfter: 'cursor-1', asOf: 'time-1', contractVersion: 'lifecycle.stages.v1' })))
+      .mockResolvedValueOnce(ok(page([old], { nextAfter: 'cursor-2', asOf: 'time-2' })))
+      .mockResolvedValueOnce(json({ status: 'ok', contractVersion: 'envelope-v1', value: page([newest]) }));
+    const result = await client.readOrders(); expect(result.status).toBe('ok');
+    if (result.status !== 'ok') throw new Error('Complete list expected');
+    expect(result.value.orders).toEqual([old, newest]); expect(latestOrder(result.value.orders)).toEqual(newest);
+    expect(result.value).not.toHaveProperty('asOf'); expect(result.value.nextAfter).toBeNull();
+    expect(result.value.pageEvidence).toEqual([
+      { after: null, nextAfter: 'cursor-1', failedCount: 0, asOf: 'time-1', contractVersion: 'lifecycle.stages.v1' },
+      { after: 'cursor-1', nextAfter: 'cursor-2', failedCount: 0, asOf: 'time-2' },
+      { after: 'cursor-2', nextAfter: null, failedCount: 0, envelopeContractVersion: 'envelope-v1' },
+    ]);
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`${config.apiBaseUrl}/orders/progress/all`,
+      `${config.apiBaseUrl}/orders/progress/all?after=cursor-1`, `${config.apiBaseUrl}/orders/progress/all?after=cursor-2`]);
+  });
+  it('retains bounded per-row failures with exact counts and never calls the incomplete list successful', async () => {
+    const failed = Array.from({ length: 20 }, (_, i) => ({ orderUuid: `bad-${i}`, status: 'unavailable', code: 'selection-source-invalid' }));
+    const own = { orderUuid: 'good', entitlementSlotId: 'slot' };
+    fetcher.mockResolvedValueOnce(ok(page([own], { failed, failedCount: 35, nextAfter: 'later' })))
+      .mockResolvedValueOnce(ok(page([], { failed, failedCount: 30 })));
+    const result = await client.readOrders(); expect(result).toMatchObject({ status: 'unavailable', code: 'account-orders-incomplete',
+      partial: { orders: [own], failedCount: 65, nextAfter: null }, failedAfter: 'later' });
+    if (result.status === 'ok') throw new Error('Incomplete collection');
+    expect(result.partial?.failed).toEqual(failed); expect(result.partial?.pageEvidence.map((p) => p.failedCount)).toEqual([35, 30]);
+    expect(result).not.toHaveProperty('value');
+  });
+  it('retains a collection envelope version only when every page supplies the same version', async () => {
+    for (const laterVersion of ['v1', 'v2', undefined]) {
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', contractVersion: 'v1', value: page([], { nextAfter: 'later' }) }))
+        .mockResolvedValueOnce(json({ status: 'ok', ...(laterVersion === undefined ? {} : { contractVersion: laterVersion }), value: page() }));
+      const result = await client.readOrders(); expect(result.status).toBe('ok');
+      if (laterVersion === 'v1') expect(result).toHaveProperty('contractVersion', 'v1');
+      else expect(result).not.toHaveProperty('contractVersion');
+    }
+  });
+  it('preserves an exact later-page failure and preceding rows with the unconsumed cursor', async () => {
+    const own = { orderUuid: 'good', entitlementSlotId: 'slot' };
+    fetcher.mockResolvedValueOnce(ok(page([own], { nextAfter: 'later' }))).mockResolvedValueOnce(json({ status: 'unavailable',
+      code: 'database-unavailable', reason: 'Try later', retryable: true, operationId: 'source-operation', value: { private: 'discard' } }, 503));
+    expect(await client.readOrders()).toMatchObject({ status: 'unavailable', code: 'database-unavailable', reason: 'Try later', retryable: true,
+      operationId: 'source-operation', httpStatus: 503, failedAfter: 'later', partial: { orders: [own], nextAfter: 'later' } });
+    expect(fetcher).toHaveBeenCalledTimes(2); expect(retry).not.toHaveBeenCalled();
+  });
+  it('refuses repeated cursors and malformed page metadata without manufacturing completeness', async () => {
+    fetcher.mockResolvedValueOnce(ok(page([], { nextAfter: 'repeat' }))).mockResolvedValueOnce(ok(page([], { nextAfter: 'repeat' })));
+    expect(await client.readOrders()).toMatchObject({ status: 'unavailable', code: 'account-orders-cursor-repeated', partial: { nextAfter: 'repeat' } });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    for (const invalid of [{ orders: [] }, page([], { nextAfter: '' }), page([], { failedCount: -1 }),
+      page([], { failed: [{ orderUuid: 'bad', status: 'unavailable', code: 'bad' }], failedCount: 0 })]) {
+      fetcher.mockResolvedValueOnce(ok(invalid));
+      expect(await client.readOrders()).toMatchObject({ status: 'unavailable', code: 'account-response-invalid' });
+    }
+  });
+  it('retains actual flat acknowledged/refused snapshots and scoped pending values without fabricating vehicle facts', async () => {
+    const snapshot = { schemaVersion: 1, operationId: 'operation', status: 'acknowledged', selection: { orderUuid: 'exact', orderNumber: null,
+      configurationId: 'config', receivedAt: null }, progress: { selectionState: 'acknowledged' } };
+    for (const status of ['acknowledged', 'refused']) {
+      const value = { ...snapshot, status }; fetcher.mockResolvedValueOnce(ok(value));
+      expect(await client.readOrder()).toEqual({ status: 'ok', value }); expect(orderVehicle(value, 'exact')).toBeNull();
+    }
+    for (const extra of [{ value: snapshot }, { value: null }, {}]) {
+      const response = { status: 'pending', operationId: 'operation', code: 'handoff-pending', retryable: false, ...extra };
+      fetcher.mockResolvedValueOnce(json(response, 202)); expect(await client.readOrder()).toEqual({ ...response, httpStatus: 202 });
+    }
+    fetcher.mockResolvedValueOnce(json({ status: 'pending', operationId: 'operation', value: { selection: { orderUuid: 123 } } }, 202));
+    expect((await client.readOrder()).status).toBe('unavailable');
+    fetcher.mockResolvedValueOnce(json({ status: 'pending', operationId: 'operation', value: { ...snapshot, employeeId: 'foreign' } }, 202));
+    expect(await client.readOrder()).toEqual({ status: 'unavailable', code: 'account-response-scope-mismatch', retryable: false });
+    fetcher.mockResolvedValueOnce(json({ status: 'pending', operationId: 'operation', value: snapshot }, 202));
+    expect(await client.saveDraft(command())).toEqual({ status: 'pending', operationId: 'operation', httpStatus: 202 });
+  });
+  it('drops all accumulated facts when any auth scope part changes during the second page', async () => {
+    for (const delta of [{ subject: 'new' }, { employeeId: 'new' }, { environmentId: 'new' }, { runId: 'new' }]) {
+      state.set({ status: 'ready', context }); fetcher.mockClear(); const later = deferred<Response>();
+      fetcher.mockResolvedValueOnce(ok(page([{ orderUuid: 'private', entitlementSlotId: 'slot' }], { nextAfter: 'later' }))).mockReturnValueOnce(later.promise);
+      const result = client.readOrders(); await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+      state.set({ status: 'ready', context: { ...context, ...delta } }); later.resolve(ok(page()));
+      expect(await result).toEqual({ status: 'account-changed', code: 'account-context-changed', retryable: false });
+    }
+  });
+  it('drops accumulated rows on a second-page authentication or embedded ownership refusal', async () => {
+    for (const response of [json({ status: 'unauthenticated', code: 'expired' }, 401),
+      ok(page([{ orderUuid: 'foreign', entitlementSlotId: 'slot', employeeId: 'other' }]))]) {
+      fetcher.mockResolvedValueOnce(ok(page([{ orderUuid: 'private', entitlementSlotId: 'slot' }], { nextAfter: 'later' }))).mockResolvedValueOnce(response);
+      const result = await client.readOrders(); expect(result.status).not.toBe('ok'); expect(result).not.toHaveProperty('partial'); expect(result).not.toHaveProperty('value');
+    }
+  });
+  it('does not fetch the next page after scope change while reading credentials or public configuration', async () => {
+    for (const phase of ['config', 'token']) {
+      state.set({ status: 'ready', context }); fetcher.mockClear(); load.mockClear(); getAccessToken.mockClear();
+      const gate = deferred<RuntimePublicConfig>(); const token = deferred<string | null>();
+      if (phase === 'config') load.mockResolvedValueOnce(config).mockReturnValueOnce(gate.promise);
+      else getAccessToken.mockResolvedValueOnce('access-token').mockReturnValueOnce(token.promise);
+      fetcher.mockResolvedValueOnce(ok(page([{ orderUuid: 'private', entitlementSlotId: 'slot' }], { nextAfter: 'later' })));
+      const result = client.readOrders(); await vi.waitFor(() => expect(phase === 'config' ? load : getAccessToken).toHaveBeenCalledTimes(2));
+      state.set({ status: 'signed-out' }); gate.resolve(config); token.resolve('other-token');
+      expect((await result).status).toBe('account-changed'); expect(fetcher).toHaveBeenCalledOnce();
+    }
+  });
+  it('cancels a later page without exposing accumulated rows, even if transport resolves late', async () => {
+    const stopped = new AbortController(); stopped.abort(); expect((await client.readOrders({ signal: stopped.signal })).status).toBe('aborted'); expect(fetcher).not.toHaveBeenCalled();
+    const caller = new AbortController(); const later = deferred<Response>();
+    fetcher.mockResolvedValueOnce(ok(page([{ orderUuid: 'private', entitlementSlotId: 'slot' }], { nextAfter: 'later' }))).mockReturnValueOnce(later.promise);
+    const result = client.readOrders({ signal: caller.signal }); await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+    caller.abort(); expect(await result).toEqual({ status: 'aborted', code: 'account-request-aborted', retryable: false });
+    expect(fetcher.mock.calls[1][1]?.signal?.aborted).toBe(true); later.resolve(ok(page()));
+  });
+  it('uses one finite deadline for all pages and retains the completed-page checkpoint', async () => {
+    vi.useFakeTimers();
+    fetcher.mockImplementationOnce(async () => { await new Promise((resolve) => setTimeout(resolve, 6000)); return ok(page([], { nextAfter: 'later' })); })
+      .mockReturnValueOnce(new Promise<Response>(() => {}));
+    const result = client.readOrders(); await vi.advanceTimersByTimeAsync(6001); expect(fetcher).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(4000);
+    expect(await result).toMatchObject({ status: 'unavailable', code: 'account-timeout', retryable: true, failedAfter: 'later',
+      partial: { nextAfter: 'later', pageEvidence: [{ after: null, nextAfter: 'later', failedCount: 0 }] } });
   });
   it('retains the documented compact stock availability projection without importing a legacy controller', async () => {
     const value = { payloadShape: 'manual-stock-compact-v1', carIds: ['exact-car'], sharedVersionKeys: ['policy'], total: 1,
