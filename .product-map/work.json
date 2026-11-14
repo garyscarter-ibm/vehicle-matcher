@@ -6131,7 +6131,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-14T02:54:50Z",
+      "observed_at": "2026-11-14T09:54:42Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -6170,9 +6170,16 @@
           "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
         },
         {
-          "evidence": "Mater passed original401b9972; Stanley passed exact98490dca..f8d478b1 partial checkpoint. Fixture/scoped/AOT/static evidence supports implementation only. Both original AC remain open: actual Java version DTO gap,OIDC/PG ownership/parity/durable-state/restart and Safari/private/a11y/print/hosted gates unproven. F487/488/491 independently prioritised.",
+          "id": "shared-order-read",
+          "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
+          "status": "in-progress",
+          "observed_at": "2026-11-14T09:54:42.129206+00:00",
+          "evidence": "Released four-file source checkpoint;39/39 focused client/preview tests,135 matching inputs,2 allocations cleaned. Independent review pending dispatcher; UI independent pending/refused handoff integration remains unimplemented. docs/gcsp/fucq-440-account-2026-11-13.md; shared-order-read/lead-resource-source-audit.json."
+        },
+        {
+          "evidence": "Original AC remain unchecked. Shared order read39/39 fixture checks do not complete UI integration: independent manual pending/refused handoff display unimplemented. Actual Java/OIDC/PG ownership/parity/durable-state and hosted/browser gates unproven. Independent source review pending dispatcher. F487/F488/F499 remain separate/unfixed.",
           "id": "integration",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "observed_at": "2026-11-14T09:54:42.129206+00:00",
           "status": "blocked",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
@@ -6184,13 +6191,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
       "workers": [
         {
-          "expires_at": "2026-11-14T02:54:49.894555+00:00",
+          "expires_at": "2026-11-14T09:54:42.129206+00:00",
           "harness": "codex",
           "name": "Marvin the Martian",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "observed_at": "2026-11-14T09:54:42.129206+00:00",
           "role": "story-lead",
-          "source": "existing lead requested/selected/effective gpt-6.1-sol/high; verified source f8d478b1; final metadata handoff only, dispatcher owns publication/sync/integration/lifecycle",
-          "status": "coupling checkpoint reviewed and complete; source stopped; actual integration blocked"
+          "source": "existing lead; direct four-file implementation, no new descendants; frozen base ec7d63b6; dispatcher owns publication/review/sync/Jira; shared-order-read/lead-resource-source-audit.json",
+          "status": "HOLD; released shared read source checkpoint tested; independent review and UI/native integration open; editing stopped"
         },
         {
           "expires_at": "2026-11-13T23:43:44.865713+00:00",

@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { ApplicationContext, AuthPort } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
-import { AccountOffers, AccountOrders, AccountOrderSnapshot, validOffer, validOffers, validOrders, validOrderSnapshot } from './account.preview';
+import { AccountOffers, AccountOrder, AccountOrderFailure, AccountOrdersCollection, AccountOrdersPage, AccountOrdersQuery,
+  AccountOrdersReadResult, AccountOrderSnapshot, validOffer, validOffers, validOrdersPage, validOrderSnapshot } from './account.preview';
 import { journeyIntent, matchingDraft } from './account.projection';
 import { AccountAction, AccountFailure, AccountFailureStatus, AccountProjection, AccountRequestOptions, AccountResult,
   DiscardDraftCommand, DiscardedDraft, ManualDraft, ManualStock, NotificationEmail, SaveDraftCommand, SaveNotificationEmailCommand } from './account.types';
@@ -80,7 +81,14 @@ const unavailable = (code: string, retryable = true): AccountFailure => ({ statu
 const authentication = (): AccountFailure => ({ status: 'authentication-required', code: 'authentication-required', retryable: false });
 const changed = (): AccountFailure => ({ status: 'account-changed', code: 'account-context-changed', retryable: false });
 const invalid = (): AccountFailure => ({ status: 'invalid', code: 'invalid-account-command', retryable: false });
+const aborted = (): AccountFailure => ({ status: 'aborted', code: 'account-request-aborted', retryable: false });
+const requestTimeoutMs = 10000;
+const retainedOrderFailures = 20;
 function command(value: Record<string, unknown>): boolean { return text(value['commandId']) && value['commandId'].length <= 128; }
+function orderQuery(value: unknown): value is AccountOrdersQuery {
+  return only(value, ['after', 'limit']) && (value['after'] === undefined || text(value['after']) && value['after'].length <= 200)
+    && (value['limit'] === undefined || typeof value['limit'] === 'number' && Number.isInteger(value['limit']) && value['limit'] >= 1 && value['limit'] <= 100);
+}
 type Scope = Pick<ApplicationContext, 'subject' | 'environmentId' | 'runId' | 'employeeId'>;
 function scoped(value: unknown, scope: Scope): boolean {
   if (Array.isArray(value)) return value.every((row) => scoped(row, scope));
@@ -99,7 +107,54 @@ export class AccountClient {
   readDraft(options: AccountRequestOptions = {}): Promise<AccountResult<ManualDraft>> { return this.request('draft', draft, options); }
   readNotificationEmail(options: AccountRequestOptions = {}): Promise<AccountResult<NotificationEmail>> { return this.request('notification-email', notification, options); }
   readStock(options: AccountRequestOptions = {}): Promise<AccountResult<ManualStock>> { return this.request('stock', stock, options); }
-  readOrders(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOrders>> { return this.request('orders/progress/all', validOrders, options); }
+  readOrdersPage(query: AccountOrdersQuery = {}, options: AccountRequestOptions = {}): Promise<AccountResult<AccountOrdersPage>> {
+    if (!orderQuery(query)) {
+      return Promise.resolve({ status: 'invalid', code: 'invalid-order-page-query', retryable: false });
+    }
+    return this.request({ ordersPage: structuredClone(query) }, validOrdersPage, options);
+  }
+  async readOrders(options: AccountRequestOptions = {}): Promise<AccountOrdersReadResult> {
+    const initial = this.scope(); if (!initial) return authentication();
+    if (options.signal?.aborted) return aborted();
+    const controller = new AbortController(); const abort = () => controller.abort();
+    let timedOut = false;
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, requestTimeoutMs);
+    options.signal?.addEventListener('abort', abort, { once: true });
+    const orders: AccountOrder[] = []; const failed: AccountOrderFailure[] = [];
+    const pageEvidence: AccountOrdersCollection['pageEvidence'][number][] = []; const cursors = new Set<string>();
+    let failedCount = 0; let after: string | null = null; let nextAfter: string | null = null;
+    const partial = (): AccountOrdersCollection => ({ orders, failed, failedCount, nextAfter, pageEvidence });
+    const incomplete = (error: AccountFailure): AccountOrdersReadResult => ({ ...error, partial: partial(), failedAfter: after });
+    try {
+      while (true) {
+        if (!this.sameScope(initial)) return changed();
+        const result = await this.readOrdersPage(after === null ? {} : { after }, { signal: controller.signal });
+        if (!this.sameScope(initial)) return changed();
+        if (timedOut) return incomplete(unavailable('account-timeout'));
+        if (controller.signal.aborted) return aborted();
+        if (result.status !== 'ok') {
+          if (['authentication-required', 'unauthenticated', 'forbidden', 'account-changed', 'aborted'].includes(result.status)
+            || result.code === 'account-response-scope-mismatch') return result;
+          return incomplete(result);
+        }
+        const page = result.value;
+        if (!Number.isSafeInteger(failedCount + page.failedCount)) return incomplete(unavailable('account-response-invalid', false));
+        orders.push(...page.orders); failed.push(...page.failed.slice(0, retainedOrderFailures - failed.length));
+        failedCount += page.failedCount; nextAfter = page.nextAfter;
+        pageEvidence.push({ after, nextAfter, failedCount: page.failedCount,
+          ...(page.asOf === undefined ? {} : { asOf: page.asOf }), ...(page.contractVersion === undefined ? {} : { contractVersion: page.contractVersion }),
+          ...(result.contractVersion === undefined ? {} : { envelopeContractVersion: result.contractVersion }) });
+        if (nextAfter === null) {
+          if (failedCount) return incomplete(unavailable('account-orders-incomplete', false));
+          const contractVersion = pageEvidence[0]?.envelopeContractVersion;
+          return { status: 'ok', value: partial(), ...(contractVersion !== undefined
+            && pageEvidence.every((evidence) => evidence.envelopeContractVersion === contractVersion) ? { contractVersion } : {}) };
+        }
+        if (cursors.has(nextAfter)) return incomplete(unavailable('account-orders-cursor-repeated', false));
+        cursors.add(nextAfter); after = nextAfter;
+      }
+    } finally { clearTimeout(timer); options.signal?.removeEventListener('abort', abort); }
+  }
   readOrder(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOrderSnapshot>> { return this.request('order', validOrderSnapshot, options); }
   async readOffers(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOffers>> {
     const initial = this.scope(); if (!initial) return authentication();
@@ -155,14 +210,15 @@ export class AccountClient {
   }
   private sameScope(scope: Scope): boolean { const current = this.scope(); return !!current && Object.keys(scope).every((key) => current[key as keyof Scope] === scope[key as keyof Scope]); }
 
-  private async request<T>(path: 'account' | 'draft' | 'draft/discard' | 'notification-email' | 'stock' | 'order' | 'offers/current' | 'orders/progress/all' | { readonly offerId: string }, valid: (value: unknown) => value is T,
+  private async request<T>(path: 'account' | 'draft' | 'draft/discard' | 'notification-email' | 'stock' | 'order' | 'offers/current'
+    | { readonly offerId: string } | { readonly ordersPage: AccountOrdersQuery }, valid: (value: unknown) => value is T,
     options: AccountRequestOptions, body?: unknown): Promise<AccountResult<T>> {
     const initial = this.scope(); if (!initial) return authentication();
     if (options.signal?.aborted) return { status: 'aborted', code: 'account-request-aborted', retryable: false };
     const controller = new AbortController();
     let timedOut = false;
     const abort = () => controller.abort();
-    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, requestTimeoutMs);
     options.signal?.addEventListener('abort', abort, { once: true });
     const stopped: Promise<AccountFailure> = new Promise((resolve) => controller.signal.addEventListener('abort', () => resolve(timedOut
       ? unavailable('account-timeout', body === undefined) : { status: 'aborted', code: 'account-request-aborted', retryable: false }), { once: true }));
@@ -177,8 +233,14 @@ export class AccountClient {
         if (!this.sameScope(initial)) return changed();
         if (!token || /\s/.test(token)) return authentication();
         if (controller.signal.aborted) return { status: 'aborted', code: 'account-request-aborted', retryable: false };
-        const suffix = typeof path === 'object' ? `offers/${encodeURIComponent(path.offerId)}?runId=${encodeURIComponent(initial.runId)}`
-          : path === 'offers/current' || path === 'orders/progress/all' ? path : `manual/${path}`;
+        let suffix: string;
+        if (typeof path === 'object' && 'ordersPage' in path) {
+          const query = new URLSearchParams();
+          if (path.ordersPage.after !== undefined) query.set('after', path.ordersPage.after);
+          if (path.ordersPage.limit !== undefined) query.set('limit', String(path.ordersPage.limit));
+          suffix = `orders/progress/all${query.size ? `?${query}` : ''}`;
+        } else suffix = typeof path === 'object' ? `offers/${encodeURIComponent(path.offerId)}?runId=${encodeURIComponent(initial.runId)}`
+          : path === 'offers/current' ? path : `manual/${path}`;
         const response = await this.fetcher(`${config.apiBaseUrl}/${suffix}`, { method: body === undefined ? 'GET' : 'POST',
           credentials: 'omit', cache: 'no-store', redirect: 'error', signal: controller.signal,
           headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
@@ -192,6 +254,11 @@ export class AccountClient {
           && (envelope['contractVersion'] === undefined || text(envelope['contractVersion']))) return { status: 'ok', value: structuredClone(envelope['value']),
             ...(envelope['contractVersion'] === undefined ? {} : { contractVersion: envelope['contractVersion'] as string }) };
         const error = failure(envelope, response.status);
+        if (path === 'order' && body === undefined && response.status === 202 && error?.status === 'pending'
+          && object(envelope) && envelope['value'] !== undefined) {
+          if (envelope['value'] !== null && !valid(envelope['value'])) return unavailable('account-response-invalid');
+          return { ...error, value: structuredClone(envelope['value']) };
+        }
         return error ?? unavailable('account-response-invalid');
       } catch {
         return this.sameScope(initial) ? unavailable('account-transport-unavailable', body === undefined) : changed();
