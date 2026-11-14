@@ -5692,13 +5692,35 @@
       "id": "FUCQ-419",
       "jira_observed_at": "2026-11-12T15:48:20.161Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T08:05:53Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "receipt-reads",
+          "status": "complete",
+          "title": "Repository readReceipts contract with indexed PostgreSQL projection",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        },
+        {
+          "id": "allocation-reads",
+          "status": "complete",
+          "title": "Allocation triggers, summaries, hydration and recovery through selected reads",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL, EXPLAIN plans and result",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        }
+      ],
       "status": "To Do",
       "title": "Read allocation triggers and receipts through indexed SQL",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-419",
       "workers": []
     },
@@ -6922,24 +6944,98 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:04:36Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-472"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-472",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Appointments schema, ports, synthetic/live providers and retained policy",
+          "observed_at": "2026-11-14T02:34:03Z",
+          "evidence": "Lead-reviewed bd5f88d5: ports, retained-file policy validation, synthetic/live/unconfigured providers, stage classification, Node id/reference parity; 35 appointments tests (native PG17) and ./mvnw -B verify 177/177"
+        },
+        {
+          "id": "s2-planning",
+          "status": "complete",
+          "title": "Read, request, confirmation progress and proposed-change acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T03:10:51Z",
+          "evidence": "Lead-reviewed ca709d85 + 97697720: AppointmentService read/request/accept/tick/startup reconcile on native PG17; 54 appointments tests incl. uncertain/lost/hang/refused, ownership, restart with new pool, run isolation, fixed statement count; ./mvnw -B verify 196/196"
+        },
+        {
+          "id": "s3-completion",
+          "status": "complete",
+          "title": "Readiness-gated completion, outcome timing, startup reconcile-only",
+          "observed_at": "2026-11-14T03:22:05Z",
+          "evidence": "Lead-reviewed 85588818: greg-only readiness-gated completion, outcome timing, refused/uncertain (lost/throw-after/hang) recovery, startup reconcile-only, completed final by DB guard, appointment-completed outbox; 67 appointments tests (native PG17), ./mvnw -B verify 567/567"
+        },
+        {
+          "id": "s4-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T07:57:52Z",
+          "evidence": "Lead-reviewed 18d317f8: v1 endpoints over real JWTs (employee own, greg complete, presenter read/tick only), provider selection none/synthetic/live, startup reconcile, PolicyService adapter; 83 appointments tests, ./mvnw -B verify 583/583"
+        },
+        {
+          "id": "s5-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:04:36Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:04:16Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Returns schema, ports, current-car relationship store and retained return policy",
+          "observed_at": "2026-11-14T02:23:51Z",
+          "evidence": "bb3b64bc reviewed by lead: 47 returns tests and 189 full Java tests pass on native PG 17; return_operations added to V473_1"
+        },
+        {
+          "id": "s2-plan",
+          "status": "complete",
+          "title": "Return plan read, request, confirmation progress and proposal acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T03:16:47Z",
+          "evidence": "cb34d17a5 reviewed by lead: 67 returns tests, 209 full Java tests pass on native PG 17"
+        },
+        {
+          "id": "s3-outcomes",
+          "status": "complete",
+          "title": "Return outcomes, current-car change at the outcome boundary, reconcile and restart",
+          "observed_at": "2026-11-14T07:42:50Z",
+          "evidence": "552ffc0bd reviewed by lead: 75 returns tests, 217 full Java tests pass on native PG 17"
+        },
+        {
+          "id": "s4-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T08:04:15Z",
+          "evidence": "8047c0e21 reviewed by lead: 85 returns tests; merged-tree verify 763 pass at 79a087b91"
+        },
+        {
+          "id": "s5-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:04:16Z",
+          "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6978,13 +7074,47 @@
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:16:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-475"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-475",
+      "slices": [
+        {
+          "id": "s1-demand",
+          "status": "complete",
+          "title": "Greg demand projection: native PG reads, privacy bands, complementary withholding, ports and service tests",
+          "observed_at": "2026-11-14T07:43:57Z",
+          "evidence": "lead review of 4a00c828c: 6 fixed SQL reads (+1 on declines) in one RR read-only snapshot; complementary withholding over 12 relations; gcsp.api.demand.** 30/30 on native PG17 :55475"
+        },
+        {
+          "id": "s2-suitability-http",
+          "status": "complete",
+          "title": "Presenter suitability projection, Greg and presenter HTTP resources, default ports and README",
+          "observed_at": "2026-11-14T08:06:29Z",
+          "evidence": "lead review of 083a85c03: Greg-only demand and presenter-only suitability resources, no-store, 6-7 page-bounded reads (equal at 40 and 400 cars); gcsp.api.demand.** 59/59 on native PG17 :55475"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story integration: merge base, full Java verify on native PG17, EXPLAIN bounds, result",
+          "observed_at": "2026-11-14T08:16:02Z",
+          "evidence": "lead review: merge dde305419; canonical PolicyDemandAdapter 3ee1abcb5; demand.** 62/62 and verify 740/0 on native PG17 :55475; EXPLAIN on 1000-employee/5000-car workload"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Mugsy",
+          "harness": "claude-code",
+          "role": "story-lead DEV-2026-11-13-043",
+          "observed_at": "2026-11-14T03:05:57Z",
+          "expires_at": "2026-11-14T08:16:02Z",
+          "source": "dev/DEV-2026-11-13-043",
+          "status": "finished"
+        }
+      ]
     },
     {
       "assignee": "",

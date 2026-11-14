@@ -70,6 +70,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
+| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
 | `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
@@ -77,6 +78,8 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE` | empty | `alternate-offline` only: absolute path of an offline-cards JSON file. Required for that provider. |
 | `GCSP_VEHICLE_IMAGES_PUBLIC` | `false` | Explicit opt-in to serve retained images without a bearer token. Evidence reads always need one. |
 | `GCSP_VEHICLE_EVIDENCE_TIMEOUT_MS`, `GCSP_VEHICLE_EVIDENCE_MAX_ATTEMPTS` | `1000`, `1` | Bounds of one provider read (1..5000 ms, 1..2 attempts); anything else stops startup. |
+| `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
+| `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).
@@ -233,6 +236,46 @@ parameters except `after` and `limit` on `/stock`; anything else is 400 `unsuppo
 | 409 | `tick-input-changed`, `release-clock-changed`, `stock-identity-changed`, `tranche-input-changed`, `unreleased-stock-occupied`, `stale-run`. |
 | 503 | Pending and retryable (`supply-provider-not-configured`, `policy-unavailable`, `stock-source-unavailable`, `stock-source-stale`, `database-unavailable`), with `state: pending`; or refused evidence (`invalid-stock-pull`, `supply-not-queued`, `supply-before-lead-time`) with `retryable: false`, `state: refused`; or `persistence-not-configured`. |
 
+## Appointments (FUCQ-472)
+
+`gcsp.api.appointments` ports the Node handover appointments. Routes, all under `/api/gcsp/v1` and scoped to the
+server's active run (never to the request); any unknown or repeated query parameter is 400 `unsupported-query`:
+
+| Route | Who | Meaning |
+| --- | --- | --- |
+| `GET /appointments?orderUuid=` | owning employee, greg, presenter | Read model `lifecycle.appointments.v1`, with offered slots while nothing is requested. |
+| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request. |
+| `POST /appointments/accept` | employee (own order) | `{commandId, orderUuid, proposalId, expectedVersion}`: accepts the provider's proposed change. |
+| `POST /appointments/complete` | greg | `{commandId, orderUuid, expectedVersion}`: records the handover outcome. |
+| `POST /presenter/appointments/ticks` | presenter | `{tickId, now}`: sets the appointment clock, then progresses every actionable appointment; answers `{tick, summary}`. |
+
+Results: 200 `ok`; 202 `pending` (`provider-outcome-uncertain` with `operationId` and the read model, or an uncertain commit
+with `outcome-uncertain`), never to be resent as a new command; 400 `invalid-appointment-command` (with `reasons`) or
+`unsupported-query`; 403 (`role-required`, `not-resource-owner`); 404 (`order-not-found`, `appointment-not-found`); 409
+(`stale-version` with `currentVersion`, `command-input-changed`, `appointment-already-requested`, `appointment-not-eligible`,
+`no-change-proposed`, `handover-not-ready` with `readiness` and `appointment`, `appointment-outcome-too-early` with
+`availableFrom`); 422 (the provider's own refusal, e.g. `live-appointments-unsupported`); 503 (`appointments-provider-not-configured`,
+`appointments-clock-unavailable`, `appointment-policy-unavailable`, `handover-readiness-unavailable`, `persistence-not-configured`).
+Every body carries `status`, `code` (when not ok), `reason` and `retryable`; tokens and upstream errors are never echoed.
+
+Ports, each with an explicit unconfigured default that answers unavailable (no silent fallback): `AppointmentProvider`,
+`OrderStagePort` (FUCQ-470 replaces it), `HandoverReadinessPort` (FUCQ-471 replaces it), `AppointmentPolicy` and
+`AppointmentClock`. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
+(`PolicyServiceAppointmentPolicy`); any gap or a wrong pin is 503 `appointment-policy-unavailable`, never a default.
+Appointment time is the latest presenter tick, never the wall clock.
+
+`AppointmentsWiring` picks the provider once at startup from `gcsp.appointments.provider` and builds the service when
+persistence is on. `synthetic` is labelled fictional in every read. A provider answer is checked exactly; a throw or a
+timeout (policy `providerTimeoutMs`) is an unknown outcome that stays open and is reconciled before any write is repeated.
+Presenter ticks page the `appointments_actionable` partial index by a keyset cursor (100 a page). With persistence on and a
+provider other than `none`, `AppointmentsStartup` reconciles open provider writes once (it never writes, confirms or
+retries) and logs a one-line summary; a failure is logged, not fatal.
+
+Completion is greg only. It needs the readiness port to say ready (else 409 `handover-not-ready`) and the booked slot to have
+started (policy `completeAfterSlotStartSeconds`), then commits the outcome and the outbox event `appointment-completed`
+(`orderUuid`, `employeeId`, `occurredAt`, `providerReference`, `slotId`) in one transaction; FUCQ-473 consumes the event.
+Not ported: no-show and rebooking, and the return purpose and current-car change (FUCQ-473).
+
 ## Identity seam
 
 `gcsp.api.identity.IdentityPort` resolves a bearer token to an `IdentityResult`: `Resolved(Principal)`,
@@ -272,6 +315,32 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
+
+## Greg demand and presenter suitability (FUCQ-475)
+
+| Path | Role | Result |
+| --- | --- | --- |
+| `GET /api/gcsp/v1/greg/demand` | Greg only | `{"status":"ok","value":<saved-demand projection>}` for the principal's run. |
+| `GET /api/gcsp/v1/presenter/suitability?page=&buddyPage=&release=` | Presenter only | Recorded allocation decisions per engaged buddy and released car; cars 8 per page, buddies 4. |
+
+Scope (environment, run, policy version) comes only from the bearer principal. Both responses send
+`Cache-Control: no-store`. Demand takes no query parameter. Suitability takes `page` and `buddyPage` (`^[1-9]\d{0,6}$`,
+default 1, clamped to the last page) and `release` (`all` or `latest`, default `all`), each at most once. Both read in one
+read-only repeatable-read snapshot, and opening them never evaluates, claims or writes anything.
+
+Refusals: 400 `unsupported-query`; 401/403 as above (`role-required` for the wrong role); 409 `stale-run`; 503
+`persistence-not-configured`, `demand-unavailable` (incomplete principal context), `privacy-policy-unavailable`,
+`evaluation-unavailable`, `brief-owner-unavailable`, `source-invalid`, and `suitability-unavailable` (retryable).
+
+Privacy: a count below N is published as a band ("fewer than N"), and the complementary "N or more" count is withheld
+wherever it would let a band be solved by subtraction. N is `greg.demand.smallCountThreshold`, read from the canonical
+PolicyService (`PolicyDemandAdapter`, with `offer.declineReasons.v1`, `offer.declinedCar.exclusion`,
+`employee.recommendation.v1` and `allocation.tieBreak.rule`). Missing or invalid policy is 503 `privacy-policy-unavailable`.
+
+The default ports are truthful refusals or empty results: demand answers 503 `evaluation-unavailable` until the
+FUCQ-461/466 adapters exist (and `privacy-policy-unavailable` while the active policy lacks the reviewed
+`offer.declineReasons.v1`), and suitability shows every cell `not-evaluated`
+until FUCQ-464 records allocations (`DemandDefaults.NoAllocationRecords`).
 
 ## Vehicle evidence (FUCQ-459)
 
@@ -384,6 +453,31 @@ of the pinned version from the canonical PolicyService (any missing or invalid r
 deliver. Car suitability is not connected, so alternative-car proposals are 503, and preference relaxation needs a
 recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
 ported yet. No new environment variables.
+
+## Returns (FUCQ-473)
+
+Package `gcsp.api.returns`: plan, request and reconcile the return of the employee's current car. `ReturnService` builds
+one `ReturnPlans` lazily and `ReturnResource` serves it; scope is the server's active run, never the request. Without
+persistence every operation is 503 `persistence-not-configured`.
+
+| Endpoint | Roles and answers |
+|---|---|
+| `GET /api/gcsp/v1/return-plan?orderUuid=` | Employee (own order only), Greg, presenter. 200 `{status:"ok", value}`; 400 `unsupported-query`; 403 `not-resource-owner`; 404; 503. |
+| `POST /api/gcsp/v1/return-plan/request` | Employee only. Body `{commandId, orderUuid, choice, slotId, expectedVersion}`. |
+| `POST /api/gcsp/v1/return-plan/accept` | Employee only. Body `{commandId, orderUuid, proposalId, expectedVersion}`. |
+| `POST /api/gcsp/v1/presenter/returns/progress` | Presenter only. Body `{commandId}`; reconciles and retries at the demo clock and returns the summary. 503 `clock-unavailable` until a presenter tick has set the clock. |
+
+Results: 200 ok; 202 `pending` with `outcome-uncertain` and `operationId` (reconciled later); 400
+`invalid-return-command` with field `reasons`; 403 `role-required` (the presenter and Greg never command employee
+actions); 409 `stale-version` with `currentVersion` and the `plan`, or `command-input-changed`; 422 unsupported provider
+with the `plan`; 503 unavailable. Startup runs a reconcile-only pass (never a new provider write) when the provider is
+not `none`, and the `returns` readiness check reports the provider, policy, source and handover modes plus the open
+operation count; it is DOWN only when the database errors.
+
+Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
+(`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
+Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
+`gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
 
 ## Render
 

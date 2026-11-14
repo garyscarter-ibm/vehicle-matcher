@@ -2,6 +2,7 @@ import pg from 'pg';
 import { withPostgresClient } from './postgres-client.js';
 import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, isScopeMiss, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
+import { RECEIPT_PROJECTIONS } from './receipt-projections.js';
 import { packEvidence, evidenceReferences, unpackEvidence, verifyEvidence, jsonBatches, DEFAULT_BATCH_BYTES,
   writeEvidenceSnapshots, replaceEvidenceReferences } from './postgres-evidence.js';
 
@@ -61,6 +62,16 @@ export function createPostgresRepository(options = {}) {
   const selectedSql = (context, selection) => {
     const parameters = [];
     const runs = `SELECT 'runs' AS t, data FROM ${tableName('runs')}`;
+    // FUCQ-419: a receipt read is a primary-key prefix scan (run, consumers[, events]); projections shrink `data` in SQL.
+    if (selection.receipts) {
+      const { consumerIds, eventIds, state, projection } = selection.receipts;
+      parameters.push(String(context?.runId ?? ''), consumerIds);
+      const where = ['run_id = $1', 'consumer_id = ANY($2::text[])'];
+      if (eventIds) { parameters.push(eventIds); where.push(`event_id = ANY($${parameters.length}::text[])`); }
+      if (state !== undefined) { parameters.push(state); where.push(`data->>'state' = $${parameters.length}`); }
+      const data = projection ? RECEIPT_PROJECTIONS[projection].sql : 'data';
+      return { sql: `${runs} UNION ALL SELECT 'event_receipts' AS t, ${data} AS data FROM ${tableName('event_receipts')} WHERE ${where.join(' AND ')}`, parameters };
+    }
     if (selection.table === 'runs' || !FOUNDATION_TABLES.includes(selection.table)) return { sql: runs, parameters };
     const table = selection.table;
     parameters.push(String(context?.runId ?? ''));
@@ -264,7 +275,7 @@ export function createPostgresRepository(options = {}) {
             const selected = selection && selectedSql(context, selection);
             const fresh = selected ? (await client.query(selected.sql, selected.parameters)).rows
               : (await client.query(snapshotSql(context))).rows;
-            const state = sealState(await toState(client, fresh));
+            const state = sealState(Object.assign(await toState(client, fresh), selection?.receipts?.projection ? { projection: selection.receipts.projection } : {}));
             remember(key, { fingerprint, state, selection, trustedUntil: until() });
             return await work(state);
           }
