@@ -6555,7 +6555,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T08:59:32Z",
+      "observed_at": "2026-11-14T13:22:34Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Open an offer and accept or decline",
@@ -6579,8 +6579,10 @@
         },
         {
           "id": "decision-followup",
-          "status": "not-started",
-          "title": "Explicit decisions and supported follow-up"
+          "status": "in-progress",
+          "title": "Explicit decisions and supported follow-up",
+          "observed_at": "2026-11-14T13:22:34Z",
+          "evidence": "Scoped explicit decisions/follow-up implemented;35 store tests reused with exact pins,34 final screen tests PASS/0skip; next-selector regression corrected. Source/resource audit PASS; actual Java/auth/email/PG/route/rendered acceptance open; docs/gcsp/fucq445-decision-followup-2026-11-14.md."
         },
         {
           "id": "proof-review",
@@ -6597,9 +6599,9 @@
         {
           "name": "Mugsy",
           "harness": "codex",
-          "observed_at": "2026-11-14T08:59:32.476909Z",
-          "expires_at": "2026-11-14T08:59:32.476909Z",
-          "source": "Direct bounded duration correction/review complete; source/helper/receipt writes released. Exact metadata checkpoint yielded for dispatcher publication; no active source worker inferred."
+          "observed_at": "2026-11-14T13:22:34.465687+00:00",
+          "expires_at": "2026-11-14T13:22:34.465687+00:00",
+          "source": "Decision/follow-up partial checkpoint locally checked; source/helper writes released after commit. Frozen for dispatcher publication and independent review; no active worker inferred."
         }
       ]
     },
