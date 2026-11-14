@@ -25,7 +25,8 @@ final class PlanRow {
             + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ?";
     /** The predicate repeats the return_plans_progress partial index so the page reads only plans with work left. */
     private static final String PAGE = "SELECT " + COLUMNS + " FROM return_plans WHERE environment_id = ? AND run_id = ? "
-            + "AND order_uuid > ? AND (state IN ('requested', 'scheduled') OR pending_operation_id IS NOT NULL) "
+            + "AND order_uuid > ? AND ((state IN ('requested', 'scheduled') AND NOT outcome_closed) "
+            + "OR pending_operation_id IS NOT NULL) "
             + "ORDER BY order_uuid LIMIT ?";
 
     String orderUuid, employeeId, oldContractId, entitlementSlotId, sourceReference, choice, policyVersion, providerMode, state;

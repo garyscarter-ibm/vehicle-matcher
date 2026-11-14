@@ -15,7 +15,7 @@ final class PlanView {
     static final String WAITING = "Waiting for the provider to confirm the last update.";
     private static final Map<String, String> PLAN_STATE = Map.of("not-requested", "not-planned", "requested",
             "return-requested", "change-proposed", "return-requested", "scheduled", "return-scheduled");
-    /** Outcome states s3 will record, shown over the appointment state once present. */
+    /** A recorded outcome's state, shown over the appointment state. */
     private static final Map<String, String> OUTCOME_STATE = Map.of("returned", "returned", "missed", "return-missed");
 
     /** The new car's handover as the plan shows it. */
@@ -63,20 +63,28 @@ final class PlanView {
     }
 
     static ObjectNode build(String runId, ReturnSource s, PlanRow row, ReturnPolicy policy, Handover handover,
-            Map<String, ChoiceOffer> offers, String providerMode, JsonNode relationship) {
+            Map<String, ChoiceOffer> offers, String providerMode, OutcomeRow rec, JsonNode relationship) {
         String apState = row == null ? "not-requested" : row.state;
-        String state = planState(apState, null);
+        boolean done = rec != null && rec.done();
+        String state = planState(apState, done ? rec.state : null);
         boolean planning = "not-planned".equals(state);
         boolean pending = row != null && row.pendingOperationId != null;
         boolean blocked = row != null && row.blockedCode != null;
         boolean idle = planning && offers.values().stream().noneMatch(ChoiceOffer::available);
-        ReturnPolicy.OwnerStep step = pending ? policy.ownership().pending() : blocked ? policy.ownership().blocked()
+        boolean unsure = !pending && rec != null && rec.awaiting() && "unknown".equals(rec.pendingLastKnown);
+        boolean outBlocked = !blocked && rec != null && rec.awaiting() && rec.blockedCode != null;
+        ReturnPolicy.OwnerStep step = done ? ("returned".equals(rec.state) ? policy.outcome().returned() : policy.outcome().missed())
+                : unsure ? policy.ownership().pending() : outBlocked ? policy.ownership().blocked()
+                : pending ? policy.ownership().pending() : blocked ? policy.ownership().blocked()
                 : idle ? policy.ownership().ineligible() : policy.ownership().states().get(apState);
 
         ObjectNode pendingJson = null;
         if (pending) pendingJson = obj().put("step", row.pendingStep).put("reason", WAITING);
         ObjectNode blockedJson = null;
         if (blocked) blockedJson = obj().put("code", row.blockedCode).put("reason", row.blockedReason);
+        ObjectNode topPending = pendingJson != null ? pendingJson : unsure ? obj().put("step", "outcome").put("reason", WAITING) : null;
+        ObjectNode topBlocked = blockedJson != null ? blockedJson
+                : outBlocked ? obj().put("code", rec.blockedCode).put("reason", rec.blockedReason) : null;
         boolean synthetic = "synthetic".equals(providerMode);
         String lastReference = row == null || row.history.isEmpty() ? null
                 : row.history.get(row.history.size() - 1).path("providerReference").asText(null);
@@ -111,9 +119,13 @@ final class PlanView {
                         .put("at", h.path("at").asText(null)).put("providerReference", h.path("providerReference").asText(null));
             }
         }
+        if (done) {
+            history.addObject().put("state", state).putNull("appointmentState").put("at", ReturnJson.format(rec.occurredAt))
+                    .put("providerReference", rec.providerReference);
+        }
         o.put("owner", step.owner()).put("nextStep", step.nextStep());
-        o.set("pending", pendingJson == null ? NullNode.instance : pendingJson);
-        o.set("blocked", blockedJson == null ? NullNode.instance : blockedJson);
+        o.set("pending", topPending == null ? NullNode.instance : topPending);
+        o.set("blocked", topBlocked == null ? NullNode.instance : topBlocked);
         ArrayNode choices = o.putArray("choices");
         ObjectNode offered = o.putObject("offeredSlots");
         for (ReturnPolicy.Choice c : policy.choices()) {
@@ -123,7 +135,14 @@ final class PlanView {
             ArrayNode slots = offered.putArray(c.id());
             offer.slots().forEach(sl -> slots.add(sl.toJson()));
         }
-        o.putNull("outcome");
+        if (done) {
+            ObjectNode out = o.putObject("outcome");
+            out.put("state", state).put("at", ReturnJson.format(rec.occurredAt)).set("location", rec.location);
+            out.set("appointment", rec.appointment);
+            out.put("providerReference", rec.providerReference).put("oldContractId", rec.oldContractId);
+        } else {
+            o.putNull("outcome");
+        }
         o.set("relationship", relationship);
         o.put("version", row == null ? 0 : row.version).put("policyVersion", policy.policyVersion());
         ArrayNode assumptions = o.putArray("assumptions");

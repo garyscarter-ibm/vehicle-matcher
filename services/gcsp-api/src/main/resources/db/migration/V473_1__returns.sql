@@ -32,6 +32,7 @@ CREATE TABLE return_plans (
   blocked_step text CHECK (blocked_step IN ('request', 'confirm', 'accept')),
   blocked_code text CHECK (length(blocked_code) BETWEEN 1 AND 128),
   blocked_reason text CHECK (length(blocked_reason) BETWEEN 1 AND 512),
+  outcome_closed boolean NOT NULL DEFAULT false,
   version bigint NOT NULL DEFAULT 1 CHECK (version > 0),
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
@@ -43,9 +44,9 @@ CREATE TABLE return_plans (
   CHECK (state <> 'change-proposed' OR (proposed_slot IS NOT NULL AND proposal_id IS NOT NULL))
 );
 CREATE INDEX return_plans_employee ON return_plans (environment_id, run_id, employee_id);
--- Progress reads only plans with provider work left: open requests, pending writes and scheduled returns.
+-- Progress reads only plans with provider work left; outcome_closed is set once the outcome settles or is refused.
 CREATE INDEX return_plans_progress ON return_plans (environment_id, run_id, order_uuid)
-  WHERE state IN ('requested', 'scheduled') OR pending_operation_id IS NOT NULL;
+  WHERE (state IN ('requested', 'scheduled') AND NOT outcome_closed) OR pending_operation_id IS NOT NULL;
 
 CREATE FUNCTION return_plans_guard() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN

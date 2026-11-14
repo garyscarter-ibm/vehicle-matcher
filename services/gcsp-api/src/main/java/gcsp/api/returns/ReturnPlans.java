@@ -69,7 +69,8 @@ public final class ReturnPlans implements AutoCloseable {
 
     private enum Kind { GOOD, WAITING, REFUSED, UNKNOWN }
 
-    private record Snapshot(Instant now, ReturnSource source, PlanRow row, ReturnPolicy policy, PlanView.Handover handover) {}
+    private record Snapshot(Instant now, ReturnSource source, PlanRow row, ReturnPolicy policy, PlanView.Handover handover,
+            OutcomeRow outcome) {}
 
     /** An early exit carrying the refusal to answer; never escapes the public methods. */
     private static final class Refusal extends RuntimeException {
@@ -373,6 +374,7 @@ public final class ReturnPlans implements AutoCloseable {
         int timeout = ok.policy().providerTimeoutMs();
         String opId = p.pendingOperationId;
         if (opId == null) {
+            if ("scheduled".equals(p.state)) return progressOutcome(sys, p, ok.policy(), now, retry);
             if (!retry || !"requested".equals(p.state)) return "idle";
             opId = p.confirmOperationId != null ? p.confirmOperationId : openConfirm(sys, p);
         }
@@ -506,12 +508,206 @@ public final class ReturnPlans implements AutoCloseable {
         return slot != null && slotId != null && slotId.equals(slot.slotId());
     }
 
+    // ---------------------------------------------------------------- outcomes
+
+    /** A scheduled plan's outcome: open it on a presenter tick if the policy enables it, else reconcile what is open. */
+    private String progressOutcome(RunContext sys, PlanRow p, ReturnPolicy pol, Instant now, boolean retry) throws SQLException {
+        OutcomeRow rec;
+        try (Connection c = dataSource.getConnection()) {
+            rec = OutcomeRow.read(c, sys, p.orderUuid);
+        }
+        String opId;
+        boolean fresh = rec == null;
+        if (fresh) {
+            if (!retry || !pol.outcome().enabled()) return "idle";
+            opId = openOutcome(sys, p, pol.outcome());
+        } else if (rec.awaiting()) {
+            opId = rec.operationId;
+        } else {
+            return "idle";
+        }
+        OpRow op;
+        PlanRow plan;
+        try (Connection c = dataSource.getConnection()) {
+            op = OpRow.read(c, sys, opId);
+            plan = PlanRow.read(c, sys, p.orderUuid);
+            rec = OutcomeRow.read(c, sys, p.orderUuid);
+        }
+        if (op == null || plan == null || rec == null) throw refuse(503, "return-plan-unavailable", "The return outcome is missing.");
+        if (!op.open() || !rec.awaiting()) return "idle";
+        Call operation = new Call(sys, op, plan);
+        int timeout = pol.providerTimeoutMs();
+        ReturnProviderPort.Result r;
+        if (fresh) {
+            r = call(timeout, () -> provider.confirmOutcome(operation.value(), now));
+        } else {
+            r = call(timeout, () -> provider.reconcile(operation.value()));
+            if (r != null && r.status() == ReturnProviderPort.Status.NOT_FOUND && opId.equals(r.operationId())) {
+                if (!retry) return "waiting";
+                r = call(timeout, () -> provider.confirmOutcome(operation.value(), now));
+            }
+        }
+        return settleOutcome(sys, op, rec, r);
+    }
+
+    /** One transaction records the awaiting outcome, its intent and its exact payload (once; a repeat finds it there). */
+    private String openOutcome(RunContext sys, PlanRow p, ReturnPolicy.OutcomeConfig cfg) throws SQLException {
+        String opId = outcomeOpId(sys.runId(), p.orderUuid);
+        AppointmentSlot slot = p.slot;
+        ObjectNode appointment = obj().put("purpose", "return").put("slotId", slot.slotId());
+        appointment.set("slot", slot.toJson());
+        appointment.put("providerReference", p.history.isEmpty() ? null
+                : p.history.get(p.history.size() - 1).path("providerReference").asText(null));
+        Instant confirmAfter = slot.end().plusSeconds(cfg.delaySecondsAfterSlotEnd());
+        ObjectNode payload = obj().put("confirmAfter", ReturnJson.format(confirmAfter)).put("outcome", cfg.outcome());
+        payload.set("appointment", appointment);
+        OutcomeRow rec = new OutcomeRow();
+        rec.orderUuid = p.orderUuid;
+        rec.operationId = opId;
+        rec.expectedOutcome = cfg.outcome();
+        rec.confirmAfter = confirmAfter;
+        rec.appointment = appointment;
+        rec.location = p.location;
+        rec.oldContractId = p.oldContractId;
+        rec.entitlementSlotId = p.entitlementSlotId;
+        rec.exceptionType = cfg.exceptionType();
+        rec.policyVersion = p.policyVersion;
+        Command cmd = new Command("return-outcome-open", opId + ":open", obj().put("orderUuid", p.orderUuid).put("operationId", opId));
+        Outcome o = runner.execute(sys, cmd, tx -> {
+            PlanRow cur = PlanRow.read(tx, p.orderUuid);
+            if (cur == null || cur.pendingOperationId != null || !"scheduled".equals(cur.state)
+                    || OutcomeRow.read(tx, p.orderUuid) != null) {
+                return WorkResult.ok(obj().put("operationId", opId));
+            }
+            rec.insert(tx);
+            insertOperation(tx, opId, "outcome", p.orderUuid, slot, payload);
+            return WorkResult.ok(obj().put("operationId", opId));
+        });
+        if (!(o instanceof Outcome.Committed)) throw mapOutcome(o);
+        return opId;
+    }
+
+    /** The provider's answer to the outcome write, applied by CAS; a returned car changes the current car in the same transaction. */
+    private String settleOutcome(RunContext sys, OpRow op, OutcomeRow seen, ReturnProviderPort.Result r) throws SQLException {
+        Kind kind = classifyOutcome(op, seen, r);
+        ReturnSource source = null;
+        if (kind == Kind.GOOD && "returned".equals(seen.expectedOutcome)) source = outcomeSource(sys, op.orderUuid());
+        ReturnSource carSource = source;
+        String code = r == null ? null : r.code();
+        String label = kind == Kind.GOOD ? "done" : kind.name().toLowerCase() + "-" + op.attempts();
+        ObjectNode input = obj().put("kind", kind.name());
+        if (kind == Kind.GOOD) input.set("response", r.toJson());
+        else if (code != null) input.put("code", code);
+        Command cmd = new Command("return-outcome-settle", op.operationId() + ":settle:" + label, input);
+        Outcome o = runner.execute(sys, cmd, tx -> {
+            OpRow fresh = OpRow.read(tx, op.operationId());
+            OutcomeRow out = OutcomeRow.read(tx, op.orderUuid());
+            PlanRow plan = PlanRow.read(tx, op.orderUuid());
+            if (fresh == null || !fresh.open() || out == null || !out.awaiting() || plan == null) return WorkResult.ok(text("settled"));
+            long seenVersion = out.version;
+            String result;
+            switch (kind) {
+                case GOOD -> {
+                    out.state = out.expectedOutcome;
+                    out.occurredAt = r.at();
+                    out.providerReference = r.providerReference();
+                    out.pendingLastKnown = null;
+                    out.blockedCode = null;
+                    out.blockedReason = null;
+                    if ("returned".equals(out.state)) {
+                        CurrentCarEvent e = new CurrentCarEvent(CurrentCarEvent.RETURN_CONFIRMED, op.orderUuid(), plan.employeeId,
+                                r.at(), r.providerReference(), out.oldContractId, null, out.location,
+                                out.appointment.path("slotId").asText(null), out.appointment.path("providerReference").asText(null));
+                        CurrentCarResult applied = currentCar.apply(tx, e, carSource);
+                        if (applied instanceof CurrentCarResult.Refused x) return WorkResult.refuse(x.code(), x.message());
+                    } else {
+                        tx.emit(op.operationId() + ":missed", out.exceptionType, missedEvent(out, plan, r));
+                    }
+                    PendingOperations.finalize(tx, op.operationId(), fresh.version(), "acknowledged", r.providerReference(), r.toJson());
+                    closeOutcome(tx, op.orderUuid());
+                    result = "applied";
+                }
+                case WAITING -> {
+                    result = "waiting";
+                    if (!"waiting".equals(out.pendingLastKnown) || out.blockedCode != null) {
+                        out.pendingLastKnown = "waiting";
+                        out.blockedCode = null;
+                        out.blockedReason = null;
+                    } else {
+                        return WorkResult.ok(text(result));
+                    }
+                }
+                case REFUSED -> {
+                    String c = r.code() != null ? r.code() : "unsupported";
+                    String why = r.reason() != null ? r.reason() : "This update is not supported.";
+                    out.pendingLastKnown = null;
+                    out.blockedCode = c;
+                    out.blockedReason = why;
+                    PendingOperations.finalize(tx, op.operationId(), fresh.version(), "refused", null,
+                            obj().put("status", "unsupported").put("code", c).put("reason", why));
+                    closeOutcome(tx, op.orderUuid());
+                    result = "blocked";
+                }
+                default -> {
+                    out.pendingLastKnown = "unknown";
+                    out.blockedCode = null;
+                    out.blockedReason = null;
+                    PendingOperations.markPending(tx, op.operationId(), fresh.version(), obj().put("status", "unknown"));
+                    result = "uncertain";
+                }
+            }
+            out.update(tx, seenVersion);
+            return WorkResult.ok(text(result));
+        });
+        if (o instanceof Outcome.Committed c) return c.result().asText("idle");
+        if (o instanceof Outcome.Uncertain) return "uncertain";
+        if (o instanceof Outcome.Conflict c && "stale-version".equals(c.code())) return "idle";
+        throw mapOutcome(o);
+    }
+
+    /** The exception a missed return raises; the renewal authority is the approvals Story's, so it is not read here. */
+    private static ObjectNode missedEvent(OutcomeRow out, PlanRow plan, ReturnProviderPort.Result r) {
+        ObjectNode e = obj().put("employeeId", plan.employeeId).put("orderUuid", out.orderUuid)
+                .put("occurredAt", ReturnJson.format(r.at())).put("exceptionType", out.exceptionType)
+                .put("oldContractId", out.oldContractId).put("entitlementSlotId", out.entitlementSlotId)
+                .put("renewalAuthority", "not-read");
+        e.set("location", out.location);
+        e.set("appointment", out.appointment.deepCopy());
+        e.put("providerReference", r.providerReference()).put("policyVersion", out.policyVersion).put("fictional", true);
+        return e;
+    }
+
+    /** Takes a settled or refused outcome out of the progress index; the plan's version is not a user-visible change. */
+    private static void closeOutcome(Tx tx, String orderUuid) throws SQLException {
+        RunContext c = tx.context();
+        tx.write("UPDATE return_plans SET outcome_closed = true, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ?", c.environmentId(), c.runId(), orderUuid);
+    }
+
+    /** The order's selection as the current-car boundary needs it; an unreadable one leaves the outcome open for the next tick. */
+    private ReturnSource outcomeSource(RunContext sys, String orderUuid) {
+        if (sources.read(sys, orderUuid) instanceof ReturnSourceReading.Found f) return f.source();
+        throw refuse(503, "return-plan-unavailable", "The order's selection could not be read.", true);
+    }
+
+    /** Whether a provider answer is the expected outcome; in-progress waits, unsupported blocks, anything else is unknown. */
+    private static Kind classifyOutcome(OpRow op, OutcomeRow rec, ReturnProviderPort.Result r) {
+        if (r == null) return Kind.UNKNOWN;
+        boolean mine = op.operationId().equals(r.operationId());
+        if (mine && r.status() == ReturnProviderPort.Status.IN_PROGRESS) return Kind.WAITING;
+        if (r.status() == ReturnProviderPort.Status.UNSUPPORTED) return Kind.REFUSED;
+        boolean good = mine && op.orderUuid().equals(r.orderUuid()) && ReturnProviderPort.STEP_OUTCOME.equals(r.step())
+                && r.status().wire().equals(rec.expectedOutcome) && ReturnJson.text(r.providerReference(), 128) && r.at() != null;
+        return good ? Kind.GOOD : Kind.UNKNOWN;
+    }
+
     // ---------------------------------------------------------------- provider calls
 
     private record Call(RunContext ctx, OpRow op, PlanRow plan) {
         ReturnProviderPort.Operation value() {
+            AppointmentSlot slot = ReturnProviderPort.STEP_OUTCOME.equals(op.step()) ? plan.slot : plan.requestedSlot;
             return new ReturnProviderPort.Operation(ctx.environmentId(), ctx.runId(), op.operationId(), op.orderUuid(), op.step(),
-                    plan.requestedSlot, op.payload().deepCopy(), op.inputDigest());
+                    slot, op.payload().deepCopy(), op.inputDigest());
         }
     }
 
@@ -519,6 +715,7 @@ public final class ReturnPlans implements AutoCloseable {
         return switch (step) {
             case "request" -> provider.requestSlot(operation);
             case "confirm" -> provider.confirm(operation, now);
+            case "outcome" -> provider.confirmOutcome(operation, now);
             default -> provider.acceptProposal(operation);
         };
     }
@@ -571,8 +768,10 @@ public final class ReturnPlans implements AutoCloseable {
 
     private Snapshot snapshot(RunContext ctx, Instant now, ReturnSource source) throws SQLException {
         PlanRow row;
+        OutcomeRow outcome = null;
         try (Connection c = dataSource.getConnection()) {
             row = PlanRow.read(c, ctx, source.orderUuid());
+            if (row != null && "scheduled".equals(row.state)) outcome = OutcomeRow.read(c, ctx, source.orderUuid());
         }
         String version = row != null ? row.policyVersion : policy.currentVersion(ctx.runId());
         ReturnPolicyReading reading = version == null ? ReturnPolicyReading.unavailable()
@@ -591,7 +790,7 @@ public final class ReturnPlans implements AutoCloseable {
             HandoverReading.Unavailable u = (HandoverReading.Unavailable) h;
             throw new Refusal(new PlanResult.Refused(503, u.code(), u.reason(), u.retryable(), null, null));
         }
-        return new Snapshot(now, source, row, ok.policy(), handover);
+        return new Snapshot(now, source, row, ok.policy(), handover, outcome);
     }
 
     private ObjectNode project(RunContext ctx, Snapshot s) throws SQLException {
@@ -604,7 +803,7 @@ public final class ReturnPlans implements AutoCloseable {
         }
         JsonNode relationship = currentCar.read(ctx, s.source().orderUuid(), s.source()).toJson();
         return PlanView.build(ctx.runId(), s.source(), row, s.policy(), s.handover(), offers,
-                row != null ? row.providerMode : provider.mode(), relationship);
+                row != null ? row.providerMode : provider.mode(), s.outcome(), relationship);
     }
 
     /** Slots for one choice from the keyed rules; the handover must already be in a state the rule names. */
@@ -712,6 +911,11 @@ public final class ReturnPlans implements AutoCloseable {
 
     private record Ids(String request, String confirm, String accept) {}
 
+    static String outcomeOpId(String runId, String orderUuid) {
+        ArrayNode key = ReturnJson.JSON.createArrayNode().add(runId).add(orderUuid);
+        return "return-outcome:" + Canonical.digest(key).substring(0, 32) + ":outcome";
+    }
+
     private static Ids opIds(RunContext ctx, String orderUuid) {
         return opIds(ctx.runId(), orderUuid);
     }
@@ -728,7 +932,7 @@ public final class ReturnPlans implements AutoCloseable {
         ObjectNode stable = obj().put("orderUuid", orderUuid).put("step", step);
         stable.set("slot", slot.toJson());
         stable.set("payload", payload);
-        PendingOperations.recordIntent(tx, opId, "return-appointment-" + step, opId, stable);
+        PendingOperations.recordIntent(tx, opId, "outcome".equals(step) ? "return-outcome" : "return-appointment-" + step, opId, stable);
         RunContext c = tx.context();
         tx.write("INSERT INTO return_operations (environment_id, run_id, operation_id, order_uuid, step, payload, input_digest) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)", c.environmentId(), c.runId(), opId, orderUuid, step, payload,

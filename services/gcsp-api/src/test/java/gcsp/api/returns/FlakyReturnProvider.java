@@ -3,7 +3,7 @@ package gcsp.api.returns;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/** Test wrapper over a provider: a write step can throw before reaching it, throw after it answered, or hang. */
+/** Test wrapper over a provider: a write step (outcome included) can throw before reaching it, throw after it answered, or hang. */
 final class FlakyReturnProvider implements ReturnProviderPort {
 
     enum Fault { NONE, THROW_BEFORE, THROW_AFTER, HANG }
@@ -66,7 +66,7 @@ final class FlakyReturnProvider implements ReturnProviderPort {
 
     @Override
     public Result confirmOutcome(Operation op, Instant now) {
-        return delegate.confirmOutcome(op, now);
+        return write(() -> delegate.confirmOutcome(op, now));
     }
 
     @Override
