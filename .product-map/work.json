@@ -6100,93 +6100,6 @@
       ]
     },
     {
-      "assignee": "Gary Carter",
-      "branch": "dev/DEV-2026-11-13-009",
-      "id": "FUCQ-441",
-      "observed_at": "2026-11-14T01:43:45Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "api-client",
-          "observed_at": "2026-11-14T00:42:02Z",
-          "status": "complete",
-          "title": "Versioned brief API client and response contracts",
-          "evidence": "Lead reviewed source contract and callers; focused API suite 6/6; matching hashes and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md."
-        },
-        {
-          "id": "editor-feedback",
-          "status": "complete",
-          "title": "Native preference, practical and current-car editor",
-          "observed_at": "2026-11-14T01:04:55Z",
-          "evidence": "Lead reviewed corrected native editor, source/callers and revision25/25; separate unchanged client10/10, exact identity and teardown verified; delivery note records remaining native integration."
-        },
-        {
-          "id": "engagement",
-          "status": "complete",
-          "title": "Buddy consent, search controls and truthful recovery",
-          "observed_at": "2026-11-14T01:43:45.291661+00:00",
-          "evidence": "Lead reviewed Buddy commands and recovery correction; matching Donald52 client/Buddy proof and corrected store/component46 checks, exact source and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md. Native integration remains open."
-        },
-        {
-          "id": "native-integration",
-          "status": "not-started",
-          "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Edit preferences and control Buddy delegation",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-441",
-      "workers": [
-        {
-          "expires_at": "2026-11-14T02:27:03.887563+00:00",
-          "harness": "codex",
-          "name": "Mike Wazowski",
-          "observed_at": "2026-11-14T00:27:03.887563+00:00",
-          "role": "story-lead",
-          "source": "chat 01a1d771-04c7-7810-9f87-4cf69d3701b6",
-          "status": "active"
-        },
-        {
-          "name": "Cogsworth",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-14T00:35:08.248381+00:00",
-          "expires_at": "2026-11-14T00:42:01.876813+00:00",
-          "source": "child chat01a1d772-fbf7-7ed3-8a99-f897a07b925a verified Luna/high",
-          "status": "stopped"
-        },
-        {
-          "name": "Road Runner",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T00:43:47.524108+00:00",
-          "expires_at": "2026-11-14T01:04:54.899729+00:00",
-          "source": "child chat 01a1d781-eeab-78b1-891f-8cff3f3a5d7a, runtime Sol/medium and title independently verified",
-          "status": "stopped"
-        },
-        {
-          "name": "Donald Duck",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-14T01:07:13.325473+00:00",
-          "expires_at": "2026-11-14T01:38:14.892502+00:00",
-          "source": "child chat 01a1d797-b6a5-75e2-a4e0-b2ad10673c43, runtime Luna/high independently verified",
-          "status": "stopped"
-        },
-        {
-          "name": "Barney McGrew",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T01:38:14.892502+00:00",
-          "expires_at": "2026-11-14T01:43:45.291661+00:00",
-          "source": "child chat 01a1d7b3-579b-7a53-90af-6474310e7385, requested/selected/effective Sol/medium and saved title independently verified",
-          "status": "stopped"
-        }
-      ]
-    },
-    {
       "assignee": "",
       "id": "FUCQ-442",
       "observed_at": "2026-11-13T20:22:18.041Z",
@@ -7149,6 +7062,113 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-13-009",
+      "id": "FUCQ-441",
+      "observed_at": "2026-11-14T02:26:19Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "api-client",
+          "observed_at": "2026-11-14T00:42:02Z",
+          "status": "complete",
+          "title": "Versioned brief API client and response contracts",
+          "evidence": "Lead reviewed source contract and callers; focused API suite 6/6; matching hashes and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md."
+        },
+        {
+          "id": "editor-feedback",
+          "status": "complete",
+          "title": "Native preference, practical and current-car editor",
+          "observed_at": "2026-11-14T01:04:55Z",
+          "evidence": "Lead reviewed corrected native editor, source/callers and revision25/25; separate unchanged client10/10, exact identity and teardown verified; delivery note records remaining native integration."
+        },
+        {
+          "id": "engagement",
+          "status": "complete",
+          "title": "Buddy consent, search controls and truthful recovery",
+          "observed_at": "2026-11-14T01:43:45.291661+00:00",
+          "evidence": "Lead reviewed Buddy commands and recovery correction; matching Donald52 client/Buddy proof and corrected store/component46 checks, exact source and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md. Native integration remains open."
+        },
+        {
+          "id": "native-integration",
+          "status": "in-progress",
+          "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Edit preferences and control Buddy delegation",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-441",
+      "workers": [
+        {
+          "expires_at": "2026-11-14T03:26:19.233839+00:00",
+          "harness": "codex",
+          "name": "Mike Wazowski",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "role": "story-lead",
+          "source": "chat 01a1d771-04c7-7810-9f87-4cf69d3701b6",
+          "status": "active"
+        },
+        {
+          "name": "Cogsworth",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T00:35:08.248381+00:00",
+          "expires_at": "2026-11-14T00:42:01.876813+00:00",
+          "source": "child chat01a1d772-fbf7-7ed3-8a99-f897a07b925a verified Luna/high",
+          "status": "stopped"
+        },
+        {
+          "name": "Road Runner",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T00:43:47.524108+00:00",
+          "expires_at": "2026-11-14T01:04:54.899729+00:00",
+          "source": "child chat 01a1d781-eeab-78b1-891f-8cff3f3a5d7a, runtime Sol/medium and title independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Donald Duck",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T01:07:13.325473+00:00",
+          "expires_at": "2026-11-14T01:38:14.892502+00:00",
+          "source": "child chat 01a1d797-b6a5-75e2-a4e0-b2ad10673c43, runtime Luna/high independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Barney McGrew",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T01:38:14.892502+00:00",
+          "expires_at": "2026-11-14T01:43:45.291661+00:00",
+          "source": "child chat 01a1d7b3-579b-7a53-90af-6474310e7385, requested/selected/effective Sol/medium and saved title independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Taz",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "expires_at": "2026-11-14T02:26:19.233839+00:00",
+          "source": "child chat 01a1d7bc-eba0-7121-8fd8-d5652e11a50d; first runtime observation 2026-11-14T01:47:25Z; requested/selected/effective gpt-6-luna/high, saved title independently verified; stopped final result observed",
+          "status": "stopped"
+        },
+        {
+          "name": "Cuthbert",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "expires_at": "2026-11-14T02:26:19.233839+00:00",
+          "source": "child chat 01a1d7d8-78e7-7a21-8666-c26aec43f4dc; first runtime observation 2026-11-14T02:17:32.852Z; requested/selected/effective gpt-6.1-sol/high, saved title independently verified; stopped final result observed",
+          "status": "stopped"
         }
       ]
     }

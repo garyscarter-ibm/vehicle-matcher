@@ -272,3 +272,136 @@ The dispatcher has the exact seams; no Account or Java source was changed here.
 Production AOT, boundary/component checks and rendered desktop/narrow interaction
 review follow this checkpoint. Safari/private, accessibility and the actual
 native journey remain open. Both original AC remain unchecked; Story In Progress.
+## Partial production and rendered proof
+
+The dispatcher synced and published clean worker
+`e687b676ede7a80c02c661bad3e35122f98f2524`, incorporating root
+`c6fd531a36d57ce35d12c57b174a35f9327e2d31`. All 20 previously recorded Angular/
+configuration hashes and the worker Story/map row survived; all 301 incoming
+foreign map rows were preserved. Ten inherited FUCQ-415 whitespace lines were
+retained exactly. No worker push, base sync or Java/Account edit was performed.
+
+Fresh capacity at 01:46 allowed two launches; only Taz was launched. Requested,
+selected and effective `gpt-6-luna` / `high` matched with no fallback; the lead
+independently verified the saved Taz title and runtime `turn_context` at child
+`01a1d7bc-eba0-7121-8fd8-d5652e11a50d`.
+
+At that frozen source the production command
+`npm --prefix apps/gcsp-web run build -- --output-path <owned-scratch>/production`,
+`npm --prefix apps/gcsp-web run check:boundaries` and local public-configuration
+`scripts/build-gcsp-static.mjs` assembly all returned zero. The retained command
+receipt reports 15 assembled files and the exact revision; its latest production
+chunk took 5.07 seconds and peaked at 1,310,474,240 bytes RSS / 12,366,592 bytes
+scratch. These are build/boundary/assembly results, not integrated acceptance.
+The boundary command includes its static CSP checks. A browser CSP pass and
+independent generated-index/config/CSP/asset-hash inspection were not established;
+the generated manifest/index were disposable scratch and not retained. The
+production receipt's `environment_id` field copied the Node engine `24.22.3`;
+the plan records the actual local proof environment input `fucq441-local-proof`.
+Neither is evidence of a hosted environment.
+
+The original broad browser attempt remains incomplete. Attempts 01–06 preserve
+identity-comparison, workspace-path, TypeScript/bootstrap, browser setup and key
+probe diagnostics. Multiple unchanged production reruns occurred before the lead
+and dispatcher stopped the broad retry loop; they are not additional coverage.
+An explicitly bounded follow-up reused production evidence and rebuilt only the
+test bootstrap/static bundle. On the real Preferences component and route with
+fixture AuthPort/PORTAL_FETCH, Chrome 157 at 1440 pixels focused the native
+SUMMARY, delivered a trusted Enter keydown with `defaultPrevented=false`, opened
+the disclosure from false to true and retained focus. No runtime exceptions were
+recorded for that diagnostic. The earlier assertion does not establish a native
+keyboard defect, and this one interaction does not establish full keyboard proof.
+
+The lead and independent reviewer viewed the actual 1440 initial screen and the
+approved 1440-initial/375-engaged references. The captured full editor shows its
+supported inputs, practical needs, retained current-car feedback, save/consent/
+Buddy controls and server-shaped vehicle preview with image/fallback, points/
+allowance, units, checks, trade-offs and unknowns. Its recorded desktop document
+width was 1440 without horizontal overflow. Only this initial desktop state was
+captured; no compact or narrow screenshot or all-state/interaction pass follows.
+
+Root-local receipts: `.claude/test-runs/fucq441/final-ui/production-proof.json`,
+`final-receipt.json` (incomplete broad proof), and
+`keyboard-diagnostic/{final-receipt,browser-proof,rendered-proof}.json` (single-key
+proof). Actual image:
+`.claude/test-runs/fucq441/final-ui/keyboard-diagnostic/screenshots/preferences-1440-initial.png`.
+A copied generic raw-log label and an erroneous preliminary `node --check` on a
+Python file remain documented; subsequent Python/Node syntax checks passed.
+The final bounded chunk took 6.95 seconds, peak RSS 1,338,392,576 bytes and scratch
+15,406,200 bytes.
+
+Lead `final-ui/lead-verification.json` and dispatcher
+`.claude/fucq441-parent-resource-final-ui-0212.json` independently verify both
+35-file source-hash sets, all 11 ownership manifests/checkpoints and dead process
+groups, absent actual/proposed scratch roots, absent scratch parent and temporary
+dependency link, preserved four borrowed dependency/runtime device/inode
+identities, and the clean frozen tree. No output exceeded 256 MiB; no OneDrive
+output or disposable leftovers remain. These audits establish resource/source
+integrity only.
+
+## Independent review and unfixed separate Bug
+
+After Taz stopped, fresh capacity at 02:16:43 allowed two launches; only Cuthbert
+was launched. Requested/selected/effective `gpt-6.1-sol` / `high`, no fallback,
+was independently verified from `turn_context` at 02:17:32.852Z; saved title
+Cuthbert was read back at child `01a1d7d8-78e7-7a21-8666-c26aec43f4dc`.
+They reviewed actual changes/callers, original acceptance, frozen source,
+meaningful selected tests, screenshots/references and resource receipts without
+allocating tests/builds/browser processes or changing files.
+
+Review found one source-proved Medium recovery regression, now separate native
+Bug **FUCQ-491**, To Do, under FUCQ-432, Relates FUCQ-441. The dispatcher verified
+Bug type/link/description and empty attachments after a complete duplicate search;
+root intake is `.claude/fucq441-preview-race-bug-0221.md`. The lead independently
+confirmed the trace at reviewed source `e687b676`:
+
+- `brief-editor.store.ts` 420–426 accepts a preview result while its scope and
+  preview ticket remain current, then applies stale/conflict outcomes to shared
+  `failure` through `fail()` at 392–397.
+- `saveFull()` at 428–430 does not invalidate that outstanding preview. After
+  confirmation clears failure at 460, the old preview can return stale during
+  final readback or before the next 180 ms preview dispatch.
+- Successful readback at 476–481 retains that intervening failure, so `locked()`
+  at 61–63 disables the saved editor and shared compact/Buddy controls until
+  refresh. The frozen producer at `server/gcsp/brief/editor.js` 444–445 supports
+  the stale outcome when versions advance during evaluation.
+
+Reproduction is source-derived, not executed. The narrow next check is a deferred
+preview regression against successful save/readback, with both late-arrival
+orders, followed by affected full/compact recovery rendering when the producer
+is available. Refresh restores transient client state; no persisted data loss,
+ownership bypass or existing-state data repair is established. No error-state
+screenshot is supplied. FUCQ-491 remains unfixed and independently prioritised;
+it neither expands this Story nor becomes its merge dependency. Existing
+FUCQ-487/488 also remain separate and unfixed. No acceptance waiver was granted.
+
+Root review summary is `.claude/test-runs/fucq441/independent-review.json`; bounded
+structured diagnosis is `stale-preview-bug-payload.json` in that directory.
+Cuthbert's final whole-acceptance verdict was **failed**, with explicit eligibility
+for a coherent, honestly labelled partial integration checkpoint under the Medium
+defect policy. The lead agrees: source/unit/build evidence supports that partial
+checkpoint; it does not complete the Story.
+
+## Remaining original acceptance and handoff
+
+Both original AC remain unchecked; native/file Story remains In Progress and the
+lease remains held. The native-integration slice is in progress solely because
+production/static and one desktop/keyboard proof have begun. Actual Java editor
+context/context-version/clock contracts and configured provider readiness remain
+concrete producer gaps. Root FUCQ-457 progress is not a substitute for verified
+consumer wiring; this worker was not synced during review.
+
+Still unrun: actual Java/OIDC/native PostgreSQL preference/feedback/engagement,
+stale/unavailable and persisted reload scenarios; transaction/concurrency/restart
+and hosted evidence; compact/narrow/320 overflow, category/rating/SameAgain/Buddy/
+save/recovery interaction and all applicable visible-state captures; full native
+keyboard/focus, browser CSP, Safari/private, accessibility and reduced motion.
+The accepted/read-only, pending/stale/uncertain and confirmed/readback-unavailable
+states retain scoped unit/source evidence only. No full-suite stamp is claimed.
+
+All product source writers are stopped. Routes, additive kit, gallery and
+COMPONENTS reservations can be released by the dispatcher after this metadata
+checkpoint. Account, auth/shell, root configuration/styles, Java and Node business
+ownership were preserved. The dispatcher alone publishes, syncs, integrates and
+updates native lifecycle; partial integration is a reviewable option, not full
+acceptance, Built/Done or lease release.
