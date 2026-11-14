@@ -6595,7 +6595,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-14T03:05:43Z",
+      "observed_at": "2026-11-14T07:39:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-459",
       "unsliced": false,
       "slices": [
@@ -6629,19 +6629,23 @@
         },
         {
           "id": "s5-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "v1 vehicle-evidence and image endpoints, readiness and artifact packaging docs",
-          "observed_at": "2026-11-14T03:05:43Z"
+          "observed_at": "2026-11-14T03:27:32Z",
+          "evidence": "story-lead reviewed; 89 evidence tests incl QuarkusTest HTTP for lookup, alternate, none, corrupt, fleet images; full verify 589 run 0 fail"
         },
         {
           "id": "s6-stock",
-          "status": "not-started",
-          "title": "Exact stock identity through persistence with native PG check"
+          "status": "complete",
+          "title": "Exact stock identity through persistence with native PG check",
+          "observed_at": "2026-11-14T07:39:23Z",
+          "evidence": "story-lead reviewed; native PG17 full verify 598 run 0 fail 0 skip; stock read Index Scan stock_cars_pkey shared hit=4 at 10k cars"
         },
         {
           "id": "s7-integration",
-          "status": "not-started",
-          "title": "Base merge, full Java verify and result"
+          "status": "in-progress",
+          "title": "Base merge, full Java verify and result",
+          "observed_at": "2026-11-14T07:39:24Z"
         }
       ]
     },
