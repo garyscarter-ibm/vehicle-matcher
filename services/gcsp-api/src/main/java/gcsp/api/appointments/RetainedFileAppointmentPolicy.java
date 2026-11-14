@@ -29,6 +29,7 @@ public final class RetainedFileAppointmentPolicy implements AppointmentPolicy {
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private final Path file;
+    private volatile JsonNode cached;
 
     public RetainedFileAppointmentPolicy(Path file) {
         this.file = file;
@@ -100,11 +101,15 @@ public final class RetainedFileAppointmentPolicy implements AppointmentPolicy {
     /** The parsed file when it is one version, already in force at asOf, and matches the pinned version. */
     private JsonNode open(String policyVersion, Instant asOf) {
         if (policyVersion == null || asOf == null) return null;
-        JsonNode root;
-        try {
-            root = JSON.readTree(Files.readString(file));
-        } catch (IOException | RuntimeException e) {
-            return null;
+        JsonNode root = cached;
+        if (root == null) {
+            // A retained file is immutable once deployed, so it is parsed once, not per request or tick.
+            try {
+                root = JSON.readTree(Files.readString(file));
+            } catch (IOException | RuntimeException e) {
+                return null;
+            }
+            cached = root;
         }
         if (root == null || !root.path("policyVersion").isTextual() || !policyVersion.equals(root.get("policyVersion").asText())
                 || !effective(root, asOf) || !root.path("assumptions").isArray()) return null;
