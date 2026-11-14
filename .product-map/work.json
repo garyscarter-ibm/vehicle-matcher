@@ -1184,7 +1184,7 @@
           "title": "Exclusive states, authoritative countdown and uncertain decisions"
         },
         {
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105",
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105",
           "id": "access-producer",
           "observed_at": "2026-11-06T00:30:56Z",
           "status": "in-progress",
@@ -2061,7 +2061,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3920,7 +3920,7 @@
       "observed_at": "2026-11-10T11:32:22Z",
       "original_status": "To Do",
       "status": "To Do",
-      "title": "Use “Your preferences” consistently in the employee journey",
+      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
       "type": "Bug",
       "unsliced": true,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-326"
@@ -4746,14 +4746,14 @@
           "title": "Offer layout and grounded comparison emphasis"
         },
         {
-          "evidence": "Original AC2: actual presenter HTTP clock/readback 7200→7140→60→0 on unchanged offer/deadline, reload and second context; labelled zero immediate-reread/missing-timing faults. Current authority blobs verified identical. docs/gcsp/evidence/fucq383/final-validation.md",
+          "evidence": "Original AC2: actual presenter HTTP clock/readback 7200\u21927140\u219260\u21920 on unchanged offer/deadline, reload and second context; labelled zero immediate-reread/missing-timing faults. Current authority blobs verified identical. docs/gcsp/evidence/fucq383/final-validation.md",
           "id": "countdown",
           "observed_at": "2026-11-11T14:54:26Z",
           "status": "complete",
           "title": "Server-derived hours and minutes countdown"
         },
         {
-          "evidence": "Original AC1–6 complete at local generated-stock/HTTPS boundary: actual decisions/expiry/refusal, corrected independent PASS and offer regressions; later F390 navigation checks/critique cover the changed seam. No deployed/BFCache/full-suite/collaborator acceptance claim. docs/gcsp/evidence/fucq383/final-validation.md",
+          "evidence": "Original AC1\u20136 complete at local generated-stock/HTTPS boundary: actual decisions/expiry/refusal, corrected independent PASS and offer regressions; later F390 navigation checks/critique cover the changed seam. No deployed/BFCache/full-suite/collaborator acceptance claim. docs/gcsp/evidence/fucq383/final-validation.md",
           "id": "integration",
           "observed_at": "2026-11-11T14:54:26Z",
           "status": "complete",
@@ -4845,7 +4845,7 @@
       "assignee": "Russell Gowers",
       "development_observed_at": "2026-11-11T14:42:07Z",
       "id": "FUCQ-382",
-      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "note": "Repair authorised on 11 November 2026; original AC1\u20133 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
       "observed_at": "2026-11-11T15:28:13Z",
       "original_status": "In Review",
       "slices": [
@@ -4864,7 +4864,7 @@
           "title": "Reconcile-generated-stock-identity-with-existing-lookup"
         },
         {
-          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md",
+          "evidence": "Original AC1\u20133 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md",
           "id": "integration",
           "observed_at": "2026-11-11T14:42:07Z",
           "status": "complete",
@@ -5498,19 +5498,86 @@
       "workers": []
     },
     {
-      "assignee": "",
       "id": "FUCQ-414",
-      "jira_observed_at": "2026-11-12T15:47:57.529Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
       "title": "Reuse validated immutable stock snapshots across employees",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
       "type": "Story",
-      "unsliced": true,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
-      "workers": []
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "reuse",
+          "status": "complete",
+          "title": "Validated-immutable-snapshot-reuse",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record."
+        },
+        {
+          "id": "proof",
+          "status": "complete",
+          "title": "Semantic-equivalence-and-operation-count-proof",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record."
+        },
+        {
+          "id": "connected",
+          "status": "blocked",
+          "title": "Connected-release-offer-history-integration",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent-final-review",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained."
+        }
+      ],
+      "workers": [
+        {
+          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
+          "name": "Foghorn Leghorn",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/mr_potato_head",
+          "name": "Mr Potato Head",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/pugh",
+          "name": "Pugh",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-13T22:52:38Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "/root/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:16:27Z",
+          "expires_at": "2026-11-13T23:19:26Z",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        }
+      ],
+      "jira_observed_at": "2026-11-13T22:36:19.647Z",
+      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
+      "observed_at": "2026-11-13T23:34:17Z",
+      "branch": "dev/DEV-2026-11-13-GC-007"
     },
     {
       "assignee": "",
@@ -5839,17 +5906,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-436",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Build and publish the static GCSP artifact",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-437",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -5869,6 +5925,93 @@
       "type": "Story",
       "unsliced": true,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-440",
+      "observed_at": "2026-11-13T23:59:47Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Show employee account and current-vehicle information",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
+      "branch": "dev/DEV-2026-11-13-008",
+      "workers": [
+        {
+          "name": "Marvin the Martian",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-13T23:31:23.186693+00:00",
+          "expires_at": "2026-11-14T01:31:23.186693+00:00",
+          "status": "active",
+          "source": "thread 01a1d73e-195c-7dd3-8470-e5c514fd5fd9; dispatcher claim09a13e78"
+        },
+        {
+          "name": "Toothless",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:43:44.865713+00:00",
+          "expires_at": "2026-11-13T23:43:44.865713+00:00",
+          "status": "complete; editing stopped",
+          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed"
+        },
+        {
+          "name": "Lord Business",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "expires_at": "2026-11-13T23:55:25.071818+00:00",
+          "status": "complete; editing stopped",
+          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed"
+        },
+        {
+          "name": "Merlin the Magic Mouse",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "expires_at": "2026-11-14T01:59:46.910501+00:00",
+          "status": "active",
+          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed"
+        }
+      ],
+      "slices": [
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "Typed-account-projection-and-bearer-client",
+          "observed_at": "2026-11-13T23:43:44Z",
+          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "id": "screen",
+          "status": "in-progress",
+          "title": "Native-account-current-car-and-existing-actions",
+          "observed_at": "2026-11-13T23:48:46.647242+00:00"
+        },
+        {
+          "id": "choices",
+          "title": "Native-policy-backed-manual-choices-before-stock",
+          "status": "complete",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record"
+        },
+        {
+          "id": "previews",
+          "title": "Original-owned-offer-order-preview-composition",
+          "status": "in-progress",
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "evidence": "Merlin explicit active report; first focused preview run51/51; lead review and final render pending"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates",
+          "observed_at": "2026-11-13T23:59:46.910501+00:00",
+          "evidence": "Actual Angular/Chrome fixture render ui-proof-02 passed; lead inspected desktop/narrow/drawer/choices/incomplete/error/denied/loading captures. Preview final render and actual Java/OIDC still pending"
+        }
+      ],
+      "jira_observed_at": "2026-11-13T20:22:18.041Z"
     },
     {
       "assignee": "",
@@ -6552,7 +6695,7 @@
           "observed_at": "2026-11-13T22:29:52.192657+00:00",
           "role": "reviewer",
           "source": "chat 01a1d702-b216-79d0-b864-c322cdfef3cd; requested/selected/effective gpt-6.1-sol/high; title/runtime verified",
-          "status": "completed; independent review passed, AC1–4 supported"
+          "status": "completed; independent review passed, AC1\u20134 supported"
         }
       ]
     },
@@ -6661,91 +6804,60 @@
       "jira_observed_at": "2026-11-13T23:18:25.492855+00:00"
     },
     {
-      "assignee": "",
-      "id": "FUCQ-440",
-      "observed_at": "2026-11-13T23:59:47Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Show employee account and current-vehicle information",
+      "id": "FUCQ-436",
+      "title": "Build and publish the static GCSP artifact",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
+      "observed_at": "2026-11-13T23:45:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
       "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
-      "branch": "dev/DEV-2026-11-13-008",
+      "branch": "dev/DEV-2026-11-13-004",
       "workers": [
         {
-          "name": "Marvin the Martian",
+          "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-13T23:31:23.186693+00:00",
-          "expires_at": "2026-11-14T01:31:23.186693+00:00",
-          "status": "active",
-          "source": "thread 01a1d73e-195c-7dd3-8470-e5c514fd5fd9; dispatcher claim09a13e78"
+          "observed_at": "2026-11-13T23:45:04.033059+00:00",
+          "expires_at": "2026-11-13T23:45:04.033059+00:00",
+          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
+          "status": "checkpoint review complete; observed worker expired"
         },
         {
-          "name": "Toothless",
+          "name": "Yosemite Sam",
           "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-13T23:43:44.865713+00:00",
-          "expires_at": "2026-11-13T23:43:44.865713+00:00",
-          "status": "complete; editing stopped",
-          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed"
-        },
-        {
-          "name": "Lord Business",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "expires_at": "2026-11-13T23:55:25.071818+00:00",
-          "status": "complete; editing stopped",
-          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed"
-        },
-        {
-          "name": "Merlin the Magic Mouse",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-13T23:59:46.910501+00:00",
-          "expires_at": "2026-11-14T01:59:46.910501+00:00",
-          "status": "active",
-          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed"
+          "role": "reviewer",
+          "observed_at": "2026-11-13T23:45:04.033059+00:00",
+          "expires_at": "2026-11-13T23:45:04.033059+00:00",
+          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
+          "status": "checkpoint review complete; observed worker expired"
         }
       ],
       "slices": [
         {
-          "id": "projection",
+          "id": "artifact",
           "status": "complete",
-          "title": "Typed-account-projection-and-bearer-client",
-          "observed_at": "2026-11-13T23:43:44Z",
-          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md"
+          "title": "Independent-static-Angular-artifact-and-required-assets",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Actual F439 foundation composed through published gcsp-poc-dev base09a13e78/merge70d86d5f; root npm assembly uses default integrated app inputs, two F455-compatible public configs,9 files/8 dependencies each,7 stable assets. Compiler/browser and18-check evidence reused with exact matching inputs. See delivery record and companion proof JSON."
         },
         {
-          "id": "screen",
+          "id": "runtime",
           "status": "in-progress",
-          "title": "Native-account-current-car-and-existing-actions",
-          "observed_at": "2026-11-13T23:48:46.647242+00:00"
-        },
-        {
-          "id": "choices",
-          "title": "Native-policy-backed-manual-choices-before-stock",
-          "status": "complete",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record"
-        },
-        {
-          "id": "previews",
-          "title": "Original-owned-offer-order-preview-composition",
-          "status": "in-progress",
-          "observed_at": "2026-11-13T23:59:46.910501+00:00",
-          "evidence": "Merlin explicit active report; first focused preview run51/51; lead review and final render pending"
+          "title": "Public-config-and-route-cache-CSP-referrer-policy",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Public schema/producer unchanged and proven compatible with actual integrated foundation via root CLI; backend settings excluded. Actual hosted cache/CSP/referrer and identity/dynamic-offer flow remain incomplete."
         },
         {
           "id": "integration",
-          "status": "in-progress",
-          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates",
-          "observed_at": "2026-11-13T23:59:46.910501+00:00",
-          "evidence": "Actual Angular/Chrome fixture render ui-proof-02 passed; lead inspected desktop/narrow/drawer/choices/incomplete/error/denied/loading captures. Preview final render and actual Java/OIDC still pending"
+          "status": "blocked",
+          "title": "Real-Angular-Java-OIDC-hosted-headers-and-browser-gates",
+          "observed_at": "2026-11-13T23:31:36Z",
+          "evidence": "Actual Angular foundation is published and locally composed; Keycloak unhosted/unregistered, real Java/OIDC/CORS/PG/Safari/private/Render gates unavailable. Medium F486 route recovery remains separate backlog, source-verified/not browser reproduced, no repair scope or new merge dependency. Original AC unchecked."
         }
       ],
-      "jira_observed_at": "2026-11-13T20:22:18.041Z"
+      "tracker_observed_at": "2026-11-13T22:23:44Z"
     }
   ],
   "version": 1

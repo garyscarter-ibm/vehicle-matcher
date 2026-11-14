@@ -2,6 +2,7 @@ import { isBuddyEngaged } from '../brief/permission.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
 import { intentValue, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
@@ -43,9 +44,14 @@ const visible = (row, employee) => Array.isArray(row.visibility?.companyIds) && 
 const lottery = (seed, runId, employeeId, orderUuid) => createHash('sha256').update(JSON.stringify([seed, runId, employeeId, orderUuid])).digest('hex');
 const ordinal = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 const byStableId = (a, b) => ordinal(a.employeeId, b.employeeId) || ordinal(a.orderUuid, b.orderUuid);
-const entryOf = (r) => ({ orderUuid: r.orderUuid, configurationId: r.configurationId, snapshot: r.facts,
-  availability: { ...r.release?.availability, state: 'available', availableFrom: r.release?.availability?.availableFrom ?? r.release?.releasedAt,
-    version: String(r.version) } });
+const entryOf = (r) => {
+  // Transaction reads are mutable copies. Prepare a detached immutable snapshot once for this pool entry.
+  let snapshot = r.facts;
+  try { snapshot = createVehicleSnapshot(snapshot); } catch { /* Preserve malformed input for the evaluator's existing rejection path. */ }
+  return { orderUuid: r.orderUuid, configurationId: r.configurationId, snapshot,
+    availability: { ...r.release?.availability, state: 'available', availableFrom: r.release?.availability?.availableFrom ?? r.release?.releasedAt,
+      version: String(r.version) } };
+};
 const quoteOf = (decision) => ({ orderUuid: decision.orderUuid, configurationId: decision.configurationId, snapshot: decision.snapshot, terms: decision.terms,
   employeeFacts: decision.employeeFacts, versions: decision.versions, reasons: decision.reasons, tradeOffs: decision.tradeOffs });
 function compare(rule) {

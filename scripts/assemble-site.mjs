@@ -58,7 +58,7 @@ function replaceOnce(source, before, after, file) {
   return source.replace(before, after);
 }
 
-function references(source, file) {
+export function references(source, file) {
   const found = new Set();
   // All literal ESM imports (including import()), CSS url/@import, page assets,
   // and literal module-relative assets/styles used by lazy entry loaders.

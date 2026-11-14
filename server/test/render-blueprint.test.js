@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
-const site = yaml.slice(yaml.indexOf('name: gcsp-site'));
+const service = (name) => yaml.match(new RegExp(`  - type: web\\n    name: ${name}\\n[\\s\\S]*?(?=\\n  - type: web|$)`))?.[0];
+const site = service('gcsp-site');
 
 // A file the site build copies but the filter omits would ship stale until some other change redeployed.
 test('gcsp-site build filter covers exactly what its build copies', () => {

@@ -1,4 +1,4 @@
-import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
+import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData, reusableVehicleSnapshot } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
@@ -21,6 +21,29 @@ function configurationValid(config, slider) {
     && ['confirmedAssurances', 'plugInFuels', 'chargingAccess', 'availabilityStates'].every((key) => Array.isArray(config[key]) && config[key].every(text))
     && config.preferences && config.essentials && config.tuning?.weights && config.tuning?.hardFilter
     && Number.isFinite(slider.minimum) && Number.isFinite(slider.maximum) && slider.minimum === 0 && slider.maximum === 100;
+}
+
+const plainDataRecord = (value) => value && typeof value === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(value))
+  && Reflect.ownKeys(value).every((key) => Object.hasOwn(Object.getOwnPropertyDescriptor(value, key), 'value'));
+
+function cloneSource(source) {
+  if (!plainDataRecord(source)) return structuredClone(source);
+  const stock = Object.getOwnPropertyDescriptor(source, 'stock');
+  if (!stock?.enumerable || !Object.hasOwn(stock, 'value') || !Array.isArray(stock.value)) return structuredClone(source);
+  if (Object.getPrototypeOf(stock.value) !== Array.prototype || Reflect.ownKeys(stock.value).some((key) => key !== 'length'
+    && (typeof key !== 'string' || !/^(0|[1-9]\d*)$/.test(key) || Number(key) >= stock.value.length
+      || !Object.getOwnPropertyDescriptor(stock.value, key).enumerable
+      || !Object.hasOwn(Object.getOwnPropertyDescriptor(stock.value, key), 'value')))) return structuredClone(source);
+  if (!stock.value.every(plainDataRecord)) return structuredClone(source);
+  const snapshots = stock.value.map((row) => {
+    const snapshot = Object.getOwnPropertyDescriptor(row, 'snapshot');
+    return snapshot?.enumerable && Object.hasOwn(snapshot, 'value') ? reusableVehicleSnapshot(snapshot.value) : undefined;
+  });
+  if (!snapshots.some(Boolean)) return structuredClone(source);
+  // Exclude only admitted snapshot graphs; clone all employee and operational facts together as before.
+  const copy = structuredClone({ ...source, stock: stock.value.map((row, index) => snapshots[index] ? { ...row, snapshot: null } : row) });
+  snapshots.forEach((snapshot, index) => { if (snapshot) copy.stock[index].snapshot = snapshot; });
+  return copy;
 }
 
 function validateSource(source) {
@@ -149,7 +172,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
         const provided = await provider.resolve(context);
         if (provided?.status === 'stale-run' || provided?.status === 'forbidden') return provided;
         if (provided?.status !== 'ok') return unavailable('employee-source-unavailable');
-        const source = structuredClone(provided.value);
+        const source = cloneSource(provided.value);
         if (['runId', 'environmentId', 'employeeId'].some((key) => source?.[key] !== context[key])) return refused();
         const candidates = validateSource(source);
         if (preview && !unselectedPracticalAnswer(preview.charging)) {
