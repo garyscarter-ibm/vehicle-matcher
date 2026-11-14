@@ -6306,7 +6306,7 @@
     {
       "assignee": "",
       "id": "FUCQ-457",
-      "observed_at": "2026-11-14T00:24:06Z",
+      "observed_at": "2026-11-14T01:39:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and publish canonical versioned policy",
@@ -6323,8 +6323,10 @@
         },
         {
           "id": "s2-publish-activation",
-          "status": "not-started",
-          "title": "Persisted versions, Greg publication and run activation on native PostgreSQL"
+          "status": "complete",
+          "title": "Persisted versions, Greg publication and run activation on native PostgreSQL",
+          "observed_at": "2026-11-14T01:39:02Z",
+          "evidence": "cd9c5ff9 reviewed by story-lead; migration renamed V457_1; merged base 49b893d6: verify 329/0F/0E/0S on native PG17 incl. 46 policy publish/activation/source/parity tests"
         },
         {
           "id": "s5-reviewed-adoption",
