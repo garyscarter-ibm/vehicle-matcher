@@ -6555,7 +6555,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T13:22:34Z",
+      "observed_at": "2026-11-14T13:57:25Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Open an offer and accept or decline",
@@ -6591,17 +6591,19 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey"
+          "status": "in-progress",
+          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey",
+          "observed_at": "2026-11-14T13:57:25Z",
+          "evidence": "Offer route now mounts native screen with initial/reused selector, safe next-handle navigation and unchanged auth guard;12 new route+5 existing policy tests PASS/0skip;105 pins/cleanup verified. Actual Java/OIDC/email/PG/remote/hosted/browser and unobserved-auth gates remain open; docs/gcsp/fucq445-route-2026-11-14.md."
         }
       ],
       "workers": [
         {
           "name": "Mugsy",
           "harness": "codex",
-          "observed_at": "2026-11-14T13:22:34.465687+00:00",
-          "expires_at": "2026-11-14T13:22:34.465687+00:00",
-          "source": "Decision/follow-up partial checkpoint locally checked; source/helper writes released after commit. Frozen for dispatcher publication and independent review; no active worker inferred."
+          "observed_at": "2026-11-14T13:57:25.686837+00:00",
+          "expires_at": "2026-11-14T13:57:25.686837+00:00",
+          "source": "Finite offer-route source/tests checked; writes including serialised routes.ts released after commit. Frozen for dispatcher publication and independent review; no active worker inferred."
         }
       ]
     },
