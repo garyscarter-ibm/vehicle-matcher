@@ -7214,8 +7214,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Current product matches F421 native fb31d459; reuse F415 native/Chrome cb5064ed with probe delta explicit. Remaining experience proof authorised, not executed; Safari unavailable: locked Mac. Original AC/acceptance unchanged. Delivery note.",
-      "observed_at": "2026-11-14T03:10:13Z",
+      "note": "Focused native-host proof partial:179/181 then91/92, no overall pass. Medium reverse drawer focus finding; separate parent Bug intake (originF386). Private/Safari/remaining keyboard gates unrun. Original AC/status unchanged.",
+      "observed_at": "2026-11-14T03:40:15Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -7233,10 +7233,10 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "Original F414 memory and F415 native Chrome42/42/10captures reused; current F421 native boundary matched. Remaining private/keyboard/accessibility proof selected; Safari blocked by locked Mac. No new execution/acceptance.",
+          "evidence": "No-match/release keyboard+relevant DOM/ARIA pass1440/375; stable pendingdesktop reverse sequence skipsClose(Medium,parentBugintake). Attempt1/2 retained179/181 and91/92, no overallpass. Remaining/private/Safari unrun; deliverynote.",
           "id": "connected",
-          "observed_at": "2026-11-14T03:10:11.467133+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "status": "blocked",
           "title": "Connected-release-offer-history-integration"
         },
         {
@@ -7254,13 +7254,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
       "workers": [
         {
-          "expires_at": "2026-11-14T04:10:13.305996+00:00",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
           "harness": "codex",
           "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
           "name": "Foghorn Leghorn",
           "observed_at": "2026-11-14T03:10:11.467133+00:00",
           "role": "story-lead",
-          "source": "Parent resumed existing lead for scoped experience proof only; no acceptance/lifecycle change."
+          "source": "Proof stopped at recorded product assertion; owned resources cleaned and partial evidence handed to parent. No acceptance/lifecycle change."
         },
         {
           "expires_at": "2026-11-13T23:19:26Z",
@@ -7288,6 +7288,15 @@
           "observed_at": "2026-11-13T23:16:27Z",
           "role": "reviewer",
           "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
+          "name": "Timone",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "expires_at": "2026-11-14T03:40:13.455765+00:00",
+          "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
         }
       ]
     }
