@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T08:12:56Z",
+      "observed_at": "2026-11-14T08:27:53Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -7376,8 +7376,10 @@
         },
         {
           "id": "view-parity",
-          "status": "not-started",
-          "title": "Native-Angular-view-parity"
+          "status": "in-progress",
+          "title": "Native-Angular-view-parity",
+          "observed_at": "2026-11-14T08:27:53Z",
+          "evidence": "Dispatcher allocated exactly seven new fact-list/option-list family files as independent view-parity increment; see docs/gcsp/fucq442-delivery.md. Stock view/media/card/route and actual Java integration remain open. No original AC changed."
         },
         {
           "id": "review-proof",
