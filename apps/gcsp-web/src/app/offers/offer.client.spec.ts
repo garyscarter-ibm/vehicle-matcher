@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { OfferClient } from './offer.client';
+import { offerCommandProducerFixtures } from './offer-command-producer.fixture';
 
 const config: RuntimePublicConfig = {
   schemaVersion: 1,
@@ -72,9 +73,11 @@ function followup(state: 'question' | 'change-saved' | 'waiting' | 'no-match' | 
   if (state === 'no-match') return { schemaVersion: 1, state, decisionId, savedChange: saved,
     evaluation: { evaluatedAt: now, carsChecked: 0, suitable: 0 } };
   return { schemaVersion: 1, state, decisionId, savedChange: saved,
-    comparison: { schemaVersion: 1, currentBriefVersion: 6, requirements: [],
-      previous: { offer: { state: 'declined' }, scoreBasis: { kind: 'historical-quote', briefVersion: 5, policyVersion: 'policy-v2', quotedAt: now } },
-      next: { offer: { state: 'pending' }, scoreBasis: { kind: 'historical-quote', briefVersion: 6, policyVersion: 'policy-v2', quotedAt: now } } } };
+    comparison: { schemaVersion: 1, currentBriefVersion: 6, requirements: [{ kind: 'preference', key: 'body', value: 'estate', importance: 1,
+      previousFacts: { body: { status: 'unknown', value: null, unit: null, provenance: null } },
+      nextFacts: { body: { status: 'unknown', value: null, unit: null, provenance: null } } }],
+      previous: { offer: offer({ state: 'declined', offerState: 'rejected', holdState: 'released', availableActions: [], handoff: null, followup: { decisionId } }), scoreBasis: { kind: 'historical-quote', briefVersion: 5, policyVersion: 'policy-v2', quotedAt: now } },
+      next: { offer: offer({ offerId: 'offer-2', quote: { ...(offer()['quote'] as object), quoteId: 'quote-2', briefVersion: 6 } }), scoreBasis: { kind: 'historical-quote', briefVersion: 6, policyVersion: 'policy-v2', quotedAt: now } } } };
 }
 
 function decisionReceipt(kind: 'accept' | 'decline', input: Record<string, unknown>): Record<string, unknown> {
@@ -83,8 +86,39 @@ function decisionReceipt(kind: 'accept' | 'decline', input: Record<string, unkno
     offerState: kind === 'accept' ? 'accepted' : 'rejected', holdState: kind === 'accept' ? 'allocated' : 'released',
     offerVersion: 3, holdVersion: 5, quoteVersion: 3, quoteId: 'quote-1', policyVersion: 'policy-v2',
     expiresAt: '2026-11-14T11:00:00.000Z', serverNow: now, clockVersion: 'clock-v3', availableActions: [],
-    operationId: null, reconciliationRequired: false, ...(kind === 'accept' ? { selection: null } : {}) };
+    operationId: null, reconciliationRequired: false, ...(kind === 'accept' ? { selection: commandHandoff() } : {}) };
 }
+
+// ManualOrderService's command projection, distinct from OfferAccessService's read selection.
+function commandHandoff(state: 'acknowledged' | 'handoff-pending' | 'handoff-failed' = 'acknowledged') {
+  const operationId = `selection:${'b'.repeat(64)}`;
+  const names = ['HR approval', 'sales-manager approval', 'sent to ordering'];
+  const acknowledged = state === 'acknowledged'; const failed = state === 'handoff-failed';
+  const scope = { operationId, runId: 'run-1', orderUuid: 'stock-1' };
+  return { schemaVersion: 1, operationId, operationState: acknowledged ? 'acknowledged' : failed ? 'handoff-failed' : 'unknown',
+    selectionReceived: true, orderReference: 'GCSP-000001',
+    selection: { schemaVersion: 1, orderReference: 'GCSP-000001', receivedAt: now, renewalId: null,
+      source: { type: 'buddy-offer', holdId: 'hold-1', expectedHoldVersion: 4, expectedDraftVersion: 5 },
+      quote: { ...(offer()['quote'] as object), runId: 'run-1', employeeId: 'employee-1', entitlementSlotId: 'slot-1', version: 3 },
+      stock: { orderUuid: 'stock-1', orderNumber: '0123456', configurationId: 'configuration-1', facts: (offer()['quote'] as Record<string, unknown>)['facts'] },
+      terms: { schemaVersion: 1, termsVersion: 'terms-v1', policyVersion: 'policy-v2', wording: 'Terms apply.', fictional: true,
+        approvalStages: names, declarations: [{ id: 'terms', label: 'I accept the terms.', appliesTo: 'all' }] },
+      declarations: { terms: true }, draft: { draftVersion: 5, choices: { mode: 'new' } },
+      employee: { name: 'Synthetic employee' }, driver: { name: 'Synthetic driver' }, oldContract: null,
+      sourceVersions: { employee: 1, brief: 5 },
+      employeeAuthority: { employeeId: 'employee-1', principalId: 'employee-subject', companyId: 'company-1', gradeId: 'grade-1', schemeId: 'scheme-1', version: 1 },
+      vehicleSlot: { runId: 'run-1', entitlementSlotId: 'slot-1', employeeId: 'employee-1', state: 'active', version: 1 }, reviewDetails: null },
+    progress: { schemaVersion: 1, selectionState: state, approved: false, current: acknowledged ? names[0] : 'selection received',
+      stages: [{ name: 'selection received', state: acknowledged ? 'complete' : failed ? 'failed' : 'pending' },
+        ...names.map((name, index) => ({ name, state: acknowledged && index === 0 ? 'waiting' : 'not-started' }))] },
+    order: acknowledged ? { status: 'confirmed', ...scope, configurationId: 'configuration-1', orderNumber: '0123456', orderStatus: names[0], fictional: true } : null,
+    failure: failed ? { status: 'rejected', ...scope, reason: 'synthetic-ordering-refused', fictional: true } : null,
+    view: { state: acknowledged ? 'awaiting-approval' : failed ? 'handoff-failed' : 'handoff-pending',
+      action: acknowledged ? 'view-order' : failed ? 'contact-support' : 'check-status' } };
+}
+
+const acceptInput = { offerId: 'offer-1', runId: 'run-1', commandId: 'command-accept', decision: 'accept' as const,
+  expectedOfferVersion: 2, expectedHoldVersion: 4, expectedQuoteVersion: 3, termsDigest: 'terms-digest', declarations: { terms: true as const } };
 
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 const context = (subject = 'employee-subject', runId = 'run-1') => ({ status: 'ready' as const,
@@ -127,6 +161,52 @@ describe('Angular offer API client', () => {
     expect(init).toMatchObject({ method: 'GET', credentials: 'omit', cache: 'no-store', redirect: 'error' });
     expect(init?.headers).toEqual({ Accept: 'application/json', Authorization: 'Bearer access-token' });
     expect(init).not.toHaveProperty('body');
+  });
+
+  it('preserves the source partial comparison when no current-car facts were recorded', async () => {
+    const missing = { ...comparison, status: 'partial', reason: 'current-car-facts-unavailable',
+      currentCar: { model: '3 Series', source: { mode: 'dated-snapshot', sourceVersion: 'current-contract-v1', observedAt: now } } };
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: offer({ comparison: missing }) }));
+    const result = await client.readOffer('offer-1');
+    expect(result.status).toBe('ok');
+    if (result.status !== 'ok') return;
+    expect(result.value.comparison).toEqual(missing);
+    expect(result.value.comparison.currentCar).not.toHaveProperty('facts');
+    expect(result.value.quote.configurationId).toBe('configuration-1');
+    expect(result.value.quote.terms.points.value).toBe(0);
+  });
+
+  it('requires comparison facts and unknowns to partition the source keys with a pinned observation time', async () => {
+    const partial = { status: 'partial', reason: 'current-car-facts-recorded', comparisonAvailable: true,
+      currentCar: { model: '3 Series', source: { mode: 'dated-snapshot', sourceVersion: 'current-contract-v1', observedAt: now },
+        facts: { seats: { value: 5, unit: null } } }, unknowns: comparison.unknowns.filter((key) => key !== 'seats') };
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: offer({ comparison: partial }) }));
+    expect((await client.readOffer('offer-1')).status).toBe('ok');
+    for (const malformed of [
+      { ...partial, unknowns: comparison.unknowns },
+      { ...partial, unknowns: [] },
+      { ...partial, comparisonAvailable: false },
+      { ...partial, currentCar: { ...partial.currentCar, facts: { seats: { value: 0, unit: null } } } },
+      { ...partial, currentCar: { ...partial.currentCar, source: { ...partial.currentCar.source, observedAt: '2026-11-14T10:00:00.000Z' } } },
+    ]) {
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: offer({ comparison: malformed }) }));
+      expect((await client.readOffer('offer-1')).status).toBe('unavailable');
+    }
+  });
+
+  it('types source explanation strings and nested requirement/fact records without losing zero values', async () => {
+    const quote = offer()['quote'] as Record<string, unknown>;
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: offer({ quote: { ...quote,
+      decision: { ...(quote['decision'] as object), reasons: ['Recorded explanation.',
+        { field: 'seats', fact: fact('known', 0), requirement: { value: 5, operator: 'gte', unit: null } }] } } }) }));
+    const result = await client.readOffer('offer-1');
+    expect(result.status).toBe('ok');
+    if (result.status !== 'ok') return;
+    const [message, detail] = result.value.quote.decision.reasons;
+    if (typeof message === 'string') expect(message.startsWith('Recorded')).toBe(true);
+    if (typeof detail === 'string') throw new Error('Expected a typed source explanation record.');
+    expect(detail.fact?.value).toBe(0);
+    expect(detail.requirement?.value).toBe(5);
   });
 
   it('keeps accepted, declined, expired and superseded offers as their returned terminal states', async () => {
@@ -181,6 +261,78 @@ describe('Angular offer API client', () => {
     expect((await client.decide(decline)).status).toBe('ok');
     expect(JSON.parse(String(fetcher.mock.calls[1]?.[1]?.body))).toEqual({ commandId: 'command-decline', runId: 'run-1',
       decision: 'decline', reasonCode: 'body-style', expectedOfferVersion: 2, expectedHoldVersion: 4, expectedQuoteVersion: 3 });
+  });
+
+  it.each(['acknowledged', 'handoff-pending', 'handoff-failed'] as const)(
+    'preserves accepted receipt and separate %s ordering progress without claiming approval', async (progressState) => {
+      const raw = commandHandoff(progressState);
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...decisionReceipt('accept', acceptInput), selection: raw } }));
+      const result = await client.decide(acceptInput);
+      expect(result.status).toBe('ok');
+      if (result.status !== 'ok') return;
+      expect(result.value.state).toBe('accepted');
+      expect(result.value.selection?.progress.selectionState).toBe(progressState);
+      expect(result.value.selection?.progress.approved).toBe(false);
+      expect(result.value.selection?.operationState).toBe(raw.operationState);
+      expect(result.value.selection?.selectionReceived).toBe(true);
+      expect(result.value.selection?.view).toEqual(raw.view);
+      expect(result.value.selection?.order).toEqual(raw.order);
+      expect(result.value.selection?.failure).toEqual(raw.failure);
+      expect(result.value.selection?.selection.stock.orderNumber).toBe('0123456');
+      expect(result.value.selection?.selection.quote.quoteId).toBe('quote-1');
+      expect(result.value.selection?.selection).not.toHaveProperty('employeeAuthority');
+      expect(result.value.selection?.selection).not.toHaveProperty('driver');
+      expect(result.value.selection?.selection.stock).not.toHaveProperty('facts');
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    });
+
+  it.each(offerCommandProducerFixtures)('reads the actual $state producer receipt', async ({ input, receipt, state: progressState }) => {
+    state.set({ status: 'ready', context: { ...context().context, runId: input.runId, employeeId: receipt.selection.selection.employeeAuthority.employeeId } });
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: receipt }));
+    const result = await client.decide(input);
+    expect(result.status).toBe('ok');
+    if (result.status !== 'ok') return;
+    expect(result.value.decisionId).toBe(receipt.decisionId);
+    expect(result.value.selection?.progress.selectionState).toBe(progressState);
+    expect(result.value.selection?.progress.approved).toBe(false);
+    expect(result.value.selection?.view).toEqual(receipt.selection.view);
+    expect(result.value.selection?.order).toEqual(receipt.selection.order);
+    expect(result.value.selection?.failure).toEqual(receipt.selection.failure);
+    expect(result.value.selection?.selection.quote.quoteId).toBe(receipt.quoteId);
+    expect(result.value.selection?.selection.stock).toEqual({ orderUuid: receipt.selection.selection.stock.orderUuid,
+      orderNumber: receipt.selection.selection.stock.orderNumber, configurationId: receipt.selection.selection.stock.configurationId });
+    expect(result.value.selection?.selection).not.toHaveProperty('employeeAuthority');
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects mismatched ordering identities and contradictory progress without replay', async () => {
+    const baseline = commandHandoff();
+    for (const selection of [
+      { ...baseline, operationId: `selection:${'c'.repeat(64)}` },
+      { ...baseline, selection: { ...baseline.selection, quote: { ...baseline.selection.quote, quoteId: 'other-quote' } } },
+      { ...baseline, selection: { ...baseline.selection, quote: { ...baseline.selection.quote, runId: 'other-run' } } },
+      { ...baseline, selection: { ...baseline.selection, stock: { ...baseline.selection.stock, orderUuid: 'other-stock' } } },
+      { ...baseline, selection: { ...baseline.selection, quote: { ...baseline.selection.quote, employeeId: 'other-employee' } } },
+      { ...baseline, view: { state: 'handoff-pending', action: 'check-status' } },
+      { ...baseline, progress: { ...baseline.progress, approved: true } },
+      { ...baseline, order: { ...baseline.order!, runId: 'other-run' } },
+      { ...baseline, order: { ...baseline.order!, orderStatus: 'approved' } },
+    ]) {
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...decisionReceipt('accept', acceptInput), selection } }));
+      expect((await client.decide(acceptInput)).status).toBe('unavailable');
+    }
+    expect(fetcher).toHaveBeenCalledTimes(9);
+  });
+
+  it('binds command receipts to the requested offer, run and command identity', async () => {
+    for (const override of [
+      { offerId: 'other-offer' }, { runId: 'other-run' }, { commandId: 'other-command' },
+      { decisionId: 'unrecognised-decision' }, { requestedDecision: 'decline' },
+    ]) {
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...decisionReceipt('accept', acceptInput), ...override } }));
+      expect((await client.decide(acceptInput)).status).toBe('unavailable');
+    }
+    expect(fetcher).toHaveBeenCalledTimes(5);
   });
 
   it('rejects unknown authority fields and caller run mismatches before dispatch', async () => {
@@ -247,6 +399,27 @@ describe('Angular offer API client', () => {
     const unavailableResult = await client.readFollowup(decisionId);
     expect(unavailableResult.status).toBe('unavailable');
     if (unavailableResult.status === 'unavailable') expect(unavailableResult.savedChange?.state).toBe('change-saved');
+  });
+
+  it('validates the real nested offer projections and score pins before declaring a follow-up ready', async () => {
+    const ready = followup('ready');
+    const comparison = ready['comparison'] as Record<string, unknown>;
+    const previous = comparison['previous'] as Record<string, unknown>;
+    const next = comparison['next'] as Record<string, unknown>;
+    const nextOffer = next['offer'] as Record<string, unknown>;
+    for (const malformed of [
+      { ...comparison, next: { ...next, offer: { state: 'pending' } } },
+      { ...comparison, previous: { ...previous, offer: { state: 'declined' } } },
+      { ...comparison, next: { ...next, offer: { ...nextOffer, runId: 'another-run' } } },
+      { ...comparison, next: { ...next, scoreBasis: { kind: 'historical-quote', briefVersion: 7, policyVersion: 'policy-v2', quotedAt: now } } },
+      { ...comparison, next: { ...next, offer: { ...nextOffer, offerId: 'offer-1' } } },
+      { ...comparison, currentBriefVersion: 7 },
+      { ...comparison, previous: { ...previous, offer: { ...(previous['offer'] as object), runId: 'other-run' } },
+        next: { ...next, offer: { ...nextOffer, runId: 'other-run' } } },
+    ]) {
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...ready, comparison: malformed } }));
+      expect((await client.readFollowup(decisionId)).status).toBe('unavailable');
+    }
   });
 
   it('confirms the exact follow-up command once and requires an operation ID for HTTP 202', async () => {

@@ -52,9 +52,18 @@ export interface OfferVehicleSnapshot {
   readonly facts: Readonly<Record<string, OfferFact>>;
 }
 
-export interface OfferExplanation {
-  readonly [key: string]: OfferSimpleValue | Readonly<Record<string, OfferFact>> | OfferSimpleValue[];
+export interface OfferExplanationRequirement {
+  readonly value?: OfferSimpleValue;
+  readonly operator?: OfferSimpleValue;
+  readonly unit?: OfferSimpleValue;
 }
+
+export type OfferExplanation = string | {
+  readonly [key: string]: OfferSimpleValue | Readonly<Record<string, OfferFact>> | OfferFact | OfferExplanationRequirement | undefined;
+  readonly fact?: OfferFact;
+  readonly facts?: OfferSimpleValue | Readonly<Record<string, OfferFact>>;
+  readonly requirement?: OfferExplanationRequirement;
+};
 
 export interface OfferEvaluation {
   readonly gateStatus: 'eligible' | 'ineligible' | 'needs-confirmation';
@@ -199,6 +208,32 @@ export type OfferDecisionInput = OfferDecisionBase & (
   | { readonly decision: 'decline'; readonly reasonCode: string; readonly termsDigest?: never; readonly declarations?: never; readonly expectedReturnMileage?: never }
 );
 
+export type OfferSelectionProgress = Omit<OfferSelection, 'orderReference' | 'orderNumber'>;
+
+// Command acknowledgement carries ordering progress; it does not establish downstream approval.
+export interface OfferCommandHandoff {
+  readonly schemaVersion: 1;
+  readonly operationId: string;
+  readonly operationState: 'allocation-pending' | 'handoff-pending' | 'unknown' | 'acknowledged' | 'allocation-failed' | 'handoff-failed';
+  readonly selectionReceived: true;
+  readonly orderReference: string | null;
+  readonly selection: {
+    readonly schemaVersion: 1;
+    readonly orderReference: string | null;
+    readonly receivedAt: string;
+    readonly source: { readonly type: 'buddy-offer'; readonly holdId: string; readonly expectedHoldVersion: number; readonly expectedDraftVersion: number };
+    readonly quote: { readonly quoteId: string; readonly orderUuid: string; readonly configurationId: string; readonly briefVersion: number; readonly policyVersion: string; readonly version: number };
+    readonly stock: { readonly orderUuid: string; readonly orderNumber: string; readonly configurationId: string };
+    readonly terms: { readonly termsVersion: string; readonly policyVersion: string; readonly approvalStages: readonly string[] };
+  };
+  readonly progress: OfferSelectionProgress;
+  readonly order: null | { readonly status: 'confirmed'; readonly operationId: string; readonly runId: string; readonly orderUuid: string;
+    readonly configurationId: string; readonly orderNumber: string; readonly orderStatus: string; readonly fictional?: boolean };
+  readonly failure: null | { readonly status?: string; readonly reason?: string; readonly operationId?: string; readonly runId?: string;
+    readonly orderUuid?: string; readonly fictional?: boolean };
+  readonly view: { readonly state: 'awaiting-approval' | 'handoff-pending' | 'handoff-failed'; readonly action: 'view-order' | 'check-status' | 'contact-support' };
+}
+
 export interface OfferDecisionReceipt {
   readonly schemaVersion: 1;
   readonly runId: string;
@@ -221,7 +256,7 @@ export interface OfferDecisionReceipt {
   readonly availableActions: readonly OfferDecisionKind[];
   readonly operationId: string | null;
   readonly reconciliationRequired: boolean;
-  readonly selection?: OfferSelection | null;
+  readonly selection?: OfferCommandHandoff | null;
 }
 
 export type OfferJsonValue = OfferScalar | readonly OfferJsonValue[] | { readonly [key: string]: OfferJsonValue };
@@ -258,11 +293,39 @@ export interface OfferSavedChange {
   readonly change: { readonly path: string; readonly before: OfferJsonValue; readonly after: OfferJsonValue };
 }
 
+export interface OfferFollowupRequirementFact {
+  readonly status: 'known' | 'unknown';
+  readonly value: OfferJsonValue;
+  readonly unit: string | null;
+  readonly provenance: OfferProvenance | null;
+}
+
+export type OfferFollowupRequirement = {
+  readonly key: string;
+  readonly value: OfferJsonValue;
+  readonly previousFacts: Readonly<Record<string, OfferFollowupRequirementFact>>;
+  readonly nextFacts: Readonly<Record<string, OfferFollowupRequirementFact>>;
+} & ({ readonly kind: 'preference'; readonly importance: number }
+  | { readonly kind: 'essential'; readonly operator: string; readonly unit: string | null });
+
+export interface OfferFollowupComparison {
+  readonly schemaVersion: 1;
+  readonly currentBriefVersion: number;
+  readonly requirements: readonly OfferFollowupRequirement[];
+  readonly previous: OfferFollowupComparisonSide;
+  readonly next: OfferFollowupComparisonSide;
+}
+
+export interface OfferFollowupComparisonSide {
+  readonly offer: OfferProjection;
+  readonly scoreBasis: { readonly kind: 'historical-quote'; readonly briefVersion: number; readonly policyVersion: string; readonly quotedAt: string };
+}
+
 export type OfferFollowupValue = OfferFollowupQuestion
   | OfferSavedChange
   | { readonly schemaVersion: 1; readonly state: 'waiting'; readonly decisionId: string; readonly savedChange: OfferSavedChange }
   | { readonly schemaVersion: 1; readonly state: 'no-match'; readonly decisionId: string; readonly savedChange: OfferSavedChange; readonly evaluation: { readonly evaluatedAt: string; readonly carsChecked: number; readonly suitable: 0 } }
-  | { readonly schemaVersion: 1; readonly state: 'ready'; readonly decisionId: string; readonly savedChange: OfferSavedChange; readonly comparison: Readonly<Record<string, OfferJsonValue>> };
+  | { readonly schemaVersion: 1; readonly state: 'ready'; readonly decisionId: string; readonly savedChange: OfferSavedChange; readonly comparison: OfferFollowupComparison };
 
 export type OfferFailureStatus = 'invalid' | 'unavailable' | 'stale-version' | 'conflict' | 'forbidden' | 'denied'
   | 'not-found' | 'stale-run' | 'pending' | 'unauthenticated' | 'unsupported';

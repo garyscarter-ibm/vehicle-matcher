@@ -14,7 +14,7 @@ import {
 } from './offer.types';
 import {
   isOfferDecisionInput,
-  isOfferDecisionReceipt,
+  parseOfferDecisionReceipt,
   isOfferDeclineReasons,
   isOfferFollowupConfirmInput,
   isOfferFollowupValue,
@@ -72,14 +72,14 @@ export class OfferClient {
   readOffer(offerId: string, options: OfferRequestOptions = {}): Promise<OfferResult<OfferProjection>> {
     if (!this.identifier(offerId)) return Promise.resolve(invalid('invalid-offer-selector'));
     return this.call((context) => `/offers/${encodeURIComponent(offerId)}?runId=${encodeURIComponent(context.runId)}`,
-      undefined, (value, context) => isOfferProjection(value, { offerId, runId: context.runId }),
+      undefined, (value, context) => isOfferProjection(value, { offerId, runId: context.runId }) ? value : null,
       { offerId }, options, undefined, () => unavailable('invalid-offer-response'));
   }
 
   readDecisionReasons(offerId: string, runId: string, options: OfferRequestOptions = {}): Promise<OfferResult<OfferDeclineReasons>> {
     if (!this.identifier(offerId) || !this.identifier(runId)) return Promise.resolve(invalid('invalid-offer-selector'));
     return this.call((context) => `/offers/${encodeURIComponent(offerId)}/decision-reasons?runId=${encodeURIComponent(context.runId)}`,
-      undefined, (value) => isOfferDeclineReasons(value), { offerId, runId }, options, runId,
+      undefined, (value) => isOfferDeclineReasons(value) ? value : null, { offerId, runId }, options, runId,
       () => unavailable('invalid-offer-response'));
   }
 
@@ -98,14 +98,14 @@ export class OfferClient {
         ? { expectedReturnMileage: input.expectedReturnMileage } : {}),
     };
     return this.call(() => `/offers/${encodeURIComponent(input.offerId)}/decision`, body,
-      (value) => isOfferDecisionReceipt(value, input), input, options, input.runId,
+      (value, context) => parseOfferDecisionReceipt(value, input, context.employeeId!), input, options, input.runId,
       () => unavailable('invalid-offer-response'));
   }
 
   readFollowup(decisionId: string, options: OfferRequestOptions = {}): Promise<OfferResult<OfferFollowupValue>> {
     if (!this.identifier(decisionId)) return Promise.resolve(invalid('invalid-offer-followup-selector'));
     return this.call(() => `/offer-followup?decisionId=${encodeURIComponent(decisionId)}`, undefined,
-      (value) => isOfferFollowupValue(value, decisionId), { decisionId }, options, undefined,
+      (value, context) => isOfferFollowupValue(value, decisionId, context.runId) ? value : null, { decisionId }, options, undefined,
       () => unavailable('invalid-offer-response'));
   }
 
@@ -119,7 +119,7 @@ export class OfferClient {
       value: input.value,
     };
     return this.call(() => '/offer-followup/confirm', body,
-      (value): value is OfferFollowupValue => isOfferFollowupValue(value, input.decisionId) && value.state === 'change-saved',
+      (value) => isOfferFollowupValue(value, input.decisionId) && value.state === 'change-saved' ? value : null,
       input, options, undefined, () => unavailable('invalid-offer-response'));
   }
 
@@ -148,7 +148,7 @@ export class OfferClient {
   private async call<T>(
     path: (context: ApplicationContext) => string,
     body: object | undefined,
-    validate: (value: unknown, context: ApplicationContext) => value is T,
+    parse: (value: unknown, context: ApplicationContext) => T | null,
     identity: { readonly runId?: string; readonly offerId?: string; readonly decisionId?: string; readonly commandId?: string },
     options: OfferRequestOptions,
     expectedRunId: string | undefined,
@@ -200,9 +200,10 @@ export class OfferClient {
       if (response.status !== 200) return failureForStatus(response.status, responseBody, identity);
       if (!isRecord(responseBody) || Object.keys(responseBody).some((key) => !['status', 'value', 'contractVersion'].includes(key))
         || responseBody['status'] !== 'ok' || !Object.hasOwn(responseBody, 'value')
-        || responseBody['contractVersion'] !== undefined && !this.identifier(responseBody['contractVersion'])
-        || !validate(responseBody['value'], captured.context)) return malformed();
-      return { status: 'ok', value: responseBody['value'], ...(responseBody['contractVersion'] === undefined
+        || responseBody['contractVersion'] !== undefined && !this.identifier(responseBody['contractVersion'])) return malformed();
+      const parsed = parse(responseBody['value'], captured.context);
+      if (parsed === null) return malformed();
+      return { status: 'ok', value: parsed, ...(responseBody['contractVersion'] === undefined
         ? {} : { contractVersion: responseBody['contractVersion'] as string }) };
     } catch {
       return unavailable('offer-unavailable');

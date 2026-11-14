@@ -1,4 +1,5 @@
 import {
+  OfferCommandHandoff,
   OfferDecisionInput,
   OfferDecisionKind,
   OfferDecisionReceipt,
@@ -218,22 +219,32 @@ function selection(value: unknown): value is OfferSelection {
     && (value['orderReference'] === null || typeof value['orderReference'] === 'string' && /^[A-Za-z0-9-]{1,32}$/.test(value['orderReference']));
 }
 
-function currentCarComparison(value: unknown): boolean {
+function currentCarComparison(value: unknown, quotedAt: string): boolean {
   if (!only(value, ['status', 'reason', 'comparisonAvailable', 'currentCar', 'unknowns'])
     || !['unavailable', 'partial', 'available'].includes(String(value['status'])) || !text(value['reason'])
     || typeof value['comparisonAvailable'] !== 'boolean' || !Array.isArray(value['unknowns'])
     || !value['unknowns'].every((key) => typeof key === 'string' && comparisonKeys.has(key))
     || new Set(value['unknowns']).size !== value['unknowns'].length) return false;
-  if (value['status'] === 'unavailable') return value['comparisonAvailable'] === false && value['currentCar'] === null;
+  if (value['status'] === 'unavailable') return value['comparisonAvailable'] === false && value['currentCar'] === null
+    && value['unknowns'].length === comparisonKeys.size;
   const car = value['currentCar'];
-  if (value['comparisonAvailable'] !== true || !only(car, ['model', 'source', 'facts']) || !text(car['model'])
+  if (!only(car, ['model', 'source', 'facts']) || !text(car['model'], 256)
     || !only(car['source'], ['mode', 'sourceVersion', 'observedAt'])
     || !['synthetic', 'dated-snapshot', 'authorised-live'].includes(String(car['source']['mode']))
-    || !text(car['source']['sourceVersion']) || !instant(car['source']['observedAt'])) return false;
-  if (car['facts'] !== undefined && (!object(car['facts']) || Object.entries(car['facts']).some(([key, fact]) =>
-    !comparisonKeys.has(key) || !only(fact, ['value', 'unit']) || !(typeof fact['value'] === 'string' || finite(fact['value']))
-      || fact['unit'] !== null && !text(fact['unit'])))) return false;
-  return value['status'] === (value['unknowns'].length ? 'partial' : 'available');
+    || !text(car['source']['sourceVersion']) || !instant(car['source']['observedAt'])
+    || Date.parse(car['source']['observedAt']) > Date.parse(quotedAt)) return false;
+  const facts = car['facts'] === undefined ? {} : car['facts'];
+  if (!object(facts) || Object.entries(facts).some(([key, fact]) => !comparisonKeys.has(key)
+    || !only(fact, ['value', 'unit']) || (['configuration', 'body', 'fuel'].includes(key)
+      ? !text(fact['value']) : !finite(fact['value']) || fact['value'] <= 0)
+    || fact['unit'] !== null && !text(fact['unit']))) return false;
+  const known = Object.keys(facts);
+  const unknowns = value['unknowns'] as string[];
+  return known.length + unknowns.length === comparisonKeys.size
+    && known.every((key) => !unknowns.includes(key))
+    && value['comparisonAvailable'] === (known.length > 0)
+    && value['reason'] === (known.length ? 'current-car-facts-recorded' : 'current-car-facts-unavailable')
+    && value['status'] === (value['unknowns'].length ? 'partial' : 'available');
 }
 
 function revisionPins(value: unknown): value is Record<string, string | number> & { quote: number } {
@@ -267,7 +278,7 @@ export function isOfferProjection(value: unknown, expected: { readonly offerId: 
     || !instant(quote['quotedAt']) || !instant(quote['validUntil']) || !revisionPins(quote['revisions'])
     || !snapshot(quote['facts'], quote['orderUuid'] as string) || !decision(quote['decision']) || !terms(quote['terms'])
     || !pointContainer(quote['allowance']) || JSON.stringify(quote['allowance']) !== JSON.stringify(quote['terms']['allowanceInputs'])) return false;
-  return currentCarComparison(value['comparison']);
+  return currentCarComparison(value['comparison'], quote['quotedAt']);
 }
 
 export function isOfferDeclineReasons(value: unknown): value is OfferDeclineReasons {
@@ -318,7 +329,7 @@ function questionControl(value: unknown): boolean {
 
 function savedChange(value: unknown, decisionId?: string): value is OfferSavedChange {
   if (!only(value, ['schemaVersion', 'state', 'decisionId', 'briefVersion', 'policyVersion', 'event', 'change'])
-    || value['schemaVersion'] !== 1 || value['state'] !== 'change-saved' || !text(value['decisionId'], 128)
+    || value['schemaVersion'] !== 1 || value['state'] !== 'change-saved' || !text(value['decisionId'], 128) || !/^offer-decision:[a-f0-9]{64}$/.test(value['decisionId'])
     || decisionId !== undefined && value['decisionId'] !== decisionId || !positive(value['briefVersion']) || !text(value['policyVersion'])) return false;
   const event = value['event']; const change = value['change'];
   return only(event, ['receiptReference', 'eventType', 'briefVersion', 'occurredAt']) && text(event['receiptReference'])
@@ -331,12 +342,12 @@ function scoreBasis(value: unknown): boolean {
     && positive(value['briefVersion']) && text(value['policyVersion']) && instant(value['quotedAt']);
 }
 
-function followupComparison(value: unknown): boolean {
+function followupComparison(value: unknown, saved: OfferSavedChange, expectedRunId?: string): boolean {
   if (!only(value, ['schemaVersion', 'currentBriefVersion', 'requirements', 'previous', 'next']) || value['schemaVersion'] !== 1
-    || !positive(value['currentBriefVersion']) || !Array.isArray(value['requirements'])) return false;
+    || value['currentBriefVersion'] !== saved.briefVersion || !Array.isArray(value['requirements'])) return false;
   const validFacts = (facts: unknown) => object(facts) && Object.entries(facts).every(([key, fact]) => text(key, 128)
     && (only(fact, ['status', 'value', 'unit', 'provenance']) && ['known', 'unknown'].includes(String(fact['status']))
-      && safeAnswer(fact['value']) && (fact['unit'] === null || text(fact['unit']))
+      && safeAnswer(fact['value']) && (fact['status'] !== 'unknown' || fact['value'] === null) && (fact['unit'] === null || text(fact['unit']))
       && (fact['provenance'] === null || provenance(fact['provenance']))));
   const validRequirement = (row: unknown) => {
     if (!object(row)) return false;
@@ -348,11 +359,25 @@ function followupComparison(value: unknown): boolean {
       && validFacts(row['previousFacts']) && validFacts(row['nextFacts']);
   };
   if (!value['requirements'].every(validRequirement)) return false;
-  return ['previous', 'next'].every((key) => only(value[key], ['offer', 'scoreBasis']) && object(value[key]['offer'])
-    && jsonValue(value[key]['offer']) && scoreBasis(value[key]['scoreBasis']));
+  for (const key of ['previous', 'next']) {
+    const side = value[key];
+    if (!only(side, ['offer', 'scoreBasis']) || !object(side['offer']) || !text(side['offer']['offerId'])
+      || !text(side['offer']['runId']) || !isOfferProjection(side['offer'], {
+        offerId: side['offer']['offerId'], runId: side['offer']['runId'],
+      }) || !scoreBasis(side['scoreBasis'])) return false;
+    const quote = side['offer']['quote'] as OfferProjection['quote'];
+    const basis = side['scoreBasis'] as RecordValue;
+    if (basis['briefVersion'] !== quote.briefVersion || basis['policyVersion'] !== quote.policyVersion
+      || basis['quotedAt'] !== quote.quotedAt) return false;
+  }
+  const previous = (value['previous'] as { offer: OfferProjection }).offer;
+  const next = (value['next'] as { offer: OfferProjection }).offer;
+  return previous.state === 'declined' && previous.followup?.decisionId === saved.decisionId && next.state === 'pending'
+    && previous.runId === next.runId && (expectedRunId === undefined || next.runId === expectedRunId) && previous.offerId !== next.offerId && previous.quote.quoteId !== next.quote.quoteId
+    && next.quote.briefVersion === saved.briefVersion && next.quote.policyVersion === saved.policyVersion;
 }
 
-export function isOfferFollowupValue(value: unknown, expectedDecisionId: string): value is OfferFollowupValue {
+export function isOfferFollowupValue(value: unknown, expectedDecisionId: string, expectedRunId?: string): value is OfferFollowupValue {
   if (!object(value) || value['schemaVersion'] !== 1 || value['decisionId'] !== expectedDecisionId) return false;
   if (value['state'] === 'question') {
     if (!only(value, ['schemaVersion', 'state', 'decisionId', 'briefVersion', 'question']) || !positive(value['briefVersion'])) return false;
@@ -376,7 +401,7 @@ export function isOfferFollowupValue(value: unknown, expectedDecisionId: string)
       && instant(evaluation['evaluatedAt']) && nonnegative(evaluation['carsChecked']) && evaluation['suitable'] === 0;
   }
   if (value['state'] === 'ready') return only(value, ['schemaVersion', 'state', 'decisionId', 'savedChange', 'comparison'])
-    && savedChange(value['savedChange'], expectedDecisionId) && followupComparison(value['comparison']);
+    && savedChange(value['savedChange'], expectedDecisionId) && followupComparison(value['comparison'], value['savedChange'], expectedRunId);
   return false;
 }
 
@@ -413,13 +438,13 @@ export function parseOfferFailure(value: unknown, expected: OfferResultIdentity 
 const acceptanceStates = new Set(['accepted']);
 const declinedStates = new Set(['declined']);
 
-export function isOfferDecisionReceipt(value: unknown, expected: OfferDecisionInput): value is OfferDecisionReceipt {
+function decisionReceipt(value: unknown, expected: OfferDecisionInput, employeeId: string): value is OfferDecisionReceipt {
   const keys = ['schemaVersion', 'runId', 'offerId', 'commandId', 'requestedDecision', 'decisionId', 'state', 'reason', 'offerState',
     'holdState', 'offerVersion', 'holdVersion', 'quoteVersion', 'quoteId', 'policyVersion', 'expiresAt', 'serverNow', 'clockVersion',
     'availableActions', 'operationId', 'reconciliationRequired', 'selection'];
   if (!only(value, keys) || value['schemaVersion'] !== 1 || value['runId'] !== expected.runId || value['offerId'] !== expected.offerId
     || value['commandId'] !== expected.commandId || value['requestedDecision'] !== expected.decision
-    || !text(value['decisionId'], 128) || !['accepted', 'declined'].includes(String(value['state']))
+    || !text(value['decisionId'], 128) || !/^offer-decision:[a-f0-9]{64}$/.test(value['decisionId']) || !['accepted', 'declined'].includes(String(value['state']))
     || value['state'] !== (expected.decision === 'accept' ? 'accepted' : 'declined') || !text(value['reason'])
     || !text(value['offerState']) || !text(value['holdState']) || !positive(value['offerVersion']) || !positive(value['holdVersion'])
     || !positive(value['quoteVersion']) || !text(value['quoteId']) || !text(value['policyVersion'])
@@ -428,6 +453,86 @@ export function isOfferDecisionReceipt(value: unknown, expected: OfferDecisionIn
     || !(value['operationId'] === null || text(value['operationId'])) || value['reconciliationRequired'] !== false) return false;
   if (expected.decision === 'accept' ? !acceptanceStates.has(String(value['state'])) || value['offerState'] !== 'accepted' || value['holdState'] !== 'allocated'
     : !declinedStates.has(String(value['state'])) || !['rejected', 'declined'].includes(String(value['offerState'])) || value['holdState'] !== 'released') return false;
-  return value['selection'] === undefined || value['selection'] === null && expected.decision === 'accept'
-    || selection(value['selection']) && expected.decision === 'accept';
+  return value['selection'] === undefined || expected.decision === 'accept'
+    && (value['selection'] === null || commandHandoff(value['selection'], value, expected, employeeId) !== null);
+}
+
+function commandHandoff(value: unknown, receipt: RecordValue, expected: OfferDecisionInput, employeeId: string): OfferCommandHandoff | null {
+  if (!only(value, ['schemaVersion', 'operationId', 'operationState', 'selectionReceived', 'orderReference', 'selection', 'progress', 'order', 'failure', 'view'])
+    || value['schemaVersion'] !== 1 || value['selectionReceived'] !== true || !text(value['operationId'], 128)
+    || !/^selection:[a-f0-9]{64}$/.test(value['operationId'])
+    || receipt['operationId'] !== null && receipt['operationId'] !== value['operationId']
+    || !['allocation-pending', 'handoff-pending', 'unknown', 'acknowledged', 'allocation-failed', 'handoff-failed'].includes(String(value['operationState']))
+    || !(value['orderReference'] === null || typeof value['orderReference'] === 'string' && /^[A-Za-z0-9-]{1,32}$/.test(value['orderReference']))) return null;
+  const selected = value['selection'];
+  if (!only(selected, ['schemaVersion', 'orderReference', 'receivedAt', 'renewalId', 'source', 'quote', 'stock', 'terms', 'declarations',
+    'draft', 'employee', 'driver', 'oldContract', 'sourceVersions', 'employeeAuthority', 'vehicleSlot', 'reviewDetails'])
+    || selected['schemaVersion'] !== 1 || selected['orderReference'] !== value['orderReference'] || !instant(selected['receivedAt'])) return null;
+  const source = selected['source']; const quote = selected['quote']; const stock = selected['stock']; const selectedTerms = selected['terms'];
+  if (!only(source, ['type', 'holdId', 'expectedHoldVersion', 'expectedDraftVersion']) || source['type'] !== 'buddy-offer'
+    || !text(source['holdId'], 128) || source['expectedHoldVersion'] !== expected.expectedHoldVersion || !positive(source['expectedDraftVersion'])
+    || !object(quote) || quote['quoteId'] !== receipt['quoteId'] || quote['version'] !== receipt['quoteVersion']
+    || quote['version'] !== expected.expectedQuoteVersion || quote['policyVersion'] !== receipt['policyVersion']
+    || quote['runId'] !== expected.runId || quote['briefVersion'] !== source['expectedDraftVersion']
+    || !text(quote['orderUuid'], 128) || !text(quote['configurationId'], 128)
+    || !object(stock) || stock['orderUuid'] !== quote['orderUuid'] || stock['configurationId'] !== quote['configurationId']
+    || typeof stock['orderNumber'] !== 'string' || !/^\d{7}$/.test(stock['orderNumber'])
+    || !object(selectedTerms) || !text(selectedTerms['termsVersion'], 128) || selectedTerms['policyVersion'] !== receipt['policyVersion']
+    || !Array.isArray(selectedTerms['approvalStages']) || selectedTerms['approvalStages'].length === 0 || selectedTerms['approvalStages'].length > 7
+    || !selectedTerms['approvalStages'].every((name) => text(name, 128))) return null;
+  const authority = selected['employeeAuthority']; const slot = selected['vehicleSlot'];
+  if (!object(authority) || authority['employeeId'] !== employeeId || quote['employeeId'] !== employeeId
+    || !object(slot) || slot['employeeId'] !== employeeId || slot['runId'] !== expected.runId
+    || !text(slot['entitlementSlotId'], 128) || slot['entitlementSlotId'] !== quote['entitlementSlotId']) return null;
+  const progress = value['progress']; const view = value['view'];
+  if (!only(progress, ['schemaVersion', 'selectionState', 'approved', 'current', 'stages'])
+    || !selection({ ...progress, orderReference: null, orderNumber: null })
+    || !only(view, ['state', 'action'])) return null;
+  const state = progress['selectionState'];
+  const acknowledged = state === 'acknowledged'; const failed = state === 'handoff-failed';
+  if (view['state'] !== (acknowledged ? 'awaiting-approval' : failed ? 'handoff-failed' : 'handoff-pending')
+    || view['action'] !== (acknowledged ? 'view-order' : failed ? 'contact-support' : 'check-status')
+    || (acknowledged ? value['operationState'] !== 'acknowledged'
+      : failed ? !['allocation-failed', 'handoff-failed'].includes(String(value['operationState']))
+        : !['allocation-pending', 'handoff-pending', 'unknown'].includes(String(value['operationState'])))) return null;
+  const names = selectedTerms['approvalStages'];
+  const stages = progress['stages'] as RecordValue[];
+  if (progress['current'] !== (acknowledged ? names[0] : 'selection received') || stages.length !== names.length + 1
+    || stages[0]['name'] !== 'selection received' || stages[0]['state'] !== (acknowledged ? 'complete' : failed ? 'failed' : 'pending')
+    || names.some((name, index) => stages[index + 1]['name'] !== name
+      || stages[index + 1]['state'] !== (acknowledged && index === 0 ? 'waiting' : 'not-started'))) return null;
+  const order = value['order']; const failure = value['failure'];
+  const matchesScope = (outcome: RecordValue) => outcome['operationId'] === value['operationId']
+    && outcome['runId'] === expected.runId && outcome['orderUuid'] === stock['orderUuid'];
+  if (acknowledged ? !object(order) || !matchesScope(order) || order['status'] !== 'confirmed'
+    || order['configurationId'] !== stock['configurationId'] || order['orderNumber'] !== stock['orderNumber']
+    || order['orderStatus'] !== names[0] || failure !== null : order !== null) return null;
+  if (failed) {
+    if (!object(failure) || !text(failure['reason']) || failure['status'] !== undefined && !text(failure['status'], 128)) return null;
+    if (value['operationState'] === 'handoff-failed' && (!matchesScope(failure) || !['rejected', 'unsupported'].includes(String(failure['status'])))) return null;
+  } else if (failure !== null) return null;
+  for (const outcome of [order, failure]) {
+    if (!object(outcome)) continue;
+    if (outcome['fictional'] !== undefined && typeof outcome['fictional'] !== 'boolean') return null;
+    for (const key of ['operationId', 'runId', 'orderUuid']) if (outcome[key] !== undefined && !matchesScope({
+      operationId: value['operationId'], runId: expected.runId, orderUuid: stock['orderUuid'], [key]: outcome[key],
+    })) return null;
+  }
+  const pick = (row: RecordValue, keys: readonly string[]) => Object.fromEntries(keys.filter((key) => has(row, key)).map((key) => [key, row[key]]));
+  return structuredClone({ schemaVersion: 1, operationId: value['operationId'], operationState: value['operationState'],
+    selectionReceived: true, orderReference: value['orderReference'], progress, view,
+    selection: { schemaVersion: 1, orderReference: selected['orderReference'], receivedAt: selected['receivedAt'], source,
+      quote: pick(quote, ['quoteId', 'orderUuid', 'configurationId', 'briefVersion', 'policyVersion', 'version']),
+      stock: pick(stock, ['orderUuid', 'orderNumber', 'configurationId']),
+      terms: pick(selectedTerms, ['termsVersion', 'policyVersion', 'approvalStages']) },
+    order: order === null ? null : pick(order as RecordValue, ['status', 'operationId', 'runId', 'orderUuid', 'configurationId', 'orderNumber', 'orderStatus', 'fictional']),
+    failure: failure === null ? null : pick(failure as RecordValue, ['status', 'reason', 'operationId', 'runId', 'orderUuid', 'fictional']),
+  }) as unknown as OfferCommandHandoff;
+}
+
+export function parseOfferDecisionReceipt(value: unknown, expected: OfferDecisionInput, employeeId: string): OfferDecisionReceipt | null {
+  // The source ordering payload includes private account/driver records; return only validated public coordinates.
+  if (!jsonValue(value) || JSON.stringify(value).length > 262144 || !decisionReceipt(value, expected, employeeId)) return null;
+  const raw = value as unknown as RecordValue;
+  return { ...raw, ...(raw['selection'] == null ? {} : { selection: commandHandoff(raw['selection'], raw, expected, employeeId)! }) } as unknown as OfferDecisionReceipt;
 }
