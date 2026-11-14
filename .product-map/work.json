@@ -6356,7 +6356,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T09:11:46Z",
+      "observed_at": "2026-11-14T17:10:58Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -6370,9 +6370,9 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T09:11:46.487247+00:00",
-          "expires_at": "2026-11-14T09:11:46.487247+00:00",
-          "source": "presentation bridge source/spec review and independent input/resource audit complete; held for dispatcher publication",
+          "observed_at": "2026-11-14T17:10:57Z",
+          "expires_at": "2026-11-14T17:10:57Z",
+          "source": "stock screen source 7f764575df52579aec74333163a23d0971783652;33 tests/17 Chrome checks and independent input/local-resource audit complete",
           "status": "inactive awaiting dispatcher audit/publication"
         },
         {
@@ -6433,8 +6433,8 @@
           "id": "view-parity",
           "status": "in-progress",
           "title": "Native-Angular-view-parity",
-          "observed_at": "2026-11-14T09:11:46Z",
-          "evidence": "Lead presentation bridge review PASS daf51ad6;23 named tests,14 pins and owned cleanup verified. Prior cumulative Wakko136PASS integrated b410a30bc. F499Low natively linked; full boundary historicallyFAIL. Full screen/card/media/routes/Java and original AC open. docs/gcsp/fucq442-delivery.md; root lead-presentation-review.json."
+          "observed_at": "2026-11-14T17:10:58Z",
+          "evidence": "Stock screen 7f764575d;33 selected PASS,17 Chrome fixture checks,167 final pins and local cleanup verified. docs/gcsp/fucq442-stock-screen-2026-11-14.md. Routes/shared gallery and actual Java/original AC remain open; F499Low unresolved."
         },
         {
           "id": "review-proof",
@@ -6449,7 +6449,7 @@
       ],
       "story_points": 13,
       "started_at": "2026-11-14",
-      "note": "Prior cumulative Wakko136PASS checkpoint integrated by dispatcher b410a30bc. Presentation bridge daf51ad6 reviewed23PASS,14 input pins/cleanup independently verified. F499Low native linked backlog; full boundary historicallyFAIL. Full screen/routes/Java and both original AC remain open."
+      "note": "Stock screen source 7f764575d;33 selected PASS,17 actual Chrome checks,167 final pins match and local cleanup audited. Route/history/shared catalogue plus actual Java and original AC open. F499Low unresolved; full boundary historicallyFAIL. Held for dispatcher publication."
     },
     {
       "assignee": "",
