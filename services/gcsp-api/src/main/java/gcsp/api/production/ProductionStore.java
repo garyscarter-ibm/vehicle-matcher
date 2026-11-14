@@ -23,12 +23,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-/** Request-row reads and the one place a provider Answer is applied to a request (shared with the reconcile pass). */
+/**
+ * Request-row reads and the one place a provider Answer is applied to a request (shared with the reconcile pass).
+ * An applied answer emits a "production.supply-changed" outbox event; nothing consumes it in this story, a later
+ * planner or runtime reads it as the durable replan signal.
+ */
 final class ProductionStore {
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final List<String> OPEN = List.of("intent", "uncertain", "requested", "partly-confirmed", "delayed");
+    static final String[] OPEN_STATES = OPEN.toArray(new String[0]);
+    static final String SELECT_REQUEST = "SELECT request_id, submission_id, line_id, model, derivative, quantity, "
+            + "state, provider_reference, refusal_code, refusal_reason, delay_until, delay_reason, confirmed_quantity, "
+            + "attempts, last_outcome::text, input_digest, requested_at, version, provider_mode FROM production_requests ";
 
     private ProductionStore() {}
 
@@ -37,7 +45,7 @@ final class ProductionStore {
     record RequestRow(String requestId, String submissionId, String lineId, String model, String derivative,
             int quantity, String state, String providerReference, String refusalCode, String refusalReason,
             Instant delayUntil, String delayReason, int confirmedQuantity, int attempts, JsonNode lastOutcome,
-            String inputDigest, Instant requestedAt, long version) {}
+            String inputDigest, Instant requestedAt, long version, String providerMode) {}
 
     /** How an Answer landed: applied (row changed), unchanged (already held), or unknown (not a usable answer). */
     enum Applied { APPLIED, UNCHANGED, UNKNOWN }
@@ -57,15 +65,111 @@ final class ProductionStore {
 
     static List<RequestRow> requests(Connection c, RunContext ctx, String submissionId) throws SQLException {
         List<RequestRow> out = new ArrayList<>();
-        try (PreparedStatement ps = c.prepareStatement("SELECT request_id, submission_id, line_id, model, derivative, quantity, "
-                + "state, provider_reference, refusal_code, refusal_reason, delay_until, delay_reason, confirmed_quantity, "
-                + "attempts, last_outcome::text, input_digest, requested_at, version FROM production_requests "
+        try (PreparedStatement ps = c.prepareStatement(SELECT_REQUEST
                 + "WHERE environment_id = ? AND run_id = ? AND submission_id = ? ORDER BY line_id")) {
             ps.setString(1, ctx.environmentId());
             ps.setString(2, ctx.runId());
             ps.setString(3, submissionId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) out.add(map(rs));
+            }
+        }
+        return out;
+    }
+
+    /** Open requests in request_id order through the partial index (its predicate is repeated here so it applies). */
+    static List<RequestRow> openRequests(Connection c, RunContext ctx, int limit, String after) throws SQLException {
+        List<RequestRow> out = new ArrayList<>();
+        try (PreparedStatement ps = c.prepareStatement(SELECT_REQUEST + "WHERE environment_id = ? AND run_id = ? AND request_id > ? AND state IN "
+                + "('intent', 'uncertain', 'requested', 'partly-confirmed', 'delayed') ORDER BY request_id LIMIT ?")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            ps.setString(3, after);
+            ps.setInt(4, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) out.add(map(rs));
+            }
+        }
+        return out;
+    }
+
+    record SubmissionRow(String submissionId, String planId, Instant requestedAt) {}
+
+    static List<SubmissionRow> submissionsOfRun(Connection c, RunContext ctx) throws SQLException {
+        List<SubmissionRow> out = new ArrayList<>();
+        try (PreparedStatement ps = c.prepareStatement("SELECT submission_id, plan_id, requested_at FROM production_submissions "
+                + "WHERE environment_id = ? AND run_id = ? ORDER BY requested_at, submission_id")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) out.add(new SubmissionRow(rs.getString(1), rs.getString(2), rs.getObject(3, OffsetDateTime.class).toInstant()));
+            }
+        }
+        return out;
+    }
+
+    static List<RequestRow> requestsOfRun(Connection c, RunContext ctx) throws SQLException {
+        List<RequestRow> out = new ArrayList<>();
+        try (PreparedStatement ps = c.prepareStatement(SELECT_REQUEST
+                + "WHERE environment_id = ? AND run_id = ? ORDER BY requested_at, request_id")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) out.add(map(rs));
+            }
+        }
+        return out;
+    }
+
+    static Optional<RequestRow> request(Connection c, RunContext ctx, String requestId) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement(SELECT_REQUEST
+                + "WHERE environment_id = ? AND run_id = ? AND request_id = ?")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            ps.setString(3, requestId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? Optional.of(map(rs)) : Optional.empty();
+            }
+        }
+    }
+
+    record ConfirmationRow(String supplyId, String requestId, int quantity, Instant confirmedAt, String sourceVersion,
+            Instant queuedAt, Instant eligibleFrom, long version) {}
+
+    private static final String SELECT_CONFIRMATION = "SELECT supply_id, request_id, quantity, confirmed_at, source_version, "
+            + "queued_at, eligible_from, version FROM production_confirmations WHERE environment_id = ? AND run_id = ? ";
+
+    /** A request's confirmations still waiting for supply (production_confirmations_request, then the queued_at filter). */
+    static List<ConfirmationRow> unqueuedFor(Connection c, RunContext ctx, String requestId) throws SQLException {
+        return confirmations(c, SELECT_CONFIRMATION + "AND request_id = ? AND queued_at IS NULL ORDER BY confirmed_at, supply_id",
+                ctx, requestId);
+    }
+
+    /** The run's oldest unqueued confirmations through production_confirmations_unqueued. */
+    static List<ConfirmationRow> unqueuedOfRun(Connection c, RunContext ctx, int limit) throws SQLException {
+        return confirmations(c, SELECT_CONFIRMATION + "AND queued_at IS NULL ORDER BY confirmed_at, supply_id LIMIT ?", ctx, limit);
+    }
+
+    static List<ConfirmationRow> confirmationsOfRun(Connection c, RunContext ctx) throws SQLException {
+        return confirmations(c, SELECT_CONFIRMATION + "ORDER BY confirmed_at, supply_id", ctx);
+    }
+
+    private static List<ConfirmationRow> confirmations(Connection c, String sql, RunContext ctx, Object... more)
+            throws SQLException {
+        List<ConfirmationRow> out = new ArrayList<>();
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            for (int i = 0; i < more.length; i++) ps.setObject(3 + i, more[i]);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    OffsetDateTime queued = rs.getObject(6, OffsetDateTime.class);
+                    OffsetDateTime eligible = rs.getObject(7, OffsetDateTime.class);
+                    out.add(new ConfirmationRow(rs.getString(1), rs.getString(2), rs.getInt(3),
+                            rs.getObject(4, OffsetDateTime.class).toInstant(), rs.getString(5),
+                            queued == null ? null : queued.toInstant(), eligible == null ? null : eligible.toInstant(),
+                            rs.getLong(8)));
+                }
             }
         }
         return out;
@@ -79,7 +183,7 @@ final class ProductionStore {
                     rs.getInt(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10),
                     delay == null ? null : delay.toInstant(), rs.getString(12), rs.getInt(13), rs.getInt(14),
                     last == null ? null : JSON.readTree(last), rs.getString(16),
-                    rs.getObject(17, OffsetDateTime.class).toInstant(), rs.getLong(18));
+                    rs.getObject(17, OffsetDateTime.class).toInstant(), rs.getLong(18), rs.getString(19));
         } catch (IOException e) {
             throw new SQLException("Stored request is unreadable");
         }
@@ -156,6 +260,17 @@ final class ProductionStore {
                 + "details) SELECT ?, ?, ?, coalesce(max(seq), 0) + 1, ?, ?, ?, ? FROM production_responses "
                 + "WHERE environment_id = ? AND run_id = ? AND request_id = ?", ctx.environmentId(), ctx.runId(),
                 row.requestId(), plan.state, at, plan.reference, details, ctx.environmentId(), ctx.runId(), row.requestId());
+        String planId = tx.first("SELECT plan_id FROM production_submissions WHERE environment_id = ? AND run_id = ? "
+                + "AND submission_id = ?", rs -> rs.getString(1), ctx.environmentId(), ctx.runId(), row.submissionId()).orElse("");
+        ObjectNode event = F.objectNode();
+        event.put("requestId", row.requestId());
+        event.put("submissionId", row.submissionId());
+        event.put("planId", planId);
+        event.put("state", plan.state);
+        event.put("confirmedQuantity", plan.total);
+        event.put("quantity", row.quantity());
+        event.put("at", Ids.ms(at).toString());
+        tx.emit("production:" + row.requestId() + ":" + (row.version() + 1), "production.supply-changed", event);
         return Applied.APPLIED;
     }
 

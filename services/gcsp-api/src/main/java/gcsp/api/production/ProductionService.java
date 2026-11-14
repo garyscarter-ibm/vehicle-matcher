@@ -15,6 +15,7 @@ import gcsp.api.production.PlanSnapshotPort.Reading;
 import gcsp.api.production.PlanSnapshotPort.Snapshot;
 import gcsp.api.production.ProductionProviderPort.Answer;
 import gcsp.api.production.ProductionProviderPort.Status;
+import gcsp.api.production.ProductionStore.ConfirmationRow;
 import gcsp.api.production.ProductionStore.RequestRow;
 import gcsp.api.production.ProductionStore.Submission;
 import java.sql.Connection;
@@ -32,6 +33,7 @@ import javax.sql.DataSource;
 /**
  * Intentional submission of Greg's plan to Production: intent is stored first, each request leaves outside any
  * transaction under one deterministic operation id, then settles by version CAS. Retries resume without duplicates.
+ * The reconcile pass only asks the provider (never submits), applies real answers, and queues confirmations into supply.
  */
 public final class ProductionService {
 
@@ -47,14 +49,23 @@ public final class ProductionService {
     private final ProductionProviderPort provider;
     private final PlanSnapshotPort plans;
     private final ProductionClock clock;
+    private final SupplyQueuePort supply;
+    private final ProductionReads reads;
 
     public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
             ProductionClock clock) {
+        this(dataSource, provider, plans, clock, new UnconfiguredSupplyQueue());
+    }
+
+    public ProductionService(DataSource dataSource, ProductionProviderPort provider, PlanSnapshotPort plans,
+            ProductionClock clock, SupplyQueuePort supply) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.provider = provider;
         this.plans = plans;
         this.clock = clock;
+        this.supply = supply;
+        this.reads = new ProductionReads(dataSource, provider, clock);
     }
 
     public ProductionResult submit(RunContext scope, SubmitInput in) {
@@ -231,6 +242,7 @@ public final class ProductionService {
             if (!"intent".equals(row.state()) && !"uncertain".equals(row.state())) continue;
             Answer answer = call(ProductionStore.operation(scope, row), fresh && "intent".equals(row.state()));
             settle(scope, row, answer, at);
+            queueConfirmations(scope, row.requestId(), at);
         }
         try (Connection c = dataSource.getConnection()) {
             rows = ProductionStore.requests(c, scope, sub.submissionId());
@@ -255,12 +267,184 @@ public final class ProductionService {
     }
 
     private Outcome settle(RunContext scope, RequestRow row, Answer answer, Instant at) {
+        return apply(scope, "production:settle:", "production.settle", row, answer, at, "intent", "uncertain");
+    }
+
+    /** One command transaction applies an answer by version CAS; the result names how it landed. */
+    private Outcome apply(RunContext scope, String idPrefix, String type, RequestRow row, Answer answer, Instant at,
+            String... from) {
         ObjectNode input = F.objectNode().put("requestId", row.requestId()).put("version", row.version());
-        String id = "production:settle:" + row.requestId() + ":v" + row.version();
-        return runner.execute(scope, new Command("production.settle", id, input), tx -> {
-            ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at, "intent", "uncertain");
-            return WorkResult.ok(F.objectNode().put("requestId", row.requestId()));
+        String id = idPrefix + row.requestId() + ":v" + row.version();
+        return runner.execute(scope, new Command(type, id, input), tx -> {
+            ProductionStore.Applied applied = ProductionStore.applyAnswer(tx, row, answer, provider.mode(), at, from);
+            return WorkResult.ok(F.objectNode().put("requestId", row.requestId()).put("applied", applied.name()));
         });
+    }
+
+    /** Hands a request's unqueued confirmations to supply, outside any transaction, then marks each by version CAS. */
+    private int queueConfirmations(RunContext scope, String requestId, Instant fallback) {
+        try {
+            List<ConfirmationRow> waiting;
+            try (Connection c = dataSource.getConnection()) {
+                waiting = ProductionStore.unqueuedFor(c, scope, requestId);
+            }
+            int queued = 0;
+            for (ConfirmationRow cr : waiting) if (queueOne(scope, cr, fallback)) queued++;
+            return queued;
+        } catch (SQLException | RuntimeException e) {
+            return 0;
+        }
+    }
+
+    private boolean queueOne(RunContext scope, ConfirmationRow cr, Instant fallback) {
+        Instant when = Ids.ms(now(scope, fallback));
+        SupplyQueuePort.Result r;
+        try {
+            r = supply.queue(scope, "production:" + cr.supplyId(), when, cr.supplyId(), cr.confirmedAt(),
+                    cr.sourceVersion());
+        } catch (RuntimeException e) {
+            return false;
+        }
+        if (!(r instanceof SupplyQueuePort.Queued q)) return false;
+        ObjectNode input = F.objectNode().put("supplyId", cr.supplyId()).put("version", cr.version());
+        Outcome o = runner.execute(scope, new Command("production.queue", "production:queue:" + cr.supplyId() + ":v" + cr.version(), input),
+                tx -> {
+                    tx.cas("UPDATE production_confirmations SET queued_at = ?, eligible_from = ?, version = version + 1, "
+                            + "updated_at = now() WHERE environment_id = ? AND run_id = ? AND supply_id = ? AND version = ? "
+                            + "AND queued_at IS NULL", when, q.eligibleFrom(), scope.environmentId(),
+                            scope.runId(), cr.supplyId(), cr.version());
+                    return WorkResult.ok(F.objectNode().put("supplyId", cr.supplyId()));
+                });
+        return o instanceof Outcome.Committed;
+    }
+
+    // ---- reconcile and reads ----
+
+    /** Reconciles up to limit open requests, then retries unqueued confirmations; never submits a new request. */
+    public ProductionResult reconcile(RunContext scope, int limit) {
+        return reconcile(scope, limit, null);
+    }
+
+    /** As {@link #reconcile(RunContext, int)}, continuing after the given request id (the value's next cursor). */
+    public ProductionResult reconcile(RunContext scope, int limit, String afterRequestId) {
+        if (limit < 1 || limit > 100) return new ProductionResult.Invalid("invalid-limit", "Choose a limit from 1 to 100.");
+        ProductionResult gate = reconcileGate();
+        if (gate != null) return gate;
+        try {
+            Optional<Instant> now = clock.now(scope);
+            if (now.isEmpty()) return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
+            Instant at = Ids.ms(now.get());
+            List<RequestRow> rows;
+            try (Connection c = dataSource.getConnection()) {
+                rows = ProductionStore.openRequests(c, scope, limit, afterRequestId == null ? "" : afterRequestId);
+            }
+            Pass pass = new Pass();
+            for (RequestRow row : rows) pass.add(reconcileRow(scope, row, at));
+            List<ConfirmationRow> waiting;
+            try (Connection c = dataSource.getConnection()) {
+                waiting = ProductionStore.unqueuedOfRun(c, scope, limit);
+            }
+            for (ConfirmationRow cr : waiting) if (!pass.tried.contains(cr.supplyId()) && queueOne(scope, cr, at)) pass.queued++;
+            ObjectNode out = pass.json();
+            out.put("next", rows.size() == limit ? rows.get(rows.size() - 1).requestId() : null);
+            return new ProductionResult.Ok(out, false);
+        } catch (SQLException | RuntimeException e) {
+            return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+        }
+    }
+
+    /** Reconciles one request (the presenter scenario step), then retries its unqueued confirmations. */
+    public ProductionResult reconcileRequest(RunContext scope, String requestId) {
+        if (requestId == null || requestId.isBlank() || requestId.length() > 200) {
+            return new ProductionResult.Invalid("request-not-found", "No such Production request.");
+        }
+        ProductionResult gate = reconcileGate();
+        if (gate != null) return gate;
+        try {
+            Optional<Instant> now = clock.now(scope);
+            if (now.isEmpty()) return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
+            Optional<RequestRow> row;
+            try (Connection c = dataSource.getConnection()) {
+                row = ProductionStore.request(c, scope, requestId);
+            }
+            if (row.isEmpty()) return new ProductionResult.Invalid("request-not-found", "No such Production request.");
+            Pass pass = new Pass();
+            pass.add(reconcileRow(scope, row.get(), Ids.ms(now.get())));
+            return new ProductionResult.Ok(pass.json(), false);
+        } catch (SQLException | RuntimeException e) {
+            return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+        }
+    }
+
+    private ProductionResult reconcileGate() {
+        if ("none".equals(provider.mode())) {
+            return new ProductionResult.Unavailable(UnconfiguredProductionProvider.CODE, UnconfiguredProductionProvider.REASON, false);
+        }
+        return null;
+    }
+
+    private record RowOutcome(String requestId, String outcome, int queued, List<String> supplyIds) {}
+
+    private static final class Pass {
+        final List<RowOutcome> rows = new ArrayList<>();
+        final Set<String> tried = new HashSet<>();
+        int queued;
+
+        void add(RowOutcome r) {
+            rows.add(r);
+            queued += r.queued();
+            tried.addAll(r.supplyIds());
+        }
+
+        ObjectNode json() {
+            ObjectNode out = F.objectNode();
+            out.put("reconciled", rows.size());
+            out.put("applied", rows.stream().filter(r -> "applied".equals(r.outcome())).count());
+            out.put("queued", queued);
+            ArrayNode list = out.putArray("requests");
+            rows.forEach(r -> list.addObject().put("requestId", r.requestId()).put("outcome", r.outcome()));
+            return out;
+        }
+    }
+
+    private RowOutcome reconcileRow(RunContext scope, RequestRow row, Instant at) {
+        String result = "closed";
+        if (ProductionStore.open(row.state())) {
+            Answer answer;
+            try {
+                answer = provider.reconcile(ProductionStore.operation(scope, row));
+            } catch (RuntimeException e) {
+                answer = null;
+            }
+            Outcome o = apply(scope, "production:reconcile:", "production.reconcile", row, answer, at, ProductionStore.OPEN_STATES);
+            result = o instanceof Outcome.Committed c ? c.result().path("applied").asText("unknown").toLowerCase(java.util.Locale.ROOT)
+                    : o instanceof Outcome.Uncertain ? "uncertain" : o instanceof Outcome.Conflict ? "conflict" : "unavailable";
+        }
+        List<String> tried = new ArrayList<>();
+        int queued = 0;
+        try {
+            List<ConfirmationRow> waiting;
+            try (Connection c = dataSource.getConnection()) {
+                waiting = ProductionStore.unqueuedFor(c, scope, row.requestId());
+            }
+            for (ConfirmationRow cr : waiting) {
+                tried.add(cr.supplyId());
+                if (queueOne(scope, cr, at)) queued++;
+            }
+        } catch (SQLException | RuntimeException e) {
+            // the confirmations stay unqueued and the next pass retries them
+        }
+        return new RowOutcome(row.requestId(), result, queued, tried);
+    }
+
+    /** Greg's tracking read: requests, confirmations, queue and release kept as separate numbers per request. */
+    public ProductionResult status(RunContext scope) {
+        return reads.status(scope);
+    }
+
+    /** What the planner binds for its supply input and replan display; supplyVersion changes with every applied response. */
+    public ProductionResult supplyActivity(RunContext scope) {
+        return reads.supplyActivity(scope);
     }
 
     private static JsonNode view(Submission sub, List<RequestRow> rows, boolean pending) {

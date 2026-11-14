@@ -8,6 +8,11 @@ import gcsp.api.production.PlanSnapshotPort.Snapshot;
 import gcsp.api.production.ProductionProviderPort.Answer;
 import gcsp.api.production.ProductionProviderPort.Operation;
 import gcsp.api.production.ProductionService.SubmitInput;
+import gcsp.api.supply.PolicyReading;
+import gcsp.api.supply.PullRequest;
+import gcsp.api.supply.ProviderResponse;
+import gcsp.api.supply.StockRelease;
+import gcsp.api.supply.SupplyProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,6 +40,34 @@ final class ProductionFixture implements AutoCloseable {
     final Plan plan = new Plan();
     ProductionProviderPort provider;
     ProductionService service;
+    /** The queue every service built here uses; tests swap its delegate to make supply unavailable. */
+    final SwitchQueue queue = new SwitchQueue();
+
+    static final class SwitchQueue implements SupplyQueuePort {
+        volatile SupplyQueuePort delegate;
+        final AtomicInteger calls = new AtomicInteger();
+
+        @Override
+        public Result queue(RunContext scope, String commandId, Instant now, String supplyId, Instant confirmedAt, String sourceVersion) {
+            calls.incrementAndGet();
+            return delegate.queue(scope, commandId, now, supplyId, confirmedAt, sourceVersion);
+        }
+    }
+
+    /** A real StockRelease over the fixture schema with a three-day lead time; its stock provider is never called. */
+    StockRelease realRelease(PGSimpleDataSource pool) {
+        return new StockRelease(pool, (runId, asOf) -> new PolicyReading.Ok("gcsp-policy-v1", 10, 3, 60), new SupplyProvider() {
+            @Override
+            public String mode() {
+                return "never";
+            }
+
+            @Override
+            public ProviderResponse pull(PullRequest request) {
+                throw new AssertionError("the stock provider must not be called");
+            }
+        });
+    }
 
     /** A plan port the test can edit between calls. */
     static final class Plan implements PlanSnapshotPort {
@@ -85,6 +118,7 @@ final class ProductionFixture implements AutoCloseable {
                     + "state) VALUES (?, 'run-1', 'tick-1', ?, 1, ?, 'pending')", ENV, java.sql.Timestamp.from(T0), "0".repeat(64));
         }
         f.synthetic = new SyntheticProductionProvider(f.pool());
+        f.queue.delegate = new StockReleaseSupplyQueue(f.realRelease(f.pool()));
         f.use(f.synthetic);
         return f;
     }
@@ -97,7 +131,14 @@ final class ProductionFixture implements AutoCloseable {
     }
 
     ProductionService service(PGSimpleDataSource pool, ProductionProviderPort p) {
-        return new ProductionService(pool, p, plan, new TickProductionClock(pool));
+        return new ProductionService(pool, p, plan, new TickProductionClock(pool), queue);
+    }
+
+    /** Moves the demo clock forward by delivering a later tick. */
+    void advance(Instant to) throws SQLException {
+        long version = count("SELECT max(clock_version) FROM supply_release_ticks") + 1;
+        update("INSERT INTO supply_release_ticks (environment_id, run_id, tick_id, tick_now, clock_version, input_digest, "
+                + "state) VALUES (?, 'run-1', ?, ?, ?, ?, 'pending')", ENV, "tick-" + version, java.sql.Timestamp.from(to), version, "0".repeat(64));
     }
 
     RunContext ctx() {
