@@ -6330,7 +6330,7 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-14T00:28:20Z",
+      "observed_at": "2026-11-14T01:00:19Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
@@ -6340,13 +6340,16 @@
       "slices": [
         {
           "id": "core",
-          "status": "not-started",
-          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)"
+          "status": "complete",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
+          "observed_at": "2026-11-14T01:00:19Z",
+          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
         },
         {
           "id": "http",
-          "status": "not-started",
-          "title": "Presenter read-only outbox and employee-owned notification email endpoints"
+          "status": "in-progress",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
+          "observed_at": "2026-11-14T01:00:19Z"
         },
         {
           "id": "brevo",
