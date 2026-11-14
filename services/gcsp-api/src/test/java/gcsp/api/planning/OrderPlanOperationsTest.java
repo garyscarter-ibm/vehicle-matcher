@@ -233,6 +233,22 @@ class OrderPlanOperationsTest {
     }
 
     @Test
+    void aRecheckConfirmsAnUnchangedPlanAndNamesWhatChangedOtherwise() {
+        JsonNode plan = value(ops.readPlan(principal("greg"))).get("plan");
+        String planId = plan.get("planId").textValue();
+        JsonNode same = value(ops.recheck(principal("greg"), planId, plan.get("versions"), null));
+        assertEquals(planId, same.get("planId").textValue());
+        ports.demandVersion = "forecast-v2";
+        ObjectNode stale = ops.recheck(principal("greg"), planId, plan.get("versions"), null);
+        assertEquals("conflict", stale.get("status").textValue());
+        assertEquals("replan-needed", stale.get("code").textValue());
+        assertEquals("[\"forecast\",\"plan\"]", stale.get("changedInputs").toString());
+        assertEquals("forecast-v2", stale.get("current").get("versions").get("forecast").textValue());
+        assertEquals("forbidden", ops.recheck(principal("employee"), planId, plan.get("versions"), null)
+                .get("status").textValue());
+    }
+
+    @Test
     void unavailableDemandOrSupplyIsReportedAndNotReplaced() {
         ports.demandOutcome = M.createObjectNode().put("status", "unavailable").put("code", "planning-forecast-not-configured");
         ObjectNode demand = ops.readPlan(principal("greg"));

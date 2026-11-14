@@ -110,6 +110,60 @@ public final class OrderPlanOperations {
         }
     }
 
+    /**
+     * Re-reads the plan from current inputs and compares it with a pinned planId and versions (Node submitPlan's
+     * replan-needed check). Read-only, so a submitting caller (FUCQ-478) can call it again inside its own transaction.
+     */
+    public ObjectNode recheck(Principal principal, String planId, JsonNode versions, JsonNode changes) {
+        try {
+            if (planId == null || planId.isEmpty() || planId.length() > 512 || versions == null || !versions.isObject()) {
+                return Outcomes.invalid("invalid-request", "input", "Supply planId and versions.", null);
+            }
+            Started started = start(principal);
+            if (started.failure() != null) {
+                return started.failure();
+            }
+            ObjectNode current;
+            if (changes == null || changes.isNull()) {
+                current = plan(principal, policy, principal.policyVersion(), supply);
+            } else {
+                Checked checked = checkChanges(started.base(), changes);
+                if (checked.failure() != null) {
+                    return checked.failure();
+                }
+                current = draftPlan(principal, started.base(), checked.changes());
+            }
+            if (!isPlan(current)) {
+                return current;
+            }
+            JsonNode now = current.get("versions");
+            java.util.TreeSet<String> keys = new java.util.TreeSet<>();
+            versions.fieldNames().forEachRemaining(keys::add);
+            now.fieldNames().forEachRemaining(keys::add);
+            ArrayNode changed = Outcomes.object().arrayNode();
+            for (String k : keys) {
+                if (!java.util.Objects.equals(versions.get(k), now.get(k))) {
+                    changed.add(k);
+                }
+            }
+            if (!planId.equals(current.get("planId").textValue())) {
+                changed.add("plan");
+            }
+            if (!changed.isEmpty()) {
+                ObjectNode refused = Outcomes.conflict("replan-needed");
+                refused.put("reason", "Inputs changed since the preview. Replan before submitting.");
+                refused.set("changedInputs", changed);
+                ObjectNode head = refused.putObject("current");
+                head.put("planId", current.get("planId").textValue());
+                head.set("versions", now);
+                return refused;
+            }
+            return finish(principal, current);
+        } catch (RuntimeException e) {
+            return Outcomes.operationsUnavailable("order-plan-operations-unavailable");
+        }
+    }
+
     /** The same plan under Greg's edited constraints, beside the active plan. Writes nothing. */
     public ObjectNode previewPlan(Principal principal, JsonNode input) {
         try {
