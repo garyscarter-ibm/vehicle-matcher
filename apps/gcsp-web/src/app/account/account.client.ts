@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApplicationContext, AuthPort } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
+import { AccountOffers, AccountOrders, AccountOrderSnapshot, validOffer, validOffers, validOrders, validOrderSnapshot } from './account.preview';
 import { journeyIntent, matchingDraft } from './account.projection';
 import { AccountAction, AccountFailure, AccountFailureStatus, AccountProjection, AccountRequestOptions, AccountResult,
   DiscardDraftCommand, DiscardedDraft, ManualDraft, ManualStock, NotificationEmail, SaveDraftCommand, SaveNotificationEmailCommand } from './account.types';
@@ -98,6 +99,20 @@ export class AccountClient {
   readDraft(options: AccountRequestOptions = {}): Promise<AccountResult<ManualDraft>> { return this.request('draft', draft, options); }
   readNotificationEmail(options: AccountRequestOptions = {}): Promise<AccountResult<NotificationEmail>> { return this.request('notification-email', notification, options); }
   readStock(options: AccountRequestOptions = {}): Promise<AccountResult<ManualStock>> { return this.request('stock', stock, options); }
+  readOrders(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOrders>> { return this.request('orders/progress/all', validOrders, options); }
+  readOrder(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOrderSnapshot>> { return this.request('order', validOrderSnapshot, options); }
+  async readOffers(options: AccountRequestOptions = {}): Promise<AccountResult<AccountOffers>> {
+    const initial = this.scope(); if (!initial) return authentication();
+    const listed = await this.request('offers/current', validOffers, options);
+    if (!this.sameScope(initial)) return changed();
+    if (listed.status !== 'ok' || !listed.value.offers.length) return listed;
+    const newest = listed.value.offers[0];
+    const detail = await this.request({ offerId: newest.offerId }, validOffer, options);
+    if (!this.sameScope(initial)) return changed();
+    if (detail.status !== 'ok') return detail;
+    if (detail.value['offerId'] !== undefined && detail.value['offerId'] !== newest.offerId) return unavailable('account-response-offer-mismatch', false);
+    return { ...listed, value: { ...listed.value, offers: [{ ...newest, state: detail.value.state }, ...listed.value.offers.slice(1)] } };
+  }
   saveDraft(input: SaveDraftCommand, options: AccountRequestOptions = {}): Promise<AccountResult<ManualDraft>> {
     if (!only(input, ['commandId', 'expectedDraftVersion', 'expectedContextVersion', 'choices']) || !command(input)
       || !revision(input['expectedDraftVersion']) || !text(input['expectedContextVersion']) || !choices(input['choices'])) return Promise.resolve(invalid());
@@ -140,7 +155,7 @@ export class AccountClient {
   }
   private sameScope(scope: Scope): boolean { const current = this.scope(); return !!current && Object.keys(scope).every((key) => current[key as keyof Scope] === scope[key as keyof Scope]); }
 
-  private async request<T>(path: 'account' | 'draft' | 'draft/discard' | 'notification-email' | 'stock', valid: (value: unknown) => value is T,
+  private async request<T>(path: 'account' | 'draft' | 'draft/discard' | 'notification-email' | 'stock' | 'order' | 'offers/current' | 'orders/progress/all' | { readonly offerId: string }, valid: (value: unknown) => value is T,
     options: AccountRequestOptions, body?: unknown): Promise<AccountResult<T>> {
     const initial = this.scope(); if (!initial) return authentication();
     if (options.signal?.aborted) return { status: 'aborted', code: 'account-request-aborted', retryable: false };
@@ -162,7 +177,9 @@ export class AccountClient {
         if (!this.sameScope(initial)) return changed();
         if (!token || /\s/.test(token)) return authentication();
         if (controller.signal.aborted) return { status: 'aborted', code: 'account-request-aborted', retryable: false };
-        const response = await this.fetcher(`${config.apiBaseUrl}/manual/${path}`, { method: body === undefined ? 'GET' : 'POST',
+        const suffix = typeof path === 'object' ? `offers/${encodeURIComponent(path.offerId)}?runId=${encodeURIComponent(initial.runId)}`
+          : path === 'offers/current' || path === 'orders/progress/all' ? path : `manual/${path}`;
+        const response = await this.fetcher(`${config.apiBaseUrl}/${suffix}`, { method: body === undefined ? 'GET' : 'POST',
           credentials: 'omit', cache: 'no-store', redirect: 'error', signal: controller.signal,
           headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
           ...(body === undefined ? {} : { body: JSON.stringify(body) }) });

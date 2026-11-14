@@ -6,6 +6,7 @@ import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { AccountOffers, AccountOrders, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
 import { AccountClient } from './account.client';
 import { AccountChoicesComponent } from './account-choices.component';
 import { contractTerms, journeyIntent, toAccountView } from './account.projection';
@@ -44,6 +45,17 @@ export class AccountComponent implements OnDestroy {
   @ViewChild('recordDrawer') private drawer?: ElementRef<HTMLDialogElement>;
   readonly projection = signal<AccountProjection | null>(null);
   readonly draft = signal<AccountResult<ManualDraft> | null>(null);
+  readonly offers = signal<AccountResult<AccountOffers> | null>(null);
+  readonly orders = signal<AccountResult<AccountOrders> | null>(null);
+  readonly orderSnapshot = signal<AccountResult<AccountOrderSnapshot> | null>(null);
+  readonly previewLoading = signal(false);
+  readonly newestOrder = computed(() => { const orders = this.orders(); return this.currentScope() && orders?.status === 'ok' ? latestOrder(orders.value.orders) : null; });
+  readonly orderCar = computed(() => { const snapshot = this.orderSnapshot(); const order = this.newestOrder(); return order ? orderVehicle(snapshot?.status === 'ok' ? snapshot.value : null, order.orderUuid) : null; });
+  readonly placedRecord = computed(() => placedOrderRecord(this.newestOrder(), this.orderCar(), this.projection()));
+  readonly allocatedOrder = computed(() => this.model()?.state === 'no-entitlement' && !!this.placedRecord());
+  readonly visibleSaved = computed(() => this.allocatedOrder() && this.saved()?.choices.slotId === this.newestOrder()?.entitlementSlotId ? null : this.saved());
+  readonly pendingOffer = computed(() => { const offers = this.offers(); return this.currentScope() && offers?.status === 'ok' && offers.value.offers[0]?.state === 'pending' ? offers.value.offers[0] : null; });
+  readonly previewFailed = computed(() => [this.offers(), this.orders(), this.orderSnapshot()].some((result) => result && result.status !== 'ok' && result.status !== 'not-found'));
   readonly pendingIntent = signal<JourneyIntent | null>(null);
   private readonly accountResult = signal<AccountResult<AccountProjection> | null>(null);
   private readonly loadedScope = signal<string | null>(null);
@@ -79,6 +91,7 @@ export class AccountComponent implements OnDestroy {
   readonly stateNotice = computed(() => {
     const model = this.model();
     if (model?.failure && ['pending', 'uncertain'].includes(model.failure.status)) return { title: 'Your account read is not confirmed', text: 'Refresh to read the latest account state.' };
+    if (this.allocatedOrder()) return null;
     return model && !model.state.startsWith('ready-') ? states[model.state] ?? { title: 'Your account is unavailable', text: 'Refresh to check the latest account information.' } : null;
   });
   readonly canStart = computed(() => this.currentScope() && !this.busy() && !this.loading() && !this.journeyLocked()
@@ -90,6 +103,7 @@ export class AccountComponent implements OnDestroy {
   private invalidate(): void {
     this.generation++; this.controller.abort(); this.controller = new AbortController();
     this.closeRecord(undefined, false); this.finishPrint();
+    this.offers.set(null); this.orders.set(null); this.orderSnapshot.set(null); this.previewLoading.set(false);
     this.loadedScope.set(null); this.projection.set(null); this.accountResult.set(null); this.draft.set(null); this.pendingIntent.set(null);
     this.loading.set(false); this.busy.set(false); this.message.set(null); this.journeyLocked.set(false); this.confirmingDiscard.set(false);
     this.failedImages.set(new Set()); this.email.set(null); this.emailInput.set(''); this.emailBusy.set(false); this.emailLocked.set(false);
@@ -109,10 +123,36 @@ export class AccountComponent implements OnDestroy {
       this.accountResult.set(account); this.draft.set(draft);
       this.projection.set(account.status === 'ok' ? account.value : null);
       if (reviewed && account.status === 'ok') this.reviewedContextVersion = account.value.contextVersion ?? null;
-      if (account.status === 'ok' && account.value.account) void this.reloadEmail();
+      if (account.status === 'ok' && account.value.account) { void this.reloadEmail(); void this.reloadPreviews(); }
     } catch { if (this.live(generation)) this.accountResult.set({ status: 'unavailable', code: 'account-read-failed' }); }
     finally { if (this.live(generation)) this.loading.set(false); }
   }
+  async reloadPreviews(): Promise<void> {
+    if (!this.currentScope() || this.previewLoading()) return;
+    const generation = this.generation; this.previewLoading.set(true);
+    this.offers.set(null); this.orders.set(null); this.orderSnapshot.set(null);
+    const options = { signal: this.controller.signal };
+    const safe = async <T>(read: () => Promise<AccountResult<T>>): Promise<AccountResult<T>> => { try { return await read(); } catch { return { status: 'unavailable' }; } };
+    try {
+      await Promise.all([
+        (async () => { const offers = await safe(() => this.client.readOffers(options)); if (this.live(generation)) this.offers.set(offers); })(),
+        (async () => {
+          const orders = await safe(() => this.client.readOrders(options)); if (!this.live(generation)) return;
+          this.orders.set(orders);
+          if (orders.status === 'ok' && latestOrder(orders.value.orders)) {
+            const snapshot = await safe(() => this.client.readOrder(options)); if (this.live(generation)) this.orderSnapshot.set(snapshot);
+          }
+        })(),
+      ]);
+    } finally { if (this.live(generation)) this.previewLoading.set(false); }
+  }
+  orderTitle(): string { const outcome = this.newestOrder()?.outcome; return outcome === 'declined' ? 'Your order was declined' : outcome === 'handed-over' ? 'Your car has been handed over' : 'Your new car'; }
+  orderStep(): string | null { const stage = this.newestOrder()?.currentStage; return stage ? words(stage).replace(/_/g, ' ') : null; }
+  orderReference(): string | null { const reference = this.newestOrder()?.source?.orderReference; return this.shown(object(reference)?.['value'] ?? (typeof reference === 'string' ? reference : null)); }
+  orderImage(orderUuid: string): string | null { return this.newestOrder()?.orderUuid === orderUuid && !this.failedImages().has(`order:${orderUuid}`) ? this.orderCar()?.photo ?? null : null; }
+  orderImageFailed(orderUuid: string): void { this.failedImages.update((keys) => new Set([...keys, `order:${orderUuid}`])); }
+  deliveredName(orderUuid: string): string { return this.newestOrder()?.orderUuid === orderUuid ? this.orderCar()?.name ?? 'Your current car' : 'Your current car'; }
+  showNoCar(): boolean { return this.model()?.contractState === 'no-current-car' && (!!this.model()?.carReturned || !(this.allocatedOrder() && this.newestOrder()?.outcome !== 'declined')); }
   authMessage(): string {
     const state = this.auth.state();
     return state.status === 'denied' ? 'Your signed-in account does not have access to employee cars.'

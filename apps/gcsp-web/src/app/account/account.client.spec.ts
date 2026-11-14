@@ -42,6 +42,37 @@ describe('native signed-in account client', () => {
       expect(options?.body).toBeUndefined(); expect(options?.signal).toBeInstanceOf(AbortSignal);
     }
   });
+  it('reads preview paths through the same bearer boundary and uses only the trusted run for owned offer detail', async () => {
+    const offers = { offers: [{ offerId: 'offer/id?with-query', runId: context.runId }] };
+    const orders = { orders: [{ orderUuid: 'exact-stock', entitlementSlotId: 'slot', source: { orderNumber: 'supplied' } }] };
+    const snapshot = { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4' } } } }, retainedFact: 'source' };
+    fetcher.mockResolvedValueOnce(ok(offers)).mockResolvedValueOnce(ok({ state: 'pending', runId: context.runId }))
+      .mockResolvedValueOnce(ok(orders)).mockResolvedValueOnce(ok(snapshot));
+    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [{ ...offers.offers[0], state: 'pending' }] } });
+    expect(await client.readOrders()).toEqual({ status: 'ok', value: orders }); expect(await client.readOrder()).toEqual({ status: 'ok', value: snapshot });
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual([`${config.apiBaseUrl}/offers/current`,
+      `${config.apiBaseUrl}/offers/offer%2Fid%3Fwith-query?runId=${encodeURIComponent(context.runId)}`, `${config.apiBaseUrl}/orders/progress/all`, `${config.apiBaseUrl}/manual/order`]);
+    for (const [, options] of fetcher.mock.calls) { expect(options).toMatchObject({ method: 'GET', credentials: 'omit', headers: { Authorization: 'Bearer access-token' } }); expect(options?.body).toBeUndefined(); }
+  });
+  it('keeps empty previews distinct from failed reads and rejects embedded foreign offer authority before detail fetch', async () => {
+    fetcher.mockResolvedValueOnce(ok({ offers: [] })).mockResolvedValueOnce(ok({ orders: [] }));
+    expect(await client.readOffers()).toEqual({ status: 'ok', value: { offers: [] } }); expect(await client.readOrders()).toEqual({ status: 'ok', value: { orders: [] } });
+    fetcher.mockClear(); fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'private', runId: 'foreign-run' }] }));
+    expect(await client.readOffers()).toEqual({ status: 'unavailable', code: 'account-response-scope-mismatch', retryable: false }); expect(fetcher).toHaveBeenCalledOnce();
+    fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'own', runId: context.runId }] })).mockResolvedValueOnce(json({ status: 'forbidden', contractVersion: '1' }, 403));
+    expect(await client.readOffers()).toEqual({ status: 'forbidden', contractVersion: '1', httpStatus: 403 });
+    fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'own', runId: context.runId }] })).mockResolvedValueOnce(ok({ state: 'pending', offerId: 'different' }));
+    expect(await client.readOffers()).toEqual({ status: 'unavailable', code: 'account-response-offer-mismatch', retryable: false });
+  });
+  it('drops late preview facts and a newest-offer response when the signed-in scope changes', async () => {
+    const detail = deferred<Response>();
+    fetcher.mockResolvedValueOnce(ok({ offers: [{ offerId: 'own', runId: context.runId }] })).mockReturnValueOnce(detail.promise);
+    const pending = client.readOffers(); await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+    state.set({ status: 'ready', context: { ...context, employeeId: 'different' } }); detail.resolve(ok({ state: 'pending', private: 'old facts' }));
+    expect((await pending).status).toBe('account-changed');
+    state.set({ status: 'ready', context }); fetcher.mockResolvedValueOnce(ok({ orders: [{ orderUuid: 'private', entitlementSlotId: 'slot', source: { employeeId: 'foreign' } }] }));
+    expect((await client.readOrders()).status).toBe('unavailable');
+  });
   it('retains the documented compact stock availability projection without importing a legacy controller', async () => {
     const value = { payloadShape: 'manual-stock-compact-v1', carIds: ['exact-car'], sharedVersionKeys: ['policy'], total: 1,
       decisions: [{ orderUuid: 'exact-car', versions: {} }], versions: { draft: 3, context: 'source-context', policy: 'retained' } };

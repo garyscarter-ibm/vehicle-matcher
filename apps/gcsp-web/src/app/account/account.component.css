@@ -60,3 +60,12 @@ tbody th { font-weight: var(--gcsp-font-strong-weight); }
   td:last-child::before { display: none; }
   .record-content dl > div { grid-template-columns: minmax(110px, 1fr) minmax(0, 1.3fr); gap: var(--gcsp-space-3); }
 }
+
+.account-previews { display: grid; gap: var(--gcsp-space-4); }
+.account-previews:empty { display: none; }
+.account-previews > .gcsp-note { margin: 0; }
+.order-preview { padding: 0; overflow: hidden; }
+.order-car { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(0, 2fr); }
+.order-car .car-media { min-height: 180px; }
+.order-car dl { margin-bottom: var(--gcsp-space-4); }
+@media (max-width: 640px) { .order-car { grid-template-columns: minmax(0, 1fr); } }

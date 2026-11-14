@@ -14,12 +14,12 @@ const deferred = <T>() => { let resolve!: (value: T) => void; const promise = ne
 describe('native employee account screen', () => {
   let fixture: ComponentFixture<AccountComponent>;
   let auth: { state: ReturnType<typeof signal<SessionState>>; recovery: ReturnType<typeof signal<null>>; signIn: ReturnType<typeof vi.fn>; retry: ReturnType<typeof vi.fn> };
-  let client: { [key in 'readAccount' | 'readDraft' | 'readNotificationEmail' | 'saveNotificationEmail' | 'startJourney' | 'discardDraft']: ReturnType<typeof vi.fn> };
+  let client: { [key in 'readOffers' | 'readOrders' | 'readOrder' | 'readAccount' | 'readDraft' | 'readNotificationEmail' | 'saveNotificationEmail' | 'startJourney' | 'discardDraft']: ReturnType<typeof vi.fn> };
   let account: AccountProjection;
   beforeEach(() => {
     account = accountSnapshot();
     auth = { state: signal(ready()), recovery: signal(null), signIn: vi.fn(), retry: vi.fn() };
-    client = { readAccount: vi.fn().mockResolvedValue({ status: 'ok', value: account }), readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
+    client = { readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { orders: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readAccount: vi.fn().mockResolvedValue({ status: 'ok', value: account }), readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
       readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'saved@example.test', version: 4 } }),
       saveNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'canonical@example.test', version: 5 } }),
       startJourney: vi.fn().mockResolvedValue({ status: 'ok', value: savedDraft() }), discardDraft: vi.fn().mockResolvedValue({ status: 'ok', value: { discarded: true, draftVersion: 4 } }) };
@@ -71,7 +71,58 @@ describe('native employee account screen', () => {
   it('uses confirmed current-car relationships after handover and keeps delivered VIN separate', async () => {
     account = { ...account, currentCarRelationships: [{ currentCar: { kind: 'order', orderUuid: 'exact-stock', vin: 'DELIVEREDVIN' }, oldCar: { contractId: account.contracts![0].contractId, status: 'returned' }, newCar: { collectedAt: '2026-11-07T13:00:00.000Z' } }] };
     client.readAccount.mockResolvedValue({ status: 'ok', value: account }); await mount();
-    expect(root().querySelector('.current-car')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
+    expect(root().querySelector('.current-car:not(.delivered-car)')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
+  });
+  it('shows the newest pending owned offer link without inventing a manual-order gate', async () => {
+    client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });
+    await mount(); expect(text()).toContain('You have a car offer to decide on before choosing another car.');
+    expect(root().querySelector('a[href="/offers/owned-offer"]')?.textContent).toBe('View your offer'); expect(button('Choose a replacement').disabled).toBe(false);
+  });
+  it('shows preview loading without blocking the working account or treating pending reads as empty', async () => {
+    const offers = deferred<AccountResult<import('./account.preview').AccountOffers>>(); const orders = deferred<AccountResult<import('./account.preview').AccountOrders>>();
+    client.readOffers.mockReturnValueOnce(offers.promise); client.readOrders.mockReturnValueOnce(orders.promise);
+    await mount(); expect(text()).toContain('Reading your offers and orders'); expect(text()).toContain('Paula Mason'); expect(button('Choose a replacement').disabled).toBe(false); expect(text()).not.toContain('No orders to track.');
+    offers.resolve({ status: 'ok', value: { offers: [] } }); orders.resolve({ status: 'ok', value: { orders: [] } }); await settle();
+    expect(text()).not.toContain('Reading your offers and orders'); expect(text()).toContain('No orders to track.');
+  });
+  it('keeps preview failures isolated, truthful and explicitly retryable while the account stays usable', async () => {
+    client.readOffers.mockResolvedValueOnce({ status: 'unavailable' }); client.readOrders.mockResolvedValueOnce({ status: 'forbidden' });
+    await mount(); expect(text()).toContain('Some offer or order details could not be read.'); expect(text()).not.toContain('No orders to track.');
+    expect(text()).toContain('Paula Mason'); expect(button('Choose a replacement').disabled).toBe(false);
+    button('Retry offers and orders').click(); await settle(); expect(text()).toContain('No orders to track.'); expect(text()).not.toContain('Some offer or order details'); expect(client.readAccount).toHaveBeenCalledTimes(1);
+  });
+  it('adds a placed order to the single history table and opens supplied numbers, outcome and slot in the existing drawer', async () => {
+    const slot = account.slots![0].entitlementSlotId;
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'exact-stock', entitlementSlotId: slot, outcome: 'ordered', currentStage: 'awaiting-handover', source: { orderReference: { value: 'REF-123' }, orderNumber: 'CAR-456' } }] } });
+    client.readOrder.mockResolvedValue({ status: 'ok', value: { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4', photo: '/exact.webp' } } } } } });
+    await mount(); expect(root().querySelectorAll('table')).toHaveLength(1); expect(root().querySelectorAll('.placed-order')).toHaveLength(1);
+    expect(text()).toContain('Current step: Awaiting handover.'); expect(root().querySelector('a[href="/orders"]')?.textContent).toBe('Track your order');
+    root().querySelector<HTMLButtonElement>('.placed-order button')!.click(); await settle();
+    const drawer = root().querySelector('dialog')!.textContent!; expect(drawer).toContain('BMW i4'); expect(drawer).toContain('REF-123'); expect(drawer).toContain('CAR-456'); expect(drawer).toContain('Ordered'); expect(drawer).not.toContain('exact-stock');
+  });
+  it('lets an allocated order supersede a same-slot saved journey and no-car notice while returned-car evidence stays explicit', async () => {
+    const slot = account.slots![0].entitlementSlotId;
+    account = { ...account, state: 'no-entitlement', actions: [], contracts: [], histories: [], currentContract: null };
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readDraft.mockResolvedValue({ status: 'ok', value: savedDraft({ choices: { mode: 'new', oldContractId: null, slotId: slot, schemeId: account.account!.schemeId! } }) });
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
+    await mount(); expect(text()).not.toContain('No ordering entitlement'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('You started a new car order'); expect(text()).not.toContain('Saved journey could not be read'); expect(text()).toContain('Your new car');
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'declined' }] } });
+    await fixture.componentInstance.reloadPreviews(); await settle(); expect(text()).toContain('Your order was declined'); expect(text()).toContain('No current car');
+    account = { ...account, currentCarRelationships: [{ currentCar: null, oldCar: { status: 'returned' } }] };
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
+    await fixture.componentInstance.refresh(); await settle(); expect(text()).toContain('Your previous car has been returned. Your new car becomes current at handover.');
+  });
+  it('uses delivered media only for the exact listed order and clears late preview facts on account change', async () => {
+    const order = { orderUuid: 'exact-stock', entitlementSlotId: account.slots![0].entitlementSlotId, outcome: 'handed-over' };
+    account = { ...account, currentCarRelationships: [{ currentCar: { kind: 'order', orderUuid: order.orderUuid, vin: 'DELIVEREDVIN' }, newCar: { collectedAt: '2026-11-07' } }] };
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [order] } });
+    client.readOrder.mockResolvedValueOnce({ status: 'ok', value: { selection: { stock: { orderUuid: 'different-stock', facts: { display: { name: 'Foreign car', photo: '/foreign.webp' } } } } } });
+    await mount(); expect(text()).not.toContain('Foreign car'); expect(root().querySelector('.delivered-car img')).toBeNull();
+    client.readOrder.mockResolvedValue({ status: 'ok', value: { selection: { stock: { orderUuid: order.orderUuid, facts: { display: { name: 'BMW i4', photo: '/exact.webp' } } } } } });
+    await fixture.componentInstance.reloadPreviews(); await settle(); expect(root().querySelector('.delivered-car h2')?.textContent).toBe('BMW i4'); expect(root().querySelector('.delivered-car img')?.getAttribute('src')).toBe('/exact.webp');
+    const late = deferred<AccountResult<import('./account.preview').AccountOrders>>(); client.readOrders.mockReturnValueOnce(late.promise);
+    const loading = fixture.componentInstance.reloadPreviews(); auth.state.set({ status: 'signed-out' }); await settle(); late.resolve({ status: 'ok', value: { orders: [order] } }); await loading; await settle();
+    expect(text()).not.toContain('BMW i4'); expect(root().querySelector('img')).toBeNull(); expect(fixture.componentInstance.newestOrder()).toBeNull();
   });
   it('announces loading, keeps failed reads truthful and retries explicitly', async () => {
     const pending = deferred<AccountResult<AccountProjection>>(); client.readAccount.mockReturnValueOnce(pending.promise);
