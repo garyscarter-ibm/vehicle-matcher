@@ -6100,6 +6100,113 @@
       ]
     },
     {
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-13-009",
+      "id": "FUCQ-441",
+      "observed_at": "2026-11-14T02:26:19Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "api-client",
+          "observed_at": "2026-11-14T00:42:02Z",
+          "status": "complete",
+          "title": "Versioned brief API client and response contracts",
+          "evidence": "Lead reviewed source contract and callers; focused API suite 6/6; matching hashes and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md."
+        },
+        {
+          "id": "editor-feedback",
+          "status": "complete",
+          "title": "Native preference, practical and current-car editor",
+          "observed_at": "2026-11-14T01:04:55Z",
+          "evidence": "Lead reviewed corrected native editor, source/callers and revision25/25; separate unchanged client10/10, exact identity and teardown verified; delivery note records remaining native integration."
+        },
+        {
+          "id": "engagement",
+          "status": "complete",
+          "title": "Buddy consent, search controls and truthful recovery",
+          "observed_at": "2026-11-14T01:43:45.291661+00:00",
+          "evidence": "Lead reviewed Buddy commands and recovery correction; matching Donald52 client/Buddy proof and corrected store/component46 checks, exact source and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md. Native integration remains open."
+        },
+        {
+          "id": "native-integration",
+          "status": "in-progress",
+          "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Edit preferences and control Buddy delegation",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-441",
+      "workers": [
+        {
+          "expires_at": "2026-11-14T03:26:19.233839+00:00",
+          "harness": "codex",
+          "name": "Mike Wazowski",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "role": "story-lead",
+          "source": "chat 01a1d771-04c7-7810-9f87-4cf69d3701b6",
+          "status": "active"
+        },
+        {
+          "name": "Cogsworth",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T00:35:08.248381+00:00",
+          "expires_at": "2026-11-14T00:42:01.876813+00:00",
+          "source": "child chat01a1d772-fbf7-7ed3-8a99-f897a07b925a verified Luna/high",
+          "status": "stopped"
+        },
+        {
+          "name": "Road Runner",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T00:43:47.524108+00:00",
+          "expires_at": "2026-11-14T01:04:54.899729+00:00",
+          "source": "child chat 01a1d781-eeab-78b1-891f-8cff3f3a5d7a, runtime Sol/medium and title independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Donald Duck",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T01:07:13.325473+00:00",
+          "expires_at": "2026-11-14T01:38:14.892502+00:00",
+          "source": "child chat 01a1d797-b6a5-75e2-a4e0-b2ad10673c43, runtime Luna/high independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Barney McGrew",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T01:38:14.892502+00:00",
+          "expires_at": "2026-11-14T01:43:45.291661+00:00",
+          "source": "child chat 01a1d7b3-579b-7a53-90af-6474310e7385, requested/selected/effective Sol/medium and saved title independently verified",
+          "status": "stopped"
+        },
+        {
+          "name": "Taz",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "expires_at": "2026-11-14T02:26:19.233839+00:00",
+          "source": "child chat 01a1d7bc-eba0-7121-8fd8-d5652e11a50d; first runtime observation 2026-11-14T01:47:25Z; requested/selected/effective gpt-6-luna/high, saved title independently verified; stopped final result observed",
+          "status": "stopped"
+        },
+        {
+          "name": "Cuthbert",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:26:19.233839+00:00",
+          "expires_at": "2026-11-14T02:26:19.233839+00:00",
+          "source": "child chat 01a1d7d8-78e7-7a21-8666-c26aec43f4dc; first runtime observation 2026-11-14T02:17:32.852Z; requested/selected/effective gpt-6.1-sol/high, saved title independently verified; stopped final result observed",
+          "status": "stopped"
+        }
+      ]
+    },
+    {
       "assignee": "",
       "id": "FUCQ-442",
       "observed_at": "2026-11-13T20:22:18.041Z",
@@ -6364,13 +6471,43 @@
     {
       "assignee": "",
       "id": "FUCQ-457",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:09:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and publish canonical versioned policy",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-457"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-457",
+      "slices": [
+        {
+          "id": "s1-read-core",
+          "status": "complete",
+          "title": "Java PolicyService reads over the retained files with Node parity",
+          "observed_at": "2026-11-14T00:24:06Z",
+          "evidence": "0e97cea5 reviewed by story-lead: 14 policy tests incl. 718 Node-generated parity cases and retained projection fixture; verify 104/0F/37 skipped"
+        },
+        {
+          "id": "s2-publish-activation",
+          "status": "complete",
+          "title": "Persisted versions, Greg publication and run activation on native PostgreSQL",
+          "observed_at": "2026-11-14T01:39:02Z",
+          "evidence": "cd9c5ff9 reviewed by story-lead; migration renamed V457_1; merged base 49b893d6: verify 329/0F/0E/0S on native PG17 incl. 46 policy publish/activation/source/parity tests"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "Greg policy read and publish endpoints under /api/gcsp/v1 and consumer port adapters",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "24d542f8 reviewed by story-lead: Greg policy GET/publish under /api/gcsp/v1, brief adapter bound, account/supply adapters ready; 80 policy tests"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "story-lead: merged base 7645efb7, clean verify 349/0F/0E/0S on native PG17; parity fixtures regenerate identically; result block in story file"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6579,13 +6716,43 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:17:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
+          "observed_at": "2026-11-14T01:00:19Z",
+          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
+          "observed_at": "2026-11-14T02:01:23Z",
+          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
+        },
+        {
+          "id": "brevo",
+          "status": "complete",
+          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
+          "observed_at": "2026-11-14T02:12:01Z",
+          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
+          "observed_at": "2026-11-14T02:17:35Z",
+          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6601,13 +6768,43 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:18:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Documents schema, policy and stage ports, provider port with synthetic, unsupported and unconfigured adapters",
+          "observed_at": "2026-11-14T01:34:26Z",
+          "evidence": "b8af3d58 reviewed by story-lead: policy loader, stage observation, provider adapters; documents tests 38/38, verify 128/128 on native PG 17"
+        },
+        {
+          "id": "s2-tick",
+          "status": "complete",
+          "title": "Source-linked opening and provider progress on ticks, exceptions and readiness projection on native PostgreSQL",
+          "observed_at": "2026-11-14T01:49:01Z",
+          "evidence": "e4a1c5cc reviewed by story-lead: source-linked open, provider progress outside tx, exceptions, readiness; verify 141/141 native PG 17; index-only scan document_items_open; 9 statements per order"
+        },
+        {
+          "id": "s3-ack-http",
+          "status": "complete",
+          "title": "Employee reads, provider acknowledgement command and /api/gcsp/v1/documents endpoints with startup selection",
+          "observed_at": "2026-11-14T02:14:33Z",
+          "evidence": "ff2d9c4a+66222cc7 reviewed by story-lead: provider-port acknowledgement with intent/CAS finalize, employee ownership, presenter/greg read-only, /api/gcsp/v1/documents; verify 160/160 native PG 17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T02:18:47Z",
+          "evidence": "341dde5c: base merged, Java verify 421/421 on native PG 17, result block written"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6965,11 +7162,11 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-13T23:45:22Z",
+      "observed_at": "2026-11-14T02:26:06Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Actual F439 foundation composed through published gcsp-poc-dev base09a13e78/merge70d86d5f; root npm assembly uses default integrated app inputs, two F455-compatible public configs,9 files/8 dependencies each,7 stable assets. Compiler/browser and18-check evidence reused with exact matching inputs. See delivery record and companion proof JSON.",
+          "evidence": "Local static artifact checkpoint retained. Java producer packaging5f92381e reconciles rootDockercontext,3policyfilters,optionalnoneproviders;18/18focusedchecks and independentPASS. Hosted release/identity gates remain open; see delivery record14November continuation.",
           "id": "artifact",
           "observed_at": "2026-11-13T23:31:36Z",
           "status": "complete",
@@ -6998,22 +7195,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-436",
       "workers": [
         {
-          "expires_at": "2026-11-13T23:45:04.033059+00:00",
-          "harness": "codex",
           "name": "Rapunzel",
-          "observed_at": "2026-11-13T23:45:04.033059+00:00",
-          "role": "story-lead",
-          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
-          "status": "checkpoint review complete; observed worker expired"
-        },
-        {
-          "expires_at": "2026-11-13T23:45:04.033059+00:00",
           "harness": "codex",
-          "name": "Yosemite Sam",
-          "observed_at": "2026-11-13T23:45:04.033059+00:00",
-          "role": "reviewer",
-          "source": "Independent review PASS for254a16d5; original AC still open; dispatcher owns publication/integration",
-          "status": "checkpoint review complete; observed worker expired"
+          "role": "story-lead",
+          "observed_at": "2026-11-14T02:26:05.937586+00:00",
+          "expires_at": "2026-11-14T02:26:05.937586+00:00",
+          "source": "Buzz Lightyear PASS5f92381e; native InProgress/originalAC/lease unchanged; dispatcher owns integration",
+          "status": "provider packaging checkpoint reviewed; observation expired"
         }
       ]
     },
@@ -7062,113 +7250,6 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
-        }
-      ]
-    },
-    {
-      "assignee": "Gary Carter",
-      "branch": "dev/DEV-2026-11-13-009",
-      "id": "FUCQ-441",
-      "observed_at": "2026-11-14T02:26:19Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "api-client",
-          "observed_at": "2026-11-14T00:42:02Z",
-          "status": "complete",
-          "title": "Versioned brief API client and response contracts",
-          "evidence": "Lead reviewed source contract and callers; focused API suite 6/6; matching hashes and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md."
-        },
-        {
-          "id": "editor-feedback",
-          "status": "complete",
-          "title": "Native preference, practical and current-car editor",
-          "observed_at": "2026-11-14T01:04:55Z",
-          "evidence": "Lead reviewed corrected native editor, source/callers and revision25/25; separate unchanged client10/10, exact identity and teardown verified; delivery note records remaining native integration."
-        },
-        {
-          "id": "engagement",
-          "status": "complete",
-          "title": "Buddy consent, search controls and truthful recovery",
-          "observed_at": "2026-11-14T01:43:45.291661+00:00",
-          "evidence": "Lead reviewed Buddy commands and recovery correction; matching Donald52 client/Buddy proof and corrected store/component46 checks, exact source and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md. Native integration remains open."
-        },
-        {
-          "id": "native-integration",
-          "status": "in-progress",
-          "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-14T02:26:19.233839+00:00",
-          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md."
-        }
-      ],
-      "status": "In Progress",
-      "title": "Edit preferences and control Buddy delegation",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-441",
-      "workers": [
-        {
-          "expires_at": "2026-11-14T03:26:19.233839+00:00",
-          "harness": "codex",
-          "name": "Mike Wazowski",
-          "observed_at": "2026-11-14T02:26:19.233839+00:00",
-          "role": "story-lead",
-          "source": "chat 01a1d771-04c7-7810-9f87-4cf69d3701b6",
-          "status": "active"
-        },
-        {
-          "name": "Cogsworth",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-14T00:35:08.248381+00:00",
-          "expires_at": "2026-11-14T00:42:01.876813+00:00",
-          "source": "child chat01a1d772-fbf7-7ed3-8a99-f897a07b925a verified Luna/high",
-          "status": "stopped"
-        },
-        {
-          "name": "Road Runner",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T00:43:47.524108+00:00",
-          "expires_at": "2026-11-14T01:04:54.899729+00:00",
-          "source": "child chat 01a1d781-eeab-78b1-891f-8cff3f3a5d7a, runtime Sol/medium and title independently verified",
-          "status": "stopped"
-        },
-        {
-          "name": "Donald Duck",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-14T01:07:13.325473+00:00",
-          "expires_at": "2026-11-14T01:38:14.892502+00:00",
-          "source": "child chat 01a1d797-b6a5-75e2-a4e0-b2ad10673c43, runtime Luna/high independently verified",
-          "status": "stopped"
-        },
-        {
-          "name": "Barney McGrew",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T01:38:14.892502+00:00",
-          "expires_at": "2026-11-14T01:43:45.291661+00:00",
-          "source": "child chat 01a1d7b3-579b-7a53-90af-6474310e7385, requested/selected/effective Sol/medium and saved title independently verified",
-          "status": "stopped"
-        },
-        {
-          "name": "Taz",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-14T02:26:19.233839+00:00",
-          "expires_at": "2026-11-14T02:26:19.233839+00:00",
-          "source": "child chat 01a1d7bc-eba0-7121-8fd8-d5652e11a50d; first runtime observation 2026-11-14T01:47:25Z; requested/selected/effective gpt-6-luna/high, saved title independently verified; stopped final result observed",
-          "status": "stopped"
-        },
-        {
-          "name": "Cuthbert",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-14T02:26:19.233839+00:00",
-          "expires_at": "2026-11-14T02:26:19.233839+00:00",
-          "source": "child chat 01a1d7d8-78e7-7a21-8666-c26aec43f4dc; first runtime observation 2026-11-14T02:17:32.852Z; requested/selected/effective gpt-6.1-sol/high, saved title independently verified; stopped final result observed",
-          "status": "stopped"
         }
       ]
     }
