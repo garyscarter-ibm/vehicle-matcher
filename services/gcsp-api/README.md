@@ -67,6 +67,8 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
+| `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
+| `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -171,6 +173,12 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 | `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
 | `GET /api/gcsp/v1/presenter/releases/ticks/{tickId}` | Tick state, attempts, clock and last outcome. |
 | `GET /api/gcsp/v1/presenter/releases/stock?after=&limit=` | Released cars (keyset page, limit 1..500) as the allocator reads them; no VIN, no employee. |
+| `GET /api/gcsp/v1/help` | Employee only. What asking for help does; opens nothing. 400 `unsupported-query`; 403 `role-required`, `not-resource-owner`; 503 `case-unavailable`. |
+| `GET /api/gcsp/v1/cases` | Employee only, own cases; `?caseId=` for one. 400 `unsupported-query`, `invalid-case-command`; 403 `role-required`, `not-resource-owner`; 404 `not-found`; 503 `case-unavailable`. |
+| `POST /api/gcsp/v1/cases` | Employee only. Body `{commandId, reason}` opens the owned case or adds to the active one; a replay returns `replayed: true`. 400 `unsupported-query`, `invalid-case-command`, `renewal-context-required`; 403 `role-required`; 409 `command-input-changed`; 503 `case-unavailable`, `outcome-uncertain`. |
+| `GET /api/gcsp/v1/scheme-team/cases` | Greg only; the presenter and employees are refused. Every case of the run with the employee's name. 400 `unsupported-query`; 403 `role-required`; 503 `case-unavailable`. |
+| `GET /api/gcsp/v1/scheme-team/cases/options` | Greg only; needs `?caseId=`. The remedies offered for one case. 400 `unsupported-query`, `invalid-case-command`; 403 `role-required`; 404 `not-found`; 409 `renewal-changed`; 503 `case-unavailable`. |
+| `POST /api/gcsp/v1/scheme-team/cases/update` | Greg only. Body with `commandId`, `caseId`, `expectedVersion`, `status`, `reason`, `nextAction`, `dueAt` and an optional `remedy`. 400 `unsupported-query`, `invalid-case-command`; 403 `role-required`, `forbidden` (a remedy the policy does not permit); 404 `not-found`; 409 `stale-version` (with `expectedVersion`, `currentVersion`), `renewal-changed`, `command-input-changed`; 503 `case-unavailable`, `outcome-uncertain`. |
 
 Acknowledgement answers: 200 `ok` (provider evidence recorded, item complete); 202 `pending`
 (`acknowledgement-pending`, with `operationId`; resend the same body to reconcile) or `uncertain`; 400 invalid body;
@@ -275,6 +283,50 @@ honoured. Responses carry `Cache-Control: no-store` and `Referrer-Policy: no-ref
 Refusals: 400 `invalid-offer-reference`, `unsupported-query`; 401 as above; 403 `role-required` (presenter, Greg, no
 `employeeId`), `offer-not-owned` (another employee; no offer facts returned); 404 `offer-not-found`; 409
 `offer-from-earlier-run`; 503 `offer-access-unavailable` (retryable) and `offer-state-inconsistent`.
+
+## Order approvals (FUCQ-470)
+
+`gcsp.api.approvals` ports the Node lifecycle approvals. `ApprovalService` records each presenter tick durably, asks the
+selected `ApprovalStatusProvider` for a decision outside any transaction and settles it only on a matching confirmation;
+elapsed ticks only make a decision due. `ApprovalSelection` picks the provider and policy once at startup with no silent
+fallback. Policy comes from the canonical PolicyService (`PolicyApprovalAdapter`, reporting `canonical`) unless
+`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source (FUCQ-468) and handover (FUCQ-472) are
+`@DefaultBean` ports (`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured`
+(503) and no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
+run (else 409 `stale-run`). With persistence on and a provider other than `none`, startup finishes up to 100 open
+decisions once (it never counts ticks or starts orders) and logs a one-line count; a failure is logged, not fatal.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/orders/progress?orderUuid=` | Employee (own orders only, else 403 `not-resource-owner`), Greg or presenter: `{status:"ok",value:<order progress>}` with owner, next step, stages and provider references. 400 `unsupported-query` for any other or repeated key. |
+| `GET /api/gcsp/v1/orders/progress/all?after=&limit=` | Same roles; keyset page, limit 1..100 (default 50); an employee sees only their own orders. |
+| `POST /api/gcsp/v1/presenter/approvals/ticks` | Presenter only: `{commandId, tickId, now, clockVersion}`. |
+| `POST /api/gcsp/v1/presenter/approvals/reconcile` | Presenter only: `{commandId, limit?}` (1..100, default 100). |
+
+`commandId` is required and nonempty but `tickId` is the idempotency identity: the same `tickId` with the same
+input replays (200 with `replayed: true`), with changed input it is 409 `tick-input-changed`. No endpoint lets any
+role approve or decline directly. Employee or Greg on a presenter endpoint is 403 `role-required`.
+
+| Result | Meaning |
+| --- | --- |
+| 200 | Read or tick delivered. |
+| 202 | `outcome-uncertain` with `operationId`: inspect before any resubmit. |
+| 400 | `invalid-tick`, `invalid-reconcile`, `invalid-query`, `invalid-order` (with `reasons`), `unsupported-query`. |
+| 403 | `role-required`, `not-resource-owner`. |
+| 404 | `not-found` (no such order). |
+| 409 | `tick-input-changed`, `approval-clock-changed`, `stale-run`. |
+| 503 | `persistence-not-configured`, `database-unavailable`, `order-source-not-configured`, `selection-pending`/`selection-handoff-failed` with `state: not-ready`, `lifecycle-policy-unavailable`, `policy-source-unavailable`, `order-progress-unavailable`. |
+
+## Renewal cases (FUCQ-474)
+
+Package `gcsp.api.cases`: owned renewal cases in the V474_1 tables (`renewal_cases`, `renewal_case_history`).
+`CaseService` runs each command as one transaction and `CaseResource` serves the six endpoints above; scope comes only
+from the bearer principal. Ports and production defaults: `PolicyCaseAdapter` reads the nine `renewalCase.*` rows
+of the pinned version from the canonical PolicyService (any missing or invalid row is 503 `case-unavailable`);
+`CaseAccountPort` reads the account records port (`GCSP_ACCOUNT_PROVIDER`, else 503); each change queues outbox event `renewal-case-update` for `gcsp.api.notify` (FUCQ-469) to
+deliver. Car suitability is not connected, so alternative-car proposals are 503, and preference relaxation needs a
+recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
+ported yet. No new environment variables.
 
 ## Render
 
