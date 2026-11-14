@@ -5676,8 +5676,8 @@
       "assignee": "Gary Carter",
       "id": "FUCQ-417",
       "jira_observed_at": "2026-11-14T07:59:15.577Z",
-      "note": "Calculation and allocation/evidence slices lead-reviewed; code cebac278c5b59acac9fa9a45dc3bc9ea1c37a385. Allocation39pass/0fail/1 nativePG skip; prior65 calculation checks reused. Native PostgreSQL and connected original gates remain open; five AC unchecked. docs/gcsp/evidence/fucq417/allocation-checkpoint.md",
-      "observed_at": "2026-11-14T08:33:36Z",
+      "note": "Built at original five-criterion boundary: historical104pass/1skip retained; F420 native124/124 peer report reused on identical current Node tree; F41542checks/ten reviewed captures mapped through unchanged presentation and semantic equality. No new runtime; no OneDrive access. docs/gcsp/evidence/fucq417/acceptance-disposition.md",
+      "observed_at": "2026-11-14T15:46:55Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -5703,10 +5703,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation and connected release-offer-history gates",
-          "observed_at": "2026-11-14T08:33:36Z",
-          "evidence": "Original four validate commands covered with retained matching calculation results and allocation/runtime results. NativePG test skipped: URL unset; connected desktop/narrow release/offer/history no-match/conflict/replay unrun. No whole-Story acceptance."
+          "observed_at": "2026-11-14T15:46:55Z",
+          "evidence": "Lead reviewed original five AC: F417 semantic/operation proof, peer F420 native124/124 on identical current Node tree, F41542checks/ten independently reviewed desktop/narrow captures through unchanged contracts. Historical104pass/1native skip and failures retained; no new runtime. docs/gcsp/evidence/fucq417/acceptance-disposition.md"
         }
       ],
       "status": "In Progress",
@@ -5719,10 +5719,10 @@
           "name": "Wyldstyle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "expires_at": "2026-11-14T08:33:35Z",
+          "observed_at": "2026-11-14T15:46:55Z",
+          "expires_at": "2026-11-14T15:46:55Z",
           "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
-          "status": "allocation reviewed; parked after metadata checkpoint for guarded publication"
+          "status": "original acceptance evidence disposition complete; HOLD for dispatcher audit/publication"
         },
         {
           "name": "Grub",
