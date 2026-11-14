@@ -5568,16 +5568,85 @@
       "assignee": "",
       "id": "FUCQ-415",
       "jira_observed_at": "2026-11-12T15:48:01.061Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
+      "note": "AC1–3 evidenced: 92 selected pass, 9 native included; 42 Chrome checks/10 captures independently reviewed PASS. AC4 partial: Safari/private/full keyboard-accessibility/hosted-dev unrun. In Progress/lease retained; dispatcher owns lifecycle. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
+      "observed_at": "2026-11-14T01:33:56Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "admission",
+          "status": "complete",
+          "title": "Immutable-policy-admission-and-complete-selection-signature",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Lead full source/caller review and focused 11/11 plus integrated83 matching hashes; complete signature/content admission and mutable/provenance compatibility. Independent Cool Cat PASS. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+        },
+        {
+          "id": "reuse",
+          "status": "complete",
+          "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Selected92/92 pass0skip including9actualnative; operation counters/eviction/reset/equivalence and actual1validation26derivations19hits. Independent Cool Cat source+native proof PASS; exactcb5064ed. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+        },
+        {
+          "id": "connected",
+          "status": "in-progress",
+          "title": "Connected-release-offer-history-and-independent-review",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Chrome42/42checks,10desktop/narrowcaptures on exactcb5064ed nativePG app independently inspected; AC4partial: Safari/private/fullkeyboard-accessibility/hosted-dev unrun, LowF400 separate. NoBuilt/Done/lease release. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+        }
+      ],
+      "status": "In Progress",
       "title": "Reuse configuration equipment evidence",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-415",
-      "workers": []
+      "workers": [
+        {
+          "id": "01a1d779-f806-7f21-8609-5846eb3c771a",
+          "name": "Mary-Sue Walton",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T00:36:44Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d77d-205f-73f3-a069-ea6c902851b9",
+          "name": "Tweety",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d787-e929-7ed2-881b-8fde01454ac2",
+          "name": "Doc Hudson",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d78f-af71-7400-b66e-576073f5f0e3",
+          "name": "Henery Hawk",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d7ac-d407-78d0-8bf1-e65fa20cefd7",
+          "name": "Cool Cat",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-008"
     },
     {
       "assignee": "",
@@ -6335,13 +6404,43 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:17:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Account ports, records contract, AccountService projection and exact Node parity",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 623197c3: gcsp.api.account AccountService over records/policy/clock/current-car ports; NodeParityTest exact JSON parity on 11 Node readAccount goldens (ready replace/order, absent, unsupported-scheme, no-contract, no-entitlement, not-yet-eligible, ordering-closed, two source failures) + 16 branch tests; ./mvnw -B verify 107 run, 0 fail, 37 PG skips"
+        },
+        {
+          "id": "endpoint-hr-snapshot",
+          "status": "complete",
+          "title": "GET /api/gcsp/v1/manual/account, ownership, startup selection and differently shaped HR snapshot provider",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 84d54bee: GET /api/gcsp/v1/manual/account (bearer, employee role, owner), startup provider selection none|hr-snapshot, HrSnapshotRecords differently shaped export; HrSnapshotParityTest 11 goldens exact through second shape; AccountHttpTest own-only, greg/presenter 403, unmapped 403, 401, query 400, absent, corrupt/missing file 503 no leak; account tests 38/38; ./mvnw -B verify 128 run 0 fail 37 PG skips"
+        },
+        {
+          "id": "repository-provider",
+          "status": "complete",
+          "title": "PostgreSQL records provider with native parity and plan evidence",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 574a9a04+fix: V458_1 employee_account_records + entitlement_slots_employee index; RepositoryAccountRecords read-only parameterised reads; RepositoryParityTest 11 goldens exact from native PG17; changed input/absent/source-failure cases; HTTP repository provider; EXPLAIN ANALYZE at 5000 employees: two index scans, 6 buffer hits, 0.03 ms; account tests 47/47 native; verify 137/137 native"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, README, full Java verify and story result",
+          "observed_at": "2026-11-14T01:17:42Z",
+          "evidence": "Lead-reviewed merged tree 5289c56b (base a593e4fb) + BriefAccountAdapter: ./mvnw -B verify native PG17 269/269, 0 skipped; brief 77 green with adapter; README and story result; policy binding pending FUCQ-457 (unconfigured policy refuses 503)"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6357,13 +6456,43 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:10:39Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460",
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Brief schema, ports, validation, draft/confirm/engagement commands with native PG tests",
+          "observed_at": "2026-11-14T00:47:27Z",
+          "evidence": "019cc7e3 reviewed by story-lead; 36 native PG17 brief tests (engagement replay, CAS race, restart new pool, consumed-draft index) and 126 module tests pass"
+        },
+        {
+          "id": "s2-editor",
+          "status": "complete",
+          "title": "Editor projection and Account preference patch (categories, rating, Same again)",
+          "observed_at": "2026-11-14T01:01:54Z",
+          "evidence": "b00e3d14 reviewed by story-lead; 67 native PG17 brief tests incl. 31 Account preference/rating/Same again/understanding replays pass"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "/api/gcsp/v1/brief HTTP, auth, JSON errors and wiring tests",
+          "observed_at": "2026-11-14T01:07:51Z",
+          "evidence": "d757cf87 reviewed by story-lead; 10 brief HTTP QuarkusTests (auth 401/403, query, replay, CAS, minimum, 503) and 167 module tests pass"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story-level validation, merge, migration number and result",
+          "observed_at": "2026-11-14T01:10:39Z",
+          "evidence": "82faf72e merged with origin/gcsp-poc-dev; clean verify 219/0/0/0 on native PG17, Flyway 1,2,460.1; result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6379,13 +6508,36 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:00:56Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-462"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-462",
+      "slices": [
+        {
+          "id": "s1-release-core",
+          "status": "complete",
+          "title": "Release schema, tick consumption, provider port and released-stock read on native PostgreSQL",
+          "observed_at": "2026-11-14T00:44:33Z",
+          "evidence": "lead review of 5eb7cc2e/820b47db plus promotion fix; gcsp.api.supply.** 34/34 on native PG17 :55462; verify 124/0; EXPLAIN: pending cursor, clock, PK, released page and latest receipt use their indexes"
+        },
+        {
+          "id": "s2-http-startup",
+          "status": "complete",
+          "title": "Startup provider selection, presenter release endpoints and startup reconciliation",
+          "observed_at": "2026-11-14T01:00:56Z",
+          "evidence": "lead review of 4724a474; supply 52/52 and verify 142/0 on native PG17 at 2874f308; real-JVM startup reconcile, restart replay and bogus-provider refusal"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T01:00:56Z",
+          "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
