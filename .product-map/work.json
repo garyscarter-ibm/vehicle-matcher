@@ -5483,53 +5483,6 @@
       "workers": []
     },
     {
-      "assignee": "",
-      "id": "FUCQ-413",
-      "jira_observed_at": "2026-11-12T15:47:47.844Z",
-      "note": "Claimed FUCQ-413 implementation; original four criteria fixed, connected/native gates remain open. See docs/gcsp/fucq-413-price-allowance-2026-11-13.md.",
-      "observed_at": "2026-11-14T00:03:27Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "prices",
-          "status": "complete",
-          "title": "Compile-price-equality-lookups",
-          "observed_at": "2026-11-13T23:52:03Z",
-          "evidence": "Lead reviewed complete price diff, callers and scan oracle; 5 focused and21 policy service passes at e1ce7e6d policy hash; heihei and lead-price receipts, docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
-        },
-        {
-          "id": "allowances",
-          "status": "complete",
-          "title": "Compile-context-allowance-lookups",
-          "observed_at": "2026-11-13T23:56:26Z",
-          "evidence": "Lead reviewed full source/test diff; focused10 and service21 pass, zero fail/skip; policy bcb722c4, focused a8cce951; maximus and lead-allowance receipts; docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Independent-review-and-connected-delivery",
-          "observed_at": "2026-11-14T00:03:27Z",
-          "evidence": "Native versions23pass1knownF484fail0skip; targeted adoption/allocation/generated13pass0skip; native price+allowance6checks pass after retained owned-proof assertion correction; connected Chrome39checks10captures, independent review ongoing. All owned PG/browser scratch absent."
-        }
-      ],
-      "status": "In Progress",
-      "title": "Compile immutable price and allowance lookups",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
-      "workers": [
-        {
-          "id": "01a1d74d-7330-7252-a6d3-1caf36d2ab98",
-          "name": "Lightning McQueen",
-          "harness": "codex",
-          "observed_at": "2026-11-13T23:47:40.362170+00:00",
-          "expires_at": "2026-11-14T01:47:40.362170+00:00",
-          "source": "dispatcher-authorized linked Story chat"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-GC-006"
-    },
-    {
       "id": "FUCQ-414",
       "title": "Reuse validated immutable stock snapshots across employees",
       "status": "In Progress",
@@ -6814,6 +6767,54 @@
         }
       ],
       "tracker_observed_at": "2026-11-13T22:23:44Z"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-413",
+      "jira_observed_at": "2026-11-12T15:47:47.844Z",
+      "note": "Reviewed checkpoint, AC1-3 met at Node boundary; original AC4 partial/open. Native/file In Progress; no Built/Done/waiver. Matching evidence reused after base9b995759 syncadf1c4b1. See delivery/result record.",
+      "observed_at": "2026-11-14T00:07:42Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "id": "prices",
+          "status": "complete",
+          "title": "Compile-price-equality-lookups",
+          "observed_at": "2026-11-13T23:52:03Z",
+          "evidence": "Lead reviewed complete price diff, callers and scan oracle; 5 focused and21 policy service passes at e1ce7e6d policy hash; heihei and lead-price receipts, docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
+        },
+        {
+          "id": "allowances",
+          "status": "complete",
+          "title": "Compile-context-allowance-lookups",
+          "observed_at": "2026-11-13T23:56:26Z",
+          "evidence": "Lead reviewed full source/test diff; focused10 and service21 pass, zero fail/skip; policy bcb722c4, focused a8cce951; maximus and lead-allowance receipts; docs/gcsp/fucq-413-price-allowance-2026-11-13.md"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Independent-review-and-connected-delivery",
+          "observed_at": "2026-11-14T00:07:42.723878+00:00",
+          "evidence": "Sniffles independent PASS; final selected Node72pass1knownF484fail0skip; native6checks; Chrome39checks10captures. AC4 partial/open: hosted-dev/Safari/private/full accessibility; missing body PNG. All owned resources absent; base9b995759 syncedadf1c4b1."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Compile immutable price and allowance lookups",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
+      "workers": [
+        {
+          "id": "01a1d74d-7330-7252-a6d3-1caf36d2ab98",
+          "name": "Lightning McQueen",
+          "harness": "codex",
+          "observed_at": "2026-11-14T00:07:42.723878+00:00",
+          "expires_at": "2026-11-14T00:07:42.723878+00:00",
+          "source": "dispatcher-authorized linked Story chat",
+          "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-006"
     }
   ],
   "version": 1
