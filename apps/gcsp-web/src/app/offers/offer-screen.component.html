@@ -31,7 +31,7 @@
           </div>
           <div class="offer-deadline"><div><strong>Offer deadline</strong><p>{{ vm.deadline }}</p></div><div class="offer-clock"><strong>{{ vm.remaining }}</strong><span>at last check</span></div></div>
           @if (vm.handoffBlocker) { <p class="gcsp-note">{{ vm.handoffBlocker }}</p> }
-          <ng-content select="[offerDecisionActions]" />
+          <gcsp-offer-decision />
         </div>
         <div class="offer-details">
           @if (vm.overview.length) { <dl class="offer-overview">@for (fact of vm.overview; track $index) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl> }
@@ -57,5 +57,7 @@
         <p>{{ vm.termsWording }}</p>
       </details>
     }
+    @if (!vm.showVehicle) { <gcsp-offer-decision /> }
+    <gcsp-offer-followup (offerOpened)="openNextOffer($event)" />
   }
 </div>
