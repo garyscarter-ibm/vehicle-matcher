@@ -6597,15 +6597,71 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T09:40:12Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-446"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-446",
+      "slices": [
+        {
+          "id": "progress-read",
+          "status": "in-progress",
+          "title": "Read owned order and lifecycle facts",
+          "points": 3,
+          "observed_at": "2026-11-14T09:40:12Z",
+          "evidence": "PARTIAL: released types/projection/spec checkpoint; 18 selected pure tests and lead review passed. Shared complete-list/snapshot/request contracts and client checks remain unresolved. docs/gcsp/fucq446-delivery.md; actual resource receipt root .claude/test-runs/fucq446/projection-001-result.json. No Story acceptance inferred."
+        },
+        {
+          "id": "employee-actions",
+          "status": "not-started",
+          "title": "Perform supported employee lifecycle actions",
+          "points": 3
+        },
+        {
+          "id": "view-parity",
+          "status": "not-started",
+          "title": "Preserve order progress screen and shared navigation",
+          "points": 3
+        },
+        {
+          "id": "review-proof",
+          "status": "not-started",
+          "title": "Review experience and original acceptance evidence",
+          "points": 2
+        },
+        {
+          "id": "java-integration",
+          "status": "not-started",
+          "title": "Prove composed Java lifecycle journey",
+          "points": 2
+        }
+      ],
+      "story_points": 13,
+      "start_date": "2026-11-14",
+      "branch": "dev/DEV-2026-11-13-014",
+      "delivery_plan": "docs/gcsp/fucq446-delivery.md",
+      "native_source_updated_at": "2026-11-14T03:24:26.536-0600",
+      "observation_basis": "Dispatcher native readback receipt inspected locally; not a new tracker query",
+      "historical_tracker_observation": {
+        "status": "To Do",
+        "assignee": "",
+        "observed_at": "2026-11-13T20:22:18.041Z"
+      },
+      "workers": [
+        {
+          "name": "Bertie",
+          "harness": "codex",
+          "role": "Story lead",
+          "observed_at": "2026-11-14T09:40:12Z",
+          "expires_at": "2026-11-14T09:40:12Z",
+          "status": "waiting on dispatcher source-checkpoint review/publication; progress-read partial",
+          "source": "docs/gcsp/fucq446-delivery.md; selected projection spec 18 passed; chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3"
+        }
+      ]
     },
     {
       "assignee": "",
