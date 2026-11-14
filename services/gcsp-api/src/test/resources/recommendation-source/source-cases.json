@@ -1,0 +1,3229 @@
+{
+ "note": "Node runtime provider output for released-stock rows (generated once from server/gcsp/runtime.js logic)",
+ "cases": [
+  {
+   "name": "paula-mixed",
+   "employee": "paula",
+   "rows": [
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000001",
+     "orderNumber": "1000001",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000001"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 001"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000002",
+     "orderNumber": "1000002",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000002"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 002"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|M340i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000003",
+     "orderNumber": "1000003",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000003"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 003"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": true,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000004",
+     "orderNumber": "1000004",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000004"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 004"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": [
+       "employee-jordan"
+      ]
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000005",
+     "orderNumber": "1000005",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000005"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 005"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-rr-production"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000006",
+     "orderNumber": "1000006",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000006"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 006"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 4,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": [
+       "employee-paula"
+      ]
+     }
+    }
+   ],
+   "expected": {
+    "status": "ok",
+    "value": {
+     "runId": "run-1",
+     "environmentId": "test-app-env",
+     "employeeId": "employee-paula",
+     "factsVersion": "fdd67af6ebca9fb50368543ddc901a9a87189eda019cb432cd82f898ae0a9b1f",
+     "stockVersion": "stock:00000000-0000-4000-8000-000000000001:1|00000000-0000-4000-8000-000000000002:1|00000000-0000-4000-8000-000000000003:1|00000000-0000-4000-8000-000000000004:1|00000000-0000-4000-8000-000000000005:1|00000000-0000-4000-8000-000000000006:4",
+     "employeeFacts": {
+      "essentials": {},
+      "charging": {
+       "status": "known",
+       "value": "home",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "requiredBy": {
+       "status": "known",
+       "value": "2026-12-01T23:59:59.999Z",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "driverEligible": {
+       "status": "known",
+       "value": true,
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      }
+     },
+     "stock": [
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000001",
+       "orderNumber": "1000001",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000001"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 001"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000002",
+       "orderNumber": "1000002",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000002"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 002"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|M340i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000003",
+       "orderNumber": "1000003",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000003"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 003"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "unavailable",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000006",
+       "orderNumber": "1000006",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000006"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 006"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      }
+     ],
+     "currentCar": {
+      "contractId": "current:employee-paula",
+      "source": {
+       "mode": "synthetic",
+       "sourceVersion": "manual-records-v1",
+       "observedAt": "2026-11-05T09:00:00.000Z"
+      },
+      "facts": {
+       "configuration": {
+        "status": "known",
+        "value": "320i M Sport Touring",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "modelLine": {
+        "status": "known",
+        "value": "G21 Touring",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 42.8,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7.6,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "points": {
+        "status": "known",
+        "value": 1100,
+        "unit": "points-per-month",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 2,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "family"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     }
+    },
+    "contractVersion": "1.0.0"
+   }
+  },
+  {
+   "name": "paula-empty",
+   "employee": "paula",
+   "rows": [],
+   "expected": {
+    "status": "ok",
+    "value": {
+     "runId": "run-1",
+     "environmentId": "test-app-env",
+     "employeeId": "employee-paula",
+     "factsVersion": "fdd67af6ebca9fb50368543ddc901a9a87189eda019cb432cd82f898ae0a9b1f",
+     "stockVersion": "stock:",
+     "employeeFacts": {
+      "essentials": {},
+      "charging": {
+       "status": "known",
+       "value": "home",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "requiredBy": {
+       "status": "known",
+       "value": "2026-12-01T23:59:59.999Z",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "driverEligible": {
+       "status": "known",
+       "value": true,
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      }
+     },
+     "stock": [],
+     "currentCar": {
+      "contractId": "current:employee-paula",
+      "source": {
+       "mode": "synthetic",
+       "sourceVersion": "manual-records-v1",
+       "observedAt": "2026-11-05T09:00:00.000Z"
+      },
+      "facts": {
+       "configuration": {
+        "status": "known",
+        "value": "320i M Sport Touring",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "modelLine": {
+        "status": "known",
+        "value": "G21 Touring",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 42.8,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7.6,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "points": {
+        "status": "known",
+        "value": 1100,
+        "unit": "points-per-month",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 2,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "family"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:manual-records-v1",
+         "version": "manual-records-v1",
+         "observedAt": "2026-11-05T09:00:00.000Z",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     }
+    },
+    "contractVersion": "1.0.0"
+   }
+  },
+  {
+   "name": "jordan-mixed",
+   "employee": "jordan",
+   "rows": [
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000001",
+     "orderNumber": "1000001",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000001"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 001"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000002",
+     "orderNumber": "1000002",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000002"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 002"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|M340i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000003",
+     "orderNumber": "1000003",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000003"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 003"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": true,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000004",
+     "orderNumber": "1000004",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000004"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 004"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": [
+       "employee-jordan"
+      ]
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000005",
+     "orderNumber": "1000005",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000005"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 005"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 1,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-rr-production"
+      ],
+      "employeeIds": null
+     }
+    },
+    {
+     "orderUuid": "00000000-0000-4000-8000-000000000006",
+     "orderNumber": "1000006",
+     "configurationId": "RzIxOlMx",
+     "facts": {
+      "sourceNamespace": "fixture:stock",
+      "identityKind": "exact-stock",
+      "sourceKeys": {
+       "stockId": "00000000-0000-4000-8000-000000000006"
+      },
+      "snapshotVersion": "snapshot-v1",
+      "observedAt": "2026-11-05T08:00:00.000Z",
+      "display": {
+       "name": "Synthetic exact car 006"
+      },
+      "facts": {
+       "eligibilityModelKey": {
+        "status": "known",
+        "value": "G21 Touring|320i",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "body": {
+        "status": "known",
+        "value": "estate",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "fuel": {
+        "status": "known",
+        "value": "petrol",
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "seats": {
+        "status": "known",
+        "value": 5,
+        "unit": "count",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "boot": {
+        "status": "known",
+        "value": 500,
+        "unit": "L",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "zeroTo62": {
+        "status": "known",
+        "value": 7,
+        "unit": "s",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "mpg": {
+        "status": "known",
+        "value": 45,
+        "unit": "mpg-imperial",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "sizeClass": {
+        "status": "known",
+        "value": 3,
+        "unit": "ordinal-1-5",
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       },
+       "tags": {
+        "status": "known",
+        "value": [
+         "cruiser"
+        ],
+        "unit": null,
+        "provenance": {
+         "sourceRef": "fixture:stock",
+         "observedAt": "2026-11-05T08:00:00.000Z",
+         "version": "facts-v1",
+         "assurance": "synthetic-scenario"
+        }
+       }
+      }
+     },
+     "state": "released",
+     "available": true,
+     "held": false,
+     "allocated": false,
+     "version": 4,
+     "release": {
+      "availability": {
+       "state": "available",
+       "availableFrom": "2026-11-05T08:00:00.000Z",
+       "availableUntil": "2027-01-01T00:00:00.000Z",
+       "version": "tranche-1"
+      }
+     },
+     "visibility": {
+      "companyIds": [
+       "demo-bmw-fs-uk"
+      ],
+      "schemeIds": [
+       "choices-fs-uk"
+      ],
+      "employeeIds": [
+       "employee-paula"
+      ]
+     }
+    }
+   ],
+   "expected": {
+    "status": "ok",
+    "value": {
+     "runId": "run-1",
+     "environmentId": "test-app-env",
+     "employeeId": "employee-jordan",
+     "factsVersion": "ce5032378a355ae456770b7fe5611248ff11e7129ec0cb3adbbe3ff106413607",
+     "stockVersion": "stock:00000000-0000-4000-8000-000000000001:1|00000000-0000-4000-8000-000000000002:1|00000000-0000-4000-8000-000000000003:1|00000000-0000-4000-8000-000000000004:1|00000000-0000-4000-8000-000000000005:1|00000000-0000-4000-8000-000000000006:4",
+     "employeeFacts": {
+      "essentials": {},
+      "charging": {
+       "status": "known",
+       "value": "home",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "requiredBy": {
+       "status": "known",
+       "value": "2026-12-01T23:59:59.999Z",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "driverEligible": {
+       "status": "known",
+       "value": true,
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      }
+     },
+     "stock": [
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000001",
+       "orderNumber": "1000001",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000001"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 001"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000002",
+       "orderNumber": "1000002",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000002"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 002"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|M340i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000003",
+       "orderNumber": "1000003",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000003"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 003"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "unavailable",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      },
+      {
+       "orderUuid": "00000000-0000-4000-8000-000000000004",
+       "orderNumber": "1000004",
+       "configurationId": "RzIxOlMx",
+       "snapshot": {
+        "sourceNamespace": "fixture:stock",
+        "identityKind": "exact-stock",
+        "sourceKeys": {
+         "stockId": "00000000-0000-4000-8000-000000000004"
+        },
+        "snapshotVersion": "snapshot-v1",
+        "observedAt": "2026-11-05T08:00:00.000Z",
+        "display": {
+         "name": "Synthetic exact car 004"
+        },
+        "facts": {
+         "eligibilityModelKey": {
+          "status": "known",
+          "value": "G21 Touring|320i",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "body": {
+          "status": "known",
+          "value": "estate",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "fuel": {
+          "status": "known",
+          "value": "petrol",
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "seats": {
+          "status": "known",
+          "value": 5,
+          "unit": "count",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "boot": {
+          "status": "known",
+          "value": 500,
+          "unit": "L",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "zeroTo62": {
+          "status": "known",
+          "value": 7,
+          "unit": "s",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "mpg": {
+          "status": "known",
+          "value": 45,
+          "unit": "mpg-imperial",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "sizeClass": {
+          "status": "known",
+          "value": 3,
+          "unit": "ordinal-1-5",
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         },
+         "tags": {
+          "status": "known",
+          "value": [
+           "cruiser"
+          ],
+          "unit": null,
+          "provenance": {
+           "sourceRef": "fixture:stock",
+           "observedAt": "2026-11-05T08:00:00.000Z",
+           "version": "facts-v1",
+           "assurance": "synthetic-scenario"
+          }
+         }
+        }
+       },
+       "availability": {
+        "state": "available",
+        "availableFrom": "2026-11-05T08:00:00.000Z",
+        "availableUntil": "2027-01-01T00:00:00.000Z",
+        "version": "tranche-1"
+       }
+      }
+     ]
+    },
+    "contractVersion": "1.0.0"
+   }
+  },
+  {
+   "name": "jordan-empty",
+   "employee": "jordan",
+   "rows": [],
+   "expected": {
+    "status": "ok",
+    "value": {
+     "runId": "run-1",
+     "environmentId": "test-app-env",
+     "employeeId": "employee-jordan",
+     "factsVersion": "ce5032378a355ae456770b7fe5611248ff11e7129ec0cb3adbbe3ff106413607",
+     "stockVersion": "stock:",
+     "employeeFacts": {
+      "essentials": {},
+      "charging": {
+       "status": "known",
+       "value": "home",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "requiredBy": {
+       "status": "known",
+       "value": "2026-12-01T23:59:59.999Z",
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      },
+      "driverEligible": {
+       "status": "known",
+       "value": true,
+       "unit": null,
+       "provenance": {
+        "sourceRef": "fixture:manual-records-v1",
+        "version": "manual-records-v1",
+        "observedAt": "2026-11-05T09:00:00.000Z",
+        "assurance": "synthetic-scenario"
+       }
+      }
+     },
+     "stock": []
+    },
+    "contractVersion": "1.0.0"
+   }
+  }
+ ]
+}
