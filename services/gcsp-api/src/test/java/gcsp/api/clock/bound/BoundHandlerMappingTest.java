@@ -15,6 +15,7 @@ import gcsp.api.persistence.RunContext;
 import gcsp.api.returns.ReturnPlans;
 import gcsp.api.documents.DocumentOutcome;
 import gcsp.api.notify.DispatchResult;
+import gcsp.api.ordering.OrderingResult;
 import gcsp.api.supply.ReleaseResult;
 import org.junit.jupiter.api.Test;
 
@@ -125,5 +126,15 @@ class BoundHandlerMappingTest {
     private static TickRequest request(TickKind kind) {
         return new TickRequest(new RunContext("env", "run-1", "a"), "t-1", java.time.Instant.parse("2026-11-14T09:00:00Z"), 2,
                 "p-1", "op-1", kind);
+    }
+
+    @Test
+    void selectionOrderReconcileMapsEachOrderingResult() {
+        ObjectNode counts = N.objectNode().put("examined", 1).put("settled", 1).put("stillPending", 0);
+        assertEquals(new HandlerOutcome.Ok(counts), SelectionOrderTickHandler.map(new OrderingResult.Ok(counts, false)));
+        assertEquals(new HandlerOutcome.Failed("unavailable", "database-unavailable", true),
+                SelectionOrderTickHandler.map(new OrderingResult.Unavailable("database-unavailable")));
+        assertEquals(new HandlerOutcome.Failed("invalid", "invalid-limit", false),
+                SelectionOrderTickHandler.map(new OrderingResult.Refused("invalid-limit", 400, "limit")));
     }
 }

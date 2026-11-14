@@ -490,7 +490,7 @@ the wall clock. Advance and tick are separate commands, each idempotent by comma
 `clock.handler.order.v1` order (then handler id), each through its bound handler: `stock-release` (`release-pull`, with a
 pull provider), then on `pending-reconciliation` `lifecycle-appointments` (provider not `none`), `lifecycle-approvals`
 (provider and an order source, so absent until the selection handoff exists), `lifecycle-documents` (persistence on)
-and `lifecycle-return-outcomes` (provider not `none`), then `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
+`lifecycle-return-outcomes` (provider not `none`) and `selection-order-reconciliation` (ordering provider not `none`), then `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
 `missingStages`, never faked. Each handler outcome is a receipt; a handler that fails leaves the tick `interrupted`, and
 repeating the same `tickId` resumes it without repeating completed handlers. Startup runs one tick of the
 `startupStages` (`manual-expiry`, `buddy-expiry`, `pending-reconciliation`) after creating the active run's clock if it
