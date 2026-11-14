@@ -64,22 +64,7 @@ skill instructions to stop on credit errors for this condition.
 - Preserve the exact error as diagnostic evidence. It does not verify the credit balance or make key rotation
   a prerequisite. Keep the configured gateway and credentials unless a collaborator directs a change.
 
-## Demo delivery, defects and claimed scope
-
-Gary's standing direction, 6 November 2026, applies to every harness, session, reviewer and descendant.
-Follow the full policy in `docs/gcsp/build-rules.md`, section "Demo delivery and scope control".
-
-- Prioritise a complete, working, demoable product and prompt integration of coherent increments. Keep
-  optional hardening, refactoring and validation-framework expansion off the current delivery path.
-- Triage defects honestly. Capture every defect below Critical/High as a linked backlog Bug for independent
-  prioritisation; it does not expand or block the current Story's review/merge. Critical/High defects require
-  resolution or an explicit collaborator decision to defer them. Preserve any specifically authorised deferral.
-- Keep a claimed Story's acceptance criteria fixed. New feature requests and proposed AC additions/changes
-  become separate backlog Stories for collaborator review and prioritisation before pickup/build. Agent or
-  dispatcher authorisation alone cannot expand the claimed contract. Preserve the original Story's scope and
-  distinguish an unmet original criterion from a proposed addition.
-- Record actual failed, skipped and unrun checks, known defects and any authorised merge exception. A merged
-  integration checkpoint does not establish full acceptance or authorise a Done transition.
+## Claimed Story scope
 
 Gary reaffirmed strict Story scope on 14 November 2026. At pickup and in every delegated brief, identify the
 original acceptance criteria, the applicable existing contracts and exact allocated files. Build, validate and
@@ -87,7 +72,7 @@ review against that bounded contract. Do not turn a shared quality document into
 require a broader migration or deployment campaign for a narrower Story, or add features, refactoring or
 hardening to its completion gates. Reuse matching evidence. Record any necessary work outside the contract
 separately for collaborator review before pickup; report an unmet original criterion as remaining Story work.
-Dispatcher or reviewer approval cannot expand the scope. Apply the existing severity policy to separate Bugs.
+Dispatcher or reviewer approval cannot expand the scope. Handle separately found defects as Bugs through the defects procedure.
 
 Pass these rules and their document path in every delegated brief. Changes to project policy belong in shared
 project instructions; Gary's personal polling setup and local coordination files remain local.
@@ -196,17 +181,3 @@ Completion still requires the story's acceptance evidence; fixtures do not prove
 Keep explicit pauses and date holds, source/access limits, claim ownership, conflicting file ownership, and actual
 technical blockers. Retain Jira links unless a collaborator separately requests their amendment. See
 `docs/gcsp/technical-readiness-2026-11-05.md` and pass this rule to every story lead and descendant.
-
-## Defects found during delivery
-
-Gary's standing direction, 6 November 2026: when a defect is found during a story or review,
-assess and record its severity from its actual impact. For a defect below Critical or High
-severity, raise or reuse a linked backlog Bug for independent later pickup and continue
-the current story toward merge. Do not expand that story to repair the defect or make
-the separate Bug a merge dependency. Preserve the diagnosis, reproduction status,
-acceptance gaps and known limitations; do not describe the defect as fixed.
-
-Critical and High severity defects require prompt active triage and are not automatically
-deferred under this rule. A collaborator may explicitly defer a specific finding. Never
-lower severity merely to clear a merge. Existing test and acceptance obligations remain
-unless a collaborator explicitly revises them; an unrun check is not a passing check.
