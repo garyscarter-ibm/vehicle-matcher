@@ -1,5 +1,5 @@
 // Offline generator for the Java evidence goldens and fixture stores (FUCQ-459). One function per slice.
-// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1|s2]
+// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1|s2|s3]
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,10 @@ import { DEFAULT_ARTIFACT_ROOT, releaseLimits } from '../../../../../server/gcsp
 import { createPolicyService, FilePolicyProvider } from '../../../../../server/gcsp/policy/index.js';
 import { createVehicleEvidenceLookup, canonicalVehicleIdentifier } from '../../../../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
 import { createVehicleSnapshot } from '../../../../../server/vehicles/index.js';
+import { configurationDisplayGallery, readDisplayImageCatalogue, withDisplayImages } from '../../../../../server/gcsp/vehicle-evidence/display-images.js';
+import { withConfigurationDefinitions } from '../../../../../server/gcsp/vehicle-evidence/configuration-definitions.js';
+import { createLiveDisplayImageHandler } from '../../../../../server/gcsp/vehicle-evidence/live-display-images.js';
+import { createHash } from 'node:crypto';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../../..');
 const EVIDENCE = join(ROOT, 'services/gcsp-api/src/test/resources/evidence');
@@ -495,7 +499,137 @@ async function s2() {
   write(join(GOLDEN, 's2-digests.json'), digests);
 }
 
-const slices = { s1, s2 };
+// ---- s3: retained display imagery and configuration definitions ---------------------------------------------------
+const STORES_S3 = [REF, 'demo-fleet.v1', 'fleet-source.v1'];
+const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const bump = (map, key) => { map[key] = (map[key] ?? 0) + 1; };
+const compactRecord = (entries) => entries.map(([key, value]) => JSON.stringify(key) + ':' + JSON.stringify(value));
+
+// Serves every mapped id through Node's production handler with no network, so only the retained fallback answers.
+async function retainedServe(id) {
+  const handler = createLiveDisplayImageHandler({ fetchImpl: async () => { throw new Error('offline'); },
+    loadSources: async () => { throw new Error('no sources'); } });
+  let status = null; let body = null;
+  const res = { writeHead(code) { status = code; }, end(bytes) { body = bytes ?? null; } };
+  const pathname = `/api/gcsp/vehicle-images/${id}.webp`;
+  await handler({ req: { method: 'GET', url: pathname }, res, pathname });
+  return { status, body };
+}
+async function s3Images() {
+  const data = await readDisplayImageCatalogue();
+  const all = [...data.configurations.map((row) => row.image), ...Object.values(data.variants), ...Object.values(data.models),
+    ...Object.values(data.configurationGalleries ?? data.galleries ?? {}).flat()];
+  const mapping = new Map();
+  for (const image of all) {
+    if (/^bmw-display-[a-f0-9]{20}$/.test(image?.imageId) && /^assets\/gcsp-vehicle-evidence\/[a-f0-9]{64}\.webp$/.test(image.asset)
+      && /^[a-f0-9]{64}$/.test(image.sha256) && Number.isSafeInteger(image.bytes) && image.bytes > 0 && image.bytes <= 2 * 1024 * 1024) mapping.set(image.imageId, image);
+  }
+  const ids = [...mapping.keys()];
+  const entry = async (id) => {
+    const { status, body } = await retainedServe(id);
+    const image = mapping.get(id);
+    return status === 200 ? { imageId: id, asset: image.asset, sha256: sha(body), bytes: body.length } : null;
+  };
+  const cases = [];
+  for (const id of [...ids.slice(0, 20), 'bmw-display-ffffffffffffffffffff', 'not-an-image-id', 'bmw-display-07c269dd7f55fad0a56bX']) {
+    cases.push({ imageId: id, expected: await entry(id) });
+  }
+  const served = []; for (const id of ids) { const found = await entry(id); if (found) served.push([id, found.sha256]); }
+  return { mappingSize: mapping.size, cases, servedCount: served.length, servedDigest: inputDigest(served) };
+}
+// Node's own gallery logic with an injected asset loader: wrong bytes, size mismatch, one failing view, unreadable asset.
+async function s3Failures(rows, registry) {
+  const data = await readDisplayImageCatalogue();
+  const known = new Map(data.configurations.map((row) => [row.configurationId, row]));
+  const row = rows.configurations.find((r) => known.has(r.configurationId));
+  const record = registry.getConfiguration(row.configurationId).record;
+  const base = await configurationDisplayGallery(record);
+  if (base.length < 3) throw new Error('failure fixture needs a three view gallery');
+  const load = (target, kind) => async (image) => {
+    const bytes = readFileSync(join(ROOT, image.asset));
+    if (image.asset !== target) return bytes;
+    if (kind === 'throw') throw new Error('asset unreadable');
+    if (kind === 'truncate') return bytes.subarray(0, bytes.length - 1);
+    const copy = Buffer.from(bytes); copy[copy.length >> 1] ^= 0xff; return copy;
+  };
+  const cases = [];
+  for (const [name, view, kind] of [['wrong bytes, first view', 0, 'flip'], ['wrong bytes, second view', 1, 'flip'],
+    ['size mismatch, second view', 1, 'truncate'], ['size mismatch, first view', 0, 'truncate'],
+    ['unreadable asset, third view', 2, 'throw'], ['wrong bytes, third view', 2, 'flip']]) {
+    const asset = base[view].asset;
+    cases.push({ name, store: 'fleet-source.v1', configurationId: row.configurationId, asset, kind,
+      gallery: await configurationDisplayGallery(record, { loadAsset: load(asset, kind) }) });
+  }
+  return { baseline: base, cases };
+}
+async function s3() {
+  mkdirSync(GOLDEN, { recursive: true });
+  for (const name of readdirSync(GOLDEN)) if (/^s3-.*\.json$/.test(name)) rmSync(join(GOLDEN, name));
+  const lookups = new Map(STORES_S3.map((store) => [store, createLocalVehicleEvidenceLookup({ root: join(REAL, store), asOf: ASOF })]));
+  const waitReady = async (lookup) => { for (let w = 0; lookup.readiness().status === 'loading' && w < 120000; w += 50) await sleep(50); };
+  for (const lookup of lookups.values()) await waitReady(lookup);
+  const fresh = await lookups.get(REF).definitionStatus();
+  if (fresh.diagnostics?.resolutions !== 0) throw new Error('definition index already used; run s3 alone');
+
+  const digests = {}; const picks = {};
+  const found = (name, label, result) => { if (!picks[name]) picks[name] = { label, result }; };
+  for (const store of STORES_S3) {
+    const rows = storeRows(store); const lookup = lookups.get(store);
+    const configurations = []; const vins = []; const counts = { representative: 0, imageStates: {}, resolutionStates: {}, galleryViews: {} };
+    const tally = (result) => {
+      bump(counts.imageStates, result.images?.state ?? 'none');
+      if (result.images?.state === 'representative') counts.representative += 1;
+      bump(counts.resolutionStates, result.equipment?.resolution?.state ?? 'none');
+      bump(counts.galleryViews, String(result.images?.items?.length ?? 0));
+    };
+    for (const row of rows.configurations) {
+      const result = await lookup.resolve({ kind: 'configuration', id: row.configurationId });
+      configurations.push(inputDigest(result)); tally(result);
+      const items = result.images?.items ?? []; const reasons = result.equipment?.resolution?.unresolved?.map((u) => u.reason) ?? [];
+      if (items.length >= 3 && items[0].fidelity === 'representative-configuration') found('gallery', `${store} configuration with a representative-configuration gallery`, result);
+      if (items.length && items.every((i) => i.fidelity === 'representative-model')) found('modelOnly', `${store} variant-only representative-model image`, result);
+      if (result.equipment?.resolution?.state === 'complete') found('known', `${store} complete definitions`, result);
+      if (result.equipment?.resolution?.state === 'partial') found('partialDefinitions', `${store} partial definitions`, result);
+      if (reasons.includes('definition-context-unavailable')) found('contextUnavailable', `${store} definition context unavailable`, result);
+      if (result.status === 'complete' || result.status === 'partial') if (!items.length) found('noImages', `${store} no retained image`, result);
+    }
+    for (const row of rows.vins) {
+      const result = await lookup.resolve({ kind: 'vin', id: row.vin17 });
+      vins.push({ vin17: row.vin17, digest: inputDigest(result) }); tally(result);
+      if (store === REF) found('referenceVin', 'lookup-reference VIN', result);
+    }
+    digests[store] = { idsDigest: inputDigest(rows.configurations.map((r) => r.configurationId)), counts, configurations, vins };
+  }
+  digests.definitionStatusAfter = await lookups.get(REF).definitionStatus();
+  write(join(GOLDEN, 's3-digests.json'), digests);
+
+  // The unavailable seed: Node's own decorator with a rejected index, over the bare registry.
+  const bare = await loadedRegistry(REF); const refRows = storeRows(REF);
+  const unavailable = createVehicleEvidenceLookup({ registry: withConfigurationDefinitions(bare, { index: Promise.reject(new Error('seed')) }) });
+  const seedUnavailable = {
+    status: await withConfigurationDefinitions(bare, { index: Promise.reject(new Error('seed')) }).definitionStatus(),
+    configuration: await unavailable.resolve({ kind: 'configuration', id: REF_IDS.configurationId }),
+    vin: await unavailable.resolve({ kind: 'vin', id: REF_IDS.vin17 }),
+  };
+  // Display images only (no definitions): the same view Java uses to prove a tampered catalogue adds nothing.
+  const imagesOnly = createVehicleEvidenceLookup({ registry: withDisplayImages(await loadedRegistry('fleet-source.v1')) });
+  const fleetRows = storeRows('fleet-source.v1');
+  const imagesOnlyDigests = [];
+  for (const row of fleetRows.configurations.slice(0, 40)) imagesOnlyDigests.push(inputDigest(await imagesOnly.resolve({ kind: 'configuration', id: row.configurationId })));
+
+  const names = ['gallery', 'modelOnly', 'known', 'partialDefinitions', 'contextUnavailable', 'noImages', 'referenceVin'];
+  for (const name of names) if (!picks[name] && ['gallery', 'modelOnly', 'known', 'contextUnavailable', 'referenceVin'].includes(name)) throw new Error(`no ${name} example`);
+  const cases = names.filter((name) => picks[name]).map((name) => ({ name: picks[name].label, key: name,
+    id: picks[name].result.requested.id, kind: picks[name].result.requested.kind,
+    store: STORES_S3.find((store) => picks[name].label.startsWith(store)) ?? REF, result: picks[name].result }));
+  compact(join(GOLDEN, 's3-full.json'), `"definitionStatus":${JSON.stringify(fresh)},"seedUnavailable":${JSON.stringify(seedUnavailable)},`
+    + `"imagesOnlyFleetDigests":${JSON.stringify(imagesOnlyDigests)},`, cases);
+
+  pretty(join(GOLDEN, 's3-images.json'), await s3Images());
+  pretty(join(GOLDEN, 's3-failures.json'), await s3Failures(fleetRows, await loadedRegistry('fleet-source.v1')));
+}
+
+const slices = { s1, s2, s3 };
 const only = process.argv[2];
 for (const [name, run] of Object.entries(slices)) if (!only || only === name) await run();
 
