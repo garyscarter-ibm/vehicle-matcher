@@ -7393,14 +7393,16 @@
       "assignee": "Gary Carter",
       "id": "FUCQ-417",
       "jira_observed_at": "2026-11-14T07:59:15.577Z",
-      "note": "Native adoption read-back .claude/fucq417-native-after-0749.json; claimed source ea15bc5625e43c4c59fbf304aaa583274d0889f4. Fixed original AC; connected and native PostgreSQL gates remain open.",
-      "observed_at": "2026-11-14T08:01:29Z",
+      "note": "Calculation slice lead-reviewed at 5bb69de28136f85bef2df608db1108b099ae5713; 65 selected checks pass at matching seven-input identity. Allocation/evidence/integration unfinished; original five AC unchecked. docs/gcsp/evidence/fucq417/calculation-checkpoint.md",
+      "observed_at": "2026-11-14T08:22:17Z",
       "original_status": "In Progress",
       "slices": [
         {
           "id": "calculation",
-          "status": "not-started",
-          "title": "Shared compact calculation and unchanged gallery projection"
+          "status": "complete",
+          "title": "Shared compact calculation and unchanged gallery projection",
+          "observed_at": "2026-11-14T08:22:17Z",
+          "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
         },
         {
           "id": "allocation",
@@ -7428,10 +7430,19 @@
           "name": "Wyldstyle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T08:01:28Z",
-          "expires_at": "2026-11-14T10:01:28Z",
-          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; observed active lead",
-          "status": "planning"
+          "observed_at": "2026-11-14T08:22:16Z",
+          "expires_at": "2026-11-14T08:22:16Z",
+          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
+          "status": "calculation reviewed; parked after metadata checkpoint for dispatcher publication"
+        },
+        {
+          "name": "Grub",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:22:16Z",
+          "expires_at": "2026-11-14T08:22:16Z",
+          "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
+          "status": "completed calculation only; inactive, scratch/process groups absent"
         }
       ],
       "branch": "dev/DEV-2026-11-13-GC-010"
