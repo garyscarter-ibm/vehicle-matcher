@@ -6317,7 +6317,7 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-14T01:10:21Z",
+      "observed_at": "2026-11-14T01:17:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
@@ -6348,9 +6348,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Merge base, policy binding status, README, full Java verify and story result",
-          "observed_at": "2026-11-14T01:10:21Z"
+          "observed_at": "2026-11-14T01:17:42Z",
+          "evidence": "Lead-reviewed merged tree 5289c56b (base a593e4fb) + BriefAccountAdapter: ./mvnw -B verify native PG17 269/269, 0 skipped; brief 77 green with adapter; README and story result; policy binding pending FUCQ-457 (unconfigured policy refuses 503)"
         }
       ]
     },
