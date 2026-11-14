@@ -5487,8 +5487,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Focused proof partial179/181 then91/92. Medium drawer focus BugFUCQ-494(ToDo,F380), parent-verified RelatesF386/F414 and PNGattachment937794. No fix/pickup/merge dependency. Private/Safari/remaining keyboard gates unrun; original AC/status unchanged.",
-      "observed_at": "2026-11-14T03:43:47Z",
+      "note": "Independent143/143 accepted-state/private proof atc9a393d7/product8c045bf2; API-only acceptance setup. Earlier179/181,91/92 failures retained. F494unfixed; pending/narrow/Escape/Safari/nativeAT/F106 remain open. ProfileIDs unrecorded; ownedroot/groups absent. Original AC/native status/lease unchanged; delivery note.",
+      "observed_at": "2026-11-14T04:01:02Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -5506,9 +5506,9 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "No-match/release keyboard+DOM/ARIA pass1440/375; pendingdesktop reverse sequence skipsClose. MediumBugFUCQ-494(ToDo,F380), RelatesoriginF386/discoveryF414 verified; attempt2 PNGattachment937794(233332bytes),SHA256 0819356d729224ad1749b7222575cba1de22ed5d4a266e60cd0ecd63b80848ad. Attempts179/181 and91/92; no overallpass. Remaining/private/Safari unrun. No fix/pickup/merge dependency.",
+          "evidence": "Independent c9a393d7/product8c045bf2 nativePG/Chrome143/143: accepted-offer/history1440/375 keyboard+DOM/ARIA/focus; sequential cookie/session/storage isolation. API-only acceptance setup, notUI proof. Earlier179/181,91/92 retained; F494unfixed/pending-narrow/Escape/Safari/nativeAT/F106 open. ProfileIDs unrecorded; ownedroot/groups absent. No full acceptance; delivery note.",
           "id": "connected",
-          "observed_at": "2026-11-14T03:40:13.455765+00:00",
+          "observed_at": "2026-11-14T04:00:02.381095+00:00",
           "status": "blocked",
           "title": "Connected-release-offer-history-integration"
         },
@@ -5527,13 +5527,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
       "workers": [
         {
-          "expires_at": "2026-11-14T03:40:13.455765+00:00",
+          "expires_at": "2026-11-14T04:00:02.381095+00:00",
           "harness": "codex",
           "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
           "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-14T03:10:11.467133+00:00",
+          "observed_at": "2026-11-14T03:55:59.716831+00:00",
           "role": "story-lead",
-          "source": "Proof stopped at recorded product assertion; owned resources cleaned and partial evidence handed to parent. No acceptance/lifecycle change."
+          "source": "Independent143/143 selected proof/audit complete; resources cleaned. Sol/high retained, no new descendants. Profile identity instrumentation gap retained. Parent owns evidence publication/lifecycle."
         },
         {
           "expires_at": "2026-11-13T23:19:26Z",
