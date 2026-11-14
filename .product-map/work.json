@@ -7512,7 +7512,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-14T09:59:21Z",
+      "observed_at": "2026-11-14T10:07:49Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7543,9 +7543,10 @@
         },
         {
           "id": "s4-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation on native PostgreSQL, merged-tree verify and result",
-          "observed_at": "2026-11-14T09:59:21Z"
+          "observed_at": "2026-11-14T10:07:49Z",
+          "evidence": "Lead validation at cc362a89a (merged origin/gcsp-poc-dev): ./mvnw -B verify 994/994 on native PG17 incl. 49 production tests; result block 27ff3f505"
         }
       ]
     },
