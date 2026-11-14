@@ -1,0 +1,61 @@
+<div class="offer-page">
+  @if (state().status === 'idle') {
+    <gcsp-status-screen title="Choose an offer" message="Open the offer from your account or use its original email link." />
+  } @else if (state().status === 'loading') {
+    <gcsp-status-screen title="Loading your offer" message="Please wait." [busy]="true" />
+  } @else if (failure(); as failed) {
+    <gcsp-status-screen [title]="failed.title" [message]="failed.message">
+      @if (failed.retry) { <button gcspButton type="button" (click)="refresh()">Check current offer</button> }
+    </gcsp-status-screen>
+  } @else if (view(); as vm) {
+    <gcsp-screen-intro [title]="vm.title" [lede]="vm.message" />
+    @if (vm.showAcceptedIdentity) {
+      <dl class="offer-confirmation"><div><dt>Your new car</dt><dd>{{ vm.name }}</dd></div>
+        @if (vm.orderNumber) { <div><dt>Car order number</dt><dd>{{ vm.orderNumber }}</dd></div> }
+      </dl>
+    }
+    @if (vm.selectionStages.length) {
+      <section class="offer-selection" aria-label="Your selection"><h2>Your selection</h2><ol>
+        @for (stage of vm.selectionStages; track $index) { <li>{{ stage.name }}: {{ stage.state.replaceAll('-', ' ') }}</li> }
+      </ol></section>
+    }
+    @if (vm.showVehicle) {
+      <section class="offer-focused" aria-label="The offered car">
+        <gcsp-media-gallery [name]="vm.name" [images]="vm.images" />
+        <div class="offer-summary">
+          <div class="offer-heading"><p class="offer-context">Your buddy found this car for you</p><h2>{{ vm.name }}</h2></div>
+          <dl class="offer-finishes">@for (finish of vm.finishes; track $index) { <div><dt>{{ finish.label }}</dt><dd>{{ finish.value ?? 'Not supplied' }}</dd></div> }</dl>
+          <div class="offer-cost"><p><strong>{{ vm.points }}</strong> points a month</p>
+            <p class="gcsp-note">{{ vm.allowance === null ? 'Allowance not supplied' : vm.allowance + ' points a month allowance' }}</p>
+            <p class="gcsp-note">{{ vm.contribution === null ? 'Contribution not supplied' : vm.contribution }}</p>
+          </div>
+          <div class="offer-deadline"><div><strong>Offer deadline</strong><p>{{ vm.deadline }}</p></div><div class="offer-clock"><strong>{{ vm.remaining }}</strong><span>at last check</span></div></div>
+          @if (vm.handoffBlocker) { <p class="gcsp-note">{{ vm.handoffBlocker }}</p> }
+          <ng-content select="[offerDecisionActions]" />
+        </div>
+        <div class="offer-details">
+          @if (vm.overview.length) { <dl class="offer-overview">@for (fact of vm.overview; track $index) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl> }
+          <gcsp-vehicle-details [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.rows" [equipment]="vm.equipment" />
+        </div>
+      </section>
+      <section class="offer-comparison" aria-label="What matters for your decision">
+        <h2>What matters for your decision</h2>
+        <div class="offer-highlights">
+          @for (group of [{ title: 'Why this car', entries: vm.reasons }, { title: 'Trade-offs', entries: vm.tradeOffs }, { title: 'Needs attention', entries: vm.blockers }, { title: 'Still unknown', entries: vm.unknowns }]; track group.title) {
+            @if (group.entries.length) { <section class="offer-highlight"><h3>{{ group.title }}</h3><ul>
+              @for (entry of group.entries; track $index) { <li><p>{{ entry.title }}</p>@for (detail of entry.details; track $index) { <p class="gcsp-note">{{ detail }}</p> }</li> }
+            </ul></section> }
+          }
+        </div>
+        <div class="offer-table-wrap"><table><caption>Compared with your current car</caption><thead><tr><th scope="col">Specification</th><th scope="col">Your current car<span>{{ vm.currentName }}</span></th><th scope="col">This offer<span>{{ vm.name }}</span></th></tr></thead><tbody>
+          @for (row of vm.comparison; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.current }}</td><td>{{ row.offered }}</td></tr> }
+        </tbody></table></div>
+        @if (vm.comparisonNote) { <p class="gcsp-note">{{ vm.comparisonNote }}</p> }
+        @if (vm.comparisonUnknowns.length) { <p class="gcsp-note">Unknown for your current car: {{ vm.comparisonUnknowns.join(', ') }}.</p> }
+      </section>
+      <details class="offer-terms"><summary>Scheme terms</summary><p>{{ vm.termsDates }}</p>
+        <p>{{ vm.termsWording }}</p>
+      </details>
+    }
+  }
+</div>
