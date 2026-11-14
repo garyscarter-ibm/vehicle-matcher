@@ -74,6 +74,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 | `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
+| `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
 | `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
 | `GCSP_VEHICLE_ASSETS_ROOT` | empty | Absolute directory that contains `assets/gcsp-vehicle-evidence/` (the repository root). Required with either provider. |
@@ -188,6 +189,34 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
   `preview-unavailable` until Greg demand and fit exist in Java. `heldOffers.count` is `null` (no offers table yet) and
   there is no `clockVersion`. Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
   `expectedVersion`, `currentVersion`, `action` or `operationId`; `src/test/resources/policy-http/outcomes.json` records them.
+
+## Learned demand forecast (FUCQ-476)
+
+`gcsp.api.learning` ports the Node learned demand forecast (`server/gcsp/predict/{model,forecast}`). The planner story
+injects `LearnedDemandForecastPort.forecast(predictionInput, PolicyRead)` and gets the Node body (`ok`, `fallback`,
+`invalid` or `unavailable`); there is no route, as in Node. `LearnedNarrowing` holds the pure `likeliest` and wait rules.
+
+- Artifacts are read in place: the pom packages `docs/gcsp/models/artifacts/*.json` under `gcsp/learning/artifacts/`
+  (the Dockerfile copies the same folder). `GCSP_LEARNING_ARTIFACT_DIR` (absolute, existing directory, else startup fails)
+  overrides it. Both stores keep the 8 MiB cap and the `<hex>.json` name; a verified artifact is cached by size and mtime.
+- Activation needs a `choice.model.reference` policy row; the seed has none, so the default is fallback `no-active-model`
+  (Java has no reviewed definition-set adoption yet, as in Node).
+- Bounds against Node: per-employee choice, wait and acceptance probabilities within 1e-12, aggregate expected/low/high
+  within 1e-9 (absolute). Statuses, reasons, limitation strings, `version` digest, coverage lists, kept sets and ranking are exact.
+- `node services/gcsp-api/src/test/parity/learning-parity.mjs` (repository root; needs `server/node_modules`) rewrites
+  `src/test/resources/learning-parity/cases.json`; `LearningParityTest` replays it without Node.
+
+### Learning records
+`LearningRecordService.readRecords(Principal)` ports Node `readRecords`; it is a bean with no route. Greg only (else `forbidden`);
+the principal needs environment, run and policy version, else `unavailable/not-configured`.
+
+- One `READ ONLY REPEATABLE READ` snapshot replaces Node's two fenced reads: 4 statements per call (run status, briefs, slots,
+  stock), independent of row count. A retired run is `conflict/stale-run`. Failures: `source-invalid`, `database-unavailable`, `persistence-not-configured`.
+- Every `briefs` row is an immutable confirmed version. Brief owners are derived as `employee` (Java `employees` has no roles); slot and renewal refs stay null.
+- Offers, holds, decisions, quotes and receipts come from the `LearningOutcomeRows` port. The default is unbound and empty, so the body
+  carries `outcomeSources: {status: unknown, reason: outcome-producers-not-bound}`. Binding follows FUCQ-466/467 (offers, decisions), FUCQ-461 (quotes), FUCQ-464 (holds).
+- `offer.declineReasons.v1` is read through `PolicyService` at the principal's version. The seed has none, so the default answer is `unavailable/decline-reasons-unavailable`, as in Node.
+- `LearningClock` defaults to the policy wall clock (ISO millis, version `wall-clock`); the presenter demo clock (FUCQ-479) replaces it.
 
 ## Endpoints
 
