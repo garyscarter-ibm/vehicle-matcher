@@ -1,0 +1,9 @@
+{
+  "policyVersion": "test-policy-v1",
+  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+  "assumptions": [
+    { "key": "supply.release.size", "value": 100, "unit": "cars per synthetic tranche", "policyVersion": "test-policy-v1" },
+    { "key": "supply.leadTimeDays", "value": 1, "unit": "days", "policyVersion": "test-policy-v1" },
+    { "key": "supply.stockSource.maxAgeMinutes", "value": 60, "unit": "minutes", "policyVersion": "test-policy-v1" }
+  ]
+}

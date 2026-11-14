@@ -255,7 +255,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
       const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
         inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });
       return saved.status === 'ok' ? ok({ prepared: event.eventId }) : saved;
-    });
+    }, { scope: [ref(context, event.eventId, ALLOCATION_CURSOR_CONSUMER), ...slices.map((slice) => sliceRef(context, event.eventId, slice.employeeId)), ref(context, event.eventId)] });
   }
 
   const service = {
@@ -350,7 +350,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
         if (cursor.status === 'not-found') cursor = await repository.transaction(context, command(`allocation:cursor:${event.eventId}`, event),
           (tx) => tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
             inputVersions: row.inputVersions, state: 'pending', outcome: ok({ next: row.outcome.value.next,
-              assignments: row.outcome.value.assignments, attempts: row.outcome.value.attempts }) }));
+              assignments: row.outcome.value.assignments, attempts: row.outcome.value.attempts }) }), { scope: [cursorRef] });
         if (cursor.status !== 'ok') return cursor;
         const progress = cursor.value.outcome.value; let version = cursor.value.version; let next = progress.next;
         // A cursor written before FUCQ-217 carries every attempt inline and keeps doing so.
@@ -406,7 +406,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
                 }
                 const swapped = await tx.compareAndSwap(cursorRef, version, { outcome: ok(saved) });
                 return swapped.status === 'ok' ? ok({ version: swapped.value.version }) : swapped;
-              });
+              }, { scope: [cursorRef, attemptRef(context, event.eventId, attempts.length - 1)] });
             if (advanced.status !== 'ok') return advanced;
             version = advanced.value.version;
           }
@@ -420,7 +420,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const closed = await tx.compareAndSwap(cursorRef, version, { state: 'completed' }); if (closed.status !== 'ok') return closed;
           const done = await tx.compareAndSwap(ref(context, event.eventId), row.version, { state: 'completed', outcome });
           return done.status === 'ok' ? ok({ completed: event.eventId }) : done;
-        });
+        }, { scope: [cursorRef, ref(context, event.eventId)] });
         if (finished.status !== 'ok') return finished;
         const completed = await repository.read(context, ref(context, event.eventId));
         return completed.status === 'ok' ? (summary ? summarizeAllocation(completed.value.outcome)
