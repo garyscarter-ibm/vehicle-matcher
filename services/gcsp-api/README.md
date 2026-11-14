@@ -30,7 +30,8 @@ curl -s localhost:8080/api/gcsp/v1/context        # 401 JSON: no bearer token
 
 Copy the whole `target/quarkus-app/` directory to deploy; `quarkus-run.jar` needs its `lib/` beside it. SIGTERM
 drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The container image is
-`docker build -t gcsp-api services/gcsp-api`.
+`docker build -f services/gcsp-api/Dockerfile -t gcsp-api .` run from the repository root (the pom reads
+retained policy data from `server/gcsp`, so the build context is the repository, not this module).
 
 ## Configuration (environment variables)
 
@@ -101,12 +102,62 @@ Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-time
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
 
+## Policy (FUCQ-457)
+
+`gcsp.api.policy.PolicyService` (`@Inject`, or `new PolicyService(PolicySource)` in tests) is the one read path for
+eligibility, allowance, points cost and assumptions, and returns the same outcome objects as the Node `PolicyService`
+(`status`, `code`, `reasons`, `value`, `contractVersion` `1.0.0`, `policyVersion`). Reads take a `PolicyRead(runId,
+asOf, policyVersion)`; a null `policyVersion` is unpinned (active at `asOf`), a value pins that version at its own
+start. `getPolicySnapshot` is for trusted server code only and is never returned by a route.
+
+Retained data is not copied into this module. The pom adds `server/gcsp/policy/seed-v1.json`, `reviewed/*.json` and
+`server/gcsp/predict/records/policy-definitions.json` to the classpath under `gcsp/policy/`. `RetainedFilePolicySource`
+reads the seed (validated once, kept for the process), so the default profile needs no database. Source choice is in
+`PolicySourceSelection`. The Node fixtures are the behavioural baseline: `src/test/parity/policy-parity.mjs` regenerates
+`src/test/resources/policy-parity/cases.json` (`node services/gcsp-api/src/test/parity/policy-parity.mjs` from the
+repository root; needs `server/node_modules`) and `PolicyParityTest` replays every case without Node.
+
+### Publication and activation (FUCQ-457 slice 2)
+
+`PolicyService.publishPolicyVersion(Principal, JsonNode changeSet)` ports the Node publish rules (`PolicyPublication`) and
+writes through `TransactionRunner` as command `policy.publish` (the change set's `commandId` is the idempotency key).
+With persistence on, `PostgresPolicySource` replaces the file source:
+tables `policy_documents` (content-addressed by SHA-256 of canonical JSON, immutable), `policy_versions` (per run,
+immutable) and `policy_run_activation` (version CAS), added by `V457_1__policy_versions.sql`. A run's base version is
+copied from the retained file on its first read, so edits to the file reach new runs only. `PolicyActivation.activate`
+records the version in force at the clock's now and `activatedPolicyVersion(env, run)` reads it back.
+
+- Role seam: `PolicyAuthority.mayPublish` requires the `greg` role (`forbidden`, code `role-required`); a principal whose
+  environment differs from `gcsp.environment-id` is `forbidden` with code `environment-mismatch`. Integration may replace it.
+- Clock: `PolicyClock.now(RunContext)` defaults to the wall clock (`WallPolicyClock`). The presenter demo clock arrives
+  in a later story and replaces the bean.
+- Conflict code: a reused `commandId` with different input is `conflict` / `command-input-changed` (the persistence
+  runner's code), replacing Node's `idempotency-input-changed`.
+- The file source stays read-only: publication is `invalid` / `unsupported-operation`, as in Node.
+- `principal.policyVersion` is still the configured interim value; consumers wanting the run's activated version call
+  `activatedPolicyVersion`.
+
+### Consumers and Greg's policy controls (FUCQ-457 slice 3)
+
+- `PolicyBriefAdapter` is the `BriefPolicyPort` bean (it replaces the brief's `@DefaultBean` refusal). The port has no run, so
+  it reads the 7 brief keys pinned at `gcsp.environment.run-id`; any key missing or at another version is the brief's
+  unavailable state.
+- `PolicyAccountAdapter` implements `AccountPolicyPort` but is not a bean: `AccountSelection.policy()` still returns the
+  refusal until integration returns `new PolicyAccountAdapter(policyService)` from it.
+- `PolicyReleaseAdapter` is a `ReleasePolicy` over the service (one version for size, lead time and max age); supply still
+  selects its file reader in `SupplySelection.select` until integration swaps it.
+- `GET /api/gcsp/v1/greg/policy` and `POST .../greg/policy/publish` (greg role only, no query parameters). Preview is `422`
+  `preview-unavailable` until Greg demand and fit exist in Java. `heldOffers.count` is `null` (no offers table yet) and
+  there is no `clockVersion`. Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
+  `expectedVersion`, `currentVersion`, `action` or `operationId`; `src/test/resources/policy-http/outcomes.json` records them.
+
 ## Endpoints
 
 | Path | Result |
 | --- | --- |
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
+| `GET /api/gcsp/v1/greg/policy`, `POST /api/gcsp/v1/greg/policy/publish`, `POST .../preview` | Greg only. Active policy projection, publish a successor (`200`, `400` with reasons, `403`, `409`, `422` without persistence, `503`), preview is `422`. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
 | `GET /api/gcsp/v1/presenter/outbox` | Presenter only, read-only. Safe notification fields, never a payload or an address. |
 | `GET`, `POST /api/gcsp/v1/manual/notification-email` | Employee only, own address only. POST sets it with `expectedVersion`. |

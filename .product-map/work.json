@@ -6375,13 +6375,43 @@
     {
       "assignee": "",
       "id": "FUCQ-457",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:09:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and publish canonical versioned policy",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-457"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-457",
+      "slices": [
+        {
+          "id": "s1-read-core",
+          "status": "complete",
+          "title": "Java PolicyService reads over the retained files with Node parity",
+          "observed_at": "2026-11-14T00:24:06Z",
+          "evidence": "0e97cea5 reviewed by story-lead: 14 policy tests incl. 718 Node-generated parity cases and retained projection fixture; verify 104/0F/37 skipped"
+        },
+        {
+          "id": "s2-publish-activation",
+          "status": "complete",
+          "title": "Persisted versions, Greg publication and run activation on native PostgreSQL",
+          "observed_at": "2026-11-14T01:39:02Z",
+          "evidence": "cd9c5ff9 reviewed by story-lead; migration renamed V457_1; merged base 49b893d6: verify 329/0F/0E/0S on native PG17 incl. 46 policy publish/activation/source/parity tests"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "Greg policy read and publish endpoints under /api/gcsp/v1 and consumer port adapters",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "24d542f8 reviewed by story-lead: Greg policy GET/publish under /api/gcsp/v1, brief adapter bound, account/supply adapters ready; 80 policy tests"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "story-lead: merged base 7645efb7, clean verify 349/0F/0E/0S on native PG17; parity fixtures regenerate identically; result block in story file"
+        }
+      ]
     },
     {
       "assignee": "",
