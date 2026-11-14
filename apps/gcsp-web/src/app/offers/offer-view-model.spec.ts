@@ -29,9 +29,9 @@ describe('offer read presentation projection', () => {
   });
   it('uses only server time for the displayed duration and never changes server state', () => {
     const offer = offerScreenFixture();
-    expect(offerViewModel(offer).remaining).toBe('2:00');
+    expect(offerViewModel(offer).remaining).toBe('2h 00m');
     const contradictory = offerViewModel({ ...offer, expiresAt: '2026-11-14T11:00:00.000Z' });
-    expect(contradictory.remaining).toBe('0:00'); expect(contradictory.title).toBe('Your offer');
+    expect(contradictory.remaining).toBe('0h 00m'); expect(contradictory.title).toBe('Your offer');
     expect(offerDate('2026-07-14T12:30:00.000Z')).toContain('13:30 BST');
   });
   it.each(['decision-pending', 'release-pending'])('retains pending confirmation for %s', (reason) => {

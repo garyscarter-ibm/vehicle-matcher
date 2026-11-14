@@ -141,7 +141,7 @@ export function offerViewModel(offer: OfferProjection) {
     orderNumber: offer.selection?.orderNumber ?? quote.orderNumber,
     points: offerValue(quote.terms.points.value), allowance: quote.terms.allowanceInputs.allowance ? offerValue(quote.terms.allowanceInputs.allowance.value) : null,
     contribution: contribution ? `${new Intl.NumberFormat('en-GB', { style: 'currency', currency: contribution.currency }).format(contribution.amount)} ${contribution.period === 'one-off' ? 'one-off' : `a ${contribution.period}`}` : null,
-    deadline: offerDate(offer.expiresAt), remaining: `${Math.floor(remainingMinutes / 60)}:${String(remainingMinutes % 60).padStart(2, '0')}`,
+    deadline: offerDate(offer.expiresAt), remaining: `${Math.floor(remainingMinutes / 60)}h ${String(remainingMinutes % 60).padStart(2, '0')}m`,
     reasons: [...measuredBenefits, ...quote.decision.reasons.map(offerExplanation)], tradeOffs: [...measuredTradeOffs, ...quote.decision.tradeOffs.map(offerExplanation)],
     blockers: quote.decision.blockers.map(offerExplanation), unknowns: quote.decision.unknowns.map(offerExplanation),
     handoffBlocker: offer.handoff?.blocker ? blockerCopy[offer.handoff.blocker] : null,
