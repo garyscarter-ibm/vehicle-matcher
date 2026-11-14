@@ -1,5 +1,258 @@
 # FUCQ-447 delivery checkpoint
 
+## Client validation checkpoint — 14 November 2026
+
+**Current disposition: bounded client slice complete with 59/59 scoped checks and
+independent parent result/teardown audit PASS; metadata-only checkpoint, HOLD.**
+The tested source is `a0d905b64cb09411f914ea57ae195cd306e4e7f8` on the unchanged, unsynced worker branch
+`dev/DEV-2026-11-13-015`. This section supersedes earlier source-only/UNRUN/runtime-HOLD
+statements below only for the consumed client release. Earlier receipts remain historical.
+Source, harnesses and runtime artifacts are unchanged by this metadata checkpoint.
+
+The Story Lead records completion only at the original `client` delivery boundary:
+the six actual Java operations plus exact-case GET selector, bearer/no cookies,
+role/scope/session safeguards, bounded requests, cancellation and late-response
+rejection, immutable prepared intent and identical-body explicit retry, and truthful
+stale/refusal/uncertain-write evidence. The 59 full assertions cover these paths and
+the authored malformed/config/token/stalled-work/privacy boundaries. Elmer's semantic
+source review1119 passed; parent and Elmer's exact-delta executable reviews1147
+passed; parent actual runtime audit1147 independently checked every assertion and
+resource/input outcome. No product policy, frontend eligibility or backend authority
+was inferred from fixtures. This records the bounded client outcome, not original
+Story acceptance or a connected screen/Java journey.
+
+Exactly ONE invocation, now consumed, from worker015:
+
+```sh
+/usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq447/client-runtime-stable-directory/supervisor.py run
+```
+
+Only `src/app/cases/case.client.spec.ts` ran with Angular compiler JIT/direct Injector:
+59 passed, 0 failed, 0 skipped/pending, 0 TODO; supervisor exit0. Full59-assertion JSON
+and the714-byte successful text log are retained outside scratch, together with the
+allocation journal/checkpoint/receipt. There was no retry, alternate runtime,
+config/source change or historical projection-spec replay. TypeScript typecheck,
+AOT/build, boundary/composed UI, browser/rendered desktop/narrow/Safari/private/
+keyboard/focus/CSP/accessibility, actual Java/real OIDC/native PostgreSQL/restart/
+concurrency, hosted/email and full originalAC acceptance remain UNRUN/open.
+Vitest JIT transpilation does not establish those gates.
+
+Preparation limitations and corrections are retained honestly. Review1119 required
+correcting the old proposal's540s work/60s cleanup split to480s work/120s reserve and
+requiring strict complete canonical locked reservation readback. The old proposal
+remains byte exact. Initial executable review1135 returned HOLD for
+`F447-HARNESS-DIRECTORY-NLINK`: mutable directory link counts were frozen as ownership,
+so normal child creation would fail mkdir/tree/root/deletion checks. That mechanism
+was established by source and read-only target-volume metadata; no failing runtime
+or product Bug was created. A separately authorised new stable-directory sibling
+excludes nlink only for directory identity, preserving dev/ino/type-as-mode/mode/
+uid/gid and explicit regular-file single-link guards. Unique roots/release/token
+scope and exact pins were audited before the one run. All prior preparations,
+proposals and failure/HOLD receipts remain unchanged. There were no test failures
+in the released run; neither the initial HOLD nor preflight PASS is a test result.
+
+The isolated regular copied closure contained46 packages/8,230 files/58,138,177 bytes,
+including Angular compiler/core/common, rxjs, tslib and selected Vitest/Vite/native
+runtime dependencies. Owned node_modules, Vite configuration, bundle/default caches,
+TMP/npm/XDG and generated output stayed within the declared namespace. Canonical
+shared HostBudget granted2GiB inclusive RAM/disk with1,028 telemetry updates.
+Total141.3338s includes setup, copies, tests, audits, teardown and final writes;
+sampled peak supervisor-plus-group RSS303,153,152B, aggregate owned disk98,239,744B.
+Final retained owned metadata was15,606,336B; the714B log,26,717B full JSON and bounded
+journal/receipts are deliberate retained evidence. No large output/OneDrive exception,
+browser, service or database was allocated. The5GiB reserve, adaptation below30GiB
+and direct configured OneDrive rule above256MiB remain the resource contract.
+
+Parent independently verified supervisor33869, entire group35045 and network FDs
+absent; scratch, all nested config/cache/temp/node_modules paths and worker dependency
+link absent; canonical locked strict full-schema token absence for
+`fucq447-client-stable-directory-1147-fd3a37d755af4335ab63f4ab4275cdda`.
+No cleanup failures or unknown retained runtime allocations remain. Parent checked
+all33 frozen runtime inputs,8 prepared pins,64 historical artifacts,8,230 selected
+closure content hashes and full identities,Node/helper pins and full borrowed package/
+toolchain lstat metadata. Metadata plus selected hashes does not prove whole borrowed
+tree byte immutability. This checkpoint changes only3 authorised evidence metadata
+files; the other30 runtime input pins and all source files remain exact.
+
+All six stable slice IDs and original13 points remain: `contracts` in-progress with
+historical cases19/help7 =26PASS at `d75d369ce14193252bf53154905a8a9282befa19` reused;
+`client` complete at the bounded outcome above; `employee-help`, `greg-queue`,
+`composition` and required `integration` not-started. The historical840B successful
+contracts text log remains unavailable, unreconstructed and unreplayed; its full JSON
+and original parent audit retain their existing identities. FUCQ-501 remains a
+separate linked Medium/P2 backlog Bug, unassigned/unclaimed/unfixed/nonblocking,
+outside66; its frozen numeric-offset response limitation is not repaired or waived.
+
+Native/file In Progress, Gary Carter claim/lease, source/reference freeze
+`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, both original uncheckedACs and the required
+integration/experience obligations are unchanged. The Story file is append-only;
+only own FUCQ-447 map object changes, with301 foreign raw rows/order and every outer
+byte preserved through the vendored helper's slice mutation and own-row writer.
+Worker waiting observation expires at this checkpoint. The parent's newer
+`jira_changed` importer notice is neither imported nor suppressed here; parent will
+preserve/reconcile it at sync. No In Review, Done, full stamp or connected acceptance.
+Remaining Java suitability/decline/preference-confirmation/clock/risk/notification
+coordination and dispatcher-owned auth/routes/kit/host/backend seams stay open.
+
+Hubie retains requested/selected/effective Sol `gpt-6.1-sol` / `high`, no fallback,
+settings/title change or descendants. This finite receipt authorises one official
+three-path metadata commit only: no source/harness change, further runtime, Jira,
+sync, push, merge, deploy, email, publication or next pickup. Parent owns exact
+checkpoint review and guarded publication/integration. HOLD after the returned SHA.
+
+### Client runtime evidence pins
+
+Paths beginning `client-runtime-stable-directory/` are under root
+`.claude/test-runs/fucq447/`. These are retained local evidence, not shipped runtime.
+
+| Evidence | SHA-256 |
+| --- | --- |
+| `.claude/fucq447-client-independent-source-review-1119.json` | `fbeb04c7986ff0b1bf87feb9b8386880537d9276b4ee097a7ac96255d3f5c97f` |
+| `.claude/fucq447-client-executable-review-1135.json (historical HOLD)` | `6448e5eda36286d0cf7f5ec5cf30c6ed1fc530a21b263f80a8b79bce72c17dc3` |
+| `.claude/fucq447-client-directory-executable-parent-audit-1147.json` | `12230f09508c145c6246edf9f5dbe1b2a0a083dd58297f96fcf53073e6563eae` |
+| `.claude/fucq447-client-directory-executable-review-1147.json` | `7d0af8965864c0dc360e892d3ff299b88ea8a2eba64b003b7462a735cc961dad` |
+| `.claude/fucq447-client-runtime-parent-audit-1147.json` | `1b8d5675dd2dd60624c6149582f00f06baa03dd598e9c228690c9838e5c04738` |
+| `client-runtime-stable-directory/supervisor.py` | `9c5d936d2d5fb20c9bd9a8cc5bb0e3e4a97d3239ad0a87e1ba6d5c49824f10dd` |
+| `client-runtime-stable-directory/manifest-template.json` | `558b3ed9970c7b750f6fb89b8760df8819dd62eb964991b7f01addc421ee3e41` |
+| `client-runtime-stable-directory/preparation-final.json` | `adaf7445d752bdb22968cc5176f34d584e866e508f3e40aaa4dfd3a66baffb79` |
+| `client-runtime-stable-directory/runtime-release.json` | `d32c9ac7e09879819323c04446d4ae82040e2bbc01f142d9027b0a8ca665dde4` |
+| `client-runtime-stable-directory/receipt.json` | `72a2e9b036e932a18f9e70815603617343054cedb401a28026c8423d7243a53b` |
+| `client-runtime-stable-directory/test-report.json` | `9625e7c942ac7dcf4e6c58b7ab40fe1362b34b252274850a1de5df30e1819e70` |
+| `client-runtime-stable-directory/test-output.log` | `b2f256de127f3994157c7d662f6621f8d475118171f449021b58013a64f72743` |
+| `client-runtime-stable-directory/allocation.json` | `4b20ea1b7ceedd45b713b922c550402731cafe633a6ed7c7e482ba1601e0da98` |
+| `client-runtime-stable-directory/allocation-journal.jsonl` | `1b029df3260aa5fbd2a7069733ba75a085ca1389d501b15f3bfc09c2995c35e5` |
+| `client-runtime-stable-directory/checkpoint.json` | `f389b0997c570e0fd61b57305f846cfef7fd52fb0457251a346079583219b772` |
+
+Tested client source remains unchanged:
+
+| Source | SHA-256 |
+| --- | --- |
+| `apps/gcsp-web/src/app/cases/case.client.ts` | `2e54eee7405f8bfc4f16f50ce10a04ea92914e63ab7aa4ab137688892bbfe530` |
+| `apps/gcsp-web/src/app/cases/case.client.spec.ts` | `cd1197fa26a5f77ac33565ee000bae8860aec803ca0bb86686f9e5a205f9375f` |
+
+## Client source checkpoint — 14 November 2026
+
+**Current disposition: source-only client and specs authored; all new checks UNRUN; HOLD for parent audit.**
+This finite client release is recorded in root `.claude/fucq447-client-source-release-1058.json`.
+Verified clean base `5aee261aca174a19adeedb29f411deaabe98e02f`, configured base `gcsp-poc-dev` and integration root
+`bed78ba385eb5b1c5272c3b548d5da2fcd9e96a9` before editing. Parent published/synced
+contracts metadata `fbb37d7bc955905d44eafce024db1c3e7d7738a0` into this base.
+This section supersedes earlier current-disposition/source-HOLD statements only for
+the consumed finite two-source client release; earlier receipts remain historical.
+
+The two new files implement the actual six Java operations, plus the exact-case GET
+selector, through the existing AuthPort/runtime-config/PORTAL_FETCH interfaces.
+Bearer authority stays outside query/body; fetch omits cookies and uses no-store and
+redirect refusal. Employee and Greg role/scope gates are local safeguards; Java
+remains authoritative. Captured ready-session object identity and immutable
+subject/environment/run/employee/policy/roles values are checked at each await;
+a new ready session with identical identity cannot revive old commands/results.
+The actual OIDC service publishes new ready objects after context reload.
+
+`prepareHelp`/`prepareUpdate` validate and freeze a reviewable command; only explicit
+`requestHelp`/`updateCase` submits it. A private WeakMap binds the exact object to
+its captured scope and serialized bytes. Explicit same-object retry replays identical
+bytes; copied/foreign-instance/old-session commands fail locally. Caller commandId
+identifies intent and Java resolves idempotency conflicts. No automatic auth retry,
+POST replay, operation-status endpoint, contract-version tag or frontend eligibility,
+transition/suitability/clock table is introduced. Four actual remedy input shapes are
+supported; omitted remedy stays omitted. Numeric-offset command timestamps are
+permitted by Java input. The frozen F501 response-parser limitation remains unfixed.
+
+A10-second race covers config,token,fetch and async body work,including promises that
+ignore AbortSignal. Late work rechecks abort/session before transport or returning
+private data. HTTP/refusal pairing and frozen projection validation preserve only
+permitted Java refusal evidence,stale versions,field reasons and operationId.
+Local failure/malformed/scope outcomes remain distinct. Dispatched writes with an
+unproved outcome are labelled unknown; pre-dispatch failures are not-sent. Known
+HTTP status survives cancellation/timeout after headers. No private UI state store,
+view,route or shared primitive is implemented by this client-only slice.
+
+The authored spec uses Angular compiler plus Injector/runInInjectionContext in a
+Node test environment,not TestBed/browser. It covers routes/encoding/headers,role and
+scope refusal,immutable intent/explicit retry,actual remedies,privacy/refusal matrix,
+malformed/transport/config/token failures and session/abort/stalled-work boundaries.
+**The new spec,compiler/typecheck,AOT/build,boundary and all runtime checks are UNRUN.**
+Read-only source/interface review,SHA-256/base/path checks,raw-map/AC integrity and
+`git diff --check` are the only checks selected for this source checkpoint.
+
+The five frozen projection/type/spec files retain their exact hashes below. Historical
+`d75d369ce14193252bf53154905a8a9282befa19` cases19/help7 =26 passed is retained with
+parent audit1058; it is neither rerun nor represented as client/typecheck/integration
+proof. The840B successful text log remains missing/unavailable; full structured JSON,
+receipt and actual cleanup evidence retain the hashes in the historical section.
+FUCQ-501 stays separate Medium/P2,unassigned/unclaimed/unfixed/nonblocking,outside66;
+no repair,new dependency or acceptance change.
+
+All six stable slices remain: `contracts` in-progress with historical scoped26PASS;
+`client` in-progress with source-only evidence; `employee-help`,`greg-queue`,
+`composition`,`integration` not-started. Original13 points,native/file In Progress,
+Gary Carter claim/lease and both original uncheckedACs remain. Only own FUCQ-447 map
+object changes;301 foreign raw rows/order and every outside-object byte are preserved.
+The waiting worker observation expires immediately and makes no active-worker claim.
+Dispatcher's1112 importer notice reports an existing validation-evidence difference,
+with unchanged native payload and originalAC; parent retains/reconciles it after this
+checkpoint. No importer header or native amendment is made in this worker release.
+
+Only the ignored non-executable runtime proposal was prepared:
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq447/client-runtime-plan-1058.json`
+SHA-256 `faf5ca88c6ea1ff3735880ddae2edbbb306deb45384aef1b64f892bd86146d49`. It selects only
+`src/app/cases/case.client.spec.ts`,requires an isolated regular copied Angular
+compiler/core/common,rxjs,tslib and Vitest/Vite/runtime closure with owned configuration,
+`.vite-temp`,`.vite`,TMP/npm/XDG caches,canonical shared HostBudget,one worker,
+2GiB RAM/disk and600s TOTAL including preflight/copy/cleanup. The5GiB reserve,
+adaptation below30GiB,direct configured OneDrive output above256MiB,manifest before
+allocation,process-group stop/join/absence,owned path removal/absence,token release/
+absence,full borrowed metadata plus selected pins and parent final receipt are explicit.
+It is a proposal only: further executable audit and separate one-run release are required.
+No runtime,copies,links,caches,scratch,resource API,Node/version,services or children ran.
+
+Remaining original gates include client spec/typecheck/AOT,boundary/shared composition,
+employee/Greg screens and approved shared components,actual Java/real OIDC/native
+PostgreSQL transactions/restart/concurrency,desktop/narrow/Safari/private/keyboard/
+focus/CSP/accessibility and hosted/email/fullAC evidence. Actual Java suitability,
+decline/preference confirmation,canonical clock/risk and notification composition
+remain original integration gaps. No rendered screen or current connected acceptance
+is claimed. Shared account/auth/config/routes/kit/orders/host/backend and frozen source
+remain untouched; parent owns source/executable audit,separate runtime release and
+publication. No sync,push,merge,Jira,deploy,email,final switch or next source pickup.
+
+Hubie retains requested/selected/effective `gpt-6.1-sol` / `high`,no fallback or children.
+Gateway PASS `api.servicesessentials.ibm.com`. Exact commit SHA is returned after the
+official five-path helper commit. HOLD after this checkpoint.
+
+### Current client source and input pins
+
+These identities are freshly read from current base `5aee261aca174a19adeedb29f411deaabe98e02f`;
+the two new source files are uncommitted until the returned checkpoint SHA. Existing
+historical inventories below keep their original base; all historical63 pins are not
+asserted to match a later parent integration.
+
+| File | SHA-256 |
+| --- | --- |
+| `apps/gcsp-web/src/app/cases/case.client.ts` | `2e54eee7405f8bfc4f16f50ce10a04ea92914e63ab7aa4ab137688892bbfe530` |
+| `apps/gcsp-web/src/app/cases/case.client.spec.ts` | `cd1197fa26a5f77ac33565ee000bae8860aec803ca0bb86686f9e5a205f9375f` |
+| `apps/gcsp-web/src/app/cases/case.types.ts` | `a1071b1627f531a813c659b660f1549e8892ae4aa36e403be0f36784dd23d14f` |
+| `apps/gcsp-web/src/app/cases/case.projection.ts` | `2b18645de9cc94fbaa34cba6ad227346625273d50cc72f9aabc2b79ff6eb0fac` |
+| `apps/gcsp-web/src/app/cases/case.projection.spec.ts` | `3139d1b5a95462f77ebe23292dbecf6dbb3ed39591c68e7e3b2e06a64e80bc00` |
+| `apps/gcsp-web/src/app/help/help.projection.ts` | `cf55e2fddef836e79f66b87a8170e82ef86f124d55fed1383faf7286a6839748` |
+| `apps/gcsp-web/src/app/help/help.projection.spec.ts` | `27aeeb6e87035343372ee78d665d63db2a2c14d65a0116d35ae31f5f77d6ff55` |
+| `apps/gcsp-web/src/app/auth/auth.port.ts` | `e8bd3ee619df1b34135fd754e6c83b394e3214088e046ab455dec4af3a762ad1` |
+| `apps/gcsp-web/src/app/auth/runtime-config.ts` | `31e385fc95f490ca270c5687c998515b6422f9f22778b09a9e3aa4976059dc41` |
+| `apps/gcsp-web/src/app/auth/oidc-auth.service.ts` | `d768b866f401c70bd64c5d770e64ae38a288d5dc98ca7111ed4c4fd69c1c8aa9` |
+| `services/gcsp-api/src/main/java/gcsp/api/cases/CaseResource.java` | `ff65461cd1526d60371315e6929f89bffabc91be7f6a245c5084a0910d9925ce` |
+| `services/gcsp-api/src/main/java/gcsp/api/cases/CaseService.java` | `89a3950de3df2b717c9ce3218d89d3ec90b6bceff9e2a375b2aea253fb1b68ab` |
+| `services/gcsp-api/src/main/java/gcsp/api/cases/CaseResult.java` | `92522315f38ebef3b93c653906e5632aa34bd8b1f2ca34cdacf71fba2df8ac1b` |
+| `services/gcsp-api/src/main/java/gcsp/api/cases/CaseJson.java` | `690edda615496b84d33a6acd35656a72e47934edbf478a5907dcc48801fe3bf6` |
+| `services/gcsp-api/src/main/java/gcsp/api/auth/IdentityRefusalMapper.java` | `15660146d1aff3b17696602bbec147d046feb2307758aeb8c16f88bbee404033` |
+| `apps/gcsp-web/package.json` | `db4427099ecdc0197ed991efb68cf22631b02087ba42a09eb0dbdd976568e540` |
+| `apps/gcsp-web/package-lock.json` | `fb9ba0a4b7c8f0f4bcb33ccbbd8059a2d57593325f7aff085d0248917fbfa5a3` |
+| `apps/gcsp-web/tsconfig.json` | `bf15840d26a748b6aa0df95da87fbc141909ec9854da7db7a2daceec56b57250` |
+| `apps/gcsp-web/tsconfig.spec.json` | `1db769dfa5c1800b9ffaf3f01bb6a3e65a5d2cf3c45d4e8d15aa68128b14edc1` |
+| `apps/gcsp-web/vitest.config.ts` | `f042a4b99a4d4f5733239f3cf20d24c4d5271cdf9df46f7c171f20ee8739f1fe` |
+| `_tools/scaffold_git.py` | `ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a` |
+| `_tools/product_map.py` | `dceee85bb1d2cf077406b3c908987ce5e1226c7c7aa23de9a5b2b7c6360d22cc` |
+
 ## Contracts validation checkpoint — 14 November 2026
 
 **Current disposition: scoped26/26 passed and parent teardown audit passed; metadata-only checkpoint,HOLD for dispatcher review/publication.**

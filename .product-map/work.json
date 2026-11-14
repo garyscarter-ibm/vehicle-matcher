@@ -6690,8 +6690,10 @@
         },
         {
           "id": "client",
-          "status": "not-started",
-          "title": "Scoped six-operation Java case client"
+          "status": "complete",
+          "title": "Scoped six-operation Java case client",
+          "observed_at": "2026-11-14T11:58:43Z",
+          "evidence": "Lead bounded client delivery: source a0d905b64cb09411f914ea57ae195cd306e4e7f8;59/59 client assertions PASS,0fail/skip/TODO;Elmer source1119, parent+Elmer executable1147 and parent actual result/inputs/teardown1147 PASS. Actual six Java paths/body,bearer/role/scope/session/abort,explicit identical intent retry/refusal/uncertain boundaries checked. Original2AC,typecheck/AOT/composedUI/Java/OIDC/nativePG/hosted remain open. docs/gcsp/fucq447-delivery.md"
         },
         {
           "id": "employee-help",
@@ -6720,13 +6722,13 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "HOLD; contracts26/26 scoped checks and parent teardown audit passed; waiting metadata checkpoint review/publication",
-          "observed_at": "2026-11-14T11:03:30Z",
-          "expires_at": "2026-11-14T11:03:30Z",
-          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; gpt-6.1-sol/high retained, no fallback/children; one released runtime consumed on d75d369ce14193252bf53154905a8a9282befa19; docs/gcsp/fucq447-delivery.md"
+          "status": "HOLD; scoped client59PASS and parent actual-result/teardown audit PASS; waiting metadata checkpoint audit/publication",
+          "observed_at": "2026-11-14T11:58:43Z",
+          "expires_at": "2026-11-14T11:58:43Z",
+          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; Hubie gpt-6.1-sol/high retained; no fallback/children. One released client runtime consumed on a0d905b64cb09411f914ea57ae195cd306e4e7f8; docs/gcsp/fucq447-delivery.md"
         }
       ],
-      "note": "Metadata-only checkpoint. In Progress/Gary Carter and original2AC remain unchanged. Contracts remains in-progress; client/employee-help/greg-queue/composition/integration not-started. Full structured26-assertion JSON retained;840B successful text log removed/unavailable. FUCQ-501 Medium separate linked backlog,unclaimed/unfixed/nonblocking/outside66; runtime reproduction UNRUN. No acceptance/Done, new source, runtime retry, Jira or publication."
+      "note": "Metadata-only client result. Native/file In Progress, Gary Carter claim/lease,13points and original2AC unchanged. Client bounded boundary complete with59PASS/source+executable+parent actual runtime/teardown audit;contracts in-progress with historical26 reused;remaining4stable slices not-started. Full JSON/714B log retained;old840B contracts log unavailable. Initial executable1135 directory-nlink HOLD corrected in separately audited sibling;no failed product runtime or new scope inferred. F501 Medium separate/unclaimed/unfixed/nonblocking/outside66. No further runtime/source/Jira/sync/push/merge/publication;parent preserves root importer notice."
     },
     {
       "assignee": "",
