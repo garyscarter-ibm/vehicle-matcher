@@ -6509,13 +6509,37 @@
     {
       "assignee": "",
       "id": "FUCQ-461",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:47:17Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Compute equivalent eligibility, quotes and recommendations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461",
+      "slices": [
+        {
+          "id": "s1-scoring-gates",
+          "status": "in-progress",
+          "title": "Brief validation, eligibility gates, preference scoring, option evidence and ranking tie-breaks with Node parity bounds",
+          "observed_at": "2026-11-14T02:47:17Z",
+          "evidence": "briefed to implementer 2026-11-14T02:45Z"
+        },
+        {
+          "id": "s2-evaluation",
+          "status": "not-started",
+          "title": "Recommendation evaluation: pinned policy, points/allowance terms, timing, current-car feedback, preview and stored subject with Node parity"
+        },
+        {
+          "id": "s3-source-http",
+          "status": "not-started",
+          "title": "Released-stock and account source adapter, vehicle evidence port stub and employee-own HTTP endpoint"
+        },
+        {
+          "id": "s4-integration",
+          "status": "not-started",
+          "title": "Story validation, Used Cars parity check, base merge, bounds record and result"
+        }
+      ]
     },
     {
       "assignee": "",
