@@ -68,7 +68,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
-| `GCSP_APPROVALS_POLICY_FILE` | empty | Retained Node policy file for the lifecycle assumptions. Empty means no policy, so every read and tick refuses per order as `lifecycle-policy-unavailable`. Set but unreadable stops startup. |
+| `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -265,9 +265,10 @@ and `outcome-uncertain` (with `operationId`).
 `gcsp.api.approvals` ports the Node lifecycle approvals. `ApprovalService` records each presenter tick durably, asks the
 selected `ApprovalStatusProvider` for a decision outside any transaction and settles it only on a matching confirmation;
 elapsed ticks only make a decision due. `ApprovalSelection` picks the provider and policy once at startup with no silent
-fallback. The order source (FUCQ-468), handover (FUCQ-472) and policy (FUCQ-457) are `@DefaultBean` ports
-(`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured` (503) and no order is
-ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
+fallback. Policy comes from the canonical PolicyService (`PolicyApprovalAdapter`, reporting `canonical`) unless
+`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source (FUCQ-468) and handover (FUCQ-472) are
+`@DefaultBean` ports (`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured`
+(503) and no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
 run (else 409 `stale-run`). With persistence on and a provider other than `none`, startup finishes up to 100 open
 decisions once (it never counts ticks or starts orders) and logs a one-line count; a failure is logged, not fatal.
 

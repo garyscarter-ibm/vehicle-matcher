@@ -1,7 +1,7 @@
 package gcsp.api.approvals;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,14 +19,14 @@ class ApprovalSelectionTest {
     Path dir;
 
     @Test
-    void defaultIsNoneWithAnUnconfiguredPolicy() {
+    void defaultIsNoneWithTheCanonicalPolicy() {
         for (String name : new String[] {null, "", "  ", "none"}) {
             ApprovalSelection.Selected s = ApprovalSelection.select(name, null);
             assertEquals("none", s.provider());
-            assertInstanceOf(UnconfiguredApprovalPolicy.class, s.policy());
-            assertEquals("none", s.policyMode());
+            assertNull(s.policyFile());
+            assertEquals("canonical", s.policyMode());
         }
-        assertInstanceOf(UnconfiguredApprovalPolicy.class, ApprovalSelection.select("synthetic", "  ").policy());
+        assertEquals("canonical", ApprovalSelection.select("synthetic", "  ").policyMode());
     }
 
     @Test
@@ -46,17 +46,11 @@ class ApprovalSelectionTest {
     @Test
     void aPolicyFileIsReadableOrStartupStops() throws Exception {
         ApprovalSelection.Selected s = ApprovalSelection.select("synthetic", SEED);
-        assertInstanceOf(RetainedApprovalPolicy.class, s.policy());
+        assertEquals(Path.of(SEED), s.policyFile());
         assertEquals("file", s.policyMode());
         assertThrows(IllegalStateException.class, () -> ApprovalSelection.select("synthetic", dir.resolve("missing.json").toString()));
         assertThrows(IllegalStateException.class, () -> ApprovalSelection.select("none", dir.toString()));
         Path ok = Files.writeString(dir.resolve("p.json"), "{}");
         assertEquals("file", ApprovalSelection.select("none", ok.toString()).policyMode());
-    }
-
-    @Test
-    void anUnconfiguredPolicyKnowsNoVersion() {
-        assertInstanceOf(ApprovalPolicyPort.VersionNotFound.class,
-                new UnconfiguredApprovalPolicy().entries("gcsp-policy-v1", java.util.List.of("k")));
     }
 }

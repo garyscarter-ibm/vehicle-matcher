@@ -18,10 +18,12 @@ public class ApprovalSelection {
     public static final String NONE = "none";
     public static final String SYNTHETIC = "synthetic";
     public static final String LIVE_STUB = "live-stub";
+    public static final String CANONICAL = "canonical";
+    public static final String FILE = "file";
     private static final Logger LOG = Logger.getLogger(ApprovalSelection.class);
 
-    /** The provider name and the policy source; policyMode is none (unconfigured) or file. */
-    public record Selected(String provider, ApprovalPolicyPort policy, String policyMode) {}
+    /** The provider name and the policy source; policyMode is canonical (PolicyService) or file (policyFile is set). */
+    public record Selected(String provider, Path policyFile, String policyMode) {}
 
     @ConfigProperty(name = "gcsp.approvals.provider", defaultValue = NONE)
     String providerName;
@@ -34,15 +36,16 @@ public class ApprovalSelection {
     @PostConstruct
     void init() {
         selected = select(providerName, policyFile.orElse(null));
-        LOG.infof("GCSP approvals provider: %s, policy: %s", selected.provider(), selected.policyMode());
+        LOG.infof("GCSP approvals provider: %s, policy source: %s", selected.provider(), selected.policyMode());
     }
 
     public String provider() {
         return selected.provider();
     }
 
-    public ApprovalPolicyPort policy() {
-        return selected.policy();
+    /** The explicit retained policy file, or null when the canonical PolicyService is the source. */
+    public Path policyFile() {
+        return selected.policyFile();
     }
 
     public String policyMode() {
@@ -72,11 +75,11 @@ public class ApprovalSelection {
             throw new IllegalStateException("Unknown gcsp.approvals.provider '" + name + "'; supported: " + NONE + ", "
                     + SYNTHETIC + ", " + LIVE_STUB);
         }
-        if (policyFile == null || policyFile.isBlank()) return new Selected(name, new UnconfiguredApprovalPolicy(), NONE);
+        if (policyFile == null || policyFile.isBlank()) return new Selected(name, null, CANONICAL);
         Path file = Path.of(policyFile.trim());
         if (!Files.isRegularFile(file) || !Files.isReadable(file)) {
             throw new IllegalStateException("gcsp.approvals.policy-file is set but cannot be read: " + file);
         }
-        return new Selected(name, new RetainedApprovalPolicy(file), "file");
+        return new Selected(name, file, FILE);
     }
 }
