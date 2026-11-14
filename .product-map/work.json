@@ -6671,15 +6671,62 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T10:18:35Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447",
+      "slices": [
+        {
+          "id": "contracts",
+          "status": "in-progress",
+          "title": "Case/help contracts and pure display projections",
+          "observed_at": "2026-11-14T10:59:22Z",
+          "evidence": "Frozen d75d369ce14193252bf53154905a8a9282befa19 pure boundary: cases19/help7 passed,0 failed/skipped/todo; Wakko source/executable and parent runtime/teardown audit passed. Still in-progress; typecheck/AOT, five later slices and actual UI/Java/OIDC/nativePG/hosted/fullAC open. F501 Medium separate/unfixed/nonblocking. docs/gcsp/fucq447-delivery.md; root .claude/fucq447-contracts-runtime-parent-audit-1058.json."
+        },
+        {
+          "id": "client",
+          "status": "not-started",
+          "title": "Scoped six-operation Java case client"
+        },
+        {
+          "id": "employee-help",
+          "status": "not-started",
+          "title": "Employee help, confirmation and current readback"
+        },
+        {
+          "id": "greg-queue",
+          "status": "not-started",
+          "title": "Greg queue, feasible remedies and reviewed updates"
+        },
+        {
+          "id": "composition",
+          "status": "not-started",
+          "title": "Feature exports and dispatcher-owned shared composition"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual Java/OIDC/PostgreSQL journey and rendered acceptance"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-015",
+      "workers": [
+        {
+          "name": "Hubie",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "HOLD; contracts26/26 scoped checks and parent teardown audit passed; waiting metadata checkpoint review/publication",
+          "observed_at": "2026-11-14T11:03:30Z",
+          "expires_at": "2026-11-14T11:03:30Z",
+          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; gpt-6.1-sol/high retained, no fallback/children; one released runtime consumed on d75d369ce14193252bf53154905a8a9282befa19; docs/gcsp/fucq447-delivery.md"
+        }
+      ],
+      "note": "Metadata-only checkpoint. In Progress/Gary Carter and original2AC remain unchanged. Contracts remains in-progress; client/employee-help/greg-queue/composition/integration not-started. Full structured26-assertion JSON retained;840B successful text log removed/unavailable. FUCQ-501 Medium separate linked backlog,unclaimed/unfixed/nonblocking/outside66; runtime reproduction UNRUN. No acceptance/Done, new source, runtime retry, Jira or publication."
     },
     {
       "assignee": "",
