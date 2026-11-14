@@ -1,0 +1,318 @@
+{
+ "policyVersion": "gcsp-policy-v1",
+ "startsAt": "2026-11-05T09:00:00.000Z",
+ "cases": [
+  {
+   "name": "small-a",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1
+   },
+   "ok": {
+    "inputHash": "f3dc07c0f08eae6987584e896179a1edc9975b1074e0a4056ea1044c40f4eb53",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "5b79f5330b333920112d9304ae2f2bad6249a96bf2eff7d97edd456f52a28ad2",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "ba2c7b8b5931aa7f7a6477e2982f68de203b1c786a122801d7be8818caa944e6"
+   }
+  },
+  {
+   "name": "small-b",
+   "seed": "comparison-b",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1
+   },
+   "ok": {
+    "inputHash": "f2f1125b78c2e12b37460c2c2ede98a7c2926ea283fea00a40680b15d012900f",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "5b79f5330b333920112d9304ae2f2bad6249a96bf2eff7d97edd456f52a28ad2",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "a5226826b2933cea8dbdeb291b4c8f129e279d720e671debaae786b3b62d230c"
+   }
+  },
+  {
+   "name": "integer-seed",
+   "seed": 7,
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1
+   },
+   "ok": {
+    "inputHash": "b483eeb057dbe8cb2c2d94bf2918f900ee563559488fc98f94d5f8e2f9e498c1",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "5b79f5330b333920112d9304ae2f2bad6249a96bf2eff7d97edd456f52a28ad2",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "335008dd51581694b7fbdafad09903fb389e6a67468b0c91386acca80a9dc6f1"
+   }
+  },
+  {
+   "name": "rounding-half-up",
+   "seed": "comparison-c",
+   "overlay": {
+    "comparison.cohortSize": 5,
+    "comparison.carsPerEmployee": 0.5
+   },
+   "ok": {
+    "inputHash": "a0a9cd1a28701bb8c7f6572418ae6da5d8c65b64149a4d900782d26f2055979f",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "5d875bf8563c9e0c06bfb5a9e31881576f9e920e1dba5fa0db11ecafa7f25e82",
+    "counts": {
+     "employees": 5,
+     "stock": 3,
+     "releases": 1
+    },
+    "outputDigest": "980b5831f40327310186a4473daf019d9f31cb77d9a7a5053d71d95eeffa812e"
+   }
+  },
+  {
+   "name": "model-line-mix",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.modelLineMix": [
+     {
+      "modelLine": "G21 Touring|320i",
+      "weight": 3
+     },
+     {
+      "modelLine": "G61 i5|i5 40",
+      "weight": 1
+     }
+    ]
+   },
+   "ok": {
+    "inputHash": "e9a365335fe628a60136d94eabe538f19cce4a779148bf249a32fde8ad0e0ce8",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "7efb6e41bd0d39554e58ae6920de435ad36a42a9e4fd03c8f177fbbc27083ebf",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "c6279803000a0d4669d9ca9b302a88f6b46cdeaf935e27899d615fdc9a2c186f"
+   }
+  },
+  {
+   "name": "points-multiplier",
+   "seed": "comparison-b",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.pointsAllowanceMultiplier": 1.2
+   },
+   "ok": {
+    "inputHash": "433469be427ba27a849de6382246dbd74460aa660d98f4663eee1274281550ad",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "c0bf61ed3296c126dfdd99d576fecbbb74b853060784741e97c8f4f2feb0e55c",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "40d1a91909d3b7d1aa2894dbc07d6b9c976d257b8f5c5d1c24fddbeb4334de6e"
+   }
+  },
+  {
+   "name": "hold-buddy",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "hold.buddy.durationSeconds": 14400
+   },
+   "ok": {
+    "inputHash": "f3dc07c0f08eae6987584e896179a1edc9975b1074e0a4056ea1044c40f4eb53",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "34442d61ae91b1f3324dc6dc061be89df279ae34a42990f51033f8a0ba851d5c",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "9020a5a5d3bbed546906fbcfe39966ea69fe4f172a7ff366fcda0cf8d7bab821"
+   }
+  },
+  {
+   "name": "noise-and-uptake",
+   "seed": "noise",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.briefNoise.v1": {
+     "accuratePreferenceProbability": 0.3,
+     "preserveEssentials": true
+    },
+    "comparison.buddyUptake": 0.5
+   },
+   "ok": {
+    "inputHash": "de43e3d06dd5d725fccefe992abdb7d3da7bbac36ddb5b8c2a9e01308e08306a",
+    "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+    "overlayHash": "1d76dd57f8ed5b7906638e86dbc769ae80404338dee5e6c1c8d410de0625fd46",
+    "counts": {
+     "employees": 12,
+     "stock": 12,
+     "releases": 1
+    },
+    "outputDigest": "a7e88ad20eace31940852b0fc6f12ad8c5c0664b3662ab773d337056a000c14e"
+   }
+  },
+  {
+   "name": "unknown-key",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.nope": 1
+   },
+   "error": {
+    "code": "invalid-overlay",
+    "key": "overlay"
+   }
+  },
+  {
+   "name": "grade-overlay",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.gradeDistribution": []
+   },
+   "error": {
+    "code": "invalid-overlay",
+    "key": "overlay"
+   }
+  },
+  {
+   "name": "empty-seed",
+   "seed": "",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1
+   },
+   "error": {
+    "code": "invalid-seed",
+    "key": "seed"
+   }
+  },
+  {
+   "name": "fractional-seed",
+   "seed": 1.5,
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1
+   },
+   "error": {
+    "code": "invalid-seed",
+    "key": "seed"
+   }
+  },
+  {
+   "name": "cohort-over-maximum",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 100001
+   },
+   "error": {
+    "code": "invalid-policy",
+    "key": "comparison.cohortSize"
+   }
+  },
+  {
+   "name": "cars-over-maximum",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 60000,
+    "comparison.carsPerEmployee": 1
+   },
+   "error": {
+    "code": "invalid-policy",
+    "key": "comparison.carsPerEmployee"
+   }
+  },
+  {
+   "name": "unknown-model-line",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.modelLineMix": [
+     {
+      "modelLine": "No such line",
+      "weight": 1
+     }
+    ]
+   },
+   "error": {
+    "code": "configuration-unavailable",
+    "key": "comparison.modelLineMix"
+   }
+  },
+  {
+   "name": "zero-weight-mix",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.modelLineMix": [
+     {
+      "modelLine": "G20 Saloon|320i",
+      "weight": 0
+     }
+    ]
+   },
+   "error": {
+    "code": "invalid-policy",
+    "key": "comparison.modelLineMix"
+   }
+  },
+  {
+   "name": "negative-buddy-hold",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "hold.buddy.durationSeconds": -1
+   },
+   "error": {
+    "code": "invalid-policy",
+    "key": "hold.buddy.durationSeconds"
+   }
+  },
+  {
+   "name": "late-release",
+   "seed": "comparison-a",
+   "overlay": {
+    "comparison.cohortSize": 12,
+    "comparison.carsPerEmployee": 1,
+    "comparison.releaseCadence": {
+     "firstReleaseDay": 0,
+     "intervalDays": 100,
+     "batchSize": 1
+    }
+   },
+   "error": {
+    "code": "invalid-policy",
+    "key": "comparison.releaseCadence"
+   }
+  }
+ ]
+}
