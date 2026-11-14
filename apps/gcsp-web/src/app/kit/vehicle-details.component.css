@@ -1,0 +1,18 @@
+:host { display: block; min-width: 0; }
+.gcsp-vehicle-details-entry.gcsp-button { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-5); width: 100%; min-height: var(--gcsp-control-height); padding: var(--gcsp-space-4) var(--gcsp-space-5); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface); text-align: left; white-space: normal; }
+.gcsp-vehicle-details-entry:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
+.gcsp-vehicle-details-copy, .gcsp-vehicle-details-hint { display: block; min-width: 0; overflow-wrap: anywhere; }
+.gcsp-vehicle-details-entry strong { display: block; }
+.gcsp-vehicle-details-hint { margin-top: var(--gcsp-space-1); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
+.gcsp-vehicle-details-arrow { flex: none; font-size: var(--gcsp-font-size-title); }
+.gcsp-vehicle-details-body { display: grid; gap: var(--gcsp-space-6); min-width: 0; }
+.gcsp-vehicle-details-body h3 { margin: 0; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); overflow-wrap: anywhere; }
+.gcsp-vehicle-specification h4 { margin: 0 0 var(--gcsp-space-2); font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-vehicle-specification dl { margin: 0 0 var(--gcsp-space-5); }
+.gcsp-vehicle-detail-row { display: grid; gap: var(--gcsp-space-1); padding: var(--gcsp-space-4) 0; border-bottom: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
+.gcsp-vehicle-detail-row dt { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.gcsp-vehicle-detail-row dd { margin: 0; }
+.gcsp-vehicle-equipment { margin: 0; padding-inline-start: var(--gcsp-space-5); }
+.gcsp-vehicle-equipment li { padding-block: var(--gcsp-space-2); overflow-wrap: anywhere; }
+.gcsp-vehicle-equipment-empty { margin: 0; color: var(--gcsp-text-muted); }
+@media (max-width: 600px) { .gcsp-vehicle-details-entry.gcsp-button { padding-inline: var(--gcsp-space-4); } }

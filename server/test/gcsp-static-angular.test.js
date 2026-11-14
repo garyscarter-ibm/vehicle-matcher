@@ -263,17 +263,50 @@ test('artifact: incomplete producer output cannot omit bootstrap, stylesheet or 
   await assert.rejects(assembleGcspStatic({ ...fixture, output: join(fixture.root, 'invalid') }), /requires a packaged WOFF\/WOFF2 font/u);
 });
 
+test('artifact: Java image packages only the active and recovery evidence as root-owned read-only files', async () => {
+  const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
+  const ignore = await readFile(new URL('../../services/gcsp-api/Dockerfile.dockerignore', import.meta.url), 'utf8');
+  const root = 'server/data/gcsp/vehicle-evidence'; const store = `${root}/fleet-source.v1`;
+  const active = JSON.parse(await readFile(new URL(`../../${store}/active.json`, import.meta.url), 'utf8'));
+  const lastGood = JSON.parse(await readFile(new URL(`../../${store}/last-good.json`, import.meta.url), 'utf8'));
+  assert.deepEqual(active.previous, lastGood.selected, 'the recovery copy follows the retained last-good pointer');
+  const expected = [
+    ...['active.json', 'last-good.json', 'identity-inventory.json'].map((file) => `${store}/${file}`),
+    ...[active.selected, active.previous].map((pointer) => `${store}/versions/${pointer.directory}/`),
+    `${root}/display-images.v1.json`, `${root}/configuration-definitions.v1.json`, 'assets/gcsp-vehicle-evidence/',
+  ];
+  const copies = [...dockerfile.matchAll(/^COPY (?:--chown=(\S+) )?((?:services|server|assets)\/\S+(?: \S+)*) (\S+)$/gmu)];
+  const evidence = copies.filter(([, , input]) => input.startsWith(root) || input.startsWith('assets/'));
+  assert.deepEqual(evidence.map(([, , input]) => input), expected, 'no whole corpus or extra versions enter the image');
+  const runtime = dockerfile.lastIndexOf('\nFROM '); const user = dockerfile.indexOf('\nUSER 1001');
+  for (const copy of evidence) {
+    const [, owner, input, destination] = copy;
+    assert.equal(owner, '0:0', `${input} stays root-owned`);
+    assert.equal(destination, input.replace(root, '/app/data/vehicle-evidence').replace(/^assets\//u, '/app/assets/'));
+    assert.ok(copy.index > runtime && copy.index < user, `${input} is copied only into the final image before USER 1001`);
+  }
+  const allowlist = ignore.split('\n').filter((line) => line.startsWith('!')).map((line) => line.slice(1));
+  assert.deepEqual(allowlist.sort(), copies.flatMap(([, , inputs]) => inputs.split(' ').map((input) => input.replace(/\/$/u, ''))).sort(),
+    'the Dockerfile-specific context allowlist includes exactly the build inputs');
+  assert.ok(ignore.split('\n').includes('**'), 'unlisted repository files stay excluded');
+  const directories = dockerfile.indexOf('find /app/data/vehicle-evidence /app/assets/gcsp-vehicle-evidence -type d -exec chmod 0555 {} +');
+  const files = dockerfile.indexOf('find /app/data/vehicle-evidence /app/assets/gcsp-vehicle-evidence -type f -exec chmod 0444 {} +');
+  assert.ok(directories > evidence.at(-1).index && files > directories && files < user,
+    'only evidence roots receive readable, non-writable permissions before the runtime user is selected');
+});
+
 test('artifact: dev blueprint has independent builds, exact fixed routes and disjoint cache policies', async () => {
   const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
   const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
-  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    envVars:'))), 'supplied Java build/runtime foundation is preserved');
+  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    buildFilter:'))), 'supplied Java build/runtime foundation is preserved');
   assert.match(java, /^    dockerContext: \.\s*(?:#.*)?$/mu);
   const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
-  const retainedInputs = [...dockerfile.matchAll(/^COPY (server\/\S+) \S+$/gmu)].map((match) => match[1]);
-  assert.ok(retainedInputs.length > 0, 'the current Java image consumes retained policy inputs');
-  for (const input of retainedInputs) {
-    const filter = input.endsWith('/') ? `${input}**` : input;
+  const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets)\/\S+(?: \S+)*) \S+$/gmu)]
+    .flatMap((match) => match[1].split(' '));
+  assert.ok(contextInputs.length > 0, 'the current Java image consumes repository inputs');
+  for (const input of contextInputs) {
+    const filter = input.startsWith('services/gcsp-api/') ? 'services/gcsp-api/**' : input.endsWith('/') ? `${input}**` : input;
     assert.ok(java.includes(`        - ${filter}\n`), `${input}: changed image input triggers a Java rebuild`);
   }
   const javaKeys = [...java.matchAll(/^      - key: (GCSP_[A-Z_]+|JAVA_OPTS)$/gmu)].map((match) => match[1]);
@@ -290,10 +323,10 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   }
   assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
   assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
-  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER']) {
+  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER', 'GCSP_APPROVALS_PROVIDER', 'GCSP_VEHICLE_EVIDENCE_PROVIDER', 'GCSP_APPOINTMENTS_PROVIDER', 'GCSP_RETURNS_PROVIDER']) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: none`, 'u'), `${key} keeps its existing unavailable default`);
   }
-  for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH']) {
+  for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH', 'GCSP_APPROVALS_POLICY_FILE', 'GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE', 'GCSP_RETURNS_POLICY_FILE']) {
     assert.doesNotMatch(java, new RegExp(`^      - key: ${key}$`, 'mu'), `${key} is not a required deployment input`);
     assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} is documented for optional deployment configuration`);
   }
@@ -312,6 +345,23 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   assert.match(properties, /^gcsp\.documents\.provider=\$\{GCSP_DOCUMENTS_PROVIDER:none\}$/mu);
   assert.match(properties, /^gcsp\.mail\.transport=\$\{GCSP_MAIL_TRANSPORT:\}$/mu);
   assert.match(properties, /^gcsp\.notify\.drain-interval=\$\{GCSP_NOTIFY_DRAIN_INTERVAL:5s\}$/mu);
+  assert.match(properties, /^gcsp\.approvals\.provider=\$\{GCSP_APPROVALS_PROVIDER:none\}$/mu);
+  assert.match(properties, /^gcsp\.approvals\.policy-file=\$\{GCSP_APPROVALS_POLICY_FILE:\}$/mu);
+  for (const [key, value] of Object.entries({
+    GCSP_VEHICLE_EVIDENCE_STORE: '/app/data/vehicle-evidence/fleet-source.v1',
+    GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR: '/app/data/vehicle-evidence', GCSP_VEHICLE_ASSETS_ROOT: '/app',
+    GCSP_VEHICLE_IMAGES_PUBLIC: '"false"',
+  })) assert.ok(java.includes(`- key: ${key}\n        value: ${value}`), `${key} matches the packaged image`);
+  for (const [property, binding] of Object.entries({
+    'gcsp.evidence.provider': 'GCSP_VEHICLE_EVIDENCE_PROVIDER:none',
+    'gcsp.evidence.store': 'GCSP_VEHICLE_EVIDENCE_STORE:',
+    'gcsp.evidence.reference-dir': 'GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR:',
+    'gcsp.evidence.assets-root': 'GCSP_VEHICLE_ASSETS_ROOT:',
+    'gcsp.evidence.alternate-file': 'GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE:',
+    'gcsp.evidence.images-public': 'GCSP_VEHICLE_IMAGES_PUBLIC:false',
+    'gcsp.appointments.provider': 'GCSP_APPOINTMENTS_PROVIDER:none',
+    'gcsp.returns.provider': 'GCSP_RETURNS_PROVIDER:none', 'gcsp.returns.policy-file': 'GCSP_RETURNS_POLICY_FILE:',
+  })) assert.ok(properties.split('\n').includes(`${property}=\${${binding}}`), `${property} retains the Java source contract`);
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);

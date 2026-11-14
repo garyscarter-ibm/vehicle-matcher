@@ -1,0 +1,174 @@
+{
+  "policyVersion": "test-policy-v1",
+  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+  "assumptions": [
+    {
+      "key": "lifecycle.appointments.slots.v1",
+      "value": {
+        "openingStage": "sent to ordering",
+        "openingState": "approved",
+        "earliestLeadDays": 2,
+        "daysOffered": 3,
+        "slotMinutes": 60,
+        "dailyStartTimes": [
+          "09:00",
+          "13:00"
+        ]
+      },
+      "unit": "days from the demo clock date; minutes; UTC HH:MM daily start times",
+      "status": "assumed",
+      "basis": "Plausible synthetic handover slots: two clear days to prepare the car, three days of choice and hour-long slots at two daily times. Not retailer calendar data; revisable here.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.appointments.confirmation.v1",
+      "value": {
+        "confirmDelaySeconds": 1800,
+        "providerTimeoutMs": 2000
+      },
+      "unit": "seconds of demo-clock time; milliseconds",
+      "status": "assumed",
+      "basis": "A half hour of demo time before the synthetic retailer answers a request makes the wait visible on a presenter tick. The call timeout bounds a stalled provider. Revisable demo assumptions.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.appointments.scenario.v1",
+      "value": {
+        "proposeChange": false,
+        "proposedSlot": "next-offered",
+        "proposalReason": "The retailer proposed a different time."
+      },
+      "unit": "difficult-case switch; alternative slot rule; reason text",
+      "status": "assumed",
+      "basis": "Difficult-case switch for the synthetic provider. Off by default; when on, the provider answers with the next daily slot instead of the requested one and Paula must accept it.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.return.options.v1",
+      "value": {
+        "choices": [
+          {
+            "id": "same-visit",
+            "label": "Return it when the new car is handed over"
+          },
+          {
+            "id": "separate",
+            "label": "Return it on a separate day"
+          }
+        ],
+        "rules": {
+          "same-visit": {
+            "requiresHandoverStates": [
+              "scheduled"
+            ],
+            "location": "handover-retailer",
+            "slot": "handover-slot"
+          },
+          "separate": {
+            "requiresHandoverStates": [
+              "scheduled",
+              "completed"
+            ],
+            "location": "handover-retailer",
+            "slot": "after-handover",
+            "notBeforeHandoverEnd": true,
+            "maxDaysAfterHandover": 7,
+            "slots": {
+              "earliestLeadDays": 2,
+              "daysOffered": 10,
+              "slotMinutes": 60,
+              "dailyStartTimes": [
+                "09:00",
+                "13:00"
+              ]
+            }
+          }
+        }
+      },
+      "unit": "choice IDs with labels; handover states; days from the demo clock date and from the handover; minutes; UTC HH:MM daily start times",
+      "basis": "Synthetic demo assumption: Paula may return the old car at the new car's handover or on a separate day within a week after it, once the handover is scheduled. A separate-day return can still be planned after the handover is completed (FUCQ-251). Not BMW policy; revisable here.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.return.ownership.v1",
+      "value": {
+        "states": {
+          "not-requested": {
+            "owner": "employee",
+            "nextStep": "Choose when to return your current car."
+          },
+          "requested": {
+            "owner": "retailer",
+            "nextStep": "Waiting for the retailer to confirm your return slot."
+          },
+          "change-proposed": {
+            "owner": "employee",
+            "nextStep": "Accept the new time to confirm your return."
+          },
+          "scheduled": {
+            "owner": "retailer",
+            "nextStep": "Keep driving your current car until the return."
+          }
+        },
+        "ineligible": {
+          "owner": "employee",
+          "nextStep": "Confirm your new car's handover first, then plan the return."
+        },
+        "pending": {
+          "owner": "scheme-team",
+          "nextStep": "Waiting for the scheme team to confirm the last update."
+        },
+        "blocked": {
+          "owner": "scheme-team",
+          "nextStep": "The scheme team will review why this was not accepted."
+        }
+      },
+      "unit": "owner and next-step label per return state",
+      "basis": "Synthetic demo assumption: who acts next at each return state (HLD review Q19, states reused from the handover appointment). Owners are Paula (employee), the retailer or the scheme team; labels are concise demo copy.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.return.outcome.v1",
+      "value": {
+        "enabled": false,
+        "outcome": "returned",
+        "delaySecondsAfterSlotEnd": 1800,
+        "exceptionType": "return-missed",
+        "ownership": {
+          "returned": {
+            "owner": "retailer",
+            "nextStep": "Your current car has been returned. Nothing more is needed from you."
+          },
+          "missed": {
+            "owner": "scheme-team",
+            "nextStep": "The scheme team will contact you to rearrange the return of your current car."
+          }
+        }
+      },
+      "unit": "scenario selection; seconds of demo time after the return slot ends; lifecycle-exception event type key",
+      "basis": "Physical return stays outside the main walkthrough, so it is off by default; a presenter scenario enables it and chooses returned or missed. Half an hour after the slot ends is a plausible time for the retailer to confirm. The exception type return-missed is its own key, selected by renewalCase.lifecycle.eventTypes, so the case is not read as a missed handover.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-outcomes--fucq-168",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "test-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 import { isBuddyEngaged } from '../brief/permission.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
-import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { RECEIPT_READ_LIMITS } from '../repository/core.js';
+import { projectReceipt } from '../repository/receipt-projections.js';
+import { createAllocationRecommendationEvaluator } from '../recommendation/index.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
@@ -107,19 +109,53 @@ export function createAllocationService({ repository, policy, clock, identity, c
   const readAllocationReceipt = (context, reference, projection) => typeof repository.readAllocationReceipt === 'function'
     ? repository.readAllocationReceipt(context, reference, projection) : repository.read(context, reference);
   // Decisions are per car, so a quote rebuilt from the frozen inputs and one pool entry equals the prepare-time quote.
-  const evaluate = (context, employeeContext, instant, inputs, stock) => createEmployeeRecommendationService({ policy,
+  const evaluate = (context, employeeContext, instant, inputs, stock, projection = 'evaluate') => createAllocationRecommendationEvaluator({ policy,
     time: { async now() { return ok(instant); } },
     provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employeeContext.employeeId,
       factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock, ...(inputs.currentCar ? { currentCar: inputs.currentCar } : {}) }); } } })
-    .recommend(employeeContext, inputs.request);
+    [projection](employeeContext, inputs.request);
+  // FUCQ-419: indexed receipt reads; a repository without readReceipts keeps the per-consumer query, filtered here.
+  const readReceipts = async (context, request) => {
+    if (typeof repository.readReceipts === 'function') return repository.readReceipts(context, request);
+    const rows = [];
+    for (const consumerId of request.consumerIds) {
+      const found = await repository.query(context, 'event_receipts', { consumerId }); if (found.status !== 'ok') return found;
+      rows.push(...found.value.filter((row) => (!request.eventIds || request.eventIds.includes(row.eventId)) && (request.state === undefined || row.state === request.state)));
+    }
+    return ok(request.projection ? rows.map((row) => projectReceipt(request.projection, row)) : rows);
+  };
+  // Exact receipts by event ID, in the order asked, in bounded batches; any missing row is not-found, as a read would be.
+  const readExact = async (context, consumerId, eventIds, projection) => {
+    const found = new Map();
+    for (let at = 0; at < eventIds.length; at += RECEIPT_READ_LIMITS.events) {
+      const batch = await readReceipts(context, { consumerIds: [consumerId], eventIds: eventIds.slice(at, at + RECEIPT_READ_LIMITS.events), ...(projection && { projection }) });
+      if (batch.status !== 'ok') return batch;
+      for (const row of batch.value) found.set(row.eventId, row);
+    }
+    return eventIds.every((id) => found.has(id)) ? ok(eventIds.map((id) => found.get(id))) : result('not-found', { resourceType: 'event_receipts' });
+  };
+  // FUCQ-420: every allocation receipt for these events as a compact summary row (state, digest, counts), keyed by event ID.
+  const allocationRows = async (context, events) => {
+    const rows = new Map(); const ids = events.map((event) => event.eventId);
+    for (let at = 0; at < ids.length; at += RECEIPT_READ_LIMITS.events) {
+      const batch = await readReceipts(context, { consumerIds: [ALLOCATION_CONSUMER], eventIds: ids.slice(at, at + RECEIPT_READ_LIMITS.events),
+        projection: 'allocation-summary' });
+      if (batch.status !== 'ok') return batch;
+      for (const row of batch.value) rows.set(row.eventId, row);
+    }
+    return ok(rows);
+  };
+  // Equal to summarizeAllocation over the full completed outcome.
+  const summaryOf = ({ summary: s }) => {
+    const limitations = allocationLimitations({ excluded: s.excluded ?? undefined });
+    return ok({ runId: s.runId, summary: { events: 1, offers: s.offers, evaluated: s.evaluated }, ...(limitations ? { limitations } : {}) });
+  };
   // Explicit detail reads receive every evaluation; routine clock ticks use counts instead.
   async function hydrate(context, eventId, outcome) {
     const refs = outcome?.value?.evaluationRefs; if (outcome?.status !== 'ok' || !refs) return outcome;
-    const evaluations = [];
-    for (const employeeId of refs.employeeIds) {
-      const slice = await repository.read(context, sliceRef(context, eventId, employeeId)); if (slice.status !== 'ok') return slice;
-      evaluations.push(expandEvaluation(slice.value.outcome.value.evaluation));
-    }
+    const slices = await readExact(context, ALLOCATION_EVALUATION_CONSUMER, refs.employeeIds.map((employeeId) => allocationEvaluationEventId(eventId, employeeId)));
+    if (slices.status !== 'ok') return slices;
+    const evaluations = slices.value.map((slice) => expandEvaluation(slice.outcome.value.evaluation));
     const { evaluationRefs, ...value } = outcome.value;
     return ok({ ...value, evaluations });
   }
@@ -272,12 +308,10 @@ export function createAllocationService({ repository, policy, clock, identity, c
         // DemoClock awaits each handler outside a repository transaction. Release/brief
         // producers have committed before this read; never nest under its transaction helper.
         // Only the trigger consumers' receipts are read (not every receipt); the events sort totally below.
-        const loaded = [];
-        for (const consumerId of ['stock-release', 'brief:changes', 'buddy-expiry', DECISION_EVENTS]) {
-          const rows = await repository.query(context, 'event_receipts', { consumerId }); if (rows.status !== 'ok') return rows;
-          loaded.push(rows.value);
-        }
-        const [releases, changes, expiries, decisions] = loaded;
+        // FUCQ-419: one indexed read of the completed producer receipts; every consumer below ignores other states.
+        const producers = ['stock-release', 'brief:changes', 'buddy-expiry', DECISION_EVENTS];
+        const read = await readReceipts(context, { consumerIds: producers, state: 'completed' }); if (read.status !== 'ok') return read;
+        const [releases, changes, expiries, decisions] = producers.map((consumerId) => read.value.filter((row) => row.consumerId === consumerId));
         const sources = [...releases, ...changes].filter((row) => row.state === 'completed' && row.outcome?.status === 'ok');
         const events = [];
         for (const source of sources) {
@@ -301,8 +335,22 @@ export function createAllocationService({ repository, policy, clock, identity, c
         events.sort((a, b) => ordinal(a.occurredAt, b.occurredAt)
           || ordinal(a.sourceReceipt.consumerId, b.sourceReceipt.consumerId) || ordinal(a.sourceEventId, b.sourceEventId));
         const allocations = []; const counts = { events: 0, offers: 0, evaluated: 0 }; let limitations;
+        // Routine ticks read completed history as compact summary rows; detail reads and unfinished work take allocate().
+        if (summary && events.length && (!policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function')) return unavailable('not-configured');
+        const known = await allocationRows(context, events); if (known.status !== 'ok') return known;
+        const pending = (event) => known.value.get(event.eventId)?.state === 'pending';
+        // FUCQ-420: resume pending claims before new triggers; completed history whose rebuilt digest matches is only counted.
+        const outcomes = new Map();
+        for (const event of [...events.filter(pending), ...events.filter((event) => !pending(event))]) {
+          const done = known.value.get(event.eventId);
+          const outcome = summary && done?.state === 'completed' && done.summary?.status === 'ok' && done.inputDigest === inputDigest(event)
+            ? summaryOf(done) : await service.allocate(context, event, { summary });
+          if (outcome.status !== 'ok') return outcome;
+          outcomes.set(event.eventId, outcome);
+        }
+        // Totals, detail and the reported limitation keep the canonical event order.
         for (const event of events) {
-          const outcome = await service.allocate(context, event, { summary }); if (outcome.status !== 'ok') return outcome;
+          const outcome = outcomes.get(event.eventId);
           if (summary) {
             for (const key of Object.keys(counts)) counts[key] += outcome.value.summary[key];
             limitations = outcome.value.limitations;
@@ -359,23 +407,43 @@ export function createAllocationService({ repository, policy, clock, identity, c
         // Quotes: inline before FUCQ-209, stored per employee by FUCQ-209, rebuilt from frozen inputs after FUCQ-217.
         const sliceRows = new Map(); const pool = new Map((plan.pool ?? []).map((entry) => [entry.orderUuid, entry]));
         const instant = { runId: context.runId, now: plan.evaluatedAt, clockVersion: plan.clockVersion };
+        // Quote inputs per employee, projected; a private projection capability (FUCQ-309) keeps its exact reads.
+        const quoteSlices = async (employeeIds) => {
+          const wanted = [...new Set(employeeIds)].filter((id) => !sliceRows.has(id)); if (!wanted.length) return ok(null);
+          if (typeof repository.readAllocationReceipt === 'function') {
+            for (const id of wanted) {
+              const slice = await readAllocationReceipt(context, sliceRef(context, event.eventId, id), 'quote-inputs'); if (slice.status !== 'ok') return slice;
+              sliceRows.set(id, slice.value.outcome.value);
+            }
+            return ok(null);
+          }
+          const slices = await readExact(context, ALLOCATION_EVALUATION_CONSUMER, wanted.map((id) => allocationEvaluationEventId(event.eventId, id)), 'quote-inputs');
+          if (slices.status !== 'ok') return slices;
+          wanted.forEach((id, n) => sliceRows.set(id, slices.value[n].outcome.value));
+          return ok(null);
+        };
         const quoteFor = async (contender, employeeContext) => {
           if (contender.quote) return ok(contender.quote);
           if (!sliceRows.has(contender.employeeId)) {
-            const slice = await readAllocationReceipt(context, sliceRef(context, event.eventId, contender.employeeId), 'quote-inputs'); if (slice.status !== 'ok') return slice;
-            const { quotes, quoteInputs } = slice.value.outcome.value;
-            sliceRows.set(contender.employeeId, { quotes, quoteInputs });
+            const loaded = await quoteSlices([contender.employeeId]); if (loaded.status !== 'ok') return loaded;
           }
           const { quotes, quoteInputs } = sliceRows.get(contender.employeeId);
           if (quotes) return quotes[contender.orderUuid] ? ok(quotes[contender.orderUuid]) : unavailable('allocation-quote-unavailable');
           const entry = pool.get(contender.orderUuid); if (!quoteInputs || !entry) return unavailable('allocation-quote-unavailable');
-          const evaluated = await evaluate(context, employeeContext, instant, quoteInputs, [entry]);
+          const evaluated = await evaluate(context, employeeContext, instant, quoteInputs, [entry], 'quote');
           const decision = evaluated.status === 'ok' ? evaluated.value.decisions[0] : null;
           return decision?.orderUuid === contender.orderUuid && decision.gateStatus === 'eligible' ? ok({ ...quoteOf(decision), employeeFacts: quoteInputs.quoteFacts ?? decision.employeeFacts }) : unavailable('allocation-quote-unavailable');
         };
-        for (let n = 0; !legacy && n < progress.count; n += 1) {
-          const saved = await repository.read(context, attemptRef(context, event.eventId, n)); if (saved.status !== 'ok') return saved;
-          const { index, attempt } = saved.value.outcome.value; attempts.push(attempt);
+        // Resumed attempts arrive in one bounded read per 500; their contenders' quote inputs in one more.
+        const savedAttempts = legacy || !progress.count ? ok([])
+          : await readExact(context, ALLOCATION_ATTEMPT_CONSUMER, Array.from({ length: progress.count }, (_, n) => `${event.eventId}:${n}`));
+        if (savedAttempts.status !== 'ok') return savedAttempts;
+        const resumed = savedAttempts.value.map((saved) => saved.outcome.value);
+        const prefetched = await quoteSlices(resumed.filter(({ attempt }) => attempt?.outcome?.status === 'ok')
+          .map(({ index }) => plan.contenders[index]).filter((contender) => contender && !contender.quote).map((contender) => contender.employeeId));
+        if (prefetched.status !== 'ok') return prefetched;
+        for (const { index, attempt } of resumed) {
+          attempts.push(attempt);
           if (attempt.outcome.status !== 'ok') continue;
           const contender = plan.contenders[index];
           const resolved = await identity.resolveEmployeeContext(context, contender.employeeId); if (resolved.status !== 'ok') return resolved;
