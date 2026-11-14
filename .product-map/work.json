@@ -6317,13 +6317,43 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:17:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Account ports, records contract, AccountService projection and exact Node parity",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 623197c3: gcsp.api.account AccountService over records/policy/clock/current-car ports; NodeParityTest exact JSON parity on 11 Node readAccount goldens (ready replace/order, absent, unsupported-scheme, no-contract, no-entitlement, not-yet-eligible, ordering-closed, two source failures) + 16 branch tests; ./mvnw -B verify 107 run, 0 fail, 37 PG skips"
+        },
+        {
+          "id": "endpoint-hr-snapshot",
+          "status": "complete",
+          "title": "GET /api/gcsp/v1/manual/account, ownership, startup selection and differently shaped HR snapshot provider",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 84d54bee: GET /api/gcsp/v1/manual/account (bearer, employee role, owner), startup provider selection none|hr-snapshot, HrSnapshotRecords differently shaped export; HrSnapshotParityTest 11 goldens exact through second shape; AccountHttpTest own-only, greg/presenter 403, unmapped 403, 401, query 400, absent, corrupt/missing file 503 no leak; account tests 38/38; ./mvnw -B verify 128 run 0 fail 37 PG skips"
+        },
+        {
+          "id": "repository-provider",
+          "status": "complete",
+          "title": "PostgreSQL records provider with native parity and plan evidence",
+          "observed_at": "2026-11-14T01:10:20Z",
+          "evidence": "Lead-reviewed 574a9a04+fix: V458_1 employee_account_records + entitlement_slots_employee index; RepositoryAccountRecords read-only parameterised reads; RepositoryParityTest 11 goldens exact from native PG17; changed input/absent/source-failure cases; HTTP repository provider; EXPLAIN ANALYZE at 5000 employees: two index scans, 6 buffer hits, 0.03 ms; account tests 47/47 native; verify 137/137 native"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, README, full Java verify and story result",
+          "observed_at": "2026-11-14T01:17:42Z",
+          "evidence": "Lead-reviewed merged tree 5289c56b (base a593e4fb) + BriefAccountAdapter: ./mvnw -B verify native PG17 269/269, 0 skipped; brief 77 green with adapter; README and story result; policy binding pending FUCQ-457 (unconfigured policy refuses 503)"
+        }
+      ]
     },
     {
       "assignee": "",

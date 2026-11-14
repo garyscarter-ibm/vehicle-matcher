@@ -1,0 +1,991 @@
+{
+  "note": "Scheme not enabled for manual ordering.",
+  "now": "2026-11-05T09:00:00.000Z",
+  "context": {
+    "environmentId": "manual-test",
+    "runId": "demo-068d52b959fbedbabcc7a1a04433c30c",
+    "employeeId": "employee-sam",
+    "name": "Sam Patel",
+    "roles": [
+      "employee"
+    ],
+    "companyId": "demo-bmw-rr-production",
+    "schemeId": "choices-rr-production",
+    "gradeId": "PG1",
+    "entitlementSlotId": "slot-sam",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "input": {
+    "employeeVersion": 3,
+    "manualContext": {
+      "recordSetId": "manual:employee-sam:v1",
+      "source": {
+        "mode": "synthetic",
+        "sourceRef": "fixture:manual-records-v1",
+        "schemaVersion": "1",
+        "sourceVersion": "manual-records-v1",
+        "effectiveFrom": "2026-11-05T09:00:00.000Z",
+        "observedAt": "2026-11-05T09:00:00.000Z"
+      },
+      "account": {
+        "employeeId": "employee-sam",
+        "name": "Sam Patel",
+        "companyId": "demo-bmw-rr-production",
+        "gradeId": "PG1",
+        "schemeId": "choices-rr-production",
+        "employeeNumber": "E168167",
+        "address": {
+          "line1": "27 Ashdown Road",
+          "town": "Bracknell",
+          "postcode": "RG12 9ZZ"
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "email": "sam.patel@gcsp-demo.com"
+        },
+        "allowanceOverride": null
+      },
+      "drivers": [
+        {
+          "driverId": "driver:employee-sam",
+          "employeeId": "employee-sam",
+          "name": "Sam Patel",
+          "kind": "employee",
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:manual-records-v1",
+              "version": "manual-records-v1",
+              "observedAt": "2026-11-05T09:00:00.000Z",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "licence": {
+            "displayNumber": "PATEL900000SP9XX",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2010-01-01",
+            "validUntil": "2030-01-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-05T09:00:00.000Z",
+              "observedAt": "2026-11-05T09:00:00.000Z"
+            }
+          }
+        },
+        {
+          "driverId": "nominated:employee-sam",
+          "employeeId": "employee-sam",
+          "name": "Casey Ward",
+          "kind": "nominated",
+          "relationship": "spouse",
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:manual-records-v1",
+              "version": "manual-records-v1",
+              "observedAt": "2026-11-05T09:00:00.000Z",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "licence": {
+            "displayNumber": "WARD9900000CW9XX",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2012-01-01",
+            "validUntil": "2030-01-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-05T09:00:00.000Z",
+              "observedAt": "2026-11-05T09:00:00.000Z"
+            }
+          }
+        }
+      ],
+      "employeeFacts": {
+        "essentials": {},
+        "charging": {
+          "status": "known",
+          "value": "home",
+          "unit": null,
+          "provenance": {
+            "sourceRef": "fixture:manual-records-v1",
+            "version": "manual-records-v1",
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "assurance": "synthetic-scenario"
+          }
+        },
+        "requiredBy": {
+          "status": "known",
+          "value": "2026-12-01T23:59:59.999Z",
+          "unit": null,
+          "provenance": {
+            "sourceRef": "fixture:manual-records-v1",
+            "version": "manual-records-v1",
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "assurance": "synthetic-scenario"
+          }
+        }
+      },
+      "contracts": [
+        {
+          "contractId": "current:employee-sam",
+          "employeeId": "employee-sam",
+          "schemeId": "choices-rr-production",
+          "slotId": "slot-sam",
+          "driverId": "driver:employee-sam",
+          "status": "current",
+          "model": "BMW 3 Series Touring 320i",
+          "media": {
+            "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+            "alt": "BMW 3 Series Touring"
+          },
+          "vehicle": {
+            "configuration": "320i M Sport Touring",
+            "modelLine": "G21 Touring",
+            "eligibilityModelKey": "G21 Touring|320i",
+            "body": "estate",
+            "fuel": "petrol",
+            "seats": 5,
+            "boot": 500,
+            "mpg": 42.8,
+            "zeroTo62": 7.6,
+            "points": 1100,
+            "sizeClass": 2,
+            "tags": [
+              "family"
+            ]
+          },
+          "actualCollectionDate": "2026-06-01",
+          "contractEndDate": "2026-12-01",
+          "returnedDate": null,
+          "annualMileage": 12000,
+          "mileageUnit": "mi/year",
+          "months": 6,
+          "currentOdometer": {
+            "value": 5200,
+            "unit": "mi"
+          },
+          "earliestCollectionDate": "2026-11-12",
+          "latestCollectionDate": "2026-12-01",
+          "source": {
+            "mode": "synthetic",
+            "sourceRef": "fixture:manual-records-v1",
+            "schemaVersion": "1",
+            "sourceVersion": "manual-records-v1",
+            "effectiveFrom": "2026-11-05T09:00:00.000Z",
+            "observedAt": "2026-11-05T09:00:00.000Z"
+          }
+        }
+      ],
+      "histories": [
+        {
+          "schemeId": "choices-rr-production",
+          "entries": [
+            {
+              "contractId": "current:employee-sam",
+              "employeeId": "employee-sam",
+              "schemeId": "choices-rr-production",
+              "slotId": "slot-sam",
+              "driverId": "driver:employee-sam",
+              "status": "current",
+              "model": "BMW 3 Series Touring 320i",
+              "media": {
+                "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+                "alt": "BMW 3 Series Touring"
+              },
+              "vehicle": {
+                "configuration": "320i M Sport Touring",
+                "modelLine": "G21 Touring",
+                "eligibilityModelKey": "G21 Touring|320i",
+                "body": "estate",
+                "fuel": "petrol",
+                "seats": 5,
+                "boot": 500,
+                "mpg": 42.8,
+                "zeroTo62": 7.6,
+                "points": 1100,
+                "sizeClass": 2,
+                "tags": [
+                  "family"
+                ]
+              },
+              "actualCollectionDate": "2026-06-01",
+              "contractEndDate": "2026-12-01",
+              "returnedDate": null,
+              "annualMileage": 12000,
+              "mileageUnit": "mi/year",
+              "months": 6,
+              "currentOdometer": {
+                "value": 5200,
+                "unit": "mi"
+              },
+              "earliestCollectionDate": "2026-11-12",
+              "latestCollectionDate": "2026-12-01",
+              "source": {
+                "mode": "synthetic",
+                "sourceRef": "fixture:manual-records-v1",
+                "schemaVersion": "1",
+                "sourceVersion": "manual-records-v1",
+                "effectiveFrom": "2026-11-05T09:00:00.000Z",
+                "observedAt": "2026-11-05T09:00:00.000Z"
+              }
+            }
+          ]
+        },
+        {
+          "schemeId": "pcs-ukfs-bmw",
+          "entries": [
+            {
+              "contractId": "historic:employee-sam",
+              "employeeId": "employee-sam",
+              "schemeId": "pcs-ukfs-bmw",
+              "status": "returned",
+              "model": "BMW 1 Series Sports Hatch 120",
+              "media": {
+                "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+                "alt": "BMW 1 Series Sports Hatch"
+              },
+              "vehicle": {
+                "configuration": "120 M Sport",
+                "body": "hatchback",
+                "fuel": "petrol"
+              },
+              "actualCollectionDate": "2025-01-01",
+              "returnedDate": "2025-12-01",
+              "source": {
+                "mode": "synthetic",
+                "sourceRef": "fixture:manual-records-v1",
+                "schemaVersion": "1",
+                "sourceVersion": "manual-records-v1",
+                "effectiveFrom": "2026-11-05T09:00:00.000Z",
+                "observedAt": "2026-11-05T09:00:00.000Z"
+              }
+            }
+          ]
+        },
+        {
+          "schemeId": "motorcycle-choices",
+          "entries": []
+        }
+      ]
+    },
+    "slots": [
+      {
+        "employeeId": "employee-sam",
+        "entitlementSlotId": "slot-sam",
+        "capacity": 1,
+        "employeeCapacity": 1,
+        "runId": "demo-068d52b959fbedbabcc7a1a04433c30c",
+        "version": 2,
+        "createdAt": "2026-11-05T09:00:00.000Z",
+        "updatedAt": "2026-11-05T09:00:00.000Z",
+        "contractId": "current:employee-sam",
+        "renewalId": "renewal:employee-sam",
+        "state": "entitled"
+      }
+    ]
+  },
+  "policy": {
+    "manualContext": {
+      "status": "ok",
+      "value": {
+        "key": "manual.context.v1",
+        "value": {
+          "enabledSchemes": [
+            "choices-fs-uk"
+          ],
+          "brands": [
+            "bmw"
+          ],
+          "contractOptions": [
+            {
+              "contractOptionId": "six-month-8000",
+              "months": 6,
+              "annualMileage": 8000,
+              "mileageUnit": "mi/year",
+              "schemeIds": [
+                "choices-fs-uk"
+              ],
+              "driverKinds": [
+                "employee",
+                "nominated"
+              ]
+            },
+            {
+              "contractOptionId": "twelve-month-12000",
+              "months": 12,
+              "annualMileage": 12000,
+              "mileageUnit": "mi/year",
+              "schemeIds": [
+                "choices-fs-uk"
+              ],
+              "driverKinds": [
+                "employee"
+              ]
+            }
+          ],
+          "locations": [
+            {
+              "locationId": "demo-collection-centre",
+              "label": "Bracknell collection centre",
+              "contractOptionIds": [
+                "six-month-8000",
+                "twelve-month-12000"
+              ],
+              "driverKinds": [
+                "employee",
+                "nominated"
+              ],
+              "closedDates": []
+            },
+            {
+              "locationId": "demo-company-site",
+              "label": "Bracknell office",
+              "contractOptionIds": [
+                "twelve-month-12000"
+              ],
+              "driverKinds": [
+                "employee"
+              ],
+              "closedDates": []
+            }
+          ],
+          "minimumLeadDays": 7,
+          "maximumLeadDays": 180,
+          "maximumSpecialRequirements": 500,
+          "maximumReturnMileage": 500000,
+          "insuranceMaximumByGrade": {
+            "G1-6": 30,
+            "G7": 35,
+            "G8-10": 45,
+            "G11-14": 50
+          }
+        },
+        "unit": "manual contract months; annual mileage mi/year; lead days; insurance group; return miles; text characters",
+        "status": "assumed",
+        "basis": "Revisable synthetic manual rules, not transcribed dropdowns or BMW policy. One explicitly enabled October 2024 FS&UK matrix and BMW brand; permitted nominated-driver/contract/location combinations and insurance caps demonstrate real validation. Choices monthly points uses the shared allowance gate; cash top-up keys remain unused.",
+        "source": "docs/gcsp/manual-journey-refinement.md#implemented-manual-context-contract--fucq-65",
+        "sourceDate": "2026-11-05",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+      },
+      "contractVersion": "1.0.0",
+      "policyVersion": "gcsp-policy-v1"
+    },
+    "schemeDisplayNames": {
+      "status": "ok",
+      "value": {
+        "key": "scheme.displayNames.v1",
+        "value": {
+          "schemaVersion": 1,
+          "names": {
+            "choices-fs-uk": "BMW Choices",
+            "choices-rr-production": "Rolls-Royce and Production Choices",
+            "pcs-ukfs-bmw": "PCS UK FS BMW",
+            "motorcycle-choices": "Motorcycle Choices"
+          }
+        },
+        "unit": "display-names",
+        "status": "assumed",
+        "basis": "Stand-in scheme names approved by Gary Carter on 9 Nov 2026, each read plainly from its scheme id, until Russell supplies the real names. Order history and the account page show a name only when this entry supplies one.",
+        "source": "docs/gcsp/shared-contracts.md",
+        "sourceDate": "2026-11-09",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+      },
+      "contractVersion": "1.0.0",
+      "policyVersion": "gcsp-policy-v1"
+    },
+    "allowance": {
+      "status": "ok",
+      "value": {
+        "key": "allowance.choices-rr-production.PG1",
+        "value": 1300,
+        "unit": "points/month",
+        "status": "assumed",
+        "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+        "source": "docs/gcsp/shared-contracts.md",
+        "sourceDate": "2026-11-04",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z",
+        "allowanceId": "allowance.choices-rr-production.PG1",
+        "companyId": "demo-bmw-rr-production",
+        "schemeId": "choices-rr-production",
+        "gradeId": "PG1",
+        "monthlyPoints": 1300
+      },
+      "contractVersion": "1.0.0",
+      "policyVersion": "gcsp-policy-v1"
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "value": {
+      "state": "unsupported-scheme",
+      "asOf": "2026-11-05T09:00:00.000Z",
+      "account": {
+        "employeeId": "employee-sam",
+        "name": "Sam Patel",
+        "companyId": "demo-bmw-rr-production",
+        "gradeId": "PG1",
+        "schemeId": "choices-rr-production",
+        "employeeNumber": "E168167",
+        "address": {
+          "line1": "27 Ashdown Road",
+          "town": "Bracknell",
+          "postcode": "RG12 9ZZ"
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "email": "sam.patel@gcsp-demo.com"
+        },
+        "allowanceOverride": null,
+        "roles": [
+          "employee"
+        ]
+      },
+      "drivers": [
+        {
+          "driverId": "driver:employee-sam",
+          "employeeId": "employee-sam",
+          "name": "Sam Patel",
+          "kind": "employee",
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:manual-records-v1",
+              "version": "manual-records-v1",
+              "observedAt": "2026-11-05T09:00:00.000Z",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "licence": {
+            "displayNumber": "PATEL900000SP9XX",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2010-01-01",
+            "validUntil": "2030-01-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-05T09:00:00.000Z",
+              "observedAt": "2026-11-05T09:00:00.000Z"
+            }
+          }
+        },
+        {
+          "driverId": "nominated:employee-sam",
+          "employeeId": "employee-sam",
+          "name": "Casey Ward",
+          "kind": "nominated",
+          "relationship": "spouse",
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:manual-records-v1",
+              "version": "manual-records-v1",
+              "observedAt": "2026-11-05T09:00:00.000Z",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "licence": {
+            "displayNumber": "WARD9900000CW9XX",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2012-01-01",
+            "validUntil": "2030-01-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-05T09:00:00.000Z",
+              "observedAt": "2026-11-05T09:00:00.000Z"
+            }
+          }
+        }
+      ],
+      "contracts": [
+        {
+          "contractId": "current:employee-sam",
+          "employeeId": "employee-sam",
+          "schemeId": "choices-rr-production",
+          "slotId": "slot-sam",
+          "driverId": "driver:employee-sam",
+          "status": "current",
+          "model": "BMW 3 Series Touring 320i",
+          "media": {
+            "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+            "alt": "BMW 3 Series Touring"
+          },
+          "vehicle": {
+            "configuration": "320i M Sport Touring",
+            "modelLine": "G21 Touring",
+            "eligibilityModelKey": "G21 Touring|320i",
+            "body": "estate",
+            "fuel": "petrol",
+            "seats": 5,
+            "boot": 500,
+            "mpg": 42.8,
+            "zeroTo62": 7.6,
+            "points": 1100,
+            "sizeClass": 2,
+            "tags": [
+              "family"
+            ]
+          },
+          "actualCollectionDate": "2026-06-01",
+          "contractEndDate": "2026-12-01",
+          "returnedDate": null,
+          "annualMileage": 12000,
+          "mileageUnit": "mi/year",
+          "months": 6,
+          "currentOdometer": {
+            "value": 5200,
+            "unit": "mi"
+          },
+          "earliestCollectionDate": "2026-11-12",
+          "latestCollectionDate": "2026-12-01",
+          "source": {
+            "mode": "synthetic",
+            "sourceRef": "fixture:manual-records-v1",
+            "schemaVersion": "1",
+            "sourceVersion": "manual-records-v1",
+            "effectiveFrom": "2026-11-05T09:00:00.000Z",
+            "observedAt": "2026-11-05T09:00:00.000Z"
+          }
+        }
+      ],
+      "slots": [
+        {
+          "employeeId": "employee-sam",
+          "entitlementSlotId": "slot-sam",
+          "capacity": 1,
+          "employeeCapacity": 1,
+          "runId": "demo-068d52b959fbedbabcc7a1a04433c30c",
+          "version": 2,
+          "createdAt": "2026-11-05T09:00:00.000Z",
+          "updatedAt": "2026-11-05T09:00:00.000Z",
+          "contractId": "current:employee-sam",
+          "renewalId": "renewal:employee-sam",
+          "state": "entitled",
+          "ordering": {
+            "enabled": false,
+            "reason": "unsupported-scheme"
+          }
+        }
+      ],
+      "currentContract": {
+        "contractId": "current:employee-sam",
+        "employeeId": "employee-sam",
+        "schemeId": "choices-rr-production",
+        "slotId": "slot-sam",
+        "driverId": "driver:employee-sam",
+        "status": "current",
+        "model": "BMW 3 Series Touring 320i",
+        "media": {
+          "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+          "alt": "BMW 3 Series Touring"
+        },
+        "vehicle": {
+          "configuration": "320i M Sport Touring",
+          "modelLine": "G21 Touring",
+          "eligibilityModelKey": "G21 Touring|320i",
+          "body": "estate",
+          "fuel": "petrol",
+          "seats": 5,
+          "boot": 500,
+          "mpg": 42.8,
+          "zeroTo62": 7.6,
+          "points": 1100,
+          "sizeClass": 2,
+          "tags": [
+            "family"
+          ]
+        },
+        "actualCollectionDate": "2026-06-01",
+        "contractEndDate": "2026-12-01",
+        "returnedDate": null,
+        "annualMileage": 12000,
+        "mileageUnit": "mi/year",
+        "months": 6,
+        "currentOdometer": {
+          "value": 5200,
+          "unit": "mi"
+        },
+        "earliestCollectionDate": "2026-11-12",
+        "latestCollectionDate": "2026-12-01",
+        "source": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        }
+      },
+      "contractState": "current-contract",
+      "histories": [
+        {
+          "schemeId": "choices-rr-production",
+          "entries": [
+            {
+              "contractId": "current:employee-sam",
+              "employeeId": "employee-sam",
+              "schemeId": "choices-rr-production",
+              "slotId": "slot-sam",
+              "driverId": "driver:employee-sam",
+              "status": "current",
+              "model": "BMW 3 Series Touring 320i",
+              "media": {
+                "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+                "alt": "BMW 3 Series Touring"
+              },
+              "vehicle": {
+                "configuration": "320i M Sport Touring",
+                "modelLine": "G21 Touring",
+                "eligibilityModelKey": "G21 Touring|320i",
+                "body": "estate",
+                "fuel": "petrol",
+                "seats": 5,
+                "boot": 500,
+                "mpg": 42.8,
+                "zeroTo62": 7.6,
+                "points": 1100,
+                "sizeClass": 2,
+                "tags": [
+                  "family"
+                ]
+              },
+              "actualCollectionDate": "2026-06-01",
+              "contractEndDate": "2026-12-01",
+              "returnedDate": null,
+              "annualMileage": 12000,
+              "mileageUnit": "mi/year",
+              "months": 6,
+              "currentOdometer": {
+                "value": 5200,
+                "unit": "mi"
+              },
+              "earliestCollectionDate": "2026-11-12",
+              "latestCollectionDate": "2026-12-01",
+              "source": {
+                "mode": "synthetic",
+                "sourceRef": "fixture:manual-records-v1",
+                "schemaVersion": "1",
+                "sourceVersion": "manual-records-v1",
+                "effectiveFrom": "2026-11-05T09:00:00.000Z",
+                "observedAt": "2026-11-05T09:00:00.000Z"
+              }
+            }
+          ],
+          "label": "Rolls-Royce and Production Choices",
+          "state": "history",
+          "count": 1,
+          "orderingSupported": false
+        },
+        {
+          "schemeId": "pcs-ukfs-bmw",
+          "entries": [
+            {
+              "contractId": "historic:employee-sam",
+              "employeeId": "employee-sam",
+              "schemeId": "pcs-ukfs-bmw",
+              "status": "returned",
+              "model": "BMW 1 Series Sports Hatch 120",
+              "media": {
+                "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+                "alt": "BMW 1 Series Sports Hatch"
+              },
+              "vehicle": {
+                "configuration": "120 M Sport",
+                "body": "hatchback",
+                "fuel": "petrol"
+              },
+              "actualCollectionDate": "2025-01-01",
+              "returnedDate": "2025-12-01",
+              "source": {
+                "mode": "synthetic",
+                "sourceRef": "fixture:manual-records-v1",
+                "schemaVersion": "1",
+                "sourceVersion": "manual-records-v1",
+                "effectiveFrom": "2026-11-05T09:00:00.000Z",
+                "observedAt": "2026-11-05T09:00:00.000Z"
+              }
+            }
+          ],
+          "label": "PCS UK FS BMW",
+          "state": "history",
+          "count": 1,
+          "orderingSupported": false
+        },
+        {
+          "schemeId": "motorcycle-choices",
+          "entries": [],
+          "label": "Motorcycle Choices",
+          "state": "empty-history",
+          "count": 0,
+          "orderingSupported": false
+        }
+      ],
+      "actions": [],
+      "choices": {
+        "schemeId": "choices-rr-production",
+        "slotId": "slot-sam",
+        "drivers": [
+          {
+            "driverId": "driver:employee-sam",
+            "name": "Sam Patel",
+            "kind": "employee"
+          },
+          {
+            "driverId": "nominated:employee-sam",
+            "name": "Casey Ward",
+            "kind": "nominated"
+          }
+        ],
+        "contractOptions": [
+          {
+            "contractOptionId": "six-month-8000",
+            "months": 6,
+            "annualMileage": 8000,
+            "mileageUnit": "mi/year",
+            "schemeIds": [
+              "choices-fs-uk"
+            ],
+            "driverKinds": [
+              "employee",
+              "nominated"
+            ]
+          },
+          {
+            "contractOptionId": "twelve-month-12000",
+            "months": 12,
+            "annualMileage": 12000,
+            "mileageUnit": "mi/year",
+            "schemeIds": [
+              "choices-fs-uk"
+            ],
+            "driverKinds": [
+              "employee"
+            ]
+          }
+        ],
+        "collectionLocations": [
+          {
+            "locationId": "demo-collection-centre",
+            "label": "Bracknell collection centre",
+            "contractOptionIds": [
+              "six-month-8000",
+              "twelve-month-12000"
+            ],
+            "driverKinds": [
+              "employee",
+              "nominated"
+            ],
+            "closedDates": []
+          },
+          {
+            "locationId": "demo-company-site",
+            "label": "Bracknell office",
+            "contractOptionIds": [
+              "twelve-month-12000"
+            ],
+            "driverKinds": [
+              "employee"
+            ],
+            "closedDates": []
+          }
+        ],
+        "brands": [
+          "bmw"
+        ]
+      },
+      "allowance": {
+        "key": "allowance.choices-rr-production.PG1",
+        "value": 1300,
+        "unit": "points/month",
+        "status": "assumed",
+        "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+        "source": "docs/gcsp/shared-contracts.md",
+        "sourceDate": "2026-11-04",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z",
+        "allowanceId": "allowance.choices-rr-production.PG1",
+        "companyId": "demo-bmw-rr-production",
+        "schemeId": "choices-rr-production",
+        "gradeId": "PG1",
+        "monthlyPoints": 1300
+      },
+      "assumptions": [
+        {
+          "key": "manual.context.v1",
+          "value": {
+            "enabledSchemes": [
+              "choices-fs-uk"
+            ],
+            "brands": [
+              "bmw"
+            ],
+            "contractOptions": [
+              {
+                "contractOptionId": "six-month-8000",
+                "months": 6,
+                "annualMileage": 8000,
+                "mileageUnit": "mi/year",
+                "schemeIds": [
+                  "choices-fs-uk"
+                ],
+                "driverKinds": [
+                  "employee",
+                  "nominated"
+                ]
+              },
+              {
+                "contractOptionId": "twelve-month-12000",
+                "months": 12,
+                "annualMileage": 12000,
+                "mileageUnit": "mi/year",
+                "schemeIds": [
+                  "choices-fs-uk"
+                ],
+                "driverKinds": [
+                  "employee"
+                ]
+              }
+            ],
+            "locations": [
+              {
+                "locationId": "demo-collection-centre",
+                "label": "Bracknell collection centre",
+                "contractOptionIds": [
+                  "six-month-8000",
+                  "twelve-month-12000"
+                ],
+                "driverKinds": [
+                  "employee",
+                  "nominated"
+                ],
+                "closedDates": []
+              },
+              {
+                "locationId": "demo-company-site",
+                "label": "Bracknell office",
+                "contractOptionIds": [
+                  "twelve-month-12000"
+                ],
+                "driverKinds": [
+                  "employee"
+                ],
+                "closedDates": []
+              }
+            ],
+            "minimumLeadDays": 7,
+            "maximumLeadDays": 180,
+            "maximumSpecialRequirements": 500,
+            "maximumReturnMileage": 500000,
+            "insuranceMaximumByGrade": {
+              "G1-6": 30,
+              "G7": 35,
+              "G8-10": 45,
+              "G11-14": 50
+            }
+          },
+          "unit": "manual contract months; annual mileage mi/year; lead days; insurance group; return miles; text characters",
+          "status": "assumed",
+          "basis": "Revisable synthetic manual rules, not transcribed dropdowns or BMW policy. One explicitly enabled October 2024 FS&UK matrix and BMW brand; permitted nominated-driver/contract/location combinations and insurance caps demonstrate real validation. Choices monthly points uses the shared allowance gate; cash top-up keys remain unused.",
+          "source": "docs/gcsp/manual-journey-refinement.md#implemented-manual-context-contract--fucq-65",
+          "sourceDate": "2026-11-05",
+          "policyVersion": "gcsp-policy-v1",
+          "effectiveFrom": "2026-11-04T00:00:00.000Z"
+        }
+      ],
+      "contextVersion": "6fc0c381eb14f0edb00e08a85b23118c3dfd855c2451725f328a384c9f0164f7",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-sam:v1",
+        "employee": 3,
+        "slot": 2,
+        "clock": "1"
+      },
+      "view": {
+        "state": "unsupported-scheme",
+        "editable": false,
+        "supportOwner": "scheme-support",
+        "action": "contact-support",
+        "fields": {
+          "account": {
+            "editable": false,
+            "supportOwner": "hr-support"
+          },
+          "licence": {
+            "editable": false,
+            "supportOwner": "driver-support"
+          },
+          "driver": {
+            "editable": false,
+            "supportOwner": "driver-support"
+          },
+          "contract": {
+            "editable": false,
+            "supportOwner": "scheme-support"
+          },
+          "collection": {
+            "editable": false,
+            "supportOwner": "collection-support"
+          },
+          "contact": {
+            "editable": false,
+            "supportOwner": "employee"
+          },
+          "expectedReturnMileage": {
+            "editable": false,
+            "supportOwner": "employee"
+          },
+          "specialRequirements": {
+            "editable": false,
+            "supportOwner": "employee"
+          }
+        }
+      }
+    },
+    "contractVersion": "1.0.0"
+  }
+}
