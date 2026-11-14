@@ -5483,180 +5483,180 @@
       "workers": []
     },
     {
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-13-GC-007",
-      "id": "FUCQ-414",
-      "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Independent143/143 accepted-state/private proof atc9a393d7/product8c045bf2; API-only acceptance setup. Earlier179/181,91/92 failures retained. F494unfixed; pending/narrow/Escape/Safari/nativeAT/F106 remain open. ProfileIDs unrecorded; ownedroot/groups absent. Original AC/native status/lease unchanged; delivery note.",
-      "observed_at": "2026-11-14T04:01:02Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
-          "id": "reuse",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Validated-immutable-snapshot-reuse"
-        },
-        {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
-          "id": "proof",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Semantic-equivalence-and-operation-count-proof"
-        },
-        {
-          "evidence": "Independent c9a393d7/product8c045bf2 nativePG/Chrome143/143: accepted-offer/history1440/375 keyboard+DOM/ARIA/focus; sequential cookie/session/storage isolation. API-only acceptance setup, notUI proof. Earlier179/181,91/92 retained; F494unfixed/pending-narrow/Escape/Safari/nativeAT/F106 open. ProfileIDs unrecorded; ownedroot/groups absent. No full acceptance; delivery note.",
-          "id": "connected",
-          "observed_at": "2026-11-14T04:00:02.381095+00:00",
-          "status": "blocked",
-          "title": "Connected-release-offer-history-integration"
-        },
-        {
-          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained.",
-          "id": "review",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Independent-final-review"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Reuse validated immutable stock snapshots across employees",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
-      "workers": [
-        {
-          "expires_at": "2026-11-14T04:00:02.381095+00:00",
-          "harness": "codex",
-          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
-          "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-14T03:55:59.716831+00:00",
-          "role": "story-lead",
-          "source": "Independent143/143 selected proof/audit complete; resources cleaned. Sol/high retained, no new descendants. Profile identity instrumentation gap retained. Parent owns evidence publication/lifecycle."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/mr_potato_head",
-          "name": "Mr Potato Head",
-          "observed_at": "2026-11-13T22:37:32Z",
-          "role": "implementer",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/pugh",
-          "name": "Pugh",
-          "observed_at": "2026-11-13T22:52:38Z",
-          "role": "runner",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/speedy_gonzales",
-          "name": "Speedy Gonzales",
-          "observed_at": "2026-11-13T23:16:27Z",
-          "role": "reviewer",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
-          "name": "Timone",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-14T03:40:13.455765+00:00",
-          "expires_at": "2026-11-14T03:40:13.455765+00:00",
-          "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
-        }
-      ]
+  "assignee": "",
+  "branch": "dev/DEV-2026-11-13-GC-007",
+  "id": "FUCQ-414",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+  "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
+  "slices": [
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+      "id": "reuse",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Validated-immutable-snapshot-reuse"
     },
     {
-      "assignee": "",
-      "id": "FUCQ-415",
-      "jira_observed_at": "2026-11-12T15:48:01.061Z",
-      "note": "AC1–3 evidenced: 92 selected pass, 9 native included; 42 Chrome checks/10 captures independently reviewed PASS. AC4 partial: Safari/private/full keyboard-accessibility/hosted-dev unrun. In Progress/lease retained; dispatcher owns lifecycle. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
-      "observed_at": "2026-11-14T01:33:56Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "admission",
-          "status": "complete",
-          "title": "Immutable-policy-admission-and-complete-selection-signature",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Lead full source/caller review and focused 11/11 plus integrated83 matching hashes; complete signature/content admission and mutable/provenance compatibility. Independent Cool Cat PASS. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
-        },
-        {
-          "id": "reuse",
-          "status": "complete",
-          "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Selected92/92 pass0skip including9actualnative; operation counters/eviction/reset/equivalence and actual1validation26derivations19hits. Independent Cool Cat source+native proof PASS; exactcb5064ed. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
-        },
-        {
-          "id": "connected",
-          "status": "in-progress",
-          "title": "Connected-release-offer-history-and-independent-review",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Chrome42/42checks,10desktop/narrowcaptures on exactcb5064ed nativePG app independently inspected; AC4partial: Safari/private/fullkeyboard-accessibility/hosted-dev unrun, LowF400 separate. NoBuilt/Done/lease release. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Reuse configuration equipment evidence",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-415",
-      "workers": [
-        {
-          "id": "01a1d779-f806-7f21-8609-5846eb3c771a",
-          "name": "Mary-Sue Walton",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-14T00:36:44Z",
-          "expires_at": "2026-11-14T01:33:56Z",
-          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
-        },
-        {
-          "id": "01a1d77d-205f-73f3-a069-ea6c902851b9",
-          "name": "Tweety",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "expires_at": "2026-11-14T01:33:56Z",
-          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
-        },
-        {
-          "id": "01a1d787-e929-7ed2-881b-8fde01454ac2",
-          "name": "Doc Hudson",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "expires_at": "2026-11-14T01:33:56Z",
-          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
-        },
-        {
-          "id": "01a1d78f-af71-7400-b66e-576073f5f0e3",
-          "name": "Henery Hawk",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "expires_at": "2026-11-14T01:33:56Z",
-          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
-        },
-        {
-          "id": "01a1d7ac-d407-78d0-8bf1-e65fa20cefd7",
-          "name": "Cool Cat",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "expires_at": "2026-11-14T01:33:56Z",
-          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-GC-008"
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+      "id": "proof",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Semantic-equivalence-and-operation-count-proof"
     },
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+      "id": "connected",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Connected-release-offer-history-integration"
+    },
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+      "id": "review",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Independent-final-review"
+    }
+  ],
+  "status": "In Review",
+  "title": "Reuse validated immutable stock snapshots across employees",
+  "type": "Story",
+  "unsliced": false,
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
+  "workers": [
+    {
+      "expires_at": "2026-11-14T04:00:02.381095+00:00",
+      "harness": "codex",
+      "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
+      "name": "Foghorn Leghorn",
+      "observed_at": "2026-11-14T03:55:59.716831+00:00",
+      "role": "story-lead",
+      "source": "Independent143/143 selected proof/audit complete; resources cleaned. Sol/high retained, no new descendants. Profile identity instrumentation gap retained. Parent owns evidence publication/lifecycle."
+    },
+    {
+      "expires_at": "2026-11-13T23:19:26Z",
+      "harness": "codex",
+      "id": "/root/mr_potato_head",
+      "name": "Mr Potato Head",
+      "observed_at": "2026-11-13T22:37:32Z",
+      "role": "implementer",
+      "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+    },
+    {
+      "expires_at": "2026-11-13T23:19:26Z",
+      "harness": "codex",
+      "id": "/root/pugh",
+      "name": "Pugh",
+      "observed_at": "2026-11-13T22:52:38Z",
+      "role": "runner",
+      "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+    },
+    {
+      "expires_at": "2026-11-13T23:19:26Z",
+      "harness": "codex",
+      "id": "/root/speedy_gonzales",
+      "name": "Speedy Gonzales",
+      "observed_at": "2026-11-13T23:16:27Z",
+      "role": "reviewer",
+      "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+    },
+    {
+      "id": "01a1d809-9b53-74b1-afcf-51e08ea22162",
+      "name": "Timone",
+      "harness": "codex",
+      "role": "runner",
+      "observed_at": "2026-11-14T03:40:13.455765+00:00",
+      "expires_at": "2026-11-14T03:40:13.455765+00:00",
+      "source": "Requested/selected/actualgpt-6-luna/high; unlaunched copy checkpoint only, stopped before lead adaptation/runtime. No descendants."
+    }
+  ]
+},
+    {
+  "assignee": "",
+  "id": "FUCQ-415",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+  "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
+  "slices": [
+    {
+      "id": "admission",
+      "status": "complete",
+      "title": "Immutable-policy-admission-and-complete-selection-signature",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+    },
+    {
+      "id": "reuse",
+      "status": "complete",
+      "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+    },
+    {
+      "id": "connected",
+      "status": "complete",
+      "title": "Connected-release-offer-history-and-independent-review",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+    }
+  ],
+  "status": "In Review",
+  "title": "Reuse configuration equipment evidence",
+  "type": "Story",
+  "unsliced": false,
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-415",
+  "workers": [
+    {
+      "id": "01a1d779-f806-7f21-8609-5846eb3c771a",
+      "name": "Mary-Sue Walton",
+      "harness": "codex",
+      "role": "story-lead",
+      "observed_at": "2026-11-14T00:36:44Z",
+      "expires_at": "2026-11-14T01:33:56Z",
+      "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+    },
+    {
+      "id": "01a1d77d-205f-73f3-a069-ea6c902851b9",
+      "name": "Tweety",
+      "harness": "codex",
+      "role": "mechanic",
+      "observed_at": "2026-11-14T01:33:56Z",
+      "expires_at": "2026-11-14T01:33:56Z",
+      "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+    },
+    {
+      "id": "01a1d787-e929-7ed2-881b-8fde01454ac2",
+      "name": "Doc Hudson",
+      "harness": "codex",
+      "role": "implementer",
+      "observed_at": "2026-11-14T01:33:56Z",
+      "expires_at": "2026-11-14T01:33:56Z",
+      "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+    },
+    {
+      "id": "01a1d78f-af71-7400-b66e-576073f5f0e3",
+      "name": "Henery Hawk",
+      "harness": "codex",
+      "role": "runner",
+      "observed_at": "2026-11-14T01:33:56Z",
+      "expires_at": "2026-11-14T01:33:56Z",
+      "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+    },
+    {
+      "id": "01a1d7ac-d407-78d0-8bf1-e65fa20cefd7",
+      "name": "Cool Cat",
+      "harness": "codex",
+      "role": "reviewer",
+      "observed_at": "2026-11-14T01:33:56Z",
+      "expires_at": "2026-11-14T01:33:56Z",
+      "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+    }
+  ],
+  "branch": "dev/DEV-2026-11-13-GC-008"
+},
     {
       "assignee": "",
       "id": "FUCQ-416",
@@ -6680,7 +6680,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-14T14:41:11Z",
+      "observed_at": "2026-11-14T15:19:32Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
@@ -6706,8 +6706,8 @@
           "id": "employee-help",
           "status": "in-progress",
           "title": "Employee help, confirmation and current readback",
-          "observed_at": "2026-11-14T14:41:11Z",
-          "evidence": "Frozen7baa6212 corrected Help route/nativecompile and19/19PASS(route9,policy5,guards5);no product/test changes. Prior Help49PASS separate. Direct/signin/recovery/role/read-only/abort/late-private/fresh-store checks pass;parentactualaudit/review and originalAC/backend/experience stillopen. docs/gcsp/fucq447-route-2026-11-14.md"
+          "observed_at": "2026-11-14T15:19:32.070107+00:00",
+          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
         },
         {
           "id": "greg-queue",
@@ -6718,8 +6718,8 @@
           "id": "composition",
           "status": "in-progress",
           "title": "Feature exports and dispatcher-owned shared composition",
-          "observed_at": "2026-11-14T14:41:11Z",
-          "evidence": "Partial actual lazy Help route at7baa6212;corrected19/19 nativePASS,0fail/skip/TODO;route metadata and source unchanged. Parent actual audit/review/publication pending;Greg/host/fulljourney/realJava/OIDC/PG/rendered/parity remainopen. Initial13PASS7FAIL retained separately;no wholeStory acceptance. docs/gcsp/fucq447-route-2026-11-14.md"
+          "observed_at": "2026-11-14T15:19:32.070107+00:00",
+          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
         },
         {
           "id": "integration",
@@ -6733,13 +6733,13 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "HOLD after corrected Help-route scoped19PASS;parent actual audit/review/publication pending;routes.ts writer remains released",
-          "observed_at": "2026-11-14T14:41:11Z",
-          "expires_at": "2026-11-14T14:41:11Z",
+          "status": "INACTIVE/HOLD; reviewed Help route integrated; no runtime/source allocation",
+          "observed_at": "2026-11-14T15:19:32.070107+00:00",
+          "expires_at": "2026-11-14T15:19:32.070107+00:00",
           "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2;SAME gpt-6.1-sol/high,no fallback/children;route-corrected-1417/native-1;docs/gcsp/fucq447-route-2026-11-14.md"
         }
       ],
-      "note": "Corrected Help route scoped native19/19PASS at frozen7baa6212:route9+policy5+guards5,0fail/skip/pending/TODO;product/source/test unchanged. Initial20test13PASS7FAIL history immutable;missingRefresh observation distinct from source-traced unreachable second click. Original2AC/InProgress/Garyclaim/13points/stable6slices retained;parentactualaudit/review/publication+fullAC/backend/rendered remain open. F501Medium/F502Low separate/unfixed/unclaimed/nonblocking/outside66. docs/gcsp/fucq447-route-2026-11-14.md"
+      "note": "Help route integrated/pushed88403ac62 after independent source PASS and parent local-only audit:19/19 scoped native tests,115 project/23009 closure pins verified;no source changes/rerun/cloud access. Both original AC/InProgress/claim retained;Greg queue and full original connected/experience obligations remain incomplete. F501Medium/F502Low remain separate/unfixed/nonblocking. docs/gcsp/fucq447-route-2026-11-14.md"
     },
     {
       "assignee": "",
@@ -7759,44 +7759,44 @@
       ]
     },
     {
-      "assignee": "Gary Carter",
-      "branch": "dev/DEV-2026-11-13-GC-005",
-      "id": "FUCQ-412",
-      "jira_observed_at": "2026-11-13T23:18:25.492855+00:00",
-      "note": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
-      "observed_at": "2026-11-13T23:18:48Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Lead reviewed unchanged public semantics, effective dates and immutable-seed cache; service21/21 and focused5/5; original baseline fails only the new operation regression as intended. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md. Versions12pass/1 existing fixture fail/3 native skips retained; integration gate separate.",
-          "id": "eligibility",
-          "observed_at": "2026-11-13T21:46:37Z",
-          "status": "complete",
-          "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
-        },
-        {
-          "evidence": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
-          "id": "integration",
-          "observed_at": "2026-11-13T23:18:25.492855+00:00",
-          "status": "in-progress",
-          "title": "Lead affected-consumer and connected presentation validation"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Compile immutable eligibility rules for direct lookup",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
-      "workers": [
-        {
-          "expires_at": "2026-11-13T23:18:25.492855+00:00",
-          "harness": "codex",
-          "name": "B-Bot",
-          "observed_at": "2026-11-13T23:18:25.492855+00:00",
-          "status": "checkpoint integrated/published; inactive"
-        }
-      ]
+  "assignee": "Gary Carter",
+  "branch": "dev/DEV-2026-11-13-GC-005",
+  "id": "FUCQ-412",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+  "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
+  "slices": [
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
+      "id": "eligibility",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
     },
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
+      "id": "integration",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Lead affected-consumer and connected presentation validation"
+    }
+  ],
+  "status": "In Review",
+  "title": "Compile immutable eligibility rules for direct lookup",
+  "type": "Story",
+  "unsliced": false,
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-412",
+  "workers": [
+    {
+      "expires_at": "2026-11-13T23:18:25.492855+00:00",
+      "harness": "codex",
+      "name": "B-Bot",
+      "observed_at": "2026-11-13T23:18:25.492855+00:00",
+      "status": "checkpoint integrated/published; inactive"
+    }
+  ]
+},
     {
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-007",
@@ -7910,53 +7910,53 @@
       ]
     },
     {
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-13-GC-006",
-      "id": "FUCQ-413",
-      "jira_observed_at": "2026-11-12T15:47:47.844Z",
-      "note": "Reviewed checkpoint, AC1-3 met at Node boundary; original AC4 partial/open. Native/file In Progress; no Built/Done/waiver. Matching evidence reused after base9b995759 syncadf1c4b1. See delivery/result record.",
-      "observed_at": "2026-11-14T00:07:42Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Lead reviewed complete price diff, callers and scan oracle; 5 focused and21 policy service passes at e1ce7e6d policy hash; heihei and lead-price receipts, docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
-          "id": "prices",
-          "observed_at": "2026-11-13T23:52:03Z",
-          "status": "complete",
-          "title": "Compile-price-equality-lookups"
-        },
-        {
-          "evidence": "Lead reviewed full source/test diff; focused10 and service21 pass, zero fail/skip; policy bcb722c4, focused a8cce951; maximus and lead-allowance receipts; docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
-          "id": "allowances",
-          "observed_at": "2026-11-13T23:56:26Z",
-          "status": "complete",
-          "title": "Compile-context-allowance-lookups"
-        },
-        {
-          "evidence": "Sniffles independent PASS; final selected Node72pass1knownF484fail0skip; native6checks; Chrome39checks10captures. AC4 partial/open: hosted-dev/Safari/private/full accessibility; missing body PNG. All owned resources absent; base9b995759 syncedadf1c4b1.",
-          "id": "integration",
-          "observed_at": "2026-11-14T00:07:42.723878+00:00",
-          "status": "in-progress",
-          "title": "Independent-review-and-connected-delivery"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Compile immutable price and allowance lookups",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
-      "workers": [
-        {
-          "expires_at": "2026-11-14T00:07:42.723878+00:00",
-          "harness": "codex",
-          "id": "01a1d74d-7330-7252-a6d3-1caf36d2ab98",
-          "name": "Lightning McQueen",
-          "observed_at": "2026-11-14T00:07:42.723878+00:00",
-          "source": "dispatcher-authorized linked Story chat",
-          "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
-        }
-      ]
+  "assignee": "",
+  "branch": "dev/DEV-2026-11-13-GC-006",
+  "id": "FUCQ-413",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+  "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
+  "slices": [
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+      "id": "prices",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Compile-price-equality-lookups"
+    },
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+      "id": "allowances",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Compile-context-allowance-lookups"
+    },
+    {
+      "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+      "id": "integration",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "status": "complete",
+      "title": "Independent-review-and-connected-delivery"
     }
+  ],
+  "status": "In Review",
+  "title": "Compile immutable price and allowance lookups",
+  "type": "Story",
+  "unsliced": false,
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-413",
+  "workers": [
+    {
+      "expires_at": "2026-11-14T00:07:42.723878+00:00",
+      "harness": "codex",
+      "id": "01a1d74d-7330-7252-a6d3-1caf36d2ab98",
+      "name": "Lightning McQueen",
+      "observed_at": "2026-11-14T00:07:42.723878+00:00",
+      "source": "dispatcher-authorized linked Story chat",
+      "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+    }
+  ]
+}
   ],
   "version": 1
 }
