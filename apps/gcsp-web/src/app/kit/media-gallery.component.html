@@ -1,4 +1,4 @@
-<div class="gcsp-media-gallery" role="group" [attr.aria-label]="name() + ' images'">
+<div class="gcsp-media-gallery" [class.is-compact]="compact()" role="group" [attr.aria-label]="name() + ' images'">
   <div class="gcsp-media-feature" [attr.aria-busy]="featureLoading() && images().length ? 'true' : null">
     @if (currentImage(); as image) {
       @if (isFailed(selectedIndex())) {
@@ -7,14 +7,16 @@
         <img class="gcsp-media-feature-image" [src]="image.src" [alt]="image.alt || name()" (load)="onFeatureLoad(image)" (error)="markFailed(image)" />
         @if (featureLoading()) { <div class="gcsp-media-loading" role="status">Loading image</div> }
       }
+      @if (!compact()) {
       <button #enlargeButton gcspButton type="button" variant="ghost" class="gcsp-media-enlarge" [disabled]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()) + ' image'" (click)="openViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14" /><path d="m15 15 6 6" /><path d="M10 7v6M7 10h6" /></svg></button>
-      @if (image.caption) { <p class="gcsp-media-caption">{{ image.caption }}</p> }
+      }
+      @if (!compact() && image.caption) { <p class="gcsp-media-caption">{{ image.caption }}</p> }
     } @else {
       <div class="gcsp-media-placeholder" role="img" [attr.aria-label]="name() + ': ' + placeholder()">{{ placeholder() }}</div>
     }
   </div>
 
-  @if (images().length > 1) {
+  @if (!compact() && images().length > 1) {
     <div class="gcsp-media-thumbnails" role="group" [attr.aria-label]="name() + ' image views'">
       @for (image of images(); track $index; let index = $index) {
         <button gcspButton type="button" variant="ghost" class="gcsp-media-thumb" [attr.aria-label]="viewLabel(image, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">

@@ -39,3 +39,6 @@
   .gcsp-media-viewer-thumbnails .gcsp-media-thumb { width: 112px; flex-basis: 112px; }
 }
 @media (prefers-reduced-motion: reduce) { .gcsp-media-viewer-thumbnails { scroll-behavior: auto; } }
+
+.gcsp-media-gallery.is-compact .gcsp-media-feature { height: 180px; flex-basis: 180px; }
+.gcsp-media-gallery.is-compact .gcsp-media-feature-image { object-fit: cover; }
