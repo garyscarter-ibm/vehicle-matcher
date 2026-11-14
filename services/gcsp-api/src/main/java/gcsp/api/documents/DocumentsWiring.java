@@ -65,15 +65,6 @@ public class DocumentsWiring {
 
     @DefaultBean
     @ApplicationScoped
-    public static class UnavailablePolicyPort implements DocumentPolicyPort {
-        @Override
-        public Optional<Assumption> assumption(String key, String policyVersion) {
-            return Optional.empty();
-        }
-    }
-
-    @DefaultBean
-    @ApplicationScoped
     public static class UnavailableCasePort implements DocumentCasePort {
         @Override
         public StageRead readStage(gcsp.api.persistence.RunContext ctx, String orderUuid) {

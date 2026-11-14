@@ -1,0 +1,9 @@
+# Used by BuildKit with services/gcsp-api/Dockerfile (repository-root context): send only what the build reads.
+**
+!services/gcsp-api/.mvn
+!services/gcsp-api/mvnw
+!services/gcsp-api/pom.xml
+!services/gcsp-api/src
+!server/gcsp/policy/seed-v1.json
+!server/gcsp/policy/reviewed
+!server/gcsp/predict/records/policy-definitions.json

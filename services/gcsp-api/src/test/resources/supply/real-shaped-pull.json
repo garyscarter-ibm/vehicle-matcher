@@ -1,0 +1,12 @@
+{
+  "status": "ok",
+  "contractVersion": "1.0.0",
+  "value": {
+    "schemaVersion": "1.0.0",
+    "runId": "TEST-RUN-REPLACED-BY-HARNESS",
+    "observedAt": "2026-11-05T09:00:00.000Z",
+    "source": { "providerId": "target-shaped-test", "mode": "dated-snapshot", "version": "fucq92-contract-test-v1", "label": "TEST FIXTURE — target-shaped pull, no live provider or real stock" },
+    "tranche": { "trancheId": "target-shaped-test:window-1", "windowId": "test-weekly-window", "availableAt": "2026-11-05T09:00:00.000Z", "supplyId": null, "orderUuids": ["00000000-0000-4000-8000-000000000001"] },
+    "stock": [{ "orderUuid": "00000000-0000-4000-8000-000000000001", "orderNumber": "0000001", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000001, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1, "account": "test-choices", "visibility": { "schemeId": "choices-fs-uk" }, "facts": { "label": "TEST FIXTURE; not decision-complete configuration facts" } }]
+  }
+}

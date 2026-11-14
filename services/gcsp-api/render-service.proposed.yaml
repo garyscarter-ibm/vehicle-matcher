@@ -8,12 +8,15 @@
     region: frankfurt
     branch: gcsp-poc-dev
     dockerfilePath: ./services/gcsp-api/Dockerfile
-    dockerContext: ./services/gcsp-api
+    dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
     healthCheckPath: /q/health/ready
     autoDeployTrigger: commit
     buildFilter:
       paths:
         - services/gcsp-api/**
+        - server/gcsp/policy/seed-v1.json
+        - server/gcsp/policy/reviewed/**
+        - server/gcsp/predict/records/policy-definitions.json
       ignoredPaths:
         - services/gcsp-api/README.md
         - services/gcsp-api/render-service.proposed.yaml
