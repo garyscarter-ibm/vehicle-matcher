@@ -486,21 +486,23 @@ Stories supply beans that replace the defaults. The current-car relationship liv
 run, employee and entitlement slot; `pending_operations` has a unique idempotency key and `selection_orders_one_per_slot`
 makes a second selection impossible. A lease plus a version compare-and-set claim comes before any provider call, a
 repeat or restart reconciles before it executes, and the outcome is finalized by compare-and-set. `pending` means the
-handoff is not settled (resend the same body or GET to reconcile, never choose again), `acknowledged` carries the provider
+handoff is not settled (resend the same body or GET to reconcile, never choose again; after an unreachable or unknown
+provider a retry is held back for 5 seconds, and inside that window a GET only reads), `acknowledged` carries the provider
 reference, `refused` means ordering rejected it. Source converters (`SelectionConversionPort`, one per source type) are
 unavailable (`selection-source-unsupported`) until FUCQ-463 (cart) and FUCQ-464/466 (buddy-offer) provide their own bean;
 no code here changes. Approvals' order source is now bound to the acknowledged selections (`ActiveOrderSource`, replacing
 the `ApprovalDefaults` default). The employee's slot is never sent: it is the `ordering.enabled` slot of their own account
 projection (503 `account-unavailable`, 409 `entitlement-unavailable`). Scope is the bearer principal and must equal the
 active run (else 409 `stale-run`). No endpoint resumes a draft into an order: every submit is an explicit employee command.
-With persistence on and a provider other than `none`, startup reconciles up to 100 open handoffs once (it never creates an
-order) and logs a one-line count; a failure is logged, not fatal.
+With persistence on and a provider other than `none`, startup reconciles up to 100 open handoffs once (it completes an employee-confirmed
+handoff and never creates a new order intent) and logs a one-line count; receipts record the actual driver (the employee,
+`presenter:<subject>` or `ordering-startup`); a failure is logged, not fatal.
 
 | Path | Result |
 | --- | --- |
 | `GET /api/gcsp/v1/manual/order/terms` | Employee only: `{status:"ok",value}` with `termsDigest`, `declarations`, `approvalStages`. |
 | `POST /api/gcsp/v1/manual/order` | Employee only: `{commandId, source:{type:"cart",holdId,expectedHoldVersion,expectedDraftVersion}, expectedQuoteId, expectedStockVersion, termsDigest, declarations}`. 200 acknowledged (`replayed: true` on a repeat), 202 `handoff-pending` with `operationId`, 400 `invalid` with `reasons`, 403, 404, 409 (`active-selection-exists`, `terms-changed`, `claim-changed`, `quote-changed`, `stock-changed`, `entitlement-unavailable`, `stale-run`), 503 retryable. |
-| `GET /api/gcsp/v1/manual/order` | Employee only: the caller's own selection, reconciling a pending handoff first; 200, 202, 404 `not-found`. Never creates one. |
+| `GET /api/gcsp/v1/manual/order` | Employee only: the caller's own selection, reconciling a pending handoff first; 200, 202, 404 `not-found`. Never creates a new selection. |
 | `POST /api/gcsp/v1/presenter/ordering/reconcile` | Presenter only: `{}` or `{limit}` (1..100, default 100); `{status:"ok",value:{examined,settled,stillPending}}`. Others get 403 `role-required`. |
 
 Any query parameter is 400 `unsupported-query`. 503 codes: `persistence-not-configured`, `ordering-provider-not-configured`,

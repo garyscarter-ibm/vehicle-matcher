@@ -86,7 +86,7 @@ public class OrderingResource {
         });
     }
 
-    /** Reads the caller's own selection; a pending handoff is reconciled first, and nothing is ever created. */
+    /** Reads the caller's own selection; a pending handoff is reconciled first; it never creates a new selection. */
     @GET
     @Path("/manual/order")
     public Response read(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
@@ -131,7 +131,8 @@ public class OrderingResource {
             }
         }
         int n = limit;
-        return withService(p, (service, run) -> mapped(service.reconcileOpen(run, n), false));
+        return withService(p, (service, run) -> mapped(service.reconcileOpen(
+                new RunContext(run.environmentId(), run.runId(), "presenter:" + p.subject()), n), false));
     }
 
     // ---- shared steps ----

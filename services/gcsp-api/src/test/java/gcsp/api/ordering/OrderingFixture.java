@@ -66,9 +66,16 @@ final class OrderingFixture implements AutoCloseable {
         return f;
     }
 
+    /** Zero backoff: a pending handoff may be retried at once. */
     OrderingService newService(PGSimpleDataSource pool, OrderingPort provider) {
+        return newService(pool, provider, java.time.Duration.ZERO, ctx -> NOW);
+    }
+
+    OrderingService newService(PGSimpleDataSource pool, OrderingPort provider, java.time.Duration backoff,
+            gcsp.api.policy.PolicyClock runClock) {
         PolicyService policy = new PolicyService(policySource);
-        return new OrderingService(pool, new OrderingTerms(policy, ctx -> NOW), provider, java.time.Duration.ofSeconds(30), wall::get);
+        return new OrderingService(pool, new OrderingTerms(policy, runClock), provider, java.time.Duration.ofSeconds(30),
+                backoff, wall::get);
     }
 
     /** The employee, their slot, one car (orderUuid car-e) and an active hold of each type (cart hold-e, buddy hold-b-e). */

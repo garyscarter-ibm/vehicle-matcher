@@ -41,7 +41,8 @@ import javax.sql.DataSource;
 
 /**
  * The one ordering operation: current versions, terms and the exact selection authorise exactly one handoff.
- * Intent is durable before the provider is called; a repeat, a lost answer or a restart reconciles, never resubmits.
+ * Intent is durable before the provider is called; a repeat, a lost answer or a restart reconciles first. Only an
+ * authoritative not-found may execute, completing the employee-confirmed handoff; no path creates a new order intent.
  */
 public final class OrderingService {
 
@@ -71,19 +72,22 @@ public final class OrderingService {
     private final OrderingTerms terms;
     private final OrderingProviderPort provider;
     private final Duration lease;
+    private final Duration backoff;
     private final Supplier<Instant> wall;
 
     public OrderingService(DataSource dataSource, OrderingTerms terms, OrderingProviderPort provider) {
-        this(dataSource, terms, provider, Duration.ofSeconds(30), Instant::now);
+        this(dataSource, terms, provider, Duration.ofSeconds(30), Duration.ofSeconds(5), Instant::now);
     }
 
+    /** The lease and the retry backoff both run on the wall clock; the run clock only stamps events. */
     public OrderingService(DataSource dataSource, OrderingTerms terms, OrderingProviderPort provider, Duration lease,
-            Supplier<Instant> wall) {
+            Duration backoff, Supplier<Instant> wall) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.terms = terms;
         this.provider = provider;
         this.lease = lease;
+        this.backoff = backoff;
         this.wall = wall;
     }
 
@@ -252,10 +256,12 @@ public final class OrderingService {
         return drive(scope, operationId);
     }
 
-    /** Drives up to limit (1..100) open handoffs whose lease is free: startup and the presenter use this. */
+    /** Drives up to limit (1..100) open handoffs whose lease is free; ctx.actorId() is recorded as the driver. */
     public OrderingResult reconcileOpen(RunContext ctx, int limit) {
         if (limit < 1 || limit > 100) return invalid("limit");
         if ("none".equals(provider.mode())) return new OrderingResult.Unavailable("ordering-provider-not-configured");
+        List<OrderingScope> scopes = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         try (Connection c = dataSource.getConnection(); PreparedStatement ps = c.prepareStatement("SELECT s.operation_id, "
                 + "s.employee_id, s.entitlement_slot_id, s.policy_version FROM selection_orders s JOIN pending_operations p "
                 + "ON p.environment_id = s.environment_id AND p.run_id = s.run_id AND p.operation_id = s.operation_id "
@@ -265,34 +271,36 @@ public final class OrderingService {
             ps.setString(2, ctx.runId());
             ps.setObject(3, wall.get().atOffset(java.time.ZoneOffset.UTC));
             ps.setInt(4, limit);
-            List<OrderingScope> scopes = new ArrayList<>();
-            List<String> ids = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ids.add(rs.getString(1));
                     scopes.add(new OrderingScope(ctx.environmentId(), ctx.runId(), rs.getString(2), rs.getString(3), rs.getString(4)));
                 }
             }
-            int settled = 0;
-            for (int i = 0; i < ids.size(); i++) {
-                if (drive(scopes.get(i), ids.get(i)) instanceof OrderingResult.Ok) settled++;
-            }
-            return new OrderingResult.Ok(JSON.createObjectNode().put("examined", ids.size()).put("settled", settled)
-                    .put("stillPending", ids.size() - settled), false);
         } catch (SQLException e) {
             return new OrderingResult.Unavailable("database-unavailable");
         }
+        int settled = 0;
+        for (int i = 0; i < ids.size(); i++) {
+            if (drive(scopes.get(i), ids.get(i), ctx.actorId()) instanceof OrderingResult.Ok) settled++;
+        }
+        return new OrderingResult.Ok(JSON.createObjectNode().put("examined", ids.size()).put("settled", settled)
+                .put("stillPending", ids.size() - settled), false);
     }
 
     public OrderingResult drive(OrderingScope scope, String id) {
+        return drive(scope, id, scope.employeeId());
+    }
+
+    private OrderingResult drive(OrderingScope scope, String id, String actorId) {
         try {
-            return doDrive(scope, id);
+            return doDrive(scope, id, actorId);
         } catch (Db e) {
             return new OrderingResult.Unavailable("database-unavailable");
         }
     }
 
-    private OrderingResult doDrive(OrderingScope scope, String id) {
+    private OrderingResult doDrive(OrderingScope scope, String id, String actorId) {
         Row r = load(scope.environmentId(), scope.runId(), id);
         if (r == null) return new OrderingResult.Refused("not-found", 404, null);
         if (!r.employeeId().equals(scope.employeeId())) return new OrderingResult.Refused("forbidden", 403, null);
@@ -300,8 +308,10 @@ public final class OrderingService {
 
         // Claim: one driver at a time holds the lease and the version, so one provider call is in flight.
         Instant now = wall.get();
+        if (r.leaseUntil() != null && r.leaseUntil().isAfter(now)) return result(r);
+        RunContext actor = new RunContext(scope.environmentId(), scope.runId(), actorId);
         long version = r.version();
-        Outcome claim = runner.execute(scope.context(), new Command("ordering.claim", "ordering:claim:" + id + ":" + version,
+        Outcome claim = runner.execute(actor, new Command("ordering.claim", "ordering:claim:" + id + ":" + version,
                 JSON.createObjectNode().put("operationId", id).put("version", version)),
                 tx -> claimWork(tx, id, version, now));
         if (!(claim instanceof Outcome.Committed c) || c.replayed()) return current(scope, id);
@@ -334,9 +344,17 @@ public final class OrderingService {
             outcome.put("status", "unknown").put("reason", resp == null ? "provider-unreachable"
                     : reason(resp.reason(), resp.status().name().toLowerCase(java.util.Locale.ROOT)));
         }
-        Outcome fin = runner.execute(scope.context(), new Command("ordering.finish", "ordering:finish:" + id + ":" + claimed,
+        Instant at;
+        try {
+            at = terms.now(scope);
+        } catch (RuntimeException e) {
+            at = wall.get();
+        }
+        Instant occurredAt = at;
+        Instant retryAt = wall.get().plus(backoff);
+        Outcome fin = runner.execute(actor, new Command("ordering.finish", "ordering:finish:" + id + ":" + claimed,
                 outcome), tx -> finishWork(tx, scope, r, claimed, confirmed ? "acknowledged" : rejected ? "refused" : "pending",
-                        outcome, now));
+                        outcome, occurredAt, retryAt));
         if (fin instanceof Outcome.Uncertain) return new OrderingResult.Pending(id, null);
         return current(scope, id);
     }
@@ -360,17 +378,18 @@ public final class OrderingService {
     }
 
     private WorkResult finishWork(Tx tx, OrderingScope scope, Row r, long claimed, String state, ObjectNode outcome,
-            Instant now) throws SQLException {
+            Instant occurredAt, Instant retryAt) throws SQLException {
         RunContext c = tx.context();
         String reference = "acknowledged".equals(state) ? outcome.path("providerReference").asText() : null;
         PendingOperations.finalize(tx, r.operationId(), claimed, state, reference, outcome);
-        tx.write("UPDATE selection_orders SET handoff_lease_until = NULL, updated_at = now() WHERE environment_id = ? "
-                + "AND run_id = ? AND operation_id = ?", c.environmentId(), c.runId(), r.operationId());
+        tx.write("UPDATE selection_orders SET handoff_lease_until = ?, updated_at = now() WHERE environment_id = ? "
+                + "AND run_id = ? AND operation_id = ?", "pending".equals(state) ? retryAt : null, c.environmentId(),
+                c.runId(), r.operationId());
         if (!"pending".equals(state)) {
             ObjectNode e = JSON.createObjectNode();
             e.put("operationId", r.operationId()).put("employeeId", r.employeeId()).put("entitlementSlotId", r.slotId())
                     .put("orderUuid", r.orderUuid()).put("orderReference", r.orderReference())
-                    .put("occurredAt", PolicyClock.iso(now));
+                    .put("occurredAt", PolicyClock.iso(occurredAt));
             if ("acknowledged".equals(state)) {
                 JsonNode renewal = r.selection().path("renewalId");
                 if (renewal.isTextual()) e.put("renewalId", renewal.asText());

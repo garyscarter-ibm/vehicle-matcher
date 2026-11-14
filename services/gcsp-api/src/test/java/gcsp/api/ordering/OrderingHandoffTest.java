@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gcsp.api.approvals.OrderSourcePort;
+import gcsp.api.persistence.RunContext;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -221,6 +222,70 @@ class OrderingHandoffTest {
             assertInstanceOf(OrderSourcePort.Invalid.class, source.find(f.ctx(), "car-e1"));
             var page = assertInstanceOf(OrderSourcePort.Page.class, source.list(f.ctx(), null, 10));
             assertEquals(List.of("car-e1"), page.invalid().stream().map(OrderSourcePort.InvalidRow::orderUuid).toList());
+        }
+    }
+
+    @Test
+    void anIntentOnlyRestartCompletesTheConfirmedHandoffWithOneExecute() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            f.provider.down = true;
+            f.submit("e1", "c1");
+            assertEquals(0, f.count("SELECT count(*) FROM ordering_synthetic_receipts"));
+            var healthy = new OrderingFixture.TestProvider(new SyntheticOrderingProvider(f.pool()));
+            OrderingService restarted = f.newService(f.pool(), healthy);
+            var out = assertInstanceOf(OrderingResult.Ok.class, restarted.reconcileOpen(f.ctx(), 10));
+            assertEquals(1, out.value().get("settled").asInt());
+            assertEquals(1, healthy.executes.get());
+            assertEquals(1, f.count("SELECT count(*) FROM ordering_synthetic_receipts"));
+            assertEquals("acknowledged", f.text("SELECT state FROM pending_operations"));
+        }
+    }
+
+    @Test
+    void theOutcomeEventIsStampedWithTheRunClockNotTheWallClock() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            f.wall.set(OrderingFixture.NOW.plusSeconds(500));
+            assertEquals("acknowledged", OrderingFixture.status(f.submit("e1", "c1")));
+            assertEquals("2026-11-13T12:00:00.000Z", f.text("SELECT payload->>'occurredAt' FROM outbox_events "
+                    + "WHERE event_type = 'ordering.selection-acknowledged'"));
+        }
+    }
+
+    @Test
+    void aPresenterOrStartupReconcileRecordsItsOwnActor() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            f.provider.down = true;
+            f.submit("e1", "c1");
+            f.provider.down = false;
+            var out = assertInstanceOf(OrderingResult.Ok.class,
+                    f.service.reconcileOpen(new RunContext(OrderingFixture.ENV, OrderingFixture.RUN, "presenter:p1"), 10));
+            assertEquals(1, out.value().get("settled").asInt());
+            assertEquals(2, f.count("SELECT count(*) FROM command_receipts WHERE actor_id = 'presenter:p1' "
+                    + "AND command_type IN ('ordering.claim', 'ordering.finish')"));
+            assertEquals(1, f.count("SELECT count(*) FROM outbox_events WHERE actor_id = 'presenter:p1' "
+                    + "AND event_type = 'ordering.selection-acknowledged'"));
+            assertEquals(1, f.count("SELECT count(*) FROM command_receipts WHERE actor_id = 'e1' AND command_type = 'ordering.submit'"));
+        }
+    }
+
+    @Test
+    void aPendingHandoffIsNotRetriedInsideTheBackoffWindow() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            OrderingService backed = f.newService(f.pool(), f.provider, java.time.Duration.ofSeconds(5), ctx -> OrderingFixture.NOW);
+            f.provider.down = true;
+            String id = assertInstanceOf(OrderingResult.Pending.class,
+                    backed.submit(f.scope("e1"), f.body("e1", false, "c1"), f.cart)).operationId();
+            long receipts = f.count("SELECT count(*) FROM command_receipts");
+            int reconciles = f.provider.reconciles.get();
+            f.provider.down = false;
+            for (int i = 0; i < 2; i++) {
+                assertEquals("pending", OrderingFixture.status(backed.drive(f.scope("e1"), id)));
+                assertEquals(receipts, f.count("SELECT count(*) FROM command_receipts"));
+                assertEquals(reconciles, f.provider.reconciles.get());
+            }
+            assertEquals(0, assertInstanceOf(OrderingResult.Ok.class, backed.reconcileOpen(f.ctx(), 10)).value().get("examined").asInt());
+            f.wall.set(OrderingFixture.NOW.plusSeconds(6));
+            assertEquals("acknowledged", OrderingFixture.status(backed.drive(f.scope("e1"), id)));
         }
     }
 }

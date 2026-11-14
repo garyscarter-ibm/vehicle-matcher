@@ -131,7 +131,8 @@ class OrderingEmployeeHttpTest {
         var ds = dataSource.get();
         var lossy = new OrderingFixture.TestProvider(new SyntheticOrderingProvider(ds));
         lossy.loseAnswer = true;
-        var service = new OrderingService(ds, new OrderingTerms(policy, ctx -> OrderingHttpPorts.NOW), lossy);
+        var service = new OrderingService(ds, new OrderingTerms(policy, ctx -> OrderingHttpPorts.NOW), lossy,
+                java.time.Duration.ofSeconds(30), java.time.Duration.ZERO, java.time.Instant::now);
         var cart = new OrderingHttpPorts.Cart();
         Seed a = seed(ds);
         Seed b = seed(ds);

@@ -12,13 +12,13 @@ import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptor;
 import org.jboss.logging.Logger;
 
-/** Reconciles open handoffs once at startup; it only asks the provider about existing intents and never orders. */
+/** Reconciles open handoffs once at startup: completes employee-confirmed handoffs, never creates a new order intent. */
 @ApplicationScoped
 public class OrderingStartup {
 
     /** Later than Persistence's default-priority observer, so the environment claim comes first. */
     static final int AFTER_PERSISTENCE = Interceptor.Priority.LIBRARY_AFTER;
-    static final String ACTOR = "startup";
+    static final String ACTOR = "ordering-startup";
     private static final Logger LOG = Logger.getLogger(OrderingStartup.class);
 
     @Inject
