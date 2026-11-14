@@ -6847,7 +6847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T03:10:51Z",
+      "observed_at": "2026-11-14T03:22:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -6871,14 +6871,16 @@
         },
         {
           "id": "s3-completion",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Readiness-gated completion, outcome timing, startup reconcile-only",
-          "observed_at": "2026-11-14T03:10:51Z"
+          "observed_at": "2026-11-14T03:22:05Z",
+          "evidence": "Lead-reviewed 85588818: greg-only readiness-gated completion, outcome timing, refused/uncertain (lost/throw-after/hang) recovery, startup reconcile-only, completed final by DB guard, appointment-completed outbox; 67 appointments tests (native PG17), ./mvnw -B verify 567/567"
         },
         {
           "id": "s4-http",
-          "status": "not-started",
-          "title": "v1 HTTP endpoints, startup adapter selection and README"
+          "status": "in-progress",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T03:22:05Z"
         },
         {
           "id": "s5-integration",
