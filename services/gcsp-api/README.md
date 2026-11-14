@@ -48,7 +48,7 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_OIDC_ROLE_CLAIM` | `realm_access.roles` | oidc: exact top-level claim name (such as a namespaced URL), else a dot path, to the role list. Default is Keycloak realm roles. |
 | `GCSP_OIDC_ACCOUNTS` | none | oidc: required JSON array `[{"subject","roles":["employee"|"greg"|"presenter"],"employeeId"?}]`. Not secret, never commit real subjects. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` | none | oidc: required; interim environment context until later Stories persist run state. |
-| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export. Unknown values stop startup. |
+| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). |
 | `GCSP_ACCOUNT_HR_SNAPSHOT_PATH` | none | hr-snapshot: required path to a `gcsp-hr-export/1` JSON file; checked at startup and re-read on every request, so a file that goes missing or corrupt becomes a 503 source failure. |
 | `JAVA_OPTS` | `-XX:MaxRAMPercentage=75` (image) | JVM options for the container start command. |
 | `GCSP_DATABASE_URL` | unset | JDBC URL of this environment's own PostgreSQL. Unset leaves persistence off (readiness `not-configured`). |

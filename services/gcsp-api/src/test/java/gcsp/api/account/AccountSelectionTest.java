@@ -28,7 +28,8 @@ class AccountSelectionTest {
     @Test
     void unknownProviderStopsStartupAndListsSupportedValues() {
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> AccountSelection.records("ldap", null));
-        assertTrue(e.getMessage().contains("none") && e.getMessage().contains("hr-snapshot"), e.getMessage());
+        assertTrue(e.getMessage().contains("none") && e.getMessage().contains("hr-snapshot")
+                && e.getMessage().contains("repository"), e.getMessage());
     }
 
     @Test
@@ -41,6 +42,14 @@ class AccountSelectionTest {
         assertThrows(IllegalStateException.class, () -> AccountSelection.records("hr-snapshot", bad.toString()));
         Path wrong = Files.writeString(tmp.resolve("wrong.json"), "{\"schema\":\"other/1\",\"people\":[]}");
         assertThrows(IllegalStateException.class, () -> AccountSelection.records("hr-snapshot", wrong.toString()));
+    }
+
+    @Test
+    void repositoryWithoutActivePersistenceStopsStartupWithAClearMessage() {
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+                () -> AccountSelection.records("repository", null, null));
+        assertTrue(e.getMessage().contains("GCSP_DATABASE_URL"), e.getMessage());
+        assertInstanceOf(RepositoryAccountRecords.class, AccountSelection.records("repository", null, () -> null));
     }
 
     @Test
