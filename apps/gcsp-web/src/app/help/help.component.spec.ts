@@ -126,13 +126,23 @@ describe('native Help body, review and current case presentation', () => {
   it('renders actual owner, UK instants, calendar deadline, remedy and dated private history', async () => {
     client.readOwnCases.mockResolvedValue(ok(list([row()])));
     const f = await mount();
+    const detail = root(f).querySelector(`article[data-case-id="${row().caseId}"]`)!;
+    const caseFacts = detail.querySelector(':scope > gcsp-fact-list')!;
+    function expectFact(list: Element, label: string, value: string): void {
+      const matches = Array.from(list.querySelectorAll(':scope > dl > div'))
+        .filter(fact => fact.querySelector(':scope > dt')?.textContent === label);
+      expect(matches).toHaveLength(1);
+      expect(Array.from(matches[0].children).map(cell => [cell.tagName, cell.textContent]))
+        .toEqual([['DT', label], ['DD', value]]);
+    }
     expect(content(f)).toContain('Scheme team'); expect(content(f)).not.toContain('Greg');
     expect(content(f)).toContain('14 Jul 2026, 11:00'); expect(content(f)).not.toContain('(UTC)');
-    expect(content(f)).toContain('Renewal deadline (calendar date) Needs confirmation');
-    expect(content(f)).toContain('Latest update Please check the handover date.');
+    expectFact(caseFacts, 'Renewal deadline (calendar date)', 'Needs confirmation');
+    expectFact(caseFacts, 'Latest update', 'Please check the handover date.');
     expect(content(f)).toContain('Proposed remedy'); expect(content(f)).toContain('The scheme team will review a later handover.');
     expect(root(f).querySelector('summary')!.textContent).toBe('Dated case history');
-    expect(content(f)).toContain('Actor You'); expect(content(f)).not.toContain('paula-subject');
+    const historyFacts = detail.querySelector('.help-history .help-event > gcsp-fact-list')!;
+    expectFact(historyFacts, 'Actor', 'You'); expect(content(f)).not.toContain('paula-subject');
     expect(root(f).querySelectorAll('h1')).toHaveLength(1); expect(root(f).querySelector('.help-remedy h3')).not.toBeNull();
     expect(root(f).querySelector('[data-case-id]')!.getAttribute('data-case-id')).toBe(row().caseId);
     expect(content(f)).not.toMatch(/synthetic|fictional|demo/i);
