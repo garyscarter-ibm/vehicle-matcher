@@ -6728,7 +6728,7 @@
       "id": "FUCQ-413",
       "jira_observed_at": "2026-11-12T15:47:47.844Z",
       "note": "Claimed FUCQ-413 implementation; original four criteria fixed, connected/native gates remain open. See docs/gcsp/fucq-413-price-allowance-2026-11-13.md.",
-      "observed_at": "2026-11-13T23:56:26Z",
+      "observed_at": "2026-11-14T00:03:27Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -6747,8 +6747,10 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Independent-review-and-connected-delivery"
+          "status": "in-progress",
+          "title": "Independent-review-and-connected-delivery",
+          "observed_at": "2026-11-14T00:03:27Z",
+          "evidence": "Native versions23pass1knownF484fail0skip; targeted adoption/allocation/generated13pass0skip; native price+allowance6checks pass after retained owned-proof assertion correction; connected Chrome39checks10captures, independent review ongoing. All owned PG/browser scratch absent."
         }
       ],
       "status": "In Progress",
