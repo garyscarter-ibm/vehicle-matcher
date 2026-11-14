@@ -161,12 +161,57 @@ function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, con
   return { record: { ...record, improvement: better.result, effect: 'omitted', reasonCode: 'feedback-not-similar-or-better' }, omit: { code: 'feedback-not-similar-or-better', keys: dims } };
 }
 
-function evaluateRecommendation(ports, context, request, preview = null) {
-  const work = () => evaluateScopedRecommendation(ports, context, request, preview);
+// Validate only the variable inputs to our fixed terms shape, even when no terms graph is projected.
+function validateCalculatedTerms(points, allowance, now, validUntil) {
+  if (![points.monthlyPoints, allowance.value.monthlyPoints].every((value) => typeof value === 'number' && Number.isFinite(value) && value >= 0)
+    || !text(points.source) || !text(allowance.policyVersion) || Date.parse(validUntil) <= Date.parse(now)
+    || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(validUntil)) throw Error('Invalid calculated terms');
+}
+
+function calculateStaticCandidate({ candidate, source, eligibility, points, allowance, brief, config, now, chargingRequired }) {
+  const providerEssentials = source.employeeFacts.essentials;
+  const blockers = []; const unknowns = []; const reasons = [];
+  if (providerEssentials === undefined) unknowns.push({ code: 'employee-essentials-unconfirmed' });
+  if (config.driverEligibilityRequired) {
+    const driver = source.employeeFacts.driverEligible;
+    if (!confirmedFact(driver, config) || typeof driver.value !== 'boolean') unknowns.push({ code: 'driver-unconfirmed', fact: driver ?? null });
+    else (driver.value ? reasons : blockers).push({ code: driver.value ? 'driver-eligible' : 'driver-ineligible', fact: driver });
+  }
+  if (eligibility.value.state === 'ineligible') blockers.push({ code: 'policy-exclude', ruleIds: eligibility.value.ruleIds });
+  else if (eligibility.value.state !== 'eligible') unknowns.push({ code: 'eligibility-unconfirmed', reasons: eligibility.value.reasons });
+  else reasons.push({ code: 'policy-include', ruleIds: eligibility.value.ruleIds });
+  let termsVersion = null; let validUntil = null;
+  if (points.status !== 'ok') unknowns.push({ code: 'points-unavailable', configurationId: candidate.configurationId });
+  else {
+    const affordable = allowance.value.monthlyPoints >= points.value.monthlyPoints;
+    (affordable ? reasons : blockers).push({ code: affordable ? 'allowance-sufficient' : 'allowance-exceeded',
+      allowance: allowance.value.monthlyPoints, monthlyPoints: points.value.monthlyPoints, unit: 'points/month' });
+    termsVersion = `${allowance.policyVersion}:${points.value.priceEntryId}:${allowance.value.allowanceId}:${now}`;
+    validUntil = new Date(Date.parse(now) + config.termValiditySeconds * 1000).toISOString();
+    validateCalculatedTerms(points.value, allowance, now, validUntil);
+  }
+  const providerGates = evaluateEssentials(candidate.snapshot, { essentials: providerEssentials ?? {} }, config);
+  for (const entries of Object.values(providerGates)) entries.forEach((entry) => { entry.authority = 'employee-provider'; });
+  for (const gate of [providerGates, evaluateEssentials(candidate.snapshot, brief, config, { optionalDefaults: true })]) {
+    blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
+  }
+  return { blockers, unknowns, reasons, termsVersion, validUntil, charging: chargingGates(candidate.snapshot, source.employeeFacts, config, chargingRequired) };
+}
+
+function projectCalculatedTerms(points, allowance, now, validUntil, termsVersion) {
+  return termsVersion === null ? null : createEmployeeTerms({ termsVersion,
+    points: { value: points.value.monthlyPoints, unit: 'points' }, allowanceInputs: { allowance: { value: allowance.value.monthlyPoints, unit: 'points' } },
+    contribution: null, validFrom: now, validUntil,
+    provenance: { sourceRef: points.value.source, version: allowance.policyVersion, observedAt: now,
+      assurance: points.value.status === 'assumed' ? 'synthetic-scenario' : 'derived' } });
+}
+
+function evaluateRecommendation(ports, context, request, preview = null, projection = 'gallery') {
+  const work = () => evaluateScopedRecommendation(ports, context, request, preview, projection);
   return typeof ports.policy?.withReadScope === 'function' ? ports.policy.withReadScope(work) : work();
 }
 
-async function evaluateScopedRecommendation({ provider, policy, time }, context, request, preview = null) {
+async function evaluateScopedRecommendation({ provider, policy, time }, context, request, preview, projection) {
       if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return unavailable('provider-not-configured');
       if (!['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'].every((key) => text(context[key]))) return invalid('invalid-context', [{ field: 'context', reason: 'The server must resolve a complete employee context.' }]);
       try {
@@ -256,32 +301,10 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
           const points = await policy.getPointsCost(context, car, read);
           if (eligibility.status !== 'ok' || !['ok', 'not-found'].includes(points.status)
             || eligibility.policyVersion !== allowance.policyVersion || points.policyVersion !== allowance.policyVersion) return unavailable('candidate-policy-unavailable');
-          const blockers = []; const unknowns = []; const reasons = [];
-          if (providerEssentials === undefined) unknowns.push({ code: 'employee-essentials-unconfirmed' });
-          if (config.driverEligibilityRequired) {
-            const driver = source.employeeFacts.driverEligible;
-            if (!confirmedFact(driver, config) || typeof driver.value !== 'boolean') unknowns.push({ code: 'driver-unconfirmed', fact: driver ?? null });
-            else (driver.value ? reasons : blockers).push({ code: driver.value ? 'driver-eligible' : 'driver-ineligible', fact: driver });
-          }
-          if (eligibility.value.state === 'ineligible') blockers.push({ code: 'policy-exclude', ruleIds: eligibility.value.ruleIds });
-          else if (eligibility.value.state !== 'eligible') unknowns.push({ code: 'eligibility-unconfirmed', reasons: eligibility.value.reasons });
-          else reasons.push({ code: 'policy-include', ruleIds: eligibility.value.ruleIds });
-          let terms = null;
-          if (points.status !== 'ok') unknowns.push({ code: 'points-unavailable', configurationId: candidate.configurationId });
-          else {
-            const affordable = allowance.value.monthlyPoints >= points.value.monthlyPoints;
-            (affordable ? reasons : blockers).push({ code: affordable ? 'allowance-sufficient' : 'allowance-exceeded',
-              allowance: allowance.value.monthlyPoints, monthlyPoints: points.value.monthlyPoints, unit: 'points/month' });
-            terms = createEmployeeTerms({ termsVersion: `${allowance.policyVersion}:${points.value.priceEntryId}:${allowance.value.allowanceId}:${now}`,
-              points: { value: points.value.monthlyPoints, unit: 'points' }, allowanceInputs: { allowance: { value: allowance.value.monthlyPoints, unit: 'points' } },
-              contribution: null, validFrom: now, validUntil: new Date(Date.parse(now) + config.termValiditySeconds * 1000).toISOString(),
-              provenance: { sourceRef: points.value.source, version: allowance.policyVersion, observedAt: now,
-                assurance: points.value.status === 'assumed' ? 'synthetic-scenario' : 'derived' } });
-          }
-          const providerGates = evaluateEssentials(candidate.snapshot, { essentials: providerEssentials ?? {} }, config);
-          for (const entries of Object.values(providerGates)) entries.forEach((entry) => { entry.authority = 'employee-provider'; });
-          for (const gate of [providerGates, evaluateEssentials(candidate.snapshot, brief, config, { optionalDefaults: true }), timingGates(candidate, source.employeeFacts, brief, now, config),
-            chargingGates(candidate.snapshot, source.employeeFacts, config, charging.value)]) {
+          const { blockers, unknowns, reasons, termsVersion, validUntil, charging: chargingGate } = calculateStaticCandidate({ candidate, source, eligibility, points, allowance, brief, config, now, chargingRequired: charging.value });
+          // Availability and clock gates always use this operation's current inputs.
+          for (const gate of [timingGates(candidate, source.employeeFacts, brief, now, config),
+            chargingGate]) {
             blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
           }
           let gateStatus = blockers.length ? 'ineligible' : unknowns.length ? 'needs-confirmation' : 'eligible';
@@ -299,24 +322,30 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
           decisions.push({ candidateKey: candidate.snapshot.candidateKey, orderUuid: candidate.orderUuid, configurationId: candidate.configurationId,
             gateStatus, suitable: gateStatus === 'eligible', evaluatedAt: now, score: scores.score, components: scores.components,
             reasons: [...reasons, ...scores.reasons], tradeOffs: scores.tradeOffs, blockers, unknowns: [...unknowns, ...scores.unknowns],
-            snapshot: candidate.snapshot, terms, brief: preview ? preview.original : brief, ...(preview ? { preview: preview.metadata } : {}), employeeFacts: source.employeeFacts,
+            ...(projection === 'compact' ? {} : { snapshot: candidate.snapshot,
+              terms: projectCalculatedTerms(points, allowance, now, validUntil, termsVersion),
+              brief: preview ? preview.original : brief, ...(preview ? { preview: preview.metadata } : {}), employeeFacts: source.employeeFacts }),
             ...(feedback ? { feedback } : {}),
             versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion,
-              snapshot: candidate.snapshot.snapshotVersion, terms: terms?.termsVersion ?? null, clock: clock.value.clockVersion, availability: candidate.availability.version,
+              snapshot: candidate.snapshot.snapshotVersion, terms: termsVersion, clock: clock.value.clockVersion, availability: candidate.availability.version,
               ...(fb ? { feedback: fb.identity } : {}) },
-            evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
-              assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } });
+            ...(projection === 'compact' ? {} : { evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
+              assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } }) });
         }
-        // Same again nulls every kept score, so the shared ranker ignores category fit for continuity matches.
-        const ranked = rankEmployeeRecommendations(decisions, config);
+        // The gallery ranker validates this policy too; compact paths must retain its failure semantics.
+        if (projection !== 'gallery' && config.ranking !== undefined && (config.ranking.rule !== 'similarFitThenPoints'
+          || !Number.isFinite(config.ranking.fitTolerance) || config.ranking.fitTolerance < 0 || config.ranking.fitTolerance > 100)) throw Error('Invalid employee recommendation ranking');
+        // Internal allocation projections retain all provider-ordered decisions without gallery ranking.
+        const ranked = projection === 'gallery' ? rankEmployeeRecommendations(decisions, config) : null;
+        const eligibleCount = ranked?.length ?? decisions.reduce((count, entry) => count + Number(entry.suitable), 0);
         return freezeVehicleData(result('ok', { value: { scenarioId: 'employee-scheme-demo-v1', runId: context.runId,
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
-          state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
+          state: !decisions.length ? 'no-stock' : eligibleCount ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
           versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion,
             ...(fb ? { feedback: fb.identity } : {}) },
           // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
           decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
-          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length,
+          ...(ranked ? { recommendations: ranked.slice(0, config.displayLimit) } : {}), eligibleCount,
           ...(config.ranking ? { ranking: config.ranking } : {}) } }));
       } catch { return unavailable('employee-source-invalid'); }
 }
@@ -345,8 +374,7 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
   };
 }
 
-// In-process calculation only. The caller owns persisted-intent authority, current
-// consent and transactional source checks. This subject is data, never a session.
+// In-process data calculation only; callers own consent, persisted intent and transactional checks.
 // Keep this factory separate from the service object used by public HTTP routes.
 export function createStoredSubjectRecommendationEvaluator({ provider, policy, time } = {}) {
   const keys = ['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'];
@@ -365,5 +393,18 @@ export function createStoredSubjectRecommendationEvaluator({ provider, policy, t
         return outcome;
       } catch { return unavailable('employee-source-invalid'); }
     },
+  };
+}
+
+// Internal allocation calculation; callers supply frozen planning ports and one-car sources for quotes.
+export function createAllocationRecommendationEvaluator({ provider, policy, time } = {}) {
+  const evaluate = (context, request, projection) => {
+    if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return Promise.resolve(unavailable('provider-not-configured'));
+    if (!context?.roles?.includes('employee')) return Promise.resolve(result('forbidden', { reason: 'An employee context is required.' }));
+    return evaluateRecommendation({ provider, policy, time }, context, request, null, projection);
+  };
+  return {
+    evaluate: (context, request) => evaluate(context, request, 'compact'),
+    quote: (context, request) => evaluate(context, request, 'detailed'),
   };
 }
