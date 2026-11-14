@@ -6795,13 +6795,43 @@
     {
       "assignee": "",
       "id": "FUCQ-470",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T03:05:25Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Reconcile approvals and ordering status",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-470",
+      "slices": [
+        {
+          "id": "s1-ports",
+          "status": "complete",
+          "title": "Approval ports, retained policy validation, V470_1 schema and synthetic, unsupported and unconfigured status providers",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of V470_1 and ports; gcsp.api.approvals tests 19/19 on native PG17 at base b1be1d59c"
+        },
+        {
+          "id": "s2-service",
+          "status": "complete",
+          "title": "Tick-driven provider progression and reads with native PostgreSQL replay, uncertain, refusal, decline, scoping and restart tests",
+          "observed_at": "2026-11-14T02:34:28Z",
+          "evidence": "lead review of ApprovalService/Commands/Store; ApprovalLifecycleTest 8, ApprovalAccessTest 5 on native PG17"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "Order progress reads and presenter approval tick endpoints, startup selection and reconcile, role and ownership HTTP tests",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
+        }
+      ]
     },
     {
       "assignee": "",
