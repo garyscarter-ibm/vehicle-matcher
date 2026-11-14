@@ -6224,7 +6224,7 @@
     {
       "assignee": "",
       "id": "FUCQ-457",
-      "observed_at": "2026-11-13T23:42:43Z",
+      "observed_at": "2026-11-14T00:24:06Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and publish canonical versioned policy",
@@ -6234,13 +6234,20 @@
       "slices": [
         {
           "id": "s1-read-core",
-          "status": "not-started",
-          "title": "Java PolicyService reads over the retained files with Node parity"
+          "status": "complete",
+          "title": "Java PolicyService reads over the retained files with Node parity",
+          "observed_at": "2026-11-14T00:24:06Z",
+          "evidence": "0e97cea5 reviewed by story-lead: 14 policy tests incl. 718 Node-generated parity cases and retained projection fixture; verify 104/0F/37 skipped"
         },
         {
           "id": "s2-publish-activation",
           "status": "not-started",
           "title": "Persisted versions, Greg publication and run activation on native PostgreSQL"
+        },
+        {
+          "id": "s5-reviewed-adoption",
+          "status": "not-started",
+          "title": "Reviewed assumption adoption with Node-compatible digests"
         },
         {
           "id": "s3-http",
