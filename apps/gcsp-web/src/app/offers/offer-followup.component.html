@@ -1,0 +1,66 @@
+@if (store.offer()?.state === 'declined') {
+  <section class="followup" aria-label="Your next offer" [attr.aria-busy]="busy()">
+    <h2 tabindex="-1">{{ headline() }}</h2>
+    <p role="status" aria-live="polite" aria-atomic="true">{{ busy() ? state().phase === 'saving' ? 'Saving your change.' : 'Please wait.' : message() }}</p>
+    @if (question(); as next) {
+      @if (state().phase === 'ready' || state().phase === 'saving') {
+        <form (submit)="$event.preventDefault(); confirm()">
+          <fieldset [disabled]="busy()"><legend>{{ next.question.prompt }}</legend>
+            @if (next.question.currentValue === null) { <p>Not in your preferences yet. Your answer adds it.</p> }
+            @switch (next.question.control.kind) {
+              @case ('options') {
+                @for (option of next.question.control.options; track option.value; let index = $index) {
+                  <label class="followup-option" [for]="prefix + '-option-' + index"><input type="radio" [id]="prefix + '-option-' + index" [name]="prefix + '-option'" [value]="option.value" [checked]="state().answer === option.value" (change)="store.chooseAnswer(option.value)" />{{ option.label }}</label>
+                }
+              }
+              @case ('slider') {
+                <gcsp-labelled-field [controlId]="prefix + '-range'" [label]="next.question.prompt">
+                  <input type="range" [id]="prefix + '-range'" [min]="next.question.control.minimum" [max]="next.question.control.maximum" step="1" [value]="state().answer" [attr.aria-describedby]="prefix + '-answer-error'" (input)="store.chooseAnswer(+$any($event.target).value)" />
+                  <output [for]="prefix + '-range'">{{ state().answer }}%</output>
+                </gcsp-labelled-field>
+              }
+              @case ('equipment') {
+                <gcsp-labelled-field [controlId]="prefix + '-equipment'" label="Required equipment" [hint]="'One name per line, up to ' + next.question.control.maximumItems + ' names and ' + next.question.control.maximumItemLength + ' characters per name.'">
+                  <textarea [id]="prefix + '-equipment'" rows="4" [value]="equipment(state().answer)" [attr.aria-describedby]="prefix + '-equipment-hint ' + prefix + '-answer-error'" [attr.aria-invalid]="!!state().error" (input)="chooseEquipment($any($event.target).value)"></textarea>
+                </gcsp-labelled-field>
+              }
+            }
+          </fieldset>
+          <p [id]="prefix + '-answer-error'" role="alert">{{ state().error }}</p>
+          <p [id]="prefix + '-confirm-hint'">{{ store.canConfirmFollowup() ? 'Only this answer will change.' : next.question.currentValue === null ? 'Choose an answer, then confirm.' : 'Choose a different answer, then confirm.' }}</p>
+          <button gcspButton type="submit" [attr.aria-describedby]="prefix + '-confirm-hint'" [disabled]="!store.canConfirmFollowup() || busy()">{{ busy() ? 'Saving your change' : 'Confirm this change' }}</button>
+        </form>
+      }
+    }
+    @if (comparison(); as compared) {
+      @if (state().phase === 'ready') {
+        <p>Compare the quoted cars with your confirmed answers.</p>
+        <div class="followup-cars">
+          @for (card of cards(); track card.offer.offerId) {
+            <section class="followup-car"><h3>{{ card.label }}</h3><h4>{{ card.view.name }}</h4>
+              <gcsp-media-gallery [name]="card.view.name" [images]="card.view.images" />
+              <p>{{ card.view.points }} points a month</p><p>{{ card.view.allowance === null ? 'Allowance not supplied' : card.view.allowance + ' points a month allowance' }}</p>
+              <p>{{ card.view.contribution ?? 'Contribution not supplied' }}</p>
+              <gcsp-vehicle-details [name]="card.view.name" [finishes]="card.view.finishes" [facts]="card.view.rows" [equipment]="card.view.equipment" />
+              @for (group of [{ label: 'Why this car', entries: card.view.reasons }, { label: 'Trade-offs', entries: card.view.tradeOffs }, { label: 'Needs attention', entries: card.view.blockers }, { label: 'Still unknown', entries: card.view.unknowns }]; track group.label) {
+                @if (group.entries.length) { <h4>{{ group.label }}</h4><ul>@for (entry of group.entries; track $index) { <li>{{ entry.title }}@for (detail of entry.details; track $index) { <p>{{ detail }}</p> }</li> }</ul> }
+              }
+              <details><summary>Quote source</summary><dl><div><dt>Quote</dt><dd>{{ card.offer.quote.quoteId }}</dd></div><div><dt>Preferences at quote</dt><dd>{{ card.offer.quote.briefVersion }}</dd></div><div><dt>Policy at quote</dt><dd>{{ card.offer.quote.policyVersion }}</dd></div><div><dt>Quoted at</dt><dd>{{ date(card.offer.quote.quotedAt) }}</dd></div></dl></details>
+            </section>
+          }
+        </div>
+        <p>Each quote keeps its original preferences and policy. No new match score is calculated.</p>
+        <div class="followup-table"><table><caption>Your confirmed preferences, version {{ compared.currentBriefVersion }}</caption><thead><tr><th scope="col">Your answer</th><th scope="col">Quoted fact</th><th scope="col">Declined offer</th><th scope="col">Next offer</th></tr></thead><tbody>
+          @for (requirement of compared.requirements; track $index) {
+            @for (entry of entries(requirement.previousFacts); track entry[0]) {
+              <tr><th scope="row">{{ label(requirement.key) }}: {{ this.requirement(requirement) }}{{ requirement.kind === 'preference' ? ' · importance ' + requirement.importance + '%' : '' }}</th><td>{{ label(entry[0]) }}</td><td>{{ fact(entry[1]) }}</td><td>{{ fact(requirement.nextFacts[entry[0]]) }}</td></tr>
+            }
+          } @empty { <tr><td colspan="4">No confirmed requirements were supplied for comparison.</td></tr> }
+        </tbody></table></div>
+        <button gcspButton type="button" (click)="offerOpened.emit(compared.next.offer.offerId)">Open this offer</button>
+      }
+    }
+    @if (state().phase === 'uncertain') { <button gcspButton type="button" (click)="confirm()">Retry the same change</button> }
+    <button gcspButton type="button" variant="ghost" [disabled]="busy()" (click)="store.refreshFollowup()">Check next-offer status</button>
+  </section>
+}

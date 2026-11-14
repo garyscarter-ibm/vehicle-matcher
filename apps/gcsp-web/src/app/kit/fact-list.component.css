@@ -1,0 +1,7 @@
+:host { display: block; min-width: 0; }
+.gcsp-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: var(--gcsp-space-4) var(--gcsp-space-6); margin: 0; }
+.gcsp-fact { min-width: 0; margin: 0; }
+dt { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); overflow-wrap: anywhere; }
+dd { margin: var(--gcsp-space-half) 0 0; overflow-wrap: anywhere; font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); }
+dd.is-missing { color: var(--gcsp-text-muted); font-style: italic; font-weight: var(--gcsp-font-weight); }
+.gcsp-facts-more { margin: var(--gcsp-space-4) 0 0; }
