@@ -1,0 +1,199 @@
+{
+ "mappingSize": 680,
+ "cases": [
+  {
+   "imageId": "bmw-display-07c269dd7f55fad0a56b",
+   "expected": {
+    "imageId": "bmw-display-07c269dd7f55fad0a56b",
+    "asset": "assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+    "sha256": "07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427",
+    "bytes": 40050
+   }
+  },
+  {
+   "imageId": "bmw-display-ed60cefd049e72934235",
+   "expected": {
+    "imageId": "bmw-display-ed60cefd049e72934235",
+    "asset": "assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+    "sha256": "ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a",
+    "bytes": 41120
+   }
+  },
+  {
+   "imageId": "bmw-display-00419fa06ad620a42de6",
+   "expected": {
+    "imageId": "bmw-display-00419fa06ad620a42de6",
+    "asset": "assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp",
+    "sha256": "00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93",
+    "bytes": 41486
+   }
+  },
+  {
+   "imageId": "bmw-display-719a549c1b6019c31850",
+   "expected": {
+    "imageId": "bmw-display-719a549c1b6019c31850",
+    "asset": "assets/gcsp-vehicle-evidence/719a549c1b6019c31850059f4331754756168ac4cc88c4513679fcae8bf6fc72.webp",
+    "sha256": "719a549c1b6019c31850059f4331754756168ac4cc88c4513679fcae8bf6fc72",
+    "bytes": 43886
+   }
+  },
+  {
+   "imageId": "bmw-display-89f72e0b5dd9b487f221",
+   "expected": {
+    "imageId": "bmw-display-89f72e0b5dd9b487f221",
+    "asset": "assets/gcsp-vehicle-evidence/89f72e0b5dd9b487f22164a9321d5c03f7762ffd8e15adc18e11a77ab755adfc.webp",
+    "sha256": "89f72e0b5dd9b487f22164a9321d5c03f7762ffd8e15adc18e11a77ab755adfc",
+    "bytes": 38822
+   }
+  },
+  {
+   "imageId": "bmw-display-4489e430feeb042f1786",
+   "expected": {
+    "imageId": "bmw-display-4489e430feeb042f1786",
+    "asset": "assets/gcsp-vehicle-evidence/4489e430feeb042f1786c5b4ddc86ef1540a4d0eb960c4cf0faaa83b968a6f22.webp",
+    "sha256": "4489e430feeb042f1786c5b4ddc86ef1540a4d0eb960c4cf0faaa83b968a6f22",
+    "bytes": 42586
+   }
+  },
+  {
+   "imageId": "bmw-display-1b01d4a62fa0d1ffa153",
+   "expected": {
+    "imageId": "bmw-display-1b01d4a62fa0d1ffa153",
+    "asset": "assets/gcsp-vehicle-evidence/1b01d4a62fa0d1ffa153371d38fdeac84adbbc674227dd1b853c3af8306ef027.webp",
+    "sha256": "1b01d4a62fa0d1ffa153371d38fdeac84adbbc674227dd1b853c3af8306ef027",
+    "bytes": 43206
+   }
+  },
+  {
+   "imageId": "bmw-display-d3245036c6bbd7f1fa32",
+   "expected": {
+    "imageId": "bmw-display-d3245036c6bbd7f1fa32",
+    "asset": "assets/gcsp-vehicle-evidence/d3245036c6bbd7f1fa324be738862422605095735dd3ec6a4fa175ffafaa6976.webp",
+    "sha256": "d3245036c6bbd7f1fa324be738862422605095735dd3ec6a4fa175ffafaa6976",
+    "bytes": 43466
+   }
+  },
+  {
+   "imageId": "bmw-display-ae3c7e57cb59a0d97040",
+   "expected": {
+    "imageId": "bmw-display-ae3c7e57cb59a0d97040",
+    "asset": "assets/gcsp-vehicle-evidence/ae3c7e57cb59a0d97040263751763f2323876109501abfb8f3d64a9f518e7306.webp",
+    "sha256": "ae3c7e57cb59a0d97040263751763f2323876109501abfb8f3d64a9f518e7306",
+    "bytes": 42814
+   }
+  },
+  {
+   "imageId": "bmw-display-44056f6b4aca840e77ed",
+   "expected": {
+    "imageId": "bmw-display-44056f6b4aca840e77ed",
+    "asset": "assets/gcsp-vehicle-evidence/44056f6b4aca840e77ed3ba3a1eda63d2056af2ec9ce3832bbdd76d59085db47.webp",
+    "sha256": "44056f6b4aca840e77ed3ba3a1eda63d2056af2ec9ce3832bbdd76d59085db47",
+    "bytes": 39902
+   }
+  },
+  {
+   "imageId": "bmw-display-8a391dd4cc66221e1cd4",
+   "expected": {
+    "imageId": "bmw-display-8a391dd4cc66221e1cd4",
+    "asset": "assets/gcsp-vehicle-evidence/8a391dd4cc66221e1cd4259784215122f5b862c30e7a315c27a3991870dfc2b3.webp",
+    "sha256": "8a391dd4cc66221e1cd4259784215122f5b862c30e7a315c27a3991870dfc2b3",
+    "bytes": 40770
+   }
+  },
+  {
+   "imageId": "bmw-display-5ce2febb1d0c3b7409ca",
+   "expected": {
+    "imageId": "bmw-display-5ce2febb1d0c3b7409ca",
+    "asset": "assets/gcsp-vehicle-evidence/5ce2febb1d0c3b7409caed6a1001ae9cce69cc9466760d47b23f284dcdaee3d3.webp",
+    "sha256": "5ce2febb1d0c3b7409caed6a1001ae9cce69cc9466760d47b23f284dcdaee3d3",
+    "bytes": 41254
+   }
+  },
+  {
+   "imageId": "bmw-display-00b920b605d965c70a72",
+   "expected": {
+    "imageId": "bmw-display-00b920b605d965c70a72",
+    "asset": "assets/gcsp-vehicle-evidence/00b920b605d965c70a72cb1d2064c2ffc6e25e31a1e61d50f1b27b9fade5396e.webp",
+    "sha256": "00b920b605d965c70a72cb1d2064c2ffc6e25e31a1e61d50f1b27b9fade5396e",
+    "bytes": 39376
+   }
+  },
+  {
+   "imageId": "bmw-display-774a03b2ba462c722324",
+   "expected": {
+    "imageId": "bmw-display-774a03b2ba462c722324",
+    "asset": "assets/gcsp-vehicle-evidence/774a03b2ba462c7223244d5233520f7ae8eaafe5a24f1f751dc090411cd46f76.webp",
+    "sha256": "774a03b2ba462c7223244d5233520f7ae8eaafe5a24f1f751dc090411cd46f76",
+    "bytes": 42054
+   }
+  },
+  {
+   "imageId": "bmw-display-bf08cd085c093ee1a35f",
+   "expected": {
+    "imageId": "bmw-display-bf08cd085c093ee1a35f",
+    "asset": "assets/gcsp-vehicle-evidence/bf08cd085c093ee1a35fd79d22b0f07027a90b0eb1232d308e09eb7aad63d6e2.webp",
+    "sha256": "bf08cd085c093ee1a35fd79d22b0f07027a90b0eb1232d308e09eb7aad63d6e2",
+    "bytes": 38816
+   }
+  },
+  {
+   "imageId": "bmw-display-5bf9ff5b946b6a5c24ca",
+   "expected": {
+    "imageId": "bmw-display-5bf9ff5b946b6a5c24ca",
+    "asset": "assets/gcsp-vehicle-evidence/5bf9ff5b946b6a5c24ca9ebe29a4cd34f4fde77a8b86697fae72eab198d09710.webp",
+    "sha256": "5bf9ff5b946b6a5c24ca9ebe29a4cd34f4fde77a8b86697fae72eab198d09710",
+    "bytes": 44924
+   }
+  },
+  {
+   "imageId": "bmw-display-af1dc0fd063cfae9b9d9",
+   "expected": {
+    "imageId": "bmw-display-af1dc0fd063cfae9b9d9",
+    "asset": "assets/gcsp-vehicle-evidence/af1dc0fd063cfae9b9d900c3befdd86352ba901fb423f18bb671f6e54b1792a8.webp",
+    "sha256": "af1dc0fd063cfae9b9d900c3befdd86352ba901fb423f18bb671f6e54b1792a8",
+    "bytes": 40748
+   }
+  },
+  {
+   "imageId": "bmw-display-d323388b874736e75d29",
+   "expected": {
+    "imageId": "bmw-display-d323388b874736e75d29",
+    "asset": "assets/gcsp-vehicle-evidence/d323388b874736e75d29d1ee5ad006416fb10f00991137b39356a569009ec1e7.webp",
+    "sha256": "d323388b874736e75d29d1ee5ad006416fb10f00991137b39356a569009ec1e7",
+    "bytes": 44484
+   }
+  },
+  {
+   "imageId": "bmw-display-a4d3c9abeef1d74547a6",
+   "expected": {
+    "imageId": "bmw-display-a4d3c9abeef1d74547a6",
+    "asset": "assets/gcsp-vehicle-evidence/a4d3c9abeef1d74547a6596bd3aac52b5f30ba78f9af71dc863c6db780be1456.webp",
+    "sha256": "a4d3c9abeef1d74547a6596bd3aac52b5f30ba78f9af71dc863c6db780be1456",
+    "bytes": 43874
+   }
+  },
+  {
+   "imageId": "bmw-display-6f57364fe122f1a5b724",
+   "expected": {
+    "imageId": "bmw-display-6f57364fe122f1a5b724",
+    "asset": "assets/gcsp-vehicle-evidence/6f57364fe122f1a5b7242c66407efc2077d7f400dd3b78faadadf0540ccc3050.webp",
+    "sha256": "6f57364fe122f1a5b7242c66407efc2077d7f400dd3b78faadadf0540ccc3050",
+    "bytes": 44612
+   }
+  },
+  {
+   "imageId": "bmw-display-ffffffffffffffffffff",
+   "expected": null
+  },
+  {
+   "imageId": "not-an-image-id",
+   "expected": null
+  },
+  {
+   "imageId": "bmw-display-07c269dd7f55fad0a56bX",
+   "expected": null
+  }
+ ],
+ "servedCount": 680,
+ "servedDigest": "64afd0a00c970c503023c37a88fbb29441522dbdb26f0e31c390da54ad754199"
+}
