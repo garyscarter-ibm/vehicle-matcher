@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T06:14:03Z",
+      "observed_at": "2026-11-14T06:14:34Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -7366,6 +7366,15 @@
           "expires_at": "2026-11-14T06:14:03.067095+00:00",
           "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
           "status": "correction reviewed; inactive"
+        },
+        {
+          "name": "Spike",
+          "harness": "codex",
+          "role": "runner rendered activity proof",
+          "observed_at": "2026-11-14T06:14:34.043395+00:00",
+          "expires_at": "2026-11-14T07:14:34.043395+00:00",
+          "source": "lead assigned runner via authoritative tier; launch/runtime verification pending",
+          "status": "assigned"
         }
       ],
       "slices": [
@@ -7385,8 +7394,10 @@
         },
         {
           "id": "proof",
-          "status": "not-started",
-          "title": "Selected state and desktop/narrow browser review"
+          "status": "in-progress",
+          "title": "Selected state and desktop/narrow browser review",
+          "observed_at": "2026-11-14T06:14:34Z",
+          "evidence": "Lead assigned isolated rendered proof to Spike after view source/caller/unit review; final proof/review not yet established."
         },
         {
           "id": "integration",
