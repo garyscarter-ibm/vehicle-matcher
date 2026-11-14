@@ -6352,13 +6352,36 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T00:33:29Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "in-progress",
+          "title": "Documents schema, policy and stage ports, provider port with synthetic, unsupported and unconfigured adapters",
+          "observed_at": "2026-11-14T00:33:29Z"
+        },
+        {
+          "id": "s2-tick",
+          "status": "not-started",
+          "title": "Source-linked opening and provider progress on ticks, exceptions and readiness projection on native PostgreSQL"
+        },
+        {
+          "id": "s3-ack-http",
+          "status": "not-started",
+          "title": "Employee reads, provider acknowledgement command and /api/gcsp/v1/documents endpoints with startup selection"
+        },
+        {
+          "id": "s4-integration",
+          "status": "not-started",
+          "title": "Story validation, base merge, migration number and result"
+        }
+      ]
     },
     {
       "assignee": "",
