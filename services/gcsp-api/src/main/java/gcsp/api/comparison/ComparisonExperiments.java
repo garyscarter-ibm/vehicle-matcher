@@ -111,6 +111,11 @@ public final class ComparisonExperiments {
 
     /** Checks an experiment before any replay; refuses with ComparisonRunError, or ComparisonInputError from the load. */
     public static Prepared prepare(JsonNode experiment, PolicyService policy, String nowIso) {
+        return prepare(experiment, policy, nowIso, PREPARATION_RUN);
+    }
+
+    /** As above, reading policy under the given run (a database policy source knows only real runs). */
+    public static Prepared prepare(JsonNode experiment, PolicyService policy, String nowIso, String runId) {
         JsonNode idNode = plain(experiment) ? experiment.get("experimentId") : null;
         String id = idNode != null && idNode.isTextual() ? idNode.textValue() : null;
         boolean process = PROCESS_EXPERIMENT_ID.equals(id);
@@ -122,15 +127,15 @@ public final class ComparisonExperiments {
         }
         if (experiment.get("overlay") != null && !plain(experiment.get("overlay"))) throw refuse("overlay");
         ObjectNode overlay = experiment.get("overlay") == null ? JSON.objectNode() : (ObjectNode) experiment.get("overlay");
-        PolicyResult probe = policy.getAssumption("comparison.startsAt", new PolicyRead(PREPARATION_RUN, nowIso, null));
+        PolicyResult probe = policy.getAssumption("comparison.startsAt", new PolicyRead(runId, nowIso, null));
         if (!probe.ok()) throw new ComparisonRunError(probe.status(), "comparison.startsAt");
         ComparisonPolicy snapshot = ComparisonPolicy.load(policy,
-                new PolicyRead(PREPARATION_RUN, probe.value().get("value").textValue(), null));
+                new PolicyRead(runId, probe.value().get("value").textValue(), null));
         JsonNode given = experiment.get("seeds");
         ArrayNode seeds = (given == null || given.isNull() ? snapshot.assumptions().get("comparison.seeds").get("value") : given)
                 instanceof ArrayNode list ? list.deepCopy() : null;
         if (seeds == null || seeds.size() == 0 || !distinct(seeds)) throw refuse("seeds");
-        PolicyRead read = new PolicyRead(PREPARATION_RUN,
+        PolicyRead read = new PolicyRead(runId,
                 snapshot.assumptions().get("comparison.startsAt").get("value").textValue(), snapshot.policyVersion());
         JsonNode ruleRow = assumption(policy, ComparisonMeasures.RULE_KEY, read);
         if (process) {

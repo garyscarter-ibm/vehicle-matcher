@@ -110,14 +110,29 @@ public final class RetainedComparisonResults {
                 || rows == null || !rows.isArray() || (!process && rows.isEmpty())) {
             throw new Refused("The result is missing required fields.");
         }
-        ObjectNode idInput = MAPPER.createObjectNode();
-        idInput.set("completedAt", result.get("completedAt"));
-        idInput.set("manifest", manifest);
-        idInput.set(process ? "perSeed" : "arms", rows);
-        String resultId = (process ? "process-comparison-" : experimentId + "-comparison-")
-                + CanonicalJson.digest(idInput).substring(0, 32);
+        String resultId = resultId(process, experimentId, result);
         return new Retained(resultId, experimentId, text(result.get("kind")), completedAt,
                 text(manifest.get("policyVersion")), text(envelope.get("digest")), result);
+    }
+
+    /** The stored id: kind prefix plus the digest of completion time, manifest and rows. Shared by import and runs. */
+    static String resultId(boolean process, String experimentId, JsonNode result) {
+        ObjectNode idInput = MAPPER.createObjectNode();
+        idInput.set("completedAt", result.get("completedAt"));
+        idInput.set("manifest", result.get("manifest"));
+        idInput.set(process ? "perSeed" : "arms", result.get(process ? "perSeed" : "arms"));
+        return (process ? "process-comparison-" : experimentId + "-comparison-")
+                + CanonicalJson.digest(idInput).substring(0, 32);
+    }
+
+    /** A freshly run result as the store keeps it: verified like an imported envelope, with its own digest. */
+    public static Retained ofRun(JsonNode result) throws Refused {
+        ObjectNode envelope = MAPPER.createObjectNode();
+        boolean process = result != null && "process-comparison".equals(text(result.get("kind")));
+        envelope.put("format", process ? PROCESS_FORMAT : EXPERIMENT_FORMAT);
+        envelope.put("digest", CanonicalJson.digest(result));
+        envelope.set("result", result);
+        return verify(envelope);
     }
 
     private static String text(JsonNode node) {

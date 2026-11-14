@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import javax.sql.DataSource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /** The comparison seam for the resource and the startup import: the active run's scope, the store and the retained files. */
@@ -27,6 +28,12 @@ public class ComparisonService {
 
     public boolean available() {
         return persistence.active();
+    }
+
+    /** The pooled datasource the job rows are written through. */
+    public DataSource dataSource() {
+        if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
+        return sources.get();
     }
 
     public ComparisonStore store() {

@@ -103,6 +103,7 @@ public final class ComparisonRunner {
                 for (int k = 0; k < 3; k++) if (!identity[k].equals(seen[k])) throw refuse("manifest");
                 ObjectNode routes = JSON.objectNode();
                 for (String route : ROUTES) {
+                    if (Thread.interrupted()) throw new ComparisonInterrupted();
                     JsonNode record = replay.replay(new ComparisonReplay.Request(arm, route, seed, inputs, prepared.snapshot(),
                             policy, multiplier(prepared, arm), codeRevision));
                     if (record == null || !route.equals(textOf(record.get("route"))) || !strictEq(record.get("seed"), seed)
@@ -175,10 +176,16 @@ public final class ComparisonRunner {
     }
 
     /** Runs process-only or a what-if; throws ComparisonRunError, ComparisonUnavailable or what the replay throws. */
-    @SuppressWarnings("unchecked")
     public static ObjectNode run(JsonNode experiment, PolicyService policy, ComparisonReplay replay, String codeRevision,
             Supplier<String> now, ProgressListener progress) {
-        Prepared prepared = ComparisonExperiments.prepare(experiment, policy, now.get());
+        return run(experiment, policy, replay, codeRevision, now, progress, ComparisonExperiments.PREPARATION_RUN);
+    }
+
+    /** As above, reading policy under the given run. */
+    @SuppressWarnings("unchecked")
+    public static ObjectNode run(JsonNode experiment, PolicyService policy, ComparisonReplay replay, String codeRevision,
+            Supplier<String> now, ProgressListener progress, String runId) {
+        Prepared prepared = ComparisonExperiments.prepare(experiment, policy, now.get(), runId);
         Object[] replayed = replayArms(prepared, replay, policy, codeRevision, progress);
         List<ArmResult> results = (List<ArmResult>) replayed[0];
         Set<String> limitations = (Set<String>) replayed[1];

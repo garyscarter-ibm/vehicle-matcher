@@ -36,27 +36,32 @@ public final class ComparisonStore {
     /** NEW when stored; SAME when the id already holds this digest; CONFLICT when it holds another (left unchanged). */
     public Inserted insert(String environmentId, Retained r, String origin) throws SQLException {
         try (Connection c = dataSource.getConnection()) {
-            try (PreparedStatement ps = c.prepareStatement("INSERT INTO comparison_results (environment_id, result_id, "
-                    + "experiment_id, kind, completed_at, policy_version, result_digest, origin, result) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::jsonb) ON CONFLICT (environment_id, result_id) DO NOTHING")) {
-                ps.setString(1, environmentId);
-                ps.setString(2, r.resultId());
-                ps.setString(3, r.experimentId());
-                ps.setString(4, r.kind());
-                ps.setTimestamp(5, Timestamp.from(r.completedAt()));
-                ps.setString(6, r.policyVersion());
-                ps.setString(7, r.digest());
-                ps.setString(8, origin);
-                ps.setString(9, r.result().toString());
-                if (ps.executeUpdate() == 1) return Inserted.NEW;
-            }
-            try (PreparedStatement ps = c.prepareStatement(
-                    "SELECT result_digest FROM comparison_results WHERE environment_id = ? AND result_id = ?")) {
-                ps.setString(1, environmentId);
-                ps.setString(2, r.resultId());
-                try (ResultSet rs = ps.executeQuery()) {
-                    return rs.next() && r.digest().equals(rs.getString(1)) ? Inserted.SAME : Inserted.CONFLICT;
-                }
+            return insert(c, environmentId, r, origin);
+        }
+    }
+
+    /** The same insert on the caller's connection, so a job can store its result and finish in one transaction. */
+    static Inserted insert(Connection c, String environmentId, Retained r, String origin) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("INSERT INTO comparison_results (environment_id, result_id, "
+                + "experiment_id, kind, completed_at, policy_version, result_digest, origin, result) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::jsonb) ON CONFLICT (environment_id, result_id) DO NOTHING")) {
+            ps.setString(1, environmentId);
+            ps.setString(2, r.resultId());
+            ps.setString(3, r.experimentId());
+            ps.setString(4, r.kind());
+            ps.setTimestamp(5, Timestamp.from(r.completedAt()));
+            ps.setString(6, r.policyVersion());
+            ps.setString(7, r.digest());
+            ps.setString(8, origin);
+            ps.setString(9, r.result().toString());
+            if (ps.executeUpdate() == 1) return Inserted.NEW;
+        }
+        try (PreparedStatement ps = c.prepareStatement(
+                "SELECT result_digest FROM comparison_results WHERE environment_id = ? AND result_id = ?")) {
+            ps.setString(1, environmentId);
+            ps.setString(2, r.resultId());
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && r.digest().equals(rs.getString(1)) ? Inserted.SAME : Inserted.CONFLICT;
             }
         }
     }

@@ -141,7 +141,7 @@ public class ComparisonResource {
     }
 
     /** Names every query field the route does not take. */
-    private static Response unsupportedQuery(UriInfo uri, String... allowed) {
+    static Response unsupportedQuery(UriInfo uri, String... allowed) {
         List<String> ok = List.of(allowed);
         TreeSet<String> extra = new TreeSet<>(uri.getQueryParameters().keySet());
         extra.removeIf(ok::contains);
