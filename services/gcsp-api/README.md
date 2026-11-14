@@ -64,6 +64,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_MAIL_FROM` | empty | Sender address. Required with `brevo`. |
 | `GCSP_MAIL_FROM_NAME` | empty | Sender display name. Required with `brevo`. |
 | `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
+| `GCSP_CLAIMS_SWEEP_INTERVAL` | `5s` | How often due manual claims expire and open remote claim operations reconcile, from `1s` to `10m`. |
 | `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
@@ -108,13 +109,34 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
 that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
 `pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
-Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts are not yet
-bound, so each attempt retries as `transport-unavailable` until the Java offer Story binds `OfferFacts`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts come from
+`PostgresOfferFacts` (FUCQ-465); an offer with no record fails as `message-facts-unavailable`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
 With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
 retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
+
+## Manual claims (FUCQ-463)
+
+`gcsp.api.claims.ManualClaims` takes the exact car for one employee (employee only; the principal needs an `employeeId`).
+Routes under `/api/gcsp/v1`: `GET /manual/claim`, `POST /manual/claim`, `POST /manual/claim/review`, `POST /manual/claim/release`.
+Any query is `400 unsupported-query`; a principal from an earlier run is `409 stale-run`. There is deliberately no public
+allocate route: ordering reaches the claim through `CartSelectionConversion` (the `cart` `SelectionConversionPort` bean), which
+locks and allocates the hold and car inside ordering's own transaction; `quoteId` (`manual-hold:d` is `manual-quote:d`) is in the claim view.
+
+- Exclusivity is the `custody_holds` unique indexes; the slot and hold rows are read `FOR UPDATE`, and each command is one
+  transaction. Idempotency is the command receipt (a changed body under the same `commandId` is `409
+  idempotency-input-changed`) and, remotely, the operation id.
+- Remote mode commits an intent, calls `ClaimStockPort` outside any transaction, then finalizes. Only `LocalClaimStock`
+  ships; remote is proven with a test double, and no live remote stock authority exists.
+- `ClaimSweep` expires due holds and reconciles open remote operations every `GCSP_CLAIMS_SWEEP_INTERVAL` (actor `system:manual-claims`).
+- In remote mode the local review deadline governs: the remote authority still holds the preview deadline sent with the
+  claim, so remote deadlines are advisory and release or expiry always go through an explicit operation. A remote
+  allocation submitted through ordering is recorded in `selection-pending` and driven by `ClaimSweep` after ordering commits.
+- `SlotOccupancyPort` reads `offerId` from the Buddy hold's `attributes` (FUCQ-464 writes it there). Still unbound:
+  `ManualSelectionPort` (every claim is `503 manual-selection-not-configured` until Java manual browse, eligibility and
+  order draft, FUCQ-461/442, land).
 
 ## Policy (FUCQ-457)
 
@@ -317,6 +339,36 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
 
+## Buddy allocation (FUCQ-464)
+
+`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
+services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+
+| Service | Does |
+| --- | --- |
+| `AllocationTriggers.consume(scope, max)` | Reads `stock-released`, `brief-changed`, `buddy-expired` (grouped per revision and `expiredAt`) and `offer-declined` outbox events after `allocation_trigger_cursor`, allocates each, then advances the cursor by version CAS. |
+| `AllocationService.allocate(scope, trigger)` | `allocation.prepare` freezes the ranked plan (policy tie-break, every eligible contender, evaluations); then one `allocation.claim` per contender, then `allocation.complete`. |
+| `BuddyExpiry.expire(scope)` | Expires due local Buddy holds (inclusive deadline) with their offers, or starts a remote release; anything misaligned is retained. |
+| `BuddyRemoteLifecycle.drive / reconcile` | Remote claim and release: an attempt transaction, the provider call outside any transaction, then an acknowledgement transaction. |
+
+Locking and idempotency:
+- One occupying holder per car, and one per slot unit, is decided by the V1 partial unique indexes on `custody_holds`. A
+  23505 inside the claim savepoint is recorded as `car-held` or `slot-occupied`, and the fallback continues.
+- Each claim locks its `allocation_runs` row `FOR UPDATE` and advances `next_index` by version CAS.
+- The allocation id comes from (trigger type, source event). The claim operation id comes from (run, allocation,
+  employee, car). Command receipts replay both, and a reused id with different input is `command-input-changed`.
+- Remote operations lock their `pending_operations` row `FOR UPDATE` and CAS its version in both transactions.
+- An uncertain commit is inspected, never assumed.
+- A remote hold is never freed until the provider confirms, so unknown or mismatched acknowledgements stay pending.
+- Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
+  `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
+
+Ports, stubbed until their Stories merge:
+- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
+- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+
+FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
+
 ## Greg demand and presenter suitability (FUCQ-475)
 
 | Path | Role | Result |
@@ -410,6 +462,23 @@ retained images served. Any copy must be byte-exact: a changed catalogue, defini
 Measured on `fleet-source.v1` (2,425 configurations): the store, catalogue and definitions load in about 0.7 to 0.9 s
 at startup and add about 12 MB of heap after a full GC (the s1 measurement of the store alone was about 0.6 s and 3 MB).
 Reads then use an index and do not rescan the 45 MB file.
+## Offers (FUCQ-465)
+
+The emailed link is `/gcsp/offers/{offerId}`. The id is a plain identifier, not a secret or token, and grants nothing on
+its own: the reader must sign in (OIDC bearer) as an `employee` whose `employeeId` owns the offer. `OfferAccess` is
+the only place that decides this, and `authorizeDecision(principal, offerId, expectedOfferVersion)` is the check
+accept/decline (FUCQ-466) builds on. Offers are read from `buddy_offers`, `custody_holds` and `buddy_quotes`
+(FUCQ-464) in the environment's active run, so a link stays valid across restarts; legacy hashed Node links are not
+honoured. Responses carry `Cache-Control: no-store` and `Referrer-Policy: no-referrer`; any query parameter is refused.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/offers/{offerId}` | The owner's offer with its actual state (`pending`, `accepted`, `declined`, `superseded`, `expired`, `released`), `reason`, versions, quote and `availableActions`. Terminal offers read 200 with no actions. |
+| `GET /api/gcsp/v1/offers/current` | The owner's offers in this run, newest first, at most 20. |
+
+Refusals: 400 `invalid-offer-reference`, `unsupported-query`; 401 as above; 403 `role-required` (presenter, Greg, no
+`employeeId`), `offer-not-owned` (another employee; no offer facts returned); 404 `offer-not-found`; 409
+`offer-from-earlier-run`; 503 `offer-access-unavailable` (retryable) and `offer-state-inconsistent`.
 
 ## Order approvals (FUCQ-470)
 
