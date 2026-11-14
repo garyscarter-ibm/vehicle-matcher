@@ -1,4 +1,4 @@
-import { AccountProjection, ContractView, EvidenceRecord } from './account.types';
+import { AccountFailure, AccountProjection, ContractView, EvidenceRecord } from './account.types';
 
 export interface AccountOffer extends EvidenceRecord { readonly offerId: string; readonly runId: string; readonly state?: string }
 export interface AccountOffers extends EvidenceRecord { readonly offers: readonly AccountOffer[] }
@@ -7,8 +7,21 @@ export interface AccountOrder extends EvidenceRecord {
   readonly source?: EvidenceRecord & { readonly receivedAt?: string; readonly orderReference?: unknown; readonly orderNumber?: string };
 }
 export interface AccountOrders extends EvidenceRecord { readonly orders: readonly AccountOrder[] }
+export interface AccountOrderFailure extends EvidenceRecord { readonly orderUuid: string; readonly status: string; readonly code: string }
+export interface AccountOrdersPage extends AccountOrders {
+  readonly failed: readonly AccountOrderFailure[]; readonly failedCount: number; readonly nextAfter: string | null;
+  readonly asOf?: string | null; readonly contractVersion?: string | null;
+}
+export interface AccountOrdersQuery { readonly after?: string; readonly limit?: number }
+export interface AccountOrdersCollection extends AccountOrdersPage {
+  readonly pageEvidence: readonly { readonly after: string | null; readonly nextAfter: string | null;
+    readonly failedCount: number; readonly asOf?: string | null; readonly contractVersion?: string | null; readonly envelopeContractVersion?: string }[];
+}
+export type AccountOrdersReadResult = { readonly status: 'ok'; readonly value: AccountOrdersCollection; readonly contractVersion?: string }
+  | (AccountFailure & { readonly partial?: AccountOrdersCollection; readonly failedAfter?: string | null });
 export interface AccountOrderSnapshot extends EvidenceRecord {
-  readonly selection?: EvidenceRecord & { readonly stock?: EvidenceRecord & { readonly orderUuid: string; readonly facts?: EvidenceRecord & { readonly display?: EvidenceRecord } } };
+  readonly selection?: EvidenceRecord & { readonly orderUuid?: string;
+    readonly stock?: EvidenceRecord & { readonly orderUuid: string; readonly facts?: EvidenceRecord & { readonly display?: EvidenceRecord } } };
 }
 export interface OrderVehicle { readonly name: string; readonly photo?: string }
 const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -24,9 +37,20 @@ export function validOrders(value: unknown): value is AccountOrders {
       && optionalText(row['source']['receivedAt']) && optionalText(row['source']['orderNumber'])
       && (row['source']['orderReference'] == null || typeof row['source']['orderReference'] === 'string' || object(row['source']['orderReference']))));
 }
+export function validOrdersPage(value: unknown): value is AccountOrdersPage {
+  return validOrders(value) && Array.isArray(value['failed']) && value['failed'].every((row) => object(row)
+    && text(row['orderUuid']) && text(row['status']) && text(row['code']))
+    && Number.isSafeInteger(value['failedCount']) && (value['failedCount'] as number) >= value['failed'].length
+    && (value['nextAfter'] === null || text(value['nextAfter']) && value['nextAfter'].length <= 200)
+    && optionalText(value['asOf']) && optionalText(value['contractVersion']);
+}
 export function validOrderSnapshot(value: unknown): value is AccountOrderSnapshot {
-  if (!object(value) || !object(value['selection']) || !object(value['selection']['stock'])) return false;
-  const stock = value['selection']['stock'];
+  if (!object(value) || !object(value['selection'])) return false;
+  const selection = value['selection']; const flat = selection['orderUuid']; const stock = selection['stock'];
+  if (flat !== undefined && !text(flat) || !['orderNumber', 'configurationId', 'quoteId', 'termsVersion', 'policyVersion', 'receivedAt']
+    .every((key) => optionalText(selection[key]))) return false;
+  if (stock == null) return text(flat);
+  if (!object(stock) || flat !== undefined && flat !== stock['orderUuid']) return false;
   if (!text(stock['orderUuid']) || stock['facts'] != null && !object(stock['facts'])) return false;
   const display = object(stock['facts']) ? stock['facts']['display'] : null;
   return display == null || object(display) && optionalText(display['name']) && optionalText(display['photo'])
@@ -37,7 +61,7 @@ export function latestOrder(orders: readonly AccountOrder[]): AccountOrder | nul
   return [...orders].sort((a, b) => stamp(b) - stamp(a) || (a.orderUuid === b.orderUuid ? 0 : a.orderUuid < b.orderUuid ? 1 : -1))[0] ?? null;
 }
 export function orderVehicle(snapshot: AccountOrderSnapshot | null, orderUuid: string): OrderVehicle | null {
-  const stock = snapshot?.selection?.stock;
+  const stock = validOrderSnapshot(snapshot) ? snapshot.selection?.stock : undefined;
   const display = stock?.orderUuid === orderUuid ? stock.facts?.display : null;
   const name = typeof display?.['name'] === 'string' ? display['name'].trim() : '';
   if (!name) return null;

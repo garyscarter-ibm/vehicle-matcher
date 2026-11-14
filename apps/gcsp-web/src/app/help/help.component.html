@@ -1,0 +1,100 @@
+<section class="help-body" [class.is-quiet]="quiet()" [attr.aria-busy]="view().pending || view().phase === 'loading' ? 'true' : null">
+  @if (!quiet()) { <gcsp-screen-intro title="Renewal help" [level]="headingLevel()" /> }
+  <p class="help-status" data-help-status tabindex="-1" [attr.role]="announce() ? null : 'status'"
+    [attr.aria-live]="announce() ? null : 'polite'" [attr.aria-atomic]="announce() ? null : 'true'">{{ view().message }}</p>
+
+  @if (view().notice; as failure) {
+    <gcsp-status-screen [title]="failure.title" [message]="failure.text" [level]="2" [announcement]="null">
+      <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="refresh()">Refresh cases</button>
+      @if (view().phase === 'auth-required') { <button gcspButton type="button" (click)="store.signIn()">Sign in</button> }
+    </gcsp-status-screen>
+  } @else if (view().phase === 'loading' || view().phase === 'auth-loading') {
+    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="2" [announcement]="null" />
+  } @else if (view().phase === 'signed-out') {
+    <gcsp-status-screen title="Sign in to continue" [level]="2" [announcement]="null">
+      <button gcspButton type="button" (click)="store.signIn()">Sign in</button>
+    </gcsp-status-screen>
+  } @else if (view().phase === 'auth-unavailable') {
+    <gcsp-status-screen title="Sign-in unavailable" [level]="2" [announcement]="null">
+      <button gcspButton type="button" (click)="store.retryAuthentication()">Try again</button>
+    </gcsp-status-screen>
+  } @else if (view().phase === 'access-denied') {
+    <gcsp-status-screen title="You cannot open these cases" [level]="2" [announcement]="null" />
+  }
+
+  @if (view().help || view().editing || view().reviewReason) {
+    <section class="help-entry">
+      @if (!quiet() && view().help) { <p class="gcsp-note">The scheme team can review a delayed or uncertain renewal.</p> }
+      @if (view().canAsk) {
+        <div class="gcsp-actions">
+          <button gcspButton type="button" data-help-ask [variant]="quiet() ? 'ghost' : 'primary'"
+            [attr.aria-describedby]="caveat() ? id + '-notice' : null" (click)="ask()">{{ quiet() ? 'Get help with your renewal' : 'Ask for help' }}</button>
+        </div>
+      }
+      @if (caveat()) { <p class="gcsp-field-hint" [id]="id + '-notice'">{{ notice }}</p> }
+      @if (view().editing) {
+        <form class="help-form" (submit)="review($event)">
+          <gcsp-labelled-field [controlId]="reasonId" label="What do you need help with?"
+            hint="Your reason will be shared with the scheme team." [error]="view().error">
+            <textarea [id]="reasonId" maxlength="2000" rows="4" [value]="view().draft" [disabled]="view().pending"
+              [attr.aria-describedby]="reasonId + '-hint' + (view().error ? ' ' + reasonId + '-error' : '')"
+              [attr.aria-invalid]="view().error ? 'true' : null" (input)="setReason($event)"></textarea>
+          </gcsp-labelled-field>
+          <div class="gcsp-actions">
+            <button gcspButton type="submit" [disabled]="!view().canReview">Review help request</button>
+            <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="cancel()">Cancel</button>
+          </div>
+        </form>
+      }
+      @if (view().reviewReason && !view().uncertain) {
+        <section class="help-confirmation">
+          @if (childLevel() === 3) { <h3 class="help-heading">Confirm your help request</h3> }
+          @else { <gcsp-screen-intro title="Confirm your help request" [level]="2" /> }
+          <p class="gcsp-note">This opens a scheme-team case or adds to your existing case and shares the reason below.</p>
+          <p class="help-reason">{{ view().reviewReason }}</p>
+          <div class="gcsp-actions">
+            <button gcspButton type="button" data-help-confirm [disabled]="!view().canConfirm" (click)="confirm()">Confirm help request</button>
+            <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="cancel()">Cancel</button>
+          </div>
+        </section>
+      }
+      @if (view().uncertain) {
+        <p class="help-reason">{{ view().reviewReason }}</p>
+        <div class="gcsp-actions">
+          <button gcspButton type="button" variant="ghost" [disabled]="view().pending || view().phase === 'loading'" (click)="refresh()">Check current cases</button>
+          @if (view().canRetry) { <button gcspButton type="button" (click)="retry()">Retry the same help request</button> }
+        </div>
+      }
+    </section>
+  }
+
+  @if (view().phase === 'empty' && !view().editing && !view().reviewReason) {
+    <p class="gcsp-note">No renewal case. Help is available if you need the scheme team to review your renewal.</p>
+  }
+  <div class="help-cases">
+    @for (record of view().cases; track record.caseId; let index = $index) {
+      <article class="help-detail" [attr.data-case-id]="record.caseId" [attr.aria-labelledby]="id + '-case-' + index">
+        <p class="vm-kicker">Renewal case</p>
+        @if (childLevel() === 3) { <h3 class="help-heading" [id]="id + '-case-' + index">{{ record.status }}</h3> }
+        @else { <h2 class="help-heading" [id]="id + '-case-' + index">{{ record.status }}</h2> }
+        <gcsp-fact-list [rows]="record.facts" />
+        @if (record.remedy; as remedy) {
+          <section class="help-remedy">
+            @if (childLevel() === 3) { <h4 class="help-subheading">{{ remedy.title }}</h4> }
+            @else { <h3 class="help-subheading">{{ remedy.title }}</h3> }
+            <gcsp-fact-list [rows]="remedy.facts" />
+          </section>
+        }
+        <details class="help-history">
+          <summary>Dated case history</summary>
+          <ol class="help-events">
+            @for (event of record.history; track $index) { <li class="help-event"><gcsp-fact-list [rows]="event" /></li> }
+          </ol>
+        </details>
+      </article>
+    }
+  </div>
+  @if (view().help) {
+    <div class="gcsp-actions"><button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="refresh()">Refresh cases</button></div>
+  }
+</section>

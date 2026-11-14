@@ -39,6 +39,15 @@ every descendant, across all harnesses. They take precedence over earlier workfl
    unrun checks and deferred defects. An authorised integration merge may unblock other work while full
    acceptance remains open; it is not a passing suite, an accepted Story or permission to mark Done.
 
+**Strict scope reaffirmed by Gary, 14 November 2026.** Every pickup and delegated brief identifies the original
+acceptance criteria, applicable existing contracts and exact allocated files. Implementation, validation and
+review stay within that boundary. Shared quality requirements apply to the affected capability; they do not
+automatically add unrelated checks or make a narrow Story depend on a whole migration, deployment or final
+human layout review. Reuse matching evidence and select checks for the actual changed boundary. Additional
+features, refactoring, hardening and proposed acceptance changes are separate backlog proposals for collaborator
+review before pickup. Dispatcher and reviewer decisions cannot expand a claimed contract. An unmet original
+criterion remains Story work; the existing severity policy still governs separately captured defects.
+
 FUCQ-149 is the backlog proposal extracted from the agent-added manual Resume criterion in FUCQ-100.
 It awaits collaborator review and prioritisation; FUCQ-100 retains its original seven backend criteria.
 Already-merged implementation and separately tracked defects remain available for that review.

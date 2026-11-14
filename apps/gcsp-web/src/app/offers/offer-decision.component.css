@@ -1,0 +1,15 @@
+:host { display: block; min-width: 0; }
+.decision-actions, .decision-content, .decision-content section, .decision-content dl, .decision-footer { display: grid; gap: var(--gcsp-space-4); }
+.decision-content { gap: var(--gcsp-space-6); }
+h3, p, dl, dd { margin: 0; }
+p:empty { display: none; }
+dt, .decision-footer p { color: var(--gcsp-text-muted); }
+dd { margin-top: var(--gcsp-space-1); overflow-wrap: anywhere; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend, summary { font-weight: var(--gcsp-font-strong-weight); margin-bottom: var(--gcsp-space-3); }
+summary { cursor: pointer; }
+.decision-choice { display: flex; align-items: start; gap: var(--gcsp-space-3); padding-block: var(--gcsp-space-3); }
+.decision-choice input { flex: none; margin-top: var(--gcsp-space-1); accent-color: var(--gcsp-accent); }
+input[type="text"] { width: 100%; box-sizing: border-box; }
+input:focus-visible, summary:focus-visible { outline: 3px solid var(--gcsp-focus); outline-offset: 3px; }
+.decision-footer { width: 100%; }

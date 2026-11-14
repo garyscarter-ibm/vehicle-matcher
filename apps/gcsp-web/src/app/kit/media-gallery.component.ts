@@ -31,6 +31,7 @@ export class MediaGalleryComponent implements OnDestroy {
   readonly name = input.required<string>();
   readonly images = input<readonly MediaGalleryImage[]>([]);
   readonly placeholder = input('Image not supplied');
+  readonly compact = input(false);
   readonly selectedIndex = signal(0);
   readonly currentImage = computed(() => this.images()[this.selectedIndex()] ?? null);
   readonly failedIndices = signal<ReadonlySet<number>>(new Set());
@@ -50,6 +51,7 @@ export class MediaGalleryComponent implements OnDestroy {
   private destroyed = false;
 
   constructor() {
+    effect(() => { if (this.compact()) untracked(() => { this.closeViewer(false); this.select(0); }); });
     effect(() => {
       const images = this.images();
       const name = this.name();
@@ -99,7 +101,7 @@ export class MediaGalleryComponent implements OnDestroy {
 
   openViewer(): void {
     const image = this.currentImage();
-    if (!image || this.isFailed(this.selectedIndex()) || this.viewerOpen() || this.destroyed) return;
+    if (this.compact() || !image || this.isFailed(this.selectedIndex()) || this.viewerOpen() || this.destroyed) return;
     const dialog = this.viewerRef.nativeElement;
     this.opener = this.enlargeButtonRef?.nativeElement ?? null;
     this.previousBodyOverflow = this.document.body.style.overflow;
