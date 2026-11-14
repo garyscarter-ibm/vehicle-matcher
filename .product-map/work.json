@@ -6509,7 +6509,7 @@
     {
       "assignee": "",
       "id": "FUCQ-461",
-      "observed_at": "2026-11-14T07:51:35Z",
+      "observed_at": "2026-11-14T09:10:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Compute equivalent eligibility, quotes and recommendations",
@@ -6526,10 +6526,10 @@
         },
         {
           "id": "s2-evaluation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Recommendation evaluation: pinned policy, points/allowance terms, timing, current-car feedback, preview and stored subject with Node parity",
-          "observed_at": "2026-11-14T07:51:35Z",
-          "evidence": "briefed to implementer 2026-11-14"
+          "observed_at": "2026-11-14T09:10:07Z",
+          "evidence": "f985b94fd reviewed by story-lead: 628 Node-generated evaluation cases (recommend/preview/stored, 24 policy-activation successor cases, frozen current-car feedback), max abs diff 0.0 over 230555 numbers, 0 status mismatches; 12 mutations caught; recommendation tests 2/0F"
         },
         {
           "id": "s3-source-http",
