@@ -7812,7 +7812,7 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-14T10:00:17Z",
+      "observed_at": "2026-11-14T22:02:46Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
@@ -7843,14 +7843,17 @@
         },
         {
           "id": "jobs-recovery",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Greg job start, progress, failure and restart recovery",
-          "observed_at": "2026-11-14T10:00:17Z"
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Lead-reviewed slice 4: Greg-only start, idempotent commandId, one running job, progress/failure/timeout/shutdown/restart-interrupted persisted; no cancel/restart route; no outbox rows; 58/58 comparison tests"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Merge base, full Java verify, README and result"
+          "status": "complete",
+          "title": "Merge base, full Java verify, README and result",
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
         }
       ]
     },
