@@ -25,6 +25,32 @@ const amount = (value, field) => {
   return value;
 };
 
+// Weak keys bind reuse to exact objects without retaining released stock or employee lifecycles.
+const validatedSnapshots = new WeakMap();
+function immutableData(value, seen = new Set()) {
+  if (value === null || ['string', 'boolean'].includes(typeof value)) return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (!value || typeof value !== 'object' || !Object.isFrozen(value)
+    || ![Object.prototype, Array.prototype, null].includes(Object.getPrototypeOf(value))) return false;
+  if (seen.has(value)) return false;
+  seen.add(value);
+  const valid = Reflect.ownKeys(value).every((key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    return typeof key === 'string' && (descriptor.enumerable || Array.isArray(value) && key === 'length')
+      && Object.hasOwn(descriptor, 'value') && immutableData(descriptor.value, seen);
+  });
+  seen.delete(value);
+  return valid;
+}
+
+/** Admit persisted immutable data once; mutable or accessor-backed inputs retain the normal clone path. */
+export function reusableVehicleSnapshot(value) {
+  const validated = validatedSnapshots.get(value);
+  if (validated) return validated;
+  if (!immutableData(value)) return undefined;
+  try { return createVehicleSnapshot(value); } catch { return undefined; }
+}
+
 /** Clone only JSON data: mutable class instances, functions and non-finite values are invalid facts. */
 function data(value, field) {
   if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
@@ -36,6 +62,7 @@ function data(value, field) {
 
 export function freezeVehicleData(value) {
   if (value && typeof value === 'object') {
+    if (validatedSnapshots.get(value) === value) return value;
     Object.values(value).forEach(freezeVehicleData);
     Object.freeze(value);
   }
@@ -71,6 +98,8 @@ function fact(value, name) {
 
 /** Validated VehicleSnapshot v1; enrichment publishes a new version. See docs/design/vehicle-snapshot-contract.md. */
 export function createVehicleSnapshot(input) {
+  const validated = validatedSnapshots.get(input);
+  if (validated) return validated;
   keys(input, ['contractVersion', 'candidateKey', 'sourceNamespace', 'identityKind', 'sourceKeys',
     'snapshotVersion', 'observedAt', 'vin', 'display', 'facts'], 'VehicleSnapshot');
   if (input.contractVersion !== undefined && input.contractVersion !== 'vehicle-snapshot-v1') fail('contractVersion');
@@ -96,7 +125,10 @@ export function createVehicleSnapshot(input) {
     snapshotVersion: input.snapshotVersion, observedAt: input.observedAt,
     ...(input.vin === undefined ? {} : { vin: input.vin }), display: data(input.display, 'display'),
     facts: Object.fromEntries(Object.entries(input.facts).map(([name, value]) => [name, fact(value, name)])) };
-  return freezeVehicleData(snapshot);
+  freezeVehicleData(snapshot);
+  validatedSnapshots.set(snapshot, snapshot);
+  if (immutableData(input)) validatedSnapshots.set(input, snapshot);
+  return snapshot;
 }
 
 export function createRetailTerms(input) {
