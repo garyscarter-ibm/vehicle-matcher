@@ -5707,13 +5707,35 @@
       "id": "FUCQ-419",
       "jira_observed_at": "2026-11-12T15:48:20.161Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T08:05:53Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "receipt-reads",
+          "status": "complete",
+          "title": "Repository readReceipts contract with indexed PostgreSQL projection",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        },
+        {
+          "id": "allocation-reads",
+          "status": "complete",
+          "title": "Allocation triggers, summaries, hydration and recovery through selected reads",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL, EXPLAIN plans and result",
+          "observed_at": "2026-11-14T08:05:53Z",
+          "evidence": "lead review at c67b1e8c2: gcsp-postgres-receipt-reads 7/7, allocation-triggers 18/18, read-window 4/4, regression modules pass on native PG17; EXPLAIN uses event_receipts_pkey"
+        }
+      ],
       "status": "To Do",
       "title": "Read allocation triggers and receipts through indexed SQL",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-419",
       "workers": []
     },
