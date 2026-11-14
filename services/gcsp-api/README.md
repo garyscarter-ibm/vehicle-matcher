@@ -58,12 +58,19 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_MAIL_TRANSPORT` | unset (captured) | Unset keeps mail captured in the outbox; `brevo` sends real email; any other value stops startup. |
+| `GCSP_PUBLIC_BASE_URL` | unset | https base for absolute emailed offer links; unset keeps them relative. Required with `brevo`: the public https origin/path that serves `/gcsp/offers/:offerId` (the Angular static site). |
+| `GCSP_BREVO_API_KEY` | empty | Brevo API key (secret, host secret store only). Required with `brevo`; startup fails without it. |
+| `GCSP_MAIL_FROM` | empty | Sender address. Required with `brevo`. |
+| `GCSP_MAIL_FROM_NAME` | empty | Sender display name. Required with `brevo`. |
+| `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
 | `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
-No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
+No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
+[Notifications (FUCQ-469)](#notifications-fucq-469).
 The test provider registration and claim mapping are in
 [`docs/gcsp/oidc-test-provider-2026-11-13.md`](../../docs/gcsp/oidc-test-provider-2026-11-13.md).
 
@@ -82,6 +89,19 @@ GCSP_TEST_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_dev?user=gcs
 GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_running?user=gcsp' \
 ./mvnw -B test -Dtest='gcsp.api.persistence.**'
 ```
+
+## Notifications (FUCQ-469)
+
+Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
+that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
+`pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
+Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts are not yet
+bound, so each attempt retries as `transport-unavailable` until the Java offer Story binds `OfferFacts`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
+retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
+Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
+Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
+(employee, own address only).
 
 ## Policy (FUCQ-457)
 
@@ -140,6 +160,8 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/greg/policy`, `POST /api/gcsp/v1/greg/policy/publish`, `POST .../preview` | Greg only. Active policy projection, publish a successor (`200`, `400` with reasons, `403`, `409`, `422` without persistence, `503`), preview is `422`. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `GET /api/gcsp/v1/presenter/outbox` | Presenter only, read-only. Safe notification fields, never a payload or an address. |
+| `GET`, `POST /api/gcsp/v1/manual/notification-email` | Employee only, own address only. POST sets it with `expectedVersion`. |
 | `GET /api/gcsp/v1/documents` | Employee only: the caller's own document orders. Any query parameter is 400 `unsupported-query`. |
 | `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
 | `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
