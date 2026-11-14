@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: 'sign-in', component: StatePageComponent, data: { kind: 'sign-in' } },
   { path: 'auth/callback', component: StatePageComponent, data: { kind: 'callback' } },
   { path: 'account', loadComponent: () => import('./account/account.component').then((m) => m.AccountComponent), canActivate: [sessionGuard], data: { title: 'Your cars', roles: ['employee'] } },
-  feature('preferences', 'Your preferences', ['employee']),
+  { path: 'preferences', loadComponent: () => import('./preferences/preferences.component').then((m) => m.PreferencesComponent), canActivate: [sessionGuard], data: { title: 'Your preferences', roles: ['employee'] } },
   feature('stock', 'Choose a car', ['employee']), feature('manual/review', 'Review your selection', ['employee']), feature('manual/summary', 'Order summary', ['employee']),
   feature('activity', 'Buddy activity', ['employee']), feature('offers/:offerId', 'Your offer', ['employee']), feature('orders', 'Order progress', ['employee']), feature('help', 'Renewal help', ['employee']),
   feature('greg', 'Employee car ordering', ['greg']), feature('greg/cases', 'Employee cases', ['greg']),
