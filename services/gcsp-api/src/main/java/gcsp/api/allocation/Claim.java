@@ -20,7 +20,7 @@ import org.postgresql.util.PSQLException;
 /** The allocation.claim body: lock, revalidate expected versions, then write the claim and advance the cursor. */
 final class Claim {
 
-    private record Run(long version, int nextIndex, int count, String state, Instant evaluatedAt, String policyVersion,
+    private record Run(long version, int nextIndex, int count, String state, String policyVersion,
             long maxActive, long durationSeconds) {}
 
     private record Row(String employeeId, String slotId, String renewalId, String orderUuid, JsonNode versions,
@@ -35,15 +35,15 @@ final class Claim {
 
     private Claim() {}
 
-    static WorkResult run(Tx tx, String allocationId, int ordinal, String operationId, boolean remote)
+    static WorkResult run(Tx tx, String allocationId, int ordinal, String operationId, boolean remote, Instant now)
             throws SQLException {
         Connection c = tx.connection();
         RunContext x = tx.context();
-        Run run = Sql.one(c, "SELECT version, next_index, contender_count, state, evaluated_at, policy_version, "
+        Run run = Sql.one(c, "SELECT version, next_index, contender_count, state, policy_version, "
                 + "(plan->>'maxActive')::bigint, (plan->>'durationSeconds')::bigint FROM allocation_runs "
                 + "WHERE environment_id = ? AND run_id = ? AND allocation_id = ? FOR UPDATE",
-                rs -> new Run(rs.getLong(1), rs.getInt(2), rs.getInt(3), rs.getString(4), Sql.instant(rs, 5),
-                        rs.getString(6), rs.getLong(7), rs.getLong(8)), x.environmentId(), x.runId(), allocationId);
+                rs -> new Run(rs.getLong(1), rs.getInt(2), rs.getInt(3), rs.getString(4),
+                        rs.getString(5), rs.getLong(6), rs.getLong(7)), x.environmentId(), x.runId(), allocationId);
         if (run == null) return WorkResult.refuse("allocation-not-found", "No such allocation.");
         // Another worker already moved this allocation on; nothing to write here.
         if ("completed".equals(run.state()) || run.nextIndex() != ordinal) {
@@ -61,7 +61,7 @@ final class Claim {
         if (refusal == null) {
             Savepoint sp = c.setSavepoint();
             try {
-                Claimed claimed = claim(tx, allocationId, operationId, run, k, remote);
+                Claimed claimed = claim(tx, allocationId, operationId, run, k, remote, now);
                 if (claimed.refusal() != null) {
                     c.rollback(sp);
                     refusal = claimed.refusal();
@@ -153,8 +153,8 @@ final class Claim {
     }
 
     /** Writes the claim; a refusal code means nothing may be kept, so the caller rolls the savepoint back. */
-    private static Claimed claim(Tx tx, String allocationId, String operationId, Run run, Row k, boolean remote)
-            throws SQLException {
+    private static Claimed claim(Tx tx, String allocationId, String operationId, Run run, Row k, boolean remote,
+            Instant now) throws SQLException {
         Connection c = tx.connection();
         RunContext x = tx.context();
         String id = Canonical.digest(Sql.JSON.createArrayNode().add(x.runId()).add(operationId));
@@ -169,7 +169,8 @@ final class Claim {
         int unit = 1;
         while (taken.contains(unit)) unit++;
         if (slot == null || unit > slot.capacity()) return new Claimed(null, "slot-occupied");
-        Instant expiresAt = run.evaluatedAt().plusSeconds(run.durationSeconds());
+        // Node holds from the claim-time clock, so a resumed allocation never creates an already-lapsed hold.
+        Instant expiresAt = now.plusSeconds(run.durationSeconds());
 
         ObjectNode quote = ((ObjectNode) k.quote()).deepCopy();
         quote.put("gateStatus", "eligible");
@@ -185,7 +186,7 @@ final class Claim {
                 + "slot_id, configuration_id, policy_version, quoted_at, valid_until, monthly_points, vehicle_name, "
                 + "image_path, quote) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", x.environmentId(),
                 x.runId(), quoteId, allocationId, k.orderUuid(), k.employeeId(), k.slotId(), car.configurationId(),
-                run.policyVersion(), run.evaluatedAt(), instantOrNull(terms.get("validUntil")), monthly,
+                run.policyVersion(), now, instantOrNull(terms.get("validUntil")), monthly,
                 vehicleName(display), Buddy.text(display.get("photo")), quote);
 
         ObjectNode attrs = Sql.JSON.createObjectNode();

@@ -21,7 +21,7 @@ final class RemoteOps {
     }
 
     record Hold(String holdId, String state, String operationId, long version, Instant expiresAt, String orderUuid,
-            String employeeId, String slotId, int slotUnit, String policyVersion, String renewalId, String offerId) {}
+            String employeeId, String slotId, int slotUnit, String policyVersion, String renewalId) {}
 
     record Offer(String offerId, String state, long version) {}
 
@@ -38,11 +38,11 @@ final class RemoteOps {
                         Sql.json(rs.getString(3))), x.environmentId(), x.runId(), operationId);
         if (op == null) return null;
         Hold hold = Sql.one(c, "SELECT hold_id, state, operation_id, version, expires_at, order_uuid, employee_id, slot_id, "
-                + "slot_unit, attributes->>'policyVersion', attributes->>'renewalId', attributes->>'offerId' "
+                + "slot_unit, attributes->>'policyVersion', attributes->>'renewalId' "
                 + "FROM custody_holds WHERE environment_id = ? AND run_id = ? AND hold_id = ?",
                 rs -> new Hold(rs.getString(1), rs.getString(2), rs.getString(3), rs.getLong(4), Sql.instant(rs, 5),
                         rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10),
-                        rs.getString(11), rs.getString(12)), x.environmentId(), x.runId(), op.holdId());
+                        rs.getString(11)), x.environmentId(), x.runId(), op.holdId());
         if (hold == null) return null;
         Offer offer = Sql.one(c, "SELECT offer_id, state, version FROM buddy_offers WHERE environment_id = ? AND run_id = ? "
                 + "AND hold_id = ?", rs -> new Offer(rs.getString(1), rs.getString(2), rs.getLong(3)), x.environmentId(),
@@ -105,10 +105,11 @@ final class RemoteOps {
         if (expired) {
             out.put("expiredAt", PolicyClock.iso(now));
             ObjectNode event = Sql.JSON.createObjectNode();
-            event.put("holdId", h.holdId()).put("offerId", r.offer() == null ? h.offerId() : r.offer().offerId())
-                    .put("orderUuid", h.orderUuid())
-                    .put("employeeId", h.employeeId()).put("expiresAt", PolicyClock.iso(h.expiresAt()))
-                    .put("expiredAt", PolicyClock.iso(now)).put("policyVersion", h.policyVersion());
+            event.put("holdId", h.holdId());
+            if (r.offer() != null) event.put("offerId", r.offer().offerId());
+            event.put("orderUuid", h.orderUuid()).put("employeeId", h.employeeId())
+                    .put("expiresAt", PolicyClock.iso(h.expiresAt())).put("expiredAt", PolicyClock.iso(now))
+                    .put("policyVersion", h.policyVersion());
             tx.emit("buddy-expired:" + h.holdId(), "buddy-expired", event);
         }
         return out;

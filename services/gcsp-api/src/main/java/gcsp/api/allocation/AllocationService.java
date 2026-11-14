@@ -11,6 +11,7 @@ import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.policy.PolicyService;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.function.Supplier;
 import javax.sql.DataSource;
@@ -84,7 +85,7 @@ public final class AllocationService {
                 int before = row.nextIndex();
                 Step step = row.nextIndex() >= row.count()
                         ? complete(runner, ctx, allocationId)
-                        : claimNext(runner, ctx, allocationId, row.nextIndex());
+                        : claimNext(runner, ctx, allocationId, row.nextIndex(), scope.now());
                 if (step.stop() != null) return driven(scope, step.stop());
                 RunRow after = run(ctx, allocationId);
                 boolean progressed = "completed".equals(after.state()) || after.nextIndex() != before;
@@ -132,14 +133,15 @@ public final class AllocationService {
         }
     }
 
-    private Step claimNext(TransactionRunner runner, RunContext ctx, String allocationId, int ordinal) throws SQLException {
+    private Step claimNext(TransactionRunner runner, RunContext ctx, String allocationId, int ordinal, Instant now)
+            throws SQLException {
         Contender k = contender(ctx, allocationId, ordinal);
         String operationId = "allocation:" + Canonical.digest(Sql.JSON.createArrayNode().add(ctx.runId())
                 .add(allocationId).add(k.employeeId()).add(k.orderUuid()));
         Command command = new Command("allocation.claim", operationId,
                 Sql.JSON.createObjectNode().put("allocationId", allocationId).put("ordinal", ordinal));
         Outcome o = settle(runner, ctx, operationId,
-                () -> runner.execute(ctx, command, tx -> Claim.run(tx, allocationId, ordinal, operationId, remote())));
+                () -> runner.execute(ctx, command, tx -> Claim.run(tx, allocationId, ordinal, operationId, remote(), now)));
         return stepOf(o, operationId);
     }
 

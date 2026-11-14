@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -154,6 +155,58 @@ class AllocationTest {
         assertEquals(List.of("e-b:car-1", "e-b:car-2"), f.contenders(idOf(t)));
         assertEquals(1, f.count("SELECT count(*) FROM custody_holds WHERE employee_id = 'e-b'"));
         assertEquals(0, f.count("SELECT count(*) FROM custody_holds WHERE employee_id = 'e-d'"));
+    }
+
+    @Test
+    void aRenewalIdOnTheSlotAttributesGivesOneHoldAcrossDifferentSlots() throws Exception {
+        f.car("car-1");
+        f.car("car-2");
+        f.employee("e-a", "2027-01-01");
+        f.employee("e-b", "2027-02-01");
+        f.update("UPDATE entitlement_slots SET attributes = attributes || '{\"renewalId\":\"ren-1\"}'::jsonb");
+        candidates.eligible("e-a", "car-1", 90).eligible("e-a", "car-2", 50).eligible("e-b", "car-1", 80)
+                .eligible("e-b", "car-2", 70);
+        Trigger t = released("evt-slot-renewal");
+        run(t);
+
+        assertEquals(1, f.occupying().size());
+        assertEquals(1, f.count("SELECT count(*) FROM custody_holds"));
+        assertEquals(4, f.count("SELECT count(*) FROM allocation_contenders WHERE renewal_id = 'ren-1'"));
+    }
+
+    @Test
+    void aResumedAllocationHoldsFromTheClaimTimeClock() throws Exception {
+        f.car("car-1");
+        f.employee("e-a", "2027-01-01");
+        candidates.eligible("e-a", "car-1", 90);
+        Trigger t = released("evt-resume");
+        // The prepare commit lands, then the database goes away, so the claim is left Pending.
+        boolean[] down = {false};
+        DataSource flaky = new FlakyCommits(f.pool(), 99, false).afterCommit(1, () -> down[0] = true);
+        DataSource gated = (DataSource) java.lang.reflect.Proxy.newProxyInstance(DataSource.class.getClassLoader(),
+                new Class<?>[] {DataSource.class}, (p, m, a) -> {
+                    if (down[0] && m.getName().equals("getConnection")) throw new java.sql.SQLException("down", "08006");
+                    try {
+                        return m.invoke(flaky, a);
+                    } catch (java.lang.reflect.InvocationTargetException e) {
+                        throw e.getCause();
+                    }
+                });
+        AllocationResult first = new AllocationService(gated, policy, candidates).allocate(AllocationFixture.scope(), t);
+        assertInstanceOf(AllocationResult.Pending.class, first);
+        assertEquals(0, f.count("SELECT count(*) FROM custody_holds"));
+
+        Instant later = Instant.parse("2026-11-14T15:00:00Z");
+        AllocationScope scope = new AllocationScope(AllocationFixture.ENV, AllocationFixture.RUN, AllocationFixture.POLICY,
+                later, 2);
+        assertInstanceOf(AllocationResult.Completed.class, service.allocate(scope, t));
+
+        String expected = "?::timestamptz + make_interval(secs => (SELECT (plan->>'durationSeconds')::bigint "
+                + "FROM allocation_runs))";
+        assertEquals(1, f.count("SELECT count(*) FROM custody_holds WHERE expires_at = " + expected, later.toString()));
+        assertEquals(1, f.count("SELECT count(*) FROM buddy_offers WHERE expires_at = " + expected, later.toString()));
+        assertEquals(1, f.count("SELECT count(*) FROM buddy_quotes WHERE quoted_at = ?::timestamptz", later.toString()));
+        assertEquals(0, f.count("SELECT count(*) FROM custody_holds WHERE expires_at <= ?::timestamptz", later.toString()));
     }
 
     @Test

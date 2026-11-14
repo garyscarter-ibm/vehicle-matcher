@@ -1,6 +1,7 @@
 package gcsp.api.allocation;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import gcsp.api.brief.Engagement;
 
 /** Small shared predicates over Buddy permissions and JSON text. */
 final class Buddy {
@@ -9,10 +10,9 @@ final class Buddy {
 
     private Buddy() {}
 
-    /** Search and hold share one Buddy switch, so a partial grant is not engaged (copy of Engagement.engaged). */
+    /** Search and hold share one Buddy switch, so a partial grant is not engaged. */
     static boolean engaged(JsonNode buddy) {
-        return buddy != null && flag(buddy, "searchConsent") && flag(buddy, "holdConsent")
-                && buddy.path("paused").isBoolean() && !buddy.get("paused").booleanValue();
+        return Engagement.engaged(buddy);
     }
 
     static boolean flag(JsonNode n, String field) {

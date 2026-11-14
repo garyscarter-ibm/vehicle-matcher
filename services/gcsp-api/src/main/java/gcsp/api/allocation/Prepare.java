@@ -91,7 +91,7 @@ final class Prepare {
         if (owner == null) return WorkResult.refuse("brief-owner-unavailable", "A Buddy brief has no employee or slot.");
         JsonNode attrs = owner.employee();
         String slotId = Buddy.text(attrs.get("entitlementSlotId"));
-        String renewalId = firstText(e.content().get("renewalId"), owner.slot().get("renewalId"), attrs.get("renewalId"));
+        String renewalId = firstText(owner.slot().get("renewalId"), attrs.get("renewalId"));
         Holds.Employee held = Holds.employee(c, x, e.employeeId(), slotId);
         if (lapsed.contains(e.employeeId()) || held.occupying() >= a.maxActive() || held.slotOccupying() > 0
                 || held.slotAllocated() > 0 || Holds.renewalHeld(c, x, renewalId, false)) {

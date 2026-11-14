@@ -338,6 +338,8 @@ Locking and idempotency:
 - Remote operations lock their `pending_operations` row `FOR UPDATE` and CAS its version in both transactions.
 - An uncertain commit is inspected, never assumed.
 - A remote hold is never freed until the provider confirms, so unknown or mismatched acknowledgements stay pending.
+- Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
+  `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
 
 Ports, stubbed until their Stories merge:
 - `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.

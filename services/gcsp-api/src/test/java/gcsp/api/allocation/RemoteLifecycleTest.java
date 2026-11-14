@@ -388,6 +388,9 @@ class RemoteLifecycleTest {
         candidates.eligible("e-a", "car-1", 90);
         allocate("evt-1");
         String claim = claimOp();
+        // Rewind to a fresh intent so both racers read attempts=0 and would both execute without per-call command ids.
+        f.update("UPDATE pending_operations SET state = 'intent', attempts = 0, outcome = NULL WHERE operation_id = ?", claim);
+        remote.calls.clear();
         remote.fallback = ScriptedRemote.confirmed();
 
         CountDownLatch go = new CountDownLatch(1);
@@ -405,12 +408,46 @@ class RemoteLifecycleTest {
         } finally {
             pool.shutdownNow();
         }
+        assertEquals(1, remote.calls.stream().filter(c -> c.startsWith("execute:")).count(), remote.calls.toString());
         assertEquals(1, f.count("SELECT count(*) FROM buddy_offers"));
         assertEquals(1, notifications());
-        assertEquals("acknowledged|2|", op(claim).substring(0, 15));
+        assertTrue(op(claim).startsWith("acknowledged|"), op(claim));
         assertEquals(1, f.count("SELECT count(*) FROM custody_holds WHERE state = 'active'"));
-        // Allocation's own drive (attempt, lost ack) is versions 1 to 3; the raced drive adds attempt and ack once.
-        assertEquals("5", f.text("SELECT version::text FROM pending_operations WHERE operation_id = ?", claim));
+    }
+
+    @Test
+    void aClaimRejectedAfterReconcileNotFoundLapsesWithoutAnOfferIdAndDoesNotBarTheEmployee() throws Exception {
+        f.car("car-1");
+        f.employee("e-a", "2027-01-01");
+        f.employee("e-b", "2027-02-01");
+        candidates.eligible("e-a", "car-1", 90).eligible("e-b", "car-1", 40);
+        allocate("evt-1");
+        String claim = claimOp();
+        assertEquals("pending|1|unknown", op(claim));
+
+        // Reconcile finds nothing and the hold has lapsed by now, so the claim is invalid.
+        Instant later = Instant.parse("2026-11-15T09:00:00Z");
+        AllocationScope scope = new AllocationScope(AllocationFixture.ENV, AllocationFixture.RUN,
+                AllocationFixture.POLICY, later, 2);
+        remote.onReconcile(ScriptedRemote.answer("not-found"));
+        DriveResult r = lifecycle(f.pool()).drive(scope, claim);
+        assertEquals("refused", assertInstanceOf(DriveResult.Settled.class, r).state());
+        assertEquals("expired|buddy-claim-rejected", f.text("SELECT state || '|' || (attributes->>'releaseReason') "
+                + "FROM custody_holds"));
+        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
+        String payload = f.text("SELECT payload::text FROM outbox_events WHERE event_type = 'buddy-expired'");
+        assertTrue(!AllocationFixture.json(payload).has("offerId"), payload);
+        assertTrue(!AllocationFixture.json(f.text("SELECT outcome::text FROM pending_operations WHERE operation_id = ?",
+                claim)).has("offerId"));
+
+        // Let-lapse keys on buddy-expired, so a later lapse trigger (another hold) still offers e-a this car.
+        f.car("car-3");
+        f.employee("e-x", "2027-03-01");
+        f.hold("h-other", "car-3", "e-x", 1, "expired", "{\"releaseReason\":\"buddy-expired\"}");
+        remote.onExecute(ScriptedRemote.confirmed());
+        assertInstanceOf(AllocationResult.Completed.class, service().allocate(AllocationFixture.scope(),
+                new Trigger("buddy-expired", "evt-other", List.of("h-other"), List.of("car-3"))));
+        assertEquals(List.of("e-a:car-1"), f.occupying());
     }
 
     @Test

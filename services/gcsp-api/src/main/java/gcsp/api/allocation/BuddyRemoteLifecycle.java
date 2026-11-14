@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import javax.sql.DataSource;
 
 /**
@@ -120,7 +121,9 @@ public final class BuddyRemoteLifecycle {
         if (seen == null) return refusedJson("operation-not-found");
         if (!seen.open()) return settledJson(seen.state(), seen.outcome());
         int next = seen.attempts() + 1;
-        Command attempt = new Command("buddy.attempt", operationId + ":attempt:" + next,
+        // A per-call nonce keeps two racing drivers from replaying one receipt and both calling the remote.
+        String call = operationId + ":" + UUID.randomUUID();
+        Command attempt = new Command("buddy.attempt", call + ":attempt:" + next,
                 Sql.JSON.createObjectNode().put("operationId", operationId).put("attempt", next));
         Outcome o = AllocationService.settle(runner, ctx, attempt.commandId(), () -> runner.execute(ctx, attempt,
                 tx -> attemptWork(tx, operationId, seen.attempts())));
@@ -140,7 +143,7 @@ public final class BuddyRemoteLifecycle {
         RemoteBuddy.Ack received = ack;
         String method = prepared.path("method").asText();
         long version = prepared.path("version").asLong();
-        Command ackCommand = new Command("buddy.ack", operationId + ":ack:" + op.attempts(),
+        Command ackCommand = new Command("buddy.ack", call + ":ack:" + op.attempts(),
                 Sql.JSON.createObjectNode().put("operationId", operationId).put("attempt", op.attempts()));
         Outcome done = AllocationService.settle(runner, ctx, ackCommand.commandId(), () -> runner.execute(ctx, ackCommand,
                 tx -> ackWork(tx, scope, operationId, version, method, received)));
@@ -206,8 +209,8 @@ public final class BuddyRemoteLifecycle {
                 return WorkResult.ok(Sql.JSON.createObjectNode().put("kind", "retry"));
             }
             boolean lapsed = !now.isBefore(rows.hold().expiresAt());
-            ObjectNode out = RemoteOps.close(tx, rows, lapsed ? "expired" : "released",
-                    lapsed ? "buddy-expired" : "prerequisites-changed", now);
+            // Node closes a rejected claim as buddy-claim-rejected; buddy-expired would wrongly bar the car from this employee.
+            ObjectNode out = RemoteOps.close(tx, rows, lapsed ? "expired" : "released", "buddy-claim-rejected", now);
             RemoteOps.closeOperation(tx, operationId, p.version(), "refused", out);
             return WorkResult.ok(settledJson("refused", out));
         }
