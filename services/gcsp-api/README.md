@@ -316,6 +316,32 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
 
+## Greg demand and presenter suitability (FUCQ-475)
+
+| Path | Role | Result |
+| --- | --- | --- |
+| `GET /api/gcsp/v1/greg/demand` | Greg only | `{"status":"ok","value":<saved-demand projection>}` for the principal's run. |
+| `GET /api/gcsp/v1/presenter/suitability?page=&buddyPage=&release=` | Presenter only | Recorded allocation decisions per engaged buddy and released car; cars 8 per page, buddies 4. |
+
+Scope (environment, run, policy version) comes only from the bearer principal. Both responses send
+`Cache-Control: no-store`. Demand takes no query parameter. Suitability takes `page` and `buddyPage` (`^[1-9]\d{0,6}$`,
+default 1, clamped to the last page) and `release` (`all` or `latest`, default `all`), each at most once. Both read in one
+read-only repeatable-read snapshot, and opening them never evaluates, claims or writes anything.
+
+Refusals: 400 `unsupported-query`; 401/403 as above (`role-required` for the wrong role); 409 `stale-run`; 503
+`persistence-not-configured`, `demand-unavailable` (incomplete principal context), `privacy-policy-unavailable`,
+`evaluation-unavailable`, `brief-owner-unavailable`, `source-invalid`, and `suitability-unavailable` (retryable).
+
+Privacy: a count below N is published as a band ("fewer than N"), and the complementary "N or more" count is withheld
+wherever it would let a band be solved by subtraction. N is `greg.demand.smallCountThreshold`, read from the canonical
+PolicyService (`PolicyDemandAdapter`, with `offer.declineReasons.v1`, `offer.declinedCar.exclusion`,
+`employee.recommendation.v1` and `allocation.tieBreak.rule`). Missing or invalid policy is 503 `privacy-policy-unavailable`.
+
+The default ports are truthful refusals or empty results: demand answers 503 `evaluation-unavailable` until the
+FUCQ-461/466 adapters exist (and `privacy-policy-unavailable` while the active policy lacks the reviewed
+`offer.declineReasons.v1`), and suitability shows every cell `not-evaluated`
+until FUCQ-464 records allocations (`DemandDefaults.NoAllocationRecords`).
+
 ## Vehicle evidence (FUCQ-459)
 
 `gcsp.api.evidence` ports the Node vehicle-evidence library: a validated corpus store, retained display imagery, the
