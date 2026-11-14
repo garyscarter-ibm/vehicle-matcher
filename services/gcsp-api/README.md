@@ -112,6 +112,27 @@ from `gcsp.identity.provider`:
 or throws `IdentityRefusal` (rendered as the JSON error), `Role` lists roles and capabilities, and `Access`
 provides `requireAnyRole`, `owns` and `requireOwner`.
 
+## Brief (FUCQ-460)
+
+Employee only (`employee` role plus an `employeeId`); scope (environment, run, employee, policy version) comes
+from the bearer principal, never from the request. Any query parameter is refused. Success is
+`{"status":"ok","value":...}` (plus `"replayed":true` when a stored receipt of the same command is returned).
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/brief` | Current confirmed brief with activity and validation (404 `not-found` before the first confirmation). |
+| `GET /api/gcsp/v1/brief/history` | Every confirmed version, oldest first. |
+| `GET /api/gcsp/v1/brief/draft` | Latest saved draft (404 `not-found` before the first save). |
+| `GET /api/gcsp/v1/brief/editor` | Account editor read: context, content to show, buddy view, versions, provenance. |
+| `POST /api/gcsp/v1/brief/draft`, `/preferences`, `/confirm`, `/engage`, `/disengage`, `/pause-search`, `/resume-search` | JSON commands with `commandId`, `expectedBriefVersion`, `expectedDraftVersion`. |
+
+The Node `/pause` and `/resume` aliases are dropped, and `change-after-decline` and `preview` are other Stories, so
+they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `invalid-preferences`,
+`engagement-minimum` (with `remaining`); 401/403 as above; 404 `not-found`; 409 `stale-version` (with
+`expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
+`already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
+and `outcome-uncertain` (with `operationId`).
+
 ## Render
 
 Gary's dev environment does not exist yet. The proposed service block for `render.gcsp.yaml` is in
