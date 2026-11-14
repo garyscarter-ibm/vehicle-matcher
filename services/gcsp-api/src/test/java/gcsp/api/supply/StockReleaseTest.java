@@ -163,9 +163,12 @@ class StockReleaseTest {
     @Test
     void seededUnreleasedCarIsPromotedByCas() throws Exception {
         seedUnreleased(CAR1, "0000001", 10000001, 1);
+        f.update("UPDATE stock_cars SET attributes = attributes || '{\"facts\":{\"seeded\":true}}' WHERE order_uuid = ?",
+                CAR1);
         ReleaseResult r = tick("t1");
         assertEquals(Status.OK, r.status());
         assertEquals(5, f.cars("released"));
+        assertEquals("true", f.text("SELECT attributes->'facts'->>'seeded' FROM stock_cars WHERE order_uuid = ?", CAR1));
         assertEquals(2, f.count("SELECT version FROM stock_cars WHERE order_uuid = ?", CAR1));
         JsonNode attrs = SupplyFixture.JSON.readTree(f.text(
                 "SELECT attributes::text FROM stock_cars WHERE order_uuid = ?", CAR1));

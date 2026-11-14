@@ -500,9 +500,12 @@ public final class StockRelease {
                         + "attributes) VALUES (?, ?, ?, ?, 'released', ?)", c.environmentId(), c.runId(), uuid,
                         car.get("configurationId").asText(), attrs);
             } else {
+                // Promotion adds only the release block; the seeded car's existing facts stay immutable (Node parity).
+                ObjectNode releaseOnly = JSON.createObjectNode().set("release", carRelease);
                 tx.cas("UPDATE stock_cars SET state = 'released', attributes = attributes || ?, "
                         + "version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? "
-                        + "AND order_uuid = ? AND version = ?", attrs, c.environmentId(), c.runId(), uuid, k.version());
+                        + "AND order_uuid = ? AND version = ?", releaseOnly, c.environmentId(), c.runId(), uuid,
+                        k.version());
             }
             added.add(uuid);
         }
