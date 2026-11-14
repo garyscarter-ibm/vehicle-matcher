@@ -6795,7 +6795,7 @@
     {
       "assignee": "",
       "id": "FUCQ-470",
-      "observed_at": "2026-11-14T02:34:28Z",
+      "observed_at": "2026-11-14T03:05:25Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Reconcile approvals and ordering status",
@@ -6819,14 +6819,17 @@
         },
         {
           "id": "s3-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Order progress reads and presenter approval tick endpoints, startup selection and reconcile, role and ownership HTTP tests",
-          "observed_at": "2026-11-14T02:34:28Z"
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
         },
         {
           "id": "s4-integration",
-          "status": "not-started",
-          "title": "Story validation, base merge, full Java verify and result"
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T03:05:25Z",
+          "evidence": "lead review; ./mvnw -B clean verify 536/0/0/0 (approvals 36) on fresh native PG17 at d627ffb82"
         }
       ]
     },
