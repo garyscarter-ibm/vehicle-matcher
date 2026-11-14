@@ -7127,13 +7127,43 @@
     {
       "assignee": "",
       "id": "FUCQ-461",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T22:13:41Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Compute equivalent eligibility, quotes and recommendations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461",
+      "slices": [
+        {
+          "id": "s1-scoring-gates",
+          "status": "complete",
+          "title": "Brief validation, eligibility gates, preference scoring, option evidence and ranking tie-breaks with Node parity bounds",
+          "observed_at": "2026-11-14T07:51:35Z",
+          "evidence": "0e33f1e3b reviewed by story-lead: 1867 Node-generated scoring/gate/ranking cases, max abs numeric difference 0.0 over 17339 numbers; mutation-checked; recommendation tests 1/0F"
+        },
+        {
+          "id": "s2-evaluation",
+          "status": "complete",
+          "title": "Recommendation evaluation: pinned policy, points/allowance terms, timing, current-car feedback, preview and stored subject with Node parity",
+          "observed_at": "2026-11-14T09:10:07Z",
+          "evidence": "f985b94fd reviewed by story-lead: 628 Node-generated evaluation cases (recommend/preview/stored, 24 policy-activation successor cases, frozen current-car feedback), max abs diff 0.0 over 230555 numbers, 0 status mismatches; 12 mutations caught; recommendation tests 2/0F"
+        },
+        {
+          "id": "s3-source-http",
+          "status": "complete",
+          "title": "Released-stock and account source adapter, vehicle evidence port stub and employee-own HTTP endpoint",
+          "observed_at": "2026-11-14T22:13:40Z",
+          "evidence": "fd1fbdbd0 reviewed by story-lead: released-stock/account source adapter (Node-generated source cases), VehicleEvidencePort stub, POST /api/gcsp/v1/recommendations employee-own; 18 recommendation tests 0F on native PG17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, Used Cars parity check, base merge, bounds record and result",
+          "observed_at": "2026-11-14T22:13:41Z",
+          "evidence": "merged origin/gcsp-poc-dev at abc8e1701; recommendation 18/0F; clean verify 1377 ran, 1 failure in unrelated gcsp.api.appointments (passes alone, order-dependent); result block in story file"
+        }
+      ]
     },
     {
       "assignee": "",

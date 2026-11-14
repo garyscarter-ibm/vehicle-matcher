@@ -232,6 +232,7 @@ the principal needs environment, run and policy version, else `unavailable/not-c
 | `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
 | `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
 | `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
+| `POST /api/gcsp/v1/recommendations` | Employee role only; the body is the brief. The caller's own recommendations over released stock: `{status:"ok",value}` (see Recommendations). 400 `unsupported-query` or `invalid-brief`; 409 `stale-run`; 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` or the service's `unavailable` outcome. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
 | `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
 | `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
@@ -369,6 +370,34 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
+
+## Recommendations (FUCQ-461)
+
+`gcsp.api.recommendation` ports the Node employee recommendation service. `RecommendationService` evaluates one brief
+against every released car the caller may see, with eligibility, points cost and allowance read from the policy snapshot.
+`POST /api/gcsp/v1/recommendations` takes the brief as the body (as Node does) and returns the service outcome JSON:
+
+| Outcome | HTTP |
+| --- | --- |
+| `ok` | 200 `{status:"ok",value}` |
+| `invalid` (`invalid-brief`, `unsupported-query`, `invalid-context`) | 400 |
+| `forbidden` | 403 |
+| `stale-run` (the principal's run is not the active run, or the source's run differs) | 409 |
+| `unavailable` (source, clock or policy failure) | 503 |
+| no persistence, no account provider, or no employment record | 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` |
+
+The context comes only from the bearer principal (environment, run, employee, policy version) and the account's employment
+record (company, scheme, grade, slot); nothing is taken from the body. Integration may switch the policy version to
+`PolicyActivation.activatedPolicyVersion`. `ReleasedStockRecommendationSource` assembles the Node provider output from
+`AccountService.readAccount`, `AccountRecordsPort.readDrivers` and `ReleasedStock.page`: every released car whose visibility
+names the caller, `unavailable` when occupied by a custody hold, with a sorted `orderUuid:version` stock version. An
+unconfirmed visibility record or any failed read makes the whole source `unavailable`; nothing is substituted.
+`VehicleEvidencePort` supplies each car's snapshot; `StockFactsEvidence` returns the stored `attributes.facts`, as Node does,
+until FUCQ-459 replaces it.
+
+Bounds per request: a constant number of account reads (employment, contract, drivers, current cars), one run lookup,
+`floor(N / 500) + 1` stock pages of 500 for N released cars (3 for 1,201), and per visible car one eligibility and one
+points read from the in-memory PolicyService snapshot. Nothing is cached across requests, and no candidate is dropped.
 
 ## Buddy allocation (FUCQ-464)
 
