@@ -78,4 +78,14 @@ final class Js {
         }
         return Double.NaN;
     }
+
+    /** Node `value === n` for a JSON number. */
+    static boolean isNumberEqual(JsonNode node, double n) {
+        return node != null && node.isNumber() && node.doubleValue() == n;
+    }
+
+    /** Node `value === true`. */
+    static boolean isTrue(JsonNode node) {
+        return node != null && node.isBoolean() && node.booleanValue();
+    }
 }
