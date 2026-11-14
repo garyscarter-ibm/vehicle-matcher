@@ -9,7 +9,7 @@
     @for (entry of preferenceEntries(false); track entry[0]) { <ng-container [ngTemplateOutlet]="preferenceControl" [ngTemplateOutletContext]="{ $implicit: entry }" /> }
     <details><summary>Anything else?</summary>@for (entry of preferenceEntries(true); track entry[0]) { <ng-container [ngTemplateOutlet]="preferenceControl" [ngTemplateOutletContext]="{ $implicit: entry }" /> }</details>
     <ng-template #preferenceControl let-entry>
-      <fieldset class="full-preference" [disabled]="store.locked() || store.queuePending() || !entry[1].editable"><legend>{{ entry[1].label }}</legend>
+      <fieldset class="full-preference" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || !entry[1].editable"><legend>{{ entry[1].label }}</legend>
         @if (entry[1].type === 'slider') {
           <gcsp-labelled-field [controlId]="'preference-' + entry[0]" label="Preference" hint="Less to more, independent of importance."><input [id]="'preference-' + entry[0]" type="range" [min]="editor.context.slider.minimum" [max]="editor.context.slider.maximum" step="1" [value]="store.brief().preferences[entry[0]]?.value ?? editor.context.slider.minimum" [attr.aria-describedby]="'preference-' + entry[0] + '-hint'" (input)="store.updatePreference(entry[0], { value: number($event) })" /></gcsp-labelled-field>
         } @else {
@@ -24,7 +24,7 @@
     </ng-template></section>
     <section class="gcsp-panel"><h2>What your car needs to do</h2><p class="gcsp-note">Not sure yet leaves that need unconfirmed.</p>
     @for (entry of entries(editor.context.practicalQuestions); track entry[0]) {
-      <fieldset class="practical-question" [disabled]="store.locked() || store.queuePending() || !editor.context.essentials[entry[0]]?.editable"><legend>{{ entry[1].label }}</legend>
+      <fieldset class="practical-question" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || !editor.context.essentials[entry[0]]?.editable"><legend>{{ entry[1].label }}</legend>
         <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'yes'" (change)="practical(entry[0], entry[1], 'yes')" />Yes</label>
         <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'no'" (change)="practical(entry[0], entry[1], 'no')" />No</label>
         <label class="native-choice"><input type="radio" [name]="'practical-' + entry[0]" [checked]="answer(entry[0], entry[1]) === 'unknown'" (change)="practical(entry[0], entry[1], 'unknown')" />Not sure yet</label>
@@ -34,8 +34,14 @@
       </fieldset>
     }</section>
     @if (store.brief().currentCarFeedback) { <section class="gcsp-panel"><h2>Your current-car feedback</h2><dl><dt>Preserve</dt><dd>{{ feedback('preserve') }}</dd><dt>Change</dt><dd>{{ feedback('change') }}</dd></dl></section> }
-    <section class="gcsp-panel"><h2>Save preferences</h2><p>Review your inputs, then save and confirm them.</p><p class="gcsp-note">Your saved Buddy choice is {{ store.consent().search ? 'engaged' : 'disengaged' }}.</p>
-      <div class="gcsp-actions"><button gcspButton type="submit" [disabled]="store.locked() || store.queueBusy() || store.fullBusy()">{{ store.fullBusy() ? 'Saving your preferences...' : 'Save your preferences' }}</button>@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }<button gcspButton variant="ghost" type="button" [disabled]="store.fullBusy() || store.saving()" (click)="replace.set(true)">Refresh and review</button></div>
+    <section class="gcsp-panel"><h2>Save preferences</h2><p>Review your inputs, then save and confirm them.</p>
+      <fieldset class="buddy-choice" [disabled]="store.locked() || store.queuePending() || store.buddyResolutionRequired() || store.fullBusy()"><legend>Buddy engagement</legend>
+        <label class="native-choice"><input type="radio" name="buddy-engagement" [checked]="store.consent().search && store.consent().hold" (change)="store.setConsent(true)" />Engage Buddy</label>
+        <label class="native-choice"><input type="radio" name="buddy-engagement" [checked]="!store.consent().search && !store.consent().hold" (change)="store.setConsent(false)" />Disengage Buddy</label>
+      </fieldset>
+      <p class="gcsp-note">Buddy will be {{ store.consent().search && store.consent().hold ? 'engaged' : 'disengaged' }} when you save. Save your preferences to apply this choice. Engaging lets Buddy search and hold a suitable car.</p>
+      <gcsp-buddy-controls [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
+      <div class="gcsp-actions"><button gcspButton type="submit" [disabled]="store.locked() || store.queueBusy() || store.fullBusy() || store.buddyResolutionRequired()">{{ store.fullBusy() ? 'Saving your preferences...' : 'Save your preferences' }}</button>@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }<button gcspButton variant="ghost" type="button" [disabled]="store.fullBusy() || store.saving()" (click)="replace.set(true)">Refresh and review</button></div>
       <p role="status" tabindex="-1">{{ store.fullMessage() || (store.failure() ? store.message() : '') }}</p>
       @if (replace()) { <div class="replace-confirm"><p>Replace your edits and permissions with your saved preferences?</p><button gcspButton type="button" (click)="reload()">Replace draft with saved preferences</button><button gcspButton variant="ghost" type="button" (click)="replace.set(false)">Keep editing</button></div> }
     </section>

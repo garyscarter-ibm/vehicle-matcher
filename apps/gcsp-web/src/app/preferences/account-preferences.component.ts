@@ -3,8 +3,9 @@ import { ButtonDirective } from '../kit/button.directive';
 import { PreferenceCategoryComponent } from '../kit/preference-category.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { BriefEditorStore } from './brief-editor.store';
+import { BuddyControlsComponent } from './buddy-controls.component';
 let sequence = 0;
-@Component({ selector: 'gcsp-account-preferences', imports: [ButtonDirective, PreferenceCategoryComponent, StatusScreenComponent], styleUrl: './preferences.component.css', template: `
+@Component({ selector: 'gcsp-account-preferences', imports: [ButtonDirective, PreferenceCategoryComponent, StatusScreenComponent, BuddyControlsComponent], styleUrl: './preferences.component.css', template: `
   @if (store.editor(); as editor) {
     <section class="compact-preferences" [attr.aria-labelledby]="id + '-title'">
       <div class="preference-heading"><h2 [id]="id + '-title'" tabindex="-1">Preferences</h2>
@@ -18,7 +19,8 @@ let sequence = 0;
       @else { <div class="category-grid">@for (key of editor.context.accountPreferences.order; track key) {
         <gcsp-preference-category [id]="id + '-' + key" [definition]="editor.context.accountPreferences.categories[key]" [state]="store.category(key)" [open]="store.openCategory() === key" [removing]="store.pendingRemoval() === key" [disabled]="store.locked() || store.fullBusy()" (opened)="store.open(key)" (changed)="store.change(key, $event)" (removeRequested)="store.requestRemove(key)" (removed)="remove(key)" (kept)="keep(key)" />
       }</div> }
-      <p role="status">{{ store.message() }}</p><div class="gcsp-actions">@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }@if (store.failure()) { <button gcspButton variant="ghost" type="button" (click)="store.reload()">Reload preferences</button> }</div>
+      <p role="status">{{ store.message() }}</p><div class="gcsp-actions">@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }@if (store.failure()) { <button gcspButton variant="ghost" type="button" (click)="store.reload()">Reload preferences</button> }@if (store.queueNeedsReview()) { <button gcspButton type="button" (click)="store.retry()">Save kept changes</button> }</div>
+      <gcsp-buddy-controls [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
     </section>
   } @else { <gcsp-status-screen title="Your preferences" [level]="2" [busy]="store.loading()" [message]="store.loading() ? 'Loading your preferences.' : store.message() || 'Your preferences are unavailable.'">@if (!store.loading()) { <button gcspButton type="button" (click)="store.load()">Try again</button> }</gcsp-status-screen> }
 ` })

@@ -7,8 +7,9 @@ import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { choiceLabel, reasonText } from './brief.copy';
 import { BriefEditorStore } from './brief-editor.store';
+import { BuddyControlsComponent } from './buddy-controls.component';
 import { BriefDecision, BriefPreview, BriefValue, PracticalQuestion } from './brief.types';
-@Component({ selector: 'gcsp-preferences', imports: [NgTemplateOutlet, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent], templateUrl: './preferences.component.html', styleUrl: './preferences.component.css' })
+@Component({ selector: 'gcsp-preferences', imports: [NgTemplateOutlet, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent], templateUrl: './preferences.component.html', styleUrl: './preferences.component.css' })
 export class PreferencesComponent {
   readonly store = inject(BriefEditorStore); readonly replace = signal(false); readonly chargingOpen = signal(false);
   constructor() {

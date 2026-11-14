@@ -627,3 +627,9 @@ outcomes require explicit reload, and identity/run changes clear the local state
 uses the same scoped editor resource, native position/importance/practical inputs, read-only facts,
 server preview decisions and explicit draft-save/confirmation. These fixture checks do not establish
 Java, OIDC, database, hosted-browser or accessibility acceptance.
+
+`gcsp-buddy-controls` presents the saved server Buddy view and native Engage, Pause search, Resume
+search and Disengage actions. It reports paused search separately from withdrawn consent, keeps
+uncertain requests available for an explicit same-command retry, and provides a status reload. Its
+gallery states use inert projections with actions disabled; the live compact and full preferences
+views bind its outputs to the shared `BriefEditorStore` command lane.

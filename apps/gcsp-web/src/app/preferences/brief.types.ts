@@ -181,6 +181,14 @@ export interface BuddyView {
   readonly canEngage: boolean;
 }
 
+export type BuddyCommandAction = 'engage' | 'pauseSearch' | 'resumeSearch' | 'disengage';
+
+export interface BriefEngagementValue {
+  readonly briefVersion: number;
+  readonly draftVersion: number;
+  readonly buddy: BuddyView;
+}
+
 export interface BuddyConsent {
   readonly search: boolean;
   readonly hold: boolean;

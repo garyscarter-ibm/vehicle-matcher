@@ -11,6 +11,8 @@ meter { display: block; width: 100%; min-width: 180px; height: 18px; accent-colo
 .brief-form { display: grid; gap: var(--gcsp-space-5); min-width: 0; }
 .gcsp-panel { padding: var(--gcsp-space-5); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface); }
 .full-preference, .practical-question { border: 0; border-bottom: 1px solid var(--gcsp-divider); margin: var(--gcsp-space-4) 0; padding: var(--gcsp-space-4) 0; min-width: 0; }
+.buddy-choice { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-4); border: 0; padding: var(--gcsp-space-3) 0; }
+.buddy-choice legend { font-weight: var(--gcsp-font-strong-weight); }
 .full-preference legend, .practical-question legend { font-weight: var(--gcsp-font-strong-weight); }
 input[type=range] { width: 100%; min-height: 44px; accent-color: var(--gcsp-text); }
 input:focus-visible, summary:focus-visible { outline: 2px solid var(--gcsp-text); outline-offset: 3px; }

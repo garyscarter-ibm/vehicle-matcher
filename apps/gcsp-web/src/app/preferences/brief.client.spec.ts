@@ -78,13 +78,15 @@ describe('Angular brief API client', () => {
     ];
     fetcher.mockImplementation(async (input, init) => {
       const path = new URL(String(input)).pathname;
-      const payload = init?.body ? JSON.parse(String(init.body)) as object : undefined;
+      const buddy = path.endsWith('/pause-search') ? { ...editor.initial.buddy, state: 'disengaged' as const, reason: 'paused' as const }
+        : path.endsWith('/disengage') ? { ...editor.initial.buddy, state: 'disengaged' as const, reason: null }
+          : { ...editor.initial.buddy, state: 'engaged' as const, reason: null, remaining: 0, canEngage: false };
       const value = path.endsWith('/preferences') ? preferenceSaveFixture()
         : path.endsWith('/draft') ? { draftVersion: 3, baseBriefVersion: 4, brief }
           : path.endsWith('/confirm') || path.endsWith('/change-after-decline')
             ? currentBriefFixture()
             : path.endsWith('/preview') ? { state: 'no-stock', eligibleCount: 0, decisions: [], recommendations: [], versions: {} }
-              : { commandId: (payload as { commandId?: string } | undefined)?.commandId };
+              : { briefVersion: 5, draftVersion: 3, buddy };
       return json({ status: 'ok', value });
     });
 
@@ -110,8 +112,8 @@ describe('Angular brief API client', () => {
     expect(input.runId).toBe('client-run');
 
     const valid = Object.freeze({ commandId: 'command-2', expectedBriefVersion: 4, expectedDraftVersion: 2 });
-    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: {} }));
-    await client.engage(valid);
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { briefVersion: 5, draftVersion: 3, buddy: { ...editor.initial.buddy, state: 'engaged', remaining: 0, canEngage: false } } }));
+    expect((await client.engage(valid)).status).toBe('ok');
     expect(valid).toEqual({ commandId: 'command-2', expectedBriefVersion: 4, expectedDraftVersion: 2 });
   });
 
@@ -136,6 +138,8 @@ describe('Angular brief API client', () => {
     expect((await client.readHistory()).status).toBe('unavailable');
     fetcher.mockRejectedValueOnce(new Error('private network detail'));
     expect((await client.readCurrent()).status).toBe('unavailable');
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { commandId: 'accepted-without-readback' } }));
+    expect((await client.engage({ commandId: 'c1', expectedBriefVersion: 4, expectedDraftVersion: 2 })).status).toBe('unavailable');
   });
 
   it('rejects nested malformed success before any presenter can dereference it', async () => {
@@ -173,7 +177,7 @@ describe('Angular brief API client', () => {
     TestBed.resetTestingModule(); TestBed.configureTestingModule({ providers: [{ provide: AuthPort, useValue: { state, getAccessToken } }, { provide: RuntimeConfigService, useValue: { load } }, { provide: PORTAL_FETCH, useValue: fetcher }] });
     client = TestBed.inject(BriefClient);
     let finish!: (token: string) => void; getAccessToken.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
-    const pending = client.savePreferences({ commandId: 'old-command', expectedBriefVersion: 4, expectedDraftVersion: 2, changes: { economy: { value: 100 } } }, { expectedContextKey: JSON.stringify(['old-subject', 'dev', 'run-1', 'employee-1']) });
+    const pending = client.engage({ commandId: 'old-command', expectedBriefVersion: 4, expectedDraftVersion: 2 }, { expectedContextKey: JSON.stringify(['old-subject', 'dev', 'run-1', 'employee-1']) });
     state.set({ status: 'ready', context: { subject: 'new-subject', environmentId: 'dev', runId: 'run-1', employeeId: 'employee-1' } }); finish('new-account-token');
     const result = await pending; expect(result.status).toBe('unavailable'); expect(fetcher).not.toHaveBeenCalled(); expect(getAccessToken).toHaveBeenCalledOnce();
   });

@@ -25,6 +25,25 @@ describe('native preference controls', () => {
     expect(client.readEditor).toHaveBeenCalledTimes(1); expect(rating.nativeElement.querySelector('input')).toBeNull();
     rating.componentRef.setInput('contractId', 'contract-1'); await rating.whenStable(); expect(rating.nativeElement.querySelectorAll('input[type=radio]').length).toBe(5);
     expect(preferences.nativeElement.textContent).toContain('input completeness'); expect(preferences.nativeElement.querySelector('article')).toBeNull();
+    expect(preferences.nativeElement.querySelector('gcsp-buddy-controls')).toBeTruthy();
+  });
+  it('disables compact native inputs during saved-status refresh while retaining visible choices', async () => {
+    const preferences = TestBed.createComponent(AccountPreferencesComponent); const rating = TestBed.createComponent(CurrentCarRatingComponent);
+    rating.componentRef.setInput('contractId', 'contract-1'); await preferences.whenStable(); await rating.whenStable();
+    const store = preferences.componentInstance.store; store.requestRemove('economy'); await preferences.whenStable();
+    let resolve!: (value: unknown) => void; client.readEditor.mockReturnValueOnce(new Promise((done) => { resolve = done; }));
+    const refreshing = store.reloadBuddyStatus(); await preferences.whenStable(); await rating.whenStable();
+    const root = preferences.nativeElement as HTMLElement; const stars = rating.nativeElement as HTMLElement;
+    expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(true);
+    root.querySelectorAll<HTMLFieldSetElement>('gcsp-preference-category fieldset').forEach((fieldset) => expect(fieldset.disabled).toBe(true));
+    root.querySelectorAll<HTMLButtonElement>('.category-title, .removal button:first-of-type').forEach((button) => expect(button.disabled).toBe(true));
+    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(true);
+    expect(root.textContent).toContain('Medium · Medium importance'); expect(root.textContent).toContain('Remove this preference?');
+    expect(root.querySelector<HTMLInputElement>('.preference-mode input')!.checked).toBe(true);
+    resolve({ status: 'ok', value: briefEditorFixture() }); await refreshing; await preferences.whenStable(); await rating.whenStable();
+    expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(false);
+    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(false);
+    expect(client.savePreferences).not.toHaveBeenCalled();
   });
   it('presents native independent preference, importance, practical and read-only fact controls', async () => {
     const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
@@ -85,8 +104,20 @@ describe('native preference controls', () => {
     client.saveDraft.mockResolvedValue({ status: 'ok', value: { draftVersion: 3, baseBriefVersion: 4, brief: briefEditorFixture().initial.brief } }); client.confirm.mockResolvedValue({ status: 'ok', value: currentBriefFixture() }); client.readEditor.mockResolvedValueOnce({ status: 'unavailable', retryable: true });
     fixture.componentInstance.store.updatePreference('economy', { value: 88 }); await fixture.componentInstance.store.saveFull(); await fixture.whenStable();
     expect(fixture.componentInstance.store.briefVersion()).toBe(5); expect(fixture.componentInstance.store.fullState()).toBe('saved');
-    const status = fixture.nativeElement.querySelector('.brief-form [role=status]').textContent;
+    const root = fixture.nativeElement as HTMLElement;
+    const status = root.querySelector('.brief-form .gcsp-actions + p[role=status]')!.textContent;
     expect(status).toContain('Your preferences were confirmed. Current readback is unavailable.'); expect(status).not.toContain('not confirmed as saved');
+  });
+  it('keeps full-page Buddy choice as one deferred search-and-hold preference', async () => {
+    const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    const radios = root.querySelectorAll<HTMLInputElement>('.buddy-choice input[type=radio]');
+    expect(radios.length).toBe(2); radios[0].click(); await fixture.whenStable();
+    expect(fixture.componentInstance.store.consent()).toEqual({ search: true, hold: true });
+    expect(fixture.nativeElement.textContent).toContain('Save your preferences to apply this choice. Engaging lets Buddy search and hold a suitable car.');
+    const commands = Array.from(root.querySelectorAll<HTMLButtonElement>('gcsp-buddy-controls button'));
+    expect(commands.find((button) => button.textContent?.trim() === 'Engage Buddy')?.disabled).toBe(true);
+    expect(client.saveDraft).not.toHaveBeenCalled(); expect(client.confirm).not.toHaveBeenCalled();
   });
   it('lazy loads the native preferences component under the existing employee guard', async () => {
     const route = routes.find((r) => r.path === 'preferences')!; expect(route.canActivate?.length).toBe(1); expect(route.data?.['roles']).toEqual(['employee']); expect(await route.loadComponent!()).toBe(PreferencesComponent);

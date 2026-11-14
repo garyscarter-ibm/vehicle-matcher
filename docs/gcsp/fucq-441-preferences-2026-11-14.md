@@ -206,3 +206,69 @@ lane serialized with saves, server-based current status/remaining gates, native
 controls and explicit uncertain retries/reload, plus the source one-function
 Buddy choice applied through full save. No Account/activity timelines/offer UI or
 server business code is included. Full native integration acceptance stays open.
+
+## Reviewed Buddy checkpoint
+
+Donald Duck completed the typed Buddy results, shared serialized command lane,
+compact/full saved-status controls, paused-search consequence, explicit uncertain
+retry/reload, and one deferred search-and-hold choice in the full save. The saved
+title and effective `gpt-6-luna` / `high` runtime were independently verified,
+matching the requested/selected pair without fallback. Its four selected spec
+files passed 52 checks at source identity
+`0d1c3454c30da19057951620de3f3f57c3ca574cb63ab0cd73064807268deb86`.
+Compiler/assertion failures and earlier successful source identities remain in
+the worker-local `.claude/test-runs/fucq441/engagement/` receipt directory.
+
+Lead review found an original recovery-criterion gap: compact controls accepted
+edits during a Buddy status GET, but its readback could overwrite those new edits
+with the snapshot captured before the GET. Fresh capacity allowed two launches;
+only Barney McGrew was launched for this bounded correction, requested/selected
+`gpt-6.1-sol` / `medium`, no fallback. Its saved title and effective runtime were
+independently verified. The store now locks compact inputs during status refresh;
+the existing queue behind an ordinary Buddy POST remains available.
+
+Seven deferred-read cases plus a native disabled/value-retention check reproduced
+eight failures before the correction. An initial test compilation error was also
+retained. The final store/component command passed 46 checks at source identity
+`18ff8c773e6a531a33ade05f1ed1589172526ec5d98a2b35e62c66e2a3615728`:
+`npm --prefix apps/gcsp-web test -- --include=src/app/preferences/brief-editor.store.spec.ts --include=src/app/preferences/preferences.component.spec.ts`.
+The unchanged client/Buddy specs reuse Donald's matching proof. This is scoped
+evidence, not a full-suite stamp. Helper-mediated `diff --check` passed.
+
+The lead reviewed the correction and callers, matched all final source/check
+hashes, and independently verified every process group and both recorded and
+actual scratch roots are absent. The inherited supervisor records its initially
+proposed temporary root separately from the overridden actual root; both were
+checked. The owned dependency link is absent, and borrowed dependency/runtime
+device and inode identities match. Root-local receipts and lead verification:
+`.claude/test-runs/fucq441/engagement-correction/`. Final correction run: 4.45
+seconds, RSS 1,051,377,664 bytes, scratch 9,965,984 bytes. Donald's final run took
+4.95 seconds, RSS 947,585,024 bytes, with the same peak scratch size.
+
+## Native producer seam observations
+
+Read-only review of Java FUCQ-460 at parent revision `a593e4fb` confirms the four
+read routes and seven core command routes match the native client, including
+sparse preference input, exact brief/draft versions and Buddy result shape.
+Paused search remains `state: disengaged`, `reason: paused`, with consent retained.
+Preview and change-after-decline are separate FUCQ-461/FUCQ-466 work.
+
+The editor DTO is still incomplete against the frozen source contract:
+`AccountEditor.context` omits `contextVersion`; `BriefService.readEditor` line 142
+emits only `versions.policy` and `versions.facts`. The client requires the real
+`context.contextVersion` and `versions.context`/`versions.clock` too, so it will
+truthfully reject that response until the producer supplies them. Known account,
+driver and employee-provider facts remain unported. No client version is invented.
+
+Read-only review at parent revision
+`b1be1d59c6d8416ac61cc3807e5311292293bdb6` confirms FUCQ-458 now provides the
+employee-owned, query-free `GET /api/gcsp/v1/manual/account` envelope and binds
+`BriefAccountPort` to the account projection's current contract/model and facts
+version. The default account provider and policy remain unavailable until their
+configured dependencies connect; truthful 503 is expected. This does not close
+the editor DTO gap or prove Java/OIDC/PostgreSQL/reload/restart/hosted acceptance.
+The dispatcher has the exact seams; no Account or Java source was changed here.
+
+Production AOT, boundary/component checks and rendered desktop/narrow interaction
+review follow this checkpoint. Safari/private, accessibility and the actual
+native journey remain open. Both original AC remain unchecked; Story In Progress.

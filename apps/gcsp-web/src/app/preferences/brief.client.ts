@@ -7,6 +7,7 @@ import {
   BriefPreview,
   BriefDraftRecord,
   BriefEditor,
+  BriefEngagementValue,
   BriefFailure,
   BriefHistoryValue,
   BriefPreferenceSaveValue,
@@ -197,6 +198,10 @@ function preferenceSaveValue(value: unknown): value is BriefPreferenceSaveValue 
   return object(value) && revision(value['briefVersion']) && revision(value['draftVersion']) && buddyView(value['buddy']) && accountState(value['accountPreferences']) && ratingView(value['currentCarRating']) && sameView(value['sameAgain']);
 }
 
+function engagementValue(value: unknown): value is BriefEngagementValue {
+  return object(value) && revision(value['briefVersion']) && revision(value['draftVersion']) && buddyView(value['buddy']);
+}
+
 function parseFailure(value: unknown): BriefFailure | null {
   if (!object(value) || typeof value['status'] !== 'string'
     || !failureStatuses.has(value['status'] as BriefFailure['status'])) return null;
@@ -277,10 +282,10 @@ export class BriefClient {
       : Promise.resolve(invalidRequest);
   }
 
-  engage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/engage', input, options); }
-  pauseSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/pause-search', input, options); }
-  resumeSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/resume-search', input, options); }
-  disengage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<unknown>> { return this.command('/brief/disengage', input, options); }
+  engage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<BriefEngagementValue>> { return this.command('/brief/engage', input, options); }
+  pauseSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<BriefEngagementValue>> { return this.command('/brief/pause-search', input, options); }
+  resumeSearch(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<BriefEngagementValue>> { return this.command('/brief/resume-search', input, options); }
+  disengage(input: BriefVersionCommand, options: BriefRequestOptions = {}): Promise<BriefResult<BriefEngagementValue>> { return this.command('/brief/disengage', input, options); }
 
   changeAfterDecline(input: BriefDeclineChangeInput, options: BriefRequestOptions = {}): Promise<BriefResult<BriefCurrentValue>> {
     return validDeclineChange(input) && !carriesAuthority(input)
@@ -288,8 +293,8 @@ export class BriefClient {
       : Promise.resolve(invalidRequest);
   }
 
-  private command(path: string, input: BriefVersionCommand, options: BriefRequestOptions): Promise<BriefResult<unknown>> {
-    return versionCommand(input) && !carriesAuthority(input) ? this.post(path, input, object, options) : Promise.resolve(invalidRequest);
+  private command(path: string, input: BriefVersionCommand, options: BriefRequestOptions): Promise<BriefResult<BriefEngagementValue>> {
+    return versionCommand(input) && !carriesAuthority(input) ? this.post(path, input, engagementValue, options) : Promise.resolve(invalidRequest);
   }
 
   private async read<T>(path: string, validate: (value: unknown) => value is T, options: BriefRequestOptions): Promise<BriefResult<T>> {
