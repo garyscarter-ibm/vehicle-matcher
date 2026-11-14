@@ -59,6 +59,8 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
+| `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
+| `GCSP_APPROVALS_POLICY_FILE` | empty | Retained Node policy file for the lifecycle assumptions. Empty means no policy, so every read and tick refuses per order as `lifecycle-policy-unavailable`. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
@@ -172,6 +174,38 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
+
+## Order approvals (FUCQ-470)
+
+`gcsp.api.approvals` ports the Node lifecycle approvals. `ApprovalService` records each presenter tick durably, asks the
+selected `ApprovalStatusProvider` for a decision outside any transaction and settles it only on a matching confirmation;
+elapsed ticks only make a decision due. `ApprovalSelection` picks the provider and policy once at startup with no silent
+fallback. The order source (FUCQ-468), handover (FUCQ-472) and policy (FUCQ-457) are `@DefaultBean` ports
+(`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured` (503) and no order is
+ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
+run (else 409 `stale-run`). With persistence on and a provider other than `none`, startup finishes up to 100 open
+decisions once (it never counts ticks or starts orders) and logs a one-line count; a failure is logged, not fatal.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/orders/progress?orderUuid=` | Employee (own orders only, else 403 `not-resource-owner`), Greg or presenter: `{status:"ok",value:<order progress>}` with owner, next step, stages and provider references. 400 `unsupported-query` for any other or repeated key. |
+| `GET /api/gcsp/v1/orders/progress/all?after=&limit=` | Same roles; keyset page, limit 1..100 (default 50); an employee sees only their own orders. |
+| `POST /api/gcsp/v1/presenter/approvals/ticks` | Presenter only: `{commandId, tickId, now, clockVersion}`. |
+| `POST /api/gcsp/v1/presenter/approvals/reconcile` | Presenter only: `{commandId, limit?}` (1..100, default 100). |
+
+`commandId` is required and nonempty but `tickId` is the idempotency identity: the same `tickId` with the same
+input replays (200 with `replayed: true`), with changed input it is 409 `tick-input-changed`. No endpoint lets any
+role approve or decline directly. Employee or Greg on a presenter endpoint is 403 `role-required`.
+
+| Result | Meaning |
+| --- | --- |
+| 200 | Read or tick delivered. |
+| 202 | `outcome-uncertain` with `operationId`: inspect before any resubmit. |
+| 400 | `invalid-tick`, `invalid-reconcile`, `invalid-query`, `invalid-order` (with `reasons`), `unsupported-query`. |
+| 403 | `role-required`, `not-resource-owner`. |
+| 404 | `not-found` (no such order). |
+| 409 | `tick-input-changed`, `approval-clock-changed`, `stale-run`. |
+| 503 | `persistence-not-configured`, `database-unavailable`, `order-source-not-configured`, `selection-pending`/`selection-handoff-failed` with `state: not-ready`, `lifecycle-policy-unavailable`, `policy-source-unavailable`, `order-progress-unavailable`. |
 
 ## Render
 
