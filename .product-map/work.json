@@ -6895,7 +6895,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-14T01:04:55Z",
+      "observed_at": "2026-11-14T01:07:13Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -6914,8 +6914,10 @@
         },
         {
           "id": "engagement",
-          "status": "not-started",
-          "title": "Buddy consent, search controls and truthful recovery"
+          "status": "in-progress",
+          "title": "Buddy consent, search controls and truthful recovery",
+          "observed_at": "2026-11-14T01:05:58Z",
+          "evidence": "Lead specified native Buddy command lane and full-save permission choice; next bounded mechanic slice with scoped regressions."
         },
         {
           "id": "native-integration",
@@ -6955,6 +6957,15 @@
           "expires_at": "2026-11-14T01:04:54.899729+00:00",
           "source": "child chat 01a1d781-eeab-78b1-891f-8cff3f3a5d7a, runtime Sol/medium and title independently verified",
           "status": "stopped"
+        },
+        {
+          "name": "Donald Duck",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T01:07:13.325473+00:00",
+          "expires_at": "2026-11-14T02:07:13.325473+00:00",
+          "source": "child chat 01a1d797-b6a5-75e2-a4e0-b2ad10673c43, runtime Luna/high independently verified",
+          "status": "active"
         }
       ]
     }

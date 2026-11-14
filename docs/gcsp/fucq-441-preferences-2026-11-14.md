@@ -189,3 +189,20 @@ These scoped proofs do not complete native acceptance. Buddy command controls,
 production AOT/boundaries and actual rendered/Java/OIDC/native PostgreSQL/reload/
 restart/Safari/private/accessibility/hosted checks remain open. Both original AC
 remain unchecked and Story In Progress.
+
+## Buddy control implementation
+
+The dispatcher guarded-published the corrected editor at
+`701bcc87c6d4acd58009f5dce15a7fe9d61da86c`; its independent resource/source
+verification is `.claude/fucq441-parent-resource-revision-0105.json`.
+Parent source changes through `06788023` are Java release/presenter work with no
+Angular delta; a base sync remains for the integration boundary.
+
+Fresh capacity allowed two launches at 01:05 GMT; the lead launched only Donald
+Duck, requested/selected `gpt-6-luna` / `high`, no fallback, from current mechanic
+tier output. Runtime was independently verified in the child's `turn_context`.
+The fully specified bounded slice adds typed Buddy command results, one command
+lane serialized with saves, server-based current status/remaining gates, native
+controls and explicit uncertain retries/reload, plus the source one-function
+Buddy choice applied through full save. No Account/activity timelines/offer UI or
+server business code is included. Full native integration acceptance stays open.
