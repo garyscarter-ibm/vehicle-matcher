@@ -5486,41 +5486,41 @@
   "assignee": "",
   "branch": "dev/DEV-2026-11-13-GC-007",
   "id": "FUCQ-414",
-  "jira_observed_at": "2026-11-13T22:36:19.647Z",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
   "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
-  "observed_at": "2026-11-14T15:34:35Z",
-  "original_status": "In Progress",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
   "slices": [
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
       "id": "reuse",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Validated-immutable-snapshot-reuse"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
       "id": "proof",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Semantic-equivalence-and-operation-count-proof"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
       "id": "connected",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Connected-release-offer-history-integration"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
       "id": "review",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Independent-final-review"
     }
   ],
-  "status": "In Progress",
+  "status": "In Review",
   "title": "Reuse validated immutable stock snapshots across employees",
   "type": "Story",
   "unsliced": false,
@@ -5576,34 +5576,34 @@
     {
   "assignee": "",
   "id": "FUCQ-415",
-  "jira_observed_at": "2026-11-12T15:48:01.061Z",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
   "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
-  "observed_at": "2026-11-14T15:34:35Z",
-  "original_status": "In Progress",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
   "slices": [
     {
       "id": "admission",
       "status": "complete",
       "title": "Immutable-policy-admission-and-complete-selection-signature",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
     },
     {
       "id": "reuse",
       "status": "complete",
       "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
     },
     {
       "id": "connected",
       "status": "complete",
       "title": "Connected-release-offer-history-and-independent-review",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
     }
   ],
-  "status": "In Progress",
+  "status": "In Review",
   "title": "Reuse configuration equipment evidence",
   "type": "Story",
   "unsliced": false,
@@ -7759,27 +7759,27 @@
   "assignee": "Gary Carter",
   "branch": "dev/DEV-2026-11-13-GC-005",
   "id": "FUCQ-412",
-  "jira_observed_at": "2026-11-13T23:18:25.492855+00:00",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
   "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
-  "observed_at": "2026-11-14T15:34:35Z",
-  "original_status": "In Progress",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
   "slices": [
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
       "id": "eligibility",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
       "id": "integration",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Lead affected-consumer and connected presentation validation"
     }
   ],
-  "status": "In Progress",
+  "status": "In Review",
   "title": "Compile immutable eligibility rules for direct lookup",
   "type": "Story",
   "unsliced": false,
@@ -7910,34 +7910,34 @@
   "assignee": "",
   "branch": "dev/DEV-2026-11-13-GC-006",
   "id": "FUCQ-413",
-  "jira_observed_at": "2026-11-12T15:47:47.844Z",
+  "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
   "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
-  "observed_at": "2026-11-14T15:34:35Z",
-  "original_status": "In Progress",
+  "observed_at": "2026-11-14T15:39:21Z",
+  "original_status": "In Review",
   "slices": [
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
       "id": "prices",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Compile-price-equality-lookups"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
       "id": "allowances",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Compile-context-allowance-lookups"
     },
     {
       "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
       "id": "integration",
-      "observed_at": "2026-11-14T15:34:35.863303+00:00",
+      "observed_at": "2026-11-14T15:39:21.818209+00:00",
       "status": "complete",
       "title": "Independent-review-and-connected-delivery"
     }
   ],
-  "status": "In Progress",
+  "status": "In Review",
   "title": "Compile immutable price and allowance lookups",
   "type": "Story",
   "unsliced": false,
