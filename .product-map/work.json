@@ -7214,8 +7214,8 @@
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Focused native-host proof partial:179/181 then91/92, no overall pass. Medium reverse drawer focus finding; separate parent Bug intake (originF386). Private/Safari/remaining keyboard gates unrun. Original AC/status unchanged.",
-      "observed_at": "2026-11-14T03:40:15Z",
+      "note": "Focused proof partial179/181 then91/92. Medium drawer focus BugFUCQ-494(ToDo,F380), parent-verified RelatesF386/F414 and PNGattachment937794. No fix/pickup/merge dependency. Private/Safari/remaining keyboard gates unrun; original AC/status unchanged.",
+      "observed_at": "2026-11-14T03:43:47Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -7233,7 +7233,7 @@
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "No-match/release keyboard+relevant DOM/ARIA pass1440/375; stable pendingdesktop reverse sequence skipsClose(Medium,parentBugintake). Attempt1/2 retained179/181 and91/92, no overallpass. Remaining/private/Safari unrun; deliverynote.",
+          "evidence": "No-match/release keyboard+DOM/ARIA pass1440/375; pendingdesktop reverse sequence skipsClose. MediumBugFUCQ-494(ToDo,F380), RelatesoriginF386/discoveryF414 verified; attempt2 PNGattachment937794(233332bytes),SHA256 0819356d729224ad1749b7222575cba1de22ed5d4a266e60cd0ecd63b80848ad. Attempts179/181 and91/92; no overallpass. Remaining/private/Safari unrun. No fix/pickup/merge dependency.",
           "id": "connected",
           "observed_at": "2026-11-14T03:40:13.455765+00:00",
           "status": "blocked",
