@@ -7278,13 +7278,13 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T03:11:19Z",
+      "observed_at": "2026-11-14T03:22:52Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java packaging47f127c4 adds documentsnone and disabled brevo/mail/5s templates;18/18focusedchecks and Sulley independentPASS. Hosted release/identity gates remain open; see14November delivery record.",
+          "evidence": "Local static artifact checkpoint retained. Java approvals packaging cfde7fc7 keeps none and unset canonical-policy override; 18/18 focused checks and Wile E. Coyote independent PASS. Hosted release/identity gates remain open; see 14 November delivery record.",
           "id": "artifact",
-          "observed_at": "2026-11-13T23:31:36Z",
+          "observed_at": "2026-11-14T03:22:52.694579+00:00",
           "status": "complete",
           "title": "Independent-static-Angular-artifact-and-required-assets"
         },
@@ -7315,9 +7315,9 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-14T03:11:19.622616+00:00",
-          "expires_at": "2026-11-14T04:11:19.622616+00:00",
-          "source": "Parent resumed F470 approvals packaging on f352ef22; fixed F436 scope",
-          "status": "reconciling optional approvals deployment settings"
+          "expires_at": "2026-11-14T03:22:52.694579+00:00",
+          "source": "Wile E. Coyote PASS on cfde7fc7; parent owns publication/integration; original AC open",
+          "status": "expired after approvals packaging handoff"
         }
       ]
     }
