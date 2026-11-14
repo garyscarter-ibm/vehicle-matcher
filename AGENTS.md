@@ -54,6 +54,14 @@ Follow the full policy in `docs/gcsp/build-rules.md`, section "Demo delivery and
 - Record actual failed, skipped and unrun checks, known defects and any authorised merge exception. A merged
   integration checkpoint does not establish full acceptance or authorise a Done transition.
 
+Gary reaffirmed strict Story scope on 14 November 2026. At pickup and in every delegated brief, identify the
+original acceptance criteria, the applicable existing contracts and exact allocated files. Build, validate and
+review against that bounded contract. Do not turn a shared quality document into additional unrelated checks,
+require a broader migration or deployment campaign for a narrower Story, or add features, refactoring or
+hardening to its completion gates. Reuse matching evidence. Record any necessary work outside the contract
+separately for collaborator review before pickup; report an unmet original criterion as remaining Story work.
+Dispatcher or reviewer approval cannot expand the scope. Apply the existing severity policy to separate Bugs.
+
 Pass these rules and their document path in every delegated brief. Changes to project policy belong in shared
 project instructions; Gary's personal polling setup and local coordination files remain local.
 
