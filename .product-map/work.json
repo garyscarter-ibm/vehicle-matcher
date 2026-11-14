@@ -6948,7 +6948,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T07:42:50Z",
+      "observed_at": "2026-11-14T08:04:16Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -6979,14 +6979,17 @@
         },
         {
           "id": "s4-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "v1 HTTP endpoints, startup adapter selection and README",
-          "observed_at": "2026-11-14T07:42:50Z"
+          "observed_at": "2026-11-14T08:04:15Z",
+          "evidence": "8047c0e21 reviewed by lead: 85 returns tests; merged-tree verify 763 pass at 79a087b91"
         },
         {
           "id": "s5-integration",
-          "status": "not-started",
-          "title": "Story validation, base merge, full Java verify and result"
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:04:16Z",
+          "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
         }
       ]
     },
