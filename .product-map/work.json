@@ -7210,11 +7210,11 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-004",
       "id": "FUCQ-436",
-      "observed_at": "2026-11-14T02:38:16Z",
+      "observed_at": "2026-11-14T02:43:05Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Local static artifact checkpoint retained. Java producer packaging5f92381e reconciles rootDockercontext,3policyfilters,optionalnoneproviders;18/18focusedchecks and independentPASS. Hosted release/identity gates remain open; see delivery record14November continuation.",
+          "evidence": "Local static artifact checkpoint retained. Java packaging47f127c4 adds documentsnone and disabled brevo/mail/5s templates;18/18focusedchecks and Sulley independentPASS. Hosted release/identity gates remain open; see14November delivery record.",
           "id": "artifact",
           "observed_at": "2026-11-13T23:31:36Z",
           "status": "complete",
@@ -7246,10 +7246,10 @@
           "name": "Rapunzel",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T02:38:16.378195+00:00",
-          "expires_at": "2026-11-14T03:38:16.378195+00:00",
-          "source": "F434 comment3629411; parent resumed documents/mail packaging on aeaf875d",
-          "status": "reconciling optional documents/mail deployment contract"
+          "observed_at": "2026-11-14T02:43:05.896143+00:00",
+          "expires_at": "2026-11-14T02:43:05.896143+00:00",
+          "source": "Sulley PASS47f127c4 documents/mail packaging; originalAC/nativeInProgress/lease unchanged; dispatcher owns integration",
+          "status": "reviewed documents/mail checkpoint; observation expired"
         }
       ]
     }
