@@ -6932,13 +6932,43 @@
     {
       "assignee": "",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T09:50:44Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's constrained next-order plan",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
+      "slices": [
+        {
+          "id": "s1",
+          "status": "complete",
+          "title": "Planning domain, demand port and constrained solver",
+          "observed_at": "2026-11-14T09:49:43Z",
+          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
+        },
+        {
+          "id": "s2",
+          "status": "complete",
+          "title": "Node golden equivalence fixtures and replay tests",
+          "observed_at": "2026-11-14T08:58:51Z",
+          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
+        },
+        {
+          "id": "s3",
+          "status": "complete",
+          "title": "Greg order-plan HTTP read and preview, no submission",
+          "observed_at": "2026-11-14T09:49:44Z",
+          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Merge gcsp-poc-dev and full gcsp-api verify",
+          "observed_at": "2026-11-14T09:50:44Z",
+          "evidence": "merging origin/gcsp-poc-dev 09:52"
+        }
+      ]
     },
     {
       "assignee": "",
