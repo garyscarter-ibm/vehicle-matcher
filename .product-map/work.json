@@ -6742,7 +6742,7 @@
     {
       "assignee": "",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-14T07:46:40Z",
+      "observed_at": "2026-11-14T07:51:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve offer links under OIDC ownership",
@@ -6766,9 +6766,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T07:46:40Z"
+          "observed_at": "2026-11-14T07:51:47Z",
+          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
         }
       ]
     },
