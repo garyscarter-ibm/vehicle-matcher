@@ -6268,7 +6268,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T00:06:08Z",
+      "observed_at": "2026-11-14T00:44:33Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -6278,14 +6278,16 @@
       "slices": [
         {
           "id": "s1-release-core",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Release schema, tick consumption, provider port and released-stock read on native PostgreSQL",
-          "observed_at": "2026-11-14T00:06:08Z"
+          "observed_at": "2026-11-14T00:44:33Z",
+          "evidence": "lead review of 5eb7cc2e/820b47db plus promotion fix; gcsp.api.supply.** 34/34 on native PG17 :55462; verify 124/0; EXPLAIN: pending cursor, clock, PK, released page and latest receipt use their indexes"
         },
         {
           "id": "s2-http-startup",
-          "status": "not-started",
-          "title": "Startup provider selection, presenter release endpoints and startup reconciliation"
+          "status": "in-progress",
+          "title": "Startup provider selection, presenter release endpoints and startup reconciliation",
+          "observed_at": "2026-11-14T00:44:33Z"
         },
         {
           "id": "s3-integration",
