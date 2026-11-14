@@ -7244,7 +7244,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T08:45:41Z",
+      "observed_at": "2026-11-14T09:35:00Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7268,14 +7268,16 @@
         },
         {
           "id": "b-scenarios",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Scenario provider switch, explicit demo preparation, isolated reset and restart",
-          "observed_at": "2026-11-14T08:40:43Z"
+          "observed_at": "2026-11-14T09:35:00Z",
+          "evidence": "Lead review of d31a5f516: GCSP_SCENARIO_PROVIDER none/demo, explicit DemoPreparation, isolated reset via RunReset, restart keeps runs; scenario+presenter 48/48 rerun native PG, full verify 991/0 fail"
         },
         {
           "id": "b2-faults",
-          "status": "not-started",
-          "title": "Synthetic faults, retry and native isolation proofs"
+          "status": "in-progress",
+          "title": "Synthetic faults, retry and native isolation proofs",
+          "observed_at": "2026-11-14T09:35:00Z"
         },
         {
           "id": "integration",
