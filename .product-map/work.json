@@ -7244,7 +7244,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T08:40:43Z",
+      "observed_at": "2026-11-14T08:45:41Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7269,8 +7269,13 @@
         {
           "id": "b-scenarios",
           "status": "in-progress",
-          "title": "Scenario preparation, isolated reset, faults/retry and restart",
+          "title": "Scenario provider switch, explicit demo preparation, isolated reset and restart",
           "observed_at": "2026-11-14T08:40:43Z"
+        },
+        {
+          "id": "b2-faults",
+          "status": "not-started",
+          "title": "Synthetic faults, retry and native isolation proofs"
         },
         {
           "id": "integration",
