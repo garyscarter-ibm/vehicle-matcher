@@ -82,6 +82,10 @@ public final class DocumentService {
         if (clock.now(ctx).isEmpty()) return unavailable();
         boolean employee = principal.roles().contains(Role.EMPLOYEE.wire());
         String self = principal.employeeId();
+        // An employee role without a mapped employee id owns nothing, so it never reads unfiltered.
+        if (employee && (self == null || self.isEmpty())) {
+            return DocumentOutcome.forbidden("not-resource-owner", NOT_OWNER_REASON);
+        }
         if (employee) {
             DocumentCasePort.Owner owner = ownerOf(ctx, orderUuid);
             if (owner instanceof DocumentCasePort.Owner.Unavailable) return unavailable();

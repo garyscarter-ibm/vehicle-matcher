@@ -351,4 +351,14 @@ class DocumentAcknowledgementTest {
         assertEquals(409, svc.acknowledge(pg.ctx, EMPLOYEE, body("cmd-1", revision() - 1)).http());
         assertEquals("acknowledging", status());
     }
+
+    @Test
+    void anEmployeeRoleWithoutAnEmployeeIdNeverReadsReadiness() throws Exception {
+        DocumentService svc = service(new SyntheticDocumentProvider());
+        gcsp.api.identity.Principal unmapped = new gcsp.api.identity.Principal("sub-x", java.util.List.of("employee"),
+                DocumentsPg.ENV, "run-1", null, "gcsp-policy-v1", java.util.List.of());
+        DocumentOutcome out = svc.readReadiness(pg.ctx, unmapped, ORDER, "gcsp-policy-v1");
+        assertEquals(403, out.http(), String.valueOf(out));
+        assertEquals("not-resource-owner", out.code());
+    }
 }
