@@ -110,7 +110,8 @@ function check(value: unknown): ActivityCheck | null {
 
 function stateChange(value: unknown): ActivityStateChange | null {
   if (!object(value) || !text(value['eventId']) || value['eventType'] !== 'brief-changed' || !operations.has(value['operation'] as string)
-    || !positive(value['briefVersion']) || !nonnegative(value['previousBriefVersion']) || !instant(value['occurredAt'])) return null;
+    || !positive(value['briefVersion']) || !(value['previousBriefVersion'] === null || nonnegative(value['previousBriefVersion']))
+    || !instant(value['occurredAt'])) return null;
   return { eventId: value['eventId'], eventType: 'brief-changed', operation: value['operation'] as ActivityStateChange['operation'],
     briefVersion: value['briefVersion'], previousBriefVersion: value['previousBriefVersion'], occurredAt: value['occurredAt'] };
 }

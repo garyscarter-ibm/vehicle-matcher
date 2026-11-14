@@ -85,6 +85,16 @@ describe('native employee activity client', () => {
     expect(fetcher.mock.calls[0][1]?.body).toBeUndefined();
   });
 
+  it('reads the first confirmed brief with no previous version', async () => {
+    fetcher.mockResolvedValueOnce(ok(projection({ briefVersion: 1, stateChanges: [
+      { eventId: 'brief:employee-paula:1', eventType: 'brief-changed', operation: 'confirmed',
+        briefVersion: 1, previousBriefVersion: null, occurredAt: '2026-11-14T07:00:00.000Z' },
+    ] })));
+    const result = await client.readActivity();
+    expect(result.status).toBe('ok');
+    if (result.status === 'ok') expect(result.value.stateChanges[0].previousBriefVersion).toBeNull();
+  });
+
   it('retains live, pending and terminal offer states and their exact versions', async () => {
     for (const [sourceState, activityState, displayState] of [
       ['active', 'offer', 'active'], ['decision-pending', 'offer', 'decision-pending'], ['release-pending', 'offer', 'release-pending'],

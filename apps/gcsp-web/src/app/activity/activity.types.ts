@@ -59,7 +59,7 @@ export interface ActivityStateChange {
   readonly eventType: 'brief-changed';
   readonly operation: 'confirmed' | 'paused' | 'resumed' | 'changed-after-decline' | 'engaged' | 'disengaged' | 'preferences-updated';
   readonly briefVersion: number;
-  readonly previousBriefVersion: number;
+  readonly previousBriefVersion: number | null;
   readonly occurredAt: string;
 }
 

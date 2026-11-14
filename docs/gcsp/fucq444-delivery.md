@@ -26,6 +26,10 @@ Production route wiring is parent-owned and not yet requested at a reviewable ch
 
 ## Current execution
 
-Dispatcher confirmed adoption on 14 November: native In Progress, Gary assigned, 8 points, Start date 14 November 2026, original description/2 AC unchanged, coordination comment 3629423. Plan checkpoint 8272d8b7 awaits parent serial publication.
+Dispatcher confirmed adoption on 14 November: native In Progress, Gary assigned, 8 points, Start date 14 November 2026, original description/2 AC unchanged, coordination comment 3629423. Own map row now reflects that observed adoption; all 301 foreign rows are preserved.
 
-Client slice delegated to Doug the Dog at 05:13 GMT: capacity can_start=2; authoritative mechanic tier requested/selected gpt-6-luna/high, no fallback. Unlaunched tier probes Egghead Jr are not worker evidence. Effective runtime/title proof pending child result.
+Client slice delegated to Doug the Dog at 05:13 GMT: capacity can_start=2; authoritative mechanic tier requested/selected/effective gpt-6-luna/high, no fallback. Runtime and saved title independently verified; completed worker claim expired. Unlaunched tier probes Egghead Jr are not worker evidence. Parent published client checkpoint 517c35f9414a899c3864f60ce91e5d4a5beb10d4 without integrating it.
+
+Lead reviewed source/type/test diffs, caller contracts and original acceptance. The initial confirmed brief in `server/gcsp/brief/index.js` records `previousBriefVersion: null`; the new decoder had rejected that valid source value. Lead corrected the type/decoder and added an initial-confirmation regression. This is a resolved defect in this unaccepted client slice, not evidence of an existing application defect or backend repair. No other substantive finding remains at this delivery boundary.
+
+Selected lead check after the correction: `npm --prefix apps/gcsp-web test -- --include=src/app/activity/activity.client.spec.ts`, 19 passed, 0 failed. Receipt/log under root `.claude/test-runs/fucq444/lead-client/`; 5.09 seconds, 833093632-byte peak sampled RSS, 9961696-byte scratch. Owned process group and scratch/link removed; borrowed dependency/runtime identities preserved; tested source/config hashes unchanged. Earlier child attempts remain recorded: attempt 1 compile failure, attempt 2 17/18 due to a wrong transport expectation, attempt 3 18/18. No full-suite or acceptance stamp claimed. Client slice is complete at its scoped delivery boundary; view, visual proof and connected integration remain open.

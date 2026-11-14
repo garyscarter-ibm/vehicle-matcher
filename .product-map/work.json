@@ -7320,11 +7320,11 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T05:14:42Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T05:32:16Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
       "type": "Story",
       "unsliced": false,
@@ -7335,27 +7335,28 @@
           "name": "Rocky",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-14T05:12:57.824036+00:00",
-          "expires_at": "2026-11-14T07:12:57.824036+00:00",
+          "observed_at": "2026-11-14T05:32:15.556431+00:00",
+          "expires_at": "2026-11-14T07:32:15.556431+00:00",
           "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
-          "status": "planning"
+          "status": "client reviewed; view scoping"
         },
         {
           "name": "Doug the Dog",
           "harness": "codex",
           "role": "mechanic client slice",
           "observed_at": "2026-11-14T05:14:42.372226+00:00",
-          "expires_at": "2026-11-14T06:14:42.372226+00:00",
+          "expires_at": "2026-11-14T05:32:15.556431+00:00",
           "source": "collaboration agent /root/doug_the_dog",
-          "status": "working"
+          "status": "client slice complete; inactive"
         }
       ],
       "slices": [
         {
           "id": "client",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Scoped native activity and command client",
-          "observed_at": "2026-11-14T05:14:42Z"
+          "observed_at": "2026-11-14T05:32:16Z",
+          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
         },
         {
           "id": "view",
@@ -7372,7 +7373,8 @@
           "status": "not-started",
           "title": "Connected route Java OIDC PostgreSQL acceptance"
         }
-      ]
+      ],
+      "tracker_observed_at": "2026-11-14T05:11:48Z"
     }
   ],
   "version": 1
