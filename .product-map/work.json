@@ -6924,7 +6924,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T08:21:06Z",
+      "observed_at": "2026-11-14T08:40:43Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -6941,14 +6941,16 @@
         },
         {
           "id": "a2-handlers-http",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP",
-          "observed_at": "2026-11-14T08:21:06Z"
+          "observed_at": "2026-11-14T08:40:43Z",
+          "evidence": "Lead review of 627905de9: bound stock-release/lifecycle-documents/captured-outbox handlers, RunClockDocumentClock, presenter clock/controls HTTP with role refusals; scoped 18/18 rerun, full verify 559/0 fail"
         },
         {
           "id": "b-scenarios",
-          "status": "not-started",
-          "title": "Scenario preparation, isolated reset, faults/retry and restart"
+          "status": "in-progress",
+          "title": "Scenario preparation, isolated reset, faults/retry and restart",
+          "observed_at": "2026-11-14T08:40:43Z"
         },
         {
           "id": "integration",
