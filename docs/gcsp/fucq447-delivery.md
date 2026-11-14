@@ -1,5 +1,74 @@
 # FUCQ-447 delivery checkpoint
 
+## Contracts source checkpoint — 14 November 2026
+
+**Current disposition: source authored, untested; HOLD for parent source audit and runtime release.**
+The dispatcher audited plan `5bc8d6524e7952b668fb254273e963493b3b2e7d`, reconciled it
+with root `6c1628e21` and officially published worker base
+`eaabe0186d14ea9b48d3c75785ea71fe33d2d294`. This worker verified that exact clean
+base before editing. Existing claim, Hubie identity and Sol/high pair are retained;
+no reclaim, fallback, child, worker sync or push occurred. All 53 original input
+pins below still match this release base and current files.
+
+The finite release covers only the five new files pinned below. They define the
+actual Java case/help envelopes and wire DTOs, pure read validation, calendar/UK/UTC
+facts, named ownership/history/remedy display, exact-car labels and frozen queue
+sorting. Employee scope checks every returned row's employee and run; Greg scope
+checks the run without comparing employees to Greg. Scope is already trusted caller
+context, not authentication or permission conferred by a query/body. Backend bearer,
+role and resource enforcement remains authoritative; later client scope capture and
+late-response protection are still required.
+
+Local not-loaded/invalid-response/scope-mismatch states remain distinct from Java
+refusals. Refusal projection preserves actual code/reason/retryability, field reasons,
+action/version/operation evidence, and drops attached private case/value/history.
+Server transition order, remedy availability/reasons, exact IDs and confirmation-needed
+car evidence survive unchanged. There is no fabricated contract-version tag,
+clock-driven remedy eligibility, transition table, success inference, business command,
+request, controller, Angular view or shared primitive. Historical/unknown recorded
+remedy evidence grants no action; Java's absent preference-confirmation/relaxation
+projection is not invented here. Existing Java suitability, decline/confirmation,
+canonical clock/risk trigger and notification seams remain original integration gaps.
+
+Two focused spec files are authored for these boundaries. **Tests, compiler/type checks,
+builds, browser/rendered checks and services are UNRUN; no stamp or passing count.**
+Only source inspection and metadata integrity checks ran. `contracts` is **in-progress**;
+the other five stable slices remain not-started. Neither original AC is met/checked.
+No new screen is rendered by this slice; later consuming screens retain all original
+rendered desktop/narrow, Safari/private, keyboard/focus, CSP/accessibility and integrated
+Java/OIDC/native-PostgreSQL/restart/hosted gates. Used Cars/shared code is unchanged.
+
+The only runtime artifact prepared is the ignored, non-executable proposal
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq447/contracts-runtime-plan-1008.json`.
+It selects exactly the two specs and proposes an owned, materialized dependency facade,
+owned Vite configuration/cache, bounded supervised scratch/output and finalizers.
+No dependency link, facade, config, cache, toolchain, process, browser or database was
+allocated. Borrowed node_modules/config directories must receive no writes; prior
+low-process cleanup evidence does not establish whole-tree immutability. The proposal
+requires source audit and explicit runtime release before any allocation or execution.
+F412/B-Bot runtime remains consumed and unused here. Parent owns the final receipt.
+
+Exact checkpoint SHA is returned after the official worker-root commit. Dispatcher
+owns publication/native lifecycle/shared integration; source/runtime work stops here.
+The approved plan and original source identities follow as historical checkpoint facts.
+
+### Contracts source and selected-check input pins
+
+| File | SHA-256 |
+| --- | --- |
+| `apps/gcsp-web/src/app/cases/case.types.ts` | `a1071b1627f531a813c659b660f1549e8892ae4aa36e403be0f36784dd23d14f` |
+| `apps/gcsp-web/src/app/cases/case.projection.ts` | `2b18645de9cc94fbaa34cba6ad227346625273d50cc72f9aabc2b79ff6eb0fac` |
+| `apps/gcsp-web/src/app/cases/case.projection.spec.ts` | `3139d1b5a95462f77ebe23292dbecf6dbb3ed39591c68e7e3b2e06a64e80bc00` |
+| `apps/gcsp-web/src/app/help/help.projection.ts` | `cf55e2fddef836e79f66b87a8170e82ef86f124d55fed1383faf7286a6839748` |
+| `apps/gcsp-web/src/app/help/help.projection.spec.ts` | `27aeeb6e87035343372ee78d665d63db2a2c14d65a0116d35ae31f5f77d6ff55` |
+| `apps/gcsp-web/package.json` | `db4427099ecdc0197ed991efb68cf22631b02087ba42a09eb0dbdd976568e540` |
+| `apps/gcsp-web/package-lock.json` | `fb9ba0a4b7c8f0f4bcb33ccbbd8059a2d57593325f7aff085d0248917fbfa5a3` |
+| `apps/gcsp-web/tsconfig.json` | `bf15840d26a748b6aa0df95da87fbc141909ec9854da7db7a2daceec56b57250` |
+| `apps/gcsp-web/tsconfig.spec.json` | `1db769dfa5c1800b9ffaf3f01bb6a3e65a5d2cf3c45d4e8d15aa68128b14edc1` |
+| `apps/gcsp-web/vitest.config.ts` | `f042a4b99a4d4f5733239f3cf20d24c4d5271cdf9df46f7c171f20ee8739f1fe` |
+
+## Approved inventory and full plan — plan-only checkpoint
+
 14 November 2026. **Plan only; HOLD for dispatcher review and explicit source release.**
 Story `DEV-2026-11-13-015`, branch `dev/DEV-2026-11-13-015`, inspected tree
 `ae8705e474ab83ac35be05e02fec29d6a4c9e10c`. The product freeze is

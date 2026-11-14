@@ -6673,7 +6673,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-14T10:06:47Z",
+      "observed_at": "2026-11-14T10:18:35Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
@@ -6683,8 +6683,10 @@
       "slices": [
         {
           "id": "contracts",
-          "status": "not-started",
-          "title": "Case/help contracts and pure display projections"
+          "status": "in-progress",
+          "title": "Case/help contracts and pure display projections",
+          "observed_at": "2026-11-14T10:18:35Z",
+          "evidence": "Five released pure contract/projection/spec files authored; source audit and both focused specs remain UNRUN/pending. See docs/gcsp/fucq447-delivery.md; no runtime allocation or completion claim."
         },
         {
           "id": "client",
@@ -6718,10 +6720,10 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "waiting for dispatcher review of plan; source held",
-          "observed_at": "2026-11-14T10:06:47Z",
-          "expires_at": "2026-11-14T10:06:47Z",
-          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; dispatcher 01a1d6ae-1c69-7240-888b-98af7b3562bd; saved title and effective gpt-6.1-sol/high verified; no children or runtime; docs/gcsp/fucq447-delivery.md"
+          "status": "waiting for parent source audit and runtime release; contracts authored, untested",
+          "observed_at": "2026-11-14T10:18:35Z",
+          "expires_at": "2026-11-14T10:18:35Z",
+          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; gpt-6.1-sol/high retained; finite source-only contracts release on eaabe0186d14ea9b48d3c75785ea71fe33d2d294; no children/runtime; docs/gcsp/fucq447-delivery.md"
         }
       ]
     },
