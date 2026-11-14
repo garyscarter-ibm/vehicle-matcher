@@ -6642,7 +6642,7 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-14T02:14:33Z",
+      "observed_at": "2026-11-14T02:18:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
@@ -6673,9 +6673,10 @@
         },
         {
           "id": "s4-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation, base merge, migration number and result",
-          "observed_at": "2026-11-14T02:14:33Z"
+          "observed_at": "2026-11-14T02:18:47Z",
+          "evidence": "341dde5c: base merged, Java verify 421/421 on native PG 17, result block written"
         }
       ]
     },
