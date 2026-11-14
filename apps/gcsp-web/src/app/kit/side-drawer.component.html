@@ -1,0 +1,13 @@
+<dialog #dialog class="gcsp-side-drawer" [attr.aria-labelledby]="titleId" (cancel)="onCancel($event)" (click)="onDialogClick($event)">
+  <section class="gcsp-side-drawer-panel">
+    <header class="gcsp-side-drawer-header">
+      <div class="gcsp-side-drawer-heading">
+        @if (context()) { <p class="gcsp-side-drawer-context">{{ context() }}</p> }
+        <h2 #heading [id]="titleId" tabindex="-1">{{ title() }}</h2>
+      </div>
+      <button gcspButton type="button" variant="ghost" [disabled]="!dismissible()" aria-label="Close" (click)="close()">Close</button>
+    </header>
+    <div class="gcsp-side-drawer-body"><ng-content /></div>
+    <footer class="gcsp-side-drawer-footer"><ng-content select="[drawer-footer]" /></footer>
+  </section>
+</dialog>

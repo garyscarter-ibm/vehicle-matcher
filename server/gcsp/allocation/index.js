@@ -3,7 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { RECEIPT_READ_LIMITS } from '../repository/core.js';
 import { projectReceipt } from '../repository/receipt-projections.js';
-import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { createAllocationRecommendationEvaluator } from '../recommendation/index.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
@@ -109,11 +109,11 @@ export function createAllocationService({ repository, policy, clock, identity, c
   const readAllocationReceipt = (context, reference, projection) => typeof repository.readAllocationReceipt === 'function'
     ? repository.readAllocationReceipt(context, reference, projection) : repository.read(context, reference);
   // Decisions are per car, so a quote rebuilt from the frozen inputs and one pool entry equals the prepare-time quote.
-  const evaluate = (context, employeeContext, instant, inputs, stock) => createEmployeeRecommendationService({ policy,
+  const evaluate = (context, employeeContext, instant, inputs, stock, projection = 'evaluate') => createAllocationRecommendationEvaluator({ policy,
     time: { async now() { return ok(instant); } },
     provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employeeContext.employeeId,
       factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock, ...(inputs.currentCar ? { currentCar: inputs.currentCar } : {}) }); } } })
-    .recommend(employeeContext, inputs.request);
+    [projection](employeeContext, inputs.request);
   // FUCQ-419: indexed receipt reads; a repository without readReceipts keeps the per-consumer query, filtered here.
   const readReceipts = async (context, request) => {
     if (typeof repository.readReceipts === 'function') return repository.readReceipts(context, request);
@@ -430,7 +430,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const { quotes, quoteInputs } = sliceRows.get(contender.employeeId);
           if (quotes) return quotes[contender.orderUuid] ? ok(quotes[contender.orderUuid]) : unavailable('allocation-quote-unavailable');
           const entry = pool.get(contender.orderUuid); if (!quoteInputs || !entry) return unavailable('allocation-quote-unavailable');
-          const evaluated = await evaluate(context, employeeContext, instant, quoteInputs, [entry]);
+          const evaluated = await evaluate(context, employeeContext, instant, quoteInputs, [entry], 'quote');
           const decision = evaluated.status === 'ok' ? evaluated.value.decisions[0] : null;
           return decision?.orderUuid === contender.orderUuid && decision.gateStatus === 'eligible' ? ok({ ...quoteOf(decision), employeeFacts: quoteInputs.quoteFacts ?? decision.employeeFacts }) : unavailable('allocation-quote-unavailable');
         };
