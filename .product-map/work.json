@@ -6606,7 +6606,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-14T10:21:15Z",
+      "observed_at": "2026-11-14T11:37:26Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
@@ -6619,8 +6619,8 @@
           "status": "in-progress",
           "title": "Read owned order and lifecycle facts",
           "points": 3,
-          "observed_at": "2026-11-14T10:21:15Z",
-          "evidence": "PARTIAL: integrated F440 complete-list/snapshot contract; new injected read port/controller/spec written. All new/combined tests, compiler/build UNRUN; historical18PASS only prior pure projection. Raw pending/partial evidence retained; production lifecycle facade/host, commands/UI and real integration held. docs/gcsp/fucq446-delivery.md; ignored runtime plan controller-runtime-plan-1008.json. No Story acceptance."
+          "observed_at": "2026-11-14T11:37:26Z",
+          "evidence": "PARTIAL: source b8f66d1f; exact two-spec run 49 PASS (31 controller/18 projection), rc0, 0 failures/skips; parent actual teardown/input audit 1130 PASS. Earlier dual-/dev/null and semver startup attempts each ran 0 tests; retained. Facade/host/commands/UI/routes/nullable projection and Java/OIDC/nativePG/hosted/visual acceptance UNRUN/held; both AC unchecked. docs/gcsp/fucq446-delivery.md."
         },
         {
           "id": "employee-actions",
