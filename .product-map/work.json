@@ -6494,7 +6494,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T00:58:47Z",
+      "observed_at": "2026-11-14T02:34:03Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -6504,14 +6504,16 @@
       "slices": [
         {
           "id": "s1-foundation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Appointments schema, ports, synthetic/live providers and retained policy",
-          "observed_at": "2026-11-14T00:58:47Z"
+          "observed_at": "2026-11-14T02:34:03Z",
+          "evidence": "Lead-reviewed bd5f88d5: ports, retained-file policy validation, synthetic/live/unconfigured providers, stage classification, Node id/reference parity; 35 appointments tests (native PG17) and ./mvnw -B verify 177/177"
         },
         {
           "id": "s2-planning",
-          "status": "not-started",
-          "title": "Read, request, confirmation progress and proposed-change acceptance on native PostgreSQL"
+          "status": "in-progress",
+          "title": "Read, request, confirmation progress and proposed-change acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T02:34:03Z"
         },
         {
           "id": "s3-completion",
