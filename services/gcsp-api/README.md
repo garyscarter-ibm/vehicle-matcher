@@ -101,7 +101,7 @@ repository root; needs `server/node_modules`) and `PolicyParityTest` replays eve
 
 `PolicyService.publishPolicyVersion(Principal, JsonNode changeSet)` ports the Node publish rules (`PolicyPublication`) and
 writes through `TransactionRunner` as command `policy.publish` (the change set's `commandId` is the idempotency key).
-There are no HTTP endpoints in this slice. With persistence on, `PostgresPolicySource` replaces the file source:
+With persistence on, `PostgresPolicySource` replaces the file source:
 tables `policy_documents` (content-addressed by SHA-256 of canonical JSON, immutable), `policy_versions` (per run,
 immutable) and `policy_run_activation` (version CAS), added by `V457_1__policy_versions.sql`. A run's base version is
 copied from the retained file on its first read, so edits to the file reach new runs only. `PolicyActivation.activate`
@@ -117,12 +117,27 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 - `principal.policyVersion` is still the configured interim value; consumers wanting the run's activated version call
   `activatedPolicyVersion`.
 
+### Consumers and Greg's policy controls (FUCQ-457 slice 3)
+
+- `PolicyBriefAdapter` is the `BriefPolicyPort` bean (it replaces the brief's `@DefaultBean` refusal). The port has no run, so
+  it reads the 7 brief keys pinned at `gcsp.environment.run-id`; any key missing or at another version is the brief's
+  unavailable state.
+- `PolicyAccountAdapter` implements `AccountPolicyPort` but is not a bean: `AccountSelection.policy()` still returns the
+  refusal until integration returns `new PolicyAccountAdapter(policyService)` from it.
+- `PolicyReleaseAdapter` is a `ReleasePolicy` over the service (one version for size, lead time and max age); supply still
+  selects its file reader in `SupplySelection.select` until integration swaps it.
+- `GET /api/gcsp/v1/greg/policy` and `POST .../greg/policy/publish` (greg role only, no query parameters). Preview is `422`
+  `preview-unavailable` until Greg demand and fit exist in Java. `heldOffers.count` is `null` (no offers table yet) and
+  there is no `clockVersion`. Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
+  `expectedVersion`, `currentVersion`, `action` or `operationId`; `src/test/resources/policy-http/outcomes.json` records them.
+
 ## Endpoints
 
 | Path | Result |
 | --- | --- |
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
+| `GET /api/gcsp/v1/greg/policy`, `POST /api/gcsp/v1/greg/policy/publish`, `POST .../preview` | Greg only. Active policy projection, publish a successor (`200`, `400` with reasons, `403`, `409`, `422` without persistence, `503`), preview is `422`. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
 | `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
