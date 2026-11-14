@@ -258,6 +258,34 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
 
+## Buddy allocation (FUCQ-464)
+
+`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
+services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+
+| Service | Does |
+| --- | --- |
+| `AllocationTriggers.consume(scope, max)` | Reads `stock-released`, `brief-changed`, `buddy-expired` (grouped per revision and `expiredAt`) and `offer-declined` outbox events after `allocation_trigger_cursor`, allocates each, then advances the cursor by version CAS. |
+| `AllocationService.allocate(scope, trigger)` | `allocation.prepare` freezes the ranked plan (policy tie-break, every eligible contender, evaluations); then one `allocation.claim` per contender, then `allocation.complete`. |
+| `BuddyExpiry.expire(scope)` | Expires due local Buddy holds (inclusive deadline) with their offers, or starts a remote release; anything misaligned is retained. |
+| `BuddyRemoteLifecycle.drive / reconcile` | Remote claim and release: an attempt transaction, the provider call outside any transaction, then an acknowledgement transaction. |
+
+Locking and idempotency:
+- One occupying holder per car, and one per slot unit, is decided by the V1 partial unique indexes on `custody_holds`. A
+  23505 inside the claim savepoint is recorded as `car-held` or `slot-occupied`, and the fallback continues.
+- Each claim locks its `allocation_runs` row `FOR UPDATE` and advances `next_index` by version CAS.
+- The allocation id comes from (trigger type, source event). The claim operation id comes from (run, allocation,
+  employee, car). Command receipts replay both, and a reused id with different input is `command-input-changed`.
+- Remote operations lock their `pending_operations` row `FOR UPDATE` and CAS its version in both transactions.
+- An uncertain commit is inspected, never assumed.
+- A remote hold is never freed until the provider confirms, so unknown or mismatched acknowledgements stay pending.
+
+Ports, stubbed until their Stories merge:
+- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
+- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+
+FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
+
 ## Render
 
 Gary's dev environment does not exist yet. The proposed service block for `render.gcsp.yaml` is in

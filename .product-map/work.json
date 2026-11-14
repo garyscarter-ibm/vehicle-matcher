@@ -6661,7 +6661,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-14T02:53:10Z",
+      "observed_at": "2026-11-14T08:51:18Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -6671,24 +6671,30 @@
       "slices": [
         {
           "id": "allocate-local",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Local allocation: plan, ranked fallback contenders, exclusive claims, offers and quotes",
-          "observed_at": "2026-11-14T02:53:10Z"
+          "observed_at": "2026-11-14T08:10:17Z",
+          "evidence": "baa38e656 reviewed by Mulan; gcsp.api.allocation AllocationTest 21/21 on native PG 17"
         },
         {
           "id": "expiry-triggers",
-          "status": "not-started",
-          "title": "Local hold expiry and trigger consumption with lapse rules"
+          "status": "complete",
+          "title": "Local hold expiry and trigger consumption with lapse rules",
+          "observed_at": "2026-11-14T08:25:38Z",
+          "evidence": "05c611456 reviewed by Mulan; ExpiryTriggersTest 11/11 + AllocationTest 21/21 native PG 17"
         },
         {
           "id": "remote-lifecycle",
-          "status": "not-started",
-          "title": "Remote Buddy claims, pending attempts, release and restart reconciliation"
+          "status": "complete",
+          "title": "Remote Buddy claims, pending attempts, release and restart reconciliation",
+          "observed_at": "2026-11-14T08:51:18Z",
+          "evidence": "9f3c761a5 reviewed by Mulan; RemoteLifecycleTest 13/13, allocation scope 45/45 native PG 17"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation"
+          "status": "in-progress",
+          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T08:51:18Z"
         }
       ]
     },
