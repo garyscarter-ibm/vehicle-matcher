@@ -100,3 +100,21 @@ Jira writes resumed on 13 November 2026. All collaborators have equal authority;
 administrative owner metadata does not elevate approval authority. Preserve exact
 child-only false HTTP 422 diagnostics and continue while the launcher can work,
 without gateway or credential changes.
+
+## Reviewed API-client checkpoint
+
+The native client now covers all four reads and nine supported POST suffixes,
+source-shaped versioned inputs, bearer authentication, authority-field rejection,
+truthful stale/pending/invalid outcomes and no automatic POST replay after 401.
+Cogsworth finished its three-file slice; the lead reviewed the contracts and
+callers against the existing editor/service source. Nested projection validation
+remains an explicit responsibility before native presenters consume those fields.
+
+Scoped command: `npm --prefix apps/gcsp-web test -- --include=src/app/preferences/brief.client.spec.ts`.
+Attempt 01 failed compilation (predicate typing and a test property access).
+Attempt 02 compiled and ran 5/6, exposing an unbound validator method.
+Attempt 03 passed 6/6 after top-level validator correction. All attempts remain at
+`.claude/test-runs/fucq441/api-client/`; this is no full stamp or Java acceptance.
+The lead independently matched the receipt source hashes and verified scratch and
+owned link absence plus preserved dependency/runtime device and inode identities.
+Passing run: 3.6 seconds, peak RSS 938,655,744 bytes; peak scratch 9,961,696 bytes.

@@ -6895,14 +6895,15 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-14T00:35:08Z",
+      "observed_at": "2026-11-14T00:42:02Z",
       "original_status": "In Progress",
       "slices": [
         {
           "id": "api-client",
-          "observed_at": "2026-11-14T00:27:04Z",
-          "status": "in-progress",
-          "title": "Versioned brief API client and response contracts"
+          "observed_at": "2026-11-14T00:42:02Z",
+          "status": "complete",
+          "title": "Versioned brief API client and response contracts",
+          "evidence": "Lead reviewed source contract and callers; focused API suite 6/6; matching hashes and teardown verified in docs/gcsp/fucq-441-preferences-2026-11-14.md."
         },
         {
           "id": "editor-feedback",
@@ -6940,9 +6941,9 @@
           "harness": "codex",
           "role": "mechanic",
           "observed_at": "2026-11-14T00:35:08.248381+00:00",
-          "expires_at": "2026-11-14T01:35:08.248381+00:00",
+          "expires_at": "2026-11-14T00:42:01.876813+00:00",
           "source": "child chat01a1d772-fbf7-7ed3-8a99-f897a07b925a verified Luna/high",
-          "status": "active"
+          "status": "stopped"
         }
       ]
     }
