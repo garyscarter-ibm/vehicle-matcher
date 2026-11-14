@@ -150,12 +150,15 @@ services:
     region: frankfurt
     branch: gcsp-poc-dev
     dockerfilePath: ./services/gcsp-api/Dockerfile
-    dockerContext: ./services/gcsp-api
+    dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
     healthCheckPath: /q/health/ready
     autoDeployTrigger: commit
     buildFilter:
       paths:
         - services/gcsp-api/**
+        - server/gcsp/policy/seed-v1.json
+        - server/gcsp/policy/reviewed/**
+        - server/gcsp/predict/records/policy-definitions.json
       ignoredPaths:
         - services/gcsp-api/README.md
         - services/gcsp-api/render-service.proposed.yaml
@@ -206,6 +209,42 @@ services:
         value: "true"          # this dev service only; fixed at the database's first claim
       - key: GCSP_DATABASE_POOL_SIZE
         value: "10"            # application's default maximum connections
+      # Optional Java adapters retain their existing unavailable defaults.
+      - key: GCSP_SUPPLY_PROVIDER
+        value: none            # none | tranche-plan
+      # tranche-plan requires a deployment-supplied plan; this image ships neither file.
+      # Empty supply policy keeps releases pending as policy-unavailable.
+      # - key: GCSP_SUPPLY_TRANCHE_PLAN_FILE
+      #   sync: false
+      # - key: GCSP_SUPPLY_POLICY_FILE
+      #   sync: false
+      - key: GCSP_ACCOUNT_PROVIDER
+        value: none            # none | hr-snapshot | repository
+      # hr-snapshot requires a deployment-supplied export; repository needs the isolated DB above.
+      # - key: GCSP_ACCOUNT_HR_SNAPSHOT_PATH
+      #   sync: false
+      - key: GCSP_DOCUMENTS_PROVIDER
+        value: none            # synthetic enables fictional demo evidence
+      # Mail stays captured when unset; brevo requires every mail setting below.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   value: brevo
+      # Use the Angular HTTPS base serving /gcsp/offers/:offerId, not the API host.
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
+      # Optional notification drain interval: 1s to 10m; unset defaults to 5s.
+      # - key: GCSP_NOTIFY_DRAIN_INTERVAL
+      #   value: 5s
+      - key: GCSP_APPROVALS_PROVIDER
+        value: none            # none | synthetic | live-stub
+      # Optional file override; unset keeps the canonical PolicyService.
+      # - key: GCSP_APPROVALS_POLICY_FILE
+      #   sync: false
 
   - type: web
     name: gcsp-angular-dev

@@ -26,6 +26,49 @@ function configurationValid(config, slider) {
 const plainDataRecord = (value) => value && typeof value === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(value))
   && Reflect.ownKeys(value).every((key) => Object.hasOwn(Object.getOwnPropertyDescriptor(value, key), 'value'));
 
+function jsonData(value, visiting = new WeakSet()) {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean'
+    || typeof value === 'number' && Number.isFinite(value)) return true;
+  if (!value || typeof value !== 'object' || visiting.has(value)) return false;
+  visiting.add(value);
+  const array = Array.isArray(value);
+  if (array ? Object.getPrototypeOf(value) !== Array.prototype
+    : ![Object.prototype, null].includes(Object.getPrototypeOf(value))) return false;
+  const keys = Reflect.ownKeys(value);
+  if (keys.some((key) => typeof key !== 'string')) return false;
+  if (array) {
+    if (keys.length !== value.length + 1 || !keys.includes('length')) return false;
+    for (let index = 0; index < value.length; index++) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value') || !jsonData(descriptor.value, visiting)) return false;
+    }
+  } else {
+    for (const key of keys) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+      if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value') || !jsonData(descriptor.value, visiting)) return false;
+    }
+  }
+  visiting.delete(value);
+  return true;
+}
+
+function prepareOptionEvidenceConfig(config) {
+  try {
+    const keys = config && typeof config === 'object' ? Reflect.ownKeys(config) : [];
+    if (!plainDataRecord(config) || keys.some((key) => typeof key !== 'string'
+      || !Object.getOwnPropertyDescriptor(config, key).enumerable) || !Object.hasOwn(config, 'preferences')
+      || ['optionEvidence', 'driverEligibilityRequired', 'retailBudgetEnabled', 'displayLimit', 'termValiditySeconds',
+        'confirmedAssurances', 'plugInFuels', 'chargingAccess', 'availabilityStates', 'essentials', 'tuning',
+        'preferenceWeights', 'ranking'].some((key) => key in config && !Object.hasOwn(config, key))
+      || !jsonData(config.preferences)
+      || config.optionEvidence !== undefined && !jsonData(config.optionEvidence)) return config;
+    const preferences = freezeVehicleData(structuredClone(config.preferences));
+    return { ...config, preferences, ...(config.optionEvidence === undefined ? {} : {
+      optionEvidence: freezeVehicleData(structuredClone(config.optionEvidence)),
+    }) };
+  } catch { return config; }
+}
+
 function cloneSource(source) {
   if (!plainDataRecord(source)) return structuredClone(source);
   const stock = Object.getOwnPropertyDescriptor(source, 'stock');
@@ -140,7 +183,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
           'eligibility.homeCharging.requiredForPlugIn'].map((key) => policy.getAssumption(key, read)));
         if (assumptionResults.some((row) => row.status !== 'ok' || row.policyVersion !== allowance.policyVersion)) return unavailable('policy-configuration-unavailable');
         const [calibration, minimum, maximum, charging] = assumptionResults.map((row) => row.value);
-        const config = calibration.value; const slider = { minimum: minimum.value, maximum: maximum.value };
+        const config = prepareOptionEvidenceConfig(calibration.value); const slider = { minimum: minimum.value, maximum: maximum.value };
         if (!configurationValid(config, slider) || typeof charging.value !== 'boolean') return unavailable('policy-configuration-invalid');
         // Typed current-car feedback rides beside the brief; the strict brief validator never sees it.
         const typed = {}; let content = request;
