@@ -159,6 +159,25 @@ describe('component-scoped activity store', () => {
     expect(client.readControlVersions).toHaveBeenCalledOnce();
   });
 
+  it('does not mistake paused search consent for a completed disengage command', async () => {
+    await ready();
+    client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+    await store.updateBuddy('disengage');
+    const input = client.command.mock.calls[0][1];
+    client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'paused', permission: {
+      searchConsent: true, holdConsent: true, paused: true, permissionVersion: 7, canSearch: false, canHold: false,
+    } })));
+    await store.refresh();
+    expect(store.view().phase).toBe('recovery');
+    expect(store.view().retryAvailable).toBe(true);
+    expect(store.view().showControls).toBe(false);
+    expect(client.command).toHaveBeenCalledOnce();
+    await store.retryUpdate();
+    expect(client.command.mock.calls[1][0]).toBe('disengage');
+    expect(client.command.mock.calls[1][1]).toBe(input);
+    expect(client.readControlVersions).toHaveBeenCalledOnce();
+  });
+
   it('clears retained commands on sign-out and only signs in after a deliberate action', async () => {
     await ready();
     client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });

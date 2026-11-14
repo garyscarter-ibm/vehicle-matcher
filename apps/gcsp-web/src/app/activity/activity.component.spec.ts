@@ -171,6 +171,91 @@ describe('native employee activity view', () => {
     expect(pageText(fixture)).not.toContain('do-not-render-diagnostic');
   });
 
+  it('engages a fully disengaged Buddy using fresh versions and waits for authoritative readback', async () => {
+    const disengaged = projection({ state: 'paused', permission: {
+      searchConsent: false, holdConsent: false, paused: false, permissionVersion: 6, canSearch: false, canHold: false,
+    } });
+    client.readActivity.mockResolvedValueOnce(ok(disengaged));
+    const fixture = await mount();
+    const button = fixture.nativeElement.querySelector('.activity-control') as HTMLButtonElement;
+    expect(button.textContent.trim()).toBe('Engage Buddy');
+    const versions = deferred<{ status: 'ok'; value: { briefVersion: number; draftVersion: number } }>();
+    const result = deferred<ActivityResult<{}>>();
+    const readback = deferred<ActivityResult<ActivityProjection>>();
+    client.readControlVersions.mockReturnValueOnce(versions.promise);
+    client.command.mockReturnValueOnce(result.promise);
+    client.readActivity.mockReturnValueOnce(readback.promise);
+    button.click(); fixture.detectChanges();
+    expect(client.readControlVersions).toHaveBeenCalledOnce();
+    expect(client.command).not.toHaveBeenCalled();
+    expect(button.disabled).toBe(true);
+    expect(fixture.componentInstance.view().projection).toBe(disengaged);
+    versions.resolve({ status: 'ok', value: { briefVersion: 8, draftVersion: 11 } });
+    await vi.waitFor(() => expect(client.command).toHaveBeenCalledOnce());
+    expect(client.command).toHaveBeenCalledWith('engage', {
+      commandId: expect.any(String), expectedBriefVersion: 8, expectedDraftVersion: 11,
+    }, expect.objectContaining({ signal: expect.any(AbortSignal) }));
+    expect(fixture.componentInstance.view().projection).toBe(disengaged);
+    result.resolve({ status: 'ok', value: {} });
+    await vi.waitFor(() => expect(client.readActivity).toHaveBeenCalledTimes(2));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.view().projection).toBeNull();
+    expect(pageText(fixture)).not.toContain('Buddy engaged');
+    readback.resolve(ok(projection({ briefVersion: 9 })));
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.activity-control')?.textContent.trim()).toBe('Disengage Buddy');
+    });
+    expect(pageText(fixture)).toContain('Buddy engaged');
+    expect(client.command).toHaveBeenCalledOnce();
+  });
+
+  it('offers Engage Buddy after an explicit disengage reads back revoked consent', async () => {
+    const fixture = await mount();
+    client.readActivity.mockResolvedValueOnce(ok(projection({ briefVersion: 9, state: 'paused', permission: {
+      searchConsent: false, holdConsent: false, paused: false, permissionVersion: 9, canSearch: false, canHold: false,
+    } })));
+    const button = fixture.nativeElement.querySelector('.activity-control') as HTMLButtonElement;
+    expect(button.textContent.trim()).toBe('Disengage Buddy');
+    button.click();
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.activity-control')?.textContent.trim()).toBe('Engage Buddy');
+    });
+    expect(client.command).toHaveBeenCalledWith('disengage', {
+      commandId: expect.any(String), expectedBriefVersion: 8, expectedDraftVersion: 5,
+    }, expect.objectContaining({ signal: expect.any(AbortSignal) }));
+    expect(pageText(fixture)).toContain('Buddy disengaged');
+    expect(fixture.componentInstance.view().projection?.briefVersion).toBe(9);
+    expect(client.command).toHaveBeenCalledOnce();
+  });
+
+  it('clears an uncertain disengage after Refresh activity reads revoked consent without replaying the command', async () => {
+    const fixture = await mount();
+    client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+    (fixture.nativeElement.querySelector('.activity-control') as HTMLButtonElement).click();
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(fixture.componentInstance.view().retryAvailable).toBe(true);
+    });
+    client.readActivity.mockResolvedValueOnce(ok(projection({ briefVersion: 9, state: 'paused', permission: {
+      searchConsent: false, holdConsent: false, paused: false, permissionVersion: 9, canSearch: false, canHold: false,
+    } })));
+    const refresh = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button'))
+      .find((button) => button.textContent.trim() === 'Refresh activity')!;
+    refresh.click();
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(fixture.componentInstance.view().phase).toBe('ready');
+    });
+    expect(fixture.componentInstance.view().retryAvailable).toBe(false);
+    expect(fixture.nativeElement.querySelector('.activity-control')?.textContent.trim()).toBe('Engage Buddy');
+    expect(pageText(fixture)).not.toContain('Retry update');
+    expect(client.readActivity).toHaveBeenCalledTimes(2);
+    expect(client.command).toHaveBeenCalledOnce();
+    expect(client.readControlVersions).toHaveBeenCalledOnce();
+  });
+
   it('deduplicates event ids and collapses adjacent identical time and label rows in supplied order', async () => {
     const sameTime = '2026-11-14T07:00:00.000Z';
     client.readActivity.mockResolvedValueOnce(ok(projection({ stateChanges: [

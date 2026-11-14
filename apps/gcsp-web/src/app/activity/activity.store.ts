@@ -52,8 +52,7 @@ const sameScope = (left: EmployeeScope, right: EmployeeScope): boolean => left.s
 const accepted = (projection: ActivityProjection | null): boolean => projection?.currentOffer?.state === 'accepted';
 const engaged = (projection: ActivityProjection): boolean => projection.permission?.searchConsent === true
   && projection.permission.holdConsent === true && projection.permission.paused === false;
-const canControl = (projection: ActivityProjection | null): boolean => !!projection?.permission
-  && projection.permission.searchConsent === true && projection.permission.holdConsent === true && !accepted(projection);
+const canControl = (projection: ActivityProjection | null): boolean => !!projection?.permission && !accepted(projection);
 
 @Injectable()
 export class ActivityStore {
@@ -349,7 +348,7 @@ export class ActivityStore {
 
   private operationApplied(projection: ActivityProjection, operation: BuddyOperation): boolean {
     if (operation === 'engage') return engaged(projection);
-    return projection.permission?.searchConsent === true && projection.permission.holdConsent === true && projection.permission.paused === true;
+    return projection.permission?.searchConsent === false && projection.permission.holdConsent === false && projection.permission.paused === false;
   }
 
   private isCurrentScope(scope: EmployeeScope): boolean {
