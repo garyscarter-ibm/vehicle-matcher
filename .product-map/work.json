@@ -6436,7 +6436,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-14T08:24:01Z",
+      "observed_at": "2026-11-14T09:14:30Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -6449,10 +6449,10 @@
           "name": "Rocky",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-14T08:24:01.540216+00:00",
-          "expires_at": "2026-11-14T08:24:01.540216+00:00",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "expires_at": "2026-11-14T09:13:53Z",
           "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
-          "status": "local proof checkpoint lead-reviewed; inactive awaiting dispatcher publication"
+          "status": "route checkpoint lead-reviewed; inactive awaiting parent publication and integration audit"
         },
         {
           "name": "Doug the Dog",
@@ -6484,11 +6484,11 @@
         {
           "name": "Spike",
           "harness": "codex",
-          "role": "runner rendered activity proof",
-          "observed_at": "2026-11-14T08:15:21.799691+00:00",
-          "expires_at": "2026-11-14T08:15:21.799691+00:00",
-          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; requested/selected/effective gpt-6-luna/high and saved title verified; attempt-8-summary.json",
-          "status": "attempt 8 local proof complete; inactive"
+          "role": "runner production Activity route proof",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "expires_at": "2026-11-14T09:13:53Z",
+          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; same requested/selected/effective gpt-6-luna/high; attempt-2-summary.json",
+          "status": "single route attempt2 complete 17/17; inactive"
         }
       ],
       "slices": [
@@ -6510,13 +6510,15 @@
           "id": "proof",
           "status": "complete",
           "title": "Selected state and desktop/narrow browser review",
-          "observed_at": "2026-11-14T08:24:01Z",
-          "evidence": "Lead source and all10 desktop/narrow capture reviews completed at 7f8e947: attempt8 59/59 assertions, zero failed waits/unrun; exact route/auth/no-replay and cleanup verified. docs/gcsp/fucq444-delivery.md; lead-attempt8-review.json c40b0956. F487/F495 remain Medium independent open/unfixed; independent reviewer and connected integration remain outstanding."
+          "observed_at": "2026-11-14T09:14:30Z",
+          "evidence": "Lead and independent Wakko source/all10capture review passed; attempt8 59/59, prior client19/store-component29 retained. Route attempt2 adds17/17 + bothAOT builds +2captures. docs/gcsp/fucq444-delivery.md. F487/F495 independent open/unfixed; connected integration remains open."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Connected route Java OIDC PostgreSQL acceptance"
+          "status": "in-progress",
+          "title": "Connected route Java OIDC PostgreSQL acceptance",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "evidence": "Parent-allocated lazy employee Activity route locally proved: both production AOT/static builds +17/17 route checks,2captures; lead-final-review.json 7b37b729. Java/OIDC/nativePG/restart/concurrency/hosted/Safari/private/accessibility and both originalAC remain open; awaiting parent route publication/audit."
         }
       ],
       "tracker_observed_at": "2026-11-14T05:11:48Z"
