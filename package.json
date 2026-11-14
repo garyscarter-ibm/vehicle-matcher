@@ -9,6 +9,8 @@
     "preview": "python3 -m http.server 3000",
     "server": "node server/index.js",
     "server:gcsp-offline": "GCSP_OFFLINE=1 node server/index.js",
+    "gcsp:compile": "npm --prefix apps/gcsp-web run build -- --configuration production",
+    "gcsp:assemble": "node scripts/build-gcsp-static.mjs",
     "audit": "node scripts/audit-questions.mjs",
     "audit:refine": "node scripts/audit-refinement.mjs",
     "personas": "node scripts/persona-check.mjs",
