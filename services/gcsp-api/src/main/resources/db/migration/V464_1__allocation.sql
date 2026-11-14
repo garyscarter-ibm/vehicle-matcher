@@ -196,3 +196,8 @@ CREATE TABLE allocation_trigger_cursor (
   PRIMARY KEY (environment_id, run_id),
   FOREIGN KEY (environment_id, run_id) REFERENCES runs (environment_id, run_id)
 );
+
+-- Allocated holds sit outside the occupying partial indexes; the allocator finds them by car, and any hold by renewal.
+CREATE INDEX custody_holds_allocated_car ON custody_holds (environment_id, run_id, order_uuid) WHERE state = 'allocated';
+CREATE INDEX custody_holds_renewal ON custody_holds (environment_id, run_id, (attributes->>'renewalId'))
+  WHERE attributes->>'renewalId' IS NOT NULL;
