@@ -5484,88 +5484,6 @@
     },
     {
       "assignee": "",
-      "branch": "dev/DEV-2026-11-13-GC-007",
-      "id": "FUCQ-414",
-      "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Native Jira In Progress independently read; file and remote lease remain In Progress/owned. Implementation and independent review PASS; original acceptance remains open, not Built. Published base09a13e78 merged into worker; F414 source hashes and301 foreign Story rows preserved. Final memory proof reused; F414+F425 nativePG, FUCQ106, Safari/fullaccessibility remain unverified.",
-      "observed_at": "2026-11-13T23:34:17Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
-          "id": "reuse",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Validated-immutable-snapshot-reuse"
-        },
-        {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
-          "id": "proof",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Semantic-equivalence-and-operation-count-proof"
-        },
-        {
-          "evidence": "Connected owned memory39/39 checks and10 captures at1440/375; nativePG/FUCQ106/Safari/fullaccessibility unavailable or unrun. Known LowF400 preserved; no acceptance inference.",
-          "id": "connected",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "blocked",
-          "title": "Connected-release-offer-history-integration"
-        },
-        {
-          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained.",
-          "id": "review",
-          "observed_at": "2026-11-13T23:19:26Z",
-          "status": "complete",
-          "title": "Independent-final-review"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Reuse validated immutable stock snapshots across employees",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
-      "workers": [
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
-          "name": "Foghorn Leghorn",
-          "observed_at": "2026-11-13T22:37:32Z",
-          "role": "story-lead",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/mr_potato_head",
-          "name": "Mr Potato Head",
-          "observed_at": "2026-11-13T22:37:32Z",
-          "role": "implementer",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/pugh",
-          "name": "Pugh",
-          "observed_at": "2026-11-13T22:52:38Z",
-          "role": "runner",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        },
-        {
-          "expires_at": "2026-11-13T23:19:26Z",
-          "harness": "codex",
-          "id": "/root/speedy_gonzales",
-          "name": "Speedy Gonzales",
-          "observed_at": "2026-11-13T23:16:27Z",
-          "role": "reviewer",
-          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
-        }
-      ]
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-415",
       "jira_observed_at": "2026-11-12T15:48:01.061Z",
       "note": "AC1–3 evidenced: 92 selected pass, 9 native included; 42 Chrome checks/10 captures independently reviewed PASS. AC4 partial: Safari/private/full keyboard-accessibility/hosted-dev unrun. In Progress/lease retained; dispatcher owns lifecycle. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
@@ -7288,6 +7206,88 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-13-GC-007",
+      "id": "FUCQ-414",
+      "jira_observed_at": "2026-11-13T22:36:19.647Z",
+      "note": "Current product matches F421 native fb31d459; reuse F415 native/Chrome cb5064ed with probe delta explicit. Remaining experience proof authorised, not executed; Safari unavailable: locked Mac. Original AC/acceptance unchanged. Delivery note.",
+      "observed_at": "2026-11-14T03:10:13Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
+          "id": "reuse",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "status": "complete",
+          "title": "Validated-immutable-snapshot-reuse"
+        },
+        {
+          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
+          "id": "proof",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "status": "complete",
+          "title": "Semantic-equivalence-and-operation-count-proof"
+        },
+        {
+          "evidence": "Original F414 memory and F415 native Chrome42/42/10captures reused; current F421 native boundary matched. Remaining private/keyboard/accessibility proof selected; Safari blocked by locked Mac. No new execution/acceptance.",
+          "id": "connected",
+          "observed_at": "2026-11-14T03:10:11.467133+00:00",
+          "status": "in-progress",
+          "title": "Connected-release-offer-history-integration"
+        },
+        {
+          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained.",
+          "id": "review",
+          "observed_at": "2026-11-13T23:19:26Z",
+          "status": "complete",
+          "title": "Independent-final-review"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Reuse validated immutable stock snapshots across employees",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-414",
+      "workers": [
+        {
+          "expires_at": "2026-11-14T04:10:13.305996+00:00",
+          "harness": "codex",
+          "id": "01a1d70b-7e3d-74c2-ba6d-d52f3181668e",
+          "name": "Foghorn Leghorn",
+          "observed_at": "2026-11-14T03:10:11.467133+00:00",
+          "role": "story-lead",
+          "source": "Parent resumed existing lead for scoped experience proof only; no acceptance/lifecycle change."
+        },
+        {
+          "expires_at": "2026-11-13T23:19:26Z",
+          "harness": "codex",
+          "id": "/root/mr_potato_head",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-13T22:37:32Z",
+          "role": "implementer",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "expires_at": "2026-11-13T23:19:26Z",
+          "harness": "codex",
+          "id": "/root/pugh",
+          "name": "Pugh",
+          "observed_at": "2026-11-13T22:52:38Z",
+          "role": "runner",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
+        },
+        {
+          "expires_at": "2026-11-13T23:19:26Z",
+          "harness": "codex",
+          "id": "/root/speedy_gonzales",
+          "name": "Speedy Gonzales",
+          "observed_at": "2026-11-13T23:16:27Z",
+          "role": "reviewer",
+          "source": "Final handoff; edits/review complete and no owned test resources remain. Dispatcher retains allocation reservation through serialized integration."
         }
       ]
     }
