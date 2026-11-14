@@ -6699,13 +6699,36 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:53:10Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-464"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-464",
+      "slices": [
+        {
+          "id": "allocate-local",
+          "status": "in-progress",
+          "title": "Local allocation: plan, ranked fallback contenders, exclusive claims, offers and quotes",
+          "observed_at": "2026-11-14T02:53:10Z"
+        },
+        {
+          "id": "expiry-triggers",
+          "status": "not-started",
+          "title": "Local hold expiry and trigger consumption with lapse rules"
+        },
+        {
+          "id": "remote-lifecycle",
+          "status": "not-started",
+          "title": "Remote Buddy claims, pending attempts, release and restart reconciliation"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation"
+        }
+      ]
     },
     {
       "assignee": "",
