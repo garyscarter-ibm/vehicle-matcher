@@ -9,6 +9,7 @@ import { createSyntheticStockProvider } from '../gcsp/stock/index.js';
 import { createVehicleSnapshot } from '../vehicles/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { essential, preference } from './helpers/employee-recommendation.js';
+import { createStrictScopeRepository } from './helpers/strict-scope-repository.js';
 
 const good = (out) => { assert.equal(out?.status, 'ok', JSON.stringify(out)); return out.value; };
 const ids = ['f9600000-0000-4000-8000-000000000001', 'f9600000-0000-4000-8000-000000000002'];
@@ -249,4 +250,17 @@ test('native PostgreSQL persists bounded tick and command JSON across six releas
   assert.ok(ticks.rows[0].bytes < 8192); assert.ok(commands.rows[0].bytes < 8192);
   t.diagnostic(`Native SQL maximum tick JSON: ${ticks.rows[0].bytes} bytes; maximum clock receipt/command JSON: ${commands.rows[0].bytes} bytes.`);
   await f.runtime.close();
+});
+
+// FUCQ-424: every declared clock/allocation receipt transaction completes on its declared state alone, equal to full state.
+test('declared clock and allocation receipt transactions need only their declared state', async (t) => {
+  const { repository, report } = createStrictScopeRepository();
+  const f = await setup(t, { repository, beforeRelease: true });
+  const ticked = good(await tick(f));
+  assert.deepEqual(good(await tick(f)).outcomes, ticked.outcomes);
+  assert.equal((await f.rows('offers')).length, 1);
+  const kinds = new Set(report.scoped.map((id) => id.split(':').slice(0, 3).join(':')));
+  for (const kind of ['clock:advance:to-noon', 'clock:tick:start', 'clock:tick:receipt', 'clock:tick:finish',
+    'allocation:prepare:allocation', 'allocation:advance:allocation', 'allocation:complete:allocation']) assert.ok(kinds.has(kind), `${kind}: ${[...kinds]}`);
+  assert.deepEqual(report.misses, []); assert.deepEqual(report.differences, []);
 });

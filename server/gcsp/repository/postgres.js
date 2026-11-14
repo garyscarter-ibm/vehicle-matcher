@@ -1,6 +1,6 @@
 import pg from 'pg';
 import { withPostgresClient } from './postgres-client.js';
-import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
+import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, isScopeMiss, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
 import { packEvidence, evidenceReferences, unpackEvidence, verifyEvidence, jsonBatches, DEFAULT_BATCH_BYTES,
   writeEvidenceSnapshots, replaceEvidenceReferences } from './postgres-evidence.js';
@@ -74,6 +74,17 @@ export function createPostgresRepository(options = {}) {
       }
     }
     return { sql: `${runs} UNION ALL SELECT ${pg.escapeLiteral(table)} AS t, data FROM ${tableName(table)} WHERE ${where.join(' AND ')}`, parameters };
+  };
+  // FUCQ-424: all runs plus only the declared exact keys of this run, in one round trip.
+  const scopedSql = (context, scope) => {
+    const parameters = [String(context?.runId ?? '')]; const parts = [`SELECT 'runs' AS t, data FROM ${tableName('runs')}`];
+    for (const table of [...new Set(scope.map((ref) => ref.table))]) {
+      const fields = TABLES[table].key.filter((field) => field !== 'runId');
+      parameters.push(JSON.stringify(scope.filter((ref) => ref.table === table).map(({ key }) => Object.fromEntries(fields.map((field) => [field, key[field]])))));
+      const join = fields.map((field) => `r.${sqlName(column(field))} = k.e->>'${field}'`).join(' AND ');
+      parts.push(`SELECT ${pg.escapeLiteral(table)} AS t, r.data FROM ${tableName(table)} AS r JOIN jsonb_array_elements($${parameters.length}::jsonb) AS k(e) ON r.run_id = $1 AND ${join}`);
+    }
+    return { sql: parts.join(' UNION ALL '), parameters };
   };
   const lockSql = (context) => `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`)}, 0))`;
 
@@ -200,7 +211,7 @@ export function createPostgresRepository(options = {}) {
     return FOUNDATION_TABLES.map((table) => `${table}:${parts.get(table)[0]}:${parts.get(table)[1]}`).join('|');
   };
 
-  async function run(context, work, write, selection) {
+  async function run(context, work, write, selection, scope) {
     const runId = String(context?.runId ?? '');
     const scopeKey = JSON.stringify([runId, null]);
     const key = selection ? JSON.stringify([runId, inputDigest(selection)]) : scopeKey;
@@ -217,9 +228,11 @@ export function createPostgresRepository(options = {}) {
         let begun = false;
         try {
           begun = true;
-          const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
-          const fingerprint = fingerprintOf(probe[2].rows);
-          const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
+          // A scoped write with no cache entry cannot hit, so it takes the lock without the fingerprint probe.
+          const lockOnly = write && scope && !cache.has(key);
+          const probe = await client.query(lockOnly ? lockSql(context) : `${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
+          const fingerprint = lockOnly ? undefined : fingerprintOf(probe[2].rows);
+          const hit = lockOnly ? undefined : cache.get(key)?.fingerprint === fingerprint ? cache.get(key)
             : complete?.fingerprint === fingerprint ? complete : undefined;
           if (hit) remember(hit === complete ? scopeKey : key, write ? hit : { ...hit, trustedUntil: until() });
           // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
@@ -233,12 +246,30 @@ export function createPostgresRepository(options = {}) {
             remember(key, { fingerprint, state, selection, trustedUntil: until() });
             return await work(state);
           }
-          const before = hit ? hit.state : sealState(await toState(client, (await client.query(snapshotSql(context))).rows));
-          const state = shallowState(before);
-          const { commit, outcome, mutations } = await work(state);
+          let before; let state; let done; let partial = false;
+          if (scope && !hit) {
+            const selected = scopedSql(context, scope);
+            const loaded = await toState(client, (await client.query(selected.sql, selected.parameters)).rows);
+            state = shallowState(sealState(Object.assign(loaded, { scope })));
+            try { done = await work(state); partial = true; } catch (error) { if (!isScopeMiss(error)) throw error; }
+          }
+          // An under-declared transaction reruns on the full state in this same locked transaction; nothing was flushed yet.
+          if (!partial) {
+            before = hit ? hit.state : sealState(await toState(client, (await client.query(snapshotSql(context))).rows));
+            state = shallowState(before);
+            done = await work(state);
+          }
+          const { commit, outcome, mutations } = done;
           if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
           if (!Array.isArray(mutations)) throw new Error('missing-mutations');
           await flush(client, mutations);
+          if (partial) {
+            // Partial state is never cached; trusted reads must not serve pre-commit rows.
+            await client.query('COMMIT'); begun = false;
+            cache.delete(key);
+            if (trustMs) refreshOthers(key, state.tables.runs);
+            return outcome;
+          }
           // Only resetRun writes outside the cached scope (the next run's seed), so only it needs a filtered copy.
           const after = mutations.some(({ table, key: { runId } }) => table !== 'runs' && runId !== context?.runId) ? scopedCopy(state, context) : committedState(before, state, mutations);
           await client.query('COMMIT'); begun = false;
@@ -281,7 +312,7 @@ export function createPostgresRepository(options = {}) {
     },
     migrationStatus() { return migrationStatus(pool, migrationOptions); },
     read(context, work, selection) { return run(context, work, false, selection); },
-    transaction(context, work) { return run(context, work, true); },
+    transaction(context, work, scope) { return run(context, work, true, undefined, scope); },
     async close() {
       try {
         if (owned && pool) await pool.end();

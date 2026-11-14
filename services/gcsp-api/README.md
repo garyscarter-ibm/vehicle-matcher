@@ -55,6 +55,9 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
+| `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
+| `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
 The test provider registration and claim mapping are in
@@ -83,6 +86,11 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
+| `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
+| `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
+| `GET /api/gcsp/v1/presenter/releases/ticks/{tickId}` | Tick state, attempts, clock and last outcome. |
+| `GET /api/gcsp/v1/presenter/releases/stock?after=&limit=` | Released cars (keyset page, limit 1..500) as the allocator reads them; no VIN, no employee. |
 
 Every other path, and every refusal, is a JSON body `{status, code, reason, retryable}` (500s add a
 `reference`), never HTML. Context refusals:
@@ -92,6 +100,35 @@ Every other path, and every refusal, is a JSON body `{status, code, reason, retr
 | 401 | `bearer-missing`, `bearer-invalid`, `token-malformed`, `token-algorithm-unsupported`, `token-signature-invalid`, `token-issuer-invalid`, `token-audience-invalid`, `token-expired`, `token-not-yet-valid`, `token-lifetime-invalid`, `token-subject-missing`, `token-client-invalid`, `token-invalid` |
 | 403 | `scope-missing`, `role-missing`, `subject-not-mapped`, `role-not-granted`, `role-conflict`; from `Access`: `role-required`, `not-resource-owner` |
 | 503 | `identity-provider-not-configured` (mode `none`); `identity-keys-unavailable` (JWKS unreachable, retryable) |
+
+## Supply release (FUCQ-462)
+
+`gcsp.api.supply` ports the Node stock release. `StockRelease` records each presenter tick durably, pulls from the
+selected `SupplyProvider` outside any transaction and releases the exact cars in one command; `ReleasedStock` holds
+the bounded reads. `SupplySelection` picks the provider and policy once at startup, with no silent synthetic
+fallback. `tranche-plan` is a synthetic scenario input, allowed in every launch mode, and every release it makes
+carries `source.mode=synthetic`. The policy file reader is a narrow port until the canonical Java PolicyService
+(FUCQ-457) replaces it. With persistence on and a provider other than `none`, startup finishes up to 100 delivered
+but pending ticks once (it never pulls new releases) and logs a one-line count; a failure is logged, not fatal.
+Readiness check `supply-release` is always UP and reports `provider`, `policy`, `pendingTicks` and
+`latestTrancheId`; only a database error makes it DOWN. Confirmed-supply queueing has no endpoint here (FUCQ-478).
+
+Trigger reads follow FUCQ-419/420 by design (Java equivalents, not delivery of the Node Stories): pending ticks are
+consumed by a keyset cursor over the `supply_release_ticks_pending` partial index, the clock check uses
+`supply_release_ticks_clock`, and tranche and tick receipts are read by primary key; no full history is replayed.
+The allocator (FUCQ-461/464) consumes `ReleasedStock.page` over `stock_cars_released` plus the `stock-released` outbox event.
+
+All endpoints are presenter-only, scoped to the server's active run (never to the request), and accept no query
+parameters except `after` and `limit` on `/stock`; anything else is 400 `unsupported-query`.
+
+| Result | Meaning |
+| --- | --- |
+| 200 | Delivered or read. A replayed tick returns `replayed: true`. |
+| 202 | `outcome-uncertain` with `operationId` (the tick id): inspect the tick before any resubmit. |
+| 400 | `invalid-tick`, `invalid-reconcile`, `invalid-query` (with `reasons`), `unsupported-query`. |
+| 404 | `tick-not-found`. |
+| 409 | `tick-input-changed`, `release-clock-changed`, `stock-identity-changed`, `tranche-input-changed`, `unreleased-stock-occupied`, `stale-run`. |
+| 503 | Pending and retryable (`supply-provider-not-configured`, `policy-unavailable`, `stock-source-unavailable`, `stock-source-stale`, `database-unavailable`), with `state: pending`; or refused evidence (`invalid-stock-pull`, `supply-not-queued`, `supply-before-lead-time`) with `retryable: false`, `state: refused`; or `persistence-not-configured`. |
 
 ## Identity seam
 
