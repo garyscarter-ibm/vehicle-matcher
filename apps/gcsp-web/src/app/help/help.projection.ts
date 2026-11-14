@@ -11,7 +11,8 @@ export function caseReadNotice(read: CaseRead<unknown>): HelpProjection['notice'
   if (read.state === 'ready' || read.state === 'not-loaded') return null;
   if (read.state === 'scope-mismatch') return { title: 'Reopen your current session', text: 'These cases do not match the current account or run.' };
   if (read.state === 'invalid-response') return { title: 'Renewal help is unavailable', text: 'The case response could not be read. Refresh before trying again.' };
-  const r = read.refusal;
+  const r = read.state === 'refused' ? read.refusal : null;
+  if (r === null) return null;
   const title = r.code === 'outcome-uncertain' ? 'Check the current case'
     : r.status === 'unauthenticated' ? 'Sign in to continue'
       : r.status === 'forbidden' ? 'You cannot open these cases'
