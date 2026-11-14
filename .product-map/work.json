@@ -6325,15 +6325,91 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:45:48Z",
       "original_status": "To Do",
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442",
+      "branch": "dev/DEV-2026-11-13-010",
+      "workers": [
+        {
+          "id": "01a1d901-2715-7062-8602-8b96ff614b2e",
+          "name": "Emmet",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T08:45:34.165207+00:00",
+          "expires_at": "2026-11-14T08:45:34.165207+00:00",
+          "source": "two-family substantive lead review complete; frozen checkpoint held for dispatcher publication",
+          "status": "inactive awaiting dispatcher audit/publication"
+        },
+        {
+          "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
+          "name": "Imhotep",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T07:54:37.273554+00:00",
+          "expires_at": "2026-11-14T07:54:37.273554+00:00",
+          "source": "verified final result; idle, source checkpoint0c547fdb, runtime Sol/medium"
+        },
+        {
+          "id": "01a1d914-f018-7810-ac0d-9c54e7484979",
+          "name": "Hugh",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:12:55.257765+00:00",
+          "expires_at": "2026-11-14T08:12:55.257765+00:00",
+          "source": "verified final/idle; source 3e6551e3; effective Sol/medium; saved title and parentage verified"
+        },
+        {
+          "id": "01a1d92c-d0a7-7443-85a3-f703aa8c3d2c",
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:45:34.165207+00:00",
+          "expires_at": "2026-11-14T08:45:34.165207+00:00",
+          "source": "verified final/idle on87961dfb; requested/selected/effective Sol/medium, no fallback/descendants; identity verified",
+          "status": "inactive; seven-file checkpoint reviewed; owned resources cleaned"
+        }
+      ],
+      "slices": [
+        {
+          "id": "typed-projection",
+          "status": "complete",
+          "title": "Typed-source-backed-exact-stock-projection",
+          "observed_at": "2026-11-14T07:54:37Z",
+          "evidence": "Lead source/producer/caller review PASS at pure typed boundary on0c547fdb; 50/50 named spec; tested tree e3668979; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-projection-review.json. Actual Java integration remains open."
+        },
+        {
+          "id": "browse-state",
+          "status": "complete",
+          "title": "Browse-history-and-detail-state",
+          "observed_at": "2026-11-14T08:12:56Z",
+          "evidence": "Lead full source/spec/frozen-gallery/auth-client review PASS at frontend state boundary on 3e6551e3; 51/51 named spec; tested tree 310aabc0; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-browse-state-review.json. Actual routes/rendered/Java integration remain open."
+        },
+        {
+          "id": "view-parity",
+          "status": "in-progress",
+          "title": "Native-Angular-view-parity",
+          "observed_at": "2026-11-14T08:45:48Z",
+          "evidence": "Two shared families reviewed on87961dfb; 35/35 scoped tests; actual Angular AOT/Chrome fixture1440/375/320px and lead visual review. Full app boundary FAILED false positive; Low bug pending parent. Stock composition/routes and Java still open. docs/gcsp/fucq442-delivery.md; lead-facts-options-review.json. Original AC unchecked."
+        },
+        {
+          "id": "review-proof",
+          "status": "not-started",
+          "title": "Selected-proof-and-independent-review"
+        },
+        {
+          "id": "java-integration",
+          "status": "not-started",
+          "title": "Actual-Java-and-journey-integration"
+        }
+      ],
+      "story_points": 13,
+      "started_at": "2026-11-14"
     },
     {
       "assignee": "",
