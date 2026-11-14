@@ -223,6 +223,23 @@ services:
       # hr-snapshot requires a deployment-supplied export; repository needs the isolated DB above.
       # - key: GCSP_ACCOUNT_HR_SNAPSHOT_PATH
       #   sync: false
+      - key: GCSP_DOCUMENTS_PROVIDER
+        value: none            # synthetic enables fictional demo evidence
+      # Mail stays captured when unset; brevo requires every mail setting below.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   value: brevo
+      # Use the Angular HTTPS base serving /gcsp/offers/:offerId, not the API host.
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
+      # Optional notification drain interval: 1s to 10m; unset defaults to 5s.
+      # - key: GCSP_NOTIFY_DRAIN_INTERVAL
+      #   value: 5s
 
   - type: web
     name: gcsp-angular-dev
