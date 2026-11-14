@@ -56,4 +56,22 @@ final class Js {
     static boolean text(JsonNode node) {
         return node != null && node.isTextual() && text(node.textValue());
     }
+
+    /** JavaScript string coercion of a JSON value, as new URL(value) applies it; MissingNode is undefined. */
+    static String coerce(JsonNode node) {
+        if (node == null || node.isMissingNode()) return "undefined";
+        if (node.isNull()) return "null";
+        if (node.isTextual()) return node.textValue();
+        if (node.isArray()) {
+            StringBuilder out = new StringBuilder();
+            for (int i = 0; i < node.size(); i++) {
+                if (i > 0) out.append(',');
+                JsonNode item = node.get(i);
+                if (!item.isNull()) out.append(coerce(item));
+            }
+            return out.toString();
+        }
+        if (node.isObject()) return "[object Object]";
+        return node.isIntegralNumber() ? node.asText() : CanonicalJson.numberToString(node.doubleValue());
+    }
 }

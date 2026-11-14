@@ -1,5 +1,5 @@
 // Offline generator for the Java evidence goldens and fixture stores (FUCQ-459). One function per slice.
-// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1|s2|s3]
+// Run from the worktree: node services/gcsp-api/src/test/node/evidence-golden.mjs [s1|s2|s3|s4]
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +16,11 @@ import { configurationDisplayGallery, readDisplayImageCatalogue, withDisplayImag
 import { withConfigurationDefinitions } from '../../../../../server/gcsp/vehicle-evidence/configuration-definitions.js';
 import { createLiveDisplayImageHandler } from '../../../../../server/gcsp/vehicle-evidence/live-display-images.js';
 import { createHash } from 'node:crypto';
+import { createConfiguredVehicleDetails, createVehicleDetailsConsumer } from '../../../../../server/gcsp/vehicle-evidence/application-vehicle-details.js';
+import { createLookupVehicleAdapter } from '../../../../../server/gcsp/vehicle-evidence/lookup-adapter.js';
+import { createAlternateOfflineVehicleAdapter } from '../../../../../server/gcsp/vehicle-evidence/alternate-offline-adapter.js';
+import { vehicleEvidenceFailure, vehicleEvidenceDetails } from '../../../../../server/gcsp/vehicle-evidence/vehicle-details-contract.js';
+import { createVehicleIdentityRouting } from '../../../../../server/gcsp/vehicle-evidence/identity-routing.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../../..');
 const EVIDENCE = join(ROOT, 'services/gcsp-api/src/test/resources/evidence');
@@ -629,7 +634,350 @@ async function s3() {
   pretty(join(GOLDEN, 's3-failures.json'), await s3Failures(fleetRows, await loadedRegistry('fleet-source.v1')));
 }
 
-const slices = { s1, s2, s3 };
+// ---- s4: both provider shapes behind one application contract --------------------------------------------------------
+const FIXTURES = join(ROOT, 'server/test/fixtures/gcsp/vehicle-evidence');
+const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'));
+const wire = (value) => JSON.parse(JSON.stringify(value));
+const NAN = { $nan: true };
+// Mutations are data so Java replays exactly what Node ran: set/delete by dotted path (array indexes allowed).
+function applyOps(target, ops = []) {
+  for (const op of ops) {
+    const parts = (op.set ?? op.del).split('.'); let node = target;
+    for (const part of parts.slice(0, -1)) node = node?.[part];
+    if (node === null || typeof node !== 'object') continue;
+    const last = parts.at(-1);
+    if (op.del !== undefined) delete node[last];
+    else node[last] = op.value && op.value.$nan ? Number.NaN : structuredClone(op.value);
+  }
+  return target;
+}
+
+async function s4() {
+  mkdirSync(GOLDEN, { recursive: true });
+  for (const name of readdirSync(GOLDEN)) if (/^s4-.*\.json$/.test(name)) rmSync(join(GOLDEN, name));
+  const fixture = readJson(join(FIXTURES, 'alternate-provider.json'));
+  const context = fixture.context;
+  const [vehicle] = lines(join(REAL, 'publication-reference.v1/vins.jsonl')).map((l) => JSON.parse(l));
+  const stockEntry = fixture.entries.find((e) => e.key.category === 'order');
+  const orderUuid = stockEntry.key.token;
+  const stock = { runId: context.runId, orderUuid, orderNumber: '0000123', configurationId: vehicle.configurationId,
+    facts: { syntheticIdentity: { identityKind: 'synthetic', vehicleId: 'fictional-stock-car', originatingDatasetId: 'consumer-fixture',
+      snapshotVersion: vehicle.snapshotVersion, configurationHash: vehicle.configurationHash } } };
+  const repository = { currentRun: async () => ({ status: 'ok', value: { runId: context.runId } }),
+    read: async (_context, { key }) => key.orderUuid === orderUuid ? { status: 'ok', value: stock } : { status: 'not-found' } };
+  const lookup = createLocalVehicleEvidenceLookup({ root: join(REAL, REF), repository, asOf: ASOF });
+  for (let waited = 0; lookup.readiness().status === 'loading' && waited < 120000; waited += 50) await sleep(50);
+  if (lookup.readiness().status !== 'ready') throw new Error('lookup-reference.v1 did not load');
+  const fixtureClassify = (request) => {
+    const card = fixture.entries.find((e) => e.document.card.query.kind === request.kind && e.document.card.query.id === request.id)?.document.card;
+    return card ? { status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: card.identifiers.composition,
+      ...(card.identifiers.subject ? { vehicleId: card.identifiers.subject } : {}) }
+      : { status: 'not-found', identityKind: 'unknown', liveEligible: false };
+  };
+  const offlineRead = (key, options) => {
+    const entry = fixture.entries.find((e) => e.key.category === key.category && e.key.token === key.token);
+    const document = !entry ? { edition: 'offline-cards/1', result: 'missing' }
+      : entry.context && entry.context.runId !== options.context?.runId ? { edition: 'offline-cards/1', result: 'mismatch' } : entry.document;
+    return { document: structuredClone(document), transportStatus: 200 };
+  };
+  const entryDocument = (index) => structuredClone(fixture.entries[index].document);
+  const requests = fixture.entries.map((e) => ({ kind: e.document.card.query.kind, id: e.key.token }));
+  const [configuration, complete] = requests;
+  const b64s = (text) => Buffer.from(text).toString('base64');
+
+  // ---- the lookup results the application adapter receives (Node production decorated lookup)
+  const bases = {
+    configuration: wire(await lookup.resolve(configuration)), complete: wire(await lookup.resolve(complete)),
+    vin: wire(await lookup.resolve({ kind: 'vin', id: vehicle.vin17 })),
+  };
+  const v2 = readJson(join(FIXTURES, 'catalogue-v2-source-record.json'));
+  const v2Request = { kind: 'configuration', id: v2.configurationId };
+  bases.v2 = wire(vehicleEvidenceDetails(v2Request, { status: 'partial', record: v2, images: [],
+    active: { datasetId: 'v2-consumer-regression', version: '1', manifestDigest: 'a'.repeat(64) } }));
+  const empty = readJson(join(FIXTURES, 'empty-mandatory-elements-cases.json'));
+  empty.cases.forEach((c, i) => { bases[`empty${i}`] = c.direct; });
+
+  const cases = [];
+  const matrixRun = async (c) => {
+    const base = c.lookupBase ? applyOps(structuredClone(bases[c.lookupBase]), c.ops) : c.lookupResult;
+    const document = c.docBase !== undefined ? applyOps(entryDocument(c.docBase), c.ops) : c.document;
+    const read = () => ({ ...(c.transportStatus !== undefined ? { transportStatus: c.transportStatus } : {}), document: structuredClone(document) });
+    const classification = c.classification;
+    const identityLookup = { classifyRequest: () => structuredClone(classification) };
+    const options = { identityLookup, ...(c.provider === 'lookup' ? { lookup: { resolve: () => structuredClone(base) } } : { provider: 'alternate-offline', alternateRead: read }) };
+    const consumer = c.route === false
+      ? createVehicleDetailsConsumer({ adapter: c.provider === 'lookup' ? createLookupVehicleAdapter({ lookup: options.lookup })
+        : createAlternateOfflineVehicleAdapter({ read }) })
+      : createConfiguredVehicleDetails(options);
+    return wire(await consumer.resolve(structuredClone(c.request), { context: c.context ?? undefined }));
+  };
+  const add = async (c) => {
+    const full = { route: true, context: null, ...c };
+    const canonical = full.request && typeof full.request === 'object' && typeof full.request.kind === 'string'
+      ? canonicalVehicleIdentifier(full.request.kind, full.request.id) : null;
+    if (full.classification === undefined) full.classification = canonical ? fixtureClassify({ kind: full.request.kind, id: canonical }) : null;
+    const result = await matrixRun(full);
+    const keep = full.full || !['complete', 'partial'].includes(result.status) ? { result } : { resultStatus: result.status, resultDigest: inputDigest(result) };
+    cases.push({ ...full, ...keep });
+    return result;
+  };
+  const both = async (name, request, ctx, perProvider) => {
+    for (const provider of ['lookup', 'alternate-offline']) await add({ name: `${name} [${provider}]`, provider, request, context: ctx, ...perProvider(provider) });
+  };
+  const vinConfig = (vin) => ({ kind: 'vin', id: vin });
+
+  // 1. providers.json: both shapes for every fixture entry through the real production wiring
+  const providers = [];
+  for (const request of requests) {
+    const local = createConfiguredVehicleDetails({ lookup, identityLookup: { classifyRequest: async (r) => fixtureClassify(r) } });
+    const alt = createConfiguredVehicleDetails({ provider: 'alternate-offline', alternateRead: offlineRead, identityLookup: { classifyRequest: async (r) => fixtureClassify(r) } });
+    const a = wire(await local.resolve(request, { context })); const b = wire(await alt.resolve(request, { context }));
+    const withoutImages = (v) => { const copy = structuredClone(v); delete copy.images; delete copy.equipment.resolution;
+      delete copy.completeness.images; delete copy.presentation.imageLabel; return copy; };
+    if (inputDigest(withoutImages(a.vehicle)) !== inputDigest(withoutImages(b.vehicle))) throw new Error(`shapes differ for ${request.kind}`);
+    providers.push({ request, lookup: a, alternate: b, withoutImagesDigest: inputDigest(withoutImages(a.vehicle)) });
+  }
+  pretty(join(GOLDEN, 's4-providers.json'), { context, cases: providers });
+
+  // 2. matrix.json: every failure and pin case of the three Node contract suites
+  const unknownVin = 'ZZZZZZZZ0ZZ000000';
+  // lookup adapter receives the lowercase padded VIN canonicalised; stock without context is refused before the adapter
+  await add({ name: 'adapter: lowercase padded VIN is canonicalised', provider: 'lookup', request: { kind: 'vin', id: ` ${vehicle.vin17.toLowerCase()} ` }, context, lookupBase: 'vin' });
+  await add({ name: 'adapter: stock without a trusted context', provider: 'lookup', request: { kind: 'stock', id: orderUuid }, context: null, lookupResult: null });
+  for (const request of [null, {}, { ...configuration, id: configuration.id.replace(/=+$/, '') }, { kind: 'stock', id: '0000123' },
+    { kind: 'vin', id: 'ZZZZZZZZIZ0000000' }, { ...configuration, url: 'https://private.example' }, { ...configuration, provider: 'live' },
+    { ...configuration, expected: { unknown: 'field' } }, { ...configuration, expected: null }, { ...configuration, expected: { market: 5 } },
+    [], 'text', { ...configuration, baseUrl: 'https://private.example' }, { ...configuration, provider: 'alternate-offline' }]) {
+    await both(`invalid input ${JSON.stringify(request)}`, request, context, (p) => p === 'lookup' ? { lookupResult: null } : { document: null });
+  }
+  for (const request of [{ kind: 'vin', id: unknownVin }, { kind: 'configuration', id: b64s('UNKNOWN:CODE') }, { kind: 'stock', id: '6ff0feca-90cd-4e6f-903c-41fad1ef9b91' }]) {
+    await both(`miss ${request.kind}`, request, context, (p) => p === 'lookup' ? { lookupResult: null } : { document: null });
+  }
+  const staleContext = { ...context, runId: 'old-run' };
+  const staleLookup = wire(await lookup.resolve({ kind: 'stock', id: orderUuid }, { context: staleContext }));
+  await both('stock under a previous run', { kind: 'stock', id: orderUuid }, staleContext, (p) => p === 'lookup'
+    ? { lookupResult: staleLookup } : { document: offlineRead({ category: 'order', token: orderUuid }, { context: staleContext }).document });
+  for (const [status, altStatus] of [['unsupported', 'unsupported'], ['source-unavailable', 'unavailable'], ['identity-mismatch', 'mismatch']]) {
+    await both(`typed ${status}`, configuration, null, (p) => p === 'lookup' ? { lookupResult: vehicleEvidenceFailure(status, 'configuration') }
+      : { document: { edition: 'offline-cards/1', result: altStatus } });
+  }
+  // pins
+  const baseVin = (await createConfiguredVehicleDetails({ lookup, identityLookup: { classifyRequest: async (r) => fixtureClassify(r) } })
+    .resolve({ kind: 'vin', id: vehicle.vin17 })).vehicle;
+  const pins = { configurationId: vehicle.configurationId, vehicleId: vehicle.vehicleId, datasetId: baseVin.identity.datasetId,
+    originatingDatasetId: vehicle.originatingDatasetId, corpusVersion: baseVin.versions.corpus, snapshotVersion: vehicle.snapshotVersion,
+    market: 'US', model: '430i', bodyType: 'Convertible', powertrain: 'petrol', profileId: vehicle.profile.profileId, observedDate: '2026-11-01' };
+  const vinRequest = (expected) => ({ kind: 'vin', id: vehicle.vin17, ...(expected ? { expected } : {}) });
+  const vinBy = (p) => p === 'lookup' ? { lookupBase: 'vin' } : { docBase: 2 };
+  await both('every pin matches', vinRequest(pins), null, vinBy);
+  for (const key of Object.keys(pins)) await both(`pin ${key} differs`, vinRequest({ [key]: 'different' }), null, vinBy);
+  for (const key of ['effectDate', 'orderDate', 'taxDate', 'catalogueDate', 'agModelCode', 'vgModelCode']) {
+    await both(`pin ${key} differs (complete)`, { ...complete, expected: { [key]: 'different' } }, null, (p) => p === 'lookup' ? { lookupBase: 'complete' } : { docBase: 1 });
+  }
+  // alternate stock scope
+  for (const scope of [undefined, { run: 'old-run', environment: context.environmentId }, { run: context.runId, environment: 'other-environment' }]) {
+    await add({ name: `alternate stock scope ${JSON.stringify(scope ?? null)}`, provider: 'alternate-offline', request: { kind: 'stock', id: orderUuid },
+      context, docBase: 3, ops: [scope ? { set: 'card.scope', value: scope } : { del: 'card.scope' }] });
+  }
+  // wrong identities
+  for (const [name, ops] of [['vin', [{ set: 'identity.vin', value: 'ZZZZZZZZ0ZZ000000' }]],
+    ['configuration', [{ set: 'resolved.configurationId', value: b64s('OTHER:CODE') }]],
+    ['identityKind real', [{ set: 'identity.identityKind', value: 'real' }]], ['usage stock', [{ set: 'identity.usage', value: 'stock' }]]]) {
+    await add({ name: `wrong returned ${name}`, provider: 'lookup', request: vinConfig(vehicle.vin17), context: null, lookupBase: 'vin', ops });
+  }
+  for (const [name, ops] of [['model code', [{ set: 'source.resolvedIdentity.modelCode', value: 'OTHER' }]],
+    ['market', [{ set: 'source.resolvedIdentity.market', value: 'US' }]],
+    ['requested effect date', [{ set: 'source.requestedIdentity.effectDate', value: '2026-01-01' }]]]) {
+    await add({ name: `wrong source ${name}`, provider: 'lookup', request: complete, context: null, lookupBase: 'complete', ops });
+  }
+  for (const field of ['chassis', 'composition', 'flavour', 'purpose']) {
+    await add({ name: `alternate wrong ${field}`, provider: 'alternate-offline', request: vinConfig(vehicle.vin17), context: null, docBase: 2,
+      ops: [{ set: `card.identifiers.${field}`, value: field === 'composition' ? b64s('OTHER:CODE') : 'different' }] });
+  }
+  // malformed, versioned and truncated payloads, wrong units, impossible evidence
+  for (const value of [null, {}, 'not JSON', [], { contractVersion: '99', schemaVersion: '1' }]) {
+    await add({ name: `lookup value ${JSON.stringify(value)}`, provider: 'lookup', request: configuration, context: null, lookupResult: value });
+  }
+  for (const document of [null, {}, 'not JSON', '{"edition":', JSON.stringify({ edition: 'offline-cards/2' }), { edition: 'offline-cards/1', result: 'complete', card: {} },
+    { edition: 'offline-cards/1', result: 'bogus' }, { edition: 'offline-cards/1', result: 'complete' },
+    { edition: 'offline-cards/1', result: 'missing' }, { edition: 'offline-cards/1', result: 'invalid' }]) {
+    await add({ name: `alternate document ${JSON.stringify(document)}`, provider: 'alternate-offline', request: configuration, context: null, document });
+  }
+  const unitOps = [
+    ['seats unit', [{ set: 'technical.seats.unit', value: 'LITRES' }]], ['seats NaN', [{ set: 'technical.seats.value', value: NAN }]],
+    ['paint object', [{ set: 'description.paint', value: {} }]], ['verifiedFitted known', [{ set: 'equipment.verifiedFitted.state', value: 'known' }]],
+    ['images state', [{ set: 'images.state', value: 'exact-build' }]], ['impossible date', [{ set: 'source.observedDate', value: '2026-02-30' }]],
+    ['versions deleted', [{ del: 'versions' }]], ['extra fact key', [{ set: 'description.model.sourceKey', value: 'private' }]],
+    ['extra identity key', [{ set: 'source.requestedIdentity.privateStorageName', value: 'private' }]],
+    ['live routing', [{ set: 'routing.liveEligible', value: true }]], ['routing mode', [{ set: 'routing.mode', value: 'live' }]],
+    ['source kind', [{ set: 'source.kind', value: 'real-build' }]], ['unsafe reference', [{ set: 'source.references.0', value: 'http://public.example/x' }]],
+    ['private host reference', [{ set: 'source.references.0', value: 'https://10.0.0.1/handbook' }]],
+    ['presentation label', [{ set: 'presentation.unknownLabel', value: 'n/a' }]],
+  ];
+  for (const [name, ops] of unitOps) await add({ name: `impossible evidence: ${name}`, provider: 'lookup', request: complete, context: null, lookupBase: 'complete', ops });
+  // transport status stays separate from capability and completeness
+  await add({ name: 'transport 503 with a good document', provider: 'alternate-offline', request: configuration, context: null, docBase: 0, transportStatus: 503 });
+  await add({ name: 'transport 200 with a truncated document', provider: 'alternate-offline', request: configuration, context: null,
+    document: '{"edition":', transportStatus: 200 });
+  await add({ name: 'transport 200 with a good document', provider: 'alternate-offline', request: configuration, context: null, docBase: 0, transportStatus: 200 });
+  for (const transport of [{ protocol: 'offline', status: 503, attempts: 1, outcome: 'answered' }, { protocol: 'in-process', status: null, attempts: 1, outcome: 'unavailable' },
+    { protocol: 'in-process', status: null, attempts: 3, outcome: 'answered' }, { protocol: 'carrier-pigeon', status: null, attempts: 1, outcome: 'answered' },
+    { protocol: 'offline', status: 99, attempts: 1, outcome: 'answered' }, { protocol: 'offline', status: 200, attempts: 1, outcome: 'answered' }]) {
+    const consumer = createVehicleDetailsConsumer({ adapter: { resolve: () => ({ result: structuredClone(bases.complete), transport }) } });
+    const result = wire(await consumer.resolve(complete));
+    cases.push({ name: `direct transport ${JSON.stringify(transport)}`, provider: 'direct', transport, request: complete, context: null, lookupBase: 'complete',
+      ...(['complete', 'partial'].includes(result.status) ? { resultStatus: result.status, resultDigest: inputDigest(result) } : { result }) });
+  }
+  // image roles survive either mapping; unsafe assets stay unavailable (adapters used without routing, as the Node test does)
+  const image = { imageId: 'fictional-contract-image', asset: 'fixture-only/no-runtime-asset.webp', role: 'representative-model', fidelity: 'representative-model',
+    sourceKind: 'dated-snapshot', observedDate: '2026-11-01', label: 'Representative model image' };
+  const imageOps = [{ del: 'equipment.resolution' }, { set: 'images', value: { state: 'representative', label: 'Representative imagery', items: [image] } },
+    { set: 'presentation.imageLabel', value: 'Representative imagery' }, { set: 'completeness.images', value: 'representative' }];
+  const portraits = (extra = {}) => ({ knowledge: 'representative', caption: 'Representative imagery', pictures: [{ reference: image.imageId, resource: image.asset,
+    usage: image.role, accuracy: image.fidelity, origin: image.sourceKind, dated: image.observedDate, caption: image.label, ...extra }] });
+  const portraitOps = (extra) => [{ set: 'card.portraits', value: portraits(extra) }, { set: 'card.labels.imageLabel', value: 'Representative imagery' },
+    { set: 'card.coverage.images', value: 'representative' }];
+  const imageCases = [['representative model image', {}], ['exact-build accuracy', { accuracy: 'exact-build' }],
+    ['private asset', { resource: 'https://private.local/handbook?key=opaque' }]];
+  for (const [name, extra] of imageCases) {
+    const lookupOps = [...imageOps]; if (extra.accuracy) lookupOps.push({ set: 'images.items.0.fidelity', value: extra.accuracy });
+    if (extra.resource) lookupOps.push({ set: 'images.items.0.asset', value: extra.resource });
+    await add({ name: `image ${name} [lookup]`, provider: 'lookup', route: false, request: complete, context: null, lookupBase: 'complete', ops: lookupOps, classification: null, full: !extra.accuracy && !extra.resource });
+    await add({ name: `image ${name} [alternate-offline]`, provider: 'alternate-offline', route: false, request: complete, context: null, docBase: 1, ops: portraitOps(extra), classification: null, full: !extra.accuracy && !extra.resource });
+  }
+  // public citations stay exact; credential parameters and queried image assets stay unavailable
+  const citation = 'https://www.press.bmwgroup.com/global/article/reference?language=en';
+  for (const [name, references] of [['language citation', [citation]], ['token parameter', ['https://public.example/source?token=opaque']],
+    ['language plus key', ['https://public.example/source?language=en&key=opaque']], ['private host', ['https://private.local/source?language=en']],
+    ['credentials', ['https://name:opaque@public.example/source?language=en']]]) {
+    await add({ name: `citation ${name}`, provider: 'lookup', route: false, request: configuration, context: null, lookupBase: 'configuration',
+      ops: [{ set: 'source.references', value: references }], classification: null, full: name === 'language citation' });
+  }
+  await add({ name: 'citation used as an image asset', provider: 'lookup', route: false, request: configuration, context: null, lookupBase: 'configuration',
+    ops: [{ set: 'source.references', value: [citation] }, { set: 'images', value: { state: 'representative', label: 'Representative imagery', items: [{
+      imageId: 'citation-is-not-an-asset', asset: citation, role: 'representative-model', fidelity: 'representative-model', sourceKind: 'dated-snapshot',
+      observedDate: '2026-11-01', label: 'Representative model image' }] } }, { set: 'presentation.imageLabel', value: 'Representative imagery' },
+    { set: 'completeness.images', value: 'representative' }], classification: null });
+  // v2 source DTO
+  const ok2 = { status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: v2.configurationId };
+  await add({ name: 'v2 source DTO at the application port', provider: 'lookup', request: v2Request, context: null, lookupBase: 'v2', classification: ok2, full: true });
+  const bindings = [['binding digest', [{ set: 'source.resolvedIdentity.bindingDigest', value: 'b'.repeat(64) }]],
+    ['configuration id', [{ set: 'source.requestedIdentity.configurationId', value: b64s('T5MJ:S0000') }, { set: 'source.resolvedIdentity.configurationId', value: b64s('T5MJ:S0000') }]],
+    ['snapshot version', [{ set: 'source.requestedIdentity.snapshotVersion', value: 'different' }, { set: 'source.resolvedIdentity.snapshotVersion', value: 'different' }]]];
+  for (const [name, ops] of bindings) await add({ name: `v2 identity substitution: ${name}`, provider: 'lookup', request: v2Request, context: null, lookupBase: 'v2', classification: ok2, ops });
+  const refs0 = bases.v2.source.references[0];
+  for (const [name, ops] of [['quantity value on unknown', [{ set: 'equipment.selected.accessories.0.quantity.value', value: 1 }]],
+    ['scalar quantity', [{ set: 'equipment.selected.accessories.0.quantity', value: 1 }]],
+    ['overstated quantity completeness', [{ set: 'equipment.selected.accessoryQuantitiesComplete', value: true }]],
+    ['factoryComplete string', [{ set: 'equipment.selected.factoryComplete', value: 'yes' }]],
+    ['extra requested identity key', [{ set: 'source.requestedIdentity.extra', value: 'untrusted' }]],
+    ['token parameter', [{ set: 'source.references.0', value: `${refs0}&token=secret` }]],
+    ['private host', [{ set: 'source.references.0', value: refs0.replace('prod.ucp.bmw.cloud', 'private.example') }]]]) {
+    await add({ name: `v2 malformed: ${name}`, provider: 'lookup', request: v2Request, context: null, lookupBase: 'v2', classification: ok2, ops });
+  }
+  // present-empty mandatory-elements citations
+  for (const [i, c] of empty.cases.entries()) {
+    const okc = { status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: c.request.id };
+    const request = { kind: c.request.kind, id: c.request.id };
+    await add({ name: `empty mandatory-elements ${c.vgModelCode}`, provider: 'lookup', request, context: null, lookupBase: `empty${i}`, classification: okc, full: true });
+    if (i === 0) {
+      const at = c.direct.source.references.findIndex((r) => r.includes('/rulesolver/'));
+      const local = c.direct.source.references.findIndex((r) => r.includes('/localisations/'));
+      const reference = c.direct.source.references[at];
+      const edits = [(r) => `${r}&mandatory-elements=`, (r) => `${r}S01h2`, (r) => `${r}%2C`, (r) => `${r}%2CS01H2`, (r) => `${r}S01`, (r) => `${r}%20`,
+        (r) => `${r}&token=secret`, (r) => r.replace('&mandatory-elements=', '&mandatory-element='), (r) => r.replace(/included-elements=[^&]*/, 'included-elements='),
+        (r) => r.replace('/models/1F7A?', '/models/1F7A/extra?'), (r) => r.replace('https:', 'http:'), (r) => `${r}#fragment`,
+        (r) => r.replace('&mandatory-elements=', '&mandatory-elements=S0337&mandatory-elements='), (r) => r.replace('mandatory-elements=', 'Mandatory-Elements='),
+        (r) => r.replace('prod.ucp.bmw.cloud', 'prod.ucp.bmw.cloud:8443'), (r) => r.replace('prod.ucp.bmw.cloud', 'PROD.UCP.BMW.CLOUD'),
+        (r) => r.replace('prod.ucp.bmw.cloud', 'user@prod.ucp.bmw.cloud'), (r) => r.replace('https://', 'https:\\\\')];
+      for (const [n, edit] of edits.entries()) {
+        await add({ name: `empty mandatory-elements malformed ${n}`, provider: 'lookup', request, context: null, lookupBase: 'empty0', classification: okc,
+          ops: [{ set: `source.references.${at}`, value: edit(reference) }] });
+      }
+      await add({ name: 'empty mandatory-elements on the localisation citation', provider: 'lookup', request, context: null, lookupBase: 'empty0', classification: okc,
+        ops: [{ set: `source.references.${local}`, value: `${c.direct.source.references[local]}?mandatory-elements=` }] });
+    }
+  }
+  // egress safeguards ported as data
+  const stockRequest = { kind: 'stock', id: orderUuid };
+  await add({ name: 'delivered identity cannot enter the stock adapter', provider: 'alternate-offline', request: stockRequest, context, docBase: 3,
+    classification: { status: 'identity-mismatch', identityKind: 'unknown', liveEligible: false }, neverRead: true });
+  await add({ name: 'unknown VIN miss never reads', provider: 'alternate-offline', request: vinConfig(unknownVin), context: null, docBase: 2,
+    classification: { status: 'not-found', identityKind: 'unknown', liveEligible: false }, neverRead: true });
+  await add({ name: 'unknown VIN miss never reads [lookup]', provider: 'lookup', request: vinConfig(unknownVin), context: null, lookupBase: 'vin',
+    classification: { status: 'not-found', identityKind: 'unknown', liveEligible: false }, neverRead: true });
+  await add({ name: 'substituted composition behind a known VIN', provider: 'alternate-offline', request: vinConfig(vehicle.vin17), context: null, docBase: 2,
+    ops: [{ set: 'card.identifiers.composition', value: complete.id }] });
+  await add({ name: 'live-eligible classification', provider: 'lookup', request: configuration, context: null, lookupBase: 'configuration',
+    classification: { status: 'ok', identityKind: 'synthetic', liveEligible: true, configurationId: configuration.id } });
+  await add({ name: 'real identity classification', provider: 'lookup', request: configuration, context: null, lookupBase: 'configuration',
+    classification: { status: 'ok', identityKind: 'real', liveEligible: false, configurationId: configuration.id } });
+  await add({ name: 'unknown classification status', provider: 'lookup', request: configuration, context: null, lookupBase: 'configuration',
+    classification: { status: 'maybe', identityKind: 'unknown', liveEligible: false } });
+  await add({ name: 'mismatched vehicle id behind the binding', provider: 'lookup', request: vinConfig(vehicle.vin17), context: null, lookupBase: 'vin',
+    classification: { ...fixtureClassify({ kind: 'vin', id: vehicle.vin17 }), vehicleId: 'another-vehicle' } });
+  compact(join(GOLDEN, 's4-matrix.json'), `"bases":${JSON.stringify(Object.fromEntries(Object.entries(bases).filter(([k]) => ['configuration', 'complete', 'vin', 'v2'].includes(k))))},`
+    + `"emptyCases":${JSON.stringify(empty.cases.map((c) => ({ vgModelCode: c.vgModelCode })))},`, cases);
+
+  // 2b. urls.json: Node's accept/reject for each URL as an image asset, a source citation and a v2 citation, via the real consumer
+  const v2Ref = bases.v2.source.references;
+  const urlVectors = ['https://a/b?', 'https://a/b?#x', 'https://@host/', 'https://:@host/', 'https://@@host/', 'https://user@/p', 'https:///foo.com/bar',
+    'https:\\\\foo.com\\x', 'HTTPS://Foo.COM:443/x', 'https://foo.com:0443/x', 'https://foo.com:8443/x', ' https://foo.com/x ', 'https://127.1/', 'https://0x7f.1/',
+    'https://2130706433/', 'https://１２７．０．０．１/', 'https://ＬＯＣＡＬＨＯＳＴ/', 'https://a/b/../c/./d/%2e%2e/e', 'https://a/b^c|d', 'https://exa mple.com/',
+    'https://foo.com./x', 'https://foo.com:/x', 'https://a%2eb/', 'https://[::1]/', 'https://a/\tb/c', 'https://straße.de/', 'https://a.b.1/', 'https://1.2.3.4.5/',
+    'https://256.1/', 'https://a..b/', 'https:foo.com/x', 'https:/foo.com/x', 'https://a:99999/', 'https://a:abc/', 'https://a:443/', 'https://a:80/', 'https://a/.%2e/x',
+    'https://a/x/..', 'https://a\\b', 'https://é.com/', 'https://a/b?x=é y', 'https://0300.0250.0.1/', 'https://0x7f000001/', 'https://1.2.3/', 'https://a.1/',
+    'https://0x/', 'https://1./', 'https://a%00b/', 'https://a b/', 'https://a_b/', 'https://%61.com/', 'https://a.com%2fx/', 'https://a.com:/', 'https://u:p@a.com/',
+    'https://:p@a.com/', 'https://u:@a.com/', 'https://a@b@c.com/', 'https://a/b?%', 'https://[::1]:80/', 'https://a.com:65535/', 'https://a.com:65536/',
+    'https://LOCALHOST./', 'https://foo.LOCAL/', 'https://10.0.0.1./', 'https://10.1/', 'https://172.16.0.1/', 'https://172.15.0.1/', 'https://172.32.0.1/',
+    'https://192.168.1.1/x', 'https://0.0.0.0/', 'https://128.0.0.1/', 'https://localhost/x', 'https://notlocal/x', 'https://x.local./a', 'https://x.local/a',
+    'http://public.example/x', 'ftp://public.example/x', 'data:text/plain,hi', 'javascript:alert(1)', '//public.example/x', 'public.example/x', 'assets/a.webp', '/assets/a.webp',
+    'assets/../a.webp', 'assets/a.webp?x=1', 'assets\\a.webp', 'https://public.example/x#frag', 'https://public.example/x?', 'https://public.example/x?language=en',
+    'https://public.example/x?language=en-GB', 'https://public.example/x?language=EN', 'https://public.example/x?language=en&', 'https://public.example/x?&language=en',
+    'https://public.example/x?language=en&language=en', 'https://public.example/x?language=e', 'https://public.example/x?language=en%2DGB', 'https://public.example/x?language=%65n',
+    'https://public.example/x?lang%75age=en', 'https://public.example/x?language=en#f', 'https://public.example/x?language=en+', 'https://public.example/x?language',
+    'https://pub lic.example/x?language=en', 'https://public.example:8443/x?language=en', 'https://public.example/x y?language=en', 'https://public.example/x?language=en y',
+    'https://user@public.example/x?language=en', 'https://public.example/x?token=a', 'https://public.example/%2e%2e/x?language=en', 'https://public.example/../x?language=en',
+    'https://prod.ucp.bmw.cloud/x', 'https://prod.ucp.bmw.cloud/x?trim=S0337', 'https://prod.ucp.bmw.cloud:443/x?language=en', 'https://PROD.UCP.BMW.CLOUD/x',
+    ...v2Ref, ...v2Ref.map((r) => r + '#f'), ...v2Ref.map((r) => r.replace('https:', 'http:')), ...v2Ref.map((r) => r.replace('?', '?x=1&')),
+    ...v2Ref.map((r) => r.replace(/\?.*/, '')), ...v2Ref.map((r) => r + '&' + r.split('?')[1]), ...v2Ref.map((r) => r.replace('bmwCar', 'bmwcar')),
+    ...v2Ref.map((r) => r.replace('/gb/', '/GB/')), ...v2Ref.map((r) => r.replace('2027-01-05', '2027-1-05')), ...v2Ref.map((r) => r.replace('%2C', ',')),
+    ...v2Ref.map((r) => r.replace('prod.ucp.bmw.cloud', 'prod.ucp.bmw.cloud.')), ...v2Ref.map((r) => r.replace('prod.ucp.bmw.cloud', 'prod.ucp.bmw.cloud:443')),
+    ...v2Ref.map((r) => r.replace('?', '?%61=1&')), ...v2Ref.map((r) => r.replace('S0337', 's0337')), ...v2Ref.map((r) => r.replace('=none', '=%6Eone')),
+    ...v2Ref.map((r) => r.replace('trim=S0337', 'trim=S%30337')), ...v2Ref.map((r) => r.replace('?', '?;')), ...v2Ref.map((r) => r.replace('&', ';'))];
+  const withUrl = async (base, ops, request, classification) => {
+    const consumer = createVehicleDetailsConsumer({ adapter: createLookupVehicleAdapter({ lookup: { resolve: () => applyOps(structuredClone(bases[base]), ops) } }) });
+    const r = await consumer.resolve(request, {}); return ['complete', 'partial'].includes(r.status);
+  };
+  const urlCases = [];
+  for (const url of [...new Set(urlVectors)]) {
+    const asset = await withUrl('complete', [{ set: 'images', value: { state: 'representative', label: 'Representative imagery', items: [{ ...image, asset: url }] } },
+      { set: 'presentation.imageLabel', value: 'Representative imagery' }, { set: 'completeness.images', value: 'representative' }, { del: 'equipment.resolution' }], complete);
+    const source = await withUrl('configuration', [{ set: 'source.references', value: [url] }], configuration);
+    const v2Source = await withUrl('v2', [{ set: 'source.references.0', value: url }], v2Request);
+    urlCases.push({ url, asset, source, v2Source });
+  }
+  pretty(join(GOLDEN, 's4-urls.json'), { cases: urlCases });
+
+  // 3. routing.json: server-owned classification over retained stores
+  const routingRequests = [{ kind: 'configuration', id: REF_IDS.configurationId }, { kind: 'configuration', id: b64s('UNKNOWN:CODE') },
+    { kind: 'vin', id: REF_IDS.vin17 }, { kind: 'vin', id: unknownVin }, { kind: 'configuration', id: OK_CONFIG }];
+  const routing = {};
+  const roots = { 'lookup-reference.v1': join(REAL, REF), ...Object.fromEntries(['deactivated', 'inventory-tampered', 'inventory-missing', 'empty',
+    'history-config-missing', 'checksum-corrupt', 'not-in-history'].map((name) => [name, join(STORES, name)])) };
+  for (const [name, root] of Object.entries(roots)) {
+    const registry = createRegistry(root); await registry.load();
+    const route = createVehicleIdentityRouting({ identityLookup: createVehicleEvidenceLookup({ registry }), provider: 'lookup' });
+    routing[name] = [];
+    for (const request of routingRequests) {
+      const outcome = await route(request, {});
+      routing[name].push({ request, route: typeof outcome === 'string' ? outcome : { configurationId: outcome.configurationId ?? null, vehicleId: outcome.vehicleId ?? null } });
+    }
+  }
+  pretty(join(GOLDEN, 's4-routing.json'), { stores: routing });
+}
+
+const slices = { s1, s2, s3, s4 };
 const only = process.argv[2];
 for (const [name, run] of Object.entries(slices)) if (!only || only === name) await run();
 

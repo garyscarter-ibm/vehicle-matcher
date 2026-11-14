@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /** Read-only same-process lookup ported from Node vehicle-lookup.js; failures never reflect the input id. */
-public final class VehicleEvidenceLookup {
+public final class VehicleEvidenceLookup implements VehicleLookupPort {
 
     private static final List<String> ALLOWED_PINS =
             List.of("configurationId", "market", "bodyType", "profileId", "snapshotVersion");
@@ -27,6 +27,7 @@ public final class VehicleEvidenceLookup {
     }
 
     /** The exact Node result object; every call returns a fresh tree the caller may mutate. */
+    @Override
     public ObjectNode resolve(EvidenceRequest request, EvidenceContext context) {
         String kind = request == null ? null : request.kind();
         if (request == null || !requestValid(request)) return EvidenceFailures.failure("invalid-input", kind);

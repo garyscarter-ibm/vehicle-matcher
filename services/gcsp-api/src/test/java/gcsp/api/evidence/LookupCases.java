@@ -147,6 +147,11 @@ final class LookupCases {
                                 text(record.get("configurationId")), record.get("facts"));
                 return new StockRead(read.get("status").textValue(), row);
             }
+
+            @Override
+            public StockClassification classify(EvidenceContext context, String orderUuid) {
+                return StockClassification.unavailable();
+            }
         };
     }
 
