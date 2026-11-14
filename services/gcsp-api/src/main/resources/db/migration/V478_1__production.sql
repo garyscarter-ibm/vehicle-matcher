@@ -31,7 +31,8 @@ CREATE TABLE production_requests (
   quantity integer NOT NULL CHECK (quantity BETWEEN 1 AND 1000),
   state text NOT NULL CHECK (state IN ('intent', 'uncertain', 'requested', 'partly-confirmed', 'confirmed', 'delayed',
     'refused', 'unsupported')),
-  provider_mode text,
+  -- The provider the request was created for; a request is only ever sent to and reconciled with that provider.
+  provider_mode text NOT NULL CHECK (length(provider_mode) BETWEEN 1 AND 40),
   provider_reference text,
   source_version text,
   refusal_code text,

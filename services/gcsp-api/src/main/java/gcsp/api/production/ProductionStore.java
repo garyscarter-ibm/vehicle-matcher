@@ -146,8 +146,11 @@ final class ProductionStore {
     }
 
     /** The run's oldest unqueued confirmations through production_confirmations_unqueued. */
-    static List<ConfirmationRow> unqueuedOfRun(Connection c, RunContext ctx, int limit) throws SQLException {
-        return confirmations(c, SELECT_CONFIRMATION + "AND queued_at IS NULL ORDER BY confirmed_at, supply_id LIMIT ?", ctx, limit);
+    static List<ConfirmationRow> unqueuedOfRun(Connection c, RunContext ctx, String mode, int limit) throws SQLException {
+        return confirmations(c, SELECT_CONFIRMATION + "AND queued_at IS NULL AND EXISTS (SELECT 1 FROM production_requests r "
+                + "WHERE r.environment_id = production_confirmations.environment_id AND r.run_id = production_confirmations.run_id "
+                + "AND r.request_id = production_confirmations.request_id AND r.provider_mode = ?) "
+                + "ORDER BY confirmed_at, supply_id LIMIT ?", ctx, mode, limit);
     }
 
     static List<ConfirmationRow> confirmationsOfRun(Connection c, RunContext ctx) throws SQLException {
@@ -270,7 +273,10 @@ final class ProductionStore {
         event.put("confirmedQuantity", plan.total);
         event.put("quantity", row.quantity());
         event.put("at", Ids.ms(at).toString());
-        tx.emit("production:" + row.requestId() + ":" + (row.version() + 1), "production.supply-changed", event);
+        // A plain acknowledgement changes no supply, matching replan.status; only real responses signal a replan.
+        if (!"requested".equals(plan.state)) {
+            tx.emit("production:" + row.requestId() + ":" + (row.version() + 1), "production.supply-changed", event);
+        }
         return Applied.APPLIED;
     }
 

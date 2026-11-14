@@ -300,6 +300,52 @@ class ProductionReconcileTest {
     }
 
     @Test
+    void aRestartFromSyntheticToLiveStubLeavesTheSyntheticRowsAlone() throws Exception {
+        try (ProductionFixture f = ProductionFixture.create()) {
+            ProductionFixture.Wrapper w = new ProductionFixture.Wrapper(f.synthetic, ProductionFixture.Wrapper.Mode.LOSE_RESPONSE, 1);
+            f.use(w);
+            assertInstanceOf(ProductionResult.Pending.class, f.submit("cmd-1"));
+            f.advance(T1);
+            script(f, "l2", "confirm", 1);
+            assertEquals("uncertain", f.stateOf("l1"));
+            assertEquals("requested", f.stateOf("l2"));
+            long events = f.count("SELECT count(*) FROM outbox_events");
+            long responses = f.count("SELECT count(*) FROM production_responses");
+            f.use(new LiveProductionProviderStub());
+            JsonNode pass = ProductionFixture.value(f.service.reconcile(f.ctx(), 10));
+            assertEquals(2, pass.get("skipped").asInt());
+            assertEquals(0, pass.get("applied").asInt());
+            for (JsonNode r : pass.get("requests")) assertEquals("provider-mode-changed", r.get("outcome").asText());
+            ProductionResult.Conflict retry = assertInstanceOf(ProductionResult.Conflict.class, f.submit("cmd-1"));
+            assertEquals("provider-mode-changed", retry.code());
+            assertEquals("uncertain", f.stateOf("l1"));
+            assertEquals("requested", f.stateOf("l2"));
+            assertEquals(events, f.count("SELECT count(*) FROM outbox_events"), "a switched provider signals nothing");
+            assertEquals(responses, f.count("SELECT count(*) FROM production_responses"));
+            assertEquals(0, f.count("SELECT count(*) FROM production_requests WHERE state = 'unsupported'"));
+            assertEquals(2, f.count("SELECT count(*) FROM production_requests WHERE provider_mode = 'synthetic'"));
+            // Back on synthetic, the same rows reconcile normally: the lost line resolves and the confirmation applies.
+            f.use(f.synthetic);
+            JsonNode again = ProductionFixture.value(f.service.reconcile(f.ctx(), 10));
+            assertEquals(0, again.get("skipped").asInt());
+            assertEquals("requested", f.stateOf("l1"));
+            assertEquals("partly-confirmed", f.stateOf("l2"));
+            assertEquals(2, f.count("SELECT count(*) FROM production_synthetic_orders"));
+        }
+    }
+
+    @Test
+    void aPlainRequestedAcknowledgementSignalsNoSupplyChange() throws Exception {
+        try (ProductionFixture f = submitted()) {
+            assertEquals("requested", f.stateOf("l1"));
+            assertEquals(0, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'production.supply-changed'"));
+            script(f, "l1", "confirm", 1);
+            f.service.reconcile(f.ctx(), 10);
+            assertEquals(1, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'production.supply-changed'"));
+        }
+    }
+
+    @Test
     void reconcileStatementCountDoesNotGrowWithOtherRunsRows() throws Exception {
         try (ProductionFixture f = submitted()) {
             AtomicInteger statements = new AtomicInteger();
@@ -310,7 +356,8 @@ class ProductionReconcileTest {
                         + "plan_versions, input_digest, requested_at) VALUES (?, 'run-2', ?, 'c', 'g', ?, '{}'::jsonb, ?, now())",
                         ProductionFixture.ENV, "s" + i, "p" + i, "0".repeat(64));
                 f.update("INSERT INTO production_requests (environment_id, run_id, request_id, submission_id, line_id, model, derivative, "
-                        + "quantity, state, input_digest, requested_at) VALUES (?, 'run-2', ?, ?, 'l', 'm', 'd', 1, 'intent', ?, now())",
+                        + "quantity, state, provider_mode, input_digest, requested_at) VALUES (?, 'run-2', ?, ?, 'l', 'm', 'd', 1, 'intent', "
+                        + "'synthetic', ?, now())",
                         ProductionFixture.ENV, "r" + i, "s" + i, "0".repeat(64));
             }
             assertEquals(before, measure(f, statements));

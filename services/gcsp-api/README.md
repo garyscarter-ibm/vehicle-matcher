@@ -496,6 +496,10 @@ quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production
 - Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
   `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
   deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
+  so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
+- Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,
+  reconcile and retries leave those rows untouched and report `provider-mode-changed` (retry submit answers 409).
 
 ## Ordering (FUCQ-468)
 

@@ -39,6 +39,7 @@ public final class ProductionService {
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final String DB_CODE = "database-unavailable";
+    static final String MODE_CHANGED = "provider-mode-changed";
     private static final String DB_REASON = "The database could not be reached. Try again shortly.";
 
     /** What Greg submitted: the plan he previewed and the input versions it was built from. */
@@ -194,9 +195,10 @@ public final class ProductionService {
                 op.put("quantity", l.quantity());
                 op.put("requestedAt", at.toString());
                 tx.write("INSERT INTO production_requests (environment_id, run_id, request_id, submission_id, line_id, model, "
-                        + "derivative, quantity, state, input_digest, requested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'intent', ?, ?)",
+                        + "derivative, quantity, state, provider_mode, input_digest, requested_at) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'intent', ?, ?, ?)",
                         scope.environmentId(), scope.runId(), requestId, submissionId, l.lineId(), l.model(), l.derivative(),
-                        l.quantity(), Canonical.digest(op), at);
+                        l.quantity(), provider.mode(), Canonical.digest(op), at);
             }
             return WorkResult.ok(F.objectNode().put("submissionId", submissionId));
         });
@@ -238,8 +240,13 @@ public final class ProductionService {
         try (Connection c = dataSource.getConnection()) {
             rows = ProductionStore.requests(c, scope, sub.submissionId());
         }
+        boolean switched = false;
         for (RequestRow row : rows) {
             if (!"intent".equals(row.state()) && !"uncertain".equals(row.state())) continue;
+            if (!sameMode(row)) {
+                switched = true;
+                continue;
+            }
             Answer answer = call(ProductionStore.operation(scope, row), fresh && "intent".equals(row.state()));
             settle(scope, row, answer, at);
             queueConfirmations(scope, row.requestId(), at);
@@ -249,6 +256,9 @@ public final class ProductionService {
         }
         boolean pending = rows.stream().anyMatch(r -> "intent".equals(r.state()) || "uncertain".equals(r.state()));
         JsonNode value = view(sub, rows, pending);
+        if (switched) {
+            return new ProductionResult.Conflict(MODE_CHANGED, modeChangedReason(), false, value);
+        }
         return pending ? new ProductionResult.Pending(value) : new ProductionResult.Ok(value, replayed);
     }
 
@@ -342,7 +352,7 @@ public final class ProductionService {
             for (RequestRow row : rows) pass.add(reconcileRow(scope, row, at));
             List<ConfirmationRow> waiting;
             try (Connection c = dataSource.getConnection()) {
-                waiting = ProductionStore.unqueuedOfRun(c, scope, limit);
+                waiting = ProductionStore.unqueuedOfRun(c, scope, provider.mode(), limit);
             }
             for (ConfirmationRow cr : waiting) if (!pass.tried.contains(cr.supplyId()) && queueOne(scope, cr, at)) pass.queued++;
             ObjectNode out = pass.json();
@@ -400,6 +410,7 @@ public final class ProductionService {
             ObjectNode out = F.objectNode();
             out.put("reconciled", rows.size());
             out.put("applied", rows.stream().filter(r -> "applied".equals(r.outcome())).count());
+            out.put("skipped", rows.stream().filter(r -> MODE_CHANGED.equals(r.outcome())).count());
             out.put("queued", queued);
             ArrayNode list = out.putArray("requests");
             rows.forEach(r -> list.addObject().put("requestId", r.requestId()).put("outcome", r.outcome()));
@@ -407,7 +418,18 @@ public final class ProductionService {
         }
     }
 
+    /** Whether the row was created for the provider selected now; a switched provider never acts on it. */
+    private boolean sameMode(RequestRow row) {
+        return provider.mode().equals(row.providerMode());
+    }
+
+    private String modeChangedReason() {
+        return "This request was made through a different Production provider than the one selected now ("
+                + provider.mode() + "). It is left as it is.";
+    }
+
     private RowOutcome reconcileRow(RunContext scope, RequestRow row, Instant at) {
+        if (!sameMode(row)) return new RowOutcome(row.requestId(), MODE_CHANGED, 0, List.of());
         String result = "closed";
         if (ProductionStore.open(row.state())) {
             Answer answer;
@@ -447,7 +469,7 @@ public final class ProductionService {
         return reads.supplyActivity(scope);
     }
 
-    private static JsonNode view(Submission sub, List<RequestRow> rows, boolean pending) {
+    private JsonNode view(Submission sub, List<RequestRow> rows, boolean pending) {
         ObjectNode out = F.objectNode();
         out.put("submissionId", sub.submissionId());
         out.put("planId", sub.planId());
@@ -463,8 +485,10 @@ public final class ProductionService {
             n.put("quantity", r.quantity());
             n.put("state", r.state());
             n.put("providerReference", r.providerReference());
-            n.put("code", r.refusalCode());
-            n.put("reason", r.refusalReason() != null ? r.refusalReason() : r.delayReason());
+            n.put("providerMode", r.providerMode());
+            boolean stranded = ProductionStore.open(r.state()) && !sameMode(r);
+            n.put("code", stranded ? MODE_CHANGED : r.refusalCode());
+            n.put("reason", stranded ? modeChangedReason() : r.refusalReason() != null ? r.refusalReason() : r.delayReason());
             allRequested &= "requested".equals(r.state());
             noneOpen &= !"refused".equals(r.state()) && !"unsupported".equals(r.state());
         }
