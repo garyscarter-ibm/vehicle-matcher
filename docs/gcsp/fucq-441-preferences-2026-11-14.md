@@ -118,3 +118,22 @@ Attempt 03 passed 6/6 after top-level validator correction. All attempts remain 
 The lead independently matched the receipt source hashes and verified scratch and
 owned link absence plus preserved dependency/runtime device and inode identities.
 Passing run: 3.6 seconds, peak RSS 938,655,744 bytes; peak scratch 9,961,696 bytes.
+
+## Native editor implementation
+
+Road Runner was selected from fresh `tiers spawn implementer` output, requested
+and selected `gpt-6.1-sol` / `medium`, no fallback. The lead independently read
+its runtime `turn_context` and saved Road Runner title at child chat
+`01a1d781-eeab-78b1-891f-8cff3f3a5d7a`. Fresh capacity allowed three launches;
+this lead launched only one child. The complex native editor is not a fully
+specified mechanical slice, so the implementer route applies at night.
+
+The native slice owns a shared auth/run/employee-scoped store, compact Account
+exports, full preferences controls, source-backed preview and draft/confirm,
+plus released additive kit/gallery/catalogue and route lanes. Account files stay
+reserved. Buddy command controls follow as their stable separate slice.
+The dispatcher guarded-published the API checkpoint
+`4322b24e408600d881f909a9791627af3cd62968` and independently verified its three
+resource receipts/source identities; parent receipt is
+`.claude/fucq441-parent-resource-api-client.json`. No application sync is needed
+for the reported disjoint allocation/clock/repository/claim changes.
