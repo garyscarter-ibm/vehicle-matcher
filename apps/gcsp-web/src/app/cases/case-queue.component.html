@@ -1,0 +1,103 @@
+<section class="case-queue" [attr.aria-busy]="view().pending || view().phase === 'loading' || view().detailPhase === 'loading' ? 'true' : null">
+  <gcsp-screen-intro title="Renewal cases" lede="Review owned renewal cases and the actions currently permitted by the scheme." />
+  <p class="case-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" data-case-status>{{ view().message }}</p>
+  @if (view().phase === 'signed-out' || view().phase === 'auth-required') {
+    <gcsp-status-screen title="Sign in to review cases" [level]="2" [announcement]="null"><button gcspButton type="button" (click)="store.signIn()">Sign in</button></gcsp-status-screen>
+  } @else if (view().phase === 'denied') {
+    <gcsp-status-screen title="You cannot open these cases" message="A current scheme-team session is required. No case details are shown." [level]="2" [announcement]="null" />
+  } @else if (view().phase === 'loading') {
+    <gcsp-status-screen title="Loading renewal cases" [level]="2" [busy]="true" [announcement]="null" />
+  } @else {
+    @if (view().phase === 'unavailable') {
+      <gcsp-status-screen [title]="view().authenticationUnavailable ? 'Sign-in unavailable' : 'Cases are unavailable'" message="Current case information could not be loaded. Try again before making a decision." [level]="2" [announcement]="null">
+        @if (view().canRetryAuthentication) { <button gcspButton type="button" (click)="store.retryAuthentication()">Retry sign-in connection</button> }
+      </gcsp-status-screen>
+    }
+    <div class="gcsp-actions"><button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="perform('refresh')">{{ view().uncertain ? 'Check current cases' : 'Refresh cases' }}</button></div>
+    @if (view().phase === 'empty') { <p class="gcsp-note">No renewal cases were returned for your current run.</p> }
+    @if (view().phase === 'ready') {
+      <p class="gcsp-note">{{ notice }}</p>
+      <gcsp-data-table caption="Renewal case queue" [columns]="columns" [rows]="rows()" [disabled]="view().pending || view().uncertain" (opened)="open($event)" />
+    }
+    @if (view().selected) {
+      <section class="case-detail" [attr.data-case-id]="view().selected">
+        @if (view().detail; as detail) {
+          <h2 tabindex="-1" data-case-heading>{{ detail.employee }} · {{ detail.reference }}</h2>
+          <p class="case-state">{{ detail.status }}</p>
+          <gcsp-fact-list [rows]="detail.facts" />
+          @if (detail.remedy; as remedy) { <section class="case-step"><h3>{{ remedy.title }}</h3><gcsp-fact-list [rows]="remedy.facts" /></section> }
+          <details class="case-history"><summary>Dated case history</summary><ol>
+            @for (event of detail.history; track $index) { <li><gcsp-fact-list [rows]="event" /></li> }
+            @empty { <li>No dated history was supplied.</li> }
+          </ol></details>
+        } @else if (view().detailPhase === 'loading') { <h2>Loading selected case</h2>
+        } @else { <h2>{{ view().detailPhase === 'stale' ? 'This case has changed' : 'Selected case unavailable' }}</h2>
+          <p class="gcsp-note">Read current case options before preparing another update.</p>
+        }
+        @if (view().options; as options) {
+          <section class="case-step"><h3>Current options</h3>
+            <p class="gcsp-note">Checked {{ time(options.asOf) }} · Policy {{ options.policyVersion }}. Feasibility is checked again when you confirm.</p>
+            @if (!options.options.alternativeCars.available) { <p>Alternative car — Not available: {{ options.options.alternativeCars.reason || 'No suitable car was supplied.' }}</p> }
+            @if (!options.options.laterRelease.available) { <p>Later release — Not available: {{ options.options.laterRelease.reason || 'No reviewed release was supplied.' }}</p> }
+            @if (!options.options.contractExtension.available) { <p>Contract extension — Not available: {{ options.options.contractExtension.reason || 'An extension is not permitted.' }}</p> }
+            <p>Preference changes — Not available: {{ options.options.preferenceRelaxations.reason || 'Preference confirmation is unavailable for this case.' }}</p>
+            @if (needsConfirmation().length) { <p>These cars need confirmation and cannot be chosen:</p><ul>@for (car of needsConfirmation(); track $index) { <li>{{ car }}</li> }</ul> }
+          </section>
+          @if (!options.nextStatuses.length) { <p class="gcsp-note">No further status changes are permitted for this case.</p>
+          } @else if (!view().review && !view().uncertain) {
+            <section class="case-step"><h3>Prepare a case update</h3>
+              <gcsp-error-summary [errors]="errors()" />
+              <form data-case-editor (submit)="review($event)" novalidate>
+                <gcsp-labelled-field [controlId]="control('status')" label="Next status" [error]="view().errors.status || ''">
+                  <select [id]="control('status')" [value]="view().draft.status" [attr.aria-describedby]="described('status')" [attr.aria-invalid]="view().errors.status ? 'true' : null" (change)="edit('status', $event)">
+                    <option value="">Choose a permitted status</option>@for (status of options.nextStatuses; track status) { <option [value]="status">{{ store.statusLabel(status) }}</option> }
+                  </select>
+                </gcsp-labelled-field>
+                @for (field of textFields; track field.key) {
+                  <gcsp-labelled-field [controlId]="control(field.key)" [label]="field.label" [error]="view().errors[field.key] || ''">
+                    <textarea [id]="control(field.key)" rows="3" maxlength="2000" [value]="view().draft[field.key]" [attr.aria-describedby]="described(field.key)" [attr.aria-invalid]="view().errors[field.key] ? 'true' : null" (input)="edit(field.key, $event)"></textarea>
+                  </gcsp-labelled-field>
+                }
+                <gcsp-labelled-field [controlId]="control('dueAt')" label="Due date and time (UTC)" [error]="view().errors.dueAt || ''">
+                  <input [id]="control('dueAt')" type="datetime-local" step="1" [value]="view().draft.dueAt" [attr.aria-describedby]="described('dueAt')" [attr.aria-invalid]="view().errors.dueAt ? 'true' : null" (input)="edit('dueAt', $event)" />
+                </gcsp-labelled-field>
+                <gcsp-labelled-field [controlId]="control('remedyKey')" label="Remedy" [error]="view().errors.remedyKey || ''">
+                  <select [id]="control('remedyKey')" [value]="view().draft.remedyKey" [attr.aria-describedby]="described('remedyKey')" [attr.aria-invalid]="view().errors.remedyKey ? 'true' : null" (change)="edit('remedyKey', $event)">
+                    <option value="">Keep the current recorded remedy</option>@for (choice of store.choices(); track choice.key) { <option [value]="choice.key">{{ choice.label }}</option> }
+                  </select>
+                </gcsp-labelled-field>
+                @if (view().draft.remedyKey === 'manual') {
+                  <gcsp-labelled-field [controlId]="control('decision')" label="Scheme-team decision" [error]="view().errors.decision || ''">
+                    <textarea [id]="control('decision')" rows="3" maxlength="2000" [value]="view().draft.decision" [attr.aria-describedby]="described('decision')" [attr.aria-invalid]="view().errors.decision ? 'true' : null" (input)="edit('decision', $event)"></textarea>
+                  </gcsp-labelled-field>
+                }
+                @if (view().draft.remedyKey === 'extension') {
+                  <gcsp-labelled-field [controlId]="control('until')" label="Proposed contract end (calendar date)" [hint]="'Current contract end: ' + options.options.contractExtension.contractEndDate" [error]="view().errors.until || ''">
+                    <input [id]="control('until')" type="date" [value]="view().draft.until" [attr.aria-describedby]="control('until') + '-hint' + (view().errors.until ? ' ' + control('until') + '-error' : '')" [attr.aria-invalid]="view().errors.until ? 'true' : null" (input)="edit('until', $event)" />
+                  </gcsp-labelled-field>
+                }
+                <div class="gcsp-actions"><button gcspButton type="submit">Review case update</button></div>
+              </form>
+            </section>
+          }
+        }
+        @if (view().review) {
+          <section class="case-step case-confirmation"><h3 tabindex="-1" data-case-review>{{ view().uncertain ? 'Update outcome unknown' : 'Confirm case update' }}</h3>
+            <gcsp-fact-list [rows]="reviewFacts()" />
+            @if (!view().uncertain) {
+              <p>This records the reviewed status, reason, next action, due time and remedy for this case.</p>
+              <div class="gcsp-actions"><button gcspButton type="button" [disabled]="!view().canConfirm" (click)="perform('confirm')">Confirm case update</button>
+                <button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="cancelReview()">Cancel</button></div>
+            } @else { <p>Checking current cases does not prove whether this update was recorded. Retry only if you intend to send the same reviewed update.</p>
+              @if (view().canRetry) { <button gcspButton type="button" (click)="perform('retry')">Retry the same case update</button> }
+            }
+          </section>
+        }
+        <div class="gcsp-actions case-step">
+          @if (!view().uncertain) { <button gcspButton variant="ghost" type="button" [disabled]="view().pending || view().detailPhase === 'loading'" (click)="perform('refreshOptions')">Refresh case options</button> }
+          <button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="close()">Close case</button>
+        </div>
+      </section>
+    }
+  }
+</section>
