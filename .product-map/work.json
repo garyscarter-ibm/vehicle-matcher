@@ -6710,13 +6710,32 @@
     {
       "assignee": "",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T07:33:53Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve offer links under OIDC ownership",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465",
+      "slices": [
+        {
+          "id": "access",
+          "status": "complete",
+          "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
+          "observed_at": "2026-11-14T07:33:53Z",
+          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
+        },
+        {
+          "id": "postgres",
+          "status": "not-started",
+          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation"
+        }
+      ]
     },
     {
       "assignee": "",
