@@ -5728,25 +5728,29 @@
       "id": "FUCQ-421",
       "jira_observed_at": "2026-11-12T15:48:24.304Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-14T02:03:27Z",
+      "observed_at": "2026-11-14T02:04:07Z",
       "original_status": "To Do",
       "slices": [
         {
           "id": "revision",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Run revision migration and PostgreSQL adapter with legacy fallback",
-          "observed_at": "2026-11-14T01:57:03Z"
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "Lead review of 0010 triggers and postgres.js revision probe at c4052f3c; native PG17 trigger probe (insert/update/delete/truncate/zero-row) and contract 97/3 pre-existing F71"
         },
         {
           "id": "evidence",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Native revision regression: probe cost, two-instance concurrency, rollback, replay, reset, legacy init",
-          "observed_at": "2026-11-14T02:03:27Z"
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "gcsp-postgres-run-revision.test.js 4/4 native PG17 at c6430b2c; two mutations (probe ignores run revision; trigger skips UPDATE) each fail it"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Story validation on native PostgreSQL 17 and delivery record"
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL 17 and delivery record",
+          "observed_at": "2026-11-14T02:04:07Z",
+          "evidence": "validate on merged tree fb31d459: contract 97 pass/3 F71 pre-existing (same on base), disconnect 7/7, read-window 4/4; affected callers identical to base; story Result block"
         }
       ],
       "status": "To Do",
