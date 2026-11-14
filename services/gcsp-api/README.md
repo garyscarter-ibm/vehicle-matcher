@@ -290,11 +290,13 @@ Refusals: 400 `unsupported-query`; 401/403 as above (`role-required` for the wro
 `evaluation-unavailable`, `brief-owner-unavailable`, `source-invalid`, and `suitability-unavailable` (retryable).
 
 Privacy: a count below N is published as a band ("fewer than N"), and the complementary "N or more" count is withheld
-wherever it would let a band be solved by subtraction. N is `greg.demand.smallCountThreshold`, read through the local
-`DemandPolicyPort` until FUCQ-457 provides PolicyService.
+wherever it would let a band be solved by subtraction. N is `greg.demand.smallCountThreshold`, read from the canonical
+PolicyService (`PolicyDemandAdapter`, with `offer.declineReasons.v1`, `offer.declinedCar.exclusion`,
+`employee.recommendation.v1` and `allocation.tieBreak.rule`). Missing or invalid policy is 503 `privacy-policy-unavailable`.
 
-The default ports are truthful refusals or empty results: demand answers 503 `evaluation-unavailable` and
-`privacy-policy-unavailable` until the FUCQ-457/461/466 adapters exist, and suitability shows every cell `not-evaluated`
+The default ports are truthful refusals or empty results: demand answers 503 `evaluation-unavailable` until the
+FUCQ-461/466 adapters exist (and `privacy-policy-unavailable` while the active policy lacks the reviewed
+`offer.declineReasons.v1`), and suitability shows every cell `not-evaluated`
 until FUCQ-464 records allocations (`DemandDefaults.NoAllocationRecords`).
 
 ## Vehicle evidence (FUCQ-459)
