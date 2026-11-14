@@ -49,6 +49,8 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_OIDC_ROLE_CLAIM` | `realm_access.roles` | oidc: exact top-level claim name (such as a namespaced URL), else a dot path, to the role list. Default is Keycloak realm roles. |
 | `GCSP_OIDC_ACCOUNTS` | none | oidc: required JSON array `[{"subject","roles":["employee"|"greg"|"presenter"],"employeeId"?}]`. Not secret, never commit real subjects. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` | none | oidc: required; interim environment context until later Stories persist run state. |
+| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). |
+| `GCSP_ACCOUNT_HR_SNAPSHOT_PATH` | none | hr-snapshot: required path to a `gcsp-hr-export/1` JSON file; checked at startup and re-read on every request, so a file that goes missing or corrupt becomes a 503 source failure. |
 | `JAVA_OPTS` | `-XX:MaxRAMPercentage=75` (image) | JVM options for the container start command. |
 | `GCSP_DATABASE_URL` | unset | JDBC URL of this environment's own PostgreSQL. Unset leaves persistence off (readiness `not-configured`). |
 | `GCSP_DATABASE_USER`, `GCSP_DATABASE_PASSWORD` | empty | Database credentials, from the host's secret store only. |
@@ -56,6 +58,9 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
+| `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
+| `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
 The test provider registration and claim mapping are in
@@ -119,6 +124,12 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
+| `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
+| `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
+| `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
+| `GET /api/gcsp/v1/presenter/releases/ticks/{tickId}` | Tick state, attempts, clock and last outcome. |
+| `GET /api/gcsp/v1/presenter/releases/stock?after=&limit=` | Released cars (keyset page, limit 1..500) as the allocator reads them; no VIN, no employee. |
 
 Every other path, and every refusal, is a JSON body `{status, code, reason, retryable}` (500s add a
 `reference`), never HTML. Context refusals:
@@ -128,6 +139,35 @@ Every other path, and every refusal, is a JSON body `{status, code, reason, retr
 | 401 | `bearer-missing`, `bearer-invalid`, `token-malformed`, `token-algorithm-unsupported`, `token-signature-invalid`, `token-issuer-invalid`, `token-audience-invalid`, `token-expired`, `token-not-yet-valid`, `token-lifetime-invalid`, `token-subject-missing`, `token-client-invalid`, `token-invalid` |
 | 403 | `scope-missing`, `role-missing`, `subject-not-mapped`, `role-not-granted`, `role-conflict`; from `Access`: `role-required`, `not-resource-owner` |
 | 503 | `identity-provider-not-configured` (mode `none`); `identity-keys-unavailable` (JWKS unreachable, retryable) |
+
+## Supply release (FUCQ-462)
+
+`gcsp.api.supply` ports the Node stock release. `StockRelease` records each presenter tick durably, pulls from the
+selected `SupplyProvider` outside any transaction and releases the exact cars in one command; `ReleasedStock` holds
+the bounded reads. `SupplySelection` picks the provider and policy once at startup, with no silent synthetic
+fallback. `tranche-plan` is a synthetic scenario input, allowed in every launch mode, and every release it makes
+carries `source.mode=synthetic`. The policy file reader is a narrow port until the canonical Java PolicyService
+(FUCQ-457) replaces it. With persistence on and a provider other than `none`, startup finishes up to 100 delivered
+but pending ticks once (it never pulls new releases) and logs a one-line count; a failure is logged, not fatal.
+Readiness check `supply-release` is always UP and reports `provider`, `policy`, `pendingTicks` and
+`latestTrancheId`; only a database error makes it DOWN. Confirmed-supply queueing has no endpoint here (FUCQ-478).
+
+Trigger reads follow FUCQ-419/420 by design (Java equivalents, not delivery of the Node Stories): pending ticks are
+consumed by a keyset cursor over the `supply_release_ticks_pending` partial index, the clock check uses
+`supply_release_ticks_clock`, and tranche and tick receipts are read by primary key; no full history is replayed.
+The allocator (FUCQ-461/464) consumes `ReleasedStock.page` over `stock_cars_released` plus the `stock-released` outbox event.
+
+All endpoints are presenter-only, scoped to the server's active run (never to the request), and accept no query
+parameters except `after` and `limit` on `/stock`; anything else is 400 `unsupported-query`.
+
+| Result | Meaning |
+| --- | --- |
+| 200 | Delivered or read. A replayed tick returns `replayed: true`. |
+| 202 | `outcome-uncertain` with `operationId` (the tick id): inspect the tick before any resubmit. |
+| 400 | `invalid-tick`, `invalid-reconcile`, `invalid-query` (with `reasons`), `unsupported-query`. |
+| 404 | `tick-not-found`. |
+| 409 | `tick-input-changed`, `release-clock-changed`, `stock-identity-changed`, `tranche-input-changed`, `unreleased-stock-occupied`, `stale-run`. |
+| 503 | Pending and retryable (`supply-provider-not-configured`, `policy-unavailable`, `stock-source-unavailable`, `stock-source-stale`, `database-unavailable`), with `state: pending`; or refused evidence (`invalid-stock-pull`, `supply-not-queued`, `supply-before-lead-time`) with `retryable: false`, `state: refused`; or `persistence-not-configured`. |
 
 ## Identity seam
 
@@ -147,6 +187,27 @@ from `gcsp.identity.provider`:
 `gcsp.api.auth` holds what later endpoints reuse: `BearerAuthentication.authenticate(header)` returns a `Principal`
 or throws `IdentityRefusal` (rendered as the JSON error), `Role` lists roles and capabilities, and `Access`
 provides `requireAnyRole`, `owns` and `requireOwner`.
+
+## Brief (FUCQ-460)
+
+Employee only (`employee` role plus an `employeeId`); scope (environment, run, employee, policy version) comes
+from the bearer principal, never from the request. Any query parameter is refused. Success is
+`{"status":"ok","value":...}` (plus `"replayed":true` when a stored receipt of the same command is returned).
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/brief` | Current confirmed brief with activity and validation (404 `not-found` before the first confirmation). |
+| `GET /api/gcsp/v1/brief/history` | Every confirmed version, oldest first. |
+| `GET /api/gcsp/v1/brief/draft` | Latest saved draft (404 `not-found` before the first save). |
+| `GET /api/gcsp/v1/brief/editor` | Account editor read: context, content to show, buddy view, versions, provenance. |
+| `POST /api/gcsp/v1/brief/draft`, `/preferences`, `/confirm`, `/engage`, `/disengage`, `/pause-search`, `/resume-search` | JSON commands with `commandId`, `expectedBriefVersion`, `expectedDraftVersion`. |
+
+The Node `/pause` and `/resume` aliases are dropped, and `change-after-decline` and `preview` are other Stories, so
+they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `invalid-preferences`,
+`engagement-minimum` (with `remaining`); 401/403 as above; 404 `not-found`; 409 `stale-version` (with
+`expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
+`already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
+and `outcome-uncertain` (with `operationId`).
 
 ## Render
 

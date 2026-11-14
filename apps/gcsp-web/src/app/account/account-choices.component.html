@@ -1,0 +1,78 @@
+<section id="choices-panel" aria-labelledby="choices-heading" [attr.aria-busy]="busy()">
+  <h2 id="choices-heading" tabindex="-1">Review choices</h2>
+  @if (!available()) {
+    <p role="status">Your account changed. Open your account again to continue.</p>
+  } @else if (choices(); as chosen) {
+    @if (model(); as options) {
+      <p class="gcsp-note">Choose your driver, contract and collection details.</p>
+      @if (options.allowance !== null) { <p>Monthly allowance <strong>{{ options.allowance.toLocaleString('en-GB') }} points</strong></p> }
+      <gcsp-error-summary [errors]="summary()" />
+      @if (failure()) { <p role="alert" class="gcsp-field-error">{{ failureMessage() }}</p> }
+      @if (notice()) { <p role="status">{{ notice() }}</p> }
+      @if (reviewRequired()) {
+        <div class="choices-review">
+          <p>Refresh and review your saved choices before continuing.</p>
+          <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="refresh()">Refresh saved choices</button>
+          @if (refreshReady()) {
+            <div class="gcsp-actions">
+              <button gcspButton type="button" [disabled]="busy()" (click)="acceptRefresh(false)">Keep my edits</button>
+              <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="acceptRefresh(true)">Use saved choices</button>
+            </div>
+          }
+        </div>
+      }
+      <form (submit)="$event.preventDefault(); save(true)" novalidate>
+        <fieldset [disabled]="busy()">
+          <legend class="choices-legend">Ordering details</legend>
+          <div class="choices-grid">
+            <gcsp-labelled-field controlId="choices-driverId" label="Driver" [error]="error('driverId')">
+              <select id="choices-driverId" [value]="chosen.driverId" [attr.aria-invalid]="!!error('driverId')" [attr.aria-describedby]="error('driverId') ? 'choices-driverId-error' : null" (change)="update('driverId', value($event))">
+                <option value="">Choose a driver</option>
+                @for (option of options.drivers; track option.id) { <option [value]="option.id" [selected]="chosen.driverId === option.id" [disabled]="option.disabled">{{ option.label }}{{ option.reason ? ': ' + option.reason : '' }}</option> }
+              </select>
+            </gcsp-labelled-field>
+            <gcsp-labelled-field controlId="choices-contractOptionId" label="Contract length and annual mileage" [error]="error('contractOptionId')">
+              <select id="choices-contractOptionId" [value]="chosen.contractOptionId" [attr.aria-invalid]="!!error('contractOptionId')" [attr.aria-describedby]="error('contractOptionId') ? 'choices-contractOptionId-error' : null" (change)="update('contractOptionId', value($event))">
+                <option value="">Choose a contract</option>
+                @for (option of options.contracts; track option.id) { <option [value]="option.id" [selected]="chosen.contractOptionId === option.id" [disabled]="option.disabled">{{ option.label }}{{ option.reason ? ': ' + option.reason : '' }}</option> }
+              </select>
+            </gcsp-labelled-field>
+            <gcsp-labelled-field controlId="choices-requestedCollectionDate" label="Requested collection date" [hint]="options.minDate && options.maxDate ? 'From ' + options.minDate + ' to ' + options.maxDate : 'Collection window not supplied'" [error]="error('requestedCollectionDate')">
+              <input id="choices-requestedCollectionDate" type="date" [value]="chosen.requestedCollectionDate" [min]="options.minDate ?? ''" [max]="options.maxDate ?? ''" [attr.aria-invalid]="!!error('requestedCollectionDate')" [attr.aria-describedby]="error('requestedCollectionDate') ? 'choices-requestedCollectionDate-hint choices-requestedCollectionDate-error' : 'choices-requestedCollectionDate-hint'" (input)="update('requestedCollectionDate', value($event))" />
+            </gcsp-labelled-field>
+            <gcsp-labelled-field controlId="choices-collectionLocationId" label="Collection location" [error]="error('collectionLocationId')">
+              <select id="choices-collectionLocationId" [value]="chosen.collectionLocationId" [attr.aria-invalid]="!!error('collectionLocationId')" [attr.aria-describedby]="error('collectionLocationId') ? 'choices-collectionLocationId-error' : null" (change)="update('collectionLocationId', value($event))">
+                <option value="">Choose a location</option>
+                @for (option of options.locations; track option.id) { <option [value]="option.id" [selected]="chosen.collectionLocationId === option.id" [disabled]="option.disabled">{{ option.label }}{{ option.reason ? ': ' + option.reason : '' }}</option> }
+              </select>
+            </gcsp-labelled-field>
+            <gcsp-labelled-field controlId="choices-brand" label="Brand" [error]="error('brand')">
+              <select id="choices-brand" [value]="chosen.brand" [attr.aria-invalid]="!!error('brand')" [attr.aria-describedby]="error('brand') ? 'choices-brand-error' : null" (change)="update('brand', value($event))">
+                <option value="">Choose a brand</option>
+                @for (brand of options.brands; track brand) { <option [value]="brand" [selected]="chosen.brand === brand">{{ brand.toUpperCase() }}</option> }
+              </select>
+            </gcsp-labelled-field>
+            @if (chosen.mode === 'replacement') {
+              <gcsp-labelled-field controlId="choices-expectedReturnMileage" label="Expected mileage at return" [error]="error('expectedReturnMileage')">
+                <input id="choices-expectedReturnMileage" type="number" min="0" step="1" [max]="options.maximumMileage ?? ''" [value]="chosen.expectedReturnMileage ?? ''" [attr.aria-invalid]="!!error('expectedReturnMileage')" [attr.aria-describedby]="error('expectedReturnMileage') ? 'choices-expectedReturnMileage-error' : null" (input)="update('expectedReturnMileage', value($event) === '' ? null : +value($event))" />
+              </gcsp-labelled-field>
+            }
+            <gcsp-labelled-field controlId="choices-phone" label="Contact phone" [error]="error('contact')">
+              <input id="choices-phone" type="tel" autocomplete="tel" [value]="chosen.contact?.phone ?? ''" [attr.aria-invalid]="!!error('contact')" [attr.aria-describedby]="error('contact') ? 'choices-phone-error' : null" (input)="updateContact('phone', value($event))" />
+            </gcsp-labelled-field>
+            <gcsp-labelled-field controlId="choices-email" label="Contact email" [error]="error('contact')">
+              <input id="choices-email" type="email" autocomplete="email" [value]="chosen.contact?.email ?? ''" [attr.aria-invalid]="!!error('contact')" [attr.aria-describedby]="error('contact') ? 'choices-email-error' : null" (input)="updateContact('email', value($event))" />
+            </gcsp-labelled-field>
+          </div>
+          <gcsp-labelled-field controlId="choices-specialRequirements" label="Special requirements" [hint]="options.maximumText === null ? '' : 'Up to ' + options.maximumText + ' characters'" [error]="error('specialRequirements')">
+            <textarea id="choices-specialRequirements" rows="3" [value]="chosen.specialRequirements" [attr.maxlength]="options.maximumText" [attr.aria-invalid]="!!error('specialRequirements')" [attr.aria-describedby]="(options.maximumText === null ? '' : 'choices-specialRequirements-hint') + (error('specialRequirements') ? ' choices-specialRequirements-error' : '')" (input)="update('specialRequirements', value($event))"></textarea>
+          </gcsp-labelled-field>
+          <div class="gcsp-actions choices-actions">
+            <button gcspButton type="submit" [disabled]="reviewRequired()">Find a car</button>
+            <button gcspButton variant="ghost" type="button" [disabled]="reviewRequired()" (click)="save(false)">Save and return</button>
+          </div>
+        </fieldset>
+      </form>
+    }
+  }
+</section>

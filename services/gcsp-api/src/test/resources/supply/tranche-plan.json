@@ -1,0 +1,16 @@
+{
+  "label": "TEST FIXTURE — five fictional exact orders; not FUCQ-78 stock or FUCQ-77 real configuration evidence",
+  "version": "fucq92-small-test-v1",
+  "windows": [{
+    "windowId": "test-weekly-window",
+    "availableAt": "2026-11-05T09:00:00.000Z",
+    "supplyId": null,
+    "stock": [
+      { "orderUuid": "00000000-0000-4000-8000-000000000001", "orderNumber": "0000001", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000001, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1, "account": "test-choices", "visibility": { "schemeId": "choices-fs-uk" }, "facts": { "label": "TEST FIXTURE; not decision-complete configuration facts" } },
+      { "orderUuid": "00000000-0000-4000-8000-000000000002", "orderNumber": "0000002", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000002, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1 },
+      { "orderUuid": "00000000-0000-4000-8000-000000000003", "orderNumber": "0000003", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000003, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1 },
+      { "orderUuid": "00000000-0000-4000-8000-000000000004", "orderNumber": "0000004", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000004, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1 },
+      { "orderUuid": "00000000-0000-4000-8000-000000000005", "orderNumber": "0000005", "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDMzNyxTMDNBQyxTMDQ4OA==", "wholesalerOrderId": 10000005, "corpusVersion": "TEST-REFERENCE-ONLY", "revision": 1 }
+    ]
+  }]
+}
