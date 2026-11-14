@@ -5568,26 +5568,30 @@
       "assignee": "",
       "id": "FUCQ-415",
       "jira_observed_at": "2026-11-12T15:48:01.061Z",
-      "note": "Claimed by dispatcher at e2a724ab; original native acceptance fixed. Implementation and connected acceptance remain separate. See docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md.",
-      "observed_at": "2026-11-14T00:36:44Z",
+      "note": "AC1–3 evidenced: 92 selected pass, 9 native included; 42 Chrome checks/10 captures independently reviewed PASS. AC4 partial: Safari/private/full keyboard-accessibility/hosted-dev unrun. In Progress/lease retained; dispatcher owns lifecycle. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
+      "observed_at": "2026-11-14T01:33:56Z",
       "original_status": "In Progress",
       "slices": [
         {
           "id": "admission",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Immutable-policy-admission-and-complete-selection-signature",
-          "observed_at": "2026-11-14T00:36:29Z",
-          "evidence": "Lead traced scoreOptionEvidence, confirmedFact certainty gate and detached PolicyService assumption reads; implementation slice ready for delegation."
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Lead full source/caller review and focused 11/11 plus integrated83 matching hashes; complete signature/content admission and mutable/provenance compatibility. Independent Cool Cat PASS. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         },
         {
           "id": "reuse",
-          "status": "not-started",
-          "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof"
+          "status": "complete",
+          "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Selected92/92 pass0skip including9actualnative; operation counters/eviction/reset/equivalence and actual1validation26derivations19hits. Independent Cool Cat source+native proof PASS; exactcb5064ed. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         },
         {
           "id": "connected",
-          "status": "not-started",
-          "title": "Connected-release-offer-history-and-independent-review"
+          "status": "in-progress",
+          "title": "Connected-release-offer-history-and-independent-review",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "evidence": "Chrome42/42checks,10desktop/narrowcaptures on exactcb5064ed nativePG app independently inspected; AC4partial: Safari/private/fullkeyboard-accessibility/hosted-dev unrun, LowF400 separate. NoBuilt/Done/lease release. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         }
       ],
       "status": "In Progress",
@@ -5602,8 +5606,44 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-14T00:36:44Z",
-          "expires_at": "2026-11-14T02:30:00Z",
-          "source": "Observed live lead starting FUCQ-415; exact claim e2a724ab."
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d77d-205f-73f3-a069-ea6c902851b9",
+          "name": "Tweety",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d787-e929-7ed2-881b-8fde01454ac2",
+          "name": "Doc Hudson",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d78f-af71-7400-b66e-576073f5f0e3",
+          "name": "Henery Hawk",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
+        },
+        {
+          "id": "01a1d7ac-d407-78d0-8bf1-e65fa20cefd7",
+          "name": "Cool Cat",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T01:33:56Z",
+          "expires_at": "2026-11-14T01:33:56Z",
+          "source": "Observed finished at lead handoff; claim observation expired. Parent retains Story lease; AC4 partial."
         }
       ],
       "branch": "dev/DEV-2026-11-13-GC-008"
