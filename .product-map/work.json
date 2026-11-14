@@ -6505,7 +6505,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T01:29:27Z",
+      "observed_at": "2026-11-14T02:23:51Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -6515,14 +6515,16 @@
       "slices": [
         {
           "id": "s1-foundation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Returns schema, ports, current-car relationship store and retained return policy",
-          "observed_at": "2026-11-14T01:29:27Z"
+          "observed_at": "2026-11-14T02:23:51Z",
+          "evidence": "bb3b64bc reviewed by lead: 47 returns tests and 189 full Java tests pass on native PG 17; return_operations added to V473_1"
         },
         {
           "id": "s2-plan",
-          "status": "not-started",
-          "title": "Return plan read, request, confirmation progress and proposal acceptance on native PostgreSQL"
+          "status": "in-progress",
+          "title": "Return plan read, request, confirmation progress and proposal acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T02:23:51Z"
         },
         {
           "id": "s3-outcomes",

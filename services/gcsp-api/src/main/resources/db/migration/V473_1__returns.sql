@@ -178,3 +178,21 @@ CREATE TABLE return_provider_receipts (
 );
 CREATE TRIGGER return_provider_receipts_immutable BEFORE UPDATE OR DELETE ON return_provider_receipts
   FOR EACH ROW EXECUTE FUNCTION forbid_change();
+
+-- The exact provider payload of each return operation, so a retry or reconcile resends identical input.
+CREATE TABLE return_operations (
+  environment_id text NOT NULL,
+  run_id text NOT NULL,
+  operation_id text NOT NULL,
+  order_uuid text NOT NULL,
+  step text NOT NULL CHECK (step IN ('request', 'confirm', 'accept', 'outcome')),
+  payload jsonb NOT NULL CHECK (jsonb_typeof(payload) = 'object'),
+  input_digest text NOT NULL CHECK (input_digest ~ '^[0-9a-f]{64}$'),
+  created_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (environment_id, run_id, operation_id),
+  UNIQUE (environment_id, run_id, order_uuid, step),
+  FOREIGN KEY (environment_id, run_id, operation_id) REFERENCES pending_operations (environment_id, run_id, operation_id),
+  FOREIGN KEY (environment_id, run_id, order_uuid) REFERENCES return_plans (environment_id, run_id, order_uuid)
+);
+CREATE TRIGGER return_operations_immutable BEFORE UPDATE OR DELETE ON return_operations
+  FOR EACH ROW EXECUTE FUNCTION forbid_change();
