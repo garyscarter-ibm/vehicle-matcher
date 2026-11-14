@@ -6690,10 +6690,10 @@
         },
         {
           "id": "client",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Scoped six-operation Java case client",
-          "observed_at": "2026-11-14T11:19:53Z",
-          "evidence": "Source-only finite client checkpoint from5aee261aca174a19adeedb29f411deaabe98e02f: two new files; actual Java routes,bearer/scope/session guards,immutable explicit retry,timeout/abort/refusal evidence. New specs/compiler/runtime UNRUN. Five frozen files unchanged; historical26PASS does not validate client. docs/gcsp/fucq447-delivery.md; ignored client-runtime-plan-1058.json is proposal only."
+          "observed_at": "2026-11-14T11:58:43Z",
+          "evidence": "Lead bounded client delivery: source a0d905b64cb09411f914ea57ae195cd306e4e7f8;59/59 client assertions PASS,0fail/skip/TODO;Elmer source1119, parent+Elmer executable1147 and parent actual result/inputs/teardown1147 PASS. Actual six Java paths/body,bearer/role/scope/session/abort,explicit identical intent retry/refusal/uncertain boundaries checked. Original2AC,typecheck/AOT/composedUI/Java/OIDC/nativePG/hosted remain open. docs/gcsp/fucq447-delivery.md"
         },
         {
           "id": "employee-help",
@@ -6722,13 +6722,13 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "HOLD; client source-only checkpoint; waiting parent source/executable audit and separate runtime release",
-          "observed_at": "2026-11-14T11:19:53Z",
-          "expires_at": "2026-11-14T11:19:53Z",
-          "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2;Hubie gpt-6.1-sol/high retained,no fallback/children;client tests/compiler/runtime UNRUN;contracts historical26PASS retained;docs/gcsp/fucq447-delivery.md"
+          "status": "HOLD; scoped client59PASS and parent actual-result/teardown audit PASS; waiting metadata checkpoint audit/publication",
+          "observed_at": "2026-11-14T11:58:43Z",
+          "expires_at": "2026-11-14T11:58:43Z",
+          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; Hubie gpt-6.1-sol/high retained; no fallback/children. One released client runtime consumed on a0d905b64cb09411f914ea57ae195cd306e4e7f8; docs/gcsp/fucq447-delivery.md"
         }
       ],
-      "note": "Source-only client checkpoint. In Progress/Gary Carter claim/lease,13points and original2AC remain unchanged. Contracts/client in-progress;other4stable slices not-started. New client specs/compiler/runtime UNRUN;historical frozen26PASS retained,840B text log missing. FUCQ-501 Medium separate/unclaimed/unfixed/nonblocking/outside66. Only ignored runtime proposal;no runtime,children,Jira,sync,push,merge,publication or next pickup. Dispatcher1112 importer notice does not amend native payload/AC;parent reconciliation pending."
+      "note": "Metadata-only client result. Native/file In Progress, Gary Carter claim/lease,13points and original2AC unchanged. Client bounded boundary complete with59PASS/source+executable+parent actual runtime/teardown audit;contracts in-progress with historical26 reused;remaining4stable slices not-started. Full JSON/714B log retained;old840B contracts log unavailable. Initial executable1135 directory-nlink HOLD corrected in separately audited sibling;no failed product runtime or new scope inferred. F501 Medium separate/unclaimed/unfixed/nonblocking/outside66. No further runtime/source/Jira/sync/push/merge/publication;parent preserves root importer notice."
     },
     {
       "assignee": "",
