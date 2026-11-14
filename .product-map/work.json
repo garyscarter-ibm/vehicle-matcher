@@ -6257,13 +6257,42 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T01:07:51Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-460",
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Brief schema, ports, validation, draft/confirm/engagement commands with native PG tests",
+          "observed_at": "2026-11-14T00:47:27Z",
+          "evidence": "019cc7e3 reviewed by story-lead; 36 native PG17 brief tests (engagement replay, CAS race, restart new pool, consumed-draft index) and 126 module tests pass"
+        },
+        {
+          "id": "s2-editor",
+          "status": "complete",
+          "title": "Editor projection and Account preference patch (categories, rating, Same again)",
+          "observed_at": "2026-11-14T01:01:54Z",
+          "evidence": "b00e3d14 reviewed by story-lead; 67 native PG17 brief tests incl. 31 Account preference/rating/Same again/understanding replays pass"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "/api/gcsp/v1/brief HTTP, auth, JSON errors and wiring tests",
+          "observed_at": "2026-11-14T01:07:51Z",
+          "evidence": "d757cf87 reviewed by story-lead; 10 brief HTTP QuarkusTests (auth 401/403, query, replay, CAS, minimum, 503) and 167 module tests pass"
+        },
+        {
+          "id": "s4-integration",
+          "status": "in-progress",
+          "title": "Story-level validation, merge, migration number and result",
+          "observed_at": "2026-11-14T01:07:51Z"
+        }
+      ]
     },
     {
       "assignee": "",
