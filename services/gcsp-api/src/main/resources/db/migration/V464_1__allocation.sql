@@ -184,3 +184,15 @@ CREATE INDEX custody_holds_buddy_due ON custody_holds (environment_id, run_id, e
   WHERE hold_type = 'buddy-offer' AND state = 'active';
 CREATE INDEX outbox_events_allocation_triggers ON outbox_events (environment_id, run_id, run_revision, event_id)
   WHERE event_type IN ('stock-released', 'brief-changed', 'buddy-expired', 'offer-declined');
+
+-- The allocator's position in the trigger stream: the last consumed (run_revision, event_id), moved by version CAS.
+CREATE TABLE allocation_trigger_cursor (
+  environment_id text NOT NULL,
+  run_id text NOT NULL,
+  last_revision bigint NOT NULL DEFAULT 0 CHECK (last_revision >= 0),
+  last_event_id text NOT NULL DEFAULT '',
+  version bigint NOT NULL DEFAULT 1 CHECK (version > 0),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (environment_id, run_id),
+  FOREIGN KEY (environment_id, run_id) REFERENCES runs (environment_id, run_id)
+);
