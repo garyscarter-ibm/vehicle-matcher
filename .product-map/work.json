@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T07:54:37Z",
+      "observed_at": "2026-11-14T08:00:53Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -7360,8 +7360,9 @@
         },
         {
           "id": "browse-state",
-          "status": "not-started",
-          "title": "Browse-history-and-detail-state"
+          "status": "in-progress",
+          "title": "Browse-history-and-detail-state",
+          "observed_at": "2026-11-14T08:00:53Z"
         },
         {
           "id": "view-parity",
