@@ -87,6 +87,16 @@ describe('released stock screen', () => {
     expect(events[0]).toBe(component.store.allCars()[0].review); expect(events[0].claimInput?.expectedTermsDigest).toBe('opaque-1');
     component.activate({ memberId: 'stock-4', action: 'details' }); fixture.detectChanges(); component.reviewDetail(); expect(events[1].orderUuid).toBe('stock-4');
   });
+  it('honours host review unavailability for card/detail DOM and direct methods while keeping standalone defaults', async () => {
+    const { root, fixture, component } = await screen(); const emitted: StockCar['review'][] = [];
+    component.review.subscribe(event => emitted.push(event));
+    fixture.componentRef.setInput('reviewUnavailableReason', 'Reviewing a car is currently unavailable.'); fixture.detectChanges();
+    expect(button(root.querySelector<HTMLElement>('[data-member-id="stock-1"]')!, 'Review this car').disabled).toBe(true);
+    component.activate({ memberId: 'stock-1', action: 'review' }); component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
+    expect(button(root, 'Review this car').disabled).toBe(true); expect(root.textContent).toContain('Reviewing a car is currently unavailable.'); component.reviewDetail(); expect(emitted).toEqual([]);
+    fixture.componentRef.setInput('reviewUnavailableReason', null); fixture.detectChanges(); expect(button(root, 'Review this car').disabled).toBe(false);
+    component.reviewDetail(); expect(emitted[0]).toBe(component.store.selectedCar()!.review);
+  });
   it('restores scoped filter/page/exact detail snapshots and emits only navigation facts', async () => {
     const { root, component, fixture } = await screen(); const events: { snapshot: StockNavigationSnapshot | null; replace: boolean }[] = [];
     component.navigationChange.subscribe(event => events.push(event)); component.showMore(); fixture.detectChanges();

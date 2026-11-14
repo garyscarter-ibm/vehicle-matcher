@@ -8,7 +8,8 @@ import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { DataTableComponent } from '../kit/data-table.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent], styleUrl: './gallery.component.css', template: `
+import { VehicleCardComponent } from '../kit/vehicle-card.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -32,8 +33,18 @@ import { DataTableComponent } from '../kit/data-table.component';
     <p role="status">{{ tableOpened() }}</p>
     <gcsp-data-table caption="Unavailable case actions" [columns]="tableColumns" [rows]="tableRows" [disabled]="true" />
   </section>
+  <section class="gcsp-panel"><h2>Released vehicle card</h2>
+    <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"
+      orderNumber="0000001" [images]="[]" [points]="740" [allowance]="1000"
+      eligibility="Needs confirmation" [reviewDisabled]="true"
+      disabledReason="Reviewing a car is unavailable in this example."
+      [facts]="[{ label: 'Exterior', value: 'Blue' }, { label: 'Interior', value: null }]"
+      (action)="cardOpened.set('Vehicle details selected for the example car')" />
+    <p role="status">{{ cardOpened() }}</p>
+  </section>
 ` })
 export class GalleryComponent {
+  readonly cardOpened = signal('');
   readonly tableOpened = signal('');
   readonly tableColumns = [{ key: 'employee', label: 'Employee' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }];
   readonly tableRows = [{ id: 'gallery-paula', label: 'Paula', cells: { employee: 'Paula', status: 'Open', owner: 'Scheme team' } }];
