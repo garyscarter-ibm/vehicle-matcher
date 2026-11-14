@@ -6902,13 +6902,36 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:43:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-468"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-468",
+      "slices": [
+        {
+          "id": "s1-core",
+          "status": "complete",
+          "title": "Ordering schema V468_1, terms, conversion/provider ports, synthetic provider and OrderingService submit/reconcile with native PostgreSQL replay tests",
+          "observed_at": "2026-11-14T08:43:02Z",
+          "evidence": "lead review of e81eae5f5; gcsp.api.ordering 19/19 on native PG17 :55468"
+        },
+        {
+          "id": "s2-http-wiring",
+          "status": "complete",
+          "title": "Manual order endpoints, provider selection, startup and presenter reconcile, OrderSourcePort binding for approvals, README",
+          "observed_at": "2026-11-14T08:43:02Z",
+          "evidence": "lead review of be5cb84a9 and base merge 056237310; ./mvnw -B clean verify 941/0/0/0 (ordering 33, approvals 36) on native PG17 :55468"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:43:02Z",
+          "evidence": "lead review of be5cb84a9 and base merge 056237310; ./mvnw -B clean verify 941/0/0/0 (ordering 33, approvals 36) on native PG17 :55468"
+        }
+      ]
     },
     {
       "assignee": "",
