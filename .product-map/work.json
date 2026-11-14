@@ -7812,13 +7812,50 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T22:02:46Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480",
+      "slices": [
+        {
+          "id": "retained-results",
+          "status": "complete",
+          "title": "Retained baseline import and stored-result reads",
+          "observed_at": "2026-11-14T09:07:00Z",
+          "evidence": "Lead-reviewed slice 1: V480_1 schema, verified retained import (process-comparison-94c77601...), Greg/presenter reads; comparison tests 20/20 native, full verify 866/0/0"
+        },
+        {
+          "id": "seeded-inputs",
+          "status": "complete",
+          "title": "Seeded comparison inputs from Java policy at existing sizes",
+          "observed_at": "2026-11-14T09:29:58Z",
+          "evidence": "Lead-reviewed slice 2: Java generator reproduces retained inputHashes for comparison-a/b/c at 1000 employees/850 cars/9 releases; 18 Node golden cases; 8/8 tests; 3 seeds in ~0.5 s, 7 MB heap"
+        },
+        {
+          "id": "measures-experiments",
+          "status": "complete",
+          "title": "Measures, result assembly and experiment checks",
+          "observed_at": "2026-11-14T10:00:16Z",
+          "evidence": "Lead-reviewed slice 3: measures/differences recompute retained process and hold-sweep results exactly; requests 24, refusals 14, prep 38 cases; Node runs replayed to identical digest; 43/43 comparison tests"
+        },
+        {
+          "id": "jobs-recovery",
+          "status": "complete",
+          "title": "Greg job start, progress, failure and restart recovery",
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Lead-reviewed slice 4: Greg-only start, idempotent commandId, one running job, progress/failure/timeout/shutdown/restart-interrupted persisted; no cancel/restart route; no outbox rows; 58/58 comparison tests"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, full Java verify, README and result",
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
+        }
+      ]
     },
     {
       "assignee": "",

@@ -580,6 +580,31 @@ Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table ab
 Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
 `gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
 
+## Comparison (FUCQ-480)
+
+Package `gcsp.api.comparison`: retained route-comparison baselines, stored-result reads and Greg's comparison jobs.
+Rows in `comparison_results` and `comparison_jobs` (`V480_1`) are keyed by environment, so retained baselines survive
+demo run resets; stored results are immutable and old run history may reset at the final switch.
+
+| Endpoint | Roles and answers |
+| --- | --- |
+| `GET /api/gcsp/v1/comparison/results/latest?experimentId=` | Greg, presenter. All experiments, or one (404 when none stored). |
+| `GET /api/gcsp/v1/comparison/process/latest` | Greg, presenter. The latest process-only result. |
+| `POST /api/gcsp/v1/comparison/jobs` | Greg only. Body `{commandId, experimentId, change?}`; 202 pending, 409 `job-running` or `command-input-changed`, 403 `comparison-reruns-off`. |
+| `GET /api/gcsp/v1/comparison/jobs/latest?jobId=` | Greg, presenter. Job status and actual progress, plus `reruns`. |
+
+There is no cancel or restart endpoint. One job runs at a time per environment; a job left running by another instance
+reads as `interrupted`, and shutdown marks the active job `interrupted`. Comparison never writes the outbox or sends mail.
+Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
+`c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
+`d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
+Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
+replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
+until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+
+Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
+starts; default off) and `GCSP_CODE_REVISION` (result provenance).
+
 ## Clock, scenarios and presenter controls (FUCQ-479)
 
 **Clock** (`gcsp.api.clock`, `V479_1__clock.sql`): `run_clocks` holds one forward-only clock per run (instant, `clock_version`,

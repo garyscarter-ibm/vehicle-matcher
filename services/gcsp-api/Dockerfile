@@ -11,6 +11,7 @@ COPY services/gcsp-api/src/ src/
 COPY server/gcsp/policy/seed-v1.json /src/server/gcsp/policy/seed-v1.json
 COPY server/gcsp/policy/reviewed/ /src/server/gcsp/policy/reviewed/
 COPY server/gcsp/predict/records/policy-definitions.json /src/server/gcsp/predict/records/policy-definitions.json
+COPY server/data/gcsp/comparison/process-only.json /src/server/data/gcsp/comparison/process-only.json
 COPY docs/gcsp/models/artifacts/ /src/docs/gcsp/models/artifacts/
 RUN ./mvnw -B package -DskipTests
 
