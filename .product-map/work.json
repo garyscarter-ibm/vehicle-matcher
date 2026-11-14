@@ -6907,7 +6907,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-14T08:51:18Z",
+      "observed_at": "2026-11-14T08:56:54Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -6938,9 +6938,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T08:51:18Z"
+          "observed_at": "2026-11-14T08:56:54Z",
+          "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
         }
       ]
     },
