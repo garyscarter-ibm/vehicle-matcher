@@ -49,6 +49,16 @@ public final class RetainedReturnPolicy implements ReturnPolicyPort {
         }
     }
 
+    @Override
+    public String currentVersion(String runId) {
+        try {
+            String v = ReturnJson.JSON.readTree(Files.readString(file)).path("policyVersion").asText(null);
+            return ReturnJson.text(v, 128) ? v : null;
+        } catch (IOException | RuntimeException e) {
+            return null;
+        }
+    }
+
     private ReturnPolicy load(Instant asOf, String version) throws IOException {
         if (asOf == null || version == null || version.isEmpty()) return null;
         JsonNode root = ReturnJson.JSON.readTree(Files.readString(file));

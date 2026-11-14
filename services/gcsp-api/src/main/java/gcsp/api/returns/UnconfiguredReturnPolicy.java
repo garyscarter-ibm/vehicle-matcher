@@ -9,4 +9,9 @@ public final class UnconfiguredReturnPolicy implements ReturnPolicyPort {
     public ReturnPolicyReading read(String runId, Instant asOf, String policyVersion) {
         return ReturnPolicyReading.unavailable();
     }
+
+    @Override
+    public String currentVersion(String runId) {
+        return null;
+    }
 }
