@@ -30,7 +30,8 @@ curl -s localhost:8080/api/gcsp/v1/context        # 401 JSON: no bearer token
 
 Copy the whole `target/quarkus-app/` directory to deploy; `quarkus-run.jar` needs its `lib/` beside it. SIGTERM
 drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The container image is
-`docker build -t gcsp-api services/gcsp-api`.
+`docker build -f services/gcsp-api/Dockerfile -t gcsp-api .` run from the repository root (the pom reads
+retained policy data from `server/gcsp`, so the build context is the repository, not this module).
 
 ## Configuration (environment variables)
 
@@ -75,6 +76,21 @@ GCSP_TEST_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_dev?user=gcs
 GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_running?user=gcsp' \
 ./mvnw -B test -Dtest='gcsp.api.persistence.**'
 ```
+
+## Policy (FUCQ-457)
+
+`gcsp.api.policy.PolicyService` (`@Inject`, or `new PolicyService(PolicySource)` in tests) is the one read path for
+eligibility, allowance, points cost and assumptions, and returns the same outcome objects as the Node `PolicyService`
+(`status`, `code`, `reasons`, `value`, `contractVersion` `1.0.0`, `policyVersion`). Reads take a `PolicyRead(runId,
+asOf, policyVersion)`; a null `policyVersion` is unpinned (active at `asOf`), a value pins that version at its own
+start. `getPolicySnapshot` is for trusted server code only and is never returned by a route.
+
+Retained data is not copied into this module. The pom adds `server/gcsp/policy/seed-v1.json`, `reviewed/*.json` and
+`server/gcsp/predict/records/policy-definitions.json` to the classpath under `gcsp/policy/`. `RetainedFilePolicySource`
+reads the seed (validated once, kept for the process), so the default profile needs no database. Source choice is in
+`PolicySourceSelection`. The Node fixtures are the behavioural baseline: `src/test/parity/policy-parity.mjs` regenerates
+`src/test/resources/policy-parity/cases.json` (`node services/gcsp-api/src/test/parity/policy-parity.mjs` from the
+repository root; needs `server/node_modules`) and `PolicyParityTest` replays every case without Node.
 
 ## Endpoints
 
