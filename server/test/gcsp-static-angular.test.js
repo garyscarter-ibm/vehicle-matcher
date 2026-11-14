@@ -268,6 +268,14 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
   const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    envVars:'))), 'supplied Java build/runtime foundation is preserved');
+  assert.match(java, /^    dockerContext: \.\s*(?:#.*)?$/mu);
+  const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
+  const retainedInputs = [...dockerfile.matchAll(/^COPY (server\/\S+) \S+$/gmu)].map((match) => match[1]);
+  assert.ok(retainedInputs.length > 0, 'the current Java image consumes retained policy inputs');
+  for (const input of retainedInputs) {
+    const filter = input.endsWith('/') ? `${input}**` : input;
+    assert.ok(java.includes(`        - ${filter}\n`), `${input}: changed image input triggers a Java rebuild`);
+  }
   const javaKeys = [...java.matchAll(/^      - key: (GCSP_[A-Z_]+|JAVA_OPTS)$/gmu)].map((match) => match[1]);
   assert.equal(new Set(javaKeys).size, javaKeys.length, 'identity and persistence share one environment setting');
   const proposedIdentityKeys = [...proposed.matchAll(/^      # - key: (GCSP_[A-Z_]+)$/gmu)].map((match) => match[1]);
@@ -282,6 +290,13 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   }
   assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
   assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
+  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER']) {
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: none`, 'u'), `${key} keeps its existing unavailable default`);
+  }
+  for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH']) {
+    assert.doesNotMatch(java, new RegExp(`^      - key: ${key}$`, 'mu'), `${key} is not a required deployment input`);
+    assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} is documented for optional deployment configuration`);
+  }
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);
