@@ -12,10 +12,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-/**
- * Reviewed option evidence, ported from server/scenarios/employee/option-evidence.js. The Node
- * module-level LRU cache is a performance device only and is not ported; outputs are identical.
- */
+/** Reviewed option evidence, from server/scenarios/employee/option-evidence.js.
+ * Node's LRU cache is a performance device only and is not ported; outputs are identical. */
 public final class OptionEvidence {
 
     private static final List<String> FIELDS = List.of("sportiness", "comfort", "economy", "size", "body", "fuel");
@@ -42,10 +40,8 @@ public final class OptionEvidence {
         }
     }
 
-    /**
-     * Null means the specification is unknown, not an evidenced basic car. A null policy (undefined)
-     * retains the original calculation; an invalid policy throws like Node.
-     */
+    /** Null means an unknown specification. A null (undefined) policy keeps the original
+     * calculation; an invalid policy throws like Node. */
     public static Result score(JsonNode selection, JsonNode policy, JsonNode preferences) {
         if (policy == null) return null;
         validatePolicy(policy, preferences);

@@ -9,11 +9,8 @@ public final class Ranking {
 
     private Ranking() {}
 
-    /**
-     * Keeps preference percentages intact. A band is anchored to its best remaining fit, so a chain of
-     * near-ties cannot promote a much worse match to the top. Input entries carry gateStatus, score
-     * (number or null), orderUuid and terms.points.value; the result holds the eligible entries in order.
-     */
+    /** Eligible entries in order; a band is anchored to its best remaining fit so near-tie chains
+     * cannot promote a much worse match. Entries carry gateStatus, score, orderUuid, terms.points.value. */
     public static List<JsonNode> rank(List<? extends JsonNode> decisions, RecommendationConfig config) {
         List<JsonNode> ranked = new ArrayList<>();
         for (JsonNode d : decisions) if (Js.eqStr(Js.get(d, "gateStatus"), "eligible")) ranked.add(d);
@@ -76,7 +73,7 @@ public final class Ranking {
         return Locale.compare(left.textValue(), Js.toStr(Js.get(b, "orderUuid")));
     }
 
-    /** String.prototype.localeCompare for ASCII order ids: letters compare without case, then lowercase first. */
+    /** localeCompare for ASCII ids (case-folded, then lowercase first); equals compareTo for lowercase hex UUIDs. */
     static final class Locale {
 
         private Locale() {}

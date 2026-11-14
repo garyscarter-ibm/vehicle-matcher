@@ -15,10 +15,8 @@ public final class PreferenceScoring {
     /** One scored component: its JSON evidence, plus the number and weight the average uses. */
     private record Component(ObjectNode json, double score, double weight) {}
 
-    /**
-     * Returns {score, components, unknowns, reasons, tradeOffs}. Throws RecommendationFault where Node throws
-     * (invalid preference weights, a car the hard filters drop, a missing container); callers map that to unavailable.
-     */
+    /** {score, components, unknowns, reasons, tradeOffs}; throws RecommendationFault where Node throws,
+     * which callers map to unavailable. */
     public static ObjectNode score(JsonNode snapshot, JsonNode brief, JsonNode employeeFacts, RecommendationConfig config, Slider slider) {
         ArrayNode unknowns = Js.arr();
         ArrayNode reasons = Js.arr();

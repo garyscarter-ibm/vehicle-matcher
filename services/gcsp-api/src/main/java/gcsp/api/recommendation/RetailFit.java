@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * The numeric path of the retail rankCars for ONE car (fit, taste and match percentages), ported from
- * server/scenarios/retail/used-retail-v1.js, dimensions.js and recommendation/evaluate.js. Reason strings are
- * not computed. JS quirks are kept: undefined arithmetic gives NaN, and a missing container throws.
- */
+/** Numeric path of retail rankCars for one car (server/scenarios/retail), without reason strings.
+ * JS quirks are kept: undefined arithmetic gives NaN, and a missing container throws. */
 final class RetailFit {
 
     /** How much of the match score is taste rather than fit (the Node default, TASTE_SHARE unset). */
