@@ -122,8 +122,8 @@ public final class RepositoryAccountRecords implements AccountRecordsPort {
     }
 
     private SourceResult query(String sql, String environmentId, String runId, String employeeId, RowReader reader) {
+        // Plain SELECTs; no session state is changed on the pooled connection.
         try (Connection c = dataSource.getConnection()) {
-            c.setReadOnly(true);
             try (PreparedStatement ps = c.prepareStatement(sql)) {
                 ps.setString(1, environmentId);
                 ps.setString(2, runId);
