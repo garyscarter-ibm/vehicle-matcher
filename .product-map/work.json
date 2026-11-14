@@ -6642,13 +6642,43 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:18:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-471",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Documents schema, policy and stage ports, provider port with synthetic, unsupported and unconfigured adapters",
+          "observed_at": "2026-11-14T01:34:26Z",
+          "evidence": "b8af3d58 reviewed by story-lead: policy loader, stage observation, provider adapters; documents tests 38/38, verify 128/128 on native PG 17"
+        },
+        {
+          "id": "s2-tick",
+          "status": "complete",
+          "title": "Source-linked opening and provider progress on ticks, exceptions and readiness projection on native PostgreSQL",
+          "observed_at": "2026-11-14T01:49:01Z",
+          "evidence": "e4a1c5cc reviewed by story-lead: source-linked open, provider progress outside tx, exceptions, readiness; verify 141/141 native PG 17; index-only scan document_items_open; 9 statements per order"
+        },
+        {
+          "id": "s3-ack-http",
+          "status": "complete",
+          "title": "Employee reads, provider acknowledgement command and /api/gcsp/v1/documents endpoints with startup selection",
+          "observed_at": "2026-11-14T02:14:33Z",
+          "evidence": "ff2d9c4a+66222cc7 reviewed by story-lead: provider-port acknowledgement with intent/CAS finalize, employee ownership, presenter/greg read-only, /api/gcsp/v1/documents; verify 160/160 native PG 17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T02:18:47Z",
+          "evidence": "341dde5c: base merged, Java verify 421/421 on native PG 17, result block written"
+        }
+      ]
     },
     {
       "assignee": "",
