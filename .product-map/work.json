@@ -6590,7 +6590,7 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-14T02:12:01Z",
+      "observed_at": "2026-11-14T02:17:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
@@ -6621,9 +6621,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
-          "observed_at": "2026-11-14T02:12:01Z"
+          "observed_at": "2026-11-14T02:17:35Z",
+          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
         }
       ]
     },
