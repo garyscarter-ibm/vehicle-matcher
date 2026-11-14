@@ -1,11 +1,16 @@
 # FUCQ-446 delivery plan and interface inventory
 
-Plan checkpoint, 14 November 2026. Bertie (they/them), Story lead, chat
+Plan and first bounded source checkpoint, 14 November 2026. Current state: dispatcher
+published plan `11440c7632f3612d6351ab486ef101f6c8d07d3a` and released only the three
+pure projection files recorded below. This checkpoint is held for exact-SHA dispatcher
+review/publication; the rest of progress-read and every later slice remain unreleased.
+
+Bertie (they/them), Story lead, chat
 `01a1d95e-58ac-75b2-a1bc-2a010748c7e3`.
 
-## Authority and delivery boundary
+## Original plan authority and delivery boundary
 
-**PLAN ONLY; waiting for dispatcher publication and explicit source release.** Commit the
+At the original plan checkpoint: **PLAN ONLY; waiting for dispatcher publication and explicit source release.** Commit the
 three named metadata paths, then hold the exact commit. No source changes, descendants,
 tests, builds, browsers, services, dependency links or runtime allocation are authorised
 at this checkpoint. The dispatcher owns publication of the exact SHA; this worker must
@@ -238,3 +243,113 @@ observation at hold; a commit must not imply an active worker or accepted Story.
 Dispatcher verifies the exact plan SHA, publishes it through the reserved parent workflow,
 and explicitly releases the first slice/any shared contract. This worker remains at its
 claim base plus this metadata-only checkpoint until that direction arrives.
+
+
+## First bounded source checkpoint — 14 November 2026
+
+Dispatcher review receipt `.claude/fucq446-plan-parent-review-0909.json` verified the
+frozen plan and native adoption, then confirmed exact remote-tip publication and released
+only the new `orders.types.ts`, `orders.projection.ts`, `orders.projection.spec.ts` under
+`apps/gcsp-web/src/app/orders/`. No source sync/rebase occurred. Lead continued directly;
+no children were spawned. Requested/selected/effective Sol/high remains dispatcher-verified.
+
+Implemented Java v1 read DTOs, source-labelled separate producer envelopes, a pure exact
+order/scope join and employee action hints. Existing account types, latestOrder and
+orderVehicle are imported read-only. Complete-list evidence requires explicit null
+nextAfter, zero failedCount and an empty failed list; missing/incomplete evidence cannot
+produce an automatic newest order or an empty-list claim. An exact known owned row can
+be selected independently of later pages. Duplicate or explicitly foreign list identities
+stay unresolved. This is consistency checking on already authorised reads, not an
+HTTP/authentication, recursive ownership filter or pagination implementation.
+
+Stage order/owner/next step and document readiness remain supplied facts. Pending envelopes
+retain operationId and any value, but cannot enable actions. Refused/unsupported envelopes
+stay distinct and do not become success. Hints expose only supported document task IDs,
+offered appointment slots/proposal and return choices/proposal with employee authority,
+provider support, state/revision and pending/blocked guards. There are no commands,
+transport, controller, components, routes or physical-completion controls.
+
+Only the exact return-plan relationship determines the projected current car. Old-car
+selection details, scheduled/returned plan labels and handover labels do not create a
+relationship or replace one. Missing display/media/relationship facts stay absent; the
+existing flat-Java versus nested-account snapshot gap remains open.
+
+Additional source-only parity observation: worker Java AppointmentService.doRequest returns
+appointment-already-requested if an existing row has a different requestedSlot; it exposes
+no new-slot rebooking branch. The current hints therefore do not advertise a no-show
+rebook command. Frozen Node's rebooking behaviour and actual Java support need dispatcher/
+backend coordination in integration. No live reproduction, defect severity, repair or
+acceptance claim is inferred from this observation. Historical Low FUCQ-499 full-app
+boundary failure remains separate, unchanged and unfixed; it was not rerun here.
+
+### Scoped validation and lead review
+
+**PASS: 18 tests, one spec file**, selected command from worker root:
+
+```sh
+npm --prefix apps/gcsp-web test -- --include=src/app/orders/orders.projection.spec.ts
+```
+
+The authorised worker007 Node24.22.3/npm11.19.1 toolchain and pinned dependencies were
+borrowed read-only. Worker/borrowed package, lock, Angular, spec and Vitest configuration
+bytes matched before allocation. The runner is Angular unit-test/Vitest4.0.18, one worker,
+watch off, cache disabled. Angular performed its selected-test bundle compilation;
+no separate application/production build was run. One test run passed; no failed/skipped
+tests were reported. The code pins below still matched at lead review.
+
+Cases establish the pure boundary: newest tie without mutation; incomplete/empty/failed
+page truth; exact missing/selected rows; failed/pending list and identity ambiguity;
+exact car join and absent data; preserved stage owner/next-step/source; partial-failure
+isolation; 202 value/operation retention; refused/unsupported distinction; cross-order/run/
+employee join rejection; supported employee task/slot/proposal/return hints; missing
+employee authority; blocked/pending/terminal actions; and supplied current-car relationship
+versus planned/physical-event facts. Lead reviewed the three files against Java
+ApprovalView/ApprovalStore, DocumentView/DocumentOutcome, appointments ReadModel/
+AppointmentService/AppointmentResult, Return PlanView/PlanResult and CurrentCarView.
+
+Full suite, client checks, full-app boundary check (FUCQ-499), browsers/rendered desktop/
+narrow/Safari/private browsing/keyboard/CSP/accessibility, real Java/native PostgreSQL/OIDC,
+transaction/restart/concurrency, email and hosted acceptance are **UNRUN**. No Story AC is
+checked. There are no current external callers of the new pure files; shared-account
+helpers are consumed without edits. Broader checks belong to later released integration.
+
+### Resource receipt and teardown
+
+Root-local receipt directory: `.claude/test-runs/fucq446/`.
+`preflight-projection-001.json` records borrowed identities, command/impact boundary and
+budgets before allocation. `run-projection-001.py` registered the supervisor/finalizer;
+`ownership/b8ad2588e461439b9562ffd326264499.json` records planned/active/removed ownership.
+The shared host reservation was released. `projection-001-result.json` and
+`projection-001.log` retain the actual result and bounded useful output.
+
+Measured runner wall time **5.393 seconds**, peak group RSS **953,778,176 bytes**, peak
+scratch **10,017,213 bytes**; one worker, 2 GiB RAM/scratch and 600-second limits,
+5 GiB emergency reserve, about 158.7 GB free after teardown. Local scratch was the
+explicit tool-working-cache/IPC compatibility exception, below the 256 MiB large-output
+threshold. No OneDrive output was needed; larger output remains directed to
+`OneDrive-IBM/_agent-output/vehicle-matcher/fucq446`.
+
+Vite's temporary config path was preflighted: an owned node_modules facade held package
+symlinks into the read-only borrower, so `.vite-temp` writes went to owned scratch.
+The owned node_modules/.angular/out-tsc/dist links and
+`scratch-projection-001` were removed and independently checked absent. Process group
+46214 has no live members or remaining owned ports. Borrowed node_modules' 25,442-entry
+metadata identity and selected tool/config/package SHA256/device/inode pins match their
+preflight values. No borrowed files were removed or changed. Filesystem teardown is
+verified, not inferred solely from the successful exit.
+
+### Tested source pins and remaining hold
+
+| Source | SHA256 |
+| --- | --- |
+| `orders.types.ts` | `a4c8a19212f436ef5923173f69c9e08ac4c0fd360c7415cc1439c2924171ca78` |
+| `orders.projection.ts` | `dfdd8bbcad13668eac1949b788a97929e1772cedd15493b1a697d959cb693c5c` |
+| `orders.projection.spec.ts` | `47ef6bd865f5bd4849e58469851aacf6f67507f37e846f40711e7381d1d81d9f` |
+
+`progress-read` is **in-progress/partial**. Shared complete-list, snapshot and request
+contracts/client checks are unresolved; the other four stable slices remain not-started.
+The map records this transition and expires Bertie's worker observation at the checkpoint
+hold. Preserve all 301 foreign map records/raw bytes/order and outside-own-row bytes.
+Both original AC and the complete original Story contract remain unchanged. Dispatcher
+alone owns native lifecycle updates, exact-SHA publication and the next explicit release.
+No worker push/sync/merge/deploy/final switch has occurred.

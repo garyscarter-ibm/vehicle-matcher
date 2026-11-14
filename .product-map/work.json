@@ -6577,7 +6577,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-14T09:31:46Z",
+      "observed_at": "2026-11-14T09:40:12Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
@@ -6587,9 +6587,11 @@
       "slices": [
         {
           "id": "progress-read",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Read owned order and lifecycle facts",
-          "points": 3
+          "points": 3,
+          "observed_at": "2026-11-14T09:40:12Z",
+          "evidence": "PARTIAL: released types/projection/spec checkpoint; 18 selected pure tests and lead review passed. Shared complete-list/snapshot/request contracts and client checks remain unresolved. docs/gcsp/fucq446-delivery.md; actual resource receipt root .claude/test-runs/fucq446/projection-001-result.json. No Story acceptance inferred."
         },
         {
           "id": "employee-actions",
@@ -6632,10 +6634,10 @@
           "name": "Bertie",
           "harness": "codex",
           "role": "Story lead",
-          "observed_at": "2026-11-14T09:31:46Z",
-          "expires_at": "2026-11-14T09:31:46Z",
-          "status": "waiting on dispatcher plan publication; source unreleased",
-          "source": "chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3; docs/gcsp/fucq446-delivery.md"
+          "observed_at": "2026-11-14T09:40:12Z",
+          "expires_at": "2026-11-14T09:40:12Z",
+          "status": "waiting on dispatcher source-checkpoint review/publication; progress-read partial",
+          "source": "docs/gcsp/fucq446-delivery.md; selected projection spec 18 passed; chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3"
         }
       ]
     },
