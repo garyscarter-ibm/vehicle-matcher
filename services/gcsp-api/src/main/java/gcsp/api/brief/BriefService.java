@@ -31,7 +31,7 @@ import javax.sql.DataSource;
  */
 public final class BriefService {
 
-    private enum Kind { SAVE_DRAFT, CONFIRM, ENGAGE, DISENGAGE, PAUSE, RESUME }
+    private enum Kind { SAVE_DRAFT, SAVE_PREFERENCES, CONFIRM, ENGAGE, DISENGAGE, PAUSE, RESUME }
 
     /** A brief and its pending draft as they stand at one head read. */
     record State(long briefVersion, long draftVersion, BriefRow current, DraftRow draft) {}
@@ -110,11 +110,47 @@ public final class BriefService {
     public BriefResult resolveInitial(BriefScope scope) {
         return read(scope, (c, rules) -> {
             State s = state(c, scope, true);
-            Resolved r = resolve(c, scope, rules, s, acceptedOffer(scope) && s.current() != null);
+            Resolved r = resolve(c, scope, rules, s, acceptedOffer(scope).isPresent() && s.current() != null);
             ObjectNode out = Json.obj();
             out.set("initial", r.initial());
             out.put("briefVersion", s.briefVersion()).put("draftVersion", s.draftVersion());
             out.put("provenance", r.matching() ? "saved-draft" : s.current() != null ? "approved-brief" : "unconfirmed-policy-defaults");
+            return new BriefResult.Ok(out);
+        });
+    }
+
+    /** The Account editor read: policy-driven context, the content to show, the account-derived views and versions. */
+    public BriefResult readEditor(BriefScope scope) {
+        return read(scope, (c, rules) -> {
+            Optional<BriefAccountPort.AccountFacts> facts = account.facts(scope.environmentId(), scope.runId(), scope.employeeId());
+            if (facts.isEmpty()) return Refusal.unavailable();
+            State s = state(c, scope, true);
+            Optional<BriefOfferPort.Offer> accepted = acceptedOffer(scope);
+            Resolved r = resolve(c, scope, rules, s, accepted.isPresent() && s.current() != null);
+            JsonNode buddy = s.current() == null ? null : s.current().buddy();
+            ObjectNode initial = Json.obj();
+            initial.set("brief", r.initial());
+            initial.put("briefVersion", s.briefVersion()).put("draftVersion", s.draftVersion());
+            initial.set("accountPreferences", AccountEditor.state(r.initial(), rules, facts));
+            initial.set("currentCarRating", AccountEditor.rating(r.initial(), facts));
+            initial.set("sameAgain", AccountEditor.sameAgain(r.initial(), facts));
+            initial.set("buddy", Engagement.view(r.initial(), buddy, rules, facts));
+            initial.putObject("consent").put("search", flag(buddy, "searchConsent")).put("hold", flag(buddy, "holdConsent"));
+            ObjectNode out = Json.obj();
+            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS)));
+            out.set("initial", initial);
+            out.putObject("versions").put("policy", scope.policyVersion()).put("facts", facts.get().factsVersion());
+            if (accepted.isPresent() && s.current() != null) {
+                ObjectNode sel = out.putObject("selection").put("state", "accepted");
+                if (accepted.get().briefVersion() == null) sel.putNull("briefVersion");
+                else sel.put("briefVersion", accepted.get().briefVersion());
+            } else {
+                out.putNull("selection");
+            }
+            ObjectNode provenance = out.putObject("provenance");
+            provenance.put("initial", r.matching() ? "saved-draft" : s.current() != null ? "approved-brief" : "unconfirmed-policy-defaults");
+            if (s.briefVersion() == 0) provenance.putNull("approvedBriefVersion");
+            else provenance.put("approvedBriefVersion", s.briefVersion());
             return new BriefResult.Ok(out);
         });
     }
@@ -160,11 +196,11 @@ public final class BriefService {
         return new Resolved(initial, matching, matching || s.current() != null, fallback);
     }
 
-    private boolean acceptedOffer(BriefScope scope) {
+    private Optional<BriefOfferPort.Offer> acceptedOffer(BriefScope scope) {
         for (BriefOfferPort.Offer o : offers.offers(scope.environmentId(), scope.runId(), scope.employeeId())) {
-            if ("accepted".equals(o.state())) return true;
+            if ("accepted".equals(o.state())) return Optional.of(o);
         }
-        return false;
+        return Optional.empty();
     }
 
     // ---- commands ----
@@ -174,6 +210,49 @@ public final class BriefService {
         Refusal bad = envelope(input, true, "brief");
         if (bad != null) return bad;
         return command(scope, Kind.SAVE_DRAFT, input, (tx, c, s) -> saveDraftWork(tx, c, s));
+    }
+
+    /**
+     * The Account editor's sparse category patch, with an optional current-car rating and Same again, saved through
+     * the draft path; the response is a readback of what was stored.
+     */
+    public BriefResult savePreferences(BriefScope scope, JsonNode input) {
+        Refusal bad = preferencesEnvelope(input);
+        if (bad != null) return bad;
+        PolicyRules rules;
+        try {
+            Optional<PolicyRules> found = PolicyRules.load(policy, scope.policyVersion());
+            if (found.isEmpty() || account.facts(scope.environmentId(), scope.runId(), scope.employeeId()).isEmpty()) {
+                return Refusal.unavailable();
+            }
+            rules = found.get();
+        } catch (PolicyRules.Unavailable e) {
+            return Refusal.unavailable();
+        }
+        Refusal invalid = AccountEditor.checkChanges(input.get("changes"), rules, input.has("currentCarRating") || input.has("sameAgain"));
+        if (invalid != null) return invalid;
+        return command(scope, Kind.SAVE_PREFERENCES, input, (tx, c, s) -> savePreferencesWork(tx, c, s));
+    }
+
+    private static Refusal preferencesEnvelope(JsonNode input) {
+        JsonNode id = input == null ? null : input.get("commandId");
+        if (!only(input, "commandId", "expectedBriefVersion", "expectedDraftVersion", "changes", "currentCarRating", "sameAgain")
+                || !input.has("changes") || !Json.text(id) || !Json.revision(input.get("expectedBriefVersion"))
+                || !Json.revision(input.get("expectedDraftVersion"))) {
+            return Refusal.invalid("invalid-preferences", "command", "Supply exactly a command ID, the expected versions and the changes.");
+        }
+        JsonNode r = input.get("currentCarRating");
+        if (input.has("currentCarRating") && !(only(r, "contractId", "value") && r.has("contractId") && r.has("value")
+                && Json.text(r.get("contractId")) && (r.get("value").isNull()
+                || Json.integer(r.get("value")) && r.get("value").intValue() >= 1 && r.get("value").intValue() <= 5))) {
+            return Refusal.invalid("invalid-preferences", "currentCarRating", "Supply exactly the current contract and a 1 to 5 value, or null to clear.");
+        }
+        JsonNode a = input.get("sameAgain");
+        if (input.has("sameAgain") && !(only(a, "contractId", "on") && a.has("contractId") && a.has("on")
+                && Json.text(a.get("contractId")) && a.get("on").isBoolean())) {
+            return Refusal.invalid("invalid-preferences", "sameAgain", "Supply exactly the current contract and a true or false on.");
+        }
+        return null;
     }
 
     /** Confirms the resolved editor content, optionally granting search and hold together. */
@@ -294,9 +373,13 @@ public final class BriefService {
     // ---- command bodies ----
 
     private JsonNode saveDraftWork(Tx tx, Ctx c, State s) throws SQLException {
-        BriefScope scope = c.scope();
         readOnlyCheck(c, s);
-        ObjectNode content = c.input().get("brief").deepCopy();
+        return persistDraft(tx, c, s, c.input().get("brief").deepCopy());
+    }
+
+    /** Stores content as the next draft; while consent is held it also confirms a version or disengages on minimum loss. */
+    private ObjectNode persistDraft(Tx tx, Ctx c, State s, ObjectNode content) throws SQLException {
+        BriefScope scope = c.scope();
         Engagement.Gate gate = Engagement.gate(content, c.rules(), c.facts());
         long draftVersion = s.draftVersion() + 1;
         DraftRow draft = new DraftRow(draftVersion, s.briefVersion(), content, BriefContent.semanticDigest(content),
@@ -325,6 +408,71 @@ public final class BriefService {
         ObjectNode out = draftJson(draft, scope, c.rules());
         if (brief != null) out.set("confirmed", Json.obj().put("briefVersion", brief.version()).put("transition", transition));
         return out;
+    }
+
+    private JsonNode savePreferencesWork(Tx tx, Ctx c, State s) throws SQLException {
+        JsonNode in = c.input();
+        if (c.facts().isEmpty()) throw new Refused(Refusal.unavailable());
+        readOnlyCheck(c, s);
+        BriefAccountPort.CurrentContract car = c.facts().get().currentContract();
+        String carId = car == null ? null : car.contractId();
+        for (String field : List.of("currentCarRating", "sameAgain")) {
+            if (!in.has(field)) continue;
+            if (carId == null || carId.isBlank()) throw new Refused(carConflict("no-current-car", "There is no current car to use.", null));
+            if ("sameAgain".equals(field) && (car.model() == null || car.model().isBlank())) {
+                throw new Refused(carConflict("current-car-unidentified", "The current car has no model, so Same again is unavailable.", null));
+            }
+            if (!carId.equals(in.get(field).get("contractId").asText())) {
+                throw new Refused(carConflict("current-car-changed", "The current car is no longer the one shown.", carId));
+            }
+        }
+        Resolved resolved = resolve(tx.connection(), c.scope(), c.rules(), s, false);
+        boolean on = resolved.hasBase() && AccountEditor.sameAgain(resolved.initial(), c.facts()).path("on").booleanValue();
+        JsonNode changes = in.get("changes");
+        if (on && !changes.isEmpty() && !(in.has("sameAgain") && !in.get("sameAgain").get("on").booleanValue())) {
+            throw new Refused(Refusal.invalid("invalid-preferences", "changes", "Turn off Same again to change your categories."));
+        }
+        // A new employee starts sparse: policy essentials stay unconfirmed and no default preference is invented.
+        ObjectNode merged = resolved.hasBase() ? resolved.initial().deepCopy() : resolved.fallback().deepCopy();
+        if (!resolved.hasBase()) merged.set("preferences", Json.obj());
+        Refusal orphan = AccountEditor.applyChanges(merged, changes, c.rules());
+        if (orphan != null) throw new Refused(orphan);
+        if (in.has("currentCarRating")) {
+            ObjectNode r = merged.putObject("currentCarRating");
+            r.set("value", in.get("currentCarRating").get("value"));
+            r.put("contractId", carId).put("source", "employee").put("ratedAt", c.nowText());
+        }
+        if (in.has("sameAgain")) {
+            ObjectNode a = merged.putObject("sameAgain");
+            a.put("on", in.get("sameAgain").get("on").booleanValue()).put("contractId", carId).put("source", "employee").put("setAt", c.nowText());
+        }
+        if (BriefContent.validate(merged, c.rules(), false) != null) {
+            throw new Refused(Refusal.invalid("invalid-preferences", "changes", "Use the registered editable brief."));
+        }
+        ObjectNode saved = persistDraft(tx, c, s, merged);
+        // The response is read back from the rows just written, in the same transaction.
+        State after = state(tx.connection(), c.scope(), true);
+        Resolved shown = resolve(tx.connection(), c.scope(), c.rules(), after, false);
+        JsonNode buddy = after.current() == null ? null : after.current().buddy();
+        ObjectNode out = Json.obj();
+        out.put("briefVersion", after.briefVersion()).put("draftVersion", after.draftVersion());
+        out.set("buddy", Engagement.view(shown.initial(), buddy, c.rules(), c.facts()));
+        JsonNode transition = saved.path("confirmed").path("transition");
+        if (transition.isTextual()) out.put("buddyTransition", transition.asText());
+        else out.putNull("buddyTransition");
+        out.set("accountPreferences", AccountEditor.state(shown.initial(), c.rules(), c.facts()));
+        out.set("currentCarRating", AccountEditor.rating(shown.initial(), c.facts()));
+        out.set("sameAgain", AccountEditor.sameAgain(shown.initial(), c.facts()));
+        return out;
+    }
+
+    private static Refusal carConflict(String code, String reason, String currentContractId) {
+        ObjectNode extra = null;
+        if (currentContractId != null) {
+            extra = Json.obj();
+            extra.putObject("current").put("contractId", currentContractId);
+        }
+        return Refusal.conflict(code, reason, extra);
     }
 
     private JsonNode confirmWork(Tx tx, Ctx c, State s) throws SQLException {
@@ -364,9 +512,9 @@ public final class BriefService {
         if ((kind == Kind.PAUSE || kind == Kind.RESUME) && s.current() == null) throw new Refused(Refusal.notFound("brief"));
         readOnlyCheck(c, s);
         JsonNode currentBuddy = s.current() == null ? null : s.current().buddy();
-        if (kind == Kind.ENGAGE && Engagement.engaged(currentBuddy)) throw new Refused(conflict(s, "already-engaged"));
+        if (kind == Kind.ENGAGE && Engagement.engaged(currentBuddy)) throw new Refused(conflict(tx.connection(), c, s, "already-engaged"));
         boolean canRevoke = flag(currentBuddy, "searchConsent") || flag(currentBuddy, "holdConsent") || flag(currentBuddy, "paused");
-        if (kind == Kind.DISENGAGE && !canRevoke) throw new Refused(conflict(s, "already-disengaged"));
+        if (kind == Kind.DISENGAGE && !canRevoke) throw new Refused(conflict(tx.connection(), c, s, "already-disengaged"));
         Resolved resolved = resolve(tx.connection(), scope, c.rules(), s, false);
         String operation;
         ObjectNode content;
@@ -395,8 +543,8 @@ public final class BriefService {
                     Engagement.Gate gate = Engagement.gate(resolved.initial(), c.rules(), c.facts());
                     if (!gate.ok()) throw new Refused(Engagement.refusal(gate));
                 }
-                if (pausing && !flag(currentBuddy, "searchConsent")) throw new Refused(conflict(s, "not-engaged"));
-                if (flag(currentBuddy, "paused") == pausing) throw new Refused(conflict(s, pausing ? "already-paused" : "already-resumed"));
+                if (pausing && !flag(currentBuddy, "searchConsent")) throw new Refused(conflict(tx.connection(), c, s, "not-engaged"));
+                if (flag(currentBuddy, "paused") == pausing) throw new Refused(conflict(tx.connection(), c, s, pausing ? "already-paused" : "already-resumed"));
                 content = s.current().content().deepCopy();
                 operation = pausing ? "paused" : "resumed";
                 buddy = currentBuddy.deepCopy();
@@ -415,17 +563,23 @@ public final class BriefService {
     // ---- shared pieces ----
 
     private void readOnlyCheck(Ctx c, State s) {
-        if (acceptedOffer(c.scope())) {
+        if (acceptedOffer(c.scope()).isPresent()) {
             ObjectNode extra = Json.obj();
             extra.putObject("current").put("briefVersion", s.briefVersion());
             throw new Refused(Refusal.conflict("brief-read-only", "An accepted offer makes the brief read-only.", extra));
         }
     }
 
-    /** A conflict carrying the current version and, once confirmed, the engagement view the page should show. */
-    private Refusal conflict(State s, String code) {
+    /** A conflict carrying the current version and, when a readback can be computed, the engagement view to show. */
+    private Refusal conflict(Connection conn, Ctx c, State s, String code) {
         ObjectNode extra = Json.obj();
         extra.putObject("current").put("briefVersion", s.briefVersion());
+        try {
+            Resolved r = resolve(conn, c.scope(), c.rules(), s, false);
+            extra.set("buddy", Engagement.view(r.initial(), s.current() == null ? null : s.current().buddy(), c.rules(), c.facts()));
+        } catch (Refused | PolicyRules.Unavailable | SQLException e) {
+            // No view without a computable readback; the conflict itself still stands.
+        }
         return Refusal.conflict(code, "The request conflicts with the current Buddy state: " + code + ".", extra);
     }
 

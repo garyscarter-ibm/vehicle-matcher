@@ -20,14 +20,16 @@ final class Engagement {
                 && !buddy.get("paused").booleanValue();
     }
 
-    /** Categories above the slider minimum that the employee chose or confirmed; policy defaults never count. */
+    /** One entry above the slider minimum that the employee chose or confirmed; policy defaults never count. */
+    static boolean isConsidered(JsonNode p, PolicyRules rules) {
+        if (p == null || !p.isObject() || !p.path("importance").isNumber() || p.get("importance").intValue() <= rules.minimum) return false;
+        return "employee".equals(p.path("source").asText(null)) || "confirmed".equals(p.path("valueState").asText(null));
+    }
+
+    /** Categories that are considered, counted over the policy's registered Account order. */
     static int considered(JsonNode content, PolicyRules rules) {
         int count = 0;
-        for (String key : rules.account.order()) {
-            JsonNode p = content.path("preferences").get(key);
-            if (p == null || !p.isObject() || !p.path("importance").isNumber() || p.get("importance").intValue() <= rules.minimum) continue;
-            if ("employee".equals(p.path("source").asText(null)) || "confirmed".equals(p.path("valueState").asText(null))) count++;
-        }
+        for (String key : rules.account.order()) if (isConsidered(content.path("preferences").get(key), rules)) count++;
         return count;
     }
 
