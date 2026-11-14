@@ -233,6 +233,9 @@ services:
       #   sync: false
       - key: GCSP_DOCUMENTS_PROVIDER
         value: none            # synthetic enables fictional demo evidence
+      # FUCQ-468: fictional ordering for this isolated dev API; approvals reads its store.
+      - key: GCSP_ORDERING_PROVIDER
+        value: synthetic       # requires the dedicated dev PostgreSQL database above
       # Keep none until image startup, readiness and retained-image checks pass.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
         value: none            # lookup | alternate-offline; no alternate file is shipped

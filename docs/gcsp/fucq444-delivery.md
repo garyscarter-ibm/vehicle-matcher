@@ -22,7 +22,7 @@ Run manifest: root `.claude/test-runs/fucq444/manifest.json`. Each check registe
 
 ## Outstanding acceptance
 
-Production route wiring is parent-owned; the reviewed standalone ActivityComponent is ready for a serial route-wiring request. Actual Java activity/offer/brief producers, real OIDC employee session, native PostgreSQL, release-to-activity API/reload comparison, hosted and Safari/private evidence remain unrun. Substitutes and isolated mounting do not close either native AC. Existing separately captured defects remain unfixed and outside this Story.
+The parent-allocated Activity production route is wired and locally proved; this route checkpoint awaits parent publication and integration audit. Actual Java activity/offer/brief producers, real OIDC employee session, native PostgreSQL, release-to-activity API/reload comparison, hosted and Safari/private evidence remain unrun. Substitutes and isolated mounting do not close either native AC. Existing separately captured defects remain unfixed and outside this Story.
 
 ## Current execution
 
@@ -82,3 +82,38 @@ Root evidence is `.claude/test-runs/fucq444/spike-proof/`:
 Dispatcher's independent audit is root `.claude/fucq444-attempt8-final-parent-audit-0815.json`. Earlier attempts 1–5 remain failed harness attempts. Actual attempt 6 remains 19 passing/1 failed/37 unrun; its literal route-encoding expectation was corrected only in the harness after source diagnosis. Actual attempt 7 remains 43 passing assertion records, zero failed assertion records, **one failed auth wait and 15 unrun**; its hidden-shell-button targeting was corrected only in the harness after diagnosis. Neither earlier run is relabelled as passing. Attempt 7's 49-file archive remains at `/Users/garycarter/Library/CloudStorage/OneDrive-IBM/_agent-output/vehicle-matcher/fucq444/attempt-7-preserved-20261114T080540Z`; attempt 6 and older archives/history remain intact.
 
 The local proof slice is complete at this bounded lead-reviewed delivery boundary. **FUCQ-487 and FUCQ-495 remain Medium, independent, open and unfixed**; neither becomes a merge dependency or a closure claim. Independent reviewer, parent-owned production route integration, actual Java activity/offer/brief commands, real OIDC employee ownership, native PostgreSQL/restart/concurrency, hosted route/API/image/CSP topology, Safari/private browsing, full accessibility and both original connected AC remain outstanding. The Story stays In Progress and its two acceptance boxes stay unchecked. This documentation/map checkpoint awaits dispatcher publication; no worker push, merge, new runtime or shared-interface change is authorised here.
+
+
+## Production route checkpoint — 14 November 2026
+
+Wakko independently passed the earlier Activity source/local proof review; the parent verified Sol/high runtime and saved title, then published integration `b50d204e2f8e06ab11824125886513eaf2d55b25` on `gcsp-poc-dev`. Parent receipt `.claude/fucq444-parent-integration-0815.json` records worker sync to `1b57426e4cafbc281cdceb0329d80513e9765724`, all 44 existing Angular pins and 301 foreign map rows preserved. That earlier integration did not include the production Activity route or establish original-AC acceptance.
+
+The dispatcher subsequently allocated only the Activity entry in `apps/gcsp-web/src/app/routes.ts`. It replaces the Activity placeholder with a lazy import of `ActivityComponent`, retains `sessionGuard`, and sets `title: 'Buddy activity'` and employee-only roles. Other routes and auth/shell/kit/build/catalogue sources retain their prior semantics. Tested source HEAD is `1b57426e4cafbc281cdceb0329d80513e9765724`; the intentionally dirty route SHA-256 is `12c0ff99492971b42a02323d4a85ca8cb676e0b07098173cc8a4feaa3053abeb`, and the complete authorised route diff SHA-256 is `92417fb60f488eb05e277dbb0a09b20ebd967c2cc64d6236682a8670bac9369b`. Helper base remains `gcsp-poc-dev`.
+
+Route attempt 1 remains **incomplete**: both normal production and exact-route smoke AOT/static builds passed (4.745s and 3.952s); three browser assertions passed before one denial-page wait failed. It expected title-case visible text, while the correctly reached access-denied page displayed `ACCESS NOT AVAILABLE` through shared heading CSS. Subsequent assertions and both captures were unrun. No production defect was established. Its actual run was 26.661s, observed scratch peak 39,001,125 bytes; RSS was unmeasured, not zero. All 26 original files, including its nested logs/checkpoints/ownership and postmortem, remain byte-identical.
+
+The parent authorised one distinct route attempt 2 using the same Spike, requested/selected/effective `gpt-6-luna/high`, no fallback or new child. Lead inspected the no-allocation preflight, all source/runner pins, exact route diff, old-file inventory and lifecycle scopes before authorising launch. Fresh launch capacity was can_start=2/running=6; the runtime headroom probe preserved the 5 GiB reserve. The copied browser harness changes only the two denial waits to read heading `textContent` and its attempt/output labels. Separate attempt-2 lifecycle files correct the copied success exit handler, prevent retry and keep its records separate from attempt 1. No production source correction or scope expansion was made.
+
+Actual attempt 2 completed once: normal production-entry AOT/static build passed in **4.521s**, the separate smoke AOT/static build importing the byte-identical production routes export passed in **3.817s**, and the browser stage passed in **1.667s**. All **17 planned route assertions passed**, with zero failed assertions, failed waits or unrun route assertions. Signed-out deep links retained the exact safe return path/query; explicit Sign in received it without a command. Greg-only and presenter-only sessions reached access denied before Activity mount/API access. Employee direct navigation retained query and route metadata, mounted the lazy view, and read current fixture state. Direct reload plus leave/Back navigation restored Activity and performed GET readback without a command. No uncaught exceptions, console errors, CSP violations or outside-origin requests were recorded.
+
+The smoke uses fixture `AuthPort` and `PORTAL_FETCH` providers with the actual production routes and Activity client/component. Fixture calls are recorded in `window.__routeRequests`; the local server's network `apiRequests` is empty. These observations do not establish Java HTTP routing, actual OIDC ownership or connected terminal-offer acceptance. The previous 19/19 client, 29/29 store/component and 59/59 standalone browser evidence was preserved and not replayed. Unit/full suites were not run for this route slice.
+
+Spike and the lead opened both actual no-brief route captures and checked the retained shared shell/body reference, COMPONENTS and experience contract. Desktop 1440x1000 and narrow 375x812 have coherent headings, status, controls and card spacing, with no clipping or horizontal overflow. The browser screenshot object's `path` was overwritten by its route-state spread; the retained bytes were not edited or rerun. Exact on-disk files are below under root `.claude/test-runs/fucq444/spike-route/attempt-2/screenshots/`:
+
+| Capture | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `activity-route-desktop-1440x1000.png` | 33,892 | `781f8a32ec6f291cc2ba943a80a38ccd7efe5c74315b93a7ad856bece8b4d3f2` |
+| `activity-route-narrow-375x812.png` | 22,801 | `92dbdbc790d8fb6a5a78792f382dec38bbeec17b3a518038859860ef5b6a7e0f` |
+
+Supervisor execution was **11.108s** (start-to-finish receipt window 11.223s); sampled peak RSS **1,524,449,280 bytes**, observed peak scratch **18,026,917 bytes**. Both temporary builds, scratch parent/child, worker dependency link and successful logs were removed. Lead independently verified owner PID 26950 dead, process group 27003 without live members, no matching runner/browser/profile process, closed loopback server port and five unchanged borrowed dependency/runtime/Chrome identities. All 45 source pins, original route diff, three prior attempt-8 receipts and 26 attempt-1 files still match. No output reached 256 MiB; the declared tool-required local scratch exception was removed and no large-output archive was needed.
+
+Root evidence is `.claude/test-runs/fucq444/spike-route/attempt-2/`:
+
+| Receipt | SHA-256 |
+| --- | --- |
+| `attempt-2-summary.json` | `695c3aa4566de96877dd3e575b3dbe9b6db81e3244bf3a3e9bb00db86241a011` |
+| `attempt-2-browser-proof.json` | `b79c44a0167f19111901b6d6c42c16fe147b8ae1b101cf0288137746b1d357ce` |
+| `attempt-2-final-receipt.json` | `c7f41f98ff2a1928c215a08e6b5e2b6f3dbff94bbbfda408faa8c74414e970c9` |
+| `lead-final-review.json` | `7b37b729d0528744aedc533a013ccf063f9d1a82787559077401471fd5f02f93` |
+
+This is a locally reviewed route-integration increment; the required connected integration slice is **in progress**, not complete. Both original AC remain unchecked and the Story remains In Progress. Actual Java activity/offer/brief commands, real OIDC employee ownership, native PostgreSQL/restart/concurrency, hosted route/API/image/CSP, Safari/private and full accessibility remain open. **FUCQ-487 and FUCQ-495 remain Medium, independent, open and unfixed.** Commit this coherent route/docs/map checkpoint, then hold for parent publication/integration audit; no worker push, merge, Jira/lifecycle write or further runtime is authorised.

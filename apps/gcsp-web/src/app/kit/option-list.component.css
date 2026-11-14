@@ -1,0 +1,9 @@
+:host { display: block; min-width: 0; }
+.gcsp-options { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2); }
+.gcsp-option { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: var(--gcsp-space-1); min-height: 44px; min-width: 0; max-width: 100%; padding: var(--gcsp-space-2); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); font: var(--gcsp-font-weight) var(--gcsp-font-size-regular)/var(--gcsp-font-line-regular) var(--gcsp-font); text-align: left; cursor: pointer; overflow-wrap: anywhere; }
+.gcsp-option:hover:enabled { background: var(--gcsp-ghost-hover); }
+.gcsp-option.is-selected { border-color: var(--gcsp-accent); background: var(--gcsp-accent-soft); }
+.gcsp-option:focus-visible { outline: 2px solid var(--gcsp-text); outline-offset: 3px; }
+.gcsp-option:disabled { background: var(--gcsp-disabled-surface); color: var(--gcsp-text-muted); cursor: not-allowed; }
+.gcsp-option-label { font-weight: var(--gcsp-font-weight); }
+.gcsp-option-sub { font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); color: var(--gcsp-text-muted); }
