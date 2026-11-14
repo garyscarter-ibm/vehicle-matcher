@@ -38,10 +38,16 @@ public final class BuddyExpiry {
 
     private final DataSource dataSource;
     private final PolicyService policy;
+    private final RemoteBuddy remote;
 
     public BuddyExpiry(DataSource dataSource, PolicyService policy) {
+        this(dataSource, policy, new LocalSyntheticBuddy());
+    }
+
+    public BuddyExpiry(DataSource dataSource, PolicyService policy, RemoteBuddy remote) {
         this.dataSource = dataSource;
         this.policy = policy;
+        this.remote = remote;
     }
 
     /** One expiry tick at the scope's instant. Running the same tick again replays. */
@@ -71,6 +77,7 @@ public final class BuddyExpiry {
         RunContext x = tx.context();
         ArrayNode expired = Sql.JSON.createArrayNode();
         ArrayNode retained = Sql.JSON.createArrayNode();
+        ArrayNode releases = Sql.JSON.createArrayNode();
         Set<String> checked = new HashSet<>();
         Instant afterExpiry = null;
         String afterHold = "";
@@ -86,8 +93,11 @@ public final class BuddyExpiry {
                 if (hold.policyVersion() != null && checked.add(hold.policyVersion()) && !inclusive(scope, now, hold)) {
                     return WorkResult.refuse("policy-unavailable", "The hold deadline policy is unavailable.");
                 }
-                String reason = retention(c, x, hold);
-                if (reason != null) {
+                String releaseId = "remote".equals(remote.mode()) ? startRemoteRelease(tx, hold) : null;
+                String reason = releaseId != null ? null : retention(c, x, hold);
+                if (releaseId != null) {
+                    releases.addObject().put("holdId", hold.holdId()).put("operationId", releaseId);
+                } else if (reason != null) {
                     retained.addObject().put("holdId", hold.holdId()).put("reason", reason);
                 } else {
                     expired.add(lapse(tx, hold, now));
@@ -101,7 +111,28 @@ public final class BuddyExpiry {
         ObjectNode result = Sql.JSON.createObjectNode();
         result.set("expired", expired);
         result.set("retained", retained);
+        result.set("releases", releases);
         return WorkResult.ok(result);
+    }
+
+    /** A due remote hold with a confirmed claim, an active offer and no other occupant starts its release; else null. */
+    private static String startRemoteRelease(Tx tx, Due hold) throws SQLException {
+        Connection c = tx.connection();
+        RunContext x = tx.context();
+        String claimId = Sql.one(c, "SELECT operation_id FROM custody_holds WHERE environment_id = ? AND run_id = ? "
+                + "AND hold_id = ?", rs -> rs.getString(1), x.environmentId(), x.runId(), hold.holdId());
+        if (claimId == null) return null;
+        Object[] claim = Sql.one(c, "SELECT state, outcome->>'state' FROM pending_operations WHERE environment_id = ? "
+                + "AND run_id = ? AND operation_id = ? AND operation_type = 'buddy-claim'",
+                rs -> new Object[] {rs.getString(1), rs.getString(2)}, x.environmentId(), x.runId(), claimId);
+        if (claim == null || !"acknowledged".equals(claim[0]) || !"offered".equals(claim[1])) return null;
+        RemoteOps.Rows rows = RemoteOps.load(c, x, claimId);
+        if (rows == null || rows.offer() == null || !"active".equals(rows.offer().state())
+                || !"active".equals(rows.hold().state()) || !"released".equals(rows.car().state())
+                || RemoteOps.otherOccupant(c, x, rows.hold())) {
+            return null;
+        }
+        return RemoteOps.startRelease(tx, rows, "buddy-expired");
     }
 
     /** The deadline is inclusive under the hold's own policy version, or the tick is refused. */
@@ -185,6 +216,10 @@ public final class BuddyExpiry {
         for (JsonNode n : result.path("retained")) {
             retained.add(new ExpiryResult.Retained(n.path("holdId").asText(), n.path("reason").asText()));
         }
-        return new ExpiryResult.Done(expired, retained, committed.replayed());
+        List<ExpiryResult.Release> releases = new ArrayList<>();
+        for (JsonNode n : result.path("releases")) {
+            releases.add(new ExpiryResult.Release(n.path("holdId").asText(), n.path("operationId").asText()));
+        }
+        return new ExpiryResult.Done(expired, retained, releases, committed.replayed());
     }
 }

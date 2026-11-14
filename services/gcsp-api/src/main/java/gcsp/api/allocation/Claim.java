@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.notify.NotificationIntent;
 import gcsp.api.persistence.Canonical;
+import gcsp.api.persistence.PendingOperations;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.Tx;
 import gcsp.api.persistence.WorkResult;
@@ -34,7 +35,8 @@ final class Claim {
 
     private Claim() {}
 
-    static WorkResult run(Tx tx, String allocationId, int ordinal, String operationId) throws SQLException {
+    static WorkResult run(Tx tx, String allocationId, int ordinal, String operationId, boolean remote)
+            throws SQLException {
         Connection c = tx.connection();
         RunContext x = tx.context();
         Run run = Sql.one(c, "SELECT version, next_index, contender_count, state, evaluated_at, policy_version, "
@@ -59,13 +61,14 @@ final class Claim {
         if (refusal == null) {
             Savepoint sp = c.setSavepoint();
             try {
-                Claimed claimed = claim(tx, allocationId, operationId, run, k);
+                Claimed claimed = claim(tx, allocationId, operationId, run, k, remote);
                 if (claimed.refusal() != null) {
                     c.rollback(sp);
                     refusal = claimed.refusal();
                 } else {
                     c.releaseSavepoint(sp);
-                    return advance(tx, allocationId, ordinal, operationId, run, "claimed", null, claimed.outcome());
+                    return advance(tx, allocationId, ordinal, operationId, run, claimed.outcome().path("status").asText(), null,
+                            claimed.outcome());
                 }
             } catch (SQLException e) {
                 String code = conflictCode(e);
@@ -78,11 +81,11 @@ final class Claim {
         return advance(tx, allocationId, ordinal, operationId, run, "refused", refusal, outcome);
     }
 
-    /** An earlier claimed attempt in this allocation already took this employee, slot, renewal or car. */
+    /** An earlier claimed or claim-pending attempt in this allocation already took this employee, slot, renewal or car. */
     private static boolean alreadyTaken(Connection c, RunContext x, String allocationId, Row k) throws SQLException {
         String sql = "SELECT 1 FROM allocation_attempts a JOIN allocation_contenders t ON t.environment_id = a.environment_id "
                 + "AND t.run_id = a.run_id AND t.allocation_id = a.allocation_id AND t.ordinal = a.ordinal "
-                + "WHERE a.environment_id = ? AND a.run_id = ? AND a.allocation_id = ? AND a.status = 'claimed' "
+                + "WHERE a.environment_id = ? AND a.run_id = ? AND a.allocation_id = ? AND a.status IN ('claimed', 'claim-pending') "
                 + "AND (t.employee_id = ? OR t.slot_id = ? OR t.order_uuid = ? OR (?::text IS NOT NULL AND t.renewal_id = ?)) "
                 + "LIMIT 1";
         return Sql.one(c, sql, rs -> 1, x.environmentId(), x.runId(), allocationId, k.employeeId(), k.slotId(),
@@ -150,7 +153,8 @@ final class Claim {
     }
 
     /** Writes the claim; a refusal code means nothing may be kept, so the caller rolls the savepoint back. */
-    private static Claimed claim(Tx tx, String allocationId, String operationId, Run run, Row k) throws SQLException {
+    private static Claimed claim(Tx tx, String allocationId, String operationId, Run run, Row k, boolean remote)
+            throws SQLException {
         Connection c = tx.connection();
         RunContext x = tx.context();
         String id = Canonical.digest(Sql.JSON.createArrayNode().add(x.runId()).add(operationId));
@@ -190,12 +194,24 @@ final class Claim {
         attrs.put("policyVersion", run.policyVersion());
         tx.write("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, "
                 + "slot_unit, hold_type, state, expires_at, operation_id, attributes) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, 'buddy-offer', 'active', ?, ?, ?)", x.environmentId(), x.runId(), holdId,
-                k.orderUuid(), k.employeeId(), k.slotId(), unit, expiresAt, operationId, attrs);
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, 'buddy-offer', ?, ?, ?, ?)", x.environmentId(), x.runId(), holdId,
+                k.orderUuid(), k.employeeId(), k.slotId(), unit, remote ? "claim-pending" : "active", expiresAt,
+                operationId, attrs);
         int moved = tx.write("UPDATE stock_cars SET version = version + 1, updated_at = now() WHERE environment_id = ? "
                 + "AND run_id = ? AND order_uuid = ? AND version = ?", x.environmentId(), x.runId(), k.orderUuid(),
                 k.versions().path("stock").asLong());
         if (moved == 0) return new Claimed(null, "stale-version");
+        if (remote) {
+            ObjectNode payload = remotePayload(x, run, k, allocationId, holdId, offerId, quoteId, expiresAt, unit);
+            PendingOperations.recordIntent(tx, operationId, "buddy-claim", operationId, payload);
+            tx.write("INSERT INTO buddy_operations (environment_id, run_id, operation_id, operation_type, hold_id, "
+                    + "payload) VALUES (?, ?, ?, 'buddy-claim', ?, ?)", x.environmentId(), x.runId(), operationId,
+                    holdId, payload);
+            ObjectNode pending = Sql.JSON.createObjectNode().put("status", "claim-pending").put("holdId", holdId)
+                    .put("offerId", offerId).put("quoteId", quoteId).put("operationId", operationId)
+                    .put("slotUnit", unit).put("expiresAt", PolicyClock.iso(expiresAt));
+            return new Claimed(pending, null);
+        }
         tx.write("INSERT INTO buddy_offers (environment_id, run_id, offer_id, hold_id, quote_id, employee_id, order_uuid, "
                 + "state, brief_version, policy_version, expires_at, operation_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, 'active', ?, ?, ?, ?)", x.environmentId(), x.runId(), offerId, holdId,
@@ -206,6 +222,25 @@ final class Claim {
                 .put("offerId", offerId).put("quoteId", quoteId).put("operationId", operationId)
                 .put("slotUnit", unit).put("expiresAt", PolicyClock.iso(expiresAt));
         return new Claimed(out, null);
+    }
+
+    /** What the remote call and its later validity check need: ids plus every version the claim was made under. */
+    private static ObjectNode remotePayload(RunContext x, Run run, Row k, String allocationId, String holdId, String offerId,
+            String quoteId, Instant expiresAt, int unit) {
+        ObjectNode p = Sql.JSON.createObjectNode();
+        p.put("runId", x.runId()).put("environmentId", x.environmentId());
+        p.put("allocationId", allocationId).put("holdId", holdId).put("offerId", offerId).put("quoteId", quoteId);
+        p.put("employeeId", k.employeeId()).put("slotId", k.slotId());
+        if (k.renewalId() == null) p.putNull("renewalId"); else p.put("renewalId", k.renewalId());
+        p.put("orderUuid", k.orderUuid()).put("expiresAt", PolicyClock.iso(expiresAt));
+        p.put("policyVersion", run.policyVersion());
+        p.put("expectedStockVersion", k.versions().path("stock").asLong() + 1);
+        p.put("expectedSlotVersion", k.versions().path("slot").asLong());
+        p.put("expectedEmployeeVersion", k.versions().path("employee").asLong());
+        p.put("expectedBriefVersion", k.versions().path("brief").asLong());
+        p.set("expectedPermissionVersion", k.versions().path("permission").deepCopy());
+        p.put("expectedHoldVersion", 1);
+        return p;
     }
 
     /** The prepare-time decision (gate, score, reasons, blockers, unknowns, versions) for this employee and car. */

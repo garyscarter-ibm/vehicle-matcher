@@ -33,11 +33,23 @@ public final class AllocationService {
     private final DataSource dataSource;
     private final PolicyService policy;
     private final EligibleCandidates candidates;
+    private final RemoteBuddy remote;
 
+    /** Local-synthetic Buddy: claims are immediate and no remote call is made. */
     public AllocationService(DataSource dataSource, PolicyService policy, EligibleCandidates candidates) {
+        this(dataSource, policy, candidates, new LocalSyntheticBuddy());
+    }
+
+    public AllocationService(DataSource dataSource, PolicyService policy, EligibleCandidates candidates,
+            RemoteBuddy remote) {
         this.dataSource = dataSource;
         this.policy = policy;
         this.candidates = candidates;
+        this.remote = remote;
+    }
+
+    private boolean remote() {
+        return "remote".equals(remote.mode());
     }
 
     /** One trigger allocation: prepare (once) then claim contenders in order. Idempotent by trigger. */
@@ -64,16 +76,16 @@ public final class AllocationService {
         try {
             RunRow first = run(ctx, allocationId);
             if (first == null) return new AllocationResult.Pending("allocation-missing", allocationId, true);
-            if ("completed".equals(first.state())) return completed(ctx, allocationId, true);
+            if ("completed".equals(first.state())) return driven(scope, completed(ctx, allocationId, true));
             int stalled = 0;
             while (true) {
                 RunRow row = run(ctx, allocationId);
-                if ("completed".equals(row.state())) return completed(ctx, allocationId, false);
+                if ("completed".equals(row.state())) return driven(scope, completed(ctx, allocationId, false));
                 int before = row.nextIndex();
                 Step step = row.nextIndex() >= row.count()
                         ? complete(runner, ctx, allocationId)
                         : claimNext(runner, ctx, allocationId, row.nextIndex());
-                if (step.stop() != null) return step.stop();
+                if (step.stop() != null) return driven(scope, step.stop());
                 RunRow after = run(ctx, allocationId);
                 boolean progressed = "completed".equals(after.state()) || after.nextIndex() != before;
                 stalled = progressed ? 0 : stalled + 1;
@@ -84,6 +96,21 @@ public final class AllocationService {
         } catch (SQLException e) {
             return new AllocationResult.Pending("database-unavailable", allocationId, true);
         }
+    }
+
+    /** Remote mode: drives each claim-pending attempt once, outside every transaction; the outcome is unchanged. */
+    private AllocationResult driven(AllocationScope scope, AllocationResult result) {
+        if (!remote() || !(result instanceof AllocationResult.Completed done)) return result;
+        try (Connection c = dataSource.getConnection()) {
+            java.util.List<String> operations = Sql.query(c, "SELECT operation_id FROM allocation_attempts WHERE "
+                    + "environment_id = ? AND run_id = ? AND allocation_id = ? AND status = 'claim-pending' ORDER BY ordinal",
+                    rs -> rs.getString(1), scope.environmentId(), scope.runId(), done.allocationId());
+            BuddyRemoteLifecycle lifecycle = new BuddyRemoteLifecycle(dataSource, policy, candidates, remote);
+            for (String id : operations) lifecycle.drive(scope, id);
+        } catch (SQLException | RuntimeException e) {
+            // Open operations are picked up by reconcile; the allocation outcome stands.
+        }
+        return result;
     }
 
     /** The stored plan and (once completed) outcome of one allocation, for inspection. */
@@ -112,7 +139,7 @@ public final class AllocationService {
         Command command = new Command("allocation.claim", operationId,
                 Sql.JSON.createObjectNode().put("allocationId", allocationId).put("ordinal", ordinal));
         Outcome o = settle(runner, ctx, operationId,
-                () -> runner.execute(ctx, command, tx -> Claim.run(tx, allocationId, ordinal, operationId)));
+                () -> runner.execute(ctx, command, tx -> Claim.run(tx, allocationId, ordinal, operationId, remote())));
         return stepOf(o, operationId);
     }
 

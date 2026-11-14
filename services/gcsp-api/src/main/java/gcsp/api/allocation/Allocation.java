@@ -21,6 +21,9 @@ public class Allocation {
     Instance<EligibleCandidates> candidates;
 
     @Inject
+    Instance<RemoteBuddy> remote;
+
+    @Inject
     Instance<AgroalDataSource> sources;
 
     private AllocationService service;
@@ -32,7 +35,7 @@ public class Allocation {
     /** Built once, on first use. */
     public synchronized AllocationService service() {
         if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
-        if (service == null) service = new AllocationService(sources.get(), policy, candidates.get());
+        if (service == null) service = new AllocationService(sources.get(), policy, candidates.get(), remote.get());
         return service;
     }
 }

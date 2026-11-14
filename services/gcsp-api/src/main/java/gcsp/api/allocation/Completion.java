@@ -43,7 +43,7 @@ final class Completion {
                     attempt.put("code", rs.getString(14));
                     attempt.set("outcome", Sql.json(rs.getString(16)));
                     ObjectNode assignment = null;
-                    if ("claimed".equals(rs.getString(13))) {
+                    if ("claimed".equals(rs.getString(13)) || "claim-pending".equals(rs.getString(13))) {
                         assignment = Sql.JSON.createObjectNode();
                         assignment.put("employeeId", rs.getString(1));
                         assignment.put("slotId", rs.getString(2));

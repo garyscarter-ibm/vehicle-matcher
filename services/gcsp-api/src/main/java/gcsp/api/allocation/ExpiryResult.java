@@ -11,8 +11,17 @@ public sealed interface ExpiryResult {
     /** One due hold left unchanged, with why (its owner reconciles it). */
     record Retained(String holdId, String reason) {}
 
+    /** A remote hold whose release was started at this tick: it stays occupied until the remote confirms. */
+    record Release(String holdId, String operationId) {}
+
     /** The tick ran. Replayed means this tick had already committed. */
-    record Done(List<Lapse> expired, List<Retained> retained, boolean replayed) implements ExpiryResult {}
+    record Done(List<Lapse> expired, List<Retained> retained, List<Release> releases, boolean replayed)
+            implements ExpiryResult {
+
+        public Done(List<Lapse> expired, List<Retained> retained, boolean replayed) {
+            this(expired, retained, List.of(), replayed);
+        }
+    }
 
     /** An outcome was uncertain or the database was unavailable; running the same tick again resumes it. */
     record Pending(String code, boolean retryable) implements ExpiryResult {}
