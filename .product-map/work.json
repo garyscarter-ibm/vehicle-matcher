@@ -5793,13 +5793,35 @@
       "id": "FUCQ-420",
       "jira_observed_at": "2026-11-12T15:49:01.766Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "observed_at": "2026-11-14T09:33:20Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "consumption",
+          "status": "complete",
+          "title": "Pending-first trigger consumption with validated completed summaries",
+          "observed_at": "2026-11-14T09:33:19Z",
+          "evidence": "lead review at 923824762: allocation-consumption 5/5 native PG17, allocation-triggers 18/18, mutation checks catch pending-first and digest regressions"
+        },
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Consecutive-release, recovery, conflict and legacy regressions on memory and native PostgreSQL",
+          "observed_at": "2026-11-14T09:33:19Z",
+          "evidence": "gcsp-allocation-consumption.test.js 5/5 at 923824762 incl. native restart/uncertain-claim case, settled tick statements [8,8,8]"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL 17 and delivery record",
+          "observed_at": "2026-11-14T09:33:20Z",
+          "evidence": "validate + regression set 124/124 on native PG17 at merged tree 923824762; story Result block"
+        }
+      ],
       "status": "To Do",
       "title": "Consume pending triggers without replaying unchanged history",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-420",
       "workers": []
     },

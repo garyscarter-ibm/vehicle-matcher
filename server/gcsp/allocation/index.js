@@ -134,14 +134,14 @@ export function createAllocationService({ repository, policy, clock, identity, c
     }
     return eventIds.every((id) => found.has(id)) ? ok(eventIds.map((id) => found.get(id))) : result('not-found', { resourceType: 'event_receipts' });
   };
-  // Completed allocation receipts for these events as summary projections, keyed by event ID.
-  const completedSummaries = async (context, events) => {
+  // FUCQ-420: every allocation receipt for these events as a compact summary row (state, digest, counts), keyed by event ID.
+  const allocationRows = async (context, events) => {
     const rows = new Map(); const ids = events.map((event) => event.eventId);
     for (let at = 0; at < ids.length; at += RECEIPT_READ_LIMITS.events) {
       const batch = await readReceipts(context, { consumerIds: [ALLOCATION_CONSUMER], eventIds: ids.slice(at, at + RECEIPT_READ_LIMITS.events),
-        state: 'completed', projection: 'allocation-summary' });
+        projection: 'allocation-summary' });
       if (batch.status !== 'ok') return batch;
-      for (const row of batch.value) if (row.summary?.status === 'ok') rows.set(row.eventId, row);
+      for (const row of batch.value) rows.set(row.eventId, row);
     }
     return ok(rows);
   };
@@ -337,11 +337,20 @@ export function createAllocationService({ repository, policy, clock, identity, c
         const allocations = []; const counts = { events: 0, offers: 0, evaluated: 0 }; let limitations;
         // Routine ticks read completed history as compact summary rows; detail reads and unfinished work take allocate().
         if (summary && events.length && (!policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function')) return unavailable('not-configured');
-        const completed = summary ? await completedSummaries(context, events) : ok(new Map()); if (completed.status !== 'ok') return completed;
-        for (const event of events) {
-          const done = completed.value.get(event.eventId);
-          const outcome = done && done.inputDigest === inputDigest(event) ? summaryOf(done) : await service.allocate(context, event, { summary });
+        const known = await allocationRows(context, events); if (known.status !== 'ok') return known;
+        const pending = (event) => known.value.get(event.eventId)?.state === 'pending';
+        // FUCQ-420: resume pending claims before new triggers; completed history whose rebuilt digest matches is only counted.
+        const outcomes = new Map();
+        for (const event of [...events.filter(pending), ...events.filter((event) => !pending(event))]) {
+          const done = known.value.get(event.eventId);
+          const outcome = summary && done?.state === 'completed' && done.summary?.status === 'ok' && done.inputDigest === inputDigest(event)
+            ? summaryOf(done) : await service.allocate(context, event, { summary });
           if (outcome.status !== 'ok') return outcome;
+          outcomes.set(event.eventId, outcome);
+        }
+        // Totals, detail and the reported limitation keep the canonical event order.
+        for (const event of events) {
+          const outcome = outcomes.get(event.eventId);
           if (summary) {
             for (const key of Object.keys(counts)) counts[key] += outcome.value.summary[key];
             limitations = outcome.value.limitations;
