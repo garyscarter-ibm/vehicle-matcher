@@ -7320,11 +7320,11 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T06:02:42Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T06:25:06Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Open an offer and accept or decline",
       "type": "Story",
       "unsliced": false,
@@ -7332,8 +7332,9 @@
       "slices": [
         {
           "id": "typed-contract",
-          "status": "not-started",
-          "title": "Typed offer and follow-up client"
+          "status": "in-progress",
+          "title": "Typed offer and follow-up client",
+          "evidence": "814d67e1 client 12/12 audited; lead found source parity gaps in partial comparison and ordering receipt selection; correction required before slice completion."
         },
         {
           "id": "offer-view",
