@@ -7530,7 +7530,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T09:54:12Z",
+      "observed_at": "2026-11-14T10:17:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7568,9 +7568,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Merge base, full Java verify and story result",
-          "observed_at": "2026-11-14T09:54:12Z"
+          "observed_at": "2026-11-14T10:17:02Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
         }
       ]
     },
