@@ -6288,17 +6288,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-445",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Open an offer and accept or decline",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-445"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-446",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -7327,6 +7316,53 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-445",
+      "observed_at": "2026-11-14T06:02:42Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Open an offer and accept or decline",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-445",
+      "slices": [
+        {
+          "id": "typed-contract",
+          "status": "not-started",
+          "title": "Typed offer and follow-up client"
+        },
+        {
+          "id": "offer-view",
+          "status": "not-started",
+          "title": "Current offer state and vehicle presentation"
+        },
+        {
+          "id": "decision-followup",
+          "status": "not-started",
+          "title": "Explicit decisions and supported follow-up"
+        },
+        {
+          "id": "proof-review",
+          "status": "not-started",
+          "title": "Scoped proofs, rendered states and independent review"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Mugsy",
+          "harness": "codex",
+          "observed_at": "2026-11-14T06:02:42Z",
+          "expires_at": "2026-11-14T08:02:42Z",
+          "source": "Authorised linked lead 01a1d8a4-979f-7cc2-b4ec-897119fa9afe"
         }
       ]
     }
