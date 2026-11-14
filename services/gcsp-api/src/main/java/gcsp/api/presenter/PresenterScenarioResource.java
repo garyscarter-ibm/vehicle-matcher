@@ -9,6 +9,7 @@ import gcsp.api.clock.RunClockHolder;
 import gcsp.api.error.ApiError;
 import gcsp.api.identity.Principal;
 import gcsp.api.persistence.RunContext;
+import gcsp.api.scenario.ScenarioFaults;
 import gcsp.api.scenario.ScenarioService;
 import gcsp.api.scenario.ScenarioWiring;
 import jakarta.inject.Inject;
@@ -35,6 +36,8 @@ public class PresenterScenarioResource {
     private static final Set<String> RESET_FIELDS = Set.of("commandId", "expectedRunId", "scenarioId", "scenarioVersion",
             "fixtureVersion", "policyVersion");
 
+    private static final Set<String> FAULT_FIELDS = Set.of("commandId", "adapter", "mode");
+
     @Inject
     BearerAuthentication auth;
 
@@ -43,6 +46,9 @@ public class PresenterScenarioResource {
 
     @Inject
     ScenarioWiring wiring;
+
+    @Inject
+    ScenarioFaults faults;
 
     @GET
     @Path("/presenter/scenarios")
@@ -83,6 +89,43 @@ public class PresenterScenarioResource {
         ScenarioService.ResetRequest request = new ScenarioService.ResetRequest(commandId, values[0], values[1], values[2],
                 values[3], values[4]);
         return execute(principal, service -> service.reset(scope(principal), request));
+    }
+
+    @GET
+    @Path("/presenter/scenarios/faults")
+    public Response readFaults(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
+        Principal principal = auth.authenticate(authorization);
+        Access.requireAnyRole(principal, Role.PRESENTER);
+        if (!uri.getQueryParameters().isEmpty()) return unsupportedQuery();
+        Response blocked = unavailable();
+        if (blocked != null) return blocked;
+        return execute(principal, service -> faults.read(scope(principal)));
+    }
+
+    @POST
+    @Path("/presenter/scenarios/faults")
+    public Response setFault(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
+            String body) {
+        Principal principal = auth.authenticate(authorization);
+        Access.requireAnyRole(principal, Role.PRESENTER);
+        if (!uri.getQueryParameters().isEmpty()) return unsupportedQuery();
+        Response blocked = unavailable();
+        if (blocked != null) return blocked;
+        List<String[]> reasons = new ArrayList<>();
+        ObjectNode in = PresenterClockResource.fields(body, FAULT_FIELDS, reasons);
+        String commandId = in == null ? null : PresenterClockResource.text(in, "commandId", reasons);
+        String adapter = in == null ? null : PresenterClockResource.text(in, "adapter", reasons);
+        String mode = in == null ? null : PresenterClockResource.text(in, "mode", reasons);
+        if (adapter != null && !ScenarioFaults.ADAPTERS.contains(adapter)) {
+            reasons.add(new String[] {"adapter", "Choose one of: " + String.join(", ", ScenarioFaults.ADAPTERS) + "."});
+        }
+        if (mode != null && !ScenarioFaults.MODES.contains(mode)) {
+            reasons.add(new String[] {"mode", "Choose one of: " + String.join(", ", ScenarioFaults.MODES) + "."});
+        }
+        if (!reasons.isEmpty()) {
+            return PresenterClockResource.invalid("invalid-fault-command", "The fault request is not valid.", reasons);
+        }
+        return execute(principal, service -> faults.set(scope(principal), commandId, adapter, mode));
     }
 
     // ---- shared steps ----

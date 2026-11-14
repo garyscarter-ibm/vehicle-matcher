@@ -164,7 +164,7 @@ final class TickRunner {
         HandlerOutcome result;
         try {
             result = handler.handle(new TickRequest(scope, row.tickId(), row.now(), row.clockVersion(),
-                    row.policyVersion(), operationId));
+                    row.policyVersion(), operationId, row.kind()));
         } catch (Exception e) {
             ObjectNode threw = failure("unavailable", "handler-threw", true);
             threw.put("exception", e.getClass().getSimpleName());

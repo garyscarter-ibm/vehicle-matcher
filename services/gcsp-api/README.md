@@ -486,12 +486,18 @@ Stories supply beans that replace the defaults. The current-car relationship liv
 scenario and fixture versions, the run's own start and named times); `clock_ticks` keeps each tick's plan and state;
 `clock_handler_receipts` is immutable. The start is the policy template (`clock.scenario.v1`) moved to the London date of
 the wall clock. Advance and tick are separate commands, each idempotent by command or tick id. A tick runs the stages in
-`clock.handler.order.v1` order, each through its bound handler: `stock-release` (`release-pull`), `lifecycle-documents`
-(`pending-reconciliation`) and `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
+`clock.handler.order.v1` order (then handler id), each through its bound handler: `stock-release` (`release-pull`, with a
+pull provider), then on `pending-reconciliation` `lifecycle-appointments` (provider not `none`), `lifecycle-approvals`
+(provider and an order source, so absent until the selection handoff exists), `lifecycle-documents` (persistence on)
+and `lifecycle-return-outcomes` (provider not `none`), then `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
 `missingStages`, never faked. Each handler outcome is a receipt; a handler that fails leaves the tick `interrupted`, and
 repeating the same `tickId` resumes it without repeating completed handlers. Startup runs one tick of the
 `startupStages` (`manual-expiry`, `buddy-expiry`, `pending-reconciliation`) after creating the active run's clock if it
-has none; it never pulls releases or dispatches.
+has none; it never pulls releases or dispatches. On a startup tick the approvals, appointments and return handlers answer
+`{"skipped":"startup-owned-by-service"}` without calling their service, because each already runs its own startup
+reconciler; documents still runs. The appointments handler records the tick then progresses with a server-built
+`system:clock` presenter principal. Appointments and returns keep their own derived clocks (`appointment_ticks`,
+`supply_release_ticks`); they are not replaced by the run clock.
 
 **Presenter endpoints** (presenter role only, no query parameters, scope is always the server's active run; none takes a
 principal or employee id, and an employee acts only under their own login):
@@ -503,6 +509,8 @@ principal or employee id, and an employee acts only under their own login):
 | `GET /presenter/scenarios` | Catalogue: versions, clock start, named times, display principals, availability, input provenance. |
 | `GET /presenter/scenarios/current` | The clock state plus `currentScenario` and `runId`. |
 | `POST /presenter/scenarios/reset` | `{commandId, expectedRunId, scenarioId, scenarioVersion, fixtureVersion, policyVersion}`. |
+| `GET /presenter/scenarios/faults` | `{runId, faults:[{adapter:"stock", mode, modes, available:true}, {adapter:"ordering", available:false, reason:"not available yet"}]}`. |
+| `POST /presenter/scenarios/faults` | `{commandId, adapter:"stock", mode: none \| unavailable \| stale}`; command `scenario.fault.set`, replays by `commandId`. |
 
 Reset order: provider is `demo` (else 403); scenario exists (404 `scenario-not-found`); the three versions equal the
 catalogue's (409 `stale-version`, `action: refresh`); a journey without a reviewed start loader is 503
@@ -510,7 +518,14 @@ catalogue's (409 `stale-version`, `action: refresh`); a journey without a review
 `expectedRunId` is the active run (409 `stale-run`). The run then retires and a new `demo-<hash>` run activates in one
 transaction (`RunReset`), nothing is deleted, and the same command replays its receipt, even once the run is no longer active.
 If preparation of the new run fails, the answer is 503 `scenario-preparation-incomplete` (retryable) and the same reset
-command, or the next startup, completes it. Faults and their controls are a later Story.
+command, or the next startup, completes it.
+
+**Synthetic faults** (`V479_3__scenario_faults.sql`, provider `demo` only, else 403 `scenarios-not-configured`): one keyed
+`scenario_faults` row per run and adapter, so a reset (a new run) starts with `none` and a restart keeps the fault. Only the
+synthetic `tranche-plan` supply is altered: `unavailable` makes `stock-release` fail with `synthetic-stock-unavailable` and
+`stale` with `stock-source-stale`, both retryable and without calling supply, so the tick is `interrupted`. Clear the fault
+(`none`) and send the same `tickId` and clock version to resume and release. A real supply provider is never altered.
+Ordering faults are not ported: no Java ordering adapter exists, so `ordering` is listed as not available yet.
 
 **Reset isolation and restart.** Reset needs the database's own identity to match: `environment_identity.reset_allowed`,
 `GCSP_EXPECTED_DATABASE` and `GCSP_ENVIRONMENT_ID`. Otherwise 403 `reset-not-allowed` or `reset-isolation-mismatch`; the
