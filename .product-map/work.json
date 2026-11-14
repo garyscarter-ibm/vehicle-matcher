@@ -5673,69 +5673,69 @@
       "workers": []
     },
     {
-      "assignee": "Gary Carter",
-      "id": "FUCQ-417",
-      "jira_observed_at": "2026-11-14T07:59:15.577Z",
-      "note": "Built at original five-criterion boundary: historical104pass/1skip retained; F420 native124/124 peer report reused on identical current Node tree; F41542checks/ten reviewed captures mapped through unchanged presentation and semantic equality. No new runtime; no OneDrive access. docs/gcsp/evidence/fucq417/acceptance-disposition.md",
-      "observed_at": "2026-11-14T15:46:55Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "id": "calculation",
-          "status": "complete",
-          "title": "Shared compact calculation and unchanged gallery projection",
-          "observed_at": "2026-11-14T08:22:17Z",
-          "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
-        },
-        {
-          "id": "allocation",
-          "status": "complete",
-          "title": "Compact planning and frozen attempted-claim quote reconstruction",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "evidence": "Lead semantic review PASS cebac278c5b59acac9fa9a45dc3bc9ea1c37a385; four dispatch changes only; F414/F424 preserved. Actual outcomes/claim inputs equal gallery baseline; complete fallback, frozen resume and legacy quotes pass. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
-        },
-        {
-          "id": "evidence",
-          "status": "complete",
-          "title": "Semantic equivalence and scoped construction/sort evidence",
-          "observed_at": "2026-11-14T08:33:36Z",
-          "evidence": "Actual allocator: 24 pairs under both tie-break policies, gallery27 terms/12 gallery sorts/1 global sort vs compact3/0/1, equal full outcomes/quotes. Four modules39pass/0fail/1 nativePG skip,14 inputs verified per command, cleanup independently verified. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Story validation and connected release-offer-history gates",
-          "observed_at": "2026-11-14T15:46:55Z",
-          "evidence": "Lead reviewed original five AC: F417 semantic/operation proof, peer F420 native124/124 on identical current Node tree, F41542checks/ten independently reviewed desktop/narrow captures through unchanged contracts. Historical104pass/1native skip and failures retained; no new runtime. docs/gcsp/evidence/fucq417/acceptance-disposition.md"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Evaluate allocation candidates without building a gallery",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-417",
-      "workers": [
-        {
-          "name": "Wyldstyle",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-14T15:46:55Z",
-          "expires_at": "2026-11-14T15:46:55Z",
-          "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
-          "status": "original acceptance evidence disposition complete; HOLD for dispatcher audit/publication"
-        },
-        {
-          "name": "Grub",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "expires_at": "2026-11-14T08:33:35Z",
-          "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
-          "status": "completed allocation; inactive; four owned groups/scratch absent"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-GC-010"
+  "assignee": "Gary Carter",
+  "id": "FUCQ-417",
+  "jira_observed_at": "2026-11-14T16:00:08.880600+00:00",
+  "note": "Original five criteria developed: matching-source F420 native peer report and unchanged-presentation connected proof reused; historical104pass/1skip/raw-log limitation retained. Native InReview verified, no human acceptance. docs/gcsp/evidence/fucq417/acceptance-disposition.md",
+  "observed_at": "2026-11-14T16:00:08Z",
+  "original_status": "In Review",
+  "slices": [
+    {
+      "id": "calculation",
+      "status": "complete",
+      "title": "Shared compact calculation and unchanged gallery projection",
+      "observed_at": "2026-11-14T08:22:17Z",
+      "evidence": "Lead semantic review PASS at 5bb69de28136f85bef2df608db1108b099ae5713; 65 checks pass, seven final input hashes match. Eight candidates: terms graphs/gallery sorts 8/2 gallery, 0/0 compact, 8/0 detailed. Calculation boundary only; allocation/native/connected AC open. docs/gcsp/evidence/fucq417/calculation-checkpoint.md"
     },
+    {
+      "id": "allocation",
+      "status": "complete",
+      "title": "Compact planning and frozen attempted-claim quote reconstruction",
+      "observed_at": "2026-11-14T08:33:35Z",
+      "evidence": "Lead semantic review PASS cebac278c5b59acac9fa9a45dc3bc9ea1c37a385; four dispatch changes only; F414/F424 preserved. Actual outcomes/claim inputs equal gallery baseline; complete fallback, frozen resume and legacy quotes pass. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+    },
+    {
+      "id": "evidence",
+      "status": "complete",
+      "title": "Semantic equivalence and scoped construction/sort evidence",
+      "observed_at": "2026-11-14T08:33:36Z",
+      "evidence": "Actual allocator: 24 pairs under both tie-break policies, gallery27 terms/12 gallery sorts/1 global sort vs compact3/0/1, equal full outcomes/quotes. Four modules39pass/0fail/1 nativePG skip,14 inputs verified per command, cleanup independently verified. docs/gcsp/evidence/fucq417/allocation-checkpoint.md"
+    },
+    {
+      "id": "integration",
+      "status": "complete",
+      "title": "Story validation and connected release-offer-history gates",
+      "observed_at": "2026-11-14T15:46:55Z",
+      "evidence": "Lead reviewed original five AC: F417 semantic/operation proof, peer F420 native124/124 on identical current Node tree, F41542checks/ten independently reviewed desktop/narrow captures through unchanged contracts. Historical104pass/1native skip and failures retained; no new runtime. docs/gcsp/evidence/fucq417/acceptance-disposition.md"
+    }
+  ],
+  "status": "In Review",
+  "title": "Evaluate allocation candidates without building a gallery",
+  "type": "Story",
+  "unsliced": false,
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-417",
+  "workers": [
+    {
+      "name": "Wyldstyle",
+      "harness": "codex",
+      "role": "story-lead",
+      "observed_at": "2026-11-14T15:46:55Z",
+      "expires_at": "2026-11-14T15:46:55Z",
+      "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
+      "status": "original acceptance evidence disposition complete; HOLD for dispatcher audit/publication"
+    },
+    {
+      "name": "Grub",
+      "harness": "codex",
+      "role": "implementer",
+      "observed_at": "2026-11-14T08:33:35Z",
+      "expires_at": "2026-11-14T08:33:35Z",
+      "source": "chat 01a1d917-4227-7021-8670-dbd76c962e65; requested/selected/effective gpt-6.1-sol/medium; title/runtime/parentage verified",
+      "status": "completed allocation; inactive; four owned groups/scratch absent"
+    }
+  ],
+  "branch": "dev/DEV-2026-11-13-GC-010"
+},
     {
       "assignee": "",
       "id": "FUCQ-418",
