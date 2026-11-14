@@ -58,6 +58,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
@@ -139,12 +140,23 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/greg/policy`, `POST /api/gcsp/v1/greg/policy/publish`, `POST .../preview` | Greg only. Active policy projection, publish a successor (`200`, `400` with reasons, `403`, `409`, `422` without persistence, `503`), preview is `422`. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `GET /api/gcsp/v1/documents` | Employee only: the caller's own document orders. Any query parameter is 400 `unsupported-query`. |
+| `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
+| `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
 | `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
 | `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
 | `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
 | `GET /api/gcsp/v1/presenter/releases/ticks/{tickId}` | Tick state, attempts, clock and last outcome. |
 | `GET /api/gcsp/v1/presenter/releases/stock?after=&limit=` | Released cars (keyset page, limit 1..500) as the allocator reads them; no VIN, no employee. |
+
+Acknowledgement answers: 200 `ok` (provider evidence recorded, item complete); 202 `pending`
+(`acknowledgement-pending`, with `operationId`; resend the same body to reconcile) or `uncertain`; 400 invalid body;
+403 `not-resource-owner`, `not-your-task`, `role-required`; 404 `document-order-not-found`; 409 `stale-version`
+(retryable, `current.documentsRevision`), `task-not-waiting`, `acknowledgement-refused`, `command-input-changed`,
+`stale-run`; 422 `acknowledgement-unsupported` (no write); 503 `documents-unavailable`. An item completes only on a
+provider answer with object evidence naming its own operation. Until the policy, stage and clock Stories supply real
+ports, documents answer unavailable (`DocumentsWiring` default beans).
 
 Every other path, and every refusal, is a JSON body `{status, code, reason, retryable}` (500s add a
 `reference`), never HTML. Context refusals:
