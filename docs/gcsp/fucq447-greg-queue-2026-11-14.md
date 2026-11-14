@@ -147,3 +147,24 @@ repair campaign. This worker did not edit the shared learnings log or expand Sto
 | `apps/gcsp-web/src/app/routes.ts` | `a83914f555d9b2222fecee191144b075ca81bce5956916de5dd96e45e04710f4` |
 | `apps/gcsp-web/src/app/pages/gallery.component.ts` | `625c774da0da69bb9f63260511d2a41f097cb3de6d06fda3f11377fe61376b37` |
 | `COMPONENTS.md` | `4a4846cbc9d62c2863adb9078c9b00197fd5df6e5a01093636b519254cbaf72d` |
+
+
+## Dispatcher integration — 2026-11-14 17:07 UTC
+
+Published exact worker `8f539829506ec1c0491edb279b33caf781e93e44` and merged/pushed to
+`gcsp-poc-dev` at `b0c5ff37b1d10c6b23e6efde108e6a535742275e`. Elmer Fudd's independent read-only review returned
+PASS_FOR_PARTIAL_INTEGRATION with no actionable findings; receipt
+`.claude/fucq447-greg-independent-review-1700.json`, SHA-256
+`bf9d8b2cafafb421d82638be1321990f4423cf65a3a59a414de5cbd21b3966a8`.
+Requested/selected gpt-6.1-sol/high; no fallback, descendants or reviewer runtime.
+
+Parent independently matched all 127 final test input hashes, 301 foreign raw map rows,
+original Story prefix, 23,008 selected borrowed dependency hashes and unchanged installation
+metadata/Node. Owned local scratch, supervisors, process groups and canonical tokens were
+absent under the ledger lock at 17:05 UTC; one other reservation was preserved. Parent audit
+SHA-256 `ebef098dad6a1e45a1578b68e48f245d0eee4d991425efe7a039f448c74b57a4`.
+Integrated root still matches all 127 inputs; no duplicate test run was needed.
+
+This publishes the coherent increment only. Both original AC, native In Progress and Story
+lease remain; browser timeout, rendered/connected/hosted limitations above are unchanged.
+No OneDrive access, acceptance waiver, In Review or Done transition occurred.

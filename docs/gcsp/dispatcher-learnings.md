@@ -112,3 +112,52 @@ commit and push named paths through the existing helper, preserving concurrent a
   needed from GC. No response has yet been observed. The earlier comment's author attribution was corrected.
 - **Framework follow-up:** attach source author and observation time to cross-poller status evidence;
   distinguish an outbound request, a peer reply and a verified worker observation.
+
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Evidence/outcome:** FUCQ-447's bounded queue/table release produced compilation and 64/64 selected
+  passing tests. Parent matched all 127 inputs and resource receipts; independent review found no actionable
+  issue. Exact worker `8f539829506ec1c0491edb279b33caf781e93e44` is integrated/pushed as `b0c5ff37b1d10c6b23e6efde108e6a535742275e`.
+- **Action:** publish the coherent increment promptly while retaining the original Story's unchecked
+  criteria and failed/unrun browser/connected checks. FUCQ-442 continues its separate allocated screen work.
+- **Framework follow-up:** this is direct evidence for a useful combined implementation/check release;
+  it does not establish sustained throughput or resolve the framework scheduling problem. Current measured
+  `can_start=2` remains below the three-slot new-Story-lead budget, so no new reservation was taken.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-004 · mitigating
+
+- **Evidence/outcome:** the parent audited the current FUCQ-447 local runner/receipts, selected dependency
+  identities and actual local teardown. All owned scratch/processes/tokens were absent at 17:05 UTC; the
+  unrelated reservation was preserved. The audit used only explicit allowed local paths.
+- **Action/follow-up:** the local mitigation worked for this increment; inherited forbidden-storage
+  instructions remain overridden. No forbidden path was probed, and no framework implementation fix is claimed.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-006 · identified
+
+- **Confirmed evidence:** independent review and parent audit retain native-2's incomplete Chrome
+  about:blank attempt (blank DOM, 30-second timeout, display/process-policy errors). Native-3 passed 64
+  tests only; it did not repeat or pass rendering. Product browser and keyboard evidence remain open.
+- **Action/follow-up:** publish the source increment with this precise limit; avoid repeating a failed
+  browser release without a causal change. No browser repair or acceptance waiver was introduced.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-007 · mitigating
+
+- **Issue/evidence:** FUCQ-442 reports Chrome starts, but its isolated fixture initially could not
+  bootstrap Angular's partially compiled libraries. This is worker-reported fixture setup evidence, not
+  a production defect. Native ngc compilation passed; a fixture-only compiler import enabled 17 reported
+  browser checks. Parent pin/resource audit and the final checkpoint are still pending.
+- **Action/outcome:** the worker continues the same bounded release, correcting a missing original
+  monthly-points summary found during visual inspection. No new feature or test-framework expansion.
+- **Framework follow-up:** distinguish fixture bootstrap failures from product failures, retain each
+  attempt, and require the final source identity for any reused visual evidence. Do not call this verified yet.
+
+## 2026-11-14 17:07 UTC · GC Codex · DL-20261114-GC-008 · verified resolved
+
+- **Issue/cause:** parent and reviewer source audits attempted to read a binary input through
+  scaffold_git's text-output wrapper, raising UnicodeDecodeError before finishing pin verification.
+- **Action/evidence/outcome:** parent used SHA-256 of exact local bytes plus tracked-file/clean frozen-HEAD
+  comparison; reviewer used immutable Git blob IDs plus byte hashes. Both independently completed all 127
+  pins. Parent receipt SHA-256 `ebef098dad6a1e45a1578b68e48f245d0eee4d991425efe7a039f448c74b57a4`.
+- **Framework follow-up:** provide a binary-safe immutable-object audit API. The local audit failure
+  is resolved; no shared framework patch, product source change or extra runtime was needed.
