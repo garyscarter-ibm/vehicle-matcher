@@ -181,6 +181,18 @@ injects `LearnedDemandForecastPort.forecast(predictionInput, PolicyRead)` and ge
 - `node services/gcsp-api/src/test/parity/learning-parity.mjs` (repository root; needs `server/node_modules`) rewrites
   `src/test/resources/learning-parity/cases.json`; `LearningParityTest` replays it without Node.
 
+### Learning records
+`LearningRecordService.readRecords(Principal)` ports Node `readRecords`; it is a bean with no route. Greg only (else `forbidden`);
+the principal needs environment, run and policy version, else `unavailable/not-configured`.
+
+- One `READ ONLY REPEATABLE READ` snapshot replaces Node's two fenced reads: 4 statements per call (run status, briefs, slots,
+  stock), independent of row count. A retired run is `conflict/stale-run`. Failures: `source-invalid`, `database-unavailable`, `persistence-not-configured`.
+- Every `briefs` row is an immutable confirmed version. Brief owners are derived as `employee` (Java `employees` has no roles); slot and renewal refs stay null.
+- Offers, holds, decisions, quotes and receipts come from the `LearningOutcomeRows` port. The default is unbound and empty, so the body
+  carries `outcomeSources: {status: unknown, reason: outcome-producers-not-bound}`. Binding follows FUCQ-466/467 (offers, decisions), FUCQ-461 (quotes), FUCQ-464 (holds).
+- `offer.declineReasons.v1` is read through `PolicyService` at the principal's version. The seed has none, so the default answer is `unavailable/decline-reasons-unavailable`, as in Node.
+- `LearningClock` defaults to the policy wall clock (ISO millis, version `wall-clock`); the presenter demo clock (FUCQ-479) replaces it.
+
 ## Endpoints
 
 | Path | Result |
