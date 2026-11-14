@@ -6924,7 +6924,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T07:40:26Z",
+      "observed_at": "2026-11-14T08:21:06Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -6934,14 +6934,16 @@
       "slices": [
         {
           "id": "a-clock",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Clock core: persisted run clock, advance, idempotent tick with ordered handler registry, startup reconcile",
-          "observed_at": "2026-11-14T07:33:07Z"
+          "observed_at": "2026-11-14T08:21:06Z",
+          "evidence": "Lead review of 49e287e92: V479_1 clock tables, RunClock/TickRunner; gcsp.api.clock 41/41 native PG 17 (port 55479), full verify 541/0 fail"
         },
         {
           "id": "a2-handlers-http",
-          "status": "not-started",
-          "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP"
+          "status": "in-progress",
+          "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP",
+          "observed_at": "2026-11-14T08:21:06Z"
         },
         {
           "id": "b-scenarios",
