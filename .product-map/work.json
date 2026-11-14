@@ -6985,13 +6985,50 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:04:16Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-473",
+      "slices": [
+        {
+          "id": "s1-foundation",
+          "status": "complete",
+          "title": "Returns schema, ports, current-car relationship store and retained return policy",
+          "observed_at": "2026-11-14T02:23:51Z",
+          "evidence": "bb3b64bc reviewed by lead: 47 returns tests and 189 full Java tests pass on native PG 17; return_operations added to V473_1"
+        },
+        {
+          "id": "s2-plan",
+          "status": "complete",
+          "title": "Return plan read, request, confirmation progress and proposal acceptance on native PostgreSQL",
+          "observed_at": "2026-11-14T03:16:47Z",
+          "evidence": "cb34d17a5 reviewed by lead: 67 returns tests, 209 full Java tests pass on native PG 17"
+        },
+        {
+          "id": "s3-outcomes",
+          "status": "complete",
+          "title": "Return outcomes, current-car change at the outcome boundary, reconcile and restart",
+          "observed_at": "2026-11-14T07:42:50Z",
+          "evidence": "552ffc0bd reviewed by lead: 75 returns tests, 217 full Java tests pass on native PG 17"
+        },
+        {
+          "id": "s4-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup adapter selection and README",
+          "observed_at": "2026-11-14T08:04:15Z",
+          "evidence": "8047c0e21 reviewed by lead: 85 returns tests; merged-tree verify 763 pass at 79a087b91"
+        },
+        {
+          "id": "s5-integration",
+          "status": "complete",
+          "title": "Story validation, base merge, full Java verify and result",
+          "observed_at": "2026-11-14T08:04:16Z",
+          "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
