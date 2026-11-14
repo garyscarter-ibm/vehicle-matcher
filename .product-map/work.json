@@ -5738,13 +5738,34 @@
       "id": "FUCQ-424",
       "jira_observed_at": "2026-11-12T15:49:02.910Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:40Z",
+      "observed_at": "2026-11-14T00:31:02Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "scoped-hydration",
+          "status": "complete",
+          "title": "Declared-scope hydration contract in core.js and postgres.js with fail-closed full fallback",
+          "observed_at": "2026-11-14T00:19:47Z",
+          "evidence": "Lead review of ef589830 core/postgres scoped contract; gcsp-postgres-scoped-hydration 10/10 native PG17 (cold declared 4 rows/1045 B vs 1945 rows/695201 B); contract/write-set/evidence/journal/read-window/disconnect match base"
+        },
+        {
+          "id": "receipt-declarations",
+          "status": "complete",
+          "title": "Declare clock and allocation receipt transaction scopes",
+          "observed_at": "2026-11-14T00:31:02Z",
+          "evidence": "Lead review of 7ac6bff0; strict-scope oracle in gcsp-allocation-runtime: 7 declared kinds, 0 misses, 0 partial/full differences, mutant caught; 10 clock/allocation/release suites pass"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story validation on native PostgreSQL and delivery record",
+          "observed_at": "2026-11-14T00:31:02Z"
+        }
+      ],
       "status": "To Do",
       "title": "Hydrate only state needed by small receipt transactions",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-424",
       "workers": []
     },
