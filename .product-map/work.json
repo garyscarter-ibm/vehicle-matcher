@@ -7322,7 +7322,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T08:27:53Z",
+      "observed_at": "2026-11-14T08:45:48Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -7336,9 +7336,10 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T08:12:55.257765+00:00",
-          "expires_at": "2026-11-14T08:42:55.257765+00:00",
-          "source": "direct active substantive browse-state review; holding reviewed checkpoint for dispatcher publication"
+          "observed_at": "2026-11-14T08:45:34.165207+00:00",
+          "expires_at": "2026-11-14T08:45:34.165207+00:00",
+          "source": "two-family substantive lead review complete; frozen checkpoint held for dispatcher publication",
+          "status": "inactive awaiting dispatcher audit/publication"
         },
         {
           "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
@@ -7357,6 +7358,16 @@
           "observed_at": "2026-11-14T08:12:55.257765+00:00",
           "expires_at": "2026-11-14T08:12:55.257765+00:00",
           "source": "verified final/idle; source 3e6551e3; effective Sol/medium; saved title and parentage verified"
+        },
+        {
+          "id": "01a1d92c-d0a7-7443-85a3-f703aa8c3d2c",
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:45:34.165207+00:00",
+          "expires_at": "2026-11-14T08:45:34.165207+00:00",
+          "source": "verified final/idle on87961dfb; requested/selected/effective Sol/medium, no fallback/descendants; identity verified",
+          "status": "inactive; seven-file checkpoint reviewed; owned resources cleaned"
         }
       ],
       "slices": [
@@ -7378,8 +7389,8 @@
           "id": "view-parity",
           "status": "in-progress",
           "title": "Native-Angular-view-parity",
-          "observed_at": "2026-11-14T08:27:53Z",
-          "evidence": "Dispatcher allocated exactly seven new fact-list/option-list family files as independent view-parity increment; see docs/gcsp/fucq442-delivery.md. Stock view/media/card/route and actual Java integration remain open. No original AC changed."
+          "observed_at": "2026-11-14T08:45:48Z",
+          "evidence": "Two shared families reviewed on87961dfb; 35/35 scoped tests; actual Angular AOT/Chrome fixture1440/375/320px and lead visual review. Full app boundary FAILED false positive; Low bug pending parent. Stock composition/routes and Java still open. docs/gcsp/fucq442-delivery.md; lead-facts-options-review.json. Original AC unchecked."
         },
         {
           "id": "review-proof",
