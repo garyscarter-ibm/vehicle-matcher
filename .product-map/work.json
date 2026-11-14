@@ -6330,13 +6330,35 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T00:28:20Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "slices": [
+        {
+          "id": "core",
+          "status": "not-started",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)"
+        },
+        {
+          "id": "http",
+          "status": "not-started",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints"
+        },
+        {
+          "id": "brevo",
+          "status": "not-started",
+          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result"
+        }
+      ]
     },
     {
       "assignee": "",
