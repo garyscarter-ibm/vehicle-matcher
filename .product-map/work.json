@@ -6330,7 +6330,7 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-14T02:01:23Z",
+      "observed_at": "2026-11-14T02:12:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
@@ -6354,14 +6354,16 @@
         },
         {
           "id": "brevo",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
-          "observed_at": "2026-11-14T02:01:23Z"
+          "observed_at": "2026-11-14T02:12:01Z",
+          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result"
+          "status": "in-progress",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
+          "observed_at": "2026-11-14T02:12:01Z"
         }
       ]
     },
