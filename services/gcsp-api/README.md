@@ -70,6 +70,13 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
+| `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
+| `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
+| `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
+| `GCSP_VEHICLE_ASSETS_ROOT` | empty | Absolute directory that contains `assets/gcsp-vehicle-evidence/` (the repository root). Required with either provider. |
+| `GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE` | empty | `alternate-offline` only: absolute path of an offline-cards JSON file. Required for that provider. |
+| `GCSP_VEHICLE_IMAGES_PUBLIC` | `false` | Explicit opt-in to serve retained images without a bearer token. Evidence reads always need one. |
+| `GCSP_VEHICLE_EVIDENCE_TIMEOUT_MS`, `GCSP_VEHICLE_EVIDENCE_MAX_ATTEMPTS` | `1000`, `1` | Bounds of one provider read (1..5000 ms, 1..2 attempts); anything else stops startup. |
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 
@@ -267,6 +274,74 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
+
+## Vehicle evidence (FUCQ-459)
+
+`gcsp.api.evidence` ports the Node vehicle-evidence library: a validated corpus store, retained display imagery, the
+configuration definitions, identity routing and the `VehicleDetailsConsumer` contract. `EvidenceSelection` picks the
+provider once at startup and builds everything once; there is no silent synthetic fallback. Provider `none` (the
+default) and a store whose content fails validation both answer `503 vehicle-source-unavailable`; a bad setting
+(unknown provider, a required path unset, relative or missing, bounds out of range) stops startup. A `StockPort` bean
+is injected when one exists (slice FUCQ-459 s6 supplies it); without one, `stock` reads are source-unavailable.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/vehicle-evidence/configurations/{id}`, `.../stock/{id}`, `.../vins/{id}` | Employee, greg or presenter. `200 {"status":"ok","value":{contractVersion,status:"complete"|"partial",vehicle}}`, always `Cache-Control: no-store`. |
+| `GET /api/gcsp/v1/vehicle-images/{imageId}.webp` | Retained, byte-verified WebP (`Cache-Control: private, max-age=60`, `nosniff`). `imageId` must match `bmw-display-` plus 20 hex digits. Bearer required unless `GCSP_VEHICLE_IMAGES_PUBLIC=true`. |
+
+Refusals are the JSON envelope `{status, code, reason, retryable, action}` (the requested id is never echoed):
+`400 invalid` (`invalid-vehicle-identifier`; any query string; a path with more or fewer segments, an empty id or a bad
+percent-escape), `404 not-found` (`vehicle-not-found`), `409 conflict` (`vehicle-identity-mismatch`), `422 unsupported`
+(`vehicle-profile-unsupported`), `503 unavailable` (`vehicle-source-unavailable`, retryable). Authentication refusals
+are the auth package's own (401, 403 `role-required`). Images: `404 image-not-found`, `400 unsupported-query`, `503
+vehicle-images-unavailable` (retryable; catalogue unavailable or bytes fail verification). There is no live upstream
+image fetch (a deliberate delta from Node).
+
+Configuration ids are standard Base64 and can contain `/`, `+` and `=`. As in Node, the raw path is split first and the
+single id segment is percent-decoded (strictly, with `decodeURIComponent` rules; a literal `+` stays `+`). Measured
+behaviour: Quarkus/Vert.x leaves `%2F`, `%2B` and `%3D` untouched in the raw path (it neither rejects nor
+normalises them), so `%2F` is decoded to `/` inside the id; a literal `/` makes two segments and is `400`. A malformed
+escape such as `%zz` is refused by Vert.x itself with a bare `400` (empty body) before any resource runs, whereas a
+well-formed escape of invalid UTF-8 (`%C3%28`) reaches the resource and gets the JSON `400`.
+
+Readiness check `vehicle-evidence` (liveness is unaffected): provider `none` is UP with `provider: none`; a configured
+provider with an active corpus is UP with `provider`, `datasetId`, `version`, `manifestDigest`, `recovered`,
+`catalogue` and `definitions` (`available`/`unavailable`); a configured provider with no active corpus is DOWN with
+`state: unavailable` and the failure `code`, so Render's health check gates the deploy as Node's does.
+
+Provider shapes: `lookup` reads the corpus in process; `alternate-offline` reads an `offline-cards/1` file (fictional,
+not a BMW schema) and returns the same application contract, with `images.state` `unknown`. Both route through the same
+server-owned classification of the corpus identity inventory, so a store is required for both.
+
+Deltas from Node. Runtime integrity: Java verifies publication identity, file checksums, shape, references and the
+identity inventory when it loads a store; full row admission stays in the offline JavaScript publisher. Imagery:
+only the retained catalogue and `assets/gcsp-vehicle-evidence/` are served, each image verified by size, sha256 and
+WebP header on every read.
+
+### Artifacts and hosting
+
+Retained identities (all read in place from the repository, byte identity checked at startup):
+
+| Artifact | Identity | Size |
+| --- | --- | --- |
+| `server/data/gcsp/vehicle-evidence/fleet-source.v1` selected | dataset `gcsp-source-fleet`, version `2026-11-07.9`, manifestDigest `28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884` (previous `9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043`) | `configurations.jsonl` 45 MB (selected version 45.3 MB) |
+| `display-images.v1.json` | sha256 `f12e588c78ca900dc98800697960f7d2857283d982fadd5cde292ba6be27b694` | 2.5 MB |
+| `configuration-definitions.v1.json` | sha256 `7327f922585d0a5eabe5dca00363bc2f2e7ed29816c9c91bb17a304beddab939` | 0.3 MB |
+| `assets/gcsp-vehicle-evidence/` | 921 files, each named by its sha256 and checked against the catalogue | 85 MB |
+
+The total exceeds 50 MB, so the files are not copied into this module. The Render build already uses the repository
+root as its docker context, but the Dockerfile and `Dockerfile.dockerignore` send and copy only policy data, so a
+deployed service starts with provider `none` until GC, who owns the blueprint and hosting cost, chooses one of: (a) Dockerfile
+and `.dockerignore` lines that copy, read-only and exactly, `server/data/gcsp/vehicle-evidence/fleet-source.v1/{active.json, last-good.json,
+identity-inventory.json, versions/<selected>, versions/<previous>}`, `display-images.v1.json`,
+`configuration-definitions.v1.json` and `assets/gcsp-vehicle-evidence/` into the image; or (b) a Render disk holding the
+same tree. Either way set the `GCSP_VEHICLE_*` variables to the copied absolute paths. Verified minimal copy (exactly
+those paths, with only the two versions): 164.4 MiB (172,369,439 bytes), 936 files, and it loads ready with 680
+retained images served. Any copy must be byte-exact: a changed catalogue, definitions seed or manifest is refused.
+
+Measured on `fleet-source.v1` (2,425 configurations): the store, catalogue and definitions load in about 0.7 to 0.9 s
+at startup and add about 12 MB of heap after a full GC (the s1 measurement of the store alone was about 0.6 s and 3 MB).
+Reads then use an index and do not rescan the 45 MB file.
 
 ## Order approvals (FUCQ-470)
 
