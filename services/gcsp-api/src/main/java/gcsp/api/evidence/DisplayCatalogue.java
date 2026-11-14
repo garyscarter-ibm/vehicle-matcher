@@ -97,6 +97,11 @@ public final class DisplayCatalogue {
         return mapping.size();
     }
 
+    /** True when the retained endpoint can serve this id (it may still fail verification). */
+    public boolean knows(String imageId) {
+        return imageId != null && mapping.containsKey(imageId);
+    }
+
     /** Ids in Node mapping order. */
     List<String> imageIds() {
         return List.copyOf(mapping.keySet());
