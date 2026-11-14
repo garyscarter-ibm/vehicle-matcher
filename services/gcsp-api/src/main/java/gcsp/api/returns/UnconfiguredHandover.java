@@ -12,6 +12,11 @@ public class UnconfiguredHandover implements HandoverPort {
     public static final String CODE = "handover-unavailable";
 
     @Override
+    public String mode() {
+        return "none";
+    }
+
+    @Override
     public HandoverReading read(RunContext ctx, String orderUuid) {
         return new HandoverReading.Unavailable(CODE, true, "Your handover could not be read.");
     }

@@ -12,6 +12,11 @@ public class UnconfiguredReturnSource implements ReturnSourcePort {
     public static final String CODE = "return-source-unavailable";
 
     @Override
+    public String mode() {
+        return "none";
+    }
+
+    @Override
     public ReturnSourceReading read(RunContext ctx, String orderUuid) {
         return new ReturnSourceReading.Unavailable(CODE, true, "The record of your current car is not available yet.");
     }

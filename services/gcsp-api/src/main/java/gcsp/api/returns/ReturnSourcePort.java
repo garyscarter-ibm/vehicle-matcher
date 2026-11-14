@@ -6,4 +6,9 @@ import gcsp.api.persistence.RunContext;
 public interface ReturnSourcePort {
 
     ReturnSourceReading read(RunContext ctx, String orderUuid);
+
+    /** Reported by readiness: none until an adapter replaces the unconfigured default. */
+    default String mode() {
+        return "configured";
+    }
 }

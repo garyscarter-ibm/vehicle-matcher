@@ -312,6 +312,31 @@ deliver. Car suitability is not connected, so alternative-car proposals are 503,
 recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
 ported yet. No new environment variables.
 
+## Returns (FUCQ-473)
+
+Package `gcsp.api.returns`: plan, request and reconcile the return of the employee's current car. `ReturnService` builds
+one `ReturnPlans` lazily and `ReturnResource` serves it; scope is the server's active run, never the request. Without
+persistence every operation is 503 `persistence-not-configured`.
+
+| Endpoint | Roles and answers |
+|---|---|
+| `GET /api/gcsp/v1/return-plan?orderUuid=` | Employee (own order only), Greg, presenter. 200 `{status:"ok", value}`; 400 `unsupported-query`; 403 `not-resource-owner`; 404; 503. |
+| `POST /api/gcsp/v1/return-plan/request` | Employee only. Body `{commandId, orderUuid, choice, slotId, expectedVersion}`. |
+| `POST /api/gcsp/v1/return-plan/accept` | Employee only. Body `{commandId, orderUuid, proposalId, expectedVersion}`. |
+| `POST /api/gcsp/v1/presenter/returns/progress` | Presenter only. Body `{commandId}`; reconciles and retries at the demo clock and returns the summary. 503 `clock-unavailable` until a presenter tick has set the clock. |
+
+Results: 200 ok; 202 `pending` with `outcome-uncertain` and `operationId` (reconciled later); 400
+`invalid-return-command` with field `reasons`; 403 `role-required` (the presenter and Greg never command employee
+actions); 409 `stale-version` with `currentVersion` and the `plan`, or `command-input-changed`; 422 unsupported provider
+with the `plan`; 503 unavailable. Startup runs a reconcile-only pass (never a new provider write) when the provider is
+not `none`, and the `returns` readiness check reports the provider, policy, source and handover modes plus the open
+operation count; it is DOWN only when the database errors.
+
+Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
+(`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
+Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
+`gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
+
 ## Render
 
 Gary's dev environment does not exist yet. The proposed service block for `render.gcsp.yaml` is in
