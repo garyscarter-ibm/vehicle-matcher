@@ -69,6 +69,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
 | `GCSP_APPROVALS_PROVIDER` | `none` | Order approval status provider: `none` leaves every decision unavailable (stages stay pending, never approved by elapsed time), `synthetic` is a labelled scenario input (projections report `provider.synthetic: true`), `live-stub` refuses honestly (no BMW approval system is connected). Unknown values stop startup. |
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
+| `GCSP_ORDERING_PROVIDER` | `none` | Employee ordering handoff provider: `none` refuses every submit (503 `ordering-provider-not-configured`) while terms and reads still work, `synthetic` is a labelled fictional provider kept in the same database. Unknown values stop startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -266,9 +267,9 @@ and `outcome-uncertain` (with `operationId`).
 selected `ApprovalStatusProvider` for a decision outside any transaction and settles it only on a matching confirmation;
 elapsed ticks only make a decision due. `ApprovalSelection` picks the provider and policy once at startup with no silent
 fallback. Policy comes from the canonical PolicyService (`PolicyApprovalAdapter`, reporting `canonical`) unless
-`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source (FUCQ-468) and handover (FUCQ-472) are
-`@DefaultBean` ports (`ApprovalDefaults`): until a real bean exists the order source is `order-source-not-configured`
-(503) and no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
+`GCSP_APPROVALS_POLICY_FILE` names an explicit file (`file`). The order source is bound by [Ordering (FUCQ-468)](#ordering-fucq-468) and the handover (FUCQ-472) is a
+`@DefaultBean` port (`ApprovalDefaults`): without persistence the order source is `order-source-not-configured`
+(503) and until a real handover bean exists no order is ever handed over. Scope is the server's active run, never the request, and must equal the principal's environment and
 run (else 409 `stale-run`). With persistence on and a provider other than `none`, startup finishes up to 100 open
 decisions once (it never counts ticks or starts orders) and logs a one-line count; a failure is logged, not fatal.
 
@@ -292,6 +293,32 @@ role approve or decline directly. Employee or Greg on a presenter endpoint is 40
 | 404 | `not-found` (no such order). |
 | 409 | `tick-input-changed`, `approval-clock-changed`, `stale-run`. |
 | 503 | `persistence-not-configured`, `database-unavailable`, `order-source-not-configured`, `selection-pending`/`selection-handoff-failed` with `state: not-ready`, `lifecycle-policy-unavailable`, `policy-source-unavailable`, `order-progress-unavailable`. |
+
+## Ordering (FUCQ-468)
+
+`gcsp.api.ordering` hands an employee's selection on to ordering exactly once. The operation id is deterministic per
+run, employee and entitlement slot; `pending_operations` has a unique idempotency key and `selection_orders_one_per_slot`
+makes a second selection impossible. A lease plus a version compare-and-set claim comes before any provider call, a
+repeat or restart reconciles before it executes, and the outcome is finalized by compare-and-set. `pending` means the
+handoff is not settled (resend the same body or GET to reconcile, never choose again), `acknowledged` carries the provider
+reference, `refused` means ordering rejected it. Source converters (`SelectionConversionPort`, one per source type) are
+unavailable (`selection-source-unsupported`) until FUCQ-463 (cart) and FUCQ-464/466 (buddy-offer) provide their own bean;
+no code here changes. Approvals' order source is now bound to the acknowledged selections (`ActiveOrderSource`, replacing
+the `ApprovalDefaults` default). The employee's slot is never sent: it is the `ordering.enabled` slot of their own account
+projection (503 `account-unavailable`, 409 `entitlement-unavailable`). Scope is the bearer principal and must equal the
+active run (else 409 `stale-run`). No endpoint resumes a draft into an order: every submit is an explicit employee command.
+With persistence on and a provider other than `none`, startup reconciles up to 100 open handoffs once (it never creates an
+order) and logs a one-line count; a failure is logged, not fatal.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/manual/order/terms` | Employee only: `{status:"ok",value}` with `termsDigest`, `declarations`, `approvalStages`. |
+| `POST /api/gcsp/v1/manual/order` | Employee only: `{commandId, source:{type:"cart",holdId,expectedHoldVersion,expectedDraftVersion}, expectedQuoteId, expectedStockVersion, termsDigest, declarations}`. 200 acknowledged (`replayed: true` on a repeat), 202 `handoff-pending` with `operationId`, 400 `invalid` with `reasons`, 403, 404, 409 (`active-selection-exists`, `terms-changed`, `claim-changed`, `quote-changed`, `stock-changed`, `entitlement-unavailable`, `stale-run`), 503 retryable. |
+| `GET /api/gcsp/v1/manual/order` | Employee only: the caller's own selection, reconciling a pending handoff first; 200, 202, 404 `not-found`. Never creates one. |
+| `POST /api/gcsp/v1/presenter/ordering/reconcile` | Presenter only: `{}` or `{limit}` (1..100, default 100); `{status:"ok",value:{examined,settled,stillPending}}`. Others get 403 `role-required`. |
+
+Any query parameter is 400 `unsupported-query`. 503 codes: `persistence-not-configured`, `ordering-provider-not-configured`,
+`selection-source-unsupported`, `account-unavailable`, `database-unavailable`, `ordering-policy-unavailable`.
 
 ## Render
 
