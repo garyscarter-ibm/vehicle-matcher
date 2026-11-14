@@ -100,3 +100,15 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Framework follow-up:** detect supported installed browser capability before allocating a rendered run,
   retain a bounded failure and stop/join its owned process group. Avoid repeatedly releasing the same failed
   environment without a causal correction. This entry neither authorises browser repair nor waives original checks.
+
+## 2026-11-14 16:57 UTC · GC Codex · DL-20261114-GC-002 · mitigating
+
+- **Correction/evidence:** a full coordination-comment read confirms 3629458 at 10:29:52 UTC was authored by
+  GC, not the other poller. The latest Russell-authored update observed is 3629446 at 09:23:23 UTC. Preserve
+  author identity as well as the timestamp when describing peer evidence. The nine execution-unverified
+  reservations remain held; this correction establishes neither activity nor inactivity.
+- **Action/outcome:** at Gary's explicit request, coordination comment 3629463 now asks the peer for a
+  current per-Story execution/blocker/last-progress/next-action report, the overall bottleneck and any help
+  needed from GC. No response has yet been observed. The earlier comment's author attribution was corrected.
+- **Framework follow-up:** attach source author and observation time to cross-poller status evidence;
+  distinguish an outbound request, a peer reply and a verified worker observation.
