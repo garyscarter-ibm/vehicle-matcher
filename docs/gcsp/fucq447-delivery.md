@@ -1,5 +1,109 @@
 # FUCQ-447 delivery checkpoint
 
+## Employee Help source checkpoint — 14 November 2026
+
+**Source only: six new native Help files, no runtime, HOLD for independent review.**
+Released from clean `2ea7035add5e115ce661e180e77a4963c442afd7` by the finite parent
+source release `.claude/fucq447-employee-help-source-release-1212.json`, SHA-256
+`e41e151eaa51714d5e2207e5260e1d37b18bc94db4ae1373dd718090af2448ba`.
+The readiness note SHA is `5d3dc008502ed3fc1b5d61726c9ea3d4b205c207f8d4593a8d655aa22fd2000f`;
+actual parent audit `5be0931cbea457321f5f25a663287a71eb365ce7b02664bf28bbccae5c044636`
+permits only this bounded increment. Existing client/projection source/spec bytes stay frozen.
+
+### Native body and state boundary
+
+New `HelpComponent` (`gcsp-help`) provides a per-instance `HelpStore`. Guidance and
+owned-case reads never write. Ask, labelled reason, review and cancel remain local;
+review prepares one immutable existing-client command, and only Confirm submits it.
+Duplicate pending commands are guarded. Later deliberate requests use new IDs even
+for identical reason text. Acknowledged success is distinguished from a subsequent
+readback failure. An unknown outcome retains the exact command but offers retry only
+after current reads; matching reason/history is not proof of commitment. Explicit
+retry uses the same object. No automatic POST follows refresh or auth recovery.
+
+The store invalidates generations/aborts and gates all private view fields on exact
+ready-session identity plus subject/environment/run/employee/policy/roles. Account,
+context or role change, denial and destruction clear private cases/history/remedies,
+draft/review and obsolete intents; late results cannot repaint. An individual denied
+read clears state even when a sibling ignores abort. Current exact-case readback
+retains the newer complete version against the list. Java owns all decisions.
+
+The approved seam is `quiet=false`, `headingLevel:1|2=1`, optional
+`announce:(message:string)=>void`. Quiet embedding suppresses the page title and uses
+Get help with your renewal. Host announcements suppress this body's live region and
+all StatusScreen announcements. Existing shared button, LabelledField/native textarea,
+FactList and ScreenIntro/StatusScreen APIs are reused; semantic subordinate headings
+use the appropriate h3/h4. No ErrorSummary clone, shared primitive or legacy wrapper.
+
+Frozen reference: Help/case-content/cases CSS at
+`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, supplied
+`docs/gcsp/screens/00-employee-account.webp`, approved broad employee body `a7fc178`
+in `docs/gcsp/evidence/fucq-6/README.md`, `COMPONENTS.md` and the experience contract.
+No image/rendered inspection is claimed now. Routes, Activity, F446 orders hosts,
+Account F440, auth/runtime/shell/global styles/kit/gallery/catalogue/build and Java
+remain parent/assigned-owner paths. No employee call to Greg options/update is added.
+Preference confirmation, suitability, canonical clock/risk producer and notification
+parity are still original OPEN obligations; no invented controls/success or AC waiver.
+
+### Unrun checks and finite proposal
+
+Authored only `help.store.spec.ts` and `help.component.spec.ts`: exact intent identity,
+pending/readback/unknown/stale/refusal/privacy/teardown; native association, focus,
+headings, facts/history and quiet/host-announcement behavior. **All new specs,
+compiler/typecheck/AOT/build/boundary/ratchet/browser/services checks are UNRUN.**
+No test stamp or rendered/connected acceptance. Existing contracts26 and client59
+passes retain their previous bounded evidence without rerun; the old840B contracts
+success log remains unavailable and unreconstructed.
+
+Finite non-executable runtime proposal:
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq447/employee-help-runtime-plan-1212.json`
+SHA-256 `3a9b66e3ccf7042551ed2fb2e3e8e3c88c5144e2b0d81f4d092a88e20b8e5f4f`.
+It proposes only those two specs through the actual Angular unit-test builder and
+TestBed/jsdom, one worker, shared2GiB RAM/disk,600s inclusive/480work/120cleanup,
+5GiB emergency reserve and30GiB adjustment trigger. Copied/generated closure expected
+above256MiB goes directly to the configured OneDrive run root; owned manifests,
+explicit caches/TMP/logs, checkpoint/full JSON/success log/failure tail, finalizer and
+independent actual teardown proof are required. No resource-helper import/API/lock/
+reservation, Node/npm/version/compiler/test/build/browser/service/port/profile,
+closure copy/link/cache/scratch, child or allocation occurred. Initial proposal
+ignore-path guard failed read-only from the worker; corrected root `git -C` guard
+created no allocation and no product check was run.
+
+Actual Java/real OIDC/native PostgreSQL/restart/concurrency and full composed
+employee→Greg→employee journey remain open, as do desktop/narrow/Safari/private,
+keyboard/focus/announcements/reduced motion/CSP/accessibility and hosted/email gates.
+A fixture is not integrated acceptance. Parent reviews source and exact executable
+separately before any runtime release; no follow-on pickup is authorized.
+
+### Current pins and preservation
+
+All47 readiness pins matched before these metadata edits (the actual parent audit
+also says47, despite46 in dispatch prose). The45 non-allocated input pins remain
+byte-identical; Story's full old bytes remain an exact prefix and delivery's old
+header/tail remain exact. Seven existing client/contracts source/spec files stay
+frozen. Six stable IDs/13points/original2uncheckedAC/native+file In Progress/Gary
+Carter claim and lease are unchanged. Only employee-help moves to in-progress;
+contracts stays in-progress, client complete, Greg/composition/integration not-started.
+The own FUCQ-447 map row is updated through the vendored slice helper with an own-row
+writer; all301 foreign raw rows/order and every outside-row byte remain exact.
+Waiting observation expires immediately and makes no active-worker inference.
+
+| New source | SHA-256 |
+| --- | --- |
+| `apps/gcsp-web/src/app/help/help.component.ts` | `ac3afc332025e3378bbce3f6fbd31e3ae42b74aada2ee41ab5b801f717785dd7` |
+| `apps/gcsp-web/src/app/help/help.component.html` | `4a9c1fb9f278f864a97924c1c59c6a2b65390c6876e207fdcbd65ef97b04e30d` |
+| `apps/gcsp-web/src/app/help/help.component.css` | `5d17f32214eac0ac0c59c76967bbbf31a6d859957701ae9862ff0072766fbb62` |
+| `apps/gcsp-web/src/app/help/help.component.spec.ts` | `1c0e093f4d1901eece3fe69ef25c0a383a63879edbe45ac422990c5e820d5350` |
+| `apps/gcsp-web/src/app/help/help.store.ts` | `154befb8532bf32ee84fc46a63dba13a47e87e7241df1b042be82377ff09c446` |
+| `apps/gcsp-web/src/app/help/help.store.spec.ts` | `d0c5f880aa28fbc7d19327a6270df5998a6899b716cdf0f0a9d2e62122f999c4` |
+
+FUCQ-501 remains separate linked Medium/P2,unassigned/unclaimed/unfixed/nonblocking/
+outside66; no repair, duplicate or new acceptance/dependency. No new defect established.
+SAME Hubie requested/selected/effective `gpt-6.1-sol/high`, no settings/title/fallback
+change or children. Gateway PASS api.servicesessentials.ibm.com. ONE official named
+nine-path commit is authorized; parent owns sync/publication/Jira/importer/shared
+integration. HOLD after returning its exact SHA, pins and proposal.
+
 ## Client validation checkpoint — 14 November 2026
 
 **Current disposition: bounded client slice complete with 59/59 scoped checks and
@@ -785,3 +889,14 @@ Test hashes identify inspected source only; references retain their historical l
 | `docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/original-ac-evidence-matrix.md` | `8638f22e165476e5a14b5177add2d54ce989439f15877a6cb5cf70700d76862a` |
 | `docs/gcsp/evidence/fucq122/activity-host-2026-11-08/observations.md` | `d17058ce0dfe19ff15ba2903af00bc4055c3e46b6ef1c655bc7fffce35f3cc1d` |
 | `COMPONENTS.md` | `5cbcd4841bb6dbf28e7ffb29cf91d05eb1a04846bdaf19e082c4b0a1ec5bc70e` |
+
+
+## Employee Help validation and independent review — 14 November 2026
+
+The employee Help partial checkpoint at `587e66fa0d24c2741ddd0a4ad808e0f285c627a3` passed the native Angular test compiler and all49 selected assertions: component14,store28,projection7;0 failed/skipped/pending/TODO. Final run `b7087891a923499895c0842c38b11331` is consumed/nonreplayable. Earlier TS2339 compilation failure, subsequent48PASS/1whitespace-sensitive assertionFAIL and preallocation verifier NameError remain retained. The compiler correction is explicit CaseRead narrowing in `help.projection.ts`; the store is unchanged. Three final component expectations now assert exact associated fact label/value rows within the proper case/history scope, preserving the original values,privacy and other assertions.
+
+Parent actual audit `.claude/fucq447-help-facts-runtime-parent-audit-1329.json` (SHA-256 `901724fe559973023d7ae552bb7e3f0b8d44c3a0e2d98e5fa5972043fc7744ed`) verified13 prepared,82 source,46 project,22991 closure,149 historical and10 builder pins,full borrowed package/toolchain metadata,actual supervisor83226/process group84934/networkFD/all scratch+created container/canonical locked full-schema token absence. Final receipt SHA-256 `223accfa251e325597475a589046622d48f2cb5d4878cd1b63bb3dbc28a4d0e0`; full49-assertion JSON `018b1e061ddecd54da7737d492d66940713f1f00882212d25f2f3233c89eb573`; successful2225-byte log `e6fa242b9716fafeace399df83dd4194d6b86a6eb93178673c80e5a4cb6c03ed`. Inclusive212.421s,peak RSS907870208B,owned disk360173344B. Engine bytes normalized exactly to the prior and canonical reviewed engines after declared literal changes. Parent ran no tests or cleanup; no runtime resources remain.
+
+Elmer Fudd independently reviewed the final source/test delta and meaningful actual49-assertion evidence: PASS for partial `gcsp-poc-dev` integration,with no new findings or Critical/High issues. Receipt `.claude/fucq447-help-final-independent-review-1329.json`, SHA-256 `1fdc041e496cd83c89fe2972ffcd6fe818907092812ddda87a2f75e3c9682cb0`. Requested/selected/effective gpt-6.1-sol/high,no fallback,children,tests or runtime resources. FUCQ-501 Medium and FUCQ-502 Low remain separate linked backlog Bugs,unclaimed,unfixed and nonblocking under `docs/gcsp/build-rules.md` Demo delivery and scope control.
+
+Both original AC remain unchanged and unchecked; native In Progress,claim/lease and13points remain. Employee-help stays in-progress,contracts in-progress,client complete,Greg queue/composition/integration not-started. Employee preference-change confirmation,suitability/canonical clock+risk/notification parity,parent routes/host composition,actual Java/realOIDC/nativePostgreSQL/restart/concurrency/remote/hosted/email and rendered desktop/narrow/Safari/private/keyboard/focus/announcement/CSP/accessibility remain open original obligations. Entirely unobserved auth history cannot be reconstructed from exposed current state. This tested partial increment does not establish full Story acceptance,In Review or Done. Earlier26 contracts/client59 results stay historical and are not added to current49; the old840-byte contracts success log remains unavailable/unreconstructed.

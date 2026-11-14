@@ -6675,7 +6675,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-14T10:18:35Z",
+      "observed_at": "2026-11-14T12:30:19Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
@@ -6699,8 +6699,10 @@
         },
         {
           "id": "employee-help",
-          "status": "not-started",
-          "title": "Employee help, confirmation and current readback"
+          "status": "in-progress",
+          "title": "Employee help, confirmation and current readback",
+          "observed_at": "2026-11-14T12:30:19Z",
+          "evidence": "Source only:6new Help files at bounded existing client seam;allnewchecksUNRUN/no runtime;parent source review and separate runtime release pending. OriginalACs,preference-confirmation/backend/host/experience/integration remain open. docs/gcsp/fucq447-delivery.md"
         },
         {
           "id": "greg-queue",
@@ -6724,13 +6726,13 @@
           "name": "Hubie",
           "harness": "codex",
           "role": "story-lead",
-          "status": "HOLD; scoped client59PASS and parent actual-result/teardown audit PASS; waiting metadata checkpoint audit/publication",
-          "observed_at": "2026-11-14T11:58:43Z",
-          "expires_at": "2026-11-14T11:58:43Z",
-          "source": "chat 01a1d97e-70b9-7831-8632-3f7405b25af2; Hubie gpt-6.1-sol/high retained; no fallback/children. One released client runtime consumed on a0d905b64cb09411f914ea57ae195cd306e4e7f8; docs/gcsp/fucq447-delivery.md"
+          "status": "HOLD after employee-help source-only checkpoint; new checks UNRUN; parent independent review/runtime release pending",
+          "observed_at": "2026-11-14T12:30:19Z",
+          "expires_at": "2026-11-14T12:30:19Z",
+          "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2; SAME gpt-6.1-sol/high,no fallback/children; finite6source+3metadata release; docs/gcsp/fucq447-delivery.md"
         }
       ],
-      "note": "Metadata-only client result. Native/file In Progress, Gary Carter claim/lease,13points and original2AC unchanged. Client bounded boundary complete with59PASS/source+executable+parent actual runtime/teardown audit;contracts in-progress with historical26 reused;remaining4stable slices not-started. Full JSON/714B log retained;old840B contracts log unavailable. Initial executable1135 directory-nlink HOLD corrected in separately audited sibling;no failed product runtime or new scope inferred. F501 Medium separate/unclaimed/unfixed/nonblocking/outside66. No further runtime/source/Jira/sync/push/merge/publication;parent preserves root importer notice."
+      "note": "Employee Help source-only increment:6newfiles; allnewchecksUNRUN/no runtime. Native/file In Progress,Gary Carter/claim/lease/13points/original2AC retained. Contracts in-progress historical26PASS,client complete59PASS;employee-help in-progress,Greg/composition/integration not-started. Original preference-confirmation/suitability/clock/notification/host and connected experience remain open. F501Medium separate/unclaimed/unfixed/nonblocking/outside66. Parent owns source review,separate runtime release,Jira/importer/shared/publication;HOLD."
     },
     {
       "assignee": "",
