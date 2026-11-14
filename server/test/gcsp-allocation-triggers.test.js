@@ -62,6 +62,10 @@ test('clock handler keeps counts only and never expands completed evaluations on
   const repository = { ...f.repository, async read(context, ref) {
     if (ref.table === 'event_receipts' && ref.key.consumerId === 'buddy-allocation-evaluation') evaluationReads += 1;
     return f.repository.read(context, ref);
+  }, async readReceipts(context, request) {
+    // FUCQ-419: selected reads count each evaluation row they ask for.
+    if (request.consumerIds.includes('buddy-allocation-evaluation')) evaluationReads += request.eventIds?.length ?? Infinity;
+    return f.repository.readReceipts(context, request);
   } };
   const service = f.create({ repository, clock: { ...f.clock,
     async registerHandler(value) { descriptor = value; return ok({ registered: true }); } } });
