@@ -60,3 +60,6 @@ CREATE TABLE document_items (
   CHECK ((status = 'complete') = (completed_at IS NOT NULL)),
   CHECK (owner <> 'employee' OR (status = 'complete') = (acknowledgement IS NOT NULL))
 );
+-- Ticks read only items that can still change: provider work in flight and unfinished employee tasks.
+CREATE INDEX document_items_open ON document_items (environment_id, run_id, order_uuid)
+  WHERE status IN ('not-started', 'in-progress', 'waiting-for-employee', 'acknowledging');
