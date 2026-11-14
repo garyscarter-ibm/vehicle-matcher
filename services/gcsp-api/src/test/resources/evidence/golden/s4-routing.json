@@ -1,0 +1,336 @@
+{
+ "stores": {
+  "lookup-reference.v1": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": null
+    }
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "not-found"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": "reference-vehicle-1"
+    }
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "not-found"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": {
+     "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+     "vehicleId": null
+    }
+   }
+  ],
+  "deactivated": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": null
+    }
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": "reference-vehicle-1"
+    }
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": {
+     "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+     "vehicleId": null
+    }
+   }
+  ],
+  "inventory-tampered": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": "source-unavailable"
+   }
+  ],
+  "inventory-missing": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": "source-unavailable"
+   }
+  ],
+  "empty": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": "source-unavailable"
+   }
+  ],
+  "history-config-missing": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": "source-unavailable"
+   }
+  ],
+  "checksum-corrupt": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": null
+    }
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": "reference-vehicle-1"
+    }
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": {
+     "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+     "vehicleId": null
+    }
+   }
+  ],
+  "not-in-history": [
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "UkVGMTpSRUZFUkVOQ0U="
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": null
+    }
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VU5LTk9XTjpDT0RF"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "WBA33DB08TC426611"
+    },
+    "route": {
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "vehicleId": "reference-vehicle-1"
+    }
+   },
+   {
+    "request": {
+     "kind": "vin",
+     "id": "ZZZZZZZZ0ZZ000000"
+    },
+    "route": "source-unavailable"
+   },
+   {
+    "request": {
+     "kind": "configuration",
+     "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+    },
+    "route": {
+     "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+     "vehicleId": null
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,11 @@
+<div class="gcsp-options" role="radiogroup" [id]="groupId()" [attr.aria-label]="label()" [attr.aria-disabled]="disabled()">
+  @for (option of options(); track option.value) {
+    <button #optionButton type="button" class="gcsp-option" role="radio"
+      [value]="option.value" [class.is-selected]="value() === option.value" [attr.aria-checked]="value() === option.value"
+      [disabled]="disabled() || option.disabled" [tabIndex]="tabValue() === option.value ? 0 : -1"
+      (click)="choose(option)" (keydown)="navigate($event, option)">
+      <span class="gcsp-option-label">{{ option.label }}</span>
+      @if (option.sub) { <span class="gcsp-option-sub">{{ option.sub }}</span> }
+    </button>
+  }
+</div>

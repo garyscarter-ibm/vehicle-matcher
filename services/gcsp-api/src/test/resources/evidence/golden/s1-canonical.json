@@ -1,0 +1,156 @@
+{
+ "vectors": [
+  {
+   "text": "{\"b\":1,\"a\":[3,{\"z\":null,\"y\":true},\"x\"],\"c\":{\"d\":false,\"b\":{\"k\":1,\"a\":2}}}",
+   "canonical": "{\"a\":[3,{\"y\":true,\"z\":null},\"x\"],\"b\":1,\"c\":{\"b\":{\"a\":2,\"k\":1},\"d\":false}}",
+   "digest": "ee4033b7318ab0ba08069196e657b0cbaf58d31075259ed16d395346baf46db2"
+  },
+  {
+   "text": "[0,-0,100,2.50,5.6,0.1,1e21,1e-7,0.000001,123456789012345678901234,1.5e300,-3.25]",
+   "canonical": "[0,0,100,2.5,5.6,0.1,1e+21,1e-7,0.000001,1.2345678901234569e+23,1.5e+300,-3.25]",
+   "digest": "46b3801aa0b693039a7d12692338e24aa8b6ea5886bdca52882676bb45c36e43"
+  },
+  {
+   "text": "[1e20,100000000000000000000,4.35,1.7976931348623157e308,5e-324,123e-20,-1e-7,0.1e1,1E3,4294967295,9007199254740993,0.30000000000000004,1.0,1e0]",
+   "canonical": "[100000000000000000000,100000000000000000000,4.35,1.7976931348623157e+308,5e-324,1.23e-18,-1e-7,1,1000,4294967295,9007199254740992,0.30000000000000004,1,1]",
+   "digest": "4eb826a3b9e8b952ddb579a38bbabe4f94bbd135dbf5f0b1280fb5ab85ce6081"
+  },
+  {
+   "text": "{\"s\":\"line\\nfeed\\ttab\\rcr\\bback\\fform\\u0000nul\\u001funit\\u007fdel\",\"q\":\"say \\\"hi\\\"\",\"bs\":\"a\\\\b\",\"sl\":\"a/b\"}",
+   "canonical": "{\"bs\":\"a\\\\b\",\"q\":\"say \\\"hi\\\"\",\"s\":\"line\\nfeed\\ttab\\rcr\\bback\\fform\\u0000nul\\u001funitdel\",\"sl\":\"a/b\"}",
+   "digest": "0d20c2ae95863dde84f9fa59d37dd2b2988b64064085b05bf2e29315a03d4227"
+  },
+  {
+   "text": "{\"u\":\"caf\\u00e9 \\u00c9 \\u2028\\u2029 \\u00a0\",\"raw\":\"naïve café 日本語\",\"emoji\":\"\\ud83d\\ude00 and 😀\"}",
+   "canonical": "{\"emoji\":\"😀 and 😀\",\"raw\":\"naïve café 日本語\",\"u\":\"café É     \"}",
+   "digest": "f73532e824c1897f5b0c2515fcefc27dc8f7d72555dc59325ceb735e8dd868cf"
+  },
+  {
+   "text": "{\"lone\":\"\\ud800\",\"loneLow\":\"\\udc00x\",\"pair\":\"\\ud83d\\ude00\",\"mixed\":\"\\ud800\\ud83d\\ude00\"}",
+   "canonical": "{\"lone\":\"\\ud800\",\"loneLow\":\"\\udc00x\",\"mixed\":\"\\ud800😀\",\"pair\":\"😀\"}",
+   "digest": "12185ce7b965aee9049a196fe9ec7e87d9aafbd7a7b9c210075e385a3db67f46"
+  },
+  {
+   "text": "{\"B\":1,\"a\":2,\"é\":3,\"Z\":4,\"_\":5,\"ab\":6,\"aB\":7,\"\":8,\"\\ud83d\\ude00\":9,\"\\uffff\":10}",
+   "canonical": "{\"\":8,\"B\":1,\"Z\":4,\"_\":5,\"a\":2,\"aB\":7,\"ab\":6,\"é\":3,\"😀\":9,\"￿\":10}",
+   "digest": "65321075c7055c50aff981a591b0e8b89c037141af1dc291a9d28b00e99e0ac8"
+  },
+  {
+   "text": "{\"10\":\"a\",\"2\":\"b\",\"1a\":\"c\",\"01\":\"d\",\"b\":\"e\",\"0\":\"f\",\"4294967295\":\"g\",\"4294967294\":\"h\",\"-1\":\"i\",\"1.5\":\"j\"}",
+   "canonical": "{\"0\":\"f\",\"2\":\"b\",\"10\":\"a\",\"4294967294\":\"h\",\"-1\":\"i\",\"01\":\"d\",\"1.5\":\"j\",\"1a\":\"c\",\"4294967295\":\"g\",\"b\":\"e\"}",
+   "digest": "d9ce3902f3bf7f7c7ceed86f17f0a76acad49fcf4cab43396c4af11bdc1705da"
+  },
+  {
+   "text": "{\"nested\":{\"10\":{\"2\":1,\"1\":2,\"x\":3},\"9\":[{\"b\":1,\"a\":0}]}}",
+   "canonical": "{\"nested\":{\"9\":[{\"a\":0,\"b\":1}],\"10\":{\"1\":2,\"2\":1,\"x\":3}}}",
+   "digest": "06eeafdbe30a4a0772dbb2d56f4c775b50c0757643fb640b81deaa286e26f7ff"
+  },
+  {
+   "text": "{\"dup\":1,\"dup\":2,\"a\":{\"x\":1,\"x\":null}}",
+   "canonical": "{\"a\":{\"x\":null},\"dup\":2}",
+   "digest": "c5dd53b65cbff6cda3c60462086ae769b41639c32601decc487cdc87f7d80dc8"
+  },
+  {
+   "text": "{}",
+   "canonical": "{}",
+   "digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  {
+   "text": "[]",
+   "canonical": "[]",
+   "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  {
+   "text": "\"just a string\"",
+   "canonical": "\"just a string\"",
+   "digest": "3fe01def54b1c6cd795b2ebfcbab64150f6a507bce043040c662c682eebfed1e"
+  },
+  {
+   "text": "null",
+   "canonical": "null",
+   "digest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+  },
+  {
+   "text": "true",
+   "canonical": "true",
+   "digest": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+  },
+  {
+   "text": "-0",
+   "canonical": "0",
+   "digest": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+  },
+  {
+   "text": "0.5",
+   "canonical": "0.5",
+   "digest": "d2cbad71ff333de67d07ec676e352ab7f38248eb69c942950157220607c55e84"
+  }
+ ],
+ "rows": [
+  {
+   "store": "lookup-reference.v1",
+   "configurations": [
+    {
+     "index": 0,
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "recordDigest": "a315fd5607f506317c5d57c0cff43a35cfdc253ebf1983c8587eb109bfa0575f"
+    },
+    {
+     "index": 1,
+     "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+     "recordDigest": "a6d1d22b211700cf28c5e0336e4b07d80fdeca336ab07da31a77e0b292ddfe13"
+    }
+   ],
+   "vins": [
+    {
+     "index": 0,
+     "vehicleId": "reference-vehicle-1",
+     "recordDigest": "5e135bf3a969163eadcbe2c377397c1a3aa56359ca3f9a05cb220b54ddc5392e"
+    }
+   ],
+   "hashChecks": [
+    {
+     "vehicleId": "reference-vehicle-1",
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "configurationDigest": "fe67d867a26cec67de2f3434886e2832256e8479e5d0260cacb061c9adc40a30",
+     "vinConfigurationHash": "fe67d867a26cec67de2f3434886e2832256e8479e5d0260cacb061c9adc40a30"
+    }
+   ]
+  },
+  {
+   "store": "fleet-source.v1",
+   "configurations": [
+    {
+     "index": 0,
+     "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+     "recordDigest": "745939519da8cbd8c5e791b5faca685ecf62595c20d27131a3dda70ed7de544d"
+    },
+    {
+     "index": 1,
+     "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIRCxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+     "recordDigest": "e1401d702e48b338f51f0f58a4c5b550f3729a6af54d40cd83dae43a19fd7f5f"
+    },
+    {
+     "index": 2,
+     "configurationId": "MlBCQzpGRVBNSSxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+     "recordDigest": "2f1ce0bf7fa6cecb8be4f1bd47d091494d43d11b1a35d47409354d853321cfe2"
+    }
+   ],
+   "vins": [
+    {
+     "index": 0,
+     "vehicleId": "reference-vehicle-1",
+     "recordDigest": "5e135bf3a969163eadcbe2c377397c1a3aa56359ca3f9a05cb220b54ddc5392e"
+    }
+   ],
+   "hashChecks": [
+    {
+     "vehicleId": "reference-vehicle-1",
+     "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+     "configurationDigest": "fe67d867a26cec67de2f3434886e2832256e8479e5d0260cacb061c9adc40a30",
+     "vinConfigurationHash": "fe67d867a26cec67de2f3434886e2832256e8479e5d0260cacb061c9adc40a30"
+    }
+   ]
+  }
+ ]
+}

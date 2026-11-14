@@ -1,0 +1,952 @@
+{
+ "cases": [
+  {
+   "url": "https://a/b?",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a/b?#x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://@host/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://:@host/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://@@host/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://user@/p",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https:///foo.com/bar",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https:\\\\foo.com\\x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "HTTPS://Foo.COM:443/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://foo.com:0443/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://foo.com:8443/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": " https://foo.com/x ",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://127.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://0x7f.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://2130706433/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://１２７．０．０．１/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://ＬＯＣＡＬＨＯＳＴ/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a/b/../c/./d/%2e%2e/e",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a/b^c|d",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://exa mple.com/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://foo.com./x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://foo.com:/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a%2eb/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://[::1]/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a/\tb/c",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://straße.de/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a.b.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://1.2.3.4.5/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://256.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a..b/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https:foo.com/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https:/foo.com/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a:99999/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a:abc/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a:443/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a:80/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a/.%2e/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a/x/..",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a\\b",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://é.com/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a/b?x=é y",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://0300.0250.0.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://0x7f000001/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://1.2.3/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://0x/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://1./",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a%00b/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a b/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a_b/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://%61.com/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a.com%2fx/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a.com:/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://u:p@a.com/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://:p@a.com/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://u:@a.com/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a@b@c.com/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a/b?%",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://[::1]:80/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://a.com:65535/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://a.com:65536/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://LOCALHOST./",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://foo.LOCAL/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://10.0.0.1./",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://10.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://172.16.0.1/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://172.15.0.1/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://172.32.0.1/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://192.168.1.1/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://0.0.0.0/",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://128.0.0.1/",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://localhost/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://notlocal/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://x.local./a",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://x.local/a",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "http://public.example/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "ftp://public.example/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "data:text/plain,hi",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "javascript:alert(1)",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "//public.example/x",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "public.example/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "assets/a.webp",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "/assets/a.webp",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "assets/../a.webp",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "assets/a.webp?x=1",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "assets\\a.webp",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x#frag",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en-GB",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=EN",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x?language=en&",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?&language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en&language=en",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x?language=e",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x?language=en%2DGB",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=%65n",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?lang%75age=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en#f",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en+",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x?language",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://pub lic.example/x?language=en",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example:8443/x?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x y?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/x?language=en y",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://user@public.example/x?language=en",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/x?token=a",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://public.example/%2e%2e/x?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://public.example/../x?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/x?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud:443/x?language=en",
+   "asset": false,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://PROD.UCP.BMW.CLOUD/x",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337#f",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true#f",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337#f",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "http://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "http://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "http://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?x=1&trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?x=1&gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?x=1&add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ",
+   "asset": true,
+   "source": true,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337&trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true&gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337&add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwcar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwcar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwcar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/GB/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/GB/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/GB/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-1-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-1-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric,paint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud./localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud./model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud./rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud:443/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud:443/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud:443/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?%61=1&trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?%61=1&gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?%61=1&add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=s0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2Cs0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=%6Eone&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S%30337",
+   "asset": false,
+   "source": false,
+   "v2Source": true
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?;trim=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?;gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?;add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none;cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  },
+  {
+   "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim;application=connext&included-elements=FKSJX%2CP0C4P%2CS0337%2CS03GQ%2CS043L&mandatory-elements=S0337",
+   "asset": false,
+   "source": false,
+   "v2Source": false
+  }
+ ]
+}
