@@ -6993,13 +6993,47 @@
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:16:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-475"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-475",
+      "slices": [
+        {
+          "id": "s1-demand",
+          "status": "complete",
+          "title": "Greg demand projection: native PG reads, privacy bands, complementary withholding, ports and service tests",
+          "observed_at": "2026-11-14T07:43:57Z",
+          "evidence": "lead review of 4a00c828c: 6 fixed SQL reads (+1 on declines) in one RR read-only snapshot; complementary withholding over 12 relations; gcsp.api.demand.** 30/30 on native PG17 :55475"
+        },
+        {
+          "id": "s2-suitability-http",
+          "status": "complete",
+          "title": "Presenter suitability projection, Greg and presenter HTTP resources, default ports and README",
+          "observed_at": "2026-11-14T08:06:29Z",
+          "evidence": "lead review of 083a85c03: Greg-only demand and presenter-only suitability resources, no-store, 6-7 page-bounded reads (equal at 40 and 400 cars); gcsp.api.demand.** 59/59 on native PG17 :55475"
+        },
+        {
+          "id": "s3-integration",
+          "status": "complete",
+          "title": "Story integration: merge base, full Java verify on native PG17, EXPLAIN bounds, result",
+          "observed_at": "2026-11-14T08:16:02Z",
+          "evidence": "lead review: merge dde305419; canonical PolicyDemandAdapter 3ee1abcb5; demand.** 62/62 and verify 740/0 on native PG17 :55475; EXPLAIN on 1000-employee/5000-car workload"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Mugsy",
+          "harness": "claude-code",
+          "role": "story-lead DEV-2026-11-13-043",
+          "observed_at": "2026-11-14T03:05:57Z",
+          "expires_at": "2026-11-14T08:16:02Z",
+          "source": "dev/DEV-2026-11-13-043",
+          "status": "finished"
+        }
+      ]
     },
     {
       "assignee": "",
