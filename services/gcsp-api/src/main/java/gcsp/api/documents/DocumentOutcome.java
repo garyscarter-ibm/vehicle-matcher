@@ -35,6 +35,21 @@ public record DocumentOutcome(int http, String status, String code, String reaso
         return new DocumentOutcome(409, "conflict", code, reason, retryable, null, null);
     }
 
+    /** A conflict that also tells the caller what the record is now, under value.current. */
+    public static DocumentOutcome conflict(String code, String reason, boolean retryable, JsonNode current) {
+        ObjectNode value = JsonNodeFactory.instance.objectNode();
+        value.set("current", current);
+        return new DocumentOutcome(409, "conflict", code, reason, retryable, value, null);
+    }
+
+    public static DocumentOutcome unsupportedQuery() {
+        ObjectNode value = JsonNodeFactory.instance.objectNode();
+        value.putArray("reasons").addObject().put("field", "query").put("reason",
+                "Documents use the current signed-in employee.");
+        return new DocumentOutcome(400, "invalid", "unsupported-query",
+                "Documents use the current signed-in employee.", false, value, null);
+    }
+
     public static DocumentOutcome unsupported(String code, String reason) {
         return new DocumentOutcome(422, "unsupported", code, reason, false, null, null);
     }

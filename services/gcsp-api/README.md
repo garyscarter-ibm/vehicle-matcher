@@ -55,6 +55,7 @@ drains in-flight requests for up to `GCSP_SHUTDOWN_TIMEOUT`, then exits. The con
 | `GCSP_ENVIRONMENT_ID` | empty | Claimed into the database's immutable identity row on first start; a mismatch later stops startup. |
 | `GCSP_RESET_ALLOWED` | `false` | Recorded at first claim. Only a database claimed with `true` (the dev database) can be reset. |
 | `GCSP_DATABASE_POOL_SIZE` | `10` | Agroal maximum connections. |
+| `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings arrive with FUCQ-469.
 The test provider registration and claim mapping are in
@@ -83,6 +84,17 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 | `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
+| `GET /api/gcsp/v1/documents` | Employee only: the caller's own document orders. Any query parameter is 400 `unsupported-query`. |
+| `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
+| `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
+
+Acknowledgement answers: 200 `ok` (provider evidence recorded, item complete); 202 `pending`
+(`acknowledgement-pending`, with `operationId`; resend the same body to reconcile) or `uncertain`; 400 invalid body;
+403 `not-resource-owner`, `not-your-task`, `role-required`; 404 `document-order-not-found`; 409 `stale-version`
+(retryable, `current.documentsRevision`), `task-not-waiting`, `acknowledgement-refused`, `command-input-changed`,
+`stale-run`; 422 `acknowledgement-unsupported` (no write); 503 `documents-unavailable`. An item completes only on a
+provider answer with object evidence naming its own operation. Until the policy, stage and clock Stories supply real
+ports, documents answer unavailable (`DocumentsWiring` default beans).
 
 Every other path, and every refusal, is a JSON body `{status, code, reason, retryable}` (500s add a
 `reference`), never HTML. Context refusals:

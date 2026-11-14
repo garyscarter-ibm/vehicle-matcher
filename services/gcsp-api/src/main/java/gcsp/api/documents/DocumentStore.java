@@ -55,6 +55,9 @@ public final class DocumentStore {
             String failureReason, String providerReference, String reason, Instant completedAt,
             JsonNode acknowledgement, String lastProviderOutcome, Instant overdueRecordedAt, JsonNode assumption) {}
 
+    /** The durable provider call behind an acknowledgement: its state and the version finalizing must match. */
+    public record OperationRow(String operationId, String state, long version, JsonNode outcome) {}
+
     private final DataSource dataSource;
 
     public DocumentStore(DataSource dataSource) {
@@ -87,6 +90,13 @@ public final class DocumentStore {
             grouped.computeIfAbsent(item.orderUuid(), (k) -> new ArrayList<>()).add(item);
         }
         return grouped;
+    }
+
+    public Optional<OperationRow> operation(RunContext ctx, String operationId) {
+        List<OperationRow> rows = query("SELECT operation_id, state, version, outcome::text FROM pending_operations "
+                + "WHERE " + SCOPE + " AND operation_id = ?", (rs) -> new OperationRow(rs.getString(1),
+                rs.getString(2), rs.getLong(3), json(rs.getString(4))), ctx, operationId);
+        return rows.isEmpty() ? Optional.empty() : Optional.of(rows.get(0));
     }
 
     public List<String> ordersWithOpenItems(RunContext ctx) {

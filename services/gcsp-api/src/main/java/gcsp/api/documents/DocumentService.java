@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.auth.Role;
 import gcsp.api.documents.DocumentCasePort.CaseCheck;
 import gcsp.api.documents.DocumentStore.ItemRow;
 import gcsp.api.documents.DocumentStore.OrderRow;
+import gcsp.api.identity.Principal;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Outcome;
@@ -29,6 +31,7 @@ public final class DocumentService {
     public static final String CONTRACT = "lifecycle.documents.v1";
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final int MAX_COMMAND_ID = 200;
+    private static final String NOT_OWNER_REASON = "These documents belong to another employee.";
     private static final int MAX_FAILED_SHOWN = 20;
 
     private final TransactionRunner runner;
@@ -37,6 +40,7 @@ public final class DocumentService {
     private final DocumentCasePort cases;
     private final DocumentClock clock;
     private final DocumentProviderPort provider;
+    private final DocumentAcknowledgement acknowledgements;
 
     public DocumentService(TransactionRunner runner, DataSource dataSource, DocumentPolicyPort policy,
             DocumentCasePort cases, DocumentClock clock, DocumentProviderPort provider) {
@@ -46,6 +50,134 @@ public final class DocumentService {
         this.cases = cases;
         this.clock = clock;
         this.provider = provider;
+        this.acknowledgements = new DocumentAcknowledgement(runner, store, clock, provider);
+    }
+
+    /** The employee's own acknowledgement of one waiting task; see DocumentAcknowledgement for the outcomes. */
+    public DocumentOutcome acknowledge(RunContext ctx, String employeeId, JsonNode body) {
+        return acknowledgements.acknowledge(ctx, employeeId, body);
+    }
+
+    public DocumentOutcome readItems(RunContext ctx, String employeeId) {
+        Optional<Instant> now = clock.now(ctx);
+        if (now.isEmpty()) return unavailable();
+        try {
+            ObjectNode node = F.objectNode();
+            node.put("contractVersion", CONTRACT);
+            node.put("now", now.get().toString());
+            ArrayNode orders = node.putArray("orders");
+            viewsFor(ctx, employeeId, now.get()).forEach(orders::add);
+            return DocumentOutcome.ok(node);
+        } catch (DocumentStore.StoreUnavailable e) {
+            return unavailable();
+        }
+    }
+
+    /** The single readiness authority; an employee sees only their own orders, an operator any order. */
+    public DocumentOutcome readReadiness(RunContext ctx, Principal principal, String orderUuid,
+            String policyVersion) {
+        if (orderUuid == null || orderUuid.isEmpty() || orderUuid.length() > 128) {
+            return DocumentOutcome.invalid("orderUuid", "Supply the order to check.");
+        }
+        if (clock.now(ctx).isEmpty()) return unavailable();
+        boolean employee = principal.roles().contains(Role.EMPLOYEE.wire());
+        String self = principal.employeeId();
+        if (employee) {
+            DocumentCasePort.Owner owner = ownerOf(ctx, orderUuid);
+            if (owner instanceof DocumentCasePort.Owner.Unavailable) return unavailable();
+            if (owner instanceof DocumentCasePort.Owner.Owned o && !o.employeeId().equals(self)) {
+                return DocumentOutcome.forbidden("not-resource-owner", NOT_OWNER_REASON);
+            }
+        }
+        try {
+            Optional<ObjectNode> opened = readiness(ctx, orderUuid, employee ? self : null);
+            if (opened.isPresent()) return DocumentOutcome.ok(opened.get());
+        } catch (ForeignOrder e) {
+            return DocumentOutcome.forbidden("not-resource-owner", NOT_OWNER_REASON);
+        } catch (DocumentStore.StoreUnavailable e) {
+            return unavailable();
+        }
+        return notOpened(ctx, orderUuid, policyVersion, employee ? self : null);
+    }
+
+    private DocumentCasePort.Owner ownerOf(RunContext ctx, String orderUuid) {
+        try {
+            DocumentCasePort.Owner owner = cases.ownerOf(ctx, orderUuid);
+            if (owner != null) return owner;
+        } catch (RuntimeException e) {
+            // an unreadable owner authority is unavailable, never a pass
+        }
+        return new DocumentCasePort.Owner.Unavailable("owner-unreadable");
+    }
+
+    private static final class ForeignOrder extends RuntimeException {
+        ForeignOrder() {
+            super(null, null, false, false);
+        }
+    }
+
+    private Optional<ObjectNode> readiness(RunContext ctx, String orderUuid, String onlyEmployee) {
+        Optional<OrderRow> order = store.order(ctx, orderUuid);
+        if (order.isEmpty()) return Optional.empty();
+        if (onlyEmployee != null && !order.get().employeeId().equals(onlyEmployee)) throw new ForeignOrder();
+        List<ItemRow> items = store.items(ctx, List.of(orderUuid)).getOrDefault(orderUuid, List.of());
+        ObjectNode node = F.objectNode();
+        node.put("orderUuid", orderUuid);
+        node.put("documentsRevision", order.get().version());
+        node.put("opened", true);
+        node.setAll(DocumentView.readiness(items));
+        return Optional.of(node);
+    }
+
+    private DocumentOutcome notOpened(RunContext ctx, String orderUuid, String policyVersion, String onlyEmployee) {
+        DocumentPolicy.Load load = DocumentPolicy.load(policy, policyVersion);
+        String reason = DocumentPolicy.Load.Unavailable.CODE;
+        String producerStatus = null;
+        String producerCode = null;
+        if (load instanceof DocumentPolicy.Load.Loaded loaded) {
+            DocumentCasePort.StageRead read;
+            try {
+                read = cases.readStage(ctx, orderUuid);
+            } catch (RuntimeException e) {
+                read = null;
+            }
+            StageObservation.Observed observed = StageObservation.observe(read, ctx.runId(), orderUuid,
+                    loaded.config().openingStage(), loaded.config().openingState());
+            if (observed instanceof StageObservation.Observed.Forbidden) {
+                return DocumentOutcome.forbidden("order-not-visible", "This order is not visible to you.");
+            }
+            if (observed instanceof StageObservation.Observed.Open open) {
+                if (onlyEmployee != null && open.employeeId() != null && !open.employeeId().equals(onlyEmployee)) {
+                    return DocumentOutcome.forbidden("not-resource-owner", NOT_OWNER_REASON);
+                }
+                reason = "awaiting-document-tick";
+            } else {
+                StageObservation.Observed.NotOpen n = (StageObservation.Observed.NotOpen) observed;
+                if (onlyEmployee != null && n.employeeId() != null && !n.employeeId().equals(onlyEmployee)) {
+                    return DocumentOutcome.forbidden("not-resource-owner", NOT_OWNER_REASON);
+                }
+                reason = n.reason();
+                producerStatus = n.producerStatus();
+                producerCode = n.producerCode();
+            }
+        }
+        ObjectNode node = F.objectNode();
+        node.put("orderUuid", orderUuid);
+        node.put("opened", false);
+        node.put("ready", false);
+        node.put("state", "not-open");
+        node.put("reason", reason);
+        node.put("documentsComplete", false);
+        node.put("vehicleReady", false);
+        if (producerStatus != null) {
+            node.put("producerStatus", producerStatus);
+            node.put("producerCode", producerCode);
+        }
+        return DocumentOutcome.ok(node);
+    }
+
+    private static DocumentOutcome unavailable() {
+        return DocumentOutcome.unavailable("documents-unavailable", DocumentOutcome.UNAVAILABLE_REASON);
     }
 
     /** One clock tick: open every listed order that reached the opening stage, then advance open provider work. */
@@ -104,15 +236,7 @@ public final class DocumentService {
 
     /** The order row is read before its items, so a changing order can only show an older revision, never newer. */
     public Optional<ObjectNode> readiness(RunContext ctx, String orderUuid) {
-        Optional<OrderRow> order = store.order(ctx, orderUuid);
-        if (order.isEmpty()) return Optional.empty();
-        List<ItemRow> items = store.items(ctx, List.of(orderUuid)).getOrDefault(orderUuid, List.of());
-        ObjectNode node = F.objectNode();
-        node.put("orderUuid", orderUuid);
-        node.put("documentsRevision", order.get().version());
-        node.put("opened", true);
-        node.setAll(DocumentView.readiness(items));
-        return Optional.of(node);
+        return readiness(ctx, orderUuid, null);
     }
 
     private DocumentCasePort.OrderList list(RunContext ctx) {
