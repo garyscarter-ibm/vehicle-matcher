@@ -16,6 +16,17 @@ RUN ./mvnw -B package -DskipTests
 FROM eclipse-temurin:21.0.13_9-jre-noble@sha256:0d57a8e90c2bb844c5a8e1b2b71e11eff06dad7edcfd803cd21ed4ae203b2515
 WORKDIR /app
 COPY --from=build /src/services/gcsp-api/target/quarkus-app/ ./
+# Retain only the selected corpus, its recovery version and byte-verified display assets.
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json /app/data/vehicle-evidence/fleet-source.v1/active.json
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json /app/data/vehicle-evidence/fleet-source.v1/last-good.json
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json /app/data/vehicle-evidence/fleet-source.v1/identity-inventory.json
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/ /app/data/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/ /app/data/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/display-images.v1.json /app/data/vehicle-evidence/display-images.v1.json
+COPY --chown=0:0 server/data/gcsp/vehicle-evidence/configuration-definitions.v1.json /app/data/vehicle-evidence/configuration-definitions.v1.json
+COPY --chown=0:0 assets/gcsp-vehicle-evidence/ /app/assets/gcsp-vehicle-evidence/
+RUN find /app/data/vehicle-evidence /app/assets/gcsp-vehicle-evidence -type d -exec chmod 0555 {} + \
+    && find /app/data/vehicle-evidence /app/assets/gcsp-vehicle-evidence -type f -exec chmod 0444 {} +
 USER 1001
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
 # exec keeps java as PID 1 so Render's SIGTERM reaches it and shutdown is graceful.
