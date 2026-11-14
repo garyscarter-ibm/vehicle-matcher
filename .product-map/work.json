@@ -6177,24 +6177,30 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-13T23:43:29Z",
+      "observed_at": "2026-11-14T00:08:28Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-458",
       "unsliced": false,
       "slices": [
         {
-          "id": "core-endpoint",
+          "id": "core",
+          "status": "in-progress",
+          "title": "Account ports, records contract, AccountService projection and exact Node parity",
+          "observed_at": "2026-11-14T00:08:28Z"
+        },
+        {
+          "id": "endpoint-hr-snapshot",
           "status": "not-started",
-          "title": "Account ports, projection, policy port, HR snapshot provider, GET /api/gcsp/v1/manual/account, ownership, startup selection, Node goldens"
+          "title": "GET /api/gcsp/v1/manual/account, ownership, startup selection and differently shaped HR snapshot provider"
         },
         {
           "id": "repository-provider",
           "status": "not-started",
-          "title": "PostgreSQL records provider and two-shape parity with native tests"
+          "title": "PostgreSQL records provider with native parity and plan evidence"
         },
         {
           "id": "integration",
           "status": "not-started",
-          "title": "Merge base, full Java verify, README and story result"
+          "title": "Merge base, policy binding status, README, full Java verify and story result"
         }
       ]
     },
