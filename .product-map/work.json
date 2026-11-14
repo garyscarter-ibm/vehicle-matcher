@@ -6375,7 +6375,7 @@
     {
       "assignee": "",
       "id": "FUCQ-457",
-      "observed_at": "2026-11-14T01:41:55Z",
+      "observed_at": "2026-11-14T02:09:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and publish canonical versioned policy",
@@ -6399,13 +6399,17 @@
         },
         {
           "id": "s3-http",
-          "status": "not-started",
-          "title": "Greg policy read and publish endpoints under /api/gcsp/v1 and consumer port adapters"
+          "status": "complete",
+          "title": "Greg policy read and publish endpoints under /api/gcsp/v1 and consumer port adapters",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "24d542f8 reviewed by story-lead: Greg policy GET/publish under /api/gcsp/v1, brief adapter bound, account/supply adapters ready; 80 policy tests"
         },
         {
           "id": "s4-integration",
-          "status": "not-started",
-          "title": "Story validation, base merge, migration number and result"
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T02:09:50Z",
+          "evidence": "story-lead: merged base 7645efb7, clean verify 349/0F/0E/0S on native PG17; parity fixtures regenerate identically; result block in story file"
         }
       ]
     },
