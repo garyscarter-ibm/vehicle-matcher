@@ -6620,13 +6620,43 @@
     {
       "assignee": "",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T02:17:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Capture and deliver notifications through the selected transport",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
+          "observed_at": "2026-11-14T01:00:19Z",
+          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
+          "observed_at": "2026-11-14T02:01:23Z",
+          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
+        },
+        {
+          "id": "brevo",
+          "status": "complete",
+          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
+          "observed_at": "2026-11-14T02:12:01Z",
+          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
+          "observed_at": "2026-11-14T02:17:35Z",
+          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
+        }
+      ]
     },
     {
       "assignee": "",

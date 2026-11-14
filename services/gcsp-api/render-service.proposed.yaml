@@ -47,6 +47,17 @@
       #   sync: false
       # - key: GCSP_POLICY_VERSION
       #   sync: false
+      # Notifications (FUCQ-469): unset GCSP_MAIL_TRANSPORT keeps mail captured; brevo needs the rest.
+      # - key: GCSP_MAIL_TRANSPORT
+      #   sync: false
+      # - key: GCSP_PUBLIC_BASE_URL
+      #   sync: false
+      # - key: GCSP_MAIL_FROM
+      #   sync: false
+      # - key: GCSP_MAIL_FROM_NAME
+      #   sync: false
+      # - key: GCSP_BREVO_API_KEY
+      #   sync: false
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS
