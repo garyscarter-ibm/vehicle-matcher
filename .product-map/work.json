@@ -6361,7 +6361,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T00:44:33Z",
+      "observed_at": "2026-11-14T01:00:56Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -6378,14 +6378,17 @@
         },
         {
           "id": "s2-http-startup",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Startup provider selection, presenter release endpoints and startup reconciliation",
-          "observed_at": "2026-11-14T00:44:33Z"
+          "observed_at": "2026-11-14T01:00:56Z",
+          "evidence": "lead review of 4724a474; supply 52/52 and verify 142/0 on native PG17 at 2874f308; real-JVM startup reconcile, restart replay and bogus-provider refusal"
         },
         {
           "id": "s3-integration",
-          "status": "not-started",
-          "title": "Story validation, base merge, migration number and result"
+          "status": "complete",
+          "title": "Story validation, base merge, migration number and result",
+          "observed_at": "2026-11-14T01:00:56Z",
+          "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
         }
       ]
     },
