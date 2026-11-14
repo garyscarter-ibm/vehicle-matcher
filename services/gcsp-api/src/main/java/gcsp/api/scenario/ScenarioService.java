@@ -93,6 +93,12 @@ public final class ScenarioService {
         }
     }
 
+    /** The selected scenario and its versions, so a replayed commandId with other input is command-input-changed. */
+    public static ObjectNode resetInput(ResetRequest in) {
+        return F.objectNode().put("scenarioId", in.scenarioId()).put("scenarioVersion", in.scenarioVersion())
+                .put("fixtureVersion", in.fixtureVersion()).put("policyVersion", in.policyVersion());
+    }
+
     public ClockResult reset(RunContext scope, ResetRequest in) {
         DemoPreparation.Loaded loaded = preparation.catalogue(scope);
         if (!loaded.ok()) return loaded.failure();
@@ -113,7 +119,7 @@ public final class ScenarioService {
         Outcome done;
         try {
             done = reset.reset(scope.environmentId(), scope.actorId(), "scenario:reset:" + in.commandId(),
-                    in.expectedRunId(), newRunId);
+                    in.expectedRunId(), newRunId, resetInput(in));
         } catch (RuntimeException e) {
             return ClockResult.unavailable("database-unavailable", "The database could not be reached.", true);
         }

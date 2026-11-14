@@ -1,5 +1,11 @@
 package gcsp.api.scenario;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+
 import gcsp.api.clock.ClockResult;
 import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Persistence;
@@ -76,7 +82,24 @@ public class ScenarioWiring {
     }
 
     void onStart(@Observes @Priority(BEFORE_CLOCK_PASS) StartupEvent event) {
+        if (available()) requireResetDatabase(dataSource.get());
         startupPass();
+    }
+
+    /** demo seeds fictional people, so it stops startup unless this database was claimed with reset allowed. */
+    static void requireResetDatabase(DataSource source) {
+        boolean allowed;
+        try (Connection c = source.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT reset_allowed FROM environment_identity"); ResultSet rs = ps.executeQuery()) {
+            allowed = rs.next() && rs.getBoolean(1);
+        } catch (SQLException e) {
+            throw new IllegalStateException("GCSP_SCENARIO_PROVIDER=demo could not read the database identity (SQLState "
+                    + e.getSQLState() + ")");
+        }
+        if (!allowed) {
+            throw new IllegalStateException("GCSP_SCENARIO_PROVIDER=demo needs a database claimed with "
+                    + "GCSP_RESET_ALLOWED=true; this database does not allow reset, so nothing is seeded");
+        }
     }
 
     /** Prepares the active run when it has no scenario row; never stops startup and logs codes only. */

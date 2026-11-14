@@ -519,7 +519,9 @@ catalogue's (409 `stale-version`, `action: refresh`); a journey without a review
 `expectedRunId` is the active run (409 `stale-run`). The run then retires and a new `demo-<hash>` run activates in one
 transaction (`RunReset`), nothing is deleted, and the same command replays its receipt, even once the run is no longer active.
 If preparation of the new run fails, the answer is 503 `scenario-preparation-incomplete` (retryable) and the same reset
-command, or the next startup, completes it.
+command, or the next startup, completes it. A replayed `commandId` with another scenario or version is 409
+`command-input-changed`. `GCSP_SCENARIO_PROVIDER=demo` stops startup unless the database was claimed with
+`GCSP_RESET_ALLOWED=true`, so it can never seed a running deployment.
 
 **Synthetic faults** (`V479_3__scenario_faults.sql`, provider `demo` only, else 403 `scenarios-not-configured`): one keyed
 `scenario_faults` row per run and adapter, so a reset (a new run) starts with `none` and a restart keeps the fault. Only the
@@ -528,8 +530,8 @@ synthetic `tranche-plan` supply is altered: `unavailable` makes `stock-release` 
 (`none`) and send the same `tickId` and clock version to resume and release. A real supply provider is never altered.
 Ordering faults are not ported: no Java ordering adapter exists, so `ordering` is listed as not available yet.
 
-**Reset isolation and restart.** Reset needs the database's own identity to match: `environment_identity.reset_allowed`,
-`GCSP_EXPECTED_DATABASE` and `GCSP_ENVIRONMENT_ID`. Otherwise 403 `reset-not-allowed` or `reset-isolation-mismatch`; the
+**Reset isolation and restart.** Reset needs `GCSP_RESET_ALLOWED=true` on the running service and the database's own
+identity to match: `environment_identity.reset_allowed`, `GCSP_EXPECTED_DATABASE` and `GCSP_ENVIRONMENT_ID`. Otherwise 403 `reset-not-allowed` or `reset-isolation-mismatch`; the
 running database can never be reset. An ordinary restart never resets or reseeds: the active run, its clock and all new-app
 rows are kept. `GCSP_SCENARIO_PROVIDER=none` (the default) seeds nothing at all, so employee and account rows come only from
 their own providers. With `demo`, startup prepares the active run only if it has no `scenario_runs` row, with the mechanics
@@ -541,6 +543,11 @@ Node fixtures and is never read from Node at runtime. Regenerate it, from `servi
 (no `node_modules` needed). Known limit: OIDC principals carry the configured `GCSP_RUN_ID`, so employee endpoints keep
 that run after a reset until the run scope is unified.
 
+**Release notes.** From this Story, every deployment with persistence on runs a startup clock tick (it creates the active
+run's clock when absent). The bound `lifecycle-documents` handler and, with a pull provider configured, `stock-release`
+are now driven by presenter ticks on every such deployment, and `lifecycle-documents` also runs in the startup tick.
+Documents read the run clock instead of answering unavailable. The startup tick never pulls releases or dispatches
+mail; `GCSP_SCENARIO_PROVIDER` stays `none` unless set.
 ## Ordering (FUCQ-468)
 
 `gcsp.api.ordering` hands an employee's selection on to ordering exactly once. The operation id is deterministic per

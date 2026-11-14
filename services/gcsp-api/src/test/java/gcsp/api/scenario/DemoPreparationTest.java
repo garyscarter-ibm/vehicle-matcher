@@ -3,6 +3,7 @@ package gcsp.api.scenario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -214,6 +215,33 @@ class DemoPreparationTest {
     }
 
     @Test
+    void theSameResetCommandWithAnotherScenarioIsCommandInputChanged() throws Exception {
+        ScenarioService s = fx.service();
+        s.startup(ScenarioFixture.ENV, RUN);
+        ResetRequest req = reset("cmd-1", RUN, "gcsp-clock-scenario-v1", s, fx.presenter(RUN));
+        assertTrue(s.reset(fx.presenter(RUN), req).ok());
+        String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, "cmd-1");
+        ResetRequest other = new ResetRequest("cmd-1", RUN, "main-successful-journey", req.scenarioVersion(),
+                req.fixtureVersion(), req.policyVersion());
+        Outcome changed = fx.rawReset().reset(ScenarioFixture.ENV, "presenter:test", "scenario:reset:cmd-1", RUN, next,
+                ScenarioService.resetInput(other));
+        assertEquals("command-input-changed", assertInstanceOf(Outcome.Conflict.class, changed).code());
+        assertTrue(((ClockResult.Ok) s.reset(fx.presenter(next), req)).value().get("replayed").booleanValue());
+        assertEquals(1, fx.count("SELECT count(*) FROM run_resets"));
+    }
+
+    @Test
+    void demoRefusesToStartOnADatabaseThatDoesNotAllowReset() throws Exception {
+        try (ScenarioFixture locked = ScenarioFixture.create("GCSP_TEST_DATABASE_URL", false)) {
+            IllegalStateException refused = assertThrows(IllegalStateException.class,
+                    () -> ScenarioWiring.requireResetDatabase(locked.pool()));
+            assertTrue(refused.getMessage().contains("GCSP_RESET_ALLOWED=true"), refused.getMessage());
+            assertEquals(0, locked.count("SELECT count(*) FROM employees"));
+        }
+        ScenarioWiring.requireResetDatabase(fx.pool());
+    }
+
+    @Test
     void aJourneyIsRefusedBeforeAnyWrite() throws Exception {
         ScenarioService s = fx.service();
         s.startup(ScenarioFixture.ENV, RUN);
@@ -237,7 +265,8 @@ class DemoPreparationTest {
         ResetRequest req = reset("cmd-1", RUN, "gcsp-clock-scenario-v1", s, scope);
         String next = ScenarioService.newRunId(ScenarioFixture.ENV, RUN, "cmd-1");
         assertInstanceOf(Outcome.Committed.class,
-                fx.rawReset().reset(ScenarioFixture.ENV, "presenter:test", "scenario:reset:cmd-1", RUN, next));
+                fx.rawReset().reset(ScenarioFixture.ENV, "presenter:test", "scenario:reset:cmd-1", RUN, next,
+                        ScenarioService.resetInput(req)));
         assertEquals(0, people(next));
         ClockResult done = s.reset(fx.presenter(next), req);
         assertTrue(done.ok(), done.toString());
