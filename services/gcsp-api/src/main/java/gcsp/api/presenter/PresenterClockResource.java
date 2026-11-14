@@ -34,7 +34,8 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 /** Presenter-only clock and controls; the scope is the server's active run for this presenter, never the request. */
-@Path("/api/gcsp/v1/presenter")
+// The class path stays at the shared root: a longer class path would hide other resources' /presenter routes.
+@Path("/api/gcsp/v1")
 @Produces(MediaType.APPLICATION_JSON)
 public class PresenterClockResource {
 
@@ -50,20 +51,20 @@ public class PresenterClockResource {
     // ---- reads ----
 
     @GET
-    @Path("/clock")
+    @Path("/presenter/clock")
     public Response clock(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
         return run(authorization, uri, (clock, scope) -> clock.state(scope));
     }
 
     @GET
-    @Path("/clock/ticks/{tickId}")
+    @Path("/presenter/clock/ticks/{tickId}")
     public Response tick(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             @PathParam("tickId") String tickId) {
         return run(authorization, uri, (clock, scope) -> clock.tickView(scope, tickId));
     }
 
     @GET
-    @Path("/controls")
+    @Path("/presenter/controls")
     public Response controls(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
         return run(authorization, uri, (clock, scope) -> clock.controls(scope));
     }
@@ -71,7 +72,7 @@ public class PresenterClockResource {
     // ---- commands ----
 
     @POST
-    @Path("/clock/advance")
+    @Path("/presenter/clock/advance")
     public Response advance(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             String body) {
         List<String[]> reasons = new ArrayList<>();
@@ -88,7 +89,7 @@ public class PresenterClockResource {
     }
 
     @POST
-    @Path("/clock/tick")
+    @Path("/presenter/clock/tick")
     public Response tickNow(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             String body) {
         List<String[]> reasons = new ArrayList<>();
@@ -100,7 +101,7 @@ public class PresenterClockResource {
     }
 
     @POST
-    @Path("/controls/tick")
+    @Path("/presenter/controls/tick")
     public Response controlsTick(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             String body) {
         List<String[]> reasons = new ArrayList<>();
@@ -205,7 +206,7 @@ public class PresenterClockResource {
         return Response.status(http).entity(body).build();
     }
 
-    private static Response invalid(String code, String reason, List<String[]> reasons) {
+    static Response invalid(String code, String reason, List<String[]> reasons) {
         ObjectNode body = JSON.createObjectNode();
         body.put("status", "invalid");
         body.put("code", code);
@@ -218,7 +219,7 @@ public class PresenterClockResource {
 
     // ---- request parsing ----
 
-    private static ObjectNode fields(String body, Set<String> allowed, List<String[]> reasons) {
+    static ObjectNode fields(String body, Set<String> allowed, List<String[]> reasons) {
         try {
             JsonNode node = body == null || body.isBlank() ? null : JSON.readTree(body);
             if (node != null && node.isObject()) {
@@ -234,7 +235,7 @@ public class PresenterClockResource {
         return null;
     }
 
-    private static String text(ObjectNode in, String field, List<String[]> reasons) {
+    static String text(ObjectNode in, String field, List<String[]> reasons) {
         JsonNode node = in.get(field);
         if (node == null || !node.isTextual() || node.asText().isBlank() || node.asText().length() > 200) {
             reasons.add(new String[] {field, "Use text of 1 to 200 characters."});
