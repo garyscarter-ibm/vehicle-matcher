@@ -82,6 +82,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_VEHICLE_EVIDENCE_TIMEOUT_MS`, `GCSP_VEHICLE_EVIDENCE_MAX_ATTEMPTS` | `1000`, `1` | Bounds of one provider read (1..5000 ms, 1..2 attempts); anything else stops startup. |
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
+| `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).
@@ -549,6 +550,73 @@ Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table ab
 Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
 `gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
 
+## Clock, scenarios and presenter controls (FUCQ-479)
+
+**Clock** (`gcsp.api.clock`, `V479_1__clock.sql`): `run_clocks` holds one forward-only clock per run (instant, `clock_version`,
+scenario and fixture versions, the run's own start and named times); `clock_ticks` keeps each tick's plan and state;
+`clock_handler_receipts` is immutable. The start is the policy template (`clock.scenario.v1`) moved to the London date of
+the wall clock. Advance and tick are separate commands, each idempotent by command or tick id. A tick runs the stages in
+`clock.handler.order.v1` order (then handler id), each through its bound handler: `stock-release` (`release-pull`, with a
+pull provider), then on `pending-reconciliation` `lifecycle-appointments` (provider not `none`), `lifecycle-approvals`
+(provider and an order source, so absent until the selection handoff exists), `lifecycle-documents` (persistence on)
+`lifecycle-return-outcomes` (provider not `none`) and `selection-order-reconciliation` (ordering provider not `none`), then `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
+`missingStages`, never faked. Each handler outcome is a receipt; a handler that fails leaves the tick `interrupted`, and
+repeating the same `tickId` resumes it without repeating completed handlers. Startup runs one tick of the
+`startupStages` (`manual-expiry`, `buddy-expiry`, `pending-reconciliation`) after creating the active run's clock if it
+has none; it never pulls releases or dispatches. On a startup tick the approvals, appointments and return handlers answer
+`{"skipped":"startup-owned-by-service"}` without calling their service, because each already runs its own startup
+reconciler; documents still runs. The appointments handler records the tick then progresses with a server-built
+`system:clock` presenter principal. Appointments and returns keep their own derived clocks (`appointment_ticks`,
+`supply_release_ticks`); they are not replaced by the run clock.
+
+**Presenter endpoints** (presenter role only, no query parameters, scope is always the server's active run; none takes a
+principal or employee id, and an employee acts only under their own login):
+
+| Route | Meaning |
+| --- | --- |
+| `GET /presenter/clock`, `/presenter/controls`, `/presenter/clock/ticks/{tickId}` | Clock, controls (step, named times, next release) and one tick. |
+| `POST /presenter/clock/advance`, `/presenter/clock/tick`, `/presenter/controls/tick` | Advance, tick, or step / `to` / `next-release` in one command. |
+| `GET /presenter/scenarios` | Catalogue: versions, clock start, named times, display principals, availability, input provenance. |
+| `GET /presenter/scenarios/current` | The clock state plus `currentScenario` and `runId`. |
+| `POST /presenter/scenarios/reset` | `{commandId, expectedRunId, scenarioId, scenarioVersion, fixtureVersion, policyVersion}`. |
+| `GET /presenter/scenarios/faults` | `{runId, faults:[{adapter:"stock", mode, modes, available:true}, {adapter:"ordering", available:false, reason:"not available yet"}]}`. |
+| `POST /presenter/scenarios/faults` | `{commandId, adapter:"stock", mode: none \| unavailable \| stale}`; command `scenario.fault.set`, replays by `commandId`. |
+
+Reset order: provider is `demo` (else 403); scenario exists (404 `scenario-not-found`); the three versions equal the
+catalogue's (409 `stale-version`, `action: refresh`); a journey without a reviewed start loader is 503
+`scenario-not-available-yet` before any write (every journey is today: only `gcsp-clock-scenario-v1` is available);
+`expectedRunId` is the active run (409 `stale-run`). The run then retires and a new `demo-<hash>` run activates in one
+transaction (`RunReset`), nothing is deleted, and the same command replays its receipt, even once the run is no longer active.
+If preparation of the new run fails, the answer is 503 `scenario-preparation-incomplete` (retryable) and the same reset
+command, or the next startup, completes it. A replayed `commandId` with another scenario or version is 409
+`command-input-changed`. `GCSP_SCENARIO_PROVIDER=demo` stops startup unless the database was claimed with
+`GCSP_RESET_ALLOWED=true`, so it can never seed a running deployment.
+
+**Synthetic faults** (`V479_3__scenario_faults.sql`, provider `demo` only, else 403 `scenarios-not-configured`): one keyed
+`scenario_faults` row per run and adapter, so a reset (a new run) starts with `none` and a restart keeps the fault. Only the
+synthetic `tranche-plan` supply is altered: `unavailable` makes `stock-release` fail with `synthetic-stock-unavailable` and
+`stale` with `stock-source-stale`, both retryable and without calling supply, so the tick is `interrupted`. Clear the fault
+(`none`) and send the same `tickId` and clock version to resume and release. A real supply provider is never altered.
+Ordering faults are not ported: no Java ordering adapter exists, so `ordering` is listed as not available yet.
+
+**Reset isolation and restart.** Reset needs `GCSP_RESET_ALLOWED=true` on the running service and the database's own
+identity to match: `environment_identity.reset_allowed`, `GCSP_EXPECTED_DATABASE` and `GCSP_ENVIRONMENT_ID`. Otherwise 403 `reset-not-allowed` or `reset-isolation-mismatch`; the
+running database can never be reset. An ordinary restart never resets or reseeds: the active run, its clock and all new-app
+rows are kept. `GCSP_SCENARIO_PROVIDER=none` (the default) seeds nothing at all, so employee and account rows come only from
+their own providers. With `demo`, startup prepares the active run only if it has no `scenario_runs` row, with the mechanics
+scenario, inserting employees, account records and entitlement slots in one command (`scenario:prepare:<runId>`), then
+the clock; existing rows are never overwritten. The people are fictional and labelled so in
+`src/main/resources/gcsp/scenario/demo-preparation-v1.json` (5 employees, 9 scenarios). The file is generated offline from the
+Node fixtures and is never read from Node at runtime. Regenerate it, from `services/gcsp-api`, with
+`node tools/scenario-baseline/generate.mjs src/main/resources/gcsp/scenario/demo-preparation-v1.json`
+(no `node_modules` needed). Known limit: OIDC principals carry the configured `GCSP_RUN_ID`, so employee endpoints keep
+that run after a reset until the run scope is unified.
+
+**Release notes.** From this Story, every deployment with persistence on runs a startup clock tick (it creates the active
+run's clock when absent). The bound `lifecycle-documents` handler and, with a pull provider configured, `stock-release`
+are now driven by presenter ticks on every such deployment, and `lifecycle-documents` also runs in the startup tick.
+Documents read the run clock instead of answering unavailable. The startup tick never pulls releases or dispatches
+mail; `GCSP_SCENARIO_PROVIDER` stays `none` unless set.
 ## Ordering (FUCQ-468)
 
 `gcsp.api.ordering` hands an employee's selection on to ordering exactly once. The operation id is deterministic per

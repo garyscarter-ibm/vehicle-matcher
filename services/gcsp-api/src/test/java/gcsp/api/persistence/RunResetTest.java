@@ -126,6 +126,25 @@ class RunResetTest {
     }
 
     @Test
+    void resetIsRefusedWhenTheServiceIsConfiguredWithoutResetEvenIfTheDatabaseAllowsIt() throws Exception {
+        String before = f.stateDigest();
+        Outcome o = new RunReset(f.pool(), database, DEV, false).reset(DEV, "actor-1", "r-cfg", "run-1", "run-2");
+        assertEquals("reset-not-allowed", assertInstanceOf(Outcome.Refused.class, o).code());
+        assertEquals(before, f.stateDigest());
+    }
+
+    @Test
+    void aReplayedResetWithChangedInputConflicts() throws Exception {
+        var a = PgFixture.obj().put("scenarioId", "s-1");
+        var b = PgFixture.obj().put("scenarioId", "s-2");
+        assertInstanceOf(Outcome.Committed.class, reset.reset(DEV, "actor-1", "r-in", "run-1", "run-2", a));
+        Outcome same = reset.reset(DEV, "actor-1", "r-in", "run-1", "run-2", a);
+        assertEquals(true, assertInstanceOf(Outcome.Committed.class, same).replayed());
+        Outcome changed = reset.reset(DEV, "actor-1", "r-in", "run-1", "run-2", b);
+        assertEquals("command-input-changed", assertInstanceOf(Outcome.Conflict.class, changed).code());
+    }
+
+    @Test
     void afterResetTheOldRunRefusesCommandsAndTheNewRunAcceptsThem() throws Exception {
         assertInstanceOf(Outcome.Committed.class, reset.reset(DEV, "actor-1", "r-8", "run-1", "run-2"));
         TransactionRunner runner = new TransactionRunner(f.pool());

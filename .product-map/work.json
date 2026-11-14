@@ -7675,13 +7675,50 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T10:17:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479",
+      "slices": [
+        {
+          "id": "a-clock",
+          "status": "complete",
+          "title": "Clock core: persisted run clock, advance, idempotent tick with ordered handler registry, startup reconcile",
+          "observed_at": "2026-11-14T08:21:06Z",
+          "evidence": "Lead review of 49e287e92: V479_1 clock tables, RunClock/TickRunner; gcsp.api.clock 41/41 native PG 17 (port 55479), full verify 541/0 fail"
+        },
+        {
+          "id": "a2-handlers-http",
+          "status": "complete",
+          "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP",
+          "observed_at": "2026-11-14T08:40:43Z",
+          "evidence": "Lead review of 627905de9: bound stock-release/lifecycle-documents/captured-outbox handlers, RunClockDocumentClock, presenter clock/controls HTTP with role refusals; scoped 18/18 rerun, full verify 559/0 fail"
+        },
+        {
+          "id": "b-scenarios",
+          "status": "complete",
+          "title": "Scenario provider switch, explicit demo preparation, isolated reset and restart",
+          "observed_at": "2026-11-14T09:35:00Z",
+          "evidence": "Lead review of d31a5f516: GCSP_SCENARIO_PROVIDER none/demo, explicit DemoPreparation, isolated reset via RunReset, restart keeps runs; scenario+presenter 48/48 rerun native PG, full verify 991/0 fail"
+        },
+        {
+          "id": "b2-faults",
+          "status": "complete",
+          "title": "Synthetic faults, retry and native isolation proofs",
+          "observed_at": "2026-11-14T09:54:12Z",
+          "evidence": "Lead review of 5cfdc4539: run-scoped stock faults, bound approvals/appointments/return-outcomes handlers with startup skip, native journey fault->interrupt->clear->same-tick resume->reset; scoped 88/0, full verify 996/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, full Java verify and story result",
+          "observed_at": "2026-11-14T10:17:02Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
