@@ -6575,15 +6575,69 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T09:31:46Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-446"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-446",
+      "slices": [
+        {
+          "id": "progress-read",
+          "status": "not-started",
+          "title": "Read owned order and lifecycle facts",
+          "points": 3
+        },
+        {
+          "id": "employee-actions",
+          "status": "not-started",
+          "title": "Perform supported employee lifecycle actions",
+          "points": 3
+        },
+        {
+          "id": "view-parity",
+          "status": "not-started",
+          "title": "Preserve order progress screen and shared navigation",
+          "points": 3
+        },
+        {
+          "id": "review-proof",
+          "status": "not-started",
+          "title": "Review experience and original acceptance evidence",
+          "points": 2
+        },
+        {
+          "id": "java-integration",
+          "status": "not-started",
+          "title": "Prove composed Java lifecycle journey",
+          "points": 2
+        }
+      ],
+      "story_points": 13,
+      "start_date": "2026-11-14",
+      "branch": "dev/DEV-2026-11-13-014",
+      "delivery_plan": "docs/gcsp/fucq446-delivery.md",
+      "native_source_updated_at": "2026-11-14T03:24:26.536-0600",
+      "observation_basis": "Dispatcher native readback receipt inspected locally; not a new tracker query",
+      "historical_tracker_observation": {
+        "status": "To Do",
+        "assignee": "",
+        "observed_at": "2026-11-13T20:22:18.041Z"
+      },
+      "workers": [
+        {
+          "name": "Bertie",
+          "harness": "codex",
+          "role": "Story lead",
+          "observed_at": "2026-11-14T09:31:46Z",
+          "expires_at": "2026-11-14T09:31:46Z",
+          "status": "waiting on dispatcher plan publication; source unreleased",
+          "source": "chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3; docs/gcsp/fucq446-delivery.md"
+        }
+      ]
     },
     {
       "assignee": "",
