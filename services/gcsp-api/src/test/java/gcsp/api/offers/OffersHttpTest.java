@@ -168,6 +168,77 @@ class OffersHttpTest {
                 .header("Cache-Control", "no-store").header("Referrer-Policy", "no-referrer");
     }
 
+    private ValidatableResponse post(String token, String path, String body) {
+        return given().header("Authorization", "Bearer " + token).contentType("application/json").body(body).when()
+                .post(BASE + path).then();
+    }
+
+    private static String declineBody(String reason, int offerVersion, int holdVersion) {
+        return "{\"commandId\":\"cmd-1\",\"decision\":\"decline\",\"reasonCode\":\"" + reason
+                + "\",\"expectedOfferVersion\":" + offerVersion + ",\"expectedHoldVersion\":" + holdVersion + "}";
+    }
+
+    @Test
+    void decisionRoutesNeedABearerAndTheEmployeeRole() throws Exception {
+        given().contentType("application/json").body("{}").when().post(BASE + "/" + MINE + "/decision").then()
+                .statusCode(401).header("Cache-Control", "no-store");
+        given().when().get(BASE + "/" + MINE + "/decision-reasons").then().statusCode(401);
+        given().when().get(BASE + "/" + MINE + "/follow-up").then().statusCode(401);
+        post(token("sub-presenter", "presenter"), "/" + MINE + "/decision", declineBody("size", 4, 2)).statusCode(403)
+                .body("code", equalTo("role-required"));
+    }
+
+    @Test
+    void invalidDecisionBodiesAreRefused() throws Exception {
+        String path = "/" + MINE + "/decision";
+        post(ownerToken(), path, "not json").statusCode(400).body("code", equalTo("invalid-offer-decision"));
+        post(ownerToken(), path, "[]").statusCode(400).body("code", equalTo("invalid-offer-decision"));
+        post(ownerToken(), path, "{\"commandId\":\"c\",\"decision\":\"decline\"}").statusCode(400)
+                .body("code", equalTo("invalid-offer-decision"));
+        post(ownerToken(), path, declineBody("size", 4, 2).replace("}", ",\"runId\":\"r\"}")).statusCode(400)
+                .body("code", equalTo("invalid-offer-decision"));
+        post(ownerToken(), path, "x".repeat(17000)).statusCode(400).body("code", equalTo("invalid-offer-decision"));
+    }
+
+    @Test
+    void decisionRoutesRefuseQueriesAndOtherEmployees() throws Exception {
+        post(ownerToken(), "/" + MINE + "/decision?x=1", declineBody("size", 4, 2)).statusCode(400)
+                .body("code", equalTo("unsupported-query"));
+        get(ownerToken(), "/" + MINE + "/decision-reasons?x=1").statusCode(400).body("code", equalTo("unsupported-query"));
+        get(ownerToken(), "/" + MINE + "/follow-up?x=1").statusCode(400).body("code", equalTo("unsupported-query"));
+        post(token("sub-employee-b", "employee"), "/" + MINE + "/decision", declineBody("size", 4, 2)).statusCode(403)
+                .body("code", equalTo("offer-not-owned"));
+        get(token("sub-employee-b", "employee"), "/" + MINE + "/follow-up").statusCode(403)
+                .body("code", equalTo("offer-not-owned"));
+    }
+
+    @Test
+    void aStaleVersionStillReachesTheLockedRecheckSoItCanReplay() throws Exception {
+        post(ownerToken(), "/" + MINE + "/decision", declineBody("size", 9, 2)).statusCode(503)
+                .body("code", equalTo("offer-decision-unavailable"));
+    }
+
+    @Test
+    void aValidDecisionWithoutPersistenceIsUnavailableAndRetryable() throws Exception {
+        post(ownerToken(), "/" + MINE + "/decision", declineBody("size", 4, 2)).statusCode(503)
+                .body("code", equalTo("offer-decision-unavailable")).body("retryable", equalTo(true))
+                .header("Cache-Control", "no-store");
+        get(ownerToken(), "/" + MINE + "/follow-up").statusCode(503).body("code", equalTo("offer-decision-unavailable"));
+    }
+
+    @Test
+    void acceptIsNotAvailableYet() throws Exception {
+        post(ownerToken(), "/" + MINE + "/decision",
+                "{\"commandId\":\"c\",\"decision\":\"accept\",\"expectedOfferVersion\":4,\"expectedHoldVersion\":2}")
+                .statusCode(503).body("code", equalTo("offer-accept-unavailable"));
+    }
+
+    @Test
+    void decisionPathsDoNotShadowTheOfferRoutes() throws Exception {
+        get(ownerToken(), "/" + MINE).statusCode(200).body("value.offerId", equalTo(MINE));
+        get(ownerToken(), "/current").statusCode(200);
+    }
+
     @Test
     void noWriteOrExchangeRoutesExist() throws Exception {
         given().header("Authorization", "Bearer " + ownerToken()).when().post(BASE + "/access").then()
