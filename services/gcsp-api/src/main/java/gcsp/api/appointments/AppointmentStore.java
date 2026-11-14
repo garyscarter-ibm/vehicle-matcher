@@ -64,6 +64,7 @@ final class AppointmentStore {
         String pendingStep;
         String pendingOperationId;
         JsonNode blocked;
+        JsonNode outcome;
 
         Edit(Row r) {
             state = r.state();
@@ -74,6 +75,7 @@ final class AppointmentStore {
             pendingStep = r.pendingStep();
             pendingOperationId = r.pendingOperationId();
             blocked = r.blocked();
+            outcome = r.outcome();
         }
 
         boolean differs(Row r) {
@@ -81,7 +83,8 @@ final class AppointmentStore {
                     && Objects.equals(proposedSlot, r.proposedSlot()) && Objects.equals(proposalId, r.proposalId())
                     && Objects.equals(acceptedProposalId, r.acceptedProposalId())
                     && Objects.equals(pendingStep, r.pendingStep())
-                    && Objects.equals(pendingOperationId, r.pendingOperationId()) && Objects.equals(blocked, r.blocked()));
+                    && Objects.equals(pendingOperationId, r.pendingOperationId()) && Objects.equals(blocked, r.blocked())
+                    && Objects.equals(outcome, r.outcome()));
         }
     }
 
@@ -202,10 +205,10 @@ final class AppointmentStore {
     static void save(Tx tx, Row row, Edit e) throws SQLException {
         RunContext c = tx.context();
         tx.cas("UPDATE appointments SET state = ?, slot = ?, proposed_slot = ?, proposal_id = ?, accepted_proposal_id = ?, "
-                + "pending_step = ?, pending_operation_id = ?, blocked = ?, version = version + 1, updated_at = now() "
+                + "pending_step = ?, pending_operation_id = ?, blocked = ?, outcome = ?, version = version + 1, updated_at = now() "
                 + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ? AND version = ?", e.state,
                 e.slot == null ? null : e.slot.toJson(), e.proposedSlot == null ? null : e.proposedSlot.toJson(),
-                e.proposalId, e.acceptedProposalId, e.pendingStep, e.pendingOperationId, e.blocked, c.environmentId(),
+                e.proposalId, e.acceptedProposalId, e.pendingStep, e.pendingOperationId, e.blocked, e.outcome, c.environmentId(),
                 c.runId(), row.orderUuid(), row.version());
     }
 

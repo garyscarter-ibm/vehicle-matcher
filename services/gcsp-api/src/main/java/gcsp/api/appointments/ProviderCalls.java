@@ -51,6 +51,11 @@ final class ProviderCalls implements AutoCloseable {
         return call(() -> provider.reconcile(op), timeoutMs, new ProviderAnswer.Unknown());
     }
 
+    HandoverReadiness readiness(HandoverReadinessPort port, gcsp.api.persistence.RunContext run, String orderUuid,
+            long timeoutMs) {
+        return call(() -> port.read(run, orderUuid), timeoutMs, new HandoverReadiness.Unavailable());
+    }
+
     SlotOffer offer(AppointmentProvider provider, Instant now, SlotPolicy policy, long timeoutMs) {
         return call(() -> provider.offerSlots(now, policy), timeoutMs, new SlotOffer.Unavailable());
     }
@@ -75,7 +80,9 @@ final class ProviderCalls implements AutoCloseable {
                 return answer instanceof ProviderAnswer.Scheduled && proposed != null
                         && d.slot().slotId().equals(proposed.slotId());
             default:
-                return false; // complete is added with slice s3
+                Instant completedAt = Iso.parse(op.payload().path("completedAt").asText(null));
+                return answer instanceof ProviderAnswer.Completed && completedAt != null && completedAt.equals(d.at())
+                        && d.slot().slotId().equals(want.slotId());
         }
     }
 

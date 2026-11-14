@@ -28,6 +28,7 @@ final class ApptHarness implements AutoCloseable {
     final Path dir;
     final AppointmentPolicy policy;
     final StubStages stages = new StubStages();
+    final StubReadiness readiness = new StubReadiness();
     final RunContext run;
     final Principal paula = principal("employee", "employee-paula");
     final Principal alex = principal("employee", "employee-alex");
@@ -76,7 +77,8 @@ final class ApptHarness implements AutoCloseable {
         if (service != null) service.close();
         pool = fx.pool();
         provider = new Flaky(live ? new LiveAppointmentsStub() : new SyntheticAppointments(fx.pool()));
-        service = new AppointmentService(CountingDataSource.wrap(pool, statements), policy, provider, stages, new TickClock(pool));
+        service = new AppointmentService(CountingDataSource.wrap(pool, statements), policy, provider, stages, new TickClock(pool),
+                readiness);
     }
 
     static ObjectNode value(ObjectNode doc, String key) {

@@ -31,7 +31,7 @@ import java.util.Optional;
 import java.util.Set;
 import javax.sql.DataSource;
 
-/** Handover appointment planning: read, request, accept a change and the presenter tick (one command per write). */
+/** Handover appointments: read, request, accept a change, the presenter tick and greg's readiness-gated completion. */
 public final class AppointmentService implements AutoCloseable {
 
     public static final String SYSTEM_ACTOR = "lifecycle-appointments";
@@ -43,17 +43,27 @@ public final class AppointmentService implements AutoCloseable {
     private static final String DOWN = "Appointments are unavailable. Try again shortly.";
     private static final Set<String> REQUEST_KEYS = Set.of("commandId", "orderUuid", "slotId", "expectedVersion");
     private static final Set<String> ACCEPT_KEYS = Set.of("commandId", "orderUuid", "proposalId", "expectedVersion");
+    private static final Set<String> COMPLETE_KEYS = Set.of("commandId", "orderUuid", "expectedVersion");
+    private static final String READINESS_DOWN = "Documents and car preparation cannot be checked right now. Try again shortly.";
 
     private final DataSource dataSource;
     private final AppointmentPolicy policy;
     private final AppointmentProvider provider;
     private final OrderStagePort stages;
     private final AppointmentClock clock;
+    private final HandoverReadinessPort readiness;
     private final TransactionRunner runner;
     private final ProviderCalls calls = new ProviderCalls();
 
+    /** Without a documents service wired, readiness is unavailable and nothing can be completed. */
     public AppointmentService(DataSource dataSource, AppointmentPolicy policy, AppointmentProvider provider,
             OrderStagePort stages, AppointmentClock clock) {
+        this(dataSource, policy, provider, stages, clock, new UnconfiguredHandoverReadiness());
+    }
+
+    public AppointmentService(DataSource dataSource, AppointmentPolicy policy, AppointmentProvider provider,
+            OrderStagePort stages, AppointmentClock clock, HandoverReadinessPort readiness) {
+        this.readiness = readiness;
         this.dataSource = dataSource;
         this.policy = policy;
         this.provider = provider;
@@ -114,6 +124,21 @@ public final class AppointmentService implements AutoCloseable {
             Prep prep = prepare(who, run);
             if (prep.error != null) return prep.error;
             return doAccept(who, run, prep, input);
+        });
+    }
+
+    /** Greg only. Input {commandId, orderUuid, expectedVersion}; the handover must be ready and its slot started. */
+    public AppointmentResult complete(Principal who, RunContext run, JsonNode input) {
+        return safe(() -> {
+            AppointmentResult denied = role(who, Role.GREG);
+            if (denied != null) return denied;
+            List<AppointmentResult.Reason> bad = fields(input, COMPLETE_KEYS);
+            commandFields(input, bad);
+            if (!Values.id(input == null ? null : input.get("orderUuid"), 128)) bad.add(reason("orderUuid", "Choose an order to complete."));
+            if (!bad.isEmpty()) return new AppointmentResult.Invalid(INVALID, bad);
+            Prep prep = prepare(who, run);
+            if (prep.error != null) return prep.error;
+            return doComplete(who, run, prep, input);
         });
     }
 
@@ -414,6 +439,98 @@ public final class AppointmentService implements AutoCloseable {
         return after(who, run, prep, orderUuid, write(system(run), cfg.value, op, prep.now).text);
     }
 
+    // ---- completion ----
+
+    private AppointmentResult doComplete(Principal who, RunContext run, Prep prep, JsonNode input) throws SQLException {
+        RunContext ctx = new RunContext(run.environmentId(), run.runId(), "greg:" + who.subject());
+        String orderUuid = input.get("orderUuid").asText();
+        String commandId = input.get("commandId").asText();
+        long expected = Values.integer(input.get("expectedVersion"));
+        ObjectNode cmdInput = JSON.createObjectNode().put("orderUuid", orderUuid).put("expectedVersion", expected);
+        String opId = AppointmentIds.operationId(run.runId(), orderUuid, "complete");
+        Row p;
+        Optional<Op> prior;
+        try (Connection c = dataSource.getConnection()) {
+            if (AppointmentStore.probe(c, ctx, commandId, Canonical.digest(cmdInput)) == Probe.DIFFERENT) {
+                return new AppointmentResult.Conflict("command-input-changed", "The command id was used with different input.");
+            }
+            Optional<Row> found = AppointmentStore.row(c, ctx, orderUuid);
+            if (found.isEmpty()) {
+                return new AppointmentResult.NotFound("appointment", "No appointment was requested for this order.");
+            }
+            p = found.get();
+            if ("completed".equals(p.state())) return readModel(who, run, prep, orderUuid);
+            if (!"scheduled".equals(p.state())) {
+                return new AppointmentResult.Conflict("appointment-not-scheduled", "Only a scheduled handover can be completed.");
+            }
+            if (p.pendingStep() != null && !"complete".equals(p.pendingStep())) {
+                return new AppointmentResult.Conflict("appointment-update-pending",
+                        "Another update to this appointment is still being confirmed.");
+            }
+            prior = AppointmentStore.op(c, ctx, opId);
+        }
+        Got<AppointmentConfig> cfg = config(p.policyVersion(), prep.now);
+        if (cfg.error != null) return cfg.error;
+        if (prior.isPresent()) {
+            if (!prior.get().open()) return after(who, run, prep, orderUuid, "refused".equals(prior.get().state()) ? "blocked" : "repeat");
+            Label label = recover(system(run), cfg.value, prior.get(), prep.now, true);
+            return after(who, run, prep, orderUuid, label.text);
+        }
+        HandoverReadiness ready = calls.readiness(readiness, run, orderUuid, cfg.value.providerTimeoutMs());
+        if (!(ready instanceof HandoverReadiness.Ok ok)) {
+            return new AppointmentResult.Unavailable("handover-readiness-unavailable", READINESS_DOWN, true);
+        }
+        if (!ok.ready()) return notReady(who, run, prep, orderUuid, cfg.value, ok);
+        PolicyResult<OutcomeTiming> timing = policy.timing(p.policyVersion(), prep.now);
+        if (timing instanceof PolicyResult.Unavailable<OutcomeTiming> u) {
+            return new AppointmentResult.Unavailable(u.code(), u.reason(), u.retryable());
+        }
+        OutcomeTiming t = ((PolicyResult.Ok<OutcomeTiming>) timing).value();
+        Instant availableFrom = Iso.parse(p.slot().start()).plusSeconds(t.completeAfterSlotStartSeconds());
+        if (prep.now.isBefore(availableFrom)) {
+            AppointmentResult model = readModel(who, run, prep, orderUuid);
+            if (!(model instanceof AppointmentResult.Ok m)) return model;
+            ObjectNode extra = JSON.createObjectNode().put("owner", t.tooEarly().owner()).put("nextStep", t.tooEarly().nextStep())
+                    .put("availableFrom", Iso.format(availableFrom));
+            extra.set("appointment", m.value());
+            return new AppointmentResult.Conflict("appointment-outcome-too-early", t.tooEarly().nextStep(), extra);
+        }
+        if (expected != p.version()) return stale(p.version());
+        ObjectNode payload = payload(orderUuid, "complete", p.slot());
+        payload.put("completedAt", Iso.format(prep.now));
+        ObjectNode readyFacts = payload.putObject("readiness");
+        if (ok.documentsRevision() == null) readyFacts.putNull("documentsRevision");
+        else readyFacts.put("documentsRevision", ok.documentsRevision());
+        Outcome o = runner.execute(ctx, new Command("appointment.complete", commandId, cmdInput), tx -> {
+            tx.cas("UPDATE appointments SET pending_step = 'complete', pending_operation_id = ?, blocked = NULL, "
+                    + "version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? "
+                    + "AND order_uuid = ? AND version = ? AND state = 'scheduled' AND pending_step IS NULL",
+                    opId, ctx.environmentId(), ctx.runId(), orderUuid, expected);
+            PendingOperations.recordIntent(tx, opId, AppointmentIds.operationType("complete"), opId, payload);
+            AppointmentStore.insertInput(tx, opId, "complete", orderUuid, payload);
+            return WorkResult.ok(JSON.createObjectNode().put("operationId", opId));
+        });
+        if (o instanceof Outcome.Conflict c && "stale-version".equals(c.code())) return stale(currentVersion(ctx, orderUuid));
+        if (!(o instanceof Outcome.Committed)) return mapped(o);
+        Op op = new Op(opId, "complete", orderUuid, "intent", 1, 0, null, Canonical.digest(payload), payload);
+        return after(who, run, prep, orderUuid, write(system(run), cfg.value, op, prep.now).text);
+    }
+
+    private AppointmentResult notReady(Principal who, RunContext run, Prep prep, String orderUuid, AppointmentConfig cfg,
+            HandoverReadiness.Ok ready) throws SQLException {
+        AppointmentResult model = readModel(who, run, prep, orderUuid);
+        if (!(model instanceof AppointmentResult.Ok m)) return model;
+        AppointmentConfig.Step wait = cfg.outcomes().notReady();
+        ObjectNode extra = JSON.createObjectNode().put("owner", wait.owner()).put("nextStep", wait.nextStep());
+        ObjectNode facts = extra.putObject("readiness");
+        if (ready.state() == null) facts.putNull("state"); else facts.put("state", ready.state());
+        facts.put("documentsComplete", ready.documentsComplete()).put("vehicleReady", ready.vehicleReady());
+        ArrayNode blocking = facts.putArray("blocking");
+        ready.blocking().forEach(blocking::add);
+        extra.set("appointment", m.value());
+        return new AppointmentResult.Conflict("handover-not-ready", wait.nextStep(), extra);
+    }
+
     private long currentVersion(RunContext ctx, String orderUuid) throws SQLException {
         try (Connection c = dataSource.getConnection()) {
             return AppointmentStore.row(c, ctx, orderUuid).map(Row::version).orElse(0L);
@@ -463,6 +580,7 @@ public final class AppointmentService implements AutoCloseable {
             String from = switch (op.step()) {
                 case "request" -> "not-requested";
                 case "confirm" -> "requested";
+                case "complete" -> "scheduled";
                 default -> "change-proposed";
             };
             if (found.isEmpty() || !from.equals(found.get().state())) return WorkResult.ok(text(Label.SETTLED));
@@ -509,6 +627,16 @@ public final class AppointmentService implements AutoCloseable {
         String state;
         switch (op.step()) {
             case "request" -> state = "requested";
+            case "complete" -> {
+                state = "completed";
+                ObjectNode outcome = JSON.createObjectNode().put("state", "completed").put("at", Iso.format(d.at()))
+                        .put("providerReference", d.providerReference());
+                e.outcome = outcome;
+                ObjectNode event = JSON.createObjectNode().put("orderUuid", row.orderUuid()).put("employeeId", row.employeeId())
+                        .put("occurredAt", Iso.format(d.at())).put("providerReference", d.providerReference())
+                        .put("slotId", d.slot().slotId()).put("policyVersion", row.policyVersion());
+                tx.emit(op.operationId(), "appointment-completed", event);
+            }
             case "accept" -> {
                 state = "scheduled";
                 e.slot = row.proposedSlot();
