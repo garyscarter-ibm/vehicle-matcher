@@ -4,6 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
+### OneDrive restriction and shared learnings
+
+Follow `AGENTS.md`, sections "OneDrive access — explicit human restriction, 14 November 2026" and
+"Shared dispatcher learnings", in this session and every descendant brief. Never access Gary's OneDrive.
+Both pollers read and append issues and resolution evidence to `docs/gcsp/dispatcher-learnings.md`.
+
 ### Jira updates resumed
 
 Follow `AGENTS.md`, section “Jira updates resumed”: Gary explicitly lifted the project-wide pause on

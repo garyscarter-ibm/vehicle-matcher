@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Optional;
 
 /** Buddy engagement rules: the Account minimum gate, Same again, and the engaged-or-not view. */
-final class Engagement {
+public final class Engagement {
 
     /** The minimum evaluated on one piece of content; remaining is what the employee still has to choose. */
     record Gate(boolean ok, int remaining, int considered, int minimumCategories) {}
@@ -15,7 +15,7 @@ final class Engagement {
     private Engagement() {}
 
     /** Search and hold share one Buddy switch, so a partial grant is not engaged. */
-    static boolean engaged(JsonNode buddy) {
+    public static boolean engaged(JsonNode buddy) {
         return buddy != null && flag(buddy, "searchConsent") && flag(buddy, "holdConsent") && buddy.path("paused").isBoolean()
                 && !buddy.get("paused").booleanValue();
     }

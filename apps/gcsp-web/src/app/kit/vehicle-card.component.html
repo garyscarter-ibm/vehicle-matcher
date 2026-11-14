@@ -1,0 +1,26 @@
+<article class="gcsp-vehicle-card" tabindex="-1" [attr.data-member-id]="memberId()" [attr.aria-label]="name()">
+  <gcsp-media-gallery [name]="name()" [images]="images()" [placeholder]="placeholder()" [compact]="true" />
+  <div class="gcsp-vehicle-card-body">
+    <header>
+      <h2>{{ name() }}</h2>
+      @if (line()) { <p class="gcsp-note">{{ line() }}</p> }
+      @if (orderNumber()) { <p class="gcsp-note">Order no. {{ orderNumber() }}</p> }
+    </header>
+    <div class="gcsp-vehicle-card-cost">
+      @if (points() !== null) { <p><strong>{{ number(points()!) }}</strong> points a month</p> }
+      @else { <p>Monthly points not supplied</p> }
+      @if (points() !== null && allowance() !== null) {
+        @if (points()! > allowance()!) { <p class="gcsp-note">{{ number(points()! - allowance()!) }} points over your allowance</p> }
+        @else { <p class="gcsp-note">Within your allowance, {{ number(allowance()! - points()!) }} points left</p> }
+      } @else { <p class="gcsp-note">Allowance not supplied</p> }
+      @if (contribution(); as cost) { <p class="gcsp-note">Contribution: {{ number(cost.amount) }} {{ cost.currency }}/{{ cost.period }}</p> }
+    </div>
+    @if (eligibility()) { <p class="gcsp-note">{{ eligibility() }}</p> }
+    <details><summary>Car facts</summary><gcsp-fact-list [rows]="facts()" hideMissing="More details not supplied" /></details>
+    <div class="gcsp-actions">
+      <button gcspButton type="button" [disabled]="reviewDisabled()" [attr.aria-describedby]="disabledReason() ? reasonId : null" (click)="activate('review')">Review this car</button>
+      <button gcspButton type="button" variant="ghost" [attr.data-details-id]="memberId()" (click)="activate('details')">Vehicle details</button>
+    </div>
+    @if (disabledReason()) { <p class="gcsp-note" [id]="reasonId">{{ disabledReason() }}</p> }
+  </div>
+</article>
