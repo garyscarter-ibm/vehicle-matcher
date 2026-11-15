@@ -540,6 +540,38 @@ Refusals: 400 `invalid-offer-reference`, `unsupported-query`; 401 as above; 403 
 `employeeId`), `offer-not-owned` (another employee; no offer facts returned); 404 `offer-not-found`; 409
 `offer-from-earlier-run`; 503 `offer-access-unavailable` (retryable) and `offer-state-inconsistent`.
 
+## Offer decisions (FUCQ-466)
+
+`OfferDecisions` applies the owner's local accept or decline. `authorizeDecision` is only a snapshot. Inside the write
+transaction the hold, offer and car rows are locked `FOR UPDATE` (the same order as `BuddyExpiry`) and checked again:
+owner, active offer and hold, offer and hold versions, inclusive deadline, car `released` with no other occupant, and
+no remote operation. The run is enforced by the command runner. Every write is a version CAS and bumps `stock_cars.version`.
+`offer_decisions` (V466_1) is immutable, one row per offer, so a second decision cannot commit.
+
+| Path | Result |
+| --- | --- |
+| `POST /api/gcsp/v1/offers/{offerId}/decision` | `{commandId, decision, expectedOfferVersion, expectedHoldVersion}` plus `reasonCode` (decline) or `termsDigest`, `declarations`, optional `expectedReturnMileage` (accept). |
+| `GET /api/gcsp/v1/offers/{offerId}/decision-reasons` | The `offer.declineReasons.v1` registry at the principal's policy version. |
+| `GET /api/gcsp/v1/offers/{offerId}/follow-up` | After a decline: `waiting-for-next-offer`, or `next-offer` with `nextOfferId`; `briefChange: unavailable`. |
+
+- Decline releases the hold (`releaseReason: offer-declined`) and declines the offer. It records the reason and the
+  `offer.declinedCar.exclusion` rule, and emits `offer-declined` in the same transaction. The allocator then reallocates
+  the car and excludes it for the decliner.
+- Accept runs inside ordering's transaction through `OrderingService.submitTrusted` and the per-call `BuddyOfferConversion`.
+  Contact, driver and return data come from the account port. Brief meaning, quote validity, allowance and eligibility are
+  revalidated against the retained quote. Hold, offer and car become `allocated`/`accepted` with the selection, decision
+  and `offer-accepted` event. Any refusal rolls all of it back.
+- Replaying the same `commandId` and input returns the first outcome with `replayed: true`. Reusing the id with other input
+  is 409 `command-input-changed`, and another command on a decided offer is 409 `offer-no-longer-pending`.
+- Refusals: 400 `invalid-offer-decision`, `expected-return-mileage-required`; 403 `offer-not-owned`; 409 `stale-version`,
+  `deadline-passed`, `selection-authority-changed`, `quote-no-longer-valid`, `allowance-exceeded`,
+  `current-eligibility-refused`, `brief-changed-review-required`, `contact-required`, `driver-review-required`, `stale-run`;
+  503 `offer-decision-unavailable`, `decline-reasons-unavailable`, `remote-decision-protocol-required` (remote Buddy mode
+  or a remote hold: FUCQ-467), `ordering-provider-not-configured`, `selection-source-unavailable`.
+- Accept needs a configured ordering provider and account source (`GCSP_ORDERING_PROVIDER`, `GCSP_ACCOUNT_PROVIDER`).
+  Decline needs the reviewed `offer.declineReasons.v1` in the active policy version. The base seed lacks it, so decline
+  is 503 `decline-reasons-unavailable` until that set is adopted.
+
 ## Order approvals (FUCQ-470)
 
 `gcsp.api.approvals` ports the Node lifecycle approvals. `ApprovalService` records each presenter tick durably, asks the
