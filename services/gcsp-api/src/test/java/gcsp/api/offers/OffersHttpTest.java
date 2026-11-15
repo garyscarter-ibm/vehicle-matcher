@@ -227,10 +227,10 @@ class OffersHttpTest {
     }
 
     @Test
-    void acceptIsNotAvailableYet() throws Exception {
+    void anAcceptWithoutTermsOrDeclarationsIsInvalid() throws Exception {
         post(ownerToken(), "/" + MINE + "/decision",
                 "{\"commandId\":\"c\",\"decision\":\"accept\",\"expectedOfferVersion\":4,\"expectedHoldVersion\":2}")
-                .statusCode(503).body("code", equalTo("offer-accept-unavailable"));
+                .statusCode(400).body("code", equalTo("invalid-offer-decision"));
     }
 
     @Test

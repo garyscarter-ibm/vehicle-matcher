@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.function.Function;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 /** Java (http, status, code) for each Node decline outcome in server/gcsp/offers/decision.js (decide, #load, #transact). */
@@ -15,8 +15,16 @@ class OfferDecisionParityTest {
         return DecisionEnv.decline("cmd-1", "size", 1, 1);
     }
 
-    private record Case(String name, ThrowingSetup setup, Function<DecisionEnv, ObjectNode> body, int http, String status,
-            String code) {}
+    private record Case(String name, ThrowingSetup setup, ThrowingBody body, int http, String status, String code) {}
+
+    @FunctionalInterface
+    private interface ThrowingBody {
+        ObjectNode apply(DecisionEnv env) throws SQLException;
+    }
+
+    private static ObjectNode accept(DecisionEnv e) throws SQLException {
+        return e.accept("cmd-1", 1, 1, null);
+    }
 
     @FunctionalInterface
     private interface ThrowingSetup {
@@ -52,7 +60,31 @@ class OfferDecisionParityTest {
                     "selection-authority-changed"),
             new Case("remote mode", e -> e.mode = "remote", OfferDecisionParityTest::standard, 503, "unavailable", "remote-decision-protocol-required"),
             new Case("registry missing", e -> e.decisions = e.service(DecisionEnv.policy(false)), OfferDecisionParityTest::standard, 503, "unavailable",
-                    "decline-reasons-unavailable"));
+                    "decline-reasons-unavailable"),
+            new Case("accepts", e -> {}, OfferDecisionParityTest::accept, 200, "ok", null),
+            new Case("accept quote lapsed", e -> e.pg.rollQuoteEnd(Instant.parse("2026-11-14T08:59:00Z")),
+                    OfferDecisionParityTest::accept, 409, "conflict", "quote-no-longer-valid"),
+            new Case("accept allowance exceeded", e -> e.pg.rollMonthlyPoints(1200), OfferDecisionParityTest::accept, 409,
+                    "conflict", "allowance-exceeded"),
+            new Case("accept no longer eligible", e -> e.pg.alterQuote("UPDATE buddy_quotes SET quote = jsonb_set(quote, "
+                    + "'{snapshot,facts,eligibilityModelKey,value}', '\"F70 Sports Hatch|M135\"')"),
+                    OfferDecisionParityTest::accept, 409, "conflict", "current-eligibility-refused"),
+            new Case("accept brief changed", e -> {
+                e.pg.update("UPDATE brief_heads SET brief_version = 4");
+                e.insertBrief(4, DecisionEnv.ESSENTIALS.replace("\"value\":5", "\"value\":7"));
+            }, OfferDecisionParityTest::accept, 409, "conflict", "brief-changed-review-required"),
+            new Case("accept deadline passed", e -> e.now[0] = DecisionEnv.NOW.plusSeconds(3600),
+                    OfferDecisionParityTest::accept, 409, "conflict", "deadline-passed"),
+            new Case("accept stale version", e -> {}, e -> e.accept("c", 2, 1, null), 409, "conflict", "stale-version"),
+            new Case("accept after decline", e -> e.decide(DecisionEnv.decline("first", "size", 1, 1)),
+                    OfferDecisionParityTest::accept, 409, "conflict", "offer-no-longer-pending"),
+            new Case("accept remote mode", e -> e.mode = "remote", OfferDecisionParityTest::accept, 503, "unavailable",
+                    "remote-decision-protocol-required"),
+            new Case("accept without terms is invalid", e -> {}, e -> {
+                ObjectNode b = accept(e);
+                b.remove("termsDigest");
+                return b;
+            }, 400, "invalid", "invalid-offer-decision"));
 
     @Test
     void javaAnswersLikeNode() throws Exception {

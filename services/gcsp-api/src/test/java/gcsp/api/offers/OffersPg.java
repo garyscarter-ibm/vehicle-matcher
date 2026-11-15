@@ -17,6 +17,9 @@ final class OffersPg implements AutoCloseable {
     static final String ENV = "test-env";
     private static final AtomicInteger RUNS = new AtomicInteger();
     private static final AtomicInteger IDS = new AtomicInteger();
+    static final String QUOTE = "{\"gateStatus\":\"eligible\",\"snapshot\":{\"facts\":{\"eligibilityModelKey\":"
+            + "{\"status\":\"known\",\"value\":\"F70 Sports Hatch|120\"}}},"
+            + "\"terms\":{\"validUntil\":\"2026-12-01T00:00:00.000Z\"}}";
 
     final String url;
     final String schema;
@@ -58,6 +61,21 @@ final class OffersPg implements AutoCloseable {
         update("INSERT INTO runs (environment_id, run_id, status) VALUES (?, ?, 'active')", ENV, to);
     }
 
+    /** Runs one UPDATE on the immutable quote row, for the expired-quote, allowance and eligibility tests. */
+    void alterQuote(String sql, Object... params) throws SQLException {
+        update("ALTER TABLE buddy_quotes DISABLE TRIGGER buddy_quotes_immutable");
+        update(sql, params);
+        update("ALTER TABLE buddy_quotes ENABLE TRIGGER buddy_quotes_immutable");
+    }
+
+    void rollQuoteEnd(Instant validUntil) throws SQLException {
+        alterQuote("UPDATE buddy_quotes SET valid_until = ?", at(validUntil));
+    }
+
+    void rollMonthlyPoints(int points) throws SQLException {
+        alterQuote("UPDATE buddy_quotes SET monthly_points = ?", points);
+    }
+
     static String hex() {
         return String.format("%064x", IDS.incrementAndGet());
     }
@@ -87,8 +105,8 @@ final class OffersPg implements AutoCloseable {
         update("INSERT INTO buddy_quotes (environment_id, run_id, quote_id, allocation_id, order_uuid, employee_id, "
                 + "slot_id, configuration_id, policy_version, quoted_at, valid_until, monthly_points, vehicle_name, "
                 + "image_path, quote) VALUES (?, ?, ?, ?, ?, ?, ?, 'config-1', 'policy-1', ?, ?, 420, 'BMW 120d', "
-                + "'/img/a.jpg', '{\"gateStatus\":\"eligible\"}'::jsonb)",
-                ENV, runId, quote, alloc, order, employeeId, slot, created, exp);
+                + "'/img/a.jpg', ?::jsonb)",
+                ENV, runId, quote, alloc, order, employeeId, slot, created, exp, QUOTE);
         update("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, "
                 + "slot_unit, hold_type, state, expires_at) VALUES (?, ?, ?, ?, ?, ?, 1, 'buddy-offer', ?, ?)",
                 ENV, runId, hold, order, employeeId, slot, holdState, exp);
