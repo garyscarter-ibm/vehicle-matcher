@@ -47,4 +47,16 @@ public record OfferOutcome(int http, String status, String code, String reason, 
         current.put("offerVersion", view.offerVersion());
         return new OfferOutcome(409, "conflict", code, reason, false, null, current);
     }
+
+    public static OfferOutcome of(int http, String status, String code, String reason, boolean retryable) {
+        return new OfferOutcome(http, status, code, reason, retryable, null, null);
+    }
+
+    /** A 409 carrying the state and version the caller should reload against. */
+    public static OfferOutcome conflict(String code, String reason, String state, long offerVersion) {
+        ObjectNode current = JsonNodeFactory.instance.objectNode();
+        current.put("state", state);
+        current.put("offerVersion", offerVersion);
+        return new OfferOutcome(409, "conflict", code, reason, false, null, current);
+    }
 }
