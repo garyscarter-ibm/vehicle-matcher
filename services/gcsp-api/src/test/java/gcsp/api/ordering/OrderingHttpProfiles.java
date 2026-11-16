@@ -69,7 +69,10 @@ public final class OrderingHttpProfiles {
 
         @Override
         public Map<String, String> getConfigOverrides() {
-            return config("employee,presenter", OWNER, "synthetic", true);
+            Map<String, String> m = config("employee,presenter", OWNER, "synthetic", true);
+            // The real cart bean (FUCQ-463) now exists; exclude it so this profile still has no cart binding.
+            m.put("quarkus.arc.exclude-types", "gcsp.api.claims.CartSelectionConversion");
+            return m;
         }
     }
 

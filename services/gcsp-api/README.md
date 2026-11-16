@@ -64,6 +64,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_MAIL_FROM` | empty | Sender address. Required with `brevo`. |
 | `GCSP_MAIL_FROM_NAME` | empty | Sender display name. Required with `brevo`. |
 | `GCSP_NOTIFY_DRAIN_INTERVAL` | `5s` | How often pending notifications are drained, from `1s` to `10m`. |
+| `GCSP_CLAIMS_SWEEP_INTERVAL` | `5s` | How often due manual claims expire and open remote claim operations reconcile, from `1s` to `10m`. |
 | `GCSP_DOCUMENTS_PROVIDER` | `none` | Document provider: `none` and `unsupported` refuse acknowledgement (422), `synthetic` gives fictional evidence. Unknown values stop startup. |
 | `GCSP_SUPPLY_PROVIDER` | `none` | Stock source: `none` leaves every pull unavailable (ticks stay pending), `tranche-plan` reads a synthetic plan file. Unknown values stop startup. |
 | `GCSP_SUPPLY_TRANCHE_PLAN_FILE` | empty | `tranche-plan` only: path to the labelled synthetic plan. Missing, unreadable or invalid stops startup. |
@@ -73,6 +74,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
 | `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
+| `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
 | `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
 | `GCSP_VEHICLE_ASSETS_ROOT` | empty | Absolute directory that contains `assets/gcsp-vehicle-evidence/` (the repository root). Required with either provider. |
@@ -81,6 +83,8 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_VEHICLE_EVIDENCE_TIMEOUT_MS`, `GCSP_VEHICLE_EVIDENCE_MAX_ATTEMPTS` | `1000`, `1` | Bounds of one provider read (1..5000 ms, 1..2 attempts); anything else stops startup. |
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
+| `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
+| `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).
@@ -108,13 +112,34 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
 that state committed. The dispatcher drains pending rows every `GCSP_NOTIFY_DRAIN_INTERVAL`. Delivery moves through
 `pending` (no delivery row yet), `sending`, `retrying`, `sent` or `failed`, each by a version-checked update.
-Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts are not yet
-bound, so each attempt retries as `transport-unavailable` until the Java offer Story binds `OfferFacts`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
+Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliveryRules`). Offer facts come from
+`PostgresOfferFacts` (FUCQ-465); an offer with no record fails as `message-facts-unavailable`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
 With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
 retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
+
+## Manual claims (FUCQ-463)
+
+`gcsp.api.claims.ManualClaims` takes the exact car for one employee (employee only; the principal needs an `employeeId`).
+Routes under `/api/gcsp/v1`: `GET /manual/claim`, `POST /manual/claim`, `POST /manual/claim/review`, `POST /manual/claim/release`.
+Any query is `400 unsupported-query`; a principal from an earlier run is `409 stale-run`. There is deliberately no public
+allocate route: ordering reaches the claim through `CartSelectionConversion` (the `cart` `SelectionConversionPort` bean), which
+locks and allocates the hold and car inside ordering's own transaction; `quoteId` (`manual-hold:d` is `manual-quote:d`) is in the claim view.
+
+- Exclusivity is the `custody_holds` unique indexes; the slot and hold rows are read `FOR UPDATE`, and each command is one
+  transaction. Idempotency is the command receipt (a changed body under the same `commandId` is `409
+  idempotency-input-changed`) and, remotely, the operation id.
+- Remote mode commits an intent, calls `ClaimStockPort` outside any transaction, then finalizes. Only `LocalClaimStock`
+  ships; remote is proven with a test double, and no live remote stock authority exists.
+- `ClaimSweep` expires due holds and reconciles open remote operations every `GCSP_CLAIMS_SWEEP_INTERVAL` (actor `system:manual-claims`).
+- In remote mode the local review deadline governs: the remote authority still holds the preview deadline sent with the
+  claim, so remote deadlines are advisory and release or expiry always go through an explicit operation. A remote
+  allocation submitted through ordering is recorded in `selection-pending` and driven by `ClaimSweep` after ordering commits.
+- `SlotOccupancyPort` reads `offerId` from the Buddy hold's `attributes` (FUCQ-464 writes it there). Still unbound:
+  `ManualSelectionPort` (every claim is `503 manual-selection-not-configured` until Java manual browse, eligibility and
+  order draft, FUCQ-461/442, land).
 
 ## Policy (FUCQ-457)
 
@@ -165,6 +190,34 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
   there is no `clockVersion`. Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
   `expectedVersion`, `currentVersion`, `action` or `operationId`; `src/test/resources/policy-http/outcomes.json` records them.
 
+## Learned demand forecast (FUCQ-476)
+
+`gcsp.api.learning` ports the Node learned demand forecast (`server/gcsp/predict/{model,forecast}`). The planner story
+injects `LearnedDemandForecastPort.forecast(predictionInput, PolicyRead)` and gets the Node body (`ok`, `fallback`,
+`invalid` or `unavailable`); there is no route, as in Node. `LearnedNarrowing` holds the pure `likeliest` and wait rules.
+
+- Artifacts are read in place: the pom packages `docs/gcsp/models/artifacts/*.json` under `gcsp/learning/artifacts/`
+  (the Dockerfile copies the same folder). `GCSP_LEARNING_ARTIFACT_DIR` (absolute, existing directory, else startup fails)
+  overrides it. Both stores keep the 8 MiB cap and the `<hex>.json` name; a verified artifact is cached by size and mtime.
+- Activation needs a `choice.model.reference` policy row; the seed has none, so the default is fallback `no-active-model`
+  (Java has no reviewed definition-set adoption yet, as in Node).
+- Bounds against Node: per-employee choice, wait and acceptance probabilities within 1e-12, aggregate expected/low/high
+  within 1e-9 (absolute). Statuses, reasons, limitation strings, `version` digest, coverage lists, kept sets and ranking are exact.
+- `node services/gcsp-api/src/test/parity/learning-parity.mjs` (repository root; needs `server/node_modules`) rewrites
+  `src/test/resources/learning-parity/cases.json`; `LearningParityTest` replays it without Node.
+
+### Learning records
+`LearningRecordService.readRecords(Principal)` ports Node `readRecords`; it is a bean with no route. Greg only (else `forbidden`);
+the principal needs environment, run and policy version, else `unavailable/not-configured`.
+
+- One `READ ONLY REPEATABLE READ` snapshot replaces Node's two fenced reads: 4 statements per call (run status, briefs, slots,
+  stock), independent of row count. A retired run is `conflict/stale-run`. Failures: `source-invalid`, `database-unavailable`, `persistence-not-configured`.
+- Every `briefs` row is an immutable confirmed version. Brief owners are derived as `employee` (Java `employees` has no roles); slot and renewal refs stay null.
+- Offers, holds, decisions, quotes and receipts come from the `LearningOutcomeRows` port. The default is unbound and empty, so the body
+  carries `outcomeSources: {status: unknown, reason: outcome-producers-not-bound}`. Binding follows FUCQ-466/467 (offers, decisions), FUCQ-461 (quotes), FUCQ-464 (holds).
+- `offer.declineReasons.v1` is read through `PolicyService` at the principal's version. The seed has none, so the default answer is `unavailable/decline-reasons-unavailable`, as in Node.
+- `LearningClock` defaults to the policy wall clock (ISO millis, version `wall-clock`); the presenter demo clock (FUCQ-479) replaces it.
+
 ## Endpoints
 
 | Path | Result |
@@ -179,6 +232,7 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
 | `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
 | `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
 | `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
+| `POST /api/gcsp/v1/recommendations` | Employee role only; the body is the brief. The caller's own recommendations over released stock: `{status:"ok",value}` (see Recommendations). 400 `unsupported-query` or `invalid-brief`; 409 `stale-run`; 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` or the service's `unavailable` outcome. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
 | `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
 | `GET /api/gcsp/v1/presenter/releases/latest` | The run's latest tranche receipt (inspection only; the presenter screen's richer projection with images and charts belongs to its own Story). |
@@ -317,6 +371,64 @@ they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `in
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
 and `outcome-uncertain` (with `operationId`).
 
+## Recommendations (FUCQ-461)
+
+`gcsp.api.recommendation` ports the Node employee recommendation service. `RecommendationService` evaluates one brief
+against every released car the caller may see, with eligibility, points cost and allowance read from the policy snapshot.
+`POST /api/gcsp/v1/recommendations` takes the brief as the body (as Node does) and returns the service outcome JSON:
+
+| Outcome | HTTP |
+| --- | --- |
+| `ok` | 200 `{status:"ok",value}` |
+| `invalid` (`invalid-brief`, `unsupported-query`, `invalid-context`) | 400 |
+| `forbidden` | 403 |
+| `stale-run` (the principal's run is not the active run, or the source's run differs) | 409 |
+| `unavailable` (source, clock or policy failure) | 503 |
+| no persistence, no account provider, or no employment record | 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` |
+
+The context comes only from the bearer principal (environment, run, employee, policy version) and the account's employment
+record (company, scheme, grade, slot); nothing is taken from the body. Integration may switch the policy version to
+`PolicyActivation.activatedPolicyVersion`. `ReleasedStockRecommendationSource` assembles the Node provider output from
+`AccountService.readAccount`, `AccountRecordsPort.readDrivers` and `ReleasedStock.page`: every released car whose visibility
+names the caller, `unavailable` when occupied by a custody hold, with a sorted `orderUuid:version` stock version. An
+unconfirmed visibility record or any failed read makes the whole source `unavailable`; nothing is substituted.
+`VehicleEvidencePort` supplies each car's snapshot; `StockFactsEvidence` returns the stored `attributes.facts`, as Node does,
+until FUCQ-459 replaces it.
+
+Bounds per request: a constant number of account reads (employment, contract, drivers, current cars), one run lookup,
+`floor(N / 500) + 1` stock pages of 500 for N released cars (3 for 1,201), and per visible car one eligibility and one
+points read from the in-memory PolicyService snapshot. Nothing is cached across requests, and no candidate is dropped.
+
+## Buddy allocation (FUCQ-464)
+
+`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
+services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+
+| Service | Does |
+| --- | --- |
+| `AllocationTriggers.consume(scope, max)` | Reads `stock-released`, `brief-changed`, `buddy-expired` (grouped per revision and `expiredAt`) and `offer-declined` outbox events after `allocation_trigger_cursor`, allocates each, then advances the cursor by version CAS. |
+| `AllocationService.allocate(scope, trigger)` | `allocation.prepare` freezes the ranked plan (policy tie-break, every eligible contender, evaluations); then one `allocation.claim` per contender, then `allocation.complete`. |
+| `BuddyExpiry.expire(scope)` | Expires due local Buddy holds (inclusive deadline) with their offers, or starts a remote release; anything misaligned is retained. |
+| `BuddyRemoteLifecycle.drive / reconcile` | Remote claim and release: an attempt transaction, the provider call outside any transaction, then an acknowledgement transaction. |
+
+Locking and idempotency:
+- One occupying holder per car, and one per slot unit, is decided by the V1 partial unique indexes on `custody_holds`. A
+  23505 inside the claim savepoint is recorded as `car-held` or `slot-occupied`, and the fallback continues.
+- Each claim locks its `allocation_runs` row `FOR UPDATE` and advances `next_index` by version CAS.
+- The allocation id comes from (trigger type, source event). The claim operation id comes from (run, allocation,
+  employee, car). Command receipts replay both, and a reused id with different input is `command-input-changed`.
+- Remote operations lock their `pending_operations` row `FOR UPDATE` and CAS its version in both transactions.
+- An uncertain commit is inspected, never assumed.
+- A remote hold is never freed until the provider confirms, so unknown or mismatched acknowledgements stay pending.
+- Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
+  `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
+
+Ports, stubbed until their Stories merge:
+- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
+- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+
+FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
+
 ## Greg demand and presenter suitability (FUCQ-475)
 
 | Path | Role | Result |
@@ -410,6 +522,55 @@ retained images served. Any copy must be byte-exact: a changed catalogue, defini
 Measured on `fleet-source.v1` (2,425 configurations): the store, catalogue and definitions load in about 0.7 to 0.9 s
 at startup and add about 12 MB of heap after a full GC (the s1 measurement of the store alone was about 0.6 s and 3 MB).
 Reads then use an index and do not rescan the 45 MB file.
+## Offers (FUCQ-465)
+
+The emailed link is `/gcsp/offers/{offerId}`. The id is a plain identifier, not a secret or token, and grants nothing on
+its own: the reader must sign in (OIDC bearer) as an `employee` whose `employeeId` owns the offer. `OfferAccess` is
+the only place that decides this, and `authorizeDecision(principal, offerId, expectedOfferVersion)` is the check
+accept/decline (FUCQ-466) builds on. Offers are read from `buddy_offers`, `custody_holds` and `buddy_quotes`
+(FUCQ-464) in the environment's active run, so a link stays valid across restarts; legacy hashed Node links are not
+honoured. Responses carry `Cache-Control: no-store` and `Referrer-Policy: no-referrer`; any query parameter is refused.
+
+| Path | Result |
+| --- | --- |
+| `GET /api/gcsp/v1/offers/{offerId}` | The owner's offer with its actual state (`pending`, `accepted`, `declined`, `superseded`, `expired`, `released`), `reason`, versions, quote and `availableActions`. Terminal offers read 200 with no actions. |
+| `GET /api/gcsp/v1/offers/current` | The owner's offers in this run, newest first, at most 20. |
+
+Refusals: 400 `invalid-offer-reference`, `unsupported-query`; 401 as above; 403 `role-required` (presenter, Greg, no
+`employeeId`), `offer-not-owned` (another employee; no offer facts returned); 404 `offer-not-found`; 409
+`offer-from-earlier-run`; 503 `offer-access-unavailable` (retryable) and `offer-state-inconsistent`.
+
+## Offer decisions (FUCQ-466)
+
+`OfferDecisions` applies the owner's local accept or decline. `authorizeDecision` is only a snapshot. Inside the write
+transaction the hold, offer and car rows are locked `FOR UPDATE` (the same order as `BuddyExpiry`) and checked again:
+owner, active offer and hold, offer and hold versions, inclusive deadline, car `released` with no other occupant, and
+no remote operation. The run is enforced by the command runner. Every write is a version CAS and bumps `stock_cars.version`.
+`offer_decisions` (V466_1) is immutable, one row per offer, so a second decision cannot commit.
+
+| Path | Result |
+| --- | --- |
+| `POST /api/gcsp/v1/offers/{offerId}/decision` | `{commandId, decision, expectedOfferVersion, expectedHoldVersion}` plus `reasonCode` (decline) or `termsDigest`, `declarations`, optional `expectedReturnMileage` (accept). |
+| `GET /api/gcsp/v1/offers/{offerId}/decision-reasons` | The `offer.declineReasons.v1` registry at the principal's policy version. |
+| `GET /api/gcsp/v1/offers/{offerId}/follow-up` | After a decline: `waiting-for-next-offer`, or `next-offer` with `nextOfferId`; `briefChange: unavailable`. |
+
+- Decline releases the hold (`releaseReason: offer-declined`) and declines the offer. It records the reason and the
+  `offer.declinedCar.exclusion` rule, and emits `offer-declined` in the same transaction. The allocator then reallocates
+  the car and excludes it for the decliner.
+- Accept runs inside ordering's transaction through `OrderingService.submitTrusted` and the per-call `BuddyOfferConversion`.
+  Contact, driver and return data come from the account port. Brief meaning, quote validity, allowance and eligibility are
+  revalidated against the retained quote. Hold, offer and car become `allocated`/`accepted` with the selection, decision
+  and `offer-accepted` event. Any refusal rolls all of it back.
+- Replaying the same `commandId` and input returns the first outcome with `replayed: true`. Reusing the id with other input
+  is 409 `command-input-changed`, and another command on a decided offer is 409 `offer-no-longer-pending`.
+- Refusals: 400 `invalid-offer-decision`, `expected-return-mileage-required`; 403 `offer-not-owned`; 409 `stale-version`,
+  `deadline-passed`, `selection-authority-changed`, `quote-no-longer-valid`, `allowance-exceeded`,
+  `current-eligibility-refused`, `brief-changed-review-required`, `contact-required`, `driver-review-required`, `stale-run`;
+  503 `offer-decision-unavailable`, `decline-reasons-unavailable`, `remote-decision-protocol-required` (remote Buddy mode
+  or a remote hold: FUCQ-467), `ordering-provider-not-configured`, `selection-source-unavailable`.
+- Accept needs a configured ordering provider and account source (`GCSP_ORDERING_PROVIDER`, `GCSP_ACCOUNT_PROVIDER`).
+  Decline needs the reviewed `offer.declineReasons.v1` in the active policy version. The base seed lacks it, so decline
+  is 503 `decline-reasons-unavailable` until that set is adopted.
 
 ## Order approvals (FUCQ-470)
 
@@ -479,6 +640,118 @@ Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table ab
 (`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
 Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
 `gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
+
+## Comparison (FUCQ-480)
+
+Package `gcsp.api.comparison`: retained route-comparison baselines, stored-result reads and Greg's comparison jobs.
+Rows in `comparison_results` and `comparison_jobs` (`V480_1`) are keyed by environment, so retained baselines survive
+demo run resets; stored results are immutable and old run history may reset at the final switch.
+
+| Endpoint | Roles and answers |
+| --- | --- |
+| `GET /api/gcsp/v1/comparison/results/latest?experimentId=` | Greg, presenter. All experiments, or one (404 when none stored). |
+| `GET /api/gcsp/v1/comparison/process/latest` | Greg, presenter. The latest process-only result. |
+| `POST /api/gcsp/v1/comparison/jobs` | Greg only. Body `{commandId, experimentId, change?}`; 202 pending, 409 `job-running` or `command-input-changed`, 403 `comparison-reruns-off`. |
+| `GET /api/gcsp/v1/comparison/jobs/latest?jobId=` | Greg, presenter. Job status and actual progress, plus `reruns`. |
+
+There is no cancel or restart endpoint. One job runs at a time per environment; a job left running by another instance
+reads as `interrupted`, and shutdown marks the active job `interrupted`. Comparison never writes the outbox or sends mail.
+Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
+`c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
+`d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
+Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
+replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
+until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+
+Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
+starts; default off) and `GCSP_CODE_REVISION` (result provenance).
+
+## Clock, scenarios and presenter controls (FUCQ-479)
+
+**Clock** (`gcsp.api.clock`, `V479_1__clock.sql`): `run_clocks` holds one forward-only clock per run (instant, `clock_version`,
+scenario and fixture versions, the run's own start and named times); `clock_ticks` keeps each tick's plan and state;
+`clock_handler_receipts` is immutable. The start is the policy template (`clock.scenario.v1`) moved to the London date of
+the wall clock. Advance and tick are separate commands, each idempotent by command or tick id. A tick runs the stages in
+`clock.handler.order.v1` order (then handler id), each through its bound handler: `stock-release` (`release-pull`, with a
+pull provider), then on `pending-reconciliation` `lifecycle-appointments` (provider not `none`), `lifecycle-approvals`
+(provider and an order source, so absent until the selection handoff exists), `lifecycle-documents` (persistence on)
+`lifecycle-return-outcomes` (provider not `none`) and `selection-order-reconciliation` (ordering provider not `none`), then `captured-outbox` (`outbox-dispatch`). A stage with no handler is listed in
+`missingStages`, never faked. Each handler outcome is a receipt; a handler that fails leaves the tick `interrupted`, and
+repeating the same `tickId` resumes it without repeating completed handlers. Startup runs one tick of the
+`startupStages` (`manual-expiry`, `buddy-expiry`, `pending-reconciliation`) after creating the active run's clock if it
+has none; it never pulls releases or dispatches. On a startup tick the approvals, appointments and return handlers answer
+`{"skipped":"startup-owned-by-service"}` without calling their service, because each already runs its own startup
+reconciler; documents still runs. The appointments handler records the tick then progresses with a server-built
+`system:clock` presenter principal. Appointments and returns keep their own derived clocks (`appointment_ticks`,
+`supply_release_ticks`); they are not replaced by the run clock.
+
+**Presenter endpoints** (presenter role only, no query parameters, scope is always the server's active run; none takes a
+principal or employee id, and an employee acts only under their own login):
+
+| Route | Meaning |
+| --- | --- |
+| `GET /presenter/clock`, `/presenter/controls`, `/presenter/clock/ticks/{tickId}` | Clock, controls (step, named times, next release) and one tick. |
+| `POST /presenter/clock/advance`, `/presenter/clock/tick`, `/presenter/controls/tick` | Advance, tick, or step / `to` / `next-release` in one command. |
+| `GET /presenter/scenarios` | Catalogue: versions, clock start, named times, display principals, availability, input provenance. |
+| `GET /presenter/scenarios/current` | The clock state plus `currentScenario` and `runId`. |
+| `POST /presenter/scenarios/reset` | `{commandId, expectedRunId, scenarioId, scenarioVersion, fixtureVersion, policyVersion}`. |
+| `GET /presenter/scenarios/faults` | `{runId, faults:[{adapter:"stock", mode, modes, available:true}, {adapter:"ordering", available:false, reason:"not available yet"}]}`. |
+| `POST /presenter/scenarios/faults` | `{commandId, adapter:"stock", mode: none \| unavailable \| stale}`; command `scenario.fault.set`, replays by `commandId`. |
+
+Reset order: provider is `demo` (else 403); scenario exists (404 `scenario-not-found`); the three versions equal the
+catalogue's (409 `stale-version`, `action: refresh`); a journey without a reviewed start loader is 503
+`scenario-not-available-yet` before any write (every journey is today: only `gcsp-clock-scenario-v1` is available);
+`expectedRunId` is the active run (409 `stale-run`). The run then retires and a new `demo-<hash>` run activates in one
+transaction (`RunReset`), nothing is deleted, and the same command replays its receipt, even once the run is no longer active.
+If preparation of the new run fails, the answer is 503 `scenario-preparation-incomplete` (retryable) and the same reset
+command, or the next startup, completes it. A replayed `commandId` with another scenario or version is 409
+`command-input-changed`. `GCSP_SCENARIO_PROVIDER=demo` stops startup unless the database was claimed with
+`GCSP_RESET_ALLOWED=true`, so it can never seed a running deployment.
+
+**Synthetic faults** (`V479_3__scenario_faults.sql`, provider `demo` only, else 403 `scenarios-not-configured`): one keyed
+`scenario_faults` row per run and adapter, so a reset (a new run) starts with `none` and a restart keeps the fault. Only the
+synthetic `tranche-plan` supply is altered: `unavailable` makes `stock-release` fail with `synthetic-stock-unavailable` and
+`stale` with `stock-source-stale`, both retryable and without calling supply, so the tick is `interrupted`. Clear the fault
+(`none`) and send the same `tickId` and clock version to resume and release. A real supply provider is never altered.
+Ordering faults are not ported: no Java ordering adapter exists, so `ordering` is listed as not available yet.
+
+**Reset isolation and restart.** Reset needs `GCSP_RESET_ALLOWED=true` on the running service and the database's own
+identity to match: `environment_identity.reset_allowed`, `GCSP_EXPECTED_DATABASE` and `GCSP_ENVIRONMENT_ID`. Otherwise 403 `reset-not-allowed` or `reset-isolation-mismatch`; the
+running database can never be reset. An ordinary restart never resets or reseeds: the active run, its clock and all new-app
+rows are kept. `GCSP_SCENARIO_PROVIDER=none` (the default) seeds nothing at all, so employee and account rows come only from
+their own providers. With `demo`, startup prepares the active run only if it has no `scenario_runs` row, with the mechanics
+scenario, inserting employees, account records and entitlement slots in one command (`scenario:prepare:<runId>`), then
+the clock; existing rows are never overwritten. The people are fictional and labelled so in
+`src/main/resources/gcsp/scenario/demo-preparation-v1.json` (5 employees, 9 scenarios). The file is generated offline from the
+Node fixtures and is never read from Node at runtime. Regenerate it, from `services/gcsp-api`, with
+`node tools/scenario-baseline/generate.mjs src/main/resources/gcsp/scenario/demo-preparation-v1.json`
+(no `node_modules` needed). Known limit: OIDC principals carry the configured `GCSP_RUN_ID`, so employee endpoints keep
+that run after a reset until the run scope is unified.
+
+**Release notes.** From this Story, every deployment with persistence on runs a startup clock tick (it creates the active
+run's clock when absent). The bound `lifecycle-documents` handler and, with a pull provider configured, `stock-release`
+are now driven by presenter ticks on every such deployment, and `lifecycle-documents` also runs in the startup tick.
+Documents read the run clock instead of answering unavailable. The startup tick never pulls releases or dispatches
+mail; `GCSP_SCENARIO_PROVIDER` stays `none` unless set.
+## Production requests (FUCQ-478)
+
+Package `gcsp.api.production`. Greg submits his plan with `POST /api/gcsp/v1/greg/production/requests` (body `{commandId, planId, versions}`;
+the only request path) and tracks it with `GET /greg/production` and `GET /greg/production/supply-activity` (Greg or presenter, read-only
+for the presenter). The presenter has scenario controls only: `POST /presenter/production/responses` (`{requestId, action: confirm|delay|refuse,
+quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
+(`{limit?}`). Employees get 403 everywhere.
+
+- One operation per request line: the request id is the provider operation id. Intent is stored before anything is sent, and a retry
+  reconciles with the provider before it resubmits, so a lost answer never creates a second order.
+- Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
+  supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
+- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
+  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
+  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
+  so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
+- Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,
+  reconcile and retries leave those rows untouched and report `provider-mode-changed` (retry submit answers 409).
 
 ## Ordering (FUCQ-468)
 

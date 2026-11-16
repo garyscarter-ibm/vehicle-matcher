@@ -28,6 +28,9 @@ public class Notifications {
     @Inject
     Instance<AgroalDataSource> sources;
 
+    @Inject
+    Instance<OfferFacts> offerFacts;
+
     @ConfigProperty(name = "gcsp.environment-id")
     Optional<String> environmentId;
 
@@ -58,9 +61,10 @@ public class Notifications {
     /** Built once, on first use. */
     public synchronized NotificationDispatcher dispatcher() {
         if (dispatcher == null) {
-            // Offer facts are bound by the Java offer Story; until then every delivery retries as unavailable.
+            // Offer facts come from the offers bean when bound; otherwise every delivery retries as unavailable.
             dispatcher = new NotificationDispatcher(dataSource(), new PolicyDeliveryRules(policy),
-                    new UnconfiguredOfferFacts(), transports.transport(), InstantSource.system(),
+                    offerFacts.isResolvable() ? offerFacts.get() : new UnconfiguredOfferFacts(),
+                    transports.transport(), InstantSource.system(),
                     environmentId.orElse(""), publicBaseUrl.filter(url -> !url.isBlank()));
         }
         return dispatcher;

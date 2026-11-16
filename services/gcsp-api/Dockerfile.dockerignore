@@ -7,6 +7,8 @@
 !server/gcsp/policy/seed-v1.json
 !server/gcsp/policy/reviewed
 !server/gcsp/predict/records/policy-definitions.json
+!server/data/gcsp/comparison/process-only.json
+!docs/gcsp/models/artifacts
 !server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json
 !server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json
 !server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json
