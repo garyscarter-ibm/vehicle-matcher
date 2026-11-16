@@ -493,3 +493,50 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/impact:** this pass supplied every required Jira field but omitted `view: full`; the connector compact projection omitted description/reporter/parent/links for all 66. The existing metadata guard refused import, with no Jira or Story changes.
 - **Action/outcome:** fetched the same exact66 with full view, verified every required field before writing, checked the write return code, then completed a no-action import. Saved one local request contract including view and fields for subsequent passes. No foreign attachment bytes downloaded.
 - **Framework follow-up:** explicit request fields alone do not guarantee connector output shape. Preserve full-view and response-field preflight together. This applies a local mitigation; repeated orchestration omissions are not verified resolved.
+
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 - local snapshot sequencing recurred
+
+- **Evidence/impact:** a local lifecycle receipt write failed with `SyntaxError: Non-UTF-8 code starting with \xE2`; the orchestration then attempted mark-done against its absent file and was refused. Native claim operations had already succeeded; no extra Jira mutation or acknowledgement resulted from the failed sequence.
+- **Action/outcome:** rewrote the same full readback/ops snapshots using ASCII Python source and explicit UTF-8 file output, checked rc0 before invoking mark-done, and acknowledged only six verified F448 operations. The existing native full66 metadata was preserved. This corrects one attempt; the earlier sequencing instruction did not prevent recurrence.
+- **Framework follow-up:** make receipt persistence and dependent acknowledgement one fail-closed operation, with encoding and required-field validation before any follow-up.
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 / DL-20261114-GC-010 - reviewed checkpoint integrated
+
+- **Evidence/outcome:** independent reviewer found no blocking/major F443 issues at4064f41c1. After guarded refresh,211code/contract/tool hashes matched retained80selected passes; post-test map bookkeeping matched the reviewed checkpoint. The initial212-pin guard correctly stopped on that documented metadata change; no runtime rerun or all212current-match claim followed. Incomplete frontend checkpoint merged/pushed bf21ae27d; originalAC/producer/connected/rendered gaps and boundaryrc1 remain.
+- **Reporting/action:** integrated exact stock-descriptor consumer resolves F442's recorded placeholder source obstacle. F442 is held rather than blocked while its original remaining proof awaits execution; native In Progress and claim stay unchanged. F443 remains concretely blocked on missing Java review-details/version authority.
+- **Framework follow-up:** compare changed input roles and independently reviewed metadata before replaying tests. Resolve the specific recorded obstacle without inferring Story completion or extending its acceptance. Bounded delivery improved locally; orchestration recurrence is not verified resolved.
+
+
+## 2026-11-16 15:23 UTC - GC Codex - DL-20261114-GC-001 / DL-20261114-GC-010 - Java slice 2 returned
+
+- **Evidence/outcome:** separate Java parent reports reviewed source5b7a11fdb merged/pushed59c941ed9 for actual manual-stock and ManualSelection. Its current local status reports81 selected checks in two supervised chunks with zero failures; Codex has not independently inspected those new receipts or teardown. The observed child transcript retains a preceding combined-run stop for RAM above its1280MiB grant (reported peak1.61GB). No failed combined run is upgraded to success.
+- **Action/limits:** current dispatcher pulled the shared increment without touching the live Java lane; the Java parent owns subsequent slice3 review-details work. F443 remains blocked until actual producer authority is delivered and reconciled. No Angular/connected/rendered acceptance or new Story completion is inferred.
+- **Framework follow-up:** retain each failed resource attempt alongside source-bound split results and inspect returned receipts before asserting verified delivery. This is a reported coherent increment, not a verified resolution of recurrent resource sizing or full migration acceptance.
+
+
+## 2026-11-16 15:30 UTC - GC Codex - DL-20261114-GC-010 - proposed finalizer stopped before admission
+
+- **Evidence/impact:** static review of F448's prepared chunk-a wrapper found retained-log copy and output-cap assertion in the same try as owned output/scratch teardown. A retention failure could skip both removals while later releasing the host reservation. No F448 runtime had started.
+- **Action/outcome:** same lead acknowledged the finding and is correcting all three wrappers: independent identity-guarded teardown attempts, bounded retained excerpts including the receipt, and reservation ownership retained when cleanup is uncertain. Actual committed branch/HEAD binding is also required before admission. Correction, failure-path exercise and runtime remain unverified; no prepared script is approved to run yet.
+- **Framework follow-up:** output retention must not prevent teardown; reservation release requires positive owned-resource evidence. Review failure paths before starting a reusable supervisor, and distinguish requested correction from an applied or exercised fix.
+
+## 2026-11-16 15:30 UTC - GC Codex - DL-20261114-GC-010 - Java split receipt exceeds its declared grant
+
+- **Evidence/diagnosis:** independently read the two exact slice-2 summary receipts. They report 66+15 selected checks, zero failures/errors/skips and rc0. Chunk B also reports peakRss 1,579,057,152 bytes against its declared 1,342,177,280-byte RAM grant. The inspected supervisor deliberately stops only above grant plus 256 MiB, so issue:null and rc0 do not establish resource compliance. Chunk A reports 989,364,224-byte RSS. The earlier combined-run RAM stop remains retained.
+- **Action/limits:** preserve successful selected test observations separately from the failed RAM contract; do not replay tests or touch the live Java owner's cleanup. Both summaries assert scratchRemoved; exact ownership/teardown and source-binding review remain pending. No connected/Angular/rendered acceptance or full migration success is inferred.
+- **Framework follow-up:** enforce the actual grant without an unapproved allowance, include supervisor and every child in aggregate accounting, and make resource breaches fail the receipt even if the test process returns zero. This is a verified receipt/supervisor inconsistency, not a verified fix.
+
+
+## 2026-11-16 15:33 UTC - GC Codex - DL-20261114-GC-010 - static correction reviewed and Java current teardown checked
+
+- **F448 evidence/outcome:** parent read the corrected 546-line wrapper, compared the other chunks (only selection/boundary settings differ), AST-parsed all three and checked supported-helper actual HEAD/branch/blob/parent readbacks. Retention, each owned root and reservation now have independent guarded attempts; reservation release requires verified process, sampler and root teardown. Final evidence reserves receipt space. This verifies the source correction only: final committed feature freeze, runtime admission and exercised failure paths remain unproved; no F448 test started.
+- **Java evidence/outcome:** independently checked both exact ownership receipts, current owned scratch paths absent, recorded supervisor PIDs/process groups absent and canonical tokens absent; retained output totals 322,923 bytes. No foreign cleanup or replay. Summary/ownership receipts contain no immutable source pins, and sampling omits the supervisor; continuous peaks, source binding and all-limit enforcement remain unproved. Chunk B's final scratch ownership peak also differs from its earlier sampled summary. These observations do not repair its declared RAM-grant breach.
+- **Action/follow-up:** appended the exact Java finding to the existing local route-owner handoff; acknowledgement and supervisor correction remain unverified. Preserve passing selected-test observations separately from resource compliance, source binding and original connected/rendered acceptance. No Story status or scope changed.
+
+
+## 2026-11-16 15:39 UTC - GC Codex - DL-20261114-GC-001 - native response persistence guard held
+
+- **Evidence/impact:** the connector's structured projection exposed issues/context without pagination metadata; the exact66/isLast guard rejected it before persistence/import. Selecting the full textual response passed metadata checks, but an unavailable btoa helper stopped the proposed local write before execution. Neither path reached import or Jira mutation.
+- **Action/outcome:** persisted the same validated full response through the normal patch tool, independently parsed/preflighted the written file, checked success, then ran one import: rc0/no actions/failures/unparented. Thirteen foreign attachment candidates were not downloaded. This is a corrected attempt, not a verified general orchestration fix.
+- **Framework follow-up:** provide one supported full-response extraction/persistence path with explicit pagination, required-field and write-result guards; do not assume connector projections or runtime encoding globals are interchangeable.
