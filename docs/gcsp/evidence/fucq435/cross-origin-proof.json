@@ -1,0 +1,406 @@
+{
+  "schema": "fucq435-cross-origin-proof/1",
+  "story": "DEV-2026-11-13-003 / FUCQ-435",
+  "startedAt": "2026-11-16T10:44:59.767Z",
+  "origins": {
+    "web": "https://gcsp-web.localhost:7443",
+    "api": "https://gcsp-api.localhost:8443",
+    "idp": "https://gcsp-idp.localhost:9443",
+    "evil": "https://evil.localhost:7444"
+  },
+  "localTestIssuer": "LOCAL TEST OIDC ISSUER https://gcsp-idp.localhost:9443/realms/gcsp-local: harness only, not the real provider and not committed configuration",
+  "tools": {
+    "harnessNode": "v26.7.0",
+    "openssl": "OpenSSL 4.1.0 23 Oct 2026 (Library: OpenSSL 4.1.0 23 Oct 2026)",
+    "chrome": "Google Chrome 157.0.8103.79",
+    "java": "openjdk version \"21.0.13.0.3\" 2026-10-24",
+    "angularBuildNode": "v24.22.3 (official nodejs.org tarball, SHA-256 verified against SHASUMS256.txt)",
+    "angularBuildNodeVersion": "v24.22.3",
+    "npm": "11.19.1"
+  },
+  "deviations": [],
+  "scenarios": {
+    "e": {
+      "title": "Direct API calls without a browser",
+      "pass": true,
+      "checks": {
+        "noBearer_401_bearer-missing": true,
+        "noBearer_acaoExactWebOrigin": true,
+        "badSignature_401_token-signature-invalid": true,
+        "badSignature_acaoExactWebOrigin": true,
+        "expired_401_token-expired": true,
+        "expired_acaoExactWebOrigin": true,
+        "wrongAudience_401_token-audience-invalid": true,
+        "wrongAudience_acaoExactWebOrigin": true,
+        "employeeOnGregOnly_403_role-required": true,
+        "employeeOnGregOnly_acaoExactWebOrigin": true,
+        "unmappedSubject_403_subject-not-mapped": true,
+        "unmappedSubject_acaoExactWebOrigin": true,
+        "validEmployee_200": true,
+        "validEmployee_acaoExactWebOrigin": true,
+        "disallowedOriginGetHasNoAcao": true
+      },
+      "observations": {
+        "cases": {
+          "noBearer": {
+            "status": 401,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "unauthenticated",
+              "code": "bearer-missing",
+              "reason": "Sign in to continue.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "badSignature": {
+            "status": 401,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "unauthenticated",
+              "code": "token-signature-invalid",
+              "reason": "Sign in to continue.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "expired": {
+            "status": 401,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "unauthenticated",
+              "code": "token-expired",
+              "reason": "Sign in to continue.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "wrongAudience": {
+            "status": 401,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "unauthenticated",
+              "code": "token-audience-invalid",
+              "reason": "Sign in to continue.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "employeeOnGregOnly": {
+            "status": 403,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "forbidden",
+              "code": "role-required",
+              "reason": "Your account cannot use this action.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "unmappedSubject": {
+            "status": 403,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "forbidden",
+              "code": "subject-not-mapped",
+              "reason": "This account is not set up for this environment.",
+              "retryable": false
+            },
+            "vary": "origin"
+          },
+          "validEmployee": {
+            "status": 200,
+            "acao": "https://gcsp-web.localhost:7443",
+            "body": {
+              "status": "ok"
+            },
+            "vary": "origin"
+          }
+        },
+        "typedBodyReadableCrossOrigin": "every case above carries Access-Control-Allow-Origin equal to the web origin, including 401 and 403",
+        "disallowedOriginSimpleGet": {
+          "status": 403,
+          "acao": null,
+          "body": null,
+          "vary": "origin"
+        }
+      }
+    },
+    "f": {
+      "title": "Secret scan of assembled static output",
+      "pass": true,
+      "checks": {
+        "noSecretFindings": true,
+        "runtimeConfigKeysExact": true,
+        "runtimeConfigPublicOrigins": true,
+        "cspConnectSrcExactOrigins": true
+      },
+      "observations": {
+        "filesScanned": 33,
+        "topLevel": [
+          "gcsp"
+        ],
+        "hits": [],
+        "libraryKeywordFiles": [
+          "gcsp/chunk-4N2WFGP7.js",
+          "gcsp/chunk-ROPMTR2T.js",
+          "gcsp/chunk-UPJJRJEE.js",
+          "gcsp/main-S2YGLOPO.js"
+        ],
+        "runtimeConfig": {
+          "schemaVersion": 1,
+          "environmentId": "local-cross-origin-proof",
+          "apiBaseUrl": "https://gcsp-api.localhost:8443/api/gcsp/v1",
+          "oidc": {
+            "authority": "https://gcsp-idp.localhost:9443/realms/gcsp-local",
+            "clientId": "gcsp-web",
+            "scope": "openid profile gcsp-api",
+            "redirectUri": "https://gcsp-web.localhost:7443/gcsp/auth/callback",
+            "postLogoutRedirectUri": "https://gcsp-web.localhost:7443/gcsp/"
+          }
+        },
+        "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://gcsp-api.localhost:8443 https://gcsp-idp.localhost:9443; frame-src 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+      }
+    },
+    "a": {
+      "title": "Employee sign-in, cross-origin preflight, bearer GET and typed account failure",
+      "pass": true,
+      "checks": {
+        "browserPreflightObserved": true,
+        "preflightExactOrigin": true,
+        "preflightNoCredentials": true,
+        "contextGet200WithBearer": true,
+        "landedOnEmployeeAccount": true,
+        "typedAccountFailure": true,
+        "visibleStateNotGeneric": true,
+        "directPreflightExactOrigin": true
+      },
+      "observations": {
+        "landedPath": "/gcsp/account",
+        "preflight": {
+          "method": "OPTIONS",
+          "path": "/api/gcsp/v1/context",
+          "type": "Other",
+          "status": 200,
+          "acao": "https://gcsp-web.localhost:7443",
+          "authorizationSent": false,
+          "cors": {
+            "allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+            "allow-headers": "Authorization,Content-Type,Accept",
+            "allow-credentials": "false"
+          }
+        },
+        "contextGet": {
+          "method": "GET",
+          "path": "/api/gcsp/v1/context",
+          "type": "Fetch",
+          "status": 200,
+          "acao": "https://gcsp-web.localhost:7443",
+          "authorizationSent": true,
+          "cors": {
+            "allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+            "allow-headers": "Authorization,Content-Type,Accept",
+            "allow-credentials": "false"
+          },
+          "body": {
+            "status": "ok"
+          }
+        },
+        "typedAccountFailure": {
+          "method": "GET",
+          "path": "/api/gcsp/v1/manual/account",
+          "type": "Fetch",
+          "status": 503,
+          "acao": "https://gcsp-web.localhost:7443",
+          "authorizationSent": true,
+          "cors": {
+            "allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+            "allow-headers": "Authorization,Content-Type,Accept",
+            "allow-credentials": "false"
+          },
+          "body": {
+            "status": "unavailable",
+            "code": "account-provider-not-configured",
+            "reason": "Account data is not available on this service yet.",
+            "retryable": false
+          }
+        },
+        "apiRequests": [
+          "GET /api/gcsp/v1/context 200 ACAO=https://gcsp-web.localhost:7443",
+          "OPTIONS /api/gcsp/v1/context 200 ACAO=https://gcsp-web.localhost:7443",
+          "GET /api/gcsp/v1/brief/editor 503 ACAO=https://gcsp-web.localhost:7443",
+          "GET /api/gcsp/v1/manual/account 503 ACAO=https://gcsp-web.localhost:7443",
+          "GET /api/gcsp/v1/manual/draft 404 ACAO=https://gcsp-web.localhost:7443",
+          "OPTIONS /api/gcsp/v1/brief/editor 200 ACAO=https://gcsp-web.localhost:7443",
+          "OPTIONS /api/gcsp/v1/manual/account 200 ACAO=https://gcsp-web.localhost:7443",
+          "OPTIONS /api/gcsp/v1/manual/draft 200 ACAO=https://gcsp-web.localhost:7443"
+        ],
+        "visibleText": "YOUR CARS Refresh Your account is unavailable Refresh to try again, or contact scheme support. Contact support",
+        "screenshot": "a-employee-account-typed-failure.png",
+        "directPreflightAllowedOrigin": {
+          "status": 200,
+          "acao": "https://gcsp-web.localhost:7443",
+          "allowHeaders": "Authorization,Content-Type,Accept",
+          "allowMethods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+          "allowCredentials": "false"
+        }
+      }
+    },
+    "b": {
+      "title": "Denied: unmapped subject and employee on a Greg-only page",
+      "pass": true,
+      "checks": {
+        "unmappedApi403": true,
+        "unmappedUiAccessNotAvailable": true,
+        "employeeGregCasesDenied": true
+      },
+      "observations": {
+        "unmapped": {
+          "apiContext": {
+            "method": "GET",
+            "path": "/api/gcsp/v1/context",
+            "type": "Fetch",
+            "status": 403,
+            "acao": "https://gcsp-web.localhost:7443",
+            "authorizationSent": true,
+            "cors": {
+              "allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+              "allow-headers": "Authorization,Content-Type,Accept",
+              "allow-credentials": "false"
+            },
+            "body": {
+              "status": "forbidden",
+              "code": "subject-not-mapped",
+              "reason": "This account is not set up for this environment.",
+              "retryable": false
+            }
+          },
+          "visibleText": "ACCESS NOT AVAILABLE Your account does not have access to this page. Go to your home",
+          "path": "/gcsp/auth/callback"
+        },
+        "screenshot": "b-access-not-available.png",
+        "employeeOnGregCases": {
+          "path": "/gcsp/access-denied",
+          "visibleText": "ACCESS NOT AVAILABLE Your account does not have access to this page. Go to your home",
+          "gregApiCalls": []
+        }
+      }
+    },
+    "c": {
+      "title": "Token expiry, re-login and recovery without automatic submission",
+      "pass": true,
+      "checks": {
+        "redirectedToSignInWithReturnTo": true,
+        "expiryNoticeShown": true,
+        "returnedToAccount": true,
+        "recoveryNoticeShown": true,
+        "noMutatingRequestAfterRelogin": true,
+        "noMutatingRequestAtAll": true,
+        "serverAccessLogNoMutating": true
+      },
+      "observations": {
+        "expiredAfterSec": 45,
+        "redirectUrl": "/gcsp/sign-in?returnTo=%2Fgcsp%2Faccount",
+        "expiryText": "Your session expired. Sign in to continue with your saved progress. SIGN IN Sign in to your Group Car Schemes account. Sign in",
+        "screenshotExpiry": "c-session-expired.png",
+        "recoveryText": "You are signed in again. Review your saved progress before continuing. YOUR CARS Refresh Your account is unavailable Refresh to try again, or contact scheme support. Contact support",
+        "screenshotRecovery": "c-recovered-notice.png",
+        "apiRequestsAfterRelogin": [
+          "GET /api/gcsp/v1/context 200",
+          "OPTIONS /api/gcsp/v1/context 200",
+          "GET /api/gcsp/v1/brief/editor 503",
+          "GET /api/gcsp/v1/manual/account 503",
+          "GET /api/gcsp/v1/manual/draft 404",
+          "OPTIONS /api/gcsp/v1/brief/editor 200",
+          "OPTIONS /api/gcsp/v1/manual/account 200",
+          "OPTIONS /api/gcsp/v1/manual/draft 200"
+        ]
+      }
+    },
+    "d": {
+      "title": "Disallowed origin is blocked by CORS",
+      "pass": true,
+      "checks": {
+        "browserBlockedFetch": true,
+        "noApiGetReachedServerAsCors": true,
+        "disallowedPreflightRejected": true,
+        "noAcaoForDisallowedOrigin": true
+      },
+      "observations": {
+        "result": "blocked:TypeError",
+        "pageText": "Browser blocked the request (CORS): TypeError",
+        "apiRequests": [
+          {
+            "method": "GET",
+            "path": "/api/gcsp/v1/context",
+            "type": "Fetch",
+            "acao": null,
+            "authorizationSent": true,
+            "failed": "net::ERR_FAILED",
+            "corsError": "PreflightMissingAllowOriginHeader"
+          },
+          {
+            "method": "OPTIONS",
+            "path": "/api/gcsp/v1/context",
+            "type": "Other",
+            "status": 403,
+            "acao": null,
+            "authorizationSent": false,
+            "cors": {
+              "allow-methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+              "allow-headers": "Authorization,Content-Type,Accept"
+            }
+          }
+        ],
+        "consoleMessages": [
+          "javascript/error: Access to fetch at 'https://gcsp-api.localhost:8443/api/gcsp/v1/context' from origin 'https://evil.localhost:7444' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+          "network/error: Failed to load resource: net::ERR_FAILED"
+        ],
+        "screenshot": "d-evil-origin-blocked.png",
+        "directPreflight": {
+          "status": 403,
+          "acao": null,
+          "body": ""
+        }
+      }
+    }
+  },
+  "gaps": [
+    "Actual hosted Render origins and real OIDC provider registration do not exist yet (Gary creates them); not proven here."
+  ],
+  "failureLogs": {},
+  "head": "6d20966335d08d2bdebe96f172927ec256e0e66a",
+  "apiAccessLog": {
+    "total": 48,
+    "methods": {
+      "GET": 27,
+      "OPTIONS": 21
+    },
+    "mutating": 0,
+    "preflights": [
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/brief/editor origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/manual/account origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/manual/draft origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/brief/editor origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/manual/account origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/manual/draft origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443",
+      "200 /api/gcsp/v1/context origin=https://gcsp-web.localhost:7443 acao=https://gcsp-web.localhost:7443"
+    ]
+  },
+  "teardown": {
+    "scratch": "/tmp/vm-poller-DEV-2026-11-13-003/proof",
+    "removed": true,
+    "retained": [
+      "docs/gcsp/evidence/fucq435/cross-origin-proof.json",
+      "docs/gcsp/evidence/fucq435/*.png"
+    ],
+    "leftoverInRepo": "apps/gcsp-web/node_modules, apps/gcsp-web/dist and services/gcsp-api/target are git-ignored build outputs left in place"
+  },
+  "endedAt": "2026-11-16T10:46:37.896Z",
+  "overall": "PASS"
+}
