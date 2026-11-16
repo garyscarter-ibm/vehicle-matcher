@@ -336,3 +336,13 @@ helper. The actual component-only runtime project-inputs.json has 171 records,
 not 175. Parent independently audited all 171 hashes as matching; manifest
 SHA-256 `798a367988a26f01d1699cc9ef94240d93e94bf34195056fd1f5ab435eadcd60`.
 This distinguishes the reuse/freeze record from the actual runtime input set.
+
+
+## Dispatcher integration, 16 November 2026, 22:54 UTC
+
+Final checkpoint `a6c8c874f0a449c31ead90724dd80ac030a7aa4d` was merged and pushed to
+`gcsp-poc-dev` at `2394926ed`. Its presenter lazy route was already in that checkpoint.
+The subsequent F451 integration supplies the outbox body; the dispatcher connects its guarded
+route. The earlier statement that outbox is a placeholder is superseded by those source changes.
+Comparison inspection and actual connected/reset-isolation/rendered acceptance remain open.
+No new runtime proof or full Story completion is claimed; native In Progress and claim remain.

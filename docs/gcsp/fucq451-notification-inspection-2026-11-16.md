@@ -146,7 +146,7 @@ inspection, not compilation or passing runtime evidence.
 
 ## Remaining original acceptance
 
-1. Integrate the allocated body through the presenter route, then exercise authorized inspection
+1. Exercise the integrated presenter/outbox route's authorized inspection
    against actual Java with current-run recipient/status/filter outcomes. Actual rendered desktop,
    narrow, Safari/private browsing, keyboard/focus and applicable CSP/accessibility checks are unrun.
 2. Generate a **new** test email through the configured transport to the agreed recipient; retain
@@ -180,3 +180,16 @@ the exact two-file correction diff over the a01 checkpoint: per-option selection
 observed fault and existing convention; the strengthened case checks signal and native values.
 That source review is distinct from the subsequent focused runtime result above. All source,
 review and runtime workers have returned; the dispatcher owns publication and route integration.
+
+## Dispatcher integration, 16 November 2026, 22:54 UTC
+
+The dispatcher published final checkpoint `27ce16a406606761356e1ec56f457853382bcf6e` and
+merged it into `gcsp-poc-dev` at `93306b887`. All 172 final worker input hashes match the a02
+manifest. Only own Story, delivery and F451 map metadata changed after the tested checkpoint.
+The dispatcher then replaced the existing presenter/outbox placeholder with a lazy import of
+`OutboxComponent`, preserving `sessionGuard`, presenter role and title. Target/export and exact
+route diff were inspected; no additional runtime or rendered proof was run.
+
+This is a coherent partial development integration. Both original acceptance criteria remain
+open, native Jira stays In Progress and the claim is retained. The composite 59 local passes,
+inherited boundary failure and real Java/OIDC/mail/ownership limitations above remain applicable.
