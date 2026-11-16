@@ -5,7 +5,7 @@ New files:
 - `services/gcsp-api/src/main/java/gcsp/api/planning/PostgresPlanningSupply.java`
 - `services/gcsp-api/src/test/java/gcsp/api/planning/PostgresPlanningSupplyTest.java`
 
-The adapter is an `@ApplicationScoped` bean, so it replaces `PlanningDefaults.UnconfiguredSupply`. With persistence off it still answers `planning-supply-not-configured`.
+`PostgresPlanningSupply.Wiring` produces the `PlanningSupply` bean. With persistence active it is the adapter; with persistence off it is `PlanningDefaults.UnconfiguredSupply`, so the defaults profile is unchanged (supply04 found a plain bean shadowed the default).
 
 ## Where each Node row comes from
 

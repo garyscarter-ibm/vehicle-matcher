@@ -14,6 +14,7 @@ import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import java.io.IOException;
 import java.sql.Connection;
@@ -36,8 +37,7 @@ import javax.sql.DataSource;
  * PlanningSupply over the native tables: a port of Node createOrderPlanSupplyProvider and resolveSupplyRecords (FUCQ-477).
  * Rows come from one read-only snapshot and are read again afterwards; any change, or a clock version change, is a conflict.
  */
-@ApplicationScoped
-public class PostgresPlanningSupply implements PlanningSupply {
+public final class PostgresPlanningSupply implements PlanningSupply {
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final ObjectMapper JSON = new ObjectMapper();
@@ -45,36 +45,38 @@ public class PostgresPlanningSupply implements PlanningSupply {
     // Java has no 'held' stock state: a hold lives in custody_holds, and stock stays 'released' or becomes 'allocated'.
     private static final Set<String> RELEASED_STATES = Set.of("released", "allocated");
 
-    @Inject
-    Persistence persistence;
+    private final DataSource source;
+    private final PlanningClock clock;
 
-    @Inject
-    Instance<AgroalDataSource> dataSource;
-
-    @Inject
-    PlanningClock clock;
-
-    private DataSource fixed;
-
-    public PostgresPlanningSupply() {
-    }
-
-    /** Tests: a direct data source and clock instead of the injected ones. */
     PostgresPlanningSupply(DataSource source, PlanningClock clock) {
-        this.fixed = source;
+        this.source = source;
         this.clock = clock;
     }
 
-    private DataSource source() {
-        if (fixed != null) {
-            return fixed;
+    /** Binds the adapter only when persistence is active; otherwise the unconfigured default stays the bean. */
+    @ApplicationScoped
+    static class Wiring {
+
+        @Inject
+        Persistence persistence;
+
+        @Inject
+        Instance<AgroalDataSource> dataSource;
+
+        @Inject
+        PlanningClock clock;
+
+        @Produces
+        @ApplicationScoped
+        PlanningSupply planningSupply() {
+            return persistence.active() ? new PostgresPlanningSupply(dataSource.get(), clock)
+                    : new PlanningDefaults.UnconfiguredSupply();
         }
-        return persistence != null && persistence.active() ? dataSource.get() : null;
     }
 
     @Override
     public ObjectNode readSupply(PlanningRead read, PolicyService policy) {
-        DataSource ds = source();
+        DataSource ds = source;
         if (ds == null || clock == null || policy == null) {
             return Outcomes.unavailable("planning-supply-not-configured");
         }
