@@ -25,6 +25,8 @@ class BriefHttpRoleTest {
                 .body("status", equalTo("forbidden")).body("code", equalTo("role-required"));
         given().header("Authorization", "Bearer " + BriefHttpProfiles.TOKEN).contentType("application/json").body("{}")
                 .post("/api/gcsp/v1/brief/engage").then().statusCode(403).body("code", equalTo("role-required"));
+        given().header("Authorization", "Bearer " + BriefHttpProfiles.TOKEN).contentType("application/json").body("{}")
+                .post("/api/gcsp/v1/brief/preview").then().statusCode(403).body("code", equalTo("role-required"));
     }
 
     @Test

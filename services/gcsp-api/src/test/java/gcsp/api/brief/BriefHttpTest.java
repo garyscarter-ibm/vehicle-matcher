@@ -154,7 +154,7 @@ class BriefHttpTest {
         post("/engage", "{\"commandId\":\"x\"}").then().statusCode(400).body("code", equalTo("invalid-command"));
         post("/engage", command("with-authority", 0, 0, "\"employeeId\":\"someone-else\"")).then().statusCode(400)
                 .body("code", equalTo("invalid-command"));
-        for (String gone : new String[] {"/pause", "/resume", "/preview", "/change-after-decline", "/nothing"}) {
+        for (String gone : new String[] {"/pause", "/resume", "/change-after-decline", "/nothing"}) {
             as().get(BASE + gone).then().statusCode(404).contentType(containsString("application/json"))
                     .body("code", equalTo("route-not-found"));
             post(gone, "{}").then().statusCode(404).body("code", equalTo("route-not-found"));
@@ -169,5 +169,37 @@ class BriefHttpTest {
             post(path, "{}").then().statusCode(400).body("code", equalTo("invalid-command"))
                     .body("reasons.field", hasItem("command"));
         }
+    }
+
+    @Test
+    @Order(8)
+    void previewPassesTheRecommendationOutcomeThroughAndChecksTheSavedVersions() {
+        int brief = version("briefVersion");
+        int draft = version("draftVersion");
+        com.fasterxml.jackson.databind.node.ObjectNode chosen = Json.obj();
+        chosen.put("schemaVersion", 1);
+        chosen.putObject("preferences").set("body", Json.obj().put("value", "saloon").put("importance", 50)
+                .put("valueState", "draft").put("importanceState", "draft").put("source", "employee"));
+        chosen.putObject("essentials");
+        Response ok = post("/preview", PreviewShapes.request(brief, draft, chosen).toString());
+        ok.then().statusCode(200).body("status", equalTo("ok")).body("contractVersion", equalTo("1.0.0")).body("replayed", nullValue());
+        org.junit.jupiter.api.Assertions.assertTrue(PreviewShapes.previewShape(
+                Json.M.valueToTree(ok.jsonPath().getMap("value"))));
+        assertEquals(draft, version("draftVersion"));
+
+        post("/preview", PreviewShapes.request(brief + 4, draft, chosen).toString()).then().statusCode(409)
+                .body("status", equalTo("stale-version")).body("currentVersion", equalTo(brief)).body("action", equalTo("refresh"));
+        post("/preview", PreviewShapes.request(brief, draft + 4, chosen).toString()).then().statusCode(409)
+                .body("resource.table", equalTo("brief-draft"));
+        // The stub port reports invalid for a brief that did not choose body: status and body pass through.
+        com.fasterxml.jackson.databind.node.ObjectNode none = chosen.deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) none.get("preferences")).removeAll();
+        post("/preview", PreviewShapes.request(brief, draft, none).toString()).then().statusCode(400)
+                .body("status", equalTo("invalid")).body("code", equalTo("invalid-preview"));
+        post("/preview", "{\"kind\":\"unsaved-draft\"}").then().statusCode(400).body("code", equalTo("invalid-preview"))
+                .body("reasons[0].field", equalTo("preview"));
+        post("/preview", "[1]").then().statusCode(400).body("code", equalTo("invalid-preview"));
+        as().contentType(ContentType.JSON).queryParam("x", "1").body("{}").post(BASE + "/preview").then().statusCode(400)
+                .body("code", equalTo("unsupported-query"));
     }
 }

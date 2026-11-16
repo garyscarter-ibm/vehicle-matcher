@@ -70,6 +70,13 @@ public class BriefResource {
     }
 
     @POST
+    @Path("/preview")
+    public Response preview(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        // A body that is not a JSON object reaches the service as invalid-preview, as in Node.
+        return serve(authorization, uri, (service, scope) -> service.preview(scope, parse(body)));
+    }
+
+    @POST
     @Path("/confirm")
     public Response confirm(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
         return command(authorization, uri, body, BriefService::confirm);
@@ -157,8 +164,12 @@ public class BriefResource {
             ObjectNode out = Json.obj();
             out.put("status", "ok");
             out.set("value", ok.value());
+            if (ok.contractVersion() != null) out.put("contractVersion", ok.contractVersion());
             if (ok.replayed()) out.put("replayed", true);
             return Response.ok(out).build();
+        }
+        if (result instanceof BriefResult.Raw raw) {
+            return Response.status(raw.httpStatus()).type(MediaType.APPLICATION_JSON_TYPE).entity(raw.body()).build();
         }
         BriefResult.Refusal r = (BriefResult.Refusal) result;
         return Response.status(r.httpStatus()).type(MediaType.APPLICATION_JSON_TYPE).entity(r.body()).build();

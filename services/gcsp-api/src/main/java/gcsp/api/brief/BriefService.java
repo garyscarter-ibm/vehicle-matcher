@@ -61,10 +61,17 @@ public final class BriefService {
     private final BriefPolicyPort policy;
     private final BriefAccountPort account;
     private final BriefOfferPort offers;
+    private final BriefPreviewPort preview;
     private final Clock clock;
 
     public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
             Clock clock) {
+        this(dataSource, policy, account, offers, (scope, input) -> BriefPreviewPort.unconfigured(), clock);
+    }
+
+    public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
+            BriefPreviewPort preview, Clock clock) {
+        this.preview = preview;
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.policy = policy;
@@ -153,6 +160,63 @@ public final class BriefService {
             else provenance.put("approvedBriefVersion", s.briefVersion());
             return new BriefResult.Ok(out);
         });
+    }
+
+    /**
+     * Evaluates an unsaved editor brief at the saved versions it was made against; nothing is stored. The recommendation
+     * outcome is passed through, and the saved versions are checked again after the evaluation.
+     */
+    public BriefResult preview(BriefScope scope, JsonNode input) {
+        if (!only(input, "kind", "baseBriefVersion", "draftVersion", "brief") || !"unsaved-draft".equals(input.path("kind").asText(null))
+                || !Json.revision(input.get("baseBriefVersion")) || !Json.revision(input.get("draftVersion"))) {
+            return invalidPreview("preview");
+        }
+        long baseBrief = input.get("baseBriefVersion").longValue();
+        long draft = input.get("draftVersion").longValue();
+        try {
+            Optional<PolicyRules> rules = PolicyRules.load(policy, scope.policyVersion());
+            if (rules.isEmpty()) return Refusal.unavailable();
+            BriefContent.defaults(rules.get());
+            Head now = headOf(scope);
+            if (baseBrief != now.briefVersion()) return Refusal.staleVersion("brief", baseBrief, now.briefVersion());
+            if (draft != now.draftVersion()) return Refusal.staleVersion("draft", draft, now.draftVersion());
+            if (BriefContent.validate(input.get("brief"), rules.get(), false) != null) return invalidPreview("brief");
+            ObjectNode request = Json.obj();
+            request.set("brief", input.get("brief").deepCopy());
+            request.put("baseBriefVersion", baseBrief).put("baseDraftVersion", draft);
+            ObjectNode outcome = preview.preview(scope, request);
+            Head latest = headOf(scope);
+            if (latest.briefVersion() != now.briefVersion()) return Refusal.staleVersion("brief", now.briefVersion(), latest.briefVersion());
+            if (latest.draftVersion() != now.draftVersion()) return Refusal.staleVersion("draft", now.draftVersion(), latest.draftVersion());
+            return passThrough(outcome);
+        } catch (SQLException | RuntimeException e) {
+            return Refusal.unavailable();
+        }
+    }
+
+    private Head headOf(BriefScope scope) throws SQLException {
+        try (Connection c = dataSource.getConnection()) {
+            return BriefStore.head(c, scope).orElse(new Head(0, 0));
+        }
+    }
+
+    private static Refusal invalidPreview(String field) {
+        return Refusal.invalid("invalid-preview", field, "Use the registered editable brief and current saved versions.");
+    }
+
+    /** The recommendation outcome as the HTTP body it already is: ok keeps its value, others keep status, code and reasons. */
+    private static BriefResult passThrough(ObjectNode outcome) {
+        String status = outcome.path("status").asText("");
+        if ("ok".equals(status) && outcome.has("value")) {
+            return new BriefResult.Ok(outcome.get("value"), false, outcome.path("contractVersion").asText(null));
+        }
+        int http = switch (status) {
+            case "invalid" -> 400;
+            case "forbidden" -> 403;
+            case "stale-run" -> 409;
+            default -> 503;
+        };
+        return new BriefResult.Raw(http, outcome);
     }
 
     @FunctionalInterface
