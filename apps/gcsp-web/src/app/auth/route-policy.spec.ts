@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { landingFor, navigationFor, permits, safeReturnTo } from './route-policy';
 import { routes } from '../routes';
+import { ComparisonComponent } from '../comparison/comparison.component';
 describe('role route policy', () => {
   it('keeps the employee rail at the agreed two destinations', () => {
     expect(navigationFor(['employee']).map((item) => item.label)).toEqual(['Your cars', 'Order progress']);
@@ -34,6 +35,6 @@ describe('role route policy', () => {
     expect(permits(['presenter', 'employee'], comparison!.data!['roles'])).toBe(true);
     expect(permits(['employee'], comparison!.data!['roles'])).toBe(false);
     expect(navigationFor(['employee']).some((item) => item.path === 'comparison')).toBe(false);
-    expect((await (comparison!.loadComponent as () => Promise<{ name: string }>)()).name).toBe('ComparisonComponent');
+    expect(await (comparison!.loadComponent as () => Promise<unknown>)()).toBe(ComparisonComponent);
   });
 });
