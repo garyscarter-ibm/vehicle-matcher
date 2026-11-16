@@ -1,0 +1,34 @@
+<section class="manual-review" [attr.aria-busy]="busy()">
+  <gcsp-screen-intro title="Review your car" />
+  @if (hasVehicle()) {
+    <div class="manual-layout">
+      <section class="gcsp-panel manual-vehicle" aria-labelledby="manual-car-name">
+        <gcsp-media-gallery [name]="vehicle().name" [images]="vehicle().images" placeholder="No image available for this car" />
+        <p class="gcsp-note">{{ vehicle().identity }}</p>
+        <h2 id="manual-car-name">{{ vehicle().name }}</h2>
+        <gcsp-fact-list [rows]="vehicle().termRows" />
+        <details><summary>Car facts</summary><gcsp-fact-list [rows]="vehicle().rows" hideMissing="More details not supplied" /></details>
+      </section>
+      <section class="gcsp-panel manual-choice" aria-labelledby="manual-review-title">
+        <h2 id="manual-review-title">Your selection</h2>
+        <p class="gcsp-note">{{ reservation() }}</p>
+        @if (projection().claim; as claimValue) {
+          <gcsp-fact-list [rows]="[{label:'Journey',value:claimValue.hold.mode === 'replacement' ? 'Replacement' : 'New order'}, {label:'Quote valid until',value:claimValue.quote.validUntil}]" />
+        }
+        @if (projection().state === 'resume-required') {
+          <p>Review this unfinished selection before continuing.</p>
+          <button gcspButton type="button" [disabled]="busy()" (click)="resume.emit()">Continue reviewing this selection</button>
+        } @else if (canClaim()) {
+          <button gcspButton type="button" [disabled]="busy()" (click)="claim.emit()">Reserve this car to review</button>
+        } @else {
+          <button gcspButton type="button" [disabled]="!projection().canReview || busy()" (click)="continue.emit()">Continue to order review</button>
+        }
+        <div class="gcsp-actions">
+          <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="edit.emit()">Edit choices</button>
+          <button gcspButton variant="ghost" type="button" [disabled]="quoted() ? !projection().canRelease || busy() : busy()" (click)="browse.emit()">Change car</button>
+        </div>
+        <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="check.emit()">Check current claim</button>
+      </section>
+    </div>
+  }
+</section>

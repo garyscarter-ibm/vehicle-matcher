@@ -6497,17 +6497,6 @@
       "note": "Stock host/history source 31589e3f4;27 selectedPASS,15actual router Chromechecks,178finalpinsmatch; route/gallery now wired. Reviewconsumer + actualJava/originalAC remainopen. F504Medium/F505Low/F499Low separateunfixed. Heldfordispatcherpublication."
     },
     {
-      "assignee": "",
-      "id": "FUCQ-443",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Review and intentionally submit a manual selection",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443"
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
       "observed_at": "2026-11-14T09:14:30Z",
@@ -8334,6 +8323,38 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-443",
+      "observed_at": "2026-11-16T15:02:03Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Review and intentionally submit a manual selection",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443",
+      "slices": [
+        {
+          "id": "claim-review",
+          "status": "in-progress",
+          "title": "Claim-review-contract-and-versioned-state",
+          "observed_at": "2026-11-16T15:02:03Z",
+          "evidence": "50/50 targeted client/projection/store checks passed on frozen source; missing actual review-details/version producer and original connected acceptance remain open"
+        },
+        {
+          "id": "manual-screens",
+          "status": "in-progress",
+          "title": "Manual-review-and-summary-screens",
+          "observed_at": "2026-11-16T15:02:03Z",
+          "evidence": "16/16 native review/summary/route checks and stock handoff14/14 passed; final submit intentionally unavailable pending producer authority; inherited case screen boundary failure and original rendered/connected proof remain open"
+        },
+        {
+          "id": "connected-proof",
+          "status": "not-started",
+          "title": "Real-claim-to-order-and-rendered-proof"
         }
       ]
     }
