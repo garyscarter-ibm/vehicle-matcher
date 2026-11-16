@@ -1,5 +1,8 @@
 package gcsp.api.ordering;
 
+import gcsp.api.claims.ManualReviewDetails;
+import gcsp.api.claims.ManualReviewDetailsHolder;
+import gcsp.api.claims.ReviewResult;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.policy.PolicyClock;
 import gcsp.api.policy.PolicyService;
@@ -28,6 +31,9 @@ public class OrderingServiceHolder {
     @Inject
     PolicyClock clock;
 
+    @Inject
+    ManualReviewDetailsHolder reviewDetails;
+
     private OrderingService service;
 
     public String provider() {
@@ -39,8 +45,21 @@ public class OrderingServiceHolder {
         if (service == null) {
             AgroalDataSource ds = dataSource.get();
             service = new OrderingService(ds, new OrderingTerms(policy, clock),
-                    OrderingProviderSelection.select(selection.provider(), ds));
+                    OrderingProviderSelection.select(selection.provider(), ds)).withReviewFreeze(this::freeze);
         }
         return Optional.of(service);
+    }
+
+    /** Adapts the claims freeze: ok gives the frozen snapshot, anything else its refusal code. */
+    private OrderingService.ReviewFreeze.Frozen freeze(gcsp.api.persistence.Tx tx, OrderingScope scope, String holdId,
+            String quoteId, long expectedHold, long expectedDraft, long version) throws Exception {
+        Optional<ManualReviewDetails> details = reviewDetails.details();
+        if (details.isEmpty()) return new OrderingService.ReviewFreeze.Frozen(null, "review-details-unavailable");
+        ReviewResult r = details.get().freeze(tx, new ManualReviewDetails.Binding(scope.runId(), scope.employeeId(),
+                scope.entitlementSlotId(), holdId, quoteId, expectedHold, expectedDraft), version);
+        if (r.isOk()) return new OrderingService.ReviewFreeze.Frozen(r.value(), null);
+        // An unavailable claims source stays a 503, as Node passes the freeze status through.
+        String code = "unavailable".equals(r.status()) ? "review-details-unavailable" : r.code() == null ? r.status() : r.code();
+        return new OrderingService.ReviewFreeze.Frozen(null, code);
     }
 }
