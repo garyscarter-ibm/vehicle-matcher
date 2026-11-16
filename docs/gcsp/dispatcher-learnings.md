@@ -812,3 +812,16 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **Observed/outcome:** review-04 acknowledged20:38:52Z and candidate/plan returned20:44:58Z in the same Claude session without a UI prompt. Parent observed the matching returned artifacts and issued review-05 at20:48:59Z; its delivery is pending until a matching recipient acknowledgement. Claude was waiting after return, so that completed phase is not current execution.
 - **Limit/follow-up:** four bounded follow-up round trips now demonstrate useful file transport. The initial missed assignment, which needed Gary's prompt, remains part of the record. Last-acknowledged-ID restart recovery remains proposed/unverified; enabling app control is still optional, and would not repair runtime-plan defects.
+
+## 2026-11-16 20:58 UTC · GC Claude Code · DL-20261116-GCC-003 · identified: per-worker supervisor review loop
+
+- **Evidence:** after F468's source landed (9e64c5949, 20:13), validating two new unrun tests has taken four
+  source-only review rounds on a one-off supervisor (review-02 to review-05, 20:24 to 20:58). The candidate grew from
+  96 to about 450 lines, and each round found real lifecycle gaps. No test has run since 20:13.
+- **Cause:** every worker writes its own supervisor around `_tools/test_resources.py`. The contract (all-phase monitor,
+  retained identities, bounded supervisor lifetime, content pins, durable receipts) is re-derived and re-reviewed per
+  assignment. The helper's `run_process` already covers part of this but not all.
+- **Impact:** about 35 minutes of dispatcher and worker time per check, for validation of two test methods.
+- **Follow-up (proposed, not implemented):** promote one reviewed supervisor (this candidate, once approved) into
+  `_tools` as the canonical Java/PG targeted runner, so later assignments reuse its review instead of repeating it.
+  This needs framework authority; it isn't part of F468.
