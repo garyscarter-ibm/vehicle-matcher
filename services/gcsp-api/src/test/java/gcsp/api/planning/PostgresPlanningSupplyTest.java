@@ -98,6 +98,10 @@ class PostgresPlanningSupplyTest {
         return adapter.readSupply(new PlanningRead(new RunContext(ENV, RUN, "sub-greg"), AS_OF, POLICY, "2027-02-04T00:00:00.000Z"), policy);
     }
 
+    private ObjectNode readAt(PostgresPlanningSupply adapter, String asOf) {
+        return adapter.readSupply(new PlanningRead(new RunContext(ENV, RUN, "sub-greg"), asOf, POLICY, "2027-02-04T00:00:00.000Z"), policy);
+    }
+
     private static ObjectNode visibility() {
         ObjectNode v = M.createObjectNode();
         v.putArray("companyIds").add("co-1");
@@ -277,6 +281,62 @@ class PostgresPlanningSupplyTest {
         ObjectNode other = adapter.readSupply(new PlanningRead(new RunContext(ENV, "run-9", "sub-greg"), AS_OF, POLICY,
                 "2027-02-04T00:00:00.000Z"), policy);
         assertEquals("planning-supply-read-mismatch", other.get("code").textValue());
+    }
+
+    @Test
+    void aRunClockAheadOfWallTimeReadsRunClockStampedRowsAsAvailable() throws Exception {
+        String runNow = "2026-11-09T00:00:00.000Z";
+        releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-08T00:00:00.000Z");
+        receipt("tr-1", null, "2026-11-08T00:00:00.000Z", "car-a");
+        PostgresPlanningSupply onRunClock = new PostgresPlanningSupply(ds,
+                context -> new PlanningClock.Observation(Instant.parse(runNow), "7"));
+
+        ObjectNode out = readAt(onRunClock, runNow);
+
+        assertEquals("ok", out.get("status").textValue(), out.toString());
+        assertEquals(1, out.get("value").get("stock").size());
+        assertEquals(runNow, out.get("value").get("asOf").textValue());
+        // The same stamps judged against an earlier time stay refused: the future-row checks are unchanged.
+        ObjectNode early = readAt(adapter(() -> "v1"), AS_OF);
+        assertEquals("planning-stock-availability-invalid", early.get("code").textValue());
+    }
+
+    @Test
+    void anAsOfThatIsNotTheClockNowIsAMismatchNotAPlan() throws Exception {
+        releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
+        PostgresPlanningSupply later = new PostgresPlanningSupply(ds,
+                context -> new PlanningClock.Observation(Instant.parse("2026-11-06T01:00:00.000Z"), "v1"));
+
+        ObjectNode out = readAt(later, AS_OF);
+
+        assertEquals("unavailable", out.get("status").textValue());
+        assertEquals("planning-supply-read-mismatch", out.get("code").textValue());
+    }
+
+    @Test
+    void aClockInstantThatMovesDuringTheReadIsAConflictEvenWithTheSameVersion() throws Exception {
+        releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
+        AtomicInteger calls = new AtomicInteger();
+        PostgresPlanningSupply moving = new PostgresPlanningSupply(ds, context -> new PlanningClock.Observation(
+                Instant.parse(calls.incrementAndGet() == 1 ? AS_OF : "2026-11-06T00:00:01.000Z"), "v1"));
+
+        ObjectNode out = readAt(moving, AS_OF);
+
+        assertEquals("conflict", out.get("status").textValue());
+        assertEquals("planning-supply-changed", out.get("code").textValue());
+    }
+
+    @Test
+    void anUnavailableRunClockIsAnUnavailableReadNotAWallTimeFallback() throws Exception {
+        releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
+        PostgresPlanningSupply none = new PostgresPlanningSupply(ds, context -> {
+            throw new IllegalStateException("The active run has no readable run clock.");
+        });
+
+        ObjectNode out = readAt(none, AS_OF);
+
+        assertEquals("unavailable", out.get("status").textValue());
+        assertEquals("planning-supply-unavailable", out.get("code").textValue());
     }
 
     private static String kinds(JsonNode responses) {

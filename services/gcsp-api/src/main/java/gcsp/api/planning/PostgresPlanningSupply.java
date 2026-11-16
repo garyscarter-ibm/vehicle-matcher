@@ -35,7 +35,7 @@ import javax.sql.DataSource;
 
 /**
  * PlanningSupply over the native tables: a port of Node createOrderPlanSupplyProvider and resolveSupplyRecords (FUCQ-477).
- * Rows come from one read-only snapshot and are read again afterwards; any change, or a clock version change, is a conflict.
+ * Rows come from one read-only snapshot and are read again afterwards; any change, or a clock instant or version change, is a conflict.
  */
 public final class PostgresPlanningSupply implements PlanningSupply {
 
@@ -86,6 +86,9 @@ public final class PostgresPlanningSupply implements PlanningSupply {
         }
         try {
             PlanningClock.Observation start = clock.observe(read.context());
+            if (!PolicyClock.iso(start.now()).equals(read.asOf())) {
+                return Outcomes.unavailable("planning-supply-read-mismatch");
+            }
             ObjectNode rows = load(ds, read.context());
             if (rows == null) {
                 return Outcomes.unavailable("planning-supply-read-mismatch");
@@ -102,7 +105,7 @@ public final class PostgresPlanningSupply implements PlanningSupply {
             }
             ObjectNode after = load(ds, read.context());
             PlanningClock.Observation end = clock.observe(read.context());
-            if (after == null || !Canonical.digest(rows).equals(Canonical.digest(after)) || !start.version().equals(end.version())) {
+            if (after == null || !Canonical.digest(rows).equals(Canonical.digest(after)) || !start.equals(end)) {
                 return Outcomes.conflict("planning-supply-changed");
             }
             return out;
@@ -332,7 +335,7 @@ public final class PostgresPlanningSupply implements PlanningSupply {
         List<JsonNode> unbound = new ArrayList<>();
         for (JsonNode row : stockRows) {
             List<JsonNode> carHolds = holdsByCar.getOrDefault(row.get("orderUuid").textValue(), List.of());
-            // A manual allocation leaves the car 'released' under an 'allocated' hold: it is allocated, not available.
+            // An 'allocated' hold is treated as allocated even if the car row lags.
             if ("allocated".equals(row.path("state").textValue())
                     || carHolds.stream().anyMatch(h -> "allocated".equals(h.path("state").textValue()))) {
                 continue;

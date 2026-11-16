@@ -20,7 +20,7 @@ New files:
 
 ## Semantics that differ, and why
 - **Held stock:** Java has no `held` stock state. A car is held when it has exactly one occupying `custody_holds` row; anything else is `planning-held-stock-unresolved`, as in Node.
-- **Allocated stock:** a car counts as allocated, and is left out, when `stock_cars.state = 'allocated'` (Buddy conversion) or its hold is `allocated` (a manual claim leaves the car `released`; `ManualClaims` :772).
+- **Allocated stock:** a car counts as allocated, and is left out, when `stock_cars.state = 'allocated'` (`ManualClaims.finish` :771-773, Buddy and remote conversions set it) or its hold is `allocated`. An allocated hold is treated as allocated even if the car row lags.
 - **expectedAt and policyVersion:** both come from `confirmed_supply_queue` (eligible_from = confirmedAt plus the policy lead time). This matches Node's expectedAt rule.
   - A confirmation not yet queued into supply has neither value, so the read is `planning-confirmed-supply-invalid`. It is not dated or left out.
   - The queue row's confirmedAt and sourceVersion must equal the confirmation's.
@@ -28,7 +28,8 @@ New files:
 - **Change detection:** the tables are read in two separate REPEATABLE READ read-only transactions, before and after resolution.
   - A different canonical row digest, or a different `PlanningClock` version, is `conflict planning-supply-changed`.
   - Each snapshot is self-consistent. The second read is what detects a commit in between.
-- **Clock and policy:** the adapter does not require clock `now == asOf`, because `WallPlanningClock` moves while its version stays fixed (`OrderPlanService` already pins asOf).
+- **Clock and policy:** the stamps the adapter reads are on the presenter run clock, so the planning clock must be too. `RunPlanningClock` (see `fucq477-run-planning-clock-2026-11-16.md`) is bound when persistence is on.
+  - As in Node, the start observation must equal `read.asOf` (else `planning-supply-read-mismatch`), and the end observation must equal the start in instant and version (else `conflict planning-supply-changed`).
   - The policy version is enforced through `PlanningCatalog.readCatalog`.
   - Greg's role is checked by `OrderPlanService` before and after, because the port is given no principal.
   - A run that is not the active run gives `planning-supply-read-mismatch`.
