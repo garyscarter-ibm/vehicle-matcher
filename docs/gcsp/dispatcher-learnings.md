@@ -281,3 +281,8 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **Issue/evidence:** F418 lead reports101selected passes and one native PostgreSQL skip, but the main runner's reported290.976seconds conflicts with TAP durations of1142294ms for runtime plus608573ms for clock-reset. Suspension or clock behavior is a possible explanation, not verified. The480/600second elapsed budget is therefore unproven for that batch.
 - **Action/outcome:** retain raw records and label the timing limitation explicitly; do not rerun the suite merely to replace an inconvenient receipt. Lead reports a fresh audit finding all five runs' owned resources absent and borrowed hashes preserved; parent audit is still outstanding. No claim of complete resource-budget compliance or Story acceptance follows from passing tests.
+
+## 2026-11-16 07:52 UTC · GC Codex · DL-20261116-GC-007 · deadline failure confirmed
+
+- **New evidence:** the main ownership manifest was created at1794809849.0533812 and removed at1794811647.0935879:1798.040seconds of realtime. This establishes that the600second total deadline was exceeded. The earlier description as merely unproven is superseded; the reason for the realtime/monotonic divergence remains unverified.
+- **Action/outcome:** retain this failed resource obligation alongside the101passing assertions and one original native-case skip. SAME Foxy is attempting only that original skipped case against already installed owned local PostgreSQL, with both realtime and monotonic deadlines enforced; no installation or repetition of the101checks. That case cannot erase the historical overrun. Lead reports current resource absence, parent audit/publication remains pending, and native acceptance is not inferred.
