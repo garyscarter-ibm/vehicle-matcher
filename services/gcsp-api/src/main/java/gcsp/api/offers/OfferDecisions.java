@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.account.AccountRecordsPort;
+import gcsp.api.allocation.ReconcileResult;
 import gcsp.api.allocation.RemoteBuddy;
 import gcsp.api.identity.Principal;
 import gcsp.api.ordering.OrderingResult;
@@ -48,7 +49,7 @@ public class OfferDecisions {
     static final com.fasterxml.jackson.databind.ObjectMapper MAPPER = new com.fasterxml.jackson.databind.ObjectMapper();
     private static final Set<String> KEYS = Set.of("commandId", "decision", "reasonCode", "expectedOfferVersion",
             "expectedHoldVersion", "termsDigest", "declarations", "expectedReturnMileage");
-    private static final String OCCUPYING = "('active', 'claim-pending', 'release-pending', 'selection-pending')";
+    static final String OCCUPYING = "('active', 'claim-pending', 'release-pending', 'selection-pending')";
 
     @Inject
     Persistence persistence;
@@ -103,10 +104,10 @@ public class OfferDecisions {
     private record Stored(String commandId, String digest, JsonNode outcome, Instant createdAt) {}
 
     record Offer(String offerId, String holdId, String state, long version, String employeeId, String orderUuid,
-            String quoteId, long briefVersion, String policyVersion) {}
+            String quoteId, long briefVersion, String policyVersion, String operationId) {}
 
     record Hold(String state, String type, long version, Instant expiresAt, String orderUuid, String employeeId,
-            String slotId, JsonNode attributes) {}
+            String slotId, JsonNode attributes, String operationId) {}
 
     record Car(String state, long version, String configurationId, JsonNode attributes) {}
 
@@ -133,8 +134,7 @@ public class OfferDecisions {
         // The two 409s may be a replay of a stored decision; the locked recheck gives the authoritative answer.
         if (authority instanceof OfferAuthority.Refused r && !replayable(r.refusal())) return r.refusal();
         if (!active().getAsBoolean()) return unavailable();
-        // FUCQ-467 seam: a remote Buddy decision needs the remote protocol, not this local one.
-        if ("remote".equals(buddy().get().mode())) return remoteRequired();
+        boolean remoteMode = "remote".equals(buddy().get().mode());
         ObjectNode input = F.objectNode();
         input.put("offerId", offerId);
         input.put("decision", accept ? "accept" : "decline");
@@ -152,6 +152,13 @@ public class OfferDecisions {
         }
         String digest = Canonical.digest(input);
         try {
+            if (remoteMode) {
+                Instant at = clock.now(context(p));
+                if (at == null) return unavailable();
+                return accept ? remoteDecisions().accept(p, offerId, input, commandId, digest, offerVersion, holdVersion, at)
+                        : remoteDecisions().decline(p, offerId, input, commandId, digest, reasonCode, offerVersion,
+                                holdVersion, at);
+            }
             Stored prior = stored(p, offerId);
             if (prior != null) return fromStored(prior, commandId, digest);
             Instant now = clock.now(context(p));
@@ -171,6 +178,16 @@ public class OfferDecisions {
         } catch (SQLException | RuntimeException e) {
             return unavailable();
         }
+    }
+
+    /** Drives every open remote offer decision of the run (the restart and tick path); zeros outside remote mode. */
+    public ReconcileResult reconcileRemote(String environmentId, String runId, int limit) {
+        if (!active().getAsBoolean() || !"remote".equals(buddy().get().mode())) return new ReconcileResult(0, 0, 0, 0, null);
+        return remoteDecisions().reconcile(environmentId, runId, limit);
+    }
+
+    private RemoteOfferDecisions remoteDecisions() {
+        return new RemoteOfferDecisions(source().get(), buddy().get(), this);
     }
 
     /** Accept runs inside ordering's transaction through the Buddy converter, so selection and decision commit as one. */
@@ -227,7 +244,7 @@ public class OfferDecisions {
         return unavailable();
     }
 
-    private static OfferOutcome refused(OrderingResult.Refused r) {
+    static OfferOutcome refused(OrderingResult.Refused r) {
         return switch (r.status()) {
             case 400 -> OfferOutcome.invalid("invalid-offer-decision", "Check the terms and declarations and try again.");
             case 403 -> OfferOutcome.forbidden(r.code(), "Sign in as the employee this offer was sent to.");
@@ -283,24 +300,83 @@ public class OfferDecisions {
         }
     }
 
+    /** The locked rows, the chosen reason and the exclusion rule: everything a decline needs before it writes. */
+    record Prepared(Locked locked, JsonNode reason, JsonNode exclusion) {}
+
+    /** Locked recheck, reason registry and exclusion shared by local decline and the remote intent; null with the refusal set. */
+    Prepared prepare(Tx tx, Principal p, String offerId, String reasonCode, long expectedOffer, long expectedHold,
+            Instant now, Verdict refusal, boolean remote) throws SQLException {
+        Locked l = lock(tx, p, offerId, expectedOffer, expectedHold, null, now, refusal, remote);
+        if (l == null) return null;
+        JsonNode registry = registry(p, now);
+        if (registry == null) return deny(refusal, reasonsUnavailable());
+        JsonNode reason = null;
+        for (JsonNode r : registry.get("reasons")) if (reasonCode.equals(r.get("code").textValue())) reason = r;
+        if (reason == null) return deny(refusal, invalid());
+        JsonNode exclusion = exclusion(p, now);
+        if (exclusion == null) return deny(refusal, OfferOutcome.of(503, "unavailable", "decline-exclusion-unavailable",
+                "The decline rules are unavailable right now. Try again shortly.", false));
+        return new Prepared(l, reason, exclusion);
+    }
+
+    static String decisionId(String runId, String offerId) {
+        return "offer-decision:" + Canonical.digest(F.arrayNode().add(runId).add(offerId));
+    }
+
+    static ObjectNode reasonRecord(JsonNode reason, String reasonCode, String policyVersion) {
+        ObjectNode stored = F.objectNode();
+        stored.put("code", reasonCode);
+        stored.put("label", reason.get("label").textValue());
+        stored.put("attribute", reason.get("attribute").textValue());
+        stored.put("policyVersion", policyVersion);
+        return stored;
+    }
+
+    static ObjectNode declinedValue(String offerId, String decisionId, String commandId, String reasonCode,
+            long offerVersion, long holdVersion, String decidedAt) {
+        ObjectNode value = F.objectNode();
+        value.put("schemaVersion", 1);
+        value.put("offerId", offerId);
+        value.put("decisionId", decisionId);
+        value.put("commandId", commandId);
+        value.put("decision", "decline");
+        value.put("state", "declined");
+        value.put("reasonCode", reasonCode);
+        value.put("offerVersion", offerVersion);
+        value.put("holdVersion", holdVersion);
+        value.put("decidedAt", decidedAt);
+        value.putArray("availableActions");
+        value.putObject("followUp").put("state", "waiting-for-next-offer").put("briefChange", "unavailable");
+        return value;
+    }
+
+    static ObjectNode declinedEvent(String holdId, String orderUuid, String offerId, String employeeId, String decisionId,
+            String reasonCode, long briefVersion, String policyVersion, String occurredAt, JsonNode exclusion) {
+        ObjectNode event = F.objectNode();
+        event.put("holdId", holdId);
+        event.put("orderUuid", orderUuid);
+        event.put("offerId", offerId);
+        event.put("employeeId", employeeId);
+        event.put("decisionId", decisionId);
+        event.put("reasonCode", reasonCode);
+        event.put("briefVersion", briefVersion);
+        event.put("policyVersion", policyVersion);
+        event.put("occurredAt", occurredAt);
+        event.set("exclusion", exclusion);
+        return event;
+    }
+
     private WorkResult decline(Tx tx, Principal p, String offerId, String commandId, String digest, String reasonCode,
             long expectedOffer, long expectedHold, Instant now, Verdict refusal) throws SQLException {
-        Locked l = lock(tx, p, offerId, expectedOffer, expectedHold, null, now, refusal);
-        if (l == null) return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
+        Prepared d = prepare(tx, p, offerId, reasonCode, expectedOffer, expectedHold, now, refusal, false);
+        if (d == null) return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
+        Locked l = d.locked();
         String env = p.environmentId();
         String run = p.runId();
         String holdId = l.holdId();
         Offer offer = l.offer();
         Hold hold = l.hold();
         Car car = l.car();
-        JsonNode registry = registry(p, now);
-        if (registry == null) return refuse(refusal, reasonsUnavailable());
-        JsonNode reason = null;
-        for (JsonNode r : registry.get("reasons")) if (reasonCode.equals(r.get("code").textValue())) reason = r;
-        if (reason == null) return refuse(refusal, invalid());
-        JsonNode exclusion = exclusion(p, now);
-        if (exclusion == null) return refuse(refusal, OfferOutcome.of(503, "unavailable", "decline-exclusion-unavailable",
-                "The decline rules are unavailable right now. Try again shortly.", false));
 
         String nowText = PolicyClock.iso(now);
         ObjectNode patch = F.objectNode().put("releaseReason", "offer-declined").put("releasedAt", nowText);
@@ -313,26 +389,9 @@ public class OfferDecisions {
         tx.cas("UPDATE stock_cars SET version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? "
                 + "AND order_uuid = ? AND version = ?", env, run, offer.orderUuid(), car.version());
 
-        String decisionId = "offer-decision:" + Canonical.digest(F.arrayNode().add(run).add(offerId));
-        ObjectNode value = F.objectNode();
-        value.put("schemaVersion", 1);
-        value.put("offerId", offerId);
-        value.put("decisionId", decisionId);
-        value.put("commandId", commandId);
-        value.put("decision", "decline");
-        value.put("state", "declined");
-        value.put("reasonCode", reasonCode);
-        value.put("offerVersion", offer.version() + 1);
-        value.put("holdVersion", hold.version() + 1);
-        value.put("decidedAt", nowText);
-        value.putArray("availableActions");
-        value.putObject("followUp").put("state", "waiting-for-next-offer").put("briefChange", "unavailable");
-
-        ObjectNode stored = F.objectNode();
-        stored.put("code", reasonCode);
-        stored.put("label", reason.get("label").textValue());
-        stored.put("attribute", reason.get("attribute").textValue());
-        stored.put("policyVersion", p.policyVersion());
+        String decisionId = decisionId(run, offerId);
+        ObjectNode value = declinedValue(offerId, decisionId, commandId, reasonCode, offer.version() + 1,
+                hold.version() + 1, nowText);
         ObjectNode versions = F.objectNode();
         versions.put("offer", offer.version());
         versions.put("hold", hold.version());
@@ -342,20 +401,11 @@ public class OfferDecisions {
         tx.write("INSERT INTO offer_decisions (environment_id, run_id, offer_id, decision_id, command_id, input_digest, "
                 + "employee_id, hold_id, decision, reason_code, reason, versions, outcome, decided_at) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'decline', ?, ?, ?, ?, ?)", env, run, offerId, decisionId, commandId,
-                digest, offer.employeeId(), holdId, reasonCode, stored, versions, value, now);
-
-        ObjectNode event = F.objectNode();
-        event.put("holdId", holdId);
-        event.put("orderUuid", offer.orderUuid());
-        event.put("offerId", offerId);
-        event.put("employeeId", offer.employeeId());
-        event.put("decisionId", decisionId);
-        event.put("reasonCode", reasonCode);
-        event.put("briefVersion", offer.briefVersion());
-        event.put("policyVersion", p.policyVersion());
-        event.put("occurredAt", nowText);
-        event.set("exclusion", exclusion);
-        tx.emit("offer-declined:" + holdId, "offer-declined", event);
+                digest, offer.employeeId(), holdId, reasonCode, reasonRecord(d.reason(), reasonCode, p.policyVersion()),
+                versions, value, now);
+        tx.emit("offer-declined:" + holdId, "offer-declined", declinedEvent(holdId, offer.orderUuid(), offerId,
+                offer.employeeId(), decisionId, reasonCode, offer.briefVersion(), p.policyVersion(), nowText,
+                d.exclusion()));
         return WorkResult.ok(value);
     }
 
@@ -365,19 +415,26 @@ public class OfferDecisions {
      */
     Locked lock(Tx tx, Principal p, String offerId, long expectedOffer, long expectedHold, Long expectedCar, Instant now,
             Verdict refusal) throws SQLException {
+        return lock(tx, p, offerId, expectedOffer, expectedHold, expectedCar, now, refusal, false);
+    }
+
+    /** As above; remote also requires the hold and offer to come from one acknowledged, offered remote claim. */
+    Locked lock(Tx tx, Principal p, String offerId, long expectedOffer, long expectedHold, Long expectedCar, Instant now,
+            Verdict refusal, boolean remote) throws SQLException {
         String env = p.environmentId();
         String run = p.runId();
         String holdId = tx.first("SELECT hold_id FROM buddy_offers WHERE environment_id = ? AND run_id = ? AND offer_id = ?",
                 rs -> rs.getString(1), env, run, offerId).orElse(null);
         if (holdId == null) return deny(refusal, OfferOutcome.notFound());
-        Hold hold = tx.first("SELECT state, hold_type, version, expires_at, order_uuid, employee_id, slot_id, attributes::text "
-                + "FROM custody_holds WHERE environment_id = ? AND run_id = ? AND hold_id = ? FOR UPDATE",
+        Hold hold = tx.first("SELECT state, hold_type, version, expires_at, order_uuid, employee_id, slot_id, attributes::text, "
+                + "operation_id FROM custody_holds WHERE environment_id = ? AND run_id = ? AND hold_id = ? FOR UPDATE",
                 rs -> new Hold(rs.getString(1), rs.getString(2), rs.getLong(3), instant(rs, 4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), json(rs.getString(8))), env, run, holdId).orElse(null);
+                        rs.getString(6), rs.getString(7), json(rs.getString(8)), rs.getString(9)), env, run, holdId).orElse(null);
         Offer offer = tx.first("SELECT offer_id, hold_id, state, version, employee_id, order_uuid, quote_id, brief_version, "
-                + "policy_version FROM buddy_offers WHERE environment_id = ? AND run_id = ? AND offer_id = ? FOR UPDATE",
+                + "policy_version, operation_id FROM buddy_offers WHERE environment_id = ? AND run_id = ? AND offer_id = ? FOR UPDATE",
                 rs -> new Offer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getString(5),
-                        rs.getString(6), rs.getString(7), rs.getLong(8), rs.getString(9)), env, run, offerId).orElse(null);
+                        rs.getString(6), rs.getString(7), rs.getLong(8), rs.getString(9), rs.getString(10)), env, run, offerId)
+                .orElse(null);
         if (hold == null || offer == null) return deny(refusal, inconsistent());
         Car car = tx.first("SELECT state, version, configuration_id, attributes::text FROM stock_cars WHERE environment_id = ? "
                 + "AND run_id = ? AND order_uuid = ? FOR UPDATE", rs -> new Car(rs.getString(1), rs.getLong(2),
@@ -397,7 +454,9 @@ public class OfferDecisions {
                 || !offer.employeeId().equals(quote.employeeId()) || !hold.slotId().equals(quote.slotId())) {
             return deny(refusal, inconsistent());
         }
-        if (tx.first("SELECT 1 FROM buddy_operations WHERE environment_id = ? AND run_id = ? AND hold_id = ? LIMIT 1",
+        if (remote) {
+            if (!remoteClaimOffered(tx, env, run, hold, offer)) return deny(refusal, inconsistent());
+        } else if (tx.first("SELECT 1 FROM buddy_operations WHERE environment_id = ? AND run_id = ? AND hold_id = ? LIMIT 1",
                 rs -> 1, env, run, holdId).isPresent()) {
             return deny(refusal, remoteRequired());
         }
@@ -422,7 +481,15 @@ public class OfferDecisions {
         return new Locked(holdId, offer, hold, car, quote);
     }
 
-    private static Locked deny(Verdict refusal, OfferOutcome outcome) {
+    /** The hold and the offer both name one acknowledged buddy-claim whose outcome is an offer. */
+    private static boolean remoteClaimOffered(Tx tx, String env, String run, Hold hold, Offer offer) throws SQLException {
+        return hold.operationId() != null && hold.operationId().equals(offer.operationId())
+                && tx.first("SELECT 1 FROM pending_operations WHERE environment_id = ? AND run_id = ? AND operation_id = ? "
+                        + "AND operation_type = 'buddy-claim' AND state = 'acknowledged' AND outcome->>'state' = 'offered'",
+                        rs -> 1, env, run, hold.operationId()).isPresent();
+    }
+
+    private static <T> T deny(Verdict refusal, OfferOutcome outcome) {
         refusal.outcome = outcome;
         return null;
     }
@@ -438,11 +505,6 @@ public class OfferDecisions {
         } catch (java.io.IOException e) {
             throw new IllegalStateException("Stored JSON is unreadable");
         }
-    }
-
-    private static WorkResult refuse(Verdict refusal, OfferOutcome outcome) {
-        refusal.outcome = outcome;
-        return WorkResult.refuse(outcome.code(), outcome.reason());
     }
 
     /** The deadline rule is inclusive at the offer's own policy version, or the decision is refused. */
@@ -547,7 +609,7 @@ public class OfferDecisions {
                 offer.version());
     }
 
-    private static OfferOutcome map(Outcome o, Verdict refusal) {
+    static OfferOutcome map(Outcome o, Verdict refusal) {
         if (o instanceof Outcome.Refused && refusal.outcome != null) return refusal.outcome;
         if (o instanceof Outcome.Conflict c) {
             return switch (c.code()) {
@@ -567,7 +629,7 @@ public class OfferDecisions {
         return OfferOutcome.ok(copy);
     }
 
-    private static OfferOutcome invalid() {
+    static OfferOutcome invalid() {
         return OfferOutcome.invalid("invalid-offer-decision", "Supply the exact offer, decision and current versions.");
     }
 
@@ -607,11 +669,11 @@ public class OfferDecisions {
     }
 
     @FunctionalInterface
-    private interface Row<T> {
+    interface Row<T> {
         T map(ResultSet rs) throws SQLException;
     }
 
-    private static <T> T one(Connection c, String sql, Row<T> row, Object... params) throws SQLException {
+    static <T> T one(Connection c, String sql, Row<T> row, Object... params) throws SQLException {
         try (PreparedStatement ps = c.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 Object v = params[i];
@@ -646,6 +708,10 @@ public class OfferDecisions {
 
     private Supplier<Optional<OrderingService>> ordering() {
         return ordering != null ? ordering : () -> orderingHolder.service();
+    }
+
+    Optional<OrderingService> orderingService() {
+        return ordering().get();
     }
 
     /** The account port, or null when none is wired. */

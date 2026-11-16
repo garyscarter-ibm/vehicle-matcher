@@ -128,6 +128,42 @@ public final class OrderingService {
         return guarded(scope, input, converter);
     }
 
+    /** The checks submitTrusted makes before its transaction (provider, terms, declarations, account), with no write. */
+    public OrderingResult precheck(OrderingScope scope, JsonNode raw, SelectionConversionPort converter) {
+        try {
+            if (converter == null || !"buddy-offer".equals(converter.sourceType())) {
+                return new OrderingResult.Unavailable(UnconfiguredConversion.CODE);
+            }
+            if ("none".equals(provider.mode())) return new OrderingResult.Unavailable("ordering-provider-not-configured");
+            Input input = parse(raw);
+            if (input == null) return invalid("selection");
+            if (!converter.sourceType().equals(input.source().type())) return invalid("source");
+            Row r = load(scope.environmentId(), scope.runId(), operationId(scope));
+            if (r != null) {
+                if (!r.employeeId().equals(scope.employeeId())) return new OrderingResult.Refused("forbidden", 403, null);
+                return r.inputDigest().equals(Canonical.digest(input.intent())) ? new OrderingResult.Ok(null, false)
+                        : refused("active-selection-exists");
+            }
+            Instant now = terms.now(scope);
+            OrderingTerms.TermsRead tr = terms.terms(scope, now);
+            if (tr instanceof Failed f) return new OrderingResult.Unavailable(f.code());
+            ObjectNode termsValue = ((TermsOk) tr).value();
+            if (!input.termsDigest().equals(termsValue.path("termsDigest").asText())) return refused("terms-changed");
+            if (terms.reference(scope, now) instanceof Failed f) return new OrderingResult.Unavailable(f.code());
+            SelectionConversionPort.Preparation prep = converter.prepare(scope, input.source());
+            if (prep instanceof Refusal rf) return refusal(rf.code());
+            if (!declarationsOk(termsValue.get("declarations"), ((SelectionConversionPort.Prepared) prep).mode(),
+                    input.declarations())) {
+                return invalid("declarations");
+            }
+            return new OrderingResult.Ok(termsValue, false);
+        } catch (Db e) {
+            return new OrderingResult.Unavailable("database-unavailable");
+        } catch (RuntimeException e) {
+            return new OrderingResult.Unavailable("ordering-policy-unavailable");
+        }
+    }
+
     private OrderingResult guarded(OrderingScope scope, JsonNode input, SelectionConversionPort converter) {
         try {
             return doSubmit(scope, input, converter);

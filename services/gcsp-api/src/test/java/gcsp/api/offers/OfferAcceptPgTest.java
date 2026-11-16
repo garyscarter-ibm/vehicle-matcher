@@ -169,7 +169,7 @@ class OfferAcceptPgTest {
     @Test
     void aRemoteHoldIsRefused() throws Exception {
         env.mode = "remote";
-        assertRefused(env.decide(env.accept("c1", 1, 1, null)), 503, "remote-decision-protocol-required");
+        assertRefused(env.decide(env.accept("c1", 1, 1, null)), 503, "offer-authority-inconsistent");
     }
 
     @Test

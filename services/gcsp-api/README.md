@@ -566,8 +566,33 @@ no remote operation. The run is enforced by the command runner. Every write is a
 - Refusals: 400 `invalid-offer-decision`, `expected-return-mileage-required`; 403 `offer-not-owned`; 409 `stale-version`,
   `deadline-passed`, `selection-authority-changed`, `quote-no-longer-valid`, `allowance-exceeded`,
   `current-eligibility-refused`, `brief-changed-review-required`, `contact-required`, `driver-review-required`, `stale-run`;
-  503 `offer-decision-unavailable`, `decline-reasons-unavailable`, `remote-decision-protocol-required` (remote Buddy mode
-  or a remote hold: FUCQ-467), `ordering-provider-not-configured`, `selection-source-unavailable`.
+  503 `offer-decision-unavailable`, `decline-reasons-unavailable`, `remote-decision-protocol-required` (a remote hold in
+  local Buddy mode), `offer-authority-inconsistent`, `ordering-provider-not-configured`, `selection-source-unavailable`.
+
+### Remote offer decisions (FUCQ-467)
+
+In remote Buddy mode (`RemoteBuddy.mode()` is `remote`) a decision is recorded before any remote call and confirmed
+afterwards. The locked recheck also requires the hold and offer to come from one acknowledged, offered `buddy-claim`.
+
+- **Intent.** One command (`offer-decision:<offerId>:<commandId>`) rechecks as local does, then moves the hold and offer
+  to `release-pending` (decline) or `selection-pending`/`decision-pending` (accept), bumps the car, and records an
+  `offer-decline-release` or `offer-selection` operation with its payload in `offer_decision_operations` (V467_1).
+  The stock stays held. Accept prechecks ordering (terms, declarations, account) first. The answer is always the stored
+  receipt: HTTP 202 `pending`, code `release-pending` or `decision-pending`, with its `operationId`. A replay returns
+  the same receipt with `replayed: true`, never the later state.
+- **Drive.** An attempt transaction, then `RemoteBuddy.execute` (first call, or after an authoritative `not-found`) or
+  `reconcile` outside any transaction, then an acknowledgement transaction. Only `confirmed`, `rejected` or `not-found`
+  echoing the operation id, run and order uuid counts. Anything else stays pending as `unknown`.
+- **Confirmed.** A decline finalizes in one transaction: hold `released`, offer `declined`, the one `offer_decisions`
+  row and `offer-declined`. An accept records `confirmed`, then converts once through `OrderingService.submitTrusted`
+  with `RemoteSelectionConversion`: hold and car `allocated`, offer `accepted`, the decision, `offer-accepted` and the
+  ordering intent commit together. If ordering is unavailable the operation stays pending as `conversion-pending` and
+  the next drive converts it without calling the remote again. A passed deadline never turns an authorised decision
+  into expiry.
+- **Rejected.** A rejected release keeps custody and the exclusion (pending, `rejected`). A rejected selection restores
+  the active hold and offer with the original deadline and closes the operation `refused`, so expiry can then act.
+- **Restart.** `offer-decision-reconciliation` (stage `pending-reconciliation`, startup included) drives open operations
+  in id order, 100 a tick. It is registered only in remote mode.
 - Accept needs a configured ordering provider and account source (`GCSP_ORDERING_PROVIDER`, `GCSP_ACCOUNT_PROVIDER`).
   Decline needs the reviewed `offer.declineReasons.v1` in the active policy version. The base seed lacks it, so decline
   is 503 `decline-reasons-unavailable` until that set is adopted.

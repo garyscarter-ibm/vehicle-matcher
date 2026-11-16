@@ -199,7 +199,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
     private JsonNode allowanceUsed;
 
     /** The retained quote's eligibility is judged again now: brief meaning, validity, allowance and the model rules. */
-    private Refusal revalidate(Tx tx, OrderingScope scope, Locked l, Instant now) throws SQLException {
+    Refusal revalidate(Tx tx, OrderingScope scope, Locked l, Instant now) throws SQLException {
         String env = scope.environmentId();
         String run = scope.runId();
         JsonNode current = tx.first("SELECT b.content::text FROM brief_heads h JOIN briefs b ON b.environment_id = h.environment_id "
@@ -251,6 +251,10 @@ final class BuddyOfferConversion implements SelectionConversionPort {
             return conflict("current-eligibility-refused", "You are no longer eligible for this car.");
         }
         return null;
+    }
+
+    JsonNode allowanceUsed() {
+        return allowanceUsed;
     }
 
     private static boolean after(JsonNode n, Instant now) {
