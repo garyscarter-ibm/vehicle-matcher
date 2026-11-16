@@ -8350,7 +8350,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-449",
-      "observed_at": "2026-11-16T18:50:17Z",
+      "observed_at": "2026-11-16T19:01:28Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Plan Greg's order and track Production responses",
@@ -8362,13 +8362,15 @@
           "id": "core",
           "status": "in-progress",
           "title": "Transport-projection-and-state",
-          "observed_at": "2026-11-16T18:47:46Z",
-          "evidence": "2026-11-16 source-only implementation; original AC open. Integration explicitly incomplete; source review and requested runtime plan in docs/gcsp/fucq449-greg-planning-production-2026-11-16.md"
+          "observed_at": "2026-11-16T19:01:28Z",
+          "evidence": "Lead source review completed; 55 authored cases UNRUN; no slice complete. Original AC, runtime/rendered/connected proof open. docs/gcsp/fucq449-greg-planning-production-2026-11-16.md"
         },
         {
           "id": "screens",
-          "status": "not-started",
-          "title": "Planning-and-production-screens"
+          "status": "in-progress",
+          "title": "Planning-and-production-screens",
+          "observed_at": "2026-11-16T19:01:28Z",
+          "evidence": "Lead source review completed; 55 authored cases UNRUN; no slice complete. Original AC, runtime/rendered/connected proof open. docs/gcsp/fucq449-greg-planning-production-2026-11-16.md"
         },
         {
           "id": "integration",
@@ -8383,18 +8385,18 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-16T18:49:18Z",
-          "expires_at": "2026-11-16T20:49:18Z",
+          "expires_at": "2026-11-16T19:01:28Z",
           "source": "launch brief + live title 01a1e5ae-b838-7422-9b7c-1b76e07e78f8",
-          "status": "source review; runtime unallocated"
+          "status": "source-only checkpoint finished; no active runtime allocation"
         },
         {
           "name": "Lightning McQueen 2",
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-16T18:49:18Z",
-          "expires_at": "2026-11-16T20:49:18Z",
+          "expires_at": "2026-11-16T19:01:28Z",
           "source": "live message 01a1e5b0-3fb3-79d2-98fa-fe6025432173",
-          "status": "source-only authoring"
+          "status": "source-only checkpoint finished; no active runtime allocation"
         }
       ]
     }
