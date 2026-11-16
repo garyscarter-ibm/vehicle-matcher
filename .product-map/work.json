@@ -6100,7 +6100,7 @@
     {
       "assignee": "",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-16T23:50:19Z",
+      "observed_at": "2026-11-16T23:55:57Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Enter and refresh replacement frontend routes",
@@ -6112,20 +6112,22 @@
           "id": "route-state",
           "status": "in-progress",
           "title": "Authorized route and recovery states",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "evidence": "Source-only implementation in allocated paths; no runtime validation or completion claimed."
+          "observed_at": "2026-11-16T23:55:56Z",
+          "evidence": "Source checkpoint 0c4831f26 reviewed by lead; 31 authored cases unrun, no completion claim."
         },
         {
           "id": "static-launcher",
           "status": "in-progress",
           "title": "Static routes and shared launcher handoff",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "evidence": "Source-only implementation in allocated paths; no runtime validation or completion claimed."
+          "observed_at": "2026-11-16T23:55:56Z",
+          "evidence": "Source checkpoints 118b0098f and 1c6d9b21b reviewed; public caller configuration and safe dynamic/unknown host routing remain open; checks unrun."
         },
         {
           "id": "integration",
           "status": "not-started",
-          "title": "Original entry refresh OIDC email and rendered validation"
+          "title": "Original entry refresh OIDC email and rendered validation",
+          "observed_at": "2026-11-16T23:55:56Z",
+          "evidence": "Original hosted refresh, real OIDC/email-return, rendered proof and finite source validation remain unrun; awaiting resource release."
         }
       ],
       "branch": "dev/DEV-2026-11-13-005",
@@ -6135,18 +6137,18 @@
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-17T00:35:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
           "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "source-only; runtime unrun"
+          "status": "returned; source authored/reviewed, execution unrun"
         },
         {
           "name": "Sally Carrera 3",
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-17T00:35:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
           "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "source-only; runtime unrun"
+          "status": "returned; source authored/reviewed, execution unrun"
         }
       ]
     },
