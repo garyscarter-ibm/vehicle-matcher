@@ -153,3 +153,7 @@ under the checkout mutex with the Codex trailer, freeze/HOLD and release write l
 No worker push/sync/merge/rebase/Jira/lease/deployment/email/service/database operation.
 Next original-scope work is actual rendered and connected lifecycle acceptance, after a
 concrete browser capability/correction and an authorised composed environment are available.
+
+## Parent integration — 16 November 2026
+
+Parent reviewed frozen `529eb07ea8e954ca61e790efb9f7c8e4e3b68d0f` and independently verified the nine indexed evidence files, 144 tested inputs, current owned resource absence and the 36.654-second realtime ownership span. All 142 unchanged tested Angular inputs matched the integration root; the two route additions were reviewed separately. The six-path increment was published, merged at `141dda1bfd80c7aaf0fe7d2bdf77a6935c16bfed` and pushed to `gcsp-poc-dev`. No repeated runtime was needed for matching inputs. The sampled-process limitation remains explicit. Both original criteria remain unchecked, native Jira stays In Progress, and the reserved lead is held after this finite increment. Rendered and connected lifecycle acceptance remain open.

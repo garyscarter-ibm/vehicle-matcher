@@ -24,7 +24,7 @@ import sys
 import tempfile
 import zlib
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 
 class Refused(Exception):
@@ -283,6 +283,13 @@ def create_report(root, report, screenshots, dm):
                 "files_or_areas": "unresolved: investigate the affected area", "decided": "none", "out_of_scope": "unrelated changes",
                 "validate": "Reproduce the defect, add a regression check, then run scoped affected checks."}
     defaults.update(report)
+    related = defaults.get("related_story")
+    if "epic" not in report and isinstance(related, str) and dm.STORY_RE.fullmatch(related):
+        # A Bug belongs to its originating Story's Epic.
+        origin = [p for p in root.glob("_dev/**/" + related + ".md") if not p.is_symlink()]
+        epic = dm.story_fields(origin[0].read_text()).get("epic", "").strip() if origin else ""
+        if epic and epic.lower() != "none":
+            defaults["epic"] = epic
     for key in ("related_story", "story_link_basis", "reproduction_steps", "expected_behaviour", "actual_behaviour"):
         if not defaults.get(key):
             defaults[key] = "unresolved: not supplied; investigate before implementation"

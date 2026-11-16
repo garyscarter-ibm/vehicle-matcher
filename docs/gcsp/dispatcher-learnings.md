@@ -286,3 +286,45 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **New evidence:** the main ownership manifest was created at1794809849.0533812 and removed at1794811647.0935879:1798.040seconds of realtime. This establishes that the600second total deadline was exceeded. The earlier description as merely unproven is superseded; the reason for the realtime/monotonic divergence remains unverified.
 - **Action/outcome:** retain this failed resource obligation alongside the101passing assertions and one original native-case skip. SAME Foxy is attempting only that original skipped case against already installed owned local PostgreSQL, with both realtime and monotonic deadlines enforced; no installation or repetition of the101checks. That case cannot erase the historical overrun. Lead reports current resource absence, parent audit/publication remains pending, and native acceptance is not inferred.
+
+## 2026-11-16 10:00 UTC · GC Codex · DL-20261114-GC-002 · blocker revalidated
+
+- **Evidence:** F441 was held while its historical missing-version assertion awaited current-source reassessment. At shared root `045a304e538a7f8a90f49d09f60f14e68ae2087e`, Angular still requires editor contextVersion and context/clock versions; the Java editor response omits them. Exact producer/consumer locations and source hashes are retained in the F441 delivery note and local reassessment receipt.
+- **Outcome/limits:** report F441 blocked on this concrete composition obstacle, preserving native In Progress, original unchecked criteria and Java ownership. This source inspection establishes neither runtime reproduction nor a repair or severity verdict. Unrun checks on other reserved Stories remain held unless a current concrete obstacle is recorded. Separate Medium F491 remains unfixed and nonblocking.
+
+## 2026-11-16 09:36–09:40 UTC · GC Codex · DL-20261116-GC-007 / DL-20261114-GC-009 · integration completed, limits retained
+
+- **F418 outcome:** the original skipped native case subsequently passed alone on owned installed PG16.15, with strict dual-clock checks. Parent verified all 815 native inputs, 3,939 borrowed identities and all seven attempts' current resource absence. Frozen source was reviewed, integrated and pushed; native Jira moved to In Review and helper cleanup completed. The main 1,798.040-second realtime deadline failure and unknown historical aggregate peak remain unresolved. Passing native evidence does not repair the historical failure.
+- **F446 mitigation:** the necessary orders-route check used the corrected inclusive 768 MiB disk plus 1,280 MiB RAM grant. Fifteen selected tests passed; sampled disk plus RSS peaked at 1,483,329,408 bytes and realtime ownership was 36.654 seconds. Parent checked nine indexed evidence files, 144 tested inputs and current owned cleanup. Continuous detached-process peak remains unproven. Route source was reviewed, published and integrated; original rendered/connected acceptance remains open. No framework patch, redundant suite or OneDrive access was introduced.
+- **Publication:** a GitHub connection reset and advancing peer commits delayed parent pushes. Normal helper pull/merge/retry succeeded, preserving peer changes and security hooks. The actual new F446 checkpoint published successfully; this mitigates the earlier optional-ref push delay without establishing its hook root cause.
+
+## 2026-11-16 · Russell Claude Code · DL-20261116-RG-001 · unparented Jira items: fix applied
+
+- **Issue/evidence:** 205 FUCQ items were created with no parent between 7 and 14 Nov, from both pollers, a Codex
+  batch and the bulk review intake. Cause: the shared skills never said to set `parent` when creating a Story, Task
+  or Bug. See [the diagnosis](epic-parenting-diagnosis-2026-11-16.md).
+- **Action:** agent-scaffolding 0.7.6 (`7e5e656`). Every create passes `parent`. A Bug's parent is its origin
+  Story's Epic. A Bug with an unknown origin goes under the Epic of the work it was found in, labelled
+  `origin-unknown`. FUCQ has no `triage_epic` (Russell, 16 Nov): a Bug with no home is reported for a person to
+  place. `jira_sync.py` 1.4.0 reports `unparented` on every pull and adds `audit --check`. Pollers run it when
+  anything is unparented, and at least daily.
+- **Outcome:** a proposed fix that is now applied and tested, but not yet a verified resolution. The audit is clean
+  on today's FUCQ. On the state before the clean-up, it flagged 177 of 180 orphans (the other 3 are exempt).
+  Whether new items now arrive parented is unproven until the pollers run the new rules.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-001 · recurrence / mitigation applied
+
+- **Evidence/impact:** a current-root Account investigation proposed independent handoff composition, but the original worker already held that source in unpublished `fa4996cd53766085a2f2950590954a641fce4f5f`, dated14November10:20UTC. Its own delivery appendix explicitly says prepared/unvalidated, awaiting dispatcher runtime release. Checking only published source missed the retained checkpoint and risked duplicate implementation.
+- **Action/outcome:** parent inspected the idle clean owned branch, preserved the checkpoint, normally merged current published base without conflicts, and resumed the same lead for bounded validation/correction with source, selected checks and owned local resources released together. App evidence confirms current execution. No duplicate writer, new claim or completed validation is inferred. The earlier fast-forward safely refused because the retained commit diverged; no work was discarded.
+- **Framework follow-up:** reconcile unpublished owned commits and outstanding runtime releases before another readiness investigation. Associate current source identity, pending next action and original worker with the claim. This is a scheduling mitigation, not yet a verified delivery resolution.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-002 · connected readiness gap identified
+
+- **Evidence/impact:** the frozen inventory includes manual draft/discard/stock/quote/review-details and brief preview/change-after-decline routes, but current published Java resource/source inspection finds no corresponding registrations at `da53e8f4d`. Backend F458/F463/F468 remain native In Review; a rendered Account and that tracker status do not establish connected journey coverage. Details: [source gap record](manual-java-contract-gaps-2026-11-16.md).
+- **Action/outcome:** preserved native statuses and original contracts; coordinated the precise producer gaps with the Java lane through F434 comment3629579. Reused independent existing Account work against the present order producers. Source inspection alone establishes neither executed failure nor defect severity, producer repair or acceptance. No new Bug or scope was created by this observation.
+- **Framework follow-up:** link migrated route inventory to actual consumer/producer composition evidence before describing a journey as connected. Keep native review status separate from execution and original integration-proof obligations; no generic new acceptance campaign is introduced.
+
+## 2026-11-16 11:45 UTC · GC Codex · DL-20261116-GC-004 · intake guard verified locally
+
+- **Evidence/action:** this pass's compact Jira search omitted description/reporter/parent/issuelinks despite the requested field list. The local adapter refused all66 before invoking the importer, preventing the earlier missing-field rewrite. The rejected projection is retained locally; repeating the read with explicit `view: full` supplied every required field.
+- **Outcome/limits:** complete-projection import succeeded with zero changes/failures/unparented items. Require the full response view and validate returned fields, rather than trusting request fields alone. This verifies the local guard for this rejection, not a shared connector/parser repair or additional application validation.

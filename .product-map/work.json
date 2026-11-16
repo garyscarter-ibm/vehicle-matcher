@@ -6111,13 +6111,36 @@
     {
       "assignee": "",
       "id": "FUCQ-435",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T10:50:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Call the separately hosted API with bearer authentication",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
+      "slices": [
+        {
+          "id": "ac1-https-cors-bearer",
+          "status": "blocked",
+          "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
+          "observed_at": "2026-11-16T10:50:24Z",
+          "evidence": "Local two-origin HTTPS CORS/bearer/secret-scan proof PASS (docs/gcsp/evidence/fucq435); actual hosted Render origins and OIDC registration do not exist yet"
+        },
+        {
+          "id": "ac2-failure-recovery",
+          "status": "complete",
+          "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
+          "observed_at": "2026-11-16T10:50:23Z",
+          "evidence": "Lead re-ran fucq435-cross-origin-proof on 35c96e64b: typed 503/403, expiry re-sign-in and recovery notice, 0 mutating requests; orders.actions spec passed"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story integration, validation and result",
+          "observed_at": "2026-11-16T10:50:32Z",
+          "evidence": "Local integration done; hosted-origin AC1 proof outstanding"
+        }
+      ]
     },
     {
       "assignee": "",
