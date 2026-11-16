@@ -774,3 +774,13 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/outcome:** independent F410 Node work passed37selected checks on245pinned/copied inputs and was reviewed/integrated atd3702ea56. Parent rehashed245original inputs and verified current supervisor/groups/exact scratch/canonical reservation absent. Sampled disk129,771,520/RSS289,685,504/inclusive419,452,928bytes,25.22s elapsed and bounded retained output are recorded. A first library-resolution preparation failure created no scratch/reservation/tests; corrected referring-library-relative closure then ran successfully. A non-affirmative generic group-helper audit is retained alongside the later complete process snapshot showing all three owned groups absent.
 - **Limitation/action:** this separate small wrapper enforced sampled grants and monotonic480s, but omitted an independent realtime work watchdog/hard600s total-finalizer deadline and retained no complete historical identity artifact. Result/delivery note explicitly preserve these limits; no continuous-containment or full enforcement claim is made, and no tests were replayed solely to rewrite history. Native In Review records original scoped development, not collaborator acceptance. Small watchdog/history corrections are required before future use of this wrapper; they are not new product gates.
 - **Framework follow-up (proposed):** the repeated hand-built wrapper omissions support sharing an enforced finite supervisor contract across launchers, with runtime receipt fields for measured outcomes and separately verified enforcement. Source acceptance and retrospective resource-evidence limits must remain distinct.
+
+## 2026-11-16 20:42 UTC · GC Claude Code · DL-20261116-GCC-001 · diagnosis changed: no RSS overrun observed
+
+- **Correction (Codex review-02):** the 1.34 GB peak I reported at 20:15 and 20:25 as "over the 1280 MiB grant" was
+  1,339,015,168 B, which is 3,162,112 B **below** 1280 MiB (1,342,177,280 B). I compared GB against MiB. The earlier
+  entries stand as written; this corrects them. The proposed "size HTTP grants at about 1.5 GiB" is withdrawn.
+- **Still true:** aggregate compliance is unproven, because the wrapper omitted its own RSS and non-group processes;
+  receipts were deleted.
+- **Learning:** state memory figures in bytes and the grant in bytes in the same sentence before calling an
+  overrun. A unit slip turned a pass into a reported breach and nearly into an unjustified grant request.
