@@ -234,3 +234,43 @@ finalizer error was recorded. Exact scratch/output, token/reservation and owned
 process/group/listener cleanup passed, independently audited. Retained regular
 files totalled 286,976 bytes after that audit. Sampled peaks do not establish
 continuous containment. a01/a02 failed evidence is preserved; no OneDrive access.
+
+## Third finite attempt: preservation passed; explicit retry still failed
+
+Allocation `a03` used reviewed source `a0fe1c39cfb27290bdbf0e462de50e1537bcd097`,
+tree `c9cbab18b73ad8c4a25c4815386dda7c521cce69`. Compilation and 29/30 component
+cases passed, but P20 again observed one reset preparation instead of two.
+Every newly added precondition passed: immediate busy, loading-to-ready auth,
+busy during deferred GET, retained exact input, authoritative run-2 readbacks,
+no read problems and no automatic submission. The busy mitigation is exercised;
+it did not resolve the complete P20 failure. The boundary checker stayed unrun.
+The earlier fixture diagnosis was insufficient to establish the remaining cause.
+
+Independent source review identified a more precise remaining candidate: the
+helper checks signals after its final render. A read continuation can therefore
+make the signal predicate pass while the native Retry button is still disabled;
+its subsequent native click would be suppressed. The bounded next change is
+test-only: require the rendered Retry button to be enabled and all public
+guards clear, spy on the actual handler to prove native click dispatch, then
+await the existing count-two preparation assertion. Exact retained-input and
+no-replay assertions stay intact. No further production correction is made.
+
+The installed pinned Angular builder schema supports `--filter` and its Vitest
+executor forwards it to `testNamePattern`. The parent released a single `a04`
+using only component P20 (`--filter=P20 retains an incomplete reset`), followed
+by the previously unrun boundary checker on pass. Native filtered/pending counts
+will be retained and distinguished from executed evidence. Reuse the unchanged
+29 component passes from a03 and 54 client/auth passes from a02. The same finite
+resource envelope and cleanup obligations apply. This candidate is unverified.
+
+The a03 receipt SHA-256 is
+`0ddc291d7463ad40710faa768fb0e134d5919f16abf9436e2a0e918bcdee4d6a`;
+independent cleanup at 22:17:50 UTC has SHA-256
+`62cc00b76fdb1d41a809411b4fc02069c7144bdd8c89983b69c16391559c2ace`.
+Both are under the existing local evidence root's `a03/` directory. Native rc1;
+29 passed, one failed, zero pending. Sampled disk/RSS/inclusive peaks were
+432,305,600 / 1,304,264,704 / 1,736,570,304 bytes; work/total elapsed were
+32.547 / 39.794 seconds. All dependency, Node and source audits matched, with
+no sampler or finalizer error. Exact roots/token/reservation and owned live
+identity/group/listener checks passed. Retained regular files totalled 430,618
+bytes after independent audit. No continuous-peak or connected/visual proof.

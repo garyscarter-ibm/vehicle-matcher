@@ -6780,15 +6780,15 @@
           "id": "view",
           "status": "in-progress",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T22:16:09.639599Z",
-          "evidence": "a02 component29/30 passed including fault-clear P26. P20 fixture/auth busy gap diagnosed; bounded correction and stronger exact-input/no-replay assertions applied, independently reviewed; focused verification pending. Inspection remains unavailable."
+          "observed_at": "2026-11-16T22:20:40.848554Z",
+          "evidence": "a03 component29/30passed; P20 preservation,busy and new-run readback assertions passed but explicit retry preparation still failed. Candidate stale-disabled DOM click; test-only enabled/handler assertions applied, verification pending. Inspection remains open."
         },
         {
           "id": "scoped-validation",
           "status": "in-progress",
           "title": "Focused Angular command and route verification",
-          "observed_at": "2026-11-16T22:16:09.639599Z",
-          "evidence": "a02 compiled,83/84passed (client44/auth10/component29),P20failed; boundary unrun. Failed evidence preserved. a03 authorized component30+existing boundary only; reuse unchanged54passes. Same resource envelope; cleanup audited."
+          "observed_at": "2026-11-16T22:20:40.848554Z",
+          "evidence": "a03 compiled,component29/30passed,P20count2got1; boundary unrun. Failed a02/a03 preserved. a04 P20-only supported --filter plus boundary on pass authorised; reuse29component+54client/auth. Input/resource/cleanup audits passed."
         },
         {
           "id": "connected-proof",
@@ -6802,10 +6802,10 @@
           "name": "Cuthbert 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T22:16:09.639599Z",
-          "expires_at": "2026-11-16T22:46:09.639599Z",
-          "source": "a02 failed receipt; direct scoped correction and independent review",
-          "status": "corrected auth handoff; component-only a03 pending"
+          "observed_at": "2026-11-16T22:20:40.848554Z",
+          "expires_at": "2026-11-16T22:50:40.848554Z",
+          "source": "a03 failed receipt; direct diagnostic fixture correction and independent review",
+          "status": "P20 native-click diagnostic; finite a04 pending"
         },
         {
           "name": "Mr Potato Head 2",

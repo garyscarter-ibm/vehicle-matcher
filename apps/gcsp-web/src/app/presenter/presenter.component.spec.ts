@@ -189,10 +189,15 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     finishAuthentication(); await wait(() => { expect(page.permitted()).toBe(true); expect(page.reading()).toBe(true); });
     expect(button('Retry the same command').disabled).toBe(true); expect(page.retryCommand()?.input).toEqual(original.input);
     expect(client.submit).toHaveBeenCalledOnce(); expect(client.prepareReset).toHaveBeenCalledOnce();
-    finishRead(ok(activated)); await wait(() => { expect(page.controls()?.runId).toBe('run-2'); expect(page.reading()).toBe(false); });
+    finishRead(ok(activated)); await wait(() => {
+      expect(page.controls()?.runId).toBe('run-2'); expect(page.reading()).toBe(false); expect(page.pending()).toBe(false);
+      expect(page.permitted()).toBe(true); expect(page.faultRetryCommand()).toBeNull(); expect(button('Retry the same command').disabled).toBe(false);
+    });
     expect(page.current()?.runId).toBe('run-2'); expect(page.faults()?.runId).toBe('run-2'); expect(page.readProblems()).toEqual([]);
     expect(page.retryCommand()?.input).toEqual(original.input); expect(client.submit).toHaveBeenCalledOnce(); expect(client.prepareReset).toHaveBeenCalledOnce();
-    await completeCommand('Retry the same command'); expect(client.prepareReset).toHaveBeenCalledTimes(2); expect(client.prepareReset.mock.calls[1][0]).toEqual(original.input);
+    const retry = vi.spyOn(page, 'retry'); button('Retry the same command').click(); expect(retry).toHaveBeenCalledOnce();
+    await wait(() => { expect(client.prepareReset).toHaveBeenCalledTimes(2); expect(page.pending() || page.reading()).toBe(false); });
+    expect(client.prepareReset.mock.calls[1][0]).toEqual(original.input);
     expect(client.submit.mock.calls[1][0].input).toEqual(original.input);
   });
   it('P21 never replays on authentication recovery and drops a prior command for another account', async () => {
