@@ -40,7 +40,8 @@ change on this branch, keeping its own `ui:` fix.
    linking the origin moves a parked Bug to that Story's Epic, and the read-back checks the parent.
 3. **Origin genuinely unknown:** the Bug goes under the Epic of the Story or work it was found in, labelled
    `origin-unknown`. Failing that, it goes under the record's `backlog.triage_epic`, when set. It is never created
-   unparented. The audit lists such Bugs as `origin_unknown` (tracked, not a failure), and when a native link is
+   unparented. FUCQ sets no `triage_epic` (Russell, 16 Nov), so here such a Bug is reported for a person to place.
+   The audit lists such Bugs as `origin_unknown` (tracked, not a failure), and when a native link is
    added later it moves them to the right Epic.
 4. **Cowork:** `epic: none` is allowed for a one-off fix in file mode only.
 5. **`defect_report.py` 1.1.0:** a file-mode Bug inherits its origin Story's `epic` unless one is given.
@@ -67,8 +68,12 @@ change on this branch, keeping its own `ui:` fix.
   `test_backlog_skill.py` and `test_plugin_layout.py` passed, and so did the project's `test_jira_sync_ui.py` (7/7).
   The scaffolding full suite was not run.
 
+## Decisions (16 November 2026)
+
+- Russell approved the fixes.
+- FUCQ has no `triage_epic`: a Bug with no origin and no found-in Story is reported (`needs_epic`) for a person to
+  place, never parked automatically.
+
 ## Open
 
-- Whether FUCQ should have a `triage_epic`. Without one, a Bug with no origin and no found-in Story is reported for a
-  person to place, rather than parked.
 - The local `_dev` records still say `epic: none` until the next `jira_sync.py pull` rewrites them from Jira.

@@ -292,3 +292,17 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **F418 outcome:** the original skipped native case subsequently passed alone on owned installed PG16.15, with strict dual-clock checks. Parent verified all 815 native inputs, 3,939 borrowed identities and all seven attempts' current resource absence. Frozen source was reviewed, integrated and pushed; native Jira moved to In Review and helper cleanup completed. The main 1,798.040-second realtime deadline failure and unknown historical aggregate peak remain unresolved. Passing native evidence does not repair the historical failure.
 - **F446 mitigation:** the necessary orders-route check used the corrected inclusive 768 MiB disk plus 1,280 MiB RAM grant. Fifteen selected tests passed; sampled disk plus RSS peaked at 1,483,329,408 bytes and realtime ownership was 36.654 seconds. Parent checked nine indexed evidence files, 144 tested inputs and current owned cleanup. Continuous detached-process peak remains unproven. Route source was reviewed, published and integrated; original rendered/connected acceptance remains open. No framework patch, redundant suite or OneDrive access was introduced.
 - **Publication:** a GitHub connection reset and advancing peer commits delayed parent pushes. Normal helper pull/merge/retry succeeded, preserving peer changes and security hooks. The actual new F446 checkpoint published successfully; this mitigates the earlier optional-ref push delay without establishing its hook root cause.
+
+## 2026-11-16 · Russell Claude Code · DL-20261116-RG-001 · unparented Jira items: fix applied
+
+- **Issue/evidence:** 205 FUCQ items were created with no parent between 7 and 14 Nov, from both pollers, a Codex
+  batch and the bulk review intake. Cause: the shared skills never said to set `parent` when creating a Story, Task
+  or Bug. See [the diagnosis](epic-parenting-diagnosis-2026-11-16.md).
+- **Action:** agent-scaffolding 0.7.6 (`7e5e656`). Every create passes `parent`. A Bug's parent is its origin
+  Story's Epic. A Bug with an unknown origin goes under the Epic of the work it was found in, labelled
+  `origin-unknown`. FUCQ has no `triage_epic` (Russell, 16 Nov): a Bug with no home is reported for a person to
+  place. `jira_sync.py` 1.4.0 reports `unparented` on every pull and adds `audit --check`. Pollers run it when
+  anything is unparented, and at least daily.
+- **Outcome:** a proposed fix that is now applied and tested, but not yet a verified resolution. The audit is clean
+  on today's FUCQ. On the state before the clean-up, it flagged 177 of 180 orphans (the other 3 are exempt).
+  Whether new items now arrive parented is unproven until the pollers run the new rules.
