@@ -328,3 +328,14 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **Evidence/action:** this pass's compact Jira search omitted description/reporter/parent/issuelinks despite the requested field list. The local adapter refused all66 before invoking the importer, preventing the earlier missing-field rewrite. The rejected projection is retained locally; repeating the read with explicit `view: full` supplied every required field.
 - **Outcome/limits:** complete-projection import succeeded with zero changes/failures/unparented items. Require the full response view and validate returned fields, rather than trusting request fields alone. This verifies the local guard for this rejection, not a shared connector/parser repair or additional application validation.
+
+## 2026-11-16 11:53 UTC · GC Codex · DL-20261114-GC-001 · recovered checkpoint delivered
+
+- **Evidence/outcome:** retained Account source `fa4996cd` was validated by the same lead:56/56 selected Account/preferences checks, no application correction. Frozen `6216010d` was independently audited, published and integrated/pushed into `gcsp-poc-dev` at `094c4d72fc7bd6cb4eadc636bae953d18e223607`. All61 tested input hashes match the integrated source; both original acceptance criteria remain unchecked.
+- **Resolution boundary:** recovery and delivery of this missed checkpoint are verified. The wider scheduling issue is not closed: rendered and real Java/OIDC/PostgreSQL/hosted proof remain unrun. Preserve original workers, unpublished source identity and pending runtime action at dispatch boundaries to prevent duplicate work.
+
+## 2026-11-16 11:53 UTC · GC Codex · DL-20261114-GC-009 · local owned validation verified, historical limits retained
+
+- **Failure/mitigation:** first Account harness attempt stopped before Angular when dependency metadata inspection rejected existing `.bin` links; its final process discovery also observed transient `ps`. Launcher corrected metadata inspection to lstat without following links and audited after discovery joined; original failure retained. No product defect established.
+- **Observed outcome:** second attempt56/56 passed. Parent verified current23,008 borrowed file hashes/identities,25,442 metadata entries and Node unchanged, and both attempts' owned process/group/scratch/link/token absence. Current35.768s dual-clock ownership and conservative1,506,509,952byte inclusive bound satisfy the release; full retained evidence is below2MiB. Sampled peaks do not establish continuous containment or repair historical resource failures.
+- **Framework follow-up:** distinguish metadata links from copied source inputs; join discovery before final identity checks and charge the whole retained evidence root. These are local harness mitigations, not a shared framework implementation or OneDrive audit.
