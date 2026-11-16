@@ -801,3 +801,37 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Observed:** source-only candidate00ed0575d41754ec92d1fd7cf670e6426d9da4b3a2777428ce7c47ff4e81808f was received, AST-parsed and not executed. It checks total time only after cleanup, leaves setup/finalization outside independent watchdog protection, lacks retained historical detached identities, and does not require exact nonzero passing reports before returning success. Whole retained output/allocated-byte/atomic reserve coverage also remains incomplete.
 - **Action/impact:** no Java runtime admitted. Original focused transaction-test source preparation continues; existing49reported selected passes remain reusable with their recorded limitations. These are defects in a proposed runtime wrapper, not newly imposed product acceptance criteria or a confirmed resource breach.
 - **Framework follow-up (proposed):** a shared finite supervisor with explicit independently exercised deadlines, process identity history, strict result counts and durable bounded receipts would avoid repeated hand-written omissions. A source proposal or a post-hoc deadline check must not be labelled verified enforcement.
+
+## 2026-11-16 20:50 UTC - GC Codex - DL-20261116-GCC-001 - revised supervisor received; enforcement still incomplete
+
+- **Observed:** source-only r2 candidate aca9dcc2515d2c6abb82a4259bcf080b44f37c4514ccc640c4ad98671d592337 now requires exactly the two new transaction tests, registers archive/tar children and includes supervisor RSS in work samples. Its resource checks still run only during Maven, PID/start history is only in memory, the time thread kills children without bounding a stuck main/final publication, and the reservation is released before scratch cleanup. Borrowed dependency digests describe metadata, not content. These are static findings; no runtime or resource breach is inferred.
+- **Action/impact:** returned the remaining concrete lifecycle issues to the same recipient, source-only, preserving the original two-test selection and unchanged grants. Prior49 reported checks are reused with their limits. No extra product criterion, source expansion or framework implementation was authorised. F411 independently started after F410 released its allocation file; no duplicate Java writer.
+- **Framework follow-up (proposed):** repeated hand-written supervisor reviews are delaying a small original acceptance check. Supply a reusable finite runner with tested setup/work/finalization accounting, identity history and bounded receipts; distinguish proposed controls from observed enforcement. Do not treat repeated review acknowledgements as product delivery.
+
+## 2026-11-16 20:50 UTC - GC Codex - DL-20261114-GC-001 - fourth bounded file follow-up returned
+
+- **Observed/outcome:** review-04 acknowledged20:38:52Z and candidate/plan returned20:44:58Z in the same Claude session without a UI prompt. Parent observed the matching returned artifacts and issued review-05 at20:48:59Z; its delivery is pending until a matching recipient acknowledgement. Claude was waiting after return, so that completed phase is not current execution.
+- **Limit/follow-up:** four bounded follow-up round trips now demonstrate useful file transport. The initial missed assignment, which needed Gary's prompt, remains part of the record. Last-acknowledged-ID restart recovery remains proposed/unverified; enabling app control is still optional, and would not repair runtime-plan defects.
+
+## 2026-11-16 20:58 UTC · GC Claude Code · DL-20261116-GCC-003 · identified: per-worker supervisor review loop
+
+- **Evidence:** after F468's source landed (9e64c5949, 20:13), validating two new unrun tests has taken four
+  source-only review rounds on a one-off supervisor (review-02 to review-05, 20:24 to 20:58). The candidate grew from
+  96 to about 450 lines, and each round found real lifecycle gaps. No test has run since 20:13.
+- **Cause:** every worker writes its own supervisor around `_tools/test_resources.py`. The contract (all-phase monitor,
+  retained identities, bounded supervisor lifetime, content pins, durable receipts) is re-derived and re-reviewed per
+  assignment. The helper's `run_process` already covers part of this but not all.
+- **Impact:** about 35 minutes of dispatcher and worker time per check, for validation of two test methods.
+- **Follow-up (proposed, not implemented):** promote one reviewed supervisor (this candidate, once approved) into
+  `_tools` as the canonical Java/PG targeted runner, so later assignments reuse its review instead of repeating it.
+  This needs framework authority; it isn't part of F468.
+
+## 2026-11-16 21:01 UTC · GC Claude Code · DL-20261116-GCC-003 · mitigated for F468: reviewed supervisor ran clean first time
+
+- **Outcome:** Codex admitted one attempt at 20:57, using candidate 57f92ba7 (my r3 plus three small corrections from
+  Codex). It passed 2/2 in 21.6 s on the first try. Peak RSS was 1.12 GB, sampled in every phase, against the 1.34 GB grant.
+  It left no processes, scratch was removed, the reservation was released, pins were unchanged, and 70 KB of receipts are
+  retained under `.claude/test-runs/receipts/fucq468/`.
+- **Learning:** content pinning of about 560 MiB (JDK, PG, m2) fitted easily (setup took 3.9 s in total), so the setup-time
+  risk I flagged did not occur. The review rounds cost about 35 minutes; the run then needed no retry. The proposed
+  follow-up stands: reuse this reviewed supervisor as the shared Java/PG runner rather than writing a new one per assignment.

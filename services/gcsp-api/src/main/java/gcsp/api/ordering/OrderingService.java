@@ -49,7 +49,7 @@ public final class OrderingService {
     static final String TYPE = "selection-order";
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final Set<String> TOP_KEYS = Set.of("commandId", "source", "expectedQuoteId", "expectedStockVersion",
-            "termsDigest", "declarations");
+            "termsDigest", "declarations", "expectedReviewDetailsVersion");
     private static final Set<String> SOURCE_KEYS = Set.of("type", "holdId", "expectedHoldVersion", "expectedDraftVersion");
     private static final String SELECT_ROW = "SELECT s.operation_id, s.employee_id, s.entitlement_slot_id, s.source_type, "
             + "s.hold_id, s.order_uuid, s.order_reference, s.policy_version, s.selection::text, s.handoff_lease_until, "
@@ -58,7 +58,21 @@ public final class OrderingService {
             + "AND p.run_id = s.run_id AND p.operation_id = s.operation_id ";
 
     private record Input(String commandId, SourceInput source, String quoteId, long stockVersion, String termsDigest,
-            JsonNode declarations, ObjectNode intent) {}
+            JsonNode declarations, ObjectNode intent, Long reviewDetailsVersion) {}
+
+    /** Freezes the saved manual review details inside the caller's transaction (claims ManualReviewDetails.freeze). */
+    @FunctionalInterface
+    public interface ReviewFreeze {
+        /** The frozen snapshot, or a refusal code; the caller rolls back on a refusal. */
+        Frozen freeze(Tx tx, OrderingScope scope, String holdId, String quoteId, long expectedHoldVersion,
+                long expectedDraftVersion, long expectedDetailsVersion) throws Exception;
+
+        record Frozen(JsonNode snapshot, String refusal) {}
+
+        static ReviewFreeze unavailable() {
+            return (tx, scope, hold, quote, h, d, v) -> new Frozen(null, "review-details-unavailable");
+        }
+    }
 
     /** A database failure inside a helper; the public methods answer it as unavailable. */
     private static final class Db extends RuntimeException {
@@ -89,6 +103,14 @@ public final class OrderingService {
         this.lease = lease;
         this.backoff = backoff;
         this.wall = wall;
+    }
+
+    private ReviewFreeze freeze = ReviewFreeze.unavailable();
+
+    /** The review-details freeze cart submits use when they name expectedReviewDetailsVersion. */
+    public OrderingService withReviewFreeze(ReviewFreeze f) {
+        this.freeze = f;
+        return this;
     }
 
     public static String operationId(OrderingScope scope) {
@@ -222,6 +244,14 @@ public final class OrderingService {
             return prior.get().equals(digest) ? WorkResult.ok(JSON.createObjectNode().put("operationId", id))
                     : WorkResult.refuse("active-selection-exists", "A different selection already exists");
         }
+        // Freeze before conversion moves the hold on; a refusal rolls back freeze, intent and conversion together.
+        JsonNode frozen = null;
+        if (input.reviewDetailsVersion() != null) {
+            ReviewFreeze.Frozen f = freeze.freeze(tx, scope, input.source().holdId(), input.quoteId(),
+                    input.source().expectedHoldVersion(), input.source().expectedDraftVersion(), input.reviewDetailsVersion());
+            if (f.refusal() != null) return WorkResult.refuse(f.refusal(), f.refusal());
+            frozen = f.snapshot();
+        }
         SelectionConversionPort.Conversion cv = converter.convert(tx, scope, new SelectionConversionPort.ConversionRequest(
                 input.source().holdId(), input.source().expectedHoldVersion(), input.source().expectedDraftVersion(),
                 input.quoteId(), input.stockVersion(), id, now));
@@ -261,6 +291,7 @@ public final class OrderingService {
         sel.set("contact", orNull(prepared.contact()));
         sel.set("employee", orNull(prepared.employee()));
         sel.set("sourceVersions", orNull(prepared.sourceVersions()));
+        sel.set("reviewDetails", orNull(frozen));
 
         PendingOperations.recordIntent(tx, id, TYPE, id, input.intent());
         tx.write("INSERT INTO selection_orders (environment_id, run_id, operation_id, employee_id, entitlement_slot_id, "
@@ -493,7 +524,7 @@ public final class OrderingService {
             case "forbidden" -> new OrderingResult.Refused(code, 403, null);
             case "not-found" -> new OrderingResult.Refused(code, 404, null);
             case "invalid" -> invalid("selection");
-            case UnconfiguredConversion.CODE, "order-reference-exhausted" -> new OrderingResult.Unavailable(code);
+            case UnconfiguredConversion.CODE, "order-reference-exhausted", "review-details-unavailable" -> new OrderingResult.Unavailable(code);
             default -> refused(code);
         };
     }
@@ -535,11 +566,17 @@ public final class OrderingService {
                 || raw.get("declarations") == null || !raw.get("declarations").isObject()) {
             return null;
         }
+        JsonNode rv = raw.get("expectedReviewDetailsVersion");
+        if (rv != null && !(rv.isIntegralNumber() && rv.canConvertToLong() && rv.asLong() >= 0
+                && rv.asLong() <= 9007199254740991L && "cart".equals(s.path("type").asText()))) {
+            return null;
+        }
         ObjectNode intent = ((ObjectNode) raw).deepCopy();
         intent.remove("commandId");
         return new Input(raw.get("commandId").asText(), new SourceInput(s.get("type").asText(), s.get("holdId").asText(),
                 s.get("expectedHoldVersion").asLong(), s.get("expectedDraftVersion").asLong()), raw.get("expectedQuoteId").asText(),
-                raw.get("expectedStockVersion").asLong(), raw.get("termsDigest").asText(), raw.get("declarations"), intent);
+                raw.get("expectedStockVersion").asLong(), raw.get("termsDigest").asText(), raw.get("declarations"), intent,
+                rv == null ? null : rv.asLong());
     }
 
     private static Instant instant(ResultSet rs, int col) throws SQLException {

@@ -10,6 +10,7 @@ import gcsp.api.ordering.OrderingResult;
 import gcsp.api.ordering.OrderingScope;
 import gcsp.api.ordering.OrderingService;
 import gcsp.api.ordering.OrderingTerms;
+import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.ordering.SyntheticOrderingProvider;
 import gcsp.api.policy.PolicyService;
 import gcsp.api.policy.RetainedFilePolicySource;
@@ -190,5 +191,78 @@ class CartOrderingTest {
         assertEquals("allocated", f.text("SELECT state FROM stock_cars WHERE order_uuid = 'car-1'"));
         assertEquals(1, stock.ledger.effects(opId));
         assertEquals(1, f.count("SELECT count(*) FROM selection_orders"));
+    }
+
+    // ---- FUCQ-468: the real review-details freeze inside ordering's transaction ----
+
+    /** Ordering with the real ManualReviewDetails freeze wired as the holder wires it in production. */
+    private ManualReviewDetails withFreeze() throws Exception {
+        ManualReviewDetails details = new ManualReviewDetails(f.pool(), new TransactionRunner(f.pool()), f.clock, f.claims,
+                new PolicyService(new RetainedFilePolicySource()));
+        ordering.withReviewFreeze((tx, s, holdId, quoteId, h, d, v) -> {
+            ReviewResult r = details.freeze(tx, new ManualReviewDetails.Binding(s.runId(), s.employeeId(),
+                    s.entitlementSlotId(), holdId, quoteId, h, d), v);
+            return new OrderingService.ReviewFreeze.Frozen(r.isOk() ? r.value() : null, r.isOk() ? null : r.code());
+        });
+        return details;
+    }
+
+    /** The complete draft version 1 the claim pins, as the account draft service stores it. */
+    private void pinnedDraft(String employee) throws Exception {
+        ObjectNode d = ClaimFixture.JSON.createObjectNode().put("runId", ClaimFixture.RUN).put("employeeId", employee)
+                .put("entitlementSlotId", "slot-" + employee).put("draftStage", "complete").put("draftVersion", 1)
+                .put("policyVersion", ClaimFixture.VERSION);
+        d.putObject("choices").put("mode", "new").putObject("contact").put("email", "d@example.test");
+        f.update("INSERT INTO manual_drafts (environment_id, run_id, employee_id, draft_version, value) VALUES (?, ?, ?, 1, ?::jsonb)",
+                ClaimFixture.ENV, ClaimFixture.RUN, employee, d.toString());
+    }
+
+    /** Saves review details version 1 for the reviewed hold through the real claims save. */
+    private void saveDetails(ManualReviewDetails details, String employee, JsonNode hold) {
+        ObjectNode in = ReviewValidationTest.command();
+        String holdId = hold.get("holdId").asText();
+        in.put("commandId", "save-" + employee).put("holdId", holdId).put("quoteId", ManualClaims.quoteId(holdId))
+                .put("expectedHoldVersion", hold.get("version").asLong()).put("expectedDraftVersion", 1)
+                .put("expectedReviewDetailsVersion", 0);
+        ((ObjectNode) in.get("details")).remove("expectedReturnMileage");
+        ReviewResult saved = details.save(f.scope(employee), in);
+        assertEquals("ok", saved.status(), String.valueOf(saved instanceof ReviewResult.Body b ? b.body() : saved));
+    }
+
+    @Test
+    void savedReviewDetailsAreFrozenWithTheConversionAndAReplayKeepsOneIntentAndOneFreeze() throws Exception {
+        ManualReviewDetails details = withFreeze();
+        pinnedDraft("e1");
+        JsonNode hold = reviewed("e1", "car-1");
+        saveDetails(details, "e1", hold);
+        ObjectNode b = body("e1", "car-1", hold, quoteOf(hold), "ord-f").put("expectedReviewDetailsVersion", 1);
+        OrderingResult first = ordering.submit(scope("e1"), b, cart);
+        assertInstanceOf(OrderingResult.Ok.class, first);
+        assertEquals("allocated", f.text("SELECT state FROM custody_holds WHERE hold_id = ?", hold.get("holdId").asText()));
+        assertEquals(1, f.count("SELECT count(*) FROM manual_review_freezes"));
+        assertEquals("1", f.text("SELECT selection->'reviewDetails'->>'reviewDetailsVersion' FROM selection_orders"));
+        assertEquals("Please call first", f.text("SELECT selection->'reviewDetails'->'details'->>'specialRequirements' FROM selection_orders"));
+        OrderingResult again = ordering.submit(scope("e1"), b.deepCopy(), cart);
+        assertTrue(assertInstanceOf(OrderingResult.Ok.class, again).replayed());
+        assertEquals(1, f.count("SELECT count(*) FROM selection_orders"));
+        assertEquals(1, f.count("SELECT count(*) FROM pending_operations"));
+        assertEquals(1, f.count("SELECT count(*) FROM manual_review_freezes"));
+    }
+
+    @Test
+    void aStaleReviewDetailsVersionIsRefusedWithNoConversionIntentOrFreeze() throws Exception {
+        ManualReviewDetails details = withFreeze();
+        pinnedDraft("e1");
+        JsonNode hold = reviewed("e1", "car-1");
+        saveDetails(details, "e1", hold);
+        ObjectNode b = body("e1", "car-1", hold, quoteOf(hold), "ord-s").put("expectedReviewDetailsVersion", 0);
+        OrderingResult r = ordering.submit(scope("e1"), b, cart);
+        OrderingResult.Refused refused = assertInstanceOf(OrderingResult.Refused.class, r);
+        assertEquals("stale-review-details", refused.code());
+        assertEquals(409, refused.status());
+        assertEquals("active", f.text("SELECT state FROM custody_holds WHERE hold_id = ?", hold.get("holdId").asText()));
+        assertEquals(0, f.count("SELECT count(*) FROM selection_orders"));
+        assertEquals(0, f.count("SELECT count(*) FROM pending_operations"));
+        assertEquals(0, f.count("SELECT count(*) FROM manual_review_freezes"));
     }
 }
