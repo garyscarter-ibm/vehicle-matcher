@@ -8414,12 +8414,12 @@
       "branch": "dev/DEV-2026-11-13-GC-004"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-416",
-      "jira_observed_at": "2026-11-12T15:48:03.241Z",
-      "note": "Scoped development complete: lead review plus42selected passes, frozen replay/F417 retained, cleanup verified. Native Jira status observation preserved; dispatcher owns publication/transition. See docs/gcsp/fucq416-baseline-score-2026-11-16.md.",
-      "observed_at": "2026-11-16T21:37:22Z",
-      "original_status": "To Do",
+      "jira_observed_at": "2026-11-16T21:42:36.979Z",
+      "note": "Merged and pushed to gcsp-poc-dev at5b106361e;42scoped checks passed, runtime and branch/worktree cleanup independently verified; Jira In Review read back, comment3629659. Awaiting collaborator acceptance.",
+      "observed_at": "2026-11-16T21:43:20Z",
+      "original_status": "In Review",
       "slices": [
         {
           "id": "baseline",
@@ -8436,7 +8436,7 @@
           "evidence": "All42selected checks passed once on pinned aa1e8cc1a/tree fdaeae03; frozen quote replay/F417 preservation; cleanup verified, receipt3a6e10dd98fd; shared publication remains dispatcher-owned"
         }
       ],
-      "status": "To Do",
+      "status": "In Review",
       "title": "Score the current-car baseline once per employee evaluation",
       "type": "Story",
       "unsliced": false,
