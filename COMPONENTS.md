@@ -636,3 +636,21 @@ search and Disengage actions. It reports paused search separately from withdrawn
 uncertain requests available for an explicit same-command retry, and provides a status reload. Its
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
+
+### Angular employee order progress (FUCQ-446)
+
+`gcsp-orders` (`apps/gcsp-web/src/app/orders/orders.component.ts`) is the native standalone
+employee screen at `/gcsp/orders`, with optional `?orderUuid=...` for an exact order. It has
+no component inputs or outputs; the router supplies query state and the injected
+`OrdersClient` supplies authenticated reads and supported employee commands. The screen
+composes `gcsp-screen-intro`, `gcsp-status-screen`, `gcsp-fact-list`, `gcsp-labelled-field`
+and `gcspButton` with supplied stage, task, slot and history lists. It uses the existing
+semantic tokens, exact vehicle imagery with a missing-image fallback and the designated
+current-car relationship source.
+
+The orders screen owns lifecycle presentation and explicit action review/confirmation;
+the existing client/controller/actions own scoped reads and the employee command lane.
+Refresh reads authoritative state, and authentication recovery does not replay a write.
+This is a routed composition, with no new shared primitive or gallery API. Selected
+component/route tests provide fixture evidence; rendered browser and connected Java/OIDC/
+database acceptance remain separate, open checks.

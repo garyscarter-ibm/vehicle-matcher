@@ -622,3 +622,31 @@ stay separate/unfixed; rebooking 3629452 unresolved. Parent binds the route and 
 catalogue/publication/integration. Same parent-verified gpt-6.1-sol/high, no fallback/settings
 change/children. Commit only named paths locally with the Codex trailer, then HOLD; no
 worker push/sync/merge/Jira/lease/deployment/email/external activation/final switch.
+
+
+## Orders route checkpoint — 16 November 2026
+
+**PARTIAL; HOLD for parent publication/integration.** Starting at verified clean
+`cbcd0aac5672968ba89b9cb93cb59b8a4392f3ee`, replaced only the orders placeholder route
+with the existing lazy native OrdersComponent, retaining sessionGuard/employee role/title
+and every other route byte. Added its accurate public `gcsp-orders` catalogue entry and
+five real-router fixture checks. No lifecycle/shared-kit/backend source changed.
+
+Current selected route/guard/policy validation: **15 PASS, three files, rc0, zero failures/
+skips**, 07:55:12–07:55:49 UTC. All 144 current input pins match. Reviewed earlier 116-test
+evidence is reused only for unchanged lifecycle/account behavior; five old manifest inputs
+changed in disjoint routes/gallery/media work, so it is not relabelled a current whole-tree
+run. No browser retry, full suite/build or connected environment was started.
+
+The corrected local runner reserved 768 MiB disk + 1280 MiB aggregate RAM, enforced their
+inclusive 2 GiB sum, included its supervisor/sampler and tracked recursive/group/token
+descendants. Sampled disk/RSS/sum peaks: 440676736/1051574272/1483329408 B, total 36.665 s.
+Selected tests/resource flags and independent owned cleanup passed; continuous detached
+peak and whole borrowed-tree bytes beyond the pinned closure remain unproven. No OneDrive
+access. Full receipt hashes, scope/reuse qualifications, remaining checks and the
+DL-20261114-GC-009 mitigation event are in [the route record](fucq446-orders-route-2026-11-16.md).
+
+Original Story prefix/two unchecked AC, entire map and all five slice IDs/points remain
+unchanged. No native lifecycle/acceptance transition or new defect pickup. Parent publishes
+the frozen local checkpoint. Same parent-verified Sol/high; no fallback/settings change/
+children. Hold after commit; no push/sync/merge/Jira/lease/service activation/final switch.
