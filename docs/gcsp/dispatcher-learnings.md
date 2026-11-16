@@ -493,3 +493,16 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/impact:** this pass supplied every required Jira field but omitted `view: full`; the connector compact projection omitted description/reporter/parent/links for all 66. The existing metadata guard refused import, with no Jira or Story changes.
 - **Action/outcome:** fetched the same exact66 with full view, verified every required field before writing, checked the write return code, then completed a no-action import. Saved one local request contract including view and fields for subsequent passes. No foreign attachment bytes downloaded.
 - **Framework follow-up:** explicit request fields alone do not guarantee connector output shape. Preserve full-view and response-field preflight together. This applies a local mitigation; repeated orchestration omissions are not verified resolved.
+
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 - local snapshot sequencing recurred
+
+- **Evidence/impact:** a local lifecycle receipt write failed with `SyntaxError: Non-UTF-8 code starting with \xE2`; the orchestration then attempted mark-done against its absent file and was refused. Native claim operations had already succeeded; no extra Jira mutation or acknowledgement resulted from the failed sequence.
+- **Action/outcome:** rewrote the same full readback/ops snapshots using ASCII Python source and explicit UTF-8 file output, checked rc0 before invoking mark-done, and acknowledged only six verified F448 operations. The existing native full66 metadata was preserved. This corrects one attempt; the earlier sequencing instruction did not prevent recurrence.
+- **Framework follow-up:** make receipt persistence and dependent acknowledgement one fail-closed operation, with encoding and required-field validation before any follow-up.
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 / DL-20261114-GC-010 - reviewed checkpoint integrated
+
+- **Evidence/outcome:** independent reviewer found no blocking/major F443 issues at4064f41c1. After guarded refresh,211code/contract/tool hashes matched retained80selected passes; post-test map bookkeeping matched the reviewed checkpoint. The initial212-pin guard correctly stopped on that documented metadata change; no runtime rerun or all212current-match claim followed. Incomplete frontend checkpoint merged/pushed bf21ae27d; originalAC/producer/connected/rendered gaps and boundaryrc1 remain.
+- **Reporting/action:** integrated exact stock-descriptor consumer resolves F442's recorded placeholder source obstacle. F442 is held rather than blocked while its original remaining proof awaits execution; native In Progress and claim stay unchanged. F443 remains concretely blocked on missing Java review-details/version authority.
+- **Framework follow-up:** compare changed input roles and independently reviewed metadata before replaying tests. Resolve the specific recorded obstacle without inferring Story completion or extending its acceptance. Bounded delivery improved locally; orchestration recurrence is not verified resolved.

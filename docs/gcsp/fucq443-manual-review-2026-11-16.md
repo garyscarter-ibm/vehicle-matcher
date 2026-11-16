@@ -155,3 +155,23 @@ requested/selected `gpt-6.1-sol/medium`; Melissa Duck 2 runner requested/selecte
 corrected source-only audit and attempts 02/03; no new worker was started for retries.
 The lead also ran the three adaptive chunks. No independent reviewer was spawned
 for this checkpoint; the parent owns subsequent review and integration.
+
+
+## Dispatcher integration observation - 16 November 2026
+
+Pussyfoot 2 independently reviewed exact checkpoint 4064f41c1 against pickup
+17c44d860 and reported no blocking or major findings. Requested, selected and
+effective reviewer gpt-6.1-sol/high and saved title were independently verified;
+no fallback, source edits, runtime or descendants. Guarded refresh c047c7d28
+preserved all 211 frozen code/contract/tool inputs. The one remaining captured
+file, .product-map/work.json, contains post-test bookkeeping already byte-identical
+to the independently reviewed checkpoint. The original 212-input runtime audit
+remains historical; no new all-212 match is claimed. Evidence:
+`.claude/fucq443-refreshed-input-audit-20261116-1508.json`.
+
+The incomplete frontend checkpoint was merged and pushed to gcsp-poc-dev at
+bf21ae27d. Independent review and this bounded shared integration are complete.
+Both original ACs remain unchecked; missing Java review-details/version authority,
+actual Java/PostgreSQL/OIDC journeys and rendered evidence remain open. Final
+submission remains disabled including native form submission. Retain all failed
+attempts and the inherited boundary rc1; no combined strict pass or Story closure.
