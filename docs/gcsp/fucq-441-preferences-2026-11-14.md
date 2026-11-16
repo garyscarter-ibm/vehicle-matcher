@@ -405,3 +405,25 @@ checkpoint. Account, auth/shell, root configuration/styles, Java and Node busine
 ownership were preserved. The dispatcher alone publishes, syncs, integrates and
 updates native lifecycle; partial integration is a reviewable option, not full
 acceptance, Built/Done or lease release.
+
+## Current Java contract reassessment — 16 November 2026, 10:00 UTC
+
+Source inspection at shared root `045a304e538a7f8a90f49d09f60f14e68ae2087e`
+revalidates the editor version obstacle after the Java integrations. The Angular
+`preferences/brief.client.ts` validator (148–175) requires nonempty
+`context.contextVersion` and all four `versions.policy/context/facts/clock` values.
+Java `brief/BriefResource.java` (54–57) delegates `GET /editor` to
+`BriefService.readEditor` (123–154). That method emits only policy and facts
+versions (142); `AccountEditor.context` (53–96) emits policyVersion but no
+contextVersion. Such a successful response fails the current consumer validator
+and maps to `unavailable` / `invalid-brief-response` (client 353–359).
+
+This is a current source-proved composition obstacle to the original connected
+edit/save/reload acceptance, so reporting changes from held to blocked. Native
+In Progress, both unchecked original criteria, the existing lease and Java
+ownership remain unchanged. The bounded local receipt
+`.claude/fucq441-contract-reassessment-20261116-0944.json` pins all four source
+hashes and the observation time. No HTTP/browser reproduction, severity decision,
+repair or acceptance is claimed. Reconcile the producer/consumer version contract
+with the Java owner before connected checks; do not invent versions or weaken
+validation. Separate Medium FUCQ-491 remains unclaimed, unfixed and nonblocking.
