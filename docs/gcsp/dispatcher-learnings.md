@@ -207,3 +207,55 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **New evidence:** Bertie reports compilation now succeeds far enough to execute the selected checks: **103 passed, 11 component tests failed**. This supersedes zero executed tests for the latest attempt only; the earlier compilation failure remains retained. Parent has not yet audited the frozen receipts.
 - **Cause/status:** the worker attributes the 11 failures to fixture assertions preceding asynchronous controller reads. That is the current diagnosis, pending a corrected check and parent audit; no green result or product-fix conclusion is claimed.
 - **Action:** the same bounded worker is making fixtures await observed controller state and continuing relevant existing role/authentication coverage. Exact failed evidence, current source pins, owned teardown and original acceptance obligations remain required. No new scope or framework implementation is authorised.
+
+
+## 2026-11-16 · GC Codex · DL-20261114-GC-001 · mitigating
+
+- **Outcome:** parent completed review of the frozen FUCQ-442 route/history/gallery and FUCQ-446 employee lifecycle increments after the 14 November child review attempts failed. Stock is integrated/pushed through `6dc5a31d533d34b023a23c49feb45ea11564174a`; lifecycle through merge `58224a0c5`. No new actionable source finding was identified at these bounded review boundaries. Original unchecked criteria and separate Bugs remain open.
+- **Evidence:** stock27 selected tests/15 actual-source fixture checks/seven personally inspected captures; lifecycle116 selected tests/eight files, with zero usable browser checks/captures. Parent matched178 stock native/browser inputs and136 lifecycle native/139 browser inputs, immutable blobs, original Story prefixes and301 foreign product-map objects before publication. Independent child review did not complete; parent review was independent of implementation. This is coherent partial delivery, not whole-Story acceptance or a full integrated-suite claim.
+- **Follow-up:** publish completed increments promptly and distinguish original unfinished capability from extra validation or framework work. No framework implementation fix is claimed.
+
+## 2026-11-14 17:30–17:39 UTC evidence, recorded16November · GC Codex · DL-20261114-GC-009 · mitigating
+
+- **Stock outcome:** the new stock-host runner includes the Python supervisor plus recursive/detached owned process groups. Two actual earlier resource stops remain failed attempts; the heap384 attempt passed27 tests and final browser15 checks. Parent verified four allowed local roots, eight groups, supervisors, links/tokens absent and borrowed identities/caches intact. The earlier incomplete peak measurements remain qualified.
+- **Lifecycle finding:** source inspection found its runner reserved2GiB disk PLUS2GiB RAM and checked them separately, rather than the intended inclusive2GiB sum. All retained disk+recordedRSS peak sums were below2GiB (largest approximately1.84GB); an overrun is not established. Supervisor/current-group RSS does not prove full recursive/detached coverage. Parent verified all six owned roots/groups/supervisors/tokens absent and23008 selected borrowed content hashes plus Node unchanged. Do not reuse that runner without correcting allocation and full aggregate accounting. Preserve the raw receipts; no rerun solely for improved accounting.
+- **Follow-up:** allocation must fit one inclusive grant, e.g.768MiB disk+1280MiB aggregate RAM; enforce the sum across supervisor and all owned descendants. Both current F418 workers were briefed. Framework change remains proposed.
+
+## 2026-11-14 17:23–17:39 UTC evidence, recorded16November · GC Codex · DL-20261114-GC-010 · verified resolved locally / acceptance incomplete
+
+- **Correction:** lifecycle native-5 passed116 tests, zero failures/skips, eight files. Parent matched all136 native inputs and immutable blobs. Retain native-1 client type/unrelated spec-closure failure (zero tests), native-2 missing global styles (zero tests), native-3 103pass/11fail and native-4 114pass/2fail. The final changes await settled async producer state and use section-specific assertions instead of broad absence matches against baseline stage labels.
+- **Outcome/follow-up:** selected fixture/type problems are resolved locally. Compilation/tests do not establish connected Java/OIDC/native PostgreSQL, rendered experience or whole-Story acceptance. Keep fixture prerequisites explicit; no generic harness expansion was added.
+
+## 2026-11-14 17:26 UTC evidence, recorded16November · GC Codex · DL-20261114-GC-006 · identified recurrence
+
+- **Evidence:** lifecycle development preview built successfully, then the90-second browser attempt timed out. Its report remains planned with zero checks/captures and empty browser log. Parent confirmed no captures exist and audited owned local teardown. Precise browser cause remains unresolved.
+- **Action/follow-up:** retain this finite failure; no render/keyboard pass or causal diagnosis follows from a successful bundle. Establish a supported installed browser and a causal correction before repeating the same attempt. No repair campaign or original acceptance waiver was introduced.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-001 · diagnosis clarified
+
+- **Issue:** lifecycle browser receipt observed one unrelated reservation disappear during its lifetime, so it could not establish foreign-token continuity.
+- **Correlation:** exact token96debdcd10e345f98a8753ecb1ba8828 and owner PID74610/start identity match the stock worker's first resource-stopped attempt. Stock records its own removal at2026-11-14T17:24:36.365UTC, inside lifecycle browser17:24:34–17:26:37UTC.
+- **Outcome/follow-up:** this is consistent with independent normal stock cleanup, not evidence of cross-worker deletion. Preserve the original false-continuity flag/raw receipts and timed observations. Do not infer either mutation or universal foreign continuity from endpoint presence alone.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-002 · verified corrected locally
+
+- **Issue:** the product-map slice CLI normalized five foreign objects and advanced F446's native observation time while writing its own slices. Worker boundary checking caught this before commit; it restored the original native fields and spliced only its own output.
+- **Evidence/outcome:** parent verified all301 foreign raw objects/order/outside bytes and original own native fields/slice IDs/points preserved. Stock's own work observation advanced separately; it did not change native status, assignment or fixed slice IDs/points. No product-map framework patch was made.
+- **Follow-up:** provide an own-object-preserving update and separate native observation time from slice evidence time. Preserve historical observation times instead of refreshing them merely on rewrite.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-003 · mitigating
+
+- **Issue/evidence:** Dot, Foxy2 and Elmer Fudd each returned IBM HTTP422 errors saying Advantage credits were exhausted, from api.servicesessentials.ibm.com/v1/responses. The parent launcher continued to work. One same-agent retry also failed on14November; raw errors/CF rays are retained in local handoff/agent state, not treated as verified balance evidence.
+- **Action/outcome:** preserve claims/branches/partial files and model settings; parent completed the existing source/evidence reviews. On16November the same Dot/Foxy pair resumed F418 and reached actual focused test discovery. No credential/model change or duplicate writer was introduced.
+- **Follow-up:** treat child422 as a diagnostic while the launcher works, per AGENTS.md. Repeated blind retries do not deliver progress; carry a bounded existing task in the available launcher or resume the same checkpoint when viable.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-004 · identified / correcting
+
+- **Issue/cause:** parent supplied a Jira search projection without parent/issuelinks to the official importer. Missing fields appeared as deleted epic/dependencies, creating misleading jira_changed notices and rewriting16 waiting records. Claimed original acceptance content stayed intact; the helper added notices only. The66 statuses/count were unaffected. This was the dispatcher's input error.
+- **Action:** fetched all66 again including parent, issuelinks, created, description, attachment, reporter and points; both relationship fields are present for every issue. Corrective official import restores the waiting metadata. Retain the misleading notices as historical input-error evidence; do not interpret them as human acceptance changes. Final result is recorded in the pass handoff.
+- **Performance impact:** the first import held the shared checkout mutex for several minutes while committing notes. A concurrent lifecycle merge was safely refused with no mutation, then succeeded after release. Shared Git operations must stay serial. Add a local projection guard before future imports; framework field-completeness/performance improvements remain proposed.
+
+## 2026-11-16 · GC Codex · DL-20261114-GC-002 · mitigating
+
+- **New native evidence:** all66 now show16ToDo/10InProgress/40InReview/0Done. The former nine peer reservations have reached native InReview; F466 also reached InReview.113 remote commits were integrated without dropping the stock increment. This supersedes the old nine-held report; it is progress evidence, not proof of present execution.
+- **Coordination:** no reply to the explicit F434 status request was observed in the latest comment read. The last actual Russell-authored coordination observation remains3629446 at2026-11-14T09:23:23UTC. Reconcile current leases and classify current execution separately; do not infer activity from native status or old claims.

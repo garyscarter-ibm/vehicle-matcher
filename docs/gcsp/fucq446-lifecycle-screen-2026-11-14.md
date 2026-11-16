@@ -220,3 +220,12 @@ resumed Jira policy within task scope, false-child-422 diagnostic rule and fixed
 defect boundaries apply. This worker makes one bounded local commit with the Codex trailer,
 then HOLDs. Parent owns exact-SHA publication/integration. No push/merge/rebase/sync,
 Jira/lease/deployment/email/external-service operation or final switch is authorised here.
+
+
+## Parent publication review and resource correction — 16 November 2026
+
+Frozen `57e66de11c1a0083ba0cc7dfd4594a8e789dfab8` received parent review independent of implementation: full client/actions/component/test and Java contract inspection,136 native/139 browser immutable matching inputs,36 retained evidence hashes, original Story and301 foreign raw map rows preserved, actual six allowed local allocations/groups/supervisors/tokens absent,23008 selected borrowed hashes and Node unchanged. Selected116 tests passed; the browser attempt produced zero checks/captures. Parent review found no new actionable product finding at this bounded increment. Child review attempts did not complete; parent carried review under AGENTS.md's422 rule. Merge `58224a0c5` is published; production files/own map row matched the integrated tree. Parent route binding and original visual/connected criteria remain unfinished, not waived.
+
+**Correction to the resource description above:** source inspection shows the runner reserved2GiB disk PLUS2GiB RAM and checked each separately, contrary to the intended inclusive2GiB sum. Recorded disk+RSS peak sums were below2GiB (largest approximately1.84GB), so an actual overrun is not established; complete recursive/detached RSS coverage is unproven. Raw receipts remain unchanged. Correct inclusive allocation, supervisor/all-descendant accounting and the aggregate sum guard before reusing this runner. Do not repeat matching tests solely to improve the receipt.
+
+The disappearing unrelated token96debdcd10e345f98a8753ecb1ba8828 and exact owner PID74610/start identity match F442's first stopped stock-host run, whose own cleanup records removal at2026-11-14T17:24:36.365UTC within this browser attempt. This is consistent with normal independent completion, not evidence of foreign cleanup; preserve the original continuity caveat. No OneDrive path was accessed for the audit or correlation.
