@@ -7401,7 +7401,7 @@
     {
       "assignee": "",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-16T11:51:15Z",
+      "observed_at": "2026-11-16T11:52:04Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Complete remote offer acceptance and decline",
@@ -7425,9 +7425,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-16T11:51:15Z"
+          "observed_at": "2026-11-16T11:52:04Z",
+          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
         }
       ]
     },
