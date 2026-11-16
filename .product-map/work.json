@@ -5737,35 +5737,35 @@
       "branch": "dev/DEV-2026-11-13-GC-010"
     },
     {
-  "assignee": "Gary Carter",
-  "id": "FUCQ-418",
-  "jira_observed_at": "2026-11-16T09:37:06.006838+00:00",
-  "note": "Original8pt contract reviewed, merged71cc0dd432 and nativeInReview; claim/branch/worktree helpercleanup complete. Main1798srealtime deadlineFAIL and historical peak limitation retained; docs/gcsp/fucq418-delivery.md. No humanacceptance/Done inferred.",
-  "observed_at": "2026-11-16T09:37:06Z",
-  "original_status": "In Review",
-  "slices": [
-    {
-      "id": "static-cache",
-      "status": "complete",
-      "title": "6pt: bounded static calculation reuse and focused regression coverage",
-      "observed_at": "2026-11-16T07:54:49Z",
-      "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+      "assignee": "Gary Carter",
+      "id": "FUCQ-418",
+      "jira_observed_at": "2026-11-16T09:37:06.006838+00:00",
+      "note": "Original8pt contract reviewed, merged71cc0dd432 and nativeInReview; claim/branch/worktree helpercleanup complete. Main1798srealtime deadlineFAIL and historical peak limitation retained; docs/gcsp/fucq418-delivery.md. No humanacceptance/Done inferred.",
+      "observed_at": "2026-11-16T09:37:06Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "static-cache",
+          "status": "complete",
+          "title": "6pt: bounded static calculation reuse and focused regression coverage",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "2pt: original consumer validation, source review and connected evidence disposition",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
+        }
+      ],
+      "status": "In Review",
+      "title": "Reuse unchanged static suitability across releases",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
+      "workers": []
     },
-    {
-      "id": "integration",
-      "status": "complete",
-      "title": "2pt: original consumer validation, source review and connected evidence disposition",
-      "observed_at": "2026-11-16T07:54:49Z",
-      "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
-    }
-  ],
-  "status": "In Review",
-  "title": "Reuse unchanged static suitability across releases",
-  "type": "Story",
-  "unsliced": false,
-  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
-  "workers": []
-},
     {
       "assignee": "",
       "id": "FUCQ-419",
@@ -8281,6 +8281,45 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-507",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Connect Java comparison jobs to allocation and recommendation route replay",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
+      "observed_at": "2026-11-16T11:13:26Z",
+      "slices": [
+        {
+          "id": "replay-harness",
+          "status": "in-progress",
+          "title": "Isolated replay run, seeding and shared per-seed evaluation",
+          "observed_at": "2026-11-16T11:13:26Z"
+        },
+        {
+          "id": "current-route",
+          "status": "not-started",
+          "title": "Current route replayed through Java manual claims"
+        },
+        {
+          "id": "buddy-route",
+          "status": "not-started",
+          "title": "Buddy route replayed through Java allocation, recommendation and offers"
+        },
+        {
+          "id": "job-wiring",
+          "status": "not-started",
+          "title": "Real replay bound at startup with the FUCQ-480 job lifecycle unchanged"
+        },
+        {
+          "id": "full-size-validation",
+          "status": "not-started",
+          "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL"
         }
       ]
     }
