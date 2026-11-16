@@ -5628,21 +5628,6 @@
       "branch": "dev/DEV-2026-11-13-GC-008"
     },
     {
-      "assignee": "",
-      "id": "FUCQ-416",
-      "jira_observed_at": "2026-11-12T15:48:03.241Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Score the current-car baseline once per employee evaluation",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-416",
-      "workers": []
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-417",
       "jira_observed_at": "2026-11-14T16:00:08.880600+00:00",
@@ -8427,6 +8412,56 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-GC-004"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-416",
+      "jira_observed_at": "2026-11-12T15:48:03.241Z",
+      "note": "Source ready and lead diff reviewed; selected finite runtime validation pending. No test evidence yet. See docs/gcsp/fucq416-baseline-score-2026-11-16.md.",
+      "observed_at": "2026-11-16T21:32:21Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "id": "baseline",
+          "status": "in-progress",
+          "title": "Evaluation-local-baseline-score-reuse",
+          "observed_at": "2026-11-16T21:27:48Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Focused-semantic-and-order-validation"
+        }
+      ],
+      "status": "To Do",
+      "title": "Score the current-car baseline once per employee evaluation",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-416",
+      "workers": [
+        {
+          "id": "cool-cat-2",
+          "name": "Cool Cat 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "thread_id": "01a1e641-123c-7722-997e-049e9daf7820",
+          "observed_at": "2026-11-16T21:32:21Z",
+          "expires_at": "2026-11-16T22:32:21Z",
+          "status": "active",
+          "source": "Observed active local thread; desktop title and turn_context pair verified 2026-11-16"
+        },
+        {
+          "id": "hugo-2",
+          "name": "Hugo 2",
+          "harness": "codex",
+          "role": "implementer",
+          "thread_id": "01a1e642-bc0d-7373-8f5d-0837438aa6dc",
+          "observed_at": "2026-11-16T21:32:21Z",
+          "expires_at": "2026-11-16T21:32:21Z",
+          "status": "returned-source-ready",
+          "source": "Observed active local thread; desktop title and turn_context pair verified 2026-11-16"
+        }
+      ]
     }
   ],
   "version": 1
