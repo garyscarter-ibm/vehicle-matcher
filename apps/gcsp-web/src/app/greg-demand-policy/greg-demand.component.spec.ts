@@ -31,7 +31,7 @@ describe('Greg demand screen', () => {
   const store = { view: () => state(), refresh: vi.fn(), signIn: vi.fn(), retryAuthentication: vi.fn() };
   const root = () => fixture.nativeElement as HTMLElement;
   const text = () => root().textContent!;
-  const button = (label: string) => [...root().querySelectorAll<HTMLButtonElement>('button')].find(b => b.textContent?.trim() === label)!;
+  const button = (label: string) => Array.from(root().querySelectorAll<HTMLButtonElement>('button')).find(b => b.textContent?.trim() === label)!;
   beforeEach(async () => {
     state = signal(view()); authState.set({ status: 'ready', context: { subject: 'greg', environmentId: 'isolated', runId: 'run-1', policyVersion: 'policy-1', roles: ['greg', 'employee'], capabilities: [] } });
     vi.clearAllMocks(); await TestBed.configureTestingModule({ imports: [GregDemandComponent], providers: [

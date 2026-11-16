@@ -42,7 +42,7 @@ describe('Greg policy screen', () => {
     previewChanges: vi.fn().mockResolvedValue(false), publishPreview: vi.fn().mockResolvedValue(false), retryPublication: vi.fn().mockResolvedValue(false) };
   const root = () => fixture.nativeElement as HTMLElement;
   const text = () => root().textContent!;
-  const button = (label: string) => [...root().querySelectorAll<HTMLButtonElement>('button')].find(b => b.textContent?.trim() === label)!;
+  const button = (label: string) => Array.from(root().querySelectorAll<HTMLButtonElement>('button')).find(b => b.textContent?.trim() === label)!;
   const input = (id: string) => root().querySelector<HTMLInputElement>(`#${fixture.componentInstance.controlId(id)}`)!;
   beforeEach(async () => {
     state = signal(view()); vi.clearAllMocks(); await TestBed.configureTestingModule({ imports: [GregPolicyComponent], providers: [{ provide: GregStore, useValue: store },
