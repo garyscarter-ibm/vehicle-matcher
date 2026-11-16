@@ -369,3 +369,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/diagnosis:** the managed parent check now returns UNSURE after16minutes quiet with nothing pending recorded; its implementer independently returns ALIVE with fresh activity. This supersedes the earlier both-ALIVE observation for the parent only. A parent stall or stopped implementer is not established.
 - **Action/outcome:** follow the existing UNSURE procedure: wait one dispatcher interval and recheck. Leave the live implementer and its source alone; no message, stop, replacement, duplicate or test replay. Current implementation execution is confirmed through the child; parent execution, first-slice delivery and resource/test receipts remain unverified.
 - **Framework follow-up:** preserve per-agent verdicts in supervision summaries and distinguish child activity from parent transcript freshness. This is an observation change, not a verified scheduling or delivery resolution.
+
+## 2026-11-16 12:49 UTC · GC Codex · DL-20261114-GC-009 · capacity admission stopped
+
+- **Evidence/impact:** the managed capacity check reports `can_start=0 running=2: 9.1 GB of swap in use (stop at 9 GB)`. This prevents new worker admission; it does not identify a responsible process or prove a Story failure. The existing Java implementer remains independently ALIVE.
+- **Action/outcome:** no new claim, worker or parent test/runtime allocation. Retain owned work and receipts; no foreign cleanup or OneDrive access. Resource pressure is observed, while its cause, recovery and any delivery impact beyond admission remain unverified.
+- **Framework follow-up:** retain the capacity tool's reason as well as its count; pressure responses may report swap rather than the normal free-memory format. Do not discard that evidence or infer authority to stop foreign work.
