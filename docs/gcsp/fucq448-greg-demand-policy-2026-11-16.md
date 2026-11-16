@@ -2,6 +2,8 @@
 
 Observed 16 November 2026. Story `DEV-2026-11-13-016`, branch `dev/DEV-2026-11-13-016`.
 Original acceptance and native In Progress status remain open. This record does not establish delivery.
+Latest checkpoint: 41 distinct checks have valid matching-source evidence. Route validation remains
+resource-blocked; the actual source boundary checker and original connected/rendered proof are unrun.
 
 ## Fixed contract and allocation
 
@@ -88,3 +90,66 @@ At 15:40 UTC all 17 allocated files are authored and final lead source review is
 specs remain unrun, and neither frontend slice is complete. Final source freeze waits for the feature
 checkpoint, the dispatcher route/catalogue commit and its current shared-base refresh. The route spec
 uses the actual routing table, so the resulting transitive feature graph is part of the frozen inputs.
+
+## Validation checkpoint, 16 November 2026 16:10 UTC
+
+This is an incomplete frontend checkpoint. The final runtime source is
+`3d5a57c59c6f9bdd6577715c87a2a8dffde3ad02`, with actual parent
+`a4f1a3115d89be8c8f713425dd0b97c5b2b5e97c` and explicit integration base
+`7899a5e4f17435d570753aa08c33263724737ff2`. Later Result/map commits describe this
+source; they are not a newly tested source snapshot. Dispatcher route/catalogue commit `2196d7d`
+and the shared manual route imports are included. The nine original non-route contract pins are unchanged.
+
+The final freeze is `.claude/test-runs/fucq448/greg-local-20261116/frozen-source.json`, SHA-256
+`184d4eca7498a5c0c984a735f9e32a80d46880908130653a6237dc236eac6eb8`.
+It binds 266 committed regular inputs, the entire 216-file application source path set and the finite
+169-file transitive closure, including the actual routing table, shared styles, fonts and brand asset.
+Each attempt's `receipt.json` and full useful log tail are retained below that local evidence directory.
+Earlier freeze/plan snapshots and six completed scripts are preserved losslessly as gzip files;
+`archive-index.json` binds compressed and decompressed hashes and lengths. No failure was discarded.
+
+| Attempt | Actual source | Observed result | Strict result |
+| --- | --- | --- | --- |
+| `a-01` | `eea6d2f6` | TS2367 in client session classification; zero tests | Failed |
+| `a-02` | `a833facff` | 30/31 core checks; reused native Response fixture failed | Failed |
+| `a-03` | `a011a8152` | Client 10/10 after fresh-response fixture correction | Passed |
+| `b-01` | `a011a8152` | TS2488 in two NodeList test helpers; zero tests | Failed |
+| `b-02` | `a4f1a3115` | Demand 4/4 and policy 6/6 | Passed |
+| `c-01` | `a4f1a3115` | Route 7/8; premature loaded-DOM assertion and RAM breach | Failed |
+| `c-02` | `3d5a57c59` | Log reports route 8/8; RAM breach before report acceptance | Incomplete |
+
+Projection 9/9 and store 12/12 from `a-02`, client 10/10 from `a-03`, and component 10/10 from
+`b-02` give 41 distinct checks with matching-source evidence. Their production and selected spec inputs
+remain identical at the final source. There was no combined 41-check passing run. The final route-only
+spec change explicitly awaits ready demand before its existing denial assertions. The route log's eight
+passes do not satisfy the resource contract: `c-02` has no parsed test totals or accepted test return code.
+The actual source boundary checker did not run after either route attempt. Its previously observed
+inherited case-queue issue remains context, not a failure observed in this Story's checker execution.
+
+Only one production correction followed initial source preparation: classify the same session failure reason
+before the type predicate narrows away `ready`. Remaining corrections are test-only: fresh fetch Responses,
+`Array.from` at three DOM collection sites and the final route test's explicit readiness wait. Existing
+byte-identity, no-fetch denial, privacy, mounted-draft, version and publication assertions are preserved.
+
+Every attempt acquired exactly 768 MiB disk plus 1280 MiB aggregate RAM, within 2 GiB inclusive,
+with a 5 GiB reserve and dual 480/600-second work/total deadlines. One worker and a 640 MiB heap
+were used through `c-01`; `c-02` lowered the heap to 512 MiB without raising the aggregate grant.
+`c-01` sampled RSS 1,418,706,944 bytes, exceeding its RAM grant by 76,529,664 bytes;
+`c-02` sampled RSS 1,405,042,688 bytes, exceeding it by 62,865,408 bytes. The lower heap was
+not a verified mitigation. Both attempts remain resource-invalid although inclusive disk plus RAM stayed
+below 2 GiB. Continuous peaks are unproved; all deadlines passed.
+
+All seven receipts record unchanged source/committed inputs, borrowed dependency content and metadata,
+and Node identity. They record no remaining owned processes, groups, listeners, scratch/output roots or
+canonical reservations, with no cleanup errors. Foreign reservations were untouched. The finite dependency
+copy remains 23,008 files / 241,262,821 bytes, with no installation or linking. At 16:08 UTC, retained
+evidence was 1,776,455 logical / 1,906,880 allocated bytes, within the entire 2 MiB cap. No OneDrive
+access, browser, Java, PostgreSQL, service or standalone application-build command occurred.
+
+`frontend-core` is complete only for its 31 selected matching checks. `frontend-screens` remains in progress;
+`integration` remains blocked. Next required check is a resource-compliant full route validation followed by
+the actual boundary checker once, under a separately admitted plan. Current Java Greg preview still returns
+HTTP 422 `preview-unavailable`; connected changed-input/privacy/preview/publication/active-offer pinning and
+denied employee/presenter commands against Java remain unproved. Rendered desktop/narrow, Safari/private,
+keyboard/focus and relevant CSP/accessibility proof remain unrun. Both original acceptance boxes are unchecked.
+No refresh, merge, deployment, claim release or native lifecycle transition is part of this checkpoint.

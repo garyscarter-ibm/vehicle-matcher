@@ -6782,62 +6782,6 @@
       "note": "Partial original Greg queue/detail/options/review/Confirm/readback and shared table authored;selected native compiler+64testsPASS;headlessChrome blankDOM/30stimeout retained;rendered/actualJava/realOIDC/nativePG/full2AC open. Original native observations/claim/13points retained. F501Medium/F502Low separate/unfixed/nonblocking. Parent owns integration/publication/lifecycle;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
     },
     {
-      "assignee": "Gary Carter",
-      "id": "FUCQ-448",
-      "observed_at": "2026-11-16T15:40:18Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Show Greg's demand and preview/publish controls",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
-      "slices": [
-        {
-          "id": "frontend-core",
-          "status": "in-progress",
-          "title": "Bearer transport, faithful demand/policy projections and scoped store",
-          "observed_at": "2026-11-16T15:40:18.062550+00:00",
-          "evidence": "All17 allocated source/spec files authored and lead reviewed; six selected specs unrun pending committed/refreshed source freeze and dispatcher runtime admission. See Story Result and delivery record; no complete slice claim."
-        },
-        {
-          "id": "frontend-screens",
-          "status": "in-progress",
-          "title": "Demand and policy Angular screens with current-version controls",
-          "observed_at": "2026-11-16T15:40:18.062550+00:00",
-          "evidence": "All17 allocated source/spec files authored and lead reviewed; six selected specs unrun pending committed/refreshed source freeze and dispatcher runtime admission. See Story Result and delivery record; no complete slice claim."
-        },
-        {
-          "id": "integration",
-          "status": "blocked",
-          "title": "Java connected preview/publication, pinned offers and affected experience development gates",
-          "observed_at": "2026-11-16T15:40:18.062550+00:00",
-          "evidence": "Original acceptance remains open: current Java preview explicitly HTTP422 preview-unavailable. Connected preview/publication/active-offer pins and rendered/browser development evidence unrun; frontend fixtures cannot close those gates."
-        }
-      ],
-      "workers": [
-        {
-          "id": "01a1e4ee-7d46-78a0-a272-c459bccdd75b",
-          "name": "Mulan 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T15:40:18.062550+00:00",
-          "expires_at": "2026-11-16T19:40:18.062550+00:00",
-          "status": "active"
-        },
-        {
-          "id": "01a1e4f1-7e08-7290-8804-50b81a621bc5",
-          "name": "Elmer Fudd 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T15:40:18.062550+00:00",
-          "expires_at": "2026-11-16T15:40:18.062550+00:00",
-          "status": "idle"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-016",
-      "jira_observed_at": "2026-11-16T15:36:15.121Z"
-    },
-    {
       "assignee": "",
       "id": "FUCQ-449",
       "observed_at": "2026-11-13T20:22:18.041Z",
@@ -8402,6 +8346,63 @@
           "title": "Real-claim-to-order-and-rendered-proof"
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-448",
+      "observed_at": "2026-11-16T16:12:13Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Show Greg's demand and preview/publish controls",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
+      "slices": [
+        {
+          "id": "frontend-core",
+          "status": "complete",
+          "title": "Bearer transport, faithful demand/policy projections and scoped store",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "evidence": "31 distinct passing checks with matching inputs: a02 projection9/store12 (wrapper failed from client fixture); a03 client10 strict pass. No combined31-run. Production/core specs unchanged at final runtime3d5a57c59. Failed attempts retained; see delivery record."
+        },
+        {
+          "id": "frontend-screens",
+          "status": "in-progress",
+          "title": "Demand and policy Angular screens with current-version controls",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "evidence": "b02 demand4/policy6 strict pass. c02@3d5a57c59 route log8pass, but RAM exceeded by62,865,408B; strict incomplete, parsed totals/rc absent. Actual boundary checker unrun. Full-route resource-compliant proof remains; no completed screen slice claim."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Java connected preview/publication, pinned offers and affected experience development gates",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "evidence": "Original AC open: Java Greg preview HTTP422 preview-unavailable. Connected changed-input/privacy/preview/publication/active-offer-pin and denied-role proof plus rendered desktop/narrow, Safari/private, keyboard/focus/CSP/accessibility evidence unrun; fixtures cannot close acceptance."
+        }
+      ],
+      "workers": [
+        {
+          "id": "01a1e4ee-7d46-78a0-a272-c459bccdd75b",
+          "name": "Mulan 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "expires_at": "2026-11-16T16:12:13.497008+00:00",
+          "status": "idle",
+          "source": "Runtime source3d5a57c59; incomplete checkpoint handed to dispatcher; no active runtime"
+        },
+        {
+          "id": "01a1e4f1-7e08-7290-8804-50b81a621bc5",
+          "name": "Elmer Fudd 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "expires_at": "2026-11-16T15:40:18.062550+00:00",
+          "status": "idle"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-016",
+      "jira_observed_at": "2026-11-16T15:36:15.121Z"
     }
   ],
   "version": 1
