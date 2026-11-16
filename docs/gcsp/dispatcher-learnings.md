@@ -449,3 +449,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/cause:** F443's exact source-hash guard failed on one changed OrderingService input; the surrounding orchestration continued to claim because it had not checked that command's return code. No worker had been launched.
 - **Action/outcome:** inspected the sole diff: an added buddy-only precheck, with existing manual behavior unchanged. Recorded the revised identity and finite file allocation before delegation. Earlier 12 matching inputs and the failed guard remain recorded. No acceptance or successful implementation is inferred from the claim.
 - **Framework follow-up:** dependent claim/delegation calls must explicitly stop on failed preflight return codes; a successful claim is not proof that prerequisite inspection passed.
+
+## 2026-11-16 14:40 UTC · GC Codex · DL-20261114-GC-002 · manual review authority boundary retained
+
+- **Evidence/diagnosis:** F443 lead source review reports the current flat Java claim/submit DTO lacks frozen contact, replacement return-mileage and review-details-version authority. Its seven-file frontend core is authored but unvalidated; native backend review status is not proof of this composition.
+- **Action/outcome:** continued the existing allocated frontend screen slice, keeping final submission unavailable until the real producer supplies the required review details. Appended the finite consumer requirement to the separate Java owner's existing slice-3 local handoff. No producer acknowledgement, code fix, test result or integrated resolution is claimed; original acceptance stays open.
+- **Framework follow-up:** exact producer/consumer DTO coverage and command authority belong in bounded handoffs; source progress and truthful unavailable UI must not be reported as capability parity. Reuse existing route ownership rather than starting a competing Java writer.
