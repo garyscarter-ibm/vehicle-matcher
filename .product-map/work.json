@@ -6794,17 +6794,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-448",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Show Greg's demand and preview/publish controls",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-449",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -8336,6 +8325,48 @@
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
         }
       ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-448",
+      "observed_at": "2026-11-16T15:19:03Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Show Greg's demand and preview/publish controls",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
+      "slices": [
+        {
+          "id": "frontend-core",
+          "status": "in-progress",
+          "title": "Bearer transport, faithful demand/policy projections and scoped store",
+          "observed_at": "2026-11-16T15:19:03Z",
+          "evidence": "Mulan 2 source review: all ten allocation source hashes match 2026-11-16 pickup. Original AC open; Java preview explicitly unavailable. Plan in docs/gcsp/fucq448-greg-demand-policy-2026-11-16.md."
+        },
+        {
+          "id": "frontend-screens",
+          "status": "not-started",
+          "title": "Demand and policy Angular screens with current-version controls"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Java connected preview/publication, pinned offers and affected experience development gates"
+        }
+      ],
+      "workers": [
+        {
+          "id": "01a1e4ee-7d46-78a0-a272-c459bccdd75b",
+          "name": "Mulan 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T15:19:03.305761+00:00",
+          "expires_at": "2026-11-16T19:19:03.305761+00:00",
+          "status": "active"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-016"
     }
   ],
   "version": 1
