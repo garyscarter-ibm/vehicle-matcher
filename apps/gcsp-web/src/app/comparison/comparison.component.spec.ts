@@ -40,7 +40,10 @@ describe('comparison inspection and supported Greg commands', () => {
   const root = () => fixture!.nativeElement as HTMLElement;
   const text = () => root().textContent ?? '';
   const button = (label: string) => Array.from(root().querySelectorAll('button')).find(b => b.textContent?.trim() === label)!;
-  async function settle() { await fixture!.whenStable(); fixture!.detectChanges(); }
+  async function settle() {
+    await vi.waitFor(() => { expect(fixture!.componentInstance.view()).not.toBe('loading'); expect(fixture!.componentInstance.commandBusy()).toBe(false); });
+    await fixture!.whenStable(); fixture!.detectChanges();
+  }
   async function render() { fixture = TestBed.createComponent(ComparisonComponent); fixture.detectChanges(); await settle(); }
   function select(id: string) { const el = root().querySelector<HTMLSelectElement>('#comparison-experiment')!; el.value = id; el.dispatchEvent(new Event('change')); fixture!.detectChanges(); }
   function input(id: string, value: string) { const el = root().querySelector<HTMLTextAreaElement>(`#comparison-${id}`)!; el.value = value; el.dispatchEvent(new Event('input')); fixture!.detectChanges(); }

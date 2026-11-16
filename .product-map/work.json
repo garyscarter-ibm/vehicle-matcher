@@ -8583,7 +8583,7 @@
     {
       "assignee": "garyscarter-ibm",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-16T23:12:57Z",
+      "observed_at": "2026-11-16T23:17:18Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -8610,16 +8610,16 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "a01 compiler failure: zero/58cases, boundary unrun. Narrow typing/unit corrections independently source-reviewed; a02 same58+boundary pending. Original actual Java/rendered acceptance and replay binding remain open.",
+      "note": "a02: compiled58cases;28client+3component pass,27component fail,boundary unrun. Exact public-state test-wait correction source-reviewed; a03affected30 pending. Actual Java/replay/rendered ACs open.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T23:12:57.160630+00:00",
+          "observed_at": "2026-11-16T23:17:17.891148+00:00",
           "expires_at": "2026-11-17T00:15:00Z",
           "source": "/root/foghorn_leghorn_2",
-          "status": "checkpointing reviewed narrow corrections and freezing finite a02; original ACs open"
+          "status": "checkpointing reviewed bounded component-test wait and preparing a03; original ACs open"
         },
         {
           "name": "Marvin the Martian 2",
@@ -8643,19 +8643,19 @@
           "name": "Hugo 3",
           "harness": "codex",
           "role": "reviewer",
-          "observed_at": "2026-11-16T23:12:15.122971+00:00",
-          "expires_at": "2026-11-16T23:12:20Z",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
           "source": "/root/foghorn_leghorn_2/hugo_3",
-          "status": "exact four-file correction review returned PASS/no blocker or major; runtime unverified"
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
         },
         {
           "name": "Bertie 2",
           "harness": "codex",
           "role": "runner",
-          "observed_at": "2026-11-16T23:09:40Z",
-          "expires_at": "2026-11-16T23:10:13.636151+00:00",
+          "observed_at": "2026-11-16T23:14:20Z",
+          "expires_at": "2026-11-16T23:14:55Z",
           "source": "/root/foghorn_leghorn_2/bertie_2",
-          "status": "a01 returned: compile failure, zero cases; cleanup/input audits pass"
+          "status": "a02 returned:28client pass/3component pass/27fail;cleanup/input audits pass"
         }
       ]
     }
