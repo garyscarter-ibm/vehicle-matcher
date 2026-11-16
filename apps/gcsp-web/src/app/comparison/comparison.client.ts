@@ -202,7 +202,7 @@ export class ComparisonClient {
     if (!validInput(input)) return Promise.resolve({ ...fail('invalid', 'invalid-comparison-command', 'Check the comparison change and command id.'), writeOutcome: 'not-sent' });
     const experimentId = input.experimentId;
     const body = JSON.stringify(input);
-    return this.request('/comparison/jobs', (http, envelope) => {
+    return this.request('/comparison/jobs', (http, envelope): ComparisonStartResponse => {
       if (http === 200 || http === 202) {
         if (object(envelope) && envelope['status'] === (http === 202 ? 'pending' : 'ok') && job(envelope['value'])
           && envelope['value'].experimentId === experimentId && (http !== 202 || envelope['value'].status === 'running')) {

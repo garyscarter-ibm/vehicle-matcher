@@ -58,5 +58,6 @@ export interface ComparisonFailure {
   readonly jobId?: string; readonly writeOutcome?: 'not-sent' | 'unknown';
 }
 export type ComparisonResponse<T> = { readonly status: 'ok'; readonly value: T } | ComparisonFailure;
-export type ComparisonStartResponse = { readonly status: 'ok' | 'pending'; readonly value: ComparisonJob } | ComparisonFailure;
+export type ComparisonStartResponse = { readonly status: 'ok'; readonly value: ComparisonJob }
+  | { readonly status: 'pending'; readonly value: ComparisonJob } | ComparisonFailure;
 export interface ComparisonReadOptions { readonly signal?: AbortSignal }

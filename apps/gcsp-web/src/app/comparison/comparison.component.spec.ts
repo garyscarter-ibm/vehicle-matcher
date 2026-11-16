@@ -47,8 +47,10 @@ describe('comparison inspection and supported Greg commands', () => {
   async function click(label: string) { button(label).click(); fixture!.detectChanges(); await settle(); }
 
   it('renders actual retained measurements, full assumptions, provenance and the fit caveat', async () => {
+    const stored = retained(); const units = ['versioned synthetic buddy behaviour', 'versioned synthetic manual behaviour'];
+    readResults.mockResolvedValue(catalogue({ ...stored, result: { ...stored.result, assumptions: [...stored.result.assumptions, ...units.map((unit, index) => ({ ...stored.result.assumptions[0], key: `behaviour.${index}`, unit }))] } }));
     await render(); expect(text()).toContain('Retained baseline'); expect(text()).toContain('1189 (1102 to 1234)'); expect(text()).toContain('3.7 (3 to 4)'); expect(text()).toContain('-1185.3 (-1230 to -1099)'); expect(text()).toContain('Buddy route better');
-    expect(text()).toContain('brief.slider.maximum'); expect(text()).toContain('integer slider units'); expect(text()).toContain('Assumed `brief.slider.scale`'); expect(text()).toContain('comparison-a, comparison-b, comparison-c'); expect(text()).toContain('669fbc2f'); expect(text()).toContain('Calculated fit is not observed satisfaction.'); expect(root().querySelectorAll('h1')).toHaveLength(1);
+    expect(text()).toContain('brief.slider.maximum'); expect(text()).toContain('integer slider units'); expect(text()).toContain('Assumed `brief.slider.scale`'); expect(text()).toContain('comparison-a, comparison-b, comparison-c'); expect(text()).toContain('669fbc2f'); expect(text()).toContain('Calculated fit is not observed satisfaction.'); expect(root().querySelectorAll('h1')).toHaveLength(1); expect(text()).toContain('versioned buddy behaviour'); expect(text()).toContain('versioned manual behaviour'); expect(text()).not.toContain('synthetic'); expect(units).toEqual(['versioned synthetic buddy behaviour', 'versioned synthetic manual behaviour']);
     expect(root().querySelector('table caption')?.textContent).toContain('Assumptions'); expect(root().querySelector('th[scope="row"]')?.textContent).toBe('brief.slider.maximum');
   });
   it('shows older policy explicitly while retaining the historical result', async () => {
