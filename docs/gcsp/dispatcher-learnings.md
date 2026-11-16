@@ -357,3 +357,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/diagnosis:** targeted discovery within the Java worktree's local harness project found the successor transcript. Managed checks returned ALIVE for both the session and its implementer, with activity2seconds and12seconds before inspection. The coordination status was stale; silence there did not establish a stopped worker.
 - **Action/outcome:** retained the supervision handle locally and left the live workers alone. Current execution is now verified at this observation, while implementation, selected-test results, resource receipts and Story acceptance remain unproven. No replacement, duplicate writer or test replay was needed.
 - **Framework follow-up:** retain the addressable harness identity with handoff evidence, and distinguish status-file freshness from actual harness activity. Local supervision recovery is verified; route delivery and the wider scheduling issue are not resolved by this check.
+
+## 2026-11-16 12:37 UTC · GC Codex · DL-20261116-GC-008 · transient read recovered
+
+- **Evidence/impact:** the F434 full comments-page read failed once with `MCP -32001: mcp-remote: fetch failed`; the independent full66 Jira snapshot succeeded. The failed read briefly left coordination freshness unverified, without changing Jira or claims.
+- **Action/outcome:** one read retry returned the complete final page, total60/latest3629579, unchanged. This read recovered; the transport cause and any lasting connector repair remain unverified. No application test or additional Story gate was introduced.
+- **Framework follow-up:** retain failed-read diagnostics and freshness separately; use one bounded retry for a transient read, and label old coordination evidence when recovery fails.
