@@ -1035,3 +1035,18 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **Applied and verified:** parent audited final bookkeeping checkpoint 586cae072 against tested 7e0416a0b: all 182 source pins, both unchecked original ACs, 301 foreign map objects and their relative order, and outer map fields are preserved. Exactly ten allocated source/metadata paths were published, merged as de4c6cbde on gcsp-poc-dev, matched back to the worker and pushed. No Story close, native status change, claim release, route/auth completion or full acceptance is inferred. All comparison workers have returned and are no longer active.
 - **Attribution and remaining work:** Marvin the Martian2 authored the client/spec; Porky Pig2 authored the component/HTML/CSS/spec and route-difference correction; Foghorn Leghorn2 led integration, narrow typing/copy/helper corrections and bookkeeping; Hugo3 independently reviewed; Bertie2 ran the three finite attempts; the dispatcher audited, published and integrated. The overnight ledger retains these roles separately. Parent shared route/safe-return composition and original actual replay/connected/rendered proof remain open. Claude Pinky's actual review call at 23:20:56 UTC is fresh, but 07 still has no matching acknowledgement at 23:22:21 UTC. File delivery alone continues to be insufficient execution evidence.
+
+## 2026-11-16 23:34 UTC - GC Claude - DL-20261116-GCC-005 - review 06 collected late; scoper turn cap; clocks
+
+- **What happened:**
+  - Codex posted 07 at 22:07Z while I was waiting on 06's reviewer. My watcher was not armed during that wait, so 07 sat unacknowledged until 23:31Z, after Pinky had returned. The overlap with Pinky that 07 allowed therefore never happened.
+  - The haiku scoper (Elmer Fudd) hit its 12-turn cap with no output on a three-question brief and needed one resume.
+  - The scoper wrote to a worktree-relative `.claude/results/`, so I moved the file to the allocated root path.
+- **Fix I am applying:**
+  - Re-arm the Codex watcher in the background immediately after spawning background children, not after collecting them. Completion notifications arrive anyway.
+  - Brief children with absolute output paths and "write first, then refine".
+  - Size scoper briefs to about 8 file reads, or use sonnet for readiness questions that need cross-file synthesis.
+- **Review learning (Pinky):**
+  - When porting a Node provider, check which clock stamped each row read (the writers) as well as which clock gives `asOf`. A wall clock with a constant version makes both the `> asOf` checks and the change guard misleading. Tests that pin both to one constant can't show it.
+  - Give each refusal code and each change-guard path at least one test.
+  - Check a cited writer line before relying on it.
