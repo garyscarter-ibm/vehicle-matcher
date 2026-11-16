@@ -8583,7 +8583,7 @@
     {
       "assignee": "garyscarter-ibm",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-16T23:17:18Z",
+      "observed_at": "2026-11-16T23:20:35Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -8610,16 +8610,16 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "a02: compiled58cases;28client+3component pass,27component fail,boundary unrun. Exact public-state test-wait correction source-reviewed; a03affected30 pending. Actual Java/replay/rendered ACs open.",
+      "note": "Partial source/fixture result:28clienta02+30componenta03 pass on matchingclosure; actual boundaryrc1 inheritedcasequeueemdash. BothoriginalACopen:JavaReplay/newrun,parentroute/auth,connected/renderedproof missing. No slice complete.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T23:17:17.891148+00:00",
-          "expires_at": "2026-11-17T00:15:00Z",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
           "source": "/root/foghorn_leghorn_2",
-          "status": "checkpointing reviewed bounded component-test wait and preparing a03; original ACs open"
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
         },
         {
           "name": "Marvin the Martian 2",
@@ -8652,10 +8652,10 @@
           "name": "Bertie 2",
           "harness": "codex",
           "role": "runner",
-          "observed_at": "2026-11-16T23:14:20Z",
-          "expires_at": "2026-11-16T23:14:55Z",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
           "source": "/root/foghorn_leghorn_2/bertie_2",
-          "status": "a02 returned:28client pass/3component pass/27fail;cleanup/input audits pass"
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
         }
       ]
     }

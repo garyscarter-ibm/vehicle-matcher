@@ -74,3 +74,24 @@ Retained a02 receipt SHA-256 `f0b1ef8c1f8a58685760a909b9c10507ccd28d5148381d746b
 Dispatcher preauthorized a03 as exactly 30 component cases affected by the shared helper plus the previously unrun boundary, under the same finite resource/finalizer envelope after independent source review and a new checkpoint/freeze. The 28 unchanged passing client cases will be reused against their matching closure. No full 58-case replay is authorized or needed. Original ACs remain open.
 
 Hugo 3 independently reviewed the exact helper correction from 23:16:41 to 23:16:52 UTC, Sol/high requested/selected, no fallback; verified title retained. Review returned PASS with no blocker/major: the public-state predicates remain bounded, deferred/destroy/fake-timer cases retain their assertions, and all 30 component cases remain. The reviewer explicitly retains the synchronization cause as a hypothesis pending runtime. No runtime allocation or OneDrive access in review.
+
+## Partial Result — 16 November 2026
+
+The allocated Angular comparison source is coherent and independently source-reviewed. Tested source checkpoint is `7e0416a0b89ebd4cd6b4804f78e1a83c2cf03c3e`, tree `0676e0a93d1637745a529a1dd9e57ac0d14544c4`; all 182 frozen source hashes and the optional boundary-input absence still match after execution. The final bookkeeping changes only this record, the own Story and the FUCQ-452 map object; it does not alter the tested source.
+
+Attempt a03 ran once at 23:18:28 UTC (Bertie 2, verified existing title, Luna/high requested/selected, no fallback, PID 92472/session 76093). Native selected-command exit 0, all 30 component cases passed with zero pending. This includes exact actual-unit display/raw-preservation assertions, unequal-arm/route labels, native selected option after loading, presenter controls, named-job/result identity, uncertain retry, interrupted/failed reasons and abort/poll cleanup. The only changed frozen input was the shared test settling helper; production and behavioral assertions were unchanged. Its passing observable-state waits establish that the earlier loading assertions were premature in this fixture harness. This does not establish connected or rendered acceptance. All 28 client cases from a02 are reused against matching client/type/auth/config/dependency hashes; no full 58-case replay was performed.
+
+The actual existing boundary command then ran once and failed with native exit 1: `apps/gcsp-web/src/app/cases/case-queue.component.html: on-screen em dash`, at `tools/check-boundaries.mjs:15:3`. This inherited other-Story failure remains a failure. Accordingly a03 outer exit is 1, state failed, strict result false; no broad rerun or unrelated source repair followed.
+
+Final a03 local evidence, under `.claude/test-runs/fucq452/receipts/a03/`:
+
+- `receipt.json`: `a85934c2b93b60799ff1088482f00e4a0195e54da61dcb7cbf82b70d4e5341f1`.
+- `test-report.json`: `2395298db725bc3f391bac2a5b174eacdae13ea8af6f3934b5f68b148facf7ee`.
+- `tests.log`: `760ed7155f3cc366c22e3109090861c66a62943ed8f1619ef9411ee11fba05b0`.
+- `boundaries.log`: `0fa8e5ff87cdfbb028c26df2ee7af3b188a1ad39befcd695041f0a6fe7ba369f`.
+
+Final lead pin audit: `.claude/test-runs/fucq452/receipts/lead-final-source-evidence.json`, SHA-256 `251b58b5bc4f0bde7c7815b859a87bb485c5550e906dc1433b0837b70a2b542f`. It preserves all three attempts and confirms the matching source closure for reused passes. Whole retained local output is 528,384 allocated bytes, below 2 MiB. No OneDrive access or verification occurred.
+
+A03 sampled 81 times: peak disk 430,982,304 bytes, RSS 1,157,283,840 bytes, inclusive 1,588,266,144 bytes, minimum free 170,515,025,920 bytes. Work 28.21 seconds, total 34.75 seconds; resource/deadline checks passed. Final audits recorded unchanged source/absent input and all 23,008 borrowed files/hash/metadata/Node, no owned processes or listeners, both process groups stopped, owned scratch/output/reservation/links absent and no cleanup errors. Both implementers, reviewer and runner returned; the lead claim expires at final bookkeeping. These sampled observations do not prove continuous containment.
+
+Both original ACs remain unchecked and all Story slices remain incomplete. This is a partial source/fixture result, not a built/accepted Story. Remaining original work is successful actual new-run proof after the separately owned main Java replay binding exists, parent shared route and safe-return/auth integration, actual Java/OIDC/PostgreSQL role/job/result evidence, and applicable rendered desktop/narrow/Safari/private/keyboard/focus/visual evidence. No route, authentication, Java, shared-kit, other-Story or registry edit, push, merge, Jira write or deployment was made by this lead. Parent owns publication/integration. No new scope or acceptance gate was introduced.
