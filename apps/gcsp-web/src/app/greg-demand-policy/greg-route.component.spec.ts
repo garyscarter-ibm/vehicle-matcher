@@ -53,7 +53,7 @@ describe('Greg route integration and lifetime', () => {
     expect(root().querySelector('[role=tab][aria-selected=true]')!.textContent).toBe('Demand and supply'); expect(client.publish).not.toHaveBeenCalled();
   });
   it('keeps draft controls and values on keyboard tab changes without reloading or publishing', async () => {
-    const route = await open(); const tabs = [...root().querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const route = await open(); const tabs = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]'));
     tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); await settle(); expect(tabs[1].getAttribute('aria-selected')).toBe('true');
     const control = root().querySelector<HTMLInputElement>('input[type=number]')!;
     control.value = '9'; control.dispatchEvent(new Event('input', { bubbles: true })); await settle(); expect(route.store.view().fields[0].draft).toBe('9');
