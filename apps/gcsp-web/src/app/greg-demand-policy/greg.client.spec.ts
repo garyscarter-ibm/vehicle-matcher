@@ -64,7 +64,7 @@ describe('Greg bearer transport and immutable commands', () => {
     }
   });
   it('retains identical payload bytes and rejects forged commands and old sessions', async () => {
-    fetcher.mockResolvedValue(json(202, refusal('uncertain', 'outcome-uncertain')));
+    fetcher.mockImplementation(async () => json(202, refusal('uncertain', 'outcome-uncertain')));
     const source = input(); const command = client.preparePublish(source); if ('state' in command) throw new Error('Command was refused');
     expect(Object.isFrozen(command.input.changes[0])).toBe(true);
     (source.changes as { id: string; value: number }[])[0].value = 9;
