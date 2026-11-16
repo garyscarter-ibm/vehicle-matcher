@@ -138,9 +138,9 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     field('fault', 'stock'); expect(Array.from(root().querySelectorAll(`#${page.control('mode')} option`)).map(o => (o as HTMLOptionElement).value)).toEqual(['', 'none', 'unavailable']);
     field('mode', 'unavailable'); await completeCommand('Set fault mode'); expect(client.prepareFault).toHaveBeenCalledWith({ commandId: expect.any(String), adapter: 'stock', mode: 'unavailable' });
   });
-  it('P14 links only permitted outbox inspection and offers no principal, employee or Greg action surface', async () => {
+  it('P14 links permitted outbox and comparison inspection without a principal, employee or Greg action surface', async () => {
     await enter(); const links = Array.from(root().querySelectorAll('a')).map(a => a.getAttribute('href'));
-    expect(links).toEqual(['/presenter/outbox']); expect(text()).toContain('Comparison inspection is not available'); expect(text()).toContain("account's own login");
+    expect(links).toEqual(['/presenter/outbox', '/comparison']); expect(text()).toContain('Process comparisons'); expect(text()).toContain("account's own login");
     expect(root().querySelector('[name="principalId"], [name="employeeId"], [name="runId"]')).toBeNull(); expect(client.submit).not.toHaveBeenCalled();
   });
   it('P15 locks duplicate commands and all editors while submission is pending', async () => {

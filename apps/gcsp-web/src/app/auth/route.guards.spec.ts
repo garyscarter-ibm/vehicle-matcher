@@ -16,4 +16,10 @@ describe('session route guards', () => {
   it('refuses roles and explicit denied contexts', async () => { state.set({ status: 'ready', context: { ...context, roles: ['greg'] } }); expect(url(await guard())).toBe('/access-denied'); state.set({ status: 'denied', message: 'Denied' }); expect(url(await guard())).toBe('/access-denied'); });
   it('lands an authenticated employee on their own account', async () => { state.set({ status: 'ready', context }); const result = await TestBed.runInInjectionContext(() => landingGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot)); expect(url(result)).toBe('/account'); });
   it('contains a rejected context read as an unavailable state', async () => { initialize.mockRejectedValueOnce(new Error('private upstream detail')); expect(url(await guard())).toBe('/unavailable'); });
+  it('retains comparison direct entry through sign-in and enforces its two permitted roles', async () => {
+    const inspect = () => TestBed.runInInjectionContext(() => sessionGuard({ data: { roles: ['greg', 'presenter'] } } as unknown as ActivatedRouteSnapshot, { url: '/comparison?experimentId=points' } as RouterStateSnapshot));
+    expect(url(await inspect())).toBe('/sign-in?returnTo=%2Fgcsp%2Fcomparison%3FexperimentId%3Dpoints');
+    for (const role of ['greg', 'presenter'] as const) { state.set({ status: 'ready', context: { ...context, roles: [role] } }); expect(await inspect()).toBe(true); }
+    state.set({ status: 'ready', context }); expect(url(await inspect())).toBe('/access-denied');
+  });
 });
