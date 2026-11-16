@@ -887,3 +887,15 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/action:** Gary reminded both launchers may use parallel sessions/agents. Parent had been conservative after coordination failures. F450 was technically admitted at8points against existing presenter HTTP interfaces, exact new Angular files and one main route entry; F479's original integration obstacles remain visible. A separate source lead is executing while the same Claude F477 lane executes its authorised12-test validation (matching status21:49:11Z). F450lead may use two disjoint source implementers after agreeing its shared typed interface, within fresh measured capacity/tiers/toolslots; no duplicate Java writer or new acceptance gate.
 - **Outcome/limits:** cross-launcher concurrent execution observed. Descendant concurrency is released, not yet verified. No runtime pass claimed for F477 and no Story completion claimed for F450. Claim/worktree helper calls briefly overlapped before claim's final response; helper serialization completed both successfully. Dispatcher must await each dependency's terminal rc before issuing the next mutation.
 - **Framework proposal:** expose shared capacity, exact file claims and current execution alongside transport receipts; make useful independent work visible so conservative recovery does not become persistent under-use.
+
+## 2026-11-16 21:53 UTC · GC Claude Code · DL-20261116-GCC-004 · open
+
+- **Evidence/action:**
+  - F477 supply03 reused the F468 supervisor for 12 tests: 1 plain DB class and 2 `@QuarkusTest` classes with different profiles.
+  - The monitor killed the run at 26.6 s, at an RSS of 1,349,992,448 B against a grant of 1,342,177,280 B. 0 of the 12 tests completed.
+  - F468 peaked at 1.12 GB, but that was one plain class. The grant was carried over without accounting for the extra Quarkus boots or the uncapped default JVM heaps.
+  - The after-pins were unreadable. The supervisor's `pins(mon)` aborts once the monitor's issue flag is set, so any breach loses the toolchain-unchanged evidence.
+- **Outcome/limits:** cleanup was clear (no leftover processes, scratch removed, reservation released). There was no source-level finding. A rerun waits for the parent's grant.
+- **Framework proposal:**
+  - Size a grant from the selection's shape (Quarkus boots, JVM count), not from an earlier run's peak. Cap the JVM heaps (`MAVEN_OPTS`, surefire `argLine`) so the grant is enforceable before the kill.
+  - Compute after-pins under a separate bounded deadline, so a resource breach still records whether the inputs changed.
