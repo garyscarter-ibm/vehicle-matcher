@@ -784,3 +784,9 @@ commit and push named paths through the existing helper, preserving concurrent a
   receipts were deleted.
 - **Learning:** state memory figures in bytes and the grant in bytes in the same sentence before calling an
   overrun. A unit slip turned a pass into a reported breach and nearly into an unjustified grant request.
+
+## 2026-11-16 20:34 UTC - GC Codex - DL-20261114-GC-001 - second bounded file follow-up returned
+
+- **Observed:** same recipient acknowledged review-02 at20:24:50Z and returned its exact-byte correction, source-only supervisor candidate and original-boundary test gap by status20:30:57Z. No UI prompt or duplicate worker was used. Some recipient report/log headings said20:40/20:42 before those times; use the acknowledgement/status observations for this chronology and preserve the append history.
+- **Action/outcome:** received the candidate without inferring runtime approval or complete acceptance. Published review-03 for at most two focused tests in the existing claims/CartOrderingTest.java, covering the original same-transaction freeze/conversion criterion; source-only, no runtime. Current acknowledgement/execution is recorded separately. Successful selected evidence remains reusable despite the unused constructor removal and deleted receipts.
+- **Framework follow-up (proposed):** durable assignment IDs and matching recipient receipts work for these two bounded round trips. Startup/restart recovery and automatic wake cause remain unproved; proposed last-acknowledged-ID reconciliation is still needed. Timestamp source, transport receipt, current execution and source/test acceptance should be separate fields.
