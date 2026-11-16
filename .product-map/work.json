@@ -5737,35 +5737,35 @@
       "branch": "dev/DEV-2026-11-13-GC-010"
     },
     {
-  "assignee": "Gary Carter",
-  "id": "FUCQ-418",
-  "jira_observed_at": "2026-11-16T09:37:06.006838+00:00",
-  "note": "Original8pt contract reviewed, merged71cc0dd432 and nativeInReview; claim/branch/worktree helpercleanup complete. Main1798srealtime deadlineFAIL and historical peak limitation retained; docs/gcsp/fucq418-delivery.md. No humanacceptance/Done inferred.",
-  "observed_at": "2026-11-16T09:37:06Z",
-  "original_status": "In Review",
-  "slices": [
-    {
-      "id": "static-cache",
-      "status": "complete",
-      "title": "6pt: bounded static calculation reuse and focused regression coverage",
-      "observed_at": "2026-11-16T07:54:49Z",
-      "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+      "assignee": "Gary Carter",
+      "id": "FUCQ-418",
+      "jira_observed_at": "2026-11-16T09:37:06.006838+00:00",
+      "note": "Original8pt contract reviewed, merged71cc0dd432 and nativeInReview; claim/branch/worktree helpercleanup complete. Main1798srealtime deadlineFAIL and historical peak limitation retained; docs/gcsp/fucq418-delivery.md. No humanacceptance/Done inferred.",
+      "observed_at": "2026-11-16T09:37:06Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "static-cache",
+          "status": "complete",
+          "title": "6pt: bounded static calculation reuse and focused regression coverage",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "2pt: original consumer validation, source review and connected evidence disposition",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
+        }
+      ],
+      "status": "In Review",
+      "title": "Reuse unchanged static suitability across releases",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
+      "workers": []
     },
-    {
-      "id": "integration",
-      "status": "complete",
-      "title": "2pt: original consumer validation, source review and connected evidence disposition",
-      "observed_at": "2026-11-16T07:54:49Z",
-      "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
-    }
-  ],
-  "status": "In Review",
-  "title": "Reuse unchanged static suitability across releases",
-  "type": "Story",
-  "unsliced": false,
-  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
-  "workers": []
-},
     {
       "assignee": "",
       "id": "FUCQ-419",
@@ -7378,13 +7378,31 @@
     {
       "assignee": "",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T10:19:58Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Complete remote offer acceptance and decline",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467",
+      "slices": [
+        {
+          "id": "remote-decline",
+          "status": "in-progress",
+          "title": "Remote decline: persisted release intent, remote release drive, confirmed finalization, rejected/unknown custody, replay and restart on native PostgreSQL",
+          "observed_at": "2026-11-16T10:19:58Z"
+        },
+        {
+          "id": "remote-accept",
+          "status": "not-started",
+          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result"
+        }
+      ]
     },
     {
       "assignee": "",
