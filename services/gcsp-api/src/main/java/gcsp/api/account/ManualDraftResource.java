@@ -117,7 +117,7 @@ public class ManualDraftResource {
     }
 
     /** ok 200, invalid 400, forbidden 403, not found 404 (200 for a draft read), conflict and stale 409, unavailable 503. */
-    static Response mapped(AccountOutcome outcome, boolean absentIs200) {
+    public static Response mapped(AccountOutcome outcome, boolean absentIs200) {
         if (outcome.isOk()) {
             ObjectNode body = JsonNodeFactory.instance.objectNode().put("status", "ok");
             body.set("value", outcome.value());
