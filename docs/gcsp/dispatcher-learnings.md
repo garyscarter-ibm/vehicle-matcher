@@ -393,3 +393,116 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/change:** the managed parent check now returns ALIVE (activity ten seconds before inspection), and the session check finds no unfinished subagent. The parent transcript at 13:05:19 UTC reports that Donald Duck returned slice 1 and that diff review has started. This supersedes the earlier parent-UNSURE/child-ALIVE observation.
 - **Action/outcome:** leave the active owning parent to review its returned manual draft/discard slice; no interruption, duplicate writer or dispatcher test replay. No frozen source, test/resource receipt, publication or original Story acceptance has yet been independently reviewed by this dispatcher. Native backend In Review statuses remain unchanged; new-worker admission still reports zero at 9.4 GB swap.
 - **Framework follow-up:** a quiet parent with a live child can resume normally when the child returns. Preserve per-agent supervision and result provenance; neither a child return nor an active review establishes validated delivery. This confirms a normal handoff observation, not a wider scheduling or resource resolution.
+
+## 2026-11-16 13:11 UTC · GC Codex · DL-20261114-GC-001 / DL-20261114-GC-002 · first Java route slice delivered
+
+- **Evidence/outcome:** Claude reviewed and published manual draft GET/POST and discard source `b4ed8d3a329391fec4086a017d3f08e28313b94a`. The normal helper pull fast-forwarded shared `gcsp-poc-dev` to `637a0ccd27984f9965877730a4807babc82b7e8e`; parent verified the source is an ancestor, all 14 changed paths fit the account/test/unique-migration allocation, and current Java content matches that checkpoint. A concurrent documentation push briefly required the owning session to merge and retry publication; both histories were retained.
+- **Validation boundary:** the recorded ten selected classes total 69 passes, zero failures/errors/skips; XML report times fall within the recorded 13:04 regression run. Its receipt reports 33.9 seconds on both clocks, 831,619,072-byte sampled RSS, 211,825,024-byte scratch, scratch removed and reservation released. Dispatcher read these receipts without a replay; no independent current cleanup or continuous aggregate peak audit is claimed. The retained 27,178,272-byte target cache is outside the reported scratch peak; no tested-source hash manifest was provided. Extra stale report lines are excluded from the selected count.
+- **Remaining work/action:** this delivers the first route-registration increment, not connected Angular/hosted acceptance or an entire Story. Preserve native In Review and all original criteria. Stock/selection and later route slices remain; the owner records capacity zero/9.4 GB swap and has not started the next implementer. No duplicate, new claim, dispatcher runtime or OneDrive access.
+- **Framework follow-up:** retain frozen source, selected fresh report identity and explicit resource-proof limits with each returned increment. Separate publication recovery, partial route delivery and original integration acceptance; do not infer a full journey from this checkpoint.
+
+## 2026-11-16 13:14 UTC · GC Codex · DL-20261114-GC-001 · retained reports inflated returned class count
+
+- **Evidence/cause:** the Java owner's 13:10 final summary describes 13 classes in the latest run. The recorded invocation selects ten classes; their 69 passing XML results fall within that run. DefaultProfileTest (9), ClaimLifecycleTest (23) and ManualClaimsHttpNoDatabaseTest (1) have earlier report times. The local runner prints every retained Surefire text report, including those three, from its persistent target cache.
+- **Action/outcome:** retain only the ten fresh selected classes/69 passes as evidence for this run. The other 33 assertions remain earlier evidence; no failure or fresh execution is inferred. No test replay, product change, new acceptance gate or interruption of the ALIVE owning session. First-slice Java source is unchanged; next implementation remains capacity-held.
+- **Framework follow-up:** return selected report identities and observation times with a chunk, rather than counting all files in a retained report directory. Diagnosis and reporting mitigation are verified here; the runner has not been repaired, and tested-source hash/current cleanup/continuous aggregate limits remain as recorded.
+
+## 2026-11-16 13:22 UTC · GC Codex · DL-20261114-GC-001 · successor supervision restored after context handoff
+
+- **Evidence/change:** the previous Java owner handed slices 2–4 to a fresh session at 13:16 UTC after reaching its context boundary. Targeted inspection of the known local harness project found the successor transcript; its initial task matches the bounded handover. The successor acknowledged inline continuation at 13:17 UTC and made source/contract reads through 13:21 UTC. Managed supervision returned ALIVE, activity 30 seconds before inspection, with no unfinished subagents. The sidecar still describes the previous session's pending handoff.
+- **Action/outcome:** retain successor and predecessor observations separately and supervise the successor. Current source analysis is confirmed; no second slice, test result or Story completion has returned. Leave the live owner alone. No dispatcher launch, duplicate writer, test replay or OneDrive access. Capacity remains zero; new lead admission remains stopped.
+- **Framework follow-up:** transfer an addressable supervision identity atomically with a context handoff, and distinguish stale coordination labels from current execution. Local handoff supervision is recovered; implementation delivery and resource admission remain unresolved.
+
+## 2026-11-16 13:29 UTC · GC Codex · DL-20261114-GC-001 · stale ownership handoff corrected
+
+- **Evidence/impact:** Gary raised possible duplicate Claude/Russell work. The Java handover still said Russell held FUCQ-467; current native Jira and shared delivery record show it merged/In Review, cleanup complete, with no live reservation or remote dev branch. Russell's live FUCQ-507 reservation is comparison replay, allocated comparison/tests with read-only allocation/recommendation use. Its published branch contains product-map planning only. Claude's allocation remains account/claims/brief/ordering route gaps, supporting existing manual-journey work.
+- **Action/outcome:** compared current reservation, branch and file evidence; no overlapping published implementation observed. Appended dated corrections to the local handovers and retained the requirement to compare exact files before each slice. Russell's unpublished edits and current execution remain unverified; this does not establish that concurrent local edits cannot exist. No worker stopped, duplicate launched, Story scope expanded or Jira status changed.
+- **Framework follow-up:** refresh ownership facts when handing work between sessions and distinguish a current reservation, published changes and live execution. Stale coordination was corrected; collision prevention still depends on current file allocations, not a broad backend ownership label.
+
+## 2026-11-16 13:41 UTC · GC Codex · DL-20261114-GC-001 · successor context checkpoint, delivery still open
+
+- **Evidence/change:** the Java successor self-reports about 307k context at 13:39 UTC and saves its slice-2 design checkpoint. The managed check is ALIVE with activity two seconds before inspection, no unfinished subagent, and source/contract reads through 13:39:54 UTC. The Java branch still has no source edits beyond the integrated first slice; only the local handover is untracked. The context estimate is not independently measured and its growth cause is unverified.
+- **Action/outcome:** retain the design checkpoint and exact continuation identity; distinguish live analysis and checkpoint preservation from a delivered increment. No second source/test result has returned. Leave the live owner alone; no stopped/stalled verdict, replacement, duplicate writer, test replay or additional Story scope. Swap admission remains stopped.
+- **Framework follow-up:** carry a compact exact-file design and next action across context boundaries, and report context consumed alongside delivered checkpoints. A saved design mitigates context loss; it does not demonstrate resumed implementation delivery or resolve resource pressure.
+
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-009 · positive capacity recovered, admission reassessed
+
+- **Evidence/change:** after the explicit human restart pause/resume, capacity first reported 11.4 GB free but only one admissible worker due to high load. A later managed check reported five slots with 12.0 GB free. This clears the prior swap-based admission stop at these observations; no responsible process or lasting resource resolution is inferred.
+- **Action/outcome:** retained existing claims and independently live Java assistance, then selected the nonconflicting manual-review Angular continuation inside the original 66. No foreign cleanup, test replay or forbidden-storage audit. Full original acceptance remains required.
+- **Framework follow-up:** preserve capacity reasons across restarts and recheck admission after transient load settles; do not reserve new work from memory availability alone.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · second Java context handoff supervised
+
+- **Evidence/change:** the previous Java helper saved its slice-2 design and ended without a new source increment. A fresh successor acknowledged the same bounded route task at 14:17:51 UTC; managed supervision returned ALIVE with no unfinished children. Its branch still held the integrated first-slice checkpoint. No additional route delivery or acceptance is inferred.
+- **Action/outcome:** retained both predecessor and successor observations, updated local supervision identity and left the live Java writer alone. New manual-review Angular allocation uses separate new frontend files.
+- **Framework follow-up:** transfer compact settled designs and addressable supervision handles together; context rollover and live analysis are distinct from delivery.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-004 · broad discovery risk observed
+
+- **Evidence/impact:** while recovering a reportedly absent disposable test supervisor, the separate Java session issued a filesystem-wide recursive discovery command despite the binding forbidden-storage restriction. Its traversal reach is unknown; no prohibited path was inspected to verify it.
+- **Action/outcome:** did not repeat that discovery or audit forbidden storage. Appended an explicit allowlisted-search reminder to the current local continuation handoff and dispatcher note. Current worker acknowledgement is unverified; this instruction alone is not a verified resolution.
+- **Framework follow-up:** resource recovery must use exact retained local paths and receipts; broad discovery can violate access restrictions even without intended output there.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · admission guard sequencing corrected before delegation
+
+- **Evidence/cause:** F443's exact source-hash guard failed on one changed OrderingService input; the surrounding orchestration continued to claim because it had not checked that command's return code. No worker had been launched.
+- **Action/outcome:** inspected the sole diff: an added buddy-only precheck, with existing manual behavior unchanged. Recorded the revised identity and finite file allocation before delegation. Earlier 12 matching inputs and the failed guard remain recorded. No acceptance or successful implementation is inferred from the claim.
+- **Framework follow-up:** dependent claim/delegation calls must explicitly stop on failed preflight return codes; a successful claim is not proof that prerequisite inspection passed.
+
+## 2026-11-16 14:40 UTC · GC Codex · DL-20261114-GC-002 · manual review authority boundary retained
+
+- **Evidence/diagnosis:** F443 lead source review reports the current flat Java claim/submit DTO lacks frozen contact, replacement return-mileage and review-details-version authority. Its seven-file frontend core is authored but unvalidated; native backend review status is not proof of this composition.
+- **Action/outcome:** continued the existing allocated frontend screen slice, keeping final submission unavailable until the real producer supplies the required review details. Appended the finite consumer requirement to the separate Java owner's existing slice-3 local handoff. No producer acknowledgement, code fix, test result or integrated resolution is claimed; original acceptance stays open.
+- **Framework follow-up:** exact producer/consumer DTO coverage and command authority belong in bounded handoffs; source progress and truthful unavailable UI must not be reported as capability parity. Reuse existing route ownership rather than starting a competing Java writer.
+
+## 2026-11-16 14:53 UTC · GC Codex · DL-20261114-GC-010 · dependency identity failure isolated
+
+- **Evidence/impact:** F443's first bounded validation exited 1 after 3.13 seconds with `AssertionError()` before any test command. Zero specs and no boundary check ran. Its final audit incorrectly grouped historical identity mismatch under a hash-failure label.
+- **Diagnosis:** the retained exact-file audit examined all 23,008 closure files and Node: every content hash matched, with no read errors; only device metadata differed, from 16777232 to 16777229. The first failing guard compared Node's complete historical identity. The cause of the device-number change remains unproven.
+- **Action/outcome:** preserved attempt 01, independently verified current owned scratch/output/process identities/groups/reservation absent, and retained the failed input audit and unproven continuous peaks. The same lead prepared a fresh owned manifest preserving paths, graph and hashes while rebinding observed device metadata, plus stage-specific diagnostics. One corrected seven-spec attempt includes the directly affected stock handoff; its result is pending. No borrowed mutation, install, browser repair or added acceptance gate.
+- **Framework follow-up:** distinguish immutable content pins from observed filesystem identity, bind both afresh before copying, and name the failing stage/file. A prepared correction and verified cleanup do not establish passing validation.
+
+## 2026-11-16 14:53 UTC · GC Codex · DL-20261114-GC-001 · native intake preflight recurrence
+
+- **Evidence/impact:** this dispatcher's manually selected Jira fields omitted first `created`, then `reporter`; the adapter refused both incomplete snapshots before import. A failed local snapshot rewrite was also followed by a redundant import attempt, which the same guard refused. No Jira writes or Story changes resulted.
+- **Action/outcome:** read the adapter's complete required field contract, fetched all 66 with that metadata, checked the snapshot write's actual return code before import, and completed a no-action import. Live queue and mail reads followed only that successful import.
+- **Framework follow-up:** derive one reusable required-field request from the intake contract, and sequence every dependent operation on an explicitly successful return code. The guards limited impact; this recurrence means orchestration sequencing is not resolved globally.
+
+## 2026-11-16 14:55 UTC · GC Codex · DL-20261114-GC-010 · identity correction exercised, compilation still failed
+
+- **Evidence/outcome:** F443 attempt 02 passed the refreshed dependency identity checks, then Angular compilation failed before any tests executed: one untyped ElementRef use, one incomplete test DTO cast and two nullable order-value accesses. The boundary check did not run. The existing stock optional-chain warning is separate. Elapsed time was 34.153 seconds; sampled inclusive peak was 1,395,858,112 bytes, with no continuous-peak claim.
+- **Audit/action:** parent independently verified current owned scratch/output/process identities/groups/reservation absent, all 23,008 borrowed content and identity pins plus Node hash matching, and 172 source inputs with exactly the three subsequent compiler-correction files changed. The failed attempt's runtime source audit reported unchanged inputs. Same lead corrected those errors, retained both failures and started one correction-specific seven-spec attempt; its result is pending. Original acceptance remains open.
+- **Framework follow-up:** this verifies the refreshed identity path for one attempt, not successful feature validation. Record compilation failures as zero executed tests and keep each correction and run bound to its actual source.
+
+## 2026-11-16 14:57 UTC · GC Codex · DL-20261114-GC-010 · compilation corrected, memory grant enforced
+
+- **Evidence/outcome:** F443 attempt 03 compiled after the four corrections, then stopped when sampled aggregate RSS reached 1,351,680,000 bytes against its 1,342,177,280-byte RAM grant. The inclusive disk-plus-RAM sample remained below 2 GiB; that does not waive the RAM grant. Logs observed 17 store and 14 stock checks passing before termination, with no complete report or boundary check, so no combined test success is claimed.
+- **Audit/action:** parent verified all 172 current source hashes, owned scratch/output/process identities/groups/reservation absent, and reused the matching independent dependency audit alongside the run's unchanged-input receipt. The run remains a resource failure. Same lead is splitting the same seven specs into three serial chunks, reducing Node heap from 896 to 640 MiB under unchanged disk/RAM/inclusive and deadline limits. Each chunk must pass its result, inputs and teardown before the next starts; no result yet.
+- **Framework follow-up:** memory accounting must include compiler, test worker, supervisor and services. One configured Vitest worker does not imply one resident process. Shrink or partition useful checks after a measured breach, retain the failure and avoid upgrading partial observations to a full result.
+
+## 2026-11-16 15:01 UTC · GC Codex · DL-20261114-GC-010 · adaptive tests completed, boundary remains failed
+
+- **Evidence/outcome:** the same frozen 212-input source completed all 80 selected tests across seven suites in three serial chunks (50/16/14), with Node heap 640 MiB and unchanged grants. Each chunk passed sampled resources, both deadlines, input and cleanup checks; continuous peaks remain unproven. The subsequent actual-source boundary check returned 1 on an on-screen em dash in `cases/case-queue.component.html`; no combined strict validation pass is claimed.
+- **Diagnosis/audit:** lead compared that template and checker with exact base 17c44d860: both byte identities match. This proves inherited source content, without a base runtime rerun or proof of later checker assertions. Parent independently compared all 212 frozen hashes and verified all three owned scratch/output roots, recorded process identities/groups and canonical reservations absent; reused the independent dependency audit plus each current input receipt.
+- **Action/outcome:** stopped further runtime at the boundary failure, preserved attempts 01–03 and all three chunk receipts, and kept the unrelated case file outside F443 allocation. Preparing a bounded source checkpoint; original producer review-details and connected acceptance remain open. No Story completion or producer acknowledgement inferred.
+- **Framework follow-up:** distinguish completed selected suites from a failing shared checker. Adaptive splitting is exercised successfully for this selected set; it does not resolve the boundary failure, original acceptance or orchestration recurrence.
+
+## 2026-11-16 15:13 UTC · GC Codex · DL-20261114-GC-001 · compact response refused before import
+
+- **Evidence/impact:** this pass supplied every required Jira field but omitted `view: full`; the connector compact projection omitted description/reporter/parent/links for all 66. The existing metadata guard refused import, with no Jira or Story changes.
+- **Action/outcome:** fetched the same exact66 with full view, verified every required field before writing, checked the write return code, then completed a no-action import. Saved one local request contract including view and fields for subsequent passes. No foreign attachment bytes downloaded.
+- **Framework follow-up:** explicit request fields alone do not guarantee connector output shape. Preserve full-view and response-field preflight together. This applies a local mitigation; repeated orchestration omissions are not verified resolved.
+
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 - local snapshot sequencing recurred
+
+- **Evidence/impact:** a local lifecycle receipt write failed with `SyntaxError: Non-UTF-8 code starting with \xE2`; the orchestration then attempted mark-done against its absent file and was refused. Native claim operations had already succeeded; no extra Jira mutation or acknowledgement resulted from the failed sequence.
+- **Action/outcome:** rewrote the same full readback/ops snapshots using ASCII Python source and explicit UTF-8 file output, checked rc0 before invoking mark-done, and acknowledged only six verified F448 operations. The existing native full66 metadata was preserved. This corrects one attempt; the earlier sequencing instruction did not prevent recurrence.
+- **Framework follow-up:** make receipt persistence and dependent acknowledgement one fail-closed operation, with encoding and required-field validation before any follow-up.
+
+## 2026-11-16 15:20 UTC - GC Codex - DL-20261114-GC-001 / DL-20261114-GC-010 - reviewed checkpoint integrated
+
+- **Evidence/outcome:** independent reviewer found no blocking/major F443 issues at4064f41c1. After guarded refresh,211code/contract/tool hashes matched retained80selected passes; post-test map bookkeeping matched the reviewed checkpoint. The initial212-pin guard correctly stopped on that documented metadata change; no runtime rerun or all212current-match claim followed. Incomplete frontend checkpoint merged/pushed bf21ae27d; originalAC/producer/connected/rendered gaps and boundaryrc1 remain.
+- **Reporting/action:** integrated exact stock-descriptor consumer resolves F442's recorded placeholder source obstacle. F442 is held rather than blocked while its original remaining proof awaits execution; native In Progress and claim stay unchanged. F443 remains concretely blocked on missing Java review-details/version authority.
+- **Framework follow-up:** compare changed input roles and independently reviewed metadata before replaying tests. Resolve the specific recorded obstacle without inferring Story completion or extending its acceptance. Bounded delivery improved locally; orchestration recurrence is not verified resolved.
