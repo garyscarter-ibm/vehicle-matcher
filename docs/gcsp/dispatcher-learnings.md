@@ -424,3 +424,28 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/change:** the Java successor self-reports about 307k context at 13:39 UTC and saves its slice-2 design checkpoint. The managed check is ALIVE with activity two seconds before inspection, no unfinished subagent, and source/contract reads through 13:39:54 UTC. The Java branch still has no source edits beyond the integrated first slice; only the local handover is untracked. The context estimate is not independently measured and its growth cause is unverified.
 - **Action/outcome:** retain the design checkpoint and exact continuation identity; distinguish live analysis and checkpoint preservation from a delivered increment. No second source/test result has returned. Leave the live owner alone; no stopped/stalled verdict, replacement, duplicate writer, test replay or additional Story scope. Swap admission remains stopped.
 - **Framework follow-up:** carry a compact exact-file design and next action across context boundaries, and report context consumed alongside delivered checkpoints. A saved design mitigates context loss; it does not demonstrate resumed implementation delivery or resolve resource pressure.
+
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-009 · positive capacity recovered, admission reassessed
+
+- **Evidence/change:** after the explicit human restart pause/resume, capacity first reported 11.4 GB free but only one admissible worker due to high load. A later managed check reported five slots with 12.0 GB free. This clears the prior swap-based admission stop at these observations; no responsible process or lasting resource resolution is inferred.
+- **Action/outcome:** retained existing claims and independently live Java assistance, then selected the nonconflicting manual-review Angular continuation inside the original 66. No foreign cleanup, test replay or forbidden-storage audit. Full original acceptance remains required.
+- **Framework follow-up:** preserve capacity reasons across restarts and recheck admission after transient load settles; do not reserve new work from memory availability alone.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · second Java context handoff supervised
+
+- **Evidence/change:** the previous Java helper saved its slice-2 design and ended without a new source increment. A fresh successor acknowledged the same bounded route task at 14:17:51 UTC; managed supervision returned ALIVE with no unfinished children. Its branch still held the integrated first-slice checkpoint. No additional route delivery or acceptance is inferred.
+- **Action/outcome:** retained both predecessor and successor observations, updated local supervision identity and left the live Java writer alone. New manual-review Angular allocation uses separate new frontend files.
+- **Framework follow-up:** transfer compact settled designs and addressable supervision handles together; context rollover and live analysis are distinct from delivery.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-004 · broad discovery risk observed
+
+- **Evidence/impact:** while recovering a reportedly absent disposable test supervisor, the separate Java session issued a filesystem-wide recursive discovery command despite the binding forbidden-storage restriction. Its traversal reach is unknown; no prohibited path was inspected to verify it.
+- **Action/outcome:** did not repeat that discovery or audit forbidden storage. Appended an explicit allowlisted-search reminder to the current local continuation handoff and dispatcher note. Current worker acknowledgement is unverified; this instruction alone is not a verified resolution.
+- **Framework follow-up:** resource recovery must use exact retained local paths and receipts; broad discovery can violate access restrictions even without intended output there.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · admission guard sequencing corrected before delegation
+
+- **Evidence/cause:** F443's exact source-hash guard failed on one changed OrderingService input; the surrounding orchestration continued to claim because it had not checked that command's return code. No worker had been launched.
+- **Action/outcome:** inspected the sole diff: an added buddy-only precheck, with existing manual behavior unchanged. Recorded the revised identity and finite file allocation before delegation. Earlier 12 matching inputs and the failed guard remain recorded. No acceptance or successful implementation is inferred from the claim.
+- **Framework follow-up:** dependent claim/delegation calls must explicitly stop on failed preflight return codes; a successful claim is not proof that prerequisite inspection passed.
