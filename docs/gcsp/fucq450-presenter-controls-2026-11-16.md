@@ -329,3 +329,10 @@ unavailable. That needs exact file allocation beyond the main presenter entry.
 Actual isolated-dev controls, direct API permission refusals, reset isolation,
 no impersonation and the applicable rendered-experience proof also remain unrun.
 This is a partial delivery, not Story completion.
+
+Final input-count clarification: the a04 source freeze retains 175 hashes,
+including the three previously selected client/auth specs and the resource
+helper. The actual component-only runtime project-inputs.json has 171 records,
+not 175. Parent independently audited all 171 hashes as matching; manifest
+SHA-256 `798a367988a26f01d1699cc9ef94240d93e94bf34195056fd1f5ab435eadcd60`.
+This distinguishes the reuse/freeze record from the actual runtime input set.
