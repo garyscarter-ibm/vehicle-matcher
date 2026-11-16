@@ -6829,17 +6829,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-453",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -8588,6 +8577,67 @@
           "expires_at": "2026-11-16T22:49:16Z",
           "source": "01a1e683-7488-7b10-939e-82deb2790a08",
           "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
+        }
+      ]
+    },
+    {
+      "assignee": "garyscarter-ibm",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-16T23:04:38Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "jobs",
+          "status": "in-progress",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected Java roles and rendered acceptance evidence"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "Lead source reviewed; 58 authored client/component cases await finite frozen validation. Original actual Java/rendered acceptance and replay binding remain open.",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:54:26Z",
+          "expires_at": "2026-11-17T00:15:00Z",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "source/test preparation executing; runtime unrun"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
         }
       ]
     }
