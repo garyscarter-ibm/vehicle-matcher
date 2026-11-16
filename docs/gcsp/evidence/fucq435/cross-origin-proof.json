@@ -1,7 +1,7 @@
 {
   "schema": "fucq435-cross-origin-proof/1",
   "story": "DEV-2026-11-13-003 / FUCQ-435",
-  "startedAt": "2026-11-16T10:44:59.767Z",
+  "startedAt": "2026-11-16T10:47:46.052Z",
   "origins": {
     "web": "https://gcsp-web.localhost:7443",
     "api": "https://gcsp-api.localhost:8443",
@@ -308,10 +308,10 @@
         "apiRequestsAfterRelogin": [
           "GET /api/gcsp/v1/context 200",
           "OPTIONS /api/gcsp/v1/context 200",
+          "OPTIONS /api/gcsp/v1/brief/editor 200",
           "GET /api/gcsp/v1/brief/editor 503",
           "GET /api/gcsp/v1/manual/account 503",
           "GET /api/gcsp/v1/manual/draft 404",
-          "OPTIONS /api/gcsp/v1/brief/editor 200",
           "OPTIONS /api/gcsp/v1/manual/account 200",
           "OPTIONS /api/gcsp/v1/manual/draft 200"
         ]
@@ -369,7 +369,7 @@
     "Actual hosted Render origins and real OIDC provider registration do not exist yet (Gary creates them); not proven here."
   ],
   "failureLogs": {},
-  "head": "6d20966335d08d2bdebe96f172927ec256e0e66a",
+  "head": "35c96e64b8046883c1ed15023a2da56b3900f53b",
   "apiAccessLog": {
     "total": 48,
     "methods": {
@@ -401,6 +401,6 @@
     ],
     "leftoverInRepo": "apps/gcsp-web/node_modules, apps/gcsp-web/dist and services/gcsp-api/target are git-ignored build outputs left in place"
   },
-  "endedAt": "2026-11-16T10:46:37.896Z",
+  "endedAt": "2026-11-16T10:49:15.939Z",
   "overall": "PASS"
 }
