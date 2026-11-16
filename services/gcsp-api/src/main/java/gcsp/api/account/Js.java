@@ -58,6 +58,10 @@ final class Js {
         return s == null ? n == null : n != null && n.isTextual() && n.textValue().equals(s);
     }
 
+    static boolean eqBool(JsonNode n) {
+        return n != null && n.isBoolean() && n.booleanValue();
+    }
+
     /** JS strict equality; distinct objects and arrays are never equal. */
     static boolean strictEq(JsonNode a, JsonNode b) {
         if (a == null || b == null) return a == b;

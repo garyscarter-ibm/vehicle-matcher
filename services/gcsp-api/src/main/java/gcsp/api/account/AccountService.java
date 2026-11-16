@@ -37,7 +37,7 @@ public final class AccountService {
     }
 
     /** Prepared facts and decisions; account is null for the absent-hr-account state. */
-    private static final class Prepared {
+    static final class Prepared {
         AccountScope scope;
         String now;
         String clockVersion;
@@ -73,7 +73,7 @@ public final class AccountService {
         }
     }
 
-    private Prepared prepare(AccountScope identity) {
+    Prepared prepare(AccountScope identity) {
         Prepared p = new Prepared();
         p.scope = identity;
         try {
@@ -89,15 +89,10 @@ public final class AccountService {
         long nowMillis = Js.epochMillis(p.now);
         PolicyRead read = new PolicyRead(identity.runId(), p.now, identity.policyVersion());
         try {
-            SourceResult employment = records.readEmployment(identity.environmentId(), identity.runId(), identity.employeeId());
-            if (employment.status().equals(SourceResult.NOT_FOUND)) return absent(p);
-            if (!employment.isOk()) return fail(p, "employee-contract");
-            JsonNode e = employment.value();
-            if (!Js.text(Js.opt(e, "companyId")) || !Js.text(Js.opt(e, "schemeId")) || !Js.text(Js.opt(e, "gradeId"))
-                    || !Js.text(Js.opt(e, "entitlementSlotId"))) return fail(p, "employee-contract-invalid");
-            final AccountScope scope = identity.withMembership(Js.text(e.get("name")) ? e.get("name").textValue() : null,
-                    e.get("companyId").textValue(), e.get("schemeId").textValue(), e.get("gradeId").textValue(),
-                    e.get("entitlementSlotId").textValue());
+            Membership member = membership(identity);
+            if (member.error() != null) return fail(p, member.error());
+            if (member.scope() == null) return absent(p);
+            final AccountScope scope = member.scope();
             p.scope = scope;
 
             SourceResult account = records.readEmployeeContract(scope);
@@ -162,8 +157,43 @@ public final class AccountService {
     }
 
     private static Prepared fail(Prepared p, String source) {
-        p.error = AccountOutcome.unavailable(source);
+        return fail(p, AccountOutcome.unavailable(source));
+    }
+
+    private static Prepared fail(Prepared p, AccountOutcome error) {
+        p.error = error;
         return p;
+    }
+
+    /** The identity with the employee's trusted membership filled in; scope is null when no employment record exists. */
+    record Membership(AccountScope scope, AccountOutcome error) {}
+
+    Membership membership(AccountScope identity) {
+        try {
+            SourceResult employment = records.readEmployment(identity.environmentId(), identity.runId(), identity.employeeId());
+            if (employment.status().equals(SourceResult.NOT_FOUND)) return new Membership(null, null);
+            if (!employment.isOk()) return new Membership(null, AccountOutcome.unavailable("employee-contract"));
+            JsonNode e = employment.value();
+            if (!Js.text(Js.opt(e, "companyId")) || !Js.text(Js.opt(e, "schemeId")) || !Js.text(Js.opt(e, "gradeId"))
+                    || !Js.text(Js.opt(e, "entitlementSlotId"))) {
+                return new Membership(null, AccountOutcome.unavailable("employee-contract-invalid"));
+            }
+            return new Membership(identity.withMembership(Js.text(e.get("name")) ? e.get("name").textValue() : null,
+                    e.get("companyId").textValue(), e.get("schemeId").textValue(), e.get("gradeId").textValue(),
+                    e.get("entitlementSlotId").textValue()), null);
+        } catch (RuntimeException e) {
+            return new Membership(null, AccountOutcome.unavailable("invalid-source"));
+        }
+    }
+
+    /** The trusted clock's instant, or null when no valid time is available. */
+    String now(AccountScope scope) {
+        try {
+            ClockReading reading = clock.now(scope);
+            return reading == null || reading.now() == null || Js.epochMillis(reading.now()) == null ? null : reading.now();
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     private static Prepared absent(Prepared p) {
@@ -181,7 +211,7 @@ public final class AccountService {
                 && Js.eqStr(Js.opt(v, "employeeId"), s.employeeId());
     }
 
-    private static boolean sourceValid(JsonNode v) {
+    static boolean sourceValid(JsonNode v) {
         return Js.object(v) && SOURCE_MODES.stream().anyMatch(m -> Js.eqStr(v.get("mode"), m))
                 && Js.text(v.get("sourceRef")) && Js.text(v.get("sourceVersion")) && Js.text(v.get("schemaVersion"))
                 && Js.validInstant(v.get("effectiveFrom")) && Js.validInstant(v.get("observedAt"));
@@ -284,7 +314,7 @@ public final class AccountService {
         return null;
     }
 
-    private static boolean closedOn(JsonNode location, String date) {
+    static boolean closedOn(JsonNode location, String date) {
         JsonNode closed = Js.get(location, "closedDates");
         if (Js.nullish(closed)) return false;
         if (closed.isArray()) return Js.includes(closed, date);
@@ -293,7 +323,7 @@ public final class AccountService {
     }
 
     /** Valid collection dates from minimumLeadDays up to maxLead (default maximumLeadDays). */
-    private static List<String> collectionDates(Prepared p, Long maxLead) {
+    static List<String> collectionDates(Prepared p, Long maxLead) {
         long day = 86_400_000L;
         long today = Js.midnight(p.now.substring(0, 10));
         JsonNode window = p.contract != null ? p.contract : p.slot;
@@ -364,7 +394,7 @@ public final class AccountService {
         return Js.nullish(n) ? F.nullNode() : n;
     }
 
-    private static ObjectNode presentation(String state) {
+    static ObjectNode presentation(String state) {
         boolean orderable = state.equals("ready");
         ObjectNode view = F.objectNode();
         view.put("state", state).put("editable", orderable).put("supportOwner", orderable ? "employee" : "scheme-support")
@@ -445,16 +475,22 @@ public final class AccountService {
         ArrayNode assumptions = out.putArray("assumptions");
         if (p.configuration != null) assumptions.add(p.configuration);
         out.set("contextVersion", p.contextVersion != null ? F.textNode(p.contextVersion) : F.nullNode());
-        ObjectNode versions = out.putObject("versions");
-        versions.put("policy", ctx.policyVersion());
+        out.set("versions", versions(p));
+        out.set("view", view);
+        return out;
+    }
+
+    /** The source versions a draft records; only valid when an account was read. */
+    static ObjectNode versions(Prepared p) {
+        ObjectNode versions = F.objectNode();
+        versions.put("policy", p.scope.policyVersion());
         versions.set("employeeContract", p.account.get("source"));
         versions.set("driver", p.drivers.get("source"));
         versions.set("recordSetId", p.account.get("recordSetId"));
         versions.set("employee", orNull(p.account.get("repositoryVersion")));
         versions.set("slot", p.slot == null ? F.nullNode() : orNull(p.slot.get("version")));
         versions.put("clock", p.clockVersion);
-        out.set("view", view);
-        return out;
+        return versions;
     }
 
     private static JsonNode choices(Prepared p) {
