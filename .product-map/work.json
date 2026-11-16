@@ -8350,7 +8350,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-16T16:12:13Z",
+      "observed_at": "2026-11-16T18:56:55Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Greg's demand and preview/publish controls",
@@ -8369,8 +8369,8 @@
           "id": "frontend-screens",
           "status": "in-progress",
           "title": "Demand and policy Angular screens with current-version controls",
-          "observed_at": "2026-11-16T16:12:13.497008+00:00",
-          "evidence": "b02 demand4/policy6 strict pass. c02@3d5a57c59 route log8pass, but RAM exceeded by62,865,408B; strict incomplete, parsed totals/rc absent. Actual boundary checker unrun. Full-route resource-compliant proof remains; no completed screen slice claim."
+          "observed_at": "2026-11-16T18:56:54.823868+00:00",
+          "evidence": "b02 demand4/policy6 plus c03 actual-route8/8 rc0 pass; sampled RAM1099546624B and deadlines/teardown pass at source3d5a57c59. Actual boundary rc1 inherited cases/case-queue on-screen em dash; overall strict false. 49 distinct checks across runs, no combined49 pass. Original screen/connected acceptance remains open; see delivery record."
         },
         {
           "id": "integration",
@@ -8386,10 +8386,10 @@
           "name": "Mulan 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T16:12:13.497008+00:00",
-          "expires_at": "2026-11-16T16:12:13.497008+00:00",
+          "observed_at": "2026-11-16T18:56:54.823868+00:00",
+          "expires_at": "2026-11-16T18:56:54.823868+00:00",
           "status": "idle",
-          "source": "Runtime source3d5a57c59; incomplete checkpoint handed to dispatcher; no active runtime"
+          "source": "c03 source3d5a57c59 route8pass/sampled limits pass; actual boundaryrc1 inherited case-queue. Incomplete checkpoint, no active runtime."
         },
         {
           "id": "01a1e4f1-7e08-7290-8804-50b81a621bc5",

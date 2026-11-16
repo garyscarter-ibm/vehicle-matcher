@@ -2,8 +2,9 @@
 
 Observed 16 November 2026. Story `DEV-2026-11-13-016`, branch `dev/DEV-2026-11-13-016`.
 Original acceptance and native In Progress status remain open. This record does not establish delivery.
-Latest checkpoint: 41 distinct checks have valid matching-source evidence. Route validation remains
-resource-blocked; the actual source boundary checker and original connected/rendered proof are unrun.
+Latest checkpoint: 49 distinct checks have matching-source evidence across runs. The full route passed
+within sampled resource bounds; the actual boundary checker failed on inherited case-queue copy. Overall
+strict validation is false; original connected/rendered proof and both acceptance criteria remain open.
 
 ## Fixed contract and allocation
 
@@ -153,3 +154,56 @@ HTTP 422 `preview-unavailable`; connected changed-input/privacy/preview/publicat
 denied employee/presenter commands against Java remain unproved. Rendered desktop/narrow, Safari/private,
 keyboard/focus and relevant CSP/accessibility proof remain unrun. Both original acceptance boxes are unchecked.
 No refresh, merge, deployment, claim release or native lifecycle transition is part of this checkpoint.
+
+
+## Route resource checkpoint and actual boundary result, 16 November 2026 18:56 UTC
+
+The dispatcher reviewed the finite source-only plan and ran exactly one `c-03`, from 18:53:01.772 to
+18:53:54.789 UTC. The runtime source stays `3d5a57c59c6f9bdd6577715c87a2a8dffde3ad02`; actual
+launch HEAD was bookkeeping commit `ceae6ab7e3aacebe5819a2579bb85f63cb1bfe27`, whose 266 source
+inputs match the immutable freeze. No product/test/build/dependency input changed, no matching core or
+component check was replayed, and subsequent documentation commits are not newly tested source.
+
+The source-only plan/script and pure-parser static checks are separate evidence from the runtime result.
+The reviewed script SHA-256 is
+`4933e1487ed8881339271bdbfaedb5ac3daba7b7d3ed45eea8a4095f86b07cb3`; plan SHA-256 is
+`66b685d96f41e573a358dea36fd180016ce5e75a6e63a345eb8f5f01831e8f39`.
+It replaces whole-file hashes, expanded dependency dictionaries and whole-tree metadata arrays with
+64 KiB streaming hashes, one manifest row at a time and a deterministic incremental metadata digest.
+Static checks compared all 23,008 rows and metadata with the original JSON and checked parser read
+boundaries/malformed values. A draft partial-decimal parsing issue was caught and fixed before the final
+static pass. Those static checks alone did not establish runtime memory compliance.
+
+`chunk-c-03/receipt.json` records route `8/8`, zero failures/pending, test exit `0`, and `route_pass: true`.
+The existing boundary command then ran once against the actual source tree, returning `1` with
+`apps/gcsp-web/src/app/cases/case-queue.component.html: on-screen em dash`. It stopped at that first
+assertion; later checker assertions remain unrun. The file is inherited and outside this allocation.
+`strict_result: false` and combined `test_pass: false` are retained. No bypass, repair, checker repeat or
+merge eligibility follows. This supersedes the earlier observation that the checker had not yet run.
+
+Adding these eight route checks to the existing 41 matching core/component checks yields 49 distinct
+checks across runs. There is no combined 49-check passing run. Prior `c-01`/`c-02` failures remain
+retained and resource-invalid; the successful route report is specific to this unchanged-source attempt.
+
+Sampled c03 aggregate RSS was 1,099,546,624 bytes, disk 442,691,136 and inclusive peak 1,533,357,216;
+all are within the unchanged 1280 MiB RAM, 768 MiB disk and 2 GiB inclusive grants. Supervisor sampled
+RSS was 29,294,592 bytes, versus c02's 250,494,976. One worker and a 512 MiB heap were retained;
+no borrowed allowance was added. Both work/total clocks passed, with total elapsed 53.016 seconds and
+the 5 GiB reserve preserved. This verifies sampled compliance and a smaller sampled supervisor for one
+attempt, not continuous peaks or a general sizing guarantee.
+
+The dispatcher audit at 18:54:43 UTC checked all 266 source pins; all runtime source/dependency/Node
+flags were true. It verified 191 recorded process identities, both owned groups, exact owned local roots
+and the canonical reservation absent. No cleanup errors or foreign-reservation changes are reported.
+The whole retained evidence tree is 1,912,832 / 2,097,152 allocated bytes. The 29 lossless archives retain
+all historical freeze/plan/script/receipt/log payloads with original and compressed hashes; compressed
+prior receipts and logs are addressable through `archive-index.json`. No failure evidence was discarded.
+No further runtime, installation, browser, Java, PostgreSQL, service or OneDrive access occurred.
+
+The map keeps `frontend-core` complete, `frontend-screens` in progress and `integration` blocked. Original
+acceptance remains open: Java preview still returns HTTP422 `preview-unavailable`, and connected
+changed-input/privacy/preview/publication/active-offer pinning plus denied employee/presenter commands
+against Java are unproved. Rendered desktop/narrow, Safari/private, keyboard/focus and relevant
+CSP/accessibility evidence remain unrun. The dispatcher retains the inherited boundary finding separately;
+this checkpoint expands neither the allocated files nor the original Story scope. Native In Progress, lease
+and both unchecked acceptance criteria are preserved. No merge, closure or deployment is authorized.
