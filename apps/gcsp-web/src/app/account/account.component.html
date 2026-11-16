@@ -46,8 +46,15 @@
       <div class="account-previews" aria-live="polite" [attr.aria-busy]="previewLoading() ? 'true' : null">
         @if (previewLoading()) { <p class="gcsp-note">Reading your offers and orders…</p> }
         @if (offers()?.status === 'ok' && !pendingOffer() && !previewLoading()) { <p class="gcsp-note">No car offer awaiting your decision.</p> }
-        @if (orders()?.status === 'ok' && !newestOrder() && !previewLoading()) { <p class="gcsp-note">No orders to track.</p> }
-        @if (previewFailed()) { <p class="gcsp-note">Some offer or order details could not be read.</p><button gcspButton variant="ghost" type="button" [disabled]="previewLoading()" (click)="reloadPreviews()">Retry offers and orders</button> }
+        @if (noOrders()) { <p class="gcsp-note">No orders to track.</p> }
+        @if (ordersIncomplete()) { <p class="gcsp-note">Your order list is incomplete. Check again to read all your orders.</p> }
+        @if (previewFailed()) { <p class="gcsp-note">Some offer or order details could not be read.</p> }
+        @if (handoffNotice(); as notice) {
+          <gcsp-status-screen [title]="notice.title" [message]="notice.text" [level]="2" [busy]="handoffState() === 'loading'" [announcement]="null">
+            @if (handoffState() === 'refused') { <a gcspButton variant="ghost" routerLink="/help">Contact support</a> }
+          </gcsp-status-screen>
+        }
+        @if (previewRetry()) { <button gcspButton variant="ghost" type="button" [disabled]="previewLoading()" (click)="reloadPreviews()">{{ previewFailed() || ordersIncomplete() || handoffState() === 'unavailable' ? 'Retry offers and orders' : 'Check for updates' }}</button> }
         @if (pendingOffer(); as offer) {
           <section class="account-summary offer-preview" aria-label="Your car offer"><p>You have a car offer to decide on before choosing another car.</p><a gcspButton [routerLink]="['/offers', offer.offerId]">View your offer</a></section>
         }

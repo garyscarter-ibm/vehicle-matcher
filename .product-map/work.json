@@ -6111,13 +6111,36 @@
     {
       "assignee": "",
       "id": "FUCQ-435",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T10:50:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Call the separately hosted API with bearer authentication",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
+      "slices": [
+        {
+          "id": "ac1-https-cors-bearer",
+          "status": "blocked",
+          "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
+          "observed_at": "2026-11-16T10:50:24Z",
+          "evidence": "Local two-origin HTTPS CORS/bearer/secret-scan proof PASS (docs/gcsp/evidence/fucq435); actual hosted Render origins and OIDC registration do not exist yet"
+        },
+        {
+          "id": "ac2-failure-recovery",
+          "status": "complete",
+          "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
+          "observed_at": "2026-11-16T10:50:23Z",
+          "evidence": "Lead re-ran fucq435-cross-origin-proof on 35c96e64b: typed 503/403, expiry re-sign-in and recovery notice, 0 mutating requests; orders.actions spec passed"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story integration, validation and result",
+          "observed_at": "2026-11-16T10:50:32Z",
+          "evidence": "Local integration done; hosted-origin AC1 proof outstanding"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6146,7 +6169,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-14T09:54:42Z",
+      "observed_at": "2026-11-16T11:53:13Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -6188,13 +6211,20 @@
           "id": "shared-order-read",
           "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
           "status": "in-progress",
-          "observed_at": "2026-11-14T09:54:42.129206+00:00",
-          "evidence": "Released four-file source checkpoint;39/39 focused client/preview tests,135 matching inputs,2 allocations cleaned. Independent review pending dispatcher; UI independent pending/refused handoff integration remains unimplemented. docs/gcsp/fucq-440-account-2026-11-13.md; shared-order-read/lead-resource-source-audit.json."
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
+          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
         },
         {
-          "evidence": "Original AC remain unchecked. Shared order read39/39 fixture checks do not complete UI integration: independent manual pending/refused handoff display unimplemented. Actual Java/OIDC/PG ownership/parity/durable-state and hosted/browser gates unproven. Independent source review pending dispatcher. F487/F488/F499 remain separate/unfixed.",
+          "id": "account-order-composition",
+          "title": "Independent-manual-handoff-and-complete-list-account-composition",
+          "status": "in-progress",
+          "observed_at": "2026-11-16T11:53:13.372282+00:00",
+          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "evidence": "Original two AC unchecked. Selected composition56/56 is local fixture evidence only. Desktop/narrow rendered, actual Java/OIDC/nativePG ownership/parity/durable refresh/restart and hosted proof remain unrun. Missing Java manual draft/stock/quote/review producers are outside Account allocation.",
           "id": "integration",
-          "observed_at": "2026-11-14T09:54:42.129206+00:00",
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
           "status": "blocked",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
@@ -6206,13 +6236,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
       "workers": [
         {
-          "expires_at": "2026-11-14T09:54:42.129206+00:00",
+          "expires_at": "2026-11-16T11:49:22.346146+00:00",
           "harness": "codex",
           "name": "Marvin the Martian",
-          "observed_at": "2026-11-14T09:54:42.129206+00:00",
+          "observed_at": "2026-11-16T11:49:22.346146+00:00",
           "role": "story-lead",
-          "source": "existing lead; direct four-file implementation, no new descendants; frozen base ec7d63b6; dispatcher owns publication/review/sync/Jira; shared-order-read/lead-resource-source-audit.json",
-          "status": "HOLD; released shared read source checkpoint tested; independent review and UI/native integration open; editing stopped"
+          "source": "SAME lead gpt-6.1-sol/high, no fallback/descendants. Parent verified61source pins,23008borrowed file hashes and current owned cleanup. No further runtime release.",
+          "status": "HOLD; frozen6216010d tested56/56 and integrated; no executing worker; original rendered/connected acceptance open"
         },
         {
           "expires_at": "2026-11-13T23:43:44.865713+00:00",
@@ -7378,13 +7408,36 @@
     {
       "assignee": "",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T11:52:04Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Complete remote offer acceptance and decline",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467",
+      "slices": [
+        {
+          "id": "remote-decline",
+          "status": "complete",
+          "title": "Remote decline: persisted release intent, remote release drive, confirmed finalization, rejected/unknown custody, replay and restart on native PostgreSQL",
+          "observed_at": "2026-11-16T11:25:27Z",
+          "evidence": "Lead review of remote decline (RemoteOfferDecisions intent-before-I/O, attempt/ack drive, one-tx finalization, V467_1); native PG 17 :55467 RemoteOfferDeclinePgTest 14/14, OfferDecisionsPgTest 17, Parity 1, Race 3, offers+allocation 153/0"
+        },
+        {
+          "id": "remote-accept",
+          "status": "complete",
+          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
+          "observed_at": "2026-11-16T11:51:15Z",
+          "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
+          "observed_at": "2026-11-16T11:52:04Z",
+          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
+        }
+      ]
     },
     {
       "assignee": "",

@@ -286,3 +286,166 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **New evidence:** the main ownership manifest was created at1794809849.0533812 and removed at1794811647.0935879:1798.040seconds of realtime. This establishes that the600second total deadline was exceeded. The earlier description as merely unproven is superseded; the reason for the realtime/monotonic divergence remains unverified.
 - **Action/outcome:** retain this failed resource obligation alongside the101passing assertions and one original native-case skip. SAME Foxy is attempting only that original skipped case against already installed owned local PostgreSQL, with both realtime and monotonic deadlines enforced; no installation or repetition of the101checks. That case cannot erase the historical overrun. Lead reports current resource absence, parent audit/publication remains pending, and native acceptance is not inferred.
+
+## 2026-11-16 10:00 UTC · GC Codex · DL-20261114-GC-002 · blocker revalidated
+
+- **Evidence:** F441 was held while its historical missing-version assertion awaited current-source reassessment. At shared root `045a304e538a7f8a90f49d09f60f14e68ae2087e`, Angular still requires editor contextVersion and context/clock versions; the Java editor response omits them. Exact producer/consumer locations and source hashes are retained in the F441 delivery note and local reassessment receipt.
+- **Outcome/limits:** report F441 blocked on this concrete composition obstacle, preserving native In Progress, original unchecked criteria and Java ownership. This source inspection establishes neither runtime reproduction nor a repair or severity verdict. Unrun checks on other reserved Stories remain held unless a current concrete obstacle is recorded. Separate Medium F491 remains unfixed and nonblocking.
+
+## 2026-11-16 09:36–09:40 UTC · GC Codex · DL-20261116-GC-007 / DL-20261114-GC-009 · integration completed, limits retained
+
+- **F418 outcome:** the original skipped native case subsequently passed alone on owned installed PG16.15, with strict dual-clock checks. Parent verified all 815 native inputs, 3,939 borrowed identities and all seven attempts' current resource absence. Frozen source was reviewed, integrated and pushed; native Jira moved to In Review and helper cleanup completed. The main 1,798.040-second realtime deadline failure and unknown historical aggregate peak remain unresolved. Passing native evidence does not repair the historical failure.
+- **F446 mitigation:** the necessary orders-route check used the corrected inclusive 768 MiB disk plus 1,280 MiB RAM grant. Fifteen selected tests passed; sampled disk plus RSS peaked at 1,483,329,408 bytes and realtime ownership was 36.654 seconds. Parent checked nine indexed evidence files, 144 tested inputs and current owned cleanup. Continuous detached-process peak remains unproven. Route source was reviewed, published and integrated; original rendered/connected acceptance remains open. No framework patch, redundant suite or OneDrive access was introduced.
+- **Publication:** a GitHub connection reset and advancing peer commits delayed parent pushes. Normal helper pull/merge/retry succeeded, preserving peer changes and security hooks. The actual new F446 checkpoint published successfully; this mitigates the earlier optional-ref push delay without establishing its hook root cause.
+
+## 2026-11-16 · Russell Claude Code · DL-20261116-RG-001 · unparented Jira items: fix applied
+
+- **Issue/evidence:** 205 FUCQ items were created with no parent between 7 and 14 Nov, from both pollers, a Codex
+  batch and the bulk review intake. Cause: the shared skills never said to set `parent` when creating a Story, Task
+  or Bug. See [the diagnosis](epic-parenting-diagnosis-2026-11-16.md).
+- **Action:** agent-scaffolding 0.7.6 (`7e5e656`). Every create passes `parent`. A Bug's parent is its origin
+  Story's Epic. A Bug with an unknown origin goes under the Epic of the work it was found in, labelled
+  `origin-unknown`. FUCQ has no `triage_epic` (Russell, 16 Nov): a Bug with no home is reported for a person to
+  place. `jira_sync.py` 1.4.0 reports `unparented` on every pull and adds `audit --check`. Pollers run it when
+  anything is unparented, and at least daily.
+- **Outcome:** a proposed fix that is now applied and tested, but not yet a verified resolution. The audit is clean
+  on today's FUCQ. On the state before the clean-up, it flagged 177 of 180 orphans (the other 3 are exempt).
+  Whether new items now arrive parented is unproven until the pollers run the new rules.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-001 · recurrence / mitigation applied
+
+- **Evidence/impact:** a current-root Account investigation proposed independent handoff composition, but the original worker already held that source in unpublished `fa4996cd53766085a2f2950590954a641fce4f5f`, dated14November10:20UTC. Its own delivery appendix explicitly says prepared/unvalidated, awaiting dispatcher runtime release. Checking only published source missed the retained checkpoint and risked duplicate implementation.
+- **Action/outcome:** parent inspected the idle clean owned branch, preserved the checkpoint, normally merged current published base without conflicts, and resumed the same lead for bounded validation/correction with source, selected checks and owned local resources released together. App evidence confirms current execution. No duplicate writer, new claim or completed validation is inferred. The earlier fast-forward safely refused because the retained commit diverged; no work was discarded.
+- **Framework follow-up:** reconcile unpublished owned commits and outstanding runtime releases before another readiness investigation. Associate current source identity, pending next action and original worker with the claim. This is a scheduling mitigation, not yet a verified delivery resolution.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-002 · connected readiness gap identified
+
+- **Evidence/impact:** the frozen inventory includes manual draft/discard/stock/quote/review-details and brief preview/change-after-decline routes, but current published Java resource/source inspection finds no corresponding registrations at `da53e8f4d`. Backend F458/F463/F468 remain native In Review; a rendered Account and that tracker status do not establish connected journey coverage. Details: [source gap record](manual-java-contract-gaps-2026-11-16.md).
+- **Action/outcome:** preserved native statuses and original contracts; coordinated the precise producer gaps with the Java lane through F434 comment3629579. Reused independent existing Account work against the present order producers. Source inspection alone establishes neither executed failure nor defect severity, producer repair or acceptance. No new Bug or scope was created by this observation.
+- **Framework follow-up:** link migrated route inventory to actual consumer/producer composition evidence before describing a journey as connected. Keep native review status separate from execution and original integration-proof obligations; no generic new acceptance campaign is introduced.
+
+## 2026-11-16 11:45 UTC · GC Codex · DL-20261116-GC-004 · intake guard verified locally
+
+- **Evidence/action:** this pass's compact Jira search omitted description/reporter/parent/issuelinks despite the requested field list. The local adapter refused all66 before invoking the importer, preventing the earlier missing-field rewrite. The rejected projection is retained locally; repeating the read with explicit `view: full` supplied every required field.
+- **Outcome/limits:** complete-projection import succeeded with zero changes/failures/unparented items. Require the full response view and validate returned fields, rather than trusting request fields alone. This verifies the local guard for this rejection, not a shared connector/parser repair or additional application validation.
+
+## 2026-11-16 11:53 UTC · GC Codex · DL-20261114-GC-001 · recovered checkpoint delivered
+
+- **Evidence/outcome:** retained Account source `fa4996cd` was validated by the same lead:56/56 selected Account/preferences checks, no application correction. Frozen `6216010d` was independently audited, published and integrated/pushed into `gcsp-poc-dev` at `094c4d72fc7bd6cb4eadc636bae953d18e223607`. All61 tested input hashes match the integrated source; both original acceptance criteria remain unchecked.
+- **Resolution boundary:** recovery and delivery of this missed checkpoint are verified. The wider scheduling issue is not closed: rendered and real Java/OIDC/PostgreSQL/hosted proof remain unrun. Preserve original workers, unpublished source identity and pending runtime action at dispatch boundaries to prevent duplicate work.
+
+## 2026-11-16 11:53 UTC · GC Codex · DL-20261114-GC-009 · local owned validation verified, historical limits retained
+
+- **Failure/mitigation:** first Account harness attempt stopped before Angular when dependency metadata inspection rejected existing `.bin` links; its final process discovery also observed transient `ps`. Launcher corrected metadata inspection to lstat without following links and audited after discovery joined; original failure retained. No product defect established.
+- **Observed outcome:** second attempt56/56 passed. Parent verified current23,008 borrowed file hashes/identities,25,442 metadata entries and Node unchanged, and both attempts' owned process/group/scratch/link/token absence. Current35.768s dual-clock ownership and conservative1,506,509,952byte inclusive bound satisfy the release; full retained evidence is below2MiB. Sampled peaks do not establish continuous containment or repair historical resource failures.
+- **Framework follow-up:** distinguish metadata links from copied source inputs; join discovery before final identity checks and charge the whole retained evidence root. These are local harness mitigations, not a shared framework implementation or OneDrive audit.
+
+## 2026-11-16 12:01 UTC · GC Codex · DL-20261114-GC-002 · response projection gap confirmed
+
+- **Evidence:** after F467 integration at `2ad99f0f79be76dc72915a9e488b244a2562727a`, Angular exact-offer/reason reads still send runId queries rejected by Java. Beyond that URL mismatch, successful OfferAccess→OfferView output lacks runId/clockVersion and the richer original quote/comparison structure required by the existing Angular projection validator. Source locations and observed limits are recorded in [the offer composition note](fucq445-integration-blocker-2026-11-14.md).
+- **Impact/action:** URL-only repair would still fail the consumer contract. Keep F445 blocked on its original authoritative read/decision composition; preserve native review statuses and existing Java ownership. No runtime reproduction, weakened validator, fabricated source fact, new acceptance gate, Bug severity or producer repair is claimed.
+- **Framework follow-up:** readiness evidence must trace the emitted success body through the actual consumer validator as well as matching route names. Native In Review and a matching endpoint do not establish composition. This refines the diagnosis; no delivery resolution is verified.
+
+## 2026-11-16 12:22 UTC · GC Codex · DL-20261114-GC-001 · continuation supervision uncertain
+
+- **Evidence/impact:** a successor acknowledgement was observed, but after roughly15minutes no subsequent implementation result or addressable session/transcript handle was available to this dispatcher. The last source observation at12:19 was unchanged. Acknowledgement alone cannot distinguish current execution, a legitimate wait or a stopped session.
+- **Action/outcome:** retained execution as unverified and requested a checkpoint and usable supervision handle through the existing local handoff. No stop, replacement, duplicate writer or test replay was inferred from silence. The managed stall check could not be targeted; its verdict and delivery remain unverified.
+- **Framework follow-up:** handoffs should retain an addressable successor identity, next action and evidence time alongside the branch/checkpoint. Verify that supervision can resume after handoff; an active label or accepted brief alone is not that evidence. This is a coordination mitigation, not a verified delivery resolution or new Story gate.
+
+## 2026-11-16 12:26 UTC · GC Codex · DL-20261114-GC-001 · supervision restored locally
+
+- **Evidence/diagnosis:** targeted discovery within the Java worktree's local harness project found the successor transcript. Managed checks returned ALIVE for both the session and its implementer, with activity2seconds and12seconds before inspection. The coordination status was stale; silence there did not establish a stopped worker.
+- **Action/outcome:** retained the supervision handle locally and left the live workers alone. Current execution is now verified at this observation, while implementation, selected-test results, resource receipts and Story acceptance remain unproven. No replacement, duplicate writer or test replay was needed.
+- **Framework follow-up:** retain the addressable harness identity with handoff evidence, and distinguish status-file freshness from actual harness activity. Local supervision recovery is verified; route delivery and the wider scheduling issue are not resolved by this check.
+
+## 2026-11-16 12:37 UTC · GC Codex · DL-20261116-GC-008 · transient read recovered
+
+- **Evidence/impact:** the F434 full comments-page read failed once with `MCP -32001: mcp-remote: fetch failed`; the independent full66 Jira snapshot succeeded. The failed read briefly left coordination freshness unverified, without changing Jira or claims.
+- **Action/outcome:** one read retry returned the complete final page, total60/latest3629579, unchanged. This read recovered; the transport cause and any lasting connector repair remain unverified. No application test or additional Story gate was introduced.
+- **Framework follow-up:** retain failed-read diagnostics and freshness separately; use one bounded retry for a transient read, and label old coordination evidence when recovery fails.
+
+## 2026-11-16 12:43 UTC · GC Codex · DL-20261114-GC-001 · parent observation uncertain, implementer live
+
+- **Evidence/diagnosis:** the managed parent check now returns UNSURE after16minutes quiet with nothing pending recorded; its implementer independently returns ALIVE with fresh activity. This supersedes the earlier both-ALIVE observation for the parent only. A parent stall or stopped implementer is not established.
+- **Action/outcome:** follow the existing UNSURE procedure: wait one dispatcher interval and recheck. Leave the live implementer and its source alone; no message, stop, replacement, duplicate or test replay. Current implementation execution is confirmed through the child; parent execution, first-slice delivery and resource/test receipts remain unverified.
+- **Framework follow-up:** preserve per-agent verdicts in supervision summaries and distinguish child activity from parent transcript freshness. This is an observation change, not a verified scheduling or delivery resolution.
+
+## 2026-11-16 12:49 UTC · GC Codex · DL-20261114-GC-009 · capacity admission stopped
+
+- **Evidence/impact:** the managed capacity check reports `can_start=0 running=2: 9.1 GB of swap in use (stop at 9 GB)`. This prevents new worker admission; it does not identify a responsible process or prove a Story failure. The existing Java implementer remains independently ALIVE.
+- **Action/outcome:** no new claim, worker or parent test/runtime allocation. Retain owned work and receipts; no foreign cleanup or OneDrive access. Resource pressure is observed, while its cause, recovery and any delivery impact beyond admission remain unverified.
+- **Framework follow-up:** retain the capacity tool's reason as well as its count; pressure responses may report swap rather than the normal free-memory format. Do not discard that evidence or infer authority to stop foreign work.
+
+## 2026-11-16 13:01 UTC · GC Codex · DL-20261114-GC-009 · positive admission snapshot observed
+
+- **Evidence/change:** after the earlier swap admission stop, the managed capacity check reports `can_start=2 running=2: 6.1 GB free less 3 GB reserve leaves room for 2 at 1.5 GB each`. Two slots remain below the three required for a new Story lead, so no new claim or allocation was made.
+- **Outcome/limits:** this is a recovered positive admission snapshot; its cause, lasting recovery, cleanup and delivery resolution remain unverified. The Java parent remains UNSURE while its implementer is independently ALIVE; leave the live implementer alone, with no interruption or duplicate. No OneDrive access or foreign cleanup.
+- **Framework follow-up:** preserve the time and admission reason across pressure changes; a positive sample alone does not close a resource or delivery issue.
+
+## 2026-11-16 13:04 UTC · GC Codex · DL-20261114-GC-009 · admission stop recurred
+
+- **Evidence/impact:** the closing check reports `can_start=0 running=2: 9.4 GB of swap in use (stop at 9 GB)`, superseding the 13:01 positive sample for current admission. Recovery was not sustained across these observations; the responsible process and underlying cause remain unknown.
+- **Action/outcome:** no new claim, worker or parent runtime was allocated. Preserve existing owned work and leave the live Java implementer undisturbed. New Java test source files are visible, but no frozen slice, executed test result or resource receipt has returned. No foreign cleanup or OneDrive access.
+- **Framework follow-up:** report the closing admission state alongside transient recovery; do not convert a short positive sample or new test files into a resolved resource issue or validated delivery.
+
+## 2026-11-16 13:06 UTC · GC Codex · DL-20261114-GC-001 · returned slice under active parent review
+
+- **Evidence/change:** the managed parent check now returns ALIVE (activity ten seconds before inspection), and the session check finds no unfinished subagent. The parent transcript at 13:05:19 UTC reports that Donald Duck returned slice 1 and that diff review has started. This supersedes the earlier parent-UNSURE/child-ALIVE observation.
+- **Action/outcome:** leave the active owning parent to review its returned manual draft/discard slice; no interruption, duplicate writer or dispatcher test replay. No frozen source, test/resource receipt, publication or original Story acceptance has yet been independently reviewed by this dispatcher. Native backend In Review statuses remain unchanged; new-worker admission still reports zero at 9.4 GB swap.
+- **Framework follow-up:** a quiet parent with a live child can resume normally when the child returns. Preserve per-agent supervision and result provenance; neither a child return nor an active review establishes validated delivery. This confirms a normal handoff observation, not a wider scheduling or resource resolution.
+
+## 2026-11-16 13:11 UTC · GC Codex · DL-20261114-GC-001 / DL-20261114-GC-002 · first Java route slice delivered
+
+- **Evidence/outcome:** Claude reviewed and published manual draft GET/POST and discard source `b4ed8d3a329391fec4086a017d3f08e28313b94a`. The normal helper pull fast-forwarded shared `gcsp-poc-dev` to `637a0ccd27984f9965877730a4807babc82b7e8e`; parent verified the source is an ancestor, all 14 changed paths fit the account/test/unique-migration allocation, and current Java content matches that checkpoint. A concurrent documentation push briefly required the owning session to merge and retry publication; both histories were retained.
+- **Validation boundary:** the recorded ten selected classes total 69 passes, zero failures/errors/skips; XML report times fall within the recorded 13:04 regression run. Its receipt reports 33.9 seconds on both clocks, 831,619,072-byte sampled RSS, 211,825,024-byte scratch, scratch removed and reservation released. Dispatcher read these receipts without a replay; no independent current cleanup or continuous aggregate peak audit is claimed. The retained 27,178,272-byte target cache is outside the reported scratch peak; no tested-source hash manifest was provided. Extra stale report lines are excluded from the selected count.
+- **Remaining work/action:** this delivers the first route-registration increment, not connected Angular/hosted acceptance or an entire Story. Preserve native In Review and all original criteria. Stock/selection and later route slices remain; the owner records capacity zero/9.4 GB swap and has not started the next implementer. No duplicate, new claim, dispatcher runtime or OneDrive access.
+- **Framework follow-up:** retain frozen source, selected fresh report identity and explicit resource-proof limits with each returned increment. Separate publication recovery, partial route delivery and original integration acceptance; do not infer a full journey from this checkpoint.
+
+## 2026-11-16 13:14 UTC · GC Codex · DL-20261114-GC-001 · retained reports inflated returned class count
+
+- **Evidence/cause:** the Java owner's 13:10 final summary describes 13 classes in the latest run. The recorded invocation selects ten classes; their 69 passing XML results fall within that run. DefaultProfileTest (9), ClaimLifecycleTest (23) and ManualClaimsHttpNoDatabaseTest (1) have earlier report times. The local runner prints every retained Surefire text report, including those three, from its persistent target cache.
+- **Action/outcome:** retain only the ten fresh selected classes/69 passes as evidence for this run. The other 33 assertions remain earlier evidence; no failure or fresh execution is inferred. No test replay, product change, new acceptance gate or interruption of the ALIVE owning session. First-slice Java source is unchanged; next implementation remains capacity-held.
+- **Framework follow-up:** return selected report identities and observation times with a chunk, rather than counting all files in a retained report directory. Diagnosis and reporting mitigation are verified here; the runner has not been repaired, and tested-source hash/current cleanup/continuous aggregate limits remain as recorded.
+
+## 2026-11-16 13:22 UTC · GC Codex · DL-20261114-GC-001 · successor supervision restored after context handoff
+
+- **Evidence/change:** the previous Java owner handed slices 2–4 to a fresh session at 13:16 UTC after reaching its context boundary. Targeted inspection of the known local harness project found the successor transcript; its initial task matches the bounded handover. The successor acknowledged inline continuation at 13:17 UTC and made source/contract reads through 13:21 UTC. Managed supervision returned ALIVE, activity 30 seconds before inspection, with no unfinished subagents. The sidecar still describes the previous session's pending handoff.
+- **Action/outcome:** retain successor and predecessor observations separately and supervise the successor. Current source analysis is confirmed; no second slice, test result or Story completion has returned. Leave the live owner alone. No dispatcher launch, duplicate writer, test replay or OneDrive access. Capacity remains zero; new lead admission remains stopped.
+- **Framework follow-up:** transfer an addressable supervision identity atomically with a context handoff, and distinguish stale coordination labels from current execution. Local handoff supervision is recovered; implementation delivery and resource admission remain unresolved.
+
+## 2026-11-16 13:29 UTC · GC Codex · DL-20261114-GC-001 · stale ownership handoff corrected
+
+- **Evidence/impact:** Gary raised possible duplicate Claude/Russell work. The Java handover still said Russell held FUCQ-467; current native Jira and shared delivery record show it merged/In Review, cleanup complete, with no live reservation or remote dev branch. Russell's live FUCQ-507 reservation is comparison replay, allocated comparison/tests with read-only allocation/recommendation use. Its published branch contains product-map planning only. Claude's allocation remains account/claims/brief/ordering route gaps, supporting existing manual-journey work.
+- **Action/outcome:** compared current reservation, branch and file evidence; no overlapping published implementation observed. Appended dated corrections to the local handovers and retained the requirement to compare exact files before each slice. Russell's unpublished edits and current execution remain unverified; this does not establish that concurrent local edits cannot exist. No worker stopped, duplicate launched, Story scope expanded or Jira status changed.
+- **Framework follow-up:** refresh ownership facts when handing work between sessions and distinguish a current reservation, published changes and live execution. Stale coordination was corrected; collision prevention still depends on current file allocations, not a broad backend ownership label.
+
+## 2026-11-16 13:41 UTC · GC Codex · DL-20261114-GC-001 · successor context checkpoint, delivery still open
+
+- **Evidence/change:** the Java successor self-reports about 307k context at 13:39 UTC and saves its slice-2 design checkpoint. The managed check is ALIVE with activity two seconds before inspection, no unfinished subagent, and source/contract reads through 13:39:54 UTC. The Java branch still has no source edits beyond the integrated first slice; only the local handover is untracked. The context estimate is not independently measured and its growth cause is unverified.
+- **Action/outcome:** retain the design checkpoint and exact continuation identity; distinguish live analysis and checkpoint preservation from a delivered increment. No second source/test result has returned. Leave the live owner alone; no stopped/stalled verdict, replacement, duplicate writer, test replay or additional Story scope. Swap admission remains stopped.
+- **Framework follow-up:** carry a compact exact-file design and next action across context boundaries, and report context consumed alongside delivered checkpoints. A saved design mitigates context loss; it does not demonstrate resumed implementation delivery or resolve resource pressure.
+
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-009 · positive capacity recovered, admission reassessed
+
+- **Evidence/change:** after the explicit human restart pause/resume, capacity first reported 11.4 GB free but only one admissible worker due to high load. A later managed check reported five slots with 12.0 GB free. This clears the prior swap-based admission stop at these observations; no responsible process or lasting resource resolution is inferred.
+- **Action/outcome:** retained existing claims and independently live Java assistance, then selected the nonconflicting manual-review Angular continuation inside the original 66. No foreign cleanup, test replay or forbidden-storage audit. Full original acceptance remains required.
+- **Framework follow-up:** preserve capacity reasons across restarts and recheck admission after transient load settles; do not reserve new work from memory availability alone.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · second Java context handoff supervised
+
+- **Evidence/change:** the previous Java helper saved its slice-2 design and ended without a new source increment. A fresh successor acknowledged the same bounded route task at 14:17:51 UTC; managed supervision returned ALIVE with no unfinished children. Its branch still held the integrated first-slice checkpoint. No additional route delivery or acceptance is inferred.
+- **Action/outcome:** retained both predecessor and successor observations, updated local supervision identity and left the live Java writer alone. New manual-review Angular allocation uses separate new frontend files.
+- **Framework follow-up:** transfer compact settled designs and addressable supervision handles together; context rollover and live analysis are distinct from delivery.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-004 · broad discovery risk observed
+
+- **Evidence/impact:** while recovering a reportedly absent disposable test supervisor, the separate Java session issued a filesystem-wide recursive discovery command despite the binding forbidden-storage restriction. Its traversal reach is unknown; no prohibited path was inspected to verify it.
+- **Action/outcome:** did not repeat that discovery or audit forbidden storage. Appended an explicit allowlisted-search reminder to the current local continuation handoff and dispatcher note. Current worker acknowledgement is unverified; this instruction alone is not a verified resolution.
+- **Framework follow-up:** resource recovery must use exact retained local paths and receipts; broad discovery can violate access restrictions even without intended output there.
+
+## 2026-11-16 14:24 UTC · GC Codex · DL-20261114-GC-001 · admission guard sequencing corrected before delegation
+
+- **Evidence/cause:** F443's exact source-hash guard failed on one changed OrderingService input; the surrounding orchestration continued to claim because it had not checked that command's return code. No worker had been launched.
+- **Action/outcome:** inspected the sole diff: an added buddy-only precheck, with existing manual behavior unchanged. Recorded the revised identity and finite file allocation before delegation. Earlier 12 matching inputs and the failed guard remain recorded. No acceptance or successful implementation is inferred from the claim.
+- **Framework follow-up:** dependent claim/delegation calls must explicitly stop on failed preflight return codes; a successful claim is not proof that prerequisite inspection passed.
