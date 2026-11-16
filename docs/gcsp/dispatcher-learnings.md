@@ -259,3 +259,25 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **New native evidence:** all66 now show16ToDo/10InProgress/40InReview/0Done. The former nine peer reservations have reached native InReview; F466 also reached InReview.113 remote commits were integrated without dropping the stock increment. This supersedes the old nine-held report; it is progress evidence, not proof of present execution.
 - **Coordination:** no reply to the explicit F434 status request was observed in the latest comment read. The last actual Russell-authored coordination observation remains3629446 at2026-11-14T09:23:23UTC. Reconcile current leases and classify current execution separately; do not infer activity from native status or old claims.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-005 · verified diagnosis / parser unresolved
+
+- **Issue/cause:** after the complete-projection corrective import succeeded, four `validate changed` notices remained on F436/F439/F445/F447. `jira_sync.split_story` stops only at `## Result`, so preceding local delivery/checkpoint headings become part of the last `validate:` block. Native validation did not change.
+- **Evidence/action/outcome:** a read-only comparison using the official parser proves all four validation prefixes before the first local appendix equal current native validation. Local receipts `.claude/native-validation-deltas-20261116-0016.json` and `.claude/native-validation-prefix-proof-20261116-0016.json` retain the comparison. Original AC and historical notices stay intact; these are not collaborator contract changes. Corrective complete intake finished with zero failed items; the local adapter now requires parent/issuelinks as well as the other full-import fields.
+- **Follow-up:** propose distinguishing local appendix boundaries from Jira-owned fields. No framework code repair, broad history rewrite or additional acceptance gate was performed.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-006 · publication delay contained
+
+- **Issue/evidence:** an optional push that merely fast-forwarded the existing F446 worker branch to the already published root `cbcd0aac5672968ba89b9cb93cb59b8a4392f3ee` remained in the managed Vault Radar pre-push hook without output for over17minutes. The parent cancelled only its owned push process tree and released the shared Git mutex. No hook, security setting or credential was bypassed or changed.
+- **Outcome:** remote readback still shows the worker branch at reviewed `57e66de11c1a0083ba0cc7dfd4594a8e789dfab8` and the integration branch at published `cbcd0aac5`. The idle worker's local fast-forward succeeded cleanly. SAME Bertie resumed the finite original orders entry/catalogue increment from that published base; its actual new checkpoint still needs normal publication. Local diagnostic: `.claude/fucq446-fast-forward-push-delay-20261116-0016.json`.
+- **Follow-up:** avoid optional ref-only pushes that hold the common mutex while scanning a large already published range; retain normal hooks for the actual source checkpoint. The hook's root cause is unverified; this is a cancelled delay, not a reported security rejection or a framework fix.
+
+## 2026-11-16 · GC Codex · DL-20261114-GC-002 · stale blocker corrected
+
+- **Evidence:** current Java `OffersResource` now implements F465/F466 offer reads/decisions/follow-up. The old F445 assertion that all these handlers are absent is stale after the peer integrations. Current source still has a concrete composition mismatch: Angular sends `runId` on offer reads/reasons while Java rejects all query parameters; Angular uses `/offer-followup?decisionId=...` and `/offer-followup/confirm` while Java exposes offer-scoped follow-up paths.
+- **Outcome/limits:** source inventory is recorded in the F445 integration note. No HTTP reproduction, defect severity, repair, producer ownership transfer or acceptance is inferred. Real email/OIDC/remote outcomes remain original F445 obligations. Other idle frontend claims are held pending current technical reassessment where their older blocker has not been confirmed; unrun checks alone do not establish a blocker.
+
+## 2026-11-16 · GC Codex · DL-20261116-GC-007 · elapsed-time evidence unresolved
+
+- **Issue/evidence:** F418 lead reports101selected passes and one native PostgreSQL skip, but the main runner's reported290.976seconds conflicts with TAP durations of1142294ms for runtime plus608573ms for clock-reset. Suspension or clock behavior is a possible explanation, not verified. The480/600second elapsed budget is therefore unproven for that batch.
+- **Action/outcome:** retain raw records and label the timing limitation explicitly; do not rerun the suite merely to replace an inconvenient receipt. Lead reports a fresh audit finding all five runs' owned resources absent and borrowed hashes preserved; parent audit is still outstanding. No claim of complete resource-budget compliance or Story acceptance follows from passing tests.

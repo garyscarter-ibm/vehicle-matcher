@@ -44,3 +44,11 @@ python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/_tools/scaffold_git.py 
 ```
 
 This worker has not run that command, pushed, synced, merged, deployed, changed Jira or released its Story lease. There is no existing runnable F445 Java offer journey to name in this source; once the actual producers arrive, select their real owned identity/read/decision/reopen/follow-up cases and affected UI checks. Do not substitute a new fixture-only layer for that proof. All five existing slice states stay unchanged. After committing this handoff the lead yields/HOLD for dispatcher publication and producer/shared-auth integration.
+
+## Dispatcher source reassessment — 16 November 2026
+
+The preceding inventory describes `88403ac62`, not the current integrated tree. At published `cbcd0aac5672968ba89b9cb93cb59b8a4392f3ee`, Java `services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java` implements current/exact offer reads, decision reasons, decisions and offer-scoped follow-up. F465/F466 are native In Review. Their handlers must no longer be described as absent.
+
+The actual Angular/Java composition still needs reconciliation. `apps/gcsp-web/src/app/offers/offer.client.ts` appends `runId` to exact-offer and reason reads; the Java resource rejects nonempty query parameters. Angular follow-up reads use `/offer-followup?decisionId=...` and confirmation uses `/offer-followup/confirm`; the Java resource exposes `/{offerId}/follow-up` and its offer-scoped confirmation operation under `/offers`. This is a current source-traced interface obstacle, not a fresh HTTP reproduction, defect severity verdict or authorised backend repair. Existing producer and frontend ownership remain intact.
+
+Both original AC stay unchanged and unchecked. Native In Progress and the existing lease remain; no worker is currently executing this Story. Reconcile the bounded original interfaces with their current owners, then select the actual original read/decision/reopen/follow-up/ownership journey. Real email/OIDC and applicable remote outcomes remain original obligations. Historical fixture passes and separate unfixed F496/F500/F503 remain as recorded; no additional acceptance criterion or shared-auth framework is introduced.
