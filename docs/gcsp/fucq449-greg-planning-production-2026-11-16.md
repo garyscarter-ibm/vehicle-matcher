@@ -1,15 +1,17 @@
 # FUCQ-449 — Greg planning and Production
 
-Source-only checkpoint for `DEV-2026-11-13-017`, 16 November 2026. The Story remains In Progress. Neither original acceptance criterion is complete. No application runtime, dependency installation/copy, service, browser, test or build was allocated for this increment.
+Updated partial delivery checkpoint for `DEV-2026-11-13-017`, 16 November 2026. **55 selected assertions passed in four admitted runs.** The guarded lazy `/greg/plan` registration is now present in source. Registered-route runtime coverage, rendered review and actual Java/OIDC acceptance remain unrun. Both original acceptance criteria remain unchecked; the Story stays In Progress and is not built.
+
+The initial source-only checkpoints (`8c81c39e78b3fd4dbcad1a3e12616d3f4ed5094a`, then `e52c38753d7a0217ad54071be28b6b4d74daa561`) recorded 55 authored cases with zero executed at that time. The separately admitted runs below supersede that test status without erasing the initial checkpoint. This latest route/documentation increment admits no application runtime, tests, browser, service, dependency work or new scratch.
 
 ## Fixed scope
 
 1. Forecast explanations, editable constraints, alternatives and infeasible/stale previews reflect current API inputs/results.
 2. Deliberate submission, quantity/status tracking and replanning follow actual Production responses, including pending/refused outcomes.
 
-The exact allocation is the dispatcher's `fucq449-pickup-allocation-20261116-1634.json` observation of 16 November. This checkpoint owns the 17 new files under `apps/gcsp-web/src/app/greg-planning/`, this record, its Story Result and only the FUCQ-449 map row through `_tools/product_map.py`. The dispatcher retains `routes.ts`, `COMPONENTS.md` and gallery registration. No Java, legacy business implementation, authentication, shared kit, build or dependency source belongs to this allocation.
+The original allocation is the dispatcher's `fucq449-pickup-allocation-20261116-1634.json` observation of 16 November. It allocated 17 new files under `apps/gcsp-web/src/app/greg-planning/`, this record, its Story Result and the FUCQ-449 map row through `_tools/product_map.py`; the dispatcher initially retained shared integration. The dispatcher subsequently allocated only the additive `apps/gcsp-web/src/app/routes.ts` registration plus updates to this record and the Story Result. This increment preserves all peer routes and changes no map, catalogue, gallery, Java, authentication, shared kit, helper, build or dependency source. There is no shared merge, Jira update, claim or closure action.
 
-The implemented body at kickoff `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, particularly `blocks/gcsp/greg/plan/{panel,plan-view,plan-copy,element,http-adapter}.js`, is the parity reference. `docs/gcsp/screens/README.md` governs the shell/palette. The 13 November Greg concepts remain proposals. The current Angular primitives and semantic tokens carry the existing component language forward.
+The implemented body at kickoff `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, particularly `blocks/gcsp/greg/plan/{panel,plan-view,plan-copy,element,http-adapter}.js`, is the parity reference. `docs/gcsp/screens/README.md` governs the shell/palette. The 13 November Greg concepts remain proposals. Current Angular primitives and semantic tokens carry the existing component language forward.
 
 ## Producer boundary
 
@@ -21,55 +23,64 @@ The implemented body at kickoff `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, part
 | Intentional request | `POST /api/gcsp/v1/greg/production/requests`, exactly `{commandId,planId,versions}` | No `/order-plan/submit`, browser identity selector, client quantity command or invented `changes` field. |
 | Recovery | Bearer authentication plus current application context | Commands are never replayed merely because authentication recovered. Subject/environment/run changes discard private state. |
 
-`ProductionResource` maps a pending or uncertain result to HTTP 202. A pending result can contain a submission value; an uncertain result can contain only `operationId`. Neither is confirmed success. Its advice to send the same request again is an intentional retry of the original command, not permission for automatic replay.
+`ProductionResource` maps a pending or uncertain result to HTTP 202. A pending result can contain a submission value; an uncertain result can contain only `operationId`. Neither is confirmed success. Advice to send the same request again means intentional retry of the original command, never automatic replay.
 
-`PlanSnapshotPort.current(context)` has no edited-constraints argument. Consequently an edited preview cannot currently be submitted through this Production contract. Keep it comparison-only and return to the current plan before a new deliberate request. Wiring the preview into an alternative submission protocol is not authorised here.
+`PlanSnapshotPort.current(context)` has no edited-constraints argument. Consequently an edited preview cannot currently be submitted through this Production contract. It stays comparison-only; a new deliberate request requires returning to the current plan. An alternative submission protocol is outside this allocation.
 
-Concrete connected obstacles remain `PlanningDefaults.UnconfiguredDemand`, `PlanningDefaults.UnconfiguredSupply` and `ProductionWiring`'s `UnconfiguredPlanSnapshot`. The defaults explicitly return `planning-forecast-not-configured`, `planning-supply-not-configured` and `plan-not-configured`. No alternative production binding was established at pickup. FUCQ-477 comment 3629648 and FUCQ-478 comment 3629649 confirm these remaining obstacles. Route registration or injected test fixtures will not close either original criterion.
+Source review at 2026-11-16T20:51:50Z confirmed unfinished producer implementation/startup wiring: `PlanningDefaults.UnconfiguredDemand` returns `planning-forecast-not-configured`, `PlanningDefaults.UnconfiguredSupply` returns `planning-supply-not-configured`, and `ProductionWiring` selects `UnconfiguredPlanSnapshot`, returning `plan-not-configured`. Pickup observation at 18:17:32Z established no alternate production binding. FUCQ-477 comment 3629648 and FUCQ-478 comment 3629649 record the remaining work. These defaults do not establish an outage of a configured external service; no allowed retained evidence observes such an outage. Route registration and injected fixtures do not close either original criterion. No frontend/Java wire-shape defect was established in the reviewed contracts.
 
-## Component and slice plan
+`OrderPlanOperations` always emits `learnedUnavailable()` for current and preview results. The frontend displays that limitation; richer learned-plan comparison/evaluation in the frozen legacy reference remains unsupported by this producer. Draft edits and retained command intent survive a transient same-account authentication interruption in memory. Route destruction or full-page sign-in clears that memory; progress persistence across either remains unimplemented and unproved under the recorded recovery contract.
 
-Reuse `ScreenIntroComponent`, `ButtonDirective`, `LabelledFieldComponent`, `StatusScreenComponent` and `FactListComponent`, with existing GCSP tokens. Compose read-only planning/Production tables using native caption, column/row headers and a named scroll region: the existing Angular table's employee-case action is not appropriate here. Compose local page sections rather than adding a new shared primitive. The dispatcher owns the necessary additive catalogue/gallery registration with integration.
+## Component and integration state
 
-Stable map slices are declared before implementation:
+The feature reuses `ScreenIntroComponent`, `ButtonDirective`, `LabelledFieldComponent`, `StatusScreenComponent` and `FactListComponent`. Native captioned read-only tables with column/row headers and named scroll regions avoid the existing shared table's employee-case action. Both sections share a route-owned `PlanningStore` and intentional-action focus events. No shared primitive was added.
 
-| Slice | Files/boundary | State at this increment |
+| Slice | Evidence and remaining work |
+| --- | --- |
+| `core` | Client12, projection12 and store15 selected assertions passed. Actual Java acceptance remains open. |
+| `screens` | Order-plan6, Production6 and local composition4 assertions passed. Rendered acceptance remains open. |
+| `integration` | Guarded lazy `greg/plan` source registration loads the real `PlanningRouteComponent` export with `sessionGuard` and Greg role metadata. Registered-route execution and actual Java/OIDC journey remain unrun; catalogue/gallery stay dispatcher-owned. |
+
+The missing route was planned unfinished dispatcher integration, already reserved by the original allocation, and is not a newly discovered Bug. No slice completion, map transition or Story acceptance is inferred from this source increment or the fixture-based passes.
+
+## Accepted targeted evidence
+
+All four accepted runs used frozen HEAD `e52c38753d7a0217ad54071be28b6b4d74daa561`, tree `ac4080b292950f47d8a1e33f3963c32527fe72e9`. Their exact selected commands, assertion names, source/dependency/control pins, process histories and teardown results are retained in the following worktree-relative receipts. Each records rc0, `strict_result:true`, the expected distinct assertions and no sampler/cleanup errors. The dispatcher independently audited all 256 source pins for each run.
+
+| Run | Selected cases | Receipt beneath `.claude/` | Receipt SHA256 |
+| --- | --- | --- | --- |
+| core a02 | client12 + projection12 + store15 = 39 | `fucq449-supervisor-a02-20261116/core-a02/receipt.json` | `6b1c0944617f36ec57a7d955f8ea441a826e9c75f6f2752f462c453757f65fad` |
+| order c01 | order-plan6 | `fucq449-order-c01-20261116/order-c01/receipt.json` | `d30fde3fc6dab53c3352c8dd5ef8c4fd4087216b85ad7cc5bde9cdaee217aa60` |
+| production c01 | Production6 | `fucq449-production-c01-20261116/production-c01/receipt.json` | `8d2c011dd37416dd39f899786a1a7600b4d49d69fb6c44d74f41f2ea330f6f30` |
+| local composition c01 | route component4 | `fucq449-localcomposition-c01-20261116/localcomposition-c01/receipt.json` | `b983a35b5b302f608a41121431e54beb2ef43b19924b4a816c26c99bfb0e6919` |
+
+The accepted commands used pinned Node/Angular CLI `test gcsp-web --watch=false`, exact `--include=src/app/greg-planning/<spec>` selections, JSON/default reporters, `--coverage=false --progress=false`, and owned output paths recorded in each receipt. They were separately admitted finite runs, not an unrestricted `npm test` or full suite. The local composition spec mocks `AuthPort` and `PlanningClient` and creates the component directly; its four passes do not exercise the exported application route, actual OIDC or Java.
+
+The feature files tested by those 55 assertions remain unchanged by this route/documentation increment. The new `routes.ts` registration changes the source identity and has not been compiled or executed. Reuse the matching 55-case evidence; it does not establish validity of the new route. No new runtime check or boundary checker ran for this increment.
+
+| Run | Work / total seconds | Sampled disk / aggregate RSS / inclusive bytes |
 | --- | --- | --- |
-| `core` | Types, client, projection, store and their scoped specs | Source implementation/review; runtime validation outstanding. |
-| `screens` | Order plan and Production status components, local route composition and their scoped specs | Source implementation/review; rendered and runtime validation outstanding. |
-| `integration` | Dispatcher route/catalogue integration; actual Java/OIDC journey and affected experience proof | Not complete; no integration claim. |
+| core a02 | 34.729 / 84.237 | 445,541,568 / 1,183,416,320 / 1,628,941,504 |
+| order c01 | 34.202 / 68.197 | 445,578,816 / 1,142,374,400 / 1,578,543,552 |
+| production c01 | 33.112 / 72.747 | 445,632,448 / 1,143,717,888 / 1,589,346,240 |
+| local composition c01 | 33.701 / 69.781 | 445,681,984 / 1,070,137,344 / 1,506,774,592 |
 
-No slice is complete from an implementer exit or source inspection alone. The map preserves the original Story and foreign rows. Worker claims record observed/expiry times and are not inferred from commits.
+All accepted runs stayed within the admitted sampled resource/time limits and retained complete process identity histories. Each verified its owned identities/groups, local scratch/output roots and reservation absent after teardown. Accounting used OS snapshots; continuous containment/unsampled peaks are not proven. This records the retained observations, not a new inspection of old scratch.
 
-## Requested validation, not executed
+Preserved failures: core a01 failed compilation before executing any case because the historical dependency subset omitted pinned `oidc-client-ts@3.5.0` and `jwt-decode@4.0.0`; additive dependency preparation for a02 corrected that subset, without app/auth/config changes. Its receipt SHA256 is `081aaec29a7b0426dbf3872758dd5b6879b6215c31a5d7650a9980ed917d4b5c`. Earlier preparation also exceeded the 2 MiB physical retained-output ceiling at **2,466,144 bytes**. Byte-identical gzip retention mitigated allocation; the breach and its original evidence remain preserved. Neither failure is erased by the accepted runs.
 
-The affected regression boundaries are the four endpoint shapes, absent/malformed producer facts, superseded reads, scope isolation, edited-preview invalidation, deliberate versioned submit, authentication recovery, and actual pending/refused/uncertain tracking. Specs must distinguish these transitions and truthfulness properties rather than mirror private helpers.
+The last lead whole-output observation after the local-composition result was 1,939,616 allocated bytes (1,806,323 logical) against 2,097,152 bytes. The dispatcher subsequently appended its audit within the counted allocation; that figure is historical, not a fresh headroom claim. This source increment writes no new ignored runtime artifacts and preserves retained evidence byte-for-byte.
 
-Request one bounded chunk at a time, from `apps/gcsp-web`, using the installed pinned environment only after the dispatcher admits a concrete supervised run:
+## Remaining acceptance and proposed next check
 
-1. Core: `npm test -- --include=src/app/greg-planning/planning.client.spec.ts --include=src/app/greg-planning/planning.projection.spec.ts --include=src/app/greg-planning/planning.store.spec.ts`.
-2. Each component independently: the same command with only `order-plan.component.spec.ts`, then only `production-status.component.spec.ts`.
-3. Local composition: only `planning-route.component.spec.ts`. This does not count as actual application-route coverage.
-4. After dispatcher integration, actual full-route coverage against the registered `/greg/plan` route separately, plus the existing Angular boundary/component/CSP ratchet checks selected for these files. No full suite is justified by this source-only checkpoint.
+The smallest meaningful registration check is proposed at the exact, currently unallocated path `apps/gcsp-web/src/app/greg-planning/planning-registered-route.spec.ts`: use the actual exported `routes`, actual `sessionGuard` and router navigation as a Greg identity; navigate to `/greg/plan`, assert both planning and Production sections share the loaded route, and assert entry sends no Production request. Controlled auth/client providers would keep this a registration/composition check, not actual Java/OIDC acceptance. Do not substitute direct component creation. This file is neither created nor run; any future implementation/run needs dispatcher allocation and a bounded admission. Reuse all 55 accepted cases.
 
-FUCQ-448's selected core/component passes can inform sizing but do not test FUCQ-449. Its full-route attempts exceeded the 1280 MiB aggregate RSS grant even after reducing V8 heap; a successful test log did not establish a compliant run. Keep the full-route boundary separate and prepare a materially smaller admitted plan using observed compiler/worker overhead. Do not borrow FUCQ-448 scratch, output, dependencies or reservations. If the indivisible route check cannot fit, retain it as unrun rather than weakening coverage or exceeding the grant.
+Connected acceptance still requires actual Java responses for feasible/infeasible/current-input changes, stale version refusal, submit/retry and response-driven replan. Relevant rendered desktop/narrow, keyboard/focus, Safari/private-browsing and CSP/accessibility observations remain unrun, including affected loading, empty, unavailable, denied, infeasible, stale, pending, refused and success states. These are the existing affected acceptance obligations, not an expanded migration/deployment campaign. Native Angular tests, fixtures and source review do not establish rendered or integrated acceptance. Unimplemented producer/recovery work above remains Story work; unrun checks must not be relabelled as external-service blockers.
 
-Any later run must own an absolute local root plus external ownership manifest, supervisor/finalizer, input/source pins and exact process/group cleanup. The existing ceiling is 768 MiB disk, 1280 MiB aggregate RSS (supervisor and all descendants), 2 GiB inclusive allocation, 5 GiB emergency reserve, 480 seconds work and 600 seconds total including 120 cleanup, one worker, and 2 MiB whole retained output. These are ceilings, not an admission. Sample/process-accounting/retention failures must remain explicit. Keep concise summaries and useful failure logs, remove only manifest-owned disposable paths, and verify filesystem absence.
+Any separately admitted run retains the existing ceilings: disk805306368, aggregate RSS1342177280, inclusive2147483648 and actual free reserve5368709120 bytes; 480 seconds work/600 total including 120 cleanup, one worker, Node heap512 MiB and cumulative whole-Story retained output2097152 bytes. It needs owned local scratch, external manifest, source/input pins, supervised process/group accounting, checkpoint and verified teardown. These ceilings are not a new admission. FUCQ-448 sizing evidence does not test this feature or authorize borrowing its resources. OneDrive remains prohibited for every access, including metadata and cleanup; no evidence here depends on accessing it.
 
-OneDrive is prohibited for all access, including reads, existence checks, archives and cleanup. No check in this source-only increment requires it.
+## Source review and agents
 
-Connected acceptance still requires actual Java responses for feasible/infeasible/current-input changes, stale version refusal, submit/retry and response-driven replan. Relevant rendered checks remain desktop/narrow, keyboard/focus, Safari/private browsing, CSP/accessibility and the introduced loading, empty, unavailable, denied, infeasible, stale, pending, refused and success states. No fixture, source review or build substitutes for that evidence.
+Lead review covered actual four-endpoint contracts, bearer transport, defensive projections, scope isolation, preview invalidation, versioned intentional submission and pending/refused/uncertain tracking. Earlier corrections addressed authentication loss during unresolved requests, superseded two-step refreshes, policy/run/plan guards, malformed alternative metrics, current/preview union comparison, concise response history and intentional-action result focus. Limits remain a closed disclosure matching the frozen reference. This increment adds only the guarded lazy route and truthful documentation; exact additive-route inspection and whitespace checks are source-only evidence.
 
-## Source review and receipt
-
-The 17 allocated files now implement bearer transport, defensive projections, route-owned signals, editable-limit previews, current-plan request submission and Production tracking. Projection displays supplied quantities, spend and coverage; it does not recalculate planning outcomes. Preview comparisons retain the union of current/preview derivative identities with an absent side left absent, and show both supplied stock-risk measures.
-
-Lead source review prompted corrections for authentication loss during an unresolved request, superseded two-step refreshes, current/preview policy and run checks, required plan pins, malformed alternative metrics, concise response history and intentional-action result focus after rendering. The edited-preview submission control stays disabled because the actual producer has no edited-plan submission authority. Limits remain a closed disclosure, matching the frozen reference. Source review is not compilation, rendered review or acceptance evidence.
-
-There are **55 authored cases, all UNRUN**: client 12, projection 12, store 15, order-plan component 6, Production component 6 and local composition 4. The selected finite validation chunks above remain requests for dispatcher admission. Actual application-route coverage follows dispatcher registration separately; the local composition spec does not cover the registered route. No boundary checker ran in this increment.
-
-`OrderPlanOperations` currently always emits `learnedUnavailable()` for current and preview results. The frontend displays that actual limitation. The richer learned-plan comparison and evaluation in the frozen legacy reference remain unsupported by this Java producer; no equivalent availability or parity is claimed. Draft edits and retained command intent survive a transient same-account authentication interruption in memory. Route destruction or a full-page sign-in reload clears that memory; persistence through either is unimplemented and unproved.
-
-Implementation/review results and the exact source commit identity are recorded in the Story Result. Runtime pass count for this increment is **0; all authored tests remain unrun**. Neither original acceptance criterion is complete and no slice is complete. No shared route, catalogue, gallery or producer configuration is changed by this checkpoint. No runtime scratch, service, browser or dependency installation/copy was started; there is no runtime resource/teardown receipt to claim.
-
-Agents: Mike Wazowski 2, requested/selected `gpt-6.1-sol` / `high`, no fallback; title verified, thread `01a1e5ae-b838-7422-9b7c-1b76e07e78f8`. Lightning McQueen 2, requested/selected `gpt-6.1-sol` / `medium` from fresh tiers mapping, no fallback; title verified, thread `01a1e5b0-3fb3-79d2-98fa-fe6025432173`. One source-only child, no descendants.
+Agents: Mike Wazowski 2, requested/selected `gpt-6.1-sol` / `high`, no fallback; title verified, thread `01a1e5ae-b838-7422-9b7c-1b76e07e78f8`. Lightning McQueen 2, requested/selected `gpt-6.1-sol` / `medium` from fresh tiers mapping, no fallback; title verified, thread `01a1e5b0-3fb3-79d2-98fa-fe6025432173`. One prior source-only child, no new children or descendants for this increment. The dispatcher owns subsequent lifecycle and shared integration decisions.
