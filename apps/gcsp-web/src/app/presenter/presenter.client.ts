@@ -154,7 +154,7 @@ export class PresenterClient {
   prepareReset(input: PresenterResetInput) { return this.prepare('reset', input); }
   prepareFault(input: PresenterFaultInput) { return this.prepare('fault', input); }
 
-  private prepare(kind: PresenterCommand['kind'], input: PresenterCommand['input']): PresenterCommand | PresenterClientFailure {
+  private prepare(kind: PresenterCommand['kind'], input: unknown): PresenterCommand | PresenterClientFailure {
     const scope = this.capture(); if ('state' in scope) return { ...scope, writeOutcome: 'not-sent' };
     if (!object(input)) return failed('invalid-command', { writeOutcome: 'not-sent' });
     let valid = false;

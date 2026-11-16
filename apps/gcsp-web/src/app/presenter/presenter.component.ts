@@ -32,6 +32,7 @@ export class PresenterComponent implements OnDestroy {
   readonly commandMessage = signal('');
   readonly readProblems = signal<readonly string[]>([]);
   readonly retryCommand = signal<PresenterCommand | null>(null);
+  readonly faultRetryCommand = signal<PresenterCommand | null>(null);
   readonly resetReview = signal<Extract<PresenterCommand, { kind: 'reset' }> | null>(null);
   readonly selectedScenarioId = signal('');
   readonly selectedFault = signal('');
@@ -45,13 +46,16 @@ export class PresenterComponent implements OnDestroy {
   private readonly displayedSession = signal<SessionState | null>(null);
   readonly permitted = computed(() => { const state = this.auth.state(); return state === this.displayedSession() && state.status === 'ready' && state.context.roles.includes('presenter'); });
   readonly locked = computed(() => !this.permitted() || this.pending() || this.reading() || !!this.retryCommand());
+  readonly recoveringTick = computed(() => ['tick', 'control-tick'].includes(this.retryCommand()?.kind ?? ''));
+  readonly faultEditorsLocked = computed(() => !this.permitted() || this.pending() || this.reading() || !!this.faultRetryCommand()
+    || !!this.retryCommand() && !this.recoveringTick());
   readonly clockReady = computed(() => !!this.controls() && !this.locked());
   readonly selectedScenario = computed(() => this.catalogue()?.scenarios.find(s => s.scenarioId === this.selectedScenarioId()) ?? null);
   readonly fault = computed(() => this.faults()?.faults.find(f => f.adapter === this.selectedFault()) ?? null);
-  readonly modes = computed(() => { const fault = this.fault(); return fault?.available ? fault.modes : []; });
+  readonly modes = computed(() => { const fault = this.fault(); return fault?.available ? fault.modes.filter(mode => !this.recoveringTick() || mode === 'none') : []; });
   readonly resetAllowed = computed(() => this.clockReady() && !!this.selectedScenario()?.availability.available
     && this.current()?.runId === this.controls()?.runId);
-  readonly faultAllowed = computed(() => !this.locked() && !!this.fault()?.available && this.modes().includes(this.selectedMode())
+  readonly faultAllowed = computed(() => !this.faultEditorsLocked() && !!this.fault()?.available && this.modes().includes(this.selectedMode())
     && this.faults()?.runId === this.controls()?.runId);
   readonly nextReleaseReason = computed(() => { const release = this.controls()?.controls.nextRelease;
     return release?.status === 'unavailable' ? release.reason : release ? `Next release: ${release.at} (UTC)` : 'Current release information is unavailable.'; });
@@ -134,10 +138,19 @@ export class PresenterComponent implements OnDestroy {
   }
   async setFault(event: Event): Promise<void> {
     event.preventDefault(); if (!this.faultAllowed()) return;
-    await this.sendPrepared(this.client.prepareFault({ commandId: this.commandId(), adapter: this.selectedFault(), mode: this.selectedMode() }));
+    const command = this.client.prepareFault({ commandId: this.commandId(), adapter: this.selectedFault(), mode: this.selectedMode() });
+    if (this.recoveringTick()) {
+      if ('state' in command) { this.invalid(command.problem); return; }
+      await this.submit(command, true);
+    } else await this.sendPrepared(command);
+  }
+  async retryFault(): Promise<void> {
+    const command = this.faultRetryCommand();
+    if (!command || !this.recoveringTick() || this.pending() || this.reading() || !this.permitted()) return;
+    await this.submit(command, true);
   }
   async retry(): Promise<void> {
-    const command = this.retryCommand(); if (!command || this.pending() || this.reading() || !this.permitted()) return;
+    const command = this.retryCommand(); if (!command || this.faultRetryCommand() || this.pending() || this.reading() || !this.permitted()) return;
     if (command.kind === 'reset' && this.recoveredReset?.needsPreparation) {
       const prepared = this.client.prepareReset(this.recoveredReset.input);
       if ('state' in prepared) { this.invalid(prepared.problem); return; }
@@ -159,7 +172,7 @@ export class PresenterComponent implements OnDestroy {
     if (this.session === session) return;
     this.session = session; this.displayedSession.set(session); this.generation++; this.controller.abort(); this.controller = new AbortController();
     this.controls.set(null); this.catalogue.set(null); this.current.set(null); this.faults.set(null);
-    this.pending.set(false); this.reading.set(false); this.retryCommand.set(null); this.resetReview.set(null);
+    this.pending.set(false); this.reading.set(false); this.retryCommand.set(null); this.faultRetryCommand.set(null); this.resetReview.set(null);
     this.selectedScenarioId.set(''); this.selectedFault.set(''); this.selectedMode.set('');
     this.commandMessage.set(''); this.validation.set(''); this.validationField.set(''); this.readProblems.set([]);
     if (session.status === 'signed-out' || session.status === 'denied' || session.status === 'ready' && (!session.context.roles.includes('presenter')
@@ -213,7 +226,8 @@ export class PresenterComponent implements OnDestroy {
     if (this.locked()) return;
     await this.submit(command);
   }
-  private async submit(command: PresenterCommand): Promise<void> {
+  private async submit(command: PresenterCommand, retainTick = false): Promise<void> {
+    const retainedTick = retainTick ? this.retryCommand() : null;
     const generation = this.generation; this.pending.set(true); this.validation.set(''); this.validationField.set(''); this.resetReview.set(null);
     this.commandMessage.set('Submitting command. Its outcome is pending.');
     let result: PresenterResult<PresenterCommandValue>;
@@ -222,14 +236,15 @@ export class PresenterComponent implements OnDestroy {
     if (!this.active(generation)) return;
     this.pending.set(false);
     if (result.state === 'ready') {
-      this.retryCommand.set(null); this.recoveredReset = null;
-      this.commandMessage.set(command.kind === 'reset' && 'activatedRunId' in result.value
+      this.retryCommand.set(retainedTick); this.faultRetryCommand.set(null); this.recoveredReset = null;
+      this.commandMessage.set(retainedTick ? 'Fault command acknowledged. The original tick remains available for deliberate retry.' : command.kind === 'reset' && 'activatedRunId' in result.value
         ? `Reset acknowledged. Activated run: ${result.value.activatedRunId}. Refresh sign-in context to read the active run.`
         : 'Command acknowledged. Checking current state.');
     } else {
       const retryable = result.state === 'refused' ? result.refusal.status !== 'conflict' && (result.refusal.status === 'pending' || result.refusal.retryable)
         : result.state !== 'scope-mismatch' || result.writeOutcome === 'unknown';
-      this.retryCommand.set(retryable ? command : null);
+      if (retainedTick) this.faultRetryCommand.set(retryable ? command : null);
+      else this.retryCommand.set(retryable ? command : null);
       this.commandMessage.set(this.problem(result, true));
     }
     await this.readCurrent();

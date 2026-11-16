@@ -213,4 +213,27 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
     await completeCommand('Refresh sign-in context'); await wait(() => expect(page.controls()?.runId).toBe('run-2'));
     expect(client.submit).toHaveBeenCalledOnce(); expect(page.retryCommand()).toBeNull(); expect(text()).toContain('Current backend state loaded.');
   });
+  it.each(['ready', 'unknown', 'unavailable'] as const)('P26 clears the fault with %s recovery while preserving the exact interrupted control command', async clearOutcome => {
+    await enter(); field('fault', 'stock'); field('mode', 'unavailable'); await completeCommand('Set fault mode');
+    client.submit.mockResolvedValueOnce({ state: 'refused', value: null, refusal: { status: 'unavailable', code: 'handler-interrupted', reason: 'Stock fault interrupted the tick', retryable: true } });
+    await completeCommand('Step 60 seconds'); const original = client.submit.mock.calls[1][0];
+    expect(page.retryCommand()).toBe(original); expect(original.input).toMatchObject({ expectedClockVersion: 4, mode: 'step' });
+    expect((root().querySelector(`#${page.control('fault')}`) as HTMLSelectElement).disabled).toBe(false);
+    expect(page.modes()).toEqual(['none']); field('mode', 'none');
+    client.submit.mockResolvedValueOnce(clearOutcome === 'ready' ? ok(faults) : clearOutcome === 'unknown'
+      ? { state: 'failed', value: null, problem: 'Connection lost while clearing fault', writeOutcome: 'unknown' }
+      : { state: 'refused', value: null, refusal: { status: 'unavailable', code: 'fault-store', reason: 'Fault outcome unresolved', retryable: true } });
+    await completeCommand('Set fault mode'); const clearing = client.submit.mock.calls[2][0];
+    expect(clearing.input).toMatchObject({ adapter: 'stock', mode: 'none' }); expect(page.retryCommand()).toBe(original);
+    expect(client.submit).toHaveBeenCalledTimes(3); expect(client.prepareControlTick).toHaveBeenCalledOnce();
+    if (clearOutcome !== 'ready') {
+      expect(page.faultRetryCommand()).toBe(clearing); expect(button('Retry the same command').disabled).toBe(true);
+      await page.retry(); expect(client.submit).toHaveBeenCalledTimes(3);
+      client.submit.mockResolvedValueOnce(ok(faults)); await completeCommand('Retry the fault command');
+      expect(client.submit.mock.calls[3][0]).toBe(clearing); expect(page.retryCommand()).toBe(original);
+    }
+    expect(page.faultRetryCommand()).toBeNull(); expect(client.prepareFault).toHaveBeenCalledTimes(2);
+    await completeCommand('Retry the same command'); expect(client.submit.mock.calls.at(-1)![0]).toBe(original);
+    expect(client.prepareControlTick).toHaveBeenCalledOnce(); expect(page.retryCommand()).toBeNull();
+  });
 });

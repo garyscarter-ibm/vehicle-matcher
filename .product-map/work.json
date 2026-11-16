@@ -6773,20 +6773,22 @@
           "id": "client",
           "status": "in-progress",
           "title": "Typed presenter commands and current readback",
-          "observed_at": "2026-11-16T21:54:09Z",
-          "evidence": "Client source and P01-P23 (44 expanded cases) authored and statically reviewed; no tests or compilation executed under source-only grant."
+          "observed_at": "2026-11-16T22:08:27.178284Z",
+          "evidence": "44 authored cases remain unrun. a01 compilation failed on private union indexing; exact input: unknown correction applied, verification pending."
         },
         {
           "id": "view",
           "status": "in-progress",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T21:58:03Z",
-          "evidence": "View, actual route and P01-P25 (27 expanded cases) authored and statically reviewed; all compilation/tests/rendered/connected proof unrun. Source checkpoint documented in docs/gcsp/fucq450-presenter-controls-2026-11-16.md."
+          "observed_at": "2026-11-16T22:08:27.178284Z",
+          "evidence": "P01-P26 (30 expanded cases) authored. Independent review fault/retry deadlock corrected in source with explicit fault-clear retry preserving original tick; verification pending."
         },
         {
           "id": "scoped-validation",
-          "status": "not-started",
-          "title": "Focused Angular command and route verification"
+          "status": "in-progress",
+          "title": "Focused Angular command and route verification",
+          "observed_at": "2026-11-16T22:08:27Z",
+          "evidence": "a01 Angular compilation rc1 with nine TS7053 errors; no test cases ran and boundary unrun. Exact type fix and scoped fault/retry regression applied; next authorized finite selection84, verification pending. Local receipt .claude/test-runs/fucq450/a01/receipt.json."
         },
         {
           "id": "connected-proof",
@@ -6800,10 +6802,10 @@
           "name": "Cuthbert 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T21:52:30.965280Z",
-          "expires_at": "2026-11-16T21:58:03.633937Z",
-          "source": "Direct source-only child acknowledgement",
-          "status": "source returned; runtime unrun"
+          "observed_at": "2026-11-16T22:08:27.178284Z",
+          "expires_at": "2026-11-16T22:38:27.178284Z",
+          "source": "Finite a01 receipt and direct active source correction",
+          "status": "corrected source; scoped verification pending"
         },
         {
           "name": "Mr Potato Head 2",
