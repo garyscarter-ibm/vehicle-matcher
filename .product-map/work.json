@@ -8329,7 +8329,7 @@
     {
       "assignee": "",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-16T15:19:03Z",
+      "observed_at": "2026-11-16T15:40:18Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Show Greg's demand and preview/publish controls",
@@ -8341,18 +8341,22 @@
           "id": "frontend-core",
           "status": "in-progress",
           "title": "Bearer transport, faithful demand/policy projections and scoped store",
-          "observed_at": "2026-11-16T15:19:03Z",
-          "evidence": "Mulan 2 source review: all ten allocation source hashes match 2026-11-16 pickup. Original AC open; Java preview explicitly unavailable. Plan in docs/gcsp/fucq448-greg-demand-policy-2026-11-16.md."
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "evidence": "All17 allocated source/spec files authored and lead reviewed; six selected specs unrun pending committed/refreshed source freeze and dispatcher runtime admission. See Story Result and delivery record; no complete slice claim."
         },
         {
           "id": "frontend-screens",
-          "status": "not-started",
-          "title": "Demand and policy Angular screens with current-version controls"
+          "status": "in-progress",
+          "title": "Demand and policy Angular screens with current-version controls",
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "evidence": "All17 allocated source/spec files authored and lead reviewed; six selected specs unrun pending committed/refreshed source freeze and dispatcher runtime admission. See Story Result and delivery record; no complete slice claim."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Java connected preview/publication, pinned offers and affected experience development gates"
+          "status": "blocked",
+          "title": "Java connected preview/publication, pinned offers and affected experience development gates",
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "evidence": "Original acceptance remains open: current Java preview explicitly HTTP422 preview-unavailable. Connected preview/publication/active-offer pins and rendered/browser development evidence unrun; frontend fixtures cannot close those gates."
         }
       ],
       "workers": [
@@ -8361,9 +8365,18 @@
           "name": "Mulan 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T15:19:03.305761+00:00",
-          "expires_at": "2026-11-16T19:19:03.305761+00:00",
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "expires_at": "2026-11-16T19:40:18.062550+00:00",
           "status": "active"
+        },
+        {
+          "id": "01a1e4f1-7e08-7290-8804-50b81a621bc5",
+          "name": "Elmer Fudd 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T15:40:18.062550+00:00",
+          "expires_at": "2026-11-16T15:40:18.062550+00:00",
+          "status": "idle"
         }
       ],
       "branch": "dev/DEV-2026-11-13-016"
