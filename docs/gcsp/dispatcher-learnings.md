@@ -599,3 +599,16 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Jira:** `_tools/jira_sync.py` 1.5.0+vehicle-matcher.1 (`0cc8c4a3d`) keeps a merged `partial` story, and its epic, In Progress. `test_jira_sync_ui.py` passes. A dry run over `_dev/done/` reopens no archived story.
 - **Briefs (Russell's lane):** Java story-leads list the inventory rows tagged to their story and report each one as registered or not done. A row tagged to two stories is built only by the story whose ACs need it.
 - **Codex:** plugin 0.7.8 is installed in Codex's cache. Claude Desktop's marketplace pin is still on 0.7.7 until Desktop is restarted.
+
+
+## 2026-11-16 18:46 UTC - GC Codex - DL-20261114-GC-010 - supervisor memory cause identified, mitigation pending
+
+- **Evidence/cause:** source-only review of the failed F448 c02 supervisor found SHA calculation reading the122,586,000-byte Node binary into one object, a fully expanded23,008-row dependency manifest and25,442 metadata rows plus serialized copies. The lead reports its individual supervisor peak250,494,976 bytes; individual process peaks are not a simultaneous aggregate. Existing c02 aggregate RAM failure remains unresolved.
+- **Action/limits:** same lead is preparing streaming hashes/manifest validation and an incremental deterministic identity digest with unchanged actual-route coverage and grants. No new runtime admitted at this observation; script review and a successful compliant run remain necessary. Retain every failed receipt and lossless archive under the existing whole-output cap.
+- **Framework follow-up:** include supervisor audit-memory lifetime in admission estimates; release large preflight structures before starting compiler/worker processes. A source diagnosis or smaller plan is a proposed mitigation, not verified resolution.
+
+## 2026-11-16 18:46 UTC - GC Codex - DL-20261114-GC-001 - planning pickup separates interface readiness from connected completion
+
+- **Evidence/action:** F449's source-backed Java Greg order-plan read/preview and Production status/requests contracts permit independent, nonconflicting Angular transport/state/screens. Allocated17new frontend files, parent serial route/catalogue ownership, claimed8points and verified native lifecycle. No overlapping peer reservation among the66authorised Stories at the full17:25UTC intake/live team observation.
+- **Remaining obstacle:** current PlanningDefaults supplies unconfigured forecast/supply ports and ProductionWiring supplies UnconfiguredPlanSnapshot; no alternate production implementations found. Connected feasible preview/submission remains original outstanding acceptance, while source-only frontend work proceeds. No Java ownership expansion, fabricated success, Jira dependency gate or all-held/all-blocked prerequisite.
+- **Framework follow-up:** record both the agreed executable interface enabling pickup and the specific producer wiring still needed for acceptance. Native In Progress or a lease never proves current worker execution.
