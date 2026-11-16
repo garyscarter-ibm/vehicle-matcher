@@ -10,6 +10,7 @@ import { AccountClient } from '../account/account.client';
 import { AuthPort, Role, SessionState } from '../auth/auth.port';
 import { GalleryComponent } from '../pages/gallery.component';
 import { StatePageComponent } from '../pages/state-page.component';
+import { ManualStore } from '../manual/manual.store';
 import { routes } from '../routes';
 import { StockComponent } from './stock.component';
 import { StockRouteComponent } from './stock-route.component';
@@ -44,6 +45,7 @@ const snapshot = (selectedId: string | null = null): StockNavigationSnapshot => 
 describe('released stock route and browser history', () => {
   let harness: RouterTestingHarness; let router: Router; let location: Location; let platform: MockPlatformLocation;
   const state = signal<SessionState>(ready); const client = { readStock: vi.fn() };
+  const manual = { enter: vi.fn() };
   const screen = () => harness.routeDebugElement!.query(By.directive(StockComponent)).componentInstance as StockComponent;
   const settle = async () => { harness.detectChanges(); await harness.fixture.whenStable(); harness.detectChanges(); };
   const history = () => location.getState() as Record<string, unknown>;
@@ -53,24 +55,38 @@ describe('released stock route and browser history', () => {
   };
   beforeEach(async () => {
     TestBed.resetTestingModule(); state.set(ready); client.readStock.mockReset().mockResolvedValue({ status: 'ok', value: stock() });
+    manual.enter.mockReset().mockResolvedValue(undefined);
     Object.defineProperty(window, 'innerWidth', { value: 1440, writable: true, configurable: true });
     TestBed.configureTestingModule({ providers: [provideRouter(routes), { provide: PlatformLocation, useClass: MockPlatformLocation },
-      { provide: AuthPort, useValue: { state, initialize: vi.fn(async () => {}) } }, { provide: AccountClient, useValue: client }] });
+      { provide: AuthPort, useValue: { state, initialize: vi.fn(async () => {}) } }, { provide: AccountClient, useValue: client },
+      { provide: ManualStore, useValue: manual }] });
     harness = await RouterTestingHarness.create(); router = TestBed.inject(Router); location = TestBed.inject(Location);
     platform = TestBed.inject(PlatformLocation) as MockPlatformLocation;
   });
   afterEach(() => { harness?.fixture.destroy(); TestBed.resetTestingModule(); vi.restoreAllMocks(); });
 
-  it('loads the real lazy employee route and keeps review truthfully unavailable without a consumer', async () => {
+  it('hands the exact supplied car to manual review without putting authority in navigation history', async () => {
     await open(); expect(harness.routeDebugElement!.componentInstance).toBeInstanceOf(StockRouteComponent);
     expect(client.readStock).toHaveBeenCalledTimes(1); expect(harness.routeNativeElement!.textContent).toContain('Released cars');
-    expect(harness.routeNativeElement!.textContent).toContain('Reviewing a car is currently unavailable');
-    const reviews: unknown[] = []; screen().review.subscribe(value => reviews.push(value));
+    const selection = screen().store.allCars().find(car => car.id === 'stock-1')!.review;
     const buttons = Array.from(harness.routeNativeElement!.querySelectorAll<HTMLButtonElement>('button'));
-    expect(buttons.filter(button => button.textContent?.trim() === 'Review this car').every(button => button.disabled)).toBe(true);
+    expect(buttons.some(button => button.textContent?.trim() === 'Review this car' && !button.disabled)).toBe(true);
+    const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     screen().activate({ memberId: 'stock-1', action: 'review' });
-    screen().activate({ memberId: 'stock-1', action: 'details' }); await settle(); screen().reviewDetail();
-    expect(reviews).toEqual([]); expect(router.url).toBe('/stock?origin=choices#cars');
+    await settle();
+    expect(manual.enter).toHaveBeenCalledExactlyOnceWith(selection);
+    expect(navigate).toHaveBeenCalledExactlyOnceWith('/manual/review');
+    expect(JSON.stringify(history())).not.toMatch(/claimInput|expectedTermsDigest|opaque-1/);
+  });
+
+  it('waits for authoritative reads and ignores duplicate review actions during the handoff', async () => {
+    const host = await open(); let finish!: () => void;
+    manual.enter.mockImplementation(() => new Promise<void>(resolve => { finish = resolve; }));
+    const navigate = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+    const selection = screen().store.allCars().find(car => car.id === 'stock-1')!.review;
+    const pending = host.reviewSelection(selection); await host.reviewSelection(selection);
+    expect(manual.enter).toHaveBeenCalledTimes(1); expect(navigate).not.toHaveBeenCalled();
+    finish(); await pending; expect(navigate).toHaveBeenCalledExactlyOnceWith('/manual/review');
   });
 
   it('restores exact selection/filter/expanded page on entry while preserving Router and unrelated history fields', async () => {
