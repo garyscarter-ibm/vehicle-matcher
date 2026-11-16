@@ -5454,21 +5454,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-411",
-      "jira_observed_at": "2026-11-12T15:47:43.693Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Track allocation occupancy through identity Sets",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-411",
-      "workers": []
-    },
-    {
-      "assignee": "",
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
@@ -8392,6 +8377,56 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-GC-003"
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-411",
+      "jira_observed_at": "2026-11-12T15:47:43.693Z",
+      "note": "Original native Jira observation/status retained for parent lifecycle sync. Two F411 development slices delivered; parent owns integration and collaborator acceptance. Exact original AC and scoped evidence in docs/gcsp/fucq411-occupancy-sets-2026-11-16.md.",
+      "observed_at": "2026-11-16T21:00:02Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "id": "occupancy",
+          "status": "complete",
+          "title": "Identity-Sets-and-focused-regressions",
+          "observed_at": "2026-11-16T21:00:01Z",
+          "evidence": "Lead diff/caller/identity/CAS review and focused6 oracle/operation-bound checks passed; a03 exact output reused after reporter parser failure, with unpersisted Node rc disclosed. docs/gcsp/fucq411-occupancy-sets-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead-review-and-original-validation",
+          "observed_at": "2026-11-16T21:00:01Z",
+          "evidence": "Lead original-AC review; a05 strict receipt: allocation23/23,ownership5/5,runtime7pass/1existingPGskip; no visible contract change. Same895 non-control pins as focused a03; cleanup/input audits passed. docs/gcsp/fucq411-occupancy-sets-2026-11-16.md"
+        }
+      ],
+      "status": "To Do",
+      "title": "Track allocation occupancy through identity Sets",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-411",
+      "workers": [
+        {
+          "name": "Captain Flack 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T20:50:31.013096Z",
+          "expires_at": "2026-11-16T21:00:01.918414Z",
+          "source": "Lead delivery checks complete; durable Result/evidence prepared; no runtime allocation",
+          "status": "finished"
+        },
+        {
+          "name": "Foxy 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T20:50:31.013096Z",
+          "expires_at": "2026-11-16T21:00:01.918414Z",
+          "source": "Source-only implementation complete; lead reviewed and scoped validation complete; no live worker claim",
+          "status": "finished"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-004"
     }
   ],
   "version": 1
