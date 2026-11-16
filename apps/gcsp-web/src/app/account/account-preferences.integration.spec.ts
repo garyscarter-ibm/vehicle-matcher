@@ -59,7 +59,7 @@ describe('Account composition with the published preference store and HTTP contr
       { provide: AuthPort, useValue: { state, getAccessToken: vi.fn().mockResolvedValue('employee-token'), signIn: vi.fn(), retry: vi.fn() } },
       { provide: RuntimeConfigService, useValue: { load: vi.fn().mockResolvedValue(config) } }, { provide: PORTAL_FETCH, useValue: fetcher },
       { provide: AccountClient, useValue: { readAccount, readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
-        readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { orders: [] } }),
+        readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }),
         readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { version: 1, deliveryEmail: null } }) } },
     ] });
   });

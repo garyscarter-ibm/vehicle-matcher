@@ -9,7 +9,7 @@ import { StatusScreenComponent } from '../kit/status-screen.component';
 import { AccountPreferencesComponent } from '../preferences/account-preferences.component';
 import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
-import { AccountOffers, AccountOrders, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
+import { AccountOffers, AccountOrdersReadResult, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
 import { AccountClient } from './account.client';
 import { AccountChoicesComponent } from './account-choices.component';
 import { contractTerms, journeyIntent, toAccountView } from './account.projection';
@@ -51,16 +51,59 @@ export class AccountComponent implements OnDestroy {
   readonly projection = signal<AccountProjection | null>(null);
   readonly draft = signal<AccountResult<ManualDraft> | null>(null);
   readonly offers = signal<AccountResult<AccountOffers> | null>(null);
-  readonly orders = signal<AccountResult<AccountOrders> | null>(null);
+  readonly orders = signal<AccountOrdersReadResult | null>(null);
   readonly orderSnapshot = signal<AccountResult<AccountOrderSnapshot> | null>(null);
   readonly previewLoading = signal(false);
-  readonly newestOrder = computed(() => { const orders = this.orders(); return this.currentScope() && orders?.status === 'ok' ? latestOrder(orders.value.orders) : null; });
-  readonly orderCar = computed(() => { const snapshot = this.orderSnapshot(); const order = this.newestOrder(); return order ? orderVehicle(snapshot?.status === 'ok' ? snapshot.value : null, order.orderUuid) : null; });
+  readonly completeOrders = computed(() => {
+    const result = this.orders();
+    return this.currentScope() && result?.status === 'ok' && result.value.nextAfter === null
+      && result.value.failedCount === 0 && result.value.failed.length === 0 ? result.value : null;
+  });
+  readonly newestOrder = computed(() => { const orders = this.completeOrders(); return orders ? latestOrder(orders.orders) : null; });
+  readonly orderCar = computed(() => {
+    const result = this.orderSnapshot(); const order = this.newestOrder(); const value = result?.status === 'ok' ? result.value : null;
+    return order && value && (value['status'] === undefined || value['status'] === 'acknowledged') ? orderVehicle(value, order.orderUuid) : null;
+  });
   readonly placedRecord = computed(() => placedOrderRecord(this.newestOrder(), this.orderCar(), this.projection()));
   readonly allocatedOrder = computed(() => this.model()?.state === 'no-entitlement' && !!this.placedRecord());
   readonly visibleSaved = computed(() => this.allocatedOrder() && this.saved()?.choices.slotId === this.newestOrder()?.entitlementSlotId ? null : this.saved());
   readonly pendingOffer = computed(() => { const offers = this.offers(); return this.currentScope() && offers?.status === 'ok' && offers.value.offers[0]?.state === 'pending' ? offers.value.offers[0] : null; });
-  readonly previewFailed = computed(() => [this.offers(), this.orders(), this.orderSnapshot()].some((result) => result && result.status !== 'ok' && result.status !== 'not-found'));
+  readonly ordersIncomplete = computed(() => {
+    const result = this.orders();
+    return this.currentScope() && !!result && (result.status === 'ok' ? !this.completeOrders() : result.partial !== undefined);
+  });
+  readonly handoffState = computed(() => {
+    if (!this.currentScope()) return null;
+    const result = this.orderSnapshot();
+    if (!result) return 'loading';
+    if (result.status === 'not-found') return 'absent';
+    if (result.status === 'pending') return 'pending';
+    if (result.status === 'refused') return 'refused';
+    if (result.status === 'uncertain') return 'unknown';
+    if (result.status !== 'ok') return 'unavailable';
+    const state = result.value['status'];
+    return state === 'pending' || state === 'refused' || state === 'acknowledged' ? state : 'unknown';
+  });
+  readonly handoffNotice = computed<Notice | null>(() => {
+    switch (this.handoffState()) {
+      case 'loading': return { title: 'Reading your selection', text: '' };
+      case 'pending': return { title: 'Your selection is being sent on', text: 'Check again shortly. Do not choose again.' };
+      case 'refused': return { title: 'Your selection could not be sent', text: 'Contact scheme support, or check for an update.' };
+      case 'unknown': return { title: 'Your selection status is not confirmed', text: 'Check again to read the latest status.' };
+      case 'unavailable': return { title: 'Your selection could not be read', text: 'Check again to read the latest status.' };
+      case 'acknowledged': {
+        const result = this.orderSnapshot(); const selection = result?.status === 'ok' ? result.value.selection : null;
+        const orderUuid = selection?.orderUuid ?? selection?.stock?.orderUuid;
+        return orderUuid && this.completeOrders()?.orders.some((order) => order.orderUuid === orderUuid) ? null
+          : { title: 'Your selection has been received', text: 'Its order details are not available here yet. Check again for an update.' };
+      }
+      default: return null;
+    }
+  });
+  readonly noOrders = computed(() => this.completeOrders()?.orders.length === 0 && this.handoffState() === 'absent');
+  readonly previewFailed = computed(() => this.currentScope() && [this.offers(), this.ordersIncomplete() ? null : this.orders()]
+    .some((result) => result && result.status !== 'ok' && result.status !== 'not-found'));
+  readonly previewRetry = computed(() => this.previewFailed() || this.ordersIncomplete() || !!this.handoffNotice() && this.handoffState() !== 'loading');
   readonly pendingIntent = signal<JourneyIntent | null>(null);
   private readonly accountResult = signal<AccountResult<AccountProjection> | null>(null);
   private readonly loadedScope = signal<string | null>(null);
@@ -141,17 +184,12 @@ export class AccountComponent implements OnDestroy {
     const generation = this.generation; this.previewLoading.set(true);
     this.offers.set(null); this.orders.set(null); this.orderSnapshot.set(null);
     const options = { signal: this.controller.signal };
-    const safe = async <T>(read: () => Promise<AccountResult<T>>): Promise<AccountResult<T>> => { try { return await read(); } catch { return { status: 'unavailable' }; } };
+    const safe = async <T>(read: () => Promise<T>): Promise<T | AccountFailure> => { try { return await read(); } catch { return { status: 'unavailable' }; } };
     try {
       await Promise.all([
         (async () => { const offers = await safe(() => this.client.readOffers(options)); if (this.live(generation)) this.offers.set(offers); })(),
-        (async () => {
-          const orders = await safe(() => this.client.readOrders(options)); if (!this.live(generation)) return;
-          this.orders.set(orders);
-          if (orders.status === 'ok' && latestOrder(orders.value.orders)) {
-            const snapshot = await safe(() => this.client.readOrder(options)); if (this.live(generation)) this.orderSnapshot.set(snapshot);
-          }
-        })(),
+        (async () => { const orders = await safe(() => this.client.readOrders(options)); if (this.live(generation)) this.orders.set(orders); })(),
+        (async () => { const snapshot = await safe(() => this.client.readOrder(options)); if (this.live(generation)) this.orderSnapshot.set(snapshot); })(),
       ]);
     } finally { if (this.live(generation)) this.previewLoading.set(false); }
   }

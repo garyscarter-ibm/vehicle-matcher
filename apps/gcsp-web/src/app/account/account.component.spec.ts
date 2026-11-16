@@ -7,10 +7,14 @@ import { BriefClient } from '../preferences/brief.client';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot, savedDraft } from './account.test-data';
+import { AccountOrder, AccountOrdersCollection, AccountOrdersReadResult, AccountOrderSnapshot } from './account.preview';
 import { AccountProjection, AccountResult, ManualDraft } from './account.types';
 
 const ready = (employeeId = 'employee-paula'): SessionState => ({ status: 'ready', context: { subject: `subject-${employeeId}`, employeeId, environmentId: 'isolated', runId: 'run', roles: ['employee'], policyVersion: 'policy', capabilities: ['account:read'] } });
 const deferred = <T>() => { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { promise, resolve }; };
+const orderCollection = (orders: readonly AccountOrder[] = []): AccountOrdersCollection => ({ orders, failed: [], failedCount: 0, nextAfter: null, pageEvidence: [] });
+const listed = (orders: readonly AccountOrder[] = []): AccountOrdersReadResult => ({ status: 'ok', value: orderCollection(orders) });
+const flatSelection = (status = 'pending'): AccountOrderSnapshot => ({ status, operationId: 'private-operation', selection: { orderUuid: 'manual-selection', configurationId: 'not-an-order-id', orderNumber: null }, progress: { selectionState: status === 'refused' ? 'handoff-failed' : status === 'acknowledged' ? 'acknowledged' : 'handoff-pending' } });
 
 describe('native employee account screen', () => {
   let fixture: ComponentFixture<AccountComponent>;
@@ -20,7 +24,7 @@ describe('native employee account screen', () => {
   beforeEach(() => {
     account = accountSnapshot();
     auth = { state: signal(ready()), recovery: signal(null), signIn: vi.fn(), retry: vi.fn() };
-    client = { readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { orders: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readAccount: vi.fn().mockResolvedValue({ status: 'ok', value: account }), readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
+    client = { readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readAccount: vi.fn().mockResolvedValue({ status: 'ok', value: account }), readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
       readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'saved@example.test', version: 4 } }),
       saveNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'canonical@example.test', version: 5 } }),
       startJourney: vi.fn().mockResolvedValue({ status: 'ok', value: savedDraft() }), discardDraft: vi.fn().mockResolvedValue({ status: 'ok', value: { discarded: true, draftVersion: 4 } }) };
@@ -81,10 +85,10 @@ describe('native employee account screen', () => {
     expect(root().querySelector('a[href="/offers/owned-offer"]')?.textContent).toBe('View your offer'); expect(button('Choose a replacement').disabled).toBe(false);
   });
   it('shows preview loading without blocking the working account or treating pending reads as empty', async () => {
-    const offers = deferred<AccountResult<import('./account.preview').AccountOffers>>(); const orders = deferred<AccountResult<import('./account.preview').AccountOrders>>();
+    const offers = deferred<AccountResult<import('./account.preview').AccountOffers>>(); const orders = deferred<AccountOrdersReadResult>();
     client.readOffers.mockReturnValueOnce(offers.promise); client.readOrders.mockReturnValueOnce(orders.promise);
     await mount(); expect(text()).toContain('Reading your offers and orders'); expect(text()).toContain('Paula Mason'); expect(button('Choose a replacement').disabled).toBe(false); expect(text()).not.toContain('No orders to track.');
-    offers.resolve({ status: 'ok', value: { offers: [] } }); orders.resolve({ status: 'ok', value: { orders: [] } }); await settle();
+    offers.resolve({ status: 'ok', value: { offers: [] } }); orders.resolve({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }); await settle();
     expect(text()).not.toContain('Reading your offers and orders'); expect(text()).toContain('No orders to track.');
   });
   it('keeps preview failures isolated, truthful and explicitly retryable while the account stays usable', async () => {
@@ -93,9 +97,114 @@ describe('native employee account screen', () => {
     expect(text()).toContain('Paula Mason'); expect(button('Choose a replacement').disabled).toBe(false);
     button('Retry offers and orders').click(); await settle(); expect(text()).toContain('No orders to track.'); expect(text()).not.toContain('Some offer or order details'); expect(client.readAccount).toHaveBeenCalledTimes(1);
   });
+  it.each([flatSelection(), null, undefined])('reads an independent pending manual selection with optional value %#', async (value) => {
+    client.readOrder.mockResolvedValue({ status: 'pending', operationId: 'private-operation', ...(value === undefined ? {} : { value }) });
+    const component = await mount();
+    expect(client.readOrders).toHaveBeenCalledOnce(); expect(client.readOrder).toHaveBeenCalledOnce();
+    expect(text()).toContain('Your selection is being sent on'); expect(text()).toContain('Do not choose again.');
+    expect(text()).not.toContain('No orders to track.'); expect(text()).not.toContain('Some offer or order details could not be read.');
+    expect(text()).not.toContain('private-operation'); expect(text()).not.toContain('manual-selection');
+    expect(root().querySelector('.order-preview')).toBeNull(); expect(root().querySelector('.placed-order')).toBeNull();
+    expect(component.newestOrder()).toBeNull(); expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId);
+    expect(button('Choose a replacement').disabled).toBe(false); expect(client.startJourney).not.toHaveBeenCalled();
+    expect(root().querySelector('.account-previews')?.getAttribute('aria-live')).toBe('polite');
+    expect(root().querySelector('.account-previews .gcsp-status')?.getAttribute('role')).toBeNull();
+  });
+  it('waits for the independent manual result before claiming an empty order list and preserves focus', async () => {
+    const manual = deferred<AccountResult<AccountOrderSnapshot>>(); client.readOrder.mockReturnValueOnce(manual.promise);
+    const component = await mount(); const action = button('Choose a replacement'); action.focus();
+    expect(client.readOrder).toHaveBeenCalledOnce(); expect(text()).toContain('Reading your selection');
+    expect(text()).not.toContain('No orders to track.'); expect(component.previewLoading()).toBe(true); expect(text()).toContain('Paula Mason');
+    manual.resolve({ status: 'not-found' }); await settle();
+    expect(text()).toContain('No orders to track.'); expect(text()).not.toContain('Reading your selection');
+    expect(component.previewLoading()).toBe(false); expect(document.activeElement).toBe(action);
+  });
+  it('renders a completed manual handoff while the acknowledged list is still loading', async () => {
+    const orders = deferred<AccountOrdersReadResult>(); client.readOrders.mockReturnValueOnce(orders.promise);
+    client.readOrder.mockResolvedValue({ status: 'pending', value: flatSelection() });
+    const component = await mount(); expect(component.previewLoading()).toBe(true); expect(text()).toContain('Your selection is being sent on');
+    expect(text()).not.toContain('No orders to track.'); expect(button('Check for updates').disabled).toBe(true);
+    orders.resolve(listed()); await settle(); expect(component.previewLoading()).toBe(false);
+    expect(text()).toContain('Your selection is being sent on'); expect(text()).not.toContain('No orders to track.');
+  });
+  it('shows a settled refused snapshot as a handoff failure without inventing an order or current car', async () => {
+    client.readOrder.mockResolvedValue({ status: 'ok', value: { ...flatSelection('refused'), failure: { reason: 'private-provider-detail' }, view: { state: 'handoff-failed', action: 'contact-support' } } });
+    const component = await mount(); expect(text()).toContain('Your selection could not be sent');
+    expect(root().querySelector('.account-previews a[href="/help"]')?.textContent).toBe('Contact support');
+    expect(text()).not.toContain('No orders to track.'); expect(text()).not.toContain('private-provider-detail');
+    expect(root().querySelector('.order-preview')).toBeNull(); expect(root().querySelector('.placed-order')).toBeNull();
+    expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId); expect(root().querySelector('.delivered-car')).toBeNull();
+  });
+  it.each([
+    { result: { status: 'unavailable' }, title: 'Your selection could not be read' },
+    { result: { status: 'forbidden' }, title: 'Your selection could not be read' },
+    { result: { status: 'uncertain' }, title: 'Your selection status is not confirmed' },
+    { result: { status: 'ok', value: { selection: { orderUuid: 'manual-selection' } } }, title: 'Your selection status is not confirmed' },
+    { result: { status: 'ok', value: flatSelection('new-source-state') }, title: 'Your selection status is not confirmed' },
+    { result: { status: 'ok', value: flatSelection('acknowledged') }, title: 'Your selection has been received' },
+  ])('qualifies empty claims when manual evidence is $title', async ({ result, title }) => {
+    client.readOrder.mockResolvedValue(result); const component = await mount();
+    expect(text()).toContain(title); expect(text()).not.toContain('No orders to track.');
+    expect(component.newestOrder()).toBeNull(); expect(root().querySelector('.placed-order')).toBeNull();
+    expect(text()).toContain('Paula Mason'); expect(client.startJourney).not.toHaveBeenCalled();
+  });
+  it('gives a pending envelope precedence over an optional acknowledged snapshot', async () => {
+    client.readOrder.mockResolvedValue({ status: 'pending', value: flatSelection('acknowledged') });
+    await mount(); expect(text()).toContain('Your selection is being sent on'); expect(text()).not.toContain('Your selection has been received');
+    expect(root().querySelector('.placed-order')).toBeNull();
+  });
+  it('retains incomplete evidence without choosing a globally newest partial order', async () => {
+    const order = { orderUuid: 'partial-car', entitlementSlotId: account.slots![0].entitlementSlotId, source: { receivedAt: '2026-11-13T12:00:00Z' } };
+    const partial = { ...orderCollection([order]), failed: [{ orderUuid: 'missing-car', status: 'unavailable', code: 'source-missing' }], failedCount: 12, nextAfter: 'later' };
+    client.readOrders.mockResolvedValue({ status: 'unavailable', code: 'account-orders-incomplete', partial, failedAfter: 'later' });
+    const component = await mount(); expect(text()).toContain('Your order list is incomplete.'); expect(text()).not.toContain('No orders to track.');
+    expect(component.orders()).toMatchObject({ partial, failedAfter: 'later' }); expect(component.newestOrder()).toBeNull(); expect(component.placedRecord()).toBeNull();
+    expect(root().querySelector('.order-preview')).toBeNull(); expect(text()).toContain('Paula Mason'); expect(client.readOrder).toHaveBeenCalledOnce();
+  });
+  it.each(['pending', 'refused'])('keeps an acknowledged list separate from %s manual media even when the identity matches', async (status) => {
+    const order = { orderUuid: 'manual-selection', entitlementSlotId: account.slots![0].entitlementSlotId, outcome: 'ordered', source: { orderNumber: 'ACK-123' } };
+    client.readOrders.mockResolvedValue(listed([order]));
+    client.readOrder.mockResolvedValue({ status: 'ok', value: { ...flatSelection(status), selection: { orderUuid: order.orderUuid, stock: { orderUuid: order.orderUuid, facts: { display: { name: 'Unconfirmed car', photo: '/unconfirmed.webp' } } } } } });
+    const component = await mount(); expect(component.newestOrder()).toEqual(order); expect(component.orderCar()).toBeNull();
+    expect(root().querySelector('.order-preview')?.textContent).toContain('ACK-123'); expect(root().querySelector('.order-preview img')).toBeNull();
+    expect(text()).not.toContain('Unconfirmed car'); expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId);
+  });
+  it('refreshes pending into an acknowledged flat selection only after an explicit read and preserves the current car', async () => {
+    const order = { orderUuid: 'manual-selection', entitlementSlotId: account.slots![0].entitlementSlotId, outcome: 'ordered' };
+    client.readOrders.mockResolvedValueOnce(listed()).mockResolvedValue(listed([order]));
+    client.readOrder.mockResolvedValueOnce({ status: 'pending', operationId: 'private-operation' }).mockResolvedValue({ status: 'ok', value: flatSelection('acknowledged') });
+    const component = await mount(); expect(client.readOrder).toHaveBeenCalledOnce();
+    button('Check for updates').click(); await settle();
+    expect(client.readOffers).toHaveBeenCalledTimes(2); expect(client.readOrders).toHaveBeenCalledTimes(2); expect(client.readOrder).toHaveBeenCalledTimes(2);
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(client.startJourney).not.toHaveBeenCalled(); expect(client.discardDraft).not.toHaveBeenCalled();
+    expect(component.newestOrder()).toEqual(order); expect(component.orderCar()).toBeNull(); expect(text()).not.toContain('Your selection is being sent on');
+    expect(root().querySelector('.order-preview')?.textContent).toContain('Car details not supplied');
+    expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId); expect(root().querySelector('.delivered-car')).toBeNull();
+  });
+  it.each([{ subject: 'other-subject' }, { employeeId: 'other-employee' }, { environmentId: 'other-environment' }, { runId: 'other-run' }])('aborts and clears independent manual/list reads on a scope change %#', async (delta) => {
+    const manual = deferred<AccountResult<AccountOrderSnapshot>>(); const orders = deferred<AccountOrdersReadResult>();
+    client.readOrder.mockReturnValueOnce(manual.promise); client.readOrders.mockReturnValueOnce(orders.promise);
+    const component = await mount(); const manualSignal = client.readOrder.mock.calls[0][0].signal as AbortSignal;
+    const listSignal = client.readOrders.mock.calls[0][0].signal as AbortSignal; const initial = ready();
+    if (initial.status !== 'ready') throw new Error('Ready fixture required');
+    client.readAccount.mockResolvedValueOnce({ status: 'forbidden' }); auth.state.set({ ...initial, context: { ...initial.context, ...delta } }); await settle();
+    expect(manualSignal.aborted).toBe(true); expect(listSignal.aborted).toBe(true); expect(text()).not.toContain('Paula Mason');
+    manual.resolve({ status: 'pending', operationId: 'old-private-operation', value: flatSelection() }); orders.resolve(listed([{ orderUuid: 'old-private-car', entitlementSlotId: 'old-slot' }])); await settle();
+    expect(component.orderSnapshot()).toBeNull(); expect(component.orders()).toBeNull(); expect(component.newestOrder()).toBeNull();
+    expect(text()).not.toContain('old-private-operation'); expect(text()).not.toContain('Your selection is being sent on');
+  });
+  it.each(['signout', 'teardown'])('discards a late independent manual response after %s', async (phase) => {
+    const manual = deferred<AccountResult<AccountOrderSnapshot>>(); client.readOrder.mockReturnValueOnce(manual.promise);
+    const component = await mount(); const signal = client.readOrder.mock.calls[0][0].signal as AbortSignal;
+    if (phase === 'signout') { auth.state.set({ status: 'signed-out' }); await settle(); }
+    else fixture.destroy();
+    expect(signal.aborted).toBe(true); expect(component.orderSnapshot()).toBeNull();
+    manual.resolve({ status: 'pending', value: flatSelection() }); await Promise.resolve(); await Promise.resolve();
+    expect(component.orderSnapshot()).toBeNull(); expect(component.previewLoading()).toBe(false);
+  });
   it('adds a placed order to the single history table and opens supplied numbers, outcome and slot in the existing drawer', async () => {
     const slot = account.slots![0].entitlementSlotId;
-    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'exact-stock', entitlementSlotId: slot, outcome: 'ordered', currentStage: 'awaiting-handover', source: { orderReference: { value: 'REF-123' }, orderNumber: 'CAR-456' } }] } });
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [{ orderUuid: 'exact-stock', entitlementSlotId: slot, outcome: 'ordered', currentStage: 'awaiting-handover', source: { orderReference: { value: 'REF-123' }, orderNumber: 'CAR-456' } }] } });
     client.readOrder.mockResolvedValue({ status: 'ok', value: { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4', photo: '/exact.webp' } } } } } });
     await mount(); expect(root().querySelectorAll('table')).toHaveLength(1); expect(root().querySelectorAll('.placed-order')).toHaveLength(1);
     expect(text()).toContain('Current step: Awaiting handover.'); expect(root().querySelector('a[href="/orders"]')?.textContent).toBe('Track your order');
@@ -106,24 +215,24 @@ describe('native employee account screen', () => {
     const slot = account.slots![0].entitlementSlotId;
     account = { ...account, state: 'no-entitlement', actions: [], contracts: [], histories: [], currentContract: null };
     client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readDraft.mockResolvedValue({ status: 'ok', value: savedDraft({ choices: { mode: 'new', oldContractId: null, slotId: slot, schemeId: account.account!.schemeId! } }) });
-    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
     await mount(); expect(text()).not.toContain('No ordering entitlement'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('You started a new car order'); expect(text()).not.toContain('Saved journey could not be read'); expect(text()).toContain('Your new car');
-    client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'declined' }] } });
+    client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'declined' }] } });
     await fixture.componentInstance.reloadPreviews(); await settle(); expect(text()).toContain('Your order was declined'); expect(text()).toContain('No current car');
     account = { ...account, currentCarRelationships: [{ currentCar: null, oldCar: { status: 'returned' } }] };
-    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [{ orderUuid: 'stock', entitlementSlotId: slot, outcome: 'ordered' }] } });
     await fixture.componentInstance.refresh(); await settle(); expect(text()).toContain('Your previous car has been returned. Your new car becomes current at handover.');
   });
   it('uses delivered media only for the exact listed order and clears late preview facts on account change', async () => {
     const order = { orderUuid: 'exact-stock', entitlementSlotId: account.slots![0].entitlementSlotId, outcome: 'handed-over' };
     account = { ...account, currentCarRelationships: [{ currentCar: { kind: 'order', orderUuid: order.orderUuid, vin: 'DELIVEREDVIN' }, newCar: { collectedAt: '2026-11-07' } }] };
-    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { orders: [order] } });
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [order] } });
     client.readOrder.mockResolvedValueOnce({ status: 'ok', value: { selection: { stock: { orderUuid: 'different-stock', facts: { display: { name: 'Foreign car', photo: '/foreign.webp' } } } } } });
     await mount(); expect(text()).not.toContain('Foreign car'); expect(root().querySelector('.delivered-car img')).toBeNull();
     client.readOrder.mockResolvedValue({ status: 'ok', value: { selection: { stock: { orderUuid: order.orderUuid, facts: { display: { name: 'BMW i4', photo: '/exact.webp' } } } } } });
     await fixture.componentInstance.reloadPreviews(); await settle(); expect(root().querySelector('.delivered-car h2')?.textContent).toBe('BMW i4'); expect(root().querySelector('.delivered-car img')?.getAttribute('src')).toBe('/exact.webp');
-    const late = deferred<AccountResult<import('./account.preview').AccountOrders>>(); client.readOrders.mockReturnValueOnce(late.promise);
-    const loading = fixture.componentInstance.reloadPreviews(); auth.state.set({ status: 'signed-out' }); await settle(); late.resolve({ status: 'ok', value: { orders: [order] } }); await loading; await settle();
+    const late = deferred<AccountOrdersReadResult>(); client.readOrders.mockReturnValueOnce(late.promise);
+    const loading = fixture.componentInstance.reloadPreviews(); auth.state.set({ status: 'signed-out' }); await settle(); late.resolve({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [order] } }); await loading; await settle();
     expect(text()).not.toContain('BMW i4'); expect(root().querySelector('img')).toBeNull(); expect(fixture.componentInstance.newestOrder()).toBeNull();
   });
   it('announces loading, keeps failed reads truthful and retries explicitly', async () => {
