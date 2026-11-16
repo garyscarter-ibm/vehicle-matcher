@@ -1,10 +1,10 @@
 # FUCQ-451 notification inspection — 16 November 2026
 
 Original Story: `DEV-2026-11-13-019`, 8 points, branch `dev/DEV-2026-11-13-019`.
-The two original acceptance criteria remain open. The first bounded Angular run passed 58 of
-59 cases and exposed a native-select refresh fault. A source correction and one-case affected
-selection are prepared; they do not establish a received email, integrated Java journey or
-rendered acceptance.
+The two original acceptance criteria remain open. Bounded local evidence is composite: 58 a01
+passes plus one corrected refresh-case pass from a02. The app boundary checker failed on an
+unchanged case-queue em dash. This does not establish a received email, integrated Java journey
+or rendered acceptance, and the Story remains waiting.
 
 ## Contract and source scope
 
@@ -66,10 +66,9 @@ cover states, filters, delivery truth, recipient context, selection/focus, safe 
 explicit refresh and session/destroy teardown. The actual Angular builder is required; a direct
 Vitest invocation is not substituted for its Angular compilation/test harness.
 
-The app boundary checker was not reached after the failed unit selection and remains **UNRUN**.
-The earlier FUCQ-450 receipt
-records a failure on an unchanged case-queue em dash; that is context, not FUCQ-451 runtime proof
-or authority for an unallocated repair. A full suite, successful-proof replay, auth suite, services,
+The app boundary checker was not reached in a01; after the a02 affected pass it ran once and
+failed on the inherited case-queue em dash described below. No unallocated repair was attempted.
+A full suite, successful-proof replay, auth suite, services,
 database, browser, installation and downloads are excluded from this finite source validation.
 Auth/offer integration remains original acceptance work, rather than being inferred from fixtures.
 
@@ -82,7 +81,7 @@ register a fresh canonical reservation and scratch/output ownership manifests be
 retain native exit status before parsing; and finally stop/join/audit owned historical PID-start,
 group and token identities, verify source/dependency identities, remove only its scratch/output
 roots and release its reservation. The dispatcher owns the final independent receipt audit.
-No allocation/runtime release is implied by preparing these files. No OneDrive access is allowed.
+Both actual runs used separately frozen plans and dispatcher releases. No OneDrive access occurred.
 
 The a01 receipt is retained under root `.claude/test-runs/fucq451/a01/receipt.json`, SHA256
 `adb71e9bf320d2d9e874695936c5d765894dc31af0aa7781c70d49f9f7d6b368`. It records 37.969 seconds
@@ -100,10 +99,11 @@ inspection shows `load()` keeps the three filter signals while loading destroys 
 On recreation, the select value binding precedes its generated options. The correction binds
 each generated option's selected state to its retained filter, following the existing
 `account-choices.component.html` pattern. The same existing case now checks all three retained
-signals and native values. Only three option bindings and that existing case changed; causal
-runtime confirmation remains pending.
+signals and native values. Only three option bindings and that existing case changed. The
+focused a02 regression passed after that correction; the binding-order diagnosis is supported
+by the retained source and before/after result.
 
-The next finite selection reuses the tested FUCQ-450 a04 Angular filtering recipe:
+The a02 finite selection reused the tested FUCQ-450 a04 Angular filtering recipe:
 
 ```text
 ng test gcsp-web --watch=false
@@ -113,11 +113,31 @@ ng test gcsp-web --watch=false
   --coverage=false --progress=false
 ```
 
-Required result: exactly one executed pass, zero failures and 38 intentionally filtered cases
-out of 39 component cases, then the still-unrun boundary check once. The prior 20 client and
-38 other component passes are retained evidence for unchanged source/inputs; they are not
-rerun. This is scoped proof, not a full suite. The checkpoint and 172 input hashes must be
-frozen again before dispatcher release; the resource grant and whole-retention cap stay fixed.
+Observed result: exactly **one executed pass, zero failures and 38 intentionally filtered cases**
+out of 39 component cases; native test exit 0. The prior 20 client and 38 other component passes
+are retained evidence for their unchanged reviewed boundaries; they were not rerun. This is
+composite scoped evidence for 59 cases, not a new 59-pass run or full-suite stamp.
+
+The tested a02 checkpoint is `3cae265b8babb58883f65cd2f62bc4a25b9f90c1`, tree
+`92639c5c5cfc0b33fa48b00d1b20c024329c32fb`. All 172 frozen inputs matched; only the two allocated
+HTML/spec input hashes differed from a01. The dispatcher then verified unchanged source and
+borrowed inputs, 86 historical process identities, groups, token, reservation and exact owned
+scratch/output absence. The receipt has no cleanup errors and is retained at root
+`.claude/test-runs/fucq451/a02/receipt.json`, SHA256
+`d2cf301cae2b6644bfa10a8e5778c63408a60685ae943087ff53237d274e6328`.
+
+The boundary checker ran once after that pass and returned 1 on
+`apps/gcsp-web/src/app/cases/case-queue.component.html`'s on-screen em dash assertion. The parent
+verified its bytes match the claim base; SHA256
+`5fbde6d6ef71834b457294509b768832796fe1d2db57d315a5bdb087c283e776`. Native outer exit remains 1
+and strict whole-run result remains false. Boundary log SHA256:
+`8d136c12de0dc291a399abe40c5df047932ac351a51baf4f4479570a86379633`.
+
+a02 used 32.942 seconds total and 26.431 seconds work. Its 81 samples recorded peaks of
+430,436,256 B disk, 1,019,215,872 B RSS and 1,449,652,128 B inclusive, within the unchanged grant.
+Continuous peak containment is not proven. The retained a02 evidence is 89,565 B and the whole
+local FUCQ-451 coordination root is 291,675 B, under its 2 MiB cap. No retry, extra suite, service,
+browser, database, installation, download or OneDrive operation was performed.
 
 Static lead inspection covered all six new files, the actual Java projection/auth ports and existing
 offer route/read boundary. All six added-file whitespace checks emitted no diagnostics; native
@@ -158,4 +178,5 @@ a01 exactly once with requested/selected `gpt-6-luna` / `high`, no fallback; own
 Goofy's affected-line follow-up also returned **PASS — no blocking or major issues found** on
 the exact two-file correction diff over the a01 checkpoint: per-option selection matches the
 observed fault and existing convention; the strengthened case checks signal and native values.
-That source review does not establish runtime resolution. The one-case result remains pending.
+That source review is distinct from the subsequent focused runtime result above. All source,
+review and runtime workers have returned; the dispatcher owns publication and route integration.

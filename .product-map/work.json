@@ -8458,7 +8458,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-451",
-      "observed_at": "2026-11-16T22:44:26Z",
+      "observed_at": "2026-11-16T22:49:16Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect notifications and follow delivered offer links",
@@ -8470,8 +8470,8 @@
           "id": "inspection",
           "status": "in-progress",
           "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-16T22:44:26Z",
-          "evidence": "a01 at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7: 20 client + 38 component passes, one refresh native-select failure, boundary UNRUN; source-only three-option correction and strengthened existing case independently reviewed PASS; one affected case pending. Original Java/rendered/mail acceptance open. See docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+          "observed_at": "2026-11-16T22:48:58Z",
+          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
         },
         {
           "id": "offer-return",
@@ -8490,28 +8490,46 @@
           "name": "Scrappy Doo 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T22:34:46.165256+00:00",
-          "expires_at": "2026-11-16T23:04:46.165256+00:00",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
           "source": "01a1e679-272e-7713-adf8-103f292da6f2",
-          "status": "lead review and finite validation preparation; runtime unrun"
+          "status": "returned coherent partial increment; original acceptance waiting"
         },
         {
           "name": "Wile E. Coyote 2",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-16T22:34:46.165256+00:00",
-          "expires_at": "2026-11-16T22:34:46.165256+00:00",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
           "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
-          "status": "returned source; authored tests unrun"
+          "status": "returned client source; a01 client 20/20 passed"
         },
         {
           "name": "Mulan 3",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-16T22:34:46.165256+00:00",
-          "expires_at": "2026-11-16T22:34:46.165256+00:00",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
           "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
-          "status": "returned source; authored tests unrun"
+          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
+        },
+        {
+          "name": "Goofy 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
+          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
+        },
+        {
+          "name": "Cecil Turtle 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
+          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
         }
       ]
     }
