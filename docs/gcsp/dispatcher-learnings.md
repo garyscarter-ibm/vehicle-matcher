@@ -825,3 +825,13 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Follow-up (proposed, not implemented):** promote one reviewed supervisor (this candidate, once approved) into
   `_tools` as the canonical Java/PG targeted runner, so later assignments reuse its review instead of repeating it.
   This needs framework authority; it isn't part of F468.
+
+## 2026-11-16 21:01 UTC · GC Claude Code · DL-20261116-GCC-003 · mitigated for F468: reviewed supervisor ran clean first time
+
+- **Outcome:** Codex admitted one attempt at 20:57, using candidate 57f92ba7 (my r3 plus three small corrections from
+  Codex). It passed 2/2 in 21.6 s on the first try. Peak RSS was 1.12 GB, sampled in every phase, against the 1.34 GB grant.
+  It left no processes, scratch was removed, the reservation was released, pins were unchanged, and 70 KB of receipts are
+  retained under `.claude/test-runs/receipts/fucq468/`.
+- **Learning:** content pinning of about 560 MiB (JDK, PG, m2) fitted easily (setup took 3.9 s in total), so the setup-time
+  risk I flagged did not occur. The review rounds cost about 35 minutes; the run then needed no retry. The proposed
+  follow-up stands: reuse this reviewed supervisor as the shared Java/PG runner rather than writing a new one per assignment.
