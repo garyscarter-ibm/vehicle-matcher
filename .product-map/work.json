@@ -6100,13 +6100,55 @@
     {
       "assignee": "",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T23:50:19Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Enter and refresh replacement frontend routes",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
+      "slices": [
+        {
+          "id": "route-state",
+          "status": "in-progress",
+          "title": "Authorized route and recovery states",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "evidence": "Source-only implementation in allocated paths; no runtime validation or completion claimed."
+        },
+        {
+          "id": "static-launcher",
+          "status": "in-progress",
+          "title": "Static routes and shared launcher handoff",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "evidence": "Source-only implementation in allocated paths; no runtime validation or completion claimed."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Original entry refresh OIDC email and rendered validation"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-005",
+      "workers": [
+        {
+          "name": "Sally Carrera 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-17T00:35:19Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "source-only; runtime unrun"
+        },
+        {
+          "name": "Sally Carrera 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-17T00:35:19Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "source-only; runtime unrun"
+        }
+      ]
     },
     {
       "assignee": "",
