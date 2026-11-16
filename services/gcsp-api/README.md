@@ -685,8 +685,9 @@ Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
 `c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
 `d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
 Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
-replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
-until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+replay is the `ComparisonReplay` port; its default (`DatabaseComparisonReplay`) runs `RouteReplay` for both routes in
+throwaway `cmp_` schemas of the configured database, so the DB user must be able to create and drop schemas. With
+persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
