@@ -16,28 +16,16 @@ Russell explicitly authorised the partial-story splits in the [MoSCoW review](ba
 
 Every moved capability keeps its relevant functional, integration, access and experience evidence. Preserve canonical policy, exact identity, pending reconciliation and provenance. Each new remainder is unassigned and To Do, linked as a split; it does not block its retained Story. Re-estimate actual remaining work at pickup. The other whole-capability MoSCoW recommendations remain proposals; the learned-model lane and remaining full-build promises are not waived by these ten splits.
 
-## Demo delivery and scope control
+## Story scope
 
-Gary's standing directions, 6 November 2026, apply to story authors, implementers, reviewers, dispatchers and
-every descendant, across all harnesses. They take precedence over earlier workflow wording where it conflicts.
-
-1. **Deliver a complete working demo.** Prioritise connected, demoable journeys and integrate coherent,
-   validated increments promptly. Avoid optional hardening, refactoring and new validation frameworks while
-   they delay the planned demonstration. Retain the agreed adapter, authority and access boundaries.
-2. **Backlog lower-severity defects.** Triage the actual impact. Every defect below Critical/High becomes a
-   linked backlog Bug to be reviewed and picked up independently later. Record its evidence, severity, originating
-   Story and known limitation; it does not expand or block the current Story's review or merge. Critical/High
-   defects require resolution or an explicit collaborator decision to defer them. A specific deferral, including
-   Gary's FUCQ-100 integration disposition, remains specific and does not lower the recorded severity.
-3. **Keep claimed acceptance stable.** New feature requests and proposed AC additions or changes become
-   separate, bounded backlog Stories for collaborator review and prioritisation before pickup/build. Link the
-   originating Story for traceability rather than adding an automatic blocking dependency. Agent/dispatcher
-   approval of implementation work does not authorise expanding a claimed Story's ACs. Any explicit human
-   instruction to revise an existing contract must be recorded and reconciled in Jira and the claimed record.
-4. **Preserve the original obligations and evidence.** An unmet original AC remains part of the current Story;
-   it cannot be reclassified as a new feature merely to declare completion. Record real test failures, skips,
-   unrun checks and deferred defects. An authorised integration merge may unblock other work while full
-   acceptance remains open; it is not a passing suite, an accepted Story or permission to mark Done.
+**Strict scope reaffirmed by Gary, 14 November 2026.** Every pickup and delegated brief identifies the original
+acceptance criteria, applicable existing contracts and exact allocated files. Implementation, validation and
+review stay within that boundary. Shared quality requirements apply to the affected capability; they do not
+automatically add unrelated checks or make a narrow Story depend on a whole migration, deployment or final
+human layout review. Reuse matching evidence and select checks for the actual changed boundary. Additional
+features, refactoring, hardening and proposed acceptance changes are separate backlog proposals for collaborator
+review before pickup. Dispatcher and reviewer decisions cannot expand a claimed contract. An unmet original
+criterion remains Story work; separately captured defects go through the defects procedure as Bugs.
 
 FUCQ-149 is the backlog proposal extracted from the agent-added manual Resume criterion in FUCQ-100.
 It awaits collaborator review and prioritisation; FUCQ-100 retains its original seven backend criteria.

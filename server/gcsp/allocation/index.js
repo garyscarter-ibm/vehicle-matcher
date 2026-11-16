@@ -3,7 +3,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { RECEIPT_READ_LIMITS } from '../repository/core.js';
 import { projectReceipt } from '../repository/receipt-projections.js';
-import { createAllocationRecommendationEvaluator } from '../recommendation/index.js';
+import { createAllocationRecommendationEvaluator, createStaticSuitabilityCache } from '../recommendation/index.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
@@ -100,7 +100,7 @@ export function buddyDeclineEvents(runId, receipts) {
 }
 
 // Allocation proposes claims; the injected FUCQ-100 port alone owns stock/hold transactions.
-export function createAllocationService({ repository, policy, clock, identity, claim } = {}) {
+export function createAllocationService({ repository, policy, clock, identity, claim, staticCache = createStaticSuitabilityCache() } = {}) {
   let registration;
   const ref = (context, eventId, consumerId = ALLOCATION_CONSUMER) => ({ table: 'event_receipts', key: { runId: context.runId, consumerId, eventId } });
   const command = (id, payload) => ({ commandId: id, inputDigest: inputDigest(payload) });
@@ -109,7 +109,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
   const readAllocationReceipt = (context, reference, projection) => typeof repository.readAllocationReceipt === 'function'
     ? repository.readAllocationReceipt(context, reference, projection) : repository.read(context, reference);
   // Decisions are per car, so a quote rebuilt from the frozen inputs and one pool entry equals the prepare-time quote.
-  const evaluate = (context, employeeContext, instant, inputs, stock, projection = 'evaluate') => createAllocationRecommendationEvaluator({ policy,
+  const evaluate = (context, employeeContext, instant, inputs, stock, projection = 'evaluate') => createAllocationRecommendationEvaluator({ policy, staticCache,
     time: { async now() { return ok(instant); } },
     provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employeeContext.employeeId,
       factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock, ...(inputs.currentCar ? { currentCar: inputs.currentCar } : {}) }); } } })

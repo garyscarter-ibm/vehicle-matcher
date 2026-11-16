@@ -4,6 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
+### OneDrive restriction and shared learnings
+
+Follow `AGENTS.md`, sections "OneDrive access — explicit human restriction, 14 November 2026" and
+"Shared dispatcher learnings", in this session and every descendant brief. Never access Gary's OneDrive.
+Both pollers read and append issues and resolution evidence to `docs/gcsp/dispatcher-learnings.md`.
+
 ### Jira updates resumed
 
 Follow `AGENTS.md`, section “Jira updates resumed”: Gary explicitly lifted the project-wide pause on
@@ -29,12 +35,10 @@ and checkpoint cadence.
 Follow `AGENTS.md`, section "IBM gateway 422 responses", including its launcher refusal condition, in this
 session and every descendant agent.
 
-### Demo delivery, defects and claimed scope
+### Claimed Story scope
 
-Follow `AGENTS.md`, section "Demo delivery, defects and claimed scope", and `docs/gcsp/build-rules.md`,
-section "Demo delivery and scope control", in this session and every descendant brief. Prioritise the working
-demo, backlog defects below Critical/High independently, and put new features/proposed AC changes into
-separate backlog Stories for collaborator review and prioritisation before build.
+Follow `AGENTS.md`, section "Claimed Story scope", and `docs/gcsp/build-rules.md`, section "Story scope",
+in this session and every descendant brief.
 
 ### Comments
 - **Keep code comments to 2 lines max**, unless a longer note is genuinely unavoidable

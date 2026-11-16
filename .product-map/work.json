@@ -5486,41 +5486,41 @@
       "assignee": "",
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
-      "jira_observed_at": "2026-11-13T22:36:19.647Z",
-      "note": "Independent143/143 accepted-state/private proof atc9a393d7/product8c045bf2; API-only acceptance setup. Earlier179/181,91/92 failures retained. F494unfixed; pending/narrow/Escape/Safari/nativeAT/F106 remain open. ProfileIDs unrecorded; ownedroot/groups absent. Original AC/native status/lease unchanged; delivery note.",
-      "observed_at": "2026-11-14T04:01:02Z",
-      "original_status": "In Progress",
+      "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
+      "observed_at": "2026-11-14T15:39:21Z",
+      "original_status": "In Review",
       "slices": [
         {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
           "id": "reuse",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Validated-immutable-snapshot-reuse"
         },
         {
-          "evidence": "Real repository/allocation twoemployee regression RED2validations/2clones -> GREEN1validation/0clones; final integrated81pass/1nativePGskip; delivery record.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
           "id": "proof",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Semantic-equivalence-and-operation-count-proof"
         },
         {
-          "evidence": "Independent c9a393d7/product8c045bf2 nativePG/Chrome143/143: accepted-offer/history1440/375 keyboard+DOM/ARIA/focus; sequential cookie/session/storage isolation. API-only acceptance setup, notUI proof. Earlier179/181,91/92 retained; F494unfixed/pending-narrow/Escape/Safari/nativeAT/F106 open. ProfileIDs unrecorded; ownedroot/groups absent. No full acceptance; delivery note.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
           "id": "connected",
-          "observed_at": "2026-11-14T04:00:02.381095+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "status": "complete",
           "title": "Connected-release-offer-history-integration"
         },
         {
-          "evidence": "Speedy Gonzales independent PASS, no blocking/major findings; actual caller correction, matched-source receipts, all10 captures and teardown verified. Acceptance gaps retained.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-414-stock-snapshot-reuse-2026-11-13.md",
           "id": "review",
-          "observed_at": "2026-11-13T23:19:26Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Independent-final-review"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Reuse validated immutable stock snapshots across employees",
       "type": "Story",
       "unsliced": false,
@@ -5576,34 +5576,34 @@
     {
       "assignee": "",
       "id": "FUCQ-415",
-      "jira_observed_at": "2026-11-12T15:48:01.061Z",
-      "note": "AC1–3 evidenced: 92 selected pass, 9 native included; 42 Chrome checks/10 captures independently reviewed PASS. AC4 partial: Safari/private/full keyboard-accessibility/hosted-dev unrun. In Progress/lease retained; dispatcher owns lifecycle. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
-      "observed_at": "2026-11-14T01:33:56Z",
-      "original_status": "In Progress",
+      "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md",
+      "observed_at": "2026-11-14T15:39:21Z",
+      "original_status": "In Review",
       "slices": [
         {
           "id": "admission",
           "status": "complete",
           "title": "Immutable-policy-admission-and-complete-selection-signature",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Lead full source/caller review and focused 11/11 plus integrated83 matching hashes; complete signature/content admission and mutable/provenance compatibility. Independent Cool Cat PASS. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         },
         {
           "id": "reuse",
           "status": "complete",
           "title": "Bounded-equipment-reuse-semantic-equivalence-and-operation-proof",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Selected92/92 pass0skip including9actualnative; operation counters/eviction/reset/equivalence and actual1validation26derivations19hits. Independent Cool Cat source+native proof PASS; exactcb5064ed. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         },
         {
           "id": "connected",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Connected-release-offer-history-and-independent-review",
-          "observed_at": "2026-11-14T01:33:56Z",
-          "evidence": "Chrome42/42checks,10desktop/narrowcaptures on exactcb5064ed nativePG app independently inspected; AC4partial: Safari/private/fullkeyboard-accessibility/hosted-dev unrun, LowF400 separate. NoBuilt/Done/lease release. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-415-equipment-evidence-2026-11-14.md"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Reuse configuration equipment evidence",
       "type": "Story",
       "unsliced": false,
@@ -5675,10 +5675,10 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-417",
-      "jira_observed_at": "2026-11-14T07:59:15.577Z",
-      "note": "Calculation and allocation/evidence slices lead-reviewed; code cebac278c5b59acac9fa9a45dc3bc9ea1c37a385. Allocation39pass/0fail/1 nativePG skip; prior65 calculation checks reused. Native PostgreSQL and connected original gates remain open; five AC unchecked. docs/gcsp/evidence/fucq417/allocation-checkpoint.md",
-      "observed_at": "2026-11-14T08:33:36Z",
-      "original_status": "In Progress",
+      "jira_observed_at": "2026-11-14T16:00:08.880600+00:00",
+      "note": "Original five criteria developed: matching-source F420 native peer report and unchanged-presentation connected proof reused; historical104pass/1skip/raw-log limitation retained. Native InReview verified, no human acceptance. docs/gcsp/evidence/fucq417/acceptance-disposition.md",
+      "observed_at": "2026-11-14T16:00:08Z",
+      "original_status": "In Review",
       "slices": [
         {
           "id": "calculation",
@@ -5703,13 +5703,13 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story validation and connected release-offer-history gates",
-          "observed_at": "2026-11-14T08:33:36Z",
-          "evidence": "Original four validate commands covered with retained matching calculation results and allocation/runtime results. NativePG test skipped: URL unset; connected desktop/narrow release/offer/history no-match/conflict/replay unrun. No whole-Story acceptance."
+          "observed_at": "2026-11-14T15:46:55Z",
+          "evidence": "Lead reviewed original five AC: F417 semantic/operation proof, peer F420 native124/124 on identical current Node tree, F41542checks/ten independently reviewed desktop/narrow captures through unchanged contracts. Historical104pass/1native skip and failures retained; no new runtime. docs/gcsp/evidence/fucq417/acceptance-disposition.md"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Evaluate allocation candidates without building a gallery",
       "type": "Story",
       "unsliced": false,
@@ -5719,10 +5719,10 @@
           "name": "Wyldstyle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T08:33:35Z",
-          "expires_at": "2026-11-14T08:33:35Z",
+          "observed_at": "2026-11-14T15:46:55Z",
+          "expires_at": "2026-11-14T15:46:55Z",
           "source": "chat 01a1d910-a6ba-7d01-9219-8c1e0445b4b8; requested/selected/effective gpt-6.1-sol/high; dispatcher verified title/runtime",
-          "status": "allocation reviewed; parked after metadata checkpoint for guarded publication"
+          "status": "original acceptance evidence disposition complete; HOLD for dispatcher audit/publication"
         },
         {
           "name": "Grub",
@@ -5737,17 +5737,32 @@
       "branch": "dev/DEV-2026-11-13-GC-010"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-418",
-      "jira_observed_at": "2026-11-12T15:49:01.144Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
+      "jira_observed_at": "2026-11-16T09:37:06.006838+00:00",
+      "note": "Original8pt contract reviewed, merged71cc0dd432 and nativeInReview; claim/branch/worktree helpercleanup complete. Main1798srealtime deadlineFAIL and historical peak limitation retained; docs/gcsp/fucq418-delivery.md. No humanacceptance/Done inferred.",
+      "observed_at": "2026-11-16T09:37:06Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "static-cache",
+          "status": "complete",
+          "title": "6pt: bounded static calculation reuse and focused regression coverage",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "2pt: original consumer validation, source review and connected evidence disposition",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
+        }
+      ],
+      "status": "In Review",
       "title": "Reuse unchanged static suitability across releases",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
       "workers": []
     },
@@ -6096,13 +6111,36 @@
     {
       "assignee": "",
       "id": "FUCQ-435",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-16T10:50:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Call the separately hosted API with bearer authentication",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
+      "slices": [
+        {
+          "id": "ac1-https-cors-bearer",
+          "status": "blocked",
+          "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
+          "observed_at": "2026-11-16T10:50:24Z",
+          "evidence": "Local two-origin HTTPS CORS/bearer/secret-scan proof PASS (docs/gcsp/evidence/fucq435); actual hosted Render origins and OIDC registration do not exist yet"
+        },
+        {
+          "id": "ac2-failure-recovery",
+          "status": "complete",
+          "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
+          "observed_at": "2026-11-16T10:50:23Z",
+          "evidence": "Lead re-ran fucq435-cross-origin-proof on 35c96e64b: typed 503/403, expiry re-sign-in and recovery notice, 0 mutating requests; orders.actions spec passed"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story integration, validation and result",
+          "observed_at": "2026-11-16T10:50:32Z",
+          "evidence": "Local integration done; hosted-origin AC1 proof outstanding"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6363,7 +6401,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
-      "observed_at": "2026-11-14T09:11:46Z",
+      "observed_at": "2026-11-14T17:30:04Z",
       "original_status": "To Do",
       "status": "In Progress",
       "title": "Browse released stock and inspect an exact vehicle",
@@ -6377,9 +6415,9 @@
           "name": "Emmet",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-14T09:11:46.487247+00:00",
-          "expires_at": "2026-11-14T09:11:46.487247+00:00",
-          "source": "presentation bridge source/spec review and independent input/resource audit complete; held for dispatcher publication",
+          "observed_at": "2026-11-14T17:30:03Z",
+          "expires_at": "2026-11-14T17:30:03Z",
+          "source": "stock host/history 31589e3f4c57445744c6652edd5f4ed8353fd41a;27selected/15browser checks and local input/resource audit complete",
           "status": "inactive awaiting dispatcher audit/publication"
         },
         {
@@ -6440,8 +6478,8 @@
           "id": "view-parity",
           "status": "in-progress",
           "title": "Native-Angular-view-parity",
-          "observed_at": "2026-11-14T09:11:46Z",
-          "evidence": "Lead presentation bridge review PASS daf51ad6;23 named tests,14 pins and owned cleanup verified. Prior cumulative Wakko136PASS integrated b410a30bc. F499Low natively linked; full boundary historicallyFAIL. Full screen/card/media/routes/Java and original AC open. docs/gcsp/fucq442-delivery.md; root lead-presentation-review.json."
+          "observed_at": "2026-11-14T17:30:04Z",
+          "evidence": "Host/history 31589e3f4;27selectedPASS,15actualChrome router checks,178pinsmatch/localcleanupverified; route/gallery wired. Original reviewconsumer/Java/wholeStoryproof open;F504/F505/F499 separateunfixed. docs/gcsp/fucq442-stock-screen-2026-11-14.md"
         },
         {
           "id": "review-proof",
@@ -6456,7 +6494,7 @@
       ],
       "story_points": 13,
       "started_at": "2026-11-14",
-      "note": "Prior cumulative Wakko136PASS checkpoint integrated by dispatcher b410a30bc. Presentation bridge daf51ad6 reviewed23PASS,14 input pins/cleanup independently verified. F499Low native linked backlog; full boundary historicallyFAIL. Full screen/routes/Java and both original AC remain open."
+      "note": "Stock host/history source 31589e3f4;27 selectedPASS,15actual router Chromechecks,178finalpinsmatch; route/gallery now wired. Reviewconsumer + actualJava/originalAC remainopen. F504Medium/F505Low/F499Low separateunfixed. Heldfordispatcherpublication."
     },
     {
       "assignee": "",
@@ -6562,7 +6600,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
-      "observed_at": "2026-11-14T08:59:32Z",
+      "observed_at": "2026-11-14T15:33:06+00:00",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Open an offer and accept or decline",
@@ -6586,8 +6624,10 @@
         },
         {
           "id": "decision-followup",
-          "status": "not-started",
-          "title": "Explicit decisions and supported follow-up"
+          "status": "in-progress",
+          "title": "Explicit decisions and supported follow-up",
+          "observed_at": "2026-11-14T13:22:34Z",
+          "evidence": "Scoped explicit decisions/follow-up implemented;35 store tests reused with exact pins,34 final screen tests PASS/0skip; next-selector regression corrected. Source/resource audit PASS; actual Java/auth/email/PG/route/rendered acceptance open; docs/gcsp/fucq445-decision-followup-2026-11-14.md."
         },
         {
           "id": "proof-review",
@@ -6596,24 +6636,29 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey"
+          "status": "in-progress",
+          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey",
+          "observed_at": "2026-11-14T15:33:06+00:00",
+          "evidence": "Source trace88403ac62: five offer read/reasons/decision/followup Java handlers absent; notification OfferFacts explicitly unconfigured. Existing Angular flow present; shared AuthPort history and actual Java/OIDC/PG/email/remote/rendered acceptance open. No new runtime or OneDrive access; original AC/states unchanged. docs/gcsp/fucq445-integration-blocker-2026-11-14.md"
         }
       ],
       "workers": [
         {
           "name": "Mugsy",
           "harness": "codex",
-          "observed_at": "2026-11-14T08:59:32.476909Z",
-          "expires_at": "2026-11-14T08:59:32.476909Z",
-          "source": "Direct bounded duration correction/review complete; source/helper/receipt writes released. Exact metadata checkpoint yielded for dispatcher publication; no active source worker inferred."
+          "role": "story-lead",
+          "status": "HOLD after metadata checkpoint; no runtime allocated",
+          "observed_at": "2026-11-14T15:33:06+00:00",
+          "expires_at": "2026-11-14T15:33:06+00:00",
+          "source": "Current source/producer trace; SAME gpt-6.1-sol/high, no fallback/children. docs/gcsp/fucq445-integration-blocker-2026-11-14.md"
         }
-      ]
+      ],
+      "note": "Source-only original-AC blocker trace at88403ac62; actual Java producer/shared-auth and connected acceptance remain open. No product source/runtime/new claim. docs/gcsp/fucq445-integration-blocker-2026-11-14.md"
     },
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-14T09:40:12Z",
+      "observed_at": "2026-11-14T11:37:26Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
@@ -6626,20 +6671,24 @@
           "status": "in-progress",
           "title": "Read owned order and lifecycle facts",
           "points": 3,
-          "observed_at": "2026-11-14T09:40:12Z",
-          "evidence": "PARTIAL: released types/projection/spec checkpoint; 18 selected pure tests and lead review passed. Shared complete-list/snapshot/request contracts and client checks remain unresolved. docs/gcsp/fucq446-delivery.md; actual resource receipt root .claude/test-runs/fucq446/projection-001-result.json. No Story acceptance inferred."
+          "observed_at": "2026-11-14T17:30:28Z",
+          "evidence": "PARTIAL: native-5 116 PASS/8 files, rc0, 0 failures/skips; controller31/projection18 plus client26/actions14/component11 and adjacent16. All 136 input pins current. Java facade now binds AccountClient list/snapshot and exact lifecycle reads; pending/null/refusal retained. Browser timeout/no captures; route/connected Java/OIDC/nativePG/hosted proof open; both AC unchecked. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
         },
         {
           "id": "employee-actions",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Perform supported employee lifecycle actions",
-          "points": 3
+          "points": 3,
+          "observed_at": "2026-11-14T17:30:28Z",
+          "evidence": "PARTIAL: existing document acknowledgement and appointment/return request/accept wired with explicit review, provider IDs/versions, own employee authority, no duplicate/replayed writes and cancellation/context boundaries. Client26/actions14/component11 pass in native-5 116 PASS. Real Java/OIDC/nativePG/restart/concurrency and browser/hosted transitions unproven; both original AC unchecked. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
         },
         {
           "id": "view-parity",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Preserve order progress screen and shared navigation",
-          "points": 3
+          "points": 3,
+          "observed_at": "2026-11-14T17:30:29Z",
+          "evidence": "PARTIAL: native OrdersComponent uses existing kit/tokens and frozen lifecycle composition, exact imagery/fallback and supplied current-car relationship. Component11 pass within native-5 116 PASS/8 files. Development fixture build rc0; Chrome timeout with 0 checks/captures. Parent route/catalogue binding, rendered desktop/narrow/keyboard/Safari/private/CSP/accessibility and hosted acceptance open. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
         },
         {
           "id": "review-proof",
@@ -6670,23 +6719,78 @@
           "name": "Bertie",
           "harness": "codex",
           "role": "Story lead",
-          "observed_at": "2026-11-14T09:40:12Z",
-          "expires_at": "2026-11-14T09:40:12Z",
-          "status": "waiting on dispatcher source-checkpoint review/publication; progress-read partial",
-          "source": "docs/gcsp/fucq446-delivery.md; selected projection spec 18 passed; chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3"
+          "observed_at": "2026-11-14T10:21:15Z",
+          "expires_at": "2026-11-14T10:21:15Z",
+          "status": "holding controller source checkpoint for dispatcher exact-SHA audit/publication; runtime unrun; progress-read partial",
+          "source": "docs/gcsp/fucq446-delivery.md; read-only port/controller/spec written; new checks UNRUN; chat 01a1d95e-58ac-75b2-a1bc-2a010748c7e3"
         }
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-14T15:19:32Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-447",
+      "slices": [
+        {
+          "id": "contracts",
+          "status": "in-progress",
+          "title": "Case/help contracts and pure display projections",
+          "observed_at": "2026-11-14T10:59:22Z",
+          "evidence": "Frozen d75d369ce14193252bf53154905a8a9282befa19 pure boundary: cases19/help7 passed,0 failed/skipped/todo; Wakko source/executable and parent runtime/teardown audit passed. Still in-progress; typecheck/AOT, five later slices and actual UI/Java/OIDC/nativePG/hosted/fullAC open. F501 Medium separate/unfixed/nonblocking. docs/gcsp/fucq447-delivery.md; root .claude/fucq447-contracts-runtime-parent-audit-1058.json."
+        },
+        {
+          "id": "client",
+          "status": "complete",
+          "title": "Scoped six-operation Java case client",
+          "observed_at": "2026-11-14T11:58:43Z",
+          "evidence": "Lead bounded client delivery: source a0d905b64cb09411f914ea57ae195cd306e4e7f8;59/59 client assertions PASS,0fail/skip/TODO;Elmer source1119, parent+Elmer executable1147 and parent actual result/inputs/teardown1147 PASS. Actual six Java paths/body,bearer/role/scope/session/abort,explicit identical intent retry/refusal/uncertain boundaries checked. Original2AC,typecheck/AOT/composedUI/Java/OIDC/nativePG/hosted remain open. docs/gcsp/fucq447-delivery.md"
+        },
+        {
+          "id": "employee-help",
+          "status": "in-progress",
+          "title": "Employee help, confirmation and current readback",
+          "observed_at": "2026-11-14T15:19:32.070107+00:00",
+          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
+        },
+        {
+          "id": "greg-queue",
+          "status": "in-progress",
+          "title": "Greg queue, feasible remedies and reviewed updates",
+          "observed_at": "2026-11-14T16:57:58Z",
+          "evidence": "Partial native Greg queue/detail/current options/review/Confirm/readback+shared table;final scoped compiler+64testsPASS(0fail/skip/TODO). Browser smoke blankDOM/30stimeout;actualJava/realOIDC/nativePG/rendered/full2AC open. Parent review/integration pending;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
+        },
+        {
+          "id": "composition",
+          "status": "in-progress",
+          "title": "Feature exports and dispatcher-owned shared composition",
+          "observed_at": "2026-11-14T15:19:32.070107+00:00",
+          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual Java/OIDC/PostgreSQL journey and rendered acceptance"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-015",
+      "workers": [
+        {
+          "name": "Hubie",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "INACTIVE/HOLD; partial Greg queue checkpoint; route writer released",
+          "observed_at": "2026-11-14T16:57:58.163632+00:00",
+          "expires_at": "2026-11-14T16:57:58.163632+00:00",
+          "source": "chat01a1d97e-70b9-7831-8632-3f7405b25af2;SAME gpt-6.1-sol/high;no fallback/children;Greg native-3 64PASS;docs/gcsp/fucq447-greg-queue-2026-11-14.md"
+        }
+      ],
+      "note": "Partial original Greg queue/detail/options/review/Confirm/readback and shared table authored;selected native compiler+64testsPASS;headlessChrome blankDOM/30stimeout retained;rendered/actualJava/realOIDC/nativePG/full2AC open. Original native observations/claim/13points retained. F501Medium/F502Low separate/unfixed/nonblocking. Parent owns integration/publication/lifecycle;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
     },
     {
       "assignee": "",
@@ -7072,13 +7176,43 @@
     {
       "assignee": "",
       "id": "FUCQ-461",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T22:13:41Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Compute equivalent eligibility, quotes and recommendations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-461",
+      "slices": [
+        {
+          "id": "s1-scoring-gates",
+          "status": "complete",
+          "title": "Brief validation, eligibility gates, preference scoring, option evidence and ranking tie-breaks with Node parity bounds",
+          "observed_at": "2026-11-14T07:51:35Z",
+          "evidence": "0e33f1e3b reviewed by story-lead: 1867 Node-generated scoring/gate/ranking cases, max abs numeric difference 0.0 over 17339 numbers; mutation-checked; recommendation tests 1/0F"
+        },
+        {
+          "id": "s2-evaluation",
+          "status": "complete",
+          "title": "Recommendation evaluation: pinned policy, points/allowance terms, timing, current-car feedback, preview and stored subject with Node parity",
+          "observed_at": "2026-11-14T09:10:07Z",
+          "evidence": "f985b94fd reviewed by story-lead: 628 Node-generated evaluation cases (recommend/preview/stored, 24 policy-activation successor cases, frozen current-car feedback), max abs diff 0.0 over 230555 numbers, 0 status mismatches; 12 mutations caught; recommendation tests 2/0F"
+        },
+        {
+          "id": "s3-source-http",
+          "status": "complete",
+          "title": "Released-stock and account source adapter, vehicle evidence port stub and employee-own HTTP endpoint",
+          "observed_at": "2026-11-14T22:13:40Z",
+          "evidence": "fd1fbdbd0 reviewed by story-lead: released-stock/account source adapter (Node-generated source cases), VehicleEvidencePort stub, POST /api/gcsp/v1/recommendations employee-own; 18 recommendation tests 0F on native PG17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation, Used Cars parity check, base merge, bounds record and result",
+          "observed_at": "2026-11-14T22:13:41Z",
+          "evidence": "merged origin/gcsp-poc-dev at abc8e1701; recommendation 18/0F; clean verify 1377 ran, 1 failure in unrelated gcsp.api.appointments (passes alone, order-dependent); result block in story file"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7117,46 +7251,159 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T09:23:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-463",
+      "slices": [
+        {
+          "id": "claims-local",
+          "status": "complete",
+          "title": "Local manual claims: schema, exact-car/slot exclusivity, review, release, convert, expiry",
+          "observed_at": "2026-11-14T08:25:52Z",
+          "evidence": "Lead review of local claim/review/release/convert/expiry; gcsp.api.claims 42 tests and gcsp-api verify 578/0 on native PG17"
+        },
+        {
+          "id": "claims-remote",
+          "status": "complete",
+          "title": "Remote claim/release/allocate: durable intent, execute/reconcile, response loss, restart",
+          "observed_at": "2026-11-14T08:55:07Z",
+          "evidence": "Lead review of remote intent/execute/reconcile/finalize; gcsp.api.claims 55 tests incl. 13 remote (response loss, restart, late ack after reset) on native PG17"
+        },
+        {
+          "id": "claims-http",
+          "status": "complete",
+          "title": "Employee HTTP routes, provider selection, expiry sweep and README",
+          "observed_at": "2026-11-14T09:03:59Z",
+          "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T09:23:07Z",
+          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T08:56:54Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-464"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-464",
+      "slices": [
+        {
+          "id": "allocate-local",
+          "status": "complete",
+          "title": "Local allocation: plan, ranked fallback contenders, exclusive claims, offers and quotes",
+          "observed_at": "2026-11-14T08:10:17Z",
+          "evidence": "baa38e656 reviewed by Mulan; gcsp.api.allocation AllocationTest 21/21 on native PG 17"
+        },
+        {
+          "id": "expiry-triggers",
+          "status": "complete",
+          "title": "Local hold expiry and trigger consumption with lapse rules",
+          "observed_at": "2026-11-14T08:25:38Z",
+          "evidence": "05c611456 reviewed by Mulan; ExpiryTriggersTest 11/11 + AllocationTest 21/21 native PG 17"
+        },
+        {
+          "id": "remote-lifecycle",
+          "status": "complete",
+          "title": "Remote Buddy claims, pending attempts, release and restart reconciliation",
+          "observed_at": "2026-11-14T08:51:18Z",
+          "evidence": "9f3c761a5 reviewed by Mulan; RemoteLifecycleTest 13/13, allocation scope 45/45 native PG 17"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T08:56:54Z",
+          "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T07:51:47Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve offer links under OIDC ownership",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465",
+      "slices": [
+        {
+          "id": "access",
+          "status": "complete",
+          "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
+          "observed_at": "2026-11-14T07:33:53Z",
+          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
+        },
+        {
+          "id": "postgres",
+          "status": "complete",
+          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
+          "observed_at": "2026-11-14T07:46:40Z",
+          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T07:51:47Z",
+          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-466",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-15T00:44:24Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Apply local offer decisions and follow-up",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-466"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-466",
+      "slices": [
+        {
+          "id": "decline",
+          "status": "complete",
+          "title": "Local decline: locked recheck, release, reasons, replay, outbox and decision-reasons/decision HTTP",
+          "observed_at": "2026-11-14T23:56:39Z",
+          "evidence": "Lead review of a16521466 (OfferDecisions decline: hold/offer/car FOR UPDATE recheck, CAS writes with stock_cars.version bump, offer_decisions immutable row, offer-declined outbox in same tx); gcsp.api.offers.** 68 tests 0 failures on native PG 17 :55466"
+        },
+        {
+          "id": "accept",
+          "status": "complete",
+          "title": "Local accept: locked recheck and ordering handoff with custody allocation, revalidation and race proof",
+          "observed_at": "2026-11-15T00:34:46Z",
+          "evidence": "Lead review of a06a7cdef (BuddyOfferConversion inside ordering tx: locked recheck, quote/allowance/eligibility/brief revalidation, CAS allocate with stock_cars.version bump, decision row and offer-accepted event); offers.** 91 tests 0 failures incl. 3x20-round native PG 17 races"
+        },
+        {
+          "id": "followup",
+          "status": "complete",
+          "title": "Follow-up after decline (question, saved change, waiting or comparison)",
+          "observed_at": "2026-11-15T00:34:46Z",
+          "evidence": "Lead review of a16521466 GET /offers/{id}/follow-up: owner-gated decline follow-up (waiting or next-offer); change-after-decline brief command is another Story (README brief section); PG tests passed"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-15T00:44:24Z",
+          "evidence": "Lead: README Offer decisions section; base c8d21c25a merged (no drift); ./mvnw -B -q clean verify on native PG 17 :55466: 1425 tests, 0 errors, 0 skipped, 1 failure PresenterClockHttpTest.readinessReportsTheClockCheckAndItsHandlers, which fails identically on base c8d21c25a with a fresh DB (pre-existing); offers.** 91/91"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7504,57 +7751,220 @@
     {
       "assignee": "",
       "id": "FUCQ-476",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T10:25:43Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Consume learned artifacts and capture new learning records",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
+      "slices": [
+        {
+          "id": "s1-inference",
+          "status": "complete",
+          "title": "Java artifact verification, active model reference and learned demand forecast with Node parity bounds",
+          "observed_at": "2026-11-14T09:29:50Z",
+          "evidence": "ad949c0eb lead-reviewed; 12 learning tests incl 187 Node parity cases (92 forecast), max diff 5.55e-17 within 1e-12/1e-9 bounds, outcomes exact; Node regeneration identical; verify 858 tests 0 fail"
+        },
+        {
+          "id": "s2-records",
+          "status": "complete",
+          "title": "Java learning-record envelope and observed projection over Node-shaped rows with Node parity",
+          "observed_at": "2026-11-14T09:58:24Z",
+          "evidence": "472a1be43 lead-reviewed; 16 learning tests; 56 projection + 48 failure + 4 random + 132 validator Node cases replay exactly incl projectionVersion; Node regeneration identical"
+        },
+        {
+          "id": "s2b-source",
+          "status": "complete",
+          "title": "Java PostgreSQL record source, Greg-only service port and native PostgreSQL proof",
+          "observed_at": "2026-11-14T10:25:43Z",
+          "evidence": "9e97b7aca lead-reviewed; 29 learning tests on native PG17 0 fail; real BriefService producer record, 37 bound-port cases equal projection, stale-run/forbidden/read-only; 2000 briefs 4 statements ~0.4 s"
+        },
+        {
+          "id": "s3-integration",
+          "status": "in-progress",
+          "title": "Merge base, full Java verify, README, Render delta and result",
+          "observed_at": "2026-11-14T10:25:43Z"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T21:30:57Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's constrained next-order plan",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
+      "slices": [
+        {
+          "id": "s1",
+          "status": "complete",
+          "title": "Planning domain, demand port and constrained solver",
+          "observed_at": "2026-11-14T09:49:43Z",
+          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
+        },
+        {
+          "id": "s2",
+          "status": "complete",
+          "title": "Node golden equivalence fixtures and replay tests",
+          "observed_at": "2026-11-14T08:58:51Z",
+          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
+        },
+        {
+          "id": "s3",
+          "status": "complete",
+          "title": "Greg order-plan HTTP read and preview, no submission",
+          "observed_at": "2026-11-14T09:49:44Z",
+          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge gcsp-poc-dev and full gcsp-api verify",
+          "observed_at": "2026-11-14T21:30:57Z",
+          "evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T10:07:49Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-478"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-478",
+      "slices": [
+        {
+          "id": "s1-submit",
+          "status": "complete",
+          "title": "Production schema, ports, providers and intentional submission with one durable operation",
+          "observed_at": "2026-11-14T09:17:56Z",
+          "evidence": "Lead-reviewed c7235cdf0: V478_1 schema, provider port (none/synthetic/live-stub), plan-snapshot and clock ports, intentional submit with plan/version checks, intent-before-send, reconcile-before-resubmit, CAS settle; 20 production tests on native PG17 (lost response, provider down, restart new pool, uncertain commit, concurrency)"
+        },
+        {
+          "id": "s2-responses",
+          "status": "complete",
+          "title": "Response reconciliation, confirmed supply queueing, replan trigger and Greg status",
+          "observed_at": "2026-11-14T09:38:30Z",
+          "evidence": "Lead-reviewed 3774c45ac: reconcile pass (provider.reconcile only, never submit), applyAnswer emits production.supply-changed outbox event, confirmations queued into merged StockRelease.queueConfirmedSupply via SupplyQueuePort, Greg status with request/confirmed/queued/released separate, supplyActivity with supplyVersion and replan; 32 production + 24 StockReleaseTest pass on native PG17"
+        },
+        {
+          "id": "s3-http",
+          "status": "complete",
+          "title": "v1 HTTP endpoints, startup selection and reconcile, README",
+          "observed_at": "2026-11-14T09:59:21Z",
+          "evidence": "Lead-reviewed 2c86e4b34: ProductionResource v1 routes (Greg-only submit, Greg/presenter read, presenter scenario script and reconcile), startup selection none/synthetic/live-stub, startup reconcile-only pass, README and properties; 49 production tests; ./mvnw -B verify 895/895 on native PG17"
+        },
+        {
+          "id": "s4-integration",
+          "status": "complete",
+          "title": "Story validation on native PostgreSQL, merged-tree verify and result",
+          "observed_at": "2026-11-14T10:07:49Z",
+          "evidence": "Lead validation at cc362a89a (merged origin/gcsp-poc-dev): ./mvnw -B verify 994/994 on native PG17 incl. 49 production tests; result block 27ff3f505"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T10:17:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-479",
+      "slices": [
+        {
+          "id": "a-clock",
+          "status": "complete",
+          "title": "Clock core: persisted run clock, advance, idempotent tick with ordered handler registry, startup reconcile",
+          "observed_at": "2026-11-14T08:21:06Z",
+          "evidence": "Lead review of 49e287e92: V479_1 clock tables, RunClock/TickRunner; gcsp.api.clock 41/41 native PG 17 (port 55479), full verify 541/0 fail"
+        },
+        {
+          "id": "a2-handlers-http",
+          "status": "complete",
+          "title": "Bound tick handlers (supply, documents, notify), document clock and presenter clock/controls HTTP",
+          "observed_at": "2026-11-14T08:40:43Z",
+          "evidence": "Lead review of 627905de9: bound stock-release/lifecycle-documents/captured-outbox handlers, RunClockDocumentClock, presenter clock/controls HTTP with role refusals; scoped 18/18 rerun, full verify 559/0 fail"
+        },
+        {
+          "id": "b-scenarios",
+          "status": "complete",
+          "title": "Scenario provider switch, explicit demo preparation, isolated reset and restart",
+          "observed_at": "2026-11-14T09:35:00Z",
+          "evidence": "Lead review of d31a5f516: GCSP_SCENARIO_PROVIDER none/demo, explicit DemoPreparation, isolated reset via RunReset, restart keeps runs; scenario+presenter 48/48 rerun native PG, full verify 991/0 fail"
+        },
+        {
+          "id": "b2-faults",
+          "status": "complete",
+          "title": "Synthetic faults, retry and native isolation proofs",
+          "observed_at": "2026-11-14T09:54:12Z",
+          "evidence": "Lead review of 5cfdc4539: run-scoped stock faults, bound approvals/appointments/return-outcomes handlers with startup skip, native journey fault->interrupt->clear->same-tick resume->reset; scoped 88/0, full verify 996/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, full Java verify and story result",
+          "observed_at": "2026-11-14T10:17:02Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
+        }
+      ]
     },
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-14T22:02:46Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-480",
+      "slices": [
+        {
+          "id": "retained-results",
+          "status": "complete",
+          "title": "Retained baseline import and stored-result reads",
+          "observed_at": "2026-11-14T09:07:00Z",
+          "evidence": "Lead-reviewed slice 1: V480_1 schema, verified retained import (process-comparison-94c77601...), Greg/presenter reads; comparison tests 20/20 native, full verify 866/0/0"
+        },
+        {
+          "id": "seeded-inputs",
+          "status": "complete",
+          "title": "Seeded comparison inputs from Java policy at existing sizes",
+          "observed_at": "2026-11-14T09:29:58Z",
+          "evidence": "Lead-reviewed slice 2: Java generator reproduces retained inputHashes for comparison-a/b/c at 1000 employees/850 cars/9 releases; 18 Node golden cases; 8/8 tests; 3 seeds in ~0.5 s, 7 MB heap"
+        },
+        {
+          "id": "measures-experiments",
+          "status": "complete",
+          "title": "Measures, result assembly and experiment checks",
+          "observed_at": "2026-11-14T10:00:16Z",
+          "evidence": "Lead-reviewed slice 3: measures/differences recompute retained process and hold-sweep results exactly; requests 24, refusals 14, prep 38 cases; Node runs replayed to identical digest; 43/43 comparison tests"
+        },
+        {
+          "id": "jobs-recovery",
+          "status": "complete",
+          "title": "Greg job start, progress, failure and restart recovery",
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Lead-reviewed slice 4: Greg-only start, idempotent commandId, one running job, progress/failure/timeout/shutdown/restart-interrupted persisted; no cancel/restart route; no outbox rows; 58/58 comparison tests"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, full Java verify, README and result",
+          "observed_at": "2026-11-14T22:02:46Z",
+          "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7709,27 +8119,27 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-GC-005",
       "id": "FUCQ-412",
-      "jira_observed_at": "2026-11-13T23:18:25.492855+00:00",
-      "note": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
-      "observed_at": "2026-11-13T23:18:48Z",
-      "original_status": "In Progress",
+      "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
+      "observed_at": "2026-11-14T15:39:21Z",
+      "original_status": "In Review",
       "slices": [
         {
-          "evidence": "Lead reviewed unchanged public semantics, effective dates and immutable-seed cache; service21/21 and focused5/5; original baseline fails only the new operation regression as intended. Evidence: docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md. Versions12pass/1 existing fixture fail/3 native skips retained; integration gate separate.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
           "id": "eligibility",
-          "observed_at": "2026-11-13T21:46:37Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Compile immutable eligibility and prove exact semantics/version boundaries"
         },
         {
-          "evidence": "Parent checkpoint integrated and published e4b8195bb35b9e1984e1ceba678f8a3b1e1663a7 from worker802bc58b62d55740b59c29c6d483f8b8eca68a84. Original AC4 remains open/unmet; LowF400 and MediumF484 unresolved, four distinct nativePG skips. Native/file In Progress and lease retained, no built/archive/Done/waiver. Policy-source ownership released for coordinated F413. No further B-Bot execution inferred.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-412-eligibility-compilation-2026-11-13.md",
           "id": "integration",
-          "observed_at": "2026-11-13T23:18:25.492855+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "status": "complete",
           "title": "Lead affected-consumer and connected presentation validation"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Compile immutable eligibility rules for direct lookup",
       "type": "Story",
       "unsliced": false,
@@ -7860,34 +8270,34 @@
       "assignee": "",
       "branch": "dev/DEV-2026-11-13-GC-006",
       "id": "FUCQ-413",
-      "jira_observed_at": "2026-11-12T15:47:47.844Z",
-      "note": "Reviewed checkpoint, AC1-3 met at Node boundary; original AC4 partial/open. Native/file In Progress; no Built/Done/waiver. Matching evidence reused after base9b995759 syncadf1c4b1. See delivery/result record.",
-      "observed_at": "2026-11-14T00:07:42Z",
-      "original_status": "In Progress",
+      "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
+      "note": "Original-scope review-ready: existing native/semantic and connected desktop/narrow evidence reconciled. Lower Bugs and historical failures/skips retained; no new runtime. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+      "observed_at": "2026-11-14T15:39:21Z",
+      "original_status": "In Review",
       "slices": [
         {
-          "evidence": "Lead reviewed complete price diff, callers and scan oracle; 5 focused and21 policy service passes at e1ce7e6d policy hash; heihei and lead-price receipts, docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
           "id": "prices",
-          "observed_at": "2026-11-13T23:52:03Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Compile-price-equality-lookups"
         },
         {
-          "evidence": "Lead reviewed full source/test diff; focused10 and service21 pass, zero fail/skip; policy bcb722c4, focused a8cce951; maximus and lead-allowance receipts; docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
           "id": "allowances",
-          "observed_at": "2026-11-13T23:56:26Z",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
           "status": "complete",
           "title": "Compile-context-allowance-lookups"
         },
         {
-          "evidence": "Sniffles independent PASS; final selected Node72pass1knownF484fail0skip; native6checks; Chrome39checks10captures. AC4 partial/open: hosted-dev/Safari/private/full accessibility; missing body PNG. All owned resources absent; base9b995759 syncedadf1c4b1.",
+          "evidence": "Original AC evidence reconciled by independent acceptance audit; relevant native and connected desktop/narrow observations reused. docs/gcsp/fucq-413-price-allowance-2026-11-13.md",
           "id": "integration",
-          "observed_at": "2026-11-14T00:07:42.723878+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-14T15:39:21.818209+00:00",
+          "status": "complete",
           "title": "Independent-review-and-connected-delivery"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Compile immutable price and allowance lookups",
       "type": "Story",
       "unsliced": false,
