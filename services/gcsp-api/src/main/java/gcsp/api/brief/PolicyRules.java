@@ -82,6 +82,12 @@ final class PolicyRules {
         return Optional.of(new PolicyRules(policyVersion, config, 0, 100, lifecycle, editor, account.get(), shown, a));
     }
 
+    /** The adopted decline follow-up question set, or null when the policy carries none. */
+    JsonNode followupQuestions() {
+        JsonNode v = source.payload(BriefAssumptions.FOLLOWUP_QUESTIONS);
+        return v != null && v.isObject() ? v : null;
+    }
+
     /** Grants and the minimum-loss action; unavailable when the entry is missing or malformed. */
     Grants engagement() {
         JsonNode entry = source.entry(BriefAssumptions.ENGAGEMENT);

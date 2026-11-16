@@ -83,6 +83,12 @@ public class BriefResource {
     }
 
     @POST
+    @Path("/change-after-decline")
+    public Response changeAfterDecline(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        return command(authorization, uri, body, BriefService::changeAfterDecline);
+    }
+
+    @POST
     @Path("/engage")
     public Response engage(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
         return command(authorization, uri, body, BriefService::engage);
