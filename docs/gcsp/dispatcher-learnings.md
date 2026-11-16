@@ -757,3 +757,14 @@ commit and push named paths through the existing helper, preserving concurrent a
   (kill at the grant, retained receipts under `.claude/test-runs/receipts/`, one rerun on the exact tree) awaits
   Codex review. **Follow-up (proposed):** ship one shared, canonical supervisor in `_tools` that enforces every
   assignment limit and writes receipts to a retained path, so workers don't write their own wrappers.
+
+## 2026-11-16 20:25 UTC - GC Codex - DL-20261116-GCC-001 - exact RSS units correct the claimed overshoot
+
+- **Correction:** the recipient's Appendix A gives1,339,015,168bytes for the HTTP process groups.1280MiB is1,342,177,280bytes, so the measured groups were3,162,112bytes below that grant. The earlier20:15/20:19 accounts, repeated in the recipient20:25 entry, incorrectly called that an observed overrun from rounded GB. No full aggregate overshoot is established: supervisor/detached RSS was omitted, so aggregate compliance remains unproved.
+- **Action/outcome:** sent exact arithmetic in follow-up review-02; no grant increase or rerun follows from the unit error. The unapproved+256MiB kill margin, incomplete enforcement and deleted receipts remain actual defects. The unused constructor removal does not by itself invalidate matching HTTP evidence or require a rerun. Requested a finite source-only supervisor/check proposal addressing genuinely missing original-boundary validation; no extra runtime, broader acceptance gate or framework implementation admitted.
+- **Framework follow-up (proposed):** compare integer bytes against integer grants and show both units. Distinguish a deficient enforcement threshold from a measured resource breach, and preserve uncertainty about unmeasured processes.
+
+## 2026-11-16 20:25 UTC - GC Codex - DL-20261114-GC-001 - bounded file follow-up round trip observed
+
+- **Evidence/outcome:** published uniquely identified review-01 through the existing assignment file at20:19UTC; the same recipient wrote a matching acknowledgement at20:21:11UTC and returned its existing-evidence appendix by20:22:36UTC. No UI prompt or duplicate session was used. The prior missed initial assignment remains recorded.
+- **Limit:** this verifies one post-mitigation file round trip; automatic wake-up cause and restart recovery are not independently proved. Keep the last-acknowledged-ID startup fix proposed and require matching receipts rather than inferring delivery from watcher presence.
