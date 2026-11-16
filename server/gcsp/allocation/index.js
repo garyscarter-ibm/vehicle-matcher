@@ -482,11 +482,20 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const quote = await quoteFor(contender, resolved.value); if (quote.status !== 'ok') return quote;
           assignments.push({ ...contender, quote: quote.value, operationId: attempt.operationId, claim: attempt.outcome.value });
         }
+        const occupied = { employeeId: new Set(), entitlementSlotId: new Set(), renewalId: new Set(), orderUuid: new Set() };
+        const occupy = (assignment) => {
+          for (const key of Object.keys(occupied)) {
+            const value = assignment[key];
+            // Set uses SameValueZero; the previous strict comparisons never matched NaN.
+            if (!Number.isNaN(value)) occupied[key].add(value);
+          }
+        };
+        for (const assignment of assignments) occupy(assignment);
         // Skipped contenders need no write: on retry they are skipped again from the same assignments.
         while (next < plan.contenders.length) {
           const contender = plan.contenders[next]; next += 1;
-          const assigned = assignments.some((a) => a.employeeId === contender.employeeId || a.entitlementSlotId === contender.entitlementSlotId
-            || contender.renewalId && a.renewalId === contender.renewalId || a.orderUuid === contender.orderUuid);
+          const assigned = occupied.employeeId.has(contender.employeeId) || occupied.entitlementSlotId.has(contender.entitlementSlotId)
+            || contender.renewalId && occupied.renewalId.has(contender.renewalId) || occupied.orderUuid.has(contender.orderUuid);
           if (!assigned) {
             const resolved = await identity.resolveEmployeeContext(context, contender.employeeId); if (resolved.status !== 'ok') return resolved;
             const quote = await quoteFor(contender, resolved.value); if (quote.status !== 'ok') return quote;
@@ -495,7 +504,11 @@ export function createAllocationService({ repository, policy, clock, identity, c
             const outcome = await claim.tryClaim(resolved.value, { ...candidate, operationId, eventId: event.eventId, runId: context.runId });
             if (!['ok', 'conflict', 'stale-version'].includes(outcome?.status)) return unavailable('claim-pending');
             const attempt = { employeeId: candidate.employeeId, orderUuid: candidate.orderUuid, operationId, outcome };
-            attempts.push(attempt); if (outcome.status === 'ok') assignments.push({ ...candidate, operationId, claim: outcome.value });
+            attempts.push(attempt);
+            if (outcome.status === 'ok') {
+              const assignment = { ...candidate, operationId, claim: outcome.value };
+              assignments.push(assignment); occupy(assignment);
+            }
             const saved = legacy ? { next, attempts, assignments } : { next, count: attempts.length };
             const advanced = await repository.transaction(context, command(`allocation:advance:${event.eventId}:${version}`, legacy ? saved : { ...saved, attempt }),
               async (tx) => {
