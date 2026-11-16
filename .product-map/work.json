@@ -8344,12 +8344,12 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-410",
-      "jira_observed_at": "2026-11-12T15:47:41.758Z",
-      "note": "Lead reviewed native internal-computation development complete; original Jira source status/time retained for parent transition. No new visual screen.",
-      "observed_at": "2026-11-16T20:25:43Z",
-      "original_status": "To Do",
+      "jira_observed_at": "2026-11-16T20:29:59.639151+00:00",
+      "note": "Native In Review after parent source/245input/currentteardown audit and integration d3702ea565e4ff3870e375ea7ffbb296ad09714f.37selected checks pass; original isolated-internal-computation screenshot exemption applies. Development review only; not collaborator acceptance. Runtime deadline/history limitations retained in delivery note.",
+      "observed_at": "2026-11-16T20:29:59Z",
+      "original_status": "In Review",
       "slices": [
         {
           "id": "decline-index",
@@ -8366,7 +8366,7 @@
           "evidence": "Lead delivery review:37/37 scoped tests,0skip; original internal-computation screenshot exemption applies; no SQL/interface/UI changes. Canonical reservation/root/process/listener teardown audited; parent shared integration remains separate. docs/gcsp/fucq410-decline-index-2026-11-16.md"
         }
       ],
-      "status": "To Do",
+      "status": "In Review",
       "title": "Resolve decline exclusions through indexed history",
       "type": "Story",
       "unsliced": false,
