@@ -8379,12 +8379,12 @@
       "branch": "dev/DEV-2026-11-13-GC-003"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-411",
-      "jira_observed_at": "2026-11-12T15:47:43.693Z",
-      "note": "Original native Jira observation/status retained for parent lifecycle sync. Two F411 development slices delivered; parent owns integration and collaborator acceptance. Exact original AC and scoped evidence in docs/gcsp/fucq411-occupancy-sets-2026-11-16.md.",
-      "observed_at": "2026-11-16T21:00:02Z",
-      "original_status": "To Do",
+      "jira_observed_at": "2026-11-16T21:10:01.995Z",
+      "note": "Native In Review verified16Nov after serial integration74d9de062. Original occupancy development complete; collaborator acceptance separate. Selected41passes/1optionalPGskip with focusedNode-rc caveat retained in docs/gcsp/fucq411-occupancy-sets-2026-11-16.md. All worker claims expired; branch/worktree/lease cleaned by normal helper.",
+      "observed_at": "2026-11-16T21:10:21Z",
+      "original_status": "In Review",
       "slices": [
         {
           "id": "occupancy",
@@ -8401,7 +8401,7 @@
           "evidence": "Lead original-AC review; a05 strict receipt: allocation23/23,ownership5/5,runtime7pass/1existingPGskip; no visible contract change. Same895 non-control pins as focused a03; cleanup/input audits passed. docs/gcsp/fucq411-occupancy-sets-2026-11-16.md"
         }
       ],
-      "status": "To Do",
+      "status": "In Review",
       "title": "Track allocation occupancy through identity Sets",
       "type": "Story",
       "unsliced": false,
