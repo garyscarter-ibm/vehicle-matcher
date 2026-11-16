@@ -19,6 +19,8 @@ final class ReplayConnection implements DataSource, AutoCloseable {
     private final DataSource source;
     private final Deque<Connection> idle = new ArrayDeque<>();
     private final List<Connection> all = new ArrayList<>();
+    private static final int ANALYZE_EVERY = 500;
+    private long commits;
 
     ReplayConnection(DataSource source) {
         this.source = source;
@@ -29,6 +31,11 @@ final class ReplayConnection implements DataSource, AutoCloseable {
         Connection real = idle.poll();
         if (real == null || real.isClosed()) {
             real = source.getConnection();
+            // Plans cached while a scratch table was still empty scan whole allocations, so each statement plans afresh.
+            real.unwrap(org.postgresql.PGConnection.class).setPrepareThreshold(0);
+            try (java.sql.Statement st = real.createStatement()) {
+                st.execute("SET synchronous_commit = off");
+            }
             all.add(real);
         }
         Connection target = real;
@@ -40,11 +47,21 @@ final class ReplayConnection implements DataSource, AutoCloseable {
                             return null;
                         }
                         if (method.getName().equals("isClosed") && method.getParameterCount() == 0) return false;
-                        return method.invoke(target, args);
+                        Object out = method.invoke(target, args);
+                        if (method.getName().equals("commit") && ++commits % ANALYZE_EVERY == 0) analyze(target);
+                        return out;
                     } catch (InvocationTargetException e) {
                         throw e.getCause();
                     }
                 });
+    }
+
+    // Stale scratch statistics make allocation's taken-check scan a whole allocation per contender; keep them current.
+    private static void analyze(Connection c) throws SQLException {
+        try (java.sql.Statement st = c.createStatement()) {
+            st.execute("ANALYZE allocation_attempts");
+        }
+        if (!c.getAutoCommit()) c.commit();
     }
 
     private synchronized void giveBack(Connection c) throws SQLException {

@@ -8346,7 +8346,7 @@
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
-      "observed_at": "2026-11-16T13:59:15Z",
+      "observed_at": "2026-11-16T19:48:32Z",
       "slices": [
         {
           "id": "replay-harness",
@@ -8364,19 +8364,22 @@
         },
         {
           "id": "buddy-route",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Buddy route replayed through Java allocation, recommendation and offers",
-          "observed_at": "2026-11-16T13:59:15Z"
+          "observed_at": "2026-11-16T14:37:35Z"
         },
         {
           "id": "job-wiring",
-          "status": "not-started",
-          "title": "Real replay bound at startup with the FUCQ-480 job lifecycle unchanged"
+          "status": "complete",
+          "title": "Real replay bound at startup with the FUCQ-480 job lifecycle unchanged",
+          "observed_at": "2026-11-16T19:48:32Z",
+          "evidence": "Lead-reviewed d8a7a09d9 (merged aa7503b6e): DatabaseComparisonReplay default bean, HTTP job runs real replay to timeout; gcsp.api.comparison.** 65/65 native PG17"
         },
         {
           "id": "full-size-validation",
-          "status": "not-started",
-          "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL"
+          "status": "in-progress",
+          "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL",
+          "observed_at": "2026-11-16T19:48:32Z"
         }
       ]
     }

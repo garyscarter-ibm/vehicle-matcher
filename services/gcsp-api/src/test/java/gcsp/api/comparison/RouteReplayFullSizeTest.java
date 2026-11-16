@@ -35,7 +35,7 @@ class RouteReplayFullSizeTest {
             if (schema != null) ds.setCurrentSchema(schema);
             return ds;
         }, null);
-        for (String route : new String[] {"current", "buddy"}) {
+        for (String route : System.getenv().getOrDefault("GCSP_COMPARISON_FULL_ROUTES", "current,buddy").split(",")) {
             long began = System.nanoTime();
             JsonNode record = replay.replay(new ComparisonReplay.Request(arm, route, node, inputs, prepared.snapshot(), POLICY, 1,
                     "full-size"));
