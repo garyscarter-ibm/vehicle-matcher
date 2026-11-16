@@ -66,8 +66,9 @@ export class GregClient {
   }
   private capture(): Captured | Failure {
     const session = this.auth.state();
-    if (!gregSession(session)) return failed(session.status === 'signed-out' ? 'authentication-required'
-      : session.status === 'ready' || session.status === 'denied' ? 'role-required' : 'context-unavailable');
+    const problem = session.status === 'signed-out' ? 'authentication-required'
+      : session.status === 'ready' || session.status === 'denied' ? 'role-required' : 'context-unavailable';
+    if (!gregSession(session)) return failed(problem);
     return { session, key: gregContextKey(session.context) };
   }
   private same(c: Captured): boolean {
