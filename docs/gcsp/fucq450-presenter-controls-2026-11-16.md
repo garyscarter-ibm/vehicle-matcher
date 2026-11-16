@@ -5,8 +5,9 @@ Observed 16 November 2026. This is an incomplete source checkpoint for
 `79dd4f9883313a13cfcb7d04f60768dfbcdd17b2`. Both original acceptance criteria
 remain unchecked. The initial checkpoint was source-only. The first finite
 Angular attempt failed compilation; the second compiled and passed 83/84 cases.
-A bounded refresh handoff correction is applied, with focused verification pending.
-Browser, live service and connected acceptance work remain unrun.
+Matching retained evidence now covers all 84 selected cases across a02-a04.
+The existing boundary checker fails in an unchanged case-queue template. Browser,
+live service and connected acceptance work remain unrun.
 
 ## Fixed delivery boundary
 
@@ -32,7 +33,7 @@ authentication, backend, deployment or database changes are included.
 | `presenter/presenter.client.ts` | Presenter bearer transport through the existing `AuthPort`, runtime configuration and `PORTAL_FETCH`. Six GET routes and five POST command kinds; no run/account query selector or principal-switch request. |
 | `presenter/presenter.client.spec.ts` | P01-P23, 44 controlled cases, passed in a02; unchanged evidence reused. |
 | `presenter/presenter.component.ts`, `.html`, `.css` | Current readback, step/release, advanced advance/tick, pinned reset confirmation, advertised fault modes, deliberate same-command retry, and read-only inspection entry. Existing kit and semantic tokens. |
-| `presenter/presenter.component.spec.ts` | P01-P26, 30 controlled cases; a02 passed 29/30, with strengthened P20 and focused verification pending. |
+| `presenter/presenter.component.spec.ts` | P01-P26, 30 controlled cases; 29 passed in a03 and strengthened P20 passed in a04, with matching evidence reused. |
 | `routes.ts` | Only the main `presenter` entry loads `PresenterComponent`; the presenter guard and role metadata remain. |
 
 Commands retain immutable submitted inputs and exact serialized bytes; retry is
@@ -274,3 +275,57 @@ Both are under the existing local evidence root's `a03/` directory. Native rc1;
 no sampler or finalizer error. Exact roots/token/reservation and owned live
 identity/group/listener checks passed. Retained regular files totalled 430,618
 bytes after independent audit. No continuous-peak or connected/visual proof.
+
+## Fourth finite attempt: P20 passed; inherited boundary failure
+
+Final product source: `523a6aba280ddc2aacf3a8bf87c311db8fd0601e`, tree
+`b2f10c7500e8c3f697a6df743962273db27323e3`. Allocation a04 ran only P20 using
+the supported Angular filter. Native test exit was 0: one passed, zero failed,
+29 pending. Those 29 non-selected assertions all have skipped status; they are
+intentional exclusions, not new passes. P20 proved the native Retry button was
+enabled, the actual handler ran once and reset preparation occurred a second
+time with exactly the original input only after explicit retry. Busy, retained
+input, new-run readback and no automatic replay assertions also passed. Only
+P20 changed after a03; no further product change was required. This focused
+outcome supports the rendered-control synchronization diagnosis. Earlier real
+failures and diagnosis revisions remain retained.
+
+The matching composite is 84 passed cases: a02 client 44 plus ten auth cases,
+a03 unchanged component 29 and a04 P20. There was no successful single 84-case
+run. The source freezes show only component/spec changed after a02 and only P20
+changed after a03. Unchanged evidence was reused under the explicit finite
+allocation. Local composite-evidence.json records all 84 native case positions,
+names and report hashes, preserving duplicate parameterized titles; SHA-256
+`e5d0ca671a1f4d1057c6ef00d0129b648e22027625a16831979da332e69f4544`.
+
+The unmodified existing boundary checker then exited 1 on
+apps/gcsp-web/src/app/cases/case-queue.component.html: on-screen em dash.
+The file is byte-identical to claim base 79dd4f9883313a13cfcb7d04f60768dfbcdd17b2,
+SHA-256 `5fbde6d6ef71834b457294509b768832796fe1d2db57d315a5bdb087c283e776`;
+the em dashes occur on lines 40-43. The checker stops at this inherited failure,
+so no full boundary pass or completion of later checks is claimed. The file is
+outside this allocation and was not edited. a04 overall strict_result is false
+for this actual boundary failure despite the focused test passing.
+
+Local a04/receipt.json SHA-256:
+`d94d883b07f7194638b4c26a566bdc4489e596a5a58c3fc3735feee569d95660`.
+Source freeze: `bafed27b2b00b253db8dca9dcc08b954964869a05e5763d2a100f5c3356e52a0`.
+Runner: `c71419410005bebbae916b7b70df7f06abe3a164b1a90061025beccac656d05e`.
+Sampled disk/RSS/inclusive peaks were 437,139,456 / 1,233,403,904 /
+1,670,543,360 bytes; work/total elapsed were 30.404 / 37.328 seconds. All 23,008
+dependency file hashes/metadata, borrowed tree, Node and source audits matched.
+Sampler and finalizer errors were empty. Independent cleanup at 22:22:47 UTC
+verified exact scratch/output roots, token/reservation, 94 historical owned
+identities, both groups and listeners absent. Audit SHA-256:
+`b88cf55d0389be8b197d480320f5d2c2073e767f8aae1e1fd3037c631bc6a654`.
+Retained regular evidence was 573,494 bytes then, before the small composite
+index. No continuous-peak, browser, Java/PostgreSQL, connected-service or
+OneDrive-access claim is made. No further runtime was started.
+
+Both original Story criteria remain open. The smallest coherent remaining source
+step is to allocate the existing read-only inspection client/route surface:
+outbox remains a guarded placeholder and presenter comparison inspection is
+unavailable. That needs exact file allocation beyond the main presenter entry.
+Actual isolated-dev controls, direct API permission refusals, reset isolation,
+no impersonation and the applicable rendered-experience proof also remain unrun.
+This is a partial delivery, not Story completion.

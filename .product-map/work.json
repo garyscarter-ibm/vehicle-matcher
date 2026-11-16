@@ -6773,22 +6773,22 @@
           "id": "client",
           "status": "in-progress",
           "title": "Typed presenter commands and current readback",
-          "observed_at": "2026-11-16T22:16:09.639599Z",
-          "evidence": "a02 compilation passed; client44/44 passed. Source/dependencies unchanged for a03; reuse evidence. Connected acceptance open."
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "a02 client44/44passed, unchanged source/dependencies reused. Typed presenter client implemented; actual connected acceptance remains open."
         },
         {
           "id": "view",
           "status": "in-progress",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T22:20:40.848554Z",
-          "evidence": "a03 component29/30passed; P20 preservation,busy and new-run readback assertions passed but explicit retry preparation still failed. Candidate stale-disabled DOM click; test-only enabled/handler assertions applied, verification pending. Inspection remains open."
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite component30passed: a03unchanged29+a04P20. Enabled native Retry/handler/count2/exact reset pins passed after test render synchronisation; no further product change. Outbox placeholder/comparison inspection open."
         },
         {
           "id": "scoped-validation",
           "status": "in-progress",
           "title": "Focused Angular command and route verification",
-          "observed_at": "2026-11-16T22:20:40.848554Z",
-          "evidence": "a03 compiled,component29/30passed,P20count2got1; boundary unrun. Failed a02/a03 preserved. a04 P20-only supported --filter plus boundary on pass authorised; reuse29component+54client/auth. Input/resource/cleanup audits passed."
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite84passed across a02client44/auth10,a03component29,a04P20; no single84run. Boundary rc1 unchanged case-queue emdash; later checks unreached. Failed attempts retained; input/resource/cleanup audits passed. Connected/visual unrun."
         },
         {
           "id": "connected-proof",
@@ -6802,10 +6802,10 @@
           "name": "Cuthbert 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T22:20:40.848554Z",
-          "expires_at": "2026-11-16T22:50:40.848554Z",
-          "source": "a03 failed receipt; direct diagnostic fixture correction and independent review",
-          "status": "P20 native-click diagnostic; finite a04 pending"
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "expires_at": "2026-11-16T22:25:03.397416Z",
+          "source": "Finite a04 P20 pass, inherited boundary failure and independent cleanup",
+          "status": "partial source and scoped evidence returned; original acceptance open"
         },
         {
           "name": "Mr Potato Head 2",
