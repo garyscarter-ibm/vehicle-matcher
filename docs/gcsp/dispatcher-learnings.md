@@ -375,3 +375,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/impact:** the managed capacity check reports `can_start=0 running=2: 9.1 GB of swap in use (stop at 9 GB)`. This prevents new worker admission; it does not identify a responsible process or prove a Story failure. The existing Java implementer remains independently ALIVE.
 - **Action/outcome:** no new claim, worker or parent test/runtime allocation. Retain owned work and receipts; no foreign cleanup or OneDrive access. Resource pressure is observed, while its cause, recovery and any delivery impact beyond admission remain unverified.
 - **Framework follow-up:** retain the capacity tool's reason as well as its count; pressure responses may report swap rather than the normal free-memory format. Do not discard that evidence or infer authority to stop foreign work.
+
+## 2026-11-16 13:01 UTC · GC Codex · DL-20261114-GC-009 · positive admission snapshot observed
+
+- **Evidence/change:** after the earlier swap admission stop, the managed capacity check reports `can_start=2 running=2: 6.1 GB free less 3 GB reserve leaves room for 2 at 1.5 GB each`. Two slots remain below the three required for a new Story lead, so no new claim or allocation was made.
+- **Outcome/limits:** this is a recovered positive admission snapshot; its cause, lasting recovery, cleanup and delivery resolution remain unverified. The Java parent remains UNSURE while its implementer is independently ALIVE; leave the live implementer alone, with no interruption or duplicate. No OneDrive access or foreign cleanup.
+- **Framework follow-up:** preserve the time and admission reason across pressure changes; a positive sample alone does not close a resource or delivery issue.
