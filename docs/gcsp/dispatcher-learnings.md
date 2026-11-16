@@ -381,3 +381,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/change:** after the earlier swap admission stop, the managed capacity check reports `can_start=2 running=2: 6.1 GB free less 3 GB reserve leaves room for 2 at 1.5 GB each`. Two slots remain below the three required for a new Story lead, so no new claim or allocation was made.
 - **Outcome/limits:** this is a recovered positive admission snapshot; its cause, lasting recovery, cleanup and delivery resolution remain unverified. The Java parent remains UNSURE while its implementer is independently ALIVE; leave the live implementer alone, with no interruption or duplicate. No OneDrive access or foreign cleanup.
 - **Framework follow-up:** preserve the time and admission reason across pressure changes; a positive sample alone does not close a resource or delivery issue.
+
+## 2026-11-16 13:04 UTC · GC Codex · DL-20261114-GC-009 · admission stop recurred
+
+- **Evidence/impact:** the closing check reports `can_start=0 running=2: 9.4 GB of swap in use (stop at 9 GB)`, superseding the 13:01 positive sample for current admission. Recovery was not sustained across these observations; the responsible process and underlying cause remain unknown.
+- **Action/outcome:** no new claim, worker or parent runtime was allocated. Preserve existing owned work and leave the live Java implementer undisturbed. New Java test source files are visible, but no frozen slice, executed test result or resource receipt has returned. No foreign cleanup or OneDrive access.
+- **Framework follow-up:** report the closing admission state alongside transient recovery; do not convert a short positive sample or new test files into a resolved resource issue or validated delivery.
