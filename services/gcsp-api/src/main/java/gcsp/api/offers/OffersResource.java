@@ -133,6 +133,13 @@ public class OffersResource {
         body.put("status", o.status());
         if (o.http() == 200) {
             body.set("value", o.value());
+        } else if (o.http() == 202) {
+            body.put("code", o.code());
+            body.put("reason", o.reason());
+            body.put("retryable", false);
+            for (String name : new String[] {"operationId", "offerId", "decisionId", "commandId"}) {
+                body.set(name, o.value().get(name));
+            }
         } else {
             body.put("code", o.code());
             body.put("reason", o.reason());

@@ -40,8 +40,10 @@ final class DecisionEnv implements AutoCloseable {
     final String offerId;
     final Instant[] now = {NOW};
     String mode = "local-synthetic";
+    RemoteBuddy injected;
     OfferDecisions decisions;
     OrderingService ordering;
+    volatile boolean orderingDown;
 
     private DecisionEnv(OffersPg pg, String offerId) {
         this.pg = pg;
@@ -63,7 +65,7 @@ final class DecisionEnv implements AutoCloseable {
     OfferDecisions service(PolicyService policy) {
         PostgresOfferRecords records = new PostgresOfferRecords(() -> true, this::source);
         OfferAccess access = new OfferAccess(records, ctx -> now[0]);
-        RemoteBuddy buddy = new LocalSyntheticBuddy() {
+        RemoteBuddy buddy = injected != null ? injected : new LocalSyntheticBuddy() {
             @Override
             public String mode() {
                 return mode;
@@ -71,7 +73,21 @@ final class DecisionEnv implements AutoCloseable {
         };
         ordering = new OrderingService(source(), new OrderingTerms(policy, ctx -> now[0]), new SyntheticOrderingProvider(source()));
         return new OfferDecisions(() -> true, this::source, access, policy, ctx -> now[0], () -> buddy,
-                () -> Optional.of(ordering), () -> new RepositoryAccountRecords(source()));
+                () -> orderingDown ? Optional.empty() : Optional.of(ordering),
+                () -> new RepositoryAccountRecords(source()));
+    }
+
+    /** Makes the seeded offer a remote-offered one: an acknowledged claim that the hold and the offer both name. */
+    void makeRemoteOffered(RemoteBuddy remote) throws SQLException {
+        injected = remote;
+        pg.update("INSERT INTO pending_operations (environment_id, run_id, operation_id, operation_type, idempotency_key, "
+                + "input_digest, state, outcome, attempts) VALUES (?, 'run-1', 'claim-1', 'buddy-claim', 'k-claim', ?, "
+                + "'acknowledged', '{\"state\":\"offered\"}'::jsonb, 1)", OffersPg.ENV, "a".repeat(64));
+        pg.update("INSERT INTO buddy_operations (environment_id, run_id, operation_id, operation_type, hold_id, payload) "
+                + "SELECT environment_id, run_id, 'claim-1', 'buddy-claim', hold_id, '{}'::jsonb FROM custody_holds");
+        pg.update("UPDATE custody_holds SET operation_id = 'claim-1'");
+        pg.update("UPDATE buddy_offers SET operation_id = 'claim-1'");
+        decisions = service(policy(true));
     }
 
     /** The employee's membership, account record, a pinned brief and a numbered car: what a clean accept needs. */

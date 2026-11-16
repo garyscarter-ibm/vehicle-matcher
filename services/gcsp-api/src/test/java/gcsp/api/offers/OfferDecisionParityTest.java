@@ -58,7 +58,7 @@ class OfferDecisionParityTest {
             }, e -> DecisionEnv.decline("c", "size", 1, 1), 409, "conflict", "offer-no-longer-pending"),
             new Case("car taken", e -> e.pg.update("UPDATE stock_cars SET state = 'allocated'"), OfferDecisionParityTest::standard, 409, "conflict",
                     "selection-authority-changed"),
-            new Case("remote mode", e -> e.mode = "remote", OfferDecisionParityTest::standard, 503, "unavailable", "remote-decision-protocol-required"),
+            new Case("remote mode", e -> e.mode = "remote", OfferDecisionParityTest::standard, 503, "unavailable", "offer-authority-inconsistent"),
             new Case("registry missing", e -> e.decisions = e.service(DecisionEnv.policy(false)), OfferDecisionParityTest::standard, 503, "unavailable",
                     "decline-reasons-unavailable"),
             new Case("accepts", e -> {}, OfferDecisionParityTest::accept, 200, "ok", null),
@@ -79,7 +79,7 @@ class OfferDecisionParityTest {
             new Case("accept after decline", e -> e.decide(DecisionEnv.decline("first", "size", 1, 1)),
                     OfferDecisionParityTest::accept, 409, "conflict", "offer-no-longer-pending"),
             new Case("accept remote mode", e -> e.mode = "remote", OfferDecisionParityTest::accept, 503, "unavailable",
-                    "remote-decision-protocol-required"),
+                    "offer-authority-inconsistent"),
             new Case("accept without terms is invalid", e -> {}, e -> {
                 ObjectNode b = accept(e);
                 b.remove("termsDigest");

@@ -12,6 +12,16 @@ public record OfferOutcome(int http, String status, String code, String reason, 
         return new OfferOutcome(200, "ok", null, null, false, value, null);
     }
 
+    /** The remote decision is recorded but not yet confirmed; the value is the stored pending receipt. */
+    public static OfferOutcome pending(JsonNode value) {
+        return pending(value, "release-pending");
+    }
+
+    public static OfferOutcome pending(JsonNode value, String code) {
+        return new OfferOutcome(202, "pending", code, "Your decision is recorded and is being confirmed.", false, value,
+                null);
+    }
+
     public static OfferOutcome invalid(String code, String reason) {
         return new OfferOutcome(400, "invalid", code, reason, false, null, null);
     }
