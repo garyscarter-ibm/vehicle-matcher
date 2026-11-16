@@ -8293,23 +8293,27 @@
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
-      "observed_at": "2026-11-16T11:13:26Z",
+      "observed_at": "2026-11-16T13:59:15Z",
       "slices": [
         {
           "id": "replay-harness",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Isolated replay run, seeding and shared per-seed evaluation",
-          "observed_at": "2026-11-16T11:13:26Z"
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: scratch-schema run, batched seeding, shared evaluation; RouteReplayCurrentTest 3/3 native PG17 (record digests equal Node runner.json)"
         },
         {
           "id": "current-route",
-          "status": "not-started",
-          "title": "Current route replayed through Java manual claims"
+          "status": "complete",
+          "title": "Current route replayed through Java manual claims",
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: current route records for parity-a/b equal Node exactly; schema dropped on success, refusal and interrupt"
         },
         {
           "id": "buddy-route",
           "status": "not-started",
-          "title": "Buddy route replayed through Java allocation, recommendation and offers"
+          "title": "Buddy route replayed through Java allocation, recommendation and offers",
+          "observed_at": "2026-11-16T13:59:15Z"
         },
         {
           "id": "job-wiring",
