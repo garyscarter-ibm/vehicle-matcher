@@ -696,3 +696,37 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Observed:** one corrected F449 core-a02 attempt passed all39exact cases (client12/projection12/store15), rc0 and strict result true. The additive22files supplied both missing exact-lock packages; pre/post audits agree on23,030files,470represented roots,448required roots and8added export/type entrypoints. The unchanged core39 source/specs were used; the earlier failed compilation and preparation cap breach remain retained.
 - **Finite verification/limits:** sampled disk445,541,568/RSS1,183,416,320/inclusive1,628,941,504bytes and34.73swork/84.24stotal stayed within unchanged grants. Parent independently matched256sourcepins, verified the complete184recorded process identities and owned groups absent, and checked exact runtime roots/canonical reservation absent. Runtime binary/dependency/control audit flags pass; parent did not independently rehash all dependency contents. Continuous peaks remain unproved. Final retained allocation reported1,795,104bytes before the small counted parent audit.
 - **Outcome/follow-up:** copy-closure mitigation is verified for this selected run, not general framework or Story acceptance. Sixteen component/composition cases and original connected/rendered acceptance remain open. Resume the smallest remaining planned chunk using matching frozen evidence and bounded new output, without rerunning successful core checks or widening Story scope.
+
+## 2026-11-16 20:15 UTC · GC Claude Code · DL-20261114-GC-001 · recipient account of the F468 file handoff
+
+- **Correction to 20:08:** the file channel delivered, but my watcher did not detect the 19:53 assignment. Its
+  baseline was taken after Codex had already written, and it also watched my own status file, so my own writes
+  re-baselined it. I found the assignment only when Gary said Codex had replied and I was still "waiting". Receipt
+  therefore relied on a human prompt, not on watcher liveness.
+- **Action/outcome:** re-armed the watcher on Codex-written paths only (assignment JSON, queue, current brief,
+  assignments folder, count of Codex/Delivery/Coordinator headings in the dispatcher note), with the baseline taken
+  after my own writes. Acknowledged in the dispatcher note; Codex confirmed receipt at 20:06:51. F468 is
+  implemented on `claude/java-manual-routes` at 9e64c5949 and pushed, not merged (per the assignment).
+- **Framework follow-up (proposed):** a recipient watcher should baseline from the last acknowledged assignment ID,
+  not from "now"; ignore its own writes; and on start-up, report any assignment newer than its last acknowledgement
+  immediately. The dispatcher's "acknowledged" should require a recipient-written ack naming the assignment ID.
+
+## 2026-11-16 20:15 UTC · GC Claude Code · DL-20261116-GCC-001 · identified: Quarkus HTTP test RSS over a 1280 MiB grant
+
+- **Evidence:** supervised F468 runs (owned PG16, `mvnw -o`, one worker). Plain service tests peaked at 0.99-1.09 GB
+  RSS. `OrderingEmployeeHttpTest` alone peaked at 1.34 GB, over the 1280 MiB grant but within the supervisor's
+  +256 MiB kill margin, so it passed (8/0). `OrderingEmployeeHttpTest,DefaultProfileTest` together peaked at 1.11 GB.
+- **Cause/uncertainty:** the Quarkus test boot plus Postgres in one process group; single observation, so not yet
+  attributable to a specific test.
+- **Action:** reported in the F468 result; no grant change requested. **Follow-up (proposed):** size Quarkus HTTP
+  test grants at about 1.5 GiB, or record a measured per-class peak in the impact map before granting.
+
+## 2026-11-16 20:15 UTC · GC Claude Code · DL-20261116-GCC-002 · identified: earlier Java lane shortfalls against scaffold rules
+
+- **Evidence (self-reported, Java manual-routes lane, slices 2-4b):** an implementer was resumed twice without a fresh
+  capacity check; the tier check ran once rather than before each spawn; one implementer run went to about 87 tool
+  calls / 374k tokens without story points; AGENTS.md was not re-read before spawns. No failure resulted, but these
+  were the rules Gary named.
+- **Action/outcome:** F468 was done inline (the assignment said no descendants), with story points first (5) and one
+  supervised run at a time. **Follow-up (proposed):** a pre-spawn checklist the launcher prints (capacity, tiers,
+  points, AGENTS.md re-read), so it doesn't depend on recall late in a long session.
