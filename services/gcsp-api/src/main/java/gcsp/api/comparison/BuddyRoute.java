@@ -100,6 +100,11 @@ final class BuddyRoute {
     private final Map<String, Counts> counts = new HashMap<>();
     private final Map<String, Integer> declinesByReason = new LinkedHashMap<>();
     private final BriefService brief;
+    /** Timing counters read by RouteReplayFullSizeTest: allocate calls, claimed contenders and time inside allocate. */
+    static final java.util.concurrent.atomic.AtomicLong allocations = new java.util.concurrent.atomic.AtomicLong();
+    static final java.util.concurrent.atomic.AtomicLong contenders = new java.util.concurrent.atomic.AtomicLong();
+    static final java.util.concurrent.atomic.AtomicLong allocateNanos = new java.util.concurrent.atomic.AtomicLong();
+
     private final AllocationService allocation;
     private final BuddyExpiry expiry;
     private final NotificationDispatcher dispatcher;
@@ -301,9 +306,13 @@ final class BuddyRoute {
         List<String> orders = new ArrayList<>();
         release.get("orderUuids").forEach(id -> orders.add(id.textValue()));
         String releaseId = release.get("releaseId").textValue();
+        long began = System.nanoTime();
         AllocationResult result = allocation.allocate(new AllocationScope(run.environmentId, run.runId, run.policyVersion,
                 Instant.ofEpochMilli(at), run.clock.version()), new Trigger("stock-released", releaseId, List.of(), orders));
+        allocateNanos.addAndGet(System.nanoTime() - began);
+        allocations.incrementAndGet();
         if (!(result instanceof AllocationResult.Completed done)) throw refuse("unavailable", "allocation");
+        contenders.addAndGet(done.outcome().path("attempts").size());
         JsonNode assignments = done.outcome().path("assignments");
         List<String> holdIds = new ArrayList<>();
         for (JsonNode a : assignments) holdIds.add(a.path("holdId").asText());

@@ -15,6 +15,8 @@ public final class RouteReplay implements ComparisonReplay {
 
     private final Function<String, DataSource> sources;
     private final String policyRunId;
+    /** Time of the latest seed evaluation, read by RouteReplayFullSizeTest. */
+    static volatile long evaluateNanos;
     private String cacheKey;
     private SeedEvaluation cached;
 
@@ -45,7 +47,9 @@ public final class RouteReplay implements ComparisonReplay {
         String key = request.inputs().manifest().get("inputHash").textValue() + ":" + request.pointsMultiplier();
         if (!key.equals(cacheKey)) {
             cached = null;
+            long began = System.nanoTime();
             cached = SeedEvaluation.evaluate(request.inputs(), policy);
+            evaluateNanos = System.nanoTime() - began;
             cacheKey = key;
         }
         return cached;
