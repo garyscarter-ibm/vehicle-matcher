@@ -158,12 +158,20 @@ export class PresenterComponent implements OnDestroy {
     } else { this.recoveredReset = null; await this.submit(command); }
   }
   async retryAuthentication(): Promise<void> {
-    if (this.pending() || this.reading()) return;
+    if (this.pending() || this.reading() || this.destroyed) return;
     const command = this.retryCommand(); const session = this.auth.state();
     if (command?.kind === 'reset' && session.status === 'ready') {
       this.recoveredReset = { input: command.input, subject: session.context.subject, environmentId: session.context.environmentId, needsPreparation: false };
     }
-    try { await this.auth.retry(); } catch { this.message.set('Sign-in context could not be refreshed. Try again.'); }
+    const generation = this.generation; this.reading.set(true); this.message.set('Refreshing sign-in context. No previous command will be submitted automatically.');
+    try { await this.auth.retry(); } catch { if (!this.destroyed) this.message.set('Sign-in context could not be refreshed. Try again.'); }
+    finally {
+      if (!this.destroyed) {
+        const current = this.auth.state();
+        if (current !== this.session) this.changeSession(current);
+        else if (generation === this.generation) this.reading.set(false);
+      }
+    }
   }
   async signIn(): Promise<void> { await this.auth.signIn('/gcsp/presenter'); }
   ngOnDestroy(): void { this.destroyed = true; this.generation++; this.controller.abort(); }

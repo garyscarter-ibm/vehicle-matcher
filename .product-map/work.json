@@ -6773,22 +6773,22 @@
           "id": "client",
           "status": "in-progress",
           "title": "Typed presenter commands and current readback",
-          "observed_at": "2026-11-16T22:08:27.178284Z",
-          "evidence": "44 authored cases remain unrun. a01 compilation failed on private union indexing; exact input: unknown correction applied, verification pending."
+          "observed_at": "2026-11-16T22:16:09.639599Z",
+          "evidence": "a02 compilation passed; client44/44 passed. Source/dependencies unchanged for a03; reuse evidence. Connected acceptance open."
         },
         {
           "id": "view",
           "status": "in-progress",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T22:08:27.178284Z",
-          "evidence": "P01-P26 (30 expanded cases) authored. Independent review fault/retry deadlock corrected in source with explicit fault-clear retry preserving original tick; verification pending."
+          "observed_at": "2026-11-16T22:16:09.639599Z",
+          "evidence": "a02 component29/30 passed including fault-clear P26. P20 fixture/auth busy gap diagnosed; bounded correction and stronger exact-input/no-replay assertions applied, independently reviewed; focused verification pending. Inspection remains unavailable."
         },
         {
           "id": "scoped-validation",
           "status": "in-progress",
           "title": "Focused Angular command and route verification",
-          "observed_at": "2026-11-16T22:08:27Z",
-          "evidence": "a01 Angular compilation rc1 with nine TS7053 errors; no test cases ran and boundary unrun. Exact type fix and scoped fault/retry regression applied; next authorized finite selection84, verification pending. Local receipt .claude/test-runs/fucq450/a01/receipt.json."
+          "observed_at": "2026-11-16T22:16:09.639599Z",
+          "evidence": "a02 compiled,83/84passed (client44/auth10/component29),P20failed; boundary unrun. Failed evidence preserved. a03 authorized component30+existing boundary only; reuse unchanged54passes. Same resource envelope; cleanup audited."
         },
         {
           "id": "connected-proof",
@@ -6802,10 +6802,10 @@
           "name": "Cuthbert 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-16T22:08:27.178284Z",
-          "expires_at": "2026-11-16T22:38:27.178284Z",
-          "source": "Finite a01 receipt and direct active source correction",
-          "status": "corrected source; scoped verification pending"
+          "observed_at": "2026-11-16T22:16:09.639599Z",
+          "expires_at": "2026-11-16T22:46:09.639599Z",
+          "source": "a02 failed receipt; direct scoped correction and independent review",
+          "status": "corrected auth handoff; component-only a03 pending"
         },
         {
           "name": "Mr Potato Head 2",

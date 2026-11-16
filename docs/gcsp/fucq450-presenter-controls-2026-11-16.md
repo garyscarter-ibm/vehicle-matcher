@@ -4,8 +4,9 @@ Observed 16 November 2026. This is an incomplete source checkpoint for
 `DEV-2026-11-13-018` on `dev/DEV-2026-11-13-018`, based on claim commit
 `79dd4f9883313a13cfcb7d04f60768dfbcdd17b2`. Both original acceptance criteria
 remain unchecked. The initial checkpoint was source-only. The first finite
-Angular compilation attempt below failed before test execution; browser, live
-service and connected acceptance work remain unrun.
+Angular attempt failed compilation; the second compiled and passed 83/84 cases.
+A bounded refresh handoff correction is applied, with focused verification pending.
+Browser, live service and connected acceptance work remain unrun.
 
 ## Fixed delivery boundary
 
@@ -29,9 +30,9 @@ authentication, backend, deployment or database changes are included.
 | --- | --- |
 | `presenter/presenter.types.ts` | Typed clock/tick/control, scenario/reset, fault and refused/pending/unknown projections. |
 | `presenter/presenter.client.ts` | Presenter bearer transport through the existing `AuthPort`, runtime configuration and `PORTAL_FETCH`. Six GET routes and five POST command kinds; no run/account query selector or principal-switch request. |
-| `presenter/presenter.client.spec.ts` | P01-P23, 44 expanded controlled cases; authored and statically reviewed, all unrun. |
+| `presenter/presenter.client.spec.ts` | P01-P23, 44 controlled cases, passed in a02; unchanged evidence reused. |
 | `presenter/presenter.component.ts`, `.html`, `.css` | Current readback, step/release, advanced advance/tick, pinned reset confirmation, advertised fault modes, deliberate same-command retry, and read-only inspection entry. Existing kit and semantic tokens. |
-| `presenter/presenter.component.spec.ts` | P01-P26, 30 expanded controlled cases, including the actual registered lazy route and guard; authored and statically reviewed, all unrun. |
+| `presenter/presenter.component.spec.ts` | P01-P26, 30 controlled cases; a02 passed 29/30, with strengthened P20 and focused verification pending. |
 | `routes.ts` | Only the main `presenter` entry loads `PresenterComponent`; the presenter guard and role metadata remain. |
 
 Commands retain immutable submitted inputs and exact serialized bytes; retry is
@@ -191,3 +192,45 @@ Agents: Cuthbert 2 requested/selected `gpt-6.1-sol/high`; Mr Potato Head 2 and
 Pluto 2 each requested/selected `gpt-6.1-sol/medium`, with no fallback. Both
 implementers ran concurrently in disjoint allocated files after explicit parent
 authorization. Effective model settings were not independently inspectable.
+
+## Second finite attempt: 83/84 passed; bounded refresh correction
+
+Allocation `a02` used source `e9dd2768ff6ffd232348c09c318cb2ead52082ac`,
+tree `24fb96c88bb72d7f1f2751f228262b1c96bf1a53`. Compilation passed.
+The client passed 44/44; route policy and guards each passed 5/5; component
+passed 29/30, including all three P26 fault-clear outcomes. Native exit was 1,
+with 83 passed, one failed and zero pending; the boundary checker remained
+unrun after that failure. P20 expected a second reset preparation but observed
+one. This result does not prove destructive loss of retained reset input.
+
+Independent review found the fixture could observe idle before the scheduled
+auth handoff, then attempt Retry while the new read was busy. It also returned
+run-1 GET projections after changing auth to run-2. Source inspection confirmed
+a brief busy-state gap in `retryAuthentication`, while retained reset input
+survived the same-account/environment handoff. The applied bounded mitigation
+sets busy synchronously, reconciles the latest session on completion and clears
+busy only if its original generation still owns it. P20 now drives explicit
+loading-to-ready auth, supplies consistent run-2 projections, holds the new GET
+open to assert busy ownership and exact retained input, waits for authoritative
+new-run readback, then explicitly retries with unchanged pins and count-two
+preparation assertions. The independent reviewer found no blocking/major source
+issue in this correction. Runtime resolution remains unverified.
+
+The parent released one finite `a03`: component spec only (30 cases), followed
+by the previously unrun existing boundary checker if those pass. Reuse the 54
+unchanged client/auth passes from a02; do not rerun their successful evidence.
+The same grant, one worker, 512 MiB Node heap, pinned dependencies, whole-output
+accounting, deadlines and cleanup apply. No connected or visual proof is added.
+
+The a02 receipt is
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq450/a02/receipt.json`,
+SHA-256 `8a0bb76b85b0e10b79b1e7c7d37428adcb80f14cbd2dff6a7209e41a3fb70034`.
+The independent cleanup audit at 22:11:48 UTC has SHA-256
+`7fa3a2b1c1941a1bddc021256617ca7090ad4d06b2e866b0bd8b816900824ee7`.
+Sampled disk/RSS/inclusive peaks were 441,136,768 / 1,332,805,632 /
+1,764,963,616 bytes; work/total elapsed were 35.370 / 43.778 seconds.
+All 23,008 dependency files, Node and source audits matched; no sampler or
+finalizer error was recorded. Exact scratch/output, token/reservation and owned
+process/group/listener cleanup passed, independently audited. Retained regular
+files totalled 286,976 bytes after that audit. Sampled peaks do not establish
+continuous containment. a01/a02 failed evidence is preserved; no OneDrive access.

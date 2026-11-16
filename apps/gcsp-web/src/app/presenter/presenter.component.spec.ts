@@ -175,8 +175,23 @@ describe('FUCQ-450 registered presenter route and deliberate controls', () => {
   it('P20 retains an incomplete reset across deliberate same-account context refresh and re-prepares identical input only on retry', async () => {
     await enter(); client.submit.mockResolvedValueOnce({ state: 'refused', value: null, refusal: { status: 'unavailable', code: 'scenario-preparation-incomplete', reason: 'Preparation incomplete; retry same reset', retryable: true, runId: 'run-2' } });
     button('Reset scenario').click(); harness.detectChanges(); await completeCommand('Confirm reset'); const original = client.submit.mock.calls[0][0];
-    auth.retry.mockImplementationOnce(async () => { state.set({ status: 'ready', context: { ...context, runId: 'run-2' } }); });
-    await completeCommand('Refresh sign-in context'); expect(client.submit).toHaveBeenCalledOnce(); expect(client.prepareReset).toHaveBeenCalledOnce();
+    const activated = controls({ runId: 'run-2', clockVersion: 1, lastTick: null });
+    let finishAuthentication!: () => void; let finishRead!: (value: PresenterResult<PresenterControls>) => void;
+    client.readControls.mockResolvedValue(ok(activated)).mockReturnValueOnce(new Promise(done => { finishRead = done; }));
+    client.readCurrentScenario.mockResolvedValue(ok(current({ ...activated, currentScenario: scenario })));
+    client.readFaults.mockResolvedValue(ok({ ...faults, runId: 'run-2' }));
+    auth.retry.mockImplementationOnce(async () => {
+      state.set({ status: 'loading' }); await new Promise<void>(done => { finishAuthentication = done; });
+      state.set({ status: 'ready', context: { ...context, runId: 'run-2' } });
+    });
+    button('Refresh sign-in context').click(); expect(page.reading()).toBe(true); expect(auth.retry).toHaveBeenCalledOnce();
+    harness.detectChanges(); expect(page.permitted()).toBe(false); expect(client.submit).toHaveBeenCalledOnce();
+    finishAuthentication(); await wait(() => { expect(page.permitted()).toBe(true); expect(page.reading()).toBe(true); });
+    expect(button('Retry the same command').disabled).toBe(true); expect(page.retryCommand()?.input).toEqual(original.input);
+    expect(client.submit).toHaveBeenCalledOnce(); expect(client.prepareReset).toHaveBeenCalledOnce();
+    finishRead(ok(activated)); await wait(() => { expect(page.controls()?.runId).toBe('run-2'); expect(page.reading()).toBe(false); });
+    expect(page.current()?.runId).toBe('run-2'); expect(page.faults()?.runId).toBe('run-2'); expect(page.readProblems()).toEqual([]);
+    expect(page.retryCommand()?.input).toEqual(original.input); expect(client.submit).toHaveBeenCalledOnce(); expect(client.prepareReset).toHaveBeenCalledOnce();
     await completeCommand('Retry the same command'); expect(client.prepareReset).toHaveBeenCalledTimes(2); expect(client.prepareReset.mock.calls[1][0]).toEqual(original.input);
     expect(client.submit.mock.calls[1][0].input).toEqual(original.input);
   });
