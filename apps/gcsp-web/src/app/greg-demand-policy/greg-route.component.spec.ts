@@ -80,7 +80,8 @@ describe('Greg route integration and lifetime', () => {
     expect(previous.store.view().demand).toBeNull(); expect(client.loadDemand).toHaveBeenCalledTimes(2); expect(client.readPolicy).toHaveBeenCalledTimes(2);
   });
   it('hides previously loaded private figures when the session is replaced with a denied identity', async () => {
-    const route = await open(); expect(root().textContent).toContain('Current demand'); state.set({ status: 'ready', context: { ...ready.context, subject: 'employee-subject', roles: ['employee'] } });
+    const route = await open(); await vi.waitFor(() => expect(route.store.view().demandState).toBe('ready')); await settle();
+    expect(root().textContent).toContain('Current demand'); state.set({ status: 'ready', context: { ...ready.context, subject: 'employee-subject', roles: ['employee'] } });
     await settle(); expect(route.store.view().demand).toBeNull(); expect(root().textContent).not.toContain('Current demand'); expect(root().textContent).toContain('Access refused');
     expect(client.loadDemand).toHaveBeenCalledOnce(); expect(client.readPolicy).toHaveBeenCalledOnce(); expect(client.publish).not.toHaveBeenCalled();
   });
