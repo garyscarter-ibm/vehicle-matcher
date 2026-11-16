@@ -67,6 +67,7 @@ final class ReplayRun implements AutoCloseable {
     private final ReplayConnection pool;
     private final AccountService account;
     private ManualClaims claims;
+    private Runnable tickHook = () -> {};
     private boolean closed;
 
     private ReplayRun(Function<String, DataSource> sources, String schema, String environmentId, String runId,
@@ -94,6 +95,15 @@ final class ReplayRun implements AutoCloseable {
 
     ManualClaims claims() {
         return claims;
+    }
+
+    DataSource pool() {
+        return pool;
+    }
+
+    /** Extra work a tick also does (Node's clock runs every registered expiry handler); the buddy route adds its own. */
+    void onTick(Runnable hook) {
+        this.tickHook = hook;
     }
 
     ClaimScope scope(String employeeId) {
@@ -315,6 +325,62 @@ final class ReplayRun implements AutoCloseable {
     /** Node's tick: every due manual hold expires. */
     void expireDue() {
         claims.expireDue(system, 1_000_000);
+        tickHook.run();
+    }
+
+    /** Offer id to its stored state. */
+    Map<String, String> offerStates(List<String> offerIds) {
+        Map<String, String> out = new HashMap<>();
+        try (Connection c = pool.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT offer_id, state FROM buddy_offers WHERE environment_id = ? AND run_id = ? AND offer_id = ANY(?)")) {
+            ps.setString(1, environmentId);
+            ps.setString(2, runId);
+            ps.setArray(3, c.createArrayOf("text", offerIds.toArray()));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) out.put(rs.getString(1), rs.getString(2));
+            }
+        } catch (SQLException e) {
+            throw database(e);
+        }
+        return out;
+    }
+
+    /** Hold id to its deadline in epoch milliseconds. */
+    Map<String, Long> holdDeadlines(List<String> holdIds) {
+        Map<String, Long> out = new HashMap<>();
+        try (Connection c = pool.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT hold_id, expires_at FROM custody_holds WHERE environment_id = ? AND run_id = ? AND hold_id = ANY(?)")) {
+            ps.setString(1, environmentId);
+            ps.setString(2, runId);
+            ps.setArray(3, c.createArrayOf("text", holdIds.toArray()));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) out.put(rs.getString(1), rs.getObject(2, java.time.OffsetDateTime.class).toInstant().toEpochMilli());
+            }
+        } catch (SQLException e) {
+            throw database(e);
+        }
+        return out;
+    }
+
+    /** Offer notifications raised, and how many of them were delivered through the captured transport. */
+    record Notifications(long raised, long captured) {}
+
+    Notifications notifications() {
+        try (Connection c = pool.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT (SELECT count(*) FROM outbox_events WHERE environment_id = ? AND run_id = ? "
+                        + "AND event_type LIKE 'notification.%'), (SELECT count(*) FROM notification_deliveries "
+                        + "WHERE environment_id = ? AND run_id = ? AND state = 'sent' AND transport = 'captured')")) {
+            ps.setString(1, environmentId);
+            ps.setString(2, runId);
+            ps.setString(3, environmentId);
+            ps.setString(4, runId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return new Notifications(rs.getLong(1), rs.getLong(2));
+            }
+        } catch (SQLException e) {
+            throw database(e);
+        }
     }
 
     /** Hold id to its stored state. */

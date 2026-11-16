@@ -26,6 +26,30 @@ final class ReplayClock implements ClaimClock, AccountClockPort, RecommendationC
         return now;
     }
 
+    long version() {
+        return version;
+    }
+
+    /** The same instant as a java.time.Clock, for the brief service and the notification dispatcher. */
+    java.time.Clock asClock() {
+        return new java.time.Clock() {
+            @Override
+            public java.time.ZoneId getZone() {
+                return java.time.ZoneOffset.UTC;
+            }
+
+            @Override
+            public java.time.Clock withZone(java.time.ZoneId zone) {
+                return this;
+            }
+
+            @Override
+            public Instant instant() {
+                return now;
+            }
+        };
+    }
+
     /** Forward only; a move back is an event-order refusal. */
     void advanceTo(Instant to) {
         if (to.isBefore(now)) throw new ComparisonRunError("invalid-input", "event-order");

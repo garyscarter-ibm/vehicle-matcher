@@ -28,13 +28,15 @@ public final class RouteReplay implements ComparisonReplay {
     public JsonNode replay(Request request) {
         if (Thread.interrupted()) throw new ComparisonInterrupted();
         String route = request.route();
-        if ("buddy".equals(route)) throw new ComparisonUnavailable();
-        if (!"current".equals(route)) throw refuse("invalid-input", "route");
-        PolicyService policy = ReplayPolicy.of(request.policy(), request.pointsMultiplier(), policyRunId);
-        SeedEvaluation evaluation = evaluation(request, policy);
+        boolean buddy = "buddy".equals(route);
+        if (!buddy && !"current".equals(route)) throw refuse("invalid-input", "route");
+        PolicyService base = ReplayPolicy.of(request.policy(), request.pointsMultiplier(), policyRunId);
+        SeedEvaluation evaluation = evaluation(request, base);
+        PolicyService policy = buddy ? BuddyPolicy.of(base, request.inputs().manifest()) : base;
         try (ReplayRun run = ReplayRun.open(sources, request, policy, evaluation, route)) {
             ReplaySelection selection = new ReplaySelection(run, evaluation);
-            return CurrentRoute.replay(run, evaluation, selection, request.codeRevision());
+            return buddy ? BuddyRoute.replay(run, evaluation, selection, request.codeRevision())
+                    : CurrentRoute.replay(run, evaluation, selection, request.codeRevision());
         }
     }
 

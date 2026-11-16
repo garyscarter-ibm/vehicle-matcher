@@ -29,11 +29,11 @@ final class CurrentRoute {
     private static final String THRESHOLD_KEY = "comparison.acceptableFitThreshold";
     private static final String HOLD_KEY = "hold.cart.durationSeconds";
     private static final String REVIEW_KEY = "hold.cart.orderReview.durationSeconds";
-    private static final int RELEASE = 0;
-    private static final int EXPIRY = 1;
-    private static final int ACCESS = 2;
-    private static final int CLAIM = 3;
-    private static final int DECISION = 4;
+    static final int RELEASE = 0;
+    static final int EXPIRY = 1;
+    static final int ACCESS = 2;
+    static final int CLAIM = 3;
+    static final int DECISION = 4;
     // The route rules this replay implements; any other policy value is refused, never approximated.
     private static final Map<String, String> SUPPORTED = Map.ofEntries(
             Map.entry("accessEvent", "once-per-release-at-generated-accessSeconds-until-taken-or-renewal"),
@@ -49,11 +49,17 @@ final class CurrentRoute {
             Map.entry("renewalDeadline", "inclusive"));
     private static final List<String> EVENT_ORDER = List.of("release", "expiry", "access", "claim", "decision");
 
-    private record Rules(long listingToClaimSeconds, long decisionSeconds, double threshold, List<JsonNode> rows) {}
+    record Rules(long listingToClaimSeconds, long decisionSeconds, double threshold, List<JsonNode> rows) {}
 
     @FunctionalInterface
-    private interface Step {
+    interface Step {
         void run(long at);
+    }
+
+    /** Runs once a release has applied, before anyone acts on it (Node's afterRelease). */
+    @FunctionalInterface
+    interface AfterRelease {
+        void run(JsonNode release, long at);
     }
 
     private record Event(long at, int rank, String employeeId, long seq, Step apply) {}
@@ -72,7 +78,7 @@ final class CurrentRoute {
         String status = "active";
     }
 
-    private static final class Person {
+    static final class Person {
         JsonNode employee;
         String id;
         long renewalMs;
@@ -93,7 +99,7 @@ final class CurrentRoute {
         String orderingClosedAt;
     }
 
-    private static final class Car {
+    static final class Car {
         String releaseId;
         boolean released;
         String allocatedTo;
@@ -109,8 +115,10 @@ final class CurrentRoute {
     private final ReplaySelection selection;
     private final String route;
     private final Rules rules;
-    private final Map<String, Person> people = new LinkedHashMap<>();
-    private final Map<String, Car> cars = new HashMap<>();
+    private final Set<String> actors;
+    private AfterRelease afterRelease = (release, at) -> {};
+    final Map<String, Person> people = new LinkedHashMap<>();
+    final Map<String, Car> cars = new HashMap<>();
     private final Map<String, Hold> holds = new LinkedHashMap<>();
     private final PriorityQueue<Event> queue = new PriorityQueue<>(Comparator.comparingLong(Event::at)
             .thenComparingInt(Event::rank).thenComparing(Event::employeeId).thenComparingLong(Event::seq));
@@ -118,22 +126,39 @@ final class CurrentRoute {
     private long seq;
     private int ticks;
 
-    private CurrentRoute(ReplayRun run, SeedEvaluation evaluation, ReplaySelection selection, Rules rules) {
+    private CurrentRoute(ReplayRun run, SeedEvaluation evaluation, ReplaySelection selection, String route, Rules rules,
+            Set<String> actors) {
         this.run = run;
         this.evaluation = evaluation;
         this.selection = selection;
-        this.route = "current";
+        this.route = route;
         this.rules = rules;
+        this.actors = actors;
     }
 
     /** Replays the whole cohort through Java claims and returns the outcome record (Node replayCurrentRoute). */
     static ObjectNode replay(ReplayRun run, SeedEvaluation evaluation, ReplaySelection selection, String codeRevision) {
         Rules rules = readRules(run, evaluation);
-        CurrentRoute route = new CurrentRoute(run, evaluation, selection, rules);
-        route.start();
-        route.scheduleReleases();
-        route.drain();
-        return route.record(codeRevision);
+        CurrentRoute route = open(run, evaluation, selection, "current", null, rules);
+        route.play();
+        return route.record(codeRevision, rules.rows(), out -> {});
+    }
+
+    /** Sets up every employee and car; only the actor ids (null: everyone) get access events. */
+    static CurrentRoute open(ReplayRun run, SeedEvaluation evaluation, ReplaySelection selection, String route,
+            Set<String> actors, Rules rules) {
+        CurrentRoute out = new CurrentRoute(run, evaluation, selection, route, rules, actors);
+        out.start();
+        return out;
+    }
+
+    void afterRelease(AfterRelease hook) {
+        this.afterRelease = hook;
+    }
+
+    void play() {
+        scheduleReleases();
+        drain();
     }
 
     // ---- assumptions ----
@@ -143,7 +168,7 @@ final class CurrentRoute {
                 && value.longValue() <= 9007199254740991L;
     }
 
-    private static Rules readRules(ReplayRun run, SeedEvaluation evaluation) {
+    static Rules readRules(ReplayRun run, SeedEvaluation evaluation) {
         PolicyRead read = new PolicyRead(run.runId, run.inputs.manifest().get("startsAt").textValue(), run.policyVersion);
         Map<String, JsonNode> rows = new HashMap<>();
         for (String key : List.of(HOLD_KEY, REVIEW_KEY, ROUTE_KEY, THRESHOLD_KEY)) {
@@ -192,7 +217,7 @@ final class CurrentRoute {
         now = run.clock.now().toEpochMilli();
     }
 
-    private void schedule(long at, int rank, String employeeId, Step apply) {
+    void schedule(long at, int rank, String employeeId, Step apply) {
         queue.add(new Event(at, rank, employeeId, ++seq, apply));
     }
 
@@ -205,9 +230,11 @@ final class CurrentRoute {
                 release.get("orderUuids").forEach(id -> ids.add(id.textValue()));
                 run.release(release.get("releaseId").textValue(), ids);
                 for (String id : ids) cars.get(id).released = true;
+                afterRelease.run(release, when);
                 List<Person> byId = new ArrayList<>(people.values());
                 byId.sort((a, b) -> a.id.compareTo(b.id));
                 for (Person person : byId) {
+                    if (actors != null && !actors.contains(person.id)) continue;
                     long access = when + (long) person.employee.get("accessSeconds").doubleValue() * 1000;
                     if (person.takenOrderUuid == null && access <= person.renewalMs) schedule(access, ACCESS, person.id, t -> access(person, t));
                 }
@@ -217,7 +244,7 @@ final class CurrentRoute {
 
     // ---- events ----
 
-    private void drain() {
+    void drain() {
         while (!queue.isEmpty()) {
             if (Thread.interrupted()) throw new ComparisonInterrupted();
             Event event = queue.poll();
@@ -391,7 +418,7 @@ final class CurrentRoute {
         return value == null ? JSON.nullNode() : ReplayRecords.number(value);
     }
 
-    private ObjectNode record(String codeRevision) {
+    ObjectNode record(String codeRevision, List<JsonNode> assumptionRows, java.util.function.Consumer<ObjectNode> extend) {
         ObjectNode manifest = run.inputs.manifest();
         ReplayRun.Persisted persisted = run.persisted();
         List<Person> ordered = new ArrayList<>(people.values());
@@ -471,7 +498,7 @@ final class CurrentRoute {
         out.set("threshold", ReplayRecords.number(rules.threshold()));
         out.put("thresholdKey", THRESHOLD_KEY);
         ArrayNode assumptions = out.putArray("assumptions");
-        for (JsonNode row : rules.rows()) {
+        for (JsonNode row : assumptionRows) {
             ObjectNode a = assumptions.addObject();
             for (String name : List.of("key", "value", "unit", "status", "basis", "source", "policyVersion")) {
                 if (row.get(name) != null) a.set(name, row.get(name).deepCopy());
@@ -493,6 +520,7 @@ final class CurrentRoute {
         totals.put("carsAllocated", allocatedCars);
         totals.put("carsHeldNotTaken", heldCars);
         totals.put("carsUnused", carRows.size() - allocatedCars - heldCars);
+        extend.accept(out);
         return out;
     }
 }
