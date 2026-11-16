@@ -17,6 +17,20 @@ const RETAIL_HASH = /(?:^#|[&])(?:m|mingle|knockout)=/;
 const readUrl = (input) => new URL(String(input));
 const relativeUrl = (url) => `${url.pathname}${url.search}${url.hash}`;
 
+// The employee frontend is deployment-owned. Query input never selects its host or API.
+export function employeeEntryUrl(frontendUrl, brand = 'bmw') {
+  if (brand !== 'bmw' || typeof frontendUrl !== 'string' || !/^https?:\/\//u.test(frontendUrl)
+    || /[\s\\?#]/u.test(frontendUrl)) return null;
+  try {
+    const url = new URL(frontendUrl);
+    const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
+    if ((url.protocol !== 'https:' && !(url.protocol === 'http:' && loopback))
+      || url.username || url.password || url.pathname !== '/gcsp/') return null;
+    url.searchParams.set('brand', 'bmw');
+    return url.href;
+  } catch { return null; }
+}
+
 /** Same-entry navigation, retaining retail context except across the employee
  * boundary. Retail answer/share serialization belongs to retailContextUrl. */
 export function buildEntryUrl(input, { experience, brand } = {}) {
@@ -130,6 +144,7 @@ export function retailReturnUrl(input, { brand = resolveEntryContext(input).bran
  * stay explicit; raw URLs and consumed keys are absent from diagnostics. */
 export function resolveEntryContext(input, {
   employeeAvailable = ENTRY_REGISTRY.employeeAvailable,
+  employeeFrontendUrl,
 } = {}) {
   const url = readUrl(input);
   url.searchParams.delete('key');
@@ -155,14 +170,16 @@ export function resolveEntryContext(input, {
   // location or recovery actions. Never copy their retail query/hash onward.
   const location = buildEntryUrl(url, { experience, brand });
   const safeBase = new URL(location, url);
+  const employeeEntry = employeeEntryUrl(employeeFrontendUrl);
   return Object.freeze({
     experience, brand, state, location,
     employeeAvailable: employeeAvailable === true,
+    employeeFrontendUrl: employeeEntry ? new URL('/gcsp/', employeeEntry).href : null,
     links: Object.freeze({
       launcher: buildEntryUrl(safeBase, { experience: 'launcher' }),
       usedCars: buildEntryUrl(safeBase, { experience: 'used-cars' }),
-      employeeCars: buildEntryUrl(safeBase, { experience: 'employee-cars' }),
-      employeeBmw: buildEntryUrl(safeBase, { experience: 'employee-cars', brand: 'bmw' }),
+      employeeCars: (brand === 'bmw' && employeeEntry) || buildEntryUrl(safeBase, { experience: 'employee-cars' }),
+      employeeBmw: employeeEntry || buildEntryUrl(safeBase, { experience: 'employee-cars', brand: 'bmw' }),
     }),
   });
 }

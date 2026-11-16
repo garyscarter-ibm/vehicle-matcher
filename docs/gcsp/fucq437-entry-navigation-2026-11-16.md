@@ -46,8 +46,18 @@ foreign Story objects, their order and outer fields are preserved.
   `/gcsp/` link from the former would therefore misrepresent deployed availability.
   No configured frontend origin has yet been verified. The parent dispatcher
   authorized an explicit public frontend URL capability option with useful
-  unavailability when absent, within the allocated source. Actual public caller
-  wiring remains open if it requires an unallocated file.
+  unavailability when absent. This is now applied in the allocated launcher source:
+  HTTPS (or loopback HTTP), exact `/gcsp/`, no credentials/query/fragment. Configured
+  links send only `brand=bmw`; defensive shared-entry mounting uses `location.replace`
+  to avoid a redirecting Back entry. Legacy journey/cookie-adapter imports are gone.
+  Lead source review found no blocker; all execution remains UNRUN.
+- Actual public `blocks/demo-launcher/demo-launcher.js` still invokes
+  `createEmployeeCapability()` without configuration. `scripts/assemble-site.mjs`
+  only substitutes its enabled flag. Both are outside this allocation. The public
+  entry therefore truthfully remains unavailable. The smallest proposed remaining
+  source boundary is an explicit public frontend URL assembler/caller input and
+  its existing packaging test; actual URL/topology configuration and hosted proof
+  remain original Story work. No hostname or public global was invented.
 - A broad `/gcsp/*` rewrite would mask missing scripts/media with HTML. Existing
   source does not establish an exclusion/regex mechanism. Unknown direct routes
   and dynamic offer refresh remain original work until a supported host contract
@@ -77,6 +87,29 @@ npm test -- --include=src/app/auth/route-policy.spec.ts --include=src/app/auth/r
 Run from `apps/gcsp-web` only under a later explicit resource release. This command
 has not executed. Unchanged ContextClient source already maps malformed/network
 API outcomes to unavailable; source inspection is not credited as a passing test.
+
+The launcher selection is all 52 declared cases in the four affected boundary
+files (15 context, nine employee-entry, 18 navigation and ten render), sequential:
+
+```sh
+node --test --test-concurrency=1 server/test/launcher-context.test.js server/test/launcher-employee-entry.test.js server/test/launcher-navigation.test.js server/test/launcher-render.test.js
+node --test --test-name-pattern='artifact: dev blueprint has independent builds, exact fixed routes and disjoint cache policies' server/test/gcsp-static-angular.test.js
+```
+
+The latter selects one existing blueprint case; fourteen other declared cases
+are excluded. No package assembly/copy is selected for the route metadata change.
+For the shared `safeReturnTo` consumer, the proposed bounded auth selection is six
+existing OIDC sign-in/callback/retry/expiry cases and two existing ContextClient
+typed/malformed-response cases. Reuse matching retained evidence where exact
+source/input/environment pins support it; otherwise run only those eight cases,
+with the precise names and native exclusions recorded in the released plan.
+
+The proposed first release is therefore 31 Angular route cases, 52 launcher cases,
+one static contract case, plus up to eight bounded existing auth cases if matching
+evidence cannot be reused. These are finite targets, not executed pass counts.
+Use the existing parent supervisor and canonical reservation, with one worker;
+no new runner framework is introduced. Runtime roots and immutable source pins
+must be frozen by the dispatcher before any command starts.
 
 Any later released finite run retains the parent-owned resource envelope: 768 MiB
 disk, 1,280 MiB aggregate RSS, 2,048 MiB inclusive allocation, one worker, 384 MiB
