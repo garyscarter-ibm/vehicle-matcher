@@ -34,15 +34,20 @@ foreign Story objects, their order and outer fields are preserved.
 
 - Existing Angular routes, guards, AuthPort/OIDC and offer route supply the agreed
   interfaces. Comparison/presenter/outbox behavior is retained.
-- The wildcard state page currently allows loading/unavailable/denied auth state to
-  hide the distinct not-found outcome. Retry after a thrown context initialization
-  also needs to retain the intended protected route.
-- The static manifest/Render fixed routes omit `/gcsp/comparison`.
+- The wildcard state page now gives the distinct not-found outcome priority over
+  auth state. Safe root query/hash survives sign-in and role landing; thrown
+  initialization preserves the return candidate. Retry handles ordinary void and
+  signed-out results. Same-root recovery reloads navigation and re-evaluates the
+  existing landing guard. Lead source review found no blocker; runtime is UNRUN.
+- `/gcsp/comparison` is now in the static fixed route, exact Render rewrite and
+  no-store header contracts (source checkpoint `118b0098f`).
 - The existing launcher service publishes the shared launcher, whereas
   `gcsp-angular-dev` publishes the separate Angular artifact. A same-origin
   `/gcsp/` link from the former would therefore misrepresent deployed availability.
-  No configured frontend origin has yet been verified. The parent dispatcher is
-  resolving the exact public handoff/configuration boundary.
+  No configured frontend origin has yet been verified. The parent dispatcher
+  authorized an explicit public frontend URL capability option with useful
+  unavailability when absent, within the allocated source. Actual public caller
+  wiring remains open if it requires an unallocated file.
 - A broad `/gcsp/*` rewrite would mask missing scripts/media with HTML. Existing
   source does not establish an exclusion/regex mechanism. Unknown direct routes
   and dynamic offer refresh remain original work until a supported host contract
@@ -60,6 +65,18 @@ dispatcher. Reuse matching existing OIDC/context/offer evidence; select changed
 route/state and launcher/static regressions. Do not rerun full comparison, Java,
 provider or retail suites without changed-boundary justification. Original real
 OIDC, actual email, hosted refresh and rendered/browser evidence remain separate.
+
+The Angular source slice authors 31 expanded cases: six route-policy, nine guard
+and sixteen state-presentation cases. The refresh test mounts the actual shell;
+lazy account/comparison checks use constructor identity. Proposed selection:
+
+```sh
+npm test -- --include=src/app/auth/route-policy.spec.ts --include=src/app/auth/route.guards.spec.ts --include=src/app/pages/state-page.component.spec.ts
+```
+
+Run from `apps/gcsp-web` only under a later explicit resource release. This command
+has not executed. Unchanged ContextClient source already maps malformed/network
+API outcomes to unavailable; source inspection is not credited as a passing test.
 
 Any later released finite run retains the parent-owned resource envelope: 768 MiB
 disk, 1,280 MiB aggregate RSS, 2,048 MiB inclusive allocation, one worker, 384 MiB
