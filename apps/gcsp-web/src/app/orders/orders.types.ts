@@ -3,7 +3,7 @@ import type { AccountFailure, CurrentCarRelationship, EvidenceRecord } from '../
 
 // Java lifecycle v1 read DTOs. Optional evidence stays absent; these types do not validate HTTP/auth.
 export type LifecycleResult<T> = { readonly status: 'ok'; readonly value: T; readonly contractVersion?: string }
-  | (AccountFailure & { readonly value?: T });
+  | (AccountFailure & { readonly value?: T | null });
 export interface OrderIdentity { readonly orderUuid: string; readonly employeeId: string; readonly runId: string }
 export interface OrderScope { readonly employeeId: string; readonly runId: string }
 export interface OrdersPage extends AccountOrders {
@@ -65,6 +65,7 @@ export interface OrderReturnPlan extends OrderIdentity, OwnedStep, EvidenceRecor
   readonly applicable: boolean; readonly state: string | null; readonly scheduled: boolean;
   readonly choices: readonly ReturnChoice[]; readonly offeredSlots: Readonly<Record<string, readonly OfferedSlot[]>>;
   readonly proposalId?: string | null; readonly proposedSlot?: OfferedSlot | null;
+  readonly history?: readonly EvidenceRecord[];
   readonly appointment?: (OwnedStep & EvidenceRecord & { readonly state: string }) | null;
   readonly pending?: EvidenceRecord | null; readonly blocked?: LifecycleNote | null;
   readonly provider?: ProviderEvidence; readonly outcome?: EvidenceRecord | null;

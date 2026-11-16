@@ -569,3 +569,56 @@ update changes no screen/product/source behavior and supplies no new rendered ev
 Commit only the three named metadata paths locally with the Codex trailer, then HOLD.
 Dispatcher owns exact-boundary audit/publication/integration. No worker push, source sync/
 rebase/merge, native update, browser/service, deployment/email or final switch is authorised.
+
+
+## Employee lifecycle screen checkpoint — 14 November 2026
+
+**PARTIAL; HOLD for parent publication/integration.** The 1700 implementation release
+starts at `6a75a85b1bdf920380c6d3fb1070a2c7ac74e96a`. Complete finite evidence, local
+receipt hashes, actual failed attempts, parent route/catalogue recipe and dispatcher
+learning events are in [the lifecycle screen record](fucq446-lifecycle-screen-2026-11-14.md).
+
+Implemented the native employee lifecycle screen, the exact existing Java read/command
+facade and reviewed command coordinator. Complete-list/snapshot reads reuse AccountClient;
+shared auth/runtime/fetch/kit stay unchanged. Own employee authority, exact scope/order,
+returned version/slot/proposal/choice IDs, explicit review, no duplicate/replayed writes,
+pending/refusal/uncertain evidence, abort/late-context handling and supplied current-car
+relationships remain explicit. No inferred current car or Java rebooking repair.
+
+Current selected Angular run **native-5: 116 PASS, eight files, rc0, zero failures/skips**
+at 17:22:55–17:23:32 UTC: controller 31/projection 18/client 26/actions 14/component 11/
+account preview 6/route policy 5/route guards 5. All 136 current source/config/reference inputs
+match its manifest; no source changed afterward. Earlier native-1 and native-2 returned
+rc1/zero tests, native-3 had 103 pass/11 fail, native-4 had 114 pass/2 fail. Their causal fixture/
+type/assertion corrections and full receipts remain recorded; those attempts remain failed.
+
+One finite browser attempt compiled a development fixture bundle, then timed out after
+90 seconds with zero rendered checks/captures. Browser proof is incomplete, precise cause
+unresolved; no retry/repair campaign. Actual desktop/narrow/keyboard visual evidence,
+Safari/private/CSP/accessibility, real Java/OIDC/nativePG, transaction/restart/concurrency,
+email, hosted/full-Story acceptance and production/full builds remain open/unrun.
+
+All six attempts used bounded owned nonsynced local scratch, with explicit local output
+root/reason, canonical locked budgets, private copied dependencies and one worker. Largest
+recorded disk 449686744 B and aggregate RSS 1397555200 B stay below 2 GiB. Each receipt records
+owned groups/scratch/reservation absent, unchanged selected borrowed hashes/metadata/Node
+and source, cleanup errors[]. Latest native/browser receipts include empty group-port
+readbacks; earlier four lack separate port readbacks. Browser also records a preexisting
+unrelated token absent at final readback: cause unverified, foreign continuity not claimed.
+No OneDrive access or historical cloud runner/cleanup operation occurred in this release.
+
+Local retained evidence index `.claude/test-runs/fucq446/lifecycle-screen-local/evidence-index.json`
+SHA256 `f1f60f3d39cf91f6da629ef614d08325620ac02ebed9b27e76cfe3d6ab768968`
+pins 36 files. Native-5 receipt SHA256
+`efc3ba2cf986d80d7ef2c7bc35a4cf7718f240986f3dc2461833fbb499a31c7f`;
+browser-1 receipt SHA256
+`20b82f64f638a65e50a38c90d15c9081a8c424e03560c14f426857169c117c0e`.
+
+Original Story prefix/two unchecked AC and five slices totaling 13 points remain fixed. Only the
+FUCQ-446 map object changes: progress-read, employee-actions and view-parity are
+in-progress/PARTIAL; review-proof/java-integration remain not-started. Native observations,
+expired worker observation and foreign map rows remain intact. FUCQ-499 Low/FUCQ-501 Medium
+stay separate/unfixed; rebooking 3629452 unresolved. Parent binds the route and owns shared
+catalogue/publication/integration. Same parent-verified gpt-6.1-sol/high, no fallback/settings
+change/children. Commit only named paths locally with the Codex trailer, then HOLD; no
+worker push/sync/merge/Jira/lease/deployment/email/external activation/final switch.

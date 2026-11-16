@@ -1,0 +1,142 @@
+<div class="orders-screen">
+  <div class="orders-heading"><gcsp-screen-intro title="Order progress" />
+    @if (contextKey()) { <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="refresh()">Refresh status</button> }
+  </div>
+  @if (!contextKey()) {
+    <gcsp-status-screen title="Sign in to track your order" message="Use your employee account to read your order and tasks." [level]="2">
+      <button gcspButton type="button" (click)="signIn()">Sign in</button>
+    </gcsp-status-screen>
+  } @else if (model(); as p) {
+    @if (orders().length > 1) {
+      <gcsp-labelled-field controlId="tracked-order" label="Order">
+        <select id="tracked-order" [value]="p.selection.order?.orderUuid || ''" [disabled]="busy()" (change)="selectOrder($event)">
+          <option value="">Latest order</option>
+          @for (order of orders(); track order.orderUuid) { <option [value]="order.orderUuid">{{ shown(order.source?.['orderNumber']) || order.orderUuid }}</option> }
+        </select>
+      </gcsp-labelled-field>
+    }
+    @if (p.selection.order; as order) {
+      <section class="order-summary" aria-labelledby="order-summary-title">
+        <div class="order-media">@if (photo(); as src) { <img [src]="src" [alt]="p.vehicle?.name || 'Your ordered car'" (error)="imageFailed()" /> }
+          @else { <p class="gcsp-note">No image available for this car</p> }</div>
+        <div class="order-summary-copy"><p class="gcsp-note">Your order</p><h2 id="order-summary-title">{{ p.vehicle?.name || 'Car details not supplied' }}</h2>
+          <gcsp-fact-list [rows]="[{ label: 'Order reference', value: shown(order.source?.['orderReference']) }, { label: 'Car order number', value: order.source?.orderNumber }]" />
+          @if (state()?.snapshot?.status !== 'ok') { <p class="gcsp-note">{{ failureMessage(state()?.snapshot) }}</p> }
+        </div>
+      </section>
+      <div class="order-feedback" aria-live="polite">
+        @if (busy()) { <p role="status">{{ action().busy ? 'Updating your order…' : 'Reading the latest provider status…' }}</p> }
+        @if (notice()) { <p class="order-notice" tabindex="-1">{{ notice() }}</p> }
+      </div>
+      @if (action().result; as result) {
+        @if (result.status !== 'ok' && result.operationId) { <p class="gcsp-note">Update reference: {{ result.operationId }}</p> }
+        @if (result.status === 'authentication-required' || result.status === 'unauthenticated' || result.status === 'account-changed' || result.status === 'stale-run') {
+          <button gcspButton type="button" (click)="signIn()">Sign in again</button>
+        }
+      }
+      @if (action().review; as review) {
+        <section class="order-review gcsp-panel" tabindex="-1" aria-labelledby="order-review-title" (keydown.escape)="cancel()">
+          <h2 id="order-review-title">{{ review.title }}</h2><p>{{ review.detail }}</p>
+          <p class="gcsp-note">Order {{ order.orderUuid }}</p>
+          <div class="gcsp-actions"><button gcspButton type="button" (click)="confirm()">Confirm</button><button gcspButton variant="ghost" type="button" (click)="cancel()">Keep current details</button></div>
+        </section>
+      }
+      <div class="order-sections" [attr.aria-busy]="busy() ? 'true' : null">
+        <section class="order-panel order-stages" aria-labelledby="order-stages-title">
+          <h2 id="order-stages-title" class="order-actions-heading" tabindex="-1">Your order</h2>
+          @if (p.stages.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.stages) }}</p> }
+          @if (p.stages.value; as stages) {
+            <ol class="stage-list">@for (step of stageRows(); track $index) {
+              <li [class.is-current]="step.current" [class.is-complete]="step.complete" [class.is-failed]="step.failed" [attr.aria-current]="step.current ? 'step' : null">
+                <span>{{ step.label }}</span><strong>{{ step.state }}</strong>
+                @if (step.at) { <time [attr.datetime]="step.at">{{ time(step.at) }}</time> }
+              </li>
+            }</ol>
+            <gcsp-fact-list [rows]="ownership(stages)" />
+            @if (stages.blocked?.reason) { <p class="order-attention">{{ stages.blocked?.reason }}</p> }
+            @if (stages.outcome === 'declined') { <a gcspButton variant="ghost" routerLink="/help">Get help</a> }
+          }
+        </section>
+        <section class="order-panel" aria-labelledby="handover-title"><h2 id="handover-title">Handover</h2>
+          @if (p.appointment.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.appointment) }}</p> }
+          @if (p.appointment.value; as a) {
+            <p class="order-state">{{ a.state === 'scheduled' && a.booked ? 'Handover booked' : a.state === 'completed' ? 'Handover complete' : a.state === 'no-show' ? 'Handover missed' : words(a.state) }}</p>
+            @if (a.state === 'scheduled' && a.booked) { <p>{{ slot(a.slot) }}</p> }
+            @else if (a.state === 'change-proposed') { <p>New time proposed: {{ slot(a.proposedSlot) }}. Not booked yet.</p> }
+            @else if (a.requestedSlot && a.state === 'requested') { <p>Requested: {{ slot(a.requestedSlot) }}. Not booked yet.</p> }
+            @if (a.pending) { <p class="order-attention">Waiting for confirmation of your last update.</p> }
+            @if (a.state === 'completed') { <p>{{ time(fact(a['outcome'], 'at')) }}</p> }
+            @if (a.blocked?.reason || a.eligibility?.reason) { <p class="order-attention">{{ a.blocked?.reason || a.eligibility?.reason }}</p> }
+            <gcsp-fact-list [rows]="ownership(a)" />
+            @if (p.actions.appointment.requestSlotIds.length) {
+              <p>Choose a handover time.</p><ul class="slot-list">@for (slot of a.offeredSlots; track slot.slotId) {
+                @if (p.actions.appointment.requestSlotIds.includes(slot.slotId)) {
+                  <li><span>{{ time(slot.start) }}</span><button gcspButton variant="ghost" type="button" [attr.aria-label]="'Request handover ' + time(slot.start)" [disabled]="!canAct('appointment')" (click)="prepare({ kind: 'request-appointment', slotId: slot.slotId })">Request</button></li>
+                }
+              }</ul>
+            } @else if (a.state === 'not-requested' && !a.pending && !a.blocked && !a.eligibility?.reason) { <p class="gcsp-note">No handover times are available yet.</p> }
+            @if (p.actions.appointment.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('appointment')" (click)="prepare({ kind: 'accept-appointment' })">Accept new handover time</button> }
+            @if (a.history && a.history.length > 1) { <details><summary>Handover history</summary><ol class="history-list">@for (event of a.history; track $index) { <li>{{ words(fact(event, 'state')) }} · {{ time(event['at']) }}</li> }</ol></details> }
+          }
+        </section>
+        <section class="order-panel" aria-labelledby="documents-title"><h2 id="documents-title">Documents and checks</h2>
+          @if (p.documents.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.documents) }}</p> }
+          @if (p.documents.value; as d) {
+            <p class="order-state">{{ d.readiness.ready ? 'Ready for handover' : 'Not ready for handover' }}</p>
+            <gcsp-fact-list [rows]="[{ label: 'Documents', value: d.readiness.documentsComplete ? 'Complete' : 'Outstanding' }, { label: 'Vehicle preparation', value: d.readiness.vehicleReady ? 'Ready' : 'Outstanding' }]" />
+            <ul class="task-list">@for (item of d.items; track item.itemId) {
+              <li [class.is-failed]="item.status === 'failed'"><div><h3>{{ item.label || words(item.itemId) }}</h3><p>{{ owner(item.owner) }} · {{ item.status === 'waiting-for-employee' ? 'Waiting for you' : words(item.status) }}</p>
+                @if (item['overdue'] === true) { <p class="order-attention">Overdue</p> }
+                @if (item['dueAt'] && item.status !== 'complete') { <p class="gcsp-note">Due {{ time(item['dueAt']) }}</p> }
+                @if (item.reason) { <p class="order-attention">{{ item.reason }}</p> }</div>
+                @if (p.actions.documentTaskIds.includes(item.itemId)) { <button gcspButton variant="ghost" type="button" [disabled]="!canAct('documents')" (click)="prepare({ kind: 'acknowledge', itemId: item.itemId })">{{ item.action || 'Acknowledge' }}</button> }
+              </li>
+            } @empty { <li>No documents or checks are listed yet.</li> }</ul>
+            @if (d.readiness.failed.length) { <p class="order-attention">Needs attention: {{ d.readiness.failed.join(', ') }}</p> }
+            @if (d.readiness.blocking.length && !d.readiness.ready) { <p class="gcsp-note">Still to do: {{ d.readiness.blocking.join(', ') }}</p> }
+          }
+        </section>
+        <section class="order-panel" aria-labelledby="relationship-title"><h2 id="relationship-title">Current car</h2>
+          <gcsp-fact-list [rows]="relationshipRows()" />
+          @if (!p.relationship.value) { <p class="gcsp-note">The current-car relationship has not been supplied.</p> }
+        </section>
+        @if (!p.returnPlan.value || p.returnPlan.value.applicable) {
+          <section class="order-panel" aria-labelledby="return-title"><h2 id="return-title">Returning your previous car</h2>
+            @if (p.returnPlan.state !== 'ok') { <p class="gcsp-note">{{ sectionMessage(p.returnPlan) }}</p> }
+            @if (p.returnPlan.value; as r) {
+              <p class="order-state">{{ words(r.state || 'Not planned') }}</p>
+              <gcsp-fact-list [rows]="[{ label: 'Car to return', value: fact(r.currentCar, 'model') }, { label: 'Return place', value: fact(r['location'], 'label') }]" />
+              @if (r.scheduled) { <p>Return booked: {{ time(r['slot'] && fact(r['slot'], 'start')) }}</p> }
+              @else if (r.proposedSlot) { <p>New time proposed: {{ slot(r.proposedSlot) }}. Not booked yet.</p> }
+              @else if (r.state === 'return-requested') { <p>Return requested. Not booked yet.</p> }
+              @if (r.pending) { <p class="order-attention">Waiting for confirmation of your last update.</p> }
+              @if (r.state === 'returned' || r.state === 'return-missed') { <p>{{ time(fact(r.outcome, 'at')) }}</p> }
+              @if (r.outcome && r.outcome['reason']) { <p class="order-attention">{{ fact(r.outcome, 'reason') }}</p> }
+              @if (r.outcome && r.outcome['providerReference']) { <p class="gcsp-note">Return reference: {{ fact(r.outcome, 'providerReference') }}</p> }
+              @if (r.blocked?.reason) { <p class="order-attention">{{ r.blocked?.reason }}</p> }
+              <gcsp-fact-list [rows]="ownership(r)" />
+              @if (r.state === 'not-planned') {
+                @for (choice of r.choices; track choice.id) {
+                  <div class="return-choice"><h3>{{ choice.label || words(choice.id) }}</h3>
+                    @if (!choice.available) { <p class="gcsp-note">{{ choice.reason || 'Not available yet.' }}</p> }
+                    @else { <ul class="slot-list">@for (slot of r.offeredSlots[choice.id] || []; track slot.slotId) {
+                      <li><span>{{ time(slot.start) }}</span><button gcspButton variant="ghost" type="button" [attr.aria-label]="'Request return ' + (choice.label || choice.id) + ' ' + time(slot.start)" [disabled]="!canAct('return') || !p.actions.returnPlan.choices.length" (click)="prepare({ kind: 'request-return', choice: choice.id, slotId: slot.slotId })">Request</button></li>
+                    } @empty { <li>No return times are available yet.</li> }</ul> }
+                  </div>
+                }
+              }
+              @if (p.actions.returnPlan.acceptProposalId) { <button gcspButton type="button" [disabled]="!canAct('return')" (click)="prepare({ kind: 'accept-return' })">Accept new return time</button> }
+              @if (r.history && r.history.length > 1) { <details><summary>Return history</summary><ol class="history-list">@for (event of r.history; track $index) { <li>{{ words(fact(event, 'appointmentState') || fact(event, 'state')) }} · {{ time(event['at']) }}</li> }</ol></details> }
+            }
+          </section>
+        }
+      </div>
+    } @else {
+      <gcsp-status-screen [title]="state()?.phase === 'loading' ? 'Loading your order' : p.selection.state === 'none' ? 'No orders to track' : p.selection.state === 'not-found' ? 'Order not found' : 'Order progress unavailable'"
+        [message]="p.selection.state === 'none' ? 'Your orders will appear here.' : p.selection.state === 'not-found' ? 'This order is not in your current account.' : failureMessage(state()?.orders)" [busy]="state()?.phase === 'loading'" [level]="2">
+        <a gcspButton variant="ghost" routerLink="/account">Your cars</a>
+        @if (state()?.orders?.status === 'authentication-required') { <button gcspButton type="button" (click)="signIn()">Sign in again</button> }
+      </gcsp-status-screen>
+    }
+  } @else { <gcsp-status-screen title="Loading your order" [busy]="true" [level]="2" /> }
+</div>
