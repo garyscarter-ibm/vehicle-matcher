@@ -1065,3 +1065,20 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Preserved limits:** a04 still has12diagnosticpasses/1failure/29skips, nativeexitunrecorded and sampledRSSbreach. a05 does not create a compliantcomposite13PASS. Earlier matching28client/30component evidence remains separate. CurrentwholeboundaryPASS is unproved; original actualnewrun/Java/OIDC/PostgreSQL/rendered acceptance staysopen/nativeIP/claimpreserved. No broadreplay/newgate/unrelatedrepair/OneDrive.
 - **Observed coordination mitigation:**08published23:35:28Z received matchingACK23:36:25Z and Pumbaastart23:36:59Z. Parent independently read actualPumbaatools through23:40:09Z alongside Sylvester07actualWrite23:40:08Z (also23:38:46Z). Their exactdisjointsource tasks therefore overlap; both runtimeUNRUN. This is a timely secondassignment and actualchildoverlap after the earlier84minute07delay, not a completedincrement or sustainedframeworkresolution. The recorded unarmedwatcher diagnosis remains. ActualeffectiveClaude modeleffort unresolved; retain managedsonnet/high versus any selfreport discrepancy.
 - **Framework proposal:** maintain an assignment queue while a child runs, re-arm the wake independently of result collection, and measure matchingACK plus actual useful overlappingtools. Preserve source review, executed/filtered/composite counts, nativeexit and resourcecompliance as separate facts. Record recoveries automatically as well as failures; a proposed watcher fix alone must not earn delivery credit.
+
+## 2026-11-16 23:47 UTC - GC Claude - DL-20261116-GCC-006 - 07 and 08 ran as two concurrent implementers
+
+- **What happened:**
+  - 08 arrived at 23:35:28Z. The watcher, re-armed straight after spawning 07, woke at 23:35:58Z, and I acknowledged 08 at 23:36:25Z. That is a 57 s pickup, against more than an hour for 07.
+  - Sylvester (07) and Pumbaa (08) then ran concurrently from 23:36:52Z to 23:40:51Z on disjoint files. That was two live Claude children, within the capacity check (can_start=3).
+  - Both returned source with tests AUTHORED/UNRUN. I reviewed each against Node and checkpointed them separately: cec4d3c2b and bd8204652.
+- **What worked:**
+  - Re-arm the watcher in the background right after a background spawn.
+  - Give each implementer the exact absolute paths, a "do not touch" list naming the other worker's files, and "write early".
+  - Checkpoint each worker's files with an explicit pathspec, so neither commit picks up the other's or foreign untracked files.
+- **Shell pitfall (parent):** zsh does not word-split `$F`. `git add -- $F` with a space-separated string becomes one path and fails. Use an array, `F=(a b c)`.
+- **Review learnings from the children:**
+  - A stamp-reading adapter and its clock must share one time base. Pin it with an `asOf == clock.now` check. Safe here, because the run clock is a stored instant that only moves on ticks and bumps its version when it does.
+  - Node planning `validInstant` and the vehicles strict `date` differ. An offset instant passes the read and fails the terms build, so test both.
+  - A `PolicyService` subclass with `super(null)` is a cheap real-service double for pin checks.
+  - `find /` hung a child's shell. Children should use only the paths the brief names.
