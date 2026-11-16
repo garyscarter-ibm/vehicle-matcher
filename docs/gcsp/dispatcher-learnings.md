@@ -363,3 +363,9 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence/impact:** the F434 full comments-page read failed once with `MCP -32001: mcp-remote: fetch failed`; the independent full66 Jira snapshot succeeded. The failed read briefly left coordination freshness unverified, without changing Jira or claims.
 - **Action/outcome:** one read retry returned the complete final page, total60/latest3629579, unchanged. This read recovered; the transport cause and any lasting connector repair remain unverified. No application test or additional Story gate was introduced.
 - **Framework follow-up:** retain failed-read diagnostics and freshness separately; use one bounded retry for a transient read, and label old coordination evidence when recovery fails.
+
+## 2026-11-16 12:43 UTC · GC Codex · DL-20261114-GC-001 · parent observation uncertain, implementer live
+
+- **Evidence/diagnosis:** the managed parent check now returns UNSURE after16minutes quiet with nothing pending recorded; its implementer independently returns ALIVE with fresh activity. This supersedes the earlier both-ALIVE observation for the parent only. A parent stall or stopped implementer is not established.
+- **Action/outcome:** follow the existing UNSURE procedure: wait one dispatcher interval and recheck. Leave the live implementer and its source alone; no message, stop, replacement, duplicate or test replay. Current implementation execution is confirmed through the child; parent execution, first-slice delivery and resource/test receipts remain unverified.
+- **Framework follow-up:** preserve per-agent verdicts in supervision summaries and distinguish child activity from parent transcript freshness. This is an observation change, not a verified scheduling or delivery resolution.
