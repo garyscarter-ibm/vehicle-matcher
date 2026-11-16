@@ -6759,15 +6759,73 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-449"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-450",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-16T21:47:34Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Operate presenter scenarios",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-450"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-450",
+      "slices": [
+        {
+          "id": "client",
+          "status": "in-progress",
+          "title": "Typed presenter commands and current readback",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "a02 client44/44passed, unchanged source/dependencies reused. Typed presenter client implemented; actual connected acceptance remains open."
+        },
+        {
+          "id": "view",
+          "status": "in-progress",
+          "title": "Presenter controls and read-only inspection entry",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite component30passed: a03unchanged29+a04P20. Enabled native Retry/handler/count2/exact reset pins passed after test render synchronisation; no further product change. Outbox placeholder/comparison inspection open."
+        },
+        {
+          "id": "scoped-validation",
+          "status": "in-progress",
+          "title": "Focused Angular command and route verification",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite84passed across a02client44/auth10,a03component29,a04P20; no single84run. Boundary rc1 unchanged case-queue emdash; later checks unreached. Failed attempts retained; input/resource/cleanup audits passed. Connected/visual unrun."
+        },
+        {
+          "id": "connected-proof",
+          "status": "not-started",
+          "title": "Original isolated-dev controls and permissions proof"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-018",
+      "workers": [
+        {
+          "name": "Cuthbert 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "expires_at": "2026-11-16T22:25:03.397416Z",
+          "source": "Finite a04 P20 pass, inherited boundary failure and independent cleanup",
+          "status": "partial source and scoped evidence returned; original acceptance open"
+        },
+        {
+          "name": "Mr Potato Head 2",
+          "harness": "codex",
+          "role": "client implementer",
+          "observed_at": "2026-11-16T21:52:30.965280Z",
+          "expires_at": "2026-11-16T21:54:09.034137Z",
+          "source": "Direct source-only child acknowledgement",
+          "status": "source returned; runtime unrun"
+        },
+        {
+          "name": "Pluto 2",
+          "harness": "codex",
+          "role": "view implementer",
+          "observed_at": "2026-11-16T21:52:30.965280Z",
+          "expires_at": "2026-11-16T21:58:03.633937Z",
+          "source": "Direct source-only child acknowledgement",
+          "status": "source returned; runtime unrun"
+        }
+      ]
     },
     {
       "assignee": "",
