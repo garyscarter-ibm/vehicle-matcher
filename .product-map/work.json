@@ -5454,21 +5454,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-410",
-      "jira_observed_at": "2026-11-12T15:47:41.758Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Resolve decline exclusions through indexed history",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-410",
-      "workers": []
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-411",
       "jira_observed_at": "2026-11-12T15:47:43.693Z",
       "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
@@ -8357,6 +8342,56 @@
           "title": "Real-claim-to-order-and-rendered-proof"
         }
       ]
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-410",
+      "jira_observed_at": "2026-11-12T15:47:41.758Z",
+      "note": "Lead reviewed native internal-computation development complete; original Jira source status/time retained for parent transition. No new visual screen.",
+      "observed_at": "2026-11-16T20:25:43Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "id": "decline-index",
+          "status": "complete",
+          "title": "Preparation-scoped-decline-index-and-semantic-regressions",
+          "observed_at": "2026-11-16T20:24:16Z",
+          "evidence": "Lead diff/caller/oracle review passed; focused module 5/5 and existing allocation23/23 + second-offer9/9 under frozen245input a02. docs/gcsp/fucq410-decline-index-2026-11-16.md; identity post-audit matched."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead-review-targeted-allocation-and-second-offer-validation",
+          "observed_at": "2026-11-16T20:24:16Z",
+          "evidence": "Lead delivery review:37/37 scoped tests,0skip; original internal-computation screenshot exemption applies; no SQL/interface/UI changes. Canonical reservation/root/process/listener teardown audited; parent shared integration remains separate. docs/gcsp/fucq410-decline-index-2026-11-16.md"
+        }
+      ],
+      "status": "To Do",
+      "title": "Resolve decline exclusions through indexed history",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-410",
+      "workers": [
+        {
+          "name": "Grub 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T20:25:43Z",
+          "expires_at": "2026-11-16T20:25:43Z",
+          "source": "37/37 scoped validation passed; owned runtime fully removed; parent owns integration",
+          "status": "source and runtime complete; inactive handoff"
+        },
+        {
+          "name": "Scooby Doo 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T20:20:45.912605+00:00",
+          "expires_at": "2026-11-16T20:20:45.912605+00:00",
+          "source": "Final source-only report received; no owned runtime allocation",
+          "status": "completed source slice; inactive"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-003"
     }
   ],
   "version": 1

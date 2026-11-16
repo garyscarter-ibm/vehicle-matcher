@@ -40,6 +40,41 @@ const intent = (brief) => ({
     { value: e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value,
       operator: e.operator, unit: e.unit, state: e.state }])),
 });
+function declineExclusions(rows) {
+  const carsByOffer = new Map(); const briefsByEmployee = new Map(); const declinesByEmployee = new Map();
+  for (const offer of rows.offers) {
+    const offerId = offer.offerId; if (Number.isNaN(offerId)) continue;
+    if (!carsByOffer.has(offerId)) carsByOffer.set(offerId, new Set());
+    carsByOffer.get(offerId).add(offer.orderUuid);
+  }
+  for (const brief of rows.briefs) {
+    if (!briefsByEmployee.has(brief.employeeId)) briefsByEmployee.set(brief.employeeId, new Map());
+    const versions = briefsByEmployee.get(brief.employeeId);
+    // Retain find's first row, including draft and legacy versions.
+    if (!versions.has(brief.briefVersion)) versions.set(brief.briefVersion, brief);
+  }
+  for (const decision of rows.decisions) {
+    if (decision.decision !== 'decline') continue;
+    const cars = carsByOffer.get(decision.offerId); if (!cars) continue;
+    if (!declinesByEmployee.has(decision.employeeId)) declinesByEmployee.set(decision.employeeId, new Map());
+    const byCar = declinesByEmployee.get(decision.employeeId);
+    for (const orderUuid of cars) {
+      if (!byCar.has(orderUuid)) byCar.set(orderUuid, []);
+      byCar.get(orderUuid).push(decision);
+    }
+  }
+  const digests = new WeakMap();
+  const digest = (brief) => {
+    if (!digests.has(brief)) digests.set(brief, inputDigest(intent(brief)));
+    return digests.get(brief);
+  };
+  return (employeeId, orderUuid, brief) => (declinesByEmployee.get(employeeId)?.get(orderUuid) ?? []).some((decision) => {
+    const version = decision.versions?.brief;
+    // Map uses SameValueZero; the former strict comparison never matched NaN versions.
+    const previous = Number.isNaN(version) ? undefined : briefsByEmployee.get(employeeId)?.get(version);
+    return !previous || digest(previous) === digest(brief);
+  });
+}
 const visible = (row, employee) => Array.isArray(row.visibility?.companyIds) && Array.isArray(row.visibility?.schemeIds)
   && row.visibility.companyIds.includes(employee.companyId) && row.visibility.schemeIds.includes(employee.schemeId)
   && (row.visibility.employeeIds === null || Array.isArray(row.visibility.employeeIds) && row.visibility.employeeIds.includes(employee.employeeId));
@@ -190,7 +225,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
       policyVersion: context.policyVersion, assumptions, contenders: [], evaluatedEmployees: [], pool: [...entries.values()],
       inputVersions: { policy: context.policyVersion, clock: instant.clockVersion,
         stock: rows.stock.map((r) => ({ orderUuid: r.orderUuid, version: r.version, revision: r.revision ?? null })).sort((a, b) => ordinal(a.orderUuid, b.orderUuid)), briefs: [] } };
-    const slices = [];
+    const slices = []; const declinedUnchanged = declineExclusions(rows);
     for (const brief of briefs) {
       const employee = rows.employees.find((e) => e.employeeId === brief.employeeId);
       const slot = rows.entitlement_slots.find((s) => s.entitlementSlotId === brief.entitlementSlotId && s.employeeId === brief.employeeId);
@@ -236,10 +271,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
       const decisions = evaluated.value.decisions.map((d) => ({ ...d, blockers: [...d.blockers] }));
       let contending = false; let excluded = false;
       for (const decision of decisions) {
-        const declined = rows.decisions.filter((d) => d.employeeId === employee.employeeId && d.decision === 'decline'
-          && rows.offers.some((o) => o.offerId === d.offerId && o.orderUuid === decision.orderUuid));
-        if (declined.some((d) => { const previous = rows.briefs.find((b) => b.employeeId === employee.employeeId && b.briefVersion === d.versions?.brief);
-          return !previous || inputDigest(intent(previous)) === inputDigest(intent(brief)); })) {
+        if (declinedUnchanged(employee.employeeId, decision.orderUuid, brief)) {
           decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push({ code: 'declined-unchanged' });
         }
         if (decision.gateStatus !== 'eligible' || brief.buddy.holdConsent !== true || letLapse.has(`${employee.employeeId}|${decision.orderUuid}`)) continue;
