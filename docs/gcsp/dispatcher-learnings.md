@@ -311,3 +311,15 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Outcome:** a proposed fix that is now applied and tested, but not yet a verified resolution. The audit is clean
   on today's FUCQ. On the state before the clean-up, it flagged 177 of 180 orphans (the other 3 are exempt).
   Whether new items now arrive parented is unproven until the pollers run the new rules.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-001 · recurrence / mitigation applied
+
+- **Evidence/impact:** a current-root Account investigation proposed independent handoff composition, but the original worker already held that source in unpublished `fa4996cd53766085a2f2950590954a641fce4f5f`, dated14November10:20UTC. Its own delivery appendix explicitly says prepared/unvalidated, awaiting dispatcher runtime release. Checking only published source missed the retained checkpoint and risked duplicate implementation.
+- **Action/outcome:** parent inspected the idle clean owned branch, preserved the checkpoint, normally merged current published base without conflicts, and resumed the same lead for bounded validation/correction with source, selected checks and owned local resources released together. App evidence confirms current execution. No duplicate writer, new claim or completed validation is inferred. The earlier fast-forward safely refused because the retained commit diverged; no work was discarded.
+- **Framework follow-up:** reconcile unpublished owned commits and outstanding runtime releases before another readiness investigation. Associate current source identity, pending next action and original worker with the claim. This is a scheduling mitigation, not yet a verified delivery resolution.
+
+## 2026-11-16 11:40 UTC · GC Codex · DL-20261114-GC-002 · connected readiness gap identified
+
+- **Evidence/impact:** the frozen inventory includes manual draft/discard/stock/quote/review-details and brief preview/change-after-decline routes, but current published Java resource/source inspection finds no corresponding registrations at `da53e8f4d`. Backend F458/F463/F468 remain native In Review; a rendered Account and that tracker status do not establish connected journey coverage. Details: [source gap record](manual-java-contract-gaps-2026-11-16.md).
+- **Action/outcome:** preserved native statuses and original contracts; coordinated the precise producer gaps with the Java lane through F434 comment3629579. Reused independent existing Account work against the present order producers. Source inspection alone establishes neither executed failure nor defect severity, producer repair or acceptance. No new Bug or scope was created by this observation.
+- **Framework follow-up:** link migrated route inventory to actual consumer/producer composition evidence before describing a journey as connected. Keep native review status separate from execution and original integration-proof obligations; no generic new acceptance campaign is introduced.
