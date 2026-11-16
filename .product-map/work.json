@@ -7378,7 +7378,7 @@
     {
       "assignee": "",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-16T10:19:58Z",
+      "observed_at": "2026-11-16T11:25:27Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Complete remote offer acceptance and decline",
@@ -7388,14 +7388,16 @@
       "slices": [
         {
           "id": "remote-decline",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Remote decline: persisted release intent, remote release drive, confirmed finalization, rejected/unknown custody, replay and restart on native PostgreSQL",
-          "observed_at": "2026-11-16T10:19:58Z"
+          "observed_at": "2026-11-16T11:25:27Z",
+          "evidence": "Lead review of remote decline (RemoteOfferDecisions intent-before-I/O, attempt/ack drive, one-tx finalization, V467_1); native PG 17 :55467 RemoteOfferDeclinePgTest 14/14, OfferDecisionsPgTest 17, Parity 1, Race 3, offers+allocation 153/0"
         },
         {
           "id": "remote-accept",
-          "status": "not-started",
-          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart"
+          "status": "in-progress",
+          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
+          "observed_at": "2026-11-16T11:25:27Z"
         },
         {
           "id": "integration",

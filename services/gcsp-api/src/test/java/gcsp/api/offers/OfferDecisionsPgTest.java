@@ -132,11 +132,12 @@ class OfferDecisionsPgTest {
     }
 
     @Test
-    void aRemoteBuddyModeIsRefusedUpFront() throws Exception {
+    void aRemoteModeDeclineWithoutARemoteClaimIsInconsistent() throws Exception {
         env.mode = "remote";
         OfferOutcome o = env.decideOk();
         assertEquals(503, o.http());
-        assertEquals("remote-decision-protocol-required", o.code());
+        assertEquals("offer-authority-inconsistent", o.code());
+        assertEquals(0, env.written());
     }
 
     @Test
