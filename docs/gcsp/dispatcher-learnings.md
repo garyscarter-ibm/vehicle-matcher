@@ -345,3 +345,45 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Evidence:** after F467 integration at `2ad99f0f79be76dc72915a9e488b244a2562727a`, Angular exact-offer/reason reads still send runId queries rejected by Java. Beyond that URL mismatch, successful OfferAccess→OfferView output lacks runId/clockVersion and the richer original quote/comparison structure required by the existing Angular projection validator. Source locations and observed limits are recorded in [the offer composition note](fucq445-integration-blocker-2026-11-14.md).
 - **Impact/action:** URL-only repair would still fail the consumer contract. Keep F445 blocked on its original authoritative read/decision composition; preserve native review statuses and existing Java ownership. No runtime reproduction, weakened validator, fabricated source fact, new acceptance gate, Bug severity or producer repair is claimed.
 - **Framework follow-up:** readiness evidence must trace the emitted success body through the actual consumer validator as well as matching route names. Native In Review and a matching endpoint do not establish composition. This refines the diagnosis; no delivery resolution is verified.
+
+## 2026-11-16 12:22 UTC · GC Codex · DL-20261114-GC-001 · continuation supervision uncertain
+
+- **Evidence/impact:** a successor acknowledgement was observed, but after roughly15minutes no subsequent implementation result or addressable session/transcript handle was available to this dispatcher. The last source observation at12:19 was unchanged. Acknowledgement alone cannot distinguish current execution, a legitimate wait or a stopped session.
+- **Action/outcome:** retained execution as unverified and requested a checkpoint and usable supervision handle through the existing local handoff. No stop, replacement, duplicate writer or test replay was inferred from silence. The managed stall check could not be targeted; its verdict and delivery remain unverified.
+- **Framework follow-up:** handoffs should retain an addressable successor identity, next action and evidence time alongside the branch/checkpoint. Verify that supervision can resume after handoff; an active label or accepted brief alone is not that evidence. This is a coordination mitigation, not a verified delivery resolution or new Story gate.
+
+## 2026-11-16 12:26 UTC · GC Codex · DL-20261114-GC-001 · supervision restored locally
+
+- **Evidence/diagnosis:** targeted discovery within the Java worktree's local harness project found the successor transcript. Managed checks returned ALIVE for both the session and its implementer, with activity2seconds and12seconds before inspection. The coordination status was stale; silence there did not establish a stopped worker.
+- **Action/outcome:** retained the supervision handle locally and left the live workers alone. Current execution is now verified at this observation, while implementation, selected-test results, resource receipts and Story acceptance remain unproven. No replacement, duplicate writer or test replay was needed.
+- **Framework follow-up:** retain the addressable harness identity with handoff evidence, and distinguish status-file freshness from actual harness activity. Local supervision recovery is verified; route delivery and the wider scheduling issue are not resolved by this check.
+
+## 2026-11-16 12:37 UTC · GC Codex · DL-20261116-GC-008 · transient read recovered
+
+- **Evidence/impact:** the F434 full comments-page read failed once with `MCP -32001: mcp-remote: fetch failed`; the independent full66 Jira snapshot succeeded. The failed read briefly left coordination freshness unverified, without changing Jira or claims.
+- **Action/outcome:** one read retry returned the complete final page, total60/latest3629579, unchanged. This read recovered; the transport cause and any lasting connector repair remain unverified. No application test or additional Story gate was introduced.
+- **Framework follow-up:** retain failed-read diagnostics and freshness separately; use one bounded retry for a transient read, and label old coordination evidence when recovery fails.
+
+## 2026-11-16 12:43 UTC · GC Codex · DL-20261114-GC-001 · parent observation uncertain, implementer live
+
+- **Evidence/diagnosis:** the managed parent check now returns UNSURE after16minutes quiet with nothing pending recorded; its implementer independently returns ALIVE with fresh activity. This supersedes the earlier both-ALIVE observation for the parent only. A parent stall or stopped implementer is not established.
+- **Action/outcome:** follow the existing UNSURE procedure: wait one dispatcher interval and recheck. Leave the live implementer and its source alone; no message, stop, replacement, duplicate or test replay. Current implementation execution is confirmed through the child; parent execution, first-slice delivery and resource/test receipts remain unverified.
+- **Framework follow-up:** preserve per-agent verdicts in supervision summaries and distinguish child activity from parent transcript freshness. This is an observation change, not a verified scheduling or delivery resolution.
+
+## 2026-11-16 12:49 UTC · GC Codex · DL-20261114-GC-009 · capacity admission stopped
+
+- **Evidence/impact:** the managed capacity check reports `can_start=0 running=2: 9.1 GB of swap in use (stop at 9 GB)`. This prevents new worker admission; it does not identify a responsible process or prove a Story failure. The existing Java implementer remains independently ALIVE.
+- **Action/outcome:** no new claim, worker or parent test/runtime allocation. Retain owned work and receipts; no foreign cleanup or OneDrive access. Resource pressure is observed, while its cause, recovery and any delivery impact beyond admission remain unverified.
+- **Framework follow-up:** retain the capacity tool's reason as well as its count; pressure responses may report swap rather than the normal free-memory format. Do not discard that evidence or infer authority to stop foreign work.
+
+## 2026-11-16 13:01 UTC · GC Codex · DL-20261114-GC-009 · positive admission snapshot observed
+
+- **Evidence/change:** after the earlier swap admission stop, the managed capacity check reports `can_start=2 running=2: 6.1 GB free less 3 GB reserve leaves room for 2 at 1.5 GB each`. Two slots remain below the three required for a new Story lead, so no new claim or allocation was made.
+- **Outcome/limits:** this is a recovered positive admission snapshot; its cause, lasting recovery, cleanup and delivery resolution remain unverified. The Java parent remains UNSURE while its implementer is independently ALIVE; leave the live implementer alone, with no interruption or duplicate. No OneDrive access or foreign cleanup.
+- **Framework follow-up:** preserve the time and admission reason across pressure changes; a positive sample alone does not close a resource or delivery issue.
+
+## 2026-11-16 13:04 UTC · GC Codex · DL-20261114-GC-009 · admission stop recurred
+
+- **Evidence/impact:** the closing check reports `can_start=0 running=2: 9.4 GB of swap in use (stop at 9 GB)`, superseding the 13:01 positive sample for current admission. Recovery was not sustained across these observations; the responsible process and underlying cause remain unknown.
+- **Action/outcome:** no new claim, worker or parent runtime was allocated. Preserve existing owned work and leave the live Java implementer undisturbed. New Java test source files are visible, but no frozen slice, executed test result or resource receipt has returned. No foreign cleanup or OneDrive access.
+- **Framework follow-up:** report the closing admission state alongside transient recovery; do not convert a short positive sample or new test files into a resolved resource issue or validated delivery.
