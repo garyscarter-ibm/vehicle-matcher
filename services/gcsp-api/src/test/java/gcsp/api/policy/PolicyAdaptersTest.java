@@ -71,6 +71,30 @@ class PolicyAdaptersTest {
                 .assumptions("gcsp-policy-v1").isEmpty());
     }
 
+    @Test
+    void theBriefAdapterCarriesTheOptionalFollowupQuestionsOnlyWhenThePinnedVersionHasThem() throws Exception {
+        assertNull(brief("run-1").assumptions("gcsp-policy-v1").get().entries().get(BriefAssumptions.FOLLOWUP_QUESTIONS));
+        JsonNode reviewed = new com.fasterxml.jackson.databind.ObjectMapper().readTree(java.nio.file.Files.readAllBytes(
+                java.nio.file.Path.of("../../server/gcsp/policy/reviewed/offer-followup-questions-v1.json")));
+        JsonNode value = reviewed.get("definitions").get(0).get("value");
+        PolicyService adopted = new PolicyService(new PolicySource() {
+            @Override
+            public List<JsonNode> loadVersions(String runId) throws PolicySourceException {
+                ObjectNode seed = Seeds.seed();
+                ObjectNode row = Seeds.assumption(seed, BriefAssumptions.ENGAGEMENT).deepCopy();
+                row.put("key", BriefAssumptions.FOLLOWUP_QUESTIONS).set("value", value.deepCopy());
+                ((com.fasterxml.jackson.databind.node.ArrayNode) seed.get("assumptions")).add(row);
+                return List.of(seed);
+            }
+        });
+        BriefAssumptions found = new PolicyBriefAdapter(adopted, CLOCK, Optional.empty(), Optional.of("run-1"))
+                .assumptions("gcsp-policy-v1").orElseThrow();
+        assertEquals(BriefAssumptions.KEYS.size() + 1, found.entries().size());
+        JsonNode entry = found.entries().get(BriefAssumptions.FOLLOWUP_QUESTIONS);
+        assertEquals(BriefAssumptions.FOLLOWUP_QUESTIONS, entry.get("key").textValue());
+        assertEquals(value, entry.get("value"));
+    }
+
     private static AccountScope scope(String company, String scheme, String grade) {
         return new AccountScope("env", "run-1", "e1", null, List.of("employee"), company, scheme, grade, null,
                 "gcsp-policy-v1");
