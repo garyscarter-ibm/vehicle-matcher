@@ -5740,16 +5740,46 @@
       "assignee": "",
       "id": "FUCQ-418",
       "jira_observed_at": "2026-11-12T15:49:01.144Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
+      "note": "Original8pt contract unchanged; reviewed source checkpoint. See docs/gcsp/fucq418-delivery.md for originalAC, native result and actual resource failure. Native Jira observation/status retained.",
+      "observed_at": "2026-11-16T07:54:49Z",
       "original_status": "To Do",
-      "slices": [],
+      "slices": [
+        {
+          "id": "static-cache",
+          "status": "complete",
+          "title": "6pt: bounded static calculation reuse and focused regression coverage",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Dot reviewed exact source/cache inputs and full cached/uncached outputs; focused10/10 and selected consumer checks passed; docs/gcsp/fucq418-delivery.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "2pt: original consumer validation, source review and connected evidence disposition",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "evidence": "Reviewed101selected passes plus1native PostgreSQL pass; original initial skip retained, connected evidence mapped, resource deadline failure disclosed; docs/gcsp/fucq418-delivery.md."
+        }
+      ],
       "status": "To Do",
       "title": "Reuse unchanged static suitability across releases",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-418",
-      "workers": []
+      "workers": [
+        {
+          "name": "Dot",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "expires_at": "2026-11-16T07:54:49Z"
+        },
+        {
+          "name": "Foxy 2",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-16T07:54:49Z",
+          "expires_at": "2026-11-16T07:54:49Z"
+        }
+      ]
     },
     {
       "assignee": "",
