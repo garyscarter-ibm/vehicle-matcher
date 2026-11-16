@@ -1,0 +1,79 @@
+<div class="gcsp-presenter">
+  <gcsp-screen-intro kicker="Presenter" title="Captured emails" lede="Captured messages and delivery status." />
+  <div class="gcsp-presenter-bar">
+    <p class="gcsp-note" role="status">@if (view() === 'ready') { {{ messages().length }} messages returned for this run, newest first. } @else if (view() === 'loading') { Loading captured emails. }</p>
+    <button gcspButton variant="ghost" type="button" [disabled]="!canRefresh()" (click)="refresh()">Refresh</button>
+  </div>
+  @if (view() === 'loading') {
+    <gcsp-status-screen title="Loading captured emails" [level]="2" [busy]="true" />
+  } @else if (view() !== 'ready') {
+    <gcsp-status-screen [title]="failureTitle()" [message]="failureMessage()" [level]="2" announcement="alert">
+      @if (view() === 'unavailable' && canRefresh()) { <button gcspButton type="button" (click)="refresh()">Retry</button> }
+    </gcsp-status-screen>
+  } @else if (messages().length === 0) {
+    <gcsp-status-screen title="No emails yet" message="No captured messages were returned for this run." [level]="2" />
+  } @else {
+    <div class="gcsp-mail-filters" role="group" aria-label="Filter returned messages">
+      <gcsp-labelled-field controlId="outbox-state" label="Delivery state">
+        <select id="outbox-state" [value]="stateFilter()" (change)="setFilter('state', $event)">
+          <option value="">All states</option>
+          @for (state of states(); track state) { <option [value]="state">{{ state === 'sent' ? 'Processed' : words(state) }}</option> }
+        </select>
+      </gcsp-labelled-field>
+      <gcsp-labelled-field controlId="outbox-recipient" label="Recipient">
+        <select id="outbox-recipient" [value]="recipientFilter()" (change)="setFilter('recipient', $event)">
+          <option value="">All recipients</option>
+          @for (recipient of recipients(); track recipient[0]) { <option [value]="recipient[0]">{{ recipient[1] }}</option> }
+        </select>
+      </gcsp-labelled-field>
+      <gcsp-labelled-field controlId="outbox-kind" label="Message kind">
+        <select id="outbox-kind" [value]="kindFilter()" (change)="setFilter('kind', $event)">
+          <option value="">All kinds</option>
+          @for (kind of kinds(); track kind) { <option [value]="kind">{{ words(kind) }}</option> }
+        </select>
+      </gcsp-labelled-field>
+    </div>
+    <p class="gcsp-note" role="status">Showing {{ filtered().length }} of {{ messages().length }} returned messages.</p>
+    @if (filtered().length === 0) {
+      <gcsp-status-screen title="No matching emails" message="No returned messages match these filters." [level]="2">
+        <button gcspButton variant="ghost" type="button" (click)="clearFilters()">Clear filters</button>
+      </gcsp-status-screen>
+    } @else {
+      <div class="gcsp-mail">
+        <ul class="gcsp-mail-list" aria-label="Captured emails">
+          @for (message of filtered(); track message.jobId) {
+            <li><button class="gcsp-mail-row" type="button" [attr.aria-current]="selected()?.jobId === message.jobId ? 'true' : null" (click)="select(message.jobId)">
+              <span class="gcsp-mail-to">{{ recipient(message) }}</span>
+              <span>{{ subject(message) }}</span>
+              <span class="gcsp-mail-meta">Demo clock: {{ time(message.time) }}</span>
+              <span class="gcsp-mail-status" [class.is-failed]="message.state === 'failed'">{{ status(message) }}</span>
+              @if (message.state === 'retrying' || message.state === 'failed') { <span class="gcsp-mail-hint">{{ message.attempts }} {{ message.attempts === 1 ? 'attempt' : 'attempts' }}. {{ error(message) }}</span> }
+            </button></li>
+          }
+        </ul>
+        @if (selected(); as message) {
+          <section class="gcsp-mail-detail" aria-label="Selected email">
+            <h2 class="gcsp-mail-heading" tabindex="-1">{{ subject(message) }}</h2>
+            <p class="gcsp-mail-line">To {{ recipient(message) }}. {{ status(message) }}. Demo clock: {{ time(message.time) }}.</p>
+            <p class="gcsp-note">{{ deliveryNote(message) }}</p>
+            @if (safeOfferLink(message.offerLink); as link) {
+              <div class="gcsp-mail-offer"><a gcspButton variant="ghost" [href]="link" target="_blank" rel="noopener noreferrer">Open the offer<span class="gcsp-vh"> (opens in a new tab)</span></a></div>
+            } @else { <p class="gcsp-note">Offer link not available</p> }
+            @if (emailDocument(); as document) {
+              <iframe class="gcsp-mail-frame" sandbox="" referrerpolicy="no-referrer" [title]="'Email preview: ' + subject(message)" [srcdoc]="document"></iframe>
+            } @else { <p class="gcsp-note">Email content is not available.</p> }
+            @if (message.textBody !== null) {
+              <details class="gcsp-mail-fold"><summary>Plain-text version</summary><pre class="gcsp-mail-text">{{ message.textBody }}</pre></details>
+            }
+            <details class="gcsp-mail-fold"><summary>Delivery attempts</summary>
+              <dl class="gcsp-mail-facts"><div><dt>Attempts</dt><dd>{{ message.attempts }}</dd></div>
+                @if (message.state === 'retrying') { <div><dt>Next attempt, demo clock</dt><dd>{{ time(message.nextAttemptAt) }}</dd></div> }
+                @if (error(message)) { <div><dt>Problem</dt><dd>{{ error(message) }}</dd></div> }
+              </dl>
+            </details>
+          </section>
+        }
+      </div>
+    }
+  }
+</div>

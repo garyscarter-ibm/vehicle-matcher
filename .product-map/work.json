@@ -6771,17 +6771,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-451",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Inspect notifications and follow delivered offer links",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-452",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -8463,6 +8452,66 @@
           "expires_at": "2026-11-16T21:37:22Z",
           "status": "returned",
           "source": "Source and scoped42-check delivery complete; local receipt a01/receipt.json, observed worker exit/return"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-451",
+      "observed_at": "2026-11-16T22:34:46Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect notifications and follow delivered offer links",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Read-only current-run notification inspection",
+          "observed_at": "2026-11-16T22:34:46Z",
+          "evidence": "Six Angular source/spec files authored and lead-reviewed; 59 finite cases UNRUN, route/rendered actual Java inspection proof pending. Delivery note docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+        },
+        {
+          "id": "offer-return",
+          "status": "not-started",
+          "title": "Delivered offer link sign-in and ownership return"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Route, rendered Java and newly received email acceptance"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-019",
+      "workers": [
+        {
+          "name": "Scrappy Doo 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:34:46.165256+00:00",
+          "expires_at": "2026-11-16T23:04:46.165256+00:00",
+          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
+          "status": "lead review and finite validation preparation; runtime unrun"
+        },
+        {
+          "name": "Wile E. Coyote 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:34:46.165256+00:00",
+          "expires_at": "2026-11-16T22:34:46.165256+00:00",
+          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
+          "status": "returned source; authored tests unrun"
+        },
+        {
+          "name": "Mulan 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:34:46.165256+00:00",
+          "expires_at": "2026-11-16T22:34:46.165256+00:00",
+          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
+          "status": "returned source; authored tests unrun"
         }
       ]
     }
