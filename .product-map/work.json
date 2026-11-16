@@ -6829,17 +6829,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-453",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -8588,6 +8577,85 @@
           "expires_at": "2026-11-16T22:49:16Z",
           "source": "01a1e683-7488-7b10-939e-82deb2790a08",
           "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
+        }
+      ]
+    },
+    {
+      "assignee": "garyscarter-ibm",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-16T23:20:35Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "jobs",
+          "status": "in-progress",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected Java roles and rendered acceptance evidence"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "Partial source/fixture result:28clienta02+30componenta03 pass on matchingclosure; actual boundaryrc1 inheritedcasequeueemdash. BothoriginalACopen:JavaReplay/newrun,parentroute/auth,connected/renderedproof missing. No slice complete.",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Hugo 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
+          "source": "/root/foghorn_leghorn_2/hugo_3",
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
+        },
+        {
+          "name": "Bertie 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
+          "source": "/root/foghorn_leghorn_2/bertie_2",
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
         }
       ]
     }
