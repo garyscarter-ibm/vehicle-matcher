@@ -8458,7 +8458,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-451",
-      "observed_at": "2026-11-16T22:34:46Z",
+      "observed_at": "2026-11-16T22:44:26Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect notifications and follow delivered offer links",
@@ -8470,8 +8470,8 @@
           "id": "inspection",
           "status": "in-progress",
           "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-16T22:34:46Z",
-          "evidence": "Six Angular source/spec files authored and lead-reviewed; 59 finite cases UNRUN, route/rendered actual Java inspection proof pending. Delivery note docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+          "observed_at": "2026-11-16T22:44:26Z",
+          "evidence": "a01 at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7: 20 client + 38 component passes, one refresh native-select failure, boundary UNRUN; source-only three-option correction and strengthened existing case independently reviewed PASS; one affected case pending. Original Java/rendered/mail acceptance open. See docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
         },
         {
           "id": "offer-return",

@@ -17,19 +17,19 @@
       <gcsp-labelled-field controlId="outbox-state" label="Delivery state">
         <select id="outbox-state" [value]="stateFilter()" (change)="setFilter('state', $event)">
           <option value="">All states</option>
-          @for (state of states(); track state) { <option [value]="state">{{ state === 'sent' ? 'Processed' : words(state) }}</option> }
+          @for (state of states(); track state) { <option [value]="state" [selected]="stateFilter() === state">{{ state === 'sent' ? 'Processed' : words(state) }}</option> }
         </select>
       </gcsp-labelled-field>
       <gcsp-labelled-field controlId="outbox-recipient" label="Recipient">
         <select id="outbox-recipient" [value]="recipientFilter()" (change)="setFilter('recipient', $event)">
           <option value="">All recipients</option>
-          @for (recipient of recipients(); track recipient[0]) { <option [value]="recipient[0]">{{ recipient[1] }}</option> }
+          @for (recipient of recipients(); track recipient[0]) { <option [value]="recipient[0]" [selected]="recipientFilter() === recipient[0]">{{ recipient[1] }}</option> }
         </select>
       </gcsp-labelled-field>
       <gcsp-labelled-field controlId="outbox-kind" label="Message kind">
         <select id="outbox-kind" [value]="kindFilter()" (change)="setFilter('kind', $event)">
           <option value="">All kinds</option>
-          @for (kind of kinds(); track kind) { <option [value]="kind">{{ words(kind) }}</option> }
+          @for (kind of kinds(); track kind) { <option [value]="kind" [selected]="kindFilter() === kind">{{ words(kind) }}</option> }
         </select>
       </gcsp-labelled-field>
     </div>

@@ -89,10 +89,14 @@ describe('presenter captured email inspection', () => {
   });
   it('refreshes only on request and retains a matching selection and local filters', async () => {
     const messages = [message(), message({ jobId: 'mail-2', subject: 'Second email' })]; read.mockResolvedValue(ok(messages)); await render();
-    rows()[1].click(); fixture!.detectChanges(); filter('kind', 'replacement-offer');
+    rows()[1].click(); fixture!.detectChanges();
+    filter('state', 'sent'); filter('recipient', 'employee-1'); filter('kind', 'replacement-offer');
     button('Refresh').click(); fixture!.detectChanges(); await settled();
     expect(read).toHaveBeenCalledTimes(2); expect(root().querySelector('.gcsp-mail-heading')?.textContent).toBe('Second email');
-    expect((root().querySelector('#outbox-kind') as HTMLSelectElement).value).toBe('replacement-offer');
+    for (const [id, value] of [['state', 'sent'], ['recipient', 'employee-1'], ['kind', 'replacement-offer']]) {
+      expect(fixture!.componentInstance[`${id}Filter` as 'stateFilter' | 'recipientFilter' | 'kindFilter']()).toBe(value);
+      expect((root().querySelector(`#outbox-${id}`) as HTMLSelectElement).value).toBe(value);
+    }
     expect(Array.from(root().querySelectorAll('button')).map((b) => b.textContent?.trim())).not.toContain('Send');
     expect(text()).not.toContain('Retry delivery'); expect(text()).not.toContain('Act as');
   });
