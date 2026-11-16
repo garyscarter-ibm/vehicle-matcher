@@ -79,7 +79,7 @@ class OfferDecisionParityTest {
             new Case("accept after decline", e -> e.decide(DecisionEnv.decline("first", "size", 1, 1)),
                     OfferDecisionParityTest::accept, 409, "conflict", "offer-no-longer-pending"),
             new Case("accept remote mode", e -> e.mode = "remote", OfferDecisionParityTest::accept, 503, "unavailable",
-                    "remote-decision-protocol-required"),
+                    "offer-authority-inconsistent"),
             new Case("accept without terms is invalid", e -> {}, e -> {
                 ObjectNode b = accept(e);
                 b.remove("termsDigest");

@@ -8,6 +8,9 @@ import gcsp.api.allocation.DriveResult;
 import gcsp.api.allocation.ReconcileResult;
 import gcsp.api.allocation.RemoteBuddy;
 import gcsp.api.identity.Principal;
+import gcsp.api.ordering.OrderingResult;
+import gcsp.api.ordering.OrderingScope;
+import gcsp.api.ordering.OrderingService;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Inspection;
@@ -16,6 +19,7 @@ import gcsp.api.persistence.PendingOperations;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.persistence.Tx;
+import gcsp.api.persistence.Work;
 import gcsp.api.persistence.WorkResult;
 import gcsp.api.policy.PolicyClock;
 import java.sql.Connection;
@@ -39,7 +43,7 @@ final class RemoteOfferDecisions {
     private static final String UNKNOWN = "unknown";
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
 
-    private record Pend(String state, int attempts, long version, JsonNode outcome) {
+    record Pend(String state, int attempts, long version, JsonNode outcome) {
         boolean open() {
             return "intent".equals(state) || "pending".equals(state);
         }
@@ -49,12 +53,18 @@ final class RemoteOfferDecisions {
         }
     }
 
-    private record Rows(String type, JsonNode payload, String holdState, String holdOperationId, long holdVersion,
+    record Rows(String type, JsonNode payload, String holdState, String holdOperationId, long holdVersion,
             String offerState, long offerVersion, String carState, long carVersion, boolean otherOccupant) {
+        boolean selection() {
+            return SELECTION.equals(type);
+        }
+
         boolean aligned() {
-            return "release-pending".equals(holdState) && payload.path("operationId").asText().equals(holdOperationId)
+            return (selection() ? "selection-pending" : "release-pending").equals(holdState)
+                    && payload.path("operationId").asText().equals(holdOperationId)
                     && holdVersion == payload.path("expectedHoldVersion").asLong(-1)
-                    && "release-pending".equals(offerState) && offerVersion == payload.path("expectedOfferVersion").asLong(-1)
+                    && (selection() ? "decision-pending" : "release-pending").equals(offerState)
+                    && offerVersion == payload.path("expectedOfferVersion").asLong(-1)
                     && "released".equals(carState) && carVersion == payload.path("expectedStockVersion").asLong(-1)
                     && !otherOccupant;
         }
@@ -74,15 +84,159 @@ final class RemoteOfferDecisions {
         return "offer-op:" + Canonical.digest(F.arrayNode().add(runId).add(offerId).add(DECLINE));
     }
 
+    /** One selection intent per command: a refused selection restores the offer, so a new command needs a new operation. */
+    static String selectionId(String runId, String offerId, String commandId) {
+        return "offer-op:" + Canonical.digest(F.arrayNode().add(runId).add(offerId).add(SELECTION).add(commandId));
+    }
+
     /** The intent commits first; the answer is always the stored pending receipt, whatever the inline drive finds. */
     OfferOutcome decline(Principal p, String offerId, ObjectNode input, String commandId, String digest,
             String reasonCode, long expectedOffer, long expectedHold, Instant now) {
+        OfferDecisions.Verdict refusal = new OfferDecisions.Verdict();
+        return decide(p, offerId, input, commandId, refusal,
+                tx -> intent(tx, p, offerId, commandId, digest, reasonCode, expectedOffer, expectedHold, now, refusal));
+    }
+
+    /** Remote accept: precheck what ordering will need, then persist the selection intent; the drive converts on confirmation. */
+    OfferOutcome accept(Principal p, String offerId, ObjectNode input, String commandId, String digest, long expectedOffer,
+            long expectedHold, Instant now) throws SQLException {
+        OrderingService service = decisions.orderingService().orElse(null);
+        if (service == null) return OfferDecisions.unavailable();
+        Object[] row;
+        try (Connection c = dataSource.getConnection()) {
+            row = OfferDecisions.one(c, "SELECT h.slot_id, k.version, o.brief_version, o.quote_id, h.hold_id, o.state FROM buddy_offers o "
+                    + "JOIN custody_holds h ON h.environment_id = o.environment_id AND h.run_id = o.run_id "
+                    + "AND h.hold_id = o.hold_id JOIN stock_cars k ON k.environment_id = o.environment_id "
+                    + "AND k.run_id = o.run_id AND k.order_uuid = o.order_uuid WHERE o.environment_id = ? "
+                    + "AND o.run_id = ? AND o.offer_id = ?",
+                    rs -> new Object[] {rs.getString(1), rs.getLong(2), rs.getLong(3), rs.getString(4), rs.getString(5),
+                            rs.getString(6)}, p.environmentId(), p.runId(), offerId);
+        }
+        if (row == null) return OfferOutcome.notFound();
+        if (!"active".equals(row[5])) {
+            // Not actionable: the locked recheck gives the exact answer (or the stored receipt on a replay).
+            OfferDecisions.Verdict settled = new OfferDecisions.Verdict();
+            return decide(p, offerId, input, commandId, settled, tx -> {
+                OfferDecisions.Locked l = decisions.lock(tx, p, offerId, expectedOffer, expectedHold, null, now, settled, true);
+                return l == null ? WorkResult.refuse(settled.outcome.code(), settled.outcome.reason())
+                        : WorkResult.refuse("stale-version", "The offer changed.");
+            });
+        }
+        String slotId = (String) row[0];
+        long carVersion = (Long) row[1];
+        long brief = (Long) row[2];
+        String quoteId = (String) row[3];
+        String holdId = (String) row[4];
+        Long mileage = input.path("expectedReturnMileage").isIntegralNumber() ? input.get("expectedReturnMileage").longValue()
+                : null;
+        // The ordering intent is submitted after the hold and car versions bump once, so it names the post-intent versions.
+        ObjectNode ordering = orderingInput(commandId, offerId, holdId, expectedHold + 1, brief, quoteId, carVersion + 1,
+                input.get("termsDigest"), input.get("declarations"));
+        OrderingScope scope = new OrderingScope(p.environmentId(), p.runId(), p.employeeId(), slotId, p.policyVersion());
+        OfferDecisions.Verdict verdict = new OfferDecisions.Verdict();
+        BuddyOfferConversion converter = new BuddyOfferConversion(decisions, verdict,
+                new BuddyOfferConversion.Ask(p, offerId, commandId, digest, expectedOffer, mileage));
+        OrderingResult checked = service.precheck(scope, ordering, converter);
+        if (!(checked instanceof OrderingResult.Ok)) {
+            // A stored receipt still answers a replay before this refusal is reached.
+            if (verdict.outcome == null) {
+                verdict.outcome = checked instanceof OrderingResult.Refused r ? OfferDecisions.refused(r)
+                        : OfferOutcome.of(503, "unavailable", checked instanceof OrderingResult.Unavailable u ? u.code()
+                                : "offer-decision-unavailable", "Ordering is unavailable right now. Try again shortly.", true);
+            }
+            OfferOutcome refusal = verdict.outcome;
+            return decide(p, offerId, input, commandId, verdict, tx -> WorkResult.refuse(refusal.code(), refusal.reason()));
+        }
+        OfferDecisions.Verdict intentVerdict = new OfferDecisions.Verdict();
+        BuddyOfferConversion revalidator = new BuddyOfferConversion(decisions, intentVerdict,
+                new BuddyOfferConversion.Ask(p, offerId, commandId, digest, expectedOffer, mileage));
+        return decide(p, offerId, input, commandId, intentVerdict, tx -> selectionIntent(tx, p, offerId, commandId, digest,
+                expectedOffer, expectedHold, now, intentVerdict, revalidator, scope, ordering, mileage, carVersion, brief,
+                quoteId));
+    }
+
+    private static ObjectNode orderingInput(String commandId, String offerId, String holdId, long holdVersion, long brief,
+            String quoteId, long stockVersion, JsonNode termsDigest, JsonNode declarations) {
+        ObjectNode in = F.objectNode();
+        in.put("commandId", "selection-offer:" + Canonical.digest(F.arrayNode().add(offerId).add(commandId)));
+        in.putObject("source").put("type", "buddy-offer").put("holdId", holdId).put("expectedHoldVersion", holdVersion)
+                .put("expectedDraftVersion", brief);
+        in.put("expectedQuoteId", quoteId);
+        in.put("expectedStockVersion", stockVersion);
+        in.set("termsDigest", termsDigest);
+        in.set("declarations", declarations);
+        return in;
+    }
+
+    private WorkResult selectionIntent(Tx tx, Principal p, String offerId, String commandId, String digest,
+            long expectedOffer, long expectedHold, Instant now, OfferDecisions.Verdict refusal,
+            BuddyOfferConversion revalidator, OrderingScope scope, ObjectNode ordering, Long mileage, long carVersion,
+            long brief, String quoteId) throws SQLException {
+        OfferDecisions.Locked l = decisions.lock(tx, p, offerId, expectedOffer, expectedHold, carVersion, now, refusal, true);
+        if (l == null) return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
+        OfferDecisions.Offer offer = l.offer();
+        OfferDecisions.Hold hold = l.hold();
+        if (!l.holdId().equals(ordering.path("source").path("holdId").asText()) || !hold.slotId().equals(scope.entitlementSlotId())
+                || offer.briefVersion() != brief || !offer.quoteId().equals(quoteId)
+                || !l.car().attributes().path("orderNumber").asText("").matches("\\d{7}")) {
+            refusal.outcome = OfferDecisions.authorityChanged();
+            return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
+        }
+        if (revalidator.revalidate(tx, scope, l, now) != null) {
+            return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
+        }
+        String env = p.environmentId();
+        String run = p.runId();
+        String holdId = l.holdId();
+        String nowText = PolicyClock.iso(now);
+        String operationId = selectionId(run, offerId, commandId);
+        String decisionId = OfferDecisions.decisionId(run, offerId);
+
+        tx.cas("UPDATE custody_holds SET state = 'selection-pending', operation_id = ?, version = version + 1, "
+                + "updated_at = now() WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ? "
+                + "AND state = 'active'", operationId, env, run, holdId, hold.version());
+        tx.cas("UPDATE buddy_offers SET state = 'decision-pending', version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND offer_id = ? AND version = ? AND state = 'active'",
+                env, run, offerId, offer.version());
+        tx.cas("UPDATE stock_cars SET version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? "
+                + "AND order_uuid = ? AND version = ?", env, run, offer.orderUuid(), l.car().version());
+
+        ObjectNode payload = F.objectNode();
+        payload.put("operationId", operationId).put("offerId", offerId).put("holdId", holdId)
+                .put("orderUuid", offer.orderUuid()).put("employeeId", offer.employeeId())
+                .put("slotId", hold.slotId()).put("commandId", commandId).put("inputDigest", digest)
+                .put("decisionId", decisionId).put("quoteId", offer.quoteId()).put("briefVersion", offer.briefVersion())
+                .put("policyVersion", p.policyVersion()).put("sourceClaimOperationId", hold.operationId())
+                .put("decidedAt", nowText);
+        payload.set("ordering", ordering);
+        if (mileage == null) payload.putNull("expectedReturnMileage"); else payload.put("expectedReturnMileage", mileage);
+        payload.set("allowance", revalidator.allowanceUsed());
+        payload.putObject("priorVersions").put("offer", offer.version()).put("hold", hold.version())
+                .put("car", l.car().version());
+        payload.put("expectedOfferVersion", offer.version() + 1).put("expectedHoldVersion", hold.version() + 1)
+                .put("expectedStockVersion", l.car().version() + 1);
+
+        PendingOperations.recordIntent(tx, operationId, SELECTION, offerId + ":" + SELECTION + ":" + commandId, payload);
+        tx.write("INSERT INTO offer_decision_operations (environment_id, run_id, operation_id, operation_type, offer_id, "
+                + "hold_id, payload) VALUES (?, ?, ?, ?, ?, ?, ?)", env, run, operationId, SELECTION, offerId, holdId, payload);
+
+        ObjectNode receipt = F.objectNode();
+        receipt.put("schemaVersion", 1).put("offerId", offerId).put("decisionId", decisionId)
+                .put("commandId", commandId).put("decision", "accept").put("state", "pending")
+                .put("reason", "decision-pending").put("operationId", operationId)
+                .put("offerVersion", offer.version() + 1).put("holdVersion", hold.version() + 1)
+                .put("decidedAt", nowText);
+        receipt.putArray("availableActions");
+        receipt.put("reconciliationRequired", true);
+        return WorkResult.ok(receipt);
+    }
+
+    private OfferOutcome decide(Principal p, String offerId, ObjectNode input, String commandId,
+            OfferDecisions.Verdict refusal, Work work) {
         RunContext ctx = new RunContext(p.environmentId(), p.runId(), "employee:" + p.employeeId());
         TransactionRunner runner = new TransactionRunner(dataSource);
         Command command = new Command("offer.decide", "offer-decision:" + offerId + ":" + commandId, input);
-        OfferDecisions.Verdict refusal = new OfferDecisions.Verdict();
-        Supplier<Outcome> attempt = () -> runner.execute(ctx, command,
-                tx -> intent(tx, p, offerId, commandId, digest, reasonCode, expectedOffer, expectedHold, now, refusal));
+        Supplier<Outcome> attempt = () -> runner.execute(ctx, command, work);
         Outcome o = settle(runner, ctx, command.commandId(), attempt);
         if (o instanceof Outcome.Committed c) return answered(p, c);
         OfferOutcome mapped = OfferDecisions.map(o, refusal);
@@ -103,7 +257,8 @@ final class RemoteOfferDecisions {
         }
         ObjectNode copy = c.result().deepCopy();
         if (c.replayed()) copy.put("replayed", true);
-        return OfferOutcome.pending(copy);
+        return "accept".equals(copy.path("decision").asText()) ? OfferOutcome.pending(copy, "decision-pending")
+                : OfferOutcome.pending(copy);
     }
 
     private WorkResult intent(Tx tx, Principal p, String offerId, String commandId, String digest, String reasonCode,
@@ -222,9 +377,10 @@ final class RemoteOfferDecisions {
             seen = typeAndPend(c, ctx, operationId);
         }
         if (seen == null) return refusedJson("operation-not-found");
-        if (!DECLINE.equals(seen[0])) return refusedJson("offer-operation-unsupported");
+        String type = (String) seen[0];
         Pend pend = (Pend) seen[1];
         if (!pend.open()) return settledJson(pend.state(), pend.outcome());
+        if (SELECTION.equals(type) && "confirmed".equals(pend.lastKnown())) return convert(ctx, operationId);
         int next = pend.attempts() + 1;
         // A per-call nonce keeps two racing drivers from replaying one receipt and both calling the remote.
         String call = operationId + ":" + UUID.randomUUID();
@@ -233,10 +389,11 @@ final class RemoteOfferDecisions {
         Outcome o = settle(runner, ctx, attempt.commandId(), () -> runner.execute(ctx, attempt,
                 tx -> attemptWork(tx, operationId, pend.attempts())));
         JsonNode prepared = answer(o);
+        if ("convert".equals(prepared.path("kind").asText())) return convert(ctx, operationId);
         if (!"attempt".equals(prepared.path("kind").asText())) return prepared;
 
         JsonNode payload = prepared.path("payload");
-        RemoteBuddy.RemoteOperation op = new RemoteBuddy.RemoteOperation(operationId, DECLINE, ctx.runId(),
+        RemoteBuddy.RemoteOperation op = new RemoteBuddy.RemoteOperation(operationId, type, ctx.runId(),
                 payload.path("holdId").asText(), payload.path("orderUuid").asText(), payload.path("employeeId").asText(),
                 payload, prepared.path("attempts").asInt());
         String method = prepared.path("method").asText();
@@ -252,7 +409,8 @@ final class RemoteOfferDecisions {
                 F.objectNode().put("operationId", operationId).put("attempt", op.attempts()));
         Outcome done = settle(runner, ctx, ackCommand.commandId(), () -> runner.execute(ctx, ackCommand,
                 tx -> ackWork(tx, operationId, version, method, received)));
-        return answer(done);
+        JsonNode answered = answer(done);
+        return "convert".equals(answered.path("kind").asText()) ? convert(ctx, operationId) : answered;
     }
 
     private static WorkResult attemptWork(Tx tx, String operationId, int expectedAttempts) throws SQLException {
@@ -265,8 +423,10 @@ final class RemoteOfferDecisions {
         if (rows == null || !rows.aligned()) {
             return WorkResult.ok(pendingJson("authority-reconciliation-required", p.lastKnown()));
         }
+        if (rows.selection() && "confirmed".equals(p.lastKnown())) return WorkResult.ok(F.objectNode().put("kind", "convert"));
         String method = p.attempts() == 0 || "not-found".equals(p.lastKnown()) ? "execute" : "reconcile";
-        ObjectNode outcome = F.objectNode().put("lastKnownState", "release-pending").put("method", method);
+        ObjectNode outcome = F.objectNode().put("lastKnownState", rows.selection() ? "selection-pending" : "release-pending")
+                .put("method", method);
         tx.cas("UPDATE pending_operations SET state = 'pending', attempts = attempts + 1, outcome = ?, "
                 + "version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? AND operation_id = ? "
                 + "AND version = ? AND state IN ('intent', 'pending')", outcome, x.environmentId(), x.runId(),
@@ -294,15 +454,66 @@ final class RemoteOfferDecisions {
                 || "not-found".equals(ack.status())) && operationId.equals(ack.operationId())
                 && x.runId().equals(ack.runId()) && rows.payload().path("orderUuid").asText().equals(ack.orderUuid());
         if (!matched) return remember(tx, operationId, p, method, UNKNOWN, "remote-unconfirmed");
-        if ("rejected".equals(ack.status())) return remember(tx, operationId, p, method, "rejected", "release-rejected");
+        if ("rejected".equals(ack.status())) {
+            return rows.selection() ? refuseSelection(tx, operationId, p, rows.payload())
+                    : remember(tx, operationId, p, method, "rejected", "release-rejected");
+        }
         if ("not-found".equals(ack.status())) {
             // Only an authoritative reconcile absence permits another execute.
             if (!"reconcile".equals(method)) return remember(tx, operationId, p, method, UNKNOWN, "remote-not-found");
             setLastKnown(tx, operationId, p, method, "not-found");
             return WorkResult.ok(F.objectNode().put("kind", "retry"));
         }
+        if (rows.selection()) {
+            setLastKnown(tx, operationId, p, method, "confirmed");
+            return WorkResult.ok(F.objectNode().put("kind", "convert"));
+        }
         return finalizeDecline(tx, operationId, p, rows.payload());
     }
+
+    /** A definitive selection refusal restores the prior active state and the original deadline; expiry may then act. */
+    private static WorkResult refuseSelection(Tx tx, String operationId, Pend p, JsonNode pl) throws SQLException {
+        RunContext x = tx.context();
+        String env = x.environmentId();
+        String run = x.runId();
+        String offerId = pl.path("offerId").asText();
+        String holdId = pl.path("holdId").asText();
+        tx.cas("UPDATE custody_holds SET state = 'active', operation_id = ?, version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ? AND state = 'selection-pending'",
+                pl.path("sourceClaimOperationId").asText(), env, run, holdId, pl.path("expectedHoldVersion").asLong());
+        tx.cas("UPDATE buddy_offers SET state = 'active', version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND offer_id = ? AND version = ? AND state = 'decision-pending'",
+                env, run, offerId, pl.path("expectedOfferVersion").asLong());
+        tx.cas("UPDATE stock_cars SET version = version + 1, updated_at = now() WHERE environment_id = ? AND run_id = ? "
+                + "AND order_uuid = ? AND version = ?", env, run, pl.path("orderUuid").asText(),
+                pl.path("expectedStockVersion").asLong());
+        ObjectNode out = F.objectNode().put("state", "selection-refused").put("offerId", offerId).put("holdId", holdId);
+        tx.cas("UPDATE pending_operations SET state = 'refused', outcome = ?, version = version + 1, updated_at = now() "
+                + "WHERE environment_id = ? AND run_id = ? AND operation_id = ? AND version = ? "
+                + "AND state IN ('intent', 'pending')", out, env, run, operationId, p.version());
+        return WorkResult.ok(settledJson("refused", out));
+    }
+
+    /** Confirmed selection: ordering takes the intent and the one decision commits with it; any other answer keeps custody. */
+    private JsonNode convert(RunContext ctx, String operationId) throws SQLException {
+        Rows rows;
+        Pend p;
+        try (Connection c = dataSource.getConnection()) {
+            rows = load(c, ctx, operationId);
+        }
+        OrderingService service = decisions.orderingService().orElse(null);
+        if (rows == null || service == null) return pendingJson("conversion-pending", "confirmed");
+        JsonNode pl = rows.payload();
+        OrderingScope scope = new OrderingScope(ctx.environmentId(), ctx.runId(), pl.path("employeeId").asText(),
+                pl.path("slotId").asText(), pl.path("policyVersion").asText());
+        service.submitTrusted(scope, pl.path("ordering"), new RemoteSelectionConversion(decisions, operationId, pl));
+        try (Connection c = dataSource.getConnection()) {
+            p = pend(c, ctx, operationId, "");
+        }
+        // Closed means finalized here or by a racing driver; anything else (refused, unavailable) keeps custody.
+        return p != null && !p.open() ? settledJson(p.state(), p.outcome()) : pendingJson("conversion-pending", "confirmed");
+    }
+
 
     /** Confirmed release: hold, offer, car, the one decision row, the event and the operation close in one transaction. */
     private static WorkResult finalizeDecline(Tx tx, String operationId, Pend p, JsonNode pl) throws SQLException {
@@ -366,7 +577,7 @@ final class RemoteOfferDecisions {
                 outcome, x.environmentId(), x.runId(), operationId, p.version());
     }
 
-    private static Rows load(Connection c, RunContext x, String operationId) throws SQLException {
+    static Rows load(Connection c, RunContext x, String operationId) throws SQLException {
         Object[] op = OfferDecisions.one(c, "SELECT operation_type, offer_id, hold_id, payload::text "
                 + "FROM offer_decision_operations WHERE environment_id = ? AND run_id = ? AND operation_id = ?",
                 rs -> new Object[] {rs.getString(1), rs.getString(2), rs.getString(3), OfferDecisions.json(rs.getString(4))},
@@ -404,7 +615,7 @@ final class RemoteOfferDecisions {
         return new Object[] {type, p};
     }
 
-    private static Pend pend(Connection c, RunContext x, String operationId, String lock) throws SQLException {
+    static Pend pend(Connection c, RunContext x, String operationId, String lock) throws SQLException {
         return OfferDecisions.one(c, "SELECT state, attempts, version, outcome::text FROM pending_operations "
                 + "WHERE environment_id = ? AND run_id = ? AND operation_id = ? AND operation_type IN ('" + SELECTION
                 + "', '" + DECLINE + "')" + lock, rs -> new Pend(rs.getString(1), rs.getInt(2), rs.getLong(3),

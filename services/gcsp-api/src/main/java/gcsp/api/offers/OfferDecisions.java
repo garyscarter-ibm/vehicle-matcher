@@ -135,8 +135,6 @@ public class OfferDecisions {
         if (authority instanceof OfferAuthority.Refused r && !replayable(r.refusal())) return r.refusal();
         if (!active().getAsBoolean()) return unavailable();
         boolean remoteMode = "remote".equals(buddy().get().mode());
-        // Remote accept needs the ordering handoff (FUCQ-467 slice 2); remote decline has its own protocol.
-        if (remoteMode && accept) return remoteRequired();
         ObjectNode input = F.objectNode();
         input.put("offerId", offerId);
         input.put("decision", accept ? "accept" : "decline");
@@ -157,8 +155,9 @@ public class OfferDecisions {
             if (remoteMode) {
                 Instant at = clock.now(context(p));
                 if (at == null) return unavailable();
-                return remoteDecisions().decline(p, offerId, input, commandId, digest, reasonCode, offerVersion,
-                        holdVersion, at);
+                return accept ? remoteDecisions().accept(p, offerId, input, commandId, digest, offerVersion, holdVersion, at)
+                        : remoteDecisions().decline(p, offerId, input, commandId, digest, reasonCode, offerVersion,
+                                holdVersion, at);
             }
             Stored prior = stored(p, offerId);
             if (prior != null) return fromStored(prior, commandId, digest);
@@ -245,7 +244,7 @@ public class OfferDecisions {
         return unavailable();
     }
 
-    private static OfferOutcome refused(OrderingResult.Refused r) {
+    static OfferOutcome refused(OrderingResult.Refused r) {
         return switch (r.status()) {
             case 400 -> OfferOutcome.invalid("invalid-offer-decision", "Check the terms and declarations and try again.");
             case 403 -> OfferOutcome.forbidden(r.code(), "Sign in as the employee this offer was sent to.");
@@ -709,6 +708,10 @@ public class OfferDecisions {
 
     private Supplier<Optional<OrderingService>> ordering() {
         return ordering != null ? ordering : () -> orderingHolder.service();
+    }
+
+    Optional<OrderingService> orderingService() {
+        return ordering().get();
     }
 
     /** The account port, or null when none is wired. */

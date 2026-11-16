@@ -298,7 +298,7 @@ class RemoteOfferDeclinePgTest {
     }
 
     @Test
-    void remoteModeWithoutAnOfferedClaimIsInconsistentAndAcceptStaysRefused() throws Exception {
+    void remoteModeWithoutAnOfferedClaimIsInconsistentForDeclineAndAccept() throws Exception {
         ScriptedRemote remote = new ScriptedRemote();
         try (DecisionEnv env = open(remote)) {
             env.pg.update("UPDATE pending_operations SET outcome = '{\"state\":\"released\"}'::jsonb");
@@ -307,7 +307,7 @@ class RemoteOfferDeclinePgTest {
             assertEquals("offer-authority-inconsistent", o.code());
             assertEquals(0, env.count("SELECT count(*) FROM offer_decision_operations"));
             assertEquals("active", env.text("SELECT state FROM custody_holds"));
-            assertEquals("remote-decision-protocol-required", env.decide(env.accept("cmd-9", 1, 1, null)).code());
+            assertEquals("offer-authority-inconsistent", env.decide(env.accept("cmd-9", 1, 1, null)).code());
             assertTrue(remote.calls.isEmpty());
         }
     }

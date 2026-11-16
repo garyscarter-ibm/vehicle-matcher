@@ -43,6 +43,7 @@ final class DecisionEnv implements AutoCloseable {
     RemoteBuddy injected;
     OfferDecisions decisions;
     OrderingService ordering;
+    volatile boolean orderingDown;
 
     private DecisionEnv(OffersPg pg, String offerId) {
         this.pg = pg;
@@ -72,7 +73,8 @@ final class DecisionEnv implements AutoCloseable {
         };
         ordering = new OrderingService(source(), new OrderingTerms(policy, ctx -> now[0]), new SyntheticOrderingProvider(source()));
         return new OfferDecisions(() -> true, this::source, access, policy, ctx -> now[0], () -> buddy,
-                () -> Optional.of(ordering), () -> new RepositoryAccountRecords(source()));
+                () -> orderingDown ? Optional.empty() : Optional.of(ordering),
+                () -> new RepositoryAccountRecords(source()));
     }
 
     /** Makes the seeded offer a remote-offered one: an acknowledged claim that the hold and the offer both name. */

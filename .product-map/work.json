@@ -7378,7 +7378,7 @@
     {
       "assignee": "",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-16T11:25:27Z",
+      "observed_at": "2026-11-16T11:51:15Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Complete remote offer acceptance and decline",
@@ -7395,14 +7395,16 @@
         },
         {
           "id": "remote-accept",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
-          "observed_at": "2026-11-16T11:25:27Z"
+          "observed_at": "2026-11-16T11:51:15Z",
+          "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result"
+          "status": "in-progress",
+          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
+          "observed_at": "2026-11-16T11:51:15Z"
         }
       ]
     },
