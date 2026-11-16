@@ -592,3 +592,10 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Action (applied):** at Russell's direction, the 24 stories with unmet ACs were moved back to In Progress (transition 21), each with a comment naming its gap (comments 3629628 to 3629651). Read back: all 24 are In Progress. The FUCQ-507 story-lead was told to tick an AC only when the startup composition does it. No code changed.
 - **Limitation:** this clone's `.claude/jira-sync.json` records the earlier In Review pushes, so its sync won't re-send them. A clone that never pushed these keys would still derive In Review from `_dev/done/` and could re-transition them.
 - **Proposed framework improvement:** add a `partial` (or `built-checkpoint`) Result status. Step D may merge it, but the Jira push keeps the story In Progress until every AC is met. Tick an AC only against the deployed composition. Add a route-parity line to Java Results. File a follow-up story for every unbound port or missing route at close.
+
+## 2026-11-16 18:40 UTC · Russell Claude Code · DL-20261116-RG-002 · resolution: `partial` status in the framework
+
+- **Applied:** agent-scaffolding `551291d` (plugin 0.7.8) adds a `partial` Result status. `built` now means every original acceptance item is ticked, and a pass against a stub or an unconfigured default is not met. Step D merges `partial` and first corrects a `built` Result that its own lines contradict. Step C gives every "not done" line an owner before closing: an existing story, or one follow-up per shared cause. New scope stays a proposal for collaborator review.
+- **Jira:** `_tools/jira_sync.py` 1.5.0+vehicle-matcher.1 (`0cc8c4a3d`) keeps a merged `partial` story, and its epic, In Progress. `test_jira_sync_ui.py` passes. A dry run over `_dev/done/` reopens no archived story.
+- **Briefs (Russell's lane):** Java story-leads list the inventory rows tagged to their story and report each one as registered or not done. A row tagged to two stories is built only by the story whose ACs need it.
+- **Codex:** plugin 0.7.8 is installed in Codex's cache. Claude Desktop's marketplace pin is still on 0.7.7 until Desktop is restarted.
