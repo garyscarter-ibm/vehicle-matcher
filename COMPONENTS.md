@@ -654,3 +654,15 @@ Refresh reads authoritative state, and authentication recovery does not replay a
 This is a routed composition, with no new shared primitive or gallery API. Selected
 component/route tests provide fixture evidence; rendered browser and connected Java/OIDC/
 database acceptance remain separate, open checks.
+
+### Angular Greg demand and policy (FUCQ-448)
+
+`GregRouteComponent` at Greg-guarded `/gcsp/greg` composes the existing screen intro,
+status, labelled fields, error summary and buttons with demand and policy presenters.
+Demand keeps the server's privacy bands and evidence; policy changes remain bound to
+the server's current version and matching preview. Publication stays unavailable when
+the server cannot supply that preview. Read-only demand tables use native captions and
+headers with the existing semantic tokens; the shared case table's employee Open action
+does not apply. This routed composition adds no shared primitive or gallery API.
+Selected validation, rendered review and connected Java/OIDC/database acceptance remain
+unrun at this source checkpoint.
