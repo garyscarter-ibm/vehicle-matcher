@@ -8417,20 +8417,23 @@
       "assignee": "",
       "id": "FUCQ-416",
       "jira_observed_at": "2026-11-12T15:48:03.241Z",
-      "note": "Source ready and lead diff reviewed; selected finite runtime validation pending. No test evidence yet. See docs/gcsp/fucq416-baseline-score-2026-11-16.md.",
-      "observed_at": "2026-11-16T21:32:21Z",
+      "note": "Scoped development complete: lead review plus42selected passes, frozen replay/F417 retained, cleanup verified. Native Jira status observation preserved; dispatcher owns publication/transition. See docs/gcsp/fucq416-baseline-score-2026-11-16.md.",
+      "observed_at": "2026-11-16T21:37:22Z",
       "original_status": "To Do",
       "slices": [
         {
           "id": "baseline",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Evaluation-local-baseline-score-reuse",
-          "observed_at": "2026-11-16T21:27:48Z"
+          "observed_at": "2026-11-16T21:36:59Z",
+          "evidence": "Lead reviewed source aa1e8cc1a; a01 new count/equivalence regression5pass and authored comparison21+feedback16pass; docs/gcsp/fucq416-baseline-score-2026-11-16.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Focused-semantic-and-order-validation"
+          "status": "complete",
+          "title": "Focused-semantic-and-order-validation",
+          "observed_at": "2026-11-16T21:36:59Z",
+          "evidence": "All42selected checks passed once on pinned aa1e8cc1a/tree fdaeae03; frozen quote replay/F417 preservation; cleanup verified, receipt3a6e10dd98fd; shared publication remains dispatcher-owned"
         }
       ],
       "status": "To Do",
@@ -8445,10 +8448,10 @@
           "harness": "codex",
           "role": "story-lead",
           "thread_id": "01a1e641-123c-7722-997e-049e9daf7820",
-          "observed_at": "2026-11-16T21:32:21Z",
-          "expires_at": "2026-11-16T22:32:21Z",
-          "status": "active",
-          "source": "Observed active local thread; desktop title and turn_context pair verified 2026-11-16"
+          "observed_at": "2026-11-16T21:37:22Z",
+          "expires_at": "2026-11-16T21:37:22Z",
+          "status": "returned",
+          "source": "Source and scoped42-check delivery complete; local receipt a01/receipt.json, observed worker exit/return"
         },
         {
           "id": "hugo-2",
@@ -8456,10 +8459,10 @@
           "harness": "codex",
           "role": "implementer",
           "thread_id": "01a1e642-bc0d-7373-8f5d-0837438aa6dc",
-          "observed_at": "2026-11-16T21:32:21Z",
-          "expires_at": "2026-11-16T21:32:21Z",
-          "status": "returned-source-ready",
-          "source": "Observed active local thread; desktop title and turn_context pair verified 2026-11-16"
+          "observed_at": "2026-11-16T21:37:22Z",
+          "expires_at": "2026-11-16T21:37:22Z",
+          "status": "returned",
+          "source": "Source and scoped42-check delivery complete; local receipt a01/receipt.json, observed worker exit/return"
         }
       ]
     }
