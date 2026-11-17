@@ -27,7 +27,7 @@ public final class BuddyJourneyProfiles {
 
     private BuddyJourneyProfiles() {}
 
-    static Map<String, String> config(String buddy) {
+    public static Map<String, String> config(String buddy) {
         Map<String, String> c = new HashMap<>();
         c.put("gcsp.identity.provider", "oidc");
         c.put("gcsp.oidc.issuer", "https://issuer.test/realms/gcsp");
