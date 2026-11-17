@@ -1504,7 +1504,7 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Outcome and improvement:** explicit disjoint source allocations now have a returned artifact as well as verified concurrent execution. Preserve separate facts for worker return, coordinator reconciliation, integrated docs and live composition proof. Managed routing deviation and independently unverified effort remain recorded; optional no-descendants choices require no demonstration spawn. No tests/runtime, Jira transition, new defect repair, Story completion or OneDrive access.
 
 
-## 2026-11-17 04:49 UTC - GC Codex - DL-20261117-GCC-010 - premature import read attempted again
+## 2026-11-17 04:48 UTC - GC Codex - DL-20261117-GCC-010 - premature import read attempted again
 
 - **Recurrence:** after the 0445 atomic import wrapper yielded a running session, the parent attempted to read its destination before terminal completion. The destination was absent and the read failed with FileNotFoundError; no partial import result was consumed. The earlier explicit-completion instruction alone did not prevent this sequencing error.
 - **Observed recovery:** parent later joined terminal exit0, then consumed the atomically published result. No Jira status change or product failure followed. Existing wrapper mitigation protects publication, while caller sequencing remains a limitation.
