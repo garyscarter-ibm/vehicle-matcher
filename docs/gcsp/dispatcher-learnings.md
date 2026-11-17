@@ -2050,3 +2050,9 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Hugh reported the same clipped combined-document output during F465 refinement; narrower excerpts and a serialization character budget are applied, with no verdict from omitted text. The issue remains unresolved. Its real signed-JWT/native-PostgreSQL regression reproduced the missing offer runId; correction and composed visual proof are still pending.
 - Parent content-based archived scan found two clone-owned pending cleanup receipts035/036. Both helper retries returned DROPPED; exact local worktree absence was verified and complete markers were committed/pushed through d300f3638. This resolves those two cleanup receipts only; no complete Bug inventory, product acceptance or OneDrive cleanup is inferred.
+
+
+### 2026-11-17 23:51 UTC · Russell Codex · DL-20261117-GCC-013 · Resume display recurrence and queue boundary
+
+- Combined resume reads and an oversized tail clipped again; this recurrence remains unresolved. Mitigation now bounds individual read output before display and retains the complete queue locally. No claim, test result or acceptance decision uses omitted text. Proposed framework improvement remains a combined serialized-output budget, including wrapper overhead.
+- Current Git queue observation contains 48 waiting Bug records, including held triage; it is not an empty or fully reconciled native inventory. Atlassian tools remain absent and background browser inspection found no Jira tab. Existing migration leads continue; historical F466/F479 Results report F510/F506/F509 repairs, which require matching-evidence/native reconciliation before duplicate pickup or lifecycle closure. No OneDrive operation or new Story gate.
