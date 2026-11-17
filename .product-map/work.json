@@ -7378,7 +7378,7 @@
     {
       "assignee": "",
       "id": "FUCQ-466",
-      "observed_at": "2026-11-17T18:17:28Z",
+      "observed_at": "2026-11-17T18:59:18Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Apply local offer decisions and follow-up",
@@ -7404,8 +7404,8 @@
           "id": "followup",
           "status": "complete",
           "title": "Follow-up after decline: GET offer-followup and POST offer-followup/confirm (question, saved change, waiting, no-match or ready)",
-          "observed_at": "2026-11-17T18:17:28Z",
-          "evidence": "Lead review of bd676fc3f; scoped set 405/0/0 on PG17 incl. OfferAccept/OfferDeclineJourneyHttpTest started-app JWT journeys"
+          "observed_at": "2026-11-17T18:59:18Z",
+          "evidence": "Lead review of 50700d520; scoped 406/0/0 on 188edb1a6; started-app decline journey reaches ready and no-match"
         },
         {
           "id": "integration",
