@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T05:54:59Z",
+      "observed_at": "2026-11-17T06:02:03Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T05:53:37.707215+00:00",
-      "note": "Inventory docs3a7a4acb2 and exact10file actionHTTP/startup increment18b29be38 integrated/pushed.65exact selected cases passed; Mater2 sourcePASS. SAME Claude15 ACK05:54:10 and actual consumer-source reads through05:54:34;4newtest/docpaths, no runtime or current childexecution verified. OriginalAC1/AC2/realOIDC/email/read-shape/fulljourney/BMW gaps remain; nativeToDo preserved.",
+      "note": "HTTP adapter increment18b29be38 integrated with65matching nativepasses. Assignment15 two managed workers returned5authored cases each; coordinator resolving assertions. Exact4file source checkpoint and runtime pending. Neither originalAC complete; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8842,10 +8842,28 @@
           "name": "Same Claude coordinator",
           "harness": "claude-code",
           "role": "F481 HTTPtoexistingdurableconsumercomponent proof source",
-          "observed_at": "2026-11-17T05:54:34.924+00:00",
-          "expires_at": "2026-11-17T06:09:34.924000+00:00",
+          "observed_at": "2026-11-17T06:01:16.424Z",
+          "expires_at": "2026-11-17T06:16:16.424000+00:00",
           "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
-          "status": "ACK15/actualcorrectedtransportandfixture source reading;4test/docpaths; no runtime or verifiedchildexecution"
+          "status": "reviewing two returned consumer test files and fixture; source checkpoint pending, no runtime"
+        },
+        {
+          "name": "claims durable-consumer test author",
+          "harness": "claude-code",
+          "role": "F481 source-only HTTP-to-durable-consumer test",
+          "observed_at": "2026-11-17T05:59:35.302Z",
+          "expires_at": "2026-11-17T05:59:35.302Z",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "returned5authoredcases; notcompiled orrun; coordinator reconciliation pending"
+        },
+        {
+          "name": "offers durable-consumer test author",
+          "harness": "claude-code",
+          "role": "F481 source-only HTTP-to-durable-consumer test",
+          "observed_at": "2026-11-17T06:00:13.207Z",
+          "expires_at": "2026-11-17T06:00:13.207Z",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "returned5authoredcases; notcompiled orrun; coordinator reconciliation pending"
         }
       ]
     }
