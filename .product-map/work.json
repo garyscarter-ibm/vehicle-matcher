@@ -7847,7 +7847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-17T11:43:18Z",
+      "observed_at": "2026-11-17T12:24:09Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7885,14 +7885,16 @@
         },
         {
           "id": "s5-plan-binding",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Real plan-snapshot adapter over planning and Production-backed submission history (replan path)",
-          "observed_at": "2026-11-17T11:43:18Z"
+          "observed_at": "2026-11-17T12:24:09Z",
+          "evidence": "Lead-reviewed fb8104aae+79c75e99a: PlanningPlanSnapshot (OrderPlanService+PlanningCatalog production mapping) is the default PlanSnapshotPort; ProductionSubmissionHistory replaces NoSubmissions; ProductionPlanJourneyTest over RS256 JWT + native PG17 (submit, replay, stale replan-needed, confirm queued, order-plan replanned); scoped 70/70"
         },
         {
           "id": "s6-inventory-routes",
-          "status": "not-started",
-          "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production"
+          "status": "in-progress",
+          "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production",
+          "observed_at": "2026-11-17T12:24:09Z"
         },
         {
           "id": "s7-reintegration",
