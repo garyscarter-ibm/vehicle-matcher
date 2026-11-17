@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-16T15:02:03Z",
+      "observed_at": "2026-11-17T01:07:15Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8385,20 +8385,22 @@
           "id": "claim-review",
           "status": "in-progress",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-16T15:02:03Z",
-          "evidence": "50/50 targeted client/projection/store checks passed on frozen source; missing actual review-details/version producer and original connected acceptance remain open"
+          "observed_at": "2026-11-17T01:07:14Z",
+          "evidence": "17Nov source checkpoint consumes actual details/save/version authority; independent static product review PASS. All78 core cases UNRUN; original connected acceptance remains open. Historical50passes and earlier failures retained."
         },
         {
           "id": "manual-screens",
           "status": "in-progress",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-16T15:02:03Z",
-          "evidence": "16/16 native review/summary/route checks and stock handoff14/14 passed; final submit intentionally unavailable pending producer authority; inherited case screen boundary failure and original rendered/connected proof remain open"
+          "observed_at": "2026-11-17T01:07:14Z",
+          "evidence": "17Nov controlled review/details and guarded native submit source; static review PASS. All32 UI plus14 unchanged stock caller cases UNRUN; original rendered/connected proof open. Historical16+14passes/inherited boundaryrc1 retained."
         },
         {
           "id": "connected-proof",
           "status": "not-started",
-          "title": "Real-claim-to-order-and-rendered-proof"
+          "title": "Real-claim-to-order-and-rendered-proof",
+          "observed_at": "2026-11-17T01:07:15Z",
+          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-response/recovery and affected rendered proof remain outstanding; no current runtime release or acceptance claim."
         }
       ]
     },

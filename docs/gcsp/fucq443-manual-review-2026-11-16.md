@@ -1,4 +1,87 @@
-# FUCQ-443 manual review checkpoint — 16 November 2026
+# FUCQ-443 manual review checkpoint — 17 November 2026
+
+Both original acceptance criteria remain open. This is the same retained
+DEV-2026-11-13-011 claim and 8-point scope, refreshed to base
+`c0043eef8b6bdf6c1bdcb5add347f931913d854c`. The capability/visual reference remains
+`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`.
+
+## Current source and authority
+
+The previous producer-gap diagnosis below is historical. The actual Java
+review-details producer now exists; this checkpoint consumes its real GET/POST
+contract and `expectedReviewDetailsVersion` submission pin. Java source is unchanged
+by this consumer work. The 17 allocated manual files add strict details parsing,
+controlled contact/replacement-return fields with server bounds, explicit serial
+save, exact version/binding reconciliation, dirty and frozen readback, field errors,
+and a guarded native final-submit event bound to the existing sole store lane.
+
+Incomplete revision-zero values remain editable without becoming saved authority.
+Invalid mileage remains dirty and blocks saving/submission. Any edit or changed
+saved revision resets declarations. Submission requires a clean confirmed revision
+greater than zero, exact car/hold/quote/draft/stock/terms pins and fresh declarations;
+it uses the current details stock version. Pending/frozen/mismatched details block
+writes. A lost save reconciles only through a matching GET revision, binding and
+values, without another POST. Existing order-first entry, scoped cancellation,
+intentional recovery and release-before-navigation behavior are preserved.
+
+The public OrderingProjection has no review-details revision, so the consumer never
+joins a public order to retained details. Once an order exists, the screen displays
+its actual public state without inventing frozen contact/return readback or approval.
+Shared kit, authentication, router/stock integration, dependencies/build settings,
+Java and Used Cars remain outside the allocated product edits.
+
+## Current evidence and remaining work
+
+Maximus the Horse 3 independently reviewed all 17 product files: **PASS — no
+blocking or major issues found**. The sorted path-to-SHA256 map is
+`af2cfb71480b558b514a8ee1e6ea2f56d48f2c02e5020ee2c303bbb21f3e39bc`.
+The review is static; no new execution or screenshots are claimed.
+
+The finite local plan selects **124 native cases**, all **UNRUN**: client31,
+projection20, store27; review12, summary12, route8; unchanged stock-route14. The
+separate actual-source boundary checker is also UNRUN. The 245-input freeze covers
+Angular source/configuration, recursive global styles, actual checker/artwork and
+resource helper. Existing pinned dependencies/Node are borrowed read-only; no
+installation is allocated. The parent must audit/admit execution before the first
+fresh owned runtime. Full suite/build and connected/rendered checks are not run in
+this preparation phase.
+
+Independent runner review found a static lifecycle gap: sampling omitted preflight
+and cleanup, and retention could exceed the combined output cap while checking only
+the retained directory. The correction places ownership/reservation/sampling before
+manifest validation, samples each cleanup phase, prechecks combined live+retained
+outputs before copying, and separates output/scratch/reservation finalizers. Finite
+static re-review passed at runner SHA256
+`c7aca96448b24eda1872c5c87f268ee963523807e4cd988a54962b9896bdeb44`.
+This is a verified source correction; no runtime breach or runtime teardown success
+was observed. Plan/runner/freeze live under primary-checkout
+`.claude/test-runs/fucq443/review-details-0037/`.
+
+The planned runtime retains 768 MiB disk, 1280 MiB aggregate RSS and inclusive
+2 GiB, Node heap384 MiB, 5 GiB reserve, setup60s/work480s/total600s on both clocks,
+cleanup120s, one worker and combined output2 MiB. Each exact chunk runs at most once,
+records native exit before strict parsing and stops after any failed/incomplete
+chunk. No runtime root or reservation has been created in this phase.
+
+AC1/AC2 remain unchecked pending original actual Java/PostgreSQL/OIDC claim-to-order,
+stale quote/declaration failure/lost-response and explicit recovery evidence, plus
+required affected desktop/narrow/Safari/private/keyboard/focus/CSP/accessibility
+rendered checks. Historical80passes and inherited boundaryrc1 below are retained,
+with prior identity/compile/RAM failures; none is a current strict pass. Product-map
+slices stay in-progress/in-progress/not-started. Parent owns publication/integration,
+Jira/native lifecycle and the separate Java review. No deployment or acceptance gain
+is claimed. No OneDrive access or cleanup verification occurred.
+
+Agents: Pinky 2 requested/selected `gpt-6.1-sol/high`; B-Bot 2 and Marvin the
+Martian 3 each requested/selected/reported effective `gpt-6.1-sol/medium`; Maximus
+the Horse 3 requested/selected `gpt-6.1-sol/high`. No fallback. Saved titles and
+useful tools verified; no independent reviewer effective-model introspection exists.
+
+## Historical checkpoint — 16 November 2026
+
+The remainder preserves the observation and execution history at that time. Its
+producer-gap and disabled-submit statements are superseded by the current source
+checkpoint above; its receipts, failures and acceptance limitations remain retained.
 
 This is an incomplete Angular checkpoint for DEV-2026-11-13-011, against base
 `17c44d860a83dd70d8bcecacce43e30b7254e445` and frozen implementation reference

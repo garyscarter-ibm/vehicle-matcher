@@ -4,6 +4,8 @@
 .manual-summary p, .manual-summary h2 { margin: 0; }
 .manual-vehicle, .manual-outcome { overflow-wrap: anywhere; }
 .manual-confirmation > button { justify-self: start; }
+.manual-submit { display: grid; gap: var(--gcsp-space-4); min-width: 0; }
+.manual-submit > button { justify-self: start; }
 .manual-terms { white-space: pre-line; }
 fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--gcsp-space-3); min-width: 0; }
 legend { margin-bottom: var(--gcsp-space-3); font-weight: var(--gcsp-font-strong-weight); }
