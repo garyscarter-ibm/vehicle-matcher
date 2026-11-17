@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +39,8 @@ final class CaseFixture implements AutoCloseable {
     final Policy policy = new Policy();
     final Account account = new Account();
     final CaseCarSuitabilityPort suitability = new CaseDefaults.NoSuitability();
+    /** Case time for every service of this fixture; move it with {@code at}, or null to make the clock unavailable. */
+    volatile Instant clock = NOW;
     CaseService service;
     private int ids;
 
@@ -67,7 +67,7 @@ final class CaseFixture implements AutoCloseable {
 
     CaseService newService(PGSimpleDataSource pool) {
         return new CaseService(pool, policy, account, new OutboxCaseNotifications(), suitability,
-                Clock.fixed(NOW, ZoneOffset.UTC));
+                (environmentId, runId) -> Optional.ofNullable(clock));
     }
 
     static PGSimpleDataSource plain(String url) throws SQLException {

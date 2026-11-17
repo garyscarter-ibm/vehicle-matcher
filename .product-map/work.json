@@ -7713,7 +7713,7 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-17T15:32:37Z",
+      "observed_at": "2026-11-17T16:04:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
@@ -7746,7 +7746,7 @@
           "id": "s4-risk-tick",
           "status": "in-progress",
           "title": "Run-clock case time and renewal-risk-cases tick handler (deadline and lifecycle triggers)",
-          "observed_at": "2026-11-17T15:32:37Z"
+          "observed_at": "2026-11-17T16:04:32Z"
         },
         {
           "id": "s5-suitability",
