@@ -8744,15 +8744,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T10:35:50Z",
+      "observed_at": "2026-11-17T11:23:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T10:26:44.484Z",
-      "note": "Ordering recovery integrated461049f73:1nativePG/HTTP pass, source reviewPASS and independentauditclear. New exact bindingcomponent19 acknowledged/executing10:34:40UTC; sourceauthoring independentlyunverified, no runtime/descendants/newclaim. Foreignselector/account handoff remains; originalACopen/nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T10:53:54.947Z",
+      "note": "Generatedclaim/JWT→actualselectedremoteorderingACK integrated/pushed23eca515d;1pass/review29PASS/auditclear. Next originalAC1census/handover22 ACKexecuting 2026-11-17T11:22:07Z. BothoriginalACopen/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8765,8 +8765,8 @@
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:51:03.227703+00:00",
-          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen."
+          "observed_at": "2026-11-17T11:20:02.668769+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen."
         },
         {
           "id": "local-composition",
@@ -8779,8 +8779,8 @@
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T10:34:58.542647+00:00",
-          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Ordering consumer461049f73: realHttpOrderingProvider→OrderingService/nativePG lostACK/restart recovery,1pass/0skip; GET/POST/GET, oneeffect/no secondPOST and persisted identity/ack/reference/occupation asserted. Source reviewPASS,64identities/7groups/scratch/reservation cleared. Component setup uses fixtureconverter/policy; startup/fulljourney/originalACopen."
+          "observed_at": "2026-11-17T11:20:02.668769+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Ordering consumer461049f73: realHttpOrderingProvider→OrderingService/nativePG lostACK/restart recovery,1pass/0skip; GET/POST/GET, oneeffect/no secondPOST and persisted identity/ack/reference/occupation asserted. Source reviewPASS,64identities/7groups/scratch/reservation cleared. Component setup uses fixtureconverter/policy; startup/fulljourney/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen."
         },
         {
           "id": "integration",
@@ -9119,8 +9119,35 @@
           "role": "Ordering binding component source in exactly3newfiles",
           "source": "claude-assist-fucq481-ordering-bindings-2026-11-17-19",
           "observed_at": "2026-11-17T10:34:40Z",
-          "expires_at": "2026-11-17T10:50:49.911161+00:00",
-          "status": "MatchingACK/currentexecutionreported10:34:40UTC, concrete3newfile bindingcomponent source. Sourceauthoring independentlyunverified; no runtime/descendants/newclaim. Successorhandover reported, independentlyunverified; ClaudeOpus5.5/high workerreported."
+          "expires_at": "2026-11-17T10:44:30Z",
+          "status": "Terminal10:44:30 source0f9a547b739;8scopedpasses/reviewPASS/parentauditclear. No current execution; workerreportedClaudeOpus5.5/high, independentlyunverified."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "F481 released ordering selector/holder/config startup connection source",
+          "source": "claude-assist-fucq481-ordering-startup-2026-11-17-20",
+          "observed_at": "2026-11-17T10:50:06Z",
+          "expires_at": "2026-11-17T10:55:30Z",
+          "status": "Terminal10:55:30 source2f93f830b0e; parent11passes/review28PASS/independentteardownclear. No current source execution."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Generated claim/JWT decision to actual selected Holder remote durable acknowledgement source",
+          "source": "claude-assist-fucq481-generated-remote-ordering-2026-11-17-21",
+          "observed_at": "2026-11-17T11:04:12Z",
+          "expires_at": "2026-11-17T11:12:30Z",
+          "status": "Terminal source21; parent1matchingnativepass/review29PASS/auditclear; integration and push by parent. No current worker execution inferred."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "OriginalAC1 uniqueport/startup/demo-preparation census and required integration handover",
+          "source": "claude-assist-fucq481-composition-census-2026-11-17-22",
+          "observed_at": "2026-11-17T11:22:07Z",
+          "expires_at": "2026-11-17T11:37:07+00:00",
+          "status": "Matching execution ACK 2026-11-17T11:22:07Z; exact3documentationpaths; no runtime/originalAC completion."
         }
       ]
     }

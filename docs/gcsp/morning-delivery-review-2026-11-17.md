@@ -56,3 +56,9 @@ The local overnight ledger retains the per-increment attribution and receipts. T
 Gary now confirms that hosted dev does not exist yet. This supersedes the earlier uncertainty about its availability; no remote probe is claimed. It directly blocks the remaining hosted acceptance for FUCQ-435 (cross-origin HTTPS/API proof), FUCQ-454 (run the Java artifact on Render) and FUCQ-456 (hosted persistence/restart/reset isolation). It is also needed for the eventual FUCQ-438/482 release and cutover evidence.
 
 A dev environment supplies the place to run OIDC and real-email journeys; FUCQ-439/455/469 still require the provider/mail setup and their applicable software composition. FUCQ-436 also retains container/artifact proof. Creating hosted dev enables these checks while the recorded contract/binding work continues. No Story is unblocked merely by this confirmation, and no spending, provisioning, deployment or final switch is inferred from the question.
+
+## Ordering handoff and delivery follow-up, 17 November 10:50 UTC
+
+Russell’s lane explicitly released the ordering selector, service holder and ordering configuration to FUCQ-481 in `c9bd31efa`; the account-policy binding is with its FUCQ-458 lead. This resolves the ordering file-ownership obstacle without requiring hosted dev. Claude’s binding component was independently reviewed and integrated as `f0f3cff25`, with all eight focused component tests passing and parent resource teardown verified. The next exact allocation connects that component through the released files and adds focused startup evidence. Its matching worker acknowledgement reports current execution at 2026-11-17T10:50:06Z.
+
+The 26 blocked Stories have not thereby completed. The component does not yet provide application hookup or the full signed-in order/status journey. Original acceptance and each specific hold remain the completion boundary; no hosted setup or new permission is inferred.
