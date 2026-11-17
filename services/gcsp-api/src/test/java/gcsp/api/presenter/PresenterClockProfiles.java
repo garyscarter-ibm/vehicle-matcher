@@ -18,6 +18,7 @@ public final class PresenterClockProfiles {
     static final String URL = System.getenv("GCSP_TEST_DATABASE_URL");
     /** Unique per JVM and per profile; each test class drops its own when it finishes. */
     static final String SCHEMA = "gcsp_s_pclock_" + Long.toHexString(System.nanoTime());
+    static final String SCHEMA_HANDLERS = "gcsp_s_pclock_hnd_" + Long.toHexString(System.nanoTime());
     static final String SCHEMA_NONE = "gcsp_s_pclock_none_" + Long.toHexString(System.nanoTime());
     private static final String ACCOUNTS = "["
             + "{\"subject\":\"sub-employee\",\"roles\":[\"employee\"],\"employeeId\":\"E-1001\"},"
@@ -81,6 +82,19 @@ public final class PresenterClockProfiles {
         @Override
         public Map<String, String> getConfigOverrides() {
             return config(SCHEMA_NONE, "none");
+        }
+
+        @Override
+        public List<TestResourceEntry> testResources() {
+            return List.of(new TestResourceEntry(JwksServerResource.class));
+        }
+    }
+
+    /** No supply provider, a schema of its own: the tick-handler proof seeds due holds without a release in the way. */
+    public static class Handlers implements QuarkusTestProfile {
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            return config(SCHEMA_HANDLERS, "none");
         }
 
         @Override
