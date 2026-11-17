@@ -1,0 +1,128 @@
+# FUCQ-481 provider inventory (2026-11-17)
+
+This records the external provider ports in the GCSP Java API as the source stands at `bdee6c5123779d877e87855b4174667f1a626a5d`. It covers the inventory half of AC1 only. **Provider selection is not complete, and neither are AC1, AC2 or the Story.**
+
+- **How it was built:** by static source reading. Nothing was built, tested or run, so no port here is verified-live.
+- **The full record:** the machine-readable version, with contracts, implementations, consumers, failure semantics and evidence per port, is [`fucq481-provider-inventory-2026-11-17.json`](fucq481-provider-inventory-2026-11-17.json).
+
+## Summary
+There are 59 inventory records: 24 read/input and 35 action/event. These include grouped contracts and cross-domain duplicates, including `EligibleCandidates`; the counts describe records, not a deduplicated port total or exhaustive AC1 coverage.
+
+| Status | Records | Meaning |
+|---|---|---|
+| local-bound | 13 | A local or repository provider is bound at startup |
+| remote-bound | 0 | No port has a remote provider bound |
+| default-unconfigured | 21 | The default gives a refusing or unconfigured provider |
+| partial | 23 | Some provider modes exist, but a required mode or a consumer path is missing |
+| unverified-runtime | 2 | Connected composition unverified by this inventory: persistence, and the offer-decision remote branch; selected PostgreSQL component evidence exists |
+
+**Selection:** every switchable provider is chosen once at startup from a `gcsp.*` key in `services/gcsp-api/src/main/resources/application.properties`. The keys are identity, account, evidence, supply, documents, appointments, approvals, returns, production, ordering, scenario and mail.
+- Every one defaults to `none`, except mail, which defaults to captured.
+- An unknown value stops startup.
+- One exception: synthetic returns or production without a database quietly falls back to unconfigured (`returns/ReturnSelection.java:106-111`).
+- `render.gcsp.yaml` sets the dev API's providers explicitly: account, evidence, supply, documents, appointments and returns are `none` and ordering is `synthetic` (`render.gcsp.yaml:221-254`). Identity stays unset until OIDC is registered (`:175`), and mail stays captured unless Brevo is uncommented (`:260`). So the dev deployment, as committed, cannot exercise AC2's differently shaped employee or stock inputs.
+
+## Findings against the original AC
+1. **No remote substitute can be selected.** The only claim-stock and Buddy implementations are local: `claims/LocalClaimStock.java` and `allocation/LocalSyntheticBuddy.java`. No config key selects a remote one, and ordering has `none` and `synthetic` but no `live` mode, although `ordering/OrderingProviderPort.java:6` names one.
+   - So "claim → signed-in decision → order/status through the remote substitute" (AC2) cannot run on this source.
+   - The remote offer-decision branch exists, but only scripted test doubles exercise it.
+2. **Demo preparation is guarded at startup, but its rows are read outside the selected provider.**
+   - **The guard:** `gcsp.scenario.provider` accepts only `none` or `demo` (`scenario/ScenarioProvider.java:13`). Preparation runs only with demo and persistence both on (`scenario/ScenarioWiring.java:68`), and it stops startup unless the database was claimed with reset allowed (`:86`).
+   - **The write:** it inserts employees, account records and slots by direct SQL (`scenario/DemoPreparation.java:138`).
+   - **The gap:** `AccountService` sees those rows only under `gcsp.account.provider=repository`. But Buddy prepare (`allocation/Prepare.java:100`), the Buddy remote lifecycle (`allocation/BuddyRemoteLifecycle.java:315`) and the manual-draft version check (`account/ManualDrafts.java:113`) read `employee_account_records` directly, whatever the account provider is.
+   - So seeded rows feed Buddy results even under `account=none` or `hr-snapshot`. "Demo preparation cannot bypass this composition" is not yet true.
+3. **Account policy always refuses in the main injection.** `account/AccountSelection.java:68` produces `UnconfiguredAccountPolicy`. Only the recommendation and brief-preview paths build `PolicyAccountAdapter` inline (`recommendation/RecommendationResource.java:126`, `brief/RecommendationBriefPreview.java:91`).
+   - The current-car port answers success with an empty list (`account/AccountSelection.java:62`).
+4. **Some ports have no real binding at all:**
+   - candidate evaluation: `EligibleCandidates` has only `UnconfiguredCandidates`;
+   - order stages, handover readiness, return source, plan snapshot and comparison replay;
+   - Greg plan submission.
+   - The clock also has no handler for the Buddy allocation, Buddy expiry or manual expiry stages.
+5. **Planning reads stay unconfigured on this branch.** Only the inert `DemandCohort` and `PostgresDemandSnapshot` helpers are here (251d89b22). `PostgresPlanningDemand` and `PostgresPlanningSupply` are held by FUCQ-515.
+6. **Clocks:** policy, account, planning, learning and comparison read wall time, not the run clock. This is the known FUCQ-515 family, recorded here and not refiled.
+7. **BMW access and capability:** no port names a BMW source. `docs/gcsp/migration-replacement-contracts-2026-11-13.md` lists BMW identity, HR, stock, ordering and lifecycle access and capabilities as unknown, around lines 98 and 128. Mail is IBM-side: Brevo acceptance is not inbox delivery.
+
+## Ports
+Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full. The "key = default" column is the startup config, where there is one.
+
+| Port | Side | Status | Key = default | Contract | Why |
+|---|---|---|---|---|---|
+| IdentityPort | read/input | default-unconfigured | `gcsp.identity.provider` = none | services/gcsp-api/src/main/java/gcsp/api/identity/IdentityPort.java:7 | Default is none; only an in-process JWKS server has exercised the oidc provider. No real issuer evidenced (dispatcher-learnings.md:335 lists real Java/OIDC/PostgreSQL proof as unrun). |
+| PolicySource | read/input | local-bound | `(follows persistence)` = retained classpath seed | services/gcsp-api/src/main/java/gcsp/api/policy/PolicySource.java:7 | Bound at startup with no extra config to retained dated tables (classpath) or PostgreSQL. Retained synthetic policy, not a BMW source. Postgres-backed tests skip without GCSP_TEST_DATABASE_U |
+| PolicyClock | read/input | partial | `(none)` = wall clock | services/gcsp-api/src/main/java/gcsp/api/policy/PolicyClock.java:9 | Wall clock only; the presenter RunClock does not feed PolicyClock consumers. No PresenterClock class exists; the presenter clock is RunClock. |
+| AccountRecordsPort | read/input | default-unconfigured | `gcsp.account.provider (+ gcsp.account.hr-snaps` = none | services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7 | Default none; file and PostgreSQL providers exist; the committed blueprint sets GCSP_ACCOUNT_PROVIDER=none (render.gcsp.yaml:229). |
+| AccountPolicyPort | read/input | partial | `(none)` = UnconfiguredAccountPolicy | services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6 | Injected AccountService permanently refuses; README.md:184-186 records the PolicyAccountAdapter swap as pending. |
+| CurrentCarPort (account) | read/input | default-unconfigured | `(none)` = empty list | services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3 | Always empty and reported as success, not unavailable. services/gcsp-api/README.md:666 says the returns-store adapter is future work. |
+| AccountClockPort | read/input | partial | `gcsp.account.fixed-now (no properties entry)` = unset: system clock | services/gcsp-api/src/main/java/gcsp/api/account/AccountClockPort.java:3 | Wall clock; presenter RunClock does not reach it. |
+| BriefAccountPort / BriefPolicyPort | read/input | partial | `gcsp.environment.policy-version, gcsp.environm` = adapters win | services/gcsp-api/src/main/java/gcsp/api/account/BriefAccountAdapter.java:15 | BriefAccountAdapter sits on the injected AccountService, so it inherits the refusing AccountPolicyPort. |
+| VehicleProvider / VehicleDetailsConsumer (configuration, specification | read/input | default-unconfigured | `gcsp.evidence.provider (+ store, reference-dir` = none | services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleProvider.java:6 | Default none and the proposed blueprint sets none (services/gcsp-api/render-service.proposed.yaml:63-64). Real providers read retained synthetic files. |
+| StockPort (evidence stock identity) | read/input | local-bound | `(follows persistence)` = bean present | services/gcsp-api/src/main/java/gcsp/api/evidence/StockPort.java:6 | Bound to PostgreSQL when persistence on; reached only when the evidence provider is not none. Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31-39), so connected P |
+| VehicleEvidencePort (recommendation input) | read/input | local-bound | `(none)` = stored stock facts | services/gcsp-api/src/main/java/gcsp/api/recommendation/VehicleEvidencePort.java:11 | Bound by default to stock-row facts stored by the supply provider; not the evidence provider. |
+| EligibleCandidates | read/input | default-unconfigured | `(none)` = recommendation-unavailable | services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8 | Only UnconfiguredCandidates ships; this crosses into worker B (allocation), so named and not traced further. |
+| SupplyProvider | read/input | default-unconfigured | `gcsp.supply.provider (+ tranche-plan-file)` = none | services/gcsp-api/src/main/java/gcsp/api/supply/SupplyProvider.java:4 | Default none; only a synthetic local plan file exists. Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31-39), so connected PostgreSQL behaviour was not observed fr |
+| ReleasePolicy | read/input | partial | `gcsp.supply.policy-file` = empty | services/gcsp-api/src/main/java/gcsp/api/supply/ReleasePolicy.java:6 | Release policy bypasses PolicyService unless a file is set; the PolicyService adapter exists but is never selected (README.md:186). |
+| ReleasedStock page read | read/input | local-bound | `(follows persistence)` = IllegalStateException when p | services/gcsp-api/src/main/java/gcsp/api/recommendation/StockPages.java:10 | Reads PostgreSQL when persistence is on. Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31-39), so connected PostgreSQL behaviour was not observed from tests alone |
+| RunClock / DocumentClock | read/input | partial | `(follows persistence)` = inactive | services/gcsp-api/src/main/java/gcsp/api/clock/RunClock.java:22 | Real run clock, but PolicyClock, PlanningClock, LearningClock, AccountClockPort and demand do not use it. RunPlanningClock is absent from this branch. |
+| PlanningClock / LearningClock (wall clocks) | read/input | partial | `(none)` = wall clock | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningClock.java:10 | RunPlanningClock is not on this branch; docs/gcsp/dispatcher-learnings.md:1354 records its wiring as held. |
+| ArtifactStore (learned model artifacts) | read/input | local-bound | `gcsp.learning.artifact-dir` = empty (classpath) | services/gcsp-api/src/main/java/gcsp/api/learning/ArtifactStore.java:6 | Always bound at startup to retained artifacts. |
+| LearningOutcomeRows | read/input | default-unconfigured | `(none)` = bound()=false | services/gcsp-api/src/main/java/gcsp/api/learning/LearningOutcomeRows.java:12 | No outcome producer exists; LearningRecordService has no consumer in main. |
+| DemandPolicyPort / UnmetEvaluationPort / OfferRecordsPort / Allocation | read/input | partial | `(none)` = refusals | services/gcsp-api/src/main/java/gcsp/api/demand/DemandPolicyPort.java:8 | Policy port bound through PolicyDemandAdapter; evaluation, offers and allocation records unbound. |
+| PlanningDemand | read/input | default-unconfigured | `(none)` = planning-forecast-not-config | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10 | No PostgresPlanningDemand class on this branch; FUCQ-477 commit 76837ffe8 is not an ancestor of HEAD (git merge-base --is-ancestor), per docs/gcsp/fucq477-planning-demand-2026-11-17.md:42-57 |
+| PlanningSupply | read/input | default-unconfigured | `(none)` = planning-supply-not-configur | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningSupply.java:10 | No PostgresPlanningSupply class on this branch. |
+| Persistence gate (datasource and Flyway activation) | read/input | unverified-runtime | `GCSP_DATABASE_URL (+ gcsp.persistence.* in pro` = off | services/gcsp-api/src/main/java/gcsp/api/persistence/Persistence.java:15 | Selected native PostgreSQL component evidence is retained in docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59; original connected provider-composition and full AC2 journey remain unproved. |
+| Scenario DemoPreparation (seeding of account tables) | read/input | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:125 | Direct seeding does not go through the provider ports; worker B owns scenario in detail. |
+| ManualSelectionPort | action/event | partial | `(none)` = ManualSelection over stock:: | services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:7 | Real implementation exists but only produces results when persistence (GCSP_DATABASE_URL) and an account provider supply stock; otherwise answers not-configured. |
+| ClaimStockPort | action/event | default-unconfigured | `(none)` = LocalClaimStock (Mode LOCAL) | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:7 | Only LOCAL implementation in main; no remote implementation and no config key, so REMOTE mode cannot be selected at startup. |
+| ClaimTimingPort | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimTimingPort.java:7 | Single local policy-backed implementation. |
+| ClaimClock | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimClock.java:7 | Bound locally, but claim expiry timing can follow the wall clock rather than the run clock depending on which PolicyClock is bound. |
+| SlotOccupancyPort | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/SlotOccupancyPort.java:8 | Single local implementation. |
+| RemoteBuddy | action/event | default-unconfigured | `(none)` = mode() = local-synthetic | services/gcsp-api/src/main/java/gcsp/api/allocation/RemoteBuddy.java:6 | Only the local-synthetic default exists in main; no remote Buddy implementation or config key, so remote mode cannot be selected. |
+| EligibleCandidates | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8 | No real binding in main; StoredSubjectEvaluator does not implement it. |
+| OfferFacts | action/event | local-bound | `(none)` = PostgresOfferFacts when its  | services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:7 | PostgresOfferFacts is an ApplicationScoped bean over local tables. |
+| OfferDecision (decision route over RemoteBuddy) | action/event | unverified-runtime | `(none)` = local (remoteMode false) | services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java:74 | Remote branch is wired but cannot be reached from main because RemoteBuddy has no remote implementation; contract-tested only with ScriptedRemote. |
+| OrderingProviderPort | action/event | partial | `gcsp.ordering.provider` = none | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | none and synthetic are selectable; the live mode named in the contract has no implementation or selectable value; synthetic receipts are local with fictional:true. |
+| SelectionConversionPort | action/event | partial | `(none)` = UnconfiguredConversion for a | services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:11 | Cart is a bean; buddy-offer is constructed inline; every other source type is unsupported. |
+| DocumentProviderPort | action/event | partial | `gcsp.documents.provider` = none | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10 | none/synthetic/unsupported selectable; no live provider; case/stage reads default to unavailable. |
+| DocumentCasePort / DocumentClock | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:8; services/gcsp-api/src/main/java/gc | Clock is a real run-clock bean; case/stage port has no real binding in main. |
+| AppointmentProvider | action/event | partial | `gcsp.appointments.provider` = none | services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentProvider.java:6 | none/synthetic/live-stub selectable; live always refuses. |
+| OrderStagePort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/appointments/OrderStagePort.java:6 | No real stage producer in main. |
+| HandoverReadinessPort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/appointments/HandoverReadinessPort.java:6 | No real binding in main. |
+| ApprovalStatusProvider | action/event | partial | `gcsp.approvals.provider` = none | services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalStatusProvider.java:7 | none/synthetic/live-stub selectable; live refuses. |
+| OrderSourcePort (approvals) | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/approvals/OrderSourcePort.java:9 | Bound to ordering selections. |
+| HandoverPort (approvals) | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/approvals/HandoverPort.java:7 | Only no-op default. |
+| ReturnProviderPort | action/event | partial | `gcsp.returns.provider` = none | services/gcsp-api/src/main/java/gcsp/api/returns/ReturnProviderPort.java:12 | none/synthetic/live-stub selectable; synthetic without a database silently yields Unconfigured (ReturnSelection.java:109-110). |
+| ReturnSourcePort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/returns/ReturnSourcePort.java:6 | Only default; no real binding. |
+| HandoverPort (returns) | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/returns/HandoverPort.java:6 | Only default; no real binding. |
+| CaseNotificationPort | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/cases/CaseNotificationPort.java:7 | Local outbox emission. |
+| CaseCarSuitabilityPort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/cases/CaseCarSuitabilityPort.java:7 | Only no-op default. |
+| MailTransport | action/event | partial | `gcsp.mail.transport` = unset = captured | services/gcsp-api/src/main/java/gcsp/api/notify/MailTransport.java:6 | Captured default is local; Brevo is the only real outbound HTTP in main, but inbox delivery is unverified (docs/gcsp/employee-delivery-email-2026-11-11.md:118,130). |
+| ProductionProviderPort | action/event | partial | `gcsp.production.provider` = none | services/gcsp-api/src/main/java/gcsp/api/production/ProductionProviderPort.java:10 | none/synthetic/live-stub selectable; quiet downgrade without DB. |
+| PlanSnapshotPort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9 | Only default in main. |
+| SupplyQueuePort | action/event | local-bound | `(none)` = StockReleaseSupplyQueue when | services/gcsp-api/src/main/java/gcsp/api/production/SupplyQueuePort.java:7 | Real local implementation constructed with the service. |
+| ProductionClock | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/production/ProductionClock.java:8 | Bound to ticks. |
+| GregOrderPlan submit action | action/event | default-unconfigured | `(none)` = not applicable | services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29 | No submit action exists; preview and read only. |
+| ComparisonReplay | action/event | default-unconfigured | `gcsp.comparison.reruns` = false (only true or 1 enable | services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonReplay.java:7 | Only unavailable replay in main; retained result files are served locally. |
+| ScenarioProvider (demo preparation) | action/event | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioProvider.java:4 | Only the mechanics scenario gcsp-clock-scenario-v1 is available; ScenarioCatalogue.java:47 marks journeys unavailable via requiredCapabilities (json :1423). |
+| ScenarioFaults | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioFaults.java:24 | Only the stock adapter fault is injectable. |
+| Presenter clock and controls | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/presenter/PresenterClockResource.java | Handlers exist for eight stages; manual-expiry, buddy-expiry and buddy-allocation have none. |
+| Outbox and command receipts | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/persistence/Tx.java:78 | Postgres-backed and local; inert without persistence. |
+
+## Defect candidates (capture-only, for the parent)
+These are listed with file:line in the JSON under `defectCandidates`. They have not been triaged, filed or repaired. Bugs FUCQ-513 to 515 are unchanged.
+
+- **The account policy always refuses.**
+- **The current-car port** reports empty as success.
+- **`PolicyReleaseAdapter`** has no injection site.
+- **Synthetic returns or production** without a database quietly falls back to unconfigured.
+- **Wall-clock reads bypass the run clock** in comparison jobs, the case service holder and the policy clock.
+- **The ordering contract** names a live mode that does not exist.
+- **Only the stock fault** is injectable.
+- **The allocation seam** has no stage handlers.
+- **Retryability** depends on a `not-configured` string suffix.
+- **Account records** are read by direct SQL outside the account port.
+
+## What this does not prove
+- This inventory ran no runtime. It establishes no full connected provider-composition, real OIDC/email, hosted deployment or BMW proof. Retained selected native PostgreSQL component evidence exists, including the F477 helper run (docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59).
+- PostgreSQL-backed tests skip without `GCSP_TEST_DATABASE_URL`.
+- Status comes from source inspection. Named tests identify test source; their presence does not establish execution in this assignment. Selected retained component passes do not prove the complete connected journey.
+- Several records group contracts or overlap across domains. The parent sampled source facts and corrected blueprint/evidence statements; not every semantic claim was independently reverified.
