@@ -7630,7 +7630,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T08:04:16Z",
+      "observed_at": "2026-11-17T16:20:16Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -7672,6 +7672,32 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:16Z",
           "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
+        },
+        {
+          "id": "s6-source",
+          "status": "in-progress",
+          "title": "Reopened: bind ReturnSourcePort to the ordering selection record (manual and buddy)",
+          "observed_at": "2026-11-17T16:20:16Z"
+        },
+        {
+          "id": "s7-handover-policy",
+          "status": "not-started",
+          "title": "Reopened: bind returns HandoverPort to appointments and the return policy to PolicyService"
+        },
+        {
+          "id": "s8-handover-current-car",
+          "status": "not-started",
+          "title": "Reopened: appointment-completed outbox event changes the current car once, via return progress"
+        },
+        {
+          "id": "s9-journey",
+          "status": "not-started",
+          "title": "Reopened: started-app journey with request, accept, completion, current car, account and restart"
+        },
+        {
+          "id": "s10-integration",
+          "status": "not-started",
+          "title": "Reopened: base merge, scoped test set and result"
         }
       ]
     },
