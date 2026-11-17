@@ -64,6 +64,9 @@
       #   sync: false
       # - key: GCSP_BREVO_API_KEY
       #   sync: false
+      # Stock supply (FUCQ-462): synthetic demo stock from policy windows and confirmed Production supply; needs the database.
+      # - key: GCSP_SUPPLY_PROVIDER
+      #   value: demo
       # Vehicle evidence (FUCQ-459, proposed for GC): provider none until the retained files are in the image or on a disk.
       # The paths below are absolute in the container; see README "Artifacts and hosting" for what to copy.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
