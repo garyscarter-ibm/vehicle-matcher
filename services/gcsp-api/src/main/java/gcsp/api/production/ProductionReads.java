@@ -130,6 +130,17 @@ final class ProductionReads {
     // ---- Greg's tracking read ----
 
     ProductionResult status(RunContext ctx) {
+        return read(ctx, null);
+    }
+
+    /** Greg's order tracking: the status value plus the policy, stock and clock versions his next request must quote. */
+    ProductionResult orders(RunContext ctx, String policyVersion) {
+        return read(ctx, policyVersion == null ? "" : policyVersion);
+    }
+
+    private record Snap(Data data, String stock) {}
+
+    private ProductionResult read(RunContext ctx, String policyVersion) {
         Optional<Instant> now;
         try {
             now = clock.now(ctx);
@@ -138,8 +149,15 @@ final class ProductionReads {
         }
         if (now.isEmpty()) return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
         try {
-            Data d = snapshot(c -> load(c, ctx, true));
-            return statusOf(d, Ids.ms(now.get()));
+            Snap s = snapshot(c -> new Snap(load(c, ctx, true), policyVersion == null ? null : ProductionStore.stockVersion(c, ctx)));
+            ProductionResult r = statusOf(s.data(), Ids.ms(now.get()));
+            if (policyVersion != null && r instanceof ProductionResult.Ok ok && ok.value() instanceof ObjectNode o) {
+                ObjectNode v = o.putObject("versions");
+                v.put("policy", policyVersion);
+                v.put("stock", s.stock());
+                v.put("clock", Ids.ms(now.get()).toString());
+            }
+            return r;
         } catch (SQLException | RuntimeException e) {
             return unavailable();
         }
@@ -194,6 +212,7 @@ final class ProductionReads {
             n.put("derivative", r.derivative());
             n.put("quantity", r.quantity());
             n.put("state", r.state());
+            n.put("version", r.version());
             n.put("providerMode", r.providerMode());
             n.put("providerReference", r.providerReference());
             n.put("code", r.refusalCode());
@@ -323,8 +342,11 @@ final class ProductionReads {
         return n;
     }
 
+    /** A manual request (Greg's single line) is not a plan, so replan history never starts from it. */
+    static final String MANUAL_PREFIX = "manual:";
+
     private static Optional<SubmissionRow> latestSubmission(Data d) {
-        return d.submissions().stream().max(Comparator.comparing(SubmissionRow::requestedAt).thenComparing(SubmissionRow::submissionId));
+        return d.submissions().stream().filter(s -> !s.planId().startsWith(MANUAL_PREFIX)).max(Comparator.comparing(SubmissionRow::requestedAt).thenComparing(SubmissionRow::submissionId));
     }
 
     private static ProductionResult activityOf(Data d) {

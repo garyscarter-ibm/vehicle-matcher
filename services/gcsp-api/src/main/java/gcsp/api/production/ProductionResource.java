@@ -44,7 +44,7 @@ import java.util.Set;
 public class ProductionResource {
 
     private static final ObjectMapper JSON = new ObjectMapper();
-    private static final String INVALID = "invalid-production-command";
+    static final String INVALID = "invalid-production-command";
     private static final int DEFAULT_LIMIT = 50;
 
     @Inject
@@ -167,12 +167,16 @@ public class ProductionResource {
     // ---- shared steps ----
 
     @FunctionalInterface
-    private interface Operation {
+    interface Operation {
         Response run(ProductionService service, RunContext scope);
     }
 
     /** Resolves the active run, refuses a principal bound to another run, then runs the operation. */
     private Response serve(Principal principal, Operation op) {
+        return serve(holder, persistence, principal, op);
+    }
+
+    static Response serve(ProductionServiceHolder holder, Persistence persistence, Principal principal, Operation op) {
         Optional<ProductionService> service = holder.service();
         if (service.isEmpty()) {
             return ApiError.response(503, "unavailable", "persistence-not-configured",
@@ -196,11 +200,11 @@ public class ProductionResource {
         }
     }
 
-    private static Response databaseDown() {
+    static Response databaseDown() {
         return ApiError.response(503, "unavailable", "database-unavailable", "The database could not be reached.", true);
     }
 
-    private static Response noQuery(UriInfo uri) {
+    static Response noQuery(UriInfo uri) {
         if (!uri.getQueryParameters().isEmpty()) {
             return ApiError.response(400, "invalid", "unsupported-query",
                     "This operation does not accept query parameters.", false);
@@ -265,7 +269,7 @@ public class ProductionResource {
         return Response.status(503).entity(body).build();
     }
 
-    private static Response invalid(List<String[]> reasons) {
+    static Response invalid(List<String[]> reasons) {
         ObjectNode body = JSON.createObjectNode();
         body.put("status", "invalid");
         body.put("code", INVALID);
@@ -278,7 +282,7 @@ public class ProductionResource {
 
     // ---- request parsing ----
 
-    private static ObjectNode object(String body, Set<String> known, boolean blankOk, List<String[]> reasons) {
+    static ObjectNode object(String body, Set<String> known, boolean blankOk, List<String[]> reasons) {
         try {
             if (blankOk && (body == null || body.isBlank())) return JSON.createObjectNode();
             JsonNode node = body == null || body.isBlank() ? null
@@ -296,7 +300,7 @@ public class ProductionResource {
         return null;
     }
 
-    private static String text(ObjectNode node, String field, int max, boolean required, List<String[]> reasons) {
+    static String text(ObjectNode node, String field, int max, boolean required, List<String[]> reasons) {
         if (node == null) return null;
         JsonNode v = node.get(field);
         if (v == null || v.isNull()) {

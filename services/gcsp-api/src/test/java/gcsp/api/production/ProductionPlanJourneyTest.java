@@ -181,6 +181,26 @@ class ProductionPlanJourneyTest {
         assertEquals(planned.size(), after.getList("value.replan.requests").size());
         assertEquals(2, after.getList("value.replan.responses").size());
         assertEquals("confirmed", after.getString("value.replan.after.state"));
+
+        // Greg's own manual request is not a plan: the replan keeps following the plan he submitted.
+        String ordersPath = "/api/gcsp/v1/greg/orders";
+        String stock = JsonPath.from(as(greg).get(ordersPath).then().statusCode(200).extract().asString()).getString("value.versions.stock");
+        JsonPath manual = JsonPath.from(as(greg).body("{\"commandId\":\"" + command() + "\",\"model\":\"3 Series Saloon\","
+                + "\"derivative\":\"320i\",\"quantity\":1,\"expectedPolicyVersion\":\"gcsp-policy-v1\",\"expectedStockVersion\":\""
+                + stock + "\"}").post(ordersPath).then().statusCode(200).extract().asString());
+        String manualId = manual.getString("value.requests[0].requestId");
+        assertEquals("requested", manual.getString("value.requests[0].state"));
+        ProductionHttpSupport.tick(dataSource.get(), persistence, 60);
+        long version = ((Number) JsonPath.from(as(greg).get(ordersPath).asString()).<Map<String, Object>>getList("value.requests").stream()
+                .filter(m -> manualId.equals(m.get("requestId"))).findFirst().orElseThrow().get("version")).longValue();
+        as(presenter).body("{\"commandId\":\"" + command() + "\",\"requestId\":\"" + manualId + "\",\"expectedVersion\":" + version
+                + ",\"action\":\"confirm\",\"quantity\":1}").post("/api/gcsp/v1/presenter/production").then().statusCode(200);
+        JsonPath manualAfter = JsonPath.from(as(greg).get(PLAN_PATH).then().statusCode(200).extract().asString());
+        assertEquals(planId, manualAfter.getString("value.replan.submittedPlanId"));
+        assertEquals(planned.size(), manualAfter.getList("value.replan.requests").size());
+        assertEquals(2, manualAfter.getList("value.replan.responses").size());
+        assertEquals("confirmed", manualAfter.getString("value.replan.after.state"));
+        assertEquals(after.getString("value.replan.after.at"), manualAfter.getString("value.replan.after.at"));
     }
 
     private static String body(String commandId, String planId, Map<String, String> versions) throws Exception {
