@@ -1841,3 +1841,7 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - New observation: the retained helper successor ACKed F441 source readiness at19:50:23UTC and explicitly reports required-reading/source-freeze work started. This supersedes the earlier queued-only observation. The successor reports the old watcher stopped; this dispatcher started no additional coordinator. Source-read acknowledgement is execution evidence, not acceptance; no product edits/runtime or tests have returned.
 - Outcome: the same handoff route is responding again; delivery improvement beyond the completed F44014-case checkpoint remains unverified. Preserve the distinction between assignment, acknowledged work, reviewed output and executed validation.
+
+## 2026-11-17 20:00 UTC · Gary Codex · DL-20261117-GCC-013 · Combined resume display exceeded budget
+
+- Evidence/impact: first combined skill, procedure and shared-log display in this pass was truncated; no delivery or acceptance conclusion used the clipped content. Recovered current instructions/status and native Jira counts through bounded selected-field reads. Character caps remain an applied mitigation, not a verified framework resolution; token caps and combined broad reads recurred despite prior guidance. Proposed improvement: enforce a serialized character budget on the complete tool result before display. No product, runtime or Story gate change.
