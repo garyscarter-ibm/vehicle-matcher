@@ -7432,7 +7432,7 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-17T15:52:49Z",
+      "observed_at": "2026-11-17T16:02:49Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
@@ -7463,14 +7463,16 @@
         },
         {
           "id": "r2-journey-synthetic",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: started dev composition proof of AC1 cart handoff (review-details freeze, refusals, acknowledged reference) with synthetic ordering",
-          "observed_at": "2026-11-17T15:52:49Z"
+          "observed_at": "2026-11-17T16:02:48Z",
+          "evidence": "lead review of ae4758e72: OrderingJourneyHttpTest 1/1 on started dev composition (oidc, repository, demo, synthetic, no alternatives), private PG17 :55536"
         },
         {
           "id": "r2-remote-faults",
-          "status": "not-started",
-          "title": "Reopened: started composition proof of refused, lost acknowledgement, repeated command and restart over a loopback remote ordering endpoint"
+          "status": "in-progress",
+          "title": "Reopened: started composition proof of refused, lost acknowledgement, repeated command and restart over a loopback remote ordering endpoint",
+          "observed_at": "2026-11-17T16:02:49Z"
         },
         {
           "id": "r2-integration",
