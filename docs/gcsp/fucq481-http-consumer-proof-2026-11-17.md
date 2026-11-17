@@ -1,6 +1,6 @@
 # FUCQ-481 HTTP consumer proof (2026-11-17)
 
-This bounded FUCQ-481 increment connects the real HTTP adapters to existing durable consumers. The ten selected cases passed against disposable PostgreSQL16 and loopback HTTP; both original acceptance criteria remain open.
+This bounded FUCQ-481 increment connects the real HTTP adapters to existing durable consumers. The ten selected cases passed against disposable PostgreSQL 16 and loopback HTTP; both original acceptance criteria remain open.
 
 It connects the real HTTP adapters from the previous increment to the existing durable consumers over loopback HTTP and real PostgreSQL:
 - `HttpClaimStock` and `HttpRemoteBuddy` are the adapters.
@@ -65,9 +65,9 @@ In outline:
 ## Selected validation
 
 - Source checkpoint `604689cfd894150bc9202223593d78f099ba3538`, tree `e6476e901bd2e6d9c12e7bbc4379356b4f830522`. The three Java test sources are unchanged by this documentation receipt.
-- Ten exact methods across `HttpClaimLifecyclePgTest` and `HttpRemoteOfferDecisionPgTest`: native exit 0, ten passed, zero failures, errors or skips. Offline Maven, Java21, one capped test worker, isolated disposable PostgreSQL16 and loopback HTTP. Existing adapter/configuration evidence is reused for unchanged code.
-- The finite run began 2026-11-17T06:04:42Z and took26.3seconds. Peak sampled RSS779681792bytes; scratch155689408bytes. Parent independently matched method names and source/tool pins, then verified all86recorded process identities, seven groups and owned scratch absent, with the host reservation released.
-- Cogsworth3 independently reviewed the four-file source checkpoint and returned PASS with no blocking or major finding. Requested/selected model `gpt-6.1-sol`, effort `high`, no fallback; no reviewer runtime.
+- Ten exact methods across `HttpClaimLifecyclePgTest` and `HttpRemoteOfferDecisionPgTest`: native exit 0, ten passed, zero failures, errors or skips. Offline Maven, Java 21, one capped test worker, isolated disposable PostgreSQL 16 and loopback HTTP. Existing adapter/configuration evidence is reused for unchanged code.
+- The finite run began 2026-11-17T06:04:42Z and took 26.3 seconds. Peak sampled RSS 779,681,792 bytes; scratch 155,689,408 bytes. Parent independently matched method names and source/tool pins, then verified all 86 recorded process identities, seven groups and owned scratch absent, with the host reservation released.
+- Cogsworth 3 independently reviewed the four-file source checkpoint and returned PASS with no blocking or major finding. Requested/selected model `gpt-6.1-sol`, effort `high`, no fallback; no reviewer runtime.
 - These are component and recovery checks through the actual HTTP adapters, existing consumers and migrated database. They do not establish the connected journey below.
 
 ## What this is not
