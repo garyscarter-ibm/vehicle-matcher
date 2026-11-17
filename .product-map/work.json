@@ -7632,7 +7632,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-17T11:36:21Z",
+      "observed_at": "2026-11-17T14:41:36Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7677,24 +7677,30 @@
         },
         {
           "id": "s6-bindings",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Real stage, readiness, document case and approvals handover adapters bound at startup",
-          "observed_at": "2026-11-17T11:36:21Z"
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 28ac8d007: real ApprovalsOrderStage, DocumentsHandoverReadiness, LifecycleDocumentCases, AppointmentHandover bound; RealPortsWiringTest, PortMappingTest, LifecycleDocumentCasesTest pass on native PG17; proven in HandoverJourneyHttpTest (563646b2f)"
         },
         {
           "id": "s7-no-show",
-          "status": "not-started",
-          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)"
+          "status": "complete",
+          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 6f41c17af: greg-only POST /appointments/no-show, appointment-no-show outbox event, rebooking attempt n+1, V472_2; AppointmentNoShowTest 8/8, appointments package 97/97, journey step 11"
         },
         {
           "id": "s8-journey",
-          "status": "not-started",
-          "title": "Integrated journey through the started app with real adapters; dev config documented"
+          "status": "complete",
+          "title": "Integrated journey through the started app with real adapters; dev config documented",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 563646b2f: HandoverJourneyHttpTest 12 steps over real JWTs and PG17 with real lifecycle ports; README and render-service.proposed.yaml dev selection"
         },
         {
           "id": "s9-integration-r2",
-          "status": "not-started",
-          "title": "Reopened: base merge, Java verify and result"
+          "status": "in-progress",
+          "title": "Reopened: base merge, Java verify and result",
+          "observed_at": "2026-11-17T14:41:36Z"
         }
       ]
     },
