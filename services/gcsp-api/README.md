@@ -573,6 +573,7 @@ no remote operation. The run is enforced by the command runner. Every write is a
 | `POST /api/gcsp/v1/offers/{offerId}/decision` | `{commandId, decision, expectedOfferVersion, expectedHoldVersion}` plus `reasonCode` (decline) or `termsDigest`, `declarations`, optional `expectedReturnMileage` (accept). |
 | `GET /api/gcsp/v1/offers/{offerId}/decision-reasons` | The `offer.declineReasons.v1` registry at the principal's policy version. |
 | `GET /api/gcsp/v1/offers/{offerId}/follow-up` | After a decline: `waiting-for-next-offer`, or `next-offer` with `nextOfferId`; `briefChange: unavailable`. |
+| `GET /api/gcsp/v1/offer-followup?decisionId=` and `POST .../offer-followup/confirm` | Employee only, for the caller's own decline. GET answers `question` (the `offer.followupQuestions.v1` question for the declined reason, with `currentValue` and `questionVersion`), or `waiting` with `savedChange` once answered; `ready` and `no-match` are not produced. Confirm saves one different value through the brief's change-after-decline and answers `change-saved`; the same `commandId` replays. 400 `invalid-offer-followup`, 403/404 for a decline that is not the caller's or unknown, 503 `offer-followup-unavailable`. |
 
 - Decline releases the hold (`releaseReason: offer-declined`) and declines the offer. It records the reason and the
   `offer.declinedCar.exclusion` rule, and emits `offer-declined` in the same transaction. The allocator then reallocates

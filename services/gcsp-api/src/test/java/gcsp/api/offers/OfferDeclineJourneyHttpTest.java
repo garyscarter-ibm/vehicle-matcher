@@ -111,6 +111,57 @@ class OfferDeclineJourneyHttpTest {
         get(paula, path(paulaOffer) + "/follow-up").then().statusCode(404);
         assertFalse(get(bruno, path(brunoOffer) + "/follow-up").asString().contains(paulaOffer));
 
+        // The follow-up routes: the registered question, one confirmed change, a replay and the saved/waiting read.
+        String decisionId = first.get("decisionId").asText();
+        String fu = "/api/gcsp/v1/offer-followup";
+        JsonNode question = body(get(bruno, fu + "?decisionId=" + decisionId).then().statusCode(200).extract().response())
+                .get("value");
+        assertEquals("question", question.get("state").asText());
+        JsonNode q = question.get("question");
+        assertEquals(reason, q.get("reasonCode").asText());
+        assertEquals("preferences.body.value", q.get("path").asText());
+        assertEquals("estate", q.get("currentValue").asText());
+        assertEquals("offer.followupQuestions.v1", q.get("provenance").get("key").asText());
+        get(paula, fu + "?decisionId=" + decisionId).then().statusCode(403);
+        get(presenter, fu + "?decisionId=" + decisionId).then().statusCode(403);
+        get(bruno, fu + "?decisionId=offer-decision:unknown").then().statusCode(404);
+        get(bruno, fu).then().statusCode(400);
+        get(bruno, fu + "?decisionId=" + decisionId + "&x=1").then().statusCode(400);
+        long briefs = s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO);
+        ObjectNode confirm = BuddyJourneySupport.JSON.createObjectNode();
+        confirm.put("commandId", "followup-1").put("decisionId", decisionId)
+                .put("expectedBriefVersion", question.get("briefVersion").asLong())
+                .put("questionVersion", q.get("questionVersion").asText()).put("value", "saloon");
+        assertEquals(403, BuddyJourneySupport.post(paula, fu + "/confirm", confirm.toString()).statusCode());
+        ObjectNode same = confirm.deepCopy();
+        same.put("value", "estate");
+        assertEquals(400, BuddyJourneySupport.post(bruno, fu + "/confirm", same.toString()).statusCode());
+        assertEquals(400, BuddyJourneySupport.post(bruno, fu + "/confirm", "{\"commandId\":\"x\"}").statusCode());
+        assertEquals(briefs, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
+        JsonNode saved = body(BuddyJourneySupport.post(bruno, fu + "/confirm", confirm.toString()).then().statusCode(200)
+                .extract().response()).get("value");
+        assertEquals("change-saved", saved.get("state").asText());
+        assertEquals(decisionId, saved.get("decisionId").asText());
+        assertEquals("preferences.body.value", saved.get("change").get("path").asText());
+        assertEquals("estate", saved.get("change").get("before").asText());
+        assertEquals("saloon", saved.get("change").get("after").asText());
+        assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
+        assertEquals(1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ? AND post_decline_change ->> 'decisionId' = ?",
+                BRUNO, decisionId));
+        JsonNode replayed = body(BuddyJourneySupport.post(bruno, fu + "/confirm", confirm.toString()).then().statusCode(200)
+                .extract().response()).get("value");
+        assertEquals(saved.get("briefVersion").asLong(), replayed.get("briefVersion").asLong());
+        assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
+        ObjectNode again = confirm.deepCopy();
+        again.put("commandId", "followup-2").put("expectedBriefVersion", saved.get("briefVersion").asLong());
+        assertEquals(409, BuddyJourneySupport.post(bruno, fu + "/confirm", again.toString()).statusCode());
+        JsonNode waiting = body(get(bruno, fu + "?decisionId=" + decisionId).then().statusCode(200).extract().response())
+                .get("value");
+        assertEquals("waiting", waiting.get("state").asText());
+        assertEquals(saved.get("briefVersion").asLong(), waiting.get("savedChange").get("briefVersion").asLong());
+        assertEquals("saloon", waiting.get("savedChange").get("change").get("after").asText());
+        assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
+
         // Expiry on the run clock: past the hold duration, with no wall wait and no tick, the offer is refused.
         s.advance(presenter, 7200 + 60);
         // The current terms are read after the deadline: the refusal must come from the offer, not from stale terms.
