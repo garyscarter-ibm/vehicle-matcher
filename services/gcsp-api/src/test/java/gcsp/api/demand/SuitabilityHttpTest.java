@@ -27,8 +27,9 @@ class SuitabilityHttpTest {
     }
 
     @Test
-    void thePresenterReadsSuitabilityWithNoStore() {
+    void thePresenterReadsSuitabilityWithNoStore() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
+        DemandHttpProfiles.ensureRunClock();
         as().get(PATH).then().statusCode(200).header("Cache-Control", equalTo("no-store"))
                 .contentType(containsString("application/json")).body("status", equalTo("ok"))
                 .body("value.release", equalTo("all")).body("value.policy.version", equalTo("gcsp-policy-v1"))

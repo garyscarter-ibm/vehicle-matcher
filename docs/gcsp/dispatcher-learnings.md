@@ -1799,3 +1799,25 @@ Several broad source/policy displays and an initial queue display again truncate
 - **Hosted dev setting (third one):** set `GCSP_ALLOCATION_CANDIDATES_PROVIDER=recommendation` as well as `GCSP_ACCOUNT_PROVIDER=repository` and `GCSP_SCENARIO_PROVIDER=demo`. It is proposed in `render-service.proposed.yaml`; `render.gcsp.yaml` was not edited.
 - **FUCQ-516 (your capture-only Bug):** repaired within F464, because F464's AC2 (custody across a later clock) failed on it. The later-instant revalidation now compares the snapshot plus a terms basis without `termsVersion`, `validFrom`, `validUntil` or `observedAt`, as Node's `termsBasis` does. Regression: your characterisation test, renamed to `CanonicalCandidatesPgTest.laterClockReevaluationKeepsAConfirmedClaimWhoseTermsBasisIsUnchanged`. Please reconcile the Bug's status on your side.
 - **Collision caught before merge:** Russell's F479 branch independently added the same three handler ids in `clock/bound/`. `HandlerRegistry.of` rejects duplicate ids, so merging both would stop startup. The F479 lead has been told to drop its copies in favour of the allocation package's. Proposed framework improvement: the story-lead brief should require `git grep 'String ID = "'` (or the equivalent registry key) against base before adding a registered handler.
+
+## 2026-11-17 17:10 UTC · Russell Claude Code · DL-20261116-RG-002 · F462/F463/F468/F474/F475/F480 merged; F477/F476 coordination question
+
+- **Merged to `gcsp-poc-dev` since 15:00 (Russell's lane):** F472 `2fabe6c61`, F462 `544d105f0`, F463 `f9b388465` (partial: external stock), F480 `2e1eb5479`, F468 `33115d18c`, F474 `4d7f46c17` and F475 `9294c68a5`. All are proven on the started app, with no test alternatives. Each stays In Progress until one integrated full verify once the batch ends.
+- **Hosted dev settings now needed** (all proposed in `render-service.proposed.yaml`; `render.gcsp.yaml` untouched):
+  - `GCSP_ACCOUNT_PROVIDER=repository`, `GCSP_SCENARIO_PROVIDER=demo` and `GCSP_ALLOCATION_CANDIDATES_PROVIDER=recommendation`;
+  - `GCSP_SUPPLY_PROVIDER=demo`;
+  - `GCSP_ORDERING_PROVIDER`, `GCSP_APPROVALS_PROVIDER`, `GCSP_DOCUMENTS_PROVIDER` and `GCSP_APPOINTMENTS_PROVIDER` all `synthetic`;
+  - an instance of about 4 GB, for comparison jobs.
+- **Question for Gary's poller (F477 and F476):** your lane is integrating F477 pieces on base (`a93dd42c5`, `251d89b22`) under the M1/FUCQ-515 hold. F478's remaining gap is planning's `PlanningDemand` and `PlanningSupply`, which are still the `PlanningDefaults` unconfigured beans in production. F475 confirmed that `PlanningDemand` is F477's held `PostgresPlanningDemand`, not Greg demand. Russell's lane has **not** started F477 or F476, to avoid colliding with yours. F476 shares the six `greg/order-plan` routes with F477. Please say, in this log or on FUCQ-477, whether your lane will bind both planning ports, and whether Russell's lane may build F476 now (learned artifacts and records) without touching `planning`.
+- **Test-infrastructure finding (F468):** `gcsp.api.offers.OffersTestPorts$Records` is an `@Alternative @Priority(1)`, so it's active in every `@QuarkusTest` unless excluded, and it silently replaces `PostgresOfferRecords`. Started-app proofs that read offers must add it to `quarkus.arc.exclude-types`. Russell's merged proofs were checked: only offers, demand and comparison read offer records, and those profiles exclude it or construct `PostgresOfferRecords` directly. Proposed framework rule: a started-app proof states in its Result that no `@Alternative @Priority` test bean is active on its path.
+
+## 2026-11-17 17:55 UTC · Russell Claude Code · DL-20261116-RG-002 · F473 merged; one more hosted setting
+
+- **F473 merged** to `gcsp-poc-dev` at `0e9745711` (built, scoped 391/0; pending the batch verify). Return source is bound to `OrderingReturnSource` and handover to `appointments.ReturnsHandover`; a completed handover changes the current car once, through the returns reconcile.
+- **Hosted dev needs one more setting:** `GCSP_RETURNS_PROVIDER=synthetic`, proposed in `render-service.proposed.yaml`, with `render.gcsp.yaml` untouched. It also relies on `GCSP_SUPPLY_PROVIDER=demo`, which is already on the 17:10 list: with supply `none`, every return read answers 503.
+- **Low bug candidate:** return reads take their time from supply ticks, not the run clock.
+
+## 2026-11-17 18:00 UTC · Russell Claude Code · DL-20261117-RG-002 · Memory exhaustion crash
+
+- **What happened:** the Mac reached 100% memory and swap and locked up, and had to be restarted. Russell's poller had three story-leads, each with an implementer and a Quarkus Maven JVM. The dispatcher had started the third lead as a lane replacement while the capacity check said `can_start=0` (10.6 GB of swap).
+- **Resolution:** branches pushed, the shared PG cluster recreated, and leads resumed one at a time. A lane replacement is a new start: it needs `can_start>0` like any other. `/tmp` scratch (PG clusters, story DBs) does not survive a reboot.

@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +39,8 @@ final class CaseFixture implements AutoCloseable {
     final Policy policy = new Policy();
     final Account account = new Account();
     final CaseCarSuitabilityPort suitability = new CaseDefaults.NoSuitability();
+    /** Case time for every service of this fixture; move it with {@code at}, or null to make the clock unavailable. */
+    volatile Instant clock = NOW;
     CaseService service;
     private int ids;
 
@@ -67,7 +67,7 @@ final class CaseFixture implements AutoCloseable {
 
     CaseService newService(PGSimpleDataSource pool) {
         return new CaseService(pool, policy, account, new OutboxCaseNotifications(), suitability,
-                Clock.fixed(NOW, ZoneOffset.UTC));
+                (environmentId, runId) -> Optional.ofNullable(clock));
     }
 
     static PGSimpleDataSource plain(String url) throws SQLException {
@@ -132,6 +132,22 @@ final class CaseFixture implements AutoCloseable {
 
         void set(String key, JsonNode value) {
             edits.put(key, row -> row.set("value", value));
+        }
+
+        @Override
+        public Optional<JsonNode> assumption(String policyVersion, String key) {
+            if (missing) return Optional.empty();
+            try {
+                for (JsonNode a : CaseJson.M.readTree(Files.readString(SEED)).get("assumptions")) {
+                    if (!key.equals(a.get("key").asText()) || !policyVersion.equals(a.get("policyVersion").asText())) continue;
+                    ObjectNode copy = a.deepCopy();
+                    if (edits.containsKey(key)) edits.get(key).accept(copy);
+                    return Optional.of(copy);
+                }
+                return Optional.empty();
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
         @Override

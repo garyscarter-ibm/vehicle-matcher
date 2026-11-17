@@ -1,6 +1,7 @@
 package gcsp.api.returns;
 
 import gcsp.api.persistence.Persistence;
+import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.runtime.Startup;
 import jakarta.annotation.PostConstruct;
@@ -23,9 +24,11 @@ public class ReturnSelection {
     public static final String NONE = "none";
     public static final String SYNTHETIC = "synthetic";
     public static final String LIVE_STUB = "live-stub";
+    public static final String CANONICAL = "canonical";
+    public static final String FILE = "file";
     private static final Logger LOG = Logger.getLogger(ReturnSelection.class);
 
-    /** The chosen provider name (none, synthetic or live-stub) and the policy source; policyMode is none or file. */
+    /** The provider name (none, synthetic or live-stub) and the policy source; policyMode is canonical or file. */
     public record Selected(String providerName, ReturnPolicyPort policy, String policyMode) {}
 
     @ConfigProperty(name = "gcsp.returns.provider", defaultValue = NONE)
@@ -33,6 +36,12 @@ public class ReturnSelection {
 
     @ConfigProperty(name = "gcsp.returns.policy-file")
     Optional<String> policyFile;
+
+    @ConfigProperty(name = "gcsp.environment.policy-version")
+    Optional<String> policyVersion;
+
+    @Inject
+    PolicyService policyService;
 
     @Inject
     Persistence persistence;
@@ -47,7 +56,8 @@ public class ReturnSelection {
 
     @PostConstruct
     void init() {
-        selected = select(providerName, policyFile.orElse(null));
+        selected = select(providerName, policyFile.orElse(null),
+                () -> new PolicyServiceReturnPolicy(policyService, policyVersion.orElse(null)));
         LOG.infof("GCSP returns provider: %s, policy: %s", selected.providerName(), selected.policyMode());
     }
 
@@ -86,18 +96,18 @@ public class ReturnSelection {
     }
 
     /** Pure selection rule, static so every refusal is unit-testable without a server. */
-    public static Selected select(String provider, String policyFile) {
+    public static Selected select(String provider, String policyFile, Supplier<ReturnPolicyPort> canonical) {
         String name = provider == null || provider.isBlank() ? NONE : provider.trim();
         if (!NONE.equals(name) && !SYNTHETIC.equals(name) && !LIVE_STUB.equals(name)) {
             throw new IllegalStateException("Unknown gcsp.returns.provider '" + name + "'; supported: " + NONE + ", "
                     + SYNTHETIC + ", " + LIVE_STUB);
         }
-        if (policyFile == null || policyFile.isBlank()) return new Selected(name, new UnconfiguredReturnPolicy(), NONE);
+        if (policyFile == null || policyFile.isBlank()) return new Selected(name, canonical.get(), CANONICAL);
         Path file = Path.of(policyFile.trim());
         if (!Files.isRegularFile(file) || !Files.isReadable(file)) {
             throw new IllegalStateException("gcsp.returns.policy-file is set but cannot be read: " + file);
         }
-        return new Selected(name, new RetainedReturnPolicy(file), "file");
+        return new Selected(name, new RetainedReturnPolicy(file), FILE);
     }
 
     /** The provider for a selected name; synthetic needs a database, so without one it answers unavailable. */

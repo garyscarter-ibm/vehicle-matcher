@@ -7704,7 +7704,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T08:04:16Z",
+      "observed_at": "2026-11-17T17:40:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -7746,13 +7746,48 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:16Z",
           "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
+        },
+        {
+          "id": "s6-source",
+          "status": "complete",
+          "title": "Reopened: bind ReturnSourcePort to the ordering selection record (manual and buddy)",
+          "observed_at": "2026-11-17T16:41:05Z",
+          "evidence": "64712ee75 reviewed by lead: OrderingReturnSource over selection_orders+pending draft/account; returns pkg 103/0 on native PG17; DB path proven in s9 journey"
+        },
+        {
+          "id": "s7-handover-policy",
+          "status": "complete",
+          "title": "Reopened: bind returns HandoverPort to appointments and the return policy to PolicyService",
+          "observed_at": "2026-11-17T16:51:39Z",
+          "evidence": "64712ee75 reviewed by lead: ReturnsHandover over appointments, PolicyServiceReturnPolicy canonical; returns pkg 103/0 native PG17; started-app proof in s9"
+        },
+        {
+          "id": "s8-handover-current-car",
+          "status": "complete",
+          "title": "Reopened: appointment-completed outbox event changes the current car once, via return progress",
+          "observed_at": "2026-11-17T16:51:40Z",
+          "evidence": "3195f6349 reviewed by lead: appointment-completed applied in ReturnPlans.progress once; ReturnHandoverCurrentCarTest 6/0, returns+clock.bound 117/0"
+        },
+        {
+          "id": "s9-journey",
+          "status": "complete",
+          "title": "Reopened: started-app journey with request, accept, completion, current car, account and restart",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "2cef4af11+cf05ce9cc reviewed by lead: ReturnJourneyHttpTest (canonical policy, demo supply) and ReturnOutcomeJourneyHttpTest (retained file) green on started app, no alternatives; scoped 391/0"
+        },
+        {
+          "id": "s10-integration",
+          "status": "complete",
+          "title": "Reopened: base merge, scoped test set and result",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "merged gcsp-poc-dev 9f6be11e2 (cce771d49); scoped set 391 run 0 fail at cf05ce9cc; Result committed"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-14T07:37:09Z",
+      "observed_at": "2026-11-17T16:41:51Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
@@ -7778,15 +7813,43 @@
           "id": "s3-integration",
           "status": "complete",
           "title": "Story-level validation, merge with gcsp-poc-dev, result block",
-          "observed_at": "2026-11-14T07:37:09Z",
-          "evidence": "c5f676d6 after merge a8c1ca1d of origin/gcsp-poc-dev: PolicyCaseAdapter over canonical PolicyService; cases 44/44 native PG17 (HTTP on real OIDC JWKS + canonical policy); ./mvnw -B verify 580 run 0 fail 0 skip; Flyway 1,2,457.1,458.1,460.1,469.1,470.1,471.1,474.1"
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s4-risk-tick",
+          "status": "complete",
+          "title": "Run-clock case time and renewal-risk-cases tick handler (deadline and lifecycle triggers)",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s5-suitability",
+          "status": "complete",
+          "title": "CaseCarSuitabilityPort bound to the Java recommendation service (alternative-car remedy)",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s6-relaxation",
+          "status": "complete",
+          "title": "Preference-relaxation remedy over recorded offer declines and post-decline brief change",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s7-journey",
+          "status": "complete",
+          "title": "Started-app journey under documented config (repository accounts, demo scenario, OIDC JWTs, PG) for AC1 and AC2",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-14T08:16:02Z",
+      "observed_at": "2026-11-17T17:05:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
@@ -7814,6 +7877,41 @@
           "title": "Story integration: merge base, full Java verify on native PG17, EXPLAIN bounds, result",
           "observed_at": "2026-11-14T08:16:02Z",
           "evidence": "lead review: merge dde305419; canonical PolicyDemandAdapter 3ee1abcb5; demand.** 62/62 and verify 740/0 on native PG17 :55475; EXPLAIN on 1000-employee/5000-car workload"
+        },
+        {
+          "id": "r2-s1-policy-clock-offers",
+          "status": "complete",
+          "title": "Reopened: reviewed decline reasons at the pinned version, run clock, PostgreSQL offer records adapter",
+          "observed_at": "2026-11-17T16:49:29Z",
+          "evidence": "lead review of 35cf4c820: reviewed decline reasons only for unknown-assumption at pinned version; run clock with clockVersion fence; PostgresOfferRecordsAdapter (2 fixed statements in snapshot); demand unit set 56/0 on PG17 :55491; demand.** 67/0 per Sniffles"
+        },
+        {
+          "id": "r2-s2-evaluation",
+          "status": "complete",
+          "title": "Reopened: unmet evaluation adapter over the selected EligibleCandidates",
+          "observed_at": "2026-11-17T16:57:57Z",
+          "evidence": "lead review of 01123d71b/0ddc55e62: batched reads, one engine call per brief, unavailable cars ineligible+not-available, latest completed run per pair; demand.** 75/0 on PG17 :55491"
+        },
+        {
+          "id": "r2-s3-allocation-records",
+          "status": "complete",
+          "title": "Reopened: recorded allocation decisions adapter for suitability",
+          "observed_at": "2026-11-17T16:57:57Z",
+          "evidence": "lead review of 01123d71b/0ddc55e62: batched reads, one engine call per brief, unavailable cars ineligible+not-available, latest completed run per pair; demand.** 75/0 on PG17 :55491"
+        },
+        {
+          "id": "r2-s4-composition-journey",
+          "status": "complete",
+          "title": "Reopened: dev-composition journey over OIDC JWTs and native PostgreSQL",
+          "observed_at": "2026-11-17T17:02:40Z",
+          "evidence": "lead review of dacfdb8e0: DemandDevCompositionHttpTest 7/0 on the dev composition, real beans asserted via Arc, no alternatives, OffersTestPorts Records excluded; counts checked against DB"
+        },
+        {
+          "id": "r2-s5-integration",
+          "status": "complete",
+          "title": "Reopened: merge base, scoped targeted set, result",
+          "observed_at": "2026-11-17T17:05:35Z",
+          "evidence": "merged 4d7f46c17 at e3b37f829; scoped set 136 run with 2 env-only errors (hardcoded gcsp_test_dev), both 3/0 on rerun; demand 82/0"
         }
       ],
       "workers": [
@@ -7823,6 +7921,15 @@
           "role": "story-lead DEV-2026-11-13-043",
           "observed_at": "2026-11-14T03:05:57Z",
           "expires_at": "2026-11-14T08:16:02Z",
+          "source": "dev/DEV-2026-11-13-043",
+          "status": "finished"
+        },
+        {
+          "name": "Miss Prissy",
+          "harness": "claude-code",
+          "role": "story-lead DEV-2026-11-13-043 (reopened)",
+          "observed_at": "2026-11-17T16:29:59Z",
+          "expires_at": "2026-11-17T17:05:35Z",
           "source": "dev/DEV-2026-11-13-043",
           "status": "finished"
         }

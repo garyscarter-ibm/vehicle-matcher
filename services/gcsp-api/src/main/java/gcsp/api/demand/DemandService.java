@@ -18,10 +18,10 @@ import gcsp.api.demand.UnmetEvaluationPort.CarCandidate;
 import gcsp.api.demand.UnmetEvaluationPort.CarDecision;
 import gcsp.api.demand.UnmetEvaluationPort.Evaluation;
 import gcsp.api.demand.UnmetEvaluationPort.Gate;
+import gcsp.api.clock.ClockReading;
 import gcsp.api.persistence.Canonical;
 import java.sql.Connection;
 import java.text.Collator;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -56,10 +56,10 @@ public final class DemandService {
     private final DemandPolicyPort policy;
     private final UnmetEvaluationPort unmet;
     private final OfferRecordsPort offers;
-    private final Clock clock;
+    private final DemandClock clock;
 
     public DemandService(DataSource dataSource, DemandPolicyPort policy, UnmetEvaluationPort unmet, OfferRecordsPort offers,
-            Clock clock) {
+            DemandClock clock) {
         this.dataSource = dataSource;
         this.policy = policy;
         this.unmet = unmet;
@@ -73,7 +73,9 @@ public final class DemandService {
 
     /** No role check here: the HTTP layer requires Greg before calling. */
     public DemandResult read(DemandScope scope) {
-        Instant asOf = clock.instant();
+        ClockReading time = clock.now(scope).orElse(null);
+        if (time == null) return DemandResult.Refusal.unavailable("clock-unavailable");
+        Instant asOf = time.now();
         DemandPolicy rules;
         int threshold;
         List<String> reasonCodes;
@@ -89,7 +91,10 @@ public final class DemandService {
             Snapshot snap = snapshot(scope);
             if (snap == null) return DemandResult.Refusal.staleRun();
             if (snap.offers() == null) return DemandResult.Refusal.unavailable("source-invalid");
-            return project(scope, rules, threshold, new HashSet<>(reasonCodes), asOf, snap);
+            ClockReading end = clock.now(scope).orElse(null);
+            if (end == null) return DemandResult.Refusal.unavailable("clock-unavailable");
+            if (end.clockVersion() != time.clockVersion()) return DemandResult.Refusal.changed();
+            return project(scope, rules, threshold, new HashSet<>(reasonCodes), asOf, time.clockVersion(), snap);
         } catch (Unavailable e) {
             return DemandResult.Refusal.unavailable(e.code);
         } catch (Exception e) {
@@ -280,7 +285,7 @@ public final class DemandService {
     }
 
     private DemandResult project(DemandScope scope, DemandPolicy rules, int n, Set<String> reasonCodes, Instant asOf,
-            Snapshot s) {
+            long clockVersion, Snapshot s) {
         Counts k = new Counts(n, scope.policyVersion());
         List<Brief> briefs = s.briefs();
         Map<String, Brief> byEmployee = new HashMap<>();
@@ -327,7 +332,7 @@ public final class DemandService {
         // Unmet demand.
         Map<String, Bucket> gateBuckets = new HashMap<>();
         Bucket unmetTotal = new Bucket();
-        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, s, byEmployee, reasonCodes).entrySet()) {
+        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, clockVersion, s, byEmployee, reasonCodes).entrySet()) {
             List<Ver> v = List.of(new Ver(u.getKey().version(), u.getKey().policyVersion()));
             unmetTotal.hit(v);
             for (String gate : u.getValue()) gateBuckets.computeIfAbsent(gate, x -> new Bucket()).hit(v);
@@ -447,6 +452,7 @@ public final class DemandService {
         ArrayNode vp = versions.putArray("policy");
         k.topPolicy.forEach(vp::add);
         versions.put("revision", s.revision());
+        versions.put("clock", clockVersion);
         ObjectNode demand = Demand.obj();
         demand.set("activeBriefs", k.count(activeBriefs));
         demand.set("byModelLine", k.list(byModelLine, true));
@@ -480,7 +486,8 @@ public final class DemandService {
         stockNode.set("source", s.source());
 
         ObjectNode identity = Demand.obj();
-        identity.put("runId", scope.runId()).put("revision", s.revision()).put("policyVersion", rules.policyVersion());
+        identity.put("runId", scope.runId()).put("revision", s.revision()).put("clock", clockVersion)
+                .put("policyVersion", rules.policyVersion());
         identity.set("threshold", rules.threshold());
         identity.put("thresholdStatus", rules.thresholdStatus());
         identity.set("declineReasons", rules.declineReasons());
@@ -605,7 +612,7 @@ public final class DemandService {
     // ---- unmet demand ----
 
     /** The gates of every brief with no eligible car, in brief order. */
-    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, Snapshot s, Map<String, Brief> byEmployee,
+    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, long clockVersion, Snapshot s, Map<String, Brief> byEmployee,
             Set<String> reasonCodes) {
         Map<Brief, List<String>> out = new LinkedHashMap<>();
         for (Brief b : s.briefs()) {
@@ -646,7 +653,7 @@ public final class DemandService {
         if (candidates.isEmpty()) return out;
         Evaluation evaluation;
         try {
-            evaluation = unmet.evaluate(scope, candidates, asOf);
+            evaluation = unmet.evaluate(scope, candidates, asOf, clockVersion);
         } catch (RuntimeException ex) {
             throw new Unavailable("evaluation-unavailable");
         }

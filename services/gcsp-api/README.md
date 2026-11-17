@@ -82,7 +82,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_VEHICLE_IMAGES_PUBLIC` | `false` | Explicit opt-in to serve retained images without a bearer token. Evidence reads always need one. |
 | `GCSP_VEHICLE_EVIDENCE_TIMEOUT_MS`, `GCSP_VEHICLE_EVIDENCE_MAX_ATTEMPTS` | `1000`, `1` | Bounds of one provider read (1..5000 ms, 1..2 attempts); anything else stops startup. |
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
-| `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
+| `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means the canonical PolicyService rules (`gcsp.environment.policy-version`, else the active version). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
 | `GCSP_ALLOCATION_CANDIDATES_PROVIDER` | `none` | Buddy allocation candidates (FUCQ-461/481 selector): `none` refuses every allocation (`recommendation-unavailable`) and leaves the `buddy-allocation`, `buddy-expiry` and `buddy-pending-operations` tick stages unregistered; `recommendation` evaluates each car with the canonical recommendation engine. Set `recommendation` on the dev service. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
@@ -657,9 +657,14 @@ Package `gcsp.api.cases`: owned renewal cases in the V474_1 tables (`renewal_cas
 from the bearer principal. Ports and production defaults: `PolicyCaseAdapter` reads the nine `renewalCase.*` rows
 of the pinned version from the canonical PolicyService (any missing or invalid row is 503 `case-unavailable`);
 `CaseAccountPort` reads the account records port (`GCSP_ACCOUNT_PROVIDER`, else 503); each change queues outbox event `renewal-case-update` for `gcsp.api.notify` (FUCQ-469) to
-deliver. Car suitability is not connected, so alternative-car proposals are 503, and preference relaxation needs a
-recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
-ported yet. No new environment variables.
+deliver. With persistence and an account provider, `CaseSuitabilitySelection` binds alternative-car suitability to the
+recommendation calculation allocation uses (released, unoccupied, visible stock; needs a confirmed brief), else every
+car proposal is 503. Preference relaxation needs the employee's recorded offer decline and, to resolve, her single
+post-decline brief change. Case times follow the run clock. Tick handler `renewal-risk-cases` (stage
+`pending-reconciliation`, registered with persistence and `GCSP_ACCOUNT_PROVIDER`) opens or extends the owned case
+when a contract end is within `renewalCase.deadline.withinDays` with no acknowledged selection, and on configured
+lifecycle exceptions (approval declined, handover no-show, return missed). No automatic recovery priority. No new
+environment variables; the dev service already needs `GCSP_ACCOUNT_PROVIDER=repository`.
 
 ## Returns (FUCQ-473)
 
@@ -681,9 +686,13 @@ with the `plan`; 503 unavailable. Startup runs a reconcile-only pass (never a ne
 not `none`, and the `returns` readiness check reports the provider, policy, source and handover modes plus the open
 operation count; it is DOWN only when the database errors.
 
+A completed handover (the `appointment-completed` outbox event) makes the new car current through the returns reconcile pass
+(the `lifecycle-return-outcomes` tick, presenter progress and startup), once, at the event's time; an order with no
+selection record is skipped.
+
 Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
-(`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
-Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
+is `OrderingReturnSource` (the FUCQ-468 selection record plus the pinned manual draft or the buddy account record) and the
+handover is `ReturnsHandover` (the FUCQ-472 appointments); both report `none` and answer unavailable without persistence. The current-car relationship lives in `gcsp.api.returns`;
 `gcsp.api.account.CurrentCarPort` (FUCQ-458) lists it through `ReturnsCurrentCarRelationships` when persistence is active.
 
 ## Comparison (FUCQ-480)
