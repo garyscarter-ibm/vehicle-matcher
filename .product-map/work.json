@@ -7062,7 +7062,7 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-17T17:24:08Z",
+      "observed_at": "2026-11-17T17:59:15Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
@@ -7107,14 +7107,17 @@
         },
         {
           "id": "r2-journey",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: started-app OIDC journey over documented composition with restart (AC1, AC2)",
-          "observed_at": "2026-11-17T17:24:08Z"
+          "observed_at": "2026-11-17T17:59:15Z",
+          "evidence": "cbbaa276f+41e746f54 reviewed by story-lead: OIDC Phase1 13 + Phase2 1 over real beans (asserted), real restart; lead rerun 14/0 and scoped 303/0 at 41e746f54"
         },
         {
           "id": "r2-integration",
-          "status": "not-started",
-          "title": "Reopened: merge base, scoped set, result block"
+          "status": "complete",
+          "title": "Reopened: merge base, scoped set, result block",
+          "observed_at": "2026-11-17T17:59:15Z",
+          "evidence": "merged origin/gcsp-poc-dev 56e93f0c8 (78f901e6d); scoped set 303/0/0/0 on PG17 55491; result block committed; full suite deferred to batch"
         }
       ]
     },
