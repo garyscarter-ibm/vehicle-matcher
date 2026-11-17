@@ -7970,7 +7970,7 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-17T15:29:09Z",
+      "observed_at": "2026-11-17T15:39:22Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
@@ -8015,21 +8015,24 @@
         },
         {
           "id": "started-app-restart",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Started-app job progress, interruption and recovery across a real restart, no real email",
-          "observed_at": "2026-11-17T15:29:09Z"
+          "observed_at": "2026-11-17T15:35:31Z",
+          "evidence": "Lead-reviewed e235c8242: packaged quarkus-run.jar, documented env, RS256 JWTs over https JWKS, native PG17, brevo transport to a fake: 58/58 checks. Reruns off 403; SIGKILL mid-run reads interrupted (restarted) with stepsDone 1; SIGTERM reads interrupted (stopped); re-POST no rerun; cancel/restart 404; 0 mail calls, 0 outbox rows"
         },
         {
           "id": "render-env",
-          "status": "not-started",
-          "title": "Render env delta for comparison (proposed yaml and README)"
+          "status": "complete",
+          "title": "Render env delta for comparison (proposed yaml and README)",
+          "observed_at": "2026-11-17T15:35:31Z",
+          "evidence": "Lead-reviewed 36e297fe4: README env rows GCSP_COMPARISON_RESULT_FILES/RERUNS/CODE_REVISION; commented proposed-yaml lines with the ~4 GB note; render.gcsp.yaml untouched"
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Story integration: base merge, scoped set, Result",
-          "observed_at": "2026-11-17T15:18:32Z",
-          "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
+          "observed_at": "2026-11-17T15:39:22Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev at 645ce2b42; scoped set 79 run/0 fail/2 env-gated skips on native PG17; started-app proof on merged-head jar 58/58; Result block written"
         }
       ],
       "workers": [
@@ -8037,10 +8040,10 @@
           "name": "Pinky",
           "harness": "claude-code",
           "role": "story-lead",
-          "observed_at": "2026-11-17T15:18:38Z",
-          "expires_at": "2026-11-17T21:18:38Z",
+          "observed_at": "2026-11-17T15:39:22Z",
+          "expires_at": "2026-11-17T15:39:22Z",
           "source": "dev poller 2026-11-17 reopen; worktree dev/DEV-2026-11-13-048",
-          "status": "building reopened story"
+          "status": "completed: Result built, awaiting dispatcher merge"
         }
       ]
     },
