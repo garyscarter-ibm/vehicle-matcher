@@ -7432,7 +7432,7 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-17T16:02:49Z",
+      "observed_at": "2026-11-17T16:21:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
@@ -7470,14 +7470,16 @@
         },
         {
           "id": "r2-remote-faults",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: started composition proof of refused, lost acknowledgement, repeated command and restart over a loopback remote ordering endpoint",
-          "observed_at": "2026-11-17T16:02:49Z"
+          "observed_at": "2026-11-17T16:21:01Z",
+          "evidence": "lead review of bc06bb0b6: OrderingRemoteRefusedHttpTest + OrderingRemoteJourneyHttpTest green over HttpOrderingProvider->loopback (refused, lost ack, hide, repeat, startup and fresh-pool restart, executes 1 per op)"
         },
         {
           "id": "r2-integration",
-          "status": "not-started",
-          "title": "Reopened: base merge, scoped story test set and Result"
+          "status": "in-progress",
+          "title": "Reopened: base merge, scoped story test set and Result",
+          "observed_at": "2026-11-17T16:21:01Z"
         }
       ]
     },
