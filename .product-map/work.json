@@ -8234,6 +8234,54 @@
       ]
     },
     {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-507",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Connect Java comparison jobs to allocation and recommendation route replay",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
+      "observed_at": "2026-11-17T14:30:19Z",
+      "slices": [
+        {
+          "id": "replay-harness",
+          "status": "complete",
+          "title": "Isolated replay run, seeding and shared per-seed evaluation",
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: scratch-schema run, batched seeding, shared evaluation; RouteReplayCurrentTest 3/3 native PG17 (record digests equal Node runner.json)"
+        },
+        {
+          "id": "current-route",
+          "status": "complete",
+          "title": "Current route replayed through Java manual claims",
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: current route records for parity-a/b equal Node exactly; schema dropped on success, refusal and interrupt"
+        },
+        {
+          "id": "buddy-route",
+          "status": "complete",
+          "title": "Buddy route replayed through Java allocation, recommendation and offers",
+          "observed_at": "2026-11-17T14:30:18Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
+        },
+        {
+          "id": "job-wiring",
+          "status": "complete",
+          "title": "Real replay bound at startup with the FUCQ-480 job lifecycle unchanged",
+          "observed_at": "2026-11-16T19:48:32Z",
+          "evidence": "Lead-reviewed d8a7a09d9 (merged aa7503b6e): DatabaseComparisonReplay default bean, HTTP job runs real replay to timeout; gcsp.api.comparison.** 65/65 native PG17"
+        },
+        {
+          "id": "full-size-validation",
+          "status": "complete",
+          "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL",
+          "observed_at": "2026-11-17T14:30:19Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
+        }
+      ]
+    },
+    {
       "assignee": "Gary Carter",
       "id": "FUCQ-410",
       "jira_observed_at": "2026-11-16T20:29:59.639151+00:00",
