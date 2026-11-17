@@ -4,8 +4,8 @@ import gcsp.api.account.AccountPolicyPort;
 import gcsp.api.account.AccountScope;
 
 /**
- * Serves the account view's policy rows from the canonical PolicyService. Deliberately not a bean: AccountSelection's
- * producer owns the binding, so integration changes its policy() to return new PolicyAccountAdapter(policyService).
+ * Serves the account view's policy rows from the canonical PolicyService. Not a bean itself: AccountSelection's
+ * policy() producer binds it with the injected PolicyService.
  */
 public final class PolicyAccountAdapter implements AccountPolicyPort {
 
