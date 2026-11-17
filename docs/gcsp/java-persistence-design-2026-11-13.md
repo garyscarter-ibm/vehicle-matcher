@@ -107,4 +107,35 @@ Native PostgreSQL 17.12, local throwaway cluster, code `0dd710eb`. Full record i
   car CAS, revision bump, receipt insert, commit), independent of run size. Exact-car read and CAS use `stock_cars_pkey` at 5,000 cars;
   receipt lookup uses its primary key; the revision bump uses `runs_one_active`; pending outbox uses its partial index.
 
+### Re-proof on the reopened base (17 November 2026)
+
+Base `gcsp-poc-dev` at `06959fdc4`, 25 Flyway migrations (V1, V2 and each consumer's own `V4xx_n`). Since the first proof,
+only `RunReset`/`Persistence` changed in this package (FUCQ-479: reset needs both the configured `GCSP_RESET_ALLOWED`
+and the stored `reset_allowed`; the replay digest includes the scenario and versions). The presenter reset route
+`POST /api/gcsp/v1/presenter/clock/reset` now drives `ScenarioService` → `RunReset`; refusals are 403.
+
+- Journey tests on the documented dev composition (real RS256 tokens, native PostgreSQL, no enabled alternatives):
+  `persistence.PersistenceDevCompositionHttpTest` and `persistence.PersistenceRunningDatabaseHttpTest`. Eight concurrent
+  advances on one clock version: one 200, seven 409 `stale-version`, one receipt, revision +1. Four concurrent copies of
+  one command: one effect, same answer. A changed replay is 409 `command-input-changed`; a refused command changes no
+  table. A presenter reset retires run-1 and activates a new run with nothing deleted, while another environment in the
+  dev database and the running database stay byte-identical (all-table digest). The running composition
+  (`reset_allowed=false`, scenario provider `none`) answers 403 `scenarios-not-configured` and writes nothing, and
+  `demo` refuses to start on a database claimed without reset.
+- Built-app proof, `scripts/gcsp/fucq456-restart-proof.mjs`, receipt `docs/gcsp/evidence/fucq456/restart-proof-2026-11-17.json`:
+  one `quarkus-run.jar` at a time with the README env vars. Run, receipts, clock and seeded people survive SIGTERM and
+  restart (Flyway: no migration needed). A command whose JVM was SIGKILLed after the request was written left the caller
+  without an answer; resending it committed exactly once. After a reset and restart the new run is active and run-1's
+  receipts are byte-identical. The running database's digest was unchanged by all dev activity; a dev JVM pointed at it
+  exits with `EnvironmentMismatchException`.
+- Freshness: unchanged (`runs.revision`). Each start runs the documented startup clock tick, which adds `clock.tick.*`
+  receipts and bumps the revision; business rows are not touched by it.
+- SQL scope: `TransactionRunner` and V1 are unchanged since `0dd710eb`, so the statement count and plans above still
+  apply. Consumer tables and their reads (`V457`–`V480`) carry their own Stories' evidence.
+
+Alignment, unchanged in substance: targeted reads and writes (FUCQ-419, 422–424 equivalents) are this package's
+command transaction; reference evidence and policy versions are read-only inputs owned by FUCQ-457/459; reset work is
+FUCQ-479's presenter control over `RunReset`. Separate optimization evidence stays with FUCQ-420/421 (consumer loops and
+any projection cache) and FUCQ-425 (batched evidence reads, E3.S06/S27). The Node Stories' acceptance is not claimed.
+
 The hosted Render dev database does not exist yet. Its connection and reset evidence awaits Gary's dev environment.

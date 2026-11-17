@@ -1,0 +1,586 @@
+{
+  "schema": "fucq456-restart-proof/1",
+  "story": "DEV-2026-11-13-024 / FUCQ-456",
+  "startedAt": "2026-11-17T20:31:05.952Z",
+  "phases": {
+    "P0": {
+      "title": "Fresh databases (only the two owned ones)",
+      "checks": [
+        {
+          "name": "both databases created empty",
+          "ok": true,
+          "observed": [
+            "gcsp_dev20261113024_app",
+            "gcsp_dev20261113024_poc"
+          ]
+        }
+      ],
+      "observed": {},
+      "pass": true
+    },
+    "P1": {
+      "title": "Running composition (poc stand-in): first start, advance, reset refused, clean stop",
+      "checks": [
+        {
+          "name": "readiness ready, env gcsp-poc, run-1",
+          "ok": true,
+          "observed": {
+            "status": "UP",
+            "state": "ready",
+            "environmentId": "gcsp-poc",
+            "runId": "run-1"
+          }
+        },
+        {
+          "name": "Flyway applied all migrations",
+          "ok": true,
+          "observed": {
+            "migrations": 26,
+            "line": "2026-11-17 20:31:09,199 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Successfully applied 25 migrations to schema \"gcsp_app\", now at version v480.2 (execution time 00:00.114s)"
+          }
+        },
+        {
+          "name": "reset_allowed=false",
+          "ok": true,
+          "observed": "f"
+        },
+        {
+          "name": "presenter advance 200",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "clockVersion": 2,
+            "now": "2026-11-17T09:01:00.000Z"
+          }
+        },
+        {
+          "name": "advance receipt stored",
+          "ok": true,
+          "observed": {
+            "clock:advance:poc-adv-1": 1,
+            "revision": 11
+          }
+        },
+        {
+          "name": "presenter reset refused with 403",
+          "ok": true,
+          "observed": {
+            "status": 403,
+            "code": "scenarios-not-configured"
+          }
+        },
+        {
+          "name": "poc digest unchanged by the refusal",
+          "ok": true
+        },
+        {
+          "name": "SIGTERM stop clean",
+          "ok": true,
+          "observed": {
+            "exitCode": 143,
+            "signal": null,
+            "forced": false,
+            "shutdownLog": [
+              "2026-11-17 20:31:10,502 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
+            ]
+          }
+        }
+      ],
+      "observed": {
+        "readiness": {
+          "status": "UP",
+          "state": "ready",
+          "environmentId": "gcsp-poc",
+          "runId": "run-1"
+        },
+        "migrationsApplied": 26,
+        "advance": {
+          "status": 200,
+          "clockVersion": 2,
+          "now": "2026-11-17T09:01:00.000Z"
+        },
+        "receipt": {
+          "clock:advance:poc-adv-1": 1,
+          "revision": 11
+        },
+        "resetAttempt": {
+          "status": 403,
+          "code": "scenarios-not-configured"
+        },
+        "stop": {
+          "exitCode": 143,
+          "signal": null,
+          "forced": false,
+          "shutdownLog": [
+            "2026-11-17 20:31:10,502 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
+          ]
+        },
+        "pocDigest": "5c5c350d3728667a0d256b3bbfd0b32e"
+      },
+      "pass": true
+    },
+    "P2": {
+      "title": "Dev composition: first start, seed, advance, concurrent writers",
+      "checks": [
+        {
+          "name": "readiness env isolated-dev run-1",
+          "ok": true,
+          "observed": {
+            "status": "UP",
+            "state": "ready",
+            "environmentId": "isolated-dev",
+            "runId": "run-1"
+          }
+        },
+        {
+          "name": "reset_allowed=true",
+          "ok": true
+        },
+        {
+          "name": "demo people seeded",
+          "ok": true,
+          "observed": 5
+        },
+        {
+          "name": "A1 advance 200",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "clockVersion": 2,
+            "now": "2026-11-17T09:01:00.000Z"
+          }
+        },
+        {
+          "name": "exactly one 200 and one 409 stale-version",
+          "ok": true,
+          "observed": [
+            {
+              "status": 409,
+              "code": "stale-version",
+              "currentVersion": 3
+            },
+            {
+              "status": 200,
+              "clockVersion": 3,
+              "now": "2026-11-17T09:01:45.000Z"
+            }
+          ]
+        },
+        {
+          "name": "clock moved by two steps, one race receipt",
+          "ok": true,
+          "observed": {
+            "clockVersion": 3,
+            "revision": 14,
+            "businessReceipts": 4,
+            "startupTickReceipts": 10,
+            "raceReceipts": 1
+          }
+        },
+        {
+          "name": "SIGTERM stop clean",
+          "ok": true,
+          "observed": {
+            "exitCode": 143,
+            "signal": null,
+            "forced": false,
+            "shutdownLog": [
+              "2026-11-17 20:31:12,589 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.010s"
+            ]
+          }
+        }
+      ],
+      "observed": {
+        "readiness": {
+          "status": "UP",
+          "state": "ready",
+          "environmentId": "isolated-dev",
+          "runId": "run-1"
+        },
+        "employees": 5,
+        "race": [
+          {
+            "status": 409,
+            "code": "stale-version",
+            "currentVersion": 3
+          },
+          {
+            "status": 200,
+            "clockVersion": 3,
+            "now": "2026-11-17T09:01:45.000Z"
+          }
+        ],
+        "state": {
+          "clockVersion": 3,
+          "revision": 14,
+          "businessReceipts": 4,
+          "startupTickReceipts": 10,
+          "raceReceipts": 1
+        },
+        "devStateDigest": "cd47a99eeb72fbd874cd53ae923ec900"
+      },
+      "pass": true
+    },
+    "P3": {
+      "title": "Normal restart: nothing re-seeded, nothing lost, replays are replays",
+      "checks": [
+        {
+          "name": "readiness same env and run",
+          "ok": true,
+          "observed": {
+            "status": "UP",
+            "state": "ready",
+            "environmentId": "isolated-dev",
+            "runId": "run-1"
+          }
+        },
+        {
+          "name": "Flyway: schema up to date, nothing applied",
+          "ok": true,
+          "observed": "2026-11-17 20:31:13,160 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Schema \"gcsp_app\" is up to date. No migration necessary."
+        },
+        {
+          "name": "clock version unchanged",
+          "ok": true,
+          "observed": 3
+        },
+        {
+          "name": "business receipts unchanged by the restart",
+          "ok": true,
+          "observed": {
+            "rec2": 4
+          }
+        },
+        {
+          "name": "replay of a1: 200, same result",
+          "ok": true,
+          "observed": {
+            "first": {
+              "status": 200,
+              "clockVersion": 2,
+              "now": "2026-11-17T09:01:00.000Z"
+            },
+            "replay": {
+              "status": 200,
+              "clockVersion": 2,
+              "now": "2026-11-17T09:01:00.000Z"
+            }
+          }
+        },
+        {
+          "name": "replay changed nothing (revision, receipts, clock)",
+          "ok": true,
+          "observed": {
+            "revision": 24
+          }
+        },
+        {
+          "name": "same id, different bySeconds: 409 command-input-changed",
+          "ok": true,
+          "observed": {
+            "status": 409,
+            "code": "command-input-changed"
+          }
+        },
+        {
+          "name": "employees not re-seeded",
+          "ok": true,
+          "observed": 5
+        },
+        {
+          "name": "business state digest identical across the normal restart, replay and refused edit",
+          "ok": true
+        }
+      ],
+      "observed": {
+        "readiness": {
+          "status": "UP",
+          "state": "ready",
+          "environmentId": "isolated-dev",
+          "runId": "run-1"
+        },
+        "startupTick": {
+          "revisionBeforeRestart": 12,
+          "revisionAfterRestart": 24,
+          "note": "each start runs a documented startup clock tick (tick receipts only)"
+        },
+        "replayA1": {
+          "status": 200,
+          "clockVersion": 2,
+          "now": "2026-11-17T09:01:00.000Z"
+        },
+        "changedInput": {
+          "status": 409,
+          "code": "command-input-changed"
+        }
+      },
+      "pass": true
+    },
+    "P4": {
+      "title": "Interrupted command: SIGKILL right after the request is written, then resend",
+      "checks": [
+        {
+          "name": "JVM was killed (SIGKILL)",
+          "ok": true,
+          "observed": {
+            "code": null,
+            "signal": "SIGKILL"
+          }
+        },
+        {
+          "name": "caller got no response (does not know the outcome)",
+          "ok": true,
+          "observed": {
+            "gotResponse": false,
+            "socketError": "ECONNRESET",
+            "bytesWritten": 933
+          }
+        },
+        {
+          "name": "restart ready on run-1",
+          "ok": true,
+          "observed": {
+            "status": "UP",
+            "state": "ready",
+            "environmentId": "isolated-dev",
+            "runId": "run-1"
+          }
+        },
+        {
+          "name": "resend with the same body answers 200 at the next version",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "clockVersion": 4,
+            "now": "2026-11-17T09:03:00.000Z"
+          }
+        },
+        {
+          "name": "exactly one receipt for clock:advance:proof-a2",
+          "ok": true,
+          "observed": 1
+        },
+        {
+          "name": "clock moved by exactly one step overall",
+          "ok": true,
+          "observed": {
+            "clockVersion": 4,
+            "receipts": 5
+          }
+        },
+        {
+          "name": "a second resend is still the same single effect",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "clockVersion": 4,
+            "now": "2026-11-17T09:03:00.000Z"
+          }
+        }
+      ],
+      "observed": {
+        "interrupted": {
+          "gotResponse": false,
+          "socketError": "ECONNRESET",
+          "bytesWritten": 933,
+          "jvmExit": {
+            "code": null,
+            "signal": "SIGKILL"
+          }
+        },
+        "receiptAfterKill": 0,
+        "resend": {
+          "status": 200,
+          "clockVersion": 4,
+          "now": "2026-11-17T09:03:00.000Z"
+        },
+        "outcome": "not committed before the kill; resend committed it for the first time"
+      },
+      "pass": true
+    },
+    "P5": {
+      "title": "Presenter reset on dev: authority survives restart, nothing deleted",
+      "checks": [
+        {
+          "name": "reset 200: retired run-1, activated a new run",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "retiredRunId": "run-1",
+            "activatedRunId": "demo-444211fbcc7609e015ea248ae6d7c25d",
+            "replayed": false
+          }
+        },
+        {
+          "name": "same reset id replays the same pair",
+          "ok": true,
+          "observed": {
+            "status": 200,
+            "retiredRunId": "run-1",
+            "activatedRunId": "demo-444211fbcc7609e015ea248ae6d7c25d",
+            "replayed": true
+          }
+        },
+        {
+          "name": "employee token reset: 403",
+          "ok": true,
+          "observed": {
+            "status": 403,
+            "code": "role-required"
+          }
+        },
+        {
+          "name": "SIGTERM stop clean",
+          "ok": true,
+          "observed": {
+            "exitCode": 143,
+            "signal": null,
+            "forced": false,
+            "shutdownLog": [
+              "2026-11-17 20:31:15,794 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
+            ]
+          }
+        },
+        {
+          "name": "readiness shows the NEW run after restart",
+          "ok": true,
+          "observed": {
+            "status": "UP",
+            "state": "ready",
+            "environmentId": "isolated-dev",
+            "runId": "demo-444211fbcc7609e015ea248ae6d7c25d"
+          }
+        },
+        {
+          "name": "presenter clock follows the new run",
+          "ok": true
+        },
+        {
+          "name": "exactly one active run, run-1 retired",
+          "ok": true,
+          "observed": "demo-444211fbcc7609e015ea248ae6d7c25d:active,run-1:retired"
+        },
+        {
+          "name": "run-1 receipts still present and byte-identical",
+          "ok": true,
+          "observed": {
+            "beforeRestart": 35,
+            "afterRestart": 35
+          }
+        },
+        {
+          "name": "SIGTERM stop clean",
+          "ok": true,
+          "observed": {
+            "exitCode": 143,
+            "signal": null,
+            "forced": false,
+            "shutdownLog": [
+              "2026-11-17 20:31:17,188 INFO  [io.quarkus] (main) gcsp-api stopped in 0.013s"
+            ]
+          }
+        }
+      ],
+      "observed": {
+        "reset": {
+          "status": 200,
+          "retiredRunId": "run-1",
+          "activatedRunId": "demo-444211fbcc7609e015ea248ae6d7c25d",
+          "replayed": false
+        },
+        "resetReplay": {
+          "status": 200,
+          "retiredRunId": "run-1",
+          "activatedRunId": "demo-444211fbcc7609e015ea248ae6d7c25d",
+          "replayed": true
+        },
+        "employeeReset": {
+          "status": 403,
+          "code": "role-required"
+        },
+        "readinessAfterRestart": {
+          "status": "UP",
+          "state": "ready",
+          "environmentId": "isolated-dev",
+          "runId": "demo-444211fbcc7609e015ea248ae6d7c25d"
+        },
+        "run1Receipts": {
+          "beforeRestart": 35,
+          "afterRestart": 35
+        }
+      },
+      "pass": true
+    },
+    "P6": {
+      "title": "Isolation: the running database is untouched and guards refuse a wrong pairing",
+      "checks": [
+        {
+          "name": "poc digest equals D_poc after all dev activity and reset",
+          "ok": true
+        },
+        {
+          "name": "dev env on the poc database exits non-zero in startup with EnvironmentMismatch",
+          "ok": true,
+          "observed": {
+            "exitCode": 1,
+            "signal": null,
+            "line": "Caused by: gcsp.api.persistence.EnvironmentMismatchException: Connected database 'gcsp_dev20261113024_poc' does not match GCSP_EXPECTED_DATABASE 'gcsp_dev20261113024_app'"
+          }
+        },
+        {
+          "name": "startup refused (non-zero exit)",
+          "ok": true,
+          "observed": {
+            "started": false,
+            "exitCode": 1,
+            "reason": "p6-scenario exited during startup (code 1 signal null)",
+            "lines": [
+              "2026-11-17 20:31:18,389 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
+              "Caused by: java.lang.IllegalStateException: GCSP_SCENARIO_PROVIDER=demo needs a database claimed with GCSP_RESET_ALLOWED=true; this database does not allow reset, so nothing is seeded",
+              "\tat gcsp.api.scenario.ScenarioWiring.requireResetDatabase(ScenarioWiring.java:100)"
+            ]
+          }
+        },
+        {
+          "name": "poc digest equals D_poc at the end",
+          "ok": true
+        }
+      ],
+      "observed": {
+        "pocDigest": {
+          "before": "5c5c350d3728667a0d256b3bbfd0b32e",
+          "afterDevActivity": "5c5c350d3728667a0d256b3bbfd0b32e"
+        },
+        "dbMismatch": {
+          "exitCode": 1,
+          "signal": null,
+          "line": "Caused by: gcsp.api.persistence.EnvironmentMismatchException: Connected database 'gcsp_dev20261113024_poc' does not match GCSP_EXPECTED_DATABASE 'gcsp_dev20261113024_app'"
+        },
+        "scenarioDemoOnPoc": {
+          "started": false,
+          "exitCode": 1,
+          "reason": "p6-scenario exited during startup (code 1 signal null)",
+          "lines": [
+            "2026-11-17 20:31:18,389 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
+            "Caused by: java.lang.IllegalStateException: GCSP_SCENARIO_PROVIDER=demo needs a database claimed with GCSP_RESET_ALLOWED=true; this database does not allow reset, so nothing is seeded",
+            "\tat gcsp.api.scenario.ScenarioWiring.requireResetDatabase(ScenarioWiring.java:100)"
+          ]
+        }
+      },
+      "pass": true
+    }
+  },
+  "deviations": [
+    "JWKS is served over https with a local self-signed certificate (trust store passed to the JVM): the built app allows http JWKS only in test launch mode. Local test issuer only, not the real provider."
+  ],
+  "gaps": [
+    "Hosted Render dev (Gary's environment) not proven here"
+  ],
+  "codeRevision": "c709769e80b6e3fcbb1b0f273d7016a141aa5e48",
+  "java": "",
+  "postgres": "PostgreSQL 17.12 (Homebrew) on aarch64-apple-darwin27.2.0, c",
+  "node": "v26.7.0",
+  "finishedAt": "2026-11-17T20:31:18.916Z",
+  "pass": true,
+  "jvmsLeft": "none"
+}
