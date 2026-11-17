@@ -7590,7 +7590,7 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-14T02:18:47Z",
+      "observed_at": "2026-11-17T18:25:10Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
@@ -7615,7 +7615,7 @@
         {
           "id": "s3-ack-http",
           "status": "complete",
-          "title": "Employee reads, provider acknowledgement command and /api/gcsp/v1/documents endpoints with startup selection",
+          "title": "Employee reads, provider acknowledgement command and /api/gcsp/v1/documents",
           "observed_at": "2026-11-14T02:14:33Z",
           "evidence": "ff2d9c4a+66222cc7 reviewed by story-lead: provider-port acknowledgement with intent/CAS finalize, employee ownership, presenter/greg read-only, /api/gcsp/v1/documents; verify 160/160 native PG 17"
         },
@@ -7625,6 +7625,22 @@
           "title": "Story validation, base merge, migration number and result",
           "observed_at": "2026-11-14T02:18:47Z",
           "evidence": "341dde5c: base merged, Java verify 421/421 on native PG 17, result block written"
+        },
+        {
+          "id": "s5-route",
+          "status": "in-progress",
+          "title": "Reopened: register inventory replacement POST /api/gcsp/v1/documents/tasks/complete",
+          "observed_at": "2026-11-17T18:25:10Z"
+        },
+        {
+          "id": "s6-journey",
+          "status": "not-started",
+          "title": "Reopened: started-app documents journey on real ports with AC2 negative proofs"
+        },
+        {
+          "id": "s7-integration",
+          "status": "not-started",
+          "title": "Reopened: base merge, scoped test set and result"
         }
       ]
     },
