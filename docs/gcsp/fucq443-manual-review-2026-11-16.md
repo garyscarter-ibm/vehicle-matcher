@@ -30,52 +30,98 @@ its actual public state without inventing frozen contact/return readback or appr
 Shared kit, authentication, router/stock integration, dependencies/build settings,
 Java and Used Cars remain outside the allocated product edits.
 
-## Current evidence and remaining work
+## Current evidence and remaining work — terminal attempt06
 
-Maximus the Horse 3 independently reviewed all 17 product files: **PASS — no
-blocking or major issues found**. The sorted path-to-SHA256 map is
+The tested source is `914dc7a7390aac5386c93c9e5fd042ceefc7dbf4`, tree
+`70494c75364948c062b6fea087a298d0a5648518`, parent
+`9fcf057e62b65bf1e4c07e988f72c362e81749ed`. The 249-input freeze contains
+2,863,149 bytes. Subsequent Story/doc/map bookkeeping does not alter those inputs.
+
+Maximus the Horse 3 independently reviewed all 17 allocated product files:
+**PASS — no blocking or major issues**. Original sorted path-to-SHA256 map:
 `af2cfb71480b558b514a8ee1e6ea2f56d48f2c02e5020ee2c303bbb21f3e39bc`.
-The review is static; no new execution or screenshots are claimed.
+Sixteen product files remain identical. The only later product change adds
+`?? undefined` to the annual-mileage `unit` expression, converting missing units
+to the existing optional FactRow contract while preserving actual supplied strings
+and mileage/quote/snapshot data. SAME reviewer independently returned PASS for that
+exact 13-byte correction. Current 17-file map:
+`009624d02c31cbeb01446474572aef839899ce4f6a5e99344a64b4c7060c8e2d`.
 
-The finite local plan selects **124 native cases**, all **UNRUN**: client31,
-projection20, store27; review12, summary12, route8; unchanged stock-route14. The
-separate actual-source boundary checker is also UNRUN. The 245-input freeze covers
-Angular source/configuration, recursive global styles, actual checker/artwork and
-resource helper. Existing pinned dependencies/Node are borrowed read-only; no
-installation is allocated. The parent must audit/admit execution before the first
-fresh owned runtime. Full suite/build and connected/rendered checks are not run in
-this preparation phase.
+| Attempt06 chunk | Native outcome | Valid test credit | Sampled peak RSS B | Result |
+| --- | --- | ---: | ---: | --- |
+| a-core | rc0, exact selected identities, no failed/pending/skipped cases | 78/78 | 1,232,486,400 | strict pass |
+| b-ui | rc0, exact selected identities, no failed/pending/skipped cases | 32/32 | 1,073,004,544 | strict pass |
+| c-caller | runner rc 1; native rc/count not captured; empty JSON | none of 14 | 1,392,345,088 | incomplete, RSS grant exceeded |
+| d-boundary | not invoked after caller failure | separate checker, no test count | unavailable | UNRUN |
 
-Independent runner review found a static lifecycle gap: sampling omitted preflight
-and cleanup, and retention could exceed the combined output cap while checking only
-the retained directory. The correction places ownership/reservation/sampling before
-manifest validation, samples each cleanup phase, prechecks combined live+retained
-outputs before copying, and separates output/scratch/reservation finalizers. Finite
-static re-review passed at runner SHA256
-`c7aca96448b24eda1872c5c87f268ee963523807e4cd988a54962b9896bdeb44`.
-This is a verified source correction; no runtime breach or runtime teardown success
-was observed. Plan/runner/freeze live under primary-checkout
-`.claude/test-runs/fucq443/review-details-0037/`.
+The current-source total is **110 valid passes**, not 124. The caller exceeded the
+unchanged RSS grant of 1,342,177,280 B by 50,167,808 B. Its log reached bundle generation
+and Vitest RUN without case results. Both resource-sampler errors are retained;
+cleanup errors are empty. Disk444,688,608 B and inclusive1,827,523,040 B stayed below
+their respective 805,306,368 B and 2,147,483,648 B grants. The selected sequence did
+not pass. The known inherited checker failure is historical and was not observed
+again in06 because the checker never ran. No later assertions or caller passes are
+inferred, and no retry/automatic07 was executed.
 
-The planned runtime retains 768 MiB disk, 1280 MiB aggregate RSS and inclusive
-2 GiB, Node heap384 MiB, 5 GiB reserve, setup60s/work480s/total600s on both clocks,
-cleanup120s, one worker and combined output2 MiB. Each exact chunk runs at most once,
-records native exit before strict parsing and stops after any failed/incomplete
-chunk. No runtime root or reservation has been created in this phase.
+All three chunks retain exact native commands, case identities where produced,
+source and physical input metadata, resource samples and raw outcomes. Parent
+independent audits verified249 current source pins/head/tree and original process
+identities (core214/UI195/caller196), owned groups/tokens/exact scratch and output
+roots/canonical reservation absence. The worker verified borrowed 23,030-file/
+243,008,674 B hashes and metadata and Node pins unchanged; parent independently
+rehashed Node, not all borrowed contents. All deadlines passed. Core/UI resources
+passed; caller resources failed. Teardown passed for all three; sampled peaks do
+not prove continuous containment.
 
-AC1/AC2 remain unchecked pending original actual Java/PostgreSQL/OIDC claim-to-order,
-stale quote/declaration failure/lost-response and explicit recovery evidence, plus
-required affected desktop/narrow/Safari/private/keyboard/focus/CSP/accessibility
-rendered checks. Historical80passes and inherited boundaryrc1 below are retained,
-with prior identity/compile/RAM failures; none is a current strict pass. Product-map
-slices stay in-progress/in-progress/not-started. Parent owns publication/integration,
-Jira/native lifecycle and the separate Java review. No deployment or acceptance gain
-is claimed. No OneDrive access or cleanup verification occurred.
+The finite contract stayed disk 768 MiB/RSS 1280 MiB/inclusive 2 GiB, reserve 5 GiB,
+heap 512 MiB, serial TS0, one worker, setup 60/work 480/total 600 seconds on realtime
+and monotonic clocks, cleanup 120 and combined outputs 2 MiB. Only the explicitly
+released06 sequence ran, stopping on its first failure.
 
-Agents: Pinky 2 requested/selected `gpt-6.1-sol/high`; B-Bot 2 and Marvin the
-Martian 3 each requested/selected/reported effective `gpt-6.1-sol/medium`; Maximus
-the Horse 3 requested/selected `gpt-6.1-sol/high`. No fallback. Saved titles and
-useful tools verified; no independent reviewer effective-model introspection exists.
+| Retained review-details attempt | Actual pre-test/terminal outcome |
+| --- | --- |
+| 01 | native 1, unresolved fonts and Angular falsy(compilation); no JSON/tests |
+| 02 | existing font inputs added, font errors absent; native 1/assertion remains; no tests |
+| 03 | two existing producer compiler inputs added; native 1/same assertion; no tests |
+| 04 | serial TS0, native -6, V8 heap 384 exhaustion then esbuild deadlock; no tests |
+| 05 | heap 512, native 1/actual TS2345 optional-unit nullability; no tests |
+| 06 | reviewed optional-unit correction; core 78/UI 32 pass; caller RSS failure; checkerUNRUN |
+
+Attempts01–05 artifacts/final reports are unchanged. The06 preparation report
+`.claude/results/fucq443-unit-correction-20261117-0152.json` remains separate and
+immutable; it is preparation evidence, not a runtime result. Terminal06 result:
+`.claude/results/fucq443-finite06-20261117-0152.json`.
+Receipts are primary-checkout
+`.claude/test-runs/fucq443/review-details-0152-attempt06/runtime-{a-core,b-ui,c-caller}/receipt.json`.
+Independent parent audits are
+`.claude/fucq443-review-details-0152-attempt06-{a-core,b-ui,c-caller}-parent-audit-0152.json`.
+The final result retains full receipt/log/native-report hashes and all earlier
+report references; no earlier failure or causal hypothesis is rewritten as success.
+
+SAME Goopy Geer 3 executed core, then compaction lost the run from its visible
+context. Parent read_thread recovered turn 01a1e740-7e82-7eb1-8043-981704a8709e and
+exec 3089fbbf-18e5-42d5-89be-0fca5a82938c proving the exact core execution. A fresh
+scoped brief restored current state, and the subsequent UI 32 pass verified resumed
+delivery. No duplicate core command ran. Parent records this coordination issue in
+the shared learning log, separately from product outcomes.
+
+Both original ACs remain unchecked. Actual Java/PostgreSQL/OIDC claim-to-order,
+stale-quote/declaration-failure/lost-save/lost-submit recovery and durable readback,
+plus affected desktop/narrow/Safari/private/keyboard/focus/CSP/accessibility rendered
+proof, remain open. Map slices remain in-progress/in-progress/not-started and native
+Story stays In Progress. Full suite/build/deployment/live BMW are not claimed.
+
+The parent observed only dispatcher-learning documentation changes on shared base
+since c0043eef; no product/compiler input conflict is known. Existing matching core/UI
+receipts are reusable. Integration is **not ready** because caller 14 lacks a valid
+result. Parent owns any next allocation, publication/integration and native/Jira
+lifecycle; no extra human gate, Story closure or deployment is introduced.
+
+Agents: Pinky 2 lead `gpt-6.1-sol/high`; B-Bot 2 and Marvin the Martian 3 source authors
+`gpt-6.1-sol/medium`; SAME Maximus the Horse 3 reviewer `gpt-6.1-sol/high`; SAME Goopy
+Geer 3 runtime operator `gpt-6-luna/high`. Requested/selected/effective pairs and
+retained titles parent-verified; no fallback/new descendants. OneDrive operations 0,
+including no access for cleanup verification.
 
 ## Historical checkpoint — 16 November 2026
 

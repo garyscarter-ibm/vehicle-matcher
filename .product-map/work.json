@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-17T01:07:15Z",
+      "observed_at": "2026-11-17T02:13:52Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8385,22 +8385,22 @@
           "id": "claim-review",
           "status": "in-progress",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-17T01:07:14Z",
-          "evidence": "17Nov source checkpoint consumes actual details/save/version authority; independent static product review PASS. All78 core cases UNRUN; original connected acceptance remains open. Historical50passes and earlier failures retained."
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "17Nov tested914dc7a: exact core78/78 PASS; original17-file reviewPASS plus reviewed13B optional-unit fix. Attempts01-05 failures retained. Original actual Java/PostgreSQL/OIDC acceptance remains open; native Story In Progress."
         },
         {
           "id": "manual-screens",
           "status": "in-progress",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-17T01:07:14Z",
-          "evidence": "17Nov controlled review/details and guarded native submit source; static review PASS. All32 UI plus14 unchanged stock caller cases UNRUN; original rendered/connected proof open. Historical16+14passes/inherited boundaryrc1 retained."
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "17Nov tested914dc7a: UI32/32 PASS. Caller14 has no valid JSON/native result after RSS1,392,345,088B exceeded1,342,177,280B; checkerUNRUN. Total110 valid passes; integration not ready. Original affected rendered/connected proof open."
         },
         {
           "id": "connected-proof",
           "status": "not-started",
           "title": "Real-claim-to-order-and-rendered-proof",
-          "observed_at": "2026-11-17T01:07:15Z",
-          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-response/recovery and affected rendered proof remain outstanding; no current runtime release or acceptance claim."
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
         }
       ]
     },
