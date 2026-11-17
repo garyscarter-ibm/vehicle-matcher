@@ -9786,7 +9786,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T20:59:37Z",
+      "observed_at": "2026-11-17T21:24:30Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9814,8 +9814,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-17T20:59:37.756737+00:00",
-          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN. Partial consumer increment: real Angular client/store8/8 against Java11envelopes, independent staticPASS/pins/teardown audit. Case4readback adoption only; exact requests case2. Component/saveFull/connected originalAC proof remains; bothACOPEN. Component/saveFull37 increment: real PreferencesComponent/store selected6/6PASS over unmodified Java goldens; exact draft/confirm requests except commandId, readback, stale correction and unavailable presentation. Parent fixed five NodeList iteration compile errors; pins and owned teardown independently verified. Both originalAC/connected proof OPEN; no new acceptance gates."
+          "observed_at": "2026-11-17T21:24:23.771312+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN. Partial consumer increment: real Angular client/store8/8 against Java11envelopes, independent staticPASS/pins/teardown audit. Case4readback adoption only; exact requests case2. Component/saveFull/connected originalAC proof remains; bothACOPEN. Component/saveFull37 increment: real PreferencesComponent/store selected6/6PASS over unmodified Java goldens; exact draft/confirm requests except commandId, readback, stale correction and unavailable presentation. Parent fixed five NodeList iteration compile errors; pins and owned teardown independently verified. Both originalAC/connected proof OPEN; no new acceptance gates. Connected proof38 returned; independent source review FAILED (raw Git, reload freshness, missing importance assertions, supervisor markers); exact correction40 allocated to same helper. Readiness39 found builds absent; no connected runtime/build run. Both originalAC OPEN."
         }
       ],
       "status": "In Progress",
@@ -9929,8 +9929,8 @@
           "role": "component parity test source implementer",
           "source": "claude-assist-fucq441-component-java-parity-2026-11-17-37",
           "observed_at": "2026-11-17T20:51:06Z",
-          "expires_at": "2026-11-17T20:51:06Z",
-          "status": "returned; parent corrected five NodeList iteration compile errors; selected6/6PASS with independent input/teardown audit; no originalAC completion"
+          "expires_at": "2026-11-17T21:24:23.771312+00:00",
+          "status": "returned; source-only observation; no connected acceptance"
         },
         {
           "name": "Same retained Claude helper successor",
@@ -9938,8 +9938,26 @@
           "role": "connected preferences proof source implementer",
           "source": "claude-assist-fucq441-connected-preferences-proof-2026-11-17-38",
           "observed_at": "2026-11-17T20:54:14Z",
-          "expires_at": "2026-11-17T21:09:14+00:00",
-          "status": "active; actual source-start ACK; exact one new originalAC proof script, source only; no runtime/acceptance"
+          "expires_at": "2026-11-17T21:24:23.771312+00:00",
+          "status": "returned; source-only observation; no connected acceptance"
+        },
+        {
+          "name": "Toothless 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "source": "frozen38 source review; gpt-6.1-sol/high requested/selected, effective unverified",
+          "observed_at": "2026-11-17T21:24:23.771312+00:00",
+          "expires_at": "2026-11-17T21:24:23.771312+00:00",
+          "status": "returned; FAILED four source findings; no runtime"
+        },
+        {
+          "name": "Same retained Claude helper successor",
+          "harness": "claude-code",
+          "role": "source corrections",
+          "source": "claude-assist-fucq441-connected-proof-review-corrections-2026-11-17-40",
+          "observed_at": "2026-11-17T21:23:43Z",
+          "expires_at": "2026-11-17T21:38:43+00:00",
+          "status": "acked-executing"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
