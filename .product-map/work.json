@@ -7065,7 +7065,7 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-14T01:17:42Z",
+      "observed_at": "2026-11-17T12:11:55Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
@@ -7095,11 +7095,32 @@
           "evidence": "Lead-reviewed 574a9a04+fix: V458_1 employee_account_records + entitlement_slots_employee index; RepositoryAccountRecords read-only parameterised reads; RepositoryParityTest 11 goldens exact from native PG17; changed input/absent/source-failure cases; HTTP repository provider; EXPLAIN ANALYZE at 5000 employees: two index scans, 6 buffer hits, 0.03 ms; account tests 47/47 native; verify 137/137 native"
         },
         {
+          "id": "policy-binding",
+          "status": "complete",
+          "title": "Bind AccountPolicyPort to the canonical PolicyService and prove account reads with real policy",
+          "observed_at": "2026-11-17T11:14:59Z",
+          "evidence": "Lead-reviewed 025b09da0: AccountPolicyPort bound to PolicyAccountAdapter over PolicyService; AccountHttp/RepositoryHttp exact Node goldens pass on the real bean (no mock); account+policy+returns+ordering 194 run 0 fail on native PG17"
+        },
+        {
+          "id": "current-car-binding",
+          "status": "complete",
+          "title": "Bind CurrentCarPort to the returns current-car store",
+          "observed_at": "2026-11-17T11:14:59Z",
+          "evidence": "Lead-reviewed 025b09da0: CurrentCarPort bound to ReturnsCurrentCarRelationships over returns.CurrentCarStore.listForEmployee (employee index + one ANY events query); CurrentCarListTest 3 and RepositoryHttp relationship test pass"
+        },
+        {
+          "id": "dev-config-proof",
+          "status": "complete",
+          "title": "Documented dev config gives a working account read; repository and hr-snapshot equivalence through the started app; ordering context",
+          "observed_at": "2026-11-17T11:32:38Z",
+          "evidence": "Lead-reviewed slice 2: AccountDevComposition* 11 tests on the documented dev config (oidc, repository+demo seeding, real PolicyService, no mocks): 4 demo employees served; HTTP equals in-process AccountService over the other shape both ways (repository app vs hr-snapshot, hr-snapshot app vs repository); /manual/order 404 not 503"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Merge base, policy binding status, README, full Java verify and story result",
-          "observed_at": "2026-11-14T01:17:42Z",
-          "evidence": "Lead-reviewed merged tree 5289c56b (base a593e4fb) + BriefAccountAdapter: ./mvnw -B verify native PG17 269/269, 0 skipped; brief 77 green with adapter; README and story result; policy binding pending FUCQ-457 (unconfigured policy refuses 503)"
+          "title": "Merge base, full Java verify, README and story result (reopen 2026-11-17)",
+          "observed_at": "2026-11-17T12:11:55Z",
+          "evidence": "Lead: merged gcsp-poc-dev (fa81c6bb4, docs-only since 43481460f); full verify 1794 run, 1 base-only failure PresenterClockHttpTest (also fails on b2e822c70); story classes 146/146; result block written"
         }
       ]
     },
