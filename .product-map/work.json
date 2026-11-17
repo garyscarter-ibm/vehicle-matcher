@@ -8744,15 +8744,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T12:46:41Z",
+      "observed_at": "2026-11-17T12:53:08Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T12:38:40Z",
-      "note": "Inventory26 source8a3d0076 reconciled to F458/24/25 after review34 factual corrections; 59 identities/53otherrows/123declarations/121names and history preserved. Review34PASS; no runtime/ACcompletion. Claude27 changed selected employee/stock input proof ACK12:39:17, no runtime/descendants.",
+      "native_observed_at": "2026-11-17T12:52:20Z",
+      "note": "Inventory26 reviewed/corrected/pushed4ec920bd2 and24/25matchingpasses retained. Claude27 actual source investigations observed12:52:07.230/stallcheckerALIVE despite oldACK12:39:17; terminal source result pending. OriginalAC/nativeToDo/five slice states preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9244,9 +9244,9 @@
           "harness": "claude-code",
           "role": "changed selected employee/stock inputs and canonical ownerHTTP/remote-ordering journey source-only",
           "source": "claude-assist-fucq481-composed-input-variation-2026-11-17-27",
-          "observed_at": "2026-11-17T12:39:17Z",
-          "expires_at": "2026-11-17T12:54:17+00:00",
-          "status": "acknowledged-executing; reportedOpus5.5/high/effectiveunverified; exact3newpaths/no runtime/descendants"
+          "observed_at": "2026-11-17T12:52:07.230Z",
+          "expires_at": "2026-11-17T13:07:07.230000+00:00",
+          "status": "Independently observed task-specific source investigation; stallcheckerALIVE. ACK12:39:17; latest actual tasktool12:52:07.230. Sourceauthoring/delivery notyetobserved; no runtime/descendants. ReportedOpus5.5/high/effectiveunverified"
         }
       ]
     }
