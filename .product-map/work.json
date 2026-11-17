@@ -6767,21 +6767,21 @@
     {
       "assignee": "",
       "id": "FUCQ-454",
-      "observed_at": "2026-11-13T22:03:54Z",
+      "observed_at": "2026-11-17T19:04:44Z",
       "original_status": "To Do",
       "slices": [
         {
-          "evidence": "Lead-reviewed services/gcsp-api: ./mvnw -B verify 16/16 pass (JDK 21.0.13, Quarkus 3.40.1.2, Maven 3.9.16); two clean builds byte-identical over 128 files",
+          "evidence": "Reopened 2026-11-17: readiness for unconfigured required providers and documented dev-composition run on base ed3e61c0c",
           "id": "artifact",
-          "observed_at": "2026-11-13T22:02:43Z",
-          "status": "complete",
+          "observed_at": "2026-11-17T19:04:44Z",
+          "status": "in-progress",
           "title": "Pinned Quarkus JVM artifact, config, readiness, shutdown and context endpoint"
         },
         {
-          "evidence": "java -jar quarkus-run.jar with PORT env: started 0.319s, ready 200, context 401/503 JSON, unknown route 404 JSON, CORS exact origin; SIGTERM stopped in 0.009s; prod launch refuses fixed-test/unknown provider",
+          "evidence": "Reopened 2026-11-17: readiness for unconfigured required providers and documented dev-composition run on base ed3e61c0c",
           "id": "local-startup",
-          "observed_at": "2026-11-13T22:02:43Z",
-          "status": "complete",
+          "observed_at": "2026-11-17T19:04:44Z",
+          "status": "in-progress",
           "title": "Startup outside Render with java -jar and env config"
         },
         {
@@ -6792,10 +6792,10 @@
           "title": "Run the artifact on Render dev environment"
         },
         {
-          "evidence": "Lead review and Result block at dev/DEV-2026-11-13-022 4289983d: 16/16 tests, local startup/shutdown evidence; Render slice blocked on external environment",
+          "evidence": "Reopened 2026-11-17: readiness for unconfigured required providers and documented dev-composition run on base ed3e61c0c",
           "id": "integration",
-          "observed_at": "2026-11-13T22:03:54Z",
-          "status": "complete",
+          "observed_at": "2026-11-17T19:04:44Z",
+          "status": "in-progress",
           "title": "Story-level lead review and delivery record"
         }
       ],

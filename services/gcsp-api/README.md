@@ -72,6 +72,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_ORDERING_PROVIDER` | `none` | Employee ordering handoff provider: `none` refuses every submit (503 `ordering-provider-not-configured`) while terms and reads still work, `synthetic` is a labelled fictional provider kept in the same database. Unknown values stop startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Explicit override: a retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty (the default) reads PolicyService's current version for the run. Set but unreadable stops startup. |
+| `GCSP_REQUIRED_PROVIDERS` | empty | Comma list of providers this deployment requires: `identity`, `persistence`, `account`, `scenario`, `supply`, `allocation-candidates`, `ordering`, `approvals`, `documents`, `appointments`, `returns`, `production`, `evidence`. The `required-providers` readiness check is DOWN, so `/q/health/ready` answers 503, while any listed provider is `none` or unset or persistence is off. Unknown keys stop startup. Dev composition: `identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns`. |
 | `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. | The dev journey (order, approvals, documents, handover) needs `synthetic` here and for `GCSP_ORDERING_PROVIDER`, `GCSP_APPROVALS_PROVIDER` and `GCSP_DOCUMENTS_PROVIDER`, with persistence on.
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
@@ -226,7 +227,7 @@ the principal needs environment, run and policy version, else `unavailable/not-c
 
 | Path | Result |
 | --- | --- |
-| `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. |
+| `GET /q/health/ready` | Readiness, including the selected identity provider. Render's health check. Answers 503 while a provider listed in `GCSP_REQUIRED_PROVIDERS` is unconfigured. |
 | `GET /q/health/live` | Liveness. |
 | `GET /api/gcsp/v1/greg/policy`, `POST /api/gcsp/v1/greg/policy/publish`, `POST .../preview` | Greg only. Active policy projection, publish a successor (`200`, `400` with reasons, `403`, `409`, `422` without persistence, `503`), preview is `422`. |
 | `GET /api/gcsp/v1/context` | `{"status":"ok","value":{subject,roles,environmentId,runId,employeeId?,policyVersion,capabilities}}` |
