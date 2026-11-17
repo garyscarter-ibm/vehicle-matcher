@@ -1,7 +1,7 @@
 # FUCQ-481 provider shape variation source increment
 
 Authored on 17 November 2026 against source checkpoint `5ce78b9bef513c14adcf1cd05a0d03d43849bf16`.
-This is an **uncompiled, unrun test increment** for the differently shaped employee/stock input part of original AC2.
+The three authored PostgreSQL cases passed on 17 November 2026 for the differently shaped employee/stock input part of original AC2.
 Neither original acceptance criterion nor FUCQ-481 is complete.
 
 The only product additions are `ProviderShapeVariationPgTest.java`, `ProviderShapeVariationSupport.java` under
@@ -14,7 +14,7 @@ remain capture-only. No Jira, shared map, claim, deployment or production change
 `HrSnapshotRecords.open(path)` reads the deliberately different `gcsp-hr-export/1` shape. It is the public
 factory used by `AccountSelection.records`, but this test calls the factory directly. The latter method and
 `HrExportFixture` are package-private in `gcsp.api.account`; neither is imported or exposed by this increment.
-The HR composition is **provider component proof**, pending execution, not an `AccountSelection` or CDI
+The HR composition is **provider component proof**, not an `AccountSelection` or CDI
 startup-selection proof. No application is booted by the authored class.
 
 `SupplySelection.select("tranche-plan", planPath, policyPath)` is called through its public API. The selected
@@ -38,7 +38,7 @@ The existing fixed fixture clock is used consistently; no clock binding or held 
 
 ## Exact authored methods and intended observations
 
-| Method | Controlled input | Assertions against actual computed output, unrun |
+| Method | Controlled input | Assertions against actual computed output, all three methods passed |
 | --- | --- | --- |
 | `sameBriefChangesComputedEligibilityWhenHrDriverEligibilityChanges` | Two HR exports differ only at the first licence holder's `eligible.value`, true to false; its provenance is retained. The brief, policy and released rows are identical. | Two eligible/recommended candidates become zero. Both decisions become `ineligible` with `driver-ineligible`; `employeeFacts.driverEligible` equals the supplied fact. Decision identities and version metadata remain equal, so a digest difference alone cannot satisfy the test. |
 | `sameBriefChangesComputedRecommendationsWhenTrancheStockFactsChange` | One tranche-plan stock fact value changes from the existing 320i model key to the existing M340i model key. The HR export, brief and other plan fields remain identical. Each variant has its own sequentially opened/dropped schema. | Eligible count changes from two to one. The changed exact order becomes `ineligible` with `policy-exclude`; the other remains eligible and is the sole recommended order. Both exact order identities remain in decisions and policy/employee-fact versions remain equal. |
@@ -55,28 +55,32 @@ G7 rules include `G21 Touring|320i` and exclude `G21 Touring|M340i`; both have r
 facts retain the existing `synthetic-scenario` assurance and provenance required by the recommendation gates.
 
 The **least-certain assertion before runtime** is that the whole HR/account/release fixture composition yields
-exactly two eligible baseline candidates. Individual source paths and retained facts support it, but Java
-compilation and native execution have not established that combined baseline or the later assertions.
+exactly two eligible baseline candidates. The selected native run established that combined baseline and all subsequent assertions.
 
-## Validation handover
+## Validation evidence
 
-No JVM, Maven, test, database, service, browser, network fetch, install, reservation or scratch allocation was
-run for this assignment. Bounded Python standard-library/source checks inspected resource paths, public API
-access, retained policy rows and authored method names. Those checks are not compilation or a test pass.
+The source lead returned an uncompiled, unrun increment and performed bounded source checks only. The parent
+then froze source commit `7128e26428fc3797f2bcab8847b80a69df55e659` (tree
+`dd5d2f9b43b40b4892886a25bceea5b258ecf049`) and ran exactly the three methods above in
+`ProviderShapeVariationPgTest`, using offline Java 21/Maven and one disposable loopback PostgreSQL 16 instance.
+All three passed: zero failures, errors or skips, native exit 0. The run took 24.3 seconds, with measured peak
+aggregate RSS 750,649,344 bytes and scratch 124,361,376 bytes, within the granted 2 GiB inclusive budget.
+Existing dependency/tool/source pins matched before and after. Historical 65-case and 10-case runs were reused
+at their existing boundaries and were not rerun.
 
-The selected future native boundary is the exact class `gcsp.api.recommendation.ProviderShapeVariationPgTest`
-under the parent's offline Java 21/Maven supervisor. Run only that class initially. `GCSP_TEST_DATABASE_URL`
-must identify the parent's disposable PostgreSQL instance; absence throws rather than skips. The helper
-creates a unique `gcsp_shape_<uuid>` schema, migrates it, seeds only environment/run identity, and drops it in
-`close()`, including the setup failure path. JDBC connections/statements are try-with-resources, connection
-and socket timeouts are finite, and JUnit `@TempDir` files must live beneath the parent's owned runtime temp.
-No parent-owned database is created or started by this source increment.
+After joining the producer, the parent independently observed all 74 recorded process identities and all seven
+owned process groups absent, owned scratch absent and the host reservation registry empty at 06:31:35 UTC.
+The bounded native receipt and independent audit are retained in local dispatcher coordination; no raw runtime
+output belongs in this document. No OneDrive location was accessed.
 
-The existing source-only resource grant allocates no scratch. Any later native execution needs the parent's
-current capacity/budget, ownership manifest, reservation, bounded single JVM and finalizer. Its stated ceiling
-is 2 GiB owned local scratch and ten minutes per chunk, with skip-as-fail accounting and verified teardown.
-Do not rerun the already retained 65-case or 10-case component runs for this addition. Retain actual failures,
-skips and unrun checks; do not convert the three authored methods into pass counts.
+Imhotep 2 independently reviewed the exact three additions at the frozen commit: PASS, no blocking or major
+finding. Requested and selected model/effort: `gpt-6.1-sol` / `high`, no fallback or descendants. The reviewer
+performed source review only. The two Java files retain their tested/reviewed hashes; this later note records
+actual validation without implying another runtime or a broader acceptance result.
+
+The helper fails rather than skips when `GCSP_TEST_DATABASE_URL` is absent. It creates a unique private
+`gcsp_shape_<uuid>` schema and drops it on close, including setup failure. All temporary files were beneath the
+parent's owned local scratch. No application startup, browser, deployed environment, OIDC or email check ran.
 
 This test/doc-only increment changes no rendered surface or production behavior. The experience contract,
 `docs/gcsp/screens/README.md` and `COMPONENTS.md` therefore require no new screenshots here. No browser check
@@ -86,12 +90,12 @@ was performed or credited.
 
 AC1 still needs complete startup composition, the remaining bindings/bypasses and demo-preparation proof.
 The direct HR factory and static supply selector above do not establish those lifecycle requirements.
-AC2 still needs native execution of this shape-variation increment, connected claim → signed-in decision →
+AC2 still needs connected claim → signed-in decision →
 order/status through the remote substitute, real test OIDC/email and the required deployed integration evidence.
 BMW identity, HR, stock, service authentication, endpoint/custody/status capabilities and access remain gaps
 under the existing inventory and replacement contracts. No live BMW capability is claimed.
 
 For shared dispatcher learnings: the predecessor proposal's inaccessible helper assumption was corrected in
 the allocation and avoided in these sources. Explicitly labelling direct factories separately from injected
-startup composition applies the existing boundary-evidence learning; this is an authored mitigation awaiting
-native validation, not a verified runtime resolution. No new product defect is diagnosed or repaired.
+startup composition applies the existing boundary-evidence learning; the three selected runtime cases now verify the component assertions. This does not resolve startup or
+connected-journey evidence gaps. No new product defect is diagnosed or repaired.
