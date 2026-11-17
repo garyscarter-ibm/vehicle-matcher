@@ -25,6 +25,9 @@ if (SCRATCH === ROOT || SCRATCH.startsWith(`${ROOT}${path.sep}`)) refuse('SCRATC
 if (!existsSync(SCRATCH) || !statSync(SCRATCH).isDirectory()) refuse('SCRATCH must be an existing directory owned by the parent run');
 const RUN_TOKEN = process.env.PROOF_RUN_TOKEN ?? '';
 if (!/^[a-z0-9][a-z0-9-]{5,39}$/.test(RUN_TOKEN)) refuse('PROOF_RUN_TOKEN must be the parent run token ([a-z0-9-], 6-40 characters)');
+// The parent verifies and pins the source revision; this script never runs git.
+const SOURCE_REVISION = process.env.PROOF_SOURCE_REVISION ?? '';
+if (!/^[0-9a-f]{40}$/.test(SOURCE_REVISION)) refuse('PROOF_SOURCE_REVISION must be the parent-verified 40-hex source commit');
 const DB_SOURCE = process.env.GCSP_TEST_DATABASE_URL ? 'GCSP_TEST_DATABASE_URL' : process.env.GCSP_TEST_RUNNING_DATABASE_URL ? 'GCSP_TEST_RUNNING_DATABASE_URL' : null;
 if (!DB_SOURCE) refuse('GCSP_TEST_DATABASE_URL (or GCSP_TEST_RUNNING_DATABASE_URL) is not set; supply an owned throwaway PostgreSQL 17 database');
 const DB_URL = process.env[DB_SOURCE];
@@ -62,7 +65,7 @@ const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), cer
 const receipt = { schema: 'fucq441-connected-preferences-proof/1', story: 'DEV-2026-11-13-009 / FUCQ-441', startedAt: new Date().toISOString(), runToken: RUN_TOKEN, origins: ORIGINS,
   localTestIssuer: `LOCAL TEST OIDC ISSUER ${ISSUER}: harness only, not the real provider`, composition: null, inputs: null, tools: {}, processes: [], scenarios: {}, originalAcceptance: null, failureLogs: {},
   limitations: [
-    'The jar and compiled web are prebuilt by the parent; hashes are recorded but this script cannot prove they were built from the recorded HEAD.',
+    'The jar and compiled web are prebuilt by the parent; hashes are recorded but this script cannot prove they were built from PROOF_SOURCE_REVISION.',
     'Unavailable is a stopped API process (browser network failure), not a 503 body from a running server; Java 503 bodies are covered by the A35 goldens.',
     'The per-run schema override mirrors BriefJourneyProfiles and is passed as JVM system properties; the database itself is the parent\'s throwaway PG17.',
     'Direct API reads use a token this harness signs for the same subject, verified by the same OIDC configuration; they only GET.'] };
@@ -73,13 +76,19 @@ const b64u = (buf) => Buffer.from(buf).toString('base64url');
 const sha256b64u = (s) => createHash('sha256').update(s).digest('base64url');
 const sha256File = (f) => createHash('sha256').update(readFileSync(f)).digest('hex');
 const tail = (file, n = 40) => { try { return readFileSync(file, 'utf8').split('\n').slice(-n).join('\n'); } catch { return ''; } };
-const cap = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', timeout: 60000, ...opts }).trim();
+const cap = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', timeout: 60000, env: childEnv(process.env), ...opts }).trim();
 
 // ---------- owned child processes ----------
 function killGroup(child, sig) { try { process.kill(-child.pid, sig); } catch { try { child.kill(sig); } catch { /* gone */ } } }
+// The outer supervisor identifies owned children by these markers, so every child keeps them and the owned temp dirs.
+const SUPERVISOR_MARKERS = ['F441_LOCAL_TOKEN', 'TEST_RESOURCE_PARENT_RESERVATION', 'PROOF_RUN_TOKEN'];
+function childEnv(env) {
+  const markers = Object.fromEntries(SUPERVISOR_MARKERS.filter((k) => process.env[k] !== undefined).map((k) => [k, process.env[k]]));
+  return { ...env, ...markers, TMPDIR: dirs.tmp, TMP: dirs.tmp, TEMP: dirs.tmp };
+}
 function spawnOwned(name, cmd, args, env, portNumber = null) {
   const logFile = path.join(dirs.logs, `${name}.log`); const out = createWriteStream(logFile);
-  const child = spawn(cmd, args, { cwd: ROOT, env, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+  const child = spawn(cmd, args, { cwd: ROOT, env: childEnv(env), stdio: ['ignore', 'pipe', 'pipe'], detached: true });
   child.stdout.pipe(out); child.stderr.pipe(out);
   const record = { name, pid: child.pid, port: portNumber, startedAt: new Date().toISOString(), exit: null };
   receipt.processes.push(record);
@@ -101,7 +110,7 @@ const portFree = (p) => new Promise((r) => { const s = net.createServer(); s.onc
 // ---------- certificates (as fucq435) ----------
 function makeCerts() {
   const c = (f) => path.join(dirs.certs, f);
-  const ssl = (args, opts) => execFileSync('openssl', args, { cwd: dirs.certs, stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000, ...opts });
+  const ssl = (args, opts) => execFileSync('openssl', args, { cwd: dirs.certs, stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000, env: childEnv(process.env), ...opts });
   ssl(['genpkey', '-algorithm', 'RSA', '-pkeyopt', 'rsa_keygen_bits:2048', '-out', c('ca.key')]);
   ssl(['req', '-x509', '-new', '-key', c('ca.key'), '-sha256', '-days', '3', '-subj', '/CN=GCSP local proof CA', '-addext', 'basicConstraints=critical,CA:TRUE', '-addext', 'keyUsage=critical,keyCertSign,cRLSign', '-out', c('ca.pem')]);
   ssl(['genpkey', '-algorithm', 'RSA', '-pkeyopt', 'rsa_keygen_bits:2048', '-out', c('leaf.key')]);
@@ -110,9 +119,9 @@ function makeCerts() {
   ssl(['x509', '-req', '-in', c('leaf.csr'), '-CA', c('ca.pem'), '-CAkey', c('ca.key'), '-CAcreateserial', '-days', '3', '-sha256', '-extfile', c('leaf.ext'), '-out', c('leaf.pem')]);
   writeFileSync(c('fullchain.pem'), readFileSync(c('leaf.pem'), 'utf8') + readFileSync(c('ca.pem'), 'utf8'));
   const pub = ssl(['x509', '-in', c('leaf.pem'), '-pubkey', '-noout']);
-  const der = execFileSync('openssl', ['pkey', '-pubin', '-outform', 'der'], { input: pub });
+  const der = execFileSync('openssl', ['pkey', '-pubin', '-outform', 'der'], { input: pub, env: childEnv(process.env) });
   const spki = createHash('sha256').update(der).digest('base64');
-  execFileSync(path.join(JAVA_HOME, 'bin/keytool'), ['-importcert', '-alias', 'gcsp-local-ca', '-file', c('ca.pem'), '-keystore', c('truststore.p12'), '-storetype', 'PKCS12', '-storepass', TRUST_PASS, '-noprompt'], { stdio: 'pipe', timeout: 60000 });
+  execFileSync(path.join(JAVA_HOME, 'bin/keytool'), ['-importcert', '-alias', 'gcsp-local-ca', '-file', c('ca.pem'), '-keystore', c('truststore.p12'), '-storetype', 'PKCS12', '-storepass', TRUST_PASS, '-noprompt'], { stdio: 'pipe', timeout: 60000, env: childEnv(process.env) });
   return { ca: readFileSync(c('ca.pem'), 'utf8'), cert: readFileSync(c('fullchain.pem')), key: readFileSync(c('leaf.key')), spki, trust: c('truststore.p12') };
 }
 
@@ -234,7 +243,7 @@ async function serverEditor() {
   const r = await request('GET', '/brief/editor', { Authorization: `Bearer ${signJwt(accessClaims(SUBJECT, ['employee']), idp.keys.privateKey)}` });
   if (r.status !== 200 || r.json?.status !== 'ok') throw new Error(`server editor read failed: ${r.status} ${r.json?.code ?? ''}`);
   const v = r.json.value; const i = v.initial;
-  const prefs = Object.fromEntries(Object.entries(i.brief.preferences ?? {}).map(([k, x]) => [k, { value: x.value, importance: x.importance, valueState: x.valueState }]));
+  const prefs = Object.fromEntries(Object.entries(i.brief.preferences ?? {}).map(([k, x]) => [k, { value: x.value, importance: x.importance, valueState: x.valueState, importanceState: x.importanceState }]));
   return { briefVersion: i.briefVersion, draftVersion: i.draftVersion, prefs, buddy: i.buddy?.state, consent: i.consent, rating: i.currentCarRating?.value ?? null, contractId: i.currentCarRating?.contractId ?? null,
     model: v.context?.knownFacts?.currentContract?.value?.model ?? null };
 }
@@ -259,13 +268,16 @@ function responseSummary(j) {
   return { status: j.status, code: j.code, action: j.action, briefVersion: v.briefVersion ?? v.brief?.briefVersion ?? v.initial?.briefVersion, draftVersion: v.draftVersion ?? v.initial?.draftVersion, eligibleCount: v.eligibleCount };
 }
 class Page {
-  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
+  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
   send(method, params) { return this.cdp.send(method, params, this.sid); }
   event(m) {
     const p = m.params ?? {};
+    // A new main-frame document bumps docs; API calls are tagged with the document generation that issued them.
+    if (m.method === 'Page.frameNavigated' && !p.frame.parentId) { this.mainFrame = p.frame.id; this.mainLoader = p.frame.loaderId; this.docs++; return; }
     if (m.method === 'Network.requestWillBeSent') {
       if (!p.request.url.startsWith(ORIGINS.api)) return;
-      const e = { id: p.requestId, method: p.request.method, path: new URL(p.request.url).pathname.replace(API_PATH, ''), auth: !!hdr(p.request.headers, 'authorization') };
+      const e = { id: p.requestId, method: p.request.method, path: new URL(p.request.url).pathname.replace(API_PATH, ''), auth: !!hdr(p.request.headers, 'authorization'),
+        doc: p.frameId === this.mainFrame ? this.docs : null, loader: p.loaderId };
       if (p.request.postData) e.request = requestSummary(parse(p.request.postData));
       else if (p.request.hasPostData) this.waits.push(this.send('Network.getRequestPostData', { requestId: p.requestId }).then((r) => { e.request = requestSummary(parse(r.postData)); }).catch(() => {}));
       this.log.push(e); this.byId.set(p.requestId, e);
@@ -330,9 +342,31 @@ async function signIn(page) {
   await page.until(`return location.origin === '${ORIGINS.web}' && /^\\/gcsp\\/(account|preferences)/.test(location.pathname);`, 30000, 'signed-in employee landing');
   return page.eval('location.pathname');
 }
+// Navigates or reloads the main frame, then waits for a NEW main-frame document whose own GET /brief/editor finished,
+// so DOM assertions never read the previous document or a response the old page already had.
+async function freshDocument(page, how, { ready, editorOk = true, timeout = 30000, what = 'fresh document' } = {}) {
+  const before = page.docs;
+  if (how === 'reload') await page.send('Page.reload', { ignoreCache: true });
+  else await page.send('Page.navigate', { url: how });
+  const end = Date.now() + timeout;
+  let read = null;
+  while (Date.now() < end) {
+    if (page.docs > before) {
+      read = page.log.find((e) => e.doc === page.docs && e.loader === page.mainLoader && e.method === 'GET' && e.path === '/brief/editor' && (e.status !== undefined || e.failed));
+      if (read && (!editorOk || read.status === 200)) break;
+    }
+    await sleep(100);
+  }
+  if (page.docs <= before) throw new Error(`${page.label}: no new main-frame document for ${what}`);
+  if (!read) throw new Error(`${page.label}: the new document made no /brief/editor read for ${what}`);
+  if (editorOk && read.status !== 200) throw new Error(`${page.label}: /brief/editor answered ${read.status ?? read.failed} for ${what}`);
+  await page.until(ready, timeout, what);
+  await page.settle();
+  return read;
+}
+const EDITOR_READY = `return !!versionNote() && !!$('#preference-comfort');`;
 async function openPreferences(page) {
-  await page.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/preferences` });
-  await page.until(`return !!versionNote() && !!$('#preference-comfort');`, 30000, 'preferences editor');
+  await freshDocument(page, `${ORIGINS.web}/gcsp/preferences`, { ready: EDITOR_READY, what: 'preferences editor' });
   return versionOf(await page.act('return versionNote();'));
 }
 async function waitStatus(page, test, what) { await page.until(`const s = saveStatus(); return ${test};`, 30000, what); await page.settle(); return page.act('return saveStatus();'); }
@@ -354,7 +388,7 @@ async function scenarioA(cdp, s, pages) {
   s.observations.landed = await signIn(page);
   s.checks.signedInAsEmployee = /^\/gcsp\/(account|preferences)/.test(s.observations.landed);
   const before = await serverEditor(); s.observations.serverBefore = before;
-  if (s.observations.landed !== '/gcsp/account') await page.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/account` });
+  if (s.observations.landed !== '/gcsp/account') await freshDocument(page, `${ORIGINS.web}/gcsp/account`, { ready: `return location.pathname === '/gcsp/account';`, what: 'account page' });
   const rated = await page.until(`return main.querySelectorAll('gcsp-current-car-rating input[type=radio]').length === 5;`, 30000, 'current-car rating stars').then(() => true, (e) => { s.observations.ratingMissing = e.message.slice(0, 200); return false; });
   s.checks.currentCarRatingOffered = rated;
   if (rated) {
@@ -397,13 +431,18 @@ async function scenarioA(cdp, s, pages) {
   const p = server1.prefs;
   s.checks.serverSavedTheChoices = Array.isArray(p.body?.value) && p.body.value.includes('estate') && p.comfort?.value === 70 && p.economy?.value === 60
     && ['body', 'comfort', 'economy'].every((k) => p[k]?.valueState === 'confirmed') && server1.buddy === 'engaged' && server1.consent?.search === true && server1.consent?.hold === true;
+  // The brief stores the integer importance the slider sent (BriefContent.validPreference/semanticDigest).
+  s.checks.serverSavedTheImportances = p.body?.importance === 75 && p.comfort?.importance === 75 && p.economy?.importance === 50
+    && ['body', 'comfort', 'economy'].every((k) => p[k]?.importanceState === 'confirmed');
+  s.checks.draftSentTheImportances = draft[0]?.request?.prefs?.body?.[1] === 75 && draft[0]?.request?.prefs?.comfort?.[1] === 75 && draft[0]?.request?.prefs?.economy?.[1] === 50;
   s.observations.screenshotSaved = await page.shot('a2-preferences-confirmed.png');
-  await page.send('Page.reload', { ignoreCache: true });
-  await page.until(`return !!versionNote() && !!$('#preference-comfort');`, 30000, 'editor after reload');
-  const shown = await page.act(`return { note: versionNote(), comfort: value('#preference-comfort'), economy: value('#preference-economy'), body: checkedLabel('preference-body'), buddy: checkedLabel('buddy-engagement') };`);
+  await freshDocument(page, 'reload', { ready: EDITOR_READY, what: 'editor after reload' });
+  const shown = await page.act(`openDetails('Anything else?'); return { note: versionNote(), comfort: value('#preference-comfort'), economy: value('#preference-economy'), body: checkedLabel('preference-body'), buddy: checkedLabel('buddy-engagement'),
+    bodyImportance: value('#importance-body'), comfortImportance: value('#importance-comfort'), economyImportance: value('#importance-economy') };`);
   s.observations.afterReload = shown;
   s.checks.reloadShowsServerSaved = versionOf(shown.note)?.saved === true && versionOf(shown.note)?.version === server1.briefVersion && shown.comfort === '70' && shown.economy === '60'
     && shown.body.includes('Estate') && shown.buddy.includes('Engage Buddy');
+  s.checks.reloadShowsServerImportances = shown.bodyImportance === '75' && shown.comfortImportance === '75' && shown.economyImportance === '50';
   await page.settle();
   const preview = await page.act(`return main.querySelector('.preview [role=status]')?.textContent.replace(/\\s+/g, ' ').trim() ?? '';`);
   const lastPreview = page.calls().filter((e) => e.path === '/brief/preview' && e.response).at(-1)?.response ?? null;
@@ -483,8 +522,9 @@ async function scenarioC(cdp, s, pages) {
     s.observations.unsavedScreen = kept;
     s.checks.editKeptWithTryAgain = kept.economy === '20' && kept.tryAgain === false && versionOf(kept.note)?.saved === false;
     s.observations.screenshotUnsaved = await one.shot('c1-unsaved-api-stopped.png');
-    await reader.send('Page.reload', { ignoreCache: true });
-    await reader.until(`return !$('form.brief-form') && /could not be loaded|unavailable/i.test(main.innerText);`, 30000, 'fresh read while the API is stopped');
+    const failedRead = await freshDocument(reader, 'reload', { editorOk: false, ready: `return !$('form.brief-form') && /could not be loaded|unavailable/i.test(main.innerText);`, what: 'fresh read while the API is stopped' });
+    s.observations.failedEditorRead = { status: failedRead.status ?? null, failed: failedRead.failed ?? null };
+    s.checks.freshReadReallyFailed = failedRead.status === undefined && !!failedRead.failed;
     const down = await reader.act(`return { path: location.pathname, text: main.innerText.replace(/\\s+/g, ' ').trim().slice(0, 300), form: !!$('form.brief-form'), note: versionNote(), tryAgain: !!button('Try again') };`);
     s.observations.freshReadWhileStopped = down;
     s.checks.freshReadInventsNothing = !down.form && down.note === null;
@@ -499,8 +539,13 @@ async function scenarioC(cdp, s, pages) {
     s.checks.retrySavesAfterRestart = Number(CONFIRMED.exec(retried)?.[1]) === after.briefVersion && after.briefVersion === base.briefVersion + 1 && after.prefs.economy?.value === 20
       && posts(one.calls(retryMark), '/brief/draft').length === 1 && posts(one.calls(retryMark), '/brief/confirm').length === 1;
     s.observations.recoverBy = down.tryAgain ? 'status-screen Try again' : 'navigate to /gcsp/preferences';
-    if (down.tryAgain) await reader.act(`return press('Try again');`); else await reader.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/preferences` });
-    await reader.until(`return !!versionNote() && !!$('#preference-economy');`, 30000, 'reader editor after restart');
+    // Try again re-reads in the same document, so it waits for a successful /brief/editor issued after the press.
+    if (down.tryAgain) {
+      const mark = reader.log.length; await reader.act(`return press('Try again');`);
+      await reader.until(`return !!versionNote() && !!$('#preference-economy');`, 30000, 'reader editor after restart');
+      await reader.settle();
+      s.checks.readerReReadSucceeded = reader.log.slice(mark).some((e) => e.method === 'GET' && e.path === '/brief/editor' && e.status === 200);
+    } else await freshDocument(reader, `${ORIGINS.web}/gcsp/preferences`, { ready: `return !!versionNote() && !!$('#preference-economy');`, what: 'reader editor after restart' });
     const readBack = await reader.act(`return { note: versionNote(), economy: value('#preference-economy') };`);
     s.observations.readerAfterRestart = readBack;
     s.checks.otherContextReadsTheServerSavedVersion = versionOf(readBack.note)?.saved === true && versionOf(readBack.note)?.version === after.briefVersion && readBack.economy === '20';
@@ -523,12 +568,12 @@ async function main() {
   receipt.inputs = { scratch: PROOF, database: { source: DB_SOURCE, host: DB[1], port: DB[2] ?? '5432', name: DB_NAME, schema: SCHEMA }, ports: PORTS, jar: { path: path.relative(ROOT, JAR), sha256: sha256File(JAR) },
     appJars: readdirSync(path.join(path.dirname(JAR), 'app')).filter((f) => f.endsWith('.jar')).map((f) => ({ file: f, sha256: sha256File(path.join(path.dirname(JAR), 'app', f)) })), webBrowser: { path: path.relative(ROOT, WEB_BROWSER), indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) } };
   receipt.composition = { identity: 'oidc (local test issuer)', subject: SUBJECT, employeeId: EMPLOYEE, account: 'repository', scenario: 'demo', ordering: 'synthetic', resetAllowed: true, environmentId: ENVIRONMENT_ID, runId: RUN_ID, policyVersion: POLICY, mirrors: 'services/gcsp-api/src/test/java/gcsp/api/brief/BriefJourneyProfiles.config()' };
-  receipt.head = cap('git', ['-C', ROOT, 'rev-parse', 'HEAD']);
-  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8' }).stderr ?? '').split('\n')[0] };
+  receipt.sourceRevision = { value: SOURCE_REVISION, provenance: 'PROOF_SOURCE_REVISION supplied and verified by the parent; not read from git here' };
+  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
   log('certificates'); tls = makeCerts();
   log('static assembly of the prebuilt web');
   const assemble = await import(pathToFileURL(path.join(ROOT, 'scripts/build-gcsp-static.mjs')).href);
-  await runOnce('assemble', process.execPath, ['scripts/build-gcsp-static.mjs', '--browser', WEB_BROWSER, '--output', dirs.static, '--environment', 'deployed', '--revision', receipt.head],
+  await runOnce('assemble', process.execPath, ['scripts/build-gcsp-static.mjs', '--browser', WEB_BROWSER, '--output', dirs.static, '--environment', 'deployed', '--revision', SOURCE_REVISION],
     { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp, GCSP_PUBLIC_ENVIRONMENT_ID: ENVIRONMENT_ID, GCSP_PUBLIC_API_BASE_URL: API_BASE, GCSP_PUBLIC_OIDC_AUTHORITY: ISSUER, GCSP_PUBLIC_OIDC_CLIENT_ID: 'gcsp-web',
       GCSP_PUBLIC_OIDC_SCOPE: 'openid profile gcsp-api', GCSP_PUBLIC_OIDC_REDIRECT_URI: `${ORIGINS.web}/gcsp/auth/callback`, GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI: `${ORIGINS.web}/gcsp/` });
   log('issuer and web'); await startIdp(tls); await startWeb(tls, assemble.GCSP_FIXED_ROUTES);
