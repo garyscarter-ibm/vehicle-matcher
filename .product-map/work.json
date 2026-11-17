@@ -8723,22 +8723,22 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:56:23Z",
+      "observed_at": "2026-11-17T07:09:54Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T06:55:56.358Z",
-      "note": "Authenticated offer composition increment integrated3d196cfb4 after one exactQuarkus/JWT/JWKS/PG/remoteBuddy method passed at30241a729 and independentImhotep2 reviewPASS. Firstprofilecapturedliteral startupfailure preserved, corrected blankconfig rerunpassed. Parent independently72identities/7groups/scratch/reservation clear. Seededprecedingclaim/profilePolicyClock and SQLorder+HTTPofferstatus limits explicit; bothoriginalACopen. All workers/runtime terminal; F481 held at incrementboundary, nativeToDopreserved.",
+      "native_observed_at": "2026-11-17T07:05:01.959Z",
+      "note": "Inventory three stale remote-provider/offer records reconciled and pushed c60412730 with retained65/10/3/1 evidence and original limits. Readiness20 terminal: EligibleCandidates still unconfigured. New exact5file adapter/selector/test source21 executing; actual fixture/parity source reads observed. No new code returned, tests or runtime granted; both originalAC open and nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T05:17:43.502148+00:00",
-          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established."
+          "observed_at": "2026-11-17T07:09:54.535Z",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census."
         },
         {
           "id": "startup",
@@ -8956,6 +8956,15 @@
           "expires_at": "2026-11-17T06:56:23.137785+00:00",
           "source": "dispatcher0649",
           "status": "terminal1pass/0skip after preservedstartupfailure;72identities/7groups/scratch/reservation clear. Integrated3d196cfb4. No currentruntime."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 source-only canonical candidate adapter and startup selector lead",
+          "observed_at": "2026-11-17T07:09:54.535Z",
+          "expires_at": "2026-11-17T07:24:54.535000+00:00",
+          "source": "codex-fucq481-canonical-candidates-21",
+          "status": "executing source21: acknowledged allocation and actual fixture/parity source reads; no runtime. Requested/selectedSol/high,nofallback, effectiveindependentlyunverified, titletoolverified."
         }
       ]
     }
