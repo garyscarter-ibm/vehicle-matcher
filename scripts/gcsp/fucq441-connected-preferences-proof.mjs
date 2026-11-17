@@ -59,6 +59,8 @@ const EMPLOYEE = 'employee-paula';
 const ENVIRONMENT_ID = `f441-connected-${RUN_TOKEN}`;
 const RUN_ID = 'run-1';
 const POLICY = 'gcsp-policy-v1';
+// With search consent held, the draft save confirms (BriefService.persistDraft) and the explicit confirm adds one more.
+const HELD_SAVE_STEP = 2;
 const SCHEMA = `gcsp_s_f441c_${RUN_TOKEN.replace(/-/g, '_')}`;
 const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), certs: path.join(PROOF, 'certs'), static: path.join(PROOF, 'static'), browser: path.join(PROOF, 'browser'), evidence: path.join(PROOF, 'evidence') };
 
@@ -429,8 +431,8 @@ async function scenarioA(cdp, s, pages) {
   s.checks.confirmCarriesConsent = confirm[0]?.request?.consent?.search === true && confirm[0]?.request?.consent?.hold === true;
   s.checks.confirmedMessageIsServerVersion = Number(CONFIRMED.exec(status)?.[1]) === server1.briefVersion && server1.briefVersion > server0.briefVersion;
   const p = server1.prefs;
-  // A multiple enum may be stored as a scalar; with consent held a draft save also confirms, so versions rise by more than one.
-  s.checks.serverSavedTheChoices = [].concat(p.body?.value ?? []).includes('estate') && p.comfort?.value === 70 && p.economy?.value === 60
+  // Java stores the single body choice as the canonical scalar (BriefContent.validChoice).
+  s.checks.serverSavedTheChoices = p.body?.value === 'estate' && p.comfort?.value === 70 && p.economy?.value === 60
     && ['body', 'comfort', 'economy'].every((k) => p[k]?.valueState === 'confirmed') && server1.buddy === 'engaged' && server1.consent?.search === true && server1.consent?.hold === true;
   // The brief stores the integer importance the slider sent (BriefContent.validPreference/semanticDigest).
   s.checks.serverSavedTheImportances = p.body?.importance === 75 && p.comfort?.importance === 75 && p.economy?.importance === 50
@@ -467,7 +469,7 @@ async function scenarioB(cdp, s, pages) {
     s.observations.twoEdit = await two.act(`return setRange('#preference-comfort', 30) && press('Save your preferences');`);
     const twoStatus = await waitStatus(two, `/^Your preferences were confirmed|not confirmed|changed elsewhere/.test(s)`, 'first writer outcome');
     const afterTwo = await serverEditor(); s.observations.afterFirstWriter = { status: twoStatus, briefVersion: afterTwo.briefVersion, comfort: afterTwo.prefs.comfort?.value };
-    s.checks.firstWriterSaved = Number(CONFIRMED.exec(twoStatus)?.[1]) === afterTwo.briefVersion && afterTwo.briefVersion > base.briefVersion && afterTwo.prefs.comfort?.value === 30;
+    s.checks.firstWriterSaved = Number(CONFIRMED.exec(twoStatus)?.[1]) === afterTwo.briefVersion && afterTwo.briefVersion === base.briefVersion + HELD_SAVE_STEP && afterTwo.prefs.comfort?.value === 30;
     s.checks.firstWriterOneDraftOneConfirm = posts(two.calls(twoMark), '/brief/draft').length === 1 && posts(two.calls(twoMark), '/brief/confirm').length === 1;
     const economyBefore = afterTwo.prefs.economy?.value;
     const oneMark = one.log.length;
@@ -497,7 +499,7 @@ async function scenarioB(cdp, s, pages) {
     await one.act(`openDetails('Anything else?'); return setRange('#preference-economy', 80) && press('Save your preferences');`);
     const fixStatus = await waitStatus(one, `/^Your preferences were confirmed|not confirmed|changed elsewhere/.test(s)`, 'corrected save outcome');
     const fixed = await serverEditor(); s.observations.corrected = { status: fixStatus, briefVersion: fixed.briefVersion, economy: fixed.prefs.economy?.value, comfort: fixed.prefs.comfort?.value };
-    s.checks.correctionSavesAtTheNewVersion = Number(CONFIRMED.exec(fixStatus)?.[1]) === fixed.briefVersion && fixed.briefVersion > afterTwo.briefVersion && fixed.prefs.economy?.value === 80 && fixed.prefs.comfort?.value === 30
+    s.checks.correctionSavesAtTheNewVersion = Number(CONFIRMED.exec(fixStatus)?.[1]) === fixed.briefVersion && fixed.briefVersion === afterTwo.briefVersion + HELD_SAVE_STEP && fixed.prefs.economy?.value === 80 && fixed.prefs.comfort?.value === 30
       && posts(one.calls(fixMark), '/brief/draft')[0]?.request?.expectedBriefVersion === afterTwo.briefVersion;
     s.checks.requestsCarryOnlyTheBearer = ownedCalls(one.calls()) && ownedCalls(two.calls());
     s.observations.screenshotCorrected = await one.shot('b2-corrected-save.png');
@@ -538,7 +540,7 @@ async function scenarioC(cdp, s, pages) {
     s.observations.retryPressed = await one.act(`return press('Try again');`);
     const retried = await waitStatus(one, `/^Your preferences were confirmed|not confirmed|changed elsewhere/.test(s)`, 'retry outcome after restart');
     const after = await serverEditor(); s.observations.retried = { status: retried, briefVersion: after.briefVersion, economy: after.prefs.economy?.value };
-    s.checks.retrySavesAfterRestart = Number(CONFIRMED.exec(retried)?.[1]) === after.briefVersion && after.briefVersion > base.briefVersion && after.prefs.economy?.value === 20
+    s.checks.retrySavesAfterRestart = Number(CONFIRMED.exec(retried)?.[1]) === after.briefVersion && after.briefVersion === base.briefVersion + HELD_SAVE_STEP && after.prefs.economy?.value === 20
       && posts(one.calls(retryMark), '/brief/draft').length === 1 && posts(one.calls(retryMark), '/brief/confirm').length === 1;
     s.observations.recoverBy = 'reload preferences after API restart to restore authentication';
     const recoveredRead = await freshDocument(reader, 'reload', { ready: `return !!versionNote() && !!$('#preference-economy');`, what: 'reader editor after authentication recovers' });
