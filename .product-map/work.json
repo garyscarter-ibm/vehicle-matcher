@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:25:02Z",
+      "observed_at": "2026-11-17T06:33:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T06:20:37.449339+00:00",
-      "note": "Donald Duck3 executing source proof: three concrete cases traced to current driver and stock policy gates. No authored result/native validation yet; future oneclass runtime plan prepared, no resources allocated. Both originalACremainopen; nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T06:32:52.848297+00:00",
+      "note": "Provider-shape three exact PG cases passed; computed HR/stock variation and invalid-HR failclosed verified, independent sourcePASS. Integrated39f95cb1c. Both originalAC open. Existing8pointallocation held at increment boundary, no current execution; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8750,14 +8750,16 @@
         {
           "id": "local-composition",
           "title": "Selected local read and transactional journey composition",
-          "status": "not-started"
+          "status": "in-progress",
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven."
         },
         {
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T06:11:13.077776+00:00",
-          "evidence": "Actual HttpClaimStock/HttpRemoteBuddy through existing durable consumers: ten exact PG/HTTP cases passed, independent sourcePASS, integrated5ce78b9be. Direct Principal/seeded offer only; full connected journey, different inputs, OIDC/email/BMW remain unproved."
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved."
         },
         {
           "id": "integration",
@@ -8896,10 +8898,28 @@
           "name": "Donald Duck 3",
           "harness": "codex",
           "role": "F481 provider shape component proof source-only lead",
-          "observed_at": "2026-11-17T06:25:01.869567+00:00",
-          "expires_at": "2026-11-17T06:40:01.869567+00:00",
+          "observed_at": "2026-11-17T06:28:12.479171+00:00",
+          "expires_at": "2026-11-17T06:28:12.479171+00:00",
           "source": "codex-fucq481-provider-shape-17",
-          "status": "executing source tools in compactrev3; three precise method plan, no runtime/result; requestedselectedSol/high"
+          "status": "terminal three-file source7128e2642; parent compiled/tested3pass and independently reviewed; requestedselectedSol/high, nofallback/descendants"
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "F481 independent provider-shape source review",
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "expires_at": "2026-11-17T06:33:42.708531+00:00",
+          "source": "parentreview0626",
+          "status": "terminalPASS/no blocking or major finding; requestedselectedSol/high, nofallback/descendants, titletoolverified; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 three selected native cases, teardown audit and integration",
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "expires_at": "2026-11-17T06:33:42.708531+00:00",
+          "source": "dispatcher0626",
+          "status": "terminal3pass/0skip;74identities/7groups/scratch absent,registryempty,integrated39f95cb1c. No current runtime/worker."
         }
       ]
     }
