@@ -68,10 +68,11 @@ foreign Story objects, their order and outer fields are preserved.
 
 ## Validation and resources
 
-This phase permits source inspection and authored tests only. Test, lint, typecheck,
-build, package installation/copy, browser, service, database and network proof are
-**UNRUN**. No test scratch, reservation or runtime was allocated. No OneDrive
-location was accessed.
+The original source checkpoints permitted source inspection and authored tests
+only. The dispatcher subsequently released the single finite a01 attempt below.
+No successful test, build or integrated acceptance is claimed. Lint, production
+build, installation, browser, service, database and network proof remain **UNRUN**.
+No OneDrive location was accessed.
 
 After source review, the lead sends an exact frozen selection and pins to the
 dispatcher. Reuse matching existing OIDC/context/offer evidence; select changed
@@ -129,6 +130,43 @@ Node heap, 480 seconds work/600 seconds total, 5 GiB reserve and 2 MiB whole loc
 retained output, with exact local ownership/reservation/finalizer and cleanup proof.
 No runtime release is implied by recording this envelope.
 
+## Attempt a01 — 17 November 2026
+
+Yakko 2 invoked the exact released supervisor at 00:08:55.825 UTC against source
+`eca975684505190566582d471275159e10132d30`, tree
+`2f05953bc9857d7081a0a9077c537538b6f7b545`. The first native Angular command
+returned 1 during compilation, before assertions. **Zero of the 93 selected
+cases ran**; the 48 intentionally filtered declarations are exclusions. The
+launcher, selected static contract, auth regression and packaging chunks remain
+unrun. The missing JSON report produced a secondary wrapper `FileNotFoundError`;
+the native exit and compiler log were retained first. No retry occurred.
+
+The compiler identified an introduced nullable-fragment mismatch in
+`route.guards.ts`. Sally Carrera 2 applied the minimal `entry.fragment ?? undefined`
+correction, preserving supplied fragments and query parameters. This correction
+is source only until separately reviewed and validated. The other blocking
+diagnostic was missing `oidc-client-ts` types, with consequential `expired` and
+`profile` errors. The reused F443 manifest omitted that package and its
+`jwt-decode` dependency even though exact lock-matching versions exist in the
+same known local dependency root. A pinned closure amendment is being prepared;
+no installation, symlink or unrelated warning repair is included.
+
+The attempt finished at 00:09:35.577 UTC. Setup/work/total elapsed were
+22.912/30.137/39.359 seconds. Sampled disk/RSS/inclusive peaks were
+534,545,344/838,418,432/1,370,194,880 bytes, within the released limits; no
+continuous/kernel containment claim is made. The receipt records no sampler or
+cleanup errors, unchanged source and borrowed identities/hashes, absent owned
+processes/groups/listeners, and removed owned scratch/output/reservation.
+
+Lead read-only audit at 00:10:40.577 UTC independently matched all 1,466 source
+pins and identities, all 23,008 borrowed file hashes and identities, and Node
+identity/hash. The worktree remained clean; the exact roots and reservation were
+absent and no recorded process identity or owned group remained. Whole local
+retention was 1,073,152 allocated bytes before the audit file, below 2 MiB.
+Local evidence is under `.claude/test-runs/fucq437/receipts/a01/` in the shared
+checkout; the immutable receipt, native log and `lead-final-audit.json` retain the
+actual failure. Both original acceptance criteria remain unchecked.
+
 ## Attribution and delivery learning
 
 Speedy Gonzales 2 leads and reviews; Sally Carrera 2 authors Angular route/state
@@ -141,6 +179,12 @@ Hubie 2 independently reviewed `5d1b8bcdf..e8ebb7e70` and returned **PASS — no
 blocking or major issues found**, source only. Requested/selected
 `gpt-6.1-sol` / `high`, no fallback. The caller/assembler amendment requires its
 own narrow independent source review before the final runtime freeze.
+
+The same Hubie 2 subsequently returned the same PASS verdict for the six-path
+caller/assembler amendment `e8ebb7e70..eca975684`, source only. Managed runner
+Yakko 2 requested and selected `gpt-6-luna` / `high`, no fallback; title and gateway
+were confirmed before a01. They earn invocation/resource/finalizer evidence,
+with no assertion-pass or acceptance credit for the failed compile.
 
 For dispatcher log issue `DL-20261116-GCC-003`, retain the demonstrated difference
 between a source-level entry link and a usable deployed handoff. The existing

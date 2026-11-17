@@ -21,5 +21,5 @@ export const landingGuard: CanActivateFn = async (_route, target) => {
   if (state.status !== 'ready') return true;
   const landing = landingFor(state.context.roles);
   const entry = router.parseUrl(target.url);
-  return router.createUrlTree([landing ? `/${landing}` : '/access-denied'], { queryParams: entry.queryParams, fragment: entry.fragment });
+  return router.createUrlTree([landing ? `/${landing}` : '/access-denied'], { queryParams: entry.queryParams, fragment: entry.fragment ?? undefined });
 };
