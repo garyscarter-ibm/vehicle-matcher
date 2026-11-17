@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T10:47:44Z",
+      "observed_at": "2026-11-17T10:50:24Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:41:34.628Z",
-      "note": "Ordering binding component source0f9a547b739:8plainJUnit passes, independent source reviewPASS and parent teardown clear. Selector/holder/ordering-config release confirmed c9bd31efa; next exact connection increment ready. Both originalAC open and nativeToDo preserved.",
+      "note": "Ordering binding component integrated/pushedf0f3cff25:8scopedpasses/reviewPASS/parentauditclear. Explicit peerfile releasec9bd31efa applied to next exact startup hookup20 acknowledged/executing2026-11-17T10:50:06Z. Both originalACopen; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9100,6 +9100,15 @@
           "observed_at": "2026-11-17T10:34:40Z",
           "expires_at": "2026-11-17T10:44:30Z",
           "status": "Terminal10:44:30 source0f9a547b739;8scopedpasses/reviewPASS/parentauditclear. No current execution; workerreportedClaudeOpus5.5/high, independentlyunverified."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "F481 released ordering selector/holder/config startup connection source",
+          "source": "claude-assist-fucq481-ordering-startup-2026-11-17-20",
+          "observed_at": "2026-11-17T10:50:06Z",
+          "expires_at": "2026-11-17T11:05:06+00:00",
+          "status": "Matching exact20 ACK/sourceexecution reported; no runtime; source authoring unverified"
         }
       ]
     }
