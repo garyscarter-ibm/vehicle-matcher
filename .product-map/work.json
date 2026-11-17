@@ -7983,17 +7983,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-481",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Prove provider composition and complete substitution",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481"
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-482",
       "observed_at": "2026-11-13T20:22:18.041Z",
       "original_status": "To Do",
@@ -8730,6 +8719,59 @@
       "native_observed_at": "2026-11-17T04:11:04.055+00:00",
       "note": "Original acceptance incomplete; native In Progress and peer ownership preserved. Cohort/Snapshot four exact tested Java blobs integrated/pushed251d89b22 (30 matching native passes). Parent also executed22held-adapter methods successfully. Terms/Evaluator/Renewal53passes integrateda93dd42c5. Demand/Supply/Clock live-binding M1/F515 hold persists. Coordinator terminal04:09:57 collected; no current worker execution.",
       "workers": []
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-481",
+      "observed_at": "2026-11-17T04:19:10Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Prove provider composition and complete substitution",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
+      "native_observed_at": "2026-11-17T04:15:26.204+00:00",
+      "note": "Claimed GC throughbdee6c512; original AC1 source-backed inventory/startup-binding documentation increment in execution by same Claude coordinator. No actual provider binding, connected/remote/OIDC/email proof or Story completion. Native ToDo preserved.",
+      "slices": [
+        {
+          "id": "inventory",
+          "title": "Current external read/action/event ports and startup binding inventory",
+          "status": "in-progress",
+          "observed_at": "2026-11-17T04:19:10.422824+00:00",
+          "evidence": "NativeAC1 source inventory independently ready; exact2newdocs allocated. Actual same-coordinator tools04:18:29 observed; no returned product docs yet."
+        },
+        {
+          "id": "startup",
+          "title": "Startup provider selection and demo-preparation boundary",
+          "status": "not-started"
+        },
+        {
+          "id": "local-composition",
+          "title": "Selected local read and transactional journey composition",
+          "status": "not-started"
+        },
+        {
+          "id": "remote-composition",
+          "title": "Differently shaped remote inputs and coherent transactional substitute",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Original connected OIDC, email and full remaining contract/failure evidence",
+          "status": "not-started"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 original port inventory and handover increment",
+          "observed_at": "2026-11-17T04:18:29.461+00:00",
+          "expires_at": "2026-11-17T04:33:29.461+00:00",
+          "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
+          "status": "actual assignment read and dedicatedworktree check observed; no runtime"
+        }
+      ]
     }
   ],
   "version": 1
