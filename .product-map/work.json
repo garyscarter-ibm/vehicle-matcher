@@ -7868,7 +7868,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-17T12:48:50Z",
+      "observed_at": "2026-11-17T12:51:31Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7920,9 +7920,10 @@
         },
         {
           "id": "s7-reintegration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened-story validation through the started app, merged-tree verify and result",
-          "observed_at": "2026-11-17T12:48:50Z"
+          "observed_at": "2026-11-17T12:51:31Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 15abc3d82; scoped set (production, planning, supply, Wiring/Startup, readiness) 228/228 on native PG17 incl. ProductionPlanJourneyTest; Result committed"
         }
       ]
     },
