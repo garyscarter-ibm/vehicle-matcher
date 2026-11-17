@@ -6173,133 +6173,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438"
     },
     {
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-13-008",
-      "id": "FUCQ-440",
-      "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-16T11:53:13Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "projection",
-          "observed_at": "2026-11-13T23:43:44Z",
-          "status": "complete",
-          "title": "Typed-account-projection-and-bearer-client"
-        },
-        {
-          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "screen",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "status": "complete",
-          "title": "Native-account-current-car-and-existing-actions"
-        },
-        {
-          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record",
-          "id": "choices",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "status": "complete",
-          "title": "Native-policy-backed-manual-choices-before-stock"
-        },
-        {
-          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "previews",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "status": "complete",
-          "title": "Original-owned-offer-order-preview-composition"
-        },
-        {
-          "id": "preference-coupling",
-          "title": "Published-compact-preferences-and-exact-current-car-rating",
-          "status": "complete",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
-          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
-        },
-        {
-          "id": "shared-order-read",
-          "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
-          "status": "in-progress",
-          "observed_at": "2026-11-14T10:19:43.778349+00:00",
-          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
-        },
-        {
-          "id": "account-order-composition",
-          "title": "Independent-manual-handoff-and-complete-list-account-composition",
-          "status": "in-progress",
-          "observed_at": "2026-11-16T11:53:13.372282+00:00",
-          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
-        },
-        {
-          "evidence": "Original two AC unchecked. Selected composition56/56 is local fixture evidence only. Desktop/narrow rendered, actual Java/OIDC/nativePG ownership/parity/durable refresh/restart and hosted proof remain unrun. Missing Java manual draft/stock/quote/review producers are outside Account allocation.",
-          "id": "integration",
-          "observed_at": "2026-11-14T10:19:43.778349+00:00",
-          "status": "blocked",
-          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
-        }
-      ],
-      "status": "To Do",
-      "title": "Show employee account and current-vehicle information",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
-      "workers": [
-        {
-          "expires_at": "2026-11-16T11:49:22.346146+00:00",
-          "harness": "codex",
-          "name": "Marvin the Martian",
-          "observed_at": "2026-11-16T11:49:22.346146+00:00",
-          "role": "story-lead",
-          "source": "SAME lead gpt-6.1-sol/high, no fallback/descendants. Parent verified61source pins,23008borrowed file hashes and current owned cleanup. No further runtime release.",
-          "status": "HOLD; frozen6216010d tested56/56 and integrated; no executing worker; original rendered/connected acceptance open"
-        },
-        {
-          "expires_at": "2026-11-13T23:43:44.865713+00:00",
-          "harness": "codex",
-          "name": "Toothless",
-          "observed_at": "2026-11-13T23:43:44.865713+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed",
-          "status": "complete; editing stopped"
-        },
-        {
-          "expires_at": "2026-11-13T23:55:25.071818+00:00",
-          "harness": "codex",
-          "name": "Lord Business",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed",
-          "status": "complete; editing stopped"
-        },
-        {
-          "expires_at": "2026-11-14T00:13:43.535381+00:00",
-          "harness": "codex",
-          "name": "Merlin the Magic Mouse",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed",
-          "status": "complete; source edits stopped; actual acceptance open"
-        },
-        {
-          "expires_at": "2026-11-14T00:21:50.433978+00:00",
-          "harness": "codex",
-          "name": "Mater",
-          "observed_at": "2026-11-14T00:21:50.433978+00:00",
-          "role": "reviewer",
-          "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
-          "status": "review passed implementation checkpoint; stopped; actual acceptance open"
-        },
-        {
-          "name": "Stanley Tiger",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
-          "expires_at": "2026-11-14T02:54:49.894555+00:00",
-          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
-          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
@@ -7271,7 +7144,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T01:00:56Z",
+      "observed_at": "2026-11-17T15:18:28Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7299,6 +7172,27 @@
           "title": "Story validation, base merge, migration number and result",
           "observed_at": "2026-11-14T01:00:56Z",
           "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
+        },
+        {
+          "id": "s4-demo-provider-policy",
+          "status": "complete",
+          "title": "Demo supply provider with confirmed-supply windows, PolicyService release policy binding",
+          "observed_at": "2026-11-17T14:28:59Z",
+          "evidence": "lead review of b1d650bf1: demo provider + confirmed-supply lookup, PolicyReleaseAdapter bound by default; Node parity 7 cases; DemoSupplyProviderTest 5/5, SupplySelectionTest 7/7 rerun by lead; supply+presenter Quarkus 74 run, 1 failure also on base"
+        },
+        {
+          "id": "s5-journey-proof",
+          "status": "complete",
+          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "lead review of ca3b693a9: SupplyDevCompositionHttpTest 9/9 on dev composition (oidc JWTs, PG17, demo provider, PolicyService); cue fix reviewed"
+        },
+        {
+          "id": "s6-integration-r2",
+          "status": "complete",
+          "title": "Reopened run: scoped validation, base merge and result",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "base merged 269c6f728; scoped set 179/0/0/0 on 269c6f728 native PG17; result block committed"
         }
       ]
     },
@@ -7360,7 +7254,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-14T08:56:54Z",
+      "observed_at": "2026-11-17T14:36:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7390,11 +7284,39 @@
           "evidence": "9f3c761a5 reviewed by Mulan; RemoteLifecycleTest 13/13, allocation scope 45/45 native PG 17"
         },
         {
+          "id": "tick-handlers",
+          "status": "complete",
+          "title": "Bind buddy-allocation, buddy-expiry and buddy-pending-operations tick handlers; repair FUCQ-516 later-clock terms comparison",
+          "observed_at": "2026-11-17T11:18:47Z",
+          "evidence": "Spike review of Toothless diff; BuddyTickHandlersPgTest 6/6, CanonicalCandidatesPgTest 2/2, RemoteLifecycleTest 14/14 native PG17 (FUCQ-516 repaired via termsBasis)"
+        },
+        {
+          "id": "activity-route",
+          "status": "complete",
+          "title": "GET /api/gcsp/v1/activity over Java brief, offer, allocation and clock state",
+          "observed_at": "2026-11-17T11:51:31Z",
+          "evidence": "Spike review of Sulley diff; ActivityHttpTest 4/4 + ActivityChecksTest 2/2 over RS256 JWT and native PG17; scope activity+brief+offers 236/0/0"
+        },
+        {
+          "id": "composition-proof",
+          "status": "complete",
+          "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)",
+          "observed_at": "2026-11-17T14:31:52Z",
+          "evidence": "Spike review of Hubie journeys: BuddyAllocationJourneyHttpTest 1/1 (AC1 via presenter tick, supply release) and BuddyRemoteCustodyJourneyHttpTest 1/1 (AC2 lost execute/reconcile, startup tick, expiry release) over RS256 JWT + native PG17"
+        },
+        {
+          "id": "docs-config",
+          "status": "complete",
+          "title": "Document GCSP_ALLOCATION_CANDIDATES_PROVIDER dev selection in README and proposed Render block",
+          "observed_at": "2026-11-17T11:53:22Z",
+          "evidence": "README env table row GCSP_ALLOCATION_CANDIDATES_PROVIDER, allocation handler/port/activity notes; render-service.proposed.yaml sets recommendation for dev; reviewed by Spike"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T08:56:54Z",
-          "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
+          "title": "Integration: base merge, full Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-17T14:36:01Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 3c48fa47f; scoped set 126/0/0 incl. AC journeys and wiring tests on native PG17; lead review of all slices"
         }
       ]
     },
@@ -7667,7 +7589,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T08:04:36Z",
+      "observed_at": "2026-11-17T14:49:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7709,6 +7631,34 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:36Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        },
+        {
+          "id": "s6-bindings",
+          "status": "complete",
+          "title": "Real stage, readiness, document case and approvals handover adapters bound at startup",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 28ac8d007: real ApprovalsOrderStage, DocumentsHandoverReadiness, LifecycleDocumentCases, AppointmentHandover bound; RealPortsWiringTest, PortMappingTest, LifecycleDocumentCasesTest pass on native PG17; proven in HandoverJourneyHttpTest (563646b2f)"
+        },
+        {
+          "id": "s7-no-show",
+          "status": "complete",
+          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 6f41c17af: greg-only POST /appointments/no-show, appointment-no-show outbox event, rebooking attempt n+1, V472_2; AppointmentNoShowTest 8/8, appointments package 97/97, journey step 11"
+        },
+        {
+          "id": "s8-journey",
+          "status": "complete",
+          "title": "Integrated journey through the started app with real adapters; dev config documented",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 563646b2f: HandoverJourneyHttpTest 12 steps over real JWTs and PG17 with real lifecycle ports; README and render-service.proposed.yaml dev selection"
+        },
+        {
+          "id": "s9-integration-r2",
+          "status": "complete",
+          "title": "Reopened: base merge, Java verify and result",
+          "observed_at": "2026-11-17T14:49:05Z",
+          "evidence": "Lead-run scoped set on merged head e8daef648: 216 run, 0 failures (appointments, approvals, documents, wiring/startup, HandoverJourneyHttpTest); base merged, Result written"
         }
       ]
     },
@@ -7882,7 +7832,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-14T10:07:49Z",
+      "observed_at": "2026-11-17T12:51:31Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7917,13 +7867,34 @@
           "title": "Story validation on native PostgreSQL, merged-tree verify and result",
           "observed_at": "2026-11-14T10:07:49Z",
           "evidence": "Lead validation at cc362a89a (merged origin/gcsp-poc-dev): ./mvnw -B verify 994/994 on native PG17 incl. 49 production tests; result block 27ff3f505"
+        },
+        {
+          "id": "s5-plan-binding",
+          "status": "complete",
+          "title": "Real plan-snapshot adapter over planning and Production-backed submission history (replan path)",
+          "observed_at": "2026-11-17T12:24:09Z",
+          "evidence": "Lead-reviewed fb8104aae+79c75e99a: PlanningPlanSnapshot (OrderPlanService+PlanningCatalog production mapping) is the default PlanSnapshotPort; ProductionSubmissionHistory replaces NoSubmissions; ProductionPlanJourneyTest over RS256 JWT + native PG17 (submit, replay, stale replan-needed, confirm queued, order-plan replanned); scoped 70/70"
+        },
+        {
+          "id": "s6-inventory-routes",
+          "status": "complete",
+          "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production",
+          "observed_at": "2026-11-17T12:48:50Z",
+          "evidence": "Lead-reviewed 20bcb771b: GregOrdersResource registers GET/POST /greg/orders, POST /greg/orders/queue (Greg) and POST /presenter/production (presenter, expectedVersion + commandId receipt); manual line reuses durable submit path, replan ignores manual: submissions; GregOrdersHttpTest 6/6, scoped production set 61/61"
+        },
+        {
+          "id": "s7-reintegration",
+          "status": "complete",
+          "title": "Reopened-story validation through the started app, merged-tree verify and result",
+          "observed_at": "2026-11-17T12:51:31Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 15abc3d82; scoped set (production, planning, supply, Wiring/Startup, readiness) 228/228 on native PG17 incl. ProductionPlanJourneyTest; Result committed"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T10:17:02Z",
+      "observed_at": "2026-11-17T14:55:13Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7962,9 +7933,37 @@
         {
           "id": "integration",
           "status": "complete",
-          "title": "Merge base, full Java verify and story result",
+          "title": "Merge base, full Java verify and story result (14 Nov)",
           "observed_at": "2026-11-14T10:17:02Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
+        },
+        {
+          "id": "r2-handlers",
+          "status": "complete",
+          "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock",
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review of a82d24255+4440b0e74+79d1ce3b4: manual-claim-expiry, buddy-expiry, buddy-pending-operations (remote), buddy-allocation (only with a candidates provider), production handlers bound; scoped presenter clock 16/0, rs-final 164/0 at 8cd16d928+slice"
+        },
+        {
+          "id": "r2-run-scope",
+          "status": "complete",
+          "title": "Reopened: principal follows the active run (FUCQ-506) and presenter/clock/reset route",
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review: ActiveRunPrincipal bound in BearerAuthentication (FUCQ-506; test fails without it), POST /presenter/clock/reset registered as mechanics-scenario reset; rs-final 164/0 scoped"
+        },
+        {
+          "id": "r2-ac2-proofs",
+          "status": "complete",
+          "title": "Reopened: started-app proofs of non-demo composition seeding nothing and restart preserving work",
+          "observed_at": "2026-11-17T14:38:29Z",
+          "evidence": "Lead review: PresenterCompositionPhase1/Phase2HttpTest, configured non-demo composition (hr-snapshot, synthetic ordering/appointments, tranche-plan, scenario none, reset not allowed) seeds no demo rows, refuses reset, real app restart keeps run, clock and employee draft; presenter+scenario 47/0 scoped at 437020601+slice"
+        },
+        {
+          "id": "r2-integration",
+          "status": "complete",
+          "title": "Reopened: merge base, full Java verify and story result (17 Nov)",
+          "observed_at": "2026-11-17T14:55:13Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev (a63edcf3a, FUCQ-464 handler-id collision resolved), scoped 312/0 at 3a4c6a60e on native PG17; result block committed"
         }
       ]
     },
@@ -8350,6 +8349,54 @@
           "observed_at": "2026-11-14T00:07:42.723878+00:00",
           "source": "dispatcher-authorized linked Story chat",
           "status": "checkpoint complete; inactive awaiting dispatcher acceptance/publication; original AC4 open"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-507",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Connect Java comparison jobs to allocation and recommendation route replay",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
+      "observed_at": "2026-11-17T14:30:19Z",
+      "slices": [
+        {
+          "id": "replay-harness",
+          "status": "complete",
+          "title": "Isolated replay run, seeding and shared per-seed evaluation",
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: scratch-schema run, batched seeding, shared evaluation; RouteReplayCurrentTest 3/3 native PG17 (record digests equal Node runner.json)"
+        },
+        {
+          "id": "current-route",
+          "status": "complete",
+          "title": "Current route replayed through Java manual claims",
+          "observed_at": "2026-11-16T13:59:15Z",
+          "evidence": "Lead-reviewed 930fbc830: current route records for parity-a/b equal Node exactly; schema dropped on success, refusal and interrupt"
+        },
+        {
+          "id": "buddy-route",
+          "status": "complete",
+          "title": "Buddy route replayed through Java allocation, recommendation and offers",
+          "observed_at": "2026-11-17T14:30:18Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
+        },
+        {
+          "id": "job-wiring",
+          "status": "complete",
+          "title": "Real replay bound at startup with the FUCQ-480 job lifecycle unchanged",
+          "observed_at": "2026-11-16T19:48:32Z",
+          "evidence": "Lead-reviewed d8a7a09d9 (merged aa7503b6e): DatabaseComparisonReplay default bean, HTTP job runs real replay to timeout; gcsp.api.comparison.** 65/65 native PG17"
+        },
+        {
+          "id": "full-size-validation",
+          "status": "complete",
+          "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL",
+          "observed_at": "2026-11-17T14:30:19Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
         }
       ]
     },
@@ -8758,48 +8805,50 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T12:08:26Z",
+      "observed_at": "2026-11-17T13:38:56Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T10:53:54.947Z",
-      "note": "Census23 source7f13b0362 reviewed31PASS;123explicitpublicdeclarations/121names and59legacyidentities/history preserved.24selected-account candidate adapter ACKexecuting 2026-11-17T12:04:58Z. Both originalAC OPEN/nativeToDo/all5slice states preserved; no newruntime.",
+      "native_observed_at": "2026-11-17T13:25:48Z",
+      "note": "Generated ownerHTTP ordering recovery29 corrected30: immutable validation d9f7a72fcf74133a6cbcc6c574271032fd400074 /tree4f4d2606647e4cb6992e39865a347ac37ca581af combines current integration production with exactly four new files. One selected method lostAcknowledgementStaysPendingForTheOwnerUntilTheSameRecordedOperationIsFound passed on native PostgreSQL17.12:1test/0failures/0errors/0skips,35.9s. Actual generated claim/quote/hold/offer, signedJWT/JWKS owner decision, pending ownerHTTP after recorded remote effect/lostACK, hidden lookup then same receipt settlement, durable lineage/outbox and exactly one execute/effect/replay. Reviews37/38PASS. Parent independently verified85process identities/17groups plus supervisor/scratch/reservation absent and source/tool pins unchanged. Initial two initdb attempts and29compile failure remain retained; no cases ran in those attempts. Partial originalAC2 evidence only: both original criteria remain OPEN. No all-port, realOIDC/browserlogin, mail, hosteddev, BMW, laterclock/F516 or fullStory/coveringgreenbatch claim. The originalAC1 Prepare/BuddyRemoteLifecycle demo-account reads remain outside selected account composition and their files remain unreleased; no current F481 source worker/runtime after30 return. No OneDrive access.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T12:07:03.343542+00:00",
-          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Correction23 source7f13b0362, review31PASS:123explicitpublicdeclarations/121names,34external+10clocks+38internal+41helpers;30externalgroups; qualifiers/history corrected. Documentation census increment; actual composition and originalAC1 open."
+          "observed_at": "2026-11-17T13:21:00.351045+00:00",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Correction23 source7f13b0362, review31PASS:123explicitpublicdeclarations/121names,34external+10clocks+38internal+41helpers;30externalgroups; qualifiers/history corrected. Documentation census increment; actual composition and originalAC1 open. Inventory26 source8a3d0076 reconciled to F458/24/25 after review34 factual corrections; 59 identities/53otherrows/123declarations/121names and history preserved. Review34PASS; no runtime/ACcompletion. Claude27 changed selected employee/stock input proof ACK12:39:17, no runtime/descendants. Inventory28 source e54d6c819 reconciles actual F478 Production plan/history/Greg/presenter bindings and missing deployed PlanningDemand/PlanningSupply inputs. Five source-backed rows changed, all59 identities/order and54 other rows/history preserved;123 public declarations/121 unique names unchanged. Independent review36PASS and parent source/hash/preservation checks; no new runtime. Peer228 scoped tests remain peer-reported, deployed submit503planning-forecast-not-configured and both originalAC remain open."
         },
         {
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T11:20:02.668769+00:00",
-          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen."
+          "observed_at": "2026-11-17T13:21:00.351045+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen. Selected-account adapter24 source3a807883/currentF458context5f1fe1bc:8focused+2generatedjourney passes/0skip; review32PASS; audits50/75/74identities+supervisors,4/19/20groups/scratch/reservationsclear. Actual selected records/no callerfallback and canonical digest/remoteoffer/order service lineage. FullownerorderstatusHTTP/realOIDC/mail/hosted/BMW/allportvariation/originalACopen. OwnerHTTP25 source209bf4f7/currentroot661185fca: real generatedclaim -> ownerJWTacceptance -> actual GETorderstatus acknowledged/holdquoteprovider lineage/one remoteexecute/replay;1nativePGmethod passed26.0s zero failures/errors/skips, review33PASS, audit77childidentities+supervisor/20groups/scratch/reservationclear. FixtureJWT/sameinstant only; realOIDC/mail/hosted/BMW/allportvariation/laterclock/originalACopen. Inventory26 source8a3d0076 reconciled to F458/24/25 after review34 factual corrections; 59 identities/53otherrows/123declarations/121names and history preserved. Review34PASS; no runtime/ACcompletion. Claude27 changed selected employee/stock input proof ACK12:39:17, no runtime/descendants. Inventory28 source e54d6c819 reconciles actual F478 Production plan/history/Greg/presenter bindings and missing deployed PlanningDemand/PlanningSupply inputs. Five source-backed rows changed, all59 identities/order and54 other rows/history preserved;123 public declarations/121 unique names unchanged. Independent review36PASS and parent source/hash/preservation checks; no new runtime. Peer228 scoped tests remain peer-reported, deployed submit503planning-forecast-not-configured and both originalAC remain open."
         },
         {
           "id": "local-composition",
           "title": "Selected local read and transactional journey composition",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:29:54.291Z",
-          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
+          "observed_at": "2026-11-17T13:08:43.318684+00:00",
+          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. Selected-account adapter24 source3a807883/currentF458context5f1fe1bc:8focused+2generatedjourney passes/0skip; review32PASS; audits50/75/74identities+supervisors,4/19/20groups/scratch/reservationsclear. Actual selected records/no callerfallback and canonical digest/remoteoffer/order service lineage. FullownerorderstatusHTTP/realOIDC/mail/hosted/BMW/allportvariation/originalACopen. OwnerHTTP25 source209bf4f7/currentroot661185fca: real generatedclaim -> ownerJWTacceptance -> actual GETorderstatus acknowledged/holdquoteprovider lineage/one remoteexecute/replay;1nativePGmethod passed26.0s zero failures/errors/skips, review33PASS, audit77childidentities+supervisor/20groups/scratch/reservationclear. FixtureJWT/sameinstant only; realOIDC/mail/hosted/BMW/allportvariation/laterclock/originalACopen. Inventory26 source8a3d0076 reconciled to F458/24/25 after review34 factual corrections; 59 identities/53otherrows/123declarations/121names and history preserved. Review34PASS; no runtime/ACcompletion. Claude27 changed selected employee/stock input proof ACK12:39:17, no runtime/descendants. Input27 source df44a34f5, immutable validation 9ae454b716/current root b9041a040: changed selected employee and stock facts each deny eligibility; restoring sources restores full evaluation and then generated claim -> owner JWT/JWKS decision -> selected remote ordering -> owner HTTP order/status with canonical durable quote/lineage and one execution/replay. One selected native PostgreSQL16 method passed, zero failures/errors/skips, 26.4s. Review35PASS; independent audit76 child identities + supervisor/19 groups/scratch/reservation absent; source/tool pins unchanged. This is bounded fixture/seam evidence, not Prepare itself, allport variation, realOIDC/mail/hosted/BMW/laterclock/F516 recovery or either originalAC completion. New Story test set PG17 and covering green batch remain outstanding for acceptance."
         },
         {
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T11:20:02.668769+00:00",
-          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Ordering consumer461049f73: realHttpOrderingProvider→OrderingService/nativePG lostACK/restart recovery,1pass/0skip; GET/POST/GET, oneeffect/no secondPOST and persisted identity/ack/reference/occupation asserted. Source reviewPASS,64identities/7groups/scratch/reservation cleared. Component setup uses fixtureconverter/policy; startup/fulljourney/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen."
+          "observed_at": "2026-11-17T13:38:50.921654+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Ordering consumer461049f73: realHttpOrderingProvider→OrderingService/nativePG lostACK/restart recovery,1pass/0skip; GET/POST/GET, oneeffect/no secondPOST and persisted identity/ack/reference/occupation asserted. Source reviewPASS,64identities/7groups/scratch/reservation cleared. Component setup uses fixtureconverter/policy; startup/fulljourney/originalACopen. OrderingProviderBindings component0f9a547b739:8focusedplainJUnitpasses/0skip, reviewPASS,39childidentities+supervisor/4groups/scratch/reservation independentlyclear. Default/syntheticdelegation, eagerremotevalidation/cachedadapter/lifecycle proven; actualapplicationselector/holderhookup not yetlanded. Threefileownershiprelease confirmedc9bd31efa. BothoriginalAC remainopen. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen. Generated remote ordering source20d71cb9f7: generated canonical claim -> real ownerRS256/JWKS HTTP acceptance -> actual cached productionHolder service -> startup-selected remote ACK and service read/replay;1nativePGcase passed/0failures/errors/skips27.0s; independent review29PASS; audit77identities+supervisor/19groups/scratch/reservation clear. Directservice reconciliation at fixedinstant; fullorderstatusHTTP/accountbinding/hostedOIDC/mail/BMW/changedinputsallports/laterclock recovery and bothoriginalACopen. Selected-account adapter24 source3a807883/currentF458context5f1fe1bc:8focused+2generatedjourney passes/0skip; review32PASS; audits50/75/74identities+supervisors,4/19/20groups/scratch/reservationsclear. Actual selected records/no callerfallback and canonical digest/remoteoffer/order service lineage. FullownerorderstatusHTTP/realOIDC/mail/hosted/BMW/allportvariation/originalACopen. OwnerHTTP25 source209bf4f7/currentroot661185fca: real generatedclaim -> ownerJWTacceptance -> actual GETorderstatus acknowledged/holdquoteprovider lineage/one remoteexecute/replay;1nativePGmethod passed26.0s zero failures/errors/skips, review33PASS, audit77childidentities+supervisor/20groups/scratch/reservationclear. FixtureJWT/sameinstant only; realOIDC/mail/hosted/BMW/allportvariation/laterclock/originalACopen. Inventory26 source8a3d0076 reconciled to F458/24/25 after review34 factual corrections; 59 identities/53otherrows/123declarations/121names and history preserved. Review34PASS; no runtime/ACcompletion. Claude27 changed selected employee/stock input proof ACK12:39:17, no runtime/descendants. Input27 source df44a34f5, immutable validation 9ae454b716/current root b9041a040: changed selected employee and stock facts each deny eligibility; restoring sources restores full evaluation and then generated claim -> owner JWT/JWKS decision -> selected remote ordering -> owner HTTP order/status with canonical durable quote/lineage and one execution/replay. One selected native PostgreSQL16 method passed, zero failures/errors/skips, 26.4s. Review35PASS; independent audit76 child identities + supervisor/19 groups/scratch/reservation absent; source/tool pins unchanged. This is bounded fixture/seam evidence, not Prepare itself, allport variation, realOIDC/mail/hosted/BMW/laterclock/F516 recovery or either originalAC completion. New Story test set PG17 and covering green batch remain outstanding for acceptance. Generated ownerHTTP ordering recovery29 corrected30: immutable validation d9f7a72fcf74133a6cbcc6c574271032fd400074 /tree4f4d2606647e4cb6992e39865a347ac37ca581af combines current integration production with exactly four new files. One selected method lostAcknowledgementStaysPendingForTheOwnerUntilTheSameRecordedOperationIsFound passed on native PostgreSQL17.12:1test/0failures/0errors/0skips,35.9s. Actual generated claim/quote/hold/offer, signedJWT/JWKS owner decision, pending ownerHTTP after recorded remote effect/lostACK, hidden lookup then same receipt settlement, durable lineage/outbox and exactly one execute/effect/replay. Reviews37/38PASS. Parent independently verified85process identities/17groups plus supervisor/scratch/reservation absent and source/tool pins unchanged. Initial two initdb attempts and29compile failure remain retained; no cases ran in those attempts. Partial originalAC2 evidence only: both original criteria remain OPEN. No all-port, realOIDC/browserlogin, mail, hosteddev, BMW, laterclock/F516 or fullStory/coveringgreenbatch claim. The originalAC1 Prepare/BuddyRemoteLifecycle demo-account reads remain outside selected account composition and their files remain unreleased; no current F481 source worker/runtime after30 return. No OneDrive access."
         },
         {
           "id": "integration",
           "title": "Original connected OIDC, email and full remaining contract/failure evidence",
-          "status": "not-started"
+          "status": "not-started",
+          "evidence": "Input27 source df44a34f5, immutable validation 9ae454b716/current root b9041a040: changed selected employee and stock facts each deny eligibility; restoring sources restores full evaluation and then generated claim -> owner JWT/JWKS decision -> selected remote ordering -> owner HTTP order/status with canonical durable quote/lineage and one execution/replay. One selected native PostgreSQL16 method passed, zero failures/errors/skips, 26.4s. Review35PASS; independent audit76 child identities + supervisor/19 groups/scratch/reservation absent; source/tool pins unchanged. This is bounded fixture/seam evidence, not Prepare itself, allport variation, realOIDC/mail/hosted/BMW/laterclock/F516 recovery or either originalAC completion. New Story test set PG17 and covering green batch remain outstanding for acceptance. Inventory28 source e54d6c819 reconciles actual F478 Production plan/history/Greg/presenter bindings and missing deployed PlanningDemand/PlanningSupply inputs. Five source-backed rows changed, all59 identities/order and54 other rows/history preserved;123 public declarations/121 unique names unchanged. Independent review36PASS and parent source/hash/preservation checks; no new runtime. Peer228 scoped tests remain peer-reported, deployed submit503planning-forecast-not-configured and both originalAC remain open. Generated ownerHTTP ordering recovery29 corrected30: immutable validation d9f7a72fcf74133a6cbcc6c574271032fd400074 /tree4f4d2606647e4cb6992e39865a347ac37ca581af combines current integration production with exactly four new files. One selected method lostAcknowledgementStaysPendingForTheOwnerUntilTheSameRecordedOperationIsFound passed on native PostgreSQL17.12:1test/0failures/0errors/0skips,35.9s. Actual generated claim/quote/hold/offer, signedJWT/JWKS owner decision, pending ownerHTTP after recorded remote effect/lostACK, hidden lookup then same receipt settlement, durable lineage/outbox and exactly one execute/effect/replay. Reviews37/38PASS. Parent independently verified85process identities/17groups plus supervisor/scratch/reservation absent and source/tool pins unchanged. Initial two initdb attempts and29compile failure remain retained; no cases ran in those attempts. Partial originalAC2 evidence only: both original criteria remain OPEN. No all-port, realOIDC/browserlogin, mail, hosteddev, BMW, laterclock/F516 or fullStory/coveringgreenbatch claim. The originalAC1 Prepare/BuddyRemoteLifecycle demo-account reads remain outside selected account composition and their files remain unreleased; no current F481 source worker/runtime after30 return. No OneDrive access.",
+          "observed_at": "2026-11-17T13:38:50.921654+00:00"
         }
       ],
       "workers": [
@@ -9187,10 +9236,301 @@
           "role": "Selected AccountRecords candidate adapter and owned startup selector source-only",
           "source": "claude-assist-fucq481-selected-account-candidates-2026-11-17-24",
           "observed_at": "2026-11-17T12:04:58Z",
-          "expires_at": "2026-11-17T12:19:58+00:00",
-          "status": "Matching exact24 executionACK 2026-11-17T12:04:58Z; same coordinator/watcher,5paths, no core/account edits/runtime/descendants. ReportedClaudeOpus5.5/high; effective settings unverified."
+          "expires_at": "2026-11-17T12:15:35Z",
+          "status": "terminal source24; parent10matchingpasses/review32PASS/auditclear; no current source24 worker"
+        },
+        {
+          "name": "Kronk 2",
+          "harness": "codex",
+          "role": "independent selected-account source reviewer",
+          "observed_at": "2026-11-17T12:23:49.323894+00:00",
+          "expires_at": "2026-11-17T12:23:49.323894+00:00",
+          "source": "fucq481-selected-account-review-32",
+          "status": "terminalPASS; requestedselectedSol/high,nofallback/no runtime; title tool succeeded"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "selected-account finite10checks/integration",
+          "observed_at": "2026-11-17T12:23:49.323894+00:00",
+          "expires_at": "2026-11-17T12:23:49.323894+00:00",
+          "source": "dispatcher1213",
+          "status": "terminal10matchingpasses/zero skips;3chunks/auditsclear; actualownerHTTP route not yettested"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "generated owner order-status HTTP source-only",
+          "observed_at": "2026-11-17T12:25:01Z",
+          "expires_at": "2026-11-17T12:25:01Z",
+          "source": "claude-assist-fucq481-order-status-http-2026-11-17-25",
+          "status": "terminal source209bf4f7; parent1pass26.0s/review33PASS/auditclear"
+        },
+        {
+          "name": "Doug the Dog 3",
+          "harness": "codex",
+          "role": "independent ownerHTTP source reviewer",
+          "observed_at": "2026-11-17T12:30:04.539595+00:00",
+          "expires_at": "2026-11-17T12:30:04.539595+00:00",
+          "source": "fucq481-owner-http-review-33",
+          "status": "terminalPASS; requestedselectedSol/high,nofallback/no runtime; title confirmed"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "finite ownerHTTP25validation/integration",
+          "observed_at": "2026-11-17T12:30:04.539595+00:00",
+          "expires_at": "2026-11-17T12:30:04.539595+00:00",
+          "source": "dispatcher1213-ownerHTTP25",
+          "status": "terminal1matchingpass26.0s/zero skips/auditclear; no current runtime"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "current provider inventory/handover reconciliation",
+          "observed_at": "2026-11-17T12:35:57Z",
+          "expires_at": "2026-11-17T12:35:57Z",
+          "source": "claude-assist-fucq481-composition-reconcile-2026-11-17-26",
+          "status": "Terminal3docs8a3d0076; parent source-backed corrections and review34PASS; no runtime/ACcompletion"
+        },
+        {
+          "name": "Doug the Dog 4",
+          "harness": "codex",
+          "role": "independent inventory26 source/correction reviewer",
+          "source": "fucq481-composition-review-34",
+          "observed_at": "2026-11-17T12:46:05.874054+00:00",
+          "expires_at": "2026-11-17T12:46:05.874054+00:00",
+          "status": "TerminalPASS after parent factual corrections; requestedselectedSol/high,nofallback/no runtime/descendants"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "changed selected employee/stock inputs and canonical ownerHTTP/remote-ordering journey source-only",
+          "source": "claude-assist-fucq481-composed-input-variation-2026-11-17-27",
+          "observed_at": "2026-11-17T13:00:29Z",
+          "expires_at": "2026-11-17T13:00:29Z",
+          "status": "Terminal source df44a34f5; parent1 matching pass/review35PASS/auditclear. No current source27 execution or originalAC completion."
+        },
+        {
+          "name": "Hiccup 2",
+          "harness": "codex",
+          "role": "Independent input27 source reviewer",
+          "source": "fucq481-input-variation-review-35",
+          "observed_at": "2026-11-17T13:08:43.318684+00:00",
+          "expires_at": "2026-11-17T13:08:43.318684+00:00",
+          "status": "TerminalPASS/no blocking or major findings; requested/selected Sol/high, no fallback/runtime/descendants; title receipt verified."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Finite input27 validation and integration",
+          "source": "dispatcher1259-input27",
+          "observed_at": "2026-11-17T13:06:55.712010+00:00",
+          "expires_at": "2026-11-17T13:06:55.712010+00:00",
+          "status": "Input27 source df44a34f5, immutable validation 9ae454b716/current root b9041a040: changed selected employee and stock facts each deny eligibility; restoring sources restores full evaluation and then generated claim -> owner JWT/JWKS decision -> selected remote ordering -> owner HTTP order/status with canonical durable quote/lineage and one execution/replay. One selected native PostgreSQL16 method passed, zero failures/errors/skips, 26.4s. Review35PASS; independent audit76 child identities + supervisor/19 groups/scratch/reservation absent; source/tool pins unchanged. This is bounded fixture/seam evidence, not Prepare itself, allport variation, realOIDC/mail/hosted/BMW/laterclock/F516 recovery or either originalAC completion. New Story test set PG17 and covering green batch remain outstanding for acceptance."
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "Production inventory reconciliation, exact three documentation files",
+          "source": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "observed_at": "2026-11-17T13:14:05Z",
+          "expires_at": "2026-11-17T13:14:05Z",
+          "status": "Terminal source e54d6c819; independentreview36PASS/parent source/hash/preservation audit. No current28 execution or wholeStory acceptance."
+        },
+        {
+          "name": "Wile E. Coyote 3",
+          "harness": "codex",
+          "role": "Independent Production inventory reviewer",
+          "source": "fucq481-production-inventory-review-36",
+          "observed_at": "2026-11-17T13:21:00.351045+00:00",
+          "expires_at": "2026-11-17T13:21:00.351045+00:00",
+          "status": "TerminalPASS/no blocking or major findings; requested/selected Sol/high, no fallback/runtime/descendants; title verified."
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "Generated ownerHTTP lost-order-ACK recovery source-only",
+          "source": "claude-assist-fucq481-generated-ordering-recovery-2026-11-17-29",
+          "observed_at": "2026-11-17T13:25:32Z",
+          "expires_at": "2026-11-17T13:25:32Z",
+          "status": "Terminal29source;37staticPASS then compilefailure, corrected30/nativePG17onecasePASS; no current29execution or Storyacceptance."
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "Recovery null assertion correction",
+          "source": "claude-assist-fucq481-ordering-recovery-compile-fix-2026-11-17-30",
+          "observed_at": "2026-11-17T13:33:44Z",
+          "expires_at": "2026-11-17T13:33:44Z",
+          "status": "Terminal source811183fee;38staticPASS then one selected nativePG17methodPASS; no current30execution."
+        },
+        {
+          "name": "Buzz Lightyear 2",
+          "harness": "codex",
+          "role": "Independent recovery source and null correction reviews37/38",
+          "source": "fucq481-generated-ordering-recovery-review-38",
+          "observed_at": "2026-11-17T13:38:50.921654+00:00",
+          "expires_at": "2026-11-17T13:38:50.921654+00:00",
+          "status": "TerminalPASS/no findings; requested/selected Sol/high, no fallback/runtime/descendants, titleverified. Static37missedcompileambiguity; no runtimeclaim from review."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Bounded nativePG17 recovery validation",
+          "source": "fucq481-recovery30-parent-audit-1323-ordering",
+          "observed_at": "2026-11-17T13:38:30.376567+00:00",
+          "expires_at": "2026-11-17T13:38:30.376567+00:00",
+          "status": "Generated ownerHTTP ordering recovery29 corrected30: immutable validation d9f7a72fcf74133a6cbcc6c574271032fd400074 /tree4f4d2606647e4cb6992e39865a347ac37ca581af combines current integration production with exactly four new files. One selected method lostAcknowledgementStaysPendingForTheOwnerUntilTheSameRecordedOperationIsFound passed on native PostgreSQL17.12:1test/0failures/0errors/0skips,35.9s. Actual generated claim/quote/hold/offer, signedJWT/JWKS owner decision, pending ownerHTTP after recorded remote effect/lostACK, hidden lookup then same receipt settlement, durable lineage/outbox and exactly one execute/effect/replay. Reviews37/38PASS. Parent independently verified85process identities/17groups plus supervisor/scratch/reservation absent and source/tool pins unchanged. Initial two initdb attempts and29compile failure remain retained; no cases ran in those attempts. Partial originalAC2 evidence only: both original criteria remain OPEN. No all-port, realOIDC/browserlogin, mail, hosteddev, BMW, laterclock/F516 or fullStory/coveringgreenbatch claim. The originalAC1 Prepare/BuddyRemoteLifecycle demo-account reads remain outside selected account composition and their files remain unreleased; no current F481 source worker/runtime after30 return. No OneDrive access."
         }
       ]
+    },
+    {
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-13-008",
+      "id": "FUCQ-440",
+      "jira_observed_at": "2026-11-17T13:50:37.299137+00:00",
+      "observed_at": "2026-11-17T14:07:14Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "projection",
+          "observed_at": "2026-11-13T23:43:44Z",
+          "status": "complete",
+          "title": "Typed-account-projection-and-bearer-client"
+        },
+        {
+          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "screen",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "status": "complete",
+          "title": "Native-account-current-car-and-existing-actions"
+        },
+        {
+          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record",
+          "id": "choices",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "status": "complete",
+          "title": "Native-policy-backed-manual-choices-before-stock"
+        },
+        {
+          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "previews",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "status": "complete",
+          "title": "Original-owned-offer-order-preview-composition"
+        },
+        {
+          "id": "preference-coupling",
+          "title": "Published-compact-preferences-and-exact-current-car-rating",
+          "status": "complete",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
+        },
+        {
+          "id": "shared-order-read",
+          "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
+          "status": "in-progress",
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
+          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "id": "account-order-composition",
+          "title": "Independent-manual-handoff-and-complete-list-account-composition",
+          "status": "in-progress",
+          "observed_at": "2026-11-16T11:53:13.372282+00:00",
+          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "evidence": "Original two AC unchecked. Selected composition56/56 is local fixture evidence only. Desktop/narrow rendered, actual Java/OIDC/nativePG ownership/parity/durable refresh/restart and hosted proof remain unrun. Missing Java manual draft/stock/quote/review producers are outside Account allocation.",
+          "id": "integration",
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
+          "status": "blocked",
+          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Show employee account and current-vehicle information",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
+      "workers": [
+        {
+          "expires_at": "2026-11-16T11:49:22.346146+00:00",
+          "harness": "codex",
+          "name": "Marvin the Martian",
+          "observed_at": "2026-11-16T11:49:22.346146+00:00",
+          "role": "story-lead",
+          "source": "SAME lead gpt-6.1-sol/high, no fallback/descendants. Parent verified61source pins,23008borrowed file hashes and current owned cleanup. No further runtime release.",
+          "status": "HOLD; frozen6216010d tested56/56 and integrated; no executing worker; original rendered/connected acceptance open"
+        },
+        {
+          "expires_at": "2026-11-13T23:43:44.865713+00:00",
+          "harness": "codex",
+          "name": "Toothless",
+          "observed_at": "2026-11-13T23:43:44.865713+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed",
+          "status": "complete; editing stopped"
+        },
+        {
+          "expires_at": "2026-11-13T23:55:25.071818+00:00",
+          "harness": "codex",
+          "name": "Lord Business",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed",
+          "status": "complete; editing stopped"
+        },
+        {
+          "expires_at": "2026-11-14T00:13:43.535381+00:00",
+          "harness": "codex",
+          "name": "Merlin the Magic Mouse",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed",
+          "status": "complete; source edits stopped; actual acceptance open"
+        },
+        {
+          "expires_at": "2026-11-14T00:21:50.433978+00:00",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-14T00:21:50.433978+00:00",
+          "role": "reviewer",
+          "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
+          "status": "review passed implementation checkpoint; stopped; actual acceptance open"
+        },
+        {
+          "name": "Stanley Tiger",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
+          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
+          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "Bounded account composition readiness assessment; no product writes",
+          "source": "claude-assist-fucq440-composed-account-readiness-2026-11-17-31",
+          "observed_at": "2026-11-17T13:38:27Z",
+          "expires_at": "2026-11-17T13:50:17Z",
+          "status": "Read-only readiness assessment returned; no product edits or runtime; both original criteria open"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude",
+          "role": "story-lead",
+          "observed_at": "2026-11-17T14:06:27.116084+00:00",
+          "expires_at": "2026-11-17T14:21:27.116084+00:00",
+          "status": "Source-only one-file Java/Angular account parity task; parent independently observed allocated new spec modified 2026-11-17T14:06:27.116084+00:00; mutable and unreviewed, tests/runtime/original acceptance open",
+          "source": "claude-assist-fucq440-java-account-parity-2026-11-17-32"
+        }
+      ],
+      "note": "Existing reserved F440 resumed through same single Claude coordinator: exact31 ACK 2026-11-17T13:38:27Z confirms bounded READONLY currentROOT account/Java contract and retained-evidence readiness assessment. No product paths/runtime/descendants/newclaim allocated. Both original account/ownership/loading/saved-state criteria remain open; no activity inferred from reservation/native status. Source implementation or connected/browser evidence needs a concrete subsequent allocation.",
+      "native_observed_at": "2026-11-17T13:25:48Z"
     }
   ],
   "version": 1

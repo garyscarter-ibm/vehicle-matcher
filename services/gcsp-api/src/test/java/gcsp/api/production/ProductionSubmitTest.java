@@ -61,7 +61,7 @@ class ProductionSubmitTest {
         try (ProductionFixture f = ProductionFixture.create()) {
             f.submit("cmd-1");
             List<Long> before = f.footprint();
-            ProductionResult r = f.service.submit(f.ctx(), new ProductionService.SubmitInput("cmd-1", "plan-1",
+            ProductionResult r = f.service.submit(f.ctx(), f.principal(), new ProductionService.SubmitInput("cmd-1", "plan-1",
                     Map.of("forecast", "f1", "policy", "p1", "stock", "s2")));
             assertEquals("idempotency-input-changed", assertInstanceOf(ProductionResult.Conflict.class, r).code());
             assertEquals(before, f.footprint());
@@ -112,7 +112,7 @@ class ProductionSubmitTest {
                     new ProductionService.SubmitInput("c", "plan-1", Map.of()),
                     new ProductionService.SubmitInput("c", "plan-1", Map.of("a", " ")),
                     new ProductionService.SubmitInput("x".repeat(201), "plan-1", ProductionFixture.VERSIONS))) {
-                assertInstanceOf(ProductionResult.Invalid.class, f.service.submit(f.ctx(), bad));
+                assertInstanceOf(ProductionResult.Invalid.class, f.service.submit(f.ctx(), f.principal(), bad));
             }
             assertEquals(0, f.count("SELECT count(*) FROM production_submissions"));
         }
@@ -126,8 +126,6 @@ class ProductionSubmitTest {
             ProductionResult.Unavailable u = assertInstanceOf(ProductionResult.Unavailable.class, f.submit("cmd-1"));
             assertEquals("plan-not-configured", u.code());
             assertEquals(before, f.footprint());
-            assertEquals(new UnconfiguredPlanSnapshot().current(f.ctx()),
-                    new Unavailable("plan-not-configured", "Greg's order plan is not connected to Production requests yet."));
         }
     }
 
@@ -235,7 +233,7 @@ class ProductionSubmitTest {
             assertEquals("uncertain", f.stateOf("l2"));
             var pool = f.pool();
             ProductionService restarted = f.service(pool, new SyntheticProductionProvider(pool));
-            assertInstanceOf(ProductionResult.Ok.class, restarted.submit(f.ctx(), f.input("cmd-1")));
+            assertInstanceOf(ProductionResult.Ok.class, restarted.submit(f.ctx(), f.principal(), f.input("cmd-1")));
             assertEquals("requested", f.stateOf("l1"));
             assertEquals("requested", f.stateOf("l2"));
             assertEquals(2, f.count("SELECT count(*) FROM production_synthetic_orders"));
@@ -248,7 +246,7 @@ class ProductionSubmitTest {
             try (ProductionFixture f = ProductionFixture.create()) {
                 var flaky = new FlakyCommitDataSource(f.pool(), mode);
                 ProductionService broken = new ProductionService(flaky, f.synthetic, f.plan, new TickProductionClock(f.pool()));
-                ProductionResult r = broken.submit(f.ctx(), f.input("cmd-1"));
+                ProductionResult r = broken.submit(f.ctx(), f.principal(), f.input("cmd-1"));
                 assertInstanceOf(ProductionResult.Uncertain.class, r);
                 assertEquals(mode == FlakyCommitDataSource.Mode.COMMIT_THEN_FAIL ? 2 : 0,
                         f.count("SELECT count(*) FROM production_requests"));

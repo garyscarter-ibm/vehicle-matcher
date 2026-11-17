@@ -21,6 +21,13 @@ public final class ComparisonHttpProfiles {
 
     private ComparisonHttpProfiles() {}
 
+    /** The database named in the JDBC URL, so the guard accepts a per-story database on a shared cluster. */
+    static String databaseName(String url) {
+        String path = url.substring(url.lastIndexOf('/') + 1);
+        int query = path.indexOf('?');
+        return query < 0 ? path : path.substring(0, query);
+    }
+
     static Map<String, String> config(boolean database) {
         Map<String, String> m = new HashMap<>();
         m.put("gcsp.identity.provider", "oidc");
@@ -39,7 +46,7 @@ public final class ComparisonHttpProfiles {
             m.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", "gcsp_app");
             m.put("quarkus.flyway.schemas", "gcsp_app");
             m.put("gcsp.environment-id", "test-app-env");
-            m.put("gcsp.database.expected-name", "gcsp_test_dev");
+            m.put("gcsp.database.expected-name", databaseName(URL));
         } else {
             m.put("quarkus.datasource.active", "false");
             m.put("quarkus.flyway.active", "false");

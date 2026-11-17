@@ -50,8 +50,8 @@ import org.jose4j.jwt.JwtClaims;
 import org.junit.jupiter.api.Test;
 
 /**
- * Generated canonical claim, owner RS256 JWT acceptance, then the application's own selected remote ordering through the
- * real Holder service. Same fixture instant as the retained test; no account-policy GET, order route or clock advance.
+ * Generated canonical claim, owner RS256 JWT acceptance, then the owner's GET /manual/order through the production route,
+ * account slots and selected remote Holder. Same fixture instant as the retained test; no clock advance.
  */
 @QuarkusTest
 @TestProfile(GeneratedClaimRemoteOrderingProfile.class)
@@ -143,12 +143,27 @@ class GeneratedClaimRemoteOrderingHttpTest {
         String policy = text("SELECT policy_version FROM selection_orders WHERE operation_id = ?", selection);
         String digest = text("SELECT input_digest FROM pending_operations WHERE operation_id = ?", selection);
         OrderingScope orderingScope = new OrderingScope(OffersPg.ENV, "run-1", EMPLOYEE, slot, policy);
+        String reference = GeneratedClaimRemoteOrderingResource.REFERENCE_PREFIX + selection;
 
-        // The existing reconciliation boundary (SelectionOrderTickHandler's): settled now, or settled by this call.
+        // The owner's order/status read: OrderingSlots/AccountService find the slot; a pending handoff is reconciled here.
+        int executesBeforeRead = stats().path("executes").asInt();
+        assertTrue(executesBeforeRead <= 1, "the decision drives at most one execute");
+        JsonPath order = get(owner, API + "/manual/order").statusCode(200).body("status", equalTo("ok"))
+                .extract().jsonPath();
+        assertEquals("acknowledged", order.getString("value.status"));
+        assertEquals(reference, order.getString("value.providerReference"));
+        assertEquals(holdId, order.getString("value.selection.holdId"));
+        assertEquals(quoteId, order.getString("value.selection.quoteId"));
+        assertEquals("awaiting-approval", order.getString("value.view.state"));
+        assertEquals(1, stats().path("executes").asInt(), "the owner's read leaves exactly one remote execute");
+        get(owner, API + "/manual/order").statusCode(200).body("value.status", equalTo("acknowledged"))
+                .body("value.providerReference", equalTo(reference));
+        assertEquals(1, stats().path("executes").asInt(), "a repeated owner read never executes again");
+
+        // The existing reconciliation boundary (SelectionOrderTickHandler's) now answers from the settled record.
         OrderingResult reconciled = service.reconcile(orderingScope, selection);
         OrderingResult.Ok ok = assertInstanceOf(OrderingResult.Ok.class, reconciled);
         assertEquals("acknowledged", ok.value().path("status").asText());
-        String reference = GeneratedClaimRemoteOrderingResource.REFERENCE_PREFIX + selection;
         assertEquals(reference, ok.value().path("providerReference").asText());
 
         JsonNode after = stats();

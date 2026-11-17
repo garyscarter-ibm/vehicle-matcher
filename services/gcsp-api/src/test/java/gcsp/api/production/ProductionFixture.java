@@ -80,7 +80,7 @@ final class ProductionFixture implements AutoCloseable {
         }
 
         @Override
-        public Reading current(RunContext ctx) {
+        public Reading current(RunContext ctx, gcsp.api.identity.Principal principal) {
             return reading;
         }
     }
@@ -141,6 +141,10 @@ final class ProductionFixture implements AutoCloseable {
                 + "state) VALUES (?, 'run-1', ?, ?, ?, ?, 'pending')", ENV, "tick-" + version, java.sql.Timestamp.from(to), version, "0".repeat(64));
     }
 
+    gcsp.api.identity.Principal principal() {
+        return new gcsp.api.identity.Principal("greg-1", List.of("greg"), ENV, "run-1", null, "test-policy-1", List.of());
+    }
+
     RunContext ctx() {
         return new RunContext(ENV, "run-1", "greg-1");
     }
@@ -150,7 +154,7 @@ final class ProductionFixture implements AutoCloseable {
     }
 
     ProductionResult submit(String commandId) {
-        return service.submit(ctx(), input(commandId));
+        return service.submit(ctx(), principal(), input(commandId));
     }
 
     static JsonNode value(ProductionResult r) {
