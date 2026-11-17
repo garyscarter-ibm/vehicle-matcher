@@ -7590,7 +7590,7 @@
     {
       "assignee": "",
       "id": "FUCQ-471",
-      "observed_at": "2026-11-17T18:25:10Z",
+      "observed_at": "2026-11-17T18:49:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Read and acknowledge documents/readiness",
@@ -7628,19 +7628,24 @@
         },
         {
           "id": "s5-route",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: register inventory replacement POST /api/gcsp/v1/documents/tasks/complete",
-          "observed_at": "2026-11-17T18:25:10Z"
+          "observed_at": "2026-11-17T18:49:07Z",
+          "evidence": "68e5c27d4 reviewed by lead; tasks/complete proven in DocumentsJourneyHttpTest; scoped 132/132 on 0162e2bf8"
         },
         {
           "id": "s6-journey",
-          "status": "not-started",
-          "title": "Reopened: started-app documents journey on real ports with AC2 negative proofs"
+          "status": "complete",
+          "title": "Reopened: started-app documents journey on real ports with AC2 negative proofs",
+          "observed_at": "2026-11-17T18:49:07Z",
+          "evidence": "0162e2bf8 reviewed by lead: started-app journey on real ports, AC1 and AC2 negatives; scoped 132/132 native PG 17"
         },
         {
           "id": "s7-integration",
-          "status": "not-started",
-          "title": "Reopened: base merge, scoped test set and result"
+          "status": "complete",
+          "title": "Reopened: base merge, scoped test set and result",
+          "observed_at": "2026-11-17T18:49:07Z",
+          "evidence": "base 2909d37be merged; scoped set 132/132 on 0162e2bf8; result block committed; full suite deferred to batch"
         }
       ]
     },
