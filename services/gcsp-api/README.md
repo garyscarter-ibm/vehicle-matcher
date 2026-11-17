@@ -728,6 +728,7 @@ principal or employee id, and an employee acts only under their own login):
 | `GET /presenter/scenarios` | Catalogue: versions, clock start, named times, display principals, availability, input provenance. |
 | `GET /presenter/scenarios/current` | The clock state plus `currentScenario` and `runId`. |
 | `POST /presenter/scenarios/reset` | `{commandId, expectedRunId, scenarioId, scenarioVersion, fixtureVersion, policyVersion}`. |
+| `POST /presenter/clock/reset` | The mechanics-scenario reset: `{commandId, expectedRunId, scenarioVersion, fixtureVersion, policyVersion}`, no `scenarioId`; same path and receipts as the scenarios reset. |
 | `GET /presenter/scenarios/faults` | `{runId, faults:[{adapter:"stock", mode, modes, available:true}, {adapter:"ordering", available:false, reason:"not available yet"}]}`. |
 | `POST /presenter/scenarios/faults` | `{commandId, adapter:"stock", mode: none \| unavailable \| stale}`; command `scenario.fault.set`, replays by `commandId`. |
 
@@ -758,8 +759,8 @@ the clock; existing rows are never overwritten. The people are fictional and lab
 `src/main/resources/gcsp/scenario/demo-preparation-v1.json` (5 employees, 9 scenarios). The file is generated offline from the
 Node fixtures and is never read from Node at runtime. Regenerate it, from `services/gcsp-api`, with
 `node tools/scenario-baseline/generate.mjs src/main/resources/gcsp/scenario/demo-preparation-v1.json`
-(no `node_modules` needed). Known limit: OIDC principals carry the configured `GCSP_RUN_ID`, so employee endpoints keep
-that run after a reset until the run scope is unified.
+(no `node_modules` needed). Principals whose configured `GCSP_RUN_ID` has been reset follow the active run, and an
+unknown run id stays `stale-run`.
 
 **Release notes.** From this Story, every deployment with persistence on runs a startup clock tick (it creates the active
 run's clock when absent). The bound `lifecycle-documents` handler and, with a pull provider configured, `stock-release`

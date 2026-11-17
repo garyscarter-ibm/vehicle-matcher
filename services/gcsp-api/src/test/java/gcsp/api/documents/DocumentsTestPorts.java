@@ -3,7 +3,6 @@ package gcsp.api.documents;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gcsp.api.persistence.RunContext;
-import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import java.nio.file.Files;
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** Test-only policy, case and clock ports with settable state, standing in for the sibling Stories' real ones. */
+/** Test-only policy, case and clock ports with settable state; only DocumentsTestProfile enables them. */
 final class DocumentsTestPorts {
 
     static final Map<String, String> OWNERS = new ConcurrentHashMap<>();
@@ -23,7 +22,6 @@ final class DocumentsTestPorts {
     private DocumentsTestPorts() {}
 
     @Alternative
-    @Priority(1)
     @ApplicationScoped
     public static class Policy implements DocumentPolicyPort {
         private final JsonNode root = read();
@@ -51,7 +49,6 @@ final class DocumentsTestPorts {
     }
 
     @Alternative
-    @Priority(1)
     @ApplicationScoped
     public static class Cases implements DocumentCasePort {
         @Override
@@ -77,7 +74,6 @@ final class DocumentsTestPorts {
     }
 
     @Alternative
-    @Priority(1)
     @ApplicationScoped
     public static class Clock implements DocumentClock {
         @Override
