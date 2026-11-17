@@ -6125,7 +6125,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-435",
-      "observed_at": "2026-11-17T19:53:13Z",
+      "observed_at": "2026-11-17T20:30:46Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Call the separately hosted API with bearer authentication",
@@ -6137,22 +6137,22 @@
           "id": "ac1-https-cors-bearer",
           "status": "blocked",
           "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
-          "observed_at": "2026-11-16T10:50:24Z",
-          "evidence": "Local two-origin HTTPS CORS/bearer/secret-scan proof PASS (docs/gcsp/evidence/fucq435); actual hosted Render origins and OIDC registration do not exist yet"
+          "observed_at": "2026-11-17T20:30:01Z",
+          "evidence": "17 Nov re-proof ba7ed3d27 on dev composition + PostgreSQL: scenarios a,d,e,f PASS. Hosted origins and real OIDC client are external (Gary)"
         },
         {
           "id": "ac2-failure-recovery",
           "status": "complete",
           "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
-          "observed_at": "2026-11-16T10:50:23Z",
-          "evidence": "Lead re-ran fucq435-cross-origin-proof on 35c96e64b: typed 503/403, expiry re-sign-in and recovery notice, 0 mutating requests; orders.actions spec passed"
+          "observed_at": "2026-11-17T20:30:01Z",
+          "evidence": "17 Nov re-proof ba7ed3d27, lead-reviewed: 403 denied, 409 stale-version, 503 unavailable and recovery, expiry to sign-in and return with notice, 0 POST /manual/order"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Story integration, validation and result",
-          "observed_at": "2026-11-16T10:50:32Z",
-          "evidence": "Local integration done; hosted-origin AC1 proof outstanding"
+          "observed_at": "2026-11-17T20:30:46Z",
+          "evidence": "Result partial 17 Nov: local integration re-proven; hosted-origin AC1 run outstanding"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -6854,7 +6854,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-456",
-      "observed_at": "2026-11-17T19:53:15Z",
+      "observed_at": "2026-11-17T20:32:05Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -6872,11 +6872,31 @@
           "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence"
         },
         {
-          "evidence": "story-lead: 54 module tests pass at 0dd710eb on native PG17; two-JVM running-app reset isolation and restart proof; EXPLAIN scope; hosted dev awaits Gary",
+          "evidence": "Result block at c709769e; scoped 172/0/0; callers 1136 run, 6 env errors (gcsp_test_dev name); design doc re-proof and alignment",
           "id": "s3-integration",
-          "observed_at": "2026-11-13T22:40:05Z",
+          "observed_at": "2026-11-17T20:32:05Z",
           "status": "complete",
-          "title": "Story-level validation, alignment record and result"
+          "title": "Story-level validation on today's base, alignment record and result"
+        },
+        {
+          "id": "s4-dev-composition-journey",
+          "status": "complete",
+          "title": "Dev-composition QuarkusTest: concurrent writers, presenter reset, isolation and non-reset refusal",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "ccc488673 reviewed by lead; 9 journey tests pass in scoped 172/0/0 at c709769e on PG17"
+        },
+        {
+          "id": "s5-restart-proof",
+          "status": "complete",
+          "title": "Running-app stop/start proof: state, receipts, authority, uncertain resend, reset isolation",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "a0f5f56a reviewed by lead; built-jar proof 7/7 PASS at c709769e, receipt docs/gcsp/evidence/fucq456/restart-proof-2026-11-17.json"
+        },
+        {
+          "id": "s7-hosted-dev",
+          "status": "blocked",
+          "title": "Hosted Render dev connection, restart and reset-isolation evidence (Gary's environment)",
+          "observed_at": "2026-11-17T19:18:12Z"
         }
       ],
       "status": "In Progress",
@@ -7517,63 +7537,6 @@
           "title": "Reopened: base merge, scoped story test set and Result",
           "observed_at": "2026-11-17T16:24:53Z",
           "evidence": "lead: merged origin/gcsp-poc-dev at 0df8441d9; scoped set 123/0/0/0 and Buddy ordering 3/0/0/0 on PG17 :55536; Result written"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-469",
-      "observed_at": "2026-11-17T20:03:28Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Capture and deliver notifications through the selected transport",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
-      "slices": [
-        {
-          "id": "core",
-          "status": "complete",
-          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
-          "observed_at": "2026-11-14T01:00:19Z",
-          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
-        },
-        {
-          "id": "http",
-          "status": "complete",
-          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
-          "observed_at": "2026-11-14T02:01:23Z",
-          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
-        },
-        {
-          "id": "brevo",
-          "status": "complete",
-          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
-          "observed_at": "2026-11-14T02:12:01Z",
-          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
-          "observed_at": "2026-11-14T02:17:35Z",
-          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
-        },
-        {
-          "id": "reopen-journey",
-          "status": "complete",
-          "title": "Started-app journey: real offer intent, Brevo loopback delivery with retry, emailed link ownership",
-          "observed_at": "2026-11-17T20:03:28Z",
-          "evidence": "4041e4fdc+ea81f929f lead review: diff read; NotificationJourneyHttpTest 2/2 started app, RS256 JWTs, native PG17, Brevo loopback stub; dispatcher run-clock defect confirmed and fixed"
-        },
-        {
-          "id": "reopen-integration",
-          "status": "complete",
-          "title": "Reopen: merge base, scoped story test set, result block",
-          "observed_at": "2026-11-17T20:03:28Z",
-          "evidence": "merged base 96816d1b8; scoped set 170 run, all pass except base-known PresenterFaultsJourneyHttpTest handler order (fails on base too); result block"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -9760,10 +9723,67 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-469",
+      "observed_at": "2026-11-17T20:08:44Z",
+      "original_status": "In Review",
+      "status": "In Review",
+      "title": "Capture and deliver notifications through the selected transport",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
+          "observed_at": "2026-11-14T01:00:19Z",
+          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
+          "observed_at": "2026-11-14T02:01:23Z",
+          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
+        },
+        {
+          "id": "brevo",
+          "status": "complete",
+          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
+          "observed_at": "2026-11-14T02:12:01Z",
+          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
+          "observed_at": "2026-11-14T02:17:35Z",
+          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
+        },
+        {
+          "id": "reopen-journey",
+          "status": "complete",
+          "title": "Started-app journey: real offer intent, Brevo loopback delivery with retry, emailed link ownership",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "4041e4fdc+ea81f929f lead review: diff read; NotificationJourneyHttpTest 2/2 started app, RS256 JWTs, native PG17, Brevo loopback stub; dispatcher run-clock defect confirmed and fixed"
+        },
+        {
+          "id": "reopen-integration",
+          "status": "complete",
+          "title": "Reopen: merge base, scoped story test set, result block",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "merged base 96816d1b8; scoped set 170 run, all pass except base-known PresenterFaultsJourneyHttpTest handler order (fails on base too); result block"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T20:07:52.303409+00:00",
+      "native_observed_at": "2026-11-17T20:07:52.303409+00:00"
+    },
+    {
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T19:55:04Z",
+      "observed_at": "2026-11-17T20:23:37Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9791,8 +9811,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-14T02:26:19.233839+00:00",
-          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md."
+          "observed_at": "2026-11-17T20:23:37.431821+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN."
         }
       ],
       "status": "In Progress",
@@ -9870,13 +9890,31 @@
           "role": "source readiness",
           "source": "claude-assist-fucq441-current-editor-readiness-2026-11-17-33",
           "observed_at": "2026-11-17T19:50:23Z",
-          "expires_at": "2026-11-17T20:05:23Z",
-          "status": "Source-read started per fresh ACK; required contracts and current freeze; no product writes/runtime; no acceptance inference"
+          "expires_at": "2026-11-17T20:04:54Z",
+          "status": "returned; source readiness only, no runtime/tests/acceptance"
+        },
+        {
+          "name": "Same retained Claude helper successor",
+          "harness": "claude-code",
+          "role": "test source implementer",
+          "source": "claude-assist-fucq441-java-editor-goldens-2026-11-17-34",
+          "observed_at": "2026-11-17T20:07:50Z",
+          "expires_at": "2026-11-17T20:12:10Z",
+          "status": "returned; static PASS and parent native generation/compare PASS; no originalAC completion"
+        },
+        {
+          "name": "Same retained Claude helper successor",
+          "harness": "claude-code",
+          "role": "consumer parity test source implementer",
+          "source": "claude-assist-fucq441-angular-producer-parity-2026-11-17-35",
+          "observed_at": "2026-11-17T20:18:18Z",
+          "expires_at": "2026-11-17T20:33:18+00:00",
+          "status": "Actual source-start ACK; one Angular parity spec, no runtime/acceptance"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "note": "Prior editor context/version source obstacle resolved by integrated BriefService fields147-151. Same retained helper successor ACKed19:50:23Z and started bounded source readiness; no runtime/product writes. Both originalAC remain open."
+      "note": "Producer34 reviewed and one nativePG17 generation plus normal exact comparison eachPASS;12real fixture files, teardown/pins independently audited. Helper35 source ACK20:18:18UTC; actual Angular consumer and connected originalAC remainOPEN."
     }
   ],
   "version": 1

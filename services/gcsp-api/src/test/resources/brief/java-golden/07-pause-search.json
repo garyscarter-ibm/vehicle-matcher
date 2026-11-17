@@ -1,0 +1,38 @@
+{
+  "file" : "07-pause-search.json",
+  "step" : "pause-search",
+  "method" : "POST",
+  "path" : "/brief/pause-search",
+  "request" : {
+    "commandId" : "golden-pause-1",
+    "expectedBriefVersion" : 1,
+    "expectedDraftVersion" : 2
+  },
+  "status" : 200,
+  "body" : {
+    "status" : "ok",
+    "value" : {
+      "briefVersion" : 2,
+      "draftVersion" : 2,
+      "operation" : "paused",
+      "buddy" : {
+        "state" : "disengaged",
+        "reason" : "paused",
+        "permissionVersion" : 2,
+        "minimumCategories" : 3,
+        "considered" : 3,
+        "remaining" : 0,
+        "sameAgain" : false,
+        "canEngage" : true
+      },
+      "event" : {
+        "eventType" : "brief-changed",
+        "operation" : "paused",
+        "employeeId" : "emp-1",
+        "briefVersion" : 2,
+        "previousBriefVersion" : 1,
+        "occurredAt" : "2026-11-13T10:00:00Z"
+      }
+    }
+  }
+}
