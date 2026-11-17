@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T11:23:32Z",
+      "observed_at": "2026-11-17T11:34:59Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:53:54.947Z",
-      "note": "Generatedclaim/JWT→actualselectedremoteorderingACK integrated/pushed23eca515d;1pass/review29PASS/auditclear. Next originalAC1census/handover22 ACKexecuting 2026-11-17T11:22:07Z. BothoriginalACopen/nativeToDo preserved.",
+      "note": "Connected ordering21 integrated23eca515d,1nativepass/review29/auditclear retained. Census22 terminalfc244cc06 failed factual source review; exact3doc correction23 queued; execution unverified. BothoriginalACopen/nativeToDo/all5slicestates preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9125,8 +9125,17 @@
           "role": "OriginalAC1 uniqueport/startup/demo-preparation census and required integration handover",
           "source": "claude-assist-fucq481-composition-census-2026-11-17-22",
           "observed_at": "2026-11-17T11:22:07Z",
-          "expires_at": "2026-11-17T11:37:07+00:00",
-          "status": "Matching execution ACK 2026-11-17T11:22:07Z; exact3documentationpaths; no runtime/originalAC completion."
+          "expires_at": "2026-11-17T11:29:30Z",
+          "status": "Returned exact3docs fc244cc06 at11:29:30; parent hashes/tree/API/scratch auditclear. Independent review30 found incorrect census totals, future observations and overbroad selector/demo statements; correction23 allocated. Not integrated; no runtime/ACcompletion."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "OriginalAC1 census factual corrections after independent review30",
+          "source": "claude-assist-fucq481-composition-census-correction-2026-11-17-23",
+          "observed_at": "2026-11-17T11:34:11.390836+00:00",
+          "expires_at": "2026-11-17T11:34:11.390836+00:00",
+          "status": "Queued; execution unverified; between-assignment handover required; exact3docs only; no runtime/originalAC completion."
         }
       ]
     }
