@@ -19,18 +19,18 @@ import java.util.List;
 import org.postgresql.ds.PGSimpleDataSource;
 
 /** Source rows and the tranche plan for the Buddy journeys: three engaged employees and unreleased exact cars. */
-final class BuddyJourneySeed {
+public final class BuddyJourneySeed {
 
-    static final String ENV = "journey-env";
-    static final String RUN = "run-1";
-    static final String POLICY = "gcsp-policy-v1";
-    static final String CAR_1 = "00000000-0000-4000-8000-000000000001";
-    static final String CAR_2 = "00000000-0000-4000-8000-000000000002";
-    static final String CAR_3 = "00000000-0000-4000-8000-000000000003";
+    public static final String ENV = "journey-env";
+    public static final String RUN = "run-1";
+    public static final String POLICY = "gcsp-policy-v1";
+    public static final String CAR_1 = "00000000-0000-4000-8000-000000000001";
+    public static final String CAR_2 = "00000000-0000-4000-8000-000000000002";
+    public static final String CAR_3 = "00000000-0000-4000-8000-000000000003";
     /** Renewal due order is paula, carla, bruno: the policy ranks the earliest renewal first. */
-    static final String PAULA = "employee-paula";
-    static final String CARLA = "employee-carla";
-    static final String BRUNO = "employee-bruno";
+    public static final String PAULA = "employee-paula";
+    public static final String CARLA = "employee-carla";
+    public static final String BRUNO = "employee-bruno";
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final ZoneId LONDON = ZoneId.of("Europe/London");
 

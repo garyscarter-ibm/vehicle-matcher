@@ -181,7 +181,9 @@ final class BuddyOfferConversion implements SelectionConversionPort {
     @Override
     public Conversion convert(Tx tx, OrderingScope scope, ConversionRequest q) throws SQLException {
         Principal p = ask.principal();
-        Instant now = q.now();
+        // The offers clock, not ordering's: holds and offers are stamped on the run clock.
+        Instant now = decisions.clock().now(scope.context());
+        if (now == null) return unavailable();
         Locked l = decisions.lock(tx, p, ask.offerId(), ask.expectedOfferVersion(), q.expectedHoldVersion(),
                 q.expectedStockVersion(), now, verdict);
         if (l == null) return new Refusal(verdict.outcome.code());
