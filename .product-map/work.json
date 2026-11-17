@@ -7271,7 +7271,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-17T13:49:21Z",
+      "observed_at": "2026-11-17T14:29:00Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7302,14 +7302,16 @@
         },
         {
           "id": "s4-demo-provider-policy",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Demo supply provider with confirmed-supply windows, PolicyService release policy binding",
-          "observed_at": "2026-11-17T13:49:21Z"
+          "observed_at": "2026-11-17T14:28:59Z",
+          "evidence": "lead review of b1d650bf1: demo provider + confirmed-supply lookup, PolicyReleaseAdapter bound by default; Node parity 7 cases; DemoSupplyProviderTest 5/5, SupplySelectionTest 7/7 rerun by lead; supply+presenter Quarkus 74 run, 1 failure also on base"
         },
         {
           "id": "s5-journey-proof",
-          "status": "not-started",
-          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs"
+          "status": "in-progress",
+          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs",
+          "observed_at": "2026-11-17T14:29:00Z"
         },
         {
           "id": "s6-integration-r2",
