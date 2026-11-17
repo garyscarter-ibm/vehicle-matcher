@@ -36,9 +36,6 @@ final class BuddyBriefPorts implements BriefPolicyPort, BriefAccountPort, BriefO
             if (!found.ok() || !policyVersion.equals(found.policyVersion())) return Optional.empty();
             entries.put(key, found.value().deepCopy());
         }
-        // Node's comparison confirms the stated brief with no Account minimum gate; one category is the smallest the rules allow.
-        ((com.fasterxml.jackson.databind.node.ObjectNode) entries.get(BriefAssumptions.ACCOUNT_PREFERENCES).get("value"))
-                .put("minimumCategories", 1);
         return Optional.of(new BriefAssumptions(policyVersion, entries));
     }
 

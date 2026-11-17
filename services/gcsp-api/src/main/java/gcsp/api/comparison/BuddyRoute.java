@@ -246,7 +246,7 @@ final class BuddyRoute {
         ObjectNode confirm = JSON.objectNode();
         confirm.put("commandId", "buddy:" + id + ":confirm").put("expectedBriefVersion", 0).put("expectedDraftVersion", 1);
         confirm.putObject("consent").put("search", true).put("hold", true);
-        must(brief.confirm(p.scope, confirm), "brief-confirm");
+        must(brief.confirmWithoutGate(p.scope, confirm), "brief-confirm");
         p.briefVersion = 1;
     }
 
