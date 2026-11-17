@@ -9963,6 +9963,62 @@
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "note": "Producer34 selected generation/normal compare eachPASS; consumer35 selected8/8PASS; component/saveFull37 parent-corrected selected6/6PASS and independent input/resource audit. Connected originalAC remainOPEN. Retained successor38 source ACK 2026-11-17T20:54:14Z; no duplicate watcher or runtime."
+    },
+    {
+      "id": "FUCQ-518",
+      "title": "Angular manual review shows Review unavailable: Java claim hold.mode is local, Angular expects new or replacement",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-518",
+      "branch": "bug/FUCQ-518-519",
+      "unsliced": false,
+      "observed_at": "2026-11-17T21:30:28Z",
+      "slices": [
+        {
+          "id": "hold-journey-mode",
+          "status": "complete",
+          "title": "Java claim hold.mode carries the pinned draft journey mode",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: ManualClaimHoldModeHttpTest 2/2 (OIDC RS256, PG17, no alternatives); Angular isManualClaim/isManualReviewDetails/manualDetailsMatchClaim true on 6 Java payloads; reviewed by lead"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped claims/manual/offers set and started-app proof",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: claims+offers packages 296/296 on 084c8e531; wiring/startup/caller journeys 72/76, 4 account failures also on base 30c38b126; merged-head re-proof 44/44"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-519",
+      "title": "Emailed offer links show Offer link incomplete: Java offers routes refuse the runId query with 400",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-519",
+      "branch": "bug/FUCQ-518-519",
+      "unsliced": false,
+      "observed_at": "2026-11-17T21:30:28Z",
+      "slices": [
+        {
+          "id": "offer-runid-query",
+          "status": "complete",
+          "title": "Java offer read and decision-reasons accept one runId equal to the active run",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: OfferRunIdQueryHttpTest 1/1 (active runId 200, other run 409 stale-run, others 400, unknown 404); reviewed by lead"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped claims/manual/offers set and started-app proof",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: claims+offers packages 296/296 on 084c8e531; wiring/startup/caller journeys 72/76, 4 account failures also on base 30c38b126; merged-head re-proof 44/44"
+        }
+      ]
     }
   ],
   "version": 1
