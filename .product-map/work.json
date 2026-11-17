@@ -7062,7 +7062,7 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-14T01:10:39Z",
+      "observed_at": "2026-11-17T17:24:08Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
@@ -7097,6 +7097,24 @@
           "title": "Story-level validation, merge, migration number and result",
           "observed_at": "2026-11-14T01:10:39Z",
           "evidence": "82faf72e merged with origin/gcsp-poc-dev; clean verify 219/0/0/0 on native PG17, Flyway 1,2,460.1; result block committed"
+        },
+        {
+          "id": "r2-ports",
+          "status": "complete",
+          "title": "Reopened: real offer port over buddy_offers, editor versions.context/clock and known facts, legacy pause/resume routes",
+          "observed_at": "2026-11-17T17:24:08Z",
+          "evidence": "ae4c4d777 reviewed by story-lead: PostgresBriefOffers over buddy_offers bound, editor versions.context/clock and knownFacts per Node, /pause and /resume; brief+adapter 117/0 (implementer), lead rerun 58/0 native PG17"
+        },
+        {
+          "id": "r2-journey",
+          "status": "in-progress",
+          "title": "Reopened: started-app OIDC journey over documented composition with restart (AC1, AC2)",
+          "observed_at": "2026-11-17T17:24:08Z"
+        },
+        {
+          "id": "r2-integration",
+          "status": "not-started",
+          "title": "Reopened: merge base, scoped set, result block"
         }
       ]
     },
