@@ -7554,7 +7554,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-17T14:41:36Z",
+      "observed_at": "2026-11-17T14:49:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7620,9 +7620,10 @@
         },
         {
           "id": "s9-integration-r2",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: base merge, Java verify and result",
-          "observed_at": "2026-11-17T14:41:36Z"
+          "observed_at": "2026-11-17T14:49:05Z",
+          "evidence": "Lead-run scoped set on merged head e8daef648: 216 run, 0 failures (appointments, approvals, documents, wiring/startup, HandoverJourneyHttpTest); base merged, Result written"
         }
       ]
     },
