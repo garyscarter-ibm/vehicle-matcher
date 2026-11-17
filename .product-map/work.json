@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-17T02:13:52Z",
+      "observed_at": "2026-11-17T02:30:08Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8385,15 +8385,15 @@
           "id": "claim-review",
           "status": "in-progress",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-17T02:13:52Z",
-          "evidence": "17Nov tested914dc7a: exact core78/78 PASS; original17-file reviewPASS plus reviewed13B optional-unit fix. Attempts01-05 failures retained. Original actual Java/PostgreSQL/OIDC acceptance remains open; native Story In Progress."
+          "observed_at": "2026-11-17T02:30:08Z",
+          "evidence": "17Nov same249 inputs: banked06 core78/78 PASS, original17 reviewPASS plus reviewed13B unit fix.07 tested7a673a metadata-only head; no core/UI rerun. Attempts01-07 failures retained. Original Java/PostgreSQL/OIDC acceptance open; native In Progress."
         },
         {
           "id": "manual-screens",
           "status": "in-progress",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-17T02:13:52Z",
-          "evidence": "17Nov tested914dc7a: UI32/32 PASS. Caller14 has no valid JSON/native result after RSS1,392,345,088B exceeded1,342,177,280B; checkerUNRUN. Total110 valid passes; integration not ready. Original affected rendered/connected proof open."
+          "observed_at": "2026-11-17T02:30:08Z",
+          "evidence": "17Nov banked UI32/32 PASS;110 total.06 caller RSS breach;07 same-input caller heap448 V8OOM native-6,0tests/noJSON, checkerUNRUN.14 unverified; integration not ready.07 grants/deadlines/teardown parent-audited. Original rendered/connected proof open."
         },
         {
           "id": "connected-proof",

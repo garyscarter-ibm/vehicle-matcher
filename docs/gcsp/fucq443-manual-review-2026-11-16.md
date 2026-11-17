@@ -30,12 +30,16 @@ its actual public state without inventing frozen contact/return readback or appr
 Shared kit, authentication, router/stock integration, dependencies/build settings,
 Java and Used Cars remain outside the allocated product edits.
 
-## Current evidence and remaining work — terminal attempt06
+## Current evidence and remaining work — terminal attempt07
 
-The tested source is `914dc7a7390aac5386c93c9e5fd042ceefc7dbf4`, tree
+Attempt06 tested source is `914dc7a7390aac5386c93c9e5fd042ceefc7dbf4`, tree
 `70494c75364948c062b6fea087a298d0a5648518`, parent
 `9fcf057e62b65bf1e4c07e988f72c362e81749ed`. The 249-input freeze contains
-2,863,149 bytes. Subsequent Story/doc/map bookkeeping does not alter those inputs.
+2,863,149 bytes. Attempt07 tested HEAD
+`7a673a902071ef709bc35f1e4de6da37e77e4533`, tree
+`3049c14b5643631b43d2fe7a6467edb656eb943a`, parent 914dc7a. All 249 input
+hashes and source bytes match06; the intervening delta is only prior Story/doc/map
+metadata. Current bookkeeping also does not alter those inputs.
 
 Maximus the Horse 3 independently reviewed all 17 allocated product files:
 **PASS — no blocking or major issues**. Original sorted path-to-SHA256 map:
@@ -61,11 +65,32 @@ cleanup errors are empty. Disk444,688,608 B and inclusive1,827,523,040 B stayed 
 their respective 805,306,368 B and 2,147,483,648 B grants. The selected sequence did
 not pass. The known inherited checker failure is historical and was not observed
 again in06 because the checker never ran. No later assertions or caller passes are
-inferred, and no retry/automatic07 was executed.
+inferred. Those 110 passes remain banked and were not rerun in07.
+
+Attempt07 was separately released at **2026-11-17T02:23:11Z** for the remaining
+caller 14 then checker, with only global heap 512→448 changed in the same finite
+runner. SAME Goopy ran caller once. Native exit **-6** is captured at
+`receipt.chunks[-1].native_rc`; outer runner 1 and strict false. The log records
+`FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory`
+near 443–446 MiB, before any test result. A secondary esbuild deadlock followed;
+its independent causality is not established. Executed tests 0; JSON report absent;
+no actual case or skip identities. Checker UNRUN on first failure. Total valid
+credit remains 110 and the 14 caller cases remain unverified.
+
+Attempt07 sampled disk 434,861,760 B, RSS 830,881,792 B and inclusive 1,265,727,168 B and
+all dual-clock deadlines passed. Supervisor interval 02:23:42.882218–02:24:45.508713Z
+(62.626674s); native 02:24:04.338281–02:24:13.369380Z. Cleanup/sampler errors empty.
+Parent audit at 02:25:05.098815Z verified 249 input hashes/physical identities,
+head/tree/clean and Node; all 216 historical process identities, group 16171,
+token processes, exact owned roots and canonical reservation were absent.
+Borrowed hashes/metadata and Node remained unchanged; parent independently rehashed
+Node, not every borrowed dependency. These are sampled observations, without a
+continuous containment claim. The heap 448 feasibility estimate was a proposal;
+actual attempt07 heap exhaustion does not verify a passing resource configuration.
 
 All three chunks retain exact native commands, case identities where produced,
 source and physical input metadata, resource samples and raw outcomes. Parent
-independent audits verified249 current source pins/head/tree and original process
+independent audits verified 249 current source pins/head/tree and original process
 identities (core214/UI195/caller196), owned groups/tokens/exact scratch and output
 roots/canonical reservation absence. The worker verified borrowed 23,030-file/
 243,008,674 B hashes and metadata and Node pins unchanged; parent independently
@@ -76,7 +101,8 @@ not prove continuous containment.
 The finite contract stayed disk 768 MiB/RSS 1280 MiB/inclusive 2 GiB, reserve 5 GiB,
 heap 512 MiB, serial TS0, one worker, setup 60/work 480/total 600 seconds on realtime
 and monotonic clocks, cleanup 120 and combined outputs 2 MiB. Only the explicitly
-released06 sequence ran, stopping on its first failure.
+released06 sequence and separately released07 caller ran, each stopping on its
+first failure; attempt07 used heap 448 with all other runner bytes identical.
 
 | Retained review-details attempt | Actual pre-test/terminal outcome |
 | --- | --- |
@@ -86,8 +112,9 @@ released06 sequence ran, stopping on its first failure.
 | 04 | serial TS0, native -6, V8 heap 384 exhaustion then esbuild deadlock; no tests |
 | 05 | heap 512, native 1/actual TS2345 optional-unit nullability; no tests |
 | 06 | reviewed optional-unit correction; core 78/UI 32 pass; caller RSS failure; checkerUNRUN |
+| 07 | same 249 input bytes, heap 448; native -6 V8 heap OOM, no JSON/tests; checkerUNRUN |
 
-Attempts01–05 artifacts/final reports are unchanged. The06 preparation report
+Attempts01–06 artifacts/final reports are unchanged. The06 preparation report
 `.claude/results/fucq443-unit-correction-20261117-0152.json` remains separate and
 immutable; it is preparation evidence, not a runtime result. Terminal06 result:
 `.claude/results/fucq443-finite06-20261117-0152.json`.
@@ -95,6 +122,13 @@ Receipts are primary-checkout
 `.claude/test-runs/fucq443/review-details-0152-attempt06/runtime-{a-core,b-ui,c-caller}/receipt.json`.
 Independent parent audits are
 `.claude/fucq443-review-details-0152-attempt06-{a-core,b-ui,c-caller}-parent-audit-0152.json`.
+Attempt07 preparation remains separate and immutable:
+`.claude/results/fucq443-caller448-preparation-20261117-0152.json`.
+Its actual terminal result is
+`.claude/results/fucq443-finite07-20261117-0152.json`, with receipt under
+`.claude/test-runs/fucq443/review-details-0152-attempt07/runtime-c-caller/receipt.json`
+and independent audit
+`.claude/fucq443-review-details-0152-attempt07-c-caller-parent-audit-0216.json`.
 The final result retains full receipt/log/native-report hashes and all earlier
 report references; no earlier failure or causal hypothesis is rewritten as success.
 
