@@ -7888,7 +7888,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-17T11:22:20Z",
+      "observed_at": "2026-11-17T11:50:23Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7933,8 +7933,9 @@
         },
         {
           "id": "r2-handlers",
-          "status": "not-started",
-          "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock"
+          "status": "in-progress",
+          "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock",
+          "observed_at": "2026-11-17T11:50:23Z"
         },
         {
           "id": "r2-run-scope",

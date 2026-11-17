@@ -14,6 +14,7 @@ import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /** Consumes allocation triggers in stream order on a tick; the buddy-allocation stage is not a startup stage. */
 @ApplicationScoped
@@ -32,6 +33,9 @@ public class BuddyAllocationTickHandler implements TickHandler {
     @Inject
     Instance<AgroalDataSource> sources;
 
+    @ConfigProperty(name = "gcsp.allocation.candidates.provider", defaultValue = "none")
+    String candidates;
+
     @Override
     public String handlerId() {
         return ID;
@@ -44,7 +48,8 @@ public class BuddyAllocationTickHandler implements TickHandler {
 
     @Override
     public boolean enabled() {
-        return persistence.active();
+        // Without a candidates provider every tick would interrupt here before outbox-dispatch.
+        return persistence.active() && candidates != null && !candidates.isBlank() && !"none".equalsIgnoreCase(candidates.trim());
     }
 
     @Override
