@@ -35,7 +35,9 @@ class OperationHttpTransportTest {
 
     private record Seen(String method, String path, String query, Map<String, String> headers, String body) {}
 
-    private record Reply(int status, String body, long delayMillis) {}
+    private record Reply(int status, String body, long delayMillis, long bodyDelayMillis) {
+        Reply(int status, String body, long delayMillis) { this(status, body, delayMillis, 0); }
+    }
 
     private final List<Seen> seen = new CopyOnWriteArrayList<>();
     private final ArrayDeque<Reply> script = new ArrayDeque<>();
@@ -55,7 +57,16 @@ class OperationHttpTransportTest {
                 if (r.delayMillis() > 0) Thread.sleep(r.delayMillis());
                 byte[] out = r.body().getBytes(StandardCharsets.UTF_8);
                 exchange.sendResponseHeaders(r.status(), out.length == 0 ? -1 : out.length);
-                if (out.length > 0) exchange.getResponseBody().write(out);
+                if (out.length > 0) {
+                    if (r.bodyDelayMillis() > 0) {
+                        exchange.getResponseBody().write(out, 0, 1);
+                        exchange.getResponseBody().flush();
+                        Thread.sleep(r.bodyDelayMillis());
+                        exchange.getResponseBody().write(out, 1, out.length - 1);
+                    } else {
+                        exchange.getResponseBody().write(out);
+                    }
+                }
             } catch (InterruptedException | IOException e) {
                 // the client gave up
             } finally {
@@ -200,6 +211,16 @@ class OperationHttpTransportTest {
         script.add(new Reply(200, ack("confirmed", "op-1", "run-1", "order-1"), 1500));
         var t = transport(Optional.of(TOKEN), Duration.ofMillis(300));
         assertEquals("remote-timeout", code(t, true));
+        assertEquals(1, seen.size());
+    }
+
+    @Test
+    void aStalledBodyTimesOutAfterHeadersAndIsNeverRetried() {
+        script.add(new Reply(200, ack("confirmed", "op-1", "run-1", "order-1"), 0, 1500));
+        var t = transport(Optional.of(TOKEN), Duration.ofMillis(300));
+        long started = System.nanoTime();
+        assertEquals("remote-timeout", code(t, true));
+        assertTrue(Duration.ofNanos(System.nanoTime() - started).toMillis() < 1200);
         assertEquals(1, seen.size());
     }
 

@@ -21,7 +21,8 @@ This is a GCSP substitute transport, **not a BMW protocol**. It completes neithe
 - **Execute:**
   - One `POST` of the operation JSON to the execute URL, with `Content-Type` and `Accept` set to `application/json`.
   - `Idempotency-Key` carries the operationId, and `Authorization: Bearer` is sent only when a token is set.
-  - It is never retried.
+  - It is never retried. The configured deadline covers response headers and body; timeout cancels the original exchange.
+  - A bounded subscriber retains at most 64 KiB plus one sentinel byte and cancels oversized responses without draining them.
 - **Reconcile:**
   - A `GET` to the reconcile URL with `?operationId=..&runId=..&orderUuid=..`: the same ids, in that order, UTF-8 percent-encoded.
   - It never sends the operation, so it can never execute it.
@@ -30,7 +31,7 @@ This is a GCSP substitute transport, **not a BMW protocol**. It completes neithe
   - The three ids must equal the ids sent.
   - Duplicate keys and trailing content are malformed.
 - **Errors:** everything else throws `RemoteOperationException`. Its message is only the code, with no URL, token or upstream body. The codes are:
-  - `remote-operation-invalid`: blank or non-visible-ASCII ids, or a non-object body, refused before any request.
+  - `remote-operation-invalid`: blank ids, a non-visible-ASCII operationId (the header value), or a non-object body, refused before any request.
   - `remote-timeout`
   - `remote-transport-failed`
   - `remote-http-status`: any non-200, including a 404 with a not-found body and an unfollowed redirect.
@@ -62,7 +63,8 @@ This is a GCSP substitute transport, **not a BMW protocol**. It completes neithe
 - Neither `render.gcsp.yaml` nor `render.yaml` sets these keys, so deployed behaviour is unchanged until someone sets them.
 
 ## Remaining
-- **Tests:** 52 tests are written but have not been run: 12 transport, 6 selector, 15 claims adapter and 19 Buddy adapter. Only `RemoteOperationProvidersTest` boots Quarkus, in the default profile, with no database. The others are plain JUnit against a loopback `HttpServer` with port 0.
+- **Tests pending execution:** 54 authored cases: 13 transport, 7 selector, 15 claims adapter and 19 Buddy adapter. The remote selector profile boots Quarkus and checks both injected remote modes without a reachable provider. Two existing default-profile neighbours supply 11 regression cases. A direct configured-instance `@PostConstruct` check covers refusal of unknown/missing settings; a full invalid-configuration application launch has not been run. The transport tests include headers plus partial body followed by a stall. The other adapter tests use loopback `HttpServer` on port 0.
+- **Independent review:** Mater 2 identified the streamed-body timeout defect and missing remote CDI coverage. Codex applied the bounded-subscriber/deadline and test-profile corrections inside this allocation; review and execution of the corrected checkpoint are pending.
 - **AC1 is still open:**
   - The direct `employee_account_records` SQL readers bypass the account port: `allocation/Prepare.java:100`, `allocation/BuddyRemoteLifecycle.java:315` and `account/ManualDrafts.java:113`.
   - The other ports in `fucq481-provider-inventory-2026-11-17.json` keep their recorded gaps.

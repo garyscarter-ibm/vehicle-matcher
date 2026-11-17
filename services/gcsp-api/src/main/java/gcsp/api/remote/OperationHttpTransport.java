@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -15,11 +15,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Flow;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * The GCSP remote-operation substitute (FUCQ-481), not a BMW protocol: execute POSTs the operation, reconcile GETs a
@@ -169,27 +176,87 @@ public final class OperationHttpTransport {
     }
 
     private Reply send(HttpRequest.Builder builder, Ids ids) throws RemoteOperationException {
-        HttpResponse<InputStream> response;
+        CompletableFuture<HttpResponse<byte[]>> pending = null;
         try {
-            response = http.send(builder.build(), HttpResponse.BodyHandlers.ofInputStream());
-        } catch (HttpTimeoutException e) {
+            pending = http.sendAsync(builder.build(), info -> new BoundedBody(info.statusCode()));
+            // The subscriber completes only at EOF (or the size limit), so this deadline includes a stalled body.
+            HttpResponse<byte[]> response = pending.get(settings.timeout().toNanos(), TimeUnit.NANOSECONDS);
+            // A 404 is not authoritative not-found: only a parsed, matching body is.
+            if (response.statusCode() != 200) throw new RemoteOperationException("remote-http-status");
+            if (response.body().length > MAX_BODY) throw new RemoteOperationException("remote-ack-malformed");
+            return parse(response.body(), ids);
+        } catch (TimeoutException e) {
+            if (pending != null) pending.cancel(true);
             throw new RemoteOperationException("remote-timeout");
         } catch (InterruptedException e) {
+            if (pending != null) pending.cancel(true);
             Thread.currentThread().interrupt();
             throw new RemoteOperationException("remote-interrupted");
-        } catch (IOException | RuntimeException e) {
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                if (cause instanceof HttpTimeoutException) throw new RemoteOperationException("remote-timeout");
+                cause = cause.getCause();
+            }
+            throw new RemoteOperationException("remote-transport-failed");
+        } catch (RuntimeException e) {
+            if (pending != null) pending.cancel(true);
             throw new RemoteOperationException("remote-transport-failed");
         }
-        byte[] raw;
-        try (InputStream in = response.body()) {
-            // A 404 is not an authoritative not-found: only a parsed, matching body is.
-            if (response.statusCode() != 200) throw new RemoteOperationException("remote-http-status");
-            raw = in.readNBytes(MAX_BODY + 1);
-        } catch (IOException e) {
-            throw new RemoteOperationException("remote-transport-failed");
+    }
+
+    /** Captures at most MAX_BODY + 1 bytes; cancels without draining non-200 or oversized responses. */
+    private static final class BoundedBody implements HttpResponse.BodySubscriber<byte[]> {
+        private final CompletableFuture<byte[]> body = new CompletableFuture<>();
+        private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        private final int status;
+        private Flow.Subscription subscription;
+
+        BoundedBody(int status) {
+            this.status = status;
         }
-        if (raw.length > MAX_BODY) throw new RemoteOperationException("remote-ack-malformed");
-        return parse(raw, ids);
+
+        @Override
+        public CompletionStage<byte[]> getBody() {
+            return body;
+        }
+
+        @Override
+        public void onSubscribe(Flow.Subscription incoming) {
+            subscription = incoming;
+            if (status != 200) {
+                incoming.cancel();
+                body.complete(new byte[0]);
+            } else {
+                incoming.request(1);
+            }
+        }
+
+        @Override
+        public void onNext(List<ByteBuffer> buffers) {
+            for (ByteBuffer buffer : buffers) {
+                int count = Math.min(buffer.remaining(), MAX_BODY + 1 - bytes.size());
+                byte[] chunk = new byte[count];
+                buffer.get(chunk);
+                bytes.writeBytes(chunk);
+                if (bytes.size() > MAX_BODY) {
+                    subscription.cancel();
+                    body.complete(bytes.toByteArray());
+                    return;
+                }
+            }
+            subscription.request(1);
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            body.completeExceptionally(error);
+        }
+
+        @Override
+        public void onComplete() {
+            body.complete(bytes.toByteArray());
+        }
     }
 
     static Reply parse(byte[] raw, Ids ids) throws RemoteOperationException {

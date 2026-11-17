@@ -14,16 +14,20 @@ import gcsp.api.claims.ClaimStockPort;
 import gcsp.api.claims.HttpClaimStock;
 import gcsp.api.claims.LocalClaimStock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.QuarkusTestProfile;
+import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
-/** Startup selection: the default profile resolves the local ports unambiguously; the static selector covers the rest. */
+/** Remote startup/CDI selection plus bounded selector and PostConstruct lifecycle refusal checks. */
 @QuarkusTest
+@TestProfile(RemoteOperationProvidersTest.RemoteProfile.class)
 class RemoteOperationProvidersTest {
 
     private static final String TOKEN = "test-token-not-real";
@@ -35,12 +39,47 @@ class RemoteOperationProvidersTest {
     @Inject
     RemoteBuddy buddy;
 
+    public static class RemoteProfile implements QuarkusTestProfile {
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            // No server at this address: selecting providers must never call it during startup.
+            return Map.of(
+                    "gcsp.claims.stock.provider", "remote",
+                    "gcsp.claims.stock.execute-url", "http://127.0.0.1:1/stock/execute",
+                    "gcsp.claims.stock.reconcile-url", "http://127.0.0.1:1/stock/reconcile",
+                    "gcsp.buddy.provider", "remote",
+                    "gcsp.buddy.execute-url", "http://127.0.0.1:1/buddy/execute",
+                    "gcsp.buddy.reconcile-url", "http://127.0.0.1:1/buddy/reconcile");
+        }
+    }
+
     @Test
-    void theDefaultProfileInjectsTheLocalPortsThroughTheSelector() {
-        assertEquals(ClaimStockPort.Mode.LOCAL, stock.mode());
-        assertEquals("local-synthetic", buddy.mode());
-        assertThrows(UnsupportedOperationException.class, () -> stock.execute(null));
-        assertThrows(IllegalStateException.class, () -> buddy.reconcile(null));
+    void theRemoteProfileInjectsBothHttpPortsThroughTheSelector() {
+        assertEquals(ClaimStockPort.Mode.REMOTE, stock.mode());
+        assertEquals("remote", buddy.mode());
+    }
+
+    @Test
+    void thePostConstructLifecycleRefusesUnknownOrMissingRemoteSettings() {
+        var unknown = configuredLocalSelector();
+        unknown.buddyProvider = "unknown";
+        var e = assertThrows(IllegalStateException.class, unknown::init);
+        assertTrue(e.getMessage().contains("gcsp.buddy.provider"));
+        var remote = configuredLocalSelector();
+        remote.stockProvider = "remote";
+        var missing = assertThrows(IllegalStateException.class, remote::init);
+        assertTrue(missing.getMessage().contains("gcsp.claims.stock.execute-url"));
+        assertTrue(missing.getMessage().contains("gcsp.claims.stock.reconcile-url"));
+    }
+
+    private static RemoteOperationProviders configuredLocalSelector() {
+        var selector = new RemoteOperationProviders();
+        selector.stockProvider = "local";
+        selector.buddyProvider = "local-synthetic";
+        selector.stockExecute = selector.stockReconcile = selector.stockToken = Optional.empty();
+        selector.buddyExecute = selector.buddyReconcile = selector.buddyToken = Optional.empty();
+        selector.stockTimeout = selector.buddyTimeout = T;
+        return selector;
     }
 
     @Test
