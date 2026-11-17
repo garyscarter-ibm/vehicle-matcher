@@ -13,6 +13,7 @@ import gcsp.api.allocation.EligibleCandidates.Car;
 import gcsp.api.allocation.EligibleCandidates.Evaluated;
 import gcsp.api.allocation.EligibleCandidates.Request;
 import gcsp.api.allocation.EligibleCandidates.Subject;
+import gcsp.api.persistence.Canonical;
 import gcsp.api.policy.PolicyService;
 import gcsp.api.policy.RetainedFilePolicySource;
 import gcsp.api.recommendation.RecommendationCandidates;
@@ -144,7 +145,7 @@ class CanonicalCandidatesPgTest {
 
     private static void assertQuote(JsonNode expected, JsonNode stored) {
         for (String key : List.of("orderUuid", "configurationId", "snapshot", "terms", "employeeFacts", "reasons",
-                "tradeOffs", "versions")) assertEquals(expected.get(key), stored.get(key), key);
+                "tradeOffs", "versions")) assertEquals(Canonical.json(expected.get(key)), Canonical.json(stored.get(key)), key);
         assertEquals("exact-stock", stored.path("snapshot").path("identityKind").asText());
         assertEquals(stored.get("orderUuid"), stored.path("snapshot").path("sourceKeys").get("stockId"));
         assertEquals("gcsp-policy-v1", stored.path("versions").path("policy").asText());
