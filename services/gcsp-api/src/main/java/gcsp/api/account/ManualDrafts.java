@@ -55,7 +55,11 @@ public final class ManualDrafts {
     }
 
     public AccountOutcome read(AccountScope identity) {
-        Prepared p = accounts.prepare(identity);
+        return read(accounts.prepare(identity), identity);
+    }
+
+    /** The same read over an already prepared account, so a caller that prepared once does not prepare twice. */
+    AccountOutcome read(Prepared p, AccountScope identity) {
         if (p.error != null) return p.error;
         JsonNode draft;
         try (Connection c = dataSource.getConnection()) {
@@ -222,7 +226,7 @@ public final class ManualDrafts {
         return AccountOutcome.refused(body);
     }
 
-    private static AccountOutcome conflict(String reason, ObjectNode view) {
+    static AccountOutcome conflict(String reason, ObjectNode view) {
         ObjectNode body = F.objectNode().put("status", "conflict").put("reason", reason);
         body.set("view", view);
         return AccountOutcome.refused(body);
@@ -232,7 +236,7 @@ public final class ManualDrafts {
         return conflict("release-required", ManualDraftRules.view("conflict", false, "release-before-change"));
     }
 
-    private static AccountOutcome stale(String resource, JsonNode expected, JsonNode current) {
+    static AccountOutcome stale(String resource, JsonNode expected, JsonNode current) {
         ObjectNode body = F.objectNode().put("status", "stale-version").put("resource", resource);
         body.set("expectedVersion", expected);
         body.set("currentVersion", current);

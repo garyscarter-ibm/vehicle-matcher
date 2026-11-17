@@ -111,3 +111,17 @@ Retained failed attempts: `first` stopped at measured RAM 1,351,647,232 B > 1,34
 Both original AC stay unchecked and the same five slices stay fixed: typed-projection/browse-state complete at frontend boundaries, view-parity in-progress, review-proof/java-integration not-started. Original review handoff, independent whole-Story proof and real connected/hosted/platform acceptance remain open. FUCQ-504 Medium (source-failure detail messaging), FUCQ-505 Low (restored-selection close focus) and FUCQ-499 Low (checker false positive) stay separate, native-linked, unclaimed/unfixed/nonblocking; none was repaired or made a new merge dependency. Full boundary remains historically FAILED rc1. No Built/In Review/Done/Jira transition or deployment claim. Emmet requested/selected/effective Sol/high, no fallback/new descendants. HOLD final source+own metadata for dispatcher publication; no worker push/sync/rebase/merge.
 
 Dispatcher event for serial shared-log append: DL-20261114-GC-009 is **mitigated locally** by the new supervisor-inclusive recursive/group accounting and independent final teardown. Two real RAM-limit stops are preserved; a 384 MiB Node heap enabled 27 selected passes and 15 browser checks under unchanged limits. This is local runtime mitigation, not a shared framework fix. DL-GC-001 finite source/check release completed route/history and additive shared-card integration without a preparation/permission round; unresolved manual-review contract remains explicit. Shared dispatcher-learnings was read and left untouched.
+
+
+## Dispatcher source obstacle update - 16 November 2026
+
+F443's independently reviewed incomplete frontend checkpoint is integrated and
+pushed at bf21ae27d. The stock route now hands the exact descriptor to the actual
+manual route rather than the former StatePage placeholder. The directly affected
+stock route's 14 selected module checks passed among F443's 80 selected passes.
+This resolves the recorded source-level onward-consumer obstacle only; actual
+connected/rendered stock-to-review proof and both original F442 ACs remain open.
+The final manual order submission is intentionally disabled until Java supplies
+review-details/version authority. No F442 worker is currently executing; its
+reporting reservation moves from blocked to held, native In Progress unchanged.
+No Bug repair, new acceptance gate, Story closure or runtime is implied.

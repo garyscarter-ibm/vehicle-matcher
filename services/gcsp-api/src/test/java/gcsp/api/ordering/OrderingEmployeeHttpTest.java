@@ -106,6 +106,21 @@ class OrderingEmployeeHttpTest {
     }
 
     @Test
+    void aReviewDetailsVersionReachesTheClaimsFreezeAndItsRefusalWritesNothing() throws Exception {
+        Seed s = seed(dataSource.get());
+        slots.use(s.slot(), true, false);
+        ObjectNode b = body(s, "cmd-f", termsDigest());
+        b.put("expectedReviewDetailsVersion", 0);
+        // The seed has no manual claim, so the real freeze refuses and the whole submit rolls back.
+        as().body(b.toString()).post(BASE).then().statusCode(404).body("code", equalTo("not-found"));
+        assertEquals(0, count(dataSource.get(), "SELECT count(*) FROM pending_operations WHERE operation_id = ?",
+                OrderingService.operationId(OrderingHttpSupport.scope(s))));
+        assertEquals(0, count(dataSource.get(), "SELECT count(*) FROM manual_review_freezes WHERE hold_id = ?", s.hold()));
+        b.put("expectedReviewDetailsVersion", "0");
+        as().body(b.toString()).post(BASE).then().statusCode(400).body("status", equalTo("invalid"));
+    }
+
+    @Test
     void anUnreadableBodyAndAQueryAreRefused() {
         as().body("[]").post(BASE).then().statusCode(400).body("reasons[0].field", equalTo("body"));
         as().get(BASE + "?employeeId=other").then().statusCode(400).body("code", equalTo("unsupported-query"));

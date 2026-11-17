@@ -3,7 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
 import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
-import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement } from './current-car.js';
+import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement, createCurrentCarBaselineScorer } from './current-car.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
@@ -201,7 +201,8 @@ function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, con
   }
   if (base.rating.class !== 'positive') return { record, reasons: [] };
   if (similarity === 'similar') return { record: { ...record, effect: 'kept', reasonCode: 'feedback-similar' }, reasons: [{ code: 'feedback-similar', keys: dims }] };
-  const better = compareImprovement({ snapshot: candidate.snapshot, scored, baseline, brief, employeeFacts, config, slider, rule: rules.improvement });
+  const better = compareImprovement({ snapshot: candidate.snapshot, scored, baseline, brief, employeeFacts, config, slider, rule: rules.improvement,
+    baselineScores: fb.baselineScores });
   if (better.result === 'proven') return { record: { ...record, improvement: 'proven', effect: 'kept', reasonCode: 'feedback-improvement' }, reasons: [{ code: 'feedback-improvement', keys: better.keys }] };
   return { record: { ...record, improvement: better.result, effect: 'omitted', reasonCode: 'feedback-not-similar-or-better' }, omit: { code: 'feedback-not-similar-or-better', keys: dims } };
 }
@@ -333,6 +334,7 @@ async function evaluateScopedRecommendation({ provider, policy, time, staticCach
             const inertCode = !baseline ? 'feedback-baseline-unavailable' : Object.keys(typed).some((key) => !matches(typed[key])) ? 'feedback-contract-mismatch' : 'feedback-neutral';
             fb = { policy: row.value.value, policyVersion: row.policyVersion, baseline, rating, usable, inertCode,
               sameOn: usable.sameAgain && typed.sameAgain.on === true,
+              baselineScores: createCurrentCarBaselineScorer({ baseline, brief, employeeFacts: source.employeeFacts, config, slider }),
               identity: `${FEEDBACK_KEY}@${row.policyVersion}${baseline ? `+${baseline.source.sourceVersion}` : ''}` };
           }
         }

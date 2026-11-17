@@ -5454,36 +5454,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-410",
-      "jira_observed_at": "2026-11-12T15:47:41.758Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Resolve decline exclusions through indexed history",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-410",
-      "workers": []
-    },
-    {
-      "assignee": "",
-      "id": "FUCQ-411",
-      "jira_observed_at": "2026-11-12T15:47:43.693Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Track allocation occupancy through identity Sets",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-411",
-      "workers": []
-    },
-    {
-      "assignee": "",
       "branch": "dev/DEV-2026-11-13-GC-007",
       "id": "FUCQ-414",
       "jira_observed_at": "2026-11-14T15:39:21.818209+00:00",
@@ -5656,21 +5626,6 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-GC-008"
-    },
-    {
-      "assignee": "",
-      "id": "FUCQ-416",
-      "jira_observed_at": "2026-11-12T15:48:03.241Z",
-      "note": "Performance backlog authoring only; no implementation or claim. observed_at records local entry; jira_observed_at preserves the native source observation. See docs/gcsp/performance-tuning-stories-2026-11-12.md.",
-      "observed_at": "2026-11-12T15:50:39Z",
-      "original_status": "To Do",
-      "slices": [],
-      "status": "To Do",
-      "title": "Score the current-car baseline once per employee evaluation",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-416",
-      "workers": []
     },
     {
       "assignee": "Gary Carter",
@@ -6145,13 +6100,66 @@
     {
       "assignee": "",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-17T00:30:55Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Enter and refresh replacement frontend routes",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
+      "slices": [
+        {
+          "id": "route-state",
+          "status": "in-progress",
+          "title": "Authorized route and recovery states",
+          "observed_at": "2026-11-17T00:30:25Z",
+          "evidence": "Independent source PASS; a02 route/state 31 native passes plus a04 auth/context 8 passes at 2912d73b5. a02 outer 1/strict false from five quoted-name mappings remains. Local scenarios do not establish hosted/OIDC/email/rendered acceptance. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        },
+        {
+          "id": "static-launcher",
+          "status": "in-progress",
+          "title": "Static routes and shared launcher handoff",
+          "observed_at": "2026-11-17T00:30:25Z",
+          "evidence": "a03 launcher 52 native passes and a04 actual caller/package 1 pass at 2912d73b5. Static blueprint 1 inherited FUCQ-514 failure; later frontend assertions were not reached. Deployed URL and safe dynamic/unknown host contract remain open. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Original entry refresh OIDC email and rendered validation",
+          "observed_at": "2026-11-17T00:30:25Z",
+          "evidence": "Original 93 selected: 92 native passes, 1 inherited FUCQ-514 failure, 0 unrun; 48 exclusions. No overall PASS. Original hosted refresh, real OIDC, actual email, rendered proof and dynamic/unknown host work remain; both AC unchecked. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-005",
+      "workers": [
+        {
+          "name": "Sally Carrera 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Sally Carrera 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Yakko 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-17T00:27:56Z",
+          "expires_at": "2026-11-17T00:28:24Z",
+          "source": "direct returned child result; lead native/input/teardown audits",
+          "status": "returned; four individually released attempts; 92 native passes, 1 inherited failure; original AC open"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -6497,17 +6505,6 @@
       "note": "Stock host/history source 31589e3f4;27 selectedPASS,15actual router Chromechecks,178finalpinsmatch; route/gallery now wired. Reviewconsumer + actualJava/originalAC remainopen. F504Medium/F505Low/F499Low separateunfixed. Heldfordispatcherpublication."
     },
     {
-      "assignee": "",
-      "id": "FUCQ-443",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Review and intentionally submit a manual selection",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443"
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
       "observed_at": "2026-11-14T09:14:30Z",
@@ -6815,37 +6812,73 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-449"
     },
     {
-      "assignee": "",
+      "assignee": "Gary Carter",
       "id": "FUCQ-450",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
+      "observed_at": "2026-11-16T21:47:34Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
       "title": "Operate presenter scenarios",
       "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-450"
-    },
-    {
-      "assignee": "",
-      "id": "FUCQ-451",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Inspect notifications and follow delivered offer links",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451"
-    },
-    {
-      "assignee": "",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-450",
+      "slices": [
+        {
+          "id": "client",
+          "status": "in-progress",
+          "title": "Typed presenter commands and current readback",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "a02 client44/44passed, unchanged source/dependencies reused. Typed presenter client implemented; actual connected acceptance remains open."
+        },
+        {
+          "id": "view",
+          "status": "in-progress",
+          "title": "Presenter controls and read-only inspection entry",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite component30passed: a03unchanged29+a04P20. Enabled native Retry/handler/count2/exact reset pins passed after test render synchronisation; no further product change. Outbox placeholder/comparison inspection open."
+        },
+        {
+          "id": "scoped-validation",
+          "status": "in-progress",
+          "title": "Focused Angular command and route verification",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "evidence": "Composite84passed across a02client44/auth10,a03component29,a04P20; no single84run. Boundary rc1 unchanged case-queue emdash; later checks unreached. Failed attempts retained; input/resource/cleanup audits passed. Connected/visual unrun."
+        },
+        {
+          "id": "connected-proof",
+          "status": "not-started",
+          "title": "Original isolated-dev controls and permissions proof"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-018",
+      "workers": [
+        {
+          "name": "Cuthbert 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:25:03.397416Z",
+          "expires_at": "2026-11-16T22:25:03.397416Z",
+          "source": "Finite a04 P20 pass, inherited boundary failure and independent cleanup",
+          "status": "partial source and scoped evidence returned; original acceptance open"
+        },
+        {
+          "name": "Mr Potato Head 2",
+          "harness": "codex",
+          "role": "client implementer",
+          "observed_at": "2026-11-16T21:52:30.965280Z",
+          "expires_at": "2026-11-16T21:54:09.034137Z",
+          "source": "Direct source-only child acknowledgement",
+          "status": "source returned; runtime unrun"
+        },
+        {
+          "name": "Pluto 2",
+          "harness": "codex",
+          "role": "view implementer",
+          "observed_at": "2026-11-16T21:52:30.965280Z",
+          "expires_at": "2026-11-16T21:58:03.633937Z",
+          "source": "Direct source-only child acknowledgement",
+          "status": "source returned; runtime unrun"
+        }
+      ]
     },
     {
       "assignee": "",
@@ -7813,47 +7846,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-477",
-      "observed_at": "2026-11-14T21:30:57Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Calculate Greg's constrained next-order plan",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
-      "slices": [
-        {
-          "id": "s1",
-          "status": "complete",
-          "title": "Planning domain, demand port and constrained solver",
-          "observed_at": "2026-11-14T09:49:43Z",
-          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
-        },
-        {
-          "id": "s2",
-          "status": "complete",
-          "title": "Node golden equivalence fixtures and replay tests",
-          "observed_at": "2026-11-14T08:58:51Z",
-          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
-        },
-        {
-          "id": "s3",
-          "status": "complete",
-          "title": "Greg order-plan HTTP read and preview, no submission",
-          "observed_at": "2026-11-14T09:49:44Z",
-          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Merge gcsp-poc-dev and full gcsp-api verify",
-          "observed_at": "2026-11-14T21:30:57Z",
-          "evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
-        }
-      ]
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-478",
       "observed_at": "2026-11-14T10:07:49Z",
       "original_status": "To Do",
@@ -7988,17 +7980,6 @@
           "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
         }
       ]
-    },
-    {
-      "assignee": "",
-      "id": "FUCQ-481",
-      "observed_at": "2026-11-13T20:22:18.041Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Prove provider composition and complete substitution",
-      "type": "Story",
-      "unsliced": true,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481"
     },
     {
       "assignee": "",
@@ -8380,6 +8361,791 @@
           "status": "in-progress",
           "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL",
           "observed_at": "2026-11-16T19:48:32Z"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-410",
+      "jira_observed_at": "2026-11-16T20:29:59.639151+00:00",
+      "note": "Native In Review after parent source/245input/currentteardown audit and integration d3702ea565e4ff3870e375ea7ffbb296ad09714f.37selected checks pass; original isolated-internal-computation screenshot exemption applies. Development review only; not collaborator acceptance. Runtime deadline/history limitations retained in delivery note.",
+      "observed_at": "2026-11-16T20:29:59Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "decline-index",
+          "status": "complete",
+          "title": "Preparation-scoped-decline-index-and-semantic-regressions",
+          "observed_at": "2026-11-16T20:24:16Z",
+          "evidence": "Lead diff/caller/oracle review passed; focused module 5/5 and existing allocation23/23 + second-offer9/9 under frozen245input a02. docs/gcsp/fucq410-decline-index-2026-11-16.md; identity post-audit matched."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead-review-targeted-allocation-and-second-offer-validation",
+          "observed_at": "2026-11-16T20:24:16Z",
+          "evidence": "Lead delivery review:37/37 scoped tests,0skip; original internal-computation screenshot exemption applies; no SQL/interface/UI changes. Canonical reservation/root/process/listener teardown audited; parent shared integration remains separate. docs/gcsp/fucq410-decline-index-2026-11-16.md"
+        }
+      ],
+      "status": "In Review",
+      "title": "Resolve decline exclusions through indexed history",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-410",
+      "workers": [
+        {
+          "name": "Grub 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T20:25:43Z",
+          "expires_at": "2026-11-16T20:25:43Z",
+          "source": "37/37 scoped validation passed; owned runtime fully removed; parent owns integration",
+          "status": "source and runtime complete; inactive handoff"
+        },
+        {
+          "name": "Scooby Doo 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T20:20:45.912605+00:00",
+          "expires_at": "2026-11-16T20:20:45.912605+00:00",
+          "source": "Final source-only report received; no owned runtime allocation",
+          "status": "completed source slice; inactive"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-003"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-411",
+      "jira_observed_at": "2026-11-16T21:10:01.995Z",
+      "note": "Native In Review verified16Nov after serial integration74d9de062. Original occupancy development complete; collaborator acceptance separate. Selected41passes/1optionalPGskip with focusedNode-rc caveat retained in docs/gcsp/fucq411-occupancy-sets-2026-11-16.md. All worker claims expired; branch/worktree/lease cleaned by normal helper.",
+      "observed_at": "2026-11-16T21:10:21Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "occupancy",
+          "status": "complete",
+          "title": "Identity-Sets-and-focused-regressions",
+          "observed_at": "2026-11-16T21:00:01Z",
+          "evidence": "Lead diff/caller/identity/CAS review and focused6 oracle/operation-bound checks passed; a03 exact output reused after reporter parser failure, with unpersisted Node rc disclosed. docs/gcsp/fucq411-occupancy-sets-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Lead-review-and-original-validation",
+          "observed_at": "2026-11-16T21:00:01Z",
+          "evidence": "Lead original-AC review; a05 strict receipt: allocation23/23,ownership5/5,runtime7pass/1existingPGskip; no visible contract change. Same895 non-control pins as focused a03; cleanup/input audits passed. docs/gcsp/fucq411-occupancy-sets-2026-11-16.md"
+        }
+      ],
+      "status": "In Review",
+      "title": "Track allocation occupancy through identity Sets",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-411",
+      "workers": [
+        {
+          "name": "Captain Flack 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T20:50:31.013096Z",
+          "expires_at": "2026-11-16T21:00:01.918414Z",
+          "source": "Lead delivery checks complete; durable Result/evidence prepared; no runtime allocation",
+          "status": "finished"
+        },
+        {
+          "name": "Foxy 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T20:50:31.013096Z",
+          "expires_at": "2026-11-16T21:00:01.918414Z",
+          "source": "Source-only implementation complete; lead reviewed and scoped validation complete; no live worker claim",
+          "status": "finished"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-GC-004"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-416",
+      "jira_observed_at": "2026-11-16T21:42:36.979Z",
+      "note": "Merged and pushed to gcsp-poc-dev at5b106361e;42scoped checks passed, runtime and branch/worktree cleanup independently verified; Jira In Review read back, comment3629659. Awaiting collaborator acceptance.",
+      "observed_at": "2026-11-16T21:43:20Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "id": "baseline",
+          "status": "complete",
+          "title": "Evaluation-local-baseline-score-reuse",
+          "observed_at": "2026-11-16T21:36:59Z",
+          "evidence": "Lead reviewed source aa1e8cc1a; a01 new count/equivalence regression5pass and authored comparison21+feedback16pass; docs/gcsp/fucq416-baseline-score-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Focused-semantic-and-order-validation",
+          "observed_at": "2026-11-16T21:36:59Z",
+          "evidence": "All42selected checks passed once on pinned aa1e8cc1a/tree fdaeae03; frozen quote replay/F417 preservation; cleanup verified, receipt3a6e10dd98fd; shared publication remains dispatcher-owned"
+        }
+      ],
+      "status": "In Review",
+      "title": "Score the current-car baseline once per employee evaluation",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-416",
+      "workers": [
+        {
+          "id": "cool-cat-2",
+          "name": "Cool Cat 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "thread_id": "01a1e641-123c-7722-997e-049e9daf7820",
+          "observed_at": "2026-11-16T21:37:22Z",
+          "expires_at": "2026-11-16T21:37:22Z",
+          "status": "returned",
+          "source": "Source and scoped42-check delivery complete; local receipt a01/receipt.json, observed worker exit/return"
+        },
+        {
+          "id": "hugo-2",
+          "name": "Hugo 2",
+          "harness": "codex",
+          "role": "implementer",
+          "thread_id": "01a1e642-bc0d-7373-8f5d-0837438aa6dc",
+          "observed_at": "2026-11-16T21:37:22Z",
+          "expires_at": "2026-11-16T21:37:22Z",
+          "status": "returned",
+          "source": "Source and scoped42-check delivery complete; local receipt a01/receipt.json, observed worker exit/return"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-451",
+      "observed_at": "2026-11-16T22:49:16Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect notifications and follow delivered offer links",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Read-only current-run notification inspection",
+          "observed_at": "2026-11-16T22:48:58Z",
+          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+        },
+        {
+          "id": "offer-return",
+          "status": "not-started",
+          "title": "Delivered offer link sign-in and ownership return"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Route, rendered Java and newly received email acceptance"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-019",
+      "workers": [
+        {
+          "name": "Scrappy Doo 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
+          "status": "returned coherent partial increment; original acceptance waiting"
+        },
+        {
+          "name": "Wile E. Coyote 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
+          "status": "returned client source; a01 client 20/20 passed"
+        },
+        {
+          "name": "Mulan 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
+          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
+        },
+        {
+          "name": "Goofy 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
+          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
+        },
+        {
+          "name": "Cecil Turtle 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
+          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
+        }
+      ]
+    },
+    {
+      "assignee": "garyscarter-ibm",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-16T23:20:35Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "jobs",
+          "status": "in-progress",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected Java roles and rendered acceptance evidence"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "Partial source/fixture result:28clienta02+30componenta03 pass on matchingclosure; actual boundaryrc1 inheritedcasequeueemdash. BothoriginalACopen:JavaReplay/newrun,parentroute/auth,connected/renderedproof missing. No slice complete.",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Hugo 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
+          "source": "/root/foghorn_leghorn_2/hugo_3",
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
+        },
+        {
+          "name": "Bertie 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
+          "source": "/root/foghorn_leghorn_2/bertie_2",
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-443",
+      "observed_at": "2026-11-17T03:11:20Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Review and intentionally submit a manual selection",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443",
+      "slices": [
+        {
+          "id": "claim-review",
+          "status": "in-progress",
+          "title": "Claim-review-contract-and-versioned-state",
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
+        },
+        {
+          "id": "manual-screens",
+          "status": "in-progress",
+          "title": "Manual-review-and-summary-screens",
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
+        },
+        {
+          "id": "connected-proof",
+          "status": "not-started",
+          "title": "Real-claim-to-order-and-rendered-proof",
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
+        }
+      ],
+      "native_observed_at": "2026-11-17T03:01:52+00:00",
+      "note": "Consumer partial799c01b95 has124 matching selected passes; producer all3selected methods native0 (2reused+1new03:03:57UTC), audited owned teardown. Both original connected/rendered/durable AC remain open; inherited checker native1.",
+      "workers": [
+        {
+          "name": "Pinky 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-17T03:06:50.812724+00:00",
+          "expires_at": "2026-11-17T03:06:50.812724+00:00",
+          "source": "01a1e6f4-fb2a-70b1-8d45-24b32f6de594",
+          "status": "returned scoped producer PASS; original connected acceptance open"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-477",
+      "observed_at": "2026-11-17T04:11:39Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Calculate Greg's constrained next-order plan",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
+      "slices": [
+        {
+          "id": "s1",
+          "status": "complete",
+          "title": "Planning domain, demand port and constrained solver",
+          "observed_at": "2026-11-14T09:49:43Z",
+          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
+        },
+        {
+          "id": "s2",
+          "status": "complete",
+          "title": "Node golden equivalence fixtures and replay tests",
+          "observed_at": "2026-11-14T08:58:51Z",
+          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
+        },
+        {
+          "id": "s3",
+          "status": "complete",
+          "title": "Greg order-plan HTTP read and preview, no submission",
+          "observed_at": "2026-11-14T09:49:44Z",
+          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Original demand and supply integration",
+          "observed_at": "2026-11-17T04:11:39.197356+00:00",
+          "evidence": "Independent Terms/Evaluator/Renewal integrateda93dd42c5 (53passes); independent Cohort/Snapshot helpers integrated251d89b22 (30matching passes). Parent executed52demand methods total, including22held adapter cases. Original connected demand/supply acceptance and M1/F515 remain unresolved; slice is incomplete.",
+          "prior_complete_evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
+        }
+      ],
+      "native_observed_at": "2026-11-17T04:11:04.055+00:00",
+      "note": "Original acceptance incomplete; native In Progress and peer ownership preserved. Cohort/Snapshot four exact tested Java blobs integrated/pushed251d89b22 (30 matching native passes). Parent also executed22held-adapter methods successfully. Terms/Evaluator/Renewal53passes integrateda93dd42c5. Demand/Supply/Clock live-binding M1/F515 hold persists. Coordinator terminal04:09:57 collected; no current worker execution.",
+      "workers": []
+    },
+    {
+      "assignee": "",
+      "id": "FUCQ-481",
+      "observed_at": "2026-11-17T10:35:50Z",
+      "original_status": "To Do",
+      "status": "To Do",
+      "title": "Prove provider composition and complete substitution",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
+      "native_observed_at": "2026-11-17T10:26:44.484Z",
+      "note": "Ordering recovery integrated461049f73:1nativePG/HTTP pass, source reviewPASS and independentauditclear. New exact bindingcomponent19 acknowledged/executing10:34:40UTC; sourceauthoring independentlyunverified, no runtime/descendants/newclaim. Foreignselector/account handoff remains; originalACopen/nativeToDo preserved.",
+      "slices": [
+        {
+          "id": "inventory",
+          "title": "Current external read/action/event ports and startup binding inventory",
+          "status": "in-progress",
+          "observed_at": "2026-11-17T08:21:37.215451+00:00",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen."
+        },
+        {
+          "id": "startup",
+          "title": "Startup provider selection and demo-preparation boundary",
+          "status": "in-progress",
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen."
+        },
+        {
+          "id": "local-composition",
+          "title": "Selected local read and transactional journey composition",
+          "status": "in-progress",
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
+        },
+        {
+          "id": "remote-composition",
+          "title": "Differently shaped remote inputs and coherent transactional substitute",
+          "status": "in-progress",
+          "observed_at": "2026-11-17T10:34:58.542647+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Ordering consumer461049f73: realHttpOrderingProvider→OrderingService/nativePG lostACK/restart recovery,1pass/0skip; GET/POST/GET, oneeffect/no secondPOST and persisted identity/ack/reference/occupation asserted. Source reviewPASS,64identities/7groups/scratch/reservation cleared. Component setup uses fixtureconverter/policy; startup/fulljourney/originalACopen."
+        },
+        {
+          "id": "integration",
+          "title": "Original connected OIDC, email and full remaining contract/failure evidence",
+          "status": "not-started"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Yakko",
+          "harness": "claude-code",
+          "role": "F481 current port inventory; disjoint source domains",
+          "observed_at": "2026-11-17T04:52:47.180Z",
+          "expires_at": "2026-11-17T05:07:42.209Z",
+          "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
+          "status": "returned24record sourceJSON05:07:42 after construction/reference corrections; no runtime"
+        },
+        {
+          "name": "Wile E. Coyote",
+          "harness": "claude-code",
+          "role": "F481 current port inventory; disjoint source domains",
+          "observed_at": "2026-11-17T04:38:46.349000+00:00",
+          "expires_at": "2026-11-17T04:40:52.481Z",
+          "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
+          "status": "returned35record sourceJSON; coordinator validating; no runtime or full inventory completion"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 inventory reconciliation and demo-preparation mapping",
+          "observed_at": "2026-11-17T05:08:17.689Z",
+          "expires_at": "2026-11-17T05:11:56.259Z",
+          "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
+          "status": "returned exact2doc checkpoint53524c5d1; parent corrected/integrated3a7a4acb2; no current worker execution inferred"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 remote claim/Buddy adapter and startup provider source increment",
+          "observed_at": "2026-11-17T05:37:09.078Z",
+          "expires_at": "2026-11-17T05:40:57.570Z",
+          "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
+        },
+        {
+          "name": "Claims adapter implementer",
+          "harness": "claude-code",
+          "role": "F481 HttpClaimStock and its test",
+          "observed_at": "2026-11-17T05:32:48.662Z",
+          "expires_at": "2026-11-17T05:33:59.027Z",
+          "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
+        },
+        {
+          "name": "Buddy adapter implementer",
+          "harness": "claude-code",
+          "role": "F481 HttpRemoteBuddy and its test",
+          "observed_at": "2026-11-17T05:33:15.140Z",
+          "expires_at": "2026-11-17T05:34:16.602Z",
+          "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
+        },
+        {
+          "name": "Mater 2",
+          "harness": "codex",
+          "role": "F481 independent source review and focused fixes review",
+          "observed_at": "2026-11-17T05:48:28.117175+00:00",
+          "expires_at": "2026-11-17T05:48:28.117175+00:00",
+          "source": "parentreview0540",
+          "status": "terminalPASS/noBLOCKERorMAJOR; no runtime; requestedselectedSol/high, nofallback, effectiveindependentlyunverified"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 bounded fixes,65selectednativecases, integration and nextallocation",
+          "observed_at": "2026-11-17T05:54:28.677046+00:00",
+          "expires_at": "2026-11-17T05:54:28.677046+00:00",
+          "source": "dispatcher0540",
+          "status": "boundedproductincrement18b29be38 integrated/pushed; no current runtime; assignment15published,executionunverified"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 HTTPtoexistingdurableconsumercomponent proof source",
+          "observed_at": "2026-11-17T06:01:16.424Z",
+          "expires_at": "2026-11-17T06:02:43.240Z",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
+        },
+        {
+          "name": "claims durable-consumer test author",
+          "harness": "claude-code",
+          "role": "F481 source-only HTTP-to-durable-consumer test",
+          "observed_at": "2026-11-17T05:59:35.302Z",
+          "expires_at": "2026-11-17T06:02:43.240Z",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
+        },
+        {
+          "name": "offers durable-consumer test author",
+          "harness": "claude-code",
+          "role": "F481 source-only HTTP-to-durable-consumer test",
+          "observed_at": "2026-11-17T06:00:13.207Z",
+          "expires_at": "2026-11-17T06:02:43.240Z",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
+        },
+        {
+          "name": "Cogsworth 3",
+          "harness": "codex",
+          "role": "F481 independent HTTP consumer source review",
+          "observed_at": "2026-11-17T06:07:00.155140+00:00",
+          "expires_at": "2026-11-17T06:07:00.155140+00:00",
+          "source": "parentreview0557",
+          "status": "terminalPASS/no blocking or major finding; requested/selectedSol/high, nofallback; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 ten selected PG/HTTP cases, teardown audit and integration",
+          "observed_at": "2026-11-17T06:05:57.930476+00:00",
+          "expires_at": "2026-11-17T06:05:57.930476+00:00",
+          "source": "dispatcher0557",
+          "status": "terminal validation:10passed/0skips;86identities/7groups/scratch cleared, integrated5ce78b9be"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 next nonconflicting read-composition source readiness",
+          "observed_at": "2026-11-17T06:11:53.873Z",
+          "expires_at": "2026-11-17T06:15:52.790Z",
+          "source": "claude-assist-fucq481-read-composition-next-2026-11-17-16",
+          "status": "terminal read-only proposal returned; no runtime/children"
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 provider shape component proof source-only lead",
+          "observed_at": "2026-11-17T06:28:12.479171+00:00",
+          "expires_at": "2026-11-17T06:28:12.479171+00:00",
+          "source": "codex-fucq481-provider-shape-17",
+          "status": "terminal three-file source7128e2642; parent compiled/tested3pass and independently reviewed; requestedselectedSol/high, nofallback/descendants"
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "F481 independent provider-shape source review",
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "expires_at": "2026-11-17T06:33:42.708531+00:00",
+          "source": "parentreview0626",
+          "status": "terminalPASS/no blocking or major finding; requestedselectedSol/high, nofallback/descendants, titletoolverified; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 three selected native cases, teardown audit and integration",
+          "observed_at": "2026-11-17T06:33:42.708531+00:00",
+          "expires_at": "2026-11-17T06:33:42.708531+00:00",
+          "source": "dispatcher0626",
+          "status": "terminal3pass/0skip;74identities/7groups/scratch absent,registryempty,integrated39f95cb1c. No current runtime/worker."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 next startup or signed-in connected-substitute source readiness",
+          "observed_at": "2026-11-17T06:39:22.530587+00:00",
+          "expires_at": "2026-11-17T06:45:04.965900+00:00",
+          "source": "codex-fucq481-connected-startup-next-18",
+          "status": "terminal readiness18 returned/collected; no product writes/runtime"
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 JWT/PG/remote offer partial composition source-only lead",
+          "observed_at": "2026-11-17T06:47:13.648019+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
+          "source": "codex-fucq481-oidc-remote-offer-19",
+          "status": "terminal3file source30241a729; parentnative1pass/0skip; integrated3d196cfb4 after independentreview. No currentexecution."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent authenticated offer composition source reviewer",
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
+          "source": "parentreview0649",
+          "status": "terminalPASS/no blockingormajor; exact30241a729; requestedselectedSol/high,nofallback, titletoolverified; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Profilecorrection, finite1method, independentcleanup and integration",
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
+          "source": "dispatcher0649",
+          "status": "terminal1pass/0skip after preservedstartupfailure;72identities/7groups/scratch/reservation clear. Integrated3d196cfb4. No currentruntime."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 source-only canonical candidate adapter and startup selector lead",
+          "observed_at": "2026-11-17T07:19:43Z",
+          "expires_at": "2026-11-17T07:19:43Z",
+          "source": "codex-fucq481-canonical-candidates-21",
+          "status": "terminalsource21 collected; parent correction/test/review/integration97cd67aa4 complete; no current source execution. Requestedselected Sol/high,nofallback,effectiveindependentlyunverified."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent canonical candidate source reviewer",
+          "observed_at": "2026-11-17T07:24:15.648523+00:00",
+          "expires_at": "2026-11-17T07:24:15.648523+00:00",
+          "source": "codex-fucq481-canonical-candidates-review-21",
+          "status": "terminalPASS/no blocking or major finding at exact71a219f28; requestedselectedSol/high,nofallback; no runtime."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "13selectedmethods, canonicalJSONassertioncorrection, cleanupaudit and integration",
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "expires_at": "2026-11-17T07:29:54.291Z",
+          "source": "dispatcher0712",
+          "status": "terminal13matchingpasses across twoattempts, failurepreserved;71/57identities and7groups each, scratch/reservations clear. Integrated97cd67aa4, F516capturedonly."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Read-only generated-claim/authenticated-decision composition readiness",
+          "observed_at": "2026-11-17T07:35:24+00:00",
+          "expires_at": "2026-11-17T07:35:24+00:00",
+          "source": "codex-fucq481-generated-claim-readiness-22",
+          "status": "terminalreadiness22 returned/collected; three-new-test-file/one-method proposal, current source hashes verified. No productwrites/runtime/currentexecution. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Generated canonical claim to actual JWT/remote offer test-source lead",
+          "observed_at": "2026-11-17T07:41:27.066685+00:00",
+          "expires_at": "2026-11-17T07:44:43+00:00",
+          "source": "codex-fucq481-generated-claim-23",
+          "status": "terminal3file source4e823b7c5; reviewed/tested/integrated4c7f6d338; no current execution. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent generated-claim source reviewer",
+          "source": "codex-fucq481-generated-claim-review-23",
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "expires_at": "2026-11-17T07:51:03.227703+00:00",
+          "status": "terminalPASS/no blocking or major finding; exact4e823b7c5; requestedselectedSol/high,nofallback; no runtime."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Finite1method, independentteardown, sourceintegration",
+          "source": "dispatcher0737",
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "expires_at": "2026-11-17T07:51:03.227703+00:00",
+          "status": "terminal1pass/0skip;70identities/7groups/scratch/reservationsclear;integrated4c7f6d338. No currentruntime."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Read-only next original provider increment readiness",
+          "source": "codex-fucq481-next-provider-readiness-24",
+          "observed_at": "2026-11-17T07:57:50.357236+00:00",
+          "expires_at": "2026-11-17T08:05:16+00:00",
+          "status": "Terminalreadiness24 returned; parentverified44sourcehashes/cleanpin364c06710/API tree. No productwrites/runtime."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Remote ordering adapter source-only lead, exactly3NEWfiles",
+          "source": "codex-fucq481-remote-ordering-source-25",
+          "observed_at": "2026-11-17T08:08:14.118178+00:00",
+          "expires_at": "2026-11-17T08:21:37.215451+00:00",
+          "status": "Terminal exact3file source45d1c1afc;13pass/reviewPASS/integrated09e224584; no current execution."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent standalone ordering source reviewer",
+          "source": "codex-fucq481-remote-ordering-review-25",
+          "observed_at": "2026-11-17T08:21:37.215451+00:00",
+          "expires_at": "2026-11-17T08:21:37.215451+00:00",
+          "status": "TerminalPASS; exact45d1c1afc, no blocking/major; requestedselectedSol/high,nofallback; no runtime."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Finite13unitmethods, independent teardown and integration",
+          "source": "dispatcher0812",
+          "observed_at": "2026-11-17T08:21:37.215451+00:00",
+          "expires_at": "2026-11-17T08:21:37.215451+00:00",
+          "status": "Terminal13pass/0skip;39identities/3groups/scratch/reservation clear;integrated09e224584. No current runtime."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Exact retained binding ownership coordination only",
+          "observed_at": "2026-11-17T09:27:06Z",
+          "expires_at": "2026-11-17T09:35:04Z",
+          "source": "coordination17",
+          "status": "terminal09:35:04; own-lane relinquishment reported; no peer release/product edit/runtime or originalAC completion; model/effort worker-reported, independently unverified"
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Real HTTP ordering durable-consumer recovery test source",
+          "source": "claude-assist-fucq481-ordering-consumer-2026-11-17-18",
+          "observed_at": "2026-11-17T10:21:25.643861+00:00",
+          "expires_at": "2026-11-17T10:27:20Z",
+          "status": "Terminal10:27:20, source00f600dcd integrated461049f73 after1nativepass/reviewPASS/independentcleanup; no currentexecution."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent durable ordering consumer source reviewer",
+          "source": "codex-fucq481-ordering-consumer-review-26",
+          "observed_at": "2026-11-17T10:30:09.040903+00:00",
+          "expires_at": "2026-11-17T10:30:09.040903+00:00",
+          "status": "TerminalPASS/no blocking or majorfinding; reviewer runtimeUNRUN, requestedselectedSol/high,nofallback."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "One selected PG/HTTP method, independentteardown and serialintegration",
+          "source": "dispatcher1026",
+          "observed_at": "2026-11-17T10:34:58.542647+00:00",
+          "expires_at": "2026-11-17T10:34:58.542647+00:00",
+          "status": "Native1pass/0skip20.8s,64identities/7groups/scratch/reservation independentlyclear; integrated/pushed461049f73. No currentruntime."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Ordering binding component source in exactly3newfiles",
+          "source": "claude-assist-fucq481-ordering-bindings-2026-11-17-19",
+          "observed_at": "2026-11-17T10:34:40Z",
+          "expires_at": "2026-11-17T10:50:49.911161+00:00",
+          "status": "MatchingACK/currentexecutionreported10:34:40UTC, concrete3newfile bindingcomponent source. Sourceauthoring independentlyunverified; no runtime/descendants/newclaim. Successorhandover reported, independentlyunverified; ClaudeOpus5.5/high workerreported."
         }
       ]
     }

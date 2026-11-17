@@ -637,6 +637,17 @@ uncertain requests available for an explicit same-command retry, and provides a 
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
 
+### Angular manual review and summary (FUCQ-443)
+
+`ManualRouteComponent` composes the existing screen intro, status, vehicle media, facts,
+native fields, declarations and buttons at employee-guarded `manual/review` and
+`manual/summary`. Stock passes its exact supplied selection through the scoped in-memory
+`ManualStore`; navigation history carries no quote or command authority. Leaving an open
+claim waits for actual release. Saved orders use the existing order-progress destination.
+The current Java response lacks the frozen contact/return details and review version,
+so final submission stays unavailable. This composition adds no shared primitive;
+connected and rendered acceptance remains open.
+
 ### Angular employee order progress (FUCQ-446)
 
 `gcsp-orders` (`apps/gcsp-web/src/app/orders/orders.component.ts`) is the native standalone

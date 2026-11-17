@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
@@ -154,11 +155,12 @@ class BriefHttpTest {
         post("/engage", "{\"commandId\":\"x\"}").then().statusCode(400).body("code", equalTo("invalid-command"));
         post("/engage", command("with-authority", 0, 0, "\"employeeId\":\"someone-else\"")).then().statusCode(400)
                 .body("code", equalTo("invalid-command"));
-        for (String gone : new String[] {"/pause", "/resume", "/preview", "/change-after-decline", "/nothing"}) {
+        for (String gone : new String[] {"/pause", "/resume", "/nothing"}) {
             as().get(BASE + gone).then().statusCode(404).contentType(containsString("application/json"))
                     .body("code", equalTo("route-not-found"));
             post(gone, "{}").then().statusCode(404).body("code", equalTo("route-not-found"));
         }
+        as().get(BASE + "/change-after-decline").then().statusCode(405).body("code", equalTo("method-not-allowed"));
         as().post(BASE + "/history").then().statusCode(405).body("code", equalTo("method-not-allowed"));
     }
 
@@ -169,5 +171,91 @@ class BriefHttpTest {
             post(path, "{}").then().statusCode(400).body("code", equalTo("invalid-command"))
                     .body("reasons.field", hasItem("command"));
         }
+    }
+
+    @Test
+    @Order(8)
+    void previewPassesTheRecommendationOutcomeThroughAndChecksTheSavedVersions() {
+        int brief = version("briefVersion");
+        int draft = version("draftVersion");
+        com.fasterxml.jackson.databind.node.ObjectNode chosen = Json.obj();
+        chosen.put("schemaVersion", 1);
+        chosen.putObject("preferences").set("body", Json.obj().put("value", "saloon").put("importance", 50)
+                .put("valueState", "draft").put("importanceState", "draft").put("source", "employee"));
+        chosen.putObject("essentials");
+        Response ok = post("/preview", PreviewShapes.request(brief, draft, chosen).toString());
+        ok.then().statusCode(200).body("status", equalTo("ok")).body("contractVersion", equalTo("1.0.0")).body("replayed", nullValue());
+        assertTrue(PreviewShapes.previewShape(
+                Json.M.valueToTree(ok.jsonPath().getMap("value"))));
+        assertEquals(draft, version("draftVersion"));
+
+        post("/preview", PreviewShapes.request(brief + 4, draft, chosen).toString()).then().statusCode(409)
+                .body("status", equalTo("stale-version")).body("currentVersion", equalTo(brief)).body("action", equalTo("refresh"));
+        post("/preview", PreviewShapes.request(brief, draft + 4, chosen).toString()).then().statusCode(409)
+                .body("resource.table", equalTo("brief-draft"));
+        // The stub port reports invalid for a brief that did not choose body: status and body pass through.
+        com.fasterxml.jackson.databind.node.ObjectNode none = chosen.deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) none.get("preferences")).removeAll();
+        post("/preview", PreviewShapes.request(brief, draft, none).toString()).then().statusCode(400)
+                .body("status", equalTo("invalid")).body("code", equalTo("invalid-preview"));
+        post("/preview", "{\"kind\":\"unsaved-draft\"}").then().statusCode(400).body("code", equalTo("invalid-preview"))
+                .body("reasons[0].field", equalTo("preview"));
+        post("/preview", "[1]").then().statusCode(400).body("code", equalTo("invalid-preview"));
+        as().contentType(ContentType.JSON).queryParam("x", "1").body("{}").post(BASE + "/preview").then().statusCode(400)
+                .body("code", equalTo("unsupported-query"));
+    }
+
+    /** One recorded decline for the principal; replica mode skips the offer, hold and stock rows the route never reads. */
+    private static void recordDecline(String decisionId) throws Exception {
+        org.postgresql.ds.PGSimpleDataSource ds = new org.postgresql.ds.PGSimpleDataSource();
+        ds.setUrl(BriefHttpProfiles.URL);
+        ds.setCurrentSchema("gcsp_app");
+        try (java.sql.Connection c = ds.getConnection()) {
+            c.createStatement().execute("SET session_replication_role = replica");
+            try (java.sql.PreparedStatement ps = c.prepareStatement("INSERT INTO offer_decisions (environment_id, run_id, offer_id, "
+                    + "decision_id, command_id, input_digest, employee_id, hold_id, decision, reason_code, versions, outcome, "
+                    + "decided_at) VALUES ('test-app-env', 'run-1', ?, ?, 'cmd', repeat('b', 64), ?, 'hold-x', 'decline', "
+                    + "'body-style', '{\"brief\":1}'::jsonb, '{}'::jsonb, now())")) {
+                ps.setString(1, "offer-" + decisionId);
+                ps.setString(2, decisionId);
+                // The profile's employee id is generated per classloader, so take the one the app wrote the head for.
+                try (java.sql.ResultSet rs = c.createStatement().executeQuery("SELECT employee_id FROM brief_heads "
+                        + "WHERE environment_id = 'test-app-env' ORDER BY updated_at DESC LIMIT 1")) {
+                    rs.next();
+                    ps.setString(3, rs.getString(1));
+                }
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    @Test
+    @Order(9)
+    void changeAfterDeclineRefusesBadRequestsAndRecordsOneChangeWithTheAngularShape() throws Exception {
+        int brief = version("briefVersion");
+        String body = "{\"commandId\":\"http-d0\",\"expectedBriefVersion\":" + brief + ",\"decisionId\":\"http-decline\","
+                + "\"change\":{\"path\":\"preferences.body.value\",\"value\":\"suv\"}}";
+        assertTrue(PreviewShapes.declineRequest(Json.M.readTree(body)));
+        post("/change-after-decline", "{}").then().statusCode(400).body("code", equalTo("invalid-command"));
+        post("/change-after-decline", body.replace("\"change\":{", "\"change\":{\"other\":1,")).then().statusCode(400)
+                .body("code", equalTo("invalid-brief")).body("reasons[0].field", equalTo("change"));
+        post("/change-after-decline", body.replace("preferences.body.value", "buddy.enabled")).then().statusCode(400)
+                .body("reason", equalTo("Change exactly one registered preference value or essential."));
+        post("/change-after-decline", body).then().statusCode(404).body("code", equalTo("not-found"))
+                .body("resourceType", equalTo("decisions"));
+        post("/change-after-decline", body.replace("http-d0", "http-d5").replace("\"expectedBriefVersion\":" + brief, "\"expectedBriefVersion\":" + (brief + 5)))
+                .then().statusCode(409).body("code", equalTo("stale-version")).body("currentVersion", equalTo(brief));
+        recordDecline("http-decline");
+        Response ok = post("/change-after-decline", body);
+        ok.then().statusCode(200).body("status", equalTo("ok")).body("value.brief.briefVersion", equalTo(brief + 1))
+                .body("value.brief.postDeclineChange.decisionId", equalTo("http-decline"))
+                .body("value.event.operation", equalTo("changed-after-decline"));
+        assertTrue(PreviewShapes.currentValue(Json.M.valueToTree(ok.jsonPath().getMap("value"))));
+        post("/change-after-decline", body).then().statusCode(200).body("replayed", equalTo(true));
+        post("/change-after-decline", body.replace("http-d0", "http-d1").replace("\"expectedBriefVersion\":" + brief,
+                "\"expectedBriefVersion\":" + (brief + 1))).then().statusCode(409)
+                .body("code", equalTo("decline-change-already-recorded")).body("current.briefVersion", equalTo(brief + 1));
+        as().contentType(ContentType.JSON).queryParam("x", "1").body(body).post(BASE + "/change-after-decline").then()
+                .statusCode(400).body("code", equalTo("unsupported-query"));
     }
 }

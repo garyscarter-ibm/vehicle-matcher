@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { ManualStore } from '../manual/manual.store';
 import { StockComponent } from './stock.component';
 import { StockNavigationSnapshot } from './stock.store';
+import type { StockCar } from './stock.types';
 
 const historyKey = 'gcspStock';
 const record = (value: unknown): Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -12,12 +14,14 @@ const record = (value: unknown): Record<string, unknown> => value !== null && ty
   selector: 'gcsp-stock-route',
   imports: [StockComponent],
   template: `<gcsp-stock [navigation]="navigation()" (navigationChange)="saveNavigation($event)"
-    reviewUnavailableReason="Reviewing a car is currently unavailable. You can still browse cars and view their details."
-    (back)="backToChoices()" />`,
+    [reviewUnavailableReason]="openingReview() ? 'Checking your selection before review.' : null"
+    (review)="reviewSelection($event)" (back)="backToChoices()" />`,
 })
 export class StockRouteComponent {
   private readonly location = inject(Location);
   private readonly router = inject(Router);
+  private readonly manual = inject(ManualStore);
+  readonly openingReview = signal(false);
   private readonly routePath = this.location.path().split('?')[0];
   readonly navigation = signal<unknown>(record(this.location.getState())[historyKey] ?? null);
   private lastSnapshot: string | undefined;
@@ -51,6 +55,14 @@ export class StockRouteComponent {
     else this.location.go(path, '', state);
   }
 
+  async reviewSelection(selection: StockCar['review']): Promise<void> {
+    if (this.disposed || this.openingReview()) return;
+    this.openingReview.set(true);
+    try {
+      await this.manual.enter(selection);
+      if (!this.disposed) await this.router.navigateByUrl('/manual/review');
+    } finally { this.openingReview.set(false); }
+  }
   backToChoices(): void { void this.router.navigateByUrl('/account'); }
   private onStockPath(): boolean { return this.location.path().split('?')[0] === this.routePath; }
 }

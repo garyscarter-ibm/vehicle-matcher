@@ -38,7 +38,7 @@ public final class BriefHttpProfiles {
     }
 
     static Set<Class<?>> ports() {
-        return Set.of(BriefHttpPorts.SeedPolicy.class, BriefHttpPorts.CurrentCar.class);
+        return Set.of(BriefHttpPorts.SeedPolicy.class, BriefHttpPorts.CurrentCar.class, BriefHttpPorts.StubPreview.class);
     }
 
     /** An employee with the shared test database (the same environment and first run as PersistenceWiringTest). */

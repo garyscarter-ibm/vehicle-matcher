@@ -1,21 +1,24 @@
 package gcsp.api.claims;
 
+import gcsp.api.account.ManualStockHolder;
 import gcsp.api.policy.PolicyClock;
 import gcsp.api.policy.PolicyService;
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.Produces;
 
 /** Production defaults; each is replaced by providing another bean of the port type. */
 @ApplicationScoped
 public class ClaimDefaults {
 
-    /** Manual browse and eligibility are not built in Java yet (FUCQ-461/442), so every claim is unavailable. */
+    /** The manual browse; without a database or account provider it answers manual-selection-not-configured. */
     @Produces
     @DefaultBean
     @ApplicationScoped
-    ManualSelectionPort selection() {
-        return new UnconfiguredManualSelection();
+    ManualSelectionPort selection(ManualStockHolder stock, Instance<AgroalDataSource> dataSource) {
+        return new ManualSelection(stock::stock, dataSource::get);
     }
 
     /** The offer id comes from the Buddy hold's attributes (FUCQ-464 writes offerId there). */
