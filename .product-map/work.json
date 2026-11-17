@@ -7199,7 +7199,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T09:23:07Z",
+      "observed_at": "2026-11-17T15:33:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7229,11 +7229,25 @@
           "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
         },
         {
+          "id": "composition-local",
+          "status": "complete",
+          "title": "AC1 and local AC2 through the started app: real JWTs, repository account, real selection/timing, HTTP race, expiry, review, release, order",
+          "observed_at": "2026-11-17T14:51:33Z",
+          "evidence": "Lead review of ManualClaimsComposedHttpTest (12) on the dev composition: oidc RS256, repository accounts, real ManualSelection/PolicyClaimTiming/LocalClaimStock/CartSelectionConversion, native PG17; 2-employee race 10/10 one winner car-held, slot race, expiry, review-once, replay, drift, claim/quote/order projections; scoped run 32/0"
+        },
+        {
+          "id": "composition-remote",
+          "status": "complete",
+          "title": "AC2 remote through the started app: HttpClaimStock against loopback stock endpoint, response loss, duplicate ack, release loss, restart",
+          "observed_at": "2026-11-17T15:28:44Z",
+          "evidence": "Lead review: ManualClaimsRemoteComposedHttpTest (8) and ManualClaimsRemoteRestartHttpTest (1) boot the dev composition with gcsp.claims.stock.provider=remote, real HttpClaimStock against loopback RemoteOperationServer; response/request loss, mismatch/500, release loss, duplicate acks, remote expiry, restart convergence with 1 effect; run 62/0"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T09:23:07Z",
-          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+          "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
+          "observed_at": "2026-11-17T15:33:01Z",
+          "evidence": "Base merge a44e836fe; scoped started-app set 189 (1 restart-test assumption fixed for FUCQ-479 startup tick, rerun 1/0) on private PG17; Result in _dev story file"
         }
       ]
     },
