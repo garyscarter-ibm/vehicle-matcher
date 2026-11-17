@@ -7432,7 +7432,7 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-17T16:21:01Z",
+      "observed_at": "2026-11-17T16:24:53Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
@@ -7477,9 +7477,10 @@
         },
         {
           "id": "r2-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: base merge, scoped story test set and Result",
-          "observed_at": "2026-11-17T16:21:01Z"
+          "observed_at": "2026-11-17T16:24:53Z",
+          "evidence": "lead: merged origin/gcsp-poc-dev at 0df8441d9; scoped set 123/0/0/0 and Buddy ordering 3/0/0/0 on PG17 :55536; Result written"
         }
       ]
     },
