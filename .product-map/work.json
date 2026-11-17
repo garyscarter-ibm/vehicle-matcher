@@ -7909,7 +7909,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-17T14:24:40Z",
+      "observed_at": "2026-11-17T14:38:29Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7968,8 +7968,10 @@
         },
         {
           "id": "r2-ac2-proofs",
-          "status": "not-started",
-          "title": "Reopened: started-app proofs of non-demo composition seeding nothing and restart preserving work"
+          "status": "complete",
+          "title": "Reopened: started-app proofs of non-demo composition seeding nothing and restart preserving work",
+          "observed_at": "2026-11-17T14:38:29Z",
+          "evidence": "Lead review: PresenterCompositionPhase1/Phase2HttpTest, configured non-demo composition (hr-snapshot, synthetic ordering/appointments, tranche-plan, scenario none, reset not allowed) seeds no demo rows, refuses reset, real app restart keeps run, clock and employee draft; presenter+scenario 47/0 scoped at 437020601+slice"
         },
         {
           "id": "r2-integration",
