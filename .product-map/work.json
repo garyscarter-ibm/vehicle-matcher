@@ -7686,7 +7686,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-17T16:20:16Z",
+      "observed_at": "2026-11-17T17:40:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -7731,29 +7731,38 @@
         },
         {
           "id": "s6-source",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: bind ReturnSourcePort to the ordering selection record (manual and buddy)",
-          "observed_at": "2026-11-17T16:20:16Z"
+          "observed_at": "2026-11-17T16:41:05Z",
+          "evidence": "64712ee75 reviewed by lead: OrderingReturnSource over selection_orders+pending draft/account; returns pkg 103/0 on native PG17; DB path proven in s9 journey"
         },
         {
           "id": "s7-handover-policy",
-          "status": "not-started",
-          "title": "Reopened: bind returns HandoverPort to appointments and the return policy to PolicyService"
+          "status": "complete",
+          "title": "Reopened: bind returns HandoverPort to appointments and the return policy to PolicyService",
+          "observed_at": "2026-11-17T16:51:39Z",
+          "evidence": "64712ee75 reviewed by lead: ReturnsHandover over appointments, PolicyServiceReturnPolicy canonical; returns pkg 103/0 native PG17; started-app proof in s9"
         },
         {
           "id": "s8-handover-current-car",
-          "status": "not-started",
-          "title": "Reopened: appointment-completed outbox event changes the current car once, via return progress"
+          "status": "complete",
+          "title": "Reopened: appointment-completed outbox event changes the current car once, via return progress",
+          "observed_at": "2026-11-17T16:51:40Z",
+          "evidence": "3195f6349 reviewed by lead: appointment-completed applied in ReturnPlans.progress once; ReturnHandoverCurrentCarTest 6/0, returns+clock.bound 117/0"
         },
         {
           "id": "s9-journey",
-          "status": "not-started",
-          "title": "Reopened: started-app journey with request, accept, completion, current car, account and restart"
+          "status": "complete",
+          "title": "Reopened: started-app journey with request, accept, completion, current car, account and restart",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "2cef4af11+cf05ce9cc reviewed by lead: ReturnJourneyHttpTest (canonical policy, demo supply) and ReturnOutcomeJourneyHttpTest (retained file) green on started app, no alternatives; scoped 391/0"
         },
         {
           "id": "s10-integration",
-          "status": "not-started",
-          "title": "Reopened: base merge, scoped test set and result"
+          "status": "complete",
+          "title": "Reopened: base merge, scoped test set and result",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "merged gcsp-poc-dev 9f6be11e2 (cce771d49); scoped set 391 run 0 fail at cf05ce9cc; Result committed"
         }
       ]
     },
