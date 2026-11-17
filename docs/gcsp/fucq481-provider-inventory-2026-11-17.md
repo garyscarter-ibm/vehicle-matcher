@@ -6,15 +6,15 @@ This records the external provider ports in the GCSP Java API as the source stan
 - **The full record:** the machine-readable version, with contracts, implementations, consumers, failure semantics and evidence per port, is [`fucq481-provider-inventory-2026-11-17.json`](fucq481-provider-inventory-2026-11-17.json).
 
 ## Summary
-There are 59 ports: 24 read/input and 35 action/event.
+There are 59 inventory records: 24 read/input and 35 action/event. These include grouped contracts and cross-domain duplicates, including `EligibleCandidates`; the counts describe records, not a deduplicated port total or exhaustive AC1 coverage.
 
-| Status | Count | Meaning |
+| Status | Records | Meaning |
 |---|---|---|
 | local-bound | 13 | A local or repository provider is bound at startup |
 | remote-bound | 0 | No port has a remote provider bound |
 | default-unconfigured | 21 | The default gives a refusing or unconfigured provider |
 | partial | 23 | Some provider modes exist, but a required mode or a consumer path is missing |
-| unverified-runtime | 2 | Wired in source and never run connected: persistence, and the offer-decision remote branch |
+| unverified-runtime | 2 | Connected composition unverified by this inventory: persistence, and the offer-decision remote branch; selected PostgreSQL component evidence exists |
 
 **Selection:** every switchable provider is chosen once at startup from a `gcsp.*` key in `services/gcsp-api/src/main/resources/application.properties`. The keys are identity, account, evidence, supply, documents, appointments, approvals, returns, production, ordering, scenario and mail.
 - Every one defaults to `none`, except mail, which defaults to captured.
@@ -50,7 +50,7 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | IdentityPort | read/input | default-unconfigured | `gcsp.identity.provider` = none | services/gcsp-api/src/main/java/gcsp/api/identity/IdentityPort.java:7 | Default is none; only an in-process JWKS server has exercised the oidc provider. No real issuer evidenced (dispatcher-learnings.md:335 lists real Java/OIDC/PostgreSQL proof as unrun). |
 | PolicySource | read/input | local-bound | `(follows persistence)` = retained classpath seed | services/gcsp-api/src/main/java/gcsp/api/policy/PolicySource.java:7 | Bound at startup with no extra config to retained dated tables (classpath) or PostgreSQL. Retained synthetic policy, not a BMW source. Postgres-backed tests skip without GCSP_TEST_DATABASE_U |
 | PolicyClock | read/input | partial | `(none)` = wall clock | services/gcsp-api/src/main/java/gcsp/api/policy/PolicyClock.java:9 | Wall clock only; the presenter RunClock does not feed PolicyClock consumers. No PresenterClock class exists; the presenter clock is RunClock. |
-| AccountRecordsPort | read/input | default-unconfigured | `gcsp.account.provider (+ gcsp.account.hr-snaps` = none | services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7 | Default none; both real providers exist (file, PostgreSQL) but the proposed Render blueprint sets no account key. Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31 |
+| AccountRecordsPort | read/input | default-unconfigured | `gcsp.account.provider (+ gcsp.account.hr-snaps` = none | services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7 | Default none; file and PostgreSQL providers exist; the committed blueprint sets GCSP_ACCOUNT_PROVIDER=none (render.gcsp.yaml:229). |
 | AccountPolicyPort | read/input | partial | `(none)` = UnconfiguredAccountPolicy | services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6 | Injected AccountService permanently refuses; README.md:184-186 records the PolicyAccountAdapter swap as pending. |
 | CurrentCarPort (account) | read/input | default-unconfigured | `(none)` = empty list | services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3 | Always empty and reported as success, not unavailable. services/gcsp-api/README.md:666 says the returns-store adapter is future work. |
 | AccountClockPort | read/input | partial | `gcsp.account.fixed-now (no properties entry)` = unset: system clock | services/gcsp-api/src/main/java/gcsp/api/account/AccountClockPort.java:3 | Wall clock; presenter RunClock does not reach it. |
@@ -69,7 +69,7 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | DemandPolicyPort / UnmetEvaluationPort / OfferRecordsPort / Allocation | read/input | partial | `(none)` = refusals | services/gcsp-api/src/main/java/gcsp/api/demand/DemandPolicyPort.java:8 | Policy port bound through PolicyDemandAdapter; evaluation, offers and allocation records unbound. |
 | PlanningDemand | read/input | default-unconfigured | `(none)` = planning-forecast-not-config | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10 | No PostgresPlanningDemand class on this branch; FUCQ-477 commit 76837ffe8 is not an ancestor of HEAD (git merge-base --is-ancestor), per docs/gcsp/fucq477-planning-demand-2026-11-17.md:42-57 |
 | PlanningSupply | read/input | default-unconfigured | `(none)` = planning-supply-not-configur | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningSupply.java:10 | No PostgresPlanningSupply class on this branch. |
-| Persistence gate (datasource and Flyway activation) | read/input | unverified-runtime | `GCSP_DATABASE_URL (+ gcsp.persistence.* in pro` = off | services/gcsp-api/src/main/java/gcsp/api/persistence/Persistence.java:15 | No PostgreSQL native or hosted run is evidenced (dispatcher-learnings.md:335). Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31-39), so connected PostgreSQL behav |
+| Persistence gate (datasource and Flyway activation) | read/input | unverified-runtime | `GCSP_DATABASE_URL (+ gcsp.persistence.* in pro` = off | services/gcsp-api/src/main/java/gcsp/api/persistence/Persistence.java:15 | Selected native PostgreSQL component evidence is retained in docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59; original connected provider-composition and full AC2 journey remain unproved. |
 | Scenario DemoPreparation (seeding of account tables) | read/input | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:125 | Direct seeding does not go through the provider ports; worker B owns scenario in detail. |
 | ManualSelectionPort | action/event | partial | `(none)` = ManualSelection over stock:: | services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:7 | Real implementation exists but only produces results when persistence (GCSP_DATABASE_URL) and an account provider supply stock; otherwise answers not-configured. |
 | ClaimStockPort | action/event | default-unconfigured | `(none)` = LocalClaimStock (Mode LOCAL) | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:7 | Only LOCAL implementation in main; no remote implementation and no config key, so REMOTE mode cannot be selected at startup. |
@@ -122,6 +122,7 @@ These are listed with file:line in the JSON under `defectCandidates`. They have 
 - **Account records** are read by direct SQL outside the account port.
 
 ## What this does not prove
-- There is no connected runtime, real OIDC, real email, hosted deployment or BMW evidence.
+- This inventory ran no runtime. It establishes no full connected provider-composition, real OIDC/email, hosted deployment or BMW proof. Retained selected native PostgreSQL component evidence exists, including the F477 helper run (docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59).
 - PostgreSQL-backed tests skip without `GCSP_TEST_DATABASE_URL`.
-- Status comes from source and named tests only. A bound class or a passing unit test is not a connected run.
+- Status comes from source inspection. Named tests identify test source; their presence does not establish execution in this assignment. Selected retained component passes do not prove the complete connected journey.
+- Several records group contracts or overlap across domains. The parent sampled source facts and corrected blueprint/evidence statements; not every semantic claim was independently reverified.
