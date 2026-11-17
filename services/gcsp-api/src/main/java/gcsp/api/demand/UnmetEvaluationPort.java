@@ -8,7 +8,7 @@ import java.util.Map;
 /** Evaluates saved briefs against visible released cars (the recommendation gates); one batched call per read. */
 public interface UnmetEvaluationPort {
 
-    Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf);
+    Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf, long clockVersion);
 
     record BriefCandidate(String employeeId, long briefVersion, JsonNode content, String companyId, String schemeId,
             List<CarCandidate> cars) {}

@@ -332,7 +332,7 @@ public final class DemandService {
         // Unmet demand.
         Map<String, Bucket> gateBuckets = new HashMap<>();
         Bucket unmetTotal = new Bucket();
-        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, s, byEmployee, reasonCodes).entrySet()) {
+        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, clockVersion, s, byEmployee, reasonCodes).entrySet()) {
             List<Ver> v = List.of(new Ver(u.getKey().version(), u.getKey().policyVersion()));
             unmetTotal.hit(v);
             for (String gate : u.getValue()) gateBuckets.computeIfAbsent(gate, x -> new Bucket()).hit(v);
@@ -612,7 +612,7 @@ public final class DemandService {
     // ---- unmet demand ----
 
     /** The gates of every brief with no eligible car, in brief order. */
-    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, Snapshot s, Map<String, Brief> byEmployee,
+    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, long clockVersion, Snapshot s, Map<String, Brief> byEmployee,
             Set<String> reasonCodes) {
         Map<Brief, List<String>> out = new LinkedHashMap<>();
         for (Brief b : s.briefs()) {
@@ -653,7 +653,7 @@ public final class DemandService {
         if (candidates.isEmpty()) return out;
         Evaluation evaluation;
         try {
-            evaluation = unmet.evaluate(scope, candidates, asOf);
+            evaluation = unmet.evaluate(scope, candidates, asOf, clockVersion);
         } catch (RuntimeException ex) {
             throw new Unavailable("evaluation-unavailable");
         }

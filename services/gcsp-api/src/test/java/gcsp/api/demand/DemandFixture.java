@@ -285,11 +285,13 @@ final class DemandFixture implements AutoCloseable {
         volatile boolean unavailable;
         final AtomicInteger calls = new AtomicInteger();
         volatile List<BriefCandidate> last = List.of();
+        volatile long lastClockVersion;
 
         @Override
-        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf) {
+        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf, long clockVersion) {
             calls.incrementAndGet();
             last = candidates;
+            lastClockVersion = clockVersion;
             if (unavailable) return Evaluation.UNAVAILABLE;
             Map<String, List<CarDecision>> out = new java.util.HashMap<>();
             candidates.forEach(c -> out.put(c.employeeId(), rule.apply(c)));
