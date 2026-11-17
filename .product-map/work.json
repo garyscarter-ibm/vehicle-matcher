@@ -7144,7 +7144,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T01:00:56Z",
+      "observed_at": "2026-11-17T15:18:28Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7172,13 +7172,34 @@
           "title": "Story validation, base merge, migration number and result",
           "observed_at": "2026-11-14T01:00:56Z",
           "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
+        },
+        {
+          "id": "s4-demo-provider-policy",
+          "status": "complete",
+          "title": "Demo supply provider with confirmed-supply windows, PolicyService release policy binding",
+          "observed_at": "2026-11-17T14:28:59Z",
+          "evidence": "lead review of b1d650bf1: demo provider + confirmed-supply lookup, PolicyReleaseAdapter bound by default; Node parity 7 cases; DemoSupplyProviderTest 5/5, SupplySelectionTest 7/7 rerun by lead; supply+presenter Quarkus 74 run, 1 failure also on base"
+        },
+        {
+          "id": "s5-journey-proof",
+          "status": "complete",
+          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "lead review of ca3b693a9: SupplyDevCompositionHttpTest 9/9 on dev composition (oidc JWTs, PG17, demo provider, PolicyService); cue fix reviewed"
+        },
+        {
+          "id": "s6-integration-r2",
+          "status": "complete",
+          "title": "Reopened run: scoped validation, base merge and result",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "base merged 269c6f728; scoped set 179/0/0/0 on 269c6f728 native PG17; result block committed"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T09:23:07Z",
+      "observed_at": "2026-11-17T15:33:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7208,18 +7229,32 @@
           "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
         },
         {
+          "id": "composition-local",
+          "status": "complete",
+          "title": "AC1 and local AC2 through the started app: real JWTs, repository account, real selection/timing, HTTP race, expiry, review, release, order",
+          "observed_at": "2026-11-17T14:51:33Z",
+          "evidence": "Lead review of ManualClaimsComposedHttpTest (12) on the dev composition: oidc RS256, repository accounts, real ManualSelection/PolicyClaimTiming/LocalClaimStock/CartSelectionConversion, native PG17; 2-employee race 10/10 one winner car-held, slot race, expiry, review-once, replay, drift, claim/quote/order projections; scoped run 32/0"
+        },
+        {
+          "id": "composition-remote",
+          "status": "complete",
+          "title": "AC2 remote through the started app: HttpClaimStock against loopback stock endpoint, response loss, duplicate ack, release loss, restart",
+          "observed_at": "2026-11-17T15:28:44Z",
+          "evidence": "Lead review: ManualClaimsRemoteComposedHttpTest (8) and ManualClaimsRemoteRestartHttpTest (1) boot the dev composition with gcsp.claims.stock.provider=remote, real HttpClaimStock against loopback RemoteOperationServer; response/request loss, mismatch/500, release loss, duplicate acks, remote expiry, restart convergence with 1 effect; run 62/0"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T09:23:07Z",
-          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+          "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
+          "observed_at": "2026-11-17T15:33:01Z",
+          "evidence": "Base merge a44e836fe; scoped started-app set 189 (1 restart-test assumption fixed for FUCQ-479 startup tick, rerun 1/0) on private PG17; Result in _dev story file"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-14T08:56:54Z",
+      "observed_at": "2026-11-17T14:36:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7249,11 +7284,39 @@
           "evidence": "9f3c761a5 reviewed by Mulan; RemoteLifecycleTest 13/13, allocation scope 45/45 native PG 17"
         },
         {
+          "id": "tick-handlers",
+          "status": "complete",
+          "title": "Bind buddy-allocation, buddy-expiry and buddy-pending-operations tick handlers; repair FUCQ-516 later-clock terms comparison",
+          "observed_at": "2026-11-17T11:18:47Z",
+          "evidence": "Spike review of Toothless diff; BuddyTickHandlersPgTest 6/6, CanonicalCandidatesPgTest 2/2, RemoteLifecycleTest 14/14 native PG17 (FUCQ-516 repaired via termsBasis)"
+        },
+        {
+          "id": "activity-route",
+          "status": "complete",
+          "title": "GET /api/gcsp/v1/activity over Java brief, offer, allocation and clock state",
+          "observed_at": "2026-11-17T11:51:31Z",
+          "evidence": "Spike review of Sulley diff; ActivityHttpTest 4/4 + ActivityChecksTest 2/2 over RS256 JWT and native PG17; scope activity+brief+offers 236/0/0"
+        },
+        {
+          "id": "composition-proof",
+          "status": "complete",
+          "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)",
+          "observed_at": "2026-11-17T14:31:52Z",
+          "evidence": "Spike review of Hubie journeys: BuddyAllocationJourneyHttpTest 1/1 (AC1 via presenter tick, supply release) and BuddyRemoteCustodyJourneyHttpTest 1/1 (AC2 lost execute/reconcile, startup tick, expiry release) over RS256 JWT + native PG17"
+        },
+        {
+          "id": "docs-config",
+          "status": "complete",
+          "title": "Document GCSP_ALLOCATION_CANDIDATES_PROVIDER dev selection in README and proposed Render block",
+          "observed_at": "2026-11-17T11:53:22Z",
+          "evidence": "README env table row GCSP_ALLOCATION_CANDIDATES_PROVIDER, allocation handler/port/activity notes; render-service.proposed.yaml sets recommendation for dev; reviewed by Spike"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T08:56:54Z",
-          "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
+          "title": "Integration: base merge, full Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-17T14:36:01Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 3c48fa47f; scoped set 126/0/0 incl. AC journeys and wiring tests on native PG17; lead review of all slices"
         }
       ]
     },
@@ -7526,7 +7589,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T08:04:36Z",
+      "observed_at": "2026-11-17T14:49:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7568,6 +7631,34 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:36Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        },
+        {
+          "id": "s6-bindings",
+          "status": "complete",
+          "title": "Real stage, readiness, document case and approvals handover adapters bound at startup",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 28ac8d007: real ApprovalsOrderStage, DocumentsHandoverReadiness, LifecycleDocumentCases, AppointmentHandover bound; RealPortsWiringTest, PortMappingTest, LifecycleDocumentCasesTest pass on native PG17; proven in HandoverJourneyHttpTest (563646b2f)"
+        },
+        {
+          "id": "s7-no-show",
+          "status": "complete",
+          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 6f41c17af: greg-only POST /appointments/no-show, appointment-no-show outbox event, rebooking attempt n+1, V472_2; AppointmentNoShowTest 8/8, appointments package 97/97, journey step 11"
+        },
+        {
+          "id": "s8-journey",
+          "status": "complete",
+          "title": "Integrated journey through the started app with real adapters; dev config documented",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 563646b2f: HandoverJourneyHttpTest 12 steps over real JWTs and PG17 with real lifecycle ports; README and render-service.proposed.yaml dev selection"
+        },
+        {
+          "id": "s9-integration-r2",
+          "status": "complete",
+          "title": "Reopened: base merge, Java verify and result",
+          "observed_at": "2026-11-17T14:49:05Z",
+          "evidence": "Lead-run scoped set on merged head e8daef648: 216 run, 0 failures (appointments, approvals, documents, wiring/startup, HandoverJourneyHttpTest); base merged, Result written"
         }
       ]
     },
@@ -7803,7 +7894,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T10:17:02Z",
+      "observed_at": "2026-11-17T14:55:13Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7842,9 +7933,37 @@
         {
           "id": "integration",
           "status": "complete",
-          "title": "Merge base, full Java verify and story result",
+          "title": "Merge base, full Java verify and story result (14 Nov)",
           "observed_at": "2026-11-14T10:17:02Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
+        },
+        {
+          "id": "r2-handlers",
+          "status": "complete",
+          "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock",
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review of a82d24255+4440b0e74+79d1ce3b4: manual-claim-expiry, buddy-expiry, buddy-pending-operations (remote), buddy-allocation (only with a candidates provider), production handlers bound; scoped presenter clock 16/0, rs-final 164/0 at 8cd16d928+slice"
+        },
+        {
+          "id": "r2-run-scope",
+          "status": "complete",
+          "title": "Reopened: principal follows the active run (FUCQ-506) and presenter/clock/reset route",
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review: ActiveRunPrincipal bound in BearerAuthentication (FUCQ-506; test fails without it), POST /presenter/clock/reset registered as mechanics-scenario reset; rs-final 164/0 scoped"
+        },
+        {
+          "id": "r2-ac2-proofs",
+          "status": "complete",
+          "title": "Reopened: started-app proofs of non-demo composition seeding nothing and restart preserving work",
+          "observed_at": "2026-11-17T14:38:29Z",
+          "evidence": "Lead review: PresenterCompositionPhase1/Phase2HttpTest, configured non-demo composition (hr-snapshot, synthetic ordering/appointments, tranche-plan, scenario none, reset not allowed) seeds no demo rows, refuses reset, real app restart keeps run, clock and employee draft; presenter+scenario 47/0 scoped at 437020601+slice"
+        },
+        {
+          "id": "r2-integration",
+          "status": "complete",
+          "title": "Reopened: merge base, full Java verify and story result (17 Nov)",
+          "observed_at": "2026-11-17T14:55:13Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev (a63edcf3a, FUCQ-464 handler-id collision resolved), scoped 312/0 at 3a4c6a60e on native PG17; result block committed"
         }
       ]
     },

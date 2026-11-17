@@ -27,6 +27,9 @@ public class Allocation {
     Instance<AgroalDataSource> sources;
 
     private AllocationService service;
+    private AllocationTriggers triggers;
+    private BuddyExpiry expiry;
+    private BuddyRemoteLifecycle lifecycle;
 
     public boolean available() {
         return persistence.active();
@@ -37,5 +40,22 @@ public class Allocation {
         if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
         if (service == null) service = new AllocationService(sources.get(), policy, candidates.get(), remote.get());
         return service;
+    }
+
+    public synchronized AllocationTriggers triggers() {
+        if (triggers == null) triggers = new AllocationTriggers(sources.get(), service());
+        return triggers;
+    }
+
+    public synchronized BuddyExpiry expiry() {
+        if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
+        if (expiry == null) expiry = new BuddyExpiry(sources.get(), policy, remote.get());
+        return expiry;
+    }
+
+    public synchronized BuddyRemoteLifecycle lifecycle() {
+        if (!persistence.active()) throw new IllegalStateException("Persistence is not configured");
+        if (lifecycle == null) lifecycle = new BuddyRemoteLifecycle(sources.get(), policy, candidates.get(), remote.get());
+        return lifecycle;
     }
 }

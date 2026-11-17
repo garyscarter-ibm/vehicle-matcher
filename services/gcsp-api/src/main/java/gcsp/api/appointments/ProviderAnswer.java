@@ -36,6 +36,10 @@ public sealed interface ProviderAnswer {
     record Completed(String operationId, String orderUuid, String step, Slot slot, String providerReference, Instant at)
             implements ProviderAnswer.Done {}
 
+    /** No-show step: the handover was missed at the given instant. */
+    record NoShow(String operationId, String orderUuid, String step, Slot slot, String providerReference, Instant at)
+            implements ProviderAnswer.Done {}
+
     /** Confirm step before its delay has passed; nothing was recorded. */
     record InProgress(String operationId, String orderUuid, String step) implements ProviderAnswer {}
 

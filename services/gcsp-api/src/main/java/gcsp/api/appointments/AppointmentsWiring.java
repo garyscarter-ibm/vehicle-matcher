@@ -3,15 +3,12 @@ package gcsp.api.appointments;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
 import io.agroal.api.AgroalDataSource;
-import io.quarkus.arc.DefaultBean;
 import io.quarkus.runtime.Startup;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
-import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import java.util.function.Supplier;
 import javax.sql.DataSource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -19,7 +16,7 @@ import org.jboss.logging.Logger;
 
 /**
  * Chooses the appointment provider once at startup (an unknown name stops startup) and builds the service when
- * persistence is on. Later Stories replace the unconfigured stage and readiness ports below.
+ * persistence is on. The stage, readiness and handover ports are the approvals and documents adapters beside it.
  */
 @ApplicationScoped
 @Startup
@@ -104,19 +101,5 @@ public class AppointmentsWiring {
     public RunContext scope() {
         var run = persistence.guard().currentRun();
         return new RunContext(run.environmentId(), run.runId(), ACTOR);
-    }
-
-    @Produces
-    @DefaultBean
-    @Singleton
-    OrderStagePort unconfiguredStages() {
-        return new UnconfiguredOrderStage();
-    }
-
-    @Produces
-    @DefaultBean
-    @Singleton
-    HandoverReadinessPort unconfiguredReadiness() {
-        return new UnconfiguredHandoverReadiness();
     }
 }

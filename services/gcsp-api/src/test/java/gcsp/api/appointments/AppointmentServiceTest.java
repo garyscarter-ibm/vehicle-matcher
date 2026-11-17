@@ -25,7 +25,8 @@ class AppointmentServiceTest {
 
     static final List<String> KEYS = List.of("contractVersion", "runId", "orderUuid", "employeeId", "version", "state",
             "booked", "slot", "requestedSlot", "proposedSlot", "proposalId", "history", "owner", "nextStep", "pending",
-            "blocked", "offeredSlots", "eligibility", "policyVersion", "assumptions", "provider", "fictional", "outcome");
+            "blocked", "offeredSlots", "eligibility", "policyVersion", "assumptions", "provider", "fictional", "outcome", "attempt",
+            "previousAttempts");
 
     static ApptHarness proposing() throws Exception {
         return ApptHarness.create(false, d -> ApptHarness.value(d, "lifecycle.appointments.scenario.v1").put("proposeChange", true));
