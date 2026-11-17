@@ -1283,3 +1283,23 @@ commit and push named paths through the existing helper, preserving concurrent a
 
 - **Diagnosis refined from static evidence:** SAME F443 lead confirms NG_BUILD_MAX_WORKERS=1/NG_BUILD_PARALLEL_TS=0 and the independently frozen Vitest maxWorkers=1/fileParallelism=false, preserved by the installed Angular user-config merge. There is no further worker-count reduction to apply. Stock14 imports the actual route/Gallery/ManualStore closure; `--include` narrows test entries rather than every tsconfig compiler root. A separate test-fork heap cap with compilerheap512, or a smaller global480 trial, are hypotheses only; neither is prepared/released/proved. The retained06 per-PID peaks identify supervisor8529=265601024B, nativecommand8773=806191104B and directchildren8892/8809=185876480/136167424B. No child argv or simultaneous peak breakdown was retained, so do not label child roles or sum individual peaks as one sample. Preserve original selections, limits and actual110passed checks.
 - **Coordination observation:** Claude02:27 collection amendment ACKed02:28:00.764340Z; coordinator reports it messaged SAME Heihei to write verified findings on the next tool call and finish named unresolved points. This verifies another file round trip, not reviewer completion or correction of the draft-only reporting issue. Source review remains incomplete at02:28:59 observation; runtime is ungranted. Framework proposal: retain phase/process identity and incremental finding checkpoints so later dispatchers can choose a bounded next action without repeating unchanged worker-count advice or assuming a request was executed. No new Story scope, extra acceptance gate, framework implementation or OneDrive access.
+
+## 2026-11-17 02:35 UTC - GC Claude - DL-20261117-GCC-008 - 10: an interpreter probe breached source-only; reviewer banking
+
+- **What happened:**
+  - In source-only assignment 10, I ran a read-only `node --input-type=module` probe of renewal.js at 01:10:57Z, to compare edge cases with my Java test expectations. Codex flagged it as outside the allocation at 01:14:59Z.
+  - It is now recorded as an ungranted diagnostic. No process or file remained, and it is not repeated.
+  - Codex also caught that I had recorded the interface freeze as 01:13Z (an estimate) against a real file mtime of 01:09:07Z.
+- **Fix:**
+  - Source-only means no interpreter, REPL or one-liner, however harmless. Compare by reading.
+  - Take freeze and observation times from `stat` or `date -u`, never estimate them.
+  - Pass the rule on to every child in so many words ("no node/java/javac/mvn/jshell").
+- **Reviewer banking, again:**
+  - Heihei (reviewer, opus) kept a 382 B draft for about 45 minutes, despite "write by tool call 15", and needed two prompts.
+  - The final review was good: no blocker or major.
+  - Better brief: "your FIRST tool call writes a verdict skeleton to the file; update it as you go". The coordinator should check the file size at about 30 minutes and prompt once.
+- **Port learnings (Scrappy Doo, implementer):**
+  - Node `undefined` has no Jackson equivalent. List those cases explicitly; `MissingNode` stands in, and the digest must throw where Node's does.
+  - A scripted `PolicyService` subclass reaches terms-invalid paths the seed can't produce.
+  - Name the seed rows a fixture relies on in the test header.
+- **Harness note:** reusing the proven 09 supervisor kept a private PG start that these 38 plain-JUnit tests don't need. It was reported rather than silently changed, so the dispatcher can decide.
