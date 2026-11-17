@@ -18,9 +18,9 @@
   },
   "evidenceNote": "Initial inventory was static source reading at sourceSha. Named currentReconciliation and reconciliationHistory records additionally cite matching retained component/startup/partial-composition executions. Other named tests remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
   "counts": {
-    "default-unconfigured": 16,
+    "default-unconfigured": 14,
     "local-bound": 15,
-    "partial": 26,
+    "partial": 28,
     "unverified-runtime": 1,
     "remote-bound": 1
   },
@@ -1347,10 +1347,23 @@
         }
       ],
       "gaps": [
-        "Planning forecast cannot respond to employee-shape inputs until the held adapter lands."
+        "Planning forecast cannot respond to employee-shape inputs until the held adapter lands.",
+        "Now also blocks the bound Production plan port: a deployed Greg plan submit answers 503 planning-forecast-not-configured (DEV-2026-11-13-046.md:126)."
       ],
       "bmwGap": "none",
-      "side": "read/input"
+      "side": "read/input",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T13:12:09Z",
+          "source": "ROOT b9041a040 (API bd2c1a5f)",
+          "assignment": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "previous": {
+            "gaps": [
+              "Planning forecast cannot respond to employee-shape inputs until the held adapter lands."
+            ]
+          }
+        }
+      ]
     },
     {
       "port": "PlanningSupply",
@@ -1389,10 +1402,23 @@
         }
       ],
       "gaps": [
-        "Plan reads never see released stock."
+        "Plan reads never see released stock.",
+        "Now also blocks the bound Production plan port: a deployed Greg plan submit answers 503 planning-supply-not-configured once demand is bound (DEV-2026-11-13-046.md:126)."
       ],
       "bmwGap": "none",
-      "side": "read/input"
+      "side": "read/input",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T13:12:09Z",
+          "source": "ROOT b9041a040 (API bd2c1a5f)",
+          "assignment": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "previous": {
+            "gaps": [
+              "Plan reads never see released stock."
+            ]
+          }
+        }
+      ]
     },
     {
       "port": "Persistence gate (datasource and Flyway activation)",
@@ -2995,7 +3021,8 @@
       },
       "consumers": [
         "production/ProductionServiceHolder.java:55",
-        "production/ProductionResource.java:98,147"
+        "production/ProductionResource.java:98,147",
+        "production/GregOrdersResource.java:58,80,97,102 (since F478)"
       ],
       "failure": "live stub answers live-production-unsupported; 202 at ProductionResource.java:234/:242; 503 at :265; synthetic without DB silently Unconfigured (:53-54).",
       "silentFallback": true,
@@ -3025,7 +3052,20 @@
         "Synthetic-without-DB quiet downgrade."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T13:12:09Z",
+          "source": "ROOT b9041a040 (API bd2c1a5f)",
+          "assignment": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "previous": {
+            "consumers": [
+              "production/ProductionServiceHolder.java:55",
+              "production/ProductionResource.java:98,147"
+            ]
+          }
+        }
+      ]
     },
     {
       "port": "PlanSnapshotPort",
@@ -3034,40 +3074,87 @@
       "contract": "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9",
       "implementations": [
         {
-          "class": "UnconfiguredPlanSnapshot",
-          "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionWiring.java:27",
-          "kind": "unconfigured-default"
+          "class": "PlanningPlanSnapshot",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/production/PlanningPlanSnapshot.java:25",
+          "kind": "local"
         }
       ],
       "selection": {
-        "mechanism": "CDI @DefaultBean only; no config key selects it",
-        "ref": null,
+        "mechanism": "CDI @DefaultBean producer; no config key selects it",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionWiring.java:44-49",
         "configKey": null,
         "envVar": null,
         "propertiesRef": null,
-        "default": "default bean",
-        "unsetYields": "UnconfiguredPlanSnapshot (plan-not-configured)",
+        "default": "PlanningPlanSnapshot",
+        "unsetYields": "PlanningPlanSnapshot; the planner's own code when it gives no plan (planning-forecast-not-configured today)",
         "unknownValue": "not applicable (no key)"
       },
       "consumers": [
         "production/ProductionService.java:96-99"
       ],
-      "failure": "Returns Unavailable plan-not-configured.",
+      "failure": "Passes the planner's own code with its reason (PlanningPlanSnapshot.java:85-91); planning-catalog-mapping-missing when a derivative has no Production mapping; never invents a plan.",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "default-unconfigured",
-      "statusWhy": "Only default in main.",
+      "status": "partial",
+      "statusWhy": "F478 binds the real plan port: ProductionWiring.plan() is the @DefaultBean PlanningPlanSnapshot over OrderPlanService and PlanningCatalog (ProductionWiring.java:43-49). Its planner inputs PlanningDemand and PlanningSupply are still the unconfigured defaults, so the started app answers a Greg plan submit with 503 planning-forecast-not-configured.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/production/ProductionFixture.java",
           "kind": "synthetic"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/production/ProductionPlanCompositionTest.java:52-60",
+          "kind": "peer-reported (default composition, 503 planning-forecast-not-configured)"
+        },
+        {
+          "ref": "_dev/in-progress/DEV-2026-11-13-046.md:108-129",
+          "kind": "peer-reported partial result"
         }
       ],
       "gaps": [
-        "No plan snapshot source."
+        "Deployed planner inputs PlanningDemand (FUCQ-475) and PlanningSupply (FUCQ-477, M1/FUCQ-515 hold) are unconfigured.",
+        "F478 journey passes (228 scoped) use test beans for those two inputs and are peer-reported, not rerun here."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T13:12:09Z",
+          "source": "ROOT b9041a040 (API bd2c1a5f)",
+          "assignment": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "previous": {
+            "status": "default-unconfigured",
+            "statusWhy": "Only default in main.",
+            "gaps": [
+              "No plan snapshot source."
+            ],
+            "implementations": [
+              {
+                "class": "UnconfiguredPlanSnapshot",
+                "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionWiring.java:27",
+                "kind": "unconfigured-default"
+              }
+            ],
+            "selection": {
+              "mechanism": "CDI @DefaultBean only; no config key selects it",
+              "ref": null,
+              "configKey": null,
+              "envVar": null,
+              "propertiesRef": null,
+              "default": "default bean",
+              "unsetYields": "UnconfiguredPlanSnapshot (plan-not-configured)",
+              "unknownValue": "not applicable (no key)"
+            },
+            "failure": "Returns Unavailable plan-not-configured.",
+            "evidence": [
+              {
+                "ref": "services/gcsp-api/src/test/java/gcsp/api/production/ProductionFixture.java",
+                "kind": "synthetic"
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "port": "SupplyQueuePort",
@@ -3159,36 +3246,89 @@
       "domain": "planning",
       "direction": "action",
       "contract": "services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29",
-      "implementations": [],
+      "implementations": [
+        {
+          "class": "ProductionResource.submit",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionResource.java:80",
+          "kind": "route"
+        },
+        {
+          "class": "GregOrdersResource",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/production/GregOrdersResource.java:47-102",
+          "kind": "route"
+        }
+      ],
       "selection": {
-        "mechanism": "none; no implementation",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29",
+        "mechanism": "JAX-RS routes over ProductionServiceHolder; the provider comes from gcsp.production.provider",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/GregOrdersResource.java:33",
         "configKey": null,
         "envVar": null,
         "propertiesRef": null,
-        "default": "not applicable",
-        "unsetYields": "Only GET read and POST /preview exist",
+        "default": "routes registered; provider none refuses",
+        "unsetYields": "none provider refusal; with a provider, 503 planning-forecast-not-configured for a plan submit",
         "unknownValue": "not applicable"
       },
       "consumers": [
-        "planning/GregOrderPlanResource.java"
+        "production/ProductionResource.java:93-94",
+        "production/GregOrdersResource.java:58,80,97"
       ],
-      "failure": "Source comment: submission is a later story.",
+      "failure": "Planner code passed through as 503; none provider refuses (ProductionService.java:77,120).",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "default-unconfigured",
-      "statusWhy": "No submit action exists; preview and read only.",
+      "status": "partial",
+      "statusWhy": "Plan submit exists in Production, not in GregOrderPlanResource: POST /greg/production/requests (ProductionResource.java:80-95) reads the current plan through PlanSnapshotPort (ProductionService.java:98-101). GregOrdersResource adds GET/POST /greg/orders, POST /greg/orders/queue and the guarded POST /presenter/production. A deployed submit refuses 503 until the planner inputs are bound.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29",
           "kind": "recorded"
+        },
+        {
+          "ref": "_dev/in-progress/DEV-2026-11-13-046.md:116-120",
+          "kind": "peer-reported routes"
         }
       ],
       "gaps": [
-        "Plan submit absent."
+        "Planner inputs unconfigured in the started app (FUCQ-475/477).",
+        "The presenter step is synthetic-provider only; no live Production.",
+        "No Angular screen calls these routes yet (FUCQ-449)."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T13:12:09Z",
+          "source": "ROOT b9041a040 (API bd2c1a5f)",
+          "assignment": "claude-assist-fucq481-production-inventory-2026-11-17-28",
+          "previous": {
+            "status": "default-unconfigured",
+            "statusWhy": "No submit action exists; preview and read only.",
+            "gaps": [
+              "Plan submit absent."
+            ],
+            "implementations": [],
+            "selection": {
+              "mechanism": "none; no implementation",
+              "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29",
+              "configKey": null,
+              "envVar": null,
+              "propertiesRef": null,
+              "default": "not applicable",
+              "unsetYields": "Only GET read and POST /preview exist",
+              "unknownValue": "not applicable"
+            },
+            "consumers": [
+              "planning/GregOrderPlanResource.java"
+            ],
+            "failure": "Source comment: submission is a later story.",
+            "evidence": [
+              {
+                "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29",
+                "kind": "recorded"
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "port": "ComparisonReplay",
@@ -3780,27 +3920,29 @@
     "Ordering record reconciled to standalone adapter09e224584 and13executed loopback methods; startup selection remains none/synthetic. Earlier source-only/count observations retain their historical scope. No originalAC completion.",
     "2026-11-17T11:28:41Z (fc244cc06; originally recorded as 11:40:00Z): uniquePortCensus is a source census; external/internal classification is judgement with stated rules, not a runtime proof.",
     "2026-11-17T11:55:43Z: assignment 23 corrected the census to 123 declarations / 121 names (34+10+38+41), qualified the startup guarantee (synthetic returns/production downgrade without persistence), scoped remote-bound to explicit configuration, and narrowed the demo bypass to the two Buddy reads. Source only; no new runtime.",
-    "2026-11-17T12:32:24Z: assignment 26 reconciled the account policy, current-car, brief, candidate and ordering rows to ROOT b220082c9. Peer F458 results are peer-reported; the owner order HTTP extension is unrun. Both original AC remain open."
+    "2026-11-17T12:32:24Z: assignment 26 reconciled the account policy, current-car, brief, candidate and ordering rows to ROOT b220082c9. Peer F458 results are peer-reported; the owner order HTTP extension is unrun. Both original AC remain open.",
+    "2026-11-17T13:12:09Z: F478 rows reconciled from source only; the F478 test passes are peer-reported. The Production plan port is bound, but its planner inputs are not, so no deployed Production submit is proven."
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T12:42:24.406039+00:00",
-    "sourceSha": "8a3d0076212eb26168630709ffb6bd0547388b60",
-    "rootSource": "887b2bad632952ac68d6ef6521d5042f2bcb3b9a",
-    "rootApiTree": "dd3deaf0535bf2a1e198736a1eb1901b26c2b2b3",
+    "observedAt": "2026-11-17T13:12:09Z",
+    "sourceSha": "df44a34f568bebbb05a634140de9cf24271ee087",
+    "rootSource": "b9041a040e2319e9ad40dfb11e29c86a21d7e224",
+    "rootApiTree": "bd2c1a5fa4480e5f8345696bbcbe1d23284a79e1",
     "ports": [
-      "AccountPolicyPort",
-      "BriefAccountPort / BriefPolicyPort",
-      "CurrentCarPort (account)",
-      "EligibleCandidates",
-      "OrderingProviderPort"
+      "PlanSnapshotPort",
+      "GregOrderPlan submit action",
+      "PlanningDemand",
+      "PlanningSupply",
+      "ProductionProviderPort"
     ],
-    "basis": "Parent refresh after source26: correct review34 BriefPolicyPort fallback-only error against actual non-default PolicyBriefAdapter; add matching owner HTTP25 pass/review/audit/integration evidence. All59identities/history/census equations preserved. No new runtime or originalAC completion.",
+    "basis": "Source-only F478 Production reconciliation from the ROOT-seeded docs. Supersedes the earlier PlanSnapshotPort and routes-missing rows; no binding or input implemented. 59 identities and order, 54 unaffected rows and the 123/121 census are preserved.",
     "evidenceClasses": {
-      "deliveredCode": "ROOT 3542ff697 bindings; ROOT b220082c9 SelectedAccountCandidates/CandidatesSelection",
-      "matchingLocalTests": "10 scoped parent passes for b220082c9 (8 adapter/selector + 2 generated journeys); owner HTTP25 exact1method26.0s in661185fca/review33PASS/auditclear/integrated887b2bad6",
-      "peerReported": "F458 146/146 incl. 11 dev-composition, not rerun by this parent",
-      "unverifiedIntegration": "Hosted dev absent; registered realOIDC/browser, original Angular account-view validation, real mail, BMW, shaped variation across all ports and FUCQ-516 later-clock recovery remain unverified."
+      "deliveredCode": "F478 fb8104aae + 79c75e99a (PlanningPlanSnapshot, ProductionSubmissionHistory), 20bcb771b (GregOrdersResource routes), merged at 15abc3d82/c27fe7c40; result corrected to partial at 6784c0b46",
+      "defaultConfigured": "PlanSnapshotPort and planning SubmissionHistory are default beans with no key; ProductionProviderPort stays gcsp.production.provider none|synthetic|live-stub",
+      "peerReported": "F478 228 scoped passes (two planner-input test beans) and ProductionPlanCompositionTest 503; not rerun by this parent",
+      "parentPass": "Input27 1 method pass (selected seam with Prepare-shaped rows, not Prepare; remote journey); no acceptance or deployment claim",
+      "absent": "Deployed PlanningDemand/PlanningSupply bindings; live Production; hosted dev; real OIDC/browser; mail; BMW; all-ports shaped variation; FUCQ-516"
     }
   },
   "reconciliationHistory": [
@@ -3880,6 +4022,26 @@
         "peerReported": "F458 146/146 incl. 11 dev-composition, not rerun by this parent",
         "unrun": "209bf4f7a owner GET /manual/order extension",
         "absent": "hosted dev, real OIDC/browser, Angular account view, real mail, BMW, shaped variation across all ports, FUCQ-516 later clock"
+      }
+    },
+    {
+      "observedAt": "2026-11-17T12:42:24.406039+00:00",
+      "sourceSha": "8a3d0076212eb26168630709ffb6bd0547388b60",
+      "rootSource": "887b2bad632952ac68d6ef6521d5042f2bcb3b9a",
+      "rootApiTree": "dd3deaf0535bf2a1e198736a1eb1901b26c2b2b3",
+      "ports": [
+        "AccountPolicyPort",
+        "BriefAccountPort / BriefPolicyPort",
+        "CurrentCarPort (account)",
+        "EligibleCandidates",
+        "OrderingProviderPort"
+      ],
+      "basis": "Parent refresh after source26: correct review34 BriefPolicyPort fallback-only error against actual non-default PolicyBriefAdapter; add matching owner HTTP25 pass/review/audit/integration evidence. All59identities/history/census equations preserved. No new runtime or originalAC completion.",
+      "evidenceClasses": {
+        "deliveredCode": "ROOT 3542ff697 bindings; ROOT b220082c9 SelectedAccountCandidates/CandidatesSelection",
+        "matchingLocalTests": "10 scoped parent passes for b220082c9 (8 adapter/selector + 2 generated journeys); owner HTTP25 exact1method26.0s in661185fca/review33PASS/auditclear/integrated887b2bad6",
+        "peerReported": "F458 146/146 incl. 11 dev-composition, not rerun by this parent",
+        "unverifiedIntegration": "Hosted dev absent; registered realOIDC/browser, original Angular account-view validation, real mail, BMW, shaped variation across all ports and FUCQ-516 later-clock recovery remain unverified."
       }
     }
   ],
@@ -4206,15 +4368,28 @@
       {
         "contract": "PlanSnapshotPort",
         "ref": "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9",
-        "selectionKey": "none: ProductionWiring.java:31 produces UnconfiguredPlanSnapshot",
-        "default": "Unconfigured",
-        "modes": "unconfigured only",
+        "selectionKey": "none: ProductionWiring.java:44-49 produces PlanningPlanSnapshot (@DefaultBean)",
+        "default": "PlanningPlanSnapshot",
+        "modes": "planning (real planner) only",
         "inventoryRows": [
           "PlanSnapshotPort"
         ],
-        "status": "default-unconfigured",
-        "remainingGap": "no implementation beyond refusal",
-        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+        "status": "partial",
+        "remainingGap": "planner inputs PlanningDemand/PlanningSupply unconfigured; 503 planning-forecast-not-configured",
+        "selectionCoverage": "single real default: PlanningPlanSnapshot, no startup key; no longer refusing-only (F478)",
+        "currentCorrections": [
+          {
+            "observedAt": "2026-11-17T13:12:09Z",
+            "previous": {
+              "selectionKey": "none: ProductionWiring.java:31 produces UnconfiguredPlanSnapshot",
+              "default": "Unconfigured",
+              "modes": "unconfigured only",
+              "status": "default-unconfigured",
+              "remainingGap": "no implementation beyond refusal",
+              "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+            }
+          }
+        ]
       },
       {
         "contract": "SupplyQueuePort",
@@ -4288,7 +4463,15 @@
           "PlanningSupply"
         ],
         "status": "default-unconfigured",
-        "remainingGap": "F477 M1/FUCQ-515 hold; supply adapter gated on persistence"
+        "remainingGap": "F477 M1/FUCQ-515 hold; supply adapter gated on persistence; now the only blocker for the bound Production plan port",
+        "currentCorrections": [
+          {
+            "observedAt": "2026-11-17T13:12:09Z",
+            "previous": {
+              "remainingGap": "F477 M1/FUCQ-515 hold; supply adapter gated on persistence"
+            }
+          }
+        ]
       }
     ],
     "clocks": [
@@ -4409,6 +4592,12 @@
           "resultOrHelperTypes": 41,
           "unknown": 0
         }
+      },
+      {
+        "observedAt": "2026-11-17T13:12:09Z",
+        "source": "b9041a040e2319e9ad40dfb11e29c86a21d7e224",
+        "apiTree": "bd2c1a5fa4480e5f8345696bbcbe1d23284a79e1",
+        "note": "Re-checked 173 interface declaration lines under src/main/java against fc244cc06: none added or removed, so 123/121 stands. F478 added classes, not interfaces. PlanSnapshotPort external entry updated."
       }
     ],
     "declarationList": [

@@ -72,7 +72,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_ORDERING_PROVIDER` | `none` | Employee ordering handoff provider: `none` refuses every submit (503 `ordering-provider-not-configured`) while terms and reads still work, `synthetic` is a labelled fictional provider kept in the same database. Unknown values stop startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Explicit override: a retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty (the default) reads PolicyService's current version for the run. Set but unreadable stops startup. |
-| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
+| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. | The dev journey (order, approvals, documents, handover) needs `synthetic` here and for `GCSP_ORDERING_PROVIDER`, `GCSP_APPROVALS_PROVIDER` and `GCSP_DOCUMENTS_PROVIDER`, with persistence on.
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
@@ -84,6 +84,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
+| `GCSP_ALLOCATION_CANDIDATES_PROVIDER` | `none` | Buddy allocation candidates (FUCQ-461/481 selector): `none` refuses every allocation (`recommendation-unavailable`) and leaves the `buddy-allocation`, `buddy-expiry` and `buddy-pending-operations` tick stages unregistered; `recommendation` evaluates each car with the canonical recommendation engine. Set `recommendation` on the dev service. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -299,9 +300,10 @@ server's active run (never to the request); any unknown or repeated query parame
 | Route | Who | Meaning |
 | --- | --- | --- |
 | `GET /appointments?orderUuid=` | owning employee, greg, presenter | Read model `lifecycle.appointments.v1`, with offered slots while nothing is requested. |
-| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request. |
+| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request, or the current version to rebook after a no-show. |
 | `POST /appointments/accept` | employee (own order) | `{commandId, orderUuid, proposalId, expectedVersion}`: accepts the provider's proposed change. |
 | `POST /appointments/complete` | greg | `{commandId, orderUuid, expectedVersion}`: records the handover outcome. |
+| `POST /appointments/no-show` | greg | `{commandId, orderUuid, expectedVersion}`: records a missed handover and its exception event. |
 | `POST /presenter/appointments/ticks` | presenter | `{tickId, now}`: sets the appointment clock, then progresses every actionable appointment; answers `{tick, summary}`. |
 
 Results: 200 `ok`; 202 `pending` (`provider-outcome-uncertain` with `operationId` and the read model, or an uncertain commit
@@ -313,9 +315,12 @@ with `outcome-uncertain`), never to be resent as a new command; 400 `invalid-app
 `appointments-clock-unavailable`, `appointment-policy-unavailable`, `handover-readiness-unavailable`, `persistence-not-configured`).
 Every body carries `status`, `code` (when not ok), `reason` and `retryable`; tokens and upstream errors are never echoed.
 
-Ports, each with an explicit unconfigured default that answers unavailable (no silent fallback): `AppointmentProvider`,
-`OrderStagePort` (FUCQ-470 replaces it), `HandoverReadinessPort` (FUCQ-471 replaces it), `AppointmentPolicy` and
-`AppointmentClock`. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
+Ports: `AppointmentProvider` (selected below), `AppointmentPolicy` and `AppointmentClock`. The lifecycle seams are bound to
+the real producers: `OrderStagePort` is `ApprovalsOrderStage` (approvals' `lifecycle.stages.v1` read), `HandoverReadinessPort`
+is `DocumentsHandoverReadiness` (documents readiness), documents' `DocumentCasePort` is `LifecycleDocumentCases`
+(approvals stages, the ordering selection owner, employee and slot rows), and approvals' `HandoverPort` is
+`AppointmentHandover`, so a completed handover becomes the order's final `handover` stage. Each answers unavailable when its
+producer is off; none falls back to a default. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
 (`PolicyServiceAppointmentPolicy`); any gap or a wrong pin is 503 `appointment-policy-unavailable`, never a default.
 Appointment time is the latest presenter tick, never the wall clock.
 
@@ -329,7 +334,12 @@ retries) and logs a one-line summary; a failure is logged, not fatal.
 Completion is greg only. It needs the readiness port to say ready (else 409 `handover-not-ready`) and the booked slot to have
 started (policy `completeAfterSlotStartSeconds`), then commits the outcome and the outbox event `appointment-completed`
 (`orderUuid`, `employeeId`, `occurredAt`, `providerReference`, `slotId`) in one transaction; FUCQ-473 consumes the event.
-Not ported: no-show and rebooking, and the return purpose and current-car change (FUCQ-473).
+No-show is greg only too, with the same gates in Node order (not scheduled, another update pending, too early by
+`noShowAfterSlotStartSeconds`, stale version) but no readiness gate. It commits the outcome and the outbox event named by
+the policy's `exceptionTypes.noShow` (`appointment-no-show`) in one transaction. After it the read model offers fresh slots
+minus every missed one, and the employee rebooks with `request` at the current version: attempt n + 1 keeps the missed
+attempt in `previousAttempts` and writes under operation ids with `:a<n>` before the step (`V472_2`).
+Not ported: the return purpose and current-car change (FUCQ-473).
 
 ## Identity seam
 
@@ -401,8 +411,9 @@ points read from the in-memory PolicyService snapshot. Nothing is cached across 
 
 ## Buddy allocation (FUCQ-464)
 
-`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
-services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+`gcsp.api.allocation` has no HTTP endpoint. Its clock handlers `buddy-allocation`, `buddy-expiry` and (remote mode)
+`buddy-pending-operations` call three plain services, each with an `AllocationScope(environmentId, runId, policyVersion,
+now, clockVersion)`; they register only when persistence is on and `GCSP_ALLOCATION_CANDIDATES_PROVIDER` is not `none`.
 
 | Service | Does |
 | --- | --- |
@@ -423,9 +434,14 @@ Locking and idempotency:
 - Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
   `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
 
-Ports, stubbed until their Stories merge:
-- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
-- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+Ports:
+- `EligibleCandidates`: selected by `GCSP_ALLOCATION_CANDIDATES_PROVIDER` (`none` refuses; `recommendation` binds
+  `RecommendationCandidates`). A remote claim confirmed later is revalidated on snapshot and terms basis, so an unchanged
+  claim is kept across ticks and restarts (FUCQ-516).
+- `RemoteBuddy`: `GCSP_BUDDY_PROVIDER`, default `local-synthetic`.
+
+`GET /api/gcsp/v1/activity` (employee only, no query) is the Buddy activity projection: brief permission, offers,
+this employee's search checks, brief state changes and the latest tick's release/allocation status, read from one snapshot.
 
 FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
 
@@ -685,8 +701,9 @@ Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
 `c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
 `d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
 Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
-replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
-until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+replay is the `ComparisonReplay` port; its default (`DatabaseComparisonReplay`) runs `RouteReplay` for both routes in
+throwaway `cmp_` schemas of the configured database, so the DB user must be able to create and drop schemas. With
+persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
@@ -720,6 +737,7 @@ principal or employee id, and an employee acts only under their own login):
 | `GET /presenter/scenarios` | Catalogue: versions, clock start, named times, display principals, availability, input provenance. |
 | `GET /presenter/scenarios/current` | The clock state plus `currentScenario` and `runId`. |
 | `POST /presenter/scenarios/reset` | `{commandId, expectedRunId, scenarioId, scenarioVersion, fixtureVersion, policyVersion}`. |
+| `POST /presenter/clock/reset` | The mechanics-scenario reset: `{commandId, expectedRunId, scenarioVersion, fixtureVersion, policyVersion}`, no `scenarioId`; same path and receipts as the scenarios reset. |
 | `GET /presenter/scenarios/faults` | `{runId, faults:[{adapter:"stock", mode, modes, available:true}, {adapter:"ordering", available:false, reason:"not available yet"}]}`. |
 | `POST /presenter/scenarios/faults` | `{commandId, adapter:"stock", mode: none \| unavailable \| stale}`; command `scenario.fault.set`, replays by `commandId`. |
 
@@ -750,8 +768,8 @@ the clock; existing rows are never overwritten. The people are fictional and lab
 `src/main/resources/gcsp/scenario/demo-preparation-v1.json` (5 employees, 9 scenarios). The file is generated offline from the
 Node fixtures and is never read from Node at runtime. Regenerate it, from `services/gcsp-api`, with
 `node tools/scenario-baseline/generate.mjs src/main/resources/gcsp/scenario/demo-preparation-v1.json`
-(no `node_modules` needed). Known limit: OIDC principals carry the configured `GCSP_RUN_ID`, so employee endpoints keep
-that run after a reset until the run scope is unified.
+(no `node_modules` needed). Principals whose configured `GCSP_RUN_ID` has been reset follow the active run, and an
+unknown run id stays `stale-run`.
 
 **Release notes.** From this Story, every deployment with persistence on runs a startup clock tick (it creates the active
 run's clock when absent). The bound `lifecycle-documents` handler and, with a pull provider configured, `stock-release`
