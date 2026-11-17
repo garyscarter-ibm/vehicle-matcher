@@ -36,6 +36,9 @@ public class PresenterScenarioResource {
     private static final Set<String> RESET_FIELDS = Set.of("commandId", "expectedRunId", "scenarioId", "scenarioVersion",
             "fixtureVersion", "policyVersion");
 
+    private static final Set<String> CLOCK_RESET_FIELDS = Set.of("commandId", "expectedRunId", "scenarioVersion",
+            "fixtureVersion", "policyVersion");
+
     private static final Set<String> FAULT_FIELDS = Set.of("commandId", "adapter", "mode");
 
     @Inject
@@ -66,13 +69,25 @@ public class PresenterScenarioResource {
     @Path("/presenter/scenarios/reset")
     public Response reset(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             String body) {
+        return resetWith(authorization, uri, body, RESET_FIELDS, null);
+    }
+
+    /** The clock reset is the mechanics-scenario reset: same service path, no scenarioId in the body. */
+    @POST
+    @Path("/presenter/clock/reset")
+    public Response clockReset(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
+            String body) {
+        return resetWith(authorization, uri, body, CLOCK_RESET_FIELDS, ScenarioService.MECHANICS_ID);
+    }
+
+    private Response resetWith(String authorization, UriInfo uri, String body, Set<String> allowed, String fixedScenario) {
         Principal principal = auth.authenticate(authorization);
         Access.requireAnyRole(principal, Role.PRESENTER);
         if (!uri.getQueryParameters().isEmpty()) return unsupportedQuery();
         Response blocked = unavailable();
         if (blocked != null) return blocked;
         List<String[]> reasons = new ArrayList<>();
-        ObjectNode in = PresenterClockResource.fields(body, RESET_FIELDS, reasons);
+        ObjectNode in = PresenterClockResource.fields(body, allowed, reasons);
         String commandId = in == null ? null : PresenterClockResource.text(in, "commandId", reasons);
         if (commandId != null && (commandId.length() > 128 || !commandId.equals(commandId.strip()))) {
             reasons.add(new String[] {"commandId", "Use text of 1 to 128 characters."});
@@ -80,6 +95,10 @@ public class PresenterScenarioResource {
         String[] values = new String[RESET_FIELDS.size()];
         List<String> names = List.of("expectedRunId", "scenarioId", "scenarioVersion", "fixtureVersion", "policyVersion");
         for (int i = 0; i < names.size(); i++) {
+            if (fixedScenario != null && "scenarioId".equals(names.get(i))) {
+                values[i] = fixedScenario;
+                continue;
+            }
             values[i] = in == null ? null : PresenterClockResource.text(in, names.get(i), reasons);
         }
         if (!reasons.isEmpty()) {
