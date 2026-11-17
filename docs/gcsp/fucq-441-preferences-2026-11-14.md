@@ -427,3 +427,33 @@ hashes and the observation time. No HTTP/browser reproduction, severity decision
 repair or acceptance is claimed. Reconcile the producer/consumer version contract
 with the Java owner before connected checks; do not invent versions or weaken
 validation. Separate Medium FUCQ-491 remains unclaimed, unfixed and nonblocking.
+
+## Java-produced component and full-save parity — 17 November 2026, 20:59 UTC
+
+The new `preferences.java-parity.spec.ts` consumes the real Java-generated brief
+envelopes through `BriefEditorStore` and `PreferencesComponent`. The parent
+independently reviewed the one-file source and ran its selected Angular test:
+**6 passed, 0 failed, 0 skipped**. The cases cover draft/consent-confirm requests
+(exact equality except generated command IDs), adoption of saved server readback,
+known facts and Buddy rendering, full save through screen controls, stale-save
+refresh correction and unavailable save/read presentation. Unrecorded preview
+requests receive 404; preview content is not asserted. Stale-write assertions
+explicitly allow the store's documented importance normalization.
+
+Source returned at `b5c5c7ba2`; compilation initially failed at five NodeList
+spreads under the existing TypeScript libraries. The parent replaced them with
+`Array.from` in `ecabfa08e44f` and the selected six cases passed. A separate
+parent-runner typo aborted an earlier attempt before resources/tests; both failed
+attempts remain retained. No product, support or configuration change was needed.
+The passing source SHA-256 is `62233b130814770b0ba2936a9927fccf144fe015e0d2a9f697c826fe86caf14e`.
+Parent auditing checked 55 source/config/fixture pins and 23,009 dependency/Node
+pins, and verified all owned processes, scratch and reservations were absent.
+The run took 32.97 seconds; resource peaks were sampled, not continuous bounds.
+
+This adds consumer proof over actual producer bodies to the earlier producer and
+client/store evidence. It supersedes the older contract-obstacle observation for
+these pinned responses; it does not prove the running composition. Both original
+acceptance criteria remain open for the connected Angular/Java/OIDC/native
+PostgreSQL journey. The retained helper successor has begun source for that
+finite proof. The covering merge batch is still outstanding. No OneDrive or
+CloudStorage access occurred.
