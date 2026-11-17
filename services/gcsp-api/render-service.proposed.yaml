@@ -78,6 +78,9 @@
       #   sync: false
       # - key: GCSP_VEHICLE_IMAGES_PUBLIC             # opt in only if images must load without a bearer
       #   value: "false"
+      # Buddy allocation (FUCQ-464): recommendation on the dev service; none refuses every allocation.
+      - key: GCSP_ALLOCATION_CANDIDATES_PROVIDER
+        value: recommendation
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS

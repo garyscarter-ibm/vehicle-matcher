@@ -84,6 +84,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
+| `GCSP_ALLOCATION_CANDIDATES_PROVIDER` | `none` | Buddy allocation candidates (FUCQ-461/481 selector): `none` refuses every allocation (`recommendation-unavailable`) and leaves the `buddy-allocation`, `buddy-expiry` and `buddy-pending-operations` tick stages unregistered; `recommendation` evaluates each car with the canonical recommendation engine. Set `recommendation` on the dev service. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -401,8 +402,9 @@ points read from the in-memory PolicyService snapshot. Nothing is cached across 
 
 ## Buddy allocation (FUCQ-464)
 
-`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
-services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+`gcsp.api.allocation` has no HTTP endpoint. Its clock handlers `buddy-allocation`, `buddy-expiry` and (remote mode)
+`buddy-pending-operations` call three plain services, each with an `AllocationScope(environmentId, runId, policyVersion,
+now, clockVersion)`; they register only when persistence is on and `GCSP_ALLOCATION_CANDIDATES_PROVIDER` is not `none`.
 
 | Service | Does |
 | --- | --- |
@@ -423,9 +425,14 @@ Locking and idempotency:
 - Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
   `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
 
-Ports, stubbed until their Stories merge:
-- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
-- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+Ports:
+- `EligibleCandidates`: selected by `GCSP_ALLOCATION_CANDIDATES_PROVIDER` (`none` refuses; `recommendation` binds
+  `RecommendationCandidates`). A remote claim confirmed later is revalidated on snapshot and terms basis, so an unchanged
+  claim is kept across ticks and restarts (FUCQ-516).
+- `RemoteBuddy`: `GCSP_BUDDY_PROVIDER`, default `local-synthetic`.
+
+`GET /api/gcsp/v1/activity` (employee only, no query) is the Buddy activity projection: brief permission, offers,
+this employee's search checks, brief state changes and the latest tick's release/allocation status, read from one snapshot.
 
 FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
 
@@ -685,8 +692,9 @@ Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
 `c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
 `d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
 Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
-replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
-until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+replay is the `ComparisonReplay` port; its default (`DatabaseComparisonReplay`) runs `RouteReplay` for both routes in
+throwaway `cmp_` schemas of the configured database, so the DB user must be able to create and drop schemas. With
+persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
@@ -767,13 +775,27 @@ for the presenter). The presenter has scenario controls only: `POST /presenter/p
 quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
 (`{limit?}`). Employees get 403 everywhere.
 
+- Greg's order routes and the presenter step (same service and store; unknown or extra fields and any query are 400):
+  - `GET /greg/orders` (Greg only): the `GET /greg/production` value plus `versions: {policy, stock, clock}` and each request's `version`.
+    `stock` is a digest of the run's `stock_cars` (order_uuid, version, state); `clock` is the demo clock instant.
+  - `POST /greg/orders` (Greg only; `{commandId, model, derivative, quantity 1-1000, expectedPolicyVersion, expectedStockVersion, plan?}`):
+    one explicit line through the plan's durable path (plan id `manual:<submissionId>`). A stale policy or stock gives 409 `stale-version`
+    (`resource`, `expectedVersion`, `currentVersion`) and writes nothing; the same command replays, changed input is 409
+    `idempotency-input-changed`. Replan history ignores `manual:` submissions.
+  - `POST /greg/orders/queue` (Greg only; `{commandId, requestId}`): queues that request's unqueued confirmations; never asks Production.
+    Answers `{requestId, queued: [{supplyId, eligibleFrom}]}`, an empty list when nothing was waiting; unknown request is 404
+    `request-not-found`; a queue that cannot take one is a retryable 503 and the confirmations stay saved.
+  - `POST /presenter/production` (presenter only; `{commandId, requestId, expectedVersion, action: confirm|delay|refuse, quantity?, delayUntil?,
+    reason?}`): the scripted step of `/presenter/production/responses` plus a request-version check (409 `stale-version`) and a command
+    receipt, so a repeat of the same command replays and scripts nothing twice. Synthetic provider only.
 - One operation per request line: the request id is the provider operation id. Intent is stored before anything is sent, and a retry
   reconciles with the provider before it resubmits, so a lost answer never creates a second order.
 - Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
   supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
-- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
-  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
-  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Each applied answer emits outbox event `production.supply-changed` (no consumer: the replan path is pull-based). Greg's `GET /greg/order-plan`
+  reports `replan` from the stored submissions and responses (`ProductionSubmissionHistory`). `supply-activity` carries `supplyVersion`.
+  The plan port is the planner itself (`PlanningPlanSnapshot`), so submit answers the planner's own 503 code (`planning-forecast-not-configured`
+  or `planning-supply-not-configured`) until FUCQ-475/477 bind its inputs. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
 - Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
   so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
 - Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,

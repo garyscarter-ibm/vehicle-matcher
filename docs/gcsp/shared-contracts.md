@@ -1366,7 +1366,7 @@ Greg or the presenter starts a what-if or process comparison from the browser an
 
 | Policy key | Unit / purpose |
 |---|---|
-| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 512, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap. FUCQ-309 locally qualified the full 1,000-employee, three-seed, six-step request on Node 26.7.0 in 1,721.492 seconds: sampled worker used heap 422.10 MiB, process RSS 874.11 MiB and supervisor-group RSS 900.11 MiB. The measured repair also includes exact sharing, narrow projections and private repository disposal. This remains an assumed operating allowance; sampled local headroom is not a hosted Node 20 or future-run guarantee. See [the qualification report](evidence/fucq309/canonical512-2026-11-10/report.md). |
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 10800, workerHeapMb: 512, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap. FUCQ-309 locally qualified the full 1,000-employee, three-seed, six-step request on Node 26.7.0 in 1,721.492 seconds: sampled worker used heap 422.10 MiB, process RSS 874.11 MiB and supervisor-group RSS 900.11 MiB. The measured repair also includes exact sharing, narrow projections and private repository disposal. This remains an assumed operating allowance; sampled local headroom is not a hosted Node 20 or future-run guarantee. See [the qualification report](evidence/fucq309/canonical512-2026-11-10/report.md). |
 
 `assumed`, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does, and stores the FUCQ-137/174 result shape through `storeComparisonResult`.
 
@@ -1414,7 +1414,7 @@ Failed and interrupted (a process-only job; `request.change` is `null`; no resul
 { "status": "ok", "value": { "status": "interrupted", "resultId": null, "reason": "The backend stopped before the comparison finished." } }
 ```
 
-Other failure reasons: `The comparison was stopped at its limit of 1800 seconds.`, `The comparison used more than its 128 MB memory allowance and was stopped.`, `The comparison worker stopped before it finished.`, and `The backend restarted before the comparison finished.` (a row left running by another backend instance, marked when next read or started).
+Other failure reasons: `The comparison was stopped at its limit of 10800 seconds.`, `The comparison used more than its 128 MB memory allowance and was stopped.`, `The comparison worker stopped before it finished.`, and `The backend restarted before the comparison finished.` (a row left running by another backend instance, marked when next read or started).
 
 409 when a job is already active (`jobId` is the running job):
 
