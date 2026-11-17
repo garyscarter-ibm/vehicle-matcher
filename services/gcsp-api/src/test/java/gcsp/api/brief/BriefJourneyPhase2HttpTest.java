@@ -72,6 +72,7 @@ class BriefJourneyPhase2HttpTest {
         // Startup and demo preparation did not reseed or overwrite any brief row.
         long[] rows = rows();
         JsonNode counts = phase1.get("counts");
+        for (long n : rows) assertTrue(n > 0, "every audit table holds phase-1 rows");
         assertEquals(counts.get("briefs").longValue(), rows[0]);
         assertEquals(counts.get("brief_drafts").longValue(), rows[1]);
         assertEquals(counts.get("command_receipts").longValue(), rows[2]);
