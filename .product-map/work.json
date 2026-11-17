@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T05:17:43Z",
+      "observed_at": "2026-11-17T05:21:06Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T04:53:13.825383+00:00",
-      "note": "Two-document source inventory increment integrated at3a7a4acb2 after parent bounded corrections.59 overlapping/grouped records, not uniqueports. JSON/counts and469 reference spans valid; selected facts sampled, not every semantic claim. OriginalAC/startup/local/remote/connected proof remain open; nativeToDo preserved.",
+      "note": "Inventory documentation increment integrated3a7a4acb2;59overlapping/groupedrecords, not a uniqueport census. Same coordinator assignment14 ACK05:19:52 and actual port/default source reads05:20:07 for startup-selectable remote claim/Buddy adapters. Exact10files allocated; no runtime granted; originalAC/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8743,7 +8743,9 @@
         {
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
-          "status": "not-started"
+          "status": "in-progress",
+          "observed_at": "2026-11-17T05:20:07.021Z",
+          "evidence": "Same coordinator assignment14 actual source reads for existing default port replacement and configured remote adapters. Implementation/tests pending; no runtime."
         },
         {
           "id": "local-composition",
@@ -8788,6 +8790,15 @@
           "expires_at": "2026-11-17T05:11:56.259Z",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
           "status": "returned exact2doc checkpoint53524c5d1; parent corrected/integrated3a7a4acb2; no current worker execution inferred"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 remote claim/Buddy adapter and startup provider source increment",
+          "observed_at": "2026-11-17T05:20:07.021Z",
+          "expires_at": "2026-11-17T05:35:07.021000+00:00",
+          "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
+          "status": "ACK05:19:52 and actual source reads05:20:07; Opus5.5 observed, effectiveeffort unverified; no runtime or confirmed newchildren"
         }
       ]
     }
