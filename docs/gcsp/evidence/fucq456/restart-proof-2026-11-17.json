@@ -1,7 +1,7 @@
 {
   "schema": "fucq456-restart-proof/1",
   "story": "DEV-2026-11-13-024 / FUCQ-456",
-  "startedAt": "2026-11-17T20:05:56.369Z",
+  "startedAt": "2026-11-17T20:31:05.952Z",
   "phases": {
     "P0": {
       "title": "Fresh databases (only the two owned ones)",
@@ -36,7 +36,7 @@
           "ok": true,
           "observed": {
             "migrations": 26,
-            "line": "2026-11-17 20:05:58,519 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Successfully applied 25 migrations to schema \"gcsp_app\", now at version v480.2 (execution time 00:00.121s)"
+            "line": "2026-11-17 20:31:09,199 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Successfully applied 25 migrations to schema \"gcsp_app\", now at version v480.2 (execution time 00:00.114s)"
           }
         },
         {
@@ -81,7 +81,7 @@
             "signal": null,
             "forced": false,
             "shutdownLog": [
-              "2026-11-17 20:05:59,663 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.010s"
+              "2026-11-17 20:31:10,502 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
             ]
           }
         }
@@ -112,10 +112,10 @@
           "signal": null,
           "forced": false,
           "shutdownLog": [
-            "2026-11-17 20:05:59,663 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.010s"
+            "2026-11-17 20:31:10,502 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
           ]
         },
-        "pocDigest": "249d73f70d59c524a26b5acf16e4ad8e"
+        "pocDigest": "5c5c350d3728667a0d256b3bbfd0b32e"
       },
       "pass": true
     },
@@ -185,7 +185,7 @@
             "signal": null,
             "forced": false,
             "shutdownLog": [
-              "2026-11-17 20:06:02,591 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.020s"
+              "2026-11-17 20:31:12,589 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.010s"
             ]
           }
         }
@@ -217,7 +217,7 @@
           "startupTickReceipts": 10,
           "raceReceipts": 1
         },
-        "devStateDigest": "db1d83fec328348656a36fe8f8064b05"
+        "devStateDigest": "cd47a99eeb72fbd874cd53ae923ec900"
       },
       "pass": true
     },
@@ -237,7 +237,7 @@
         {
           "name": "Flyway: schema up to date, nothing applied",
           "ok": true,
-          "observed": "2026-11-17 20:06:03,291 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Schema \"gcsp_app\" is up to date. No migration necessary."
+          "observed": "2026-11-17 20:31:13,160 INFO  [org.flywaydb.core.internal.command.DbMigrate] (main) Schema \"gcsp_app\" is up to date. No migration necessary."
         },
         {
           "name": "clock version unchanged",
@@ -437,7 +437,7 @@
             "signal": null,
             "forced": false,
             "shutdownLog": [
-              "2026-11-17 20:06:05,932 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.010s"
+              "2026-11-17 20:31:15,794 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.009s"
             ]
           }
         },
@@ -476,7 +476,7 @@
             "signal": null,
             "forced": false,
             "shutdownLog": [
-              "2026-11-17 20:06:07,369 INFO  [io.quarkus] (Shutdown thread) gcsp-api stopped in 0.011s"
+              "2026-11-17 20:31:17,188 INFO  [io.quarkus] (main) gcsp-api stopped in 0.013s"
             ]
           }
         }
@@ -535,7 +535,7 @@
             "exitCode": 1,
             "reason": "p6-scenario exited during startup (code 1 signal null)",
             "lines": [
-              "2026-11-17 20:06:08,660 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
+              "2026-11-17 20:31:18,389 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
               "Caused by: java.lang.IllegalStateException: GCSP_SCENARIO_PROVIDER=demo needs a database claimed with GCSP_RESET_ALLOWED=true; this database does not allow reset, so nothing is seeded",
               "\tat gcsp.api.scenario.ScenarioWiring.requireResetDatabase(ScenarioWiring.java:100)"
             ]
@@ -548,8 +548,8 @@
       ],
       "observed": {
         "pocDigest": {
-          "before": "249d73f70d59c524a26b5acf16e4ad8e",
-          "afterDevActivity": "249d73f70d59c524a26b5acf16e4ad8e"
+          "before": "5c5c350d3728667a0d256b3bbfd0b32e",
+          "afterDevActivity": "5c5c350d3728667a0d256b3bbfd0b32e"
         },
         "dbMismatch": {
           "exitCode": 1,
@@ -561,7 +561,7 @@
           "exitCode": 1,
           "reason": "p6-scenario exited during startup (code 1 signal null)",
           "lines": [
-            "2026-11-17 20:06:08,660 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
+            "2026-11-17 20:31:18,389 ERROR [io.quarkus.runtime.Application] (main) Failed to start application: java.lang.RuntimeException: Failed to start quarkus",
             "Caused by: java.lang.IllegalStateException: GCSP_SCENARIO_PROVIDER=demo needs a database claimed with GCSP_RESET_ALLOWED=true; this database does not allow reset, so nothing is seeded",
             "\tat gcsp.api.scenario.ScenarioWiring.requireResetDatabase(ScenarioWiring.java:100)"
           ]
@@ -576,11 +576,11 @@
   "gaps": [
     "Hosted Render dev (Gary's environment) not proven here"
   ],
-  "codeRevision": "ccc488673f6f0e6a77c39ce65cf855d1a9ea32d4",
+  "codeRevision": "c709769e80b6e3fcbb1b0f273d7016a141aa5e48",
   "java": "",
   "postgres": "PostgreSQL 17.12 (Homebrew) on aarch64-apple-darwin27.2.0, c",
   "node": "v26.7.0",
-  "finishedAt": "2026-11-17T20:06:09.225Z",
+  "finishedAt": "2026-11-17T20:31:18.916Z",
   "pass": true,
   "jvmsLeft": "none"
 }
