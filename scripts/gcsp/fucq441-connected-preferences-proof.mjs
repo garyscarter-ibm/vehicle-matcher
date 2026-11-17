@@ -342,9 +342,9 @@ async function signIn(page) {
   await page.until(`return location.origin === '${ORIGINS.web}' && /^\\/gcsp\\/(account|preferences)/.test(location.pathname);`, 30000, 'signed-in employee landing');
   return page.eval('location.pathname');
 }
-// Navigates or reloads the main frame, then waits for a NEW main-frame document whose own GET /brief/editor finished,
+// Navigates or reloads the main frame, then waits for a NEW main-frame document whose own selected GET finished,
 // so DOM assertions never read the previous document or a response the old page already had.
-async function freshDocument(page, how, { ready, editorOk = true, timeout = 30000, what = 'fresh document' } = {}) {
+async function freshDocument(page, how, { ready, readPath = '/brief/editor', readOk = true, timeout = 30000, what = 'fresh document' } = {}) {
   const before = page.docs;
   if (how === 'reload') await page.send('Page.reload', { ignoreCache: true });
   else await page.send('Page.navigate', { url: how });
@@ -352,14 +352,14 @@ async function freshDocument(page, how, { ready, editorOk = true, timeout = 3000
   let read = null;
   while (Date.now() < end) {
     if (page.docs > before) {
-      read = page.log.find((e) => e.doc === page.docs && e.loader === page.mainLoader && e.method === 'GET' && e.path === '/brief/editor' && (e.status !== undefined || e.failed));
-      if (read && (!editorOk || read.status === 200)) break;
+      read = page.log.find((e) => e.doc === page.docs && e.loader === page.mainLoader && e.method === 'GET' && e.path === readPath && (e.status !== undefined || e.failed));
+      if (read && (!readOk || read.status === 200)) break;
     }
     await sleep(100);
   }
   if (page.docs <= before) throw new Error(`${page.label}: no new main-frame document for ${what}`);
-  if (!read) throw new Error(`${page.label}: the new document made no /brief/editor read for ${what}`);
-  if (editorOk && read.status !== 200) throw new Error(`${page.label}: /brief/editor answered ${read.status ?? read.failed} for ${what}`);
+  if (!read) throw new Error(`${page.label}: the new document made no ${readPath} read for ${what}`);
+  if (readOk && read.status !== 200) throw new Error(`${page.label}: ${readPath} answered ${read.status ?? read.failed} for ${what}`);
   await page.until(ready, timeout, what);
   await page.settle();
   return read;
@@ -522,8 +522,9 @@ async function scenarioC(cdp, s, pages) {
     s.observations.unsavedScreen = kept;
     s.checks.editKeptWithTryAgain = kept.economy === '20' && kept.tryAgain === false && versionOf(kept.note)?.saved === false;
     s.observations.screenshotUnsaved = await one.shot('c1-unsaved-api-stopped.png');
-    const failedRead = await freshDocument(reader, 'reload', { editorOk: false, ready: `return !$('form.brief-form') && /could not be loaded|unavailable/i.test(main.innerText);`, what: 'fresh read while the API is stopped' });
-    s.observations.failedEditorRead = { status: failedRead.status ?? null, failed: failedRead.failed ?? null };
+    // Authentication reads /context first; with the API stopped no editor request can be issued.
+    const failedRead = await freshDocument(reader, 'reload', { readPath: '/context', readOk: false, ready: `return !$('form.brief-form') && /could not be loaded|unavailable/i.test(main.innerText);`, what: 'fresh authentication read while the API is stopped' });
+    s.observations.failedContextRead = { status: failedRead.status ?? null, failed: failedRead.failed ?? null };
     s.checks.freshReadReallyFailed = failedRead.status === undefined && !!failedRead.failed;
     const down = await reader.act(`return { path: location.pathname, text: main.innerText.replace(/\\s+/g, ' ').trim().slice(0, 300), form: !!$('form.brief-form'), note: versionNote(), tryAgain: !!button('Try again') };`);
     s.observations.freshReadWhileStopped = down;
@@ -538,14 +539,9 @@ async function scenarioC(cdp, s, pages) {
     const after = await serverEditor(); s.observations.retried = { status: retried, briefVersion: after.briefVersion, economy: after.prefs.economy?.value };
     s.checks.retrySavesAfterRestart = Number(CONFIRMED.exec(retried)?.[1]) === after.briefVersion && after.briefVersion === base.briefVersion + 1 && after.prefs.economy?.value === 20
       && posts(one.calls(retryMark), '/brief/draft').length === 1 && posts(one.calls(retryMark), '/brief/confirm').length === 1;
-    s.observations.recoverBy = down.tryAgain ? 'status-screen Try again' : 'navigate to /gcsp/preferences';
-    // Try again re-reads in the same document, so it waits for a successful /brief/editor issued after the press.
-    if (down.tryAgain) {
-      const mark = reader.log.length; await reader.act(`return press('Try again');`);
-      await reader.until(`return !!versionNote() && !!$('#preference-economy');`, 30000, 'reader editor after restart');
-      await reader.settle();
-      s.checks.readerReReadSucceeded = reader.log.slice(mark).some((e) => e.method === 'GET' && e.path === '/brief/editor' && e.status === 200);
-    } else await freshDocument(reader, `${ORIGINS.web}/gcsp/preferences`, { ready: `return !!versionNote() && !!$('#preference-economy');`, what: 'reader editor after restart' });
+    s.observations.recoverBy = 'reload preferences after API restart to restore authentication';
+    const recoveredRead = await freshDocument(reader, 'reload', { ready: `return !!versionNote() && !!$('#preference-economy');`, what: 'reader editor after authentication recovers' });
+    s.checks.readerReReadSucceeded = recoveredRead.status === 200;
     const readBack = await reader.act(`return { note: versionNote(), economy: value('#preference-economy') };`);
     s.observations.readerAfterRestart = readBack;
     s.checks.otherContextReadsTheServerSavedVersion = versionOf(readBack.note)?.saved === true && versionOf(readBack.note)?.version === after.briefVersion && readBack.economy === '20';
