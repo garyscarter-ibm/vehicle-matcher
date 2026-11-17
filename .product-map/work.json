@@ -7271,7 +7271,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T01:00:56Z",
+      "observed_at": "2026-11-17T13:49:21Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7299,6 +7299,22 @@
           "title": "Story validation, base merge, migration number and result",
           "observed_at": "2026-11-14T01:00:56Z",
           "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
+        },
+        {
+          "id": "s4-demo-provider-policy",
+          "status": "in-progress",
+          "title": "Demo supply provider with confirmed-supply windows, PolicyService release policy binding",
+          "observed_at": "2026-11-17T13:49:21Z"
+        },
+        {
+          "id": "s5-journey-proof",
+          "status": "not-started",
+          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs"
+        },
+        {
+          "id": "s6-integration-r2",
+          "status": "not-started",
+          "title": "Reopened run: scoped validation, base merge and result"
         }
       ]
     },
