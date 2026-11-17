@@ -16,7 +16,7 @@
     "partial": "some provider modes exist but a required one, or a consumer path, is missing",
     "unverified-runtime": "this inventory has not established connected runtime for the represented composition; selected retained component runs may exist"
   },
-  "evidenceNote": "Initial inventory was static source reading at sourceSha. The three currentReconciliation records additionally reference matching retained component/startup/partial-composition executions. Other named test references remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
+  "evidenceNote": "Initial inventory was static source reading at sourceSha. Named currentReconciliation and reconciliationHistory records additionally cite matching retained component/startup/partial-composition executions. Other named tests remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
   "counts": {
     "default-unconfigured": 17,
     "local-bound": 13,
@@ -1871,6 +1871,11 @@
           "class": "SyntheticOrderingProvider",
           "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/SyntheticOrderingProvider.java:18",
           "kind": "synthetic"
+        },
+        {
+          "class": "HttpOrderingProvider",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/HttpOrderingProvider.java",
+          "kind": "remote-substitute-unbound"
         }
       ],
       "selection": {
@@ -1893,7 +1898,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam. Presenter reconcile at OrderingResource.java:110.",
       "status": "partial",
-      "statusWhy": "none and synthetic are selectable; the live mode named in the contract has no implementation or selectable value; synthetic receipts are local with fictional:true.",
+      "statusWhy": "none and synthetic remain selectable. Standalone HttpOrderingProvider is now reviewed and tested against an actual loopback GCSP substitute, but is UNBOUND: no remote startup selection or durable consumer integration. No verified BMW live mode exists.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingSelectionTest.java:9",
@@ -1910,14 +1915,24 @@
         {
           "ref": "docs/gcsp/fucq468-review-details-freeze-2026-11-16.md",
           "kind": "recorded"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/HttpOrderingProviderTest.java",
+          "kind": "executed-component-contract",
+          "checkpoint": "45d1c1afc05858c6f2d123d1958dd86ed625214a",
+          "integration": "09e22458483497c23d74a6588d43a140805b0d4e",
+          "result": "Exactly13 focused actual-loopback methods passed, zero failures/errors/skips,17.0s. Independent source review PASS; parent independently verified39identities/3groups/scratch/reservation clear and unchanged pins. Full12fieldPOST/persistedkey/GETonlyreconcile/complete truthfulACK/statuses/strictJSON/body/time bounds. UNBOUND; no startup/durable consumer/full journey/BMW proof."
         }
       ],
       "gaps": [
-        "No live OrderingProviderPort implementation.",
-        "Connected Angular/Java/OIDC order journey still open per fucq468 doc."
+        "Remote startup composition requires exact peer F468 holder/selector/config file coordination; existing bindings and core remain unchanged.",
+        "No durable remote-ordering consumer or connected full order/status HTTP proof. Refusing peer F458 account policy remains a concrete route gap.",
+        "No verified BMW OrderingProviderPort implementation or live capability evidence."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "reconciledAt": "2026-11-17T08:21:37.215451+00:00",
+      "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e"
     },
     {
       "port": "SelectionConversionPort",
@@ -3458,19 +3473,17 @@
     "No descendants were used.",
     "Cross-domain records overlap and several records group multiple contracts; this is an inventory increment, not an asserted unique-port census. Parent corrected stale blueprint and PostgreSQL-evidence statements before integration; source facts were sampled, not all semantically reverified.",
     "Current reconciliation updates only three records after initial inventory: remote provider source and selected execution now exist. Unchanged rows/line numbers retain the original observation; no new runtime was run for this documentation update.",
-    "Second current reconciliation updates only two EligibleCandidates records at97cd67aa4 using13 matching focused passes and independent source review. F516 captures failed later-clock recovery. No complete remote journey or verified-live evidence; earlier source-only notes describe the initial observation."
+    "Second current reconciliation updates only two EligibleCandidates records at97cd67aa4 using13 matching focused passes and independent source review. F516 captures failed later-clock recovery. No complete remote journey or verified-live evidence; earlier source-only notes describe the initial observation.",
+    "Ordering record reconciled to standalone adapter09e224584 and13executed loopback methods; startup selection remains none/synthetic. Earlier source-only/count observations retain their historical scope. No originalAC completion."
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T07:51:03.227703+00:00",
-    "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+    "observedAt": "2026-11-17T08:21:37.215451+00:00",
+    "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e",
     "ports": [
-      "EligibleCandidates (read/input)",
-      "EligibleCandidates (action/event)",
-      "RemoteBuddy",
-      "OfferDecision (decision route over RemoteBuddy)"
+      "OrderingProviderPort"
     ],
-    "basis": "Four existing record identities reconciled to the reviewed/integrated generated-claim proof.55other rows preserved. Exactly1new native method passed; no broad rerun, inventory-completeness or originalAC claim."
+    "basis": "One existing record reconciled to reviewed/tested standalone adapter09e224584; all58other records and59identities preserved. Exactly13newnative unit methods passed. Adapter remains unbound; no fullAC/startup/durable consumer/BMW claim."
   },
   "reconciliationHistory": [
     {
@@ -3491,6 +3504,17 @@
         "EligibleCandidates (action/event)"
       ],
       "basis": "Only these two cross-domain records updated to delivered adapter/startup source and13 matching scoped native passes;57other records preserved from their own observations. Initial13run had12passes/1test assertion failure; corrected affected method passed separately. F516confirmed/captureonly; neither originalAC complete."
+    },
+    {
+      "observedAt": "2026-11-17T07:51:03.227703+00:00",
+      "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+      "ports": [
+        "EligibleCandidates (read/input)",
+        "EligibleCandidates (action/event)",
+        "RemoteBuddy",
+        "OfferDecision (decision route over RemoteBuddy)"
+      ],
+      "basis": "Four existing record identities reconciled to the reviewed/integrated generated-claim proof.55other rows preserved. Exactly1new native method passed; no broad rerun, inventory-completeness or originalAC claim."
     }
   ]
 }
