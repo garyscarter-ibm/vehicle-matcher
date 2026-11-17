@@ -135,7 +135,7 @@ export class ManualReviewDetailsComponent {
       { label: 'Collection location', value: shown(snapshot.requestedCollection.locationId) },
       { label: 'Contract option', value: shown(contract['contractOptionId']) },
       { label: 'Contract months', value: shown(contract['months']) },
-      { label: 'Annual mileage', value: shown(contract['annualMileage']), unit: text(contract['mileageUnit']) },
+      { label: 'Annual mileage', value: shown(contract['annualMileage']), unit: text(contract['mileageUnit']) ?? undefined },
       ...(snapshot.mode === 'replacement' ? [
         { label: 'Returning contract', value: snapshot.oldContractId },
         { label: 'Current car', value: shown(current['model']) },
