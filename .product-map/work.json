@@ -7325,7 +7325,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-17T11:51:31Z",
+      "observed_at": "2026-11-17T11:53:22Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7376,8 +7376,10 @@
         },
         {
           "id": "docs-config",
-          "status": "not-started",
-          "title": "Document GCSP_ALLOCATION_CANDIDATES_PROVIDER dev selection in README and proposed Render block"
+          "status": "complete",
+          "title": "Document GCSP_ALLOCATION_CANDIDATES_PROVIDER dev selection in README and proposed Render block",
+          "observed_at": "2026-11-17T11:53:22Z",
+          "evidence": "README env table row GCSP_ALLOCATION_CANDIDATES_PROVIDER, allocation handler/port/activity notes; render-service.proposed.yaml sets recommendation for dev; reviewed by Spike"
         },
         {
           "id": "integration",
