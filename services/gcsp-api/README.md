@@ -84,6 +84,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_RETURNS_PROVIDER` | `none` | Old-car return provider: `none` answers unavailable, `synthetic` is fictional and receipts in the database, `live-stub` refuses every call as unsupported. Unknown values stop startup. |
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
+| `GCSP_ALLOCATION_CANDIDATES_PROVIDER` | `none` | Buddy allocation candidates (FUCQ-461/481 selector): `none` refuses every allocation (`recommendation-unavailable`) and leaves the `buddy-allocation`, `buddy-expiry` and `buddy-pending-operations` tick stages unregistered; `recommendation` evaluates each car with the canonical recommendation engine. Set `recommendation` on the dev service. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
@@ -401,8 +402,9 @@ points read from the in-memory PolicyService snapshot. Nothing is cached across 
 
 ## Buddy allocation (FUCQ-464)
 
-`gcsp.api.allocation` has no HTTP endpoint and no tick framework: FUCQ-479's clock handlers call three plain
-services, each with an `AllocationScope(environmentId, runId, policyVersion, now, clockVersion)`.
+`gcsp.api.allocation` has no HTTP endpoint. Its clock handlers `buddy-allocation`, `buddy-expiry` and (remote mode)
+`buddy-pending-operations` call three plain services, each with an `AllocationScope(environmentId, runId, policyVersion,
+now, clockVersion)`; they register only when persistence is on and `GCSP_ALLOCATION_CANDIDATES_PROVIDER` is not `none`.
 
 | Service | Does |
 | --- | --- |
@@ -423,9 +425,14 @@ Locking and idempotency:
 - Every custody writer must bump `stock_cars.version` when it creates or closes a hold: allocation's exclusivity against
   `allocated` holds and `maxActive` relies on that CAS. FUCQ-466 decisions and ordering must follow it.
 
-Ports, stubbed until their Stories merge:
-- `EligibleCandidates` (FUCQ-461 recommendation): the `@DefaultBean` is `recommendation-unavailable`.
-- `RemoteBuddy`: the `@DefaultBean` is `local-synthetic`.
+Ports:
+- `EligibleCandidates`: selected by `GCSP_ALLOCATION_CANDIDATES_PROVIDER` (`none` refuses; `recommendation` binds
+  `RecommendationCandidates`). A remote claim confirmed later is revalidated on snapshot and terms basis, so an unchanged
+  claim is kept across ticks and restarts (FUCQ-516).
+- `RemoteBuddy`: `GCSP_BUDDY_PROVIDER`, default `local-synthetic`.
+
+`GET /api/gcsp/v1/activity` (employee only, no query) is the Buddy activity projection: brief permission, offers,
+this employee's search checks, brief state changes and the latest tick's release/allocation status, read from one snapshot.
 
 FUCQ-465 reads `buddy_offers` and `buddy_quotes`. FUCQ-466 owns the offer decision transitions.
 

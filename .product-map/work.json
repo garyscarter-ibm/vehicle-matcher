@@ -7219,7 +7219,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-14T08:56:54Z",
+      "observed_at": "2026-11-17T14:36:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7249,11 +7249,39 @@
           "evidence": "9f3c761a5 reviewed by Mulan; RemoteLifecycleTest 13/13, allocation scope 45/45 native PG 17"
         },
         {
+          "id": "tick-handlers",
+          "status": "complete",
+          "title": "Bind buddy-allocation, buddy-expiry and buddy-pending-operations tick handlers; repair FUCQ-516 later-clock terms comparison",
+          "observed_at": "2026-11-17T11:18:47Z",
+          "evidence": "Spike review of Toothless diff; BuddyTickHandlersPgTest 6/6, CanonicalCandidatesPgTest 2/2, RemoteLifecycleTest 14/14 native PG17 (FUCQ-516 repaired via termsBasis)"
+        },
+        {
+          "id": "activity-route",
+          "status": "complete",
+          "title": "GET /api/gcsp/v1/activity over Java brief, offer, allocation and clock state",
+          "observed_at": "2026-11-17T11:51:31Z",
+          "evidence": "Spike review of Sulley diff; ActivityHttpTest 4/4 + ActivityChecksTest 2/2 over RS256 JWT and native PG17; scope activity+brief+offers 236/0/0"
+        },
+        {
+          "id": "composition-proof",
+          "status": "complete",
+          "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)",
+          "observed_at": "2026-11-17T14:31:52Z",
+          "evidence": "Spike review of Hubie journeys: BuddyAllocationJourneyHttpTest 1/1 (AC1 via presenter tick, supply release) and BuddyRemoteCustodyJourneyHttpTest 1/1 (AC2 lost execute/reconcile, startup tick, expiry release) over RS256 JWT + native PG17"
+        },
+        {
+          "id": "docs-config",
+          "status": "complete",
+          "title": "Document GCSP_ALLOCATION_CANDIDATES_PROVIDER dev selection in README and proposed Render block",
+          "observed_at": "2026-11-17T11:53:22Z",
+          "evidence": "README env table row GCSP_ALLOCATION_CANDIDATES_PROVIDER, allocation handler/port/activity notes; render-service.proposed.yaml sets recommendation for dev; reviewed by Spike"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: README, base merge, full Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T08:56:54Z",
-          "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
+          "title": "Integration: base merge, full Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-17T14:36:01Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 3c48fa47f; scoped set 126/0/0 incl. AC journeys and wiring tests on native PG17; lead review of all slices"
         }
       ]
     },

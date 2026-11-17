@@ -87,7 +87,7 @@ class CanonicalCandidatesPgTest {
     }
 
     @Test
-    void laterClockReevaluationExposesChangedTermsAndLeavesTheOriginalQuotePinned() throws Exception {
+    void laterClockReevaluationKeepsAConfirmedClaimWhoseTermsBasisIsUnchanged() throws Exception {
         Request request = seed();
         remote.onExecute(ScriptedRemote.lost());
         allocate(request, "canonical-later-instant");
@@ -113,14 +113,13 @@ class CanonicalCandidatesPgTest {
         DriveResult.Settled result = assertInstanceOf(DriveResult.Settled.class,
                 new BuddyRemoteLifecycle(f.pool(), policy, candidates, remote).drive(scope(reevaluation), operation));
 
-        // This characterizes current full-terms equality; it does not claim successful later-clock recovery.
+        // FUCQ-516: terms differ only by evaluation instant, so the confirmed claim settles as an offer.
         assertEquals("acknowledged", result.state());
-        assertEquals("release-pending", result.outcome().path("state").asText());
-        assertEquals("release-pending", f.text("SELECT state FROM custody_holds"));
-        assertEquals("prerequisites-changed", f.text("SELECT attributes->>'releaseReason' FROM custody_holds"));
-        assertEquals(1, f.count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-release'"));
-        assertEquals(0, f.count("SELECT count(*) FROM buddy_offers"));
-        assertEquals(0, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
+        assertEquals("offered", result.outcome().path("state").asText());
+        assertEquals("active", f.text("SELECT state FROM custody_holds"));
+        assertEquals(1, f.count("SELECT count(*) FROM buddy_offers"));
+        assertEquals("active", f.text("SELECT state FROM buddy_offers"));
+        assertEquals(0, f.count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-release'"));
         assertEquals(original, AllocationFixture.json(f.text("SELECT quote::text FROM buddy_quotes")));
         assertEquals(List.of("execute:buddy-claim", "reconcile:buddy-claim"), remote.calls);
     }
