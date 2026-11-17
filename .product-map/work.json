@@ -7733,7 +7733,7 @@
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-17T16:29:59Z",
+      "observed_at": "2026-11-17T16:49:29Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
@@ -7764,8 +7764,10 @@
         },
         {
           "id": "r2-s1-policy-clock-offers",
-          "status": "not-started",
-          "title": "Reopened: reviewed decline reasons at the pinned version, run clock, PostgreSQL offer records adapter"
+          "status": "complete",
+          "title": "Reopened: reviewed decline reasons at the pinned version, run clock, PostgreSQL offer records adapter",
+          "observed_at": "2026-11-17T16:49:29Z",
+          "evidence": "lead review of 35cf4c820: reviewed decline reasons only for unknown-assumption at pinned version; run clock with clockVersion fence; PostgresOfferRecordsAdapter (2 fixed statements in snapshot); demand unit set 56/0 on PG17 :55491; demand.** 67/0 per Sniffles"
         },
         {
           "id": "r2-s2-evaluation",
