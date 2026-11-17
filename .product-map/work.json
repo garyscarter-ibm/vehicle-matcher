@@ -6863,7 +6863,7 @@
     {
       "assignee": "",
       "id": "FUCQ-456",
-      "observed_at": "2026-11-13T22:40:05Z",
+      "observed_at": "2026-11-17T19:18:21Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -6883,9 +6883,26 @@
         {
           "evidence": "story-lead: 54 module tests pass at 0dd710eb on native PG17; two-JVM running-app reset isolation and restart proof; EXPLAIN scope; hosted dev awaits Gary",
           "id": "s3-integration",
-          "observed_at": "2026-11-13T22:40:05Z",
-          "status": "complete",
-          "title": "Story-level validation, alignment record and result"
+          "observed_at": "2026-11-17T19:18:12Z",
+          "status": "in-progress",
+          "title": "Story-level validation on today's base, alignment record and result"
+        },
+        {
+          "id": "s4-dev-composition-journey",
+          "status": "in-progress",
+          "title": "Dev-composition QuarkusTest: concurrent writers, presenter reset, isolation and non-reset refusal",
+          "observed_at": "2026-11-17T19:18:12Z"
+        },
+        {
+          "id": "s5-restart-proof",
+          "status": "not-started",
+          "title": "Running-app stop/start proof: state, receipts, authority, uncertain resend, reset isolation"
+        },
+        {
+          "id": "s7-hosted-dev",
+          "status": "blocked",
+          "title": "Hosted Render dev connection, restart and reset-isolation evidence (Gary's environment)",
+          "observed_at": "2026-11-17T19:18:12Z"
         }
       ],
       "status": "To Do",
