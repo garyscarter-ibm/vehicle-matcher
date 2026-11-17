@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import gcsp.api.account.StockDbFixture;
 import gcsp.api.approvals.HandoverPort;
 import gcsp.api.approvals.OrderSourcePort;
 import gcsp.api.documents.DocumentCasePort;
 import gcsp.api.documents.LifecycleDocumentCases;
 import gcsp.api.ordering.ActiveOrderSource;
-import gcsp.api.ordering.OrderingHttpPorts;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
 import io.agroal.api.AgroalDataSource;
@@ -27,11 +27,9 @@ import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
@@ -61,9 +59,6 @@ class HandoverJourneyHttpTest {
 
     @Inject
     Instance<AgroalDataSource> dataSource;
-
-    @Inject
-    OrderingHttpPorts.TestSlots slots;
 
     @Inject
     OrderStagePort stages;
@@ -99,40 +94,67 @@ class HandoverJourneyHttpTest {
         }
     }
 
-    /** One orderable entitlement for the employee: slot, car and the active cart hold on it, as ordering's source needs. */
-    private String[] seed(String employee, String tag) throws Exception {
-        String env = "test-app-env";
-        String run = persistence.guard().currentRun().runId();
-        String slot = "slot-hj-" + tag;
-        String car = "car-hj-" + tag + "-" + UUID.randomUUID().toString().substring(0, 8);
-        String hold = "hold-hj-" + tag;
-        sql("INSERT INTO employees (environment_id, run_id, employee_id, attributes) VALUES (?, ?, ?, ?::jsonb) "
-                + "ON CONFLICT DO NOTHING", env, run, employee, "{\"schemeId\":\"choices-fs-uk\"}");
-        sql("INSERT INTO entitlement_slots (environment_id, run_id, slot_id, employee_id, capacity) VALUES (?, ?, ?, ?, 1)",
-                env, run, slot, employee);
-        sql("INSERT INTO stock_cars (environment_id, run_id, order_uuid, configuration_id, state) VALUES (?, ?, ?, 'cfg-hj', "
-                + "'available')", env, run, car);
-        sql("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, slot_unit, "
-                + "hold_type, state, expires_at) VALUES (?, ?, ?, ?, ?, ?, 1, 'cart', 'active', ?)", env, run, hold, car,
-                employee, slot, Timestamp.from(Instant.now().plusSeconds(86_400)));
-        return new String[] {slot, hold, car};
+    /** Released stock is upstream supply (the supply release is not part of this story), so it is the one thing seeded. */
+    private void seedStock() throws Exception {
+        var run = persistence.guard().currentRun();
+        try (Connection c = dataSource.get().getConnection()) {
+            List<JsonNode> rows = new ArrayList<>(StockDbFixture.rows());
+            // Alex's grade (G1-6) is not eligible for the fixture's G21 Touring cars: one more released car of an included model.
+            com.fasterxml.jackson.databind.node.ObjectNode extra = rows.get(0).deepCopy();
+            String id = StockDbFixture.UUID_PREFIX + "9";
+            extra.put("orderUuid", id).put("orderNumber", "1000009");
+            ((com.fasterxml.jackson.databind.node.ObjectNode) extra.get("facts").get("sourceKeys")).put("stockId", id);
+            ((com.fasterxml.jackson.databind.node.ObjectNode) extra.get("facts").get("facts").get("eligibilityModelKey"))
+                    .put("value", "U11 X1|20i");
+            rows.add(extra);
+            StockDbFixture.insertStock(c, run.environmentId(), run.runId(), rows);
+        }
     }
 
-    /** Submits through the real ordering route and returns the order uuid ordering itself wrote. */
-    private String submit(String who, String[] seed) throws Exception {
-        slots.use(seed[0], true, false);
+    /** The real account, draft, stock, claim and review routes for a demo employee; returns the order ordering writes. */
+    private String order(String who, String taken) throws Exception {
+        String sub = "sub-" + who;
+        JsonNode account = body(http.as(who).get(BASE + "/manual/account")).get("value");
+        assertEquals("ready", account.get("state").asText());
+        assertTrue(account.get("slots").get(0).get("ordering").get("enabled").asBoolean());
+        String draft = StockDbFixture.complete().toString().replace("paula", who).replace("Paula Mason", who)
+                .replace("2026-11-12", "2026-11-30");
+        Response saved = http.as(who).body("{\"commandId\":\"draft-" + ApptHttp.id() + "\",\"expectedDraftVersion\":0,"
+                + "\"expectedContextVersion\":\"" + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}")
+                .post(BASE + "/manual/draft");
+        assertEquals(200, saved.statusCode(), sub + " " + saved.asString());
+        Response browse = http.as(who).get(BASE + "/manual/stock");
+        assertEquals(200, browse.statusCode(), browse.asString());
+        com.fasterxml.jackson.databind.node.ObjectNode claim = null;
+        for (JsonNode d : body(browse).get("value").get("decisions")) {
+            if (claim == null && "eligible".equals(d.get("gateStatus").asText()) && !d.get("orderUuid").asText().equals(taken)) {
+                claim = ((com.fasterxml.jackson.databind.node.ObjectNode) d.get("claimInput")).deepCopy();
+            }
+        }
+        assertNotNull(claim, who + " has no eligible car: " + body(browse).get("value").get("decisions"));
+        String car = claim.get("orderUuid").asText();
+        claim.put("commandId", "claim-" + ApptHttp.id());
+        Response claimed = http.as(who).body(claim.toString()).post(BASE + "/manual/claim");
+        assertEquals(200, claimed.statusCode(), claimed.asString());
+        JsonNode hold = body(claimed).get("value").get("hold");
+        Response reviewed = http.as(who).body("{\"commandId\":\"review-" + ApptHttp.id() + "\",\"holdId\":\""
+                + hold.get("holdId").asText() + "\",\"expectedHoldVersion\":" + hold.get("version").asLong()
+                + ",\"expectedDraftVersion\":1}").post(BASE + "/manual/claim/review");
+        assertEquals(200, reviewed.statusCode(), reviewed.asString());
+        JsonNode inReview = body(reviewed).get("value");
         String digest = body(http.as(who).get(ORDERING + "/terms")).get("value").get("termsDigest").asText();
-        String json = "{\"commandId\":\"cmd-" + ApptHttp.id() + "\",\"source\":{\"type\":\"cart\",\"holdId\":\"" + seed[1]
-                + "\",\"expectedHoldVersion\":1,\"expectedDraftVersion\":1},\"expectedQuoteId\":\"q-" + seed[1]
-                + "\",\"expectedStockVersion\":1,\"termsDigest\":\"" + digest
-                + "\",\"declarations\":{\"terms\":true,\"driver\":true}}";
+        String json = "{\"commandId\":\"cmd-" + ApptHttp.id() + "\",\"source\":{\"type\":\"cart\",\"holdId\":\""
+                + hold.get("holdId").asText() + "\",\"expectedHoldVersion\":" + inReview.get("hold").get("version").asLong()
+                + ",\"expectedDraftVersion\":1},\"expectedQuoteId\":\"" + inReview.get("quote").get("quoteId").asText()
+                + "\",\"expectedStockVersion\":" + inReview.get("quote").get("stockVersion").asLong() + ",\"termsDigest\":\""
+                + digest + "\",\"declarations\":{\"terms\":true,\"driver\":true,\"return\":true}}";
         Response r = http.as(who).body(json).post(ORDERING);
         assertEquals(200, r.statusCode(), r.asString());
         JsonNode v = body(r).get("value");
         assertEquals("acknowledged", v.get("status").asText());
         assertNotNull(v.get("providerReference").asText());
-        assertEquals(seed[2], v.get("selection").get("orderUuid").asText());
-        return seed[2];
+        assertEquals(car, v.get("selection").get("orderUuid").asText());
+        return car;
     }
 
     private JsonNode clock() throws Exception {
@@ -217,10 +239,10 @@ class HandoverJourneyHttpTest {
         assertEquals(PolicyServiceAppointmentPolicy.class, beanClass(AppointmentPolicy.class));
 
         // 1. Two employees' orders are submitted and acknowledged by ordering itself.
-        String[] seedA = seed("employee-paula", "a");
-        String[] seedB = seed("employee-alex", "b");
-        String a = submit("paula", seedA);
-        String b = submit("alex", seedB);
+        seedStock();
+        // Alex (grade G1-6) is eligible for fewer cars, so alex orders first and paula takes another car.
+        String b = order("alex", null);
+        String a = order("paula", b);
         assertEquals(2, ApptHttp.count(dataSource.get(), "SELECT count(*) FROM selection_orders WHERE order_uuid IN (?, ?)", a, b));
 
         JsonNode run = clock();

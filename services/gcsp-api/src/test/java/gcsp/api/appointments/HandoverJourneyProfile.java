@@ -1,7 +1,6 @@
 package gcsp.api.appointments;
 
 import gcsp.api.JwksServerResource;
-import gcsp.api.ordering.OrderingHttpPorts;
 import io.quarkus.test.junit.QuarkusTestProfile;
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The handover journey: real RS256 identity, a private schema and every lifecycle port real. Only ordering's upstream
- * slot and cart sources are test beans, since the account policy and claims review they read are not bound yet.
+ * The handover journey: real RS256 identity, a private schema, demo-prepared people and every port real, with no
+ * test alternative in force. Only released stock (upstream supply) is seeded by the test.
  */
 public class HandoverJourneyProfile implements QuarkusTestProfile {
 
@@ -21,6 +20,9 @@ public class HandoverJourneyProfile implements QuarkusTestProfile {
     public Map<String, String> getConfigOverrides() {
         Map<String, String> m = new HashMap<>(new RealPortsProfile().getConfigOverrides());
         for (String area : List.of("approvals", "documents", "ordering", "appointments")) m.put("gcsp." + area + ".provider", "synthetic");
+        m.put("gcsp.account.provider", "repository");
+        m.put("gcsp.scenario.provider", "demo");
+        m.put("gcsp.reset-allowed", "true");
         m.put("gcsp.claims.sweep-interval", "10m");
         m.put("gcsp.notify.drain-interval", "10m");
         if ("true".equals(m.get("quarkus.datasource.active"))) {
@@ -33,7 +35,7 @@ public class HandoverJourneyProfile implements QuarkusTestProfile {
 
     @Override
     public Set<Class<?>> getEnabledAlternatives() {
-        return Set.of(OrderingHttpPorts.TestSlots.class, OrderingHttpPorts.Cart.class);
+        return Set.of();
     }
 
     @Override
