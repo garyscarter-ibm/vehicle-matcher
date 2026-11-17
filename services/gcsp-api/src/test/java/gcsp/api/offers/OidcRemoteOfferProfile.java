@@ -24,7 +24,8 @@ public class OidcRemoteOfferProfile extends OffersTestProfile {
         c.put("gcsp.claims.stock.provider", "local");
         c.put("gcsp.ordering.provider", "synthetic");
         c.put("gcsp.scenario.provider", "none");
-        c.put("gcsp.mail.transport", "captured");
+        // The existing selector captures mail when the setting is blank; "captured" is not a mode.
+        c.put("gcsp.mail.transport", "");
         c.put("gcsp.mail.public-base-url", "https://gcsp.example.test");
         c.put("gcsp.claims.sweep-interval", "10m");
         c.put("gcsp.notify.drain-interval", "10m");
