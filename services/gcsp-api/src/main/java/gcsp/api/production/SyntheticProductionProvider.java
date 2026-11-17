@@ -98,6 +98,12 @@ public final class SyntheticProductionProvider implements ProductionProviderPort
     /** Appends one scripted answer (confirm, delay or refuse) for a stored order, validated against what it already holds. */
     public ScriptResult script(RunContext ctx, String operationId, String action, Integer quantity, Instant delayUntil,
             String reason, Instant now) {
+        return script(ctx, operationId, action, quantity, delayUntil, reason, now, null);
+    }
+
+    /** As above; a non-null commandId is recorded with the answer, so the same command never appends a second one. */
+    public ScriptResult script(RunContext ctx, String operationId, String action, Integer quantity, Instant delayUntil,
+            String reason, Instant now, String commandId) {
         if (ctx == null || operationId == null || operationId.isBlank() || now == null) {
             return ScriptResult.fail(INVALID, "The request is malformed.");
         }
@@ -107,7 +113,7 @@ public final class SyntheticProductionProvider implements ProductionProviderPort
         try (Connection c = dataSource.getConnection()) {
             c.setAutoCommit(false);
             try {
-                ScriptResult r = scriptIn(c, ctx, operationId, action, quantity, delayUntil, reason, now);
+                ScriptResult r = scriptIn(c, ctx, operationId, action, quantity, delayUntil, reason, now, commandId);
                 if (r.ok()) c.commit();
                 else c.rollback();
                 return r;
@@ -121,7 +127,7 @@ public final class SyntheticProductionProvider implements ProductionProviderPort
     }
 
     private ScriptResult scriptIn(Connection c, RunContext ctx, String operationId, String action, Integer quantity,
-            Instant delayUntil, String reason, Instant now) throws SQLException {
+            Instant delayUntil, String reason, Instant now, String commandId) throws SQLException {
         int ordered;
         try (PreparedStatement ps = c.prepareStatement("SELECT outcome, (request->>'quantity')::int FROM production_synthetic_orders "
                 + "WHERE environment_id = ? AND run_id = ? AND operation_id = ? FOR UPDATE")) {
@@ -141,12 +147,18 @@ public final class SyntheticProductionProvider implements ProductionProviderPort
         boolean refused = false;
         for (JsonNode r : responses(c, ctx.environmentId(), ctx.runId(), operationId)) {
             seq++;
+            if (commandId != null && commandId.equals(r.path("commandId").asText(null))) {
+                return action.equals(r.path("action").asText())
+                        ? new ScriptResult(true, null, null, seq)
+                        : ScriptResult.fail("idempotency-input-changed", "This command ID was used with different input.");
+            }
             if ("confirm".equals(r.path("action").asText())) confirmed += r.path("quantity").asInt();
             if ("refuse".equals(r.path("action").asText())) refused = true;
         }
         if (refused) return ScriptResult.fail("request-refused", "Production has already refused this request.");
         ObjectNode response = JSON.createObjectNode();
         response.put("action", action);
+        if (commandId != null) response.put("commandId", commandId);
         seq++;
         switch (action) {
             case "confirm" -> {
