@@ -3,6 +3,7 @@ package gcsp.api.demand;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.clock.ClockReading;
 import gcsp.api.demand.AllocationRecordsPort.RecordedDecision;
 import gcsp.api.demand.DemandPolicyPort.DemandPolicy;
 import gcsp.api.demand.OfferRecordsPort.DecisionRow;
@@ -18,9 +19,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +50,7 @@ final class DemandFixture implements AutoCloseable {
     final Policy policy = new Policy();
     final Evaluator evaluator = new Evaluator();
     final Offers offers = new Offers();
+    final TestClock clock = new TestClock();
     DemandService service;
 
     private DemandFixture(String url, String schema) {
@@ -73,7 +73,7 @@ final class DemandFixture implements AutoCloseable {
     }
 
     DemandService service(DemandPolicyPort p, UnmetEvaluationPort u, OfferRecordsPort o) throws SQLException {
-        return new DemandService(pool(), p, u, o, Clock.fixed(NOW, ZoneOffset.UTC));
+        return new DemandService(pool(), p, u, o, clock);
     }
 
     static PGSimpleDataSource plain(String url) throws SQLException {
@@ -213,7 +213,7 @@ final class DemandFixture implements AutoCloseable {
     final Records records = new Records();
 
     SuitabilityService suitability() throws SQLException {
-        return new SuitabilityService(pool(), policy, records, Clock.fixed(NOW, ZoneOffset.UTC));
+        return new SuitabilityService(pool(), policy, records, clock);
     }
 
     DemandResult read() {
@@ -235,6 +235,18 @@ final class DemandFixture implements AutoCloseable {
     }
 
     // ---- stub ports ----
+
+    /** NOW at clock version 1 unless a test sets readings; each read takes the next queued reading, else the current one. */
+    static final class TestClock implements DemandClock {
+        volatile Optional<ClockReading> current = Optional.of(new ClockReading(NOW, 1));
+        final java.util.concurrent.ConcurrentLinkedQueue<Optional<ClockReading>> queued = new java.util.concurrent.ConcurrentLinkedQueue<>();
+
+        @Override
+        public Optional<ClockReading> now(DemandScope scope) {
+            Optional<ClockReading> next = queued.poll();
+            return next != null ? next : current;
+        }
+    }
 
     /** Reads the retained Node policy seed (never a copy), with the decline reasons supplied explicitly. */
     static final class Policy implements DemandPolicyPort {
