@@ -9874,7 +9874,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T23:33:58Z",
+      "observed_at": "2026-11-17T23:40:21Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10082,9 +10082,9 @@
           "name": "Claude A43",
           "harness": "claude",
           "role": "covering batch delivery",
-          "observed_at": "2026-11-17T23:27:32.316520+00:00",
-          "expires_at": "2026-11-17T23:42:32.316520+00:00",
-          "source": "Fresh current checkpoint includes input-tree/dependency/test discovery and Wakko supervisor implementer start at measured capacity. Runtime concretely released by account lead23:32:32UTC; batch commands not yet observed. Model/effort retain self-reported Opus5.5/high, independently unverified; child Sonnet/high reported, effective unverified. No green batch/acceptance inferred.",
+          "observed_at": "2026-11-17T23:38:12.545626+00:00",
+          "expires_at": "2026-11-17T23:53:12.545626+00:00",
+          "source": "Actual covering batch started23:38:12 at3639634f93742877b528213941ad110a9b4517e0 after concrete lane release observed23:33:30. Wakko supervisor source46397B SHA f4acc21c8d70a522b0a5b2cb922588bb1cafb1c3b9357164d6efe4ca9eaae977 delivered and lead reviewed. Root npm test then API clean verify ownPG17 serially; no result/green batch/acceptance yet. Model/effort still self-reported, effective independently unverified.",
           "status": "active"
         }
       ],
