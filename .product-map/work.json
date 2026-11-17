@@ -8242,7 +8242,7 @@
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-507",
-      "observed_at": "2026-11-16T19:48:32Z",
+      "observed_at": "2026-11-17T14:30:19Z",
       "slices": [
         {
           "id": "replay-harness",
@@ -8260,9 +8260,10 @@
         },
         {
           "id": "buddy-route",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Buddy route replayed through Java allocation, recommendation and offers",
-          "observed_at": "2026-11-16T14:37:35Z"
+          "observed_at": "2026-11-17T14:30:18Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
         },
         {
           "id": "job-wiring",
@@ -8273,9 +8274,10 @@
         },
         {
           "id": "full-size-validation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "1,000-employee seeds against Node process-only.json on native PostgreSQL",
-          "observed_at": "2026-11-16T19:48:32Z"
+          "observed_at": "2026-11-17T14:30:19Z",
+          "evidence": "Lead-reviewed at 8d989318b: ComparisonJobFullSizeTest via POST /api/gcsp/v1/comparison/jobs succeeded (4,118 s, -Xmx3g), all 6 per-seed record digests equal fresh Node (a, b, c); scoped Java set 175 pass"
         }
       ]
     },
