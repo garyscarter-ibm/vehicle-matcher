@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T04:41:04Z",
+      "observed_at": "2026-11-17T04:42:55Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,14 +8731,14 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T04:40:35.953216+00:00",
-      "note": "Original AC1 current-port inventory continues in exact2newdocs under same coordinator; actual2Sonnet sourceworker activity observed. Inventory returns, actual startup selection and original connected/remote/OIDC/email proof remain open. Native To Do preserved.",
+      "note": "Action/event source worker returned35record JSON04:40:52; coordinator source checking, read/input worker stillpending. Original AC1 exact2doc checkpoint notreturned; no startup/connected/remote/OIDC/email proof or Story completion. Native To Do preserved.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T04:40:19.704859+00:00",
-          "evidence": "Actual source-reading worker tools observed04:39:55/04:38:46UTC. Exact2doc return pending; no runtime, startup composition proof or full originalAC completion."
+          "observed_at": "2026-11-17T04:42:55.312158+00:00",
+          "evidence": "Action/event worker returned35record sourceJSON04:40:52, parent JSONparse/count only. Coordinator sourcechecking; read/input/final2docs pending. No runtime or originalAC completion."
         },
         {
           "id": "startup",
@@ -8776,9 +8776,18 @@
           "harness": "claude-code",
           "role": "F481 current port inventory; disjoint source domains",
           "observed_at": "2026-11-17T04:38:46.349000+00:00",
-          "expires_at": "2026-11-17T04:53:46.349000+00:00",
+          "expires_at": "2026-11-17T04:40:52.481Z",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "actual source reads observed; Sonnet5.5; effective effort unverified; no runtime"
+          "status": "returned35record sourceJSON; coordinator validating; no runtime or full inventory completion"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 inventory reconciliation and demo-preparation mapping",
+          "observed_at": "2026-11-17T04:41:37.910000+00:00",
+          "expires_at": "2026-11-17T04:56:37.910000+00:00",
+          "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
+          "status": "actual source/reference checks observed; Opus5.5; effective effort unverified; no runtime"
         }
       ]
     }
