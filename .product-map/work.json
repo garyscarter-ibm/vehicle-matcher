@@ -7713,7 +7713,7 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-17T16:16:07Z",
+      "observed_at": "2026-11-17T16:25:00Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
@@ -7756,13 +7756,15 @@
         },
         {
           "id": "s6-relaxation",
-          "status": "not-started",
-          "title": "Preference-relaxation remedy over recorded offer declines and post-decline brief change"
+          "status": "in-progress",
+          "title": "Preference-relaxation remedy over recorded offer declines and post-decline brief change",
+          "observed_at": "2026-11-17T16:25:00Z"
         },
         {
           "id": "s7-journey",
-          "status": "not-started",
-          "title": "Started-app journey under documented config (repository accounts, demo scenario, OIDC JWTs, PG) for AC1 and AC2"
+          "status": "in-progress",
+          "title": "Started-app journey under documented config (repository accounts, demo scenario, OIDC JWTs, PG) for AC1 and AC2",
+          "observed_at": "2026-11-17T16:25:00Z"
         }
       ]
     },

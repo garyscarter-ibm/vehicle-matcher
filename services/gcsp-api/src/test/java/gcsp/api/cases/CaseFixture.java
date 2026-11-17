@@ -135,6 +135,22 @@ final class CaseFixture implements AutoCloseable {
         }
 
         @Override
+        public Optional<JsonNode> assumption(String policyVersion, String key) {
+            if (missing) return Optional.empty();
+            try {
+                for (JsonNode a : CaseJson.M.readTree(Files.readString(SEED)).get("assumptions")) {
+                    if (!key.equals(a.get("key").asText()) || !policyVersion.equals(a.get("policyVersion").asText())) continue;
+                    ObjectNode copy = a.deepCopy();
+                    if (edits.containsKey(key)) edits.get(key).accept(copy);
+                    return Optional.of(copy);
+                }
+                return Optional.empty();
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+
+        @Override
         public Optional<Map<String, JsonNode>> assumptions(String policyVersion) {
             if (missing) return Optional.empty();
             try {

@@ -97,12 +97,10 @@ public final class CaseService {
                 if (!found.get().employeeId().equals(scope.employeeId())) {
                     return Refusal.forbidden("not-resource-owner", "This renewal case belongs to another employee.");
                 }
-                out.set("case", caseJson(found.get(), scope.runId()));
+                out.set("case", own(c, scope, List.of(found.get())).get(0));
             } else {
                 ArrayNode cases = out.putArray("cases");
-                for (Row r : CaseStore.read(c, scope.environmentId(), scope.runId(), scope.employeeId(), null)) {
-                    cases.add(caseJson(r, scope.runId()));
-                }
+                own(c, scope, CaseStore.read(c, scope.environmentId(), scope.runId(), scope.employeeId(), null)).forEach(cases::add);
             }
             Optional<Instant> asOf = now(scope.environmentId(), scope.runId());
             if (asOf.isEmpty()) return Refusal.unavailable();
@@ -111,6 +109,21 @@ public final class CaseService {
         } catch (SQLException e) {
             return Refusal.unavailable();
         }
+    }
+
+    /** The employee's cases; one with a preference-relaxation remedy also shows the brief state (one briefs read at most). */
+    private List<ObjectNode> own(Connection c, EmployeeScope scope, List<Row> rows) throws SQLException {
+        List<CaseRelaxation.Brief> briefs = null;
+        List<ObjectNode> out = new ArrayList<>();
+        for (Row r : rows) {
+            ObjectNode n = caseJson(r, scope.runId());
+            if (CaseRelaxation.isRelaxation(r.remedy())) {
+                if (briefs == null) briefs = CaseRelaxation.briefs(c, scope.environmentId(), scope.runId(), scope.employeeId());
+                n.set("relaxation", CaseRelaxation.projection(briefs, r.remedy(), scope.principalId()));
+            }
+            out.add(n);
+        }
+        return out;
     }
 
     /** Every case of the run with history and the employee's name (the id when no name is known). */
@@ -163,9 +176,17 @@ public final class CaseService {
         Instant now = clockNow.get();
         CaseCarSuitabilityPort.Options cars = suitability.options(scope.environmentId(), scope.runId(), row.employeeId(),
                 scope.policyVersion());
+        ArrayNode relaxations;
+        try (Snapshot snap = snapshot()) {
+            relaxations = CaseRelaxation.options(snap.connection, policy, scope.environmentId(), scope.runId(), row.employeeId(),
+                    scope.policyVersion());
+        } catch (SQLException e) {
+            return Refusal.unavailable();
+        }
+        if (relaxations == null) return Refusal.unavailable();
         ObjectNode options = CaseJson.obj();
         options.set("alternativeCars", carOptions(cars));
-        options.set("preferenceRelaxations", available(CaseJson.arr(),
+        options.set("preferenceRelaxations", available(relaxations,
                 "A current confirmed brief and an unused recorded decline are required."));
         options.set("laterRelease", available(laterReleases(row, now),
                 "No reviewed future release date and source are recorded for this case."));
@@ -289,8 +310,12 @@ public final class CaseService {
                 JsonNode submitted = input.has("remedy") ? input.get("remedy") : c.remedy();
                 if (!input.has("remedy") && submitted != null && "alternative-car".equals(submitted.path("type").asText())) {
                     submitted = CaseJson.obj().put("type", "alternative-car").set("orderUuid", submitted.get("orderUuid"));
+                } else if (!input.has("remedy") && CaseRelaxation.isRelaxation(submitted)) {
+                    ObjectNode own = CaseJson.obj();
+                    for (String k : List.of("type", "decisionId", "expectedBriefVersion", "path", "value")) own.set(k, submitted.get(k));
+                    submitted = own;
                 }
-                remedy = checkRemedy(scope, c, renewal, rule, now, submitted);
+                remedy = checkRemedy(tx.connection(), scope, c, renewal, rule, now, submitted, status.equals("resolved"));
             }
             CaseStore.appendHistory(tx, c.caseId(), new History(now, scope.principalId(), rule.ownerRole(), status,
                     input.get("reason").textValue(), null, input.get("nextAction").textValue(), dueAt, remedy));
@@ -349,8 +374,8 @@ public final class CaseService {
 
     // ---- remedies ----
 
-    private ObjectNode checkRemedy(GregScope scope, Row c, CaseAccountPort.Lookup renewal, CasePolicy rule, Instant now,
-            JsonNode remedy) {
+    private ObjectNode checkRemedy(Connection conn, GregScope scope, Row c, CaseAccountPort.Lookup renewal, CasePolicy rule,
+            Instant now, JsonNode remedy, boolean resolving) throws SQLException {
         if (!CaseJson.object(remedy) || !text(remedy.get("type"), 128)) {
             throw new Refused(Refusal.invalid("remedy", "The scheme team must record a remedy before resolving this case."));
         }
@@ -381,7 +406,7 @@ public final class CaseService {
                 return (ObjectNode) remedy.deepCopy();
             }
             case "preference-relaxation":
-                throw new Refused(Refusal.forbidden("forbidden", "A recorded decline for this employee is required."));
+                return relaxation(conn, scope, c, renewal, remedy, resolving);
             case "alternative-car": {
                 if (!only(remedy, "type", "orderUuid") || !text(remedy.get("orderUuid"), 128)) {
                     throw new Refused(Refusal.invalid("remedy.orderUuid", "Choose a current suitable available car."));
@@ -398,6 +423,36 @@ public final class CaseService {
             default:
                 throw new Refused(Refusal.invalid("remedy.type", "Choose a supported scheme-team remedy."));
         }
+    }
+
+    /** A relaxation needs this employee's decline, a preference of the confirmed brief and (to resolve) her confirmation. */
+    private static ObjectNode relaxation(Connection conn, GregScope scope, Row c, CaseAccountPort.Lookup renewal, JsonNode remedy,
+            boolean resolving) throws SQLException {
+        JsonNode path = remedy.get("path");
+        if (!only(remedy, "type", "decisionId", "expectedBriefVersion", "path", "value", "confirmationState", "confirmedBy",
+                "confirmedAt", "briefVersion") || !text(remedy.get("decisionId"), 128)
+                || !CaseJson.integer(remedy.get("expectedBriefVersion")) || remedy.get("expectedBriefVersion").doubleValue() < 1
+                || path == null || !path.isTextual() || !path.textValue().matches("^preferences\\.[^.]+\\.value$") || !remedy.has("value")) {
+            throw new Refused(Refusal.invalid("remedy", "Propose exactly one preference value. Essentials and allowance remain unchanged."));
+        }
+        List<CaseRelaxation.Brief> briefs = CaseRelaxation.briefs(conn, scope.environmentId(), scope.runId(), c.employeeId());
+        CaseRelaxation.Brief before = CaseRelaxation.version(briefs, remedy.get("expectedBriefVersion").longValue());
+        if (before == null || !before.preferences().has(path.textValue().split("\\.")[1])) {
+            throw new Refused(Refusal.invalid("remedy.path", "Choose a preference in the confirmed employee brief."));
+        }
+        CaseRelaxation.Decline decision = CaseRelaxation.decision(conn, scope.environmentId(), scope.runId(),
+                remedy.get("decisionId").textValue());
+        if (decision == null) throw new Refused(Refusal.notFound("No recorded decision exists with that reference."));
+        if (!decision.employeeId().equals(c.employeeId()) || !"decline".equals(decision.decision())) {
+            throw new Refused(Refusal.forbidden("forbidden", "A recorded decline for this employee is required."));
+        }
+        boolean confirmed = CaseRelaxation.confirmed(briefs, remedy, null);
+        if (resolving && !confirmed) {
+            String who = text(renewal.name(), 200) ? renewal.name() : "The employee";
+            throw new Refused(Refusal.invalid("employee-confirmation-required", "remedy",
+                    who + " must confirm the single preference change in the brief before this case can be resolved."));
+        }
+        return CaseRelaxation.stored(remedy, briefs, confirmed);
     }
 
     private static boolean validLater(JsonNode remedy, Instant now) {
