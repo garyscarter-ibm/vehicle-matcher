@@ -2,9 +2,15 @@ package gcsp.api.offers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.ordering.OrderingProviderPort;
+import gcsp.api.ordering.OrderingScope;
+import gcsp.api.ordering.OrderingService;
+import gcsp.api.ordering.OrderingTerms;
+import gcsp.api.ordering.SyntheticOrderingProvider;
 import java.sql.SQLException;
 import java.time.Instant;
 import org.junit.jupiter.api.AfterEach;
@@ -223,5 +229,57 @@ class OfferAcceptPgTest {
         assertEquals(409, o.http());
         assertEquals("terms-changed", o.code());
         assertUntouched();
+    }
+
+    /** The synthetic provider never pends; a lost answer after execute drives OrderingResult.Pending with its stored view. */
+    private static final class LostAnswer implements OrderingProviderPort {
+        private final OrderingProviderPort inner;
+
+        LostAnswer(OrderingProviderPort inner) {
+            this.inner = inner;
+        }
+
+        @Override
+        public String mode() {
+            return inner.mode();
+        }
+
+        @Override
+        public String provider() {
+            return inner.provider();
+        }
+
+        @Override
+        public ProviderResponse execute(OrderingScope scope, ProviderRequest request) {
+            inner.execute(scope, request);
+            throw new IllegalStateException("response lost");
+        }
+
+        @Override
+        public ProviderResponse reconcile(OrderingScope scope, ProviderRequest request) {
+            throw new IllegalStateException("provider unreachable");
+        }
+    }
+
+    @Test
+    void aPendingOrderingHandoffIsAnAcceptedDecisionWithAPendingSelectionAndTheHoldNotReleased() throws Exception {
+        env.ordering = new OrderingService(env.source(), new OrderingTerms(DecisionEnv.policy(true), ctx -> env.now[0]),
+                new LostAnswer(new SyntheticOrderingProvider(env.source())));
+        OfferOutcome o = env.acceptOk();
+        assertEquals(200, o.http(), o.code());
+        assertEquals("accepted", o.value().get("state").textValue());
+        assertEquals("pending", o.value().at("/selection/status").textValue(), o.value().toString());
+        assertEquals("handoff-pending", o.value().at("/selection/progress/selectionState").textValue());
+        assertNotNull(o.value().at("/selection/operationId").textValue());
+        assertEquals(o.value().get("operationId").textValue(), o.value().at("/selection/operationId").textValue());
+        // The decision is recorded and the car stays held for the employee: nothing is released while the handoff is open.
+        assertEquals("accepted", env.text("SELECT state FROM buddy_offers"));
+        assertEquals("allocated", env.text("SELECT state FROM custody_holds"));
+        assertEquals(0, env.count("SELECT count(*) FROM custody_holds WHERE state = 'released'"));
+        assertEquals(1, env.count("SELECT count(*) FROM offer_decisions WHERE decision = 'accept'"));
+        OfferOutcome again = env.decide(env.accept("cmd-1", 1, 1, null));
+        assertEquals(200, again.http(), again.code());
+        assertEquals(o.value().get("decisionId"), again.value().get("decisionId"));
+        assertEquals(1, env.count("SELECT count(*) FROM offer_decisions"));
     }
 }

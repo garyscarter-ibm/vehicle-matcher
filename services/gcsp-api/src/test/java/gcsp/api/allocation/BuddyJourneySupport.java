@@ -24,22 +24,22 @@ import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 
 /** JWTs, presenter clock calls and SQL reads shared by the two Buddy journey tests. */
-final class BuddyJourneySupport {
+public final class BuddyJourneySupport {
 
-    static final ObjectMapper JSON = new ObjectMapper();
-    static final String API = "/api/gcsp/v1";
-    static final String OCCUPYING = "('active', 'claim-pending', 'release-pending', 'selection-pending')";
+    public static final ObjectMapper JSON = new ObjectMapper();
+    public static final String API = "/api/gcsp/v1";
+    public static final String OCCUPYING = "('active', 'claim-pending', 'release-pending', 'selection-pending')";
     private static final String HELD = "('active', 'claim-pending', 'release-pending', 'selection-pending', 'allocated')";
 
     private final DataSource dataSource;
     private final String signingJwk;
 
-    BuddyJourneySupport(DataSource dataSource, String signingJwk) {
+    public BuddyJourneySupport(DataSource dataSource, String signingJwk) {
         this.dataSource = dataSource;
         this.signingJwk = signingJwk;
     }
 
-    String token(String subject, String role) throws Exception {
+    public String token(String subject, String role) throws Exception {
         RsaJsonWebKey key = (RsaJsonWebKey) JsonWebKey.Factory.newJwk(signingJwk);
         JwtClaims claims = new JwtClaims();
         claims.setIssuer("https://issuer.test/realms/gcsp");
@@ -58,46 +58,46 @@ final class BuddyJourneySupport {
         return jws.getCompactSerialization();
     }
 
-    static Response get(String token, String path) {
+    public static Response get(String token, String path) {
         return given().header("Authorization", "Bearer " + token).when().get(path);
     }
 
-    static Response post(String token, String path, String body) {
+    public static Response post(String token, String path, String body) {
         return given().header("Authorization", "Bearer " + token).contentType(ContentType.JSON).body(body).when().post(path);
     }
 
-    long clockVersion(String presenter) {
+    public long clockVersion(String presenter) {
         return get(presenter, API + "/presenter/clock").then().statusCode(200).extract().jsonPath().getLong("value.clockVersion");
     }
 
-    String clockNow(String presenter) {
+    public String clockNow(String presenter) {
         return get(presenter, API + "/presenter/clock").then().statusCode(200).extract().jsonPath().getString("value.now");
     }
 
-    void advance(String presenter, long bySeconds) {
+    public void advance(String presenter, long bySeconds) {
         long version = clockVersion(presenter);
         post(presenter, API + "/presenter/clock/advance", "{\"commandId\":\"adv-" + UUID.randomUUID()
                 + "\",\"expectedClockVersion\":" + version + ",\"bySeconds\":" + bySeconds + "}").then().statusCode(200);
     }
 
     /** A presenter tick at the current clock; it must complete with a 200. Returns the tick view's value. */
-    JsonNode tick(String presenter, String tickId) throws Exception {
+    public JsonNode tick(String presenter, String tickId) throws Exception {
         String body = post(presenter, API + "/presenter/clock/tick", "{\"tickId\":\"" + tickId
                 + "\",\"expectedClockVersion\":" + clockVersion(presenter) + "}").then().statusCode(200).extract().asString();
         return JSON.readTree(body).get("value");
     }
 
-    static JsonNode outcome(JsonNode tick, String handlerId) {
+    public static JsonNode outcome(JsonNode tick, String handlerId) {
         for (JsonNode o : tick.get("outcomes")) if (handlerId.equals(o.path("handlerId").asText())) return o.get("outcome");
         throw new AssertionError("no outcome for " + handlerId + " in " + tick.get("outcomes"));
     }
 
-    static JsonNode value(Response r, int status) throws Exception {
+    public static JsonNode value(Response r, int status) throws Exception {
         return JSON.readTree(r.then().statusCode(status).extract().asString());
     }
 
     /** Every car has at most one occupying or allocated hold, every employee at most maxActive, every slot unit one. */
-    void assertCustodyInvariants(long maxActive) throws SQLException {
+    public void assertCustodyInvariants(long maxActive) throws SQLException {
         assertEquals(0, count("SELECT count(*) FROM (SELECT order_uuid FROM custody_holds WHERE state IN " + HELD
                 + " GROUP BY order_uuid HAVING count(*) > 1) x"), "a car has two holders");
         assertEquals(0, count("SELECT count(*) FROM (SELECT employee_id FROM custody_holds WHERE state IN " + OCCUPYING
@@ -106,18 +106,18 @@ final class BuddyJourneySupport {
                 + " GROUP BY slot_id, slot_unit HAVING count(*) > 1) x"), "a slot unit has two occupants");
     }
 
-    JsonNode json(String sql, Object... parameters) throws Exception {
+    public JsonNode json(String sql, Object... parameters) throws Exception {
         return JSON.readTree(text(sql, parameters));
     }
 
-    String text(String sql, Object... parameters) throws SQLException {
+    public String text(String sql, Object... parameters) throws SQLException {
         List<String> rows = column(sql, parameters);
         assertEquals(1, rows.size(), sql);
         assertTrue(rows.get(0) != null, sql);
         return rows.get(0);
     }
 
-    List<String> column(String sql, Object... parameters) throws SQLException {
+    public List<String> column(String sql, Object... parameters) throws SQLException {
         List<String> out = new ArrayList<>();
         try (Connection c = dataSource.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             for (int i = 0; i < parameters.length; i++) ps.setObject(i + 1, parameters[i]);
@@ -128,7 +128,7 @@ final class BuddyJourneySupport {
         return out;
     }
 
-    long count(String sql, Object... parameters) throws SQLException {
+    public long count(String sql, Object... parameters) throws SQLException {
         return Long.parseLong(text(sql, parameters));
     }
 }

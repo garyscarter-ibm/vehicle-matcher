@@ -6,7 +6,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /** The typed answer of an offer read; current is set only on the two 409 decision refusals. */
 public record OfferOutcome(int http, String status, String code, String reason, boolean retryable, JsonNode value,
-        JsonNode current) {
+        JsonNode current, JsonNode savedChange) {
+
+    public OfferOutcome(int http, String status, String code, String reason, boolean retryable, JsonNode value,
+            JsonNode current) {
+        this(http, status, code, reason, retryable, value, current, null);
+    }
+
+    /** A failure that still shows the brief change the employee has already saved. */
+    public OfferOutcome withSavedChange(JsonNode saved) {
+        return new OfferOutcome(http, status, code, reason, retryable, value, current, saved);
+    }
 
     public static OfferOutcome ok(JsonNode value) {
         return new OfferOutcome(200, "ok", null, null, false, value, null);

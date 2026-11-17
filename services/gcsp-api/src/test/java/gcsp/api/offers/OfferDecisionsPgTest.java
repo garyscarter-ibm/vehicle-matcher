@@ -204,6 +204,14 @@ class OfferDecisionsPgTest {
         assertEquals(200, o.http());
         assertEquals(4, o.value().get("reasons").size());
         assertEquals(DecisionEnv.POLICY, o.value().get("policyVersion").textValue());
+        // The exact shape the web client validates, with the registry row's provenance.
+        assertEquals(java.util.List.of("schemaVersion", "key", "policyVersion", "reasons", "provenance"),
+                java.util.stream.StreamSupport.stream(((Iterable<String>) o.value()::fieldNames).spliterator(), false).toList());
+        assertEquals(java.util.List.of("status", "basis", "source", "sourceDate"),
+                java.util.stream.StreamSupport.stream(((Iterable<String>) o.value().get("provenance")::fieldNames)
+                        .spliterator(), false).toList());
+        assertEquals("assumed", o.value().get("provenance").get("status").textValue());
+        assertEquals("DecisionEnv", o.value().get("provenance").get("source").textValue());
         assertEquals(403, env.decisions.reasons(DecisionEnv.employee("E-1002"), env.offerId).http());
     }
 
