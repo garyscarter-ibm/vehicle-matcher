@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:21:14Z",
+      "observed_at": "2026-11-17T06:25:02Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T06:20:37.449339+00:00",
-      "note": "Claude16 next-increment assessment returned; fresh Donald Duck3 executing source-only provider shape component proof, exact new3paths; contract/source reads confirmed06:19:50 and desktop title verified. No runtime or new tests this pass; neither originalAC complete, nativeToDo preserved.",
+      "note": "Donald Duck3 executing source proof: three concrete cases traced to current driver and stock policy gates. No authored result/native validation yet; future oneclass runtime plan prepared, no resources allocated. Both originalACremainopen; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8896,10 +8896,10 @@
           "name": "Donald Duck 3",
           "harness": "codex",
           "role": "F481 provider shape component proof source-only lead",
-          "observed_at": "2026-11-17T06:19:50.029621+00:00",
-          "expires_at": "2026-11-17T06:34:50.029621+00:00",
+          "observed_at": "2026-11-17T06:25:01.869567+00:00",
+          "expires_at": "2026-11-17T06:40:01.869567+00:00",
           "source": "codex-fucq481-provider-shape-17",
-          "status": "executing bounded source reads; title independently verified; requestedselectedSol/high; no runtime"
+          "status": "executing source tools in compactrev3; three precise method plan, no runtime/result; requestedselectedSol/high"
         }
       ]
     }
