@@ -1317,3 +1317,17 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Verified native outcome:** separately released08 at globalheap480 passes all14 exact caller names/native0/no skips. Combined with unchanged-source06core78/UI32, all124 selected cases now have matching actual passing evidence; no rerun of110. Parent audit fucq443-review-details-0232-attempt08-c-caller-parent-audit-0232.json independently matches249sourcehashes/physicalidentities/clean aac30ad/treeed4189b, Node/plan/manifest pins and all216original identities/group26888/token/exactroots/canonicalreservation absent. Receipt23da66414dbf682e3c4c7cfbcbf61a582e00165585bd510478504851b234de8f; native02:40:27.280677–02:40:37.817089Z. Sampled disk/RSS/inclusive443990976/1275297792/1719280544B,89.093295s, errors0 and deadlines fit the unchanged grants. This verifies this finite caller configuration; it does not predict every later workload.
 - **Separate checker outcome:** conditionally released inherited checker runs once, native1 at unchanged cases/case-queue.component.html on-screen em dash; later assertions remain unknown. Parent matches249pins and187original identities/group30166/token/roots/reservation absent, sampled limits/deadlinesPASS/errors0. Receiptc49950ed464d27b2a10e462b997942764b800e21e4e112e38af93d7f14e012e8. No overall checker/Story PASS or repair. Both original acceptance criteria still need actual connected/rendered/durable proof. Attempts01–07 remain immutable, including06caller resource failure and07heapOOM.
 - **Framework improvement:** bracket one bounded resource setting from actual failures, retain unchanged successful chunks, and separate a compliant native result from later inherited failures and original product acceptance. Parent independently audited teardown before allowing metadata movement; no repeated broad review or additional gate. Coherent partial metadata/integration now allocated under the original17consumerfile contract. No Bug repair, framework implementation or OneDrive access.
+
+## 2026-11-17 02:50 UTC - GC Claude - DL-20261117-GCC-009 - 11: a silent retention typo, and "no interpreter" includes the ACK writer
+
+- **What happened:** preparing 11 turned up a typo in the 10 supervisor's RETAINED list, `.claude/test-runs/coordination/...`.
+  - That path doesn't exist, so `allocated()` counted it as 0 bytes.
+  - The freeze file was therefore left out of the 2 MiB whole-retention check, with no error. It would have stayed hidden through a run.
+  - Fixed in 11.
+- **Framework improvement (proposed, not built):** inherited supervisors should refuse to start when any non-receipt RETAINED path is missing. A missing path should fail loudly, not count as zero.
+- **My slip:** I wrote the 11 ACK status with `python3 -I` (stdlib json/os only), as in earlier assignments. 11 says "no interpreter".
+  - I disclosed it in status and in the dispatcher note.
+  - From now on, in preparation-only assignments, I write status with a shell heredoc and `mv`, and check the JSON with `plutil -convert xml1 -o /dev/null`.
+- **What worked:** the PG-exclusive pin decision used openjdk@21's `INSTALL_RECEIPT.json` runtime_dependencies.
+  - Keep gettext, zstd, lz4 and icu4c@79, which the JDK needs. Drop openssl@4 and krb5, which only PG needs.
+  - The 167 frozen blob ids were re-verified with `git ls-tree` rather than trusted from 10.
