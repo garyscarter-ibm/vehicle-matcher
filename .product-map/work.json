@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T04:53:42Z",
+      "observed_at": "2026-11-17T05:09:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T04:53:13.825383+00:00",
-      "note": "Action/event35record source return retained; Yakko current source execution verified through 2026-11-17T04:52:47.180Z. Same coordinator awaiting read/input return before final2docs. Original AC and all connected/remote proof remain open; native To Do preserved.",
+      "note": "Both source inventories returned: action/event35records and read/input24records; these counts are worker records, not a deduplicated completeport count. Coordinator actual source reconciliation05:08; final2productdocs pending. OriginalAC and all runtime/connected/remote proof remain open; native To Do preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8767,9 +8767,9 @@
           "harness": "claude-code",
           "role": "F481 current port inventory; disjoint source domains",
           "observed_at": "2026-11-17T04:52:47.180Z",
-          "expires_at": "2026-11-17T05:07:47.180000+00:00",
+          "expires_at": "2026-11-17T05:07:42.209Z",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "current source execution observed; Sonnet5.5; effective effort unverified; no runtime"
+          "status": "returned24record sourceJSON05:07:42 after construction/reference corrections; no runtime"
         },
         {
           "name": "Wile E. Coyote",
@@ -8784,10 +8784,10 @@
           "name": "Same Claude coordinator",
           "harness": "claude-code",
           "role": "F481 inventory reconciliation and demo-preparation mapping",
-          "observed_at": "2026-11-17T04:41:37.910000+00:00",
-          "expires_at": "2026-11-17T04:41:46.608Z",
+          "observed_at": "2026-11-17T05:08:17.689Z",
+          "expires_at": "2026-11-17T05:23:17.689000+00:00",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "public waiting-for-input-worker response04:41:46; current coordinator execution not separately confirmed; no runtime"
+          "status": "actual source and combined-result checks observed05:08; Opus5.5, effective effort unverified; no runtime"
         }
       ]
     }
