@@ -1,25 +1,22 @@
 package gcsp.api.cases;
 
-import io.quarkus.arc.DefaultBean;
-import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 
-/** Production defaults until the real adapters exist; each is replaced by providing another bean. */
+/** Fallback adapters for deployments that lack the real source. */
 public final class CaseDefaults {
 
     private CaseDefaults() {}
 
-    /** No Java recommendation or suitability service exists yet, so no car can be proposed. */
-    @DefaultBean
-    @ApplicationScoped
+    /** Used without persistence or an account provider: no car can be checked, so none can be proposed. */
     public static class NoSuitability implements CaseCarSuitabilityPort {
         @Override
-        public Options options(String environmentId, String runId, String employeeId) {
+        public Options options(String environmentId, String runId, String employeeId, String policyVersion) {
             return new Options(false, List.of(), List.of());
         }
 
         @Override
-        public Check check(String environmentId, String runId, String employeeId, String orderUuid) {
+        public Check check(String environmentId, String runId, String employeeId, String policyVersion,
+                String orderUuid) {
             return new Check(Verdict.UNAVAILABLE, null);
         }
     }
