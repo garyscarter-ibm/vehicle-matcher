@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
 
@@ -31,6 +33,11 @@ public final class CurrentCarStore implements CurrentCarPort {
             + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ? AND event_type = ?";
     private static final String READ_EVENTS = "SELECT payload::text FROM current_car_events "
             + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ? ORDER BY occurred_at, event_type";
+
+    private static final String LIST_RELS = "SELECT order_uuid, " + REL_COLUMNS + " FROM current_car_relationships "
+            + "WHERE environment_id = ? AND run_id = ? AND employee_id = ? ORDER BY order_uuid";
+    private static final String LIST_EVENTS = "SELECT order_uuid, payload::text FROM current_car_events "
+            + "WHERE environment_id = ? AND run_id = ? AND order_uuid = ANY(?) ORDER BY order_uuid, occurred_at, event_type";
 
     private record Row(String employeeId, CurrentCarView.Old old, CurrentCarView.New current, long version) {}
 
@@ -101,6 +108,61 @@ public final class CurrentCarStore implements CurrentCarPort {
                 conn.rollback();
             }
         }
+    }
+
+    /** Every recorded relationship for one employee, by order, in two queries; none are synthesised. */
+    public List<CurrentCarView> listForEmployee(RunContext ctx, String employeeId) throws SQLException {
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            conn.setReadOnly(true);
+            try {
+                Map<String, Row> rows = new LinkedHashMap<>();
+                try (PreparedStatement ps = conn.prepareStatement(LIST_RELS)) {
+                    ps.setString(1, ctx.environmentId());
+                    ps.setString(2, ctx.runId());
+                    ps.setString(3, employeeId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) rows.put(rs.getString("order_uuid"), listedRow(rs));
+                    }
+                }
+                Map<String, List<CurrentCarView.Change>> changes = new LinkedHashMap<>();
+                if (!rows.isEmpty()) {
+                    try (PreparedStatement ps = conn.prepareStatement(LIST_EVENTS)) {
+                        ps.setString(1, ctx.environmentId());
+                        ps.setString(2, ctx.runId());
+                        ps.setArray(3, conn.createArrayOf("text", rows.keySet().toArray()));
+                        try (ResultSet rs = ps.executeQuery()) {
+                            while (rs.next()) {
+                                JsonNode p = json(rs.getString(2));
+                                changes.computeIfAbsent(rs.getString(1), k -> new ArrayList<>())
+                                        .add(new CurrentCarView.Change(p.path("type").asText(),
+                                                ReturnJson.parse(p.path("occurredAt").asText(null)),
+                                                p.path("providerReference").asText(), p.path("appointment")));
+                            }
+                        }
+                    }
+                }
+                List<CurrentCarView> out = new ArrayList<>();
+                rows.forEach((order, r) -> out.add(new CurrentCarView(ctx.runId(), order, r.employeeId(), r.old(),
+                        r.current(), changes.getOrDefault(order, List.of()))));
+                return out;
+            } finally {
+                conn.rollback();
+            }
+        }
+    }
+
+    private static Row listedRow(ResultSet rs) throws SQLException {
+        String oldStatus = rs.getString("old_status");
+        CurrentCarView.Old old = oldStatus == null ? null
+                : new CurrentCarView.Old(rs.getString("old_contract_id"), rs.getString("old_slot_id"), oldStatus,
+                        instant(rs, "old_returned_at"), rs.getString("old_provider_reference"),
+                        json(rs.getString("old_location")));
+        CurrentCarView.New created = new CurrentCarView.New(rs.getString("order_uuid"), rs.getString("new_configuration_id"),
+                rs.getString("new_status"), instant(rs, "new_collected_at"), rs.getString("new_vin"),
+                rs.getString("new_provider_reference"));
+        return new Row(rs.getString("employee_id"), old, created, rs.getLong("version"));
     }
 
     private static CurrentCarResult.Refused refused(String code, String message) {

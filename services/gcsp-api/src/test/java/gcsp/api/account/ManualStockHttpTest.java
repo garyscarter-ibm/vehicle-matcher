@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gcsp.api.account.AccountPolicyPort.PolicyOutcome;
-import gcsp.api.account.AccountPolicyPort.PolicyRead;
 import gcsp.api.claims.ClaimClock;
 import gcsp.api.claims.ManualStockShapes;
 import gcsp.api.persistence.Persistence;
@@ -60,19 +58,6 @@ class ManualStockHttpTest {
         GoldenFixture jordan = new GoldenFixture("jordan");
         // The claim clock is the wall clock; the account clock is pinned, so pin the claim clock to it too.
         QuarkusMock.installMockForType((ClaimClock) c -> java.time.Instant.parse(paula.now), ClaimClock.class);
-        QuarkusMock.installMockForType(new AccountPolicyPort() {
-            public PolicyOutcome manualRules(PolicyRead r) {
-                return paula.manualRules;
-            }
-
-            public PolicyOutcome allowance(AccountScope s, PolicyRead r) {
-                return s.employeeId().equals(jordan.scope.employeeId()) ? jordan.allowance : paula.allowance;
-            }
-
-            public PolicyOutcome schemeDisplayNames(PolicyRead r) {
-                return paula.schemeNames;
-            }
-        }, AccountPolicyPort.class);
         try (Connection c = dataSource.get().getConnection()) {
             clear(c);
             for (GoldenFixture fx : List.of(paula, jordan)) {

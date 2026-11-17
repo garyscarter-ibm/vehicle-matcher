@@ -49,7 +49,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_OIDC_ROLE_CLAIM` | `realm_access.roles` | oidc: exact top-level claim name (such as a namespaced URL), else a dot path, to the role list. Default is Keycloak realm roles. |
 | `GCSP_OIDC_ACCOUNTS` | none | oidc: required JSON array `[{"subject","roles":["employee"|"greg"|"presenter"],"employeeId"?}]`. Not secret, never commit real subjects. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` | none | oidc: required; interim environment context until later Stories persist run state. |
-| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). |
+| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). The dev composition is `repository` with `GCSP_SCENARIO_PROVIDER=demo` on the dedicated dev database (`GCSP_RUN_ID=run-1`, `GCSP_POLICY_VERSION=gcsp-policy-v1`), which seeds the fictional people at first start. |
 | `GCSP_ACCOUNT_HR_SNAPSHOT_PATH` | none | hr-snapshot: required path to a `gcsp-hr-export/1` JSON file; checked at startup and re-read on every request, so a file that goes missing or corrupt becomes a 503 source failure. |
 | `JAVA_OPTS` | `-XX:MaxRAMPercentage=75` (image) | JVM options for the container start command. |
 | `GCSP_DATABASE_URL` | unset | JDBC URL of this environment's own PostgreSQL. Unset leaves persistence off (readiness `not-configured`). |
@@ -231,7 +231,7 @@ the principal needs environment, run and policy version, else `unavailable/not-c
 | `GET /api/gcsp/v1/documents` | Employee only: the caller's own document orders. Any query parameter is 400 `unsupported-query`. |
 | `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
 | `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
-| `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
+| `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy rows (manual rules, scheme names, allowance) come from the canonical PolicyService, and `currentCarRelationships` lists the relationships recorded in the returns store when persistence is active (absent when none). `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
 | `POST /api/gcsp/v1/recommendations` | Employee role only; the body is the brief. The caller's own recommendations over released stock: `{status:"ok",value}` (see Recommendations). 400 `unsupported-query` or `invalid-brief`; 409 `stale-run`; 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` or the service's `unavailable` outcome. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
 | `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
@@ -664,7 +664,7 @@ operation count; it is DOWN only when the database errors.
 Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
 (`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
 Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
-`gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
+`gcsp.api.account.CurrentCarPort` (FUCQ-458) lists it through `ReturnsCurrentCarRelationships` when persistence is active.
 
 ## Comparison (FUCQ-480)
 
