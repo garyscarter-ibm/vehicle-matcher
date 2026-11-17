@@ -55,7 +55,7 @@ These are native runs, retained and not rerun. They are connected partial bounda
   - synthetic returns and production downgrade quietly without persistence;
   - six contracts have only a refusing implementation and no key.
 - **Ordering.** `remote-bound` means remote is selectable and connected when `gcsp.ordering.provider=remote` is set. Default startup is `none`, which refuses.
-- **AC2.** Claim, signed-in decision and remote ordering acknowledgement are connected. The employee's order and status HTTP read still needs `AccountPolicyPort` over `PolicyService`, which the **Russell F458 lead** owns. Differently shaped employee and stock inputs are shown for HR and tranche plans, not across all ports.
+- **AC2.** Claim, signed-in decision and remote ordering acknowledgement are connected. The F458 policy blocker is resolved at ROOT `3542ff697`: `AccountPolicyPort` is bound to `PolicyAccountAdapter`. The owner's order and status HTTP read (`209bf4f7a`) passed its exact native method in context `661185fca`, review33 PASS, integrated `887b2bad6`. Differently shaped employee and stock inputs are shown for HR and tranche plans, not across all ports.
 - **Not proved.** A registered real OIDC issuer, browser login, real mail, any BMW service or capability, and the **FUCQ-516** later-clock recovery. The hosted dev environment is absent, per Gary at 08:47 UTC.
 - **Holds.** **F477 M1 / FUCQ-515** stays held. Bugs 513-516 remain capture-only.
 
@@ -67,3 +67,24 @@ Make the two Buddy reads take the account record from the selected `AccountRecor
 - **Shape risk.** The port answers in two calls: `readEmployeeContract` (account, contracts, histories, slots) and `readDrivers` (drivers, employee facts). The candidates adapter reads one combined record. Whether the two compose to that record is a design point to settle first. It is not established here.
 - **Ownership releases needed.** An explicit release of those two allocation files from their current owner, which the coordination files do not name. The account package, `AccountSelection` and `AccountPolicyPort` over `PolicyService` stay with the Russell F458 lead and are not touched.
 - **If that is not released.** No other source-only AC1 increment is ready on this lane. The refusing-only contracts need BMW or capability facts that are absent. The returns and production downgrade is in foreign files. A capture-only characterization test would be busywork, so none is proposed.
+
+## Current state, 17 November 2026, 12:32 UTC
+
+Checked against ROOT `b220082c9`.
+
+- **Delivered code.**
+  - ROOT `3542ff697` (F458) binds `AccountPolicyPort` to `PolicyAccountAdapter`, and `CurrentCarPort` to the returns store when persistence is on.
+  - ROOT `b220082c9` makes selected recommendation candidates read the selected `AccountRecordsPort`.
+- **Matching local tests.** 10 parent passes for `b220082c9`: 8 adapter and selector methods, plus the 2 generated journeys. Review 32 passed.
+- **Peer-reported.** F458's 146/146 relevant cases, including 11 dev-composition cases. The FUCQ-481 parent has not rerun them.
+- **Matching local test.** Owner `GET /manual/order` extension (`209bf4f7a`): 1 method passed, zero failures/errors/skips, 26.0s; review33 PASS, parent cleanup audit clear; integrated/pushed `887b2bad6`. This replaces the earlier source-only UNRUN observation.
+- **Unavailable environment and unverified evidence.**
+  - Hosted dev does not exist, as confirmed by Gary. Real OIDC/browser login and Angular account-view integration evidence remain unverified; this does not assert the account-view code is absent.
+  - Actual mail and authorised BMW service integration evidence remain unverified.
+  - Variation across all selected port inputs remains unverified; the recorded FUCQ-516 later-clock defect remains capture-only and unrepaired.
+- **Superseded above.** The "next increment" for the two Buddy reads is now partly delivered, as an adapter rather than a change to those files. Their SQL still runs, but its record is ignored under `recommendation`.
+- **Next.** Claude assignment27 is authoring the bounded changed employee/stock-input proof through actual selected candidates, followed by the canonical generated owner-HTTP/remote-ordering journey. The parent owns its later focused validation and review. Removing the now-redundant Buddy SQL reads still needs an allocation-file release.
+
+### Parent correction and evidence refresh, 2026-11-17T12:42:24.406039+00:00
+
+`PolicyBriefAdapter` already supplies the non-default `BriefPolicyPort` bean over `PolicyService`; the source26 fallback-only statement was an inventory error identified by review34 and corrected in the JSON/Markdown current rows. Missing brief-specific matching runtime remains explicit. All earlier observations are retained as dated history. Owner HTTP25 now has the matching local pass/review/audit above; no new execution was needed to refresh these documents. Both original acceptance criteria and live integration/all-port/later-clock gaps remain open.
