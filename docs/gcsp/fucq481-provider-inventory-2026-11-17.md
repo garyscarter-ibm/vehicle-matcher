@@ -80,7 +80,7 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | EligibleCandidates | action/event | partial | `gcsp.allocation.candidates.provider` = none; recommendation selectable | services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8 | Real canonical candidates produce a PG claim/offer at one instant through the scripted remote. Later-clock reevaluation confirms F516; full startup-selected remote/authenticated/order-status composition remains open. |
 | OfferFacts | action/event | local-bound | `(none)` = PostgresOfferFacts when its  | services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:7 | PostgresOfferFacts is an ApplicationScoped bean over local tables. |
 | OfferDecision (decision route over RemoteBuddy) | action/event | partial | `gcsp.buddy.provider` = local-synthetic; remote selectable | services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java:74 | One native JWT/JWKS/Quarkus/PG/remote acceptance and HTTP offer-state method passed. Seeded prior offer, fixed profile clock and SQL order readback limit the proof. |
-| OrderingProviderPort | action/event | partial | `gcsp.ordering.provider` = none | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | none and synthetic are selectable; the live mode named in the contract has no implementation or selectable value; synthetic receipts are local with fictional:true. |
+| OrderingProviderPort | action/event | remote-bound | `gcsp.ordering.provider` = none; none, synthetic or remote, bound through `OrderingProviderBindings` and the real Holder | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | GCSP substitute only; full order/status HTTP blocked by the refusing AccountPolicyPort (F458); no BMW live mode |
 | SelectionConversionPort | action/event | partial | `(none)` = UnconfiguredConversion for a | services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:11 | Cart is a bean; buddy-offer is constructed inline; every other source type is unsupported. |
 | DocumentProviderPort | action/event | partial | `gcsp.documents.provider` = none | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10 | none/synthetic/unsupported selectable; no live provider; case/stage reads default to unavailable. |
 | DocumentCasePort / DocumentClock | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:8; services/gcsp-api/src/main/java/gc | Clock is a real run-clock bean; case/stage port has no real binding in main. |
@@ -136,3 +136,29 @@ One native method in `GeneratedClaimRemoteOfferHttpTest` passed at `4e823b7c5`, 
 Independent source review passed. The finite run executed exactly one case with zero failures/errors/skips in 23.7 seconds. Parent independently verified 70 recorded process identities and 7 groups absent, scratch removed, reservation clear and pinned inputs unchanged; the integrated API tree equals tested source. Retained 65 adapter/startup, 10 consumer, 3 shape, 1 seeded-boundary JWT and 13 canonical cases were reused without rerun.
 
 This is a fixed same-instant composition proof. Full `GET /api/gcsp/v1/manual/order` still reaches the refusing AccountSelection policy; no browser, hosted OIDC, actual email, BMW or later-clock recovery is proved. FUCQ-516 remains capture-only and unrepaired. Both original acceptance criteria remain open. The four JSON port records above now include this evidence; older paragraphs and other records retain their own observations.
+
+## Standalone remote ordering adapter — 17 November 2026, 08:21 UTC
+
+Reviewed source `45d1c1afc05858c6f2d123d1958dd86ed625214a` is integrated and pushed as `09e22458483497c23d74a6588d43a140805b0d4e`. The exact two Java blobs implement the unchanged ordering port and13focused real-loopback tests; the integrated API tree equals tested source. All13cases passed with zero failures, errors or skips in17.0seconds. Independent source review passed. Parent independently verified39recorded process identities and three groups absent, owned scratch removed, host reservation released and tool/source pins unchanged; no PostgreSQL was started. See [the mapping and validation note](fucq481-remote-ordering-adapter-2026-11-17.md).
+
+The adapter preserves all request/scope facts, the persisted idempotency key, GET-only identity reconciliation and complete truthful acknowledgements. Shared transport remains unchanged because its generic reply omits ordering facts and unsupported status. This is an **unbound GCSP substitute**: existing holder/selector/configuration and peer-owned core were unchanged. Startup selection, actual durable consumer/full order-status HTTP, BMW access and both original criteria remain open. Only the OrderingProviderPort JSON record changed;59record identities, all58other rows and existing count/status facts are preserved. Earlier paragraphs retain their own observations.
+
+## Startup selection and unique-port census, 17 November 2026, 11:40 UTC
+
+The ordering row above is reconciled to the integrated startup selection (`3e0235593`, then `23eca515d`). Its earlier text is kept in the JSON `reconciliationHistory`.
+
+The retained native evidence for ordering is: 13 adapter methods, 1 durable consumer method, 8 binding methods, 11 startup methods (the 8 overlap) and 1 generated-claim JWT to selected-remote acknowledgement. These prove connected partial boundaries, not a whole acceptance criterion.
+
+The JSON now has a `uniquePortCensus`. It covers all 121 `public interface` declarations in `services/gcsp-api/src/main/java`, at the root and worker API tree `55023060`:
+
+| Class | Count |
+|---|---|
+| External provider contracts (startup-selected or produced) | 30 |
+| Clock inputs | 10 |
+| Internal service, projection or repository seams | 39 |
+| Sealed results and helper callbacks | 41 |
+| Unknown | 0 |
+
+The 59 legacy rows are kept with their identities. Some group or duplicate contracts, and some are composition boundaries rather than interfaces. The census lists the rules it used and the disputed cases. It is a source census, not a runtime proof.
+
+Demo preparation is traced again at the current source in `reconciliation.demoPreparation.currentTrace`. It constructs no provider and writes source tables only. Direct reads of `employee_account_records` by Buddy prepare, the Buddy remote lifecycle and manual drafts still bypass `gcsp.account.provider`. See `docs/gcsp/fucq481-provider-composition-handover-2026-11-17.md`.
