@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T05:37:45Z",
+      "observed_at": "2026-11-17T05:54:59Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T05:34:02.828091+00:00",
-      "note": "Inventory docs integrated3a7a4acb2. Assignment14 two managed adapter workers returned4source/test files (15+19 authored tests, zero run); SAME coordinator reviewing and completing startup composition/note. Exact10file checkpoint/validation and originalAC remain open; no runtime; nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T05:53:37.707215+00:00",
+      "note": "Inventory docs3a7a4acb2 and exact10file actionHTTP/startup increment18b29be38 integrated/pushed.65exact selected cases passed; Mater2 sourcePASS. SAME Claude15 ACK05:54:10 and actual consumer-source reads through05:54:34;4newtest/docpaths, no runtime or current childexecution verified. OriginalAC1/AC2/realOIDC/email/read-shape/fulljourney/BMW gaps remain; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8744,8 +8744,8 @@
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T05:20:07.021Z",
-          "evidence": "Same coordinator assignment14 actual source reads for existing default port replacement and configured remote adapters. Implementation/tests pending; no runtime."
+          "observed_at": "2026-11-17T05:54:28.677046+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete."
         },
         {
           "id": "local-composition",
@@ -8755,7 +8755,9 @@
         {
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
-          "status": "not-started"
+          "status": "in-progress",
+          "observed_at": "2026-11-17T05:54:28.677046+00:00",
+          "evidence": "HTTP actionadapters integrated18b29be38 and54newcomponentcases pass. SAME coordinator15 actual consumer-fixture source reading; boundedPGcomponenttestsource next. Wholeconnectedjourney/differentinputs/realOIDC/email unproved."
         },
         {
           "id": "integration",
@@ -8796,9 +8798,9 @@
           "harness": "claude-code",
           "role": "F481 remote claim/Buddy adapter and startup provider source increment",
           "observed_at": "2026-11-17T05:37:09.078Z",
-          "expires_at": "2026-11-17T05:52:09.078000+00:00",
+          "expires_at": "2026-11-17T05:40:57.570Z",
           "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
-          "status": "actual adapter source/test reconciliation, startup config and note writing; exact10file checkpoint pending; no runtime"
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
         },
         {
           "name": "Claims adapter implementer",
@@ -8807,7 +8809,7 @@
           "observed_at": "2026-11-17T05:32:48.662Z",
           "expires_at": "2026-11-17T05:33:59.027Z",
           "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
-          "status": "returned2source/test files05:33:59;15authored tests,zero run; no longer executing"
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
         },
         {
           "name": "Buddy adapter implementer",
@@ -8816,7 +8818,34 @@
           "observed_at": "2026-11-17T05:33:15.140Z",
           "expires_at": "2026-11-17T05:34:16.602Z",
           "source": "claude-assist-fucq481-remote-operation-providers-2026-11-17-14",
-          "status": "returned2source/test files05:34:16;19authored tests,zero run; no longer executing"
+          "status": "terminalsourcecheckpoint14 collected; tested/corrected/independentlyreviewed byCodex and integrated18b29be38; no current worker execution"
+        },
+        {
+          "name": "Mater 2",
+          "harness": "codex",
+          "role": "F481 independent source review and focused fixes review",
+          "observed_at": "2026-11-17T05:48:28.117175+00:00",
+          "expires_at": "2026-11-17T05:48:28.117175+00:00",
+          "source": "parentreview0540",
+          "status": "terminalPASS/noBLOCKERorMAJOR; no runtime; requestedselectedSol/high, nofallback, effectiveindependentlyunverified"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 bounded fixes,65selectednativecases, integration and nextallocation",
+          "observed_at": "2026-11-17T05:54:28.677046+00:00",
+          "expires_at": "2026-11-17T05:54:28.677046+00:00",
+          "source": "dispatcher0540",
+          "status": "boundedproductincrement18b29be38 integrated/pushed; no current runtime; assignment15published,executionunverified"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 HTTPtoexistingdurableconsumercomponent proof source",
+          "observed_at": "2026-11-17T05:54:34.924+00:00",
+          "expires_at": "2026-11-17T06:09:34.924000+00:00",
+          "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
+          "status": "ACK15/actualcorrectedtransportandfixture source reading;4test/docpaths; no runtime or verifiedchildexecution"
         }
       ]
     }
