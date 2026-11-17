@@ -2056,3 +2056,10 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Combined resume reads and an oversized tail clipped again; this recurrence remains unresolved. Mitigation now bounds individual read output before display and retains the complete queue locally. No claim, test result or acceptance decision uses omitted text. Proposed framework improvement remains a combined serialized-output budget, including wrapper overhead.
 - Current Git queue observation contains 48 waiting Bug records, including held triage; it is not an empty or fully reconciled native inventory. Atlassian tools remain absent and background browser inspection found no Jira tab. Existing migration leads continue; historical F466/F479 Results report F510/F506/F509 repairs, which require matching-evidence/native reconciliation before duplicate pickup or lifecycle closure. No OneDrive operation or new Story gate.
+
+
+### 2026-11-17 23:53 UTC · Russell Codex · DL-20261117-RG-014 · Split verification at an observed memory bound
+
+- Hugh reported the465 selected Java run stopped at its2304MiB RAM limit after57 green tests across11 completed classes; sampled RSS2505129984bytes exceeded the bound. This is an incomplete run, not an assertion failure or passing story set. Daffy stopped owned PostgreSQL, removed106442496bytes scratch, reported absence and released the reservation.
+- Applied mitigation: preserve completed evidence under its code/input/environment identity and run only remaining class chunks with fresh forks. The next chunk exposed OidcRemoteOfferHttpTest GET503 from a compact legacy quote seed missing browser-required pins. The lead owns the narrow caller-fixture correction; protocol production files remain in467. A necessary shared-support edit would name its full-suite exception. Correction/results remain pending; no blanket gateway retry or unchanged test retry conceals the failure.
+- Proposed framework improvement: size fork lifetime from measured RSS and checkpoint per-class completion before admission to the next chunk. No new Story scope, parent phase gate or OneDrive operation.
