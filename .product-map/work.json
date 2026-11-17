@@ -9223,7 +9223,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-17T13:50:37.299137+00:00",
-      "observed_at": "2026-11-17T13:53:51Z",
+      "observed_at": "2026-11-17T14:07:14Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9356,9 +9356,9 @@
           "name": "Same Claude coordinator",
           "harness": "claude",
           "role": "story-lead",
-          "observed_at": "2026-11-17T13:53:36Z",
-          "expires_at": "2026-11-17T14:08:36+00:00",
-          "status": "Source-only Java/Angular account parity spec; confirmed source execution ACK 2026-11-17T13:53:36Z; no runtime or original acceptance claim",
+          "observed_at": "2026-11-17T14:06:27.116084+00:00",
+          "expires_at": "2026-11-17T14:21:27.116084+00:00",
+          "status": "Source-only one-file Java/Angular account parity task; parent independently observed allocated new spec modified 2026-11-17T14:06:27.116084+00:00; mutable and unreviewed, tests/runtime/original acceptance open",
           "source": "claude-assist-fucq440-java-account-parity-2026-11-17-32"
         }
       ],
