@@ -7065,7 +7065,7 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-14T01:17:42Z",
+      "observed_at": "2026-11-17T10:53:54Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
@@ -7095,10 +7095,26 @@
           "evidence": "Lead-reviewed 574a9a04+fix: V458_1 employee_account_records + entitlement_slots_employee index; RepositoryAccountRecords read-only parameterised reads; RepositoryParityTest 11 goldens exact from native PG17; changed input/absent/source-failure cases; HTTP repository provider; EXPLAIN ANALYZE at 5000 employees: two index scans, 6 buffer hits, 0.03 ms; account tests 47/47 native; verify 137/137 native"
         },
         {
+          "id": "policy-binding",
+          "status": "in-progress",
+          "title": "Bind AccountPolicyPort to the canonical PolicyService and prove account reads with real policy",
+          "observed_at": "2026-11-17T10:53:54Z"
+        },
+        {
+          "id": "current-car-binding",
+          "status": "not-started",
+          "title": "Bind CurrentCarPort to the returns current-car store"
+        },
+        {
+          "id": "dev-config-proof",
+          "status": "not-started",
+          "title": "Documented dev config gives a working account read; repository and hr-snapshot equivalence through the started app; ordering context"
+        },
+        {
           "id": "integration",
-          "status": "complete",
-          "title": "Merge base, policy binding status, README, full Java verify and story result",
-          "observed_at": "2026-11-14T01:17:42Z",
+          "status": "in-progress",
+          "title": "Merge base, full Java verify, README and story result (reopen 2026-11-17)",
+          "observed_at": "2026-11-17T10:53:54Z",
           "evidence": "Lead-reviewed merged tree 5289c56b (base a593e4fb) + BriefAccountAdapter: ./mvnw -B verify native PG17 269/269, 0 skipped; brief 77 green with adapter; README and story result; policy binding pending FUCQ-457 (unconfigured policy refuses 503)"
         }
       ]
