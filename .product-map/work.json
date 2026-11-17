@@ -7868,7 +7868,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-14T10:07:49Z",
+      "observed_at": "2026-11-17T12:51:31Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7903,6 +7903,27 @@
           "title": "Story validation on native PostgreSQL, merged-tree verify and result",
           "observed_at": "2026-11-14T10:07:49Z",
           "evidence": "Lead validation at cc362a89a (merged origin/gcsp-poc-dev): ./mvnw -B verify 994/994 on native PG17 incl. 49 production tests; result block 27ff3f505"
+        },
+        {
+          "id": "s5-plan-binding",
+          "status": "complete",
+          "title": "Real plan-snapshot adapter over planning and Production-backed submission history (replan path)",
+          "observed_at": "2026-11-17T12:24:09Z",
+          "evidence": "Lead-reviewed fb8104aae+79c75e99a: PlanningPlanSnapshot (OrderPlanService+PlanningCatalog production mapping) is the default PlanSnapshotPort; ProductionSubmissionHistory replaces NoSubmissions; ProductionPlanJourneyTest over RS256 JWT + native PG17 (submit, replay, stale replan-needed, confirm queued, order-plan replanned); scoped 70/70"
+        },
+        {
+          "id": "s6-inventory-routes",
+          "status": "complete",
+          "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production",
+          "observed_at": "2026-11-17T12:48:50Z",
+          "evidence": "Lead-reviewed 20bcb771b: GregOrdersResource registers GET/POST /greg/orders, POST /greg/orders/queue (Greg) and POST /presenter/production (presenter, expectedVersion + commandId receipt); manual line reuses durable submit path, replan ignores manual: submissions; GregOrdersHttpTest 6/6, scoped production set 61/61"
+        },
+        {
+          "id": "s7-reintegration",
+          "status": "complete",
+          "title": "Reopened-story validation through the started app, merged-tree verify and result",
+          "observed_at": "2026-11-17T12:51:31Z",
+          "evidence": "Merged origin/gcsp-poc-dev at 15abc3d82; scoped set (production, planning, supply, Wiring/Startup, readiness) 228/228 on native PG17 incl. ProductionPlanJourneyTest; Result committed"
         }
       ]
     },

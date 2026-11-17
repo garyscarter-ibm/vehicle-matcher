@@ -766,13 +766,27 @@ for the presenter). The presenter has scenario controls only: `POST /presenter/p
 quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
 (`{limit?}`). Employees get 403 everywhere.
 
+- Greg's order routes and the presenter step (same service and store; unknown or extra fields and any query are 400):
+  - `GET /greg/orders` (Greg only): the `GET /greg/production` value plus `versions: {policy, stock, clock}` and each request's `version`.
+    `stock` is a digest of the run's `stock_cars` (order_uuid, version, state); `clock` is the demo clock instant.
+  - `POST /greg/orders` (Greg only; `{commandId, model, derivative, quantity 1-1000, expectedPolicyVersion, expectedStockVersion, plan?}`):
+    one explicit line through the plan's durable path (plan id `manual:<submissionId>`). A stale policy or stock gives 409 `stale-version`
+    (`resource`, `expectedVersion`, `currentVersion`) and writes nothing; the same command replays, changed input is 409
+    `idempotency-input-changed`. Replan history ignores `manual:` submissions.
+  - `POST /greg/orders/queue` (Greg only; `{commandId, requestId}`): queues that request's unqueued confirmations; never asks Production.
+    Answers `{requestId, queued: [{supplyId, eligibleFrom}]}`, an empty list when nothing was waiting; unknown request is 404
+    `request-not-found`; a queue that cannot take one is a retryable 503 and the confirmations stay saved.
+  - `POST /presenter/production` (presenter only; `{commandId, requestId, expectedVersion, action: confirm|delay|refuse, quantity?, delayUntil?,
+    reason?}`): the scripted step of `/presenter/production/responses` plus a request-version check (409 `stale-version`) and a command
+    receipt, so a repeat of the same command replays and scripts nothing twice. Synthetic provider only.
 - One operation per request line: the request id is the provider operation id. Intent is stored before anything is sent, and a retry
   reconciles with the provider before it resubmits, so a lost answer never creates a second order.
 - Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
   supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
-- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
-  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
-  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Each applied answer emits outbox event `production.supply-changed` (no consumer: the replan path is pull-based). Greg's `GET /greg/order-plan`
+  reports `replan` from the stored submissions and responses (`ProductionSubmissionHistory`). `supply-activity` carries `supplyVersion`.
+  The plan port is the planner itself (`PlanningPlanSnapshot`), so submit answers the planner's own 503 code (`planning-forecast-not-configured`
+  or `planning-supply-not-configured`) until FUCQ-475/477 bind its inputs. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
 - Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
   so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
 - Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,

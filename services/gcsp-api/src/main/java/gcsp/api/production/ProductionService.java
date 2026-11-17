@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.identity.Principal;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Outcome;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.TransactionRunner;
+import gcsp.api.persistence.TxConflict;
 import gcsp.api.persistence.WorkResult;
 import gcsp.api.production.PlanSnapshotPort.Line;
 import gcsp.api.production.PlanSnapshotPort.Reading;
@@ -69,7 +71,7 @@ public final class ProductionService {
         this.reads = new ProductionReads(dataSource, provider, clock);
     }
 
-    public ProductionResult submit(RunContext scope, SubmitInput in) {
+    public ProductionResult submit(RunContext scope, Principal principal, SubmitInput in) {
         ProductionResult invalid = validate(in);
         if (invalid != null) return invalid;
         if ("none".equals(provider.mode())) {
@@ -93,17 +95,99 @@ public final class ProductionService {
                 return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
             }
             Instant at = Ids.ms(now.get());
-            Reading reading = plans.current(scope);
+            Reading reading = plans.current(scope, principal);
             if (reading instanceof PlanSnapshotPort.Unavailable u) {
                 return new ProductionResult.Unavailable(u.code(), u.reason(), false);
             }
             Snapshot plan = (Snapshot) reading;
             ProductionResult refused = checkPlan(in, plan);
             if (refused != null) return refused;
-            return create(scope, in, input, digest, submissionId, plan, at);
+            return create(scope, "submit", in.commandId(), input, digest, submissionId, in.planId(), input.get("versions"),
+                    wanted(plan), at, null);
         } catch (SQLException | RuntimeException e) {
             return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
         }
+    }
+
+    /** Greg's explicit single-line request: the observed policy and stock versions, and an optional plan reference. */
+    public record ManualInput(String commandId, String model, String derivative, int quantity,
+            String expectedPolicyVersion, String expectedStockVersion, JsonNode plan) {}
+
+    /** One line through the plan's durable path (intent first, one operation); its "manual:" plan id keeps replan history off it. */
+    public ProductionResult submitManual(RunContext scope, Principal principal, ManualInput in) {
+        ProductionResult invalid = validate(in);
+        if (invalid != null) return invalid;
+        if ("none".equals(provider.mode())) {
+            return new ProductionResult.Unavailable(UnconfiguredProductionProvider.CODE,
+                    UnconfiguredProductionProvider.REASON, false);
+        }
+        ObjectNode input = F.objectNode();
+        input.put("commandId", in.commandId());
+        input.put("model", in.model());
+        input.put("derivative", in.derivative());
+        input.put("quantity", in.quantity());
+        input.put("expectedPolicyVersion", in.expectedPolicyVersion());
+        input.put("expectedStockVersion", in.expectedStockVersion());
+        if (in.plan() != null) input.set("plan", in.plan());
+        String digest = Canonical.digest(input);
+        String submissionId = "submission-" + Ids.hex32(scope.runId(), scope.actorId(), in.commandId(), "manual");
+        try {
+            Optional<Submission> prior;
+            try (Connection c = dataSource.getConnection()) {
+                prior = ProductionStore.submission(c, scope, submissionId);
+            }
+            if (prior.isPresent()) {
+                if (!prior.get().inputDigest().equals(digest)) return changedInput();
+                return send(scope, prior.get(), now(scope, prior.get().requestedAt()), false, true);
+            }
+            Optional<Instant> now = clock.now(scope);
+            if (now.isEmpty()) {
+                return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
+            }
+            if (!in.expectedPolicyVersion().equals(principal.policyVersion())) {
+                return stale("policy", in.expectedPolicyVersion(), principal.policyVersion());
+            }
+            String stock;
+            try (Connection c = dataSource.getConnection()) {
+                stock = ProductionStore.stockVersion(c, scope);
+            }
+            if (!in.expectedStockVersion().equals(stock)) return stale("stock", in.expectedStockVersion(), stock);
+            ObjectNode versions = F.objectNode();
+            versions.put("policy", in.expectedPolicyVersion());
+            versions.put("stock", in.expectedStockVersion());
+            if (in.plan() != null) versions.set("plan", in.plan());
+            List<Line> lines = List.of(new Line("l1", in.model(), in.derivative(), in.quantity()));
+            return create(scope, "manual", in.commandId(), input, digest, submissionId,
+                    ProductionReads.MANUAL_PREFIX + submissionId, versions, lines, Ids.ms(now.get()), in.expectedStockVersion());
+        } catch (SQLException | RuntimeException e) {
+            return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+        }
+    }
+
+    private static ProductionResult validate(ManualInput in) {
+        if (in == null || in.commandId() == null || in.commandId().isBlank() || in.commandId().length() > 200) {
+            return new ProductionResult.Invalid("invalid-command-id", "Supply a command ID of 1 to 200 characters.");
+        }
+        if (in.model() == null || in.model().isBlank() || in.model().length() > 200 || in.derivative() == null
+                || in.derivative().isBlank() || in.derivative().length() > 200) {
+            return new ProductionResult.Invalid("invalid-choice", "Supply the model and derivative to request.");
+        }
+        if (in.quantity() < 1 || in.quantity() > 1000) {
+            return new ProductionResult.Invalid("invalid-quantity", "Request from 1 to 1000 vehicles.");
+        }
+        if (in.expectedPolicyVersion() == null || in.expectedPolicyVersion().isBlank() || in.expectedStockVersion() == null
+                || in.expectedStockVersion().isBlank()) {
+            return new ProductionResult.Invalid("invalid-versions", "Supply the policy and stock versions you saw.");
+        }
+        return null;
+    }
+
+    private static ProductionResult stale(String resource, String expected, String current) {
+        ObjectNode details = F.objectNode();
+        details.put("resource", resource);
+        details.put("expectedVersion", expected);
+        details.put("currentVersion", current);
+        return new ProductionResult.Conflict("stale-version", "This changed since you looked. Refresh and try again.", false, details);
     }
 
     private static ProductionResult validate(SubmitInput in) {
@@ -175,16 +259,19 @@ public final class ProductionService {
         return out;
     }
 
-    /** One command transaction stores the submission and every intent row, before any request leaves. */
-    private ProductionResult create(RunContext scope, SubmitInput in, ObjectNode input, String digest, String submissionId,
-            Snapshot plan, Instant at) throws SQLException {
-        List<Line> lines = wanted(plan);
-        String commandId = "production:submit:" + scope.actorId() + ":" + in.commandId();
-        Outcome out = runner.execute(scope, new Command("production.submit", commandId, input), tx -> {
+    /** One command transaction stores the submission and every intent row first; a stock fence re-checks stock inside it. */
+    private ProductionResult create(RunContext scope, String kind, String clientCommandId, ObjectNode input, String digest,
+            String submissionId, String planId, JsonNode planVersions, List<Line> lines, Instant at, String stockFence)
+            throws SQLException {
+        String commandId = "production:" + kind + ":" + scope.actorId() + ":" + clientCommandId;
+        Outcome out = runner.execute(scope, new Command("production." + kind, commandId, input), tx -> {
+            if (stockFence != null && !stockFence.equals(ProductionStore.stockVersion(tx.connection(), scope))) {
+                throw new TxConflict("stale-version", "Stock changed since you looked.");
+            }
             tx.write("INSERT INTO production_submissions (environment_id, run_id, submission_id, command_id, requested_by, "
                     + "plan_id, plan_versions, input_digest, requested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    scope.environmentId(), scope.runId(), submissionId, in.commandId(), scope.actorId(), in.planId(),
-                    input.get("versions"), digest, at);
+                    scope.environmentId(), scope.runId(), submissionId, clientCommandId, scope.actorId(), planId,
+                    planVersions, digest, at);
             for (Line l : lines) {
                 String requestId = "request-" + Ids.hex32(scope.runId(), submissionId, l.lineId());
                 ObjectNode op = F.objectNode();
@@ -208,6 +295,11 @@ public final class ProductionService {
             resumed = c.replayed();
         } else if (out instanceof Outcome.Conflict c) {
             if ("command-input-changed".equals(c.code())) return changedInput();
+            if ("stale-version".equals(c.code()) && stockFence != null) {
+                try (Connection conn = dataSource.getConnection()) {
+                    return stale("stock", stockFence, ProductionStore.stockVersion(conn, scope));
+                }
+            }
             if (!"duplicate-record".equals(c.code())) return new ProductionResult.Conflict(c.code(), c.message(), c.retryable(), F.objectNode());
             try (Connection conn = dataSource.getConnection()) {
                 if (ProductionStore.submission(conn, scope, submissionId).isEmpty()) {
@@ -221,7 +313,7 @@ public final class ProductionService {
         } else {
             return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
         }
-        Submission sub = new Submission(submissionId, in.planId(), digest, at);
+        Submission sub = new Submission(submissionId, planId, digest, at);
         return send(scope, sub, at, !resumed, resumed);
     }
 
@@ -307,15 +399,20 @@ public final class ProductionService {
     }
 
     private boolean queueOne(RunContext scope, ConfirmationRow cr, Instant fallback) {
+        return queueEligible(scope, cr, fallback) != null;
+    }
+
+    /** Queues one confirmation into supply and marks it; the date it becomes eligible, or null when it stays unqueued. */
+    private Instant queueEligible(RunContext scope, ConfirmationRow cr, Instant fallback) {
         Instant when = Ids.ms(now(scope, fallback));
         SupplyQueuePort.Result r;
         try {
             r = supply.queue(scope, "production:" + cr.supplyId(), when, cr.supplyId(), cr.confirmedAt(),
                     cr.sourceVersion());
         } catch (RuntimeException e) {
-            return false;
+            return null;
         }
-        if (!(r instanceof SupplyQueuePort.Queued q)) return false;
+        if (!(r instanceof SupplyQueuePort.Queued q)) return null;
         ObjectNode input = F.objectNode().put("supplyId", cr.supplyId()).put("version", cr.version());
         Outcome o = runner.execute(scope, new Command("production.queue", "production:queue:" + cr.supplyId() + ":v" + cr.version(), input),
                 tx -> {
@@ -325,7 +422,120 @@ public final class ProductionService {
                             scope.runId(), cr.supplyId(), cr.version());
                     return WorkResult.ok(F.objectNode().put("supplyId", cr.supplyId()));
                 });
-        return o instanceof Outcome.Committed;
+        return o instanceof Outcome.Committed ? q.eligibleFrom() : null;
+    }
+
+    // ---- queueing and the presenter step ----
+
+    /** Queues a request's unqueued confirmations (never asks the provider); a repeat answers an empty list, a refusal a retryable 503. */
+    public ProductionResult queueRequest(RunContext scope, String requestId) {
+        if (requestId == null || requestId.isBlank() || requestId.length() > 200) {
+            return new ProductionResult.Invalid("request-not-found", "No such Production request.");
+        }
+        try {
+            Optional<Instant> now = clock.now(scope);
+            if (now.isEmpty()) return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
+            List<ConfirmationRow> waiting;
+            try (Connection c = dataSource.getConnection()) {
+                if (ProductionStore.request(c, scope, requestId).isEmpty()) {
+                    return new ProductionResult.Invalid("request-not-found", "No such Production request.");
+                }
+                waiting = ProductionStore.unqueuedFor(c, scope, requestId);
+            }
+            ObjectNode out = F.objectNode();
+            out.put("requestId", requestId);
+            ArrayNode queued = out.putArray("queued");
+            for (ConfirmationRow cr : waiting) {
+                Instant eligible = queueEligible(scope, cr, Ids.ms(now.get()));
+                if (eligible == null) {
+                    return new ProductionResult.Unavailable("supply-queue-unavailable",
+                            "Confirmed supply is saved; the release queue could not take it. Retry queueing.", true);
+                }
+                queued.addObject().put("supplyId", cr.supplyId()).put("eligibleFrom", Ids.ms(eligible).toString());
+            }
+            return new ProductionResult.Ok(out, false);
+        } catch (SQLException | RuntimeException e) {
+            return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+        }
+    }
+
+    /** The presenter's scenario step: what to script, against which version of the request. */
+    public record StepInput(String commandId, String requestId, long expectedVersion, String action, Integer quantity,
+            Instant delayUntil, String reason) {}
+
+    /** Scripts one answer, then reconciles; the version check, bump and receipt share one transaction, so a repeat replays. */
+    public ProductionResult stepProduction(RunContext scope, StepInput in) {
+        if (!(provider instanceof SyntheticProductionProvider synthetic)) {
+            return new ProductionResult.Conflict("production-scenario-unsupported",
+                    "Production responses can only be scripted for the synthetic provider.", false, F.objectNode());
+        }
+        ObjectNode input = F.objectNode();
+        input.put("commandId", in.commandId());
+        input.put("requestId", in.requestId());
+        input.put("expectedVersion", in.expectedVersion());
+        input.put("action", in.action());
+        if (in.quantity() != null) input.put("quantity", in.quantity());
+        if (in.delayUntil() != null) input.put("delayUntil", Ids.ms(in.delayUntil()).toString());
+        if (in.reason() != null) input.put("reason", in.reason());
+        try {
+            Optional<Instant> now = clock.now(scope);
+            if (now.isEmpty()) return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
+            java.util.concurrent.atomic.AtomicReference<ProductionResult> refusal = new java.util.concurrent.atomic.AtomicReference<>();
+            Outcome out = runner.execute(scope, new Command("production.step", "production:step:" + in.commandId(), input), tx -> {
+                Optional<RequestRow> row = ProductionStore.lockedRequest(tx, in.requestId());
+                if (row.isEmpty()) {
+                    refusal.set(new ProductionResult.Invalid("request-not-found", "No such Production request."));
+                    throw new TxConflict("request-not-found", "No such Production request.");
+                }
+                if (row.get().version() != in.expectedVersion()) {
+                    refusal.set(stale("request", Long.toString(in.expectedVersion()), Long.toString(row.get().version())));
+                    throw new TxConflict("stale-version", "The request changed since you looked.");
+                }
+                tx.cas("UPDATE production_requests SET version = version + 1, updated_at = now() WHERE environment_id = ? "
+                        + "AND run_id = ? AND request_id = ? AND version = ?", scope.environmentId(), scope.runId(),
+                        in.requestId(), in.expectedVersion());
+                SyntheticProductionProvider.ScriptResult r = synthetic.script(scope, in.requestId(), in.action(), in.quantity(),
+                        in.delayUntil(), in.reason(), Ids.ms(now.get()), in.commandId());
+                if (!r.ok()) {
+                    refusal.set(scriptRefusal(r));
+                    throw new TxConflict(r.code(), r.reason());
+                }
+                return WorkResult.ok(F.objectNode().put("seq", r.seq()));
+            });
+            boolean replayed;
+            int seq;
+            if (out instanceof Outcome.Committed c) {
+                replayed = c.replayed();
+                seq = c.result().path("seq").asInt();
+            } else if (out instanceof Outcome.Uncertain u) {
+                return new ProductionResult.Uncertain(u.operationId());
+            } else if (out instanceof Outcome.Conflict c) {
+                if (refusal.get() != null) return refusal.get();
+                if ("command-input-changed".equals(c.code())) return changedInput();
+                return new ProductionResult.Conflict(c.code(), c.message(), c.retryable(), F.objectNode());
+            } else if (out instanceof Outcome.Refused r) {
+                return new ProductionResult.Invalid(r.code(), r.message());
+            } else {
+                return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+            }
+            ProductionResult settled = reconcileRequest(scope, in.requestId());
+            if (settled instanceof ProductionResult.Ok ok && ok.value() instanceof ObjectNode o) {
+                ObjectNode copy = o.deepCopy();
+                copy.putObject("scripted").put("requestId", in.requestId()).put("action", in.action()).put("seq", seq);
+                return new ProductionResult.Ok(copy, replayed);
+            }
+            return settled;
+        } catch (RuntimeException e) {
+            return new ProductionResult.Unavailable(DB_CODE, DB_REASON, true);
+        }
+    }
+
+    private static ProductionResult scriptRefusal(SyntheticProductionProvider.ScriptResult r) {
+        return switch (r.code()) {
+            case "operation-not-found" -> new ProductionResult.Invalid("request-not-found", r.reason());
+            case "production-store-unavailable" -> new ProductionResult.Unavailable(r.code(), r.reason(), true);
+            default -> new ProductionResult.Conflict(r.code(), r.reason(), false, F.objectNode());
+        };
     }
 
     // ---- reconcile and reads ----
@@ -464,9 +674,19 @@ public final class ProductionService {
         return reads.status(scope);
     }
 
+    /** The tracking read plus the policy, stock and clock versions a manual request must quote. */
+    public ProductionResult orders(RunContext scope, String policyVersion) {
+        return reads.orders(scope, policyVersion);
+    }
+
     /** What the planner binds for its supply input and replan display; supplyVersion changes with every applied response. */
     public ProductionResult supplyActivity(RunContext scope) {
         return reads.supplyActivity(scope);
+    }
+
+    /** Greg's order-plan replan value: the latest submission's responses since it was sent, against the plan he now sees. */
+    public ProductionResult replanFor(RunContext scope, String currentPlanId) {
+        return reads.replanFor(scope, currentPlanId);
     }
 
     private JsonNode view(Submission sub, List<RequestRow> rows, boolean pending) {
