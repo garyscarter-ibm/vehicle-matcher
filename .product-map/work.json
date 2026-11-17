@@ -9752,7 +9752,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T20:23:37Z",
+      "observed_at": "2026-11-17T20:33:52Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9780,8 +9780,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-17T20:23:37.431821+00:00",
-          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN."
+          "observed_at": "2026-11-17T20:33:52.045370+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN. Partial consumer increment: real Angular client/store8/8 against Java11envelopes, independent staticPASS/pins/teardown audit. Case4readback adoption only; exact requests case2. Component/saveFull/connected originalAC proof remains; bothACOPEN."
         }
       ],
       "status": "In Progress",
@@ -9877,8 +9877,26 @@
           "role": "consumer parity test source implementer",
           "source": "claude-assist-fucq441-angular-producer-parity-2026-11-17-35",
           "observed_at": "2026-11-17T20:18:18Z",
-          "expires_at": "2026-11-17T20:33:18+00:00",
-          "status": "Actual source-start ACK; one Angular parity spec, no runtime/acceptance"
+          "expires_at": "2026-11-17T20:23:48Z",
+          "status": "returned; independent staticPASS and parent selected8/8consumer parityPASS; no originalAC completion"
+        },
+        {
+          "name": "Same retained Claude helper",
+          "harness": "claude-code",
+          "role": "source readiness",
+          "source": "claude-assist-fucq441-connected-acceptance-readiness-2026-11-17-36",
+          "observed_at": "2026-11-17T20:28:47Z",
+          "expires_at": "2026-11-17T20:30:43Z",
+          "status": "returned; source trace only; no runtime/acceptance"
+        },
+        {
+          "name": "Same retained Claude helper",
+          "harness": "claude-code",
+          "role": "component parity test source implementer",
+          "source": "claude-assist-fucq441-component-java-parity-2026-11-17-37",
+          "observed_at": "2026-11-17T20:32:13Z",
+          "expires_at": "2026-11-17T20:47:13Z",
+          "status": "Actual source-start ACK; exactly one new spec, no runtime/acceptance"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
