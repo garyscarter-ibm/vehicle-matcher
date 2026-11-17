@@ -50,7 +50,7 @@ final class AccountEditor {
     }
 
     /** The editor context: control definitions, slider, policy projection and the read-only known facts. */
-    static ObjectNode context(PolicyRules rules, Optional<AccountFacts> facts, java.time.Instant observedAt) {
+    static ObjectNode context(PolicyRules rules, Optional<AccountFacts> facts, java.time.Instant observedAt, String contextVersion) {
         ObjectNode preferences = Json.obj();
         rules.config.get("preferences").properties().forEach(e -> {
             JsonNode d = e.getValue();
@@ -66,33 +66,70 @@ final class AccountEditor {
         essentials.set("charging", essential("charging", rules.charging()));
         ObjectNode knownFacts = Json.obj();
         ObjectNode permissions = Json.obj();
-        String version = facts.map(AccountFacts::factsVersion).orElse(null);
-        CurrentContract car = car(facts);
-        ObjectNode fact = knownFacts.putObject("currentContract");
-        if (car == null) {
-            fact.putNull("value");
+        BriefAccountPort.Known known = facts.map(AccountFacts::known).orElse(null);
+        if (known != null) {
+            String at = observedAt.toString();
+            ObjectNode fromAccount = Json.obj();
+            if (known.account() != null) fromAccount.set("account", known.account());
+            if (known.currentContract() != null) fromAccount.set("currentContract", known.currentContract());
+            if (known.drivers() != null) fromAccount.set("drivers", known.drivers());
+            fromAccount.properties().forEach(e -> fact(knownFacts, e.getKey(), e.getValue(), "manual-account", known.accountVersions(), at));
+            if (known.employeeFacts() != null) {
+                known.employeeFacts().properties().stream().filter(e -> !"essentials".equals(e.getKey()))
+                        .forEach(e -> fact(knownFacts, e.getKey(), e.getValue(), "employee-provider",
+                                known.providerFactsVersion() == null ? null : Json.M.getNodeFactory().textNode(known.providerFactsVersion()), at));
+            }
         } else {
-            fact.putObject("value").put("contractId", car.contractId()).put("model", car.model());
+            CurrentContract car = car(facts);
+            JsonNode value = car == null ? null : Json.obj().put("contractId", car.contractId()).put("model", car.model());
+            String version = facts.map(AccountFacts::factsVersion).orElse(null);
+            fact(knownFacts, "currentContract", value, "manual-account",
+                    version == null ? null : Json.M.getNodeFactory().textNode(version), observedAt.toString());
         }
-        fact.put("source", "manual-account");
-        if (version == null) fact.putNull("sourceVersion");
-        else fact.put("sourceVersion", version);
-        fact.put("observedAt", observedAt.toString()).put("editable", false);
-        if (car == null) fact.put("status", "missing");
-        permissions.putObject("currentContract").put("editable", false);
+        knownFacts.fieldNames().forEachRemaining(k -> permissions.putObject(k).put("editable", false));
         ObjectNode c = Json.obj();
         c.set("preferences", preferences);
         c.set("essentials", essentials);
         c.putObject("slider").put("minimum", rules.minimum).put("maximum", rules.maximum);
         c.set("knownFacts", knownFacts);
         c.set("permissions", permissions);
-        c.put("policyVersion", rules.policyVersion);
+        c.put("policyVersion", rules.policyVersion).put("contextVersion", contextVersion);
         c.set("practicalQuestions", rules.editor.get("practicalQuestions").deepCopy());
         c.set("unconfirmedLabel", rules.editor.get("unconfirmedLabel").deepCopy());
         ArrayNode assumptions = c.putArray("assumptions");
         rules.assumptions.forEach(a -> assumptions.add(a.deepCopy()));
         c.set("accountPreferences", projection(rules));
         return c;
+    }
+
+    private static void fact(ObjectNode into, String key, JsonNode value, String source, JsonNode sourceVersion, String observedAt) {
+        ObjectNode f = into.putObject(key);
+        f.set("value", value == null ? Json.M.nullNode() : value.deepCopy());
+        f.put("source", source);
+        f.set("sourceVersion", sourceVersion == null ? Json.M.nullNode() : sourceVersion.deepCopy());
+        f.put("observedAt", observedAt).put("editable", false);
+        if (value == null || value.isNull()) f.put("status", "missing");
+    }
+
+    /** The editor's context version: the run, employee and policy with the account and provider facts versions. */
+    static String contextVersion(BriefScope scope, Optional<AccountFacts> facts) {
+        BriefAccountPort.Known k = facts.map(AccountFacts::known).orElse(null);
+        ObjectNode in = Json.obj().put("runId", scope.runId()).put("employeeId", scope.employeeId()).put("policy", scope.policyVersion());
+        in.put("account", k == null ? null : k.accountContextVersion());
+        in.put("facts", factsVersion(facts));
+        return gcsp.api.persistence.Canonical.digest(in);
+    }
+
+    /** The provider facts version when the port carries one, else the account facts version. */
+    static String factsVersion(Optional<AccountFacts> facts) {
+        BriefAccountPort.Known k = facts.map(AccountFacts::known).orElse(null);
+        return k != null && k.providerFactsVersion() != null ? k.providerFactsVersion() : facts.map(AccountFacts::factsVersion).orElse(null);
+    }
+
+    /** The clock version the account read was made at; the system clock otherwise. */
+    static String clockVersion(Optional<AccountFacts> facts) {
+        BriefAccountPort.Known k = facts.map(AccountFacts::known).orElse(null);
+        return k != null && k.clockVersion() != null ? k.clockVersion() : "system";
     }
 
     private static ObjectNode essential(String key, JsonNode d) {

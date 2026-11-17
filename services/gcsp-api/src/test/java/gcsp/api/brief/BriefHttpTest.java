@@ -155,7 +155,7 @@ class BriefHttpTest {
         post("/engage", "{\"commandId\":\"x\"}").then().statusCode(400).body("code", equalTo("invalid-command"));
         post("/engage", command("with-authority", 0, 0, "\"employeeId\":\"someone-else\"")).then().statusCode(400)
                 .body("code", equalTo("invalid-command"));
-        for (String gone : new String[] {"/pause", "/resume", "/nothing"}) {
+        for (String gone : new String[] {"/nothing"}) {
             as().get(BASE + gone).then().statusCode(404).contentType(containsString("application/json"))
                     .body("code", equalTo("route-not-found"));
             post(gone, "{}").then().statusCode(404).body("code", equalTo("route-not-found"));
@@ -257,5 +257,41 @@ class BriefHttpTest {
                 .body("code", equalTo("decline-change-already-recorded")).body("current.briefVersion", equalTo(brief + 1));
         as().contentType(ContentType.JSON).queryParam("x", "1").body(body).post(BASE + "/change-after-decline").then()
                 .statusCode(400).body("code", equalTo("unsupported-query"));
+    }
+
+    @Test
+    @Order(10)
+    void legacyPauseAndResumeAreTheDisengageAndEngageAliases() {
+        int brief = version("briefVersion");
+        String two = "\"changes\":{\"comfort\":{\"value\":50},\"economy\":{\"value\":50},\"size\":{\"value\":50}}";
+        post("/preferences", command("leg-p", brief, version("draftVersion"), two)).then().statusCode(200);
+        post("/engage", command("leg-e", brief, version("draftVersion"), "")).then().statusCode(200);
+        brief = version("briefVersion");
+        String ok = "{\"commandId\":\"leg-pause\",\"expectedBriefVersion\":" + brief + "}";
+        int draftBefore = version("draftVersion");
+        Response paused = post("/pause", ok);
+        paused.then().statusCode(200).body("value.operation", equalTo("disengaged")).body("value.buddy.state", equalTo("disengaged"));
+        assertEquals(brief + 1, version("briefVersion"));
+        // As in Node the alias checks the brief version first, so a late replay is stale; the receipt itself replays.
+        post("/pause", ok).then().statusCode(409).body("code", equalTo("stale-version"));
+        Response replay = post("/disengage", command("leg-pause", brief, draftBefore, ""));
+        replay.then().statusCode(200).body("replayed", equalTo(true));
+        assertEquals(paused.jsonPath().getMap("value"), replay.jsonPath().getMap("value"));
+        assertEquals(brief + 1, version("briefVersion"));
+
+        brief = version("briefVersion");
+        int draft = version("draftVersion");
+        post("/resume", "{\"commandId\":\"leg-stale\",\"expectedBriefVersion\":" + (brief + 3) + "}").then().statusCode(409)
+                .body("code", equalTo("stale-version")).body("action", equalTo("refresh")).body("currentVersion", equalTo(brief));
+        post("/resume", "{\"commandId\":\"leg-extra\",\"expectedBriefVersion\":" + brief + ",\"expectedDraftVersion\":" + draft + "}")
+                .then().statusCode(400).body("code", equalTo("invalid-command"));
+        post("/resume", "{\"commandId\":\" \",\"expectedBriefVersion\":" + brief + "}").then().statusCode(400)
+                .body("code", equalTo("invalid-command"));
+        as().contentType(ContentType.JSON).queryParam("x", "1").body(ok).post(BASE + "/pause").then().statusCode(400)
+                .body("code", equalTo("invalid-command"));
+        assertEquals(brief, version("briefVersion"));
+        post("/resume", "{\"commandId\":\"leg-resume\",\"expectedBriefVersion\":" + brief + "}").then().statusCode(200)
+                .body("value.operation", equalTo("engaged")).body("value.buddy.state", equalTo("engaged"));
+        assertEquals(brief + 1, version("briefVersion"));
     }
 }

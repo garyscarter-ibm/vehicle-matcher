@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.brief.BriefAccountPort.AccountFacts;
+import gcsp.api.persistence.Canonical;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,20 @@ import org.junit.jupiter.api.Test;
 class BriefAccountAdapterTest {
 
     private static Optional<AccountFacts> facts(GoldenFixture f, String policyVersion) {
-        return new BriefAccountAdapter(f.service(), Optional.ofNullable(policyVersion))
+        AccountRecordsPort records = new AccountRecordsPort() {
+            public SourceResult readEmployeeContract(AccountScope s) {
+                return f.contractReader.apply(f.input);
+            }
+
+            public SourceResult readDrivers(AccountScope s) {
+                return f.driverReader.apply(f.input);
+            }
+
+            public SourceResult readEmployment(String environmentId, String runId, String employeeId) {
+                return f.employment;
+            }
+        };
+        return new BriefAccountAdapter(f.service(records), records, Optional.ofNullable(policyVersion))
                 .facts(f.scope.environmentId(), f.scope.runId(), f.scope.employeeId());
     }
 
@@ -24,6 +40,35 @@ class BriefAccountAdapterTest {
         assertEquals(f.golden.at("/expected/value/currentContract/contractId").asText(), facts.currentContract().contractId());
         assertEquals(f.golden.at("/expected/value/currentContract/model").asText(), facts.currentContract().model());
         assertEquals(f.golden.at("/expected/value/contextVersion").asText(), facts.factsVersion());
+    }
+
+    @Test
+    void knownFactsAreTheSameReadsTheEditorNeeds() {
+        GoldenFixture f = new GoldenFixture("paula");
+        AccountFacts facts = facts(f, f.scope.policyVersion()).orElseThrow();
+        var known = facts.known();
+        JsonNode v = f.golden.at("/expected/value");
+        assertEquals(v.get("account"), known.account());
+        assertEquals(v.get("currentContract"), known.currentContract());
+        assertEquals(v.get("drivers"), known.drivers());
+        assertEquals(v.get("versions"), known.accountVersions());
+        assertEquals(v.get("contextVersion").asText(), known.accountContextVersion());
+        assertEquals("1", known.clockVersion());
+        assertEquals(f.input.get("manualContext").get("employeeFacts"), known.employeeFacts());
+        ObjectNode digest = GoldenFixture.JSON.createObjectNode();
+        digest.set("driver", f.input.get("manualContext").get("source"));
+        digest.set("recordSetId", f.input.get("manualContext").get("recordSetId"));
+        digest.set("repositoryVersion", f.input.get("employeeVersion"));
+        assertEquals(Canonical.digest(digest), known.providerFactsVersion());
+        GoldenFixture absent = new GoldenFixture("jordan-absent");
+        assertNull(facts(absent, absent.scope.policyVersion()).orElseThrow().known());
+    }
+
+    @Test
+    void aDriverReadThatFailsIsUnavailable() {
+        GoldenFixture f = new GoldenFixture("paula");
+        f.driverReader = in -> SourceResult.unavailable("driver");
+        assertTrue(facts(f, f.scope.policyVersion()).isEmpty());
     }
 
     @Test
