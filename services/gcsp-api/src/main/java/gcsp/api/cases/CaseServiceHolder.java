@@ -5,7 +5,7 @@ import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import java.time.Clock;
+import gcsp.api.clock.ClockReading;
 import java.util.Optional;
 
 /** Builds the one CaseService lazily over the Agroal datasource and the port beans; empty without persistence. */
@@ -30,13 +30,25 @@ public class CaseServiceHolder {
     @Inject
     CaseCarSuitabilityPort suitability;
 
+    @Inject
+    CaseSuitabilitySelection readings;
+
     private CaseService service;
 
     public synchronized Optional<CaseService> service() {
         if (!persistence.active()) return Optional.empty();
         if (service == null) {
-            service = new CaseService(dataSource.get(), policy, account, notifications, suitability, Clock.systemUTC());
+            service = new CaseService(dataSource.get(), policy, account, notifications, suitability, runClock());
         }
         return Optional.of(service);
+    }
+
+    /** Case time is the run clock; empty without persistence, a run clock row or a readable clock. */
+    private Optional<java.time.Instant> readClock(String environmentId, String runId) {
+        return readings.reading(environmentId, runId).map(ClockReading::now);
+    }
+
+    private CaseClock runClock() {
+        return this::readClock;
     }
 }
