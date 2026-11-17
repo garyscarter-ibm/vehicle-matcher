@@ -47,6 +47,7 @@
       #   sync: false
       # - key: GCSP_POLICY_VERSION
       #   sync: false
+      # A value ending +offer-journey-v1 (e.g. gcsp-policy-v1+offer-journey-v1) adopts the reviewed decline reasons at startup.
       # Account records (FUCQ-458), dedicated dev database only: needs GCSP_DATABASE_URL and the oidc values above.
       # - key: GCSP_ACCOUNT_PROVIDER
       #   value: repository

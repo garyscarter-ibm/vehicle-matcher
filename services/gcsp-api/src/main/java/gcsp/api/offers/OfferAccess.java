@@ -22,10 +22,15 @@ public class OfferAccess {
     @Inject
     OfferRecords records;
 
-    @Inject
     PolicyClock clock;
 
     OfferAccess() {}
+
+    /** The CDI path reads the run clock through OfferClock, not the global PolicyClock. */
+    @Inject
+    void useOfferClock(OfferClock offerClock) {
+        this.clock = offerClock;
+    }
 
     OfferAccess(OfferRecords records, PolicyClock clock) {
         this.records = records;
