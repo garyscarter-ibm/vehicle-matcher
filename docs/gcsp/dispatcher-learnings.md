@@ -1821,3 +1821,23 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - **What happened:** the Mac reached 100% memory and swap and locked up, and had to be restarted. Russell's poller had three story-leads, each with an implementer and a Quarkus Maven JVM. The dispatcher had started the third lead as a lane replacement while the capacity check said `can_start=0` (10.6 GB of swap).
 - **Resolution:** branches pushed, the shared PG cluster recreated, and leads resumed one at a time. A lane replacement is a new start: it needs `can_start>0` like any other. `/tmp` scratch (PG clusters, story DBs) does not survive a reboot.
+
+## 2026-11-17 19:51 UTC · Gary Codex · DL-20261117-GCC-009 · Claude parity increment validated; successor allocated
+
+- Evidence/outcome: Claude32 returned one F440 spec; independent review passed and parent selected run passed 14/14 using 11 Java goldens. This is a tested partial increment, not original-AC completion; covering batch and connected original acceptance remain open. Claude33 was allocated source-only current F441 editor readiness through the same existing handoff, because integrated Java now supplies the previously missing context/version fields. ACK has not been observed; this allocation is held, not active. Native UI tool reports computer-use permissions unavailable; no second coordinator or launcher was created.
+- Impact/cause/action: idle returned work and stale source blockers can waste Claude capacity. Persisted Gary's reminder in the local run directive and queued exact bounded work promptly. Proposed framework improvement: each pass should collect returned output and explicitly assess the next useful Claude allocation, separating queued, ACK and actual execution. This routing mitigation is applied, not verified as execution.
+
+## 2026-11-17 19:51 UTC · Gary Codex · DL-20261117-GCC-013 · Restart changed device identity; broad displays recurred
+
+- Evidence: first parity preparation stopped before Angular launch because stat.st_dev changed across restart. All 23,009 pinned dependency/Node hashes and other identities still matched; refreshed only device IDs, then selected14/14 passed in33.009s. Both attempts have independent cleanup receipts. No OneDrive access.
+- Recurrent issue: broad source/policy displays again exceeded output caps, including in independent review. Narrow reads recovered facts. Token caps alone are insufficient; require character-bounded projections before printing. The mitigation remains necessary, not a verified resolution. Proposed framework improvement: invalidate volatile device/process pins at restart and rebind only after byte/remaining-identity verification; preserve the refused attempt as failure evidence.
+
+## 2026-11-17 19:51 UTC · Gary Codex · DL-20261116-RG-002 · Planning ownership answer and peer repair observation
+
+- F477 planning Demand/Supply binding remains under the existing M1/FUCQ-515 hold; Gary's lane has allocated no additional planning-port writes and does not lift that hold. Gary's lane has no reserved F476 learned-artifact/record path. Russell's already-owned F476 can proceed within its original contract without touching held planning files; preserve the six-route shared contract.
+- FUCQ-516: peer's15:00 report and merged F464 repair supersede the earlier blanket unrepaired statement. This dispatcher has not independently rerun that regression or changed the capture-only repair scope. No claim of independent verification or new Bug repair authority is made.
+
+## 2026-11-17 19:55 UTC · Gary Codex · DL-20261117-GCC-009 · Retained Claude handoff acknowledged
+
+- New observation: the retained helper successor ACKed F441 source readiness at19:50:23UTC and explicitly reports required-reading/source-freeze work started. This supersedes the earlier queued-only observation. The successor reports the old watcher stopped; this dispatcher started no additional coordinator. Source-read acknowledgement is execution evidence, not acceptance; no product edits/runtime or tests have returned.
+- Outcome: the same handoff route is responding again; delivery improvement beyond the completed F44014-case checkpoint remains unverified. Preserve the distinction between assignment, acknowledged work, reviewed output and executed validation.
