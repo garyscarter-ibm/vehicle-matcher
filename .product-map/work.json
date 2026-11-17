@@ -7144,7 +7144,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-17T14:29:00Z",
+      "observed_at": "2026-11-17T15:18:28Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7182,14 +7182,17 @@
         },
         {
           "id": "s5-journey-proof",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs",
-          "observed_at": "2026-11-17T14:29:00Z"
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "lead review of ca3b693a9: SupplyDevCompositionHttpTest 9/9 on dev composition (oidc JWTs, PG17, demo provider, PolicyService); cue fix reviewed"
         },
         {
           "id": "s6-integration-r2",
-          "status": "not-started",
-          "title": "Reopened run: scoped validation, base merge and result"
+          "status": "complete",
+          "title": "Reopened run: scoped validation, base merge and result",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "base merged 269c6f728; scoped set 179/0/0/0 on 269c6f728 native PG17; result block committed"
         }
       ]
     },
