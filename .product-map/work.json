@@ -6767,35 +6767,35 @@
     {
       "assignee": "",
       "id": "FUCQ-454",
-      "observed_at": "2026-11-13T22:03:54Z",
+      "observed_at": "2026-11-17T19:19:59Z",
       "original_status": "To Do",
       "slices": [
         {
-          "evidence": "Lead-reviewed services/gcsp-api: ./mvnw -B verify 16/16 pass (JDK 21.0.13, Quarkus 3.40.1.2, Maven 3.9.16); two clean builds byte-identical over 128 files",
+          "evidence": "Lead review at 4bde828e9: RequiredProvidersReadiness (GCSP_REQUIRED_PROVIDERS) 8/8; two clean fast-jar builds byte-identical over 151 files; scoped wiring/startup set green",
           "id": "artifact",
-          "observed_at": "2026-11-13T22:02:43Z",
+          "observed_at": "2026-11-17T19:19:59Z",
           "status": "complete",
           "title": "Pinned Quarkus JVM artifact, config, readiness, shutdown and context endpoint"
         },
         {
-          "evidence": "java -jar quarkus-run.jar with PORT env: started 0.319s, ready 200, context 401/503 JSON, unknown route 404 JSON, CORS exact origin; SIGTERM stopped in 0.009s; prod launch refuses fixed-test/unknown provider",
+          "evidence": "tools/artifact-proof/run.sh on 4bde828e9, fresh PG17 db: 17/17 PASS (bare, required-unconfigured 503, dev composition ready 200 + context/account 200 over RS256 https JWKS, no child/node process, SIGTERM 143 in 0.33s)",
           "id": "local-startup",
-          "observed_at": "2026-11-13T22:02:43Z",
+          "observed_at": "2026-11-17T19:19:59Z",
           "status": "complete",
           "title": "Startup outside Render with java -jar and env config"
         },
         {
-          "evidence": "Gary's isolated Render dev environment does not exist yet; proposed block in services/gcsp-api/render-service.proposed.yaml awaits GC as render.gcsp.yaml writer; Docker image build unrun locally (no daemon)",
+          "evidence": "2026-11-17: hosted Render dev environment does not exist yet (Gary owns it); render-service.proposed.yaml carries the dev composition keys; render.gcsp.yaml untouched",
           "id": "render-hosted",
-          "observed_at": "2026-11-13T22:02:43Z",
+          "observed_at": "2026-11-17T19:19:59Z",
           "status": "blocked",
           "title": "Run the artifact on Render dev environment"
         },
         {
-          "evidence": "Lead review and Result block at dev/DEV-2026-11-13-022 4289983d: 16/16 tests, local startup/shutdown evidence; Render slice blocked on external environment",
+          "evidence": "Result block at 4bde828e9 (partial); awaits dispatcher batch verify and hosted Render",
           "id": "integration",
-          "observed_at": "2026-11-13T22:03:54Z",
-          "status": "complete",
+          "observed_at": "2026-11-17T19:19:59Z",
+          "status": "in-progress",
           "title": "Story-level lead review and delivery record"
         }
       ],
