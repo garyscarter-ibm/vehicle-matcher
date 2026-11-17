@@ -677,6 +677,10 @@ with the `plan`; 503 unavailable. Startup runs a reconcile-only pass (never a ne
 not `none`, and the `returns` readiness check reports the provider, policy, source and handover modes plus the open
 operation count; it is DOWN only when the database errors.
 
+A completed handover (the `appointment-completed` outbox event) makes the new car current through the returns reconcile pass
+(the `lifecycle-return-outcomes` tick, presenter progress and startup), once, at the event's time; an order with no
+selection record is skipped.
+
 Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
 is `OrderingReturnSource` (the FUCQ-468 selection record plus the pinned manual draft or the buddy account record) and the
 handover is `ReturnsHandover` (the FUCQ-472 appointments); both report `none` and answer unavailable without persistence. The current-car relationship lives in `gcsp.api.returns`;
