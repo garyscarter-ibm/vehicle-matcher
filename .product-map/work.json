@@ -7305,7 +7305,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T09:23:07Z",
+      "observed_at": "2026-11-17T12:26:52Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7335,10 +7335,21 @@
           "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
         },
         {
+          "id": "composition-local",
+          "status": "in-progress",
+          "title": "AC1 and local AC2 through the started app: real JWTs, repository account, real selection/timing, HTTP race, expiry, review, release, order",
+          "observed_at": "2026-11-17T12:26:52Z"
+        },
+        {
+          "id": "composition-remote",
+          "status": "not-started",
+          "title": "AC2 remote through the started app: HttpClaimStock against loopback stock endpoint, response loss, duplicate ack, release loss, restart"
+        },
+        {
           "id": "integration",
-          "status": "complete",
-          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T09:23:07Z",
+          "status": "not-started",
+          "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
+          "observed_at": "2026-11-17T12:26:52Z",
           "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
         }
       ]
