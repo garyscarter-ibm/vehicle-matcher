@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:02:03Z",
+      "observed_at": "2026-11-17T06:11:13Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T05:53:37.707215+00:00",
-      "note": "HTTP adapter increment18b29be38 integrated with65matching nativepasses. Assignment15 two managed workers returned5authored cases each; coordinator resolving assertions. Exact4file source checkpoint and runtime pending. Neither originalAC complete; nativeToDo preserved.",
+      "note": "HTTP consumer increment5ce78b9be integrated: ten exact PostgreSQL/HTTP cases passed, no skips, Cogsworth3 sourcePASS. Same coordinator16 published for next nonconflicting read-composition source readiness; execution unverified. Neither originalAC complete; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8756,8 +8756,8 @@
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T05:54:28.677046+00:00",
-          "evidence": "HTTP actionadapters integrated18b29be38 and54newcomponentcases pass. SAME coordinator15 actual consumer-fixture source reading; boundedPGcomponenttestsource next. Wholeconnectedjourney/differentinputs/realOIDC/email unproved."
+          "observed_at": "2026-11-17T06:11:13.077776+00:00",
+          "evidence": "Actual HttpClaimStock/HttpRemoteBuddy through existing durable consumers: ten exact PG/HTTP cases passed, independent sourcePASS, integrated5ce78b9be. Direct Principal/seeded offer only; full connected journey, different inputs, OIDC/email/BMW remain unproved."
         },
         {
           "id": "integration",
@@ -8843,27 +8843,54 @@
           "harness": "claude-code",
           "role": "F481 HTTPtoexistingdurableconsumercomponent proof source",
           "observed_at": "2026-11-17T06:01:16.424Z",
-          "expires_at": "2026-11-17T06:16:16.424000+00:00",
+          "expires_at": "2026-11-17T06:02:43.240Z",
           "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
-          "status": "reviewing two returned consumer test files and fixture; source checkpoint pending, no runtime"
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
         },
         {
           "name": "claims durable-consumer test author",
           "harness": "claude-code",
           "role": "F481 source-only HTTP-to-durable-consumer test",
           "observed_at": "2026-11-17T05:59:35.302Z",
-          "expires_at": "2026-11-17T05:59:35.302Z",
+          "expires_at": "2026-11-17T06:02:43.240Z",
           "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
-          "status": "returned5authoredcases; notcompiled orrun; coordinator reconciliation pending"
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
         },
         {
           "name": "offers durable-consumer test author",
           "harness": "claude-code",
           "role": "F481 source-only HTTP-to-durable-consumer test",
           "observed_at": "2026-11-17T06:00:13.207Z",
-          "expires_at": "2026-11-17T06:00:13.207Z",
+          "expires_at": "2026-11-17T06:02:43.240Z",
           "source": "claude-assist-fucq481-http-consumer-proof-2026-11-17-15",
-          "status": "returned5authoredcases; notcompiled orrun; coordinator reconciliation pending"
+          "status": "terminal; four-file source integrated5ce78b9be after ten nativepasses and independent source review"
+        },
+        {
+          "name": "Cogsworth 3",
+          "harness": "codex",
+          "role": "F481 independent HTTP consumer source review",
+          "observed_at": "2026-11-17T06:07:00.155140+00:00",
+          "expires_at": "2026-11-17T06:07:00.155140+00:00",
+          "source": "parentreview0557",
+          "status": "terminalPASS/no blocking or major finding; requested/selectedSol/high, nofallback; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "F481 ten selected PG/HTTP cases, teardown audit and integration",
+          "observed_at": "2026-11-17T06:05:57.930476+00:00",
+          "expires_at": "2026-11-17T06:05:57.930476+00:00",
+          "source": "dispatcher0557",
+          "status": "terminal validation:10passed/0skips;86identities/7groups/scratch cleared, integrated5ce78b9be"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "F481 next nonconflicting read-composition source readiness",
+          "observed_at": "2026-11-17T06:10:24.636546+00:00",
+          "expires_at": "2026-11-17T06:10:24.636546+00:00",
+          "source": "claude-assist-fucq481-read-composition-next-2026-11-17-16",
+          "status": "published; awaiting matching ACK and actual source execution; no runtime"
         }
       ]
     }
