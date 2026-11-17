@@ -55,7 +55,7 @@ These are native runs, retained and not rerun. They are connected partial bounda
   - synthetic returns and production downgrade quietly without persistence;
   - six contracts have only a refusing implementation and no key.
 - **Ordering.** `remote-bound` means remote is selectable and connected when `gcsp.ordering.provider=remote` is set. Default startup is `none`, which refuses.
-- **AC2.** Claim, signed-in decision and remote ordering acknowledgement are connected. The employee's order and status HTTP read still needs `AccountPolicyPort` over `PolicyService`, which the **Russell F458 lead** owns. Differently shaped employee and stock inputs are shown for HR and tranche plans, not across all ports.
+- **AC2.** Claim, signed-in decision and remote ordering acknowledgement are connected. The F458 policy blocker is resolved at ROOT `3542ff697`: `AccountPolicyPort` is bound to `PolicyAccountAdapter`. The owner's order and status HTTP read is authored (`209bf4f7a`) but **unrun**. Differently shaped employee and stock inputs are shown for HR and tranche plans, not across all ports.
 - **Not proved.** A registered real OIDC issuer, browser login, real mail, any BMW service or capability, and the **FUCQ-516** later-clock recovery. The hosted dev environment is absent, per Gary at 08:47 UTC.
 - **Holds.** **F477 M1 / FUCQ-515** stays held. Bugs 513-516 remain capture-only.
 
@@ -67,3 +67,20 @@ Make the two Buddy reads take the account record from the selected `AccountRecor
 - **Shape risk.** The port answers in two calls: `readEmployeeContract` (account, contracts, histories, slots) and `readDrivers` (drivers, employee facts). The candidates adapter reads one combined record. Whether the two compose to that record is a design point to settle first. It is not established here.
 - **Ownership releases needed.** An explicit release of those two allocation files from their current owner, which the coordination files do not name. The account package, `AccountSelection` and `AccountPolicyPort` over `PolicyService` stay with the Russell F458 lead and are not touched.
 - **If that is not released.** No other source-only AC1 increment is ready on this lane. The refusing-only contracts need BMW or capability facts that are absent. The returns and production downgrade is in foreign files. A capture-only characterization test would be busywork, so none is proposed.
+
+## Current state, 17 November 2026, 12:32 UTC
+
+Checked against ROOT `b220082c9`.
+
+- **Delivered code.**
+  - ROOT `3542ff697` (F458) binds `AccountPolicyPort` to `PolicyAccountAdapter`, and `CurrentCarPort` to the returns store when persistence is on.
+  - ROOT `b220082c9` makes selected recommendation candidates read the selected `AccountRecordsPort`.
+- **Matching local tests.** 10 parent passes for `b220082c9`: 8 adapter and selector methods, plus the 2 generated journeys. Review 32 passed.
+- **Peer-reported.** F458's 146/146 relevant cases, including 11 dev-composition cases. The FUCQ-481 parent has not rerun them.
+- **Unrun.** The owner `GET /manual/order` extension (`209bf4f7a`).
+- **Absent.**
+  - The hosted dev environment, real OIDC and browser login, and the Angular account view.
+  - Real mail, and any BMW service.
+  - Shaped inputs varied across all ports, and FUCQ-516.
+- **Superseded above.** The "next increment" for the two Buddy reads is now partly delivered, as an adapter rather than a change to those files. Their SQL still runs, but its record is ignored under `recommendation`.
+- **Next.** The parent runs `-Dtest=GeneratedClaimRemoteOrderingHttpTest`. Removing the now-redundant Buddy SQL reads would need an allocation-file release.

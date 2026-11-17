@@ -18,9 +18,9 @@
   },
   "evidenceNote": "Initial inventory was static source reading at sourceSha. Named currentReconciliation and reconciliationHistory records additionally cite matching retained component/startup/partial-composition executions. Other named tests remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
   "counts": {
-    "default-unconfigured": 17,
-    "local-bound": 13,
-    "partial": 27,
+    "default-unconfigured": 16,
+    "local-bound": 15,
+    "partial": 26,
     "unverified-runtime": 1,
     "remote-bound": 1
   },
@@ -324,8 +324,8 @@
       "failure": "Injected AccountService answers unavailable (AccountService.java:117-125); AccountResource answers 503.",
       "silentFallback": false,
       "demoPreparation": "none found",
-      "status": "partial",
-      "statusWhy": "Injected AccountService permanently refuses; README.md:184-186 records the PolicyAccountAdapter swap as pending.",
+      "status": "local-bound",
+      "statusWhy": "Bound at startup: AccountSelection.policy() returns PolicyAccountAdapter over the canonical PolicyService (ROOT 3542ff697; AccountSelection.java:70-74). One implementation, no provider key; it serves the account, draft, ordering-slot and brief account reads. Local policy only; no BMW policy feed.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/policy/PolicyAdaptersTest.java:22",
@@ -337,10 +337,32 @@
         }
       ],
       "gaps": [
-        "Manual account/draft/stock, ordering slots and brief account adapter inherit the refusing port in a real composition; tests install a mock port a deployment lacks."
+        "No selection key: PolicyAccountAdapter is the only bound implementation, so there is no alternative policy provider to select.",
+        "Peer F458 evidence (146/146, 11 dev-composition) is peer-reported, not rerun by the FUCQ-481 parent; hosted dev, real OIDC and Angular account view remain unrun.",
+        "No BMW policy source or capability evidence."
       ],
       "bmwGap": "none specific",
-      "side": "read/input"
+      "side": "read/input",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "partial",
+          "previousStatusWhy": "Injected AccountService permanently refuses; README.md:184-186 records the PolicyAccountAdapter swap as pending.",
+          "previousGaps": [
+            "Manual account/draft/stock, ordering slots and brief account adapter inherit the refusing port in a real composition; tests install a mock port a deployment lacks."
+          ],
+          "statusWhy": "Bound at startup: AccountSelection.policy() returns PolicyAccountAdapter over the canonical PolicyService (ROOT 3542ff697; AccountSelection.java:70-74). One implementation, no provider key; it serves the account, draft, ordering-slot and brief account reads. Local policy only; no BMW policy feed.",
+          "status": "local-bound",
+          "gaps": [
+            "No selection key: PolicyAccountAdapter is the only bound implementation, so there is no alternative policy provider to select.",
+            "Peer F458 evidence (146/146, 11 dev-composition) is peer-reported, not rerun by the FUCQ-481 parent; hosted dev, real OIDC and Angular account view remain unrun.",
+            "No BMW policy source or capability evidence."
+          ],
+          "evidence": "ROOT 3542ff697 (DEV-2026-11-13-026, F458): AccountSelection.java:63-74 binds CurrentCarPort to ReturnsCurrentCarRelationships over returns.CurrentCarStore when persistence is active (NoCurrentCarRelationships otherwise) and AccountPolicyPort to PolicyAccountAdapter over PolicyService. Peer-reported 146/146 relevant local cases incl. 11 dev-composition; not rerun by the FUCQ-481 parent."
+        }
+      ]
     },
     {
       "port": "CurrentCarPort (account)",
@@ -375,8 +397,8 @@
       "failure": "Never fails; reports ok with no relationships (NoCurrentCarRelationships.java:10).",
       "silentFallback": true,
       "demoPreparation": "none found: nothing seeds current_car_relationships.",
-      "status": "default-unconfigured",
-      "statusWhy": "Always empty and reported as success, not unavailable. services/gcsp-api/README.md:666 says the returns-store adapter is future work.",
+      "status": "local-bound",
+      "statusWhy": "Bound by persistence: with persistence active AccountSelection.currentCars() returns ReturnsCurrentCarRelationships over returns.CurrentCarStore (current_car_relationships); without persistence it stays NoCurrentCarRelationships, which answers ok with an empty list (ROOT 3542ff697; AccountSelection.java:63-68).",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/returns/CurrentCarStoreTest.java:22",
@@ -384,10 +406,32 @@
         }
       ],
       "gaps": [
-        "Handover/return outcomes in current_car_relationships never reach account or recommendation reads."
+        "Without persistence it still answers ok with an empty list, not unavailable.",
+        "Relationships come only from GCSP's own returns store; no BMW current-car source.",
+        "Peer-reported evidence only, as for AccountPolicyPort."
       ],
       "bmwGap": "docs/gcsp/migration-replacement-contracts-2026-11-13.md:92 row Return outcomes; no BMW source named.",
-      "side": "read/input"
+      "side": "read/input",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "default-unconfigured",
+          "previousStatusWhy": "Always empty and reported as success, not unavailable. services/gcsp-api/README.md:666 says the returns-store adapter is future work.",
+          "previousGaps": [
+            "Handover/return outcomes in current_car_relationships never reach account or recommendation reads."
+          ],
+          "statusWhy": "Bound by persistence: with persistence active AccountSelection.currentCars() returns ReturnsCurrentCarRelationships over returns.CurrentCarStore (current_car_relationships); without persistence it stays NoCurrentCarRelationships, which answers ok with an empty list (ROOT 3542ff697; AccountSelection.java:63-68).",
+          "status": "local-bound",
+          "gaps": [
+            "Without persistence it still answers ok with an empty list, not unavailable.",
+            "Relationships come only from GCSP's own returns store; no BMW current-car source.",
+            "Peer-reported evidence only, as for AccountPolicyPort."
+          ],
+          "evidence": "ROOT 3542ff697 (DEV-2026-11-13-026, F458): AccountSelection.java:63-74 binds CurrentCarPort to ReturnsCurrentCarRelationships over returns.CurrentCarStore when persistence is active (NoCurrentCarRelationships otherwise) and AccountPolicyPort to PolicyAccountAdapter over PolicyService. Peer-reported 146/146 relevant local cases incl. 11 dev-composition; not rerun by the FUCQ-481 parent."
+        }
+      ]
     },
     {
       "port": "AccountClockPort",
@@ -465,7 +509,7 @@
       "silentFallback": false,
       "demoPreparation": "none found",
       "status": "partial",
-      "statusWhy": "BriefAccountAdapter sits on the injected AccountService, so it inherits the refusing AccountPolicyPort.",
+      "statusWhy": "account/BriefAccountAdapter is an @ApplicationScoped bean over the injected AccountService, which now carries the bound PolicyAccountAdapter (ROOT 3542ff697), so brief account facts no longer inherit a refusing policy. brief/BriefDefaults keeps @DefaultBean Unconfigured fallbacks for BriefPolicyPort and BriefAccountPort.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/policy/PolicyAdaptersTest.java:22",
@@ -473,10 +517,30 @@
         }
       ],
       "gaps": [
-        "Brief current-contract facts cannot resolve in a real composition."
+        "BriefPolicyPort: no non-default producer found at ROOT b220082c9 beyond BriefDefaults' @DefaultBean UnconfiguredPolicy; not re-traced further here.",
+        "No brief-specific run evidence in this inventory."
       ],
       "bmwGap": "none",
-      "side": "read/input"
+      "side": "read/input",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "partial",
+          "previousStatusWhy": "BriefAccountAdapter sits on the injected AccountService, so it inherits the refusing AccountPolicyPort.",
+          "previousGaps": [
+            "Brief current-contract facts cannot resolve in a real composition."
+          ],
+          "statusWhy": "account/BriefAccountAdapter is an @ApplicationScoped bean over the injected AccountService, which now carries the bound PolicyAccountAdapter (ROOT 3542ff697), so brief account facts no longer inherit a refusing policy. brief/BriefDefaults keeps @DefaultBean Unconfigured fallbacks for BriefPolicyPort and BriefAccountPort.",
+          "gaps": [
+            "BriefPolicyPort: no non-default producer found at ROOT b220082c9 beyond BriefDefaults' @DefaultBean UnconfiguredPolicy; not re-traced further here.",
+            "No brief-specific run evidence in this inventory."
+          ],
+          "evidence": "ROOT 3542ff697 (DEV-2026-11-13-026, F458): AccountSelection.java:63-74 binds CurrentCarPort to ReturnsCurrentCarRelationships over returns.CurrentCarStore when persistence is active (NoCurrentCarRelationships otherwise) and AccountPolicyPort to PolicyAccountAdapter over PolicyService. Peer-reported 146/146 relevant local cases incl. 11 dev-composition; not rerun by the FUCQ-481 parent.",
+          "statusNote": "status kept partial: the account half is now composed; the policy half is not re-established"
+        }
+      ]
     },
     {
       "port": "VehicleProvider / VehicleDetailsConsumer (configuration, specification, VIN, imagery)",
@@ -671,7 +735,7 @@
       "silentFallback": false,
       "demoPreparation": "none found",
       "status": "partial",
-      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
+      "statusWhy": "Startup-selected recommendation candidates now read account facts through the selected AccountRecordsPort (SelectedAccountCandidates, ROOT b220082c9); the caller's accountRecord is never a fallback, so account=none refuses. Earlier generated claim/offer/owner JWT evidence is retained in currentCorrections history.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
@@ -697,7 +761,7 @@
         }
       ],
       "gaps": [
-        "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+        "Prepare.java:100-116 and BuddyRemoteLifecycle.java:315-325 still run their direct employee_account_records SQL; under recommendation the record they pass is ignored and SelectedAccountCandidates reads the selected AccountRecordsPort instead. The SQL reads are not removed.",
         "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
         "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
         "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
@@ -706,7 +770,30 @@
       "side": "read/input",
       "observedAt": "2026-11-17T07:27:14.076549+00:00",
       "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
-      "reconciledAt": "2026-11-17T07:51:03.227703+00:00"
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "partial",
+          "previousStatusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
+          "previousGaps": [
+            "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+            "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+            "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+            "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
+          ],
+          "statusWhy": "Startup-selected recommendation candidates now read account facts through the selected AccountRecordsPort (SelectedAccountCandidates, ROOT b220082c9); the caller's accountRecord is never a fallback, so account=none refuses. Earlier generated claim/offer/owner JWT evidence is retained in currentCorrections history.",
+          "gaps": [
+            "Prepare.java:100-116 and BuddyRemoteLifecycle.java:315-325 still run their direct employee_account_records SQL; under recommendation the record they pass is ignored and SelectedAccountCandidates reads the selected AccountRecordsPort instead. The SQL reads are not removed.",
+            "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+            "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+            "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
+          ],
+          "evidence": "ROOT b220082c9 (integrated 12:27:01Z): CandidatesSelection wraps RecommendationCandidates in SelectedAccountCandidates over the selected AccountRecordsPort. Parent ran 10 matching scoped methods (8 adapter/selector + 2 generated journeys), review 32 PASS, audited cleanup (.claude/fucq481-selected-account-integration-1213.json)."
+        }
+      ]
     },
     {
       "port": "SupplyProvider",
@@ -1702,7 +1789,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
       "status": "partial",
-      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
+      "statusWhy": "Startup-selected recommendation candidates now read account facts through the selected AccountRecordsPort (SelectedAccountCandidates, ROOT b220082c9); the caller's accountRecord is never a fallback, so account=none refuses. Earlier generated claim/offer/owner JWT evidence is retained in currentCorrections history.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
@@ -1728,7 +1815,7 @@
         }
       ],
       "gaps": [
-        "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+        "Prepare.java:100-116 and BuddyRemoteLifecycle.java:315-325 still run their direct employee_account_records SQL; under recommendation the record they pass is ignored and SelectedAccountCandidates reads the selected AccountRecordsPort instead. The SQL reads are not removed.",
         "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
         "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
         "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
@@ -1737,7 +1824,30 @@
       "side": "action/event",
       "observedAt": "2026-11-17T07:27:14.076778+00:00",
       "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
-      "reconciledAt": "2026-11-17T07:51:03.227703+00:00"
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "partial",
+          "previousStatusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
+          "previousGaps": [
+            "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+            "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+            "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+            "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
+          ],
+          "statusWhy": "Startup-selected recommendation candidates now read account facts through the selected AccountRecordsPort (SelectedAccountCandidates, ROOT b220082c9); the caller's accountRecord is never a fallback, so account=none refuses. Earlier generated claim/offer/owner JWT evidence is retained in currentCorrections history.",
+          "gaps": [
+            "Prepare.java:100-116 and BuddyRemoteLifecycle.java:315-325 still run their direct employee_account_records SQL; under recommendation the record they pass is ignored and SelectedAccountCandidates reads the selected AccountRecordsPort instead. The SQL reads are not removed.",
+            "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+            "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+            "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
+          ],
+          "evidence": "ROOT b220082c9 (integrated 12:27:01Z): CandidatesSelection wraps RecommendationCandidates in SelectedAccountCandidates over the selected AccountRecordsPort. Parent ran 10 matching scoped methods (8 adapter/selector + 2 generated journeys), review 32 PASS, audited cleanup (.claude/fucq481-selected-account-integration-1213.json)."
+        }
+      ]
     },
     {
       "port": "OfferFacts",
@@ -1901,7 +2011,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam. Presenter reconcile at OrderingResource.java:110.",
       "status": "remote-bound",
-      "statusWhy": "Since 3e0235593/23eca515d remote is selectable at startup and bound through the real Holder service. Retained native runs: 13 adapter, 1 durable consumer (PG), 8 binding component + 11 startup (the 8 overlap), 1 generated-claim/JWT to selected-remote Holder acknowledgement. It is the GCSP fictional substitute only; no BMW live mode; full order/status HTTP still blocked by the refusing AccountPolicyPort (F458).",
+      "statusWhy": "Since 3e0235593/23eca515d remote is selectable at startup and bound through the real Holder service. Retained native runs: 13 adapter, 1 durable consumer (PG), 8 binding component + 11 startup (the 8 overlap), 1 generated-claim/JWT to selected-remote Holder acknowledgement. It is the GCSP fictional substitute only; no BMW live mode; the former F458 policy blocker for the owner order/status HTTP read is resolved at ROOT 3542ff697; that read is authored (209bf4f7a) but unrun.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingSelectionTest.java:9",
@@ -1946,7 +2056,7 @@
         }
       ],
       "gaps": [
-        "No connected order/status HTTP read for the employee: the manual-order GET/route still needs AccountPolicyPort over PolicyService (Russell F458 lead).",
+        "Owner order/status HTTP (GET /manual/order through OrderingSlots/AccountService and the selected remote Holder) is authored but UNRUN (209bf4f7a, under parent review). The former blocker, the refusing AccountPolicyPort, is resolved at ROOT 3542ff697.",
         "Selected remote is the GCSP substitute only; no verified BMW OrderingProviderPort or live capability evidence.",
         "FUCQ-516 later-clock recovery not exercised; proofs keep the same-instant fixture clock."
       ],
@@ -1954,7 +2064,28 @@
       "side": "action/event",
       "reconciledAt": "2026-11-17T08:21:37.215451+00:00",
       "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e",
-      "statusScope": "remote-bound only when gcsp.ordering.provider=remote is configured explicitly (OrderingSelection.java:20,36-42; OrderingProviderBindings.java:44-49,74-85; OrderingServiceHolder.java:46-53). The default is none, which binds the refusing UnconfiguredOrderingProvider; render.gcsp.yaml:237-238 selects synthetic."
+      "statusScope": "remote-bound only when gcsp.ordering.provider=remote is configured explicitly (OrderingSelection.java:20,36-42; OrderingProviderBindings.java:44-49,74-85; OrderingServiceHolder.java:46-53). The default is none, which binds the refusing UnconfiguredOrderingProvider; render.gcsp.yaml:237-238 selects synthetic.",
+      "currentCorrections": [
+        {
+          "observedAt": "2026-11-17T12:32:24Z",
+          "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+          "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+          "previousStatus": "remote-bound",
+          "previousStatusWhy": "Since 3e0235593/23eca515d remote is selectable at startup and bound through the real Holder service. Retained native runs: 13 adapter, 1 durable consumer (PG), 8 binding component + 11 startup (the 8 overlap), 1 generated-claim/JWT to selected-remote Holder acknowledgement. It is the GCSP fictional substitute only; no BMW live mode; full order/status HTTP still blocked by the refusing AccountPolicyPort (F458).",
+          "previousGaps": [
+            "No connected order/status HTTP read for the employee: the manual-order GET/route still needs AccountPolicyPort over PolicyService (Russell F458 lead).",
+            "Selected remote is the GCSP substitute only; no verified BMW OrderingProviderPort or live capability evidence.",
+            "FUCQ-516 later-clock recovery not exercised; proofs keep the same-instant fixture clock."
+          ],
+          "statusWhy": "Since 3e0235593/23eca515d remote is selectable at startup and bound through the real Holder service. Retained native runs: 13 adapter, 1 durable consumer (PG), 8 binding component + 11 startup (the 8 overlap), 1 generated-claim/JWT to selected-remote Holder acknowledgement. It is the GCSP fictional substitute only; no BMW live mode; the former F458 policy blocker for the owner order/status HTTP read is resolved at ROOT 3542ff697; that read is authored (209bf4f7a) but unrun.",
+          "gaps": [
+            "Owner order/status HTTP (GET /manual/order through OrderingSlots/AccountService and the selected remote Holder) is authored but UNRUN (209bf4f7a, under parent review). The former blocker, the refusing AccountPolicyPort, is resolved at ROOT 3542ff697.",
+            "Selected remote is the GCSP substitute only; no verified BMW OrderingProviderPort or live capability evidence.",
+            "FUCQ-516 later-clock recovery not exercised; proofs keep the same-instant fixture clock."
+          ],
+          "evidence": "ROOT 3542ff697 (DEV-2026-11-13-026, F458): AccountSelection.java:63-74 binds CurrentCarPort to ReturnsCurrentCarRelationships over returns.CurrentCarStore when persistence is active (NoCurrentCarRelationships otherwise) and AccountPolicyPort to PolicyAccountAdapter over PolicyService. Peer-reported 146/146 relevant local cases incl. 11 dev-composition; not rerun by the FUCQ-481 parent. Owner GET /manual/order extension of GeneratedClaimRemoteOrderingHttpTest authored at 209bf4f7a (12:24:25Z); UNRUN and under parent review at this observation."
+        }
+      ]
     },
     {
       "port": "SelectionConversionPort",
@@ -3466,11 +3597,13 @@
     "readInput": [
       {
         "defect": "AccountSelection.policy() hard-wires UnconfiguredAccountPolicy so manual/ordering/brief routes cannot succeed in a deployment",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountSelection.java:68"
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountSelection.java:68",
+        "currentStatus": "2026-11-17T12:32:24Z: resolved in source at ROOT 3542ff697 (PolicyAccountAdapter bound); original capture kept"
       },
       {
         "defect": "account.CurrentCarPort answers ok with an empty list rather than unavailable",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountSelection.java:62"
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountSelection.java:62",
+        "currentStatus": "2026-11-17T12:32:24Z: narrowed at ROOT 3542ff697: only without persistence (NoCurrentCarRelationships); with persistence the returns store is bound"
       },
       {
         "defect": "PolicyReleaseAdapter has no injection site while the release path uses its own policy file",
@@ -3533,16 +3666,30 @@
     "Second current reconciliation updates only two EligibleCandidates records at97cd67aa4 using13 matching focused passes and independent source review. F516 captures failed later-clock recovery. No complete remote journey or verified-live evidence; earlier source-only notes describe the initial observation.",
     "Ordering record reconciled to standalone adapter09e224584 and13executed loopback methods; startup selection remains none/synthetic. Earlier source-only/count observations retain their historical scope. No originalAC completion.",
     "2026-11-17T11:28:41Z (fc244cc06; originally recorded as 11:40:00Z): uniquePortCensus is a source census; external/internal classification is judgement with stated rules, not a runtime proof.",
-    "2026-11-17T11:55:43Z: assignment 23 corrected the census to 123 declarations / 121 names (34+10+38+41), qualified the startup guarantee (synthetic returns/production downgrade without persistence), scoped remote-bound to explicit configuration, and narrowed the demo bypass to the two Buddy reads. Source only; no new runtime."
+    "2026-11-17T11:55:43Z: assignment 23 corrected the census to 123 declarations / 121 names (34+10+38+41), qualified the startup guarantee (synthetic returns/production downgrade without persistence), scoped remote-bound to explicit configuration, and narrowed the demo bypass to the two Buddy reads. Source only; no new runtime.",
+    "2026-11-17T12:32:24Z: assignment 26 reconciled the account policy, current-car, brief, candidate and ordering rows to ROOT b220082c9. Peer F458 results are peer-reported; the owner order HTTP extension is unrun. Both original AC remain open."
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T11:55:43Z",
-    "sourceSha": "fc244cc06d4445626a53a733eb50923342d4f354",
-    "integrationCheckpoint": "b2e822c7050a4e8e2d40d903de734322c6b3debf",
-    "apiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
-    "ports": [],
-    "basis": "Assignment 23 documentation correction after review 30: census counting unit and totals, startup fallback wording, Returns/Approvals mode tokens, ordering remote-bound scope, the ManualDrafts qualification and timestamps. No legacy record identity or status changed; OrderingProviderPort gained statusScope only. Source only; no runtime."
+    "observedAt": "2026-11-17T12:32:24Z",
+    "sourceSha": "209bf4f7aabcb6cf84621c5830edeb9e6de42087",
+    "rootSource": "b220082c923515b78abb7f9c7db2c6d9aac72a1e",
+    "rootApiTree": "3213b1af19996c98577da4428f7177c5986cd6f0",
+    "ports": [
+      "AccountPolicyPort",
+      "BriefAccountPort / BriefPolicyPort",
+      "CurrentCarPort (account)",
+      "EligibleCandidates",
+      "OrderingProviderPort"
+    ],
+    "basis": "Assignment 26: current source correction of AccountPolicyPort, CurrentCarPort (account), BriefAccountPort/BriefPolicyPort, EligibleCandidates (both sides) and OrderingProviderPort against ROOT b220082c9. Prior text kept in each row's currentCorrections. 59 identities preserved; census equation unchanged. No new runtime.",
+    "evidenceClasses": {
+      "deliveredCode": "ROOT 3542ff697 bindings; ROOT b220082c9 SelectedAccountCandidates/CandidatesSelection",
+      "matchingLocalTests": "10 scoped parent passes for b220082c9 (8 adapter/selector + 2 generated journeys)",
+      "peerReported": "F458 146/146 incl. 11 dev-composition, not rerun by this parent",
+      "unrun": "209bf4f7a owner GET /manual/order extension",
+      "absent": "hosted dev, real OIDC/browser, Angular account view, real mail, BMW, shaped variation across all ports, FUCQ-516 later clock"
+    }
   },
   "reconciliationHistory": [
     {
@@ -3593,6 +3740,14 @@
       ],
       "basis": "One existing record reconciled to integrated startup selection and connected generated-claim evidence (assignments 19-21). 58 other rows and all 59 identities preserved. Source-only census added as uniquePortCensus; no new runtime.",
       "observedAtCorrection": "published at fc244cc06 11:28:41Z; originally recorded as 11:40:00Z (after the author's 11:29:30Z return); corrected by assignment 23"
+    },
+    {
+      "observedAt": "2026-11-17T11:55:43Z",
+      "sourceSha": "fc244cc06d4445626a53a733eb50923342d4f354",
+      "integrationCheckpoint": "b2e822c7050a4e8e2d40d903de734322c6b3debf",
+      "apiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
+      "ports": [],
+      "basis": "Assignment 23 documentation correction after review 30: census counting unit and totals, startup fallback wording, Returns/Approvals mode tokens, ordering remote-bound scope, the ManualDrafts qualification and timestamps. No legacy record identity or status changed; OrderingProviderPort gained statusScope only. Source only; no runtime."
     }
   ],
   "uniquePortCensus": {
@@ -3652,35 +3807,37 @@
           "AccountRecordsPort"
         ],
         "status": "default-unconfigured",
-        "remainingGap": "no BMW HR/account source. Buddy prepare (allocation/Prepare.java:100-116) and the Buddy remote lifecycle (allocation/BuddyRemoteLifecycle.java:315-325) read employee_account_records directly into candidate evaluation without consulting the selected AccountRecordsPort. ManualDrafts.java:111-117 is a conditional version guard, not a bypass (see reconciliation.demoPreparation.currentTrace). Held PostgresDemandSnapshot.java:94-97 also joins the table (F477 M1/F515 hold)."
+        "remainingGap": "no BMW HR/account source; repository is a local PostgreSQL adapter, not remote HR proof. Prepare.java:100-116 and BuddyRemoteLifecycle.java:315-325 still read the table, but under recommendation candidates use this port (SelectedAccountCandidates, ROOT b220082c9). ManualDrafts.java:111-117 is a conditional version guard."
       },
       {
         "contract": "AccountPolicyPort",
         "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6",
         "selectionKey": "gcsp.account.provider (AccountSelection)",
-        "default": "Unconfigured (refusing)",
-        "modes": "UnconfiguredAccountPolicy | PolicyAccountAdapter",
+        "default": "PolicyAccountAdapter (bound)",
+        "modes": "PolicyAccountAdapter only",
         "inventoryRows": [
           "AccountPolicyPort",
           "BriefAccountPort / BriefPolicyPort"
         ],
-        "status": "partial",
-        "remainingGap": "owned by Russell F458 lead: binding over PolicyService not delivered; blocks full manual order/status HTTP"
+        "status": "local-bound",
+        "remainingGap": "owned by Russell F458 lead: binding over PolicyService not delivered; blocks full manual order/status HTTP",
+        "currentCorrection": "2026-11-17T12:32:24Z: bound at ROOT 3542ff697; was Unconfigured (refusing)"
       },
       {
         "contract": "CurrentCarPort (account and returns)",
         "ref": "services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3",
         "selectionKey": "AccountSelection producer",
-        "default": "NoCurrentCarRelationships",
-        "modes": "none | CurrentCarStore",
+        "default": "ReturnsCurrentCarRelationships with persistence; NoCurrentCarRelationships without",
+        "modes": "persistence-dependent",
         "inventoryRows": [
           "CurrentCarPort (account)"
         ],
-        "status": "default-unconfigured",
+        "status": "local-bound",
         "remainingGap": "no BMW current-car source; two same-named interfaces (account/, returns/) counted once here",
         "duplicateDeclarations": [
           "services/gcsp-api/src/main/java/gcsp/api/returns/CurrentCarPort.java:8"
-        ]
+        ],
+        "currentCorrection": "2026-11-17T12:32:24Z: bound at ROOT 3542ff697"
       },
       {
         "contract": "VehicleProvider / VehicleLookupPort",
@@ -3766,7 +3923,7 @@
           "EligibleCandidates"
         ],
         "status": "partial",
-        "remainingGap": "duplicate legacy rows (read/input and action/event) are one contract"
+        "remainingGap": "recommendation reads the selected AccountRecordsPort (ROOT b220082c9); Prepare/BuddyRemoteLifecycle SQL reads still run but their record is ignored under recommendation"
       },
       {
         "contract": "OrderingProviderPort",
