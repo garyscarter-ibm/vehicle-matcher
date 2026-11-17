@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T07:29:54Z",
+      "observed_at": "2026-11-17T07:36:12Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T07:29:09.922Z",
-      "note": "Canonical candidate adapter/startup selector integrated97cd67aa4;13matching focused passes (12initial plus affected1after test-only canonicalJSONassertion correction), independent source review PASS, both attempts teardown verified. F516Mediumcaptureonly confirms laterclockprematurerelease. Inventory2candidate records/log9ff4fb489. Readiness22 actual source inspection executing; no source/runtime grant, both originalAC open/nativeToDo preserved.",
+      "note": "Canonical candidate adapter/startup selector integrated97cd67aa4;13matching cases across14executions/twoattempts, independentreviewPASS, teardownverified; F516Mediumcaptureonly. Readiness22 terminal:3newtestfiles/1method proposal, current source hashes verified; no implementation/runtime grant. F481 reserved/held at incrementboundary; both originalAC open/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8988,10 +8988,10 @@
           "name": "Donald Duck 3",
           "harness": "codex",
           "role": "Read-only generated-claim/authenticated-decision composition readiness",
-          "observed_at": "2026-11-17T07:29:54.291Z",
-          "expires_at": "2026-11-17T07:44:54.635159+00:00",
+          "observed_at": "2026-11-17T07:35:24+00:00",
+          "expires_at": "2026-11-17T07:35:24+00:00",
           "source": "codex-fucq481-generated-claim-readiness-22",
-          "status": "executingreadiness22; actual producer/OIDCtestsource reads verified. No productwrites/runtime granted. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
+          "status": "terminalreadiness22 returned/collected; three-new-test-file/one-method proposal, current source hashes verified. No productwrites/runtime/currentexecution. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
         }
       ]
     }
