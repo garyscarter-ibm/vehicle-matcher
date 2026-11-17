@@ -169,10 +169,22 @@ class OrderingProviderBindingsTest {
         unset.init();
         assertEquals("none", unset.mode());
         unset.close();
-        // The current OrderingSelection still refuses remote, so remote application startup is not enabled yet.
-        OrderingSelection remote = new OrderingSelection();
-        remote.providerName = "remote";
-        assertThrows(IllegalStateException.class, remote::init);
+        // OrderingSelection now accepts remote; the binding then fails closed without settings and binds one adapter with them.
+        OrderingProviderBindings missing = newBindings(" remote ");
+        assertEquals("remote", missing.selection.provider());
+        var e = assertThrows(IllegalStateException.class, missing::init);
+        assertTrue(e.getMessage().contains("gcsp.ordering.execute-url"));
+        assertThrows(IllegalStateException.class, missing::mode, "a failed init hands nothing out");
+        OrderingProviderBindings remote = newBindings("remote");
+        remote.executeUrl = Optional.of("https://ordering.invalid/execute");
+        remote.reconcileUrl = Optional.of("https://ordering.invalid/reconcile");
+        remote.init();
+        assertEquals("remote", remote.mode());
+        OrderingProviderPort port = remote.provider(null);
+        assertInstanceOf(HttpOrderingProvider.class, port);
+        assertSame(port, remote.provider(countingDataSource(new AtomicInteger())), "the datasource does not change remote");
+        remote.close();
+        assertThrows(IllegalStateException.class, () -> remote.provider(null));
     }
 
     private static OrderingProviderBindings newBindings(String providerName) {
