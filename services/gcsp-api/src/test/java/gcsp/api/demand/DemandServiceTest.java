@@ -554,4 +554,29 @@ class DemandServiceTest {
         array.forEach(out::add);
         return out;
     }
+
+    @Test
+    void theRunClockSetsAsOfAndVersionAndAMissingOrChangedClockIsRefused() throws Exception {
+        try (DemandFixture f = DemandFixture.create()) {
+            f.employee("emp-1");
+            f.brief("emp-1", 1, DemandFixture.brief("estate", null, null, null));
+            ObjectNode a = f.ok();
+            assertEquals(1, a.get("versions").get("clock").asLong());
+            f.clock.current = java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 2));
+            ObjectNode b = f.ok();
+            assertEquals(2, b.get("versions").get("clock").asLong());
+            assertNotEquals(a.get("projectionVersion"), b.get("projectionVersion"));
+
+            f.clock.current = java.util.Optional.empty();
+            assertEquals("clock-unavailable", unavailableCode(f.read()));
+
+            f.clock.current = java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 1));
+            f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 1)));
+            f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 2)));
+            DemandResult.Refusal changed = (DemandResult.Refusal) f.read();
+            assertEquals(409, changed.http());
+            assertEquals("demand-changed", changed.code());
+            assertTrue(changed.retryable());
+        }
+    }
 }

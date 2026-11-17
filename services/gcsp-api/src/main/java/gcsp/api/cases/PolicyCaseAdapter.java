@@ -36,19 +36,36 @@ public class PolicyCaseAdapter implements CasePolicyPort {
     public Optional<Map<String, JsonNode>> assumptions(String policyVersion) {
         if (runId.isBlank() || policyVersion == null || policyVersion.isBlank()) return Optional.empty();
         try {
-            PolicyRead read = new PolicyRead(runId,
-                    PolicyClock.iso(clock.now(new RunContext(environmentId, runId, "case-policy"))), policyVersion);
+            PolicyRead read = read(policyVersion);
             Map<String, JsonNode> rows = new LinkedHashMap<>();
             for (String key : CasePolicy.KEYS) {
-                PolicyResult found = policy.getAssumption(key, read);
-                if (!found.ok() || !policyVersion.equals(found.policyVersion()) || found.value() == null) {
-                    return Optional.empty();
-                }
-                rows.put(key, found.value().deepCopy());
+                Optional<JsonNode> row = row(key, read);
+                if (row.isEmpty()) return Optional.empty();
+                rows.put(key, row.get());
             }
             return Optional.of(rows);
         } catch (RuntimeException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<JsonNode> assumption(String policyVersion, String key) {
+        if (runId.isBlank() || policyVersion == null || policyVersion.isBlank()) return Optional.empty();
+        try {
+            return row(key, read(policyVersion));
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
+    }
+
+    private PolicyRead read(String policyVersion) {
+        return new PolicyRead(runId, PolicyClock.iso(clock.now(new RunContext(environmentId, runId, "case-policy"))), policyVersion);
+    }
+
+    private Optional<JsonNode> row(String key, PolicyRead read) {
+        PolicyResult found = policy.getAssumption(key, read);
+        if (!found.ok() || !read.policyVersion().equals(found.policyVersion()) || found.value() == null) return Optional.empty();
+        return Optional.of(found.value().deepCopy());
     }
 }
