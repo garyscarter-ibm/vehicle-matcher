@@ -74,7 +74,7 @@ describe('preferences screen over the Java brief goldens', () => {
   const settle = async (fixture: ComponentFixture<PreferencesComponent>) => { await idle(); await new Promise<void>((resolve) => setTimeout(resolve, 200)); await idle(); await fixture.whenStable(); };
   const root = (fixture: ComponentFixture<PreferencesComponent>) => fixture.nativeElement as HTMLElement;
   const button = (fixture: ComponentFixture<PreferencesComponent>, label: string) =>
-    [...root(fixture).querySelectorAll('button')].find((b) => b.textContent?.trim() === label) as HTMLButtonElement | undefined;
+    Array.from(root(fixture).querySelectorAll('button')).find((b) => b.textContent?.trim() === label) as HTMLButtonElement | undefined;
   const status = (fixture: ComponentFixture<PreferencesComponent>) => root(fixture).querySelector('.brief-form .gcsp-actions + p[role=status]')?.textContent?.trim();
   const note = (fixture: ComponentFixture<PreferencesComponent>) => root(fixture).querySelector(':scope > p.gcsp-note')?.textContent?.trim();
   const ownedRequests = () => {
@@ -108,16 +108,16 @@ describe('preferences screen over the Java brief goldens', () => {
   it('renders the Java initial editor: known facts, preferences, version and Buddy choice, and no match of its own', async () => {
     const fixture = await render('editor-initial');
     const java = value('editor-initial');
-    const facts = [...root(fixture).querySelectorAll('.known-facts dt')].map((dt) => [dt.textContent?.trim(), dt.nextElementSibling?.textContent?.trim()]);
+    const facts = Array.from(root(fixture).querySelectorAll('.known-facts dt')).map((dt) => [dt.textContent?.trim(), dt.nextElementSibling?.textContent?.trim()]);
     expect(facts).toEqual([['Current car', 'Model X'], ['Contract ends', 'Not supplied'], ['Drivers', 'Pat'], ['Annual mileage', '8000 miles']]);
     expect(java['context']['knownFacts']['currentContract']['value']['model']).toBe('Model X');
     expect(note(fixture)).toBe(`Your saved preferences · Version ${java['initial']['briefVersion']}`);
-    const legends = [...root(fixture).querySelectorAll('fieldset.full-preference legend')].map((l) => l.textContent?.trim());
+    const legends = Array.from(root(fixture).querySelectorAll('fieldset.full-preference legend')).map((l) => l.textContent?.trim());
     expect(legends).toEqual(Object.values(java['context']['preferences']).map((p: any) => p.label));
     const body = java['context']['preferences']['body']['values'] as string[];
-    const boxes = [...root(fixture).querySelectorAll<HTMLInputElement>('#preference-body input')];
+    const boxes = Array.from(root(fixture).querySelectorAll<HTMLInputElement>('#preference-body input'));
     expect(boxes.map((b) => b.checked)).toEqual(body.map((v) => v === java['initial']['brief']['preferences']['body']['value']));
-    const [engage, disengage] = [...root(fixture).querySelectorAll<HTMLInputElement>('input[name=buddy-engagement]')];
+    const [engage, disengage] = Array.from(root(fixture).querySelectorAll<HTMLInputElement>('input[name=buddy-engagement]'));
     expect(java['initial']['buddy']['state']).toBe('disengaged'); expect(engage.checked).toBe(false); expect(disengage.checked).toBe(true);
     expect(root(fixture).textContent).not.toMatch(/\bEligible\b|Not eligible/);
     ownedRequests();
