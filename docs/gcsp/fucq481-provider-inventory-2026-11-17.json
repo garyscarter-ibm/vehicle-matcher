@@ -20,8 +20,9 @@
   "counts": {
     "default-unconfigured": 17,
     "local-bound": 13,
-    "partial": 28,
-    "unverified-runtime": 1
+    "partial": 27,
+    "unverified-runtime": 1,
+    "remote-bound": 1
   },
   "ports": [
     {
@@ -1875,18 +1876,20 @@
         {
           "class": "HttpOrderingProvider",
           "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/HttpOrderingProvider.java",
-          "kind": "remote-substitute-unbound"
+          "kind": "remote-substitute (startup-selected via OrderingProviderBindings)"
         }
       ],
       "selection": {
-        "mechanism": "Config-name switch, fail closed",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderSelection.java:10",
+        "mechanism": "OrderingSelection validates none/synthetic/remote once at @Startup; OrderingProviderBindings captures the provider (none/synthetic delegate to OrderingProviderSelection, remote = one HttpOrderingProvider after eager Settings.parse/newClient, no network call); OrderingServiceHolder passes bindings.provider(ds)",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderBindings.java",
         "configKey": "gcsp.ordering.provider",
         "envVar": "GCSP_ORDERING_PROVIDER",
         "propertiesRef": "services/gcsp-api/src/main/resources/application.properties:120",
         "default": "none",
         "unsetYields": "UnconfiguredOrderingProvider (mode none; refuses ordering-provider-not-configured)",
-        "unknownValue": "OrderingSelection.java:34-39 @Startup throws IllegalStateException (fail closed)"
+        "unknownValue": "OrderingSelection.validate throws IllegalStateException at startup (fail closed); invalid remote settings throw key-only messages",
+        "holderRef": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingServiceHolder.java:51",
+        "remoteSettings": "gcsp.ordering.execute-url/reconcile-url/token (blank) and timeout (10s) from GCSP_ORDERING_*"
       },
       "consumers": [
         "ordering/OrderingService.java:138,146,327,394",
@@ -1897,8 +1900,8 @@
       "failure": "Provider none refuses at OrderingResource.java:79; unavailable 503 (non-retryable for not-configured) at :247; 202 at :221; unknown outcome :411; reconcile then re-execute once on NOT_FOUND :394; synthetic receipts in ordering_synthetic_receipts.",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam. Presenter reconcile at OrderingResource.java:110.",
-      "status": "partial",
-      "statusWhy": "none and synthetic remain selectable. Standalone HttpOrderingProvider is now reviewed and tested against an actual loopback GCSP substitute, but is UNBOUND: no remote startup selection or durable consumer integration. No verified BMW live mode exists.",
+      "status": "remote-bound",
+      "statusWhy": "Since 3e0235593/23eca515d remote is selectable at startup and bound through the real Holder service. Retained native runs: 13 adapter, 1 durable consumer (PG), 8 binding component + 11 startup (the 8 overlap), 1 generated-claim/JWT to selected-remote Holder acknowledgement. It is the GCSP fictional substitute only; no BMW live mode; full order/status HTTP still blocked by the refusing AccountPolicyPort (F458).",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingSelectionTest.java:9",
@@ -1922,17 +1925,36 @@
           "checkpoint": "45d1c1afc05858c6f2d123d1958dd86ed625214a",
           "integration": "09e22458483497c23d74a6588d43a140805b0d4e",
           "result": "Exactly13 focused actual-loopback methods passed, zero failures/errors/skips,17.0s. Independent source review PASS; parent independently verified39identities/3groups/scratch/reservation clear and unchanged pins. Full12fieldPOST/persistedkey/GETonlyreconcile/complete truthfulACK/statuses/strictJSON/body/time bounds. UNBOUND; no startup/durable consumer/full journey/BMW proof."
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/RemoteOrderingConsumerPgTest.java",
+          "kind": "executed-component-contract",
+          "result": "1 passed (lost-ACK reconcile, no second execute); receipt .claude/test-runs/receipts/fucq481/ordering-consumer-1021/20261117T102805-fucq481-ordering-consumer-1021-unit.json; audit .claude/fucq481-ordering-consumer-parent-audit-1026.json",
+          "observedAt": "2026-11-17T10:28Z"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingProviderBindingsTest.java + RemoteOrderingStartupTest.java",
+          "kind": "executed-startup-composition",
+          "result": "8 passed at 0f9a547b7; 11 passed at 2f93f830b (includes the 8 plus OrderingSelectionTest and one remote boot); receipt .claude/test-runs/receipts/fucq481/ordering-startup-1053/20261117T105704-fucq481-ordering-startup-1053-unit.json; review .claude/results/fucq481-ordering-startup-review-28.json",
+          "observedAt": "2026-11-17T10:57Z"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/GeneratedClaimRemoteOrderingHttpTest.java",
+          "kind": "executed-connected-partial-boundary",
+          "result": "1 passed: generated claim, owner RS256 JWT accept, real Holder service reconcile through startup-selected remote, one execute, durable acknowledgement; receipt .claude/test-runs/receipts/fucq481/generated-ordering-1111/20261117T111309-fucq481-generated-ordering-1111-unit.json; review .claude/results/fucq481-generated-ordering-review-29.json; audit .claude/fucq481-generated-ordering-parent-audit-1111.json",
+          "observedAt": "2026-11-17T11:13Z"
         }
       ],
       "gaps": [
-        "Remote startup composition requires exact peer F468 holder/selector/config file coordination; existing bindings and core remain unchanged.",
-        "No durable remote-ordering consumer or connected full order/status HTTP proof. Refusing peer F458 account policy remains a concrete route gap.",
-        "No verified BMW OrderingProviderPort implementation or live capability evidence."
+        "No connected order/status HTTP read for the employee: the manual-order GET/route still needs AccountPolicyPort over PolicyService (Russell F458 lead).",
+        "Selected remote is the GCSP substitute only; no verified BMW OrderingProviderPort or live capability evidence.",
+        "FUCQ-516 later-clock recovery not exercised; proofs keep the same-instant fixture clock."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
       "side": "action/event",
       "reconciledAt": "2026-11-17T08:21:37.215451+00:00",
-      "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e"
+      "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e",
+      "statusScope": "remote-bound only when gcsp.ordering.provider=remote is configured explicitly (OrderingSelection.java:20,36-42; OrderingProviderBindings.java:44-49,74-85; OrderingServiceHolder.java:46-53). The default is none, which binds the refusing UnconfiguredOrderingProvider; render.gcsp.yaml:237-238 selects synthetic."
     },
     {
       "port": "SelectionConversionPort",
@@ -2157,7 +2179,8 @@
         "No live appointments implementation."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "modeTokenCorrection": "2026-11-17T11:55:43Z: the accepted token is live, not live-stub (AppointmentsWiring.java:28-30,72); live is a refusing stub. statusWhy above keeps its original wording."
     },
     {
       "port": "OrderStagePort",
@@ -3166,7 +3189,41 @@
       ],
       "writes": "services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:138 inserts employees, employee_account_records and entitlement_slots by direct SQL in one runner command; never reseeds once scenario_runs has a row",
       "why": "AccountService sees these rows only with gcsp.account.provider=repository (services/gcsp-api/src/main/java/gcsp/api/account/AccountSelection.java:86), but Buddy prepare (services/gcsp-api/src/main/java/gcsp/api/allocation/Prepare.java:100), the Buddy remote lifecycle (services/gcsp-api/src/main/java/gcsp/api/allocation/BuddyRemoteLifecycle.java:315) and the manual-draft version check (services/gcsp-api/src/main/java/gcsp/api/account/ManualDrafts.java:113) read employee_account_records directly whatever the account provider is. So seeded rows feed Buddy results even under account=none or hr-snapshot, and AC1's 'demo preparation cannot bypass this composition' is not yet true.",
-      "workers": "Worker A rated it a bypass; worker B rated it not a bypass of provider wiring. Both are right about different halves: the seeding step is guarded, the consumption is not composed."
+      "workers": "Worker A rated it a bypass; worker B rated it not a bypass of provider wiring. Both are right about different halves: the seeding step is guarded, the consumption is not composed.",
+      "currentTrace": {
+        "observedAt": "2026-11-17T11:55:43Z",
+        "sourceSha": "fc244cc06d4445626a53a733eb50923342d4f354",
+        "selection": [
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioWiring.java:38 gcsp.scenario.provider default none",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioWiring.java:59 ScenarioProvider.normalise (unknown stops startup)",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioWiring.java:68 available() needs demo and persistence",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioWiring.java:89-101 demo requires environment_identity.reset_allowed or stops startup"
+        ],
+        "seeding": [
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:126 scenario_runs",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:144 employees",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:146 employee_account_records",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:150 entitlement_slots"
+        ],
+        "replayAndReset": [
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioService.java:81 startup prepares the mechanics scenario when no row exists",
+          "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioService.java:102-121 reset through persistence RunReset (retires run, inserts new run) then prepares",
+          "services/gcsp-api/src/main/java/gcsp/api/presenter/PresenterScenarioResource.java:54-106 catalogue/current/reset/faults routes"
+        ],
+        "faults": "services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioFaults.java:69 writes scenario_faults; no main-source reader outside ScenarioFaults/presenter, so faults do not reach any selected provider",
+        "providerUse": "Preparation constructs no provider and injects none of the external ports; it writes source tables only.",
+        "bypass": "Consumption, not seeding. Buddy prepare (allocation/Prepare.java:100-116) and the Buddy remote lifecycle (allocation/BuddyRemoteLifecycle.java:315-325) read employee_account_records.record by direct SQL and pass it as EligibleCandidates.Subject.accountRecord (EligibleCandidates.java:16-17); RecommendationCandidates uses its employeeFacts, drivers, contracts and source (RecommendationCandidates.java:32,45,81-82,142,152). Neither file refers to AccountSelection or AccountRecordsPort, so whenever gcsp.allocation.candidates.provider=recommendation the seeded rows reach Buddy candidates whatever gcsp.account.provider is. Held planning demand (planning/PostgresDemandSnapshot.java:94-97) also joins the table; it stays read-only under the F477 M1/F515 hold.",
+        "observationHistory": [
+          {
+            "observedAt": "2026-11-17T11:28:41Z",
+            "publishedIn": "fc244cc06",
+            "note": "assignment 22 trace, originally recorded as 11:40:00Z; its bypass sentence overstated ManualDrafts",
+            "bypass": "Consumption, not seeding: Prepare.java:100, BuddyRemoteLifecycle.java:315, ManualDrafts.java:113 and PostgresDemandSnapshot.java:96 (held) read employee_account_records directly regardless of gcsp.account.provider, so seeded rows reach Buddy results even under account=none or hr-snapshot. Unchanged from the baseline verdict."
+          }
+        ],
+        "manualDrafts": "Not a bypass. ManualDrafts.java:99 takes the selected account projection from AccountService.prepare, which reads the selected AccountRecordsPort (AccountService.java:98-110). It refuses unless that projection is ready (ManualDrafts.java:102-103), so under account=none UnconfiguredAccountRecords answers unavailable (UnconfiguredAccountRecords.java:9-10) and the SQL never runs. ManualDrafts.java:111-117 then reads only the table version FOR SHARE, and only when p.account.repositoryVersion is present, to refuse a stale save. Repository records set repositoryVersion from that table (RepositoryAccountRecords.java:93); hr-snapshot sets it from the snapshot recordVersion (HrSnapshotRecords.java:215). Open uncertainty: under hr-snapshot with a non-null recordVersion and a seeded table row for the same employee, the guard compares the two sources; whether that combination occurs is not established from source."
+      },
+      "whyQualification": "Assignment 23 (2026-11-17T11:55:43Z): the 'why' text above is the baseline wording. Its ManualDrafts clause is superseded by currentTrace.manualDrafts: that read is a conditional version guard behind the selected account projection, not an unconditional consumer."
     },
     "remoteJourney": {
       "claim": "ManualClaims remote() over ClaimStockPort (ManualClaims.java:414)",
@@ -3474,16 +3531,18 @@
     "Cross-domain records overlap and several records group multiple contracts; this is an inventory increment, not an asserted unique-port census. Parent corrected stale blueprint and PostgreSQL-evidence statements before integration; source facts were sampled, not all semantically reverified.",
     "Current reconciliation updates only three records after initial inventory: remote provider source and selected execution now exist. Unchanged rows/line numbers retain the original observation; no new runtime was run for this documentation update.",
     "Second current reconciliation updates only two EligibleCandidates records at97cd67aa4 using13 matching focused passes and independent source review. F516 captures failed later-clock recovery. No complete remote journey or verified-live evidence; earlier source-only notes describe the initial observation.",
-    "Ordering record reconciled to standalone adapter09e224584 and13executed loopback methods; startup selection remains none/synthetic. Earlier source-only/count observations retain their historical scope. No originalAC completion."
+    "Ordering record reconciled to standalone adapter09e224584 and13executed loopback methods; startup selection remains none/synthetic. Earlier source-only/count observations retain their historical scope. No originalAC completion.",
+    "2026-11-17T11:28:41Z (fc244cc06; originally recorded as 11:40:00Z): uniquePortCensus is a source census; external/internal classification is judgement with stated rules, not a runtime proof.",
+    "2026-11-17T11:55:43Z: assignment 23 corrected the census to 123 declarations / 121 names (34+10+38+41), qualified the startup guarantee (synthetic returns/production downgrade without persistence), scoped remote-bound to explicit configuration, and narrowed the demo bypass to the two Buddy reads. Source only; no new runtime."
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T08:21:37.215451+00:00",
-    "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e",
-    "ports": [
-      "OrderingProviderPort"
-    ],
-    "basis": "One existing record reconciled to reviewed/tested standalone adapter09e224584; all58other records and59identities preserved. Exactly13newnative unit methods passed. Adapter remains unbound; no fullAC/startup/durable consumer/BMW claim."
+    "observedAt": "2026-11-17T11:55:43Z",
+    "sourceSha": "fc244cc06d4445626a53a733eb50923342d4f354",
+    "integrationCheckpoint": "b2e822c7050a4e8e2d40d903de734322c6b3debf",
+    "apiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
+    "ports": [],
+    "basis": "Assignment 23 documentation correction after review 30: census counting unit and totals, startup fallback wording, Returns/Approvals mode tokens, ordering remote-bound scope, the ManualDrafts qualification and timestamps. No legacy record identity or status changed; OrderingProviderPort gained statusScope only. Source only; no runtime."
   },
   "reconciliationHistory": [
     {
@@ -3515,6 +3574,1233 @@
         "OfferDecision (decision route over RemoteBuddy)"
       ],
       "basis": "Four existing record identities reconciled to the reviewed/integrated generated-claim proof.55other rows preserved. Exactly1new native method passed; no broad rerun, inventory-completeness or originalAC claim."
+    },
+    {
+      "observedAt": "2026-11-17T08:21:37.215451+00:00",
+      "sourceSha": "09e22458483497c23d74a6588d43a140805b0d4e",
+      "ports": [
+        "OrderingProviderPort"
+      ],
+      "basis": "One existing record reconciled to reviewed/tested standalone adapter09e224584; all58other records and59identities preserved. Exactly13newnative unit methods passed. Adapter remains unbound; no fullAC/startup/durable consumer/BMW claim."
+    },
+    {
+      "observedAt": "2026-11-17T11:28:41Z",
+      "sourceSha": "20d71cb9f7fec1f5043cf541cf5b53c5feba4c8a",
+      "integrationCheckpoint": "23eca515dd79c02b07a0419b2440138c00c9aa73",
+      "apiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
+      "ports": [
+        "OrderingProviderPort"
+      ],
+      "basis": "One existing record reconciled to integrated startup selection and connected generated-claim evidence (assignments 19-21). 58 other rows and all 59 identities preserved. Source-only census added as uniquePortCensus; no new runtime.",
+      "observedAtCorrection": "published at fc244cc06 11:28:41Z; originally recorded as 11:40:00Z (after the author's 11:29:30Z return); corrected by assignment 23"
     }
-  ]
+  ],
+  "uniquePortCensus": {
+    "observedAt": "2026-11-17T11:55:43Z",
+    "sourceSha": "fc244cc06d4445626a53a733eb50923342d4f354",
+    "rootApiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
+    "workerApiTree": "55023060e8e6d5875a467f617f36009a17a4f5a6",
+    "rootEqualsWorker": true,
+    "method": "Every public interface declaration (top-level or nested, with optional sealed/non-sealed/static) under services/gcsp-api/src/main/java at API tree 55023060, found by a read-only Python stdlib line scan with ^(\\s*)public\\s+((sealed|non-sealed|static)\\s+)*interface\\s+(\\w+). The counting unit is the declaration: 123 declarations with 121 distinct simple names (CurrentCarPort and HandoverPort are each declared in two packages). Each declaration is mapped exactly once in declarationList. No runtime.",
+    "inclusionRule": "external = a contract whose implementation answers for a system outside GCSP (identity, HR/account, policy feed, stock/supply, custody, Buddy, ordering, documents, appointments, approvals, returns, mail, production, learning/comparison sources) and is chosen by a startup key or producer",
+    "exclusionRule": "internal service/projection/repository seams over GCSP's own tables or policy, sealed result/outcome types, and nested helper callbacks are excluded; clocks are listed separately because the AC treats them as inputs, not providers",
+    "counts": {
+      "declarations": 123,
+      "distinctSimpleNames": 121,
+      "externalDeclarations": 34,
+      "externalDistinctSimpleNames": 32,
+      "externalGroupedEntries": 30,
+      "clockDeclarations": 10,
+      "internalDeclarations": 38,
+      "resultOrHelperDeclarations": 41,
+      "unknown": 0,
+      "equation": "34 external + 10 clocks + 38 internal + 41 result/helper = 123 declarations (121 simple names)",
+      "groupingNote": "The 30 external entries group 34 declarations: VehicleProvider + VehicleLookupPort and PlanningDemand + PlanningSupply each join two names, and CurrentCarPort and HandoverPort each join two same-named declarations in different packages."
+    },
+    "external": [
+      {
+        "contract": "IdentityPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/identity/IdentityPort.java:7",
+        "selectionKey": "gcsp.identity.provider",
+        "default": "none",
+        "modes": "none | oidc | fixed-test (tests only)",
+        "inventoryRows": [
+          "IdentityPort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "OIDC proven against test JWKS only; no registered real issuer/browser login evidence"
+      },
+      {
+        "contract": "PolicySource",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/policy/PolicySource.java:7",
+        "selectionKey": "PolicySourceSelection (persistence-dependent)",
+        "default": "retained file",
+        "modes": "retained-file | postgres",
+        "inventoryRows": [
+          "PolicySource"
+        ],
+        "status": "local-bound",
+        "remainingGap": "no BMW policy feed; retained dated tables only"
+      },
+      {
+        "contract": "AccountRecordsPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7",
+        "selectionKey": "gcsp.account.provider",
+        "default": "none",
+        "modes": "none | repository | hr-snapshot",
+        "inventoryRows": [
+          "AccountRecordsPort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no BMW HR/account source. Buddy prepare (allocation/Prepare.java:100-116) and the Buddy remote lifecycle (allocation/BuddyRemoteLifecycle.java:315-325) read employee_account_records directly into candidate evaluation without consulting the selected AccountRecordsPort. ManualDrafts.java:111-117 is a conditional version guard, not a bypass (see reconciliation.demoPreparation.currentTrace). Held PostgresDemandSnapshot.java:94-97 also joins the table (F477 M1/F515 hold)."
+      },
+      {
+        "contract": "AccountPolicyPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6",
+        "selectionKey": "gcsp.account.provider (AccountSelection)",
+        "default": "Unconfigured (refusing)",
+        "modes": "UnconfiguredAccountPolicy | PolicyAccountAdapter",
+        "inventoryRows": [
+          "AccountPolicyPort",
+          "BriefAccountPort / BriefPolicyPort"
+        ],
+        "status": "partial",
+        "remainingGap": "owned by Russell F458 lead: binding over PolicyService not delivered; blocks full manual order/status HTTP"
+      },
+      {
+        "contract": "CurrentCarPort (account and returns)",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3",
+        "selectionKey": "AccountSelection producer",
+        "default": "NoCurrentCarRelationships",
+        "modes": "none | CurrentCarStore",
+        "inventoryRows": [
+          "CurrentCarPort (account)"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no BMW current-car source; two same-named interfaces (account/, returns/) counted once here",
+        "duplicateDeclarations": [
+          "services/gcsp-api/src/main/java/gcsp/api/returns/CurrentCarPort.java:8"
+        ]
+      },
+      {
+        "contract": "VehicleProvider / VehicleLookupPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleProvider.java:6",
+        "selectionKey": "gcsp.evidence.provider",
+        "default": "none",
+        "modes": "none | lookup | alternate-offline",
+        "inventoryRows": [
+          "VehicleProvider / VehicleDetailsConsumer (configuration"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no authorised BMW configuration/imagery source"
+      },
+      {
+        "contract": "StockPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/StockPort.java:6",
+        "selectionKey": "injected (PersistentStockPort)",
+        "default": "repository",
+        "modes": "repository",
+        "inventoryRows": [
+          "StockPort (evidence stock identity)"
+        ],
+        "status": "local-bound",
+        "remainingGap": "no BMW stock feed"
+      },
+      {
+        "contract": "SupplyProvider",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/SupplyProvider.java:4",
+        "selectionKey": "gcsp.supply.provider",
+        "default": "none",
+        "modes": "none | tranche-plan",
+        "inventoryRows": [
+          "SupplyProvider",
+          "ReleasedStock page read"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no BMW supply/release feed"
+      },
+      {
+        "contract": "ReleasePolicy",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/ReleasePolicy.java:6",
+        "selectionKey": "SupplySelection",
+        "default": "Unconfigured",
+        "modes": "unconfigured | retained file | policy adapter",
+        "inventoryRows": [
+          "ReleasePolicy"
+        ],
+        "status": "partial",
+        "remainingGap": "policy-derived only"
+      },
+      {
+        "contract": "ClaimStockPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:7",
+        "selectionKey": "gcsp.claims.stock.provider",
+        "default": "local",
+        "modes": "local | remote",
+        "inventoryRows": [
+          "ClaimStockPort"
+        ],
+        "status": "partial",
+        "remainingGap": "remote = GCSP substitute; no BMW custody service"
+      },
+      {
+        "contract": "RemoteBuddy",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/RemoteBuddy.java:6",
+        "selectionKey": "gcsp.buddy.provider",
+        "default": "local-synthetic",
+        "modes": "local-synthetic | remote",
+        "inventoryRows": [
+          "RemoteBuddy",
+          "OfferDecision (decision route over RemoteBuddy)"
+        ],
+        "status": "partial",
+        "remainingGap": "remote = GCSP substitute; FUCQ-516 later-clock recovery open"
+      },
+      {
+        "contract": "EligibleCandidates",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8",
+        "selectionKey": "gcsp.allocation.candidates.provider",
+        "default": "none",
+        "modes": "none | recommendation",
+        "inventoryRows": [
+          "EligibleCandidates"
+        ],
+        "status": "partial",
+        "remainingGap": "duplicate legacy rows (read/input and action/event) are one contract"
+      },
+      {
+        "contract": "OrderingProviderPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4",
+        "selectionKey": "gcsp.ordering.provider",
+        "default": "none",
+        "modes": "none | synthetic | remote",
+        "inventoryRows": [
+          "OrderingProviderPort"
+        ],
+        "status": "remote-bound",
+        "remainingGap": "see row: substitute only; F458 blocks the full order/status route",
+        "statusScope": "remote-bound only when gcsp.ordering.provider=remote is configured explicitly (OrderingSelection.java:20,36-42; OrderingProviderBindings.java:44-49,74-85; OrderingServiceHolder.java:46-53). The default is none, which binds the refusing UnconfiguredOrderingProvider; render.gcsp.yaml:237-238 selects synthetic."
+      },
+      {
+        "contract": "DocumentProviderPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10",
+        "selectionKey": "gcsp.documents.provider",
+        "default": "none",
+        "modes": "none | synthetic | unsupported",
+        "inventoryRows": [
+          "DocumentProviderPort"
+        ],
+        "status": "partial",
+        "remainingGap": "no BMW documents capability"
+      },
+      {
+        "contract": "AppointmentProvider",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentProvider.java:6",
+        "selectionKey": "gcsp.appointments.provider",
+        "default": "none",
+        "modes": "none | synthetic | live (a refusing stub; AppointmentsWiring.java:28-30,72)",
+        "inventoryRows": [
+          "AppointmentProvider"
+        ],
+        "status": "partial",
+        "remainingGap": "live is a refusing stub"
+      },
+      {
+        "contract": "OrderStagePort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/OrderStagePort.java:6",
+        "selectionKey": "none: AppointmentsWiring.java:113 produces UnconfiguredOrderStage",
+        "default": "Unconfigured",
+        "modes": "unconfigured only",
+        "inventoryRows": [
+          "OrderStagePort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no implementation beyond refusal",
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "HandoverReadinessPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/HandoverReadinessPort.java:6",
+        "selectionKey": "none: AppointmentsWiring.java:120 produces UnconfiguredHandoverReadiness",
+        "default": "Unconfigured",
+        "modes": "unconfigured only",
+        "inventoryRows": [
+          "HandoverReadinessPort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no implementation beyond refusal",
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "ApprovalStatusProvider",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalStatusProvider.java:7",
+        "selectionKey": "gcsp.approvals.provider",
+        "default": "none",
+        "modes": "none | synthetic | live-stub",
+        "inventoryRows": [
+          "ApprovalStatusProvider"
+        ],
+        "status": "partial",
+        "remainingGap": "live-stub is a refusing stub"
+      },
+      {
+        "contract": "HandoverPort (approvals and returns)",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/HandoverPort.java:7",
+        "selectionKey": "none: ApprovalDefaults.java:28 produces NoHandover; returns/UnconfiguredHandover.java:8-10 is a @DefaultBean",
+        "default": "Unconfigured",
+        "modes": "unconfigured only",
+        "inventoryRows": [
+          "HandoverPort (approvals)",
+          "HandoverPort (returns)"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "two same-named interfaces counted once",
+        "duplicateDeclarations": [
+          "services/gcsp-api/src/main/java/gcsp/api/returns/HandoverPort.java:6"
+        ],
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "ReturnProviderPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnProviderPort.java:12",
+        "selectionKey": "gcsp.returns.provider",
+        "default": "none",
+        "modes": "none | synthetic | live-stub",
+        "inventoryRows": [
+          "ReturnProviderPort"
+        ],
+        "status": "partial",
+        "remainingGap": "live-stub is a refusing stub",
+        "fallback": "The name is validated at startup (ReturnSelection.java:89-94: an unknown value stops the service). The provider is built on first use (ReturnSelection.java:67-71), and a selected synthetic without active persistence becomes UnconfiguredReturnProvider (ReturnSelection.java:104-111). That is a quiet downgrade, not an unknown-mode refusal."
+      },
+      {
+        "contract": "ReturnSourcePort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnSourcePort.java:6",
+        "selectionKey": "none: returns/UnconfiguredReturnSource.java:8-10 is a @DefaultBean",
+        "default": "Unconfigured",
+        "modes": "unconfigured only",
+        "inventoryRows": [
+          "ReturnSourcePort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no implementation beyond refusal",
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "MailTransport",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/notify/MailTransport.java:6",
+        "selectionKey": "gcsp.mail.transport",
+        "default": "captured (blank)",
+        "modes": "captured | brevo",
+        "inventoryRows": [
+          "MailTransport"
+        ],
+        "status": "partial",
+        "remainingGap": "no real delivery evidence in this Story"
+      },
+      {
+        "contract": "ProductionProviderPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionProviderPort.java:10",
+        "selectionKey": "gcsp.production.provider",
+        "default": "none",
+        "modes": "none | synthetic | live-stub",
+        "inventoryRows": [
+          "ProductionProviderPort"
+        ],
+        "status": "partial",
+        "remainingGap": "live-stub refuses",
+        "fallback": "The name is validated at startup (ProductionSelection.java:38-45). The provider is built on first use (ProductionServiceHolder.java:36-44), and a selected synthetic without active persistence becomes UnconfiguredProductionProvider (ProductionSelection.java:47-55). That is a quiet downgrade, not an unknown-mode refusal."
+      },
+      {
+        "contract": "PlanSnapshotPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9",
+        "selectionKey": "none: ProductionWiring.java:31 produces UnconfiguredPlanSnapshot",
+        "default": "Unconfigured",
+        "modes": "unconfigured only",
+        "inventoryRows": [
+          "PlanSnapshotPort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no implementation beyond refusal",
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "SupplyQueuePort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/SupplyQueuePort.java:7",
+        "selectionKey": "ProductionWiring",
+        "default": "Unconfigured or stock release",
+        "modes": "unconfigured | stock-release queue",
+        "inventoryRows": [
+          "SupplyQueuePort"
+        ],
+        "status": "local-bound",
+        "remainingGap": "local queue only"
+      },
+      {
+        "contract": "CaseCarSuitabilityPort",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CaseCarSuitabilityPort.java:7",
+        "selectionKey": "none: CaseDefaults.java:13-15 NoSuitability is a @DefaultBean",
+        "default": "NoSuitability",
+        "modes": "none only",
+        "inventoryRows": [
+          "CaseCarSuitabilityPort"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no implementation beyond refusal",
+        "selectionCoverage": "refusing-only: one implementation, no startup key, so there is nothing to select"
+      },
+      {
+        "contract": "ComparisonReplay",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonReplay.java:7",
+        "selectionKey": "default bean",
+        "default": "Unavailable",
+        "modes": "unavailable only",
+        "inventoryRows": [
+          "ComparisonReplay"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no replay source"
+      },
+      {
+        "contract": "ArtifactStore",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/ArtifactStore.java:6",
+        "selectionKey": "gcsp.learning.artifact-dir",
+        "default": "classpath",
+        "modes": "classpath | directory",
+        "inventoryRows": [
+          "ArtifactStore (learned model artifacts)"
+        ],
+        "status": "local-bound",
+        "remainingGap": "retained artifacts only"
+      },
+      {
+        "contract": "LearningOutcomeRows",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/LearningOutcomeRows.java:12",
+        "selectionKey": "default bean",
+        "default": "Unbound",
+        "modes": "unbound only",
+        "inventoryRows": [
+          "LearningOutcomeRows"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "no outcome source"
+      },
+      {
+        "contract": "PlanningDemand / PlanningSupply",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10",
+        "selectionKey": "PlanningDefaults",
+        "default": "Unconfigured",
+        "modes": "unconfigured (Postgres demand held for F477 M1/F515)",
+        "inventoryRows": [
+          "PlanningDemand",
+          "PlanningSupply"
+        ],
+        "status": "default-unconfigured",
+        "remainingGap": "F477 M1/FUCQ-515 hold; supply adapter gated on persistence"
+      }
+    ],
+    "clocks": [
+      "PolicyClock",
+      "AccountClockPort",
+      "ClaimClock",
+      "DocumentClock",
+      "AppointmentClock",
+      "ReturnClock",
+      "ProductionClock",
+      "PlanningClock",
+      "LearningClock",
+      "RecommendationClock"
+    ],
+    "internal": [
+      "AllocationRecordsPort",
+      "BriefOfferPort",
+      "BriefPreviewPort",
+      "CaseAccountPort",
+      "CaseNotificationPort",
+      "CasePolicyPort",
+      "ClaimTimingPort",
+      "DeliveryRules",
+      "DemandPolicyPort",
+      "DocumentCasePort",
+      "DocumentPolicyPort",
+      "EvidenceRegistry",
+      "LearnedDemandForecastPort",
+      "ManualSelectionPort",
+      "OfferFacts",
+      "OfferRecords",
+      "OfferRecordsPort",
+      "OrderSourcePort",
+      "ApprovalPolicyPort",
+      "AppointmentPolicy",
+      "ReturnPolicyPort",
+      "RecommendationSource",
+      "SelectionConversionPort",
+      "SlotOccupancyPort",
+      "SubmissionHistory",
+      "UnmetEvaluationPort",
+      "VehicleEvidencePort",
+      "OfflineCardReader",
+      "StockPages",
+      "TickHandler",
+      "Work",
+      "RowMapper",
+      "SelectionCommit",
+      "ReviewFreeze",
+      "ProgressListener",
+      "Attempt",
+      "BriefAccountPort",
+      "BriefPolicyPort"
+    ],
+    "resultOrHelperTypes": [
+      "AllocationResult",
+      "AppointmentResult",
+      "ApprovalResult",
+      "BriefResult",
+      "CaseResult",
+      "ClaimResult",
+      "ClockResult",
+      "CurrentCarResult",
+      "DemandResult",
+      "DispatchResult",
+      "DriveResult",
+      "ExpiryResult",
+      "HandlerOutcome",
+      "HandoverReadiness",
+      "HandoverReading",
+      "IdentityResult",
+      "Inspection",
+      "Load",
+      "Loaded",
+      "Observed",
+      "OfferAuthority",
+      "OrderingResult",
+      "Outcome",
+      "PlanResult",
+      "PolicyReading",
+      "PolicyResult",
+      "ProductionResult",
+      "ProviderAnswer",
+      "ProviderResponse",
+      "ReferenceRead",
+      "Result",
+      "ReturnPolicyReading",
+      "ReturnSourceReading",
+      "ReviewResult",
+      "SlotOffer",
+      "StageObservation",
+      "StageRead",
+      "Step",
+      "TermsRead",
+      "TriggerResult",
+      "WorkResult"
+    ],
+    "unknown": [],
+    "legacyRowsNotInCensus": "Rows such as 'Persistence gate', 'Outbox and command receipts', 'GregOrderPlan submit action', 'Presenter clock and controls', 'ScenarioFaults' and 'Scenario DemoPreparation' are composition or control boundaries, not provider interfaces; kept as legacy rows",
+    "limits": [
+      "Classification of internal versus external is source-backed judgement; disputed cases are BriefAccountPort/BriefPolicyPort (adapters over account/policy) and OfferFacts (Postgres-only)",
+      "No runtime; counts are of declarations, not of exercised paths",
+      "Assignment 23 corrected counts, unit and timestamps from a fresh scan at 2026-11-17T11:55:43Z; classification of each name is unchanged from assignment 22 apart from removing the AccountClockPort overlap."
+    ],
+    "integrationCheckpoint": "b2e822c7050a4e8e2d40d903de734322c6b3debf",
+    "observationHistory": [
+      {
+        "observedAt": "2026-11-17T11:28:41Z",
+        "sourceSha": "20d71cb9f7fec1f5043cf541cf5b53c5feba4c8a",
+        "publishedIn": "fc244cc06",
+        "note": "Assignment 22 census. Its observedAt read 11:40:00Z, after its own 11:28:41Z commit and 11:29:30Z return, so the corrected time is the commit time. It also counted 121 declarations / 118 names and listed AccountClockPort under both clocks and internal; corrected by assignment 23 (review 30 R30-1, R30-4).",
+        "method": "Every 'public [sealed] interface' under services/gcsp-api/src/main/java (121 declarations, 118 names) classified by constructors, @Produces, @Inject and config-key selection sites; read-only Python stdlib scan, no runtime.",
+        "counts": {
+          "declarations": 121,
+          "externalProviderContracts": 30,
+          "clockInputs": 10,
+          "internalSeams": 39,
+          "resultOrHelperTypes": 41,
+          "unknown": 0
+        }
+      }
+    ],
+    "declarationList": [
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountClockPort.java:3",
+        "qualifiedName": "gcsp.api.account.AccountClockPort",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6",
+        "qualifiedName": "gcsp.api.account.AccountPolicyPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7",
+        "qualifiedName": "gcsp.api.account.AccountRecordsPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3",
+        "qualifiedName": "gcsp.api.account.CurrentCarPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/AllocationResult.java:6",
+        "qualifiedName": "gcsp.api.allocation.AllocationResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/DriveResult.java:6",
+        "qualifiedName": "gcsp.api.allocation.DriveResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8",
+        "qualifiedName": "gcsp.api.allocation.EligibleCandidates",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/ExpiryResult.java:6",
+        "qualifiedName": "gcsp.api.allocation.ExpiryResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/RemoteBuddy.java:6",
+        "qualifiedName": "gcsp.api.allocation.RemoteBuddy",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/TriggerResult.java:6",
+        "qualifiedName": "gcsp.api.allocation.TriggerResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentClock.java:8",
+        "qualifiedName": "gcsp.api.appointments.AppointmentClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentPolicy.java:6",
+        "qualifiedName": "gcsp.api.appointments.AppointmentPolicy",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentProvider.java:6",
+        "qualifiedName": "gcsp.api.appointments.AppointmentProvider",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentResult.java:8",
+        "qualifiedName": "gcsp.api.appointments.AppointmentResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/HandoverReadiness.java:6",
+        "qualifiedName": "gcsp.api.appointments.HandoverReadiness",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/HandoverReadinessPort.java:6",
+        "qualifiedName": "gcsp.api.appointments.HandoverReadinessPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/OrderStagePort.java:6",
+        "qualifiedName": "gcsp.api.appointments.OrderStagePort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/PolicyResult.java:4",
+        "qualifiedName": "gcsp.api.appointments.PolicyResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/ProviderAnswer.java:6",
+        "qualifiedName": "gcsp.api.appointments.ProviderAnswer",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/SlotOffer.java:6",
+        "qualifiedName": "gcsp.api.appointments.SlotOffer",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/StageObservation.java:6",
+        "qualifiedName": "gcsp.api.appointments.StageObservation",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/appointments/StageRead.java:6",
+        "qualifiedName": "gcsp.api.appointments.StageRead",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalPolicy.java:39",
+        "qualifiedName": "gcsp.api.approvals.ApprovalPolicy.Loaded",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalPolicyPort.java:8",
+        "qualifiedName": "gcsp.api.approvals.ApprovalPolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalResult.java:6",
+        "qualifiedName": "gcsp.api.approvals.ApprovalResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalStatusProvider.java:7",
+        "qualifiedName": "gcsp.api.approvals.ApprovalStatusProvider",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/HandoverPort.java:7",
+        "qualifiedName": "gcsp.api.approvals.HandoverPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/approvals/OrderSourcePort.java:9",
+        "qualifiedName": "gcsp.api.approvals.OrderSourcePort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/brief/BriefAccountPort.java:6",
+        "qualifiedName": "gcsp.api.brief.BriefAccountPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/brief/BriefOfferPort.java:6",
+        "qualifiedName": "gcsp.api.brief.BriefOfferPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/brief/BriefPolicyPort.java:6",
+        "qualifiedName": "gcsp.api.brief.BriefPolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/brief/BriefPreviewPort.java:7",
+        "qualifiedName": "gcsp.api.brief.BriefPreviewPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/brief/BriefResult.java:7",
+        "qualifiedName": "gcsp.api.brief.BriefResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CaseAccountPort.java:4",
+        "qualifiedName": "gcsp.api.cases.CaseAccountPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CaseCarSuitabilityPort.java:7",
+        "qualifiedName": "gcsp.api.cases.CaseCarSuitabilityPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CaseNotificationPort.java:7",
+        "qualifiedName": "gcsp.api.cases.CaseNotificationPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CasePolicyPort.java:8",
+        "qualifiedName": "gcsp.api.cases.CasePolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/cases/CaseResult.java:7",
+        "qualifiedName": "gcsp.api.cases.CaseResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimClock.java:7",
+        "qualifiedName": "gcsp.api.claims.ClaimClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimResult.java:8",
+        "qualifiedName": "gcsp.api.claims.ClaimResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:7",
+        "qualifiedName": "gcsp.api.claims.ClaimStockPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimTimingPort.java:7",
+        "qualifiedName": "gcsp.api.claims.ClaimTimingPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:7",
+        "qualifiedName": "gcsp.api.claims.ManualSelectionPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ReviewResult.java:8",
+        "qualifiedName": "gcsp.api.claims.ReviewResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/SelectionCommit.java:8",
+        "qualifiedName": "gcsp.api.claims.SelectionCommit",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/SlotOccupancyPort.java:8",
+        "qualifiedName": "gcsp.api.claims.SlotOccupancyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/clock/ClockResult.java:8",
+        "qualifiedName": "gcsp.api.clock.ClockResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/clock/HandlerOutcome.java:7",
+        "qualifiedName": "gcsp.api.clock.HandlerOutcome",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/clock/TickHandler.java:4",
+        "qualifiedName": "gcsp.api.clock.TickHandler",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonReplay.java:7",
+        "qualifiedName": "gcsp.api.comparison.ComparisonReplay",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonRunner.java:48",
+        "qualifiedName": "gcsp.api.comparison.ComparisonRunner.ProgressListener",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/demand/AllocationRecordsPort.java:10",
+        "qualifiedName": "gcsp.api.demand.AllocationRecordsPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/demand/DemandPolicyPort.java:8",
+        "qualifiedName": "gcsp.api.demand.DemandPolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/demand/DemandResult.java:6",
+        "qualifiedName": "gcsp.api.demand.DemandResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/demand/OfferRecordsPort.java:9",
+        "qualifiedName": "gcsp.api.demand.OfferRecordsPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/demand/UnmetEvaluationPort.java:9",
+        "qualifiedName": "gcsp.api.demand.UnmetEvaluationPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:8",
+        "qualifiedName": "gcsp.api.documents.DocumentCasePort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentClock.java:8",
+        "qualifiedName": "gcsp.api.documents.DocumentClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentPolicy.java:33",
+        "qualifiedName": "gcsp.api.documents.DocumentPolicy.Load",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentPolicyPort.java:7",
+        "qualifiedName": "gcsp.api.documents.DocumentPolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10",
+        "qualifiedName": "gcsp.api.documents.DocumentProviderPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/documents/StageObservation.java:20",
+        "qualifiedName": "gcsp.api.documents.StageObservation.Observed",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/BoundedVehicleRead.java:40",
+        "qualifiedName": "gcsp.api.evidence.BoundedVehicleRead.Attempt",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/EvidenceRegistry.java:4",
+        "qualifiedName": "gcsp.api.evidence.EvidenceRegistry",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/OfflineCardReader.java:7",
+        "qualifiedName": "gcsp.api.evidence.OfflineCardReader",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/StockPort.java:6",
+        "qualifiedName": "gcsp.api.evidence.StockPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleLookupPort.java:6",
+        "qualifiedName": "gcsp.api.evidence.VehicleLookupPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleProvider.java:6",
+        "qualifiedName": "gcsp.api.evidence.VehicleProvider",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/identity/IdentityPort.java:7",
+        "qualifiedName": "gcsp.api.identity.IdentityPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/identity/IdentityResult.java:4",
+        "qualifiedName": "gcsp.api.identity.IdentityResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/ArtifactStore.java:6",
+        "qualifiedName": "gcsp.api.learning.ArtifactStore",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/LearnedDemandForecastPort.java:8",
+        "qualifiedName": "gcsp.api.learning.LearnedDemandForecastPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/LearningClock.java:6",
+        "qualifiedName": "gcsp.api.learning.LearningClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/learning/LearningOutcomeRows.java:12",
+        "qualifiedName": "gcsp.api.learning.LearningOutcomeRows",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/notify/DeliveryRules.java:6",
+        "qualifiedName": "gcsp.api.notify.DeliveryRules",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/notify/DispatchResult.java:4",
+        "qualifiedName": "gcsp.api.notify.DispatchResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/notify/MailTransport.java:6",
+        "qualifiedName": "gcsp.api.notify.MailTransport",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:7",
+        "qualifiedName": "gcsp.api.notify.OfferFacts",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/offers/OfferAuthority.java:6",
+        "qualifiedName": "gcsp.api.offers.OfferAuthority",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/offers/OfferRecords.java:8",
+        "qualifiedName": "gcsp.api.offers.OfferRecords",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4",
+        "qualifiedName": "gcsp.api.ordering.OrderingProviderPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingResult.java:6",
+        "qualifiedName": "gcsp.api.ordering.OrderingResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingService.java:65",
+        "qualifiedName": "gcsp.api.ordering.OrderingService.ReviewFreeze",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingTerms.java:25",
+        "qualifiedName": "gcsp.api.ordering.OrderingTerms.TermsRead",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingTerms.java:34",
+        "qualifiedName": "gcsp.api.ordering.OrderingTerms.ReferenceRead",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:11",
+        "qualifiedName": "gcsp.api.ordering.SelectionConversionPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/persistence/Inspection.java:6",
+        "qualifiedName": "gcsp.api.persistence.Inspection",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/persistence/Outcome.java:6",
+        "qualifiedName": "gcsp.api.persistence.Outcome",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/persistence/Tx.java:20",
+        "qualifiedName": "gcsp.api.persistence.Tx.RowMapper",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/persistence/Work.java:5",
+        "qualifiedName": "gcsp.api.persistence.Work",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/persistence/WorkResult.java:6",
+        "qualifiedName": "gcsp.api.persistence.WorkResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/DemandCohort.java:15",
+        "qualifiedName": "gcsp.api.planning.DemandCohort.Step",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/PlanningClock.java:10",
+        "qualifiedName": "gcsp.api.planning.PlanningClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10",
+        "qualifiedName": "gcsp.api.planning.PlanningDemand",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/PlanningSupply.java:10",
+        "qualifiedName": "gcsp.api.planning.PlanningSupply",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/planning/SubmissionHistory.java:7",
+        "qualifiedName": "gcsp.api.planning.SubmissionHistory",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/policy/PolicyClock.java:9",
+        "qualifiedName": "gcsp.api.policy.PolicyClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/policy/PolicySource.java:7",
+        "qualifiedName": "gcsp.api.policy.PolicySource",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9",
+        "qualifiedName": "gcsp.api.production.PlanSnapshotPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionClock.java:8",
+        "qualifiedName": "gcsp.api.production.ProductionClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionProviderPort.java:10",
+        "qualifiedName": "gcsp.api.production.ProductionProviderPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/ProductionResult.java:6",
+        "qualifiedName": "gcsp.api.production.ProductionResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/production/SupplyQueuePort.java:7",
+        "qualifiedName": "gcsp.api.production.SupplyQueuePort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/RecommendationClock.java:6",
+        "qualifiedName": "gcsp.api.recommendation.RecommendationClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/RecommendationSource.java:9",
+        "qualifiedName": "gcsp.api.recommendation.RecommendationSource",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/StockPages.java:10",
+        "qualifiedName": "gcsp.api.recommendation.StockPages",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/VehicleEvidencePort.java:11",
+        "qualifiedName": "gcsp.api.recommendation.VehicleEvidencePort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/CurrentCarPort.java:8",
+        "qualifiedName": "gcsp.api.returns.CurrentCarPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/CurrentCarResult.java:4",
+        "qualifiedName": "gcsp.api.returns.CurrentCarResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/HandoverPort.java:6",
+        "qualifiedName": "gcsp.api.returns.HandoverPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/HandoverReading.java:4",
+        "qualifiedName": "gcsp.api.returns.HandoverReading",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/PlanResult.java:7",
+        "qualifiedName": "gcsp.api.returns.PlanResult",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnClock.java:8",
+        "qualifiedName": "gcsp.api.returns.ReturnClock",
+        "category": "clock"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnPolicyPort.java:6",
+        "qualifiedName": "gcsp.api.returns.ReturnPolicyPort",
+        "category": "internal"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnPolicyReading.java:4",
+        "qualifiedName": "gcsp.api.returns.ReturnPolicyReading",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnProviderPort.java:12",
+        "qualifiedName": "gcsp.api.returns.ReturnProviderPort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnSourcePort.java:6",
+        "qualifiedName": "gcsp.api.returns.ReturnSourcePort",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnSourceReading.java:4",
+        "qualifiedName": "gcsp.api.returns.ReturnSourceReading",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/PolicyReading.java:4",
+        "qualifiedName": "gcsp.api.supply.PolicyReading",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/ProviderResponse.java:6",
+        "qualifiedName": "gcsp.api.supply.ProviderResponse",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/PullValidator.java:36",
+        "qualifiedName": "gcsp.api.supply.PullValidator.Result",
+        "category": "result-or-helper"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/ReleasePolicy.java:6",
+        "qualifiedName": "gcsp.api.supply.ReleasePolicy",
+        "category": "external"
+      },
+      {
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/supply/SupplyProvider.java:4",
+        "qualifiedName": "gcsp.api.supply.SupplyProvider",
+        "category": "external"
+      }
+    ],
+    "excludedInterfaces": {
+      "count": 50,
+      "memberOfPublicInterface": {
+        "count": 22,
+        "rule": "nested in a counted public interface with no explicit public modifier (implicitly public). Result/variant types of their enclosing contract, counted with that declaration rather than separately.",
+        "declarations": [
+          "services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:21 gcsp.api.allocation.EligibleCandidates.Result",
+          "services/gcsp-api/src/main/java/gcsp/api/appointments/ProviderAnswer.java:9 gcsp.api.appointments.ProviderAnswer.Done",
+          "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalPolicyPort.java:12 gcsp.api.approvals.ApprovalPolicyPort.Read",
+          "services/gcsp-api/src/main/java/gcsp/api/approvals/OrderSourcePort.java:22 gcsp.api.approvals.OrderSourcePort.Found",
+          "services/gcsp-api/src/main/java/gcsp/api/approvals/OrderSourcePort.java:39 gcsp.api.approvals.OrderSourcePort.Listing",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:23 gcsp.api.claims.ClaimStockPort.Ack",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimTimingPort.java:11 gcsp.api.claims.ClaimTimingPort.Timing",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:16 gcsp.api.claims.ManualSelectionPort.Claimant",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:24 gcsp.api.claims.ManualSelectionPort.Decision",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:31 gcsp.api.claims.ManualSelectionPort.OrderDraft",
+          "services/gcsp-api/src/main/java/gcsp/api/demand/UnmetEvaluationPort.java:19 gcsp.api.demand.UnmetEvaluationPort.Evaluation",
+          "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:19 gcsp.api.documents.DocumentCasePort.CaseCheck",
+          "services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:26 gcsp.api.documents.DocumentCasePort.Owner",
+          "services/gcsp-api/src/main/java/gcsp/api/notify/DeliveryRules.java:10 gcsp.api.notify.DeliveryRules.Result",
+          "services/gcsp-api/src/main/java/gcsp/api/notify/MailTransport.java:18 gcsp.api.notify.MailTransport.Result",
+          "services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:11 gcsp.api.notify.OfferFacts.Result",
+          "services/gcsp-api/src/main/java/gcsp/api/offers/OfferRecords.java:17 gcsp.api.offers.OfferRecords.Lookup",
+          "services/gcsp-api/src/main/java/gcsp/api/offers/OfferRecords.java:29 gcsp.api.offers.OfferRecords.Listing",
+          "services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:27 gcsp.api.ordering.SelectionConversionPort.Preparation",
+          "services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:29 gcsp.api.ordering.SelectionConversionPort.Conversion",
+          "services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:15 gcsp.api.production.PlanSnapshotPort.Reading",
+          "services/gcsp-api/src/main/java/gcsp/api/production/SupplyQueuePort.java:11 gcsp.api.production.SupplyQueuePort.Result"
+        ]
+      },
+      "packagePrivateInClass": {
+        "count": 28,
+        "rule": "nested in a class without a public modifier, so package-private: an implementation helper, not a contract.",
+        "declarations": [
+          "services/gcsp-api/src/main/java/gcsp/api/account/AccountService.java:308 gcsp.api.account.AccountService.Match",
+          "services/gcsp-api/src/main/java/gcsp/api/account/ManualDraftRules.java:202 gcsp.api.account.ManualDraftRules.Match",
+          "services/gcsp-api/src/main/java/gcsp/api/account/RepositoryAccountRecords.java:120 gcsp.api.account.RepositoryAccountRecords.RowReader",
+          "services/gcsp-api/src/main/java/gcsp/api/allocation/Assumptions.java:21 gcsp.api.allocation.Assumptions.Read",
+          "services/gcsp-api/src/main/java/gcsp/api/allocation/Sql.java:23 gcsp.api.allocation.Sql.Row",
+          "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentRules.java:26 gcsp.api.appointments.AppointmentRules.Rows",
+          "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentService.java:868 gcsp.api.appointments.AppointmentService.Work",
+          "services/gcsp-api/src/main/java/gcsp/api/appointments/AppointmentsResource.java:130 gcsp.api.appointments.AppointmentsResource.ServiceCall",
+          "services/gcsp-api/src/main/java/gcsp/api/approvals/ApprovalResource.java:138 gcsp.api.approvals.ApprovalResource.Operation",
+          "services/gcsp-api/src/main/java/gcsp/api/brief/BriefResource.java:116 gcsp.api.brief.BriefResource.Command",
+          "services/gcsp-api/src/main/java/gcsp/api/brief/BriefService.java:55 gcsp.api.brief.BriefService.Body",
+          "services/gcsp-api/src/main/java/gcsp/api/brief/BriefService.java:223 gcsp.api.brief.BriefService.Reader",
+          "services/gcsp-api/src/main/java/gcsp/api/cases/CaseResource.java:45 gcsp.api.cases.CaseResource.Op",
+          "services/gcsp-api/src/main/java/gcsp/api/cases/CaseService.java:383 gcsp.api.cases.CaseService.Body",
+          "services/gcsp-api/src/main/java/gcsp/api/claims/ManualClaimsResource.java:84 gcsp.api.claims.ManualClaimsResource.Action",
+          "services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonMeasures.java:228 gcsp.api.comparison.ComparisonMeasures.Read",
+          "services/gcsp-api/src/main/java/gcsp/api/evidence/DisplayCatalogue.java:51 gcsp.api.evidence.DisplayCatalogue.AssetLoader",
+          "services/gcsp-api/src/main/java/gcsp/api/evidence/IndexedJsonl.java:39 gcsp.api.evidence.IndexedJsonl.RowHandler",
+          "services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleRouting.java:15 gcsp.api.evidence.VehicleRouting.Classifier",
+          "services/gcsp-api/src/main/java/gcsp/api/offers/OfferDecisions.java:672 gcsp.api.offers.OfferDecisions.Row",
+          "services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingResource.java:161 gcsp.api.ordering.OrderingResource.Operation",
+          "services/gcsp-api/src/main/java/gcsp/api/planning/PostgresDemandSnapshot.java:30 gcsp.api.planning.PostgresDemandSnapshot.Mapper",
+          "services/gcsp-api/src/main/java/gcsp/api/policy/PolicyRecords.java:108 gcsp.api.policy.PolicyRecords.Writer",
+          "services/gcsp-api/src/main/java/gcsp/api/production/ProductionReads.java:59 gcsp.api.production.ProductionReads.Read",
+          "services/gcsp-api/src/main/java/gcsp/api/production/ProductionResource.java:170 gcsp.api.production.ProductionResource.Operation",
+          "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnPlans.java:86 gcsp.api.returns.ReturnPlans.Body",
+          "services/gcsp-api/src/main/java/gcsp/api/returns/ReturnResource.java:129 gcsp.api.returns.ReturnResource.Operation",
+          "services/gcsp-api/src/main/java/gcsp/api/supply/PresenterReleaseResource.java:192 gcsp.api.supply.PresenterReleaseResource.Action"
+        ]
+      }
+    }
+  },
+  "countsScope": "counts are legacy record statuses. The one remote-bound record (OrderingProviderPort, action/event) is remote-bound only under an explicit gcsp.ordering.provider=remote; its default startup is none (refusing)."
 }

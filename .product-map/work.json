@@ -8744,7 +8744,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T11:23:32Z",
+      "observed_at": "2026-11-17T12:08:26Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8752,14 +8752,14 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:53:54.947Z",
-      "note": "Generatedclaim/JWT→actualselectedremoteorderingACK integrated/pushed23eca515d;1pass/review29PASS/auditclear. Next originalAC1census/handover22 ACKexecuting 2026-11-17T11:22:07Z. BothoriginalACopen/nativeToDo preserved.",
+      "note": "Census23 source7f13b0362 reviewed31PASS;123explicitpublicdeclarations/121names and59legacyidentities/history preserved.24selected-account candidate adapter ACKexecuting 2026-11-17T12:04:58Z. Both originalAC OPEN/nativeToDo/all5slice states preserved; no newruntime.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T08:21:37.215451+00:00",
-          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen."
+          "observed_at": "2026-11-17T12:07:03.343542+00:00",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen. Standalone remote ordering adapter09e224584:13loopback methods pass/reviewPASS/auditclear; actual typed ACK preserved. UNBOUND; startup/consumer/full journey remainopen. Correction23 source7f13b0362, review31PASS:123explicitpublicdeclarations/121names,34external+10clocks+38internal+41helpers;30externalgroups; qualifiers/history corrected. Documentation census increment; actual composition and originalAC1 open."
         },
         {
           "id": "startup",
@@ -9146,8 +9146,35 @@
           "role": "OriginalAC1 uniqueport/startup/demo-preparation census and required integration handover",
           "source": "claude-assist-fucq481-composition-census-2026-11-17-22",
           "observed_at": "2026-11-17T11:22:07Z",
-          "expires_at": "2026-11-17T11:37:07+00:00",
-          "status": "Matching execution ACK 2026-11-17T11:22:07Z; exact3documentationpaths; no runtime/originalAC completion."
+          "expires_at": "2026-11-17T11:29:30Z",
+          "status": "Returned exact3docs fc244cc06 at11:29:30; parent hashes/tree/API/scratch auditclear. Independent review30 found incorrect census totals, future observations and overbroad selector/demo statements; correction23 allocated. Not integrated; no runtime/ACcompletion."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "OriginalAC1 census factual corrections after independent review30",
+          "source": "claude-assist-fucq481-composition-census-correction-2026-11-17-23",
+          "observed_at": "2026-11-17T11:51:35.761Z",
+          "expires_at": "2026-11-17T11:59:18Z",
+          "status": "Terminal23 exact3docs7f13b0362; parent frozen bytes/API/preservation checks and independentreview31PASS. Integrated by parent; no runtime/ACcompletion."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent factual correction reviewer",
+          "source": "fucq481-composition-census-review-31",
+          "observed_at": "2026-11-17T12:04:36.553981+00:00",
+          "expires_at": "2026-11-17T12:04:36.553981+00:00",
+          "status": "TerminalPASS/all4review30findingsresolved; exact7f13b0362. RequestedselectedSol/high,nofallback, noRuntime."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Selected AccountRecords candidate adapter and owned startup selector source-only",
+          "source": "claude-assist-fucq481-selected-account-candidates-2026-11-17-24",
+          "observed_at": "2026-11-17T12:04:58Z",
+          "expires_at": "2026-11-17T12:19:58+00:00",
+          "status": "Matching exact24 executionACK 2026-11-17T12:04:58Z; same coordinator/watcher,5paths, no core/account edits/runtime/descendants. ReportedClaudeOpus5.5/high; effective settings unverified."
         }
       ]
     }
