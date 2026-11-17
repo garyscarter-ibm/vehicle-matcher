@@ -6,8 +6,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import gcsp.api.clock.ClockReading;
-import gcsp.api.clock.ClockUnavailableException;
-import gcsp.api.clock.RunClockHolder;
 import java.util.Optional;
 
 /** Builds the one CaseService lazily over the Agroal datasource and the port beans; empty without persistence. */
@@ -33,7 +31,7 @@ public class CaseServiceHolder {
     CaseCarSuitabilityPort suitability;
 
     @Inject
-    RunClockHolder clock;
+    CaseSuitabilitySelection readings;
 
     private CaseService service;
 
@@ -47,12 +45,7 @@ public class CaseServiceHolder {
 
     /** Case time is the run clock; empty without persistence, a run clock row or a readable clock. */
     private Optional<java.time.Instant> readClock(String environmentId, String runId) {
-        if (!clock.available()) return Optional.empty();
-        try {
-            return clock.clock().now(environmentId, runId).map(ClockReading::now);
-        } catch (ClockUnavailableException e) {
-            return Optional.empty();
-        }
+        return readings.reading(environmentId, runId).map(ClockReading::now);
     }
 
     private CaseClock runClock() {

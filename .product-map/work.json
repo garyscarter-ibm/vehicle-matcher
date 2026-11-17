@@ -7713,7 +7713,7 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-17T16:04:32Z",
+      "observed_at": "2026-11-17T16:16:07Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
@@ -7750,8 +7750,9 @@
         },
         {
           "id": "s5-suitability",
-          "status": "not-started",
-          "title": "CaseCarSuitabilityPort bound to the Java recommendation service (alternative-car remedy)"
+          "status": "in-progress",
+          "title": "CaseCarSuitabilityPort bound to the Java recommendation service (alternative-car remedy)",
+          "observed_at": "2026-11-17T16:16:07Z"
         },
         {
           "id": "s6-relaxation",

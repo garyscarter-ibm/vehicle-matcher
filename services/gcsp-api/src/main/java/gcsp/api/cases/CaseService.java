@@ -161,7 +161,8 @@ public final class CaseService {
         Optional<Instant> clockNow = now(scope.environmentId(), scope.runId());
         if (clockNow.isEmpty()) return Refusal.unavailable();
         Instant now = clockNow.get();
-        CaseCarSuitabilityPort.Options cars = suitability.options(scope.environmentId(), scope.runId(), row.employeeId());
+        CaseCarSuitabilityPort.Options cars = suitability.options(scope.environmentId(), scope.runId(), row.employeeId(),
+                scope.policyVersion());
         ObjectNode options = CaseJson.obj();
         options.set("alternativeCars", carOptions(cars));
         options.set("preferenceRelaxations", available(CaseJson.arr(),
@@ -386,7 +387,7 @@ public final class CaseService {
                     throw new Refused(Refusal.invalid("remedy.orderUuid", "Choose a current suitable available car."));
                 }
                 CaseCarSuitabilityPort.Check check = suitability.check(scope.environmentId(), scope.runId(), c.employeeId(),
-                        remedy.get("orderUuid").textValue());
+                        scope.policyVersion(), remedy.get("orderUuid").textValue());
                 if (check.verdict() == CaseCarSuitabilityPort.Verdict.UNAVAILABLE) throw new Refused(Refusal.unavailable());
                 if (check.verdict() == CaseCarSuitabilityPort.Verdict.UNSUITABLE || check.remedy() == null) {
                     throw new Refused(Refusal.invalid("remedy.orderUuid",
@@ -429,6 +430,7 @@ public final class CaseService {
         n.set("items", items);
         n.set("needsConfirmation", unconfirmed);
         if (!cars.connected()) n.put("reason", NOT_CONNECTED);
+        else if (items.isEmpty() && cars.reason() != null) n.put("reason", cars.reason());
         else if (items.isEmpty()) {
             n.put("reason", unconfirmed.isEmpty() ? "No suitable available car is currently recorded."
                     : "No available car is confirmed as suitable yet. The cars listed need confirmation first.");
