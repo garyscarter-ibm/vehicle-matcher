@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T11:21:09Z",
+      "observed_at": "2026-11-17T11:23:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:53:54.947Z",
-      "note": "Generatedclaim/JWT→actualselectedremoteorderingACK integrated/pushed23eca515d;1pass/review29PASS/auditclear. Next originalAC1census/handover22 queued; executionunverified. BothoriginalACopen/nativeToDo preserved.",
+      "note": "Generatedclaim/JWT→actualselectedremoteorderingACK integrated/pushed23eca515d;1pass/review29PASS/auditclear. Next originalAC1census/handover22 ACKexecuting 2026-11-17T11:22:07Z. BothoriginalACopen/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9124,9 +9124,9 @@
           "harness": "claude-code",
           "role": "OriginalAC1 uniqueport/startup/demo-preparation census and required integration handover",
           "source": "claude-assist-fucq481-composition-census-2026-11-17-22",
-          "observed_at": "2026-11-17T11:20:33.487473+00:00",
-          "expires_at": "2026-11-17T11:20:33.487473+00:00",
-          "status": "Queued; execution unverified; no activeworker inferred; exact3documentationpaths; no runtime/originalAC completion."
+          "observed_at": "2026-11-17T11:22:07Z",
+          "expires_at": "2026-11-17T11:37:07+00:00",
+          "status": "Matching execution ACK 2026-11-17T11:22:07Z; exact3documentationpaths; no runtime/originalAC completion."
         }
       ]
     }
