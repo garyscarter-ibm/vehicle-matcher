@@ -7846,47 +7846,6 @@
     },
     {
       "assignee": "",
-      "id": "FUCQ-477",
-      "observed_at": "2026-11-14T21:30:57Z",
-      "original_status": "To Do",
-      "status": "To Do",
-      "title": "Calculate Greg's constrained next-order plan",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
-      "slices": [
-        {
-          "id": "s1",
-          "status": "complete",
-          "title": "Planning domain, demand port and constrained solver",
-          "observed_at": "2026-11-14T09:49:43Z",
-          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
-        },
-        {
-          "id": "s2",
-          "status": "complete",
-          "title": "Node golden equivalence fixtures and replay tests",
-          "observed_at": "2026-11-14T08:58:51Z",
-          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
-        },
-        {
-          "id": "s3",
-          "status": "complete",
-          "title": "Greg order-plan HTTP read and preview, no submission",
-          "observed_at": "2026-11-14T09:49:44Z",
-          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Merge gcsp-poc-dev and full gcsp-api verify",
-          "observed_at": "2026-11-14T21:30:57Z",
-          "evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
-        }
-      ]
-    },
-    {
-      "assignee": "",
       "id": "FUCQ-478",
       "observed_at": "2026-11-14T10:07:49Z",
       "original_status": "To Do",
@@ -8371,40 +8330,6 @@
       ]
     },
     {
-      "assignee": "",
-      "id": "FUCQ-443",
-      "observed_at": "2026-11-17T02:45:16Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Review and intentionally submit a manual selection",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443",
-      "slices": [
-        {
-          "id": "claim-review",
-          "status": "in-progress",
-          "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-17T02:45:16Z",
-          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
-        },
-        {
-          "id": "manual-screens",
-          "status": "in-progress",
-          "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-17T02:45:16Z",
-          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
-        },
-        {
-          "id": "connected-proof",
-          "status": "not-started",
-          "title": "Real-claim-to-order-and-rendered-proof",
-          "observed_at": "2026-11-17T02:13:52Z",
-          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-410",
       "jira_observed_at": "2026-11-16T20:29:59.639151+00:00",
@@ -8711,6 +8636,108 @@
           "expires_at": "2026-11-16T23:19:03.283520+00:00",
           "source": "/root/foghorn_leghorn_2/bertie_2",
           "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
+        }
+      ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-443",
+      "observed_at": "2026-11-17T03:11:20Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Review and intentionally submit a manual selection",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-443",
+      "slices": [
+        {
+          "id": "claim-review",
+          "status": "in-progress",
+          "title": "Claim-review-contract-and-versioned-state",
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
+        },
+        {
+          "id": "manual-screens",
+          "status": "in-progress",
+          "title": "Manual-review-and-summary-screens",
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
+        },
+        {
+          "id": "connected-proof",
+          "status": "not-started",
+          "title": "Real-claim-to-order-and-rendered-proof",
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
+        }
+      ],
+      "native_observed_at": "2026-11-17T03:01:52+00:00",
+      "note": "Consumer partial799c01b95 has124 matching selected passes; producer all3selected methods native0 (2reused+1new03:03:57UTC), audited owned teardown. Both original connected/rendered/durable AC remain open; inherited checker native1.",
+      "workers": [
+        {
+          "name": "Pinky 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-17T03:06:50.812724+00:00",
+          "expires_at": "2026-11-17T03:06:50.812724+00:00",
+          "source": "01a1e6f4-fb2a-70b1-8d45-24b32f6de594",
+          "status": "returned scoped producer PASS; original connected acceptance open"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-477",
+      "observed_at": "2026-11-17T03:11:20Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Calculate Greg's constrained next-order plan",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-477",
+      "slices": [
+        {
+          "id": "s1",
+          "status": "complete",
+          "title": "Planning domain, demand port and constrained solver",
+          "observed_at": "2026-11-14T09:49:43Z",
+          "evidence": "b011b9237+630c22eb3: solver, PlanningPolicy/Catalog from canonical PolicyService, PlanningDemand/Supply/SubmissionHistory ports; lead review and rerun 23/23 planning tests"
+        },
+        {
+          "id": "s2",
+          "status": "complete",
+          "title": "Node golden equivalence fixtures and replay tests",
+          "observed_at": "2026-11-14T08:58:51Z",
+          "evidence": "b011b9237: 172 Node golden cases (155 plan, 17 policy) replay with 0 diffs in OrderPlanParityTest; lead re-ran planning tests 5/5 and regenerated cases byte-identical"
+        },
+        {
+          "id": "s3",
+          "status": "complete",
+          "title": "Greg order-plan HTTP read and preview, no submission",
+          "observed_at": "2026-11-14T09:49:44Z",
+          "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Original demand and supply integration",
+          "observed_at": "2026-11-17T03:10:58.053218+00:00",
+          "evidence": "Reopened original acceptance: standalone Terms/Evaluator/Renewal53matching passes integrated a93dd42c5. PlanningDemand remains unbound; Supply/Clock M1/F515 integration hold persists. Prior969tests did not establish these original bindings.",
+          "prior_complete_evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
+        }
+      ],
+      "native_observed_at": "2026-11-17T03:01:52+00:00",
+      "note": "Original acceptance incomplete; native In Progress and peer claim preserved. Independent3classes/3tests/2notes integrated a93dd42c5 using53matching passes. Four Supply/Clock Java files and their2notes remain held for M1/F515. Current demand source12 ACK03:08:46UTC and actual coordinator tools through03:09:56.874UTC; runtime not granted.",
+      "workers": [
+        {
+          "name": "Claude coordinator",
+          "harness": "claude-code",
+          "role": "PlanningDemand source coordinator",
+          "observed_at": "2026-11-17T03:09:56.874+00:00",
+          "expires_at": "2026-11-17T03:24:56.874000+00:00",
+          "source": "claude-assist-fucq477-planning-demand-2026-11-17-12",
+          "status": "actual source contract tool calls observed; no runtime granted"
         }
       ]
     }
