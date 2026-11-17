@@ -32,8 +32,8 @@ public record AppointmentConfig(
         }
     }
 
-    /** states holds completed and no-show; notReady answers a completion before readiness. */
-    public record Outcomes(Map<String, Step> states, Step notReady) {
+    /** states holds completed and no-show; notReady answers a completion before readiness; completedStage may be null. */
+    public record Outcomes(Map<String, Step> states, Step notReady, String completedStage) {
         public Outcomes {
             states = Map.copyOf(states);
         }
