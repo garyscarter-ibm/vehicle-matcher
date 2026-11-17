@@ -7305,7 +7305,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-17T14:51:34Z",
+      "observed_at": "2026-11-17T15:28:44Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7343,15 +7343,16 @@
         },
         {
           "id": "composition-remote",
-          "status": "in-progress",
+          "status": "complete",
           "title": "AC2 remote through the started app: HttpClaimStock against loopback stock endpoint, response loss, duplicate ack, release loss, restart",
-          "observed_at": "2026-11-17T14:51:34Z"
+          "observed_at": "2026-11-17T15:28:44Z",
+          "evidence": "Lead review: ManualClaimsRemoteComposedHttpTest (8) and ManualClaimsRemoteRestartHttpTest (1) boot the dev composition with gcsp.claims.stock.provider=remote, real HttpClaimStock against loopback RemoteOperationServer; response/request loss, mismatch/500, release loss, duplicate acks, remote expiry, restart convergence with 1 effect; run 62/0"
         },
         {
           "id": "integration",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
-          "observed_at": "2026-11-17T12:26:52Z",
+          "observed_at": "2026-11-17T15:28:44Z",
           "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
         }
       ]
