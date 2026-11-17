@@ -2044,3 +2044,9 @@ Several broad source/policy displays and an initial queue display again truncate
 - Current-pass reconciliation found historical activity-row claim/lease fields disagreeing with the saved Story-lease and local-record evidence, although the six bucket counts were unchanged. Normalize current claim facts from those sources and refresh current runtime aliases while preserving historical receipts. Proposed improvement: derive the current projection once rather than copying stale claim fields across passes; assertions verify all66 unique Stories and exact six-bucket membership. No Story scope, acceptance gate or OneDrive operation.
 
 - 2026-11-17T23:46:27.235137+00:00 observed outcome: account proof checkpoint767d1668b is pushed and the narrow independent static review passed. The lead returned held awaiting the batch runtime release; map observation expired its current worker claim without changing native status or slice completion. Current66 projection verifies correct Story leases/claim owners and exact unique membership (3/1/13/8/41/0). Actual corrected browser proof and covering batch results remain pending.
+
+
+### 2026-11-17 23:47 UTC · Russell Codex · DL-20261117-GCC-013 · Worker recurrence and completed cleanup scan
+
+- Hugh reported the same clipped combined-document output during F465 refinement; narrower excerpts and a serialization character budget are applied, with no verdict from omitted text. The issue remains unresolved. Its real signed-JWT/native-PostgreSQL regression reproduced the missing offer runId; correction and composed visual proof are still pending.
+- Parent content-based archived scan found two clone-owned pending cleanup receipts035/036. Both helper retries returned DROPPED; exact local worktree absence was verified and complete markers were committed/pushed through d300f3638. This resolves those two cleanup receipts only; no complete Bug inventory, product acceptance or OneDrive cleanup is inferred.
