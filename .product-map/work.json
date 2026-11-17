@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T07:51:03Z",
+      "observed_at": "2026-11-17T07:58:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T07:48:51.837Z",
-      "note": "Generated canonical claim/authenticated remote decision proof integrated4c7f6d338: exact1nativepass/reviewPASS/independentteardown; source23/review23 terminal. Same-instant only; full order-status HTTP/F516 recovery/bothoriginalAC open. NativeToDo preserved; held at increment boundary.",
+      "native_observed_at": "2026-11-17T07:56:06.581Z",
+      "note": "Generated-claim proof4c7f6d338 retained1nativepass/reviewPASS/independentteardown. Actual read-only readiness24 source reads confirmed at364c06710; no product writes/runtime granted. Both originalAC open, nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9019,6 +9019,15 @@
           "observed_at": "2026-11-17T07:51:03.227703+00:00",
           "expires_at": "2026-11-17T07:51:03.227703+00:00",
           "status": "terminal1pass/0skip;70identities/7groups/scratch/reservationsclear;integrated4c7f6d338. No currentruntime."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Read-only next original provider increment readiness",
+          "source": "codex-fucq481-next-provider-readiness-24",
+          "observed_at": "2026-11-17T07:57:50.357236+00:00",
+          "expires_at": "2026-11-17T08:12:50.357236+00:00",
+          "status": "Actual current AGENTS/Story/contract/inventory/helper source reads confirmed; no implementation/runtime. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
         }
       ]
     }
