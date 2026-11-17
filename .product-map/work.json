@@ -6123,42 +6123,6 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-435",
-      "observed_at": "2026-11-17T20:30:46Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Call the separately hosted API with bearer authentication",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
-      "slices": [
-        {
-          "id": "ac1-https-cors-bearer",
-          "status": "blocked",
-          "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
-          "observed_at": "2026-11-17T20:30:01Z",
-          "evidence": "17 Nov re-proof ba7ed3d27 on dev composition + PostgreSQL: scenarios a,d,e,f PASS. Hosted origins and real OIDC client are external (Gary)"
-        },
-        {
-          "id": "ac2-failure-recovery",
-          "status": "complete",
-          "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
-          "observed_at": "2026-11-17T20:30:01Z",
-          "evidence": "17 Nov re-proof ba7ed3d27, lead-reviewed: 403 denied, 409 stale-version, 503 unavailable and recovery, expiry to sign-in and return with notice, 0 POST /manual/order"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Story integration, validation and result",
-          "observed_at": "2026-11-17T20:30:46Z",
-          "evidence": "Result partial 17 Nov: local integration re-proven; hosted-origin AC1 run outstanding"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-437",
       "observed_at": "2026-11-17T19:53:13Z",
@@ -6837,62 +6801,6 @@
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-455",
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-456",
-      "observed_at": "2026-11-17T20:32:05Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "b990c1a8 reviewed by story-lead; 23 native PG17 persistence tests pass (commit/rollback/CAS/no-op/competing custody/replay/uncertain/new-pool restart/stale-run/wiring)",
-          "id": "s1-core",
-          "observed_at": "2026-11-13T22:30:18Z",
-          "status": "complete",
-          "title": "Design, V1 schema and transactional repository core with native tests"
-        },
-        {
-          "evidence": "3706cac6 reviewed by story-lead; 37 native PG17 persistence tests pass incl. atomic reset, isolation refusals, two-database isolation, intent/CAS finalize",
-          "id": "s2-reset-isolation",
-          "observed_at": "2026-11-13T22:35:13Z",
-          "status": "complete",
-          "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence"
-        },
-        {
-          "evidence": "Result block at c709769e; scoped 172/0/0; callers 1136 run, 6 env errors (gcsp_test_dev name); design doc re-proof and alignment",
-          "id": "s3-integration",
-          "observed_at": "2026-11-17T20:32:05Z",
-          "status": "complete",
-          "title": "Story-level validation on today's base, alignment record and result"
-        },
-        {
-          "id": "s4-dev-composition-journey",
-          "status": "complete",
-          "title": "Dev-composition QuarkusTest: concurrent writers, presenter reset, isolation and non-reset refusal",
-          "observed_at": "2026-11-17T20:32:05Z",
-          "evidence": "ccc488673 reviewed by lead; 9 journey tests pass in scoped 172/0/0 at c709769e on PG17"
-        },
-        {
-          "id": "s5-restart-proof",
-          "status": "complete",
-          "title": "Running-app stop/start proof: state, receipts, authority, uncertain resend, reset isolation",
-          "observed_at": "2026-11-17T20:32:05Z",
-          "evidence": "a0f5f56a reviewed by lead; built-jar proof 7/7 PASS at c709769e, receipt docs/gcsp/evidence/fucq456/restart-proof-2026-11-17.json"
-        },
-        {
-          "id": "s7-hosted-dev",
-          "status": "blocked",
-          "title": "Hosted Render dev connection, restart and reset-isolation evidence (Gary's environment)",
-          "observed_at": "2026-11-17T19:18:12Z"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Persist state in isolated development PostgreSQL",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-456",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
@@ -9922,6 +9830,98 @@
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "note": "Producer34 reviewed and one nativePG17 generation plus normal exact comparison eachPASS;12real fixture files, teardown/pins independently audited. Helper35 source ACK20:18:18UTC; actual Angular consumer and connected originalAC remainOPEN."
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-435",
+      "observed_at": "2026-11-17T20:37:18Z",
+      "original_status": "In Review",
+      "status": "In Review",
+      "title": "Call the separately hosted API with bearer authentication",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-435",
+      "slices": [
+        {
+          "id": "ac1-https-cors-bearer",
+          "status": "blocked",
+          "title": "Two HTTPS origins, preflights, exact origins, bearer JWT, no static secrets",
+          "observed_at": "2026-11-17T20:30:01Z",
+          "evidence": "17 Nov re-proof ba7ed3d27 on dev composition + PostgreSQL: scenarios a,d,e,f PASS. Hosted origins and real OIDC client are external (Gary)"
+        },
+        {
+          "id": "ac2-failure-recovery",
+          "status": "complete",
+          "title": "Typed failures, denial and expiry reach frontend outcomes; no auto-submit",
+          "observed_at": "2026-11-17T20:30:01Z",
+          "evidence": "17 Nov re-proof ba7ed3d27, lead-reviewed: 403 denied, 409 stale-version, 503 unavailable and recovery, expiry to sign-in and return with notice, 0 POST /manual/order"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Story integration, validation and result",
+          "observed_at": "2026-11-17T20:30:46Z",
+          "evidence": "Result partial 17 Nov: local integration re-proven; hosted-origin AC1 run outstanding"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-456",
+      "observed_at": "2026-11-17T20:37:18Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "evidence": "b990c1a8 reviewed by story-lead; 23 native PG17 persistence tests pass (commit/rollback/CAS/no-op/competing custody/replay/uncertain/new-pool restart/stale-run/wiring)",
+          "id": "s1-core",
+          "observed_at": "2026-11-13T22:30:18Z",
+          "status": "complete",
+          "title": "Design, V1 schema and transactional repository core with native tests"
+        },
+        {
+          "evidence": "3706cac6 reviewed by story-lead; 37 native PG17 persistence tests pass incl. atomic reset, isolation refusals, two-database isolation, intent/CAS finalize",
+          "id": "s2-reset-isolation",
+          "observed_at": "2026-11-13T22:35:13Z",
+          "status": "complete",
+          "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence"
+        },
+        {
+          "evidence": "Result block at c709769e; scoped 172/0/0; callers 1136 run, 6 env errors (gcsp_test_dev name); design doc re-proof and alignment",
+          "id": "s3-integration",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "status": "complete",
+          "title": "Story-level validation on today's base, alignment record and result"
+        },
+        {
+          "id": "s4-dev-composition-journey",
+          "status": "complete",
+          "title": "Dev-composition QuarkusTest: concurrent writers, presenter reset, isolation and non-reset refusal",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "ccc488673 reviewed by lead; 9 journey tests pass in scoped 172/0/0 at c709769e on PG17"
+        },
+        {
+          "id": "s5-restart-proof",
+          "status": "complete",
+          "title": "Running-app stop/start proof: state, receipts, authority, uncertain resend, reset isolation",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "a0f5f56a reviewed by lead; built-jar proof 7/7 PASS at c709769e, receipt docs/gcsp/evidence/fucq456/restart-proof-2026-11-17.json"
+        },
+        {
+          "id": "s7-hosted-dev",
+          "status": "blocked",
+          "title": "Hosted Render dev connection, restart and reset-isolation evidence (Gary's environment)",
+          "observed_at": "2026-11-17T19:18:12Z"
+        }
+      ],
+      "status": "In Review",
+      "title": "Persist state in isolated development PostgreSQL",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-456",
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1
