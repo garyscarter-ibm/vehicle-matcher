@@ -9864,7 +9864,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T21:48:42Z",
+      "observed_at": "2026-11-17T21:50:05Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10042,11 +10042,12 @@
           "harness": "claude-code",
           "role": "supervisor source",
           "source": "claude-assist-fucq441-connected-supervisor-source-2026-11-17-41",
-          "observed_at": "2026-11-17T21:31:49Z",
-          "expires_at": "2026-11-17T21:46:49+00:00",
-          "status": "held; execution unverified after expired actual checkpoint; same-allocation checkpoint requested",
-          "dispatcher_observed_at": "2026-11-17T21:48:41.915531+00:00",
-          "checkpoint_requested_at": "2026-11-17T21:48:02.220754+00:00"
+          "observed_at": "2026-11-17T21:49:09Z",
+          "expires_at": "2026-11-17T22:04:09+00:00",
+          "status": "active source-only preparation: detailed checkpoint answered; supervisor source still pending",
+          "dispatcher_observed_at": "2026-11-17T21:50:04.367453+00:00",
+          "checkpoint_requested_at": "2026-11-17T21:48:02.220754+00:00",
+          "checkpoint_answered_at": "2026-11-17T21:49:09Z"
         },
         {
           "name": "Toothless 2",
@@ -10060,7 +10061,7 @@
       ],
       "jira_observed_at": "2026-11-17T21:47:38.426Z",
       "native_observed_at": "2026-11-17T21:47:38.426Z",
-      "note": "Producer34/consumer35/component37 selected evidence retained; corrected connected proof source independently reviewed and integrated. Both originalAC OPEN; connected builds/runtime UNRUN. Same retained supervisor-source41 actual checkpoint21:31:49Z expired21:46:49Z; no saved source/result observed21:47:17Z. Held execution unverified; same-allocation checkpoint request published21:48:02Z, response not yet observed. No runtime or duplicate watcher."
+      "note": "Producer34/consumer35/component37 selected evidence retained; corrected connected proof source independently reviewed and integrated. Both originalAC OPEN; connected builds/runtime UNRUN. Supervisor41 initial checkpoint expired21:46:49Z; same-allocation request21:48:02Z answered21:49:09Z with detailed actual source reading and current supervisor authorship. Active source preparation; no saved source/result yet at21:49:41Z. Model/effort are self-reported and effective values independently unverified. No runtime or duplicate watcher."
     }
   ],
   "version": 1
