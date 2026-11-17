@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:11:13Z",
+      "observed_at": "2026-11-17T06:12:42Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T05:53:37.707215+00:00",
-      "note": "HTTP consumer increment5ce78b9be integrated: ten exact PostgreSQL/HTTP cases passed, no skips, Cogsworth3 sourcePASS. Same coordinator16 published for next nonconflicting read-composition source readiness; execution unverified. Neither originalAC complete; nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T06:12:02.645179+00:00",
+      "note": "HTTP consumer increment5ce78b9be integrated: ten exact PostgreSQL/HTTP cases passed with zero skips; Cogsworth3 sourcePASS and verified teardown. Same coordinator16 ACK06:11:43 and actual claim/ownership source inspection06:11:53 for next nonconflicting read composition. No16runtime. Both originalAC remain open; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8887,10 +8887,10 @@
           "name": "Same Claude coordinator",
           "harness": "claude-code",
           "role": "F481 next nonconflicting read-composition source readiness",
-          "observed_at": "2026-11-17T06:10:24.636546+00:00",
-          "expires_at": "2026-11-17T06:10:24.636546+00:00",
+          "observed_at": "2026-11-17T06:11:53.873Z",
+          "expires_at": "2026-11-17T06:26:53.873000+00:00",
           "source": "claude-assist-fucq481-read-composition-next-2026-11-17-16",
-          "status": "published; awaiting matching ACK and actual source execution; no runtime"
+          "status": "ACK16 and actual current lease/claim ownership inspection; next read-composition source readiness only, no runtime/children verified"
         }
       ]
     }
