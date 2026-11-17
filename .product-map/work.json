@@ -7325,7 +7325,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-17T11:18:47Z",
+      "observed_at": "2026-11-17T11:51:31Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7363,14 +7363,16 @@
         },
         {
           "id": "activity-route",
-          "status": "in-progress",
+          "status": "complete",
           "title": "GET /api/gcsp/v1/activity over Java brief, offer, allocation and clock state",
-          "observed_at": "2026-11-17T11:18:47Z"
+          "observed_at": "2026-11-17T11:51:31Z",
+          "evidence": "Spike review of Sulley diff; ActivityHttpTest 4/4 + ActivityChecksTest 2/2 over RS256 JWT and native PG17; scope activity+brief+offers 236/0/0"
         },
         {
           "id": "composition-proof",
-          "status": "not-started",
-          "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)"
+          "status": "in-progress",
+          "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)",
+          "observed_at": "2026-11-17T11:51:31Z"
         },
         {
           "id": "docs-config",
