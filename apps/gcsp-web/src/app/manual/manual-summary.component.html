@@ -25,13 +25,16 @@
         <gcsp-fact-list [rows]="vehicle().termRows" />
         <details><summary>Car facts</summary><gcsp-fact-list [rows]="vehicle().rows" hideMissing="More details not supplied" /></details>
       </section>
-      <form class="gcsp-panel manual-confirmation" (submit)="blockSubmit($event)">
-        <h2>Your order review</h2>
+      <section class="gcsp-panel manual-confirmation" aria-labelledby="manual-confirmation-title">
+        <h2 id="manual-confirmation-title">Your order review</h2>
         @if (resumeRequired()) {
           <p>Review this unfinished selection before continuing. No order has been placed by returning here.</p>
           <button gcspButton type="button" [disabled]="busy()" (click)="resume.emit()">Continue reviewing this selection</button>
         }
-        <p id="manual-review-unavailable" role="status">{{ reviewDetailsUnavailable }}</p>
+        <gcsp-manual-review-details [projection]="projection()" [detailsDraft]="detailsDraft()" [detailsDirty]="detailsDirty()"
+          [canSaveDetails]="canSaveDetails()" [busy]="busy()" [resumeRequired]="resumeRequired()"
+          (detailsChange)="detailsChange.emit($event)" (saveDetails)="saveDetails.emit()" />
+        <form class="manual-submit" (submit)="submitOrder($event)">
         @if (projection().wording; as wording) { <p class="manual-terms">{{ wording }}</p> }
         @if (projection().terms; as terms) {
           <gcsp-fact-list [rows]="[{label:'Terms version',value:terms.termsVersion},{label:'Terms valid until',value:terms.validUntil}]" />
@@ -40,19 +43,21 @@
             @for (declaration of projection().declarations; track declaration.id; let index = $index) {
               <label class="manual-declaration" [for]="'manual-declaration-' + index">
                 <input type="checkbox" [id]="'manual-declaration-' + index" [checked]="declarations()[declaration.id] === true"
+                  required
                   (change)="changeDeclaration(declaration.id, $event)" />
                 <span>{{ declaration.label }}</span>
               </label>
             }
           </fieldset>
         }
-        <button gcspButton type="submit" disabled aria-describedby="manual-review-unavailable">Place order</button>
+        <button gcspButton type="submit" [disabled]="busy() || resumeRequired() || !projection().canSubmit" aria-describedby="manual-details-status">Place order</button>
+        </form>
         <div class="gcsp-actions">
           <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="edit.emit()">Edit choices</button>
           <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="browse.emit()">Change car</button>
           <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="check.emit()">Check current claim</button>
         </div>
-      </form>
+      </section>
     </div>
   }
 </section>

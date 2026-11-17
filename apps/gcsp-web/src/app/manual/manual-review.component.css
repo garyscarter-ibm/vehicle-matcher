@@ -5,6 +5,13 @@
 .manual-choice { align-content: start; }
 .manual-choice > button { justify-self: start; }
 .manual-vehicle { overflow-wrap: anywhere; }
+.manual-details, .manual-details form, .manual-details fieldset { display: grid; gap: var(--gcsp-space-4); min-width: 0; }
+.manual-details h2, .manual-details p { margin: 0; }
+.manual-details fieldset { border: 0; padding: 0; margin: 0; }
+.manual-details legend { margin-bottom: var(--gcsp-space-3); font-weight: var(--gcsp-font-strong-weight); }
+.manual-details input, .manual-details textarea { box-sizing: border-box; width: 100%; min-width: 0; }
+.manual-details button { justify-self: start; }
+.manual-details form:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
 details { border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-3); }
 summary { cursor: pointer; padding: var(--gcsp-space-2) 0; font-weight: var(--gcsp-font-strong-weight); color: var(--gcsp-link); }
 summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }

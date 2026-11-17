@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
-import { isManualClaim, isManualOrder, isManualTerms, manualObject, manualPositive, manualText } from './manual.projection';
+import { isManualClaim, isManualOrder, isManualReviewDetails, isManualTerms, manualObject, manualPositive, manualRevision, manualText,
+  sameManualDetails, validManualEditableDetails } from './manual.projection';
 import type { ManualClaim, ManualClaimCommand, ManualFailure, ManualOptions, ManualOrder, ManualRecord, ManualReleaseCommand,
-  ManualResult, ManualReviewCommand, ManualScope, ManualSubmitCommand, ManualTerms } from './manual.types';
+  ManualResult, ManualReviewCommand, ManualReviewDetails, ManualReviewDetailsCommand, ManualScope, ManualSubmitCommand, ManualTerms } from './manual.types';
 
 const only = (v: unknown, keys: readonly string[]): v is ManualRecord => manualObject(v)
   && Object.keys(v).length === keys.length && keys.every((k) => Object.hasOwn(v, k));
@@ -20,6 +21,25 @@ function scoped(value: unknown, scope: ManualScope): boolean {
 }
 const statuses: Readonly<Record<number, readonly string[]>> = { 202: ['pending'], 400: ['invalid'], 401: ['unauthenticated', 'authentication-required'],
   403: ['forbidden'], 404: ['not-found'], 409: ['conflict'], 422: ['refused'], 503: ['unavailable'] };
+function reviewFailure(v: ManualRecord, httpStatus: number): ManualFailure | null {
+  const status = v['status']; const view = v['view'];
+  const actualView = (state: string, editable: boolean, action: string) => manualObject(view) && view['state'] === state
+    && view['editable'] === editable && view['action'] === action && view['supportOwner'] === 'employee';
+  const result = (state: ManualFailure['status'], code: string): ManualFailure => ({ ...structuredClone(v), status: state, code,
+    retryable: false, httpStatus });
+  if (status === 'invalid' && httpStatus === 400 && v['code'] === 'invalid-review-details'
+    && Array.isArray(v['reasons']) && v['reasons'].length > 0 && v['reasons'].every((r) => manualObject(r) && manualText(r['field']) && manualText(r['reason']))
+    && actualView('validation', true, 'correct-fields')) return result('invalid', 'invalid-review-details');
+  if (status === 'stale-version' && httpStatus === 409 && v['code'] === 'stale-review-details' && manualText(v['resource'])
+    && manualRevision(v['expectedVersion']) && manualRevision(v['currentVersion']) && v['action'] === 'refresh'
+    && actualView('conflict', false, 'refresh-review')) return result('conflict', 'stale-review-details');
+  if (status === 'conflict' && httpStatus === 409 && manualText(v['code']) && manualText(v['reason']) && v['action'] === 'refresh'
+    && actualView('conflict', false, 'refresh-review')) return result('conflict', v['code']);
+  if (status === 'forbidden' && httpStatus === 403 && v['code'] === undefined && manualText(v['reason'])) return result('forbidden', 'manual-review-forbidden');
+  if (status === 'not-found' && httpStatus === 404 && v['code'] === undefined && manualText(v['resourceType'])) return result('not-found', 'manual-review-not-found');
+  if (status === 'stale-run' && httpStatus === 409 && v['code'] === undefined && manualText(v['reason'])) return result('conflict', 'stale-run');
+  return null;
+}
 
 /** Fixed principal-scoped Java routes. No implicit retries or successful transport substitutes. */
 @Injectable({ providedIn: 'root' })
@@ -35,6 +55,20 @@ export class ManualClient {
   readClaim(options: ManualOptions = {}): Promise<ManualResult<ManualClaim>> { return this.request('manual/claim', isManualClaim, options); }
   readOrder(options: ManualOptions = {}): Promise<ManualResult<ManualOrder>> { return this.request('manual/order', isManualOrder, options); }
   readTerms(options: ManualOptions = {}): Promise<ManualResult<ManualTerms>> { return this.request('manual/order/terms', isManualTerms, options); }
+  readReviewDetails(options: ManualOptions = {}): Promise<ManualResult<ManualReviewDetails>> {
+    return this.request('manual/review-details', isManualReviewDetails, options);
+  }
+  saveReviewDetails(command: ManualReviewDetailsCommand, options: ManualOptions = {}): Promise<ManualResult<ManualReviewDetails>> {
+    if (!only(command, [...actionKeys, 'quoteId', 'expectedReviewDetailsVersion', 'details']) || !action(command)
+      || ![command.commandId, command.holdId, command.quoteId].every((value) => manualText(value, 100))
+      || !manualRevision(command.expectedReviewDetailsVersion) || !validManualEditableDetails(command.details)) {
+      return Promise.resolve(failure('invalid', 'invalid-manual-review-details-command'));
+    }
+    return this.request('manual/review-details', isManualReviewDetails, options, command, (value) => value.binding.holdId === command.holdId
+      && value.binding.quoteId === command.quoteId && value.binding.expectedHoldVersion === command.expectedHoldVersion
+      && value.binding.expectedDraftVersion === command.expectedDraftVersion && value.reviewDetailsVersion === command.expectedReviewDetailsVersion + 1
+      && sameManualDetails(value.details, command.details));
+  }
   claim(command: ManualClaimCommand, options: ManualOptions = {}): Promise<ManualResult<ManualClaim>> {
     if (!only(command, ['commandId', 'orderUuid', 'expectedStockVersion', 'expectedDraftVersion', 'expectedContextVersion', 'expectedTermsDigest'])
       || !id(command.commandId) || !id(command.orderUuid) || !manualPositive(command.expectedStockVersion)
@@ -61,11 +95,11 @@ export class ManualClient {
       (value) => value.hold.holdId === holdId && value.quote.draftVersion === expectedDraftVersion);
   }
   submit(command: ManualSubmitCommand, options: ManualOptions = {}): Promise<ManualResult<ManualOrder>> {
-    if (!only(command, ['commandId', 'source', 'expectedQuoteId', 'expectedStockVersion', 'termsDigest', 'declarations'])
+    if (!only(command, ['commandId', 'source', 'expectedQuoteId', 'expectedStockVersion', 'expectedReviewDetailsVersion', 'termsDigest', 'declarations'])
       || !id(command.commandId) || !only(command.source, ['type', 'holdId', 'expectedHoldVersion', 'expectedDraftVersion'])
       || command.source.type !== 'cart' || !id(command.source.holdId) || !manualPositive(command.source.expectedHoldVersion)
       || !manualPositive(command.source.expectedDraftVersion) || !id(command.expectedQuoteId) || !manualPositive(command.expectedStockVersion)
-      || !id(command.termsDigest) || !manualObject(command.declarations)
+      || !manualPositive(command.expectedReviewDetailsVersion) || !id(command.termsDigest) || !manualObject(command.declarations)
       || !Object.entries(command.declarations).every(([key, value]) => id(key) && value === true)) return Promise.resolve(failure('invalid', 'invalid-manual-submit-command'));
     const { holdId } = command.source; const { expectedQuoteId } = command;
     return this.request('manual/order', isManualOrder, options, command, (value) => value.selection.sourceType === 'cart'
@@ -105,6 +139,10 @@ export class ManualClient {
         if (response.status === 200 && envelope['status'] === 'ok' && valid(envelope['value']) && (!matchesCommand || matchesCommand(envelope['value']))
           && (envelope['replayed'] === undefined || typeof envelope['replayed'] === 'boolean')) {
           return { status: 'ok', value: structuredClone(envelope['value']), ...(envelope['replayed'] === undefined ? {} : { replayed: envelope['replayed'] as boolean }) };
+        }
+        if (path === 'manual/review-details') {
+          const detailsFailure = reviewFailure(envelope, response.status);
+          if (detailsFailure) return detailsFailure;
         }
         if (!statuses[response.status]?.includes(envelope['status'] as string) || !manualText(envelope['code'])
           || !manualText(envelope['reason']) || typeof envelope['retryable'] !== 'boolean'

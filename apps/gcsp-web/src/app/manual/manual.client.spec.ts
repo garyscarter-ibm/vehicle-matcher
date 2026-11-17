@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
 import { ManualClient } from './manual.client';
-import type { ManualClaim, ManualClaimCommand, ManualOrder, ManualReviewCommand, ManualSubmitCommand } from './manual.types';
+import type { ManualClaim, ManualClaimCommand, ManualOrder, ManualReviewCommand, ManualReviewDetails, ManualReviewDetailsCommand, ManualSubmitCommand } from './manual.types';
 
 const context = { subject: 'subject', employeeId: 'employee', environmentId: 'dev', runId: 'run', roles: ['employee'] as const, policyVersion: 'policy', capabilities: [] };
 const terms = { schemaVersion: 1, fictional: true, termsVersion: 'terms', wording: 'Read these terms', validUntil: '2026-11-16T18:00:00Z',
@@ -14,7 +14,7 @@ const claim: ManualClaimCommand = { commandId: 'claim-command', orderUuid: 'exac
   expectedContextVersion: 'context-pin', expectedTermsDigest: 'claim-digest' };
 const review: ManualReviewCommand = { commandId: 'review-command', holdId: 'exact-hold', expectedHoldVersion: 2, expectedDraftVersion: 7 };
 const submit: ManualSubmitCommand = { commandId: 'submit-command', source: { type: 'cart', holdId: 'exact-hold', expectedHoldVersion: 3, expectedDraftVersion: 7 },
-  expectedQuoteId: 'exact-quote', expectedStockVersion: 6, termsDigest: 'ordering-digest', declarations: { read: true } };
+  expectedQuoteId: 'exact-quote', expectedStockVersion: 6, expectedReviewDetailsVersion: 1, termsDigest: 'ordering-digest', declarations: { read: true } };
 const claimed = (): ManualClaim => ({ state: 'quoted', now: '2026-11-16T12:00:00Z', pendingOperation: null,
   hold: { holdId: 'exact-hold', orderUuid: 'exact-car', employeeId: 'employee', entitlementSlotId: 'slot', type: 'cart', state: 'active',
     phase: 'preview', mode: 'new', version: 2, expiresAt: '2026-11-16T18:00:00Z', reviewStartedAt: null, releaseReason: null },
@@ -32,6 +32,22 @@ const acknowledged = (): ManualOrder => ({ schemaVersion: 1, operationId: 'opera
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 const refusal = (status = 'conflict', code = 'terms-changed', http = 409) => json({ status, code, reason: 'Read the current state.', retryable: false }, http);
 const deferred = <T>() => { let resolve!: (v: T) => void; const promise = new Promise<T>((yes) => { resolve = yes; }); return { promise, resolve }; };
+const reviewDetails = (revision = 1): ManualReviewDetails => {
+  const c = claimed();
+  return { binding: { runId: 'run', employeeId: 'employee', entitlementSlotId: 'slot', holdId: c.hold.holdId, quoteId: c.quote.quoteId,
+    expectedHoldVersion: c.hold.version, expectedDraftVersion: c.quote.draftVersion }, reviewDetailsVersion: revision,
+    details: { contact: { phone: '01234 567890', email: 'employee@example.test' }, expectedReturnMileage: null, specialRequirements: '' },
+    constraints: { maximumSpecialRequirements: 500, maximumReturnMileage: 200000, mileageUnit: 'mi', textLengthUnit: 'UTF-16 code units',
+      provenance: { key: 'manual.context.v1', policyVersion: 'policy', status: 'assumed', source: 'policy', basis: 'Scheme limits',
+        sourceDate: '2026-11-01', effectiveFrom: c.now, value: { maximumSpecialRequirements: 500, maximumReturnMileage: 200000 } } },
+    mode: 'new', currentContract: null, requestedCollection: { date: '2026-12-01', locationId: 'collection' }, oldContractId: null,
+    contract: { termMonths: 6 }, hold: { ...c.hold, runId: 'run', quoteId: c.quote.quoteId, policyVersion: 'policy' },
+    quote: { ...c.quote, runId: 'run' }, orderNumber: '1234567', stockVersion: 8, now: c.now, clockVersion: '1',
+    frozen: false, editable: true, canContinue: true, view: { state: 'review', editable: true, action: 'save-review-details', supportOwner: 'employee' } };
+};
+const detailsCommand = (): ManualReviewDetailsCommand => ({ commandId: 'details-command', holdId: 'exact-hold', quoteId: 'exact-quote',
+  expectedHoldVersion: 2, expectedDraftVersion: 7, expectedReviewDetailsVersion: 0,
+  details: { contact: { phone: '01234 567890', email: 'employee@example.test' }, expectedReturnMileage: null, specialRequirements: '' } });
 
 describe('manual principal-scoped Java transport', () => {
   let client: ManualClient; let state: ReturnType<typeof signal<SessionState>>;
@@ -61,10 +77,10 @@ describe('manual principal-scoped Java transport', () => {
     expect(fetcher.mock.calls.map(([, options]) => JSON.parse(options!.body as string))).toEqual([claim, review, { ...review, reason: 'change' }, submit]);
     expect(fetcher.mock.calls.every(([, options]) => options?.method === 'POST')).toBe(true);
   });
-  it('rejects extra identity, invented details pins, zero versions and unchecked declarations before fetch', async () => {
+  it('rejects extra identity, missing saved-details pins, zero versions and unchecked declarations before fetch', async () => {
     expect((await client.claim({ ...claim, employeeId: 'other' } as ManualClaimCommand)).status).toBe('invalid');
     expect((await client.review({ ...review, expectedHoldVersion: 0 })).status).toBe('invalid');
-    expect((await client.submit({ ...submit, expectedReviewDetailsVersion: 1 } as ManualSubmitCommand)).status).toBe('invalid');
+    expect((await client.submit({ ...submit, expectedReviewDetailsVersion: 0 })).status).toBe('invalid');
     expect((await client.submit({ ...submit, declarations: { read: false } })).status).toBe('invalid'); expect(fetcher).not.toHaveBeenCalled();
   });
   it('accepts exact command-bound claim and order results', async () => {
@@ -134,5 +150,56 @@ describe('manual principal-scoped Java transport', () => {
   it('reports a network-lost submit as uncertain', async () => {
     fetcher.mockRejectedValueOnce(new TypeError('connection lost'));
     expect((await client.submit(submit)).status).toBe('uncertain'); expect(fetcher).toHaveBeenCalledOnce();
+  });
+  it('reads and saves the fixed details endpoint with exact pins and immutable next revision', async () => {
+    const d = reviewDetails(); const command = detailsCommand();
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...d, reviewDetailsVersion: 0, details: { contact: {}, expectedReturnMileage: null } } }))
+      .mockResolvedValueOnce(json({ status: 'ok', value: d }));
+    expect((await client.readReviewDetails()).status).toBe('ok');
+    expect(await client.saveReviewDetails(command)).toEqual({ status: 'ok', value: d });
+    expect(fetcher.mock.calls.map(([url]) => url)).toEqual(Array(2).fill('https://api.test/api/gcsp/v1/manual/review-details'));
+    expect(JSON.parse(fetcher.mock.calls[1][1]!.body as string)).toEqual(command);
+  });
+  it.each(['revision', 'binding', 'details'])('rejects a saved details response with different %s', async (changed) => {
+    const d = reviewDetails(); const value = changed === 'revision' ? { ...d, reviewDetailsVersion: 2 }
+      : changed === 'binding' ? { ...d, binding: { ...d.binding, holdId: 'other-hold' }, hold: { ...d.hold, holdId: 'other-hold' } }
+      : { ...d, details: { ...d.details, specialRequirements: 'different' } };
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value }));
+    expect(await client.saveReviewDetails(detailsCommand())).toMatchObject({ status: 'uncertain', code: 'manual-response-invalid' });
+  });
+  it('preserves producer validation and stale-version envelopes only at the details endpoint', async () => {
+    const invalid = { status: 'invalid', code: 'invalid-review-details', reasons: [{ field: 'contact.email', reason: 'Supply a contact email address.' }],
+      view: { state: 'validation', editable: true, action: 'correct-fields', supportOwner: 'employee' } };
+    const stale = { status: 'stale-version', code: 'stale-review-details', resource: 'review-details', expectedVersion: 1, currentVersion: 2, action: 'refresh',
+      view: { state: 'conflict', editable: false, action: 'refresh-review', supportOwner: 'employee' } };
+    fetcher.mockResolvedValueOnce(json(invalid, 400)).mockResolvedValueOnce(json(stale, 409)).mockResolvedValueOnce(json(invalid, 400));
+    expect(await client.saveReviewDetails(detailsCommand())).toMatchObject({ ...invalid, retryable: false, httpStatus: 400 });
+    expect(await client.readReviewDetails()).toMatchObject({ ...stale, status: 'conflict', retryable: false, httpStatus: 409 });
+    expect((await client.readClaim()).status).toBe('unavailable');
+  });
+  it('accepts code-less details refusals and conflict without weakening normal claim failures', async () => {
+    const conflict = { status: 'conflict', code: 'review-details-locked', reason: 'review-details-locked', action: 'refresh',
+      view: { state: 'conflict', editable: false, action: 'refresh-review', supportOwner: 'employee' } };
+    fetcher.mockResolvedValueOnce(json({ status: 'not-found', resourceType: 'manual-claim' }, 404))
+      .mockResolvedValueOnce(json({ status: 'forbidden', reason: 'This claim belongs to another entitlement.' }, 403))
+      .mockResolvedValueOnce(json({ status: 'stale-run', reason: 'The current run has changed.' }, 409)).mockResolvedValueOnce(json(conflict, 409));
+    expect(await client.readReviewDetails()).toMatchObject({ status: 'not-found', resourceType: 'manual-claim', retryable: false });
+    expect(await client.readReviewDetails()).toMatchObject({ status: 'forbidden', reason: 'This claim belongs to another entitlement.' });
+    expect(await client.readReviewDetails()).toMatchObject({ status: 'conflict', code: 'stale-run' });
+    expect(await client.readReviewDetails()).toMatchObject({ ...conflict, retryable: false });
+  });
+  it('rejects malformed details envelopes and extra save fields before they can become authority', async () => {
+    const command = detailsCommand();
+    expect((await client.saveReviewDetails({ ...command, employeeId: 'other' } as ManualReviewDetailsCommand)).status).toBe('invalid');
+    expect((await client.saveReviewDetails({ ...command, expectedReviewDetailsVersion: -1 })).status).toBe('invalid');
+    expect(fetcher).not.toHaveBeenCalled();
+    fetcher.mockResolvedValueOnce(json({ status: 'invalid', code: 'invalid-review-details', reasons: [], view: {} }, 400))
+      .mockResolvedValueOnce(json({ status: 'ok', value: { ...reviewDetails(), details: { contact: {}, expectedReturnMileage: null } } }));
+    expect((await client.readReviewDetails()).status).toBe('unavailable');
+    expect((await client.readReviewDetails()).status).toBe('unavailable');
+  });
+  it('never automatically retries a network-lost details save', async () => {
+    fetcher.mockRejectedValueOnce(new TypeError('response lost'));
+    expect((await client.saveReviewDetails(detailsCommand())).status).toBe('uncertain'); expect(fetcher).toHaveBeenCalledOnce();
   });
 });

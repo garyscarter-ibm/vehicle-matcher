@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-16T15:02:03Z",
+      "observed_at": "2026-11-17T02:45:16Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8385,20 +8385,22 @@
           "id": "claim-review",
           "status": "in-progress",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-16T15:02:03Z",
-          "evidence": "50/50 targeted client/projection/store checks passed on frozen source; missing actual review-details/version producer and original connected acceptance remain open"
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
         },
         {
           "id": "manual-screens",
           "status": "in-progress",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-16T15:02:03Z",
-          "evidence": "16/16 native review/summary/route checks and stock handoff14/14 passed; final submit intentionally unavailable pending producer authority; inherited case screen boundary failure and original rendered/connected proof remain open"
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
         },
         {
           "id": "connected-proof",
           "status": "not-started",
-          "title": "Real-claim-to-order-and-rendered-proof"
+          "title": "Real-claim-to-order-and-rendered-proof",
+          "observed_at": "2026-11-17T02:13:52Z",
+          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
         }
       ]
     },

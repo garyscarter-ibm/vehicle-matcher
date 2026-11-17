@@ -1,12 +1,14 @@
 import { computed, DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import { ManualClient } from './manual.client';
-import { projectManual } from './manual.projection';
-import type { ManualClaim, ManualFailure, ManualHandoff, ManualOrder, ManualReleaseCommand, ManualResult, ManualReviewCommand,
-  ManualSubmitCommand, ManualTerms } from './manual.types';
+import { completeManualDetails, editableManualDetails, isManualReviewDetails, manualDetailsMatchClaim, projectManual, sameManualDetails,
+  validManualEditableDetails } from './manual.projection';
+import type { ManualClaim, ManualEditableDetails, ManualFailure, ManualHandoff, ManualOrder, ManualReleaseCommand, ManualResult, ManualReviewCommand,
+  ManualReviewDetails, ManualReviewDetailsCommand, ManualSubmitCommand, ManualTerms } from './manual.types';
 
-type Lane = 'claim' | 'review' | 'release' | 'submit';
-interface UnknownAttempt { readonly lane: Lane; readonly holdId?: string; readonly orderUuid?: string; readonly pending?: boolean }
+type Lane = 'claim' | 'review' | 'release' | 'save-details' | 'submit';
+interface UnknownAttempt { readonly lane: Lane; readonly holdId?: string; readonly orderUuid?: string; readonly pending?: boolean;
+  readonly detailsCommand?: ManualReviewDetailsCommand }
 const uncertain = (status: string): boolean => status === 'uncertain' || status === 'pending';
 const failed = <T>(result: ManualResult<T>): ManualFailure | null => result.status === 'ok' ? null : result;
 
@@ -22,6 +24,8 @@ export class ManualStore {
   private readonly claimValue = signal<ManualResult<ManualClaim> | null>(null);
   private readonly orderValue = signal<ManualResult<ManualOrder> | null>(null);
   private readonly termsValue = signal<ManualResult<ManualTerms> | null>(null);
+  private readonly detailsValue = signal<ManualResult<ManualReviewDetails> | null>(null);
+  private readonly draftValue = signal<ManualEditableDetails | null>(null);
   private readonly failureValue = signal<ManualFailure | null>(null);
   private readonly handoffValue = signal<ManualHandoff | null>(null);
   private readonly ticks = signal<Readonly<Record<string, boolean>>>({});
@@ -30,6 +34,7 @@ export class ManualStore {
   private readonly owned = computed(() => this.active() && !!this.scope() && this.owner() === this.scope());
   readonly projection = computed(() => projectManual(this.owned() ? {
     claim: this.claimValue(), order: this.orderValue(), terms: this.termsValue(), failure: this.failureValue(),
+    reviewDetails: this.detailsValue(), detailsDirty: this.detailsDirty(),
     loading: this.busy(), hasHandoff: !!this.handoffValue()?.claimInput, resumeRequired: this.resume(),
     uncertain: !!this.unknownAttempt() && !this.unknownAttempt()?.pending, pending: this.unknownAttempt()?.pending, declarations: this.ticks(),
   } : {}));
@@ -42,6 +47,18 @@ export class ManualStore {
   readonly declarations = computed(() => this.owned() ? this.ticks() : {});
   readonly handoff = computed(() => this.owned() ? this.handoffValue() : null);
   readonly resumeRequired = computed(() => this.owned() && this.resume());
+  readonly detailsDraft = computed(() => this.owned() ? this.draftValue() : null);
+  readonly detailsDirty = computed(() => {
+    const saved = this.detailsValue(); const draft = this.draftValue();
+    return this.owned() && !!draft && saved?.status === 'ok' && !sameManualDetails(draft, editableManualDetails(saved.value));
+  });
+  readonly canSaveReviewDetails = computed(() => {
+    const p = this.projection(); const draft = this.detailsDraft(); const details = p.reviewDetails;
+    return this.owned() && !this.busy() && !this.resume() && !this.unknownAttempt() && this.orderValue()?.status === 'not-found'
+      && !!details && details.editable && details.canContinue && !!draft && !!p.claim && p.claim.state === 'quoted'
+      && (!p.failure || p.failure.status === 'invalid') && (this.detailsDirty() || details.reviewDetailsVersion === 0)
+      && completeManualDetails(draft, details.mode, details.constraints);
+  });
   readonly canClaim = computed(() => this.owned() && !this.busy() && !this.unknownAttempt()
     && this.orderValue()?.status === 'not-found' && this.claimValue()?.status === 'not-found' && !!this.handoffValue()?.claimInput);
   private controller = new AbortController();
@@ -63,6 +80,7 @@ export class ManualStore {
   private cancel(): void { this.epoch++; this.controller.abort(); this.controller = new AbortController(); this.operation = null; this.busy.set(false); }
   private clear(): void {
     this.cancel(); this.owner.set(null); this.active.set(false); this.claimValue.set(null); this.orderValue.set(null); this.termsValue.set(null);
+    this.detailsValue.set(null); this.draftValue.set(null);
     this.failureValue.set(null); this.handoffValue.set(null); this.ticks.set({}); this.resume.set(false); this.unknownAttempt.set(null); this.commands.clear();
   }
   /** Re-entry always reads the existing order first; a supplied stock record does not cause a POST. */
@@ -87,6 +105,7 @@ export class ManualStore {
         if (order.status === 'ok' || order.status === 'pending') {
           this.unknownAttempt.set(order.status === 'pending' || order.value?.status === 'pending' ? { lane: 'submit', pending: true } : null);
           this.claimValue.set(null); this.termsValue.set(null); this.ticks.set({});
+          this.detailsValue.set(null); this.draftValue.set(null);
         }
         return;
       }
@@ -103,7 +122,11 @@ export class ManualStore {
         const oldTerms = this.termsValue();
         if (oldTerms?.status !== 'ok' || terms.status !== 'ok' || oldTerms.value.termsDigest !== terms.value.termsDigest) this.ticks.set({});
         this.termsValue.set(terms);
-      } else this.termsValue.set(null);
+        if (claim.value.state === 'quoted') {
+          const details = await this.client.readReviewDetails(options); if (!valid()) return;
+          this.acceptDetails(details);
+        } else { this.detailsValue.set(null); this.draftValue.set(null); }
+      } else { this.termsValue.set(null); this.detailsValue.set(null); this.draftValue.set(null); }
     });
   }
   checkStatus(): Promise<void> { return this.refresh(); }
@@ -115,6 +138,37 @@ export class ManualStore {
     if (!this.owned() || this.busy() || this.resume() || this.unknownAttempt() || this.projection().order
       || !this.projection().declarations.some((d) => d.id === id) || typeof checked !== 'boolean') return;
     this.ticks.update((ticks) => ({ ...ticks, [id]: checked }));
+  }
+  setReviewDetails(details: ManualEditableDetails): void {
+    if (!this.owned() || this.busy() || this.resume() || this.unknownAttempt() || this.projection().order
+      || !this.projection().reviewDetails?.editable || !validManualEditableDetails(details)) return;
+    if (sameManualDetails(this.draftValue(), details)) return;
+    this.draftValue.set(structuredClone(details)); this.ticks.set({});
+    if (this.failureValue()?.status === 'invalid') this.failureValue.set(null);
+  }
+  saveReviewDetails(): Promise<void> {
+    if (!this.canSaveReviewDetails()) return this.operation ?? Promise.resolve();
+    const details = this.projection().reviewDetails!; const draft = structuredClone(this.detailsDraft()!);
+    const body = { holdId: details.binding.holdId, quoteId: details.binding.quoteId,
+      expectedHoldVersion: details.binding.expectedHoldVersion, expectedDraftVersion: details.binding.expectedDraftVersion,
+      expectedReviewDetailsVersion: details.reviewDetailsVersion, details: draft };
+    const command: ManualReviewDetailsCommand = { ...body, commandId: this.commandId('save-details', body) };
+    return this.run(async (valid, options) => {
+      this.failureValue.set(null); this.ticks.set({});
+      const attempt: UnknownAttempt = { lane: 'save-details', holdId: body.holdId, detailsCommand: command };
+      this.unknownAttempt.set(attempt);
+      let result: ManualResult<ManualReviewDetails>;
+      try { result = await this.client.saveReviewDetails(command, options); }
+      catch { result = { status: 'uncertain', code: 'manual-command-outcome-unknown', retryable: false }; }
+      if (!valid()) return;
+      this.failureValue.set(failed(result));
+      this.unknownAttempt.set(uncertain(result.status) ? { ...attempt, pending: result.status === 'pending' } : null);
+      if (result.status === 'ok') this.acceptDetails(result, true);
+      else if (uncertain(result.status)) {
+        const read = await this.client.readReviewDetails(options); if (!valid()) return;
+        this.acceptDetails(read);
+      }
+    });
   }
   claimSelection(): Promise<void> {
     if (!this.canClaim()) return Promise.resolve();
@@ -138,10 +192,10 @@ export class ManualStore {
   }
   submit(): Promise<void> {
     if (!this.owned() || !this.projection().canSubmit || this.orderValue()?.status !== 'not-found') return Promise.resolve();
-    const claim = this.projection().claim!; const terms = this.projection().terms!;
+    const claim = this.projection().claim!; const terms = this.projection().terms!; const details = this.projection().reviewDetails!;
     const body: Omit<ManualSubmitCommand, 'commandId'> = { source: { type: 'cart', holdId: claim.hold.holdId,
       expectedHoldVersion: claim.hold.version, expectedDraftVersion: claim.quote.draftVersion }, expectedQuoteId: claim.quote.quoteId,
-      expectedStockVersion: claim.quote.stockVersion, termsDigest: terms.termsDigest,
+      expectedStockVersion: details.stockVersion, expectedReviewDetailsVersion: details.reviewDetailsVersion, termsDigest: terms.termsDigest,
       declarations: Object.fromEntries(this.projection().declarations.map((d) => [d.id, this.ticks()[d.id] === true])) };
     const command = { ...body, commandId: this.commandId('submit', body) };
     return this.run(async (valid, options) => {
@@ -186,9 +240,38 @@ export class ManualStore {
       if (result.status === 'ok') {
         this.claimValue.set(result); this.ticks.set({});
         if (lane === 'claim') this.resume.set(false);
-        if (lane !== 'release') { const terms = await this.client.readTerms(options); if (valid()) this.termsValue.set(terms); }
+        if (lane !== 'release') {
+          const terms = await this.client.readTerms(options); if (!valid()) return; this.termsValue.set(terms);
+          const details = await this.client.readReviewDetails(options); if (valid()) this.acceptDetails(details);
+        } else { this.detailsValue.set(null); this.draftValue.set(null); }
       }
     });
+  }
+  private acceptDetails(result: ManualResult<ManualReviewDetails>, saved = false): void {
+    const old = this.detailsValue(); const dirty = this.detailsDirty();
+    if (result.status !== 'ok') {
+      if (old?.status !== 'ok') this.detailsValue.set(result);
+      this.failureValue.set(result); return;
+    }
+    if (!isManualReviewDetails(result.value)) {
+      this.failureValue.set({ status: 'unavailable', code: 'manual-response-invalid', retryable: false }); return;
+    }
+    const value = result.value; const claim = this.claimValue();
+    const matchesClaim = claim?.status === 'ok' && manualDetailsMatchClaim(value, claim.value);
+    if (old?.status !== 'ok' || old.value.reviewDetailsVersion !== value.reviewDetailsVersion
+      || !sameManualDetails(old.value.binding, value.binding) || old.value.stockVersion !== value.stockVersion
+      || !sameManualDetails(old.value.details, value.details) || !sameManualDetails(old.value.constraints, value.constraints)) this.ticks.set({});
+    const sameBinding = old?.status === 'ok' && old.value.binding.holdId === value.binding.holdId
+      && old.value.binding.quoteId === value.binding.quoteId && old.value.binding.expectedDraftVersion === value.binding.expectedDraftVersion;
+    this.detailsValue.set(result);
+    const unknown = this.unknownAttempt(); const command = unknown?.detailsCommand;
+    const reconciled = unknown?.lane === 'save-details' && !!command && matchesClaim
+      && value.binding.holdId === command.holdId && value.binding.quoteId === command.quoteId
+      && value.binding.expectedHoldVersion === command.expectedHoldVersion && value.binding.expectedDraftVersion === command.expectedDraftVersion
+      && value.reviewDetailsVersion === command.expectedReviewDetailsVersion + 1 && sameManualDetails(value.details, command.details);
+    if (reconciled) { this.unknownAttempt.set(null); this.failureValue.set(null); }
+    if (matchesClaim && (saved || reconciled || !dirty || !sameBinding)) this.draftValue.set(editableManualDetails(value));
+    else if (!matchesClaim) this.draftValue.set(null);
   }
   private run(work: (valid: () => boolean, options: { signal: AbortSignal }) => Promise<void>): Promise<void> {
     if (!this.owned() || this.busy() || this.destroyed) return this.operation ?? Promise.resolve();
