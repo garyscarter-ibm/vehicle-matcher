@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:33:42Z",
+      "observed_at": "2026-11-17T06:39:22Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T06:32:52.848297+00:00",
-      "note": "Provider-shape three exact PG cases passed; computed HR/stock variation and invalid-HR failclosed verified, independent sourcePASS. Integrated39f95cb1c. Both originalAC open. Existing8pointallocation held at increment boundary, no current execution; nativeToDo preserved.",
+      "note": "DonaldDuck3 executing read-only startup/JWKS/connectedjourney readiness on current7d5020c46. Prior integrated shape3/HTTPconsumer10/adapter65 evidence retained; no newsource/result/runtime thispass. BothoriginalACremainopen; nativeToDopreserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8920,6 +8920,15 @@
           "expires_at": "2026-11-17T06:33:42.708531+00:00",
           "source": "dispatcher0626",
           "status": "terminal3pass/0skip;74identities/7groups/scratch absent,registryempty,integrated39f95cb1c. No current runtime/worker."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 next startup or signed-in connected-substitute source readiness",
+          "observed_at": "2026-11-17T06:39:22.530587+00:00",
+          "expires_at": "2026-11-17T06:54:22.530587+00:00",
+          "source": "codex-fucq481-connected-startup-next-18",
+          "status": "executing actual source tools in current18turn compactrev8; allproductreadonly, no runtime; requestedselectedSol/high, nofallback/descendants"
         }
       ]
     }
