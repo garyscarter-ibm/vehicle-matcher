@@ -18,6 +18,6 @@ const privateRoute = /^(?:account|preferences|stock|manual\/(?:review|summary)|a
 export function safeReturnTo(value: string | null | undefined): string {
   if (!value?.startsWith('/gcsp/')) return '/gcsp/';
   const path = value.slice('/gcsp/'.length).split(/[?#]/)[0];
-  if (!privateRoute.test(path) || /[\\\u0000-\u0020]/.test(value)) return '/gcsp/';
+  if ((path !== '' && !privateRoute.test(path)) || /[\\\u0000-\u0020]/.test(value)) return '/gcsp/';
   return value;
 }

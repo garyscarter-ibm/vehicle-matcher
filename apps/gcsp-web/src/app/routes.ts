@@ -6,7 +6,7 @@ import { StatePageComponent } from './pages/state-page.component';
 const feature = (path: string, title: string, roles: readonly Role[]) => ({ path, component: StatePageComponent, canActivate: [sessionGuard], data: { title, roles } });
 const leaveManual: CanDeactivateFn<ManualRouteComponent> = (component, _current, _state, next) => component.canLeave(next.url);
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', component: StatePageComponent, canActivate: [landingGuard] },
+  { path: '', pathMatch: 'full', component: StatePageComponent, canActivate: [landingGuard], runGuardsAndResolvers: 'always' },
   { path: 'sign-in', component: StatePageComponent, data: { kind: 'sign-in' } },
   { path: 'auth/callback', component: StatePageComponent, data: { kind: 'callback' } },
   { path: 'account', loadComponent: () => import('./account/account.component').then((m) => m.AccountComponent), canActivate: [sessionGuard], data: { title: 'Your cars', roles: ['employee'] } },

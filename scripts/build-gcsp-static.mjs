@@ -13,7 +13,7 @@ const hashed = /-[A-Za-z0-9_-]{8,}\.[a-z0-9]+$/u;
 const publicFile = /\.(?:html|js|css|svg|png|jpe?g|webp|avif|gif|ico|woff2?|ttf|otf|json)$/u;
 export const GCSP_FIXED_ROUTES = Object.freeze(['/gcsp/', '/gcsp/sign-in', '/gcsp/auth/callback', '/gcsp/account', '/gcsp/preferences',
   '/gcsp/stock', '/gcsp/manual/review', '/gcsp/manual/summary', '/gcsp/activity', '/gcsp/orders', '/gcsp/help', '/gcsp/greg',
-  '/gcsp/greg/cases', '/gcsp/presenter', '/gcsp/presenter/outbox', '/gcsp/components', '/gcsp/access-denied', '/gcsp/unavailable']);
+  '/gcsp/greg/cases', '/gcsp/comparison', '/gcsp/presenter', '/gcsp/presenter/outbox', '/gcsp/components', '/gcsp/access-denied', '/gcsp/unavailable']);
 
 async function compiledFiles(root, relative = '') {
   const files = [];

@@ -34,7 +34,8 @@ export function renderLauncher(root, initialContext, { input = window.location.h
     const base = new URL(buildEntryUrl(new URL(brandChangeUrl(input, brand), input), { experience: 'launcher' }), input);
     const usedCars = changed ? buildEntryUrl(base, { experience: 'used-cars' })
       : retailReturnUrl(input, { brand, storage: window.sessionStorage });
-    const context = resolveEntryContext(base, { employeeAvailable: initialContext.employeeAvailable });
+    const context = resolveEntryContext(base, { employeeAvailable: initialContext.employeeAvailable,
+      employeeFrontendUrl: initialContext.employeeFrontendUrl });
     header.firstChild.href = context.links.launcher;
     selection.textContent = brand ? `Selected brand: ${BRAND_LABELS[brand] || brand}` : 'All six brands available for Used cars. Employee cars supports BMW.';
     const supported = brand === 'bmw';
