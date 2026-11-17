@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T11:01:50Z",
+      "observed_at": "2026-11-17T11:04:24Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:53:54.947Z",
-      "note": "Ordering startup hookup tested/reviewed and prepared for serial integration. Ordering startup source2f93f830b0e: actual CDI selector/bindings/holder plus selected remote GET; 11 selected passes/0failures/errors/skips19.4s, independent review28PASS, parent audit42identities+supervisor/4groups/scratch/reservation clear. No Holder database/JWT/fullorder-status proof; both originalACopen.",
+      "note": "Ordering startup hookup integrated/pushed3e0235593;11selectedpasses/review28PASS/auditclear. Next disjoint originalAC2 composition21 allocated to same Claude watcher. Matching execution ACK observed 2026-11-17T11:04:12Z. Both originalACopen; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9109,6 +9109,15 @@
           "observed_at": "2026-11-17T10:50:06Z",
           "expires_at": "2026-11-17T10:55:30Z",
           "status": "Terminal10:55:30 source2f93f830b0e; parent11passes/review28PASS/independentteardownclear. No current source execution."
+        },
+        {
+          "name": "Existing successor Claude helper",
+          "harness": "claude-code",
+          "role": "Generated claim/JWT decision to actual selected Holder remote durable acknowledgement source",
+          "source": "claude-assist-fucq481-generated-remote-ordering-2026-11-17-21",
+          "observed_at": "2026-11-17T11:04:12Z",
+          "expires_at": "2026-11-17T11:19:12+00:00",
+          "status": "Matching execution ACK observed 2026-11-17T11:04:12Z; source-only four new files; no runtime/acceptance claim."
         }
       ]
     }
