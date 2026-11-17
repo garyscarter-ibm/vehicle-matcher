@@ -1,7 +1,8 @@
 # Development stories
 
 **Keep this folder clear. It holds only the dev queue:** `README.md`, `story-template.md`, `code-inbox/`,
-`cowork-inbox/`, `in-progress/` and `done/`. Hand-overs, notes and drafts go elsewhere in the project, never here.
+`cowork-inbox/`, `in-progress/`, `done/` and the batch-run log `batches.md` (one line per full-suite run after a
+batch of merges). Hand-overs, notes and drafts go elsewhere in the project, never here.
 
 Cowork posts a user story to `code-inbox/` when a request needs code. A Claude Code session started with "start the dev
 poller" builds it on its own branch, merges it once its tests pass (or leaves it for review, if the project's merge
