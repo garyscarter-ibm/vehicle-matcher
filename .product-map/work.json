@@ -7325,7 +7325,7 @@
     {
       "assignee": "",
       "id": "FUCQ-464",
-      "observed_at": "2026-11-17T11:53:22Z",
+      "observed_at": "2026-11-17T14:31:52Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Allocate Buddy offers and reconcile holds",
@@ -7370,9 +7370,10 @@
         },
         {
           "id": "composition-proof",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Started-app OIDC/PostgreSQL journeys for release allocation (AC1) and remote custody/restart (AC2)",
-          "observed_at": "2026-11-17T11:51:31Z"
+          "observed_at": "2026-11-17T14:31:52Z",
+          "evidence": "Spike review of Hubie journeys: BuddyAllocationJourneyHttpTest 1/1 (AC1 via presenter tick, supply release) and BuddyRemoteCustodyJourneyHttpTest 1/1 (AC2 lost execute/reconcile, startup tick, expiry release) over RS256 JWT + native PG17"
         },
         {
           "id": "docs-config",
@@ -7383,9 +7384,9 @@
         },
         {
           "id": "integration",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Integration: base merge, full Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-17T11:03:08Z",
+          "observed_at": "2026-11-17T14:31:52Z",
           "evidence": "merged origin/gcsp-poc-dev at 82b67ed0e; ./mvnw -B verify 953 run, 0 fail, 2 skipped, native PG 17"
         }
       ]
