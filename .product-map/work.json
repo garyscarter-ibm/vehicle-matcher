@@ -9786,7 +9786,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T20:48:35Z",
+      "observed_at": "2026-11-17T20:50:21Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9928,9 +9928,9 @@
           "harness": "claude-code",
           "role": "component parity test source implementer",
           "source": "claude-assist-fucq441-component-java-parity-2026-11-17-37",
-          "observed_at": "2026-11-17T20:32:13Z",
-          "expires_at": "2026-11-17T20:47:13Z",
-          "status": "held; execution unverified; source-start ACK20:32:13UTC expired20:47:13UTC; same-assignment checkpoint amendment published, receipt unconfirmed"
+          "observed_at": "2026-11-17T20:48:37Z",
+          "expires_at": "2026-11-17T21:03:37Z",
+          "status": "active; fresh same-assignment checkpoint plus parent-observed allocated uncommitted source; original helper writes37, successor owns watcher38onward; no runtime/acceptance"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
