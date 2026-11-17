@@ -7432,7 +7432,7 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-14T08:43:02Z",
+      "observed_at": "2026-11-17T15:52:49Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
@@ -7457,9 +7457,25 @@
         {
           "id": "s3-integration",
           "status": "complete",
-          "title": "Story validation, base merge, full Java verify and result",
+          "title": "Story validation, base merge, full Java verify and result (first run)",
           "observed_at": "2026-11-14T08:43:02Z",
           "evidence": "lead review of be5cb84a9 and base merge 056237310; ./mvnw -B clean verify 941/0/0/0 (ordering 33, approvals 36) on native PG17 :55468"
+        },
+        {
+          "id": "r2-journey-synthetic",
+          "status": "in-progress",
+          "title": "Reopened: started dev composition proof of AC1 cart handoff (review-details freeze, refusals, acknowledged reference) with synthetic ordering",
+          "observed_at": "2026-11-17T15:52:49Z"
+        },
+        {
+          "id": "r2-remote-faults",
+          "status": "not-started",
+          "title": "Reopened: started composition proof of refused, lost acknowledgement, repeated command and restart over a loopback remote ordering endpoint"
+        },
+        {
+          "id": "r2-integration",
+          "status": "not-started",
+          "title": "Reopened: base merge, scoped story test set and Result"
         }
       ]
     },
