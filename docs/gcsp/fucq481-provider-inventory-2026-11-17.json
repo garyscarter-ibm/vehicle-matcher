@@ -18,9 +18,9 @@
   },
   "evidenceNote": "Initial inventory was static source reading at sourceSha. The three currentReconciliation records additionally reference matching retained component/startup/partial-composition executions. Other named test references remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
   "counts": {
-    "default-unconfigured": 19,
+    "default-unconfigured": 17,
     "local-bound": 13,
-    "partial": 26,
+    "partial": 28,
     "unverified-runtime": 1
   },
   "ports": [
@@ -645,37 +645,59 @@
           "class": "UnconfiguredCandidates",
           "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/UnconfiguredCandidates.java:9",
           "kind": "unconfigured-default"
+        },
+        {
+          "class": "RecommendationCandidates",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/RecommendationCandidates.java:26",
+          "kind": "canonical-frozen-request-adapter"
         }
       ],
       "selection": {
-        "mechanism": "@DefaultBean @ApplicationScoped; only implementation in main",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/UnconfiguredCandidates.java:9",
-        "configKey": "(none)",
-        "envVar": "(none)",
-        "default": "recommendation-unavailable",
-        "propertiesRef": "none",
-        "unsetYields": "Unavailable recommendation-unavailable (UnconfiguredCandidates.java:13)",
-        "unknownValue": "not applicable"
+        "mechanism": "Startup normal CDI producer overrides DefaultBean; no silent fallback",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/CandidatesSelection.java:30",
+        "configKey": "gcsp.allocation.candidates.provider",
+        "envVar": "GCSP_ALLOCATION_CANDIDATES_PROVIDER",
+        "propertiesRef": "ConfigProperty on CandidatesSelection; no application.properties edit",
+        "default": "none; recommendation selectable",
+        "unsetYields": "UnconfiguredCandidates answers recommendation-unavailable; blank also selects none",
+        "unknownValue": "IllegalStateException from actual PostConstruct initializer; full failed-app bootstrap unrun"
       },
       "consumers": [
-        "services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8"
+        "services/gcsp-api/src/main/java/gcsp/api/allocation/Prepare.java",
+        "services/gcsp-api/src/main/java/gcsp/api/allocation/BuddyRemoteLifecycle.java:318"
       ],
-      "failure": "Unavailable refusal.",
+      "failure": "Default none refuses; malformed/unavailable canonical input refuses; no fabricated facts. Later-clock pending claim may release prematurely: confirmed Medium FUCQ-516 capture-only.",
       "silentFallback": false,
       "demoPreparation": "none found",
-      "status": "default-unconfigured",
-      "statusWhy": "Only UnconfiguredCandidates ships; this crosses into worker B (allocation), so named and not traced further.",
+      "status": "partial",
+      "statusWhy": "Real canonical adapter now selectable. Thirteen matching focused cases cover projection, actual selected CDI injection and PG claim/offer production at one instant; later-clock case characterizes premature release, not successful recovery. Full remote/HTTP/order composition remains open.",
       "evidence": [
         {
-          "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/AllocationTest.java:31",
-          "kind": "synthetic"
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
+          "kind": "contract-tested",
+          "result": "8 exact real-engine mapping/provenance/shape methods passed at37b2d964d; source unchanged by test-only correction"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/CandidatesSelectionTest.java",
+          "kind": "contract-tested",
+          "result": "3 exact startup/default/refusal methods passed, including actual injected recommendation adapter; unknown configured initializer tested, not full failed-app boot"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/CanonicalCandidatesPgTest.java",
+          "kind": "contract-tested",
+          "result": "2 exact nativePG methods have matching passes across37b2d964d/71a219f28. Same-instant creates real canonical quote/claim/offer through scripted remote. Later-clock confirms F516. Initial quote JsonNode assertion failure retained; only affected method rerun after Canonical.json assertion correction."
         }
       ],
       "gaps": [
-        "No adapter connects the recommendation engine to allocation candidates."
+        "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+        "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+        "Full generated claim -> signed-in decision -> actual order/status through startup-selected remote substitute, browser/hostedOIDC, actual email and BMW proof remain open.",
+        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion."
       ],
       "bmwGap": "none",
-      "side": "read/input"
+      "side": "read/input",
+      "observedAt": "2026-11-17T07:27:14.076549+00:00",
+      "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4"
     },
     {
       "port": "SupplyProvider",
@@ -1641,40 +1663,57 @@
           "kind": "unconfigured-default"
         },
         {
-          "class": "ScriptedCandidates (test double)",
-          "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/ScriptedCandidates.java",
-          "kind": "synthetic"
+          "class": "RecommendationCandidates",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/RecommendationCandidates.java:26",
+          "kind": "canonical-frozen-request-adapter"
         }
       ],
       "selection": {
-        "mechanism": "CDI @DefaultBean only; no config key selects it",
-        "ref": null,
-        "configKey": null,
-        "envVar": null,
-        "propertiesRef": null,
-        "default": "default bean",
-        "unsetYields": "UnconfiguredCandidates answers recommendation-unavailable",
-        "unknownValue": "not applicable (no key)"
+        "mechanism": "Startup normal CDI producer overrides DefaultBean; no silent fallback",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/recommendation/CandidatesSelection.java:30",
+        "configKey": "gcsp.allocation.candidates.provider",
+        "envVar": "GCSP_ALLOCATION_CANDIDATES_PROVIDER",
+        "propertiesRef": "ConfigProperty on CandidatesSelection; no application.properties edit",
+        "default": "none; recommendation selectable",
+        "unsetYields": "UnconfiguredCandidates answers recommendation-unavailable; blank also selects none",
+        "unknownValue": "IllegalStateException from actual PostConstruct initializer; full failed-app bootstrap unrun"
       },
       "consumers": [
-        "allocation/AllocationService.java:53"
+        "services/gcsp-api/src/main/java/gcsp/api/allocation/Prepare.java",
+        "services/gcsp-api/src/main/java/gcsp/api/allocation/BuddyRemoteLifecycle.java:318"
       ],
-      "failure": "Answers recommendation-unavailable.",
+      "failure": "Default none refuses; malformed/unavailable canonical input refuses; no fabricated facts. Later-clock pending claim may release prematurely: confirmed Medium FUCQ-516 capture-only.",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "default-unconfigured",
-      "statusWhy": "No real binding in main; StoredSubjectEvaluator does not implement it.",
+      "status": "partial",
+      "statusWhy": "Real canonical adapter now selectable. Thirteen matching focused cases cover projection, actual selected CDI injection and PG claim/offer production at one instant; later-clock case characterizes premature release, not successful recovery. Full remote/HTTP/order composition remains open.",
       "evidence": [
         {
-          "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/AllocationTest.java:31",
-          "kind": "contract-tested"
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
+          "kind": "contract-tested",
+          "result": "8 exact real-engine mapping/provenance/shape methods passed at37b2d964d; source unchanged by test-only correction"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/CandidatesSelectionTest.java",
+          "kind": "contract-tested",
+          "result": "3 exact startup/default/refusal methods passed, including actual injected recommendation adapter; unknown configured initializer tested, not full failed-app boot"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/CanonicalCandidatesPgTest.java",
+          "kind": "contract-tested",
+          "result": "2 exact nativePG methods have matching passes across37b2d964d/71a219f28. Same-instant creates real canonical quote/claim/offer through scripted remote. Later-clock confirms F516. Initial quote JsonNode assertion failure retained; only affected method rerun after Canonical.json assertion correction."
         }
       ],
       "gaps": [
-        "Buddy offers cannot be produced at runtime from main wiring."
+        "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
+        "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
+        "Full generated claim -> signed-in decision -> actual order/status through startup-selected remote substitute, browser/hostedOIDC, actual email and BMW proof remain open.",
+        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "observedAt": "2026-11-17T07:27:14.076778+00:00",
+      "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4"
     },
     {
       "port": "OfferFacts",
@@ -3388,17 +3427,29 @@
     "Some line numbers for implementations declared inside selection/wiring files point at the switch or producer, not a class declaration.",
     "No descendants were used.",
     "Cross-domain records overlap and several records group multiple contracts; this is an inventory increment, not an asserted unique-port census. Parent corrected stale blueprint and PostgreSQL-evidence statements before integration; source facts were sampled, not all semantically reverified.",
-    "Current reconciliation updates only three records after initial inventory: remote provider source and selected execution now exist. Unchanged rows/line numbers retain the original observation; no new runtime was run for this documentation update."
+    "Current reconciliation updates only three records after initial inventory: remote provider source and selected execution now exist. Unchanged rows/line numbers retain the original observation; no new runtime was run for this documentation update.",
+    "Second current reconciliation updates only two EligibleCandidates records at97cd67aa4 using13 matching focused passes and independent source review. F516 captures failed later-clock recovery. No complete remote journey or verified-live evidence; earlier source-only notes describe the initial observation."
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T07:03:16.962620+00:00",
-    "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0",
+    "observedAt": "2026-11-17T07:27:14.076818+00:00",
+    "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4",
     "ports": [
-      "ClaimStockPort",
-      "RemoteBuddy",
-      "OfferDecision (decision route over RemoteBuddy)"
+      "EligibleCandidates (read/input)",
+      "EligibleCandidates (action/event)"
     ],
-    "basis": "Reconciled these three records to integrated source and matching retained execution; all other rows retain their original source observation. No new test execution, complete inventory census or original AC completion is claimed."
-  }
+    "basis": "Only these two cross-domain records updated to delivered adapter/startup source and13 matching scoped native passes;57other records preserved from their own observations. Initial13run had12passes/1test assertion failure; corrected affected method passed separately. F516confirmed/captureonly; neither originalAC complete."
+  },
+  "reconciliationHistory": [
+    {
+      "observedAt": "2026-11-17T07:03:16.962620+00:00",
+      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0",
+      "ports": [
+        "ClaimStockPort",
+        "RemoteBuddy",
+        "OfferDecision (decision route over RemoteBuddy)"
+      ],
+      "basis": "Reconciled these three records to integrated source and matching retained execution; all other rows retain their original source observation. No new test execution, complete inventory census or original AC completion is claimed."
+    }
+  ]
 }
