@@ -7909,7 +7909,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-17T11:50:23Z",
+      "observed_at": "2026-11-17T14:24:40Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7954,14 +7954,17 @@
         },
         {
           "id": "r2-handlers",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock",
-          "observed_at": "2026-11-17T11:50:23Z"
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review of a82d24255+4440b0e74+79d1ce3b4: manual-claim-expiry, buddy-expiry, buddy-pending-operations (remote), buddy-allocation (only with a candidates provider), production handlers bound; scoped presenter clock 16/0, rs-final 164/0 at 8cd16d928+slice"
         },
         {
           "id": "r2-run-scope",
-          "status": "not-started",
-          "title": "Reopened: principal follows the active run (FUCQ-506) and presenter/clock/reset route"
+          "status": "complete",
+          "title": "Reopened: principal follows the active run (FUCQ-506) and presenter/clock/reset route",
+          "observed_at": "2026-11-17T14:24:40Z",
+          "evidence": "Lead review: ActiveRunPrincipal bound in BearerAuthentication (FUCQ-506; test fails without it), POST /presenter/clock/reset registered as mechanics-scenario reset; rs-final 164/0 scoped"
         },
         {
           "id": "r2-ac2-proofs",

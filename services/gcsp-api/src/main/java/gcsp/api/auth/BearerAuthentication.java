@@ -1,5 +1,6 @@
 package gcsp.api.auth;
 
+import gcsp.api.clock.ActiveRunPrincipal;
 import gcsp.api.identity.IdentityPort;
 import gcsp.api.identity.IdentityResult;
 import gcsp.api.identity.Principal;
@@ -13,6 +14,9 @@ public class BearerAuthentication {
     @Inject
     IdentityPort identity;
 
+    @Inject
+    ActiveRunPrincipal activeRun;
+
     public Principal authenticate(String authorizationHeader) {
         if (authorizationHeader == null || authorizationHeader.isBlank()) {
             throw new IdentityRefusal(401, "unauthenticated", "bearer-missing", "Sign in to continue.", false);
@@ -23,7 +27,7 @@ public class BearerAuthentication {
         }
         IdentityResult result = identity.resolve(token);
         if (result instanceof IdentityResult.Resolved r) {
-            return r.principal();
+            return activeRun.bind(r.principal());
         }
         if (result instanceof IdentityResult.Rejected r) {
             throw new IdentityRefusal(401, "unauthenticated", r.code(), "Sign in to continue.", false);
