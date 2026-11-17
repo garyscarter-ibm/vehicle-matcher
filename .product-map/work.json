@@ -7847,7 +7847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-17T12:24:09Z",
+      "observed_at": "2026-11-17T12:48:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7892,14 +7892,16 @@
         },
         {
           "id": "s6-inventory-routes",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production",
-          "observed_at": "2026-11-17T12:24:09Z"
+          "observed_at": "2026-11-17T12:48:50Z",
+          "evidence": "Lead-reviewed 20bcb771b: GregOrdersResource registers GET/POST /greg/orders, POST /greg/orders/queue (Greg) and POST /presenter/production (presenter, expectedVersion + commandId receipt); manual line reuses durable submit path, replan ignores manual: submissions; GregOrdersHttpTest 6/6, scoped production set 61/61"
         },
         {
           "id": "s7-reintegration",
-          "status": "not-started",
-          "title": "Reopened-story validation through the started app, merged-tree verify and result"
+          "status": "in-progress",
+          "title": "Reopened-story validation through the started app, merged-tree verify and result",
+          "observed_at": "2026-11-17T12:48:50Z"
         }
       ]
     },
