@@ -25,6 +25,7 @@ public class ReturnOutcomeJourneyProfile implements QuarkusTestProfile {
         m.put("gcsp.returns.provider", "synthetic");
         m.putAll(ReturnJourneyProfile.supply());
         m.put("gcsp.returns.policy-file", writePolicy().toString());
+        m.merge("quarkus.arc.exclude-types", "gcsp.api.offers.OffersTestPorts$Records", (a, b) -> a + "," + b);
         if ("true".equals(m.get("quarkus.datasource.active"))) {
             m.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", SCHEMA);
             m.put("quarkus.flyway.schemas", SCHEMA);

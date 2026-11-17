@@ -1,8 +1,6 @@
 package gcsp.api.appointments;
 
 import io.quarkus.test.junit.QuarkusTestProfile;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +17,7 @@ public class ReturnJourneyProfile implements QuarkusTestProfile {
         Map<String, String> m = new HashMap<>(new HandoverJourneyProfile().getConfigOverrides());
         m.put("gcsp.returns.provider", "synthetic");
         m.putAll(supply());
+        m.merge("quarkus.arc.exclude-types", "gcsp.api.offers.OffersTestPorts$Records", (a, b) -> a + "," + b);
         if ("true".equals(m.get("quarkus.datasource.active"))) {
             m.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", SCHEMA);
             m.put("quarkus.flyway.schemas", SCHEMA);
@@ -27,18 +26,9 @@ public class ReturnJourneyProfile implements QuarkusTestProfile {
         return m;
     }
 
-    /** Return time is the last supply tick, so supply is configured as deployed, on ids that never meet the seeded cars. */
+    /** The dev composition's selected supply (SupplyDevCompositionProfile): demo provider, PolicyService release policy. */
     static Map<String, String> supply() {
-        try {
-            Path plan = Path.of("target/return-journey-tranche-plan.json").toAbsolutePath();
-            Files.createDirectories(plan.getParent());
-            Files.writeString(plan, Files.readString(Path.of("src/test/resources/supply/tranche-plan.json"))
-                    .replace("-00000000000", "-0000000000f"));
-            return Map.of("gcsp.supply.provider", "tranche-plan", "gcsp.supply.tranche-plan-file", plan.toString(),
-                    "gcsp.supply.policy-file", Path.of("src/test/resources/supply/policy.json").toAbsolutePath().toString());
-        } catch (java.io.IOException e) {
-            throw new IllegalStateException(e);
-        }
+        return Map.of("gcsp.supply.provider", "demo");
     }
 
     @Override
