@@ -9864,7 +9864,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T21:50:05Z",
+      "observed_at": "2026-11-17T22:05:18Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10042,12 +10042,13 @@
           "harness": "claude-code",
           "role": "supervisor source",
           "source": "claude-assist-fucq441-connected-supervisor-source-2026-11-17-41",
-          "observed_at": "2026-11-17T21:49:09Z",
-          "expires_at": "2026-11-17T22:04:09+00:00",
-          "status": "active source-only preparation: detailed checkpoint answered; supervisor source still pending",
-          "dispatcher_observed_at": "2026-11-17T21:50:04.367453+00:00",
+          "observed_at": "2026-11-17T22:04:21Z",
+          "expires_at": "2026-11-17T22:19:21+00:00",
+          "status": "active source-only supervisor authorship: successor actual execution ACK",
+          "dispatcher_observed_at": "2026-11-17T22:05:17.017437+00:00",
           "checkpoint_requested_at": "2026-11-17T21:48:02.220754+00:00",
-          "checkpoint_answered_at": "2026-11-17T21:49:09Z"
+          "checkpoint_answered_at": "2026-11-17T21:49:09Z",
+          "session": "local_19c60623"
         },
         {
           "name": "Toothless 2",
@@ -10061,7 +10062,7 @@
       ],
       "jira_observed_at": "2026-11-17T21:47:38.426Z",
       "native_observed_at": "2026-11-17T21:47:38.426Z",
-      "note": "Producer34/consumer35/component37 selected evidence retained; corrected connected proof source independently reviewed and integrated. Both originalAC OPEN; connected builds/runtime UNRUN. Supervisor41 initial checkpoint expired21:46:49Z; same-allocation request21:48:02Z answered21:49:09Z with detailed actual source reading and current supervisor authorship. Active source preparation; no saved source/result yet at21:49:41Z. Model/effort are self-reported and effective values independently unverified. No runtime or duplicate watcher."
+      "note": "Producer34/consumer35/component37 selected evidence retained; corrected connected proof source independently reviewed and integrated. Both originalAC OPEN; connected builds/runtime UNRUN. Original41 helper reported handover/watch stopped22:03:56Z; SAME retained helper role successor local_19c60623 actual source execution re-ACK22:04:21Z. No saved supervisor/result at22:04:43Z. Active source-only preparation, not completed supervisor delivery. No new coordinator/children/runtime."
     }
   ],
   "version": 1
