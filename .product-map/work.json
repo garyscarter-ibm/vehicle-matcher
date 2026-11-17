@@ -7065,7 +7065,7 @@
     {
       "assignee": "",
       "id": "FUCQ-458",
-      "observed_at": "2026-11-17T10:53:54Z",
+      "observed_at": "2026-11-17T11:32:38Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Resolve employee/account context through replaceable ports",
@@ -7096,19 +7096,24 @@
         },
         {
           "id": "policy-binding",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Bind AccountPolicyPort to the canonical PolicyService and prove account reads with real policy",
-          "observed_at": "2026-11-17T10:53:54Z"
+          "observed_at": "2026-11-17T11:14:59Z",
+          "evidence": "Lead-reviewed 025b09da0: AccountPolicyPort bound to PolicyAccountAdapter over PolicyService; AccountHttp/RepositoryHttp exact Node goldens pass on the real bean (no mock); account+policy+returns+ordering 194 run 0 fail on native PG17"
         },
         {
           "id": "current-car-binding",
-          "status": "not-started",
-          "title": "Bind CurrentCarPort to the returns current-car store"
+          "status": "complete",
+          "title": "Bind CurrentCarPort to the returns current-car store",
+          "observed_at": "2026-11-17T11:14:59Z",
+          "evidence": "Lead-reviewed 025b09da0: CurrentCarPort bound to ReturnsCurrentCarRelationships over returns.CurrentCarStore.listForEmployee (employee index + one ANY events query); CurrentCarListTest 3 and RepositoryHttp relationship test pass"
         },
         {
           "id": "dev-config-proof",
-          "status": "not-started",
-          "title": "Documented dev config gives a working account read; repository and hr-snapshot equivalence through the started app; ordering context"
+          "status": "complete",
+          "title": "Documented dev config gives a working account read; repository and hr-snapshot equivalence through the started app; ordering context",
+          "observed_at": "2026-11-17T11:32:38Z",
+          "evidence": "Lead-reviewed slice 2: AccountDevComposition* 11 tests on the documented dev config (oidc, repository+demo seeding, real PolicyService, no mocks): 4 demo employees served; HTTP equals in-process AccountService over the other shape both ways (repository app vs hr-snapshot, hr-snapshot app vs repository); /manual/order 404 not 503"
         },
         {
           "id": "integration",
