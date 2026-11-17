@@ -8723,43 +8723,43 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T07:09:54Z",
+      "observed_at": "2026-11-17T07:29:54Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T07:05:01.959Z",
-      "note": "Inventory three stale remote-provider/offer records reconciled and pushed c60412730 with retained65/10/3/1 evidence and original limits. Readiness20 terminal: EligibleCandidates still unconfigured. New exact5file adapter/selector/test source21 executing; actual fixture/parity source reads observed. No new code returned, tests or runtime granted; both originalAC open and nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T07:29:09.922Z",
+      "note": "Canonical candidate adapter/startup selector integrated97cd67aa4;13matching focused passes (12initial plus affected1after test-only canonicalJSONassertion correction), independent source review PASS, both attempts teardown verified. F516Mediumcaptureonly confirms laterclockprematurerelease. Inventory2candidate records/log9ff4fb489. Readiness22 actual source inspection executing; no source/runtime grant, both originalAC open/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:09:54.535Z",
-          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census."
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
         },
         {
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T06:56:23.137785+00:00",
-          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen."
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
         },
         {
           "id": "local-composition",
           "title": "Selected local read and transactional journey composition",
           "status": "in-progress",
-          "observed_at": "2026-11-17T06:33:42.708531+00:00",
-          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven."
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "evidence": "Actual public HR factory/static supply selector -> StockRelease/privatePG -> ReleasedStockRecommendationSource/RecommendationService: three exact cases passed at7128e2642, reviewed Imhotep2, integrated39f95cb1c. Computed HR/stock variation and failclosed only; application startup/wholejourney not proven. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
         },
         {
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T06:56:23.137785+00:00",
-          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen."
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
         },
         {
           "id": "integration",
@@ -8961,10 +8961,37 @@
           "name": "Donald Duck 3",
           "harness": "codex",
           "role": "F481 source-only canonical candidate adapter and startup selector lead",
-          "observed_at": "2026-11-17T07:09:54.535Z",
-          "expires_at": "2026-11-17T07:24:54.535000+00:00",
+          "observed_at": "2026-11-17T07:19:43Z",
+          "expires_at": "2026-11-17T07:19:43Z",
           "source": "codex-fucq481-canonical-candidates-21",
-          "status": "executing source21: acknowledged allocation and actual fixture/parity source reads; no runtime. Requested/selectedSol/high,nofallback, effectiveindependentlyunverified, titletoolverified."
+          "status": "terminalsource21 collected; parent correction/test/review/integration97cd67aa4 complete; no current source execution. Requestedselected Sol/high,nofallback,effectiveindependentlyunverified."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent canonical candidate source reviewer",
+          "observed_at": "2026-11-17T07:24:15.648523+00:00",
+          "expires_at": "2026-11-17T07:24:15.648523+00:00",
+          "source": "codex-fucq481-canonical-candidates-review-21",
+          "status": "terminalPASS/no blocking or major finding at exact71a219f28; requestedselectedSol/high,nofallback; no runtime."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "13selectedmethods, canonicalJSONassertioncorrection, cleanupaudit and integration",
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "expires_at": "2026-11-17T07:29:54.291Z",
+          "source": "dispatcher0712",
+          "status": "terminal13matchingpasses across twoattempts, failurepreserved;71/57identities and7groups each, scratch/reservations clear. Integrated97cd67aa4, F516capturedonly."
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "Read-only generated-claim/authenticated-decision composition readiness",
+          "observed_at": "2026-11-17T07:29:54.291Z",
+          "expires_at": "2026-11-17T07:44:54.635159+00:00",
+          "source": "codex-fucq481-generated-claim-readiness-22",
+          "status": "executingreadiness22; actual producer/OIDCtestsource reads verified. No productwrites/runtime granted. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
         }
       ]
     }
