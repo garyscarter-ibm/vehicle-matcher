@@ -7632,7 +7632,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T08:04:36Z",
+      "observed_at": "2026-11-17T11:36:21Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7674,6 +7674,27 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:36Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        },
+        {
+          "id": "s6-bindings",
+          "status": "in-progress",
+          "title": "Real stage, readiness, document case and approvals handover adapters bound at startup",
+          "observed_at": "2026-11-17T11:36:21Z"
+        },
+        {
+          "id": "s7-no-show",
+          "status": "not-started",
+          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)"
+        },
+        {
+          "id": "s8-journey",
+          "status": "not-started",
+          "title": "Integrated journey through the started app with real adapters; dev config documented"
+        },
+        {
+          "id": "s9-integration-r2",
+          "status": "not-started",
+          "title": "Reopened: base merge, Java verify and result"
         }
       ]
     },
