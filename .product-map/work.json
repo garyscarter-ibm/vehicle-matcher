@@ -7211,42 +7211,6 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-465",
-      "observed_at": "2026-11-17T19:53:16Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Resolve offer links under OIDC ownership",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465",
-      "slices": [
-        {
-          "id": "access",
-          "status": "complete",
-          "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
-          "observed_at": "2026-11-14T07:33:53Z",
-          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
-        },
-        {
-          "id": "postgres",
-          "status": "complete",
-          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
-          "observed_at": "2026-11-14T07:46:40Z",
-          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T07:51:47Z",
-          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
       "assignee": "",
       "id": "FUCQ-466",
       "observed_at": "2026-11-17T19:53:16Z",
@@ -7284,42 +7248,6 @@
           "title": "Integration: started-app JWT/PG journeys for AC1 and AC2, README, base merge, scoped validation",
           "observed_at": "2026-11-17T18:17:28Z",
           "evidence": "Lead review of bd676fc3f; scoped set 405/0/0 on PG17 incl. OfferAccept/OfferDeclineJourneyHttpTest started-app JWT journeys"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-467",
-      "observed_at": "2026-11-17T19:53:16Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Complete remote offer acceptance and decline",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467",
-      "slices": [
-        {
-          "id": "remote-decline",
-          "status": "complete",
-          "title": "Remote decline: persisted release intent, remote release drive, confirmed finalization, rejected/unknown custody, replay and restart on native PostgreSQL",
-          "observed_at": "2026-11-16T11:25:27Z",
-          "evidence": "Lead review of remote decline (RemoteOfferDecisions intent-before-I/O, attempt/ack drive, one-tx finalization, V467_1); native PG 17 :55467 RemoteOfferDeclinePgTest 14/14, OfferDecisionsPgTest 17, Parity 1, Race 3, offers+allocation 153/0"
-        },
-        {
-          "id": "remote-accept",
-          "status": "complete",
-          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
-          "observed_at": "2026-11-16T11:51:15Z",
-          "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-16T11:52:04Z",
-          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -10037,6 +9965,100 @@
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "note": "Producer34 selected generation/normal compare eachPASS; consumer35 selected8/8PASS; component/saveFull37 parent-corrected selected6/6PASS and independent input/resource audit. Connected originalAC remainOPEN. Retained successor38 source ACK 2026-11-17T20:54:14Z; no duplicate watcher or runtime."
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-465",
+      "observed_at": "2026-11-17T21:37:04Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Resolve offer links under OIDC ownership",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-465",
+      "slices": [
+        {
+          "id": "access",
+          "status": "complete",
+          "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
+          "observed_at": "2026-11-14T07:33:53Z",
+          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
+        },
+        {
+          "id": "postgres",
+          "status": "complete",
+          "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
+          "observed_at": "2026-11-14T07:46:40Z",
+          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
+          "observed_at": "2026-11-14T07:51:47Z",
+          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "workers": [
+        {
+          "name": "Peer reserved Story; execution unverified",
+          "harness": "claude-code",
+          "role": "story-lead claim",
+          "source": "Published peer handover; runId obstacle superseded by FUCQ519, start time later than observer clock; no current execution inferred",
+          "observed_at": "2026-11-17T21:37:03.830155+00:00",
+          "expires_at": "2026-11-17T21:37:03.830155+00:00",
+          "status": "held; reserved; execution unverified"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-467",
+      "observed_at": "2026-11-17T21:37:04Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Complete remote offer acceptance and decline",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-467",
+      "slices": [
+        {
+          "id": "remote-decline",
+          "status": "complete",
+          "title": "Remote decline: persisted release intent, remote release drive, confirmed finalization, rejected/unknown custody, replay and restart on native PostgreSQL",
+          "observed_at": "2026-11-16T11:25:27Z",
+          "evidence": "Lead review of remote decline (RemoteOfferDecisions intent-before-I/O, attempt/ack drive, one-tx finalization, V467_1); native PG 17 :55467 RemoteOfferDeclinePgTest 14/14, OfferDecisionsPgTest 17, Parity 1, Race 3, offers+allocation 153/0"
+        },
+        {
+          "id": "remote-accept",
+          "status": "complete",
+          "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
+          "observed_at": "2026-11-16T11:51:15Z",
+          "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
+          "observed_at": "2026-11-16T11:52:04Z",
+          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "workers": [
+        {
+          "name": "Peer reserved Story; execution unverified",
+          "harness": "claude-code",
+          "role": "story-lead claim",
+          "source": "Published peer handover; runId obstacle superseded by FUCQ519, start time later than observer clock; no current execution inferred",
+          "observed_at": "2026-11-17T21:37:03.830155+00:00",
+          "expires_at": "2026-11-17T21:37:03.830155+00:00",
+          "status": "held; reserved; execution unverified"
+        }
+      ]
     }
   ],
   "version": 1
