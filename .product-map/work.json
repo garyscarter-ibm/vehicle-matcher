@@ -8689,7 +8689,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-17T04:09:49Z",
+      "observed_at": "2026-11-17T04:11:39Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Calculate Greg's constrained next-order plan",
@@ -8722,24 +8722,14 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Original demand and supply integration",
-          "observed_at": "2026-11-17T04:09:49.183392+00:00",
-          "evidence": "Standalone Terms/Evaluator/Renewal integrated a93dd42c5 (53 matching passes). Demand Cohort/Snapshot helpers validated30 matching passes and prepared for integration; live adapter22 passes remain held source. Original connected real demand/supply acceptance and M1/F515 unresolved.",
+          "observed_at": "2026-11-17T04:11:39.197356+00:00",
+          "evidence": "Independent Terms/Evaluator/Renewal integrateda93dd42c5 (53passes); independent Cohort/Snapshot helpers integrated251d89b22 (30matching passes). Parent executed52demand methods total, including22held adapter cases. Original connected demand/supply acceptance and M1/F515 remain unresolved; slice is incomplete.",
           "prior_complete_evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
         }
       ],
-      "native_observed_at": "2026-11-17T03:01:52+00:00",
-      "note": "Original acceptance incomplete; native In Progress and peer ownership preserved. Cohort/Snapshot four tested Java helpers prepared for partial integration from76837ffe8,30 matching native passes; held adapter22 passes also completed. Existing Terms/Evaluator/Renewal53 passes integrated a93dd42c5. Demand/Supply/Clock live binding M1/F515 hold persists. Codex parent executed/audited52 native methods; Claude authorship and independent review recorded in delivery note.",
-      "workers": [
-        {
-          "name": "Codex dispatcher",
-          "harness": "codex",
-          "role": "collect and integrate independent demand helpers",
-          "observed_at": "2026-11-17T04:09:49.183392+00:00",
-          "expires_at": "2026-11-17T04:09:49+00:00",
-          "source": "dispatcher-pass-20261117-0401",
-          "status": "observed parent integration work; worker claim expires immediately at checkpoint"
-        }
-      ]
+      "native_observed_at": "2026-11-17T04:11:04.055+00:00",
+      "note": "Original acceptance incomplete; native In Progress and peer ownership preserved. Cohort/Snapshot four exact tested Java blobs integrated/pushed251d89b22 (30 matching native passes). Parent also executed22held-adapter methods successfully. Terms/Evaluator/Renewal53passes integrateda93dd42c5. Demand/Supply/Clock live-binding M1/F515 hold persists. Coordinator terminal04:09:57 collected; no current worker execution.",
+      "workers": []
     }
   ],
   "version": 1
