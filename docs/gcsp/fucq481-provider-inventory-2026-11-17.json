@@ -16,12 +16,12 @@
     "partial": "some provider modes exist but a required one, or a consumer path, is missing",
     "unverified-runtime": "this inventory has not established connected runtime for the represented composition; selected retained component runs may exist"
   },
-  "evidenceNote": "Static source reading only in this assignment. Named test references identify test source, not executions performed or independently verified by this inventory. Matching retained native PostgreSQL component evidence exists, including the F477 helper run; full connected provider-composition and AC2 journey proof remains open.",
+  "evidenceNote": "Initial inventory was static source reading at sourceSha. The three currentReconciliation records additionally reference matching retained component/startup/partial-composition executions. Other named test references remain source references. Nothing establishes complete connected journey, hosted delivery or verified-live BMW integration.",
   "counts": {
-    "default-unconfigured": 21,
+    "default-unconfigured": 19,
     "local-bound": 13,
-    "partial": 23,
-    "unverified-runtime": 2
+    "partial": 26,
+    "unverified-runtime": 1
   },
   "ports": [
     {
@@ -1361,17 +1361,27 @@
           "class": "ScriptedClaimStock (test double only)",
           "ref": "services/gcsp-api/src/test/java/gcsp/api/claims/ScriptedClaimStock.java:10",
           "kind": "synthetic"
+        },
+        {
+          "class": "HttpClaimStock",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/HttpClaimStock.java:13",
+          "kind": "remote-substitute"
         }
       ],
       "selection": {
-        "mechanism": "CDI @Produces @DefaultBean in ClaimDefaults",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/claims/ClaimDefaults.java:47",
-        "configKey": null,
-        "envVar": null,
-        "propertiesRef": null,
-        "default": "LocalClaimStock (Mode LOCAL)",
-        "unsetYields": "LocalClaimStock; execute/reconcile throw UnsupportedOperationException (LocalClaimStock.java:4) and are never called in LOCAL mode",
-        "unknownValue": "not applicable"
+        "mechanism": "Startup RemoteOperationProviders builds selected ports in PostConstruct; CDI producers replace local DefaultBeans",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/remote/RemoteOperationProviders.java:69",
+        "configKey": "gcsp.claims.stock.provider",
+        "envVar": "GCSP_CLAIM_STOCK_PROVIDER",
+        "propertiesRef": "services/gcsp-api/src/main/resources/application.properties:78-82",
+        "default": "local",
+        "values": [
+          "local",
+          "remote"
+        ],
+        "remoteSettings": "gcsp.claims.stock.execute-url/.reconcile-url/.token/.timeout; timeout defaults 10s; configured remote never falls back",
+        "unsetYields": "LocalClaimStock (Mode LOCAL)",
+        "unknownValue": "IllegalStateException during startup; missing/invalid remote settings also refuse startup"
       },
       "consumers": [
         "claims/ManualClaims.java:414 (remote())",
@@ -1382,8 +1392,8 @@
       "failure": "Remote path: intent written first, execute/reconcile outside tx, acks must echo operationId; retryable unavailable except codes ending not-configured (ManualClaims.java:954); 202 pending at ManualClaimsResource.java:158.",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "default-unconfigured",
-      "statusWhy": "Only LOCAL implementation in main; no remote implementation and no config key, so REMOTE mode cannot be selected at startup.",
+      "status": "partial",
+      "statusWhy": "Local and remote modes are selectable at startup; actual injected remote mode and bounded transport/component behavior passed. The full claim-to-signed-in-order/status journey and deployed/BMW integration remain unproved.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/claims/ClaimRemoteTest.java",
@@ -1392,14 +1402,22 @@
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/claims/ClaimUncertainTest.java",
           "kind": "contract-tested"
+        },
+        {
+          "ref": "docs/gcsp/fucq481-remote-operation-providers-2026-11-17.md",
+          "kind": "executed-component-and-startup",
+          "checkpoint": "55d161477",
+          "integration": "18b29be38",
+          "result": "65 selected cases passed with zero failures/errors/skips, including injected remote and existing default profiles; not full journey acceptance"
         }
       ],
       "gaps": [
-        "No remote ClaimStockPort implementation exists in main.",
-        "No config key to select remote mode."
+        "Full producer-to-order/status composition, hosted OIDC/email and authorised BMW contract/access evidence remain open."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "reconciledAt": "2026-11-17T07:03:16.962620+00:00",
+      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0"
     },
     {
       "port": "ClaimTimingPort",
@@ -1544,17 +1562,27 @@
           "class": "ScriptedRemote (test double only)",
           "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/ScriptedRemote.java",
           "kind": "synthetic"
+        },
+        {
+          "class": "HttpRemoteBuddy",
+          "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/HttpRemoteBuddy.java:16",
+          "kind": "remote-substitute"
         }
       ],
       "selection": {
-        "mechanism": "CDI @DefaultBean (LocalSyntheticBuddy)",
-        "ref": "services/gcsp-api/src/main/java/gcsp/api/allocation/LocalSyntheticBuddy.java:9",
-        "configKey": null,
-        "envVar": null,
-        "propertiesRef": null,
-        "default": "mode() = local-synthetic",
-        "unsetYields": "LocalSyntheticBuddy; execute/reconcile throw IllegalStateException No remote Buddy is configured",
-        "unknownValue": "not applicable"
+        "mechanism": "Startup RemoteOperationProviders builds selected ports in PostConstruct; CDI producers replace local DefaultBeans",
+        "ref": "services/gcsp-api/src/main/java/gcsp/api/remote/RemoteOperationProviders.java:75",
+        "configKey": "gcsp.buddy.provider",
+        "envVar": "GCSP_BUDDY_PROVIDER",
+        "propertiesRef": "services/gcsp-api/src/main/resources/application.properties:83-87",
+        "default": "local-synthetic",
+        "values": [
+          "local-synthetic",
+          "remote"
+        ],
+        "remoteSettings": "gcsp.buddy.execute-url/.reconcile-url/.token/.timeout; timeout defaults 10s; configured remote never falls back",
+        "unsetYields": "LocalSyntheticBuddy",
+        "unknownValue": "IllegalStateException during startup; missing/invalid remote settings also refuse startup"
       },
       "consumers": [
         "allocation/Allocation.java:24,38",
@@ -1568,8 +1596,8 @@
       "failure": "Remote lifecycle refuses buddy-remote-unavailable (BuddyRemoteLifecycle.java:64); offer path offer-remote-unavailable (RemoteOfferDecisions.java:363), authority-reconciliation-required (:424), remote-unconfirmed (:456); 202 at OffersResource.java:136.",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "default-unconfigured",
-      "statusWhy": "Only the local-synthetic default exists in main; no remote Buddy implementation or config key, so remote mode cannot be selected.",
+      "status": "partial",
+      "statusWhy": "Local and remote modes are selectable at startup; actual injected remote mode and bounded transport/component behavior passed. The full claim-to-signed-in-order/status journey and deployed/BMW integration remain unproved.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/RemoteLifecycleTest.java:22",
@@ -1582,15 +1610,24 @@
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/RemoteOfferAcceptPgTest.java:32",
           "kind": "contract-tested"
+        },
+        {
+          "ref": "docs/gcsp/fucq481-remote-operation-providers-2026-11-17.md",
+          "kind": "executed-component-and-startup",
+          "checkpoint": "55d161477",
+          "integration": "18b29be38",
+          "result": "65 selected cases passed with zero failures/errors/skips, including injected remote and existing default profiles; not full journey acceptance"
         }
       ],
       "gaps": [
-        "No remote Buddy implementation in main.",
         "Allocation.java seam has no injector in main (dead composition).",
-        "No TickHandler for stages buddy-allocation, buddy-expiry, manual-expiry (server/gcsp/policy/seed-v1.json:13305-13312; services/gcsp-api/src/test/java/gcsp/api/clock/RunClockTest.java:249)."
+        "No TickHandler for stages buddy-allocation, buddy-expiry, manual-expiry (server/gcsp/policy/seed-v1.json:13305-13312; services/gcsp-api/src/test/java/gcsp/api/clock/RunClockTest.java:249).",
+        "Full producer-to-order/status composition, hosted OIDC/email and authorised BMW contract/access evidence remain open."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "reconciledAt": "2026-11-17T07:03:16.962620+00:00",
+      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0"
     },
     {
       "port": "EligibleCandidates",
@@ -1705,12 +1742,12 @@
       "selection": {
         "mechanism": "Runtime branch on RemoteBuddy.mode()",
         "ref": "services/gcsp-api/src/main/java/gcsp/api/offers/OfferDecisions.java:137",
-        "configKey": null,
-        "envVar": null,
-        "propertiesRef": null,
+        "configKey": "gcsp.buddy.provider",
+        "envVar": "GCSP_BUDDY_PROVIDER",
+        "propertiesRef": "services/gcsp-api/src/main/resources/application.properties:83-87",
         "default": "local (remoteMode false)",
         "unsetYields": "local accept path; submitTrusted at OfferDecisions.java:225",
-        "unknownValue": "not applicable"
+        "unknownValue": "Invalid provider selection refuses startup in RemoteOperationProviders"
       },
       "consumers": [
         "offers/OffersResource.java:74",
@@ -1719,8 +1756,8 @@
       "failure": "202 pending at OffersResource.java:136; execute then reconcile; remote-unconfirmed (RemoteOfferDecisions.java:456); acks must echo operationId, runId, orderUuid; submitTrusted via RemoteSelectionConversion (:509).",
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
-      "status": "unverified-runtime",
-      "statusWhy": "Remote branch is wired but cannot be reached from main because RemoteBuddy has no remote implementation; contract-tested only with ScriptedRemote.",
+      "status": "partial",
+      "statusWhy": "RemoteBuddy is startup-selectable. A native Quarkus/JWKS JWT request used injected HttpRemoteBuddy and PostgresOfferRecords for durable acceptance and HTTP offer-state readback. The preceding acknowledged claim/offer was seeded; a profile-scoped fixed PolicyClock was used. SQL order persistence plus HTTP offer state does not prove full order-status HTTP or the complete journey.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/RemoteOfferAcceptPgTest.java:32",
@@ -1733,13 +1770,22 @@
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/OffersHttpTest.java:29",
           "kind": "contract-tested"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/OidcRemoteOfferHttpTest.java",
+          "kind": "executed-partial-composition",
+          "checkpoint": "30241a7290283617c05bc94936b898a6064a8c4c",
+          "integration": "3d196cfb4f8b1df380b1e256817a1129ed4b3555",
+          "result": "Exactly one selected method passed; zero failures/errors/skips. Independent source review PASS. Preceding claim/offer seeded and PolicyClock profile-scoped; no whole-journey/hosted/email/BMW claim."
         }
       ],
       "gaps": [
-        "docs/gcsp/adapter-readiness-assessment-2026-11-13.md:30-35 lists remote offer decisions as an open gap."
+        "Full claim/offer production through the selected providers, full order-status HTTP, browser/hosted OIDC, actual email delivery and authorised BMW contract/access evidence remain open."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
-      "side": "action/event"
+      "side": "action/event",
+      "reconciledAt": "2026-11-17T07:03:16.962620+00:00",
+      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0"
     },
     {
       "port": "OrderingProviderPort",
@@ -3043,7 +3089,7 @@
       "signedInDecision": "OffersResource.java:74 over OfferDecisions/RemoteOfferDecisions via RemoteBuddy",
       "orderStatus": "OrderingService.submitTrusted over OrderingProviderPort (synthetic only)",
       "coherentThroughRemoteSubstitute": "no",
-      "why": "No remote ClaimStockPort or RemoteBuddy implementation and no config key exists in main, so remote mode cannot be selected; ordering has no live mode; allocation seam has no injector and three stage handlers are missing. The remote offer paths are contract-tested only with scripted doubles."
+      "why": "Claim stock and RemoteBuddy now have explicit local/remote startup selectors and passing adapter/consumer evidence. One native signed-in offer acceptance/readback composition also passed, starting from a seeded acknowledged remote offer and fixed profile clock. Full producer-to-claim-to-order/status, browser/hosted OIDC, actual email and BMW evidence remain open; allocation candidates and full order AccountPolicy are still unconfigured."
     },
     "planning": "PlanningDemand and PlanningSupply stay on unconfigured defaults here. Only the inert DemandCohort and PostgresDemandSnapshot helpers are on this branch (251d89b22); PostgresPlanningDemand (76837ffe8) and PostgresPlanningSupply are held by FUCQ-515.",
     "renderBlueprint": "render.gcsp.yaml sets the dev API's providers explicitly: account, evidence, supply, documents, appointments and returns are none and ordering is synthetic (render.gcsp.yaml:221-254). Identity stays unset until OIDC is registered (:175), and mail stays captured unless Brevo is uncommented (:260). So the dev deployment, as committed, cannot exercise AC2's differently shaped employee or stock inputs."
@@ -3164,9 +3210,8 @@
           "EligibleCandidates"
         ],
         "missingInJava": [
-          "remote ClaimStockPort",
-          "remote RemoteBuddy",
-          "real EligibleCandidates"
+          "real EligibleCandidates",
+          "connected producer/full claim journey evidence"
         ]
       },
       {
@@ -3176,7 +3221,7 @@
           "OfferFacts"
         ],
         "missingInJava": [
-          "remote provider"
+          "complete producer-to-order/status journey and hosted OIDC/email evidence; seeded-boundary JWT/PG/remote decision proof exists"
         ]
       },
       {
@@ -3342,7 +3387,18 @@
     "Worker A ports (identity, policy, account, evidence, supply, clock reads, learning, demand, planning reads) are boundary-only.",
     "Some line numbers for implementations declared inside selection/wiring files point at the switch or producer, not a class declaration.",
     "No descendants were used.",
-    "Cross-domain records overlap and several records group multiple contracts; this is an inventory increment, not an asserted unique-port census. Parent corrected stale blueprint and PostgreSQL-evidence statements before integration; source facts were sampled, not all semantically reverified."
+    "Cross-domain records overlap and several records group multiple contracts; this is an inventory increment, not an asserted unique-port census. Parent corrected stale blueprint and PostgreSQL-evidence statements before integration; source facts were sampled, not all semantically reverified.",
+    "Current reconciliation updates only three records after initial inventory: remote provider source and selected execution now exist. Unchanged rows/line numbers retain the original observation; no new runtime was run for this documentation update."
   ],
-  "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage."
+  "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
+  "currentReconciliation": {
+    "observedAt": "2026-11-17T07:03:16.962620+00:00",
+    "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0",
+    "ports": [
+      "ClaimStockPort",
+      "RemoteBuddy",
+      "OfferDecision (decision route over RemoteBuddy)"
+    ],
+    "basis": "Reconciled these three records to integrated source and matching retained execution; all other rows retain their original source observation. No new test execution, complete inventory census or original AC completion is claimed."
+  }
 }

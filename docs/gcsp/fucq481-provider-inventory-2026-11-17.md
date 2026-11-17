@@ -1,8 +1,8 @@
 # FUCQ-481 provider inventory (2026-11-17)
 
-This records the external provider ports in the GCSP Java API as the source stands at `bdee6c5123779d877e87855b4174667f1a626a5d`. It covers the inventory half of AC1 only. **Provider selection is not complete, and neither are AC1, AC2 or the Story.**
+This records the external provider ports in the GCSP Java API as the source stands at `bdee6c5123779d877e87855b4174667f1a626a5d`. Three records were reconciled at `e3c56854a` after the remote-provider and authenticated-offer increments; other records retain the original observation. It covers an inventory increment of AC1 only. **Provider selection is not complete, and neither are AC1, AC2 or the Story.**
 
-- **How it was built:** by static source reading. Nothing was built, tested or run, so no port here is verified-live.
+- **How it was built:** the initial inventory used static source reading. The current claim-stock, Buddy and offer-decision records also reference matching retained native execution below. This documentation reconciliation ran no new tests, and no port is verified-live against BMW.
 - **The full record:** the machine-readable version, with contracts, implementations, consumers, failure semantics and evidence per port, is [`fucq481-provider-inventory-2026-11-17.json`](fucq481-provider-inventory-2026-11-17.json).
 
 ## Summary
@@ -11,21 +11,21 @@ There are 59 inventory records: 24 read/input and 35 action/event. These include
 | Status | Records | Meaning |
 |---|---|---|
 | local-bound | 13 | A local or repository provider is bound at startup |
-| remote-bound | 0 | No port has a remote provider bound |
-| default-unconfigured | 21 | The default gives a refusing or unconfigured provider |
-| partial | 23 | Some provider modes exist, but a required mode or a consumer path is missing |
-| unverified-runtime | 2 | Connected composition unverified by this inventory: persistence, and the offer-decision remote branch; selected PostgreSQL component evidence exists |
+| remote-bound | 0 | No record is exclusively remote-bound; two action ports now support explicit remote startup modes |
+| default-unconfigured | 19 | The default gives a refusing or unconfigured provider |
+| partial | 26 | Some provider modes exist, but a required mode or a consumer path is missing |
+| unverified-runtime | 1 | The broad persistence record remains unverified as a complete composition; selected native PostgreSQL evidence exists |
 
-**Selection:** every switchable provider is chosen once at startup from a `gcsp.*` key in `services/gcsp-api/src/main/resources/application.properties`. The keys are identity, account, evidence, supply, documents, appointments, approvals, returns, production, ordering, scenario and mail.
-- Every one defaults to `none`, except mail, which defaults to captured.
+**Selection:** every switchable provider is chosen once at startup from a `gcsp.*` key in `services/gcsp-api/src/main/resources/application.properties`. The keys are identity, account, evidence, supply, documents, appointments, approvals, returns, production, ordering, scenario, mail, claim stock and Buddy.
+- The original switchable providers default to `none`, except captured mail. Claim stock defaults to `local`; Buddy defaults to `local-synthetic`. Their new `remote` selections refuse invalid settings at startup and never fall back.
 - An unknown value stops startup.
 - One exception: synthetic returns or production without a database quietly falls back to unconfigured (`returns/ReturnSelection.java:106-111`).
 - `render.gcsp.yaml` sets the dev API's providers explicitly: account, evidence, supply, documents, appointments and returns are `none` and ordering is `synthetic` (`render.gcsp.yaml:221-254`). Identity stays unset until OIDC is registered (`:175`), and mail stays captured unless Brevo is uncommented (`:260`). So the dev deployment, as committed, cannot exercise AC2's differently shaped employee or stock inputs.
 
 ## Findings against the original AC
-1. **No remote substitute can be selected.** The only claim-stock and Buddy implementations are local: `claims/LocalClaimStock.java` and `allocation/LocalSyntheticBuddy.java`. No config key selects a remote one, and ordering has `none` and `synthetic` but no `live` mode, although `ordering/OrderingProviderPort.java:6` names one.
-   - So "claim → signed-in decision → order/status through the remote substitute" (AC2) cannot run on this source.
-   - The remote offer-decision branch exists, but only scripted test doubles exercise it.
+1. **Claim-stock and Buddy remote substitutes are now selectable at startup.** `remote/RemoteOperationProviders.java` selects `claims/HttpClaimStock.java` and `allocation/HttpRemoteBuddy.java`. The retained 65-case adapter/transport/startup run and 10 HTTP-to-durable-consumer cases passed. Three HR/stock-shape component cases also passed. See [remote provider evidence](fucq481-remote-operation-providers-2026-11-17.md).
+   - One native Quarkus/JWKS JWT method passed using the injected remote Buddy and PostgreSQL offer records for durable acceptance and HTTP offer readback (`30241a729`, integrated `3d196cfb4`). Independent source review passed.
+   - The preceding acknowledged claim/offer was seeded and the policy clock was profile-scoped and fixed. SQL order persistence plus HTTP offer state does not prove the full order-status HTTP route, claim producer, browser/hosted OIDC, actual email or BMW integration. Both original criteria remain open.
 2. **Demo preparation is guarded at startup, but its rows are read outside the selected provider.**
    - **The guard:** `gcsp.scenario.provider` accepts only `none` or `demo` (`scenario/ScenarioProvider.java:13`). Preparation runs only with demo and persistence both on (`scenario/ScenarioWiring.java:68`), and it stops startup unless the database was claimed with reset allowed (`:86`).
    - **The write:** it inserts employees, account records and slots by direct SQL (`scenario/DemoPreparation.java:138`).
@@ -72,14 +72,14 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | Persistence gate (datasource and Flyway activation) | read/input | unverified-runtime | `GCSP_DATABASE_URL (+ gcsp.persistence.* in pro` = off | services/gcsp-api/src/main/java/gcsp/api/persistence/Persistence.java:15 | Selected native PostgreSQL component evidence is retained in docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59; original connected provider-composition and full AC2 journey remain unproved. |
 | Scenario DemoPreparation (seeding of account tables) | read/input | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:125 | Direct seeding does not go through the provider ports; worker B owns scenario in detail. |
 | ManualSelectionPort | action/event | partial | `(none)` = ManualSelection over stock:: | services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:7 | Real implementation exists but only produces results when persistence (GCSP_DATABASE_URL) and an account provider supply stock; otherwise answers not-configured. |
-| ClaimStockPort | action/event | default-unconfigured | `(none)` = LocalClaimStock (Mode LOCAL) | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimStockPort.java:7 | Only LOCAL implementation in main; no remote implementation and no config key, so REMOTE mode cannot be selected at startup. |
+| ClaimStockPort | action/event | partial | `gcsp.claims.stock.provider` = local; remote selectable | services/gcsp-api/src/main/java/gcsp/api/remote/RemoteOperationProviders.java:69 | HttpClaimStock and local default are startup-selected; retained transport/startup/consumer passes exist. Full claim producer and journey remain open. |
 | ClaimTimingPort | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimTimingPort.java:7 | Single local policy-backed implementation. |
 | ClaimClock | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/ClaimClock.java:7 | Bound locally, but claim expiry timing can follow the wall clock rather than the run clock depending on which PolicyClock is bound. |
 | SlotOccupancyPort | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/claims/SlotOccupancyPort.java:8 | Single local implementation. |
-| RemoteBuddy | action/event | default-unconfigured | `(none)` = mode() = local-synthetic | services/gcsp-api/src/main/java/gcsp/api/allocation/RemoteBuddy.java:6 | Only the local-synthetic default exists in main; no remote Buddy implementation or config key, so remote mode cannot be selected. |
+| RemoteBuddy | action/event | partial | `gcsp.buddy.provider` = local-synthetic; remote selectable | services/gcsp-api/src/main/java/gcsp/api/remote/RemoteOperationProviders.java:75 | HttpRemoteBuddy is startup-selected; retained component and seeded-boundary authenticated acceptance proof exist. Full claim/offer producer and order/status remain open. |
 | EligibleCandidates | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8 | No real binding in main; StoredSubjectEvaluator does not implement it. |
 | OfferFacts | action/event | local-bound | `(none)` = PostgresOfferFacts when its  | services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:7 | PostgresOfferFacts is an ApplicationScoped bean over local tables. |
-| OfferDecision (decision route over RemoteBuddy) | action/event | unverified-runtime | `(none)` = local (remoteMode false) | services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java:74 | Remote branch is wired but cannot be reached from main because RemoteBuddy has no remote implementation; contract-tested only with ScriptedRemote. |
+| OfferDecision (decision route over RemoteBuddy) | action/event | partial | `gcsp.buddy.provider` = local-synthetic; remote selectable | services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java:74 | One native JWT/JWKS/Quarkus/PG/remote acceptance and HTTP offer-state method passed. Seeded prior offer, fixed profile clock and SQL order readback limit the proof. |
 | OrderingProviderPort | action/event | partial | `gcsp.ordering.provider` = none | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | none and synthetic are selectable; the live mode named in the contract has no implementation or selectable value; synthetic receipts are local with fictional:true. |
 | SelectionConversionPort | action/event | partial | `(none)` = UnconfiguredConversion for a | services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:11 | Cart is a bean; buddy-offer is constructed inline; every other source type is unsupported. |
 | DocumentProviderPort | action/event | partial | `gcsp.documents.provider` = none | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10 | none/synthetic/unsupported selectable; no live provider; case/stage reads default to unavailable. |
@@ -122,7 +122,7 @@ These are listed with file:line in the JSON under `defectCandidates`. They have 
 - **Account records** are read by direct SQL outside the account port.
 
 ## What this does not prove
-- This inventory ran no runtime. It establishes no full connected provider-composition, real OIDC/email, hosted deployment or BMW proof. Retained selected native PostgreSQL component evidence exists, including the F477 helper run (docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59).
+- This documentation reconciliation ran no new runtime. The three updated records retain the selected native evidence above; it establishes no full connected provider-composition, browser/hosted OIDC, actual email delivery, hosted deployment or BMW proof. Retained selected native PostgreSQL component evidence exists, including the F477 helper run (docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59).
 - PostgreSQL-backed tests skip without `GCSP_TEST_DATABASE_URL`.
-- Status comes from source inspection. Named tests identify test source; their presence does not establish execution in this assignment. Selected retained component passes do not prove the complete connected journey.
+- Unchanged records retain source-inspection status. The three reconciled records distinguish matching retained execution from test-source references. Selected component and seeded-boundary composition passes do not prove the complete connected journey.
 - Several records group contracts or overlap across domains. The parent sampled source facts and corrected blueprint/evidence statements; not every semantic claim was independently reverified.
