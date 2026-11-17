@@ -11,7 +11,7 @@ import java.util.Set;
 /** The claim dev composition over its own schema with no global test alternative in force, so ordering is the real bean. */
 public class ClaimHoldModeProfile implements QuarkusTestProfile {
 
-    static final String SCHEMA = "gcsp_s_claimholdmode_" + Long.toHexString(System.nanoTime());
+    static final String SCHEMA = "gcsp_s_acctdev_claimholdmode_" + Long.toHexString(System.nanoTime());
 
     @Override
     public Map<String, String> getConfigOverrides() {

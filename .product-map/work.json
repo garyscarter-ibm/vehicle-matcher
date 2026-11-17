@@ -9974,17 +9974,21 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-518",
       "branch": "bug/FUCQ-518-519",
       "unsliced": false,
-      "observed_at": "2026-11-17T21:09:23Z",
+      "observed_at": "2026-11-17T21:30:28Z",
       "slices": [
         {
           "id": "hold-journey-mode",
-          "status": "not-started",
-          "title": "Java claim hold.mode carries the pinned draft journey mode"
+          "status": "complete",
+          "title": "Java claim hold.mode carries the pinned draft journey mode",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: ManualClaimHoldModeHttpTest 2/2 (OIDC RS256, PG17, no alternatives); Angular isManualClaim/isManualReviewDetails/manualDetailsMatchClaim true on 6 Java payloads; reviewed by lead"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Scoped claims/manual/offers set and started-app proof"
+          "status": "complete",
+          "title": "Scoped claims/manual/offers set and started-app proof",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: claims+offers packages 296/296 on 084c8e531; wiring/startup/caller journeys 72/76, 4 account failures also on base 30c38b126; merged-head re-proof 44/44"
         }
       ]
     },
@@ -9998,17 +10002,21 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-519",
       "branch": "bug/FUCQ-518-519",
       "unsliced": false,
-      "observed_at": "2026-11-17T21:09:23Z",
+      "observed_at": "2026-11-17T21:30:28Z",
       "slices": [
         {
           "id": "offer-runid-query",
-          "status": "not-started",
-          "title": "Java offer read and decision-reasons accept one runId equal to the active run"
+          "status": "complete",
+          "title": "Java offer read and decision-reasons accept one runId equal to the active run",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: OfferRunIdQueryHttpTest 1/1 (active runId 200, other run 409 stale-run, others 400, unknown 404); reviewed by lead"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Scoped claims/manual/offers set and started-app proof"
+          "status": "complete",
+          "title": "Scoped claims/manual/offers set and started-app proof",
+          "observed_at": "2026-11-17T21:30:28Z",
+          "evidence": "branch bug/FUCQ-518-519 at ab956ad84 (merged base 30c38b126), scoped: claims+offers packages 296/296 on 084c8e531; wiring/startup/caller journeys 72/76, 4 account failures also on base 30c38b126; merged-head re-proof 44/44"
         }
       ]
     }
