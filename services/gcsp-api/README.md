@@ -86,6 +86,9 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
 | `GCSP_ALLOCATION_CANDIDATES_PROVIDER` | `none` | Buddy allocation candidates (FUCQ-461/481 selector): `none` refuses every allocation (`recommendation-unavailable`) and leaves the `buddy-allocation`, `buddy-expiry` and `buddy-pending-operations` tick stages unregistered; `recommendation` evaluates each car with the canonical recommendation engine. Set `recommendation` on the dev service. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
+| `GCSP_COMPARISON_RESULT_FILES` | empty | Retained comparison baselines: comma-separated absolute envelope files. Empty imports the bundled `process-only` result at startup. |
+| `GCSP_COMPARISON_RERUNS` | `false` | Greg comparison job starts: exactly `true` or `1` enables them; anything else answers 403 `comparison-reruns-off`. Reads of retained results and job status work either way. A full job needs about a 3 GB heap (FUCQ-507). |
+| `GCSP_CODE_REVISION` | `unknown` | Code revision recorded in each comparison result manifest. Set it to the deployed commit (Render exposes it as `RENDER_GIT_COMMIT`). |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).
@@ -707,6 +710,8 @@ persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
+Started-app proof of job status across a crash and a graceful stop, with a real mail transport configured:
+`node src/test/started-app/comparison-restart-proof.mjs --jar target/quarkus-app/quarkus-run.jar --db-url <jdbc> --db-name <db> --scratch <dir> --out <summary.json>`.
 
 ## Clock, scenarios and presenter controls (FUCQ-479)
 
