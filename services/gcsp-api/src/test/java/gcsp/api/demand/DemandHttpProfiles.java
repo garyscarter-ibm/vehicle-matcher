@@ -13,6 +13,16 @@ public final class DemandHttpProfiles {
 
     private DemandHttpProfiles() {}
 
+    /** The run clock the projections read; kept if another test already seeded it. */
+    static void ensureRunClock() throws java.sql.SQLException {
+        try (var c = java.sql.DriverManager.getConnection(URL); var st = c.createStatement()) {
+            st.execute("SET search_path TO gcsp_app");
+            st.execute("INSERT INTO run_clocks (environment_id, run_id, clock_instant, clock_version, scenario_version, fixture_version, "
+                    + "starts_at, named_times) VALUES ('test-app-env', 'run-1', now(), 1, 's1', 'f1', now(), '{}'::jsonb) "
+                    + "ON CONFLICT DO NOTHING");
+        }
+    }
+
     static Map<String, String> identity(String roles) {
         Map<String, String> m = new HashMap<>();
         m.put("gcsp.identity.provider", "fixed-test");
@@ -35,7 +45,7 @@ public final class DemandHttpProfiles {
         m.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", "gcsp_app");
         m.put("quarkus.flyway.schemas", "gcsp_app");
         m.put("gcsp.environment-id", "test-app-env");
-        m.put("gcsp.database.expected-name", "gcsp_test_dev");
+        m.put("gcsp.database.expected-name", URL.replaceAll("^.*/([^/?]+)(\\?.*)?$", "$1"));
         return m;
     }
 

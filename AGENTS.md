@@ -8,6 +8,17 @@ limits and report any check that cannot proceed under this restriction. Pass thi
 delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
 local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
 
+## Delivery autonomy and Claude delegation — Gary, 17 November 2026
+
+Give Claude coherent delivery increments with enough work to use parallel agents or distinct working sessions
+when measured capacity and file ownership permit. Let the delivery lead divide the work, run the necessary
+scoped validation and carry the increment through review. Keep that authority through handovers.
+
+Do not add single-file, source-only, no-child, fixed-session or repeated parent-approval limits without an
+explicit human instruction or a concrete scope, ownership, technical or resource reason. An earlier dispatcher
+restriction is not authority for continuing it. Remove an unjustified limit rather than repeatedly asking a
+collaborator to lift it. Existing Story acceptance, specific holds, access restrictions and resource rules apply.
+
 ## Shared dispatcher learnings
 
 Gary's direction, 14 November 2026: both pollers maintain `docs/gcsp/dispatcher-learnings.md` so observed

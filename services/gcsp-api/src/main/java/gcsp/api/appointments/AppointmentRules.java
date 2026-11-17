@@ -131,7 +131,10 @@ final class AppointmentRules {
             states.put(s, step);
         }
         AppointmentConfig.Step notReady = step(o.get("notReady"));
-        return notReady == null ? null : new AppointmentConfig.Outcomes(states, notReady);
+        JsonNode stage = o.get("states").get("completed").get("stage");
+        return notReady == null ? null
+                : new AppointmentConfig.Outcomes(states, notReady, text(stage, 128) ? stage.asText() : null,
+                        o.get("exceptionTypes").get("noShow").asText());
     }
 
     private static AppointmentConfig.Step step(JsonNode n) {

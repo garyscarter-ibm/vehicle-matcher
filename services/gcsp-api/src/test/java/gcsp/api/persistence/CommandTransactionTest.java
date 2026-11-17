@@ -112,6 +112,32 @@ class CommandTransactionTest {
     }
 
     @Test
+    void aCopyThatLosesTheRaceToItsOwnCommittedTwinAnswersWithTheTwinsReceipt() throws Exception {
+        Command command = cmd("add-employee", "c-race", input("e", "e1"));
+        Outcome[] twin = new Outcome[1];
+        // The twin commits on another connection while this copy's work runs, then this copy sees a moved version.
+        Outcome refused = runner.execute(ctx, command, tx -> {
+            twin[0] = runner.execute(ctx, command, other -> {
+                Custody.insertEmployee(other, "e1");
+                return WorkResult.ok(PgFixture.obj().put("n", 1));
+            });
+            return WorkResult.refuse("stale-version", "moved");
+        });
+        Outcome.Committed r = assertInstanceOf(Outcome.Committed.class, refused);
+        assertTrue(r.replayed());
+        assertEquals(((Outcome.Committed) twin[0]).result(), r.result());
+        Outcome noOp = runner.execute(ctx, cmd("add-employee", "c-race-2", input("e", "e2")), tx -> {
+            runner.execute(ctx, cmd("add-employee", "c-race-2", input("e", "e2")), other -> {
+                Custody.insertEmployee(other, "e2");
+                return WorkResult.ok(PgFixture.obj().put("n", 2));
+            });
+            return WorkResult.ok(PgFixture.obj().put("noop", true));
+        });
+        assertTrue(assertInstanceOf(Outcome.Committed.class, noOp).replayed());
+        assertEquals(2, f.revision(ctx));
+    }
+
+    @Test
     void sameCommandIdWithChangedInputIsRefusedAsConflict() throws Exception {
         runner.execute(ctx, cmd("t", "c-7", input("e", "one")), tx -> {
             Custody.insertEmployee(tx, "e1");

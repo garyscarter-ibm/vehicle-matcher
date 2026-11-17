@@ -47,6 +47,7 @@
       #   sync: false
       # - key: GCSP_POLICY_VERSION
       #   sync: false
+      # A value ending +offer-journey-v1 (e.g. gcsp-policy-v1+offer-journey-v1) adopts the reviewed decline reasons at startup.
       # Account records (FUCQ-458), dedicated dev database only: needs GCSP_DATABASE_URL and the oidc values above.
       # - key: GCSP_ACCOUNT_PROVIDER
       #   value: repository
@@ -64,6 +65,9 @@
       #   sync: false
       # - key: GCSP_BREVO_API_KEY
       #   sync: false
+      # Stock supply (FUCQ-462): synthetic demo stock from policy windows and confirmed Production supply; needs the database.
+      # - key: GCSP_SUPPLY_PROVIDER
+      #   value: demo
       # Vehicle evidence (FUCQ-459, proposed for GC): provider none until the retained files are in the image or on a disk.
       # The paths below are absolute in the container; see README "Artifacts and hosting" for what to copy.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
@@ -78,7 +82,56 @@
       #   sync: false
       # - key: GCSP_VEHICLE_IMAGES_PUBLIC             # opt in only if images must load without a bearer
       #   value: "false"
+      # Comparison jobs (FUCQ-480): reads of retained results need nothing; Greg job starts need the database and true.
+      # A full process-only job takes about 70 minutes and a ~3 GB heap (FUCQ-507), so about a 4 GB instance.
+      # - key: GCSP_COMPARISON_RERUNS
+      #   value: "true"
+      # - key: GCSP_CODE_REVISION     # result provenance; unknown when unset
+      #   sync: false
+      # Handover journey (FUCQ-472): every lifecycle provider synthetic over the isolated dev database; none refuses.
+      - key: GCSP_ORDERING_PROVIDER
+        value: synthetic
+      - key: GCSP_APPROVALS_PROVIDER
+        value: synthetic
+      - key: GCSP_DOCUMENTS_PROVIDER
+        value: synthetic
+      - key: GCSP_APPOINTMENTS_PROVIDER
+        value: synthetic
+      # Old-car returns (FUCQ-473): synthetic; also runs the handover current-car change.
+      - key: GCSP_RETURNS_PROVIDER
+        value: synthetic
+      # Buddy allocation (FUCQ-464): recommendation on the dev service; none refuses every allocation.
+      - key: GCSP_ALLOCATION_CANDIDATES_PROVIDER
+        value: recommendation
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS
         value: -XX:MaxRAMPercentage=75
+      # Dev composition checked by FUCQ-454 on 2026-11-17 (dispatcher-learnings 12:30, 15:00, 17:10, 17:55):
+      # active values for the providers above that are still commented, plus the dedicated dev database.
+      - key: GCSP_ACCOUNT_PROVIDER
+        value: repository
+      - key: GCSP_SCENARIO_PROVIDER
+        value: demo
+      - key: GCSP_SUPPLY_PROVIDER
+        value: demo
+      - key: GCSP_DATABASE_URL
+        sync: false            # jdbc:postgresql://host:5432/db of the dedicated dev database only
+      - key: GCSP_DATABASE_USER
+        sync: false
+      - key: GCSP_DATABASE_PASSWORD
+        sync: false
+      - key: GCSP_EXPECTED_DATABASE
+        sync: false            # exact database name; mismatch refuses startup and reset
+      - key: GCSP_ENVIRONMENT_ID
+        sync: false
+      - key: GCSP_RUN_ID
+        value: run-1
+      - key: GCSP_POLICY_VERSION
+        value: gcsp-policy-v1
+      - key: GCSP_RESET_ALLOWED
+        value: "true"          # dev database only, fixed at its first claim; never on a running one
+      # Readiness (and so the Render health check) stays 503 until every listed provider is configured.
+      # identity needs GCSP_IDENTITY_PROVIDER=oidc and the GCSP_OIDC_* values (FUCQ-455).
+      - key: GCSP_REQUIRED_PROVIDERS
+        value: identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns

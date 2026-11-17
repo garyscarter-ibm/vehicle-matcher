@@ -329,11 +329,24 @@ public final class BuddyRemoteLifecycle {
         if (!(result instanceof EligibleCandidates.Evaluated evaluated)) return Validity.UNAVAILABLE;
         for (EligibleCandidates.Decision d : evaluated.decisions()) {
             if (!h.orderUuid().equals(d.orderUuid())) continue;
-            boolean same = d.quote() != null && Canonical.digest(d.quote().path("terms"))
-                    .equals(Canonical.digest(((JsonNode) quote[1]).path("terms")));
+            boolean same = d.quote() != null && sameClaim(d.quote(), (JsonNode) quote[1]);
             return "eligible".equals(d.gateStatus()) && same ? Validity.VALID : Validity.INVALID;
         }
         return Validity.INVALID;
+    }
+
+    /** FUCQ-516: the same stock facts and terms apart from the evaluation instant, as Node's termsBasis. */
+    private static boolean sameClaim(JsonNode fresh, JsonNode stored) {
+        return Canonical.digest(fresh.path("snapshot")).equals(Canonical.digest(stored.path("snapshot")))
+                && Canonical.digest(termsBasis(fresh.path("terms"))).equals(Canonical.digest(termsBasis(stored.path("terms"))));
+    }
+
+    private static JsonNode termsBasis(JsonNode terms) {
+        if (!(terms instanceof ObjectNode o)) return terms;
+        ObjectNode basis = o.deepCopy();
+        basis.remove(List.of("termsVersion", "validFrom", "validUntil"));
+        if (basis.path("provenance") instanceof ObjectNode provenance) provenance.remove("observedAt");
+        return basis;
     }
 
     private Long maxActive(AllocationScope scope, String policyVersion) {

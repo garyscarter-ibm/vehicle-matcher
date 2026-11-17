@@ -427,3 +427,43 @@ hashes and the observation time. No HTTP/browser reproduction, severity decision
 repair or acceptance is claimed. Reconcile the producer/consumer version contract
 with the Java owner before connected checks; do not invent versions or weaken
 validation. Separate Medium FUCQ-491 remains unclaimed, unfixed and nonblocking.
+
+## Java-produced component and full-save parity — 17 November 2026, 20:59 UTC
+
+The new `preferences.java-parity.spec.ts` consumes the real Java-generated brief
+envelopes through `BriefEditorStore` and `PreferencesComponent`. The parent
+independently reviewed the one-file source and ran its selected Angular test:
+**6 passed, 0 failed, 0 skipped**. The cases cover draft/consent-confirm requests
+(exact equality except generated command IDs), adoption of saved server readback,
+known facts and Buddy rendering, full save through screen controls, stale-save
+refresh correction and unavailable save/read presentation. Unrecorded preview
+requests receive 404; preview content is not asserted. Stale-write assertions
+explicitly allow the store's documented importance normalization.
+
+Source returned at `b5c5c7ba2`; compilation initially failed at five NodeList
+spreads under the existing TypeScript libraries. The parent replaced them with
+`Array.from` in `ecabfa08e44f` and the selected six cases passed. A separate
+parent-runner typo aborted an earlier attempt before resources/tests; both failed
+attempts remain retained. No product, support or configuration change was needed.
+The passing source SHA-256 is `62233b130814770b0ba2936a9927fccf144fe015e0d2a9f697c826fe86caf14e`.
+Parent auditing checked 55 source/config/fixture pins and 23,009 dependency/Node
+pins, and verified all owned processes, scratch and reservations were absent.
+The run took 32.97 seconds; resource peaks were sampled, not continuous bounds.
+
+This adds consumer proof over actual producer bodies to the earlier producer and
+client/store evidence. It supersedes the older contract-obstacle observation for
+these pinned responses; it does not prove the running composition. Both original
+acceptance criteria remain open for the connected Angular/Java/OIDC/native
+PostgreSQL journey. The retained helper successor has begun source for that
+finite proof. The covering merge batch is still outstanding. No OneDrive or
+CloudStorage access occurred.
+
+## Connected browser evidence — 17 November 2026, 23:01 UTC
+
+Claude's corrected connected proof completed at 22:57:10 UTC with a strict pass; independent review passed all 39 checks. Production source inputs match shared revision `22b656aef89851782f2887b46252b1141a8d7012`; the proof is the reviewed `79d197213a73f5ffee642a7d64564f3be0036784` version (SHA-256 `d47ef7b8eca6874a30a4ff58860905fcc55d760ff149672bd7cc71432de434fb`). Evidence is retained in `.claude/test-runs/fucq441/connected40-2128/connected-20261117T225638Z/`, including its receipt, proof JSON and screenshots.
+
+The real Java/Angular/native PostgreSQL 17 composition proved server-saved choices, importance, account rating and Buddy consent followed by reload; stale HTTP 409 without an accepted write, preserved edits and corrected save; truthful stopped-API failure, unchanged persisted data after restart and successful retry. Server versions progressed 1→3→5→7 under the existing held-consent contract. Preview displayed the actual server zero count. These provide connected evidence for both original items; their existing required focused Java checks and covering green batch are still outstanding, so both remain open.
+
+Independent audit matched 1,400 API, 515 web and 327 connected-export source pins, 2,853 Maven and 23,031 web borrowed-input pins/identities, all 151 API and 36 web artifacts through manifests/consumption records, and all 13 retained evidence/log hashes. At 22:59:12 UTC the recorded processes/groups, exact scratch paths and reservations were absent; successful keepers were consumed and finalizers reported no listeners or cleanup errors. The successful pipeline including its failed web attempt took 198.171 seconds (836.328 seconds from the first corrected API build), below 1,500 seconds. The connected run's sampled disk/RSS/inclusive peaks were 240,466,053 / 2,363,506,688 / 2,603,156,517 bytes, within its grants.
+
+The intervening `web-20261117T225439Z` sampled keeper-grant breach remains an incomplete, failed attempt. Historical API and failed-web runner files changed later, so those runner hashes cannot be replayed from current files. Cleaned artifact bytes are corroborated by earlier independent byte verification and matching handoff manifests. Measurements are sampled, without continuous containment or a shared pipeline-timer claim. Desktop screenshots do not show below-fold stale/failure banners; their text is proved by retained DOM/network evidence, not a complete visual review. The unavailable scenario stops the API and does not prove a running-server 503 response. No hosted dev deployment was exercised.

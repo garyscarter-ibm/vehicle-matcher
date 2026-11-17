@@ -63,7 +63,6 @@ public class OfferDecisions {
     @Inject
     PolicyService policy;
 
-    @Inject
     PolicyClock clock;
 
     @Inject
@@ -82,6 +81,12 @@ public class OfferDecisions {
     private Supplier<AccountRecordsPort> accounts;
 
     OfferDecisions() {}
+
+    /** The CDI path reads the run clock through OfferClock, not the global PolicyClock. */
+    @Inject
+    void useOfferClock(OfferClock offerClock) {
+        this.clock = offerClock;
+    }
 
     OfferDecisions(BooleanSupplier active, Supplier<DataSource> source, OfferAccess access, PolicyService policy,
             PolicyClock clock, Supplier<RemoteBuddy> buddy) {
@@ -258,13 +263,18 @@ public class OfferDecisions {
         if (owned.http() != 200) return owned;
         try {
             Instant now = clock.now(context(p));
-            JsonNode registry = now == null ? null : registry(p, now);
-            if (registry == null) return reasonsUnavailable();
+            JsonNode row = now == null ? null : registryRow(p, now);
+            if (row == null) return reasonsUnavailable();
             ObjectNode value = F.objectNode();
             value.put("schemaVersion", 1);
-            value.put("policyVersion", p.policyVersion());
             value.put("key", REASONS_KEY);
-            value.set("reasons", registry.get("reasons").deepCopy());
+            value.put("policyVersion", p.policyVersion());
+            value.set("reasons", row.get("value").get("reasons").deepCopy());
+            ObjectNode provenance = value.putObject("provenance");
+            for (String field : new String[] {"status", "basis", "source", "sourceDate"}) {
+                if (!row.path(field).isTextual() || row.get(field).textValue().isBlank()) return reasonsUnavailable();
+                provenance.set(field, row.get(field));
+            }
             return OfferOutcome.ok(value);
         } catch (RuntimeException e) {
             return reasonsUnavailable();
@@ -534,8 +544,13 @@ public class OfferDecisions {
         }
     }
 
-    /** The registry value at the principal's policy version when it is exactly the documented shape, else null. */
     private JsonNode registry(Principal p, Instant now) {
+        JsonNode row = registryRow(p, now);
+        return row == null ? null : row.get("value");
+    }
+
+    /** The registry row at the principal's policy version when its value is exactly the documented shape, else null. */
+    private JsonNode registryRow(Principal p, Instant now) {
         if (p.policyVersion() == null) return null;
         PolicyResult r = policy.getAssumption(REASONS_KEY, new PolicyRead(p.runId(), PolicyClock.iso(now), p.policyVersion()));
         if (!r.ok() || !p.policyVersion().equals(r.policyVersion()) || r.value() == null) return null;
@@ -551,7 +566,7 @@ public class OfferDecisions {
                 return null;
             }
         }
-        return v;
+        return r.value();
     }
 
     private static boolean text(JsonNode n) {

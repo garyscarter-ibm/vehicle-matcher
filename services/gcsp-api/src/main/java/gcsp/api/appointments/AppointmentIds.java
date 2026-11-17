@@ -8,7 +8,7 @@ import java.util.List;
 /** Operation ids and types with Node parity: "appointment:" + 32 hex of digest([runId, orderUuid]) + ":" + step. */
 public final class AppointmentIds {
 
-    public static final List<String> STEPS = List.of("request", "confirm", "accept", "complete");
+    public static final List<String> STEPS = List.of("request", "confirm", "accept", "complete", "no-show");
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private AppointmentIds() {}
@@ -21,6 +21,14 @@ public final class AppointmentIds {
         if (!isStep(step)) throw new IllegalArgumentException("Unknown appointment step: " + step);
         ArrayNode key = JSON.createArrayNode().add(runId).add(orderUuid);
         return "appointment:" + Canonical.digest(key).substring(0, 32) + ":" + step;
+    }
+
+    /** Attempt 1 keeps the plain id; a rebooking (attempt n > 1) inserts ":a<n>" before the step. */
+    public static String operationId(String runId, String orderUuid, String step, int attempt) {
+        if (attempt <= 1) return operationId(runId, orderUuid, step);
+        if (!isStep(step)) throw new IllegalArgumentException("Unknown appointment step: " + step);
+        ArrayNode key = JSON.createArrayNode().add(runId).add(orderUuid);
+        return "appointment:" + Canonical.digest(key).substring(0, 32) + ":a" + attempt + ":" + step;
     }
 
     public static String operationType(String step) {

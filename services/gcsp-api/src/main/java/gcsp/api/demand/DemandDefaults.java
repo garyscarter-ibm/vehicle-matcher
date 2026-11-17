@@ -26,7 +26,7 @@ public final class DemandDefaults {
     @ApplicationScoped
     public static class UnconfiguredEvaluation implements UnmetEvaluationPort {
         @Override
-        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf) {
+        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf, long clockVersion) {
             return Evaluation.UNAVAILABLE;
         }
     }

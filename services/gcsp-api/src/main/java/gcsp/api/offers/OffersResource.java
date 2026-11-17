@@ -66,7 +66,8 @@ public class OffersResource {
         } catch (IdentityRefusal e) {
             return secure(ApiError.response(e.http(), e.status(), e.code(), e.reason(), e.retryable()));
         }
-        if (!uri.getQueryParameters().isEmpty()) return render(unsupportedQuery());
+        OfferOutcome run = runSelector(uri, p);
+        if (run != null) return render(run);
         return render(access.read(p, offerId));
     }
 
@@ -94,7 +95,8 @@ public class OffersResource {
         } catch (IdentityRefusal e) {
             return secure(ApiError.response(e.http(), e.status(), e.code(), e.reason(), e.retryable()));
         }
-        if (!uri.getQueryParameters().isEmpty()) return render(unsupportedQuery());
+        OfferOutcome run = runSelector(uri, p);
+        if (run != null) return render(run);
         return render(decisions.reasons(p, offerId));
     }
 
@@ -123,6 +125,22 @@ public class OffersResource {
         }
     }
 
+    /**
+     * Node parity for the offer reads: at most one runId, which must be the caller's active run; null when it may proceed.
+     * Any other parameter is refused, and a runId from another run answers stale-run as Node does.
+     */
+    static OfferOutcome runSelector(UriInfo uri, Principal p) {
+        var query = uri.getQueryParameters();
+        if (query.isEmpty()) return null;
+        java.util.List<String> runs = query.get("runId");
+        if (query.size() != 1 || runs == null || runs.size() != 1) return unsupportedQuery();
+        String runId = runs.get(0);
+        if (runId == null || runId.isBlank() || runId.length() > 128) {
+            return OfferOutcome.invalid("invalid-offer-selector", "This offer link is not valid. Open the link from your email again.");
+        }
+        return runId.equals(p.runId()) ? null : OfferOutcome.staleRun();
+    }
+
     private static OfferOutcome unsupportedQuery() {
         return OfferOutcome.invalid("unsupported-query", "Offers do not take query parameters.");
     }
@@ -145,6 +163,7 @@ public class OffersResource {
             body.put("reason", o.reason());
             body.put("retryable", o.retryable());
             if (o.current() != null) body.set("current", o.current());
+            if (o.savedChange() != null) body.set("savedChange", o.savedChange());
         }
         return secure(Response.status(o.http()).type(MediaType.APPLICATION_JSON_TYPE).entity(body).build());
     }

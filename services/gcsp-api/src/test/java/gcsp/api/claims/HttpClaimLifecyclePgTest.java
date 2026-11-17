@@ -52,7 +52,7 @@ class HttpClaimLifecyclePgTest {
         String operationId = ManualClaims.operationId("cmd-http-1", "manual-claim");
         JsonNode h = ClaimFixture.value(f.claims.claim(f.scope("e1"), f.claimInput("cmd-http-1", "car-1", 1))).get("hold");
         assertEquals("active", h.get("state").asText());
-        assertEquals("remote", h.get("mode").asText());
+        assertTrue(h.get("mode").isNull(), "the fixture seeds no draft, so there is no journey mode");
         assertEquals("active", holdState());
         assertEquals("remote", f.text("SELECT mode FROM manual_claims"));
         assertEquals("acknowledged", opState());
