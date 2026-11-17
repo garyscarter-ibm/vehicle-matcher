@@ -7888,7 +7888,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-14T10:17:02Z",
+      "observed_at": "2026-11-17T11:22:20Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7927,9 +7927,29 @@
         {
           "id": "integration",
           "status": "complete",
-          "title": "Merge base, full Java verify and story result",
+          "title": "Merge base, full Java verify and story result (14 Nov)",
           "observed_at": "2026-11-14T10:17:02Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev f145164a6, full Java verify 1034/0 on native PG 17 at e595db787, packaged-JVM none/demo/restart/wrong-db proof, result block committed"
+        },
+        {
+          "id": "r2-handlers",
+          "status": "not-started",
+          "title": "Reopened: bind manual-claim, Buddy expiry/pending/allocation and production tick handlers; fix FUCQ-509 test clock"
+        },
+        {
+          "id": "r2-run-scope",
+          "status": "not-started",
+          "title": "Reopened: principal follows the active run (FUCQ-506) and presenter/clock/reset route"
+        },
+        {
+          "id": "r2-ac2-proofs",
+          "status": "not-started",
+          "title": "Reopened: started-app proofs of non-demo composition seeding nothing and restart preserving work"
+        },
+        {
+          "id": "r2-integration",
+          "status": "not-started",
+          "title": "Reopened: merge base, full Java verify and story result (17 Nov)"
         }
       ]
     },
