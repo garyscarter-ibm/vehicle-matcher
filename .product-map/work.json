@@ -7847,7 +7847,7 @@
     {
       "assignee": "",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-14T10:07:49Z",
+      "observed_at": "2026-11-17T11:43:18Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit Production requests and reconcile responses",
@@ -7882,6 +7882,22 @@
           "title": "Story validation on native PostgreSQL, merged-tree verify and result",
           "observed_at": "2026-11-14T10:07:49Z",
           "evidence": "Lead validation at cc362a89a (merged origin/gcsp-poc-dev): ./mvnw -B verify 994/994 on native PG17 incl. 49 production tests; result block 27ff3f505"
+        },
+        {
+          "id": "s5-plan-binding",
+          "status": "in-progress",
+          "title": "Real plan-snapshot adapter over planning and Production-backed submission history (replan path)",
+          "observed_at": "2026-11-17T11:43:18Z"
+        },
+        {
+          "id": "s6-inventory-routes",
+          "status": "not-started",
+          "title": "Inventory routes greg/orders GET/POST, greg/orders/queue and presenter/production"
+        },
+        {
+          "id": "s7-reintegration",
+          "status": "not-started",
+          "title": "Reopened-story validation through the started app, merged-tree verify and result"
         }
       ]
     },
