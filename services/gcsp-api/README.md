@@ -656,9 +656,14 @@ Package `gcsp.api.cases`: owned renewal cases in the V474_1 tables (`renewal_cas
 from the bearer principal. Ports and production defaults: `PolicyCaseAdapter` reads the nine `renewalCase.*` rows
 of the pinned version from the canonical PolicyService (any missing or invalid row is 503 `case-unavailable`);
 `CaseAccountPort` reads the account records port (`GCSP_ACCOUNT_PROVIDER`, else 503); each change queues outbox event `renewal-case-update` for `gcsp.api.notify` (FUCQ-469) to
-deliver. Car suitability is not connected, so alternative-car proposals are 503, and preference relaxation needs a
-recorded decline that Java does not hold yet. No automatic recovery priority, and the renewal-risk clock tick is not
-ported yet. No new environment variables.
+deliver. With persistence and an account provider, `CaseSuitabilitySelection` binds alternative-car suitability to the
+recommendation calculation allocation uses (released, unoccupied, visible stock; needs a confirmed brief), else every
+car proposal is 503. Preference relaxation needs the employee's recorded offer decline and, to resolve, her single
+post-decline brief change. Case times follow the run clock. Tick handler `renewal-risk-cases` (stage
+`pending-reconciliation`, registered with persistence and `GCSP_ACCOUNT_PROVIDER`) opens or extends the owned case
+when a contract end is within `renewalCase.deadline.withinDays` with no acknowledged selection, and on configured
+lifecycle exceptions (approval declined, handover no-show, return missed). No automatic recovery priority. No new
+environment variables; the dev service already needs `GCSP_ACCOUNT_PROVIDER=repository`.
 
 ## Returns (FUCQ-473)
 
