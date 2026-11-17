@@ -18,6 +18,16 @@ class AppointmentIdsTest {
     }
 
     @Test
+    void anAttemptAfterTheFirstInsertsItsNumberBeforeTheStep() {
+        String base = "appointment:b98fd174551e4e7e08f722f6eff0aef9";
+        assertEquals(base + ":request", AppointmentIds.operationId("run-1", ORDER, "request", 1));
+        assertEquals(base + ":a2:request", AppointmentIds.operationId("run-1", ORDER, "request", 2));
+        assertEquals(base + ":a3:no-show", AppointmentIds.operationId("run-1", ORDER, "no-show", 3));
+        assertEquals(base + ":no-show", AppointmentIds.operationId("run-1", ORDER, "no-show"));
+        assertEquals("lifecycle-appointment-no-show", AppointmentIds.operationType("no-show"));
+    }
+
+    @Test
     void typesAndSteps() {
         assertEquals("lifecycle-appointment-confirm", AppointmentIds.operationType("confirm"));
         assertEquals("lifecycle-appointment-accept", AppointmentIds.operationType("accept"));

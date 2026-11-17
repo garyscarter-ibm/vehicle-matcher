@@ -7554,7 +7554,7 @@
     {
       "assignee": "",
       "id": "FUCQ-472",
-      "observed_at": "2026-11-14T08:04:36Z",
+      "observed_at": "2026-11-17T14:49:05Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan supported handover appointments",
@@ -7596,6 +7596,34 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:36Z",
           "evidence": "Lead: merged origin/gcsp-poc-dev at 6ae27d37, ./mvnw -B verify 761/761 on native PG17; result block committed"
+        },
+        {
+          "id": "s6-bindings",
+          "status": "complete",
+          "title": "Real stage, readiness, document case and approvals handover adapters bound at startup",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 28ac8d007: real ApprovalsOrderStage, DocumentsHandoverReadiness, LifecycleDocumentCases, AppointmentHandover bound; RealPortsWiringTest, PortMappingTest, LifecycleDocumentCasesTest pass on native PG17; proven in HandoverJourneyHttpTest (563646b2f)"
+        },
+        {
+          "id": "s7-no-show",
+          "status": "complete",
+          "title": "No-show outcome, exception event and rebooking (kickoff FUCQ-167 parity)",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 6f41c17af: greg-only POST /appointments/no-show, appointment-no-show outbox event, rebooking attempt n+1, V472_2; AppointmentNoShowTest 8/8, appointments package 97/97, journey step 11"
+        },
+        {
+          "id": "s8-journey",
+          "status": "complete",
+          "title": "Integrated journey through the started app with real adapters; dev config documented",
+          "observed_at": "2026-11-17T14:41:35Z",
+          "evidence": "Lead-reviewed 563646b2f: HandoverJourneyHttpTest 12 steps over real JWTs and PG17 with real lifecycle ports; README and render-service.proposed.yaml dev selection"
+        },
+        {
+          "id": "s9-integration-r2",
+          "status": "complete",
+          "title": "Reopened: base merge, Java verify and result",
+          "observed_at": "2026-11-17T14:49:05Z",
+          "evidence": "Lead-run scoped set on merged head e8daef648: 216 run, 0 failures (appointments, approvals, documents, wiring/startup, HandoverJourneyHttpTest); base merged, Result written"
         }
       ]
     },

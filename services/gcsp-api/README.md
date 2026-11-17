@@ -72,7 +72,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPROVALS_POLICY_FILE` | empty | Explicit override: a retained Node policy file for the lifecycle assumptions. Empty (the default) reads the canonical PolicyService at each order's pinned version. Set but unreadable stops startup. |
 | `GCSP_ORDERING_PROVIDER` | `none` | Employee ordering handoff provider: `none` refuses every submit (503 `ordering-provider-not-configured`) while terms and reads still work, `synthetic` is a labelled fictional provider kept in the same database. Unknown values stop startup. |
 | `GCSP_SUPPLY_POLICY_FILE` | empty | Retained Node policy file (`policyVersion`, `effectiveFrom`, `assumptions[]`). Empty means no policy, so every release stays pending as `policy-unavailable`. Set but unreadable stops startup. |
-| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. |
+| `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. | The dev journey (order, approvals, documents, handover) needs `synthetic` here and for `GCSP_ORDERING_PROVIDER`, `GCSP_APPROVALS_PROVIDER` and `GCSP_DOCUMENTS_PROVIDER`, with persistence on.
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
@@ -300,9 +300,10 @@ server's active run (never to the request); any unknown or repeated query parame
 | Route | Who | Meaning |
 | --- | --- | --- |
 | `GET /appointments?orderUuid=` | owning employee, greg, presenter | Read model `lifecycle.appointments.v1`, with offered slots while nothing is requested. |
-| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request. |
+| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request, or the current version to rebook after a no-show. |
 | `POST /appointments/accept` | employee (own order) | `{commandId, orderUuid, proposalId, expectedVersion}`: accepts the provider's proposed change. |
 | `POST /appointments/complete` | greg | `{commandId, orderUuid, expectedVersion}`: records the handover outcome. |
+| `POST /appointments/no-show` | greg | `{commandId, orderUuid, expectedVersion}`: records a missed handover and its exception event. |
 | `POST /presenter/appointments/ticks` | presenter | `{tickId, now}`: sets the appointment clock, then progresses every actionable appointment; answers `{tick, summary}`. |
 
 Results: 200 `ok`; 202 `pending` (`provider-outcome-uncertain` with `operationId` and the read model, or an uncertain commit
@@ -314,9 +315,12 @@ with `outcome-uncertain`), never to be resent as a new command; 400 `invalid-app
 `appointments-clock-unavailable`, `appointment-policy-unavailable`, `handover-readiness-unavailable`, `persistence-not-configured`).
 Every body carries `status`, `code` (when not ok), `reason` and `retryable`; tokens and upstream errors are never echoed.
 
-Ports, each with an explicit unconfigured default that answers unavailable (no silent fallback): `AppointmentProvider`,
-`OrderStagePort` (FUCQ-470 replaces it), `HandoverReadinessPort` (FUCQ-471 replaces it), `AppointmentPolicy` and
-`AppointmentClock`. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
+Ports: `AppointmentProvider` (selected below), `AppointmentPolicy` and `AppointmentClock`. The lifecycle seams are bound to
+the real producers: `OrderStagePort` is `ApprovalsOrderStage` (approvals' `lifecycle.stages.v1` read), `HandoverReadinessPort`
+is `DocumentsHandoverReadiness` (documents readiness), documents' `DocumentCasePort` is `LifecycleDocumentCases`
+(approvals stages, the ordering selection owner, employee and slot rows), and approvals' `HandoverPort` is
+`AppointmentHandover`, so a completed handover becomes the order's final `handover` stage. Each answers unavailable when its
+producer is off; none falls back to a default. Rules come only from the six `lifecycle.appointments.*` assumptions through `PolicyService`
 (`PolicyServiceAppointmentPolicy`); any gap or a wrong pin is 503 `appointment-policy-unavailable`, never a default.
 Appointment time is the latest presenter tick, never the wall clock.
 
@@ -330,7 +334,12 @@ retries) and logs a one-line summary; a failure is logged, not fatal.
 Completion is greg only. It needs the readiness port to say ready (else 409 `handover-not-ready`) and the booked slot to have
 started (policy `completeAfterSlotStartSeconds`), then commits the outcome and the outbox event `appointment-completed`
 (`orderUuid`, `employeeId`, `occurredAt`, `providerReference`, `slotId`) in one transaction; FUCQ-473 consumes the event.
-Not ported: no-show and rebooking, and the return purpose and current-car change (FUCQ-473).
+No-show is greg only too, with the same gates in Node order (not scheduled, another update pending, too early by
+`noShowAfterSlotStartSeconds`, stale version) but no readiness gate. It commits the outcome and the outbox event named by
+the policy's `exceptionTypes.noShow` (`appointment-no-show`) in one transaction. After it the read model offers fresh slots
+minus every missed one, and the employee rebooks with `request` at the current version: attempt n + 1 keeps the missed
+attempt in `previousAttempts` and writes under operation ids with `:a<n>` before the step (`V472_2`).
+Not ported: the return purpose and current-car change (FUCQ-473).
 
 ## Identity seam
 
