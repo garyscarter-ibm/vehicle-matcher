@@ -7831,7 +7831,7 @@
     {
       "assignee": "",
       "id": "FUCQ-479",
-      "observed_at": "2026-11-17T14:38:29Z",
+      "observed_at": "2026-11-17T14:55:13Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Run clock, scenarios and presenter operations",
@@ -7897,8 +7897,10 @@
         },
         {
           "id": "r2-integration",
-          "status": "not-started",
-          "title": "Reopened: merge base, full Java verify and story result (17 Nov)"
+          "status": "complete",
+          "title": "Reopened: merge base, full Java verify and story result (17 Nov)",
+          "observed_at": "2026-11-17T14:55:13Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev (a63edcf3a, FUCQ-464 handler-id collision resolved), scoped 312/0 at 3a4c6a60e on native PG17; result block committed"
         }
       ]
     },
