@@ -7144,7 +7144,7 @@
     {
       "assignee": "",
       "id": "FUCQ-462",
-      "observed_at": "2026-11-14T01:00:56Z",
+      "observed_at": "2026-11-17T15:18:28Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release stock through the selected supply provider",
@@ -7172,13 +7172,34 @@
           "title": "Story validation, base merge, migration number and result",
           "observed_at": "2026-11-14T01:00:56Z",
           "evidence": "base merged 53ca980c, V2 chosen (base has V1 only), verify 142/0 at 2874f308, result block committed"
+        },
+        {
+          "id": "s4-demo-provider-policy",
+          "status": "complete",
+          "title": "Demo supply provider with confirmed-supply windows, PolicyService release policy binding",
+          "observed_at": "2026-11-17T14:28:59Z",
+          "evidence": "lead review of b1d650bf1: demo provider + confirmed-supply lookup, PolicyReleaseAdapter bound by default; Node parity 7 cases; DemoSupplyProviderTest 5/5, SupplySelectionTest 7/7 rerun by lead; supply+presenter Quarkus 74 run, 1 failure also on base"
+        },
+        {
+          "id": "s5-journey-proof",
+          "status": "complete",
+          "title": "Dev composition journey @QuarkusTest over OIDC JWTs and PostgreSQL, docs",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "lead review of ca3b693a9: SupplyDevCompositionHttpTest 9/9 on dev composition (oidc JWTs, PG17, demo provider, PolicyService); cue fix reviewed"
+        },
+        {
+          "id": "s6-integration-r2",
+          "status": "complete",
+          "title": "Reopened run: scoped validation, base merge and result",
+          "observed_at": "2026-11-17T15:18:28Z",
+          "evidence": "base merged 269c6f728; scoped set 179/0/0/0 on 269c6f728 native PG17; result block committed"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-14T09:23:07Z",
+      "observed_at": "2026-11-17T15:33:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7208,11 +7229,25 @@
           "evidence": "Lead review of employee routes, sweep and README; 8 HTTP tests; gcsp-api verify 599/0 on native PG17"
         },
         {
+          "id": "composition-local",
+          "status": "complete",
+          "title": "AC1 and local AC2 through the started app: real JWTs, repository account, real selection/timing, HTTP race, expiry, review, release, order",
+          "observed_at": "2026-11-17T14:51:33Z",
+          "evidence": "Lead review of ManualClaimsComposedHttpTest (12) on the dev composition: oidc RS256, repository accounts, real ManualSelection/PolicyClaimTiming/LocalClaimStock/CartSelectionConversion, native PG17; 2-employee race 10/10 one winner car-held, slot race, expiry, review-once, replay, drift, claim/quote/order projections; scoped run 32/0"
+        },
+        {
+          "id": "composition-remote",
+          "status": "complete",
+          "title": "AC2 remote through the started app: HttpClaimStock against loopback stock endpoint, response loss, duplicate ack, release loss, restart",
+          "observed_at": "2026-11-17T15:28:44Z",
+          "evidence": "Lead review: ManualClaimsRemoteComposedHttpTest (8) and ManualClaimsRemoteRestartHttpTest (1) boot the dev composition with gcsp.claims.stock.provider=remote, real HttpClaimStock against loopback RemoteOperationServer; response/request loss, mismatch/500, release loss, duplicate acks, remote expiry, restart convergence with 1 effect; run 62/0"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Integration: base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T09:23:07Z",
-          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+          "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
+          "observed_at": "2026-11-17T15:33:01Z",
+          "evidence": "Base merge a44e836fe; scoped started-app set 189 (1 restart-test assumption fixed for FUCQ-479 startup tick, rerun 1/0) on private PG17; Result in _dev story file"
         }
       ]
     },
@@ -7397,7 +7432,7 @@
     {
       "assignee": "",
       "id": "FUCQ-468",
-      "observed_at": "2026-11-14T08:43:02Z",
+      "observed_at": "2026-11-17T16:24:53Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Submit and reconcile employee ordering handoffs",
@@ -7422,9 +7457,30 @@
         {
           "id": "s3-integration",
           "status": "complete",
-          "title": "Story validation, base merge, full Java verify and result",
+          "title": "Story validation, base merge, full Java verify and result (first run)",
           "observed_at": "2026-11-14T08:43:02Z",
           "evidence": "lead review of be5cb84a9 and base merge 056237310; ./mvnw -B clean verify 941/0/0/0 (ordering 33, approvals 36) on native PG17 :55468"
+        },
+        {
+          "id": "r2-journey-synthetic",
+          "status": "complete",
+          "title": "Reopened: started dev composition proof of AC1 cart handoff (review-details freeze, refusals, acknowledged reference) with synthetic ordering",
+          "observed_at": "2026-11-17T16:02:48Z",
+          "evidence": "lead review of ae4758e72: OrderingJourneyHttpTest 1/1 on started dev composition (oidc, repository, demo, synthetic, no alternatives), private PG17 :55536"
+        },
+        {
+          "id": "r2-remote-faults",
+          "status": "complete",
+          "title": "Reopened: started composition proof of refused, lost acknowledgement, repeated command and restart over a loopback remote ordering endpoint",
+          "observed_at": "2026-11-17T16:21:01Z",
+          "evidence": "lead review of bc06bb0b6: OrderingRemoteRefusedHttpTest + OrderingRemoteJourneyHttpTest green over HttpOrderingProvider->loopback (refused, lost ack, hide, repeat, startup and fresh-pool restart, executes 1 per op)"
+        },
+        {
+          "id": "r2-integration",
+          "status": "complete",
+          "title": "Reopened: base merge, scoped story test set and Result",
+          "observed_at": "2026-11-17T16:24:53Z",
+          "evidence": "lead: merged origin/gcsp-poc-dev at 0df8441d9; scoped set 123/0/0/0 and Buddy ordering 3/0/0/0 on PG17 :55536; Result written"
         }
       ]
     },
@@ -7704,7 +7760,7 @@
     {
       "assignee": "",
       "id": "FUCQ-474",
-      "observed_at": "2026-11-14T07:37:09Z",
+      "observed_at": "2026-11-17T16:41:51Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Maintain owned help/renewal cases and remedies",
@@ -7730,15 +7786,43 @@
           "id": "s3-integration",
           "status": "complete",
           "title": "Story-level validation, merge with gcsp-poc-dev, result block",
-          "observed_at": "2026-11-14T07:37:09Z",
-          "evidence": "c5f676d6 after merge a8c1ca1d of origin/gcsp-poc-dev: PolicyCaseAdapter over canonical PolicyService; cases 44/44 native PG17 (HTTP on real OIDC JWKS + canonical policy); ./mvnw -B verify 580 run 0 fail 0 skip; Flyway 1,2,457.1,458.1,460.1,469.1,470.1,471.1,474.1"
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s4-risk-tick",
+          "status": "complete",
+          "title": "Run-clock case time and renewal-risk-cases tick handler (deadline and lifecycle triggers)",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s5-suitability",
+          "status": "complete",
+          "title": "CaseCarSuitabilityPort bound to the Java recommendation service (alternative-car remedy)",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s6-relaxation",
+          "status": "complete",
+          "title": "Preference-relaxation remedy over recorded offer declines and post-decline brief change",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
+        },
+        {
+          "id": "s7-journey",
+          "status": "complete",
+          "title": "Started-app journey under documented config (repository accounts, demo scenario, OIDC JWTs, PG) for AC1 and AC2",
+          "observed_at": "2026-11-17T16:41:51Z",
+          "evidence": "Lead-reviewed; scoped set 241/0/0 on merged tree d5aebb1e1 (cases 77 incl. started-app journey on OIDC+PG); result block in story file"
         }
       ]
     },
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-14T08:16:02Z",
+      "observed_at": "2026-11-17T17:05:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
@@ -7766,6 +7850,41 @@
           "title": "Story integration: merge base, full Java verify on native PG17, EXPLAIN bounds, result",
           "observed_at": "2026-11-14T08:16:02Z",
           "evidence": "lead review: merge dde305419; canonical PolicyDemandAdapter 3ee1abcb5; demand.** 62/62 and verify 740/0 on native PG17 :55475; EXPLAIN on 1000-employee/5000-car workload"
+        },
+        {
+          "id": "r2-s1-policy-clock-offers",
+          "status": "complete",
+          "title": "Reopened: reviewed decline reasons at the pinned version, run clock, PostgreSQL offer records adapter",
+          "observed_at": "2026-11-17T16:49:29Z",
+          "evidence": "lead review of 35cf4c820: reviewed decline reasons only for unknown-assumption at pinned version; run clock with clockVersion fence; PostgresOfferRecordsAdapter (2 fixed statements in snapshot); demand unit set 56/0 on PG17 :55491; demand.** 67/0 per Sniffles"
+        },
+        {
+          "id": "r2-s2-evaluation",
+          "status": "complete",
+          "title": "Reopened: unmet evaluation adapter over the selected EligibleCandidates",
+          "observed_at": "2026-11-17T16:57:57Z",
+          "evidence": "lead review of 01123d71b/0ddc55e62: batched reads, one engine call per brief, unavailable cars ineligible+not-available, latest completed run per pair; demand.** 75/0 on PG17 :55491"
+        },
+        {
+          "id": "r2-s3-allocation-records",
+          "status": "complete",
+          "title": "Reopened: recorded allocation decisions adapter for suitability",
+          "observed_at": "2026-11-17T16:57:57Z",
+          "evidence": "lead review of 01123d71b/0ddc55e62: batched reads, one engine call per brief, unavailable cars ineligible+not-available, latest completed run per pair; demand.** 75/0 on PG17 :55491"
+        },
+        {
+          "id": "r2-s4-composition-journey",
+          "status": "complete",
+          "title": "Reopened: dev-composition journey over OIDC JWTs and native PostgreSQL",
+          "observed_at": "2026-11-17T17:02:40Z",
+          "evidence": "lead review of dacfdb8e0: DemandDevCompositionHttpTest 7/0 on the dev composition, real beans asserted via Arc, no alternatives, OffersTestPorts Records excluded; counts checked against DB"
+        },
+        {
+          "id": "r2-s5-integration",
+          "status": "complete",
+          "title": "Reopened: merge base, scoped targeted set, result",
+          "observed_at": "2026-11-17T17:05:35Z",
+          "evidence": "merged 4d7f46c17 at e3b37f829; scoped set 136 run with 2 env-only errors (hardcoded gcsp_test_dev), both 3/0 on rerun; demand 82/0"
         }
       ],
       "workers": [
@@ -7775,6 +7894,15 @@
           "role": "story-lead DEV-2026-11-13-043",
           "observed_at": "2026-11-14T03:05:57Z",
           "expires_at": "2026-11-14T08:16:02Z",
+          "source": "dev/DEV-2026-11-13-043",
+          "status": "finished"
+        },
+        {
+          "name": "Miss Prissy",
+          "harness": "claude-code",
+          "role": "story-lead DEV-2026-11-13-043 (reopened)",
+          "observed_at": "2026-11-17T16:29:59Z",
+          "expires_at": "2026-11-17T17:05:35Z",
           "source": "dev/DEV-2026-11-13-043",
           "status": "finished"
         }
@@ -7961,7 +8089,7 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-14T22:02:46Z",
+      "observed_at": "2026-11-17T15:39:22Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
@@ -7998,11 +8126,43 @@
           "evidence": "Lead-reviewed slice 4: Greg-only start, idempotent commandId, one running job, progress/failure/timeout/shutdown/restart-interrupted persisted; no cancel/restart route; no outbox rows; 58/58 comparison tests"
         },
         {
+          "id": "experiments-replay",
+          "status": "complete",
+          "title": "Experiment arms (points, hold-sweep, order-mix) through the real Java replay equal Node",
+          "observed_at": "2026-11-17T15:29:09Z",
+          "evidence": "Lead-reviewed 3c7f2296f: ComparisonExperimentReplayTest runs process-only, points, order-mix and hold-sweep (seeds parity-a/b, 12 employees) through real RouteReplay on native PG17; result digests and progress equal fresh Node runComparison; lead rerun 1/1 pass, no cmp_ schema left"
+        },
+        {
+          "id": "started-app-restart",
+          "status": "complete",
+          "title": "Started-app job progress, interruption and recovery across a real restart, no real email",
+          "observed_at": "2026-11-17T15:35:31Z",
+          "evidence": "Lead-reviewed e235c8242: packaged quarkus-run.jar, documented env, RS256 JWTs over https JWKS, native PG17, brevo transport to a fake: 58/58 checks. Reruns off 403; SIGKILL mid-run reads interrupted (restarted) with stepsDone 1; SIGTERM reads interrupted (stopped); re-POST no rerun; cancel/restart 404; 0 mail calls, 0 outbox rows"
+        },
+        {
+          "id": "render-env",
+          "status": "complete",
+          "title": "Render env delta for comparison (proposed yaml and README)",
+          "observed_at": "2026-11-17T15:35:31Z",
+          "evidence": "Lead-reviewed 36e297fe4: README env rows GCSP_COMPARISON_RESULT_FILES/RERUNS/CODE_REVISION; commented proposed-yaml lines with the ~4 GB note; render.gcsp.yaml untouched"
+        },
+        {
           "id": "integration",
           "status": "complete",
-          "title": "Merge base, full Java verify, README and result",
-          "observed_at": "2026-11-14T22:02:46Z",
-          "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
+          "title": "Story integration: base merge, scoped set, Result",
+          "observed_at": "2026-11-17T15:39:22Z",
+          "evidence": "Lead: merged origin/gcsp-poc-dev at 645ce2b42; scoped set 79 run/0 fail/2 env-gated skips on native PG17; started-app proof on merged-head jar 58/58; Result block written"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Pinky",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-17T15:39:22Z",
+          "expires_at": "2026-11-17T15:39:22Z",
+          "source": "dev poller 2026-11-17 reopen; worktree dev/DEV-2026-11-13-048",
+          "status": "completed: Result built, awaiting dispatcher merge"
         }
       ]
     },

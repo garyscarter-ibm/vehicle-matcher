@@ -1,0 +1,210 @@
+{
+ "comment": "Hand-ported from server/gcsp/stock/demo-provider.js MODELS and display-images.v1.json; parity-tested against Node.",
+ "models": {
+  "saloon": {
+   "model": "3 Series Saloon",
+   "derivative": "320i",
+   "configurationId": "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=",
+   "key": "G20 Saloon|320i",
+   "image": {
+    "imageId": "bmw-display-c1a3b0f2df9a6c3834cd",
+    "asset": "assets/gcsp-vehicle-evidence/c1a3b0f2df9a6c3834cd04fc8f65455e6daa8fda9e7bf0f7a9c9e5e437ec8318.webp",
+    "fidelity": "representative-model",
+    "observedDate": "2026-11-10"
+   },
+   "facts": {
+    "body": {
+     "value": "saloon",
+     "unit": null
+    },
+    "fuel": {
+     "value": "petrol",
+     "unit": null
+    },
+    "seats": {
+     "value": 5,
+     "unit": "count"
+    },
+    "boot": {
+     "value": 480,
+     "unit": "L"
+    },
+    "sizeClass": {
+     "value": 2,
+     "unit": "ordinal-1-5"
+    },
+    "zeroTo62": {
+     "value": 7.4,
+     "unit": "s"
+    },
+    "insuranceGroup": {
+     "value": 30,
+     "unit": "insurance-group"
+    },
+    "tags": {
+     "value": [
+      "cruiser"
+     ],
+     "unit": null
+    },
+    "mpg": {
+     "value": 45,
+     "unit": "mpg-imperial"
+    }
+   }
+  },
+  "touring": {
+   "model": "3 Series Touring",
+   "derivative": "320i",
+   "configurationId": "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=",
+   "key": "G21 Touring|320i",
+   "image": {
+    "imageId": "bmw-display-07c269dd7f55fad0a56b",
+    "asset": "assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+    "fidelity": "representative-model",
+    "observedDate": "2026-11-10"
+   },
+   "facts": {
+    "body": {
+     "value": "estate",
+     "unit": null
+    },
+    "fuel": {
+     "value": "petrol",
+     "unit": null
+    },
+    "seats": {
+     "value": 5,
+     "unit": "count"
+    },
+    "boot": {
+     "value": 500,
+     "unit": "L"
+    },
+    "sizeClass": {
+     "value": 2,
+     "unit": "ordinal-1-5"
+    },
+    "zeroTo62": {
+     "value": 7.4,
+     "unit": "s"
+    },
+    "insuranceGroup": {
+     "value": 30,
+     "unit": "insurance-group"
+    },
+    "tags": {
+     "value": [
+      "family"
+     ],
+     "unit": null
+    },
+    "mpg": {
+     "value": 44,
+     "unit": "mpg-imperial"
+    }
+   }
+  },
+  "i5": {
+   "model": "i5 Touring",
+   "derivative": "eDrive40",
+   "configurationId": "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=",
+   "key": "G61 i5|i5 40",
+   "nameKey": "G61 i5|i5 eDrive40",
+   "image": {
+    "imageId": "bmw-display-084ce679faec3f32a47f",
+    "asset": "assets/gcsp-vehicle-evidence/084ce679faec3f32a47f7589a589f88ccab14a70acbf8f6a1d23417db2bb2cca.webp",
+    "fidelity": "representative-model",
+    "observedDate": "2026-11-10"
+   },
+   "facts": {
+    "body": {
+     "value": "estate",
+     "unit": null
+    },
+    "fuel": {
+     "value": "ev",
+     "unit": null
+    },
+    "seats": {
+     "value": 5,
+     "unit": "count"
+    },
+    "boot": {
+     "value": 490,
+     "unit": "L"
+    },
+    "sizeClass": {
+     "value": 3,
+     "unit": "ordinal-1-5"
+    },
+    "zeroTo62": {
+     "value": 6.1,
+     "unit": "s"
+    },
+    "insuranceGroup": {
+     "value": 35,
+     "unit": "insurance-group"
+    },
+    "tags": {
+     "value": [
+      "electric"
+     ],
+     "unit": null
+    }
+   }
+  },
+  "hatch": {
+   "model": "1 Series Sports Hatch",
+   "derivative": "120",
+   "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+   "key": "F70 Sports Hatch|120",
+   "image": {
+    "imageId": "bmw-display-ed60cefd049e72934235",
+    "asset": "assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+    "fidelity": "representative-model",
+    "observedDate": "2026-11-10"
+   },
+   "facts": {
+    "body": {
+     "value": "hatchback",
+     "unit": null
+    },
+    "fuel": {
+     "value": "petrol",
+     "unit": null
+    },
+    "seats": {
+     "value": 5,
+     "unit": "count"
+    },
+    "boot": {
+     "value": 380,
+     "unit": "L"
+    },
+    "sizeClass": {
+     "value": 1,
+     "unit": "ordinal-1-5"
+    },
+    "zeroTo62": {
+     "value": 7.8,
+     "unit": "s"
+    },
+    "insuranceGroup": {
+     "value": 22,
+     "unit": "insurance-group"
+    },
+    "tags": {
+     "value": [
+      "city"
+     ],
+     "unit": null
+    },
+    "mpg": {
+     "value": 48.7,
+     "unit": "mpg-imperial"
+    }
+   }
+  }
+ }
+}

@@ -64,6 +64,9 @@
       #   sync: false
       # - key: GCSP_BREVO_API_KEY
       #   sync: false
+      # Stock supply (FUCQ-462): synthetic demo stock from policy windows and confirmed Production supply; needs the database.
+      # - key: GCSP_SUPPLY_PROVIDER
+      #   value: demo
       # Vehicle evidence (FUCQ-459, proposed for GC): provider none until the retained files are in the image or on a disk.
       # The paths below are absolute in the container; see README "Artifacts and hosting" for what to copy.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
@@ -78,6 +81,12 @@
       #   sync: false
       # - key: GCSP_VEHICLE_IMAGES_PUBLIC             # opt in only if images must load without a bearer
       #   value: "false"
+      # Comparison jobs (FUCQ-480): reads of retained results need nothing; Greg job starts need the database and true.
+      # A full process-only job takes about 70 minutes and a ~3 GB heap (FUCQ-507), so about a 4 GB instance.
+      # - key: GCSP_COMPARISON_RERUNS
+      #   value: "true"
+      # - key: GCSP_CODE_REVISION     # result provenance; unknown when unset
+      #   sync: false
       # Handover journey (FUCQ-472): every lifecycle provider synthetic over the isolated dev database; none refuses.
       - key: GCSP_ORDERING_PROVIDER
         value: synthetic

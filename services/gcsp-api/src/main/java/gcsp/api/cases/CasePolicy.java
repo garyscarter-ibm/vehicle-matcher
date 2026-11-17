@@ -5,14 +5,21 @@ import static gcsp.api.cases.CaseJson.object;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 /** The renewalCase.* rules parsed from exactly the pinned policy version; any malformed row makes it unavailable. */
-record CasePolicy(String policyVersion, String ownerRole, int dueHours, boolean extensionPermitted, ArrayNode assumptions) {
+record CasePolicy(String policyVersion, String ownerRole, int dueHours, boolean extensionPermitted, ArrayNode assumptions,
+        boolean deadlineEnabled, int withinDays, boolean lifecycleEnabled, List<String> lifecycleEventTypes,
+        List<String> selectionEventTypes, Map<String, Copy> exceptionCopy) {
+
+    /** The configured label and reason that name one lifecycle exception. */
+    record Copy(String label, String reason) {}
 
     static final List<String> KEYS = List.of("renewalCase.deadline.enabled", "renewalCase.deadline.withinDays",
             "renewalCase.lifecycle.enabled", "renewalCase.lifecycle.eventTypes", "renewalCase.selection.eventTypes",
@@ -39,11 +46,22 @@ record CasePolicy(String policyVersion, String ownerRole, int dueHours, boolean 
         if (!booleans || !integer(values[1]) || values[1].doubleValue() < 0 || !list(values[3]) || !list(values[4])
                 || values[5] == null || !"scheme-team".equals(values[5].asText(null)) || !integer(values[6])
                 || values[6].doubleValue() < 1 || !object(copy)) return Optional.empty();
-        for (JsonNode c : copy) {
-            if (!object(c) || !CaseJson.text(c.get("label"), 120) || !CaseJson.text(c.get("reason"), 500)) return Optional.empty();
+        Map<String, Copy> copies = new LinkedHashMap<>();
+        for (var it = copy.fields(); it.hasNext();) {
+            var c = it.next();
+            JsonNode v = c.getValue();
+            if (!object(v) || !CaseJson.text(v.get("label"), 120) || !CaseJson.text(v.get("reason"), 500)) return Optional.empty();
+            copies.put(c.getKey(), new Copy(v.get("label").textValue(), v.get("reason").textValue()));
         }
         return Optional.of(new CasePolicy(policyVersion, values[5].textValue(), values[6].intValue(),
-                values[7].booleanValue(), shown));
+                values[7].booleanValue(), shown, values[0].booleanValue(), values[1].intValue(), values[2].booleanValue(),
+                strings(values[3]), strings(values[4]), copies));
+    }
+
+    private static List<String> strings(JsonNode v) {
+        List<String> out = new ArrayList<>();
+        v.forEach(n -> out.add(n.textValue()));
+        return out;
     }
 
     private static boolean list(JsonNode v) {

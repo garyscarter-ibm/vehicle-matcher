@@ -32,8 +32,8 @@ public final class DemandHttpPorts {
         private final DemandFixture.Evaluator delegate = new DemandFixture.Evaluator();
 
         @Override
-        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf) {
-            return delegate.evaluate(scope, candidates, asOf);
+        public Evaluation evaluate(DemandScope scope, List<BriefCandidate> candidates, Instant asOf, long clockVersion) {
+            return delegate.evaluate(scope, candidates, asOf, clockVersion);
         }
     }
 
