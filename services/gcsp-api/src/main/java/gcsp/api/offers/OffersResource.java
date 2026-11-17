@@ -145,6 +145,7 @@ public class OffersResource {
             body.put("reason", o.reason());
             body.put("retryable", o.retryable());
             if (o.current() != null) body.set("current", o.current());
+            if (o.savedChange() != null) body.set("savedChange", o.savedChange());
         }
         return secure(Response.status(o.http()).type(MediaType.APPLICATION_JSON_TYPE).entity(body).build());
     }

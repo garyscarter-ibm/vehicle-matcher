@@ -162,6 +162,56 @@ class OfferDeclineJourneyHttpTest {
         assertEquals("saloon", waiting.get("savedChange").get("change").get("after").asText());
         assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
 
+        // A presenter tick re-evaluates Bruno against his saved brief: a second offer makes the follow-up ready.
+        assertEquals("completed", s.tick(presenter, "offer-journey-after-change").get("state").asText());
+        JsonNode ready = body(get(bruno, fu + "?decisionId=" + decisionId).then().statusCode(200).extract().response())
+                .get("value");
+        assertEquals("ready", ready.get("state").asText());
+        assertEquals("saloon", ready.get("savedChange").get("change").get("after").asText());
+        JsonNode cmp = ready.get("comparison");
+        String secondOffer = s.text("SELECT offer_id FROM buddy_offers WHERE employee_id = ? AND state = 'active'", BRUNO);
+        assertEquals(brunoOffer, cmp.get("previous").get("offer").get("offerId").asText());
+        assertEquals("declined", cmp.get("previous").get("offer").get("state").asText());
+        assertEquals(secondOffer, cmp.get("next").get("offer").get("offerId").asText());
+        assertEquals(saved.get("briefVersion").asLong(), cmp.get("currentBriefVersion").asLong());
+        assertEquals(saved.get("briefVersion").asLong(), cmp.get("next").get("scoreBasis").get("briefVersion").asLong());
+        assertEquals("body", cmp.get("requirements").get(0).get("key").asText());
+        assertEquals("saloon", cmp.get("requirements").get(0).get("value").asText());
+        assertEquals("known", cmp.get("requirements").get(0).get("nextFacts").get("body").get("status").asText());
+        assertFalse(ready.toString().contains(paulaOffer));
+        get(paula, fu + "?decisionId=" + decisionId).then().statusCode(403);
+
+        // Declining that offer for equipment and requiring equipment no car has leaves nothing suitable: no-match.
+        JsonNode secondView = view(bruno, secondOffer);
+        String equipment = reasons.get("reasons").get(3).get("code").asText();
+        JsonNode second = decide(bruno, secondOffer, decline("decline-2", secondView, equipment), 200).get("value");
+        String secondDecision = second.get("decisionId").asText();
+        JsonNode eq = body(get(bruno, fu + "?decisionId=" + secondDecision).then().statusCode(200).extract().response())
+                .get("value");
+        assertEquals("question", eq.get("state").asText());
+        ObjectNode essential = BuddyJourneySupport.JSON.createObjectNode();
+        essential.put("commandId", "followup-3").put("decisionId", secondDecision)
+                .put("expectedBriefVersion", eq.get("briefVersion").asLong())
+                .put("questionVersion", eq.get("question").get("questionVersion").asText());
+        essential.putArray("value").add("tow-bar-that-no-car-has");
+        JsonNode savedEq = body(BuddyJourneySupport.post(bruno, fu + "/confirm", essential.toString()).then().statusCode(200)
+                .extract().response()).get("value");
+        assertEquals("essentials.equipment", savedEq.get("change").get("path").asText());
+        assertEquals("waiting", body(get(bruno, fu + "?decisionId=" + secondDecision).then().statusCode(200).extract()
+                .response()).get("value").get("state").asText());
+        assertEquals("completed", s.tick(presenter, "offer-journey-after-equipment").get("state").asText());
+        JsonNode none = body(get(bruno, fu + "?decisionId=" + secondDecision).then().statusCode(200).extract().response())
+                .get("value");
+        assertEquals("no-match", none.get("state").asText(), none.toString());
+        assertEquals(0, none.get("evaluation").get("suitable").asInt());
+        assertEquals(s.count("SELECT jsonb_array_length(e.evaluation->'decisions') FROM allocation_evaluations e "
+                + "JOIN allocation_runs r ON r.allocation_id = e.allocation_id AND r.run_id = e.run_id "
+                + "WHERE e.employee_id = ? ORDER BY r.evaluated_at DESC, r.allocation_id DESC LIMIT 1", BRUNO),
+                none.get("evaluation").get("carsChecked").asInt());
+        assertTrue(none.get("evaluation").get("carsChecked").asInt() > 0);
+        assertEquals(0, s.count("SELECT count(*) FROM buddy_offers WHERE employee_id = ? AND state = 'active'", BRUNO));
+        s.assertCustodyInvariants(1);
+
         // Expiry on the run clock: past the hold duration, with no wall wait and no tick, the offer is refused.
         s.advance(presenter, 7200 + 60);
         // The current terms are read after the deadline: the refusal must come from the offer, not from stale terms.

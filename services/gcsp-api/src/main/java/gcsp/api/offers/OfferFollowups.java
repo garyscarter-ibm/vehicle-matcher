@@ -26,13 +26,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * The post-decline follow-up: the registered question for the declined reason, and the one confirmed brief change that
- * answers it (saved through BriefService). Supports question and waiting; ready and no-match need a comparison read.
+ * The post-decline follow-up: the registered question, the one confirmed brief change that answers it (saved through
+ * BriefService), and after it waiting, no-match or ready from the allocator's rows and the owner's offer reads.
  */
 @ApplicationScoped
 public class OfferFollowups {
@@ -56,6 +58,9 @@ public class OfferFollowups {
     OfferClock clock;
 
     @Inject
+    OfferAccess access;
+
+    @Inject
     BriefServiceHolder briefs;
 
     /** Carries the typed answer out of a deep helper; anything unexpected becomes the unavailable answer. */
@@ -68,7 +73,8 @@ public class OfferFollowups {
         }
     }
 
-    private record Decision(String decisionId, String employeeId, String decision, String reasonCode, String reasonPolicy) {}
+    private record Decision(String decisionId, String employeeId, String decision, String reasonCode, String reasonPolicy,
+            String offerId) {}
 
     private record State(Decision decision, BriefService service, BriefScope scope, ArrayNode history, Instant now) {}
 
@@ -80,7 +86,7 @@ public class OfferFollowups {
             State s = prepare(p, decisionId);
             for (JsonNode row : s.history()) {
                 if (decisionId.equals(row.path("postDeclineChange").path("decisionId").asText(null))) {
-                    return OfferOutcome.ok(waiting(decisionId, row));
+                    return afterSave(p, s, row);
                 }
             }
             JsonNode brief = s.history().get(s.history().size() - 1);
@@ -135,15 +141,154 @@ public class OfferFollowups {
         }
     }
 
+    // ---- after the saved change ----
+
+    /** Ready when exactly one new active offer fits the saved brief; else no-match or waiting from the allocator's run. */
+    private OfferOutcome afterSave(Principal p, State s, JsonNode row) {
+        String decisionId = s.decision().decisionId();
+        ObjectNode saved = savedChange(decisionId, row);
+        try {
+            JsonNode current = s.history().get(s.history().size() - 1);
+            long version = current.get("briefVersion").longValue();
+            List<String> candidates = new ArrayList<>();
+            String slot = null;
+            try (Connection c = sources.get().getConnection()) {
+                slot = OfferDecisions.one(c, "SELECT h.slot_id FROM offer_decisions d JOIN custody_holds h ON h.environment_id = d.environment_id "
+                        + "AND h.run_id = d.run_id AND h.hold_id = d.hold_id WHERE d.environment_id = ? AND d.run_id = ? "
+                        + "AND d.decision_id = ?", rs -> rs.getString(1), p.environmentId(), p.runId(), decisionId);
+                try (var ps = c.prepareStatement("SELECT offer_id FROM buddy_offers WHERE environment_id = ? AND run_id = ? "
+                        + "AND employee_id = ? AND offer_id <> ? AND state = 'active' AND brief_version = ? "
+                        + "AND brief_version >= ? ORDER BY offer_id")) {
+                    ps.setString(1, p.environmentId());
+                    ps.setString(2, p.runId());
+                    ps.setString(3, p.employeeId());
+                    ps.setString(4, s.decision().offerId());
+                    ps.setLong(5, version);
+                    ps.setLong(6, row.get("briefVersion").longValue());
+                    try (var rs = ps.executeQuery()) {
+                        while (rs.next()) candidates.add(rs.getString(1));
+                    }
+                }
+            }
+            if (candidates.isEmpty()) return awaiting(p, s, current, saved);
+            if (candidates.size() != 1 || slot == null) return unavailable("followup-evaluation-unavailable", saved);
+            return ready(p, s, current, saved, candidates.get(0), slot);
+        } catch (RuntimeException | SQLException e) {
+            return unavailable("followup-evaluation-unavailable", saved);
+        }
+    }
+
+    /** No second offer yet: the allocator's latest completed run for this brief says waiting or no-match. */
+    private OfferOutcome awaiting(Principal p, State s, JsonNode current, ObjectNode saved) throws SQLException {
+        Object[] latest;
+        try (Connection c = sources.get().getConnection()) {
+            latest = OfferDecisions.one(c, "SELECT r.evaluated_at, e.evaluation::text FROM allocation_runs r JOIN allocation_evaluations e "
+                    + "ON e.environment_id = r.environment_id AND e.run_id = r.run_id AND e.allocation_id = r.allocation_id "
+                    + "WHERE r.environment_id = ? AND r.run_id = ? AND r.state = 'completed' AND r.evaluated_at <= ? "
+                    + "AND e.employee_id = ? AND e.evaluation->'versions'->>'brief' = ? "
+                    + "ORDER BY r.evaluated_at DESC, r.allocation_id DESC LIMIT 1",
+                    rs -> new Object[] {OfferDecisions.instant(rs, 1), rs.getString(2)},
+                    p.environmentId(), p.runId(), s.now(), p.employeeId(), current.get("briefVersion").asText());
+        }
+        ObjectNode value = F.objectNode();
+        value.put("schemaVersion", 1);
+        value.put("decisionId", s.decision().decisionId());
+        value.set("savedChange", saved);
+        if (latest == null) return OfferOutcome.ok(value.put("state", "waiting"));
+        JsonNode decisions;
+        try {
+            decisions = new com.fasterxml.jackson.databind.ObjectMapper().readTree((String) latest[1]).path("decisions");
+        } catch (java.io.IOException e) {
+            return unavailable("followup-evaluation-unavailable", saved);
+        }
+        if (!decisions.isArray()) return unavailable("followup-evaluation-unavailable", saved);
+        for (JsonNode d : decisions) if ("eligible".equals(d.path("gateStatus").asText())) return OfferOutcome.ok(value.put("state", "waiting"));
+        value.put("state", "no-match");
+        value.putObject("evaluation").put("evaluatedAt", PolicyClock.iso((Instant) latest[0]))
+                .put("carsChecked", decisions.size()).put("suitable", 0);
+        return OfferOutcome.ok(value);
+    }
+
+    private OfferOutcome ready(Principal p, State s, JsonNode current, ObjectNode saved, String nextId, String slot) {
+        OfferOutcome no = unavailable("followup-comparison-unavailable", saved);
+        try {
+            long version = current.get("briefVersion").longValue();
+            var previousView = access.ownedView(p, s.decision().offerId());
+            var nextView = access.ownedView(p, nextId);
+            if (previousView.isEmpty() || nextView.isEmpty() || !"declined".equals(previousView.get().state())
+                    || !"pending".equals(nextView.get().state())) return no;
+            JsonNode previousQuote;
+            JsonNode nextQuote;
+            String previousNumber;
+            String nextNumber;
+            String clockVersion;
+            try (Connection c = sources.get().getConnection()) {
+                Object[] a = quote(c, p, previousView.get().quote().quoteId());
+                Object[] b = quote(c, p, nextView.get().quote().quoteId());
+                String holdSlot = OfferDecisions.one(c, "SELECT slot_id FROM custody_holds h JOIN buddy_offers o ON o.environment_id = h.environment_id "
+                        + "AND o.run_id = h.run_id AND o.hold_id = h.hold_id WHERE o.environment_id = ? AND o.run_id = ? "
+                        + "AND o.offer_id = ? AND h.state = 'active' AND h.hold_type = 'buddy-offer' AND h.employee_id = ?",
+                        rs -> rs.getString(1), p.environmentId(), p.runId(), nextId, p.employeeId());
+                Long clock = OfferDecisions.one(c, "SELECT clock_version FROM run_clocks WHERE environment_id = ? AND run_id = ?",
+                        rs -> rs.getLong(1), p.environmentId(), p.runId());
+                if (a == null || b == null || !slot.equals(holdSlot) || clock == null) return no;
+                previousQuote = (JsonNode) a[0];
+                previousNumber = (String) a[1];
+                nextQuote = (JsonNode) b[0];
+                nextNumber = (String) b[1];
+                clockVersion = Long.toString(clock);
+                Instant quoted = nextView.get().quote().quotedAt();
+                // quotedAt is run time, confirmedAt wall time, so only the pinned brief version ties the quote to the brief.
+                if (!(Boolean) b[2] || quoted == null || quoted.isAfter(s.now())) return no;
+            }
+            ObjectNode previous = FollowupComparison.offer(previousView.get(), p.runId(), clockVersion, s.decision().decisionId(),
+                    previousQuote, previousNumber);
+            ObjectNode next = FollowupComparison.offer(nextView.get(), p.runId(), clockVersion, null, nextQuote, nextNumber);
+            JsonNode config = assumption(p, s.now(), BriefAssumptions.RECOMMENDATION).path("value");
+            if (previous == null || next == null) return no;
+            ObjectNode comparison = FollowupComparison.build(previous, next, current, config);
+            if (comparison == null || !(s.service().history(s.scope()) instanceof BriefResult.Ok ok)
+                    || ok.value().get("versions").get(ok.value().get("versions").size() - 1).get("briefVersion").longValue() != version) {
+                return no;
+            }
+            ObjectNode value = F.objectNode();
+            value.put("schemaVersion", 1).put("state", "ready").put("decisionId", s.decision().decisionId());
+            value.set("savedChange", saved);
+            value.set("comparison", comparison);
+            return OfferOutcome.ok(value);
+        } catch (RuntimeException | SQLException e) {
+            return no;
+        }
+    }
+
+    /** The pinned quote json and the car's order number, with whether the quote belongs to this employee. */
+    private static Object[] quote(Connection c, Principal p, String quoteId) throws SQLException {
+        return OfferDecisions.one(c, "SELECT q.quote::text, k.attributes->>'orderNumber', q.employee_id = ? FROM buddy_quotes q "
+                + "JOIN stock_cars k ON k.environment_id = q.environment_id AND k.run_id = q.run_id AND k.order_uuid = q.order_uuid "
+                + "WHERE q.environment_id = ? AND q.run_id = ? AND q.quote_id = ?", rs -> {
+                    try {
+                        return new Object[] {new com.fasterxml.jackson.databind.ObjectMapper().readTree(rs.getString(1)),
+                            rs.getString(2), rs.getBoolean(3)};
+                    } catch (java.io.IOException e) {
+                        throw new SQLException("Stored quote is unreadable");
+                    }
+                }, p.employeeId(), p.environmentId(), p.runId(), quoteId);
+    }
+
+    private static OfferOutcome unavailable(String code, ObjectNode saved) {
+        return OfferOutcome.of(503, "unavailable", code, "The offer follow-up is temporarily unavailable.", true)
+                .withSavedChange(saved);
+    }
+
     // ---- ownership and state ----
 
     private State prepare(Principal p, String decisionId) throws SQLException {
         if (!persistence.active()) throw new Stop(unavailable());
         Decision d;
         try (Connection c = sources.get().getConnection()) {
-            d = OfferDecisions.one(c, "SELECT employee_id, decision, reason_code, reason->>'policyVersion' FROM offer_decisions "
+            d = OfferDecisions.one(c, "SELECT employee_id, decision, reason_code, reason->>'policyVersion', offer_id FROM offer_decisions "
                     + "WHERE environment_id = ? AND run_id = ? AND decision_id = ?",
-                    rs -> new Decision(decisionId, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)),
+                    rs -> new Decision(decisionId, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)),
                     p.environmentId(), p.runId(), decisionId);
         }
         if (d == null) {

@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /** The single home of offer ownership: the id is not a secret, so only the signed-in owner is authorised. */
@@ -40,6 +41,11 @@ public class OfferAccess {
     public OfferOutcome read(Principal p, String offerId) {
         Resolved r = resolve(p, offerId);
         return r.refusal != null ? r.refusal : OfferOutcome.ok(r.view.toJson());
+    }
+
+    /** The owner's projection of one offer, or empty when the owner read is refused for any reason. */
+    Optional<OfferView> ownedView(Principal p, String offerId) {
+        return Optional.ofNullable(resolve(p, offerId).view);
     }
 
     public OfferOutcome listCurrent(Principal p) {
