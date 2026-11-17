@@ -53,14 +53,14 @@ class PortMappingTest {
         AppointmentConfig.Step done = new AppointmentConfig.Step("retailer", "Your handover is complete.");
         AppointmentConfig.Step wait = new AppointmentConfig.Step("retailer", "wait");
         Instant at = Instant.parse("2026-11-16T10:00:00Z");
-        AppointmentConfig with = config(new AppointmentConfig.Outcomes(Map.of("completed", done), wait, "handover"));
+        AppointmentConfig with = config(new AppointmentConfig.Outcomes(Map.of("completed", done), wait, "handover", "appointment-no-show"));
         var h = AppointmentHandover.handover(with, at, "ref-1").orElseThrow();
         assertEquals("handover", h.stage());
         assertEquals(at, h.at());
         assertEquals("retailer", h.owner());
         assertEquals("ref-1", h.providerReference());
         assertTrue(AppointmentHandover.handover(
-                config(new AppointmentConfig.Outcomes(Map.of("completed", done), wait, null)), at, "ref-1").isEmpty());
+                config(new AppointmentConfig.Outcomes(Map.of("completed", done), wait, null, "appointment-no-show")), at, "ref-1").isEmpty());
     }
 
     private static AppointmentConfig config(AppointmentConfig.Outcomes outcomes) {

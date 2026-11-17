@@ -299,9 +299,10 @@ server's active run (never to the request); any unknown or repeated query parame
 | Route | Who | Meaning |
 | --- | --- | --- |
 | `GET /appointments?orderUuid=` | owning employee, greg, presenter | Read model `lifecycle.appointments.v1`, with offered slots while nothing is requested. |
-| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request. |
+| `POST /appointments/request` | employee (own order) | `{commandId, orderUuid, slotId, expectedVersion}`; `expectedVersion` is 0 before the first request, or the current version to rebook after a no-show. |
 | `POST /appointments/accept` | employee (own order) | `{commandId, orderUuid, proposalId, expectedVersion}`: accepts the provider's proposed change. |
 | `POST /appointments/complete` | greg | `{commandId, orderUuid, expectedVersion}`: records the handover outcome. |
+| `POST /appointments/no-show` | greg | `{commandId, orderUuid, expectedVersion}`: records a missed handover and its exception event. |
 | `POST /presenter/appointments/ticks` | presenter | `{tickId, now}`: sets the appointment clock, then progresses every actionable appointment; answers `{tick, summary}`. |
 
 Results: 200 `ok`; 202 `pending` (`provider-outcome-uncertain` with `operationId` and the read model, or an uncertain commit
@@ -329,7 +330,12 @@ retries) and logs a one-line summary; a failure is logged, not fatal.
 Completion is greg only. It needs the readiness port to say ready (else 409 `handover-not-ready`) and the booked slot to have
 started (policy `completeAfterSlotStartSeconds`), then commits the outcome and the outbox event `appointment-completed`
 (`orderUuid`, `employeeId`, `occurredAt`, `providerReference`, `slotId`) in one transaction; FUCQ-473 consumes the event.
-Not ported: no-show and rebooking, and the return purpose and current-car change (FUCQ-473).
+No-show is greg only too, with the same gates in Node order (not scheduled, another update pending, too early by
+`noShowAfterSlotStartSeconds`, stale version) but no readiness gate. It commits the outcome and the outbox event named by
+the policy's `exceptionTypes.noShow` (`appointment-no-show`) in one transaction. After it the read model offers fresh slots
+minus every missed one, and the employee rebooks with `request` at the current version: attempt n + 1 keeps the missed
+attempt in `previousAttempts` and writes under operation ids with `:a<n>` before the step (`V472_2`).
+Not ported: the return purpose and current-car change (FUCQ-473).
 
 ## Identity seam
 
