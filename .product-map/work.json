@@ -7513,63 +7513,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "id": "FUCQ-469",
-      "observed_at": "2026-11-17T20:03:28Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Capture and deliver notifications through the selected transport",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
-      "slices": [
-        {
-          "id": "core",
-          "status": "complete",
-          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
-          "observed_at": "2026-11-14T01:00:19Z",
-          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
-        },
-        {
-          "id": "http",
-          "status": "complete",
-          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
-          "observed_at": "2026-11-14T02:01:23Z",
-          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
-        },
-        {
-          "id": "brevo",
-          "status": "complete",
-          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
-          "observed_at": "2026-11-14T02:12:01Z",
-          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
-          "observed_at": "2026-11-14T02:17:35Z",
-          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
-        },
-        {
-          "id": "reopen-journey",
-          "status": "complete",
-          "title": "Started-app journey: real offer intent, Brevo loopback delivery with retry, emailed link ownership",
-          "observed_at": "2026-11-17T20:03:28Z",
-          "evidence": "4041e4fdc+ea81f929f lead review: diff read; NotificationJourneyHttpTest 2/2 started app, RS256 JWTs, native PG17, Brevo loopback stub; dispatcher run-clock defect confirmed and fixed"
-        },
-        {
-          "id": "reopen-integration",
-          "status": "complete",
-          "title": "Reopen: merge base, scoped story test set, result block",
-          "observed_at": "2026-11-17T20:03:28Z",
-          "evidence": "merged base 96816d1b8; scoped set 170 run, all pass except base-known PresenterFaultsJourneyHttpTest handler order (fails on base too); result block"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Russell Gowers",
       "id": "FUCQ-470",
       "observed_at": "2026-11-17T19:53:16Z",
       "original_status": "In Review",
@@ -9752,7 +9695,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T19:55:04Z",
+      "observed_at": "2026-11-17T20:08:43Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9859,13 +9802,79 @@
           "role": "source readiness",
           "source": "claude-assist-fucq441-current-editor-readiness-2026-11-17-33",
           "observed_at": "2026-11-17T19:50:23Z",
-          "expires_at": "2026-11-17T20:05:23Z",
-          "status": "Source-read started per fresh ACK; required contracts and current freeze; no product writes/runtime; no acceptance inference"
+          "expires_at": "2026-11-17T20:04:54Z",
+          "status": "returned; source readiness only, no runtime/tests/acceptance"
+        },
+        {
+          "name": "Same retained Claude helper successor",
+          "harness": "claude-code",
+          "role": "test source implementer",
+          "source": "claude-assist-fucq441-java-editor-goldens-2026-11-17-34",
+          "observed_at": "2026-11-17T20:07:50Z",
+          "expires_at": "2026-11-17T20:22:50+00:00",
+          "status": "Source work started per explicit ACK; one generator test file only; no runtime/generated goldens/acceptance"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "note": "Prior editor context/version source obstacle resolved by integrated BriefService fields147-151. Same retained helper successor ACKed19:50:23Z and started bounded source readiness; no runtime/product writes. Both originalAC remain open."
+      "note": "Prior editor context/version and known-facts source obstacles resolved in integrated F460;18listed source pins matched. Readiness33 returned; same retained helper34 source ACK20:07:50UTC. Both originalAC OPEN; real producer goldens/Angular consumer and connected original evidence pending."
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-469",
+      "observed_at": "2026-11-17T20:08:44Z",
+      "original_status": "In Review",
+      "status": "In Review",
+      "title": "Capture and deliver notifications through the selected transport",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-469",
+      "slices": [
+        {
+          "id": "core",
+          "status": "complete",
+          "title": "Outbox notification intent, offer message, captured transport and retry/status dispatcher (native PG)",
+          "observed_at": "2026-11-14T01:00:19Z",
+          "evidence": "73a3e7f9 lead review: diff read; gcsp.api.notify 35/35 native PG17 (lead rerun); verify 125/0 fail"
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Presenter read-only outbox and employee-owned notification email endpoints",
+          "observed_at": "2026-11-14T02:01:23Z",
+          "evidence": "fef3d9ea lead review: diff read; gcsp.api.notify 53/53 native PG17 (lead rerun); verify 143/0 fail"
+        },
+        {
+          "id": "brevo",
+          "status": "complete",
+          "title": "Brevo transport behind configuration, idempotent custody, refusal/retry codes, stub-server tests, env docs",
+          "observed_at": "2026-11-14T02:12:01Z",
+          "evidence": "29184375 lead review: diff read; gcsp.api.notify 77/77 native PG17 with 127.0.0.1 stub (lead rerun); verify 167/0 fail"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
+          "observed_at": "2026-11-14T02:17:35Z",
+          "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
+        },
+        {
+          "id": "reopen-journey",
+          "status": "complete",
+          "title": "Started-app journey: real offer intent, Brevo loopback delivery with retry, emailed link ownership",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "4041e4fdc+ea81f929f lead review: diff read; NotificationJourneyHttpTest 2/2 started app, RS256 JWTs, native PG17, Brevo loopback stub; dispatcher run-clock defect confirmed and fixed"
+        },
+        {
+          "id": "reopen-integration",
+          "status": "complete",
+          "title": "Reopen: merge base, scoped story test set, result block",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "merged base 96816d1b8; scoped set 170 run, all pass except base-known PresenterFaultsJourneyHttpTest handler order (fails on base too); result block"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T20:07:52.303409+00:00",
+      "native_observed_at": "2026-11-17T20:07:52.303409+00:00"
     }
   ],
   "version": 1
