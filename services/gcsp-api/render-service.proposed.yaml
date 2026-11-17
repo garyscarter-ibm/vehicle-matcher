@@ -97,6 +97,9 @@
         value: synthetic
       - key: GCSP_APPOINTMENTS_PROVIDER
         value: synthetic
+      # Old-car returns (FUCQ-473): synthetic; also runs the handover current-car change.
+      - key: GCSP_RETURNS_PROVIDER
+        value: synthetic
       # Buddy allocation (FUCQ-464): recommendation on the dev service; none refuses every allocation.
       - key: GCSP_ALLOCATION_CANDIDATES_PROVIDER
         value: recommendation

@@ -7062,7 +7062,7 @@
     {
       "assignee": "",
       "id": "FUCQ-460",
-      "observed_at": "2026-11-14T01:10:39Z",
+      "observed_at": "2026-11-17T17:59:15Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Save preferences, feedback and delegation",
@@ -7097,6 +7097,27 @@
           "title": "Story-level validation, merge, migration number and result",
           "observed_at": "2026-11-14T01:10:39Z",
           "evidence": "82faf72e merged with origin/gcsp-poc-dev; clean verify 219/0/0/0 on native PG17, Flyway 1,2,460.1; result block committed"
+        },
+        {
+          "id": "r2-ports",
+          "status": "complete",
+          "title": "Reopened: real offer port over buddy_offers, editor versions.context/clock and known facts, legacy pause/resume routes",
+          "observed_at": "2026-11-17T17:24:08Z",
+          "evidence": "ae4c4d777 reviewed by story-lead: PostgresBriefOffers over buddy_offers bound, editor versions.context/clock and knownFacts per Node, /pause and /resume; brief+adapter 117/0 (implementer), lead rerun 58/0 native PG17"
+        },
+        {
+          "id": "r2-journey",
+          "status": "complete",
+          "title": "Reopened: started-app OIDC journey over documented composition with restart (AC1, AC2)",
+          "observed_at": "2026-11-17T17:59:15Z",
+          "evidence": "cbbaa276f+41e746f54 reviewed by story-lead: OIDC Phase1 13 + Phase2 1 over real beans (asserted), real restart; lead rerun 14/0 and scoped 303/0 at 41e746f54"
+        },
+        {
+          "id": "r2-integration",
+          "status": "complete",
+          "title": "Reopened: merge base, scoped set, result block",
+          "observed_at": "2026-11-17T17:59:15Z",
+          "evidence": "merged origin/gcsp-poc-dev 56e93f0c8 (78f901e6d); scoped set 303/0/0/0 on PG17 55491; result block committed; full suite deferred to batch"
         }
       ]
     },
@@ -7686,7 +7707,7 @@
     {
       "assignee": "",
       "id": "FUCQ-473",
-      "observed_at": "2026-11-14T08:04:16Z",
+      "observed_at": "2026-11-17T17:40:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Plan and reconcile supported old-car returns",
@@ -7728,6 +7749,41 @@
           "title": "Story validation, base merge, full Java verify and result",
           "observed_at": "2026-11-14T08:04:16Z",
           "evidence": "base merged at 79a087b91; full Java verify 763/763 on native PG 17.12; result block committed"
+        },
+        {
+          "id": "s6-source",
+          "status": "complete",
+          "title": "Reopened: bind ReturnSourcePort to the ordering selection record (manual and buddy)",
+          "observed_at": "2026-11-17T16:41:05Z",
+          "evidence": "64712ee75 reviewed by lead: OrderingReturnSource over selection_orders+pending draft/account; returns pkg 103/0 on native PG17; DB path proven in s9 journey"
+        },
+        {
+          "id": "s7-handover-policy",
+          "status": "complete",
+          "title": "Reopened: bind returns HandoverPort to appointments and the return policy to PolicyService",
+          "observed_at": "2026-11-17T16:51:39Z",
+          "evidence": "64712ee75 reviewed by lead: ReturnsHandover over appointments, PolicyServiceReturnPolicy canonical; returns pkg 103/0 native PG17; started-app proof in s9"
+        },
+        {
+          "id": "s8-handover-current-car",
+          "status": "complete",
+          "title": "Reopened: appointment-completed outbox event changes the current car once, via return progress",
+          "observed_at": "2026-11-17T16:51:40Z",
+          "evidence": "3195f6349 reviewed by lead: appointment-completed applied in ReturnPlans.progress once; ReturnHandoverCurrentCarTest 6/0, returns+clock.bound 117/0"
+        },
+        {
+          "id": "s9-journey",
+          "status": "complete",
+          "title": "Reopened: started-app journey with request, accept, completion, current car, account and restart",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "2cef4af11+cf05ce9cc reviewed by lead: ReturnJourneyHttpTest (canonical policy, demo supply) and ReturnOutcomeJourneyHttpTest (retained file) green on started app, no alternatives; scoped 391/0"
+        },
+        {
+          "id": "s10-integration",
+          "status": "complete",
+          "title": "Reopened: base merge, scoped test set and result",
+          "observed_at": "2026-11-17T17:40:50Z",
+          "evidence": "merged gcsp-poc-dev 9f6be11e2 (cce771d49); scoped set 391 run 0 fail at cf05ce9cc; Result committed"
         }
       ]
     },
