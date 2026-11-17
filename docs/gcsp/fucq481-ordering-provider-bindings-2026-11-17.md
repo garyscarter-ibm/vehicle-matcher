@@ -1,13 +1,13 @@
 # FUCQ-481 ordering provider bindings: 17 November 2026
 
-This note covers one new startup component, `OrderingProviderBindings`, and its plain-JUnit tests. It was authored from `00f600dcd`, whose API tree matches integration `461049f73`. **Nothing here has been compiled or run.** It changes no screen, no existing source and no configuration.
+This note covers the startup component `OrderingProviderBindings`, its connection to the ordering selector, holder and configuration, and the tests of both. It changes no screen.
 
-It is the composition bridge planned in readiness 24 and MSG-2026-11-17-GC-001. It is a partial implementation of that binding. **It does not enable remote application startup:**
+There are two stages:
 
-- the current `OrderingSelection.validate` still refuses `remote`;
-- `OrderingServiceHolder` still calls `OrderingProviderSelection.select` and does not use this component.
+1. **Component (assignment 19).** Authored from `00f600dcd` (API tree matches integration `461049f73`) and committed as `0f9a547b7`. The parent ran `-Dtest=OrderingProviderBindingsTest`: **8 passed, 0 failures, errors or skips**. It was independently reviewed (PASS) and integrated as `f0f3cff25`.
+2. **Connection (assignment 20).** Authored from `0f9a547b7`. The Russell lane released `OrderingSelection.java`, `OrderingServiceHolder.java` and the ordering keys of `application.properties` to F481 at 10:40 UTC (`dispatcher-learnings.md` at `c9bd31efa`). **The stage 2 edits and both stage 2 tests below are authored and not compiled or run.** The stage 1 pass applies only to `0f9a547b7`.
 
-Both files are foreign (F468) and were left read-only. MSG-2026-11-17-GC-001 is still unanswered; it does not block these new files.
+With stage 2, `gcsp.ordering.provider=remote` is selectable at application startup.
 
 ## The component
 
@@ -31,32 +31,36 @@ There is no new provider key, no fallback to `none` when remote is unusable, no 
 
 ## Configuration boundary
 
-These are the readiness 24 keys. They are not yet in `application.properties`, which is foreign and read-only here.
+`application.properties` now carries these keys (stage 2). Nothing else in that file changed.
 
 | Key | Type | Default |
 |---|---|---|
-| `gcsp.ordering.provider` | `none`, `synthetic`, `remote` | `none`, read by `OrderingSelection` |
-| `gcsp.ordering.execute-url` | `Optional<String>`, https (loopback http in TEST only) | unset |
-| `gcsp.ordering.reconcile-url` | `Optional<String>`, as above, no query | unset |
-| `gcsp.ordering.token` | `Optional<String>`, visible ASCII | unset |
-| `gcsp.ordering.timeout` | `Duration`, above 0 and at most 60s | `10s` |
+| `gcsp.ordering.provider` | `none`, `synthetic`, `remote`, from `GCSP_ORDERING_PROVIDER` | `none`, read by `OrderingSelection` |
+| `gcsp.ordering.execute-url` | `Optional<String>`, https (loopback http in TEST only), from `GCSP_ORDERING_EXECUTE_URL` | blank |
+| `gcsp.ordering.reconcile-url` | as above, no query, from `GCSP_ORDERING_RECONCILE_URL` | blank |
+| `gcsp.ordering.token` | `Optional<String>`, visible ASCII, from `GCSP_ORDERING_TOKEN` | blank |
+| `gcsp.ordering.timeout` | `Duration`, above 0 and at most 60s, from `GCSP_ORDERING_TIMEOUT` | `10s` |
+
+No real endpoint, secret or deployment setting was added.
 
 With `none` or `synthetic` the URL keys are not read for validation, so the component boots harmlessly under every existing profile.
 
-## The remaining handoff, outside this allocation
+## The connection (stage 2)
 
-Three small edits to foreign files would connect it:
-
-1. **`OrderingSelection.validate`** accepts `remote` as well as `none` and `synthetic`.
-2. **`OrderingServiceHolder`** adds `@Inject OrderingProviderBindings bindings;` and replaces the provider argument at line 48:
-   `OrderingProviderSelection.select(selection.provider(), ds)` becomes `bindings.provider(ds)`.
-3. **`application.properties`** adds the four keys above, with `${GCSP_ORDERING_*:}` environment fallbacks and the default left at `none`.
+1. **`OrderingSelection`** adds `REMOTE` (the same value as `OrderingProviderBindings.REMOTE`), and `validate` accepts it.
+   - Blank still means `none`, and only one selection is made at startup.
+   - `Remote`, `live` and every other value still stop startup. The message now lists `none, synthetic, remote`.
+   - The existing `OrderingSelectionTest` assertions are unchanged and still hold.
+2. **`OrderingServiceHolder`** injects `OrderingProviderBindings bindings`. In `service()`, `OrderingProviderSelection.select(selection.provider(), ds)` becomes `bindings.provider(ds)`.
+   - `provider()`, lazy construction, the Agroal datasource, `OrderingTerms`, the clock, the freeze adapter and all business rules are unchanged.
+   - `none` and `synthetic` still reach the same `OrderingProviderSelection` through the bindings.
+3. **`application.properties`** adds one comment line and the four keys above.
 
 `OrderingResource`, `OrderingStartup` and `SelectionOrderTickHandler` compare `holder.provider()` with `none` only, so `remote` needs no change there.
 
 ## Tests
 
-`services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingProviderBindingsTest.java`: 8 plain-JUnit methods, with no Quarkus boot, no database and no `@Alternative`.
+`services/gcsp-api/src/test/java/gcsp/api/ordering/OrderingProviderBindingsTest.java`: 8 plain-JUnit methods, with no Quarkus boot, no database and no `@Alternative`. Stage 2 changed only the last method, whose old final check (that `OrderingSelection` refuses `remote`) is now false.
 
 | Method | What it checks |
 |---|---|
@@ -67,16 +71,34 @@ Three small edits to foreign files would connect it:
 | `remoteWithInvalidSettingsFailsClosedWithoutEchoingEndpointsOrToken` | Non-loopback http, a query, a token with a space and 61s all fail, and the message contains neither the host nor the token; loopback http outside TEST and a zero timeout fail |
 | `anUnknownOrDifferentlyCasedModeStopsStartup` | `live`, `Remote`, `Synthetic`, `bmw` are refused with the exact message |
 | `closingShutsDownTheOwnedClientAndThenRefusesToHandOutAPort` | `close` terminates the client, is idempotent, and later `provider` calls refuse |
-| `theConfiguredInstanceLifecycleFollowsTheCurrentSelection` | A configured instance refuses before `init`, then follows `synthetic` and unset; current `OrderingSelection` still refuses `remote` |
+| `theConfiguredInstanceLifecycleFollowsTheCurrentSelection` | A configured instance refuses before `init`, then follows `synthetic` and unset. Stage 2: `OrderingSelection` accepts ` remote `; without URLs `init` fails closed naming `gcsp.ordering.execute-url` and hands nothing out; with https URLs it binds one `HttpOrderingProvider`, the same whatever datasource is passed, refused after `close` |
 
-This is component validation only. It is not a remote boot profile and not a whole-journey proof.
+`services/gcsp-api/src/test/java/gcsp/api/ordering/RemoteOrderingStartupTest.java` (new in stage 2) has one started `@QuarkusTest` with one profile, `RemoteProfile`, and one test resource, `OrderingStub`.
+
+- **Profile.** It sets `gcsp.ordering.provider=remote`, a test token and a 2s timeout. Datasource, Flyway and dev services are explicitly inactive. There is no `@Alternative`, and the selector and provider are not faked.
+- **`OrderingStub`.** A `QuarkusTestResourceLifecycleManager` that owns a 127.0.0.1 JDK `HttpServer`. It supplies the loopback execute and reconcile URLs before Quarkus starts, and stops in `stop()` or when its own start fails.
+- **The method, `remoteIsBoundAtStartupWithoutARequestAndReconcilesThroughTheSelectedPort`:**
+  - The stub has received no ordering request after startup.
+  - The injected `OrderingSelection.provider()`, `OrderingServiceHolder.provider()` and `OrderingProviderBindings.mode()` are all `remote`.
+  - `bindings.provider(null)` is one cached `HttpOrderingProvider`.
+  - `holder.service()` is empty without persistence. It is **not** a `Holder.service` execution.
+  - One `reconcile` through the selected port gets the stub's echoed `not-found`, sent as one GET with the configured bearer token and no execute.
+
+This is startup-boundary evidence only. It has no database, no JWT and no claim-to-order or order-status journey.
 
 ### Proposed finite run, parent-owned
 
-One plain-JUnit chunk, with no PostgreSQL and no network beyond one loopback stub: `-Dtest=OrderingProviderBindingsTest`, 8 methods. It needs the module's JDK 21 tooling, not host `javac` 11. Expect seconds of runtime and well under 256 MiB of scratch. The only owned resources are one in-process `HttpServer` and the clients, all stopped in `finally` or `close`.
+Two chunks, with no PostgreSQL and no network beyond owned loopback stubs. Both need the module's JDK 21 tooling, not host `javac` 11.
+
+1. `-Dtest=OrderingProviderBindingsTest` plus `OrderingSelectionTest`: plain JUnit, 10 methods.
+2. `-Dtest=RemoteOrderingStartupTest`: one Quarkus boot, 1 method.
+
+Expect seconds to well under a minute, and well under 256 MiB of scratch. The only owned resources are the in-process `HttpServer`s and clients, all stopped in `finally`, `close` or the resource's `stop`.
+
+**Least-certain assertion.** In `RemoteOrderingStartupTest`, "no ordering request at startup" is read from the stub's own `/stats` counter, and the token check depends on the adapter sending `Authorization: Bearer <token>` on reconcile. Both follow from the source but have not been executed.
 
 ## Still open
 
-- **Both original acceptance criteria stay open.** Remote ordering is not selectable at startup until the three foreign edits above land.
-- `AccountSelection` still supplies the refusing policy port (F458). The hosted dev environment is absent, per Gary.
+- **Both original acceptance criteria stay open.** Remote ordering is now selectable at startup (stage 2, unrun). No connected claim, signed-in decision and order/status journey through the remote substitute has been shown.
+- The full journey still needs the account policy binding: `AccountSelection` supplies the refusing policy port, which the Russell F458 lead owns. The hosted dev environment is absent, per Gary.
 - The F477 M1 / FUCQ-515 hold continues, and Bugs 513-516 remain capture-only.
