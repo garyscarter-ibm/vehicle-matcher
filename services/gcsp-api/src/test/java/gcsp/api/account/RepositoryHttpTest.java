@@ -3,16 +3,14 @@ package gcsp.api.account;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import gcsp.api.account.AccountPolicyPort.PolicyOutcome;
-import gcsp.api.account.AccountPolicyPort.PolicyRead;
 import gcsp.api.persistence.Persistence;
 import io.agroal.api.AgroalDataSource;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.enterprise.inject.Instance;
@@ -51,23 +49,6 @@ class RepositoryHttpTest {
     @BeforeEach
     void seed() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
-        GoldenFixture paula = new GoldenFixture("paula");
-        GoldenFixture jordan = new GoldenFixture("jordan");
-        PolicyOutcome rules = paula.manualRules;
-        PolicyOutcome names = paula.schemeNames;
-        QuarkusMock.installMockForType(new AccountPolicyPort() {
-            public PolicyOutcome manualRules(PolicyRead r) {
-                return rules;
-            }
-
-            public PolicyOutcome allowance(AccountScope s, PolicyRead r) {
-                return s.employeeId().equals(jordan.scope.employeeId()) ? jordan.allowance : paula.allowance;
-            }
-
-            public PolicyOutcome schemeDisplayNames(PolicyRead r) {
-                return names;
-            }
-        }, AccountPolicyPort.class);
         try (Connection c = dataSource.get().getConnection()) {
             for (String name : GOLDENS) {
                 GoldenFixture fx = new GoldenFixture(name);
@@ -131,6 +112,37 @@ class RepositoryHttpTest {
     void employeeGetsExactlyTheirGoldenAccountFromPostgreSql() throws Exception {
         assertEquals(expectedValue("paula"), get("sub-paula", "paula"));
         assertEquals(expectedValue("jordan"), get("sub-jordan", "jordan"));
+    }
+
+    @Test
+    void recordedCurrentCarRelationshipsAreInTheAccountAndAbsentWhenNone() throws Exception {
+        String order = "order-account-http-1";
+        assertFalse(GoldenFixture.JSON.readTree(rawBody("sub-paula")).get("value").has("currentCarRelationships"));
+        try (Connection c = dataSource.get().getConnection()) {
+            RepositoryFixture.update(c, "INSERT INTO current_car_relationships (environment_id, run_id, order_uuid, employee_id, "
+                    + "old_contract_id, old_slot_id, old_status, new_configuration_id, new_status) "
+                    + "VALUES (?, ?, ?, 'employee-paula', 'contract-x', 'slot-x', 'held', 'cfg-x', 'on-order')",
+                    RepositoryHttpProfile.ENV, RepositoryHttpProfile.RUN, order);
+            try {
+                JsonNode list = GoldenFixture.JSON.readTree(rawBody("sub-paula")).get("value").get("currentCarRelationships");
+                assertEquals(1, list.size());
+                assertEquals(order, list.get(0).get("orderUuid").asText());
+                assertEquals("employee-paula", list.get(0).get("employeeId").asText());
+                assertEquals("contract-x", list.get(0).get("currentCar").get("contractId").asText());
+                assertEquals(0, list.get(0).get("changes").size());
+            } finally {
+                // The relationship guard forbids deletes, so the test row is removed with triggers off.
+                RepositoryFixture.update(c, "SET session_replication_role = replica");
+                RepositoryFixture.update(c, "DELETE FROM current_car_relationships WHERE environment_id = ? AND run_id = ? "
+                        + "AND order_uuid = ?", RepositoryHttpProfile.ENV, RepositoryHttpProfile.RUN, order);
+                RepositoryFixture.update(c, "RESET session_replication_role");
+            }
+        }
+    }
+
+    private String rawBody(String sub) throws Exception {
+        return given().header("Authorization", "Bearer " + token(sub)).when().get(PATH).then().statusCode(200)
+                .body("status", equalTo("ok")).extract().asString();
     }
 
     @Test

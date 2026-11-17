@@ -125,6 +125,21 @@ class BriefLifecycleTest {
     }
 
     @Test
+    void confirmWithoutGateKeepsTheGivenConsentBelowTheMinimum() throws Exception {
+        ObjectNode b = h.sparse();
+        choose(b, "body", list("saloon"), 50);
+        h.saveOk(b);
+        ObjectNode consent = h.at("c-1");
+        consent.set("consent", obj().put("search", true).put("hold", true));
+        JsonNode out = h.ok(f.service.confirmWithoutGate(f.scope, consent));
+        assertTrue(out.get("brief").get("buddy").get("searchConsent").booleanValue());
+        assertTrue(out.get("brief").get("buddy").get("holdConsent").booleanValue());
+        ObjectNode bad = h.at("c-2");
+        bad.set("consent", obj().put("search", "yes").put("hold", true));
+        h.refused(f.service.confirmWithoutGate(f.scope, bad), 400, "invalid-command");
+    }
+
+    @Test
     void confirmAndEngageAreNotFoundWithoutADraftOrABrief() throws Exception {
         h.refused(f.service.confirm(f.scope, h.at("c-1")), 404, "not-found");
         h.refused(h.engage(), 404, "not-found");

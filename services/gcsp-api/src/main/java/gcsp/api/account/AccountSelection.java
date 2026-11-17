@@ -32,6 +32,9 @@ public class AccountSelection {
     @Inject
     Instance<AgroalDataSource> dataSource;
 
+    @Inject
+    gcsp.api.policy.PolicyService policyService;
+
     public String mode() {
         return normalise(config.getOptionalValue("gcsp.account.provider", String.class).orElse(NONE));
     }
@@ -60,14 +63,14 @@ public class AccountSelection {
     @Produces
     @ApplicationScoped
     CurrentCarPort currentCars() {
-        return new NoCurrentCarRelationships();
+        if (!persistence.active()) return new NoCurrentCarRelationships();
+        return new ReturnsCurrentCarRelationships(new gcsp.api.returns.CurrentCarStore(dataSource.get()));
     }
 
     @Produces
     @ApplicationScoped
     AccountPolicyPort policy() {
-        // The canonical PolicyService adapter replaces this at integration.
-        return new UnconfiguredAccountPolicy();
+        return new gcsp.api.policy.PolicyAccountAdapter(policyService);
     }
 
     @Produces

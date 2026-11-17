@@ -105,4 +105,46 @@ public final class ProductionHttpProfiles {
             return m;
         }
     }
+
+    /** The real plan port and the real order-plan history over a private schema; only the planner's inputs are test beans. */
+    public static class Journey extends Base {
+        static final String SCHEMA = "gcsp_s_prodplan_" + Long.toHexString(System.nanoTime());
+
+        @Override
+        public Set<Class<?>> getEnabledAlternatives() {
+            return Set.of(ProductionPlanPorts.Inputs.class, ProductionPlanPorts.FixedClock.class);
+        }
+
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            return planConfig(SCHEMA);
+        }
+    }
+
+    /** The started app's own composition: no test alternative at all. */
+    public static class Composition extends Base {
+        static final String SCHEMA = "gcsp_s_prodcomp_" + Long.toHexString(System.nanoTime());
+
+        @Override
+        public Set<Class<?>> getEnabledAlternatives() {
+            return Set.of();
+        }
+
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            return planConfig(SCHEMA);
+        }
+    }
+
+    /** Synthetic provider, the seed policy version (it carries the order-plan catalogue) and a private schema. */
+    static Map<String, String> planConfig(String schema) {
+        Map<String, String> m = config("synthetic", true);
+        m.put("gcsp.environment.policy-version", "gcsp-policy-v1");
+        if (URL != null && !URL.isBlank()) {
+            m.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", schema);
+            m.put("quarkus.flyway.schemas", schema);
+            m.put("quarkus.flyway.default-schema", schema);
+        }
+        return m;
+    }
 }

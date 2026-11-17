@@ -1,5 +1,6 @@
 package gcsp.api.recommendation;
 
+import gcsp.api.account.AccountRecordsPort;
 import gcsp.api.allocation.EligibleCandidates;
 import gcsp.api.allocation.UnconfiguredCandidates;
 import gcsp.api.policy.PolicyService;
@@ -11,7 +12,10 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-/** Selects the allocation calculation once at startup; none refuses and never falls back to synthetic decisions. */
+/**
+ * Selects the allocation calculation once at startup; none refuses and never falls back to synthetic decisions.
+ * recommendation reads account facts from the selected AccountRecordsPort, never the caller's record.
+ */
 @ApplicationScoped
 @Startup
 public class CandidatesSelection {
@@ -25,11 +29,14 @@ public class CandidatesSelection {
     @Inject
     PolicyService policy;
 
+    @Inject
+    AccountRecordsPort records;
+
     private EligibleCandidates selected;
 
     @PostConstruct
     void init() {
-        selected = select(provider, policy);
+        selected = select(provider, policy, records);
         LOG.infof("GCSP allocation candidates provider: %s", normalise(provider));
     }
 
@@ -39,10 +46,10 @@ public class CandidatesSelection {
         return selected;
     }
 
-    static EligibleCandidates select(String provider, PolicyService policy) {
+    static EligibleCandidates select(String provider, PolicyService policy, AccountRecordsPort records) {
         return switch (normalise(provider)) {
             case "none" -> new UnconfiguredCandidates();
-            case "recommendation" -> new RecommendationCandidates(policy);
+            case "recommendation" -> new SelectedAccountCandidates(new RecommendationCandidates(policy), records);
             default -> throw new IllegalStateException("Unknown " + KEY + " '" + provider
                     + "'; supported: none, recommendation");
         };

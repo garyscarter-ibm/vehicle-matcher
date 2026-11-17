@@ -49,7 +49,9 @@
   "inbox": {
     "test": "npm test",
     "merge": "auto",
-    "owner": "Russell"
+    "owner": "Russell",
+    "story_tests": "AGENTS.md#story-test-set",
+    "batch_merges": 5
   },
   "base_branch": "gcsp-poc-dev",
   "team": {

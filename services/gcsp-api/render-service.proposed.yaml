@@ -47,6 +47,12 @@
       #   sync: false
       # - key: GCSP_POLICY_VERSION
       #   sync: false
+      # Account records (FUCQ-458), dedicated dev database only: needs GCSP_DATABASE_URL and the oidc values above.
+      # - key: GCSP_ACCOUNT_PROVIDER
+      #   value: repository
+      # Demo people seeded at first start; needs GCSP_RESET_ALLOWED=true on the dev database, never on a running one.
+      # - key: GCSP_SCENARIO_PROVIDER
+      #   value: demo
       # Notifications (FUCQ-469): unset GCSP_MAIL_TRANSPORT keeps mail captured; brevo needs the rest.
       # - key: GCSP_MAIL_TRANSPORT
       #   sync: false
@@ -81,6 +87,9 @@
         value: synthetic
       - key: GCSP_APPOINTMENTS_PROVIDER
         value: synthetic
+      # Buddy allocation (FUCQ-464): recommendation on the dev service; none refuses every allocation.
+      - key: GCSP_ALLOCATION_CANDIDATES_PROVIDER
+        value: recommendation
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS

@@ -8,9 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import gcsp.api.account.AccountPolicyPort.PolicyOutcome;
-import gcsp.api.account.AccountPolicyPort.PolicyRead;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.response.ValidatableResponse;
@@ -44,23 +41,6 @@ class AccountHttpTest {
     void setUp() throws Exception {
         key = (RsaJsonWebKey) JsonWebKey.Factory.newJwk(signingJwk);
         originalSnapshot = Files.readAllBytes(AccountHttpProfile.SNAPSHOT);
-        GoldenFixture paula = new GoldenFixture("paula");
-        GoldenFixture jordan = new GoldenFixture("jordan");
-        PolicyOutcome rules = paula.manualRules;
-        PolicyOutcome names = paula.schemeNames;
-        QuarkusMock.installMockForType(new AccountPolicyPort() {
-            public PolicyOutcome manualRules(PolicyRead r) {
-                return rules;
-            }
-
-            public PolicyOutcome allowance(AccountScope s, PolicyRead r) {
-                return s.employeeId().equals(jordan.scope.employeeId()) ? jordan.allowance : paula.allowance;
-            }
-
-            public PolicyOutcome schemeDisplayNames(PolicyRead r) {
-                return names;
-            }
-        }, AccountPolicyPort.class);
     }
 
     @AfterEach
