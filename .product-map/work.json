@@ -7851,7 +7851,7 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-17T15:18:32Z",
+      "observed_at": "2026-11-17T15:29:09Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
@@ -7889,14 +7889,16 @@
         },
         {
           "id": "experiments-replay",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Experiment arms (points, hold-sweep, order-mix) through the real Java replay equal Node",
-          "observed_at": "2026-11-17T15:18:32Z"
+          "observed_at": "2026-11-17T15:29:09Z",
+          "evidence": "Lead-reviewed 3c7f2296f: ComparisonExperimentReplayTest runs process-only, points, order-mix and hold-sweep (seeds parity-a/b, 12 employees) through real RouteReplay on native PG17; result digests and progress equal fresh Node runComparison; lead rerun 1/1 pass, no cmp_ schema left"
         },
         {
           "id": "started-app-restart",
-          "status": "not-started",
-          "title": "Started-app job progress, interruption and recovery across a real restart, no real email"
+          "status": "in-progress",
+          "title": "Started-app job progress, interruption and recovery across a real restart, no real email",
+          "observed_at": "2026-11-17T15:29:09Z"
         },
         {
           "id": "render-env",

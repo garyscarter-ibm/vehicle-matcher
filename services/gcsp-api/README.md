@@ -694,6 +694,8 @@ persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
+Started-app proof of job status across a crash and a graceful stop, with a real mail transport configured:
+`node src/test/started-app/comparison-restart-proof.mjs --jar target/quarkus-app/quarkus-run.jar --db-url <jdbc> --db-name <db> --scratch <dir> --out <summary.json>`.
 
 ## Clock, scenarios and presenter controls (FUCQ-479)
 
