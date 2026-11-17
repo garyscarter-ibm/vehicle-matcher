@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T10:34:58Z",
+      "observed_at": "2026-11-17T10:35:50Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T10:26:44.484Z",
-      "note": "Ordering durable-consumer recovery integrated461049f73:1selected nativePG/HTTP pass, independent source reviewPASS and teardown auditclear. Actual old worker ended10:27:20UTC. New concrete ordering binding component assignment19 queued; execution unverified until exactACK. Both originalAC open; nativeToDo/unassigned preserved.",
+      "note": "Ordering recovery integrated461049f73:1nativePG/HTTP pass, source reviewPASS and independentauditclear. New exact bindingcomponent19 acknowledged/executing10:34:40UTC; sourceauthoring independentlyunverified, no runtime/descendants/newclaim. Foreignselector/account handoff remains; originalACopen/nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -9097,9 +9097,9 @@
           "harness": "claude-code",
           "role": "Ordering binding component source in exactly3newfiles",
           "source": "claude-assist-fucq481-ordering-bindings-2026-11-17-19",
-          "observed_at": "2026-11-17T10:33:43.204983+00:00",
-          "expires_at": "2026-11-17T10:33:43.204983+00:00",
-          "status": "Queued; executionunverified pendingmatchingACK. No runtime/descendants/newclaim. Foreignselector/holder/configread-only; originalACopen."
+          "observed_at": "2026-11-17T10:34:40Z",
+          "expires_at": "2026-11-17T10:50:49.911161+00:00",
+          "status": "MatchingACK/currentexecutionreported10:34:40UTC, concrete3newfile bindingcomponent source. Sourceauthoring independentlyunverified; no runtime/descendants/newclaim. Successorhandover reported, independentlyunverified; ClaudeOpus5.5/high workerreported."
         }
       ]
     }
