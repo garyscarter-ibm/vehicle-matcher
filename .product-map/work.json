@@ -8723,22 +8723,22 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T04:31:05Z",
+      "observed_at": "2026-11-17T04:41:04Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T04:29:06.794638+00:00",
-      "note": "Claimed GC bdee6c512; same Claude coordinator and two actual concurrent Sonnet source workers for original AC1 inventory, exact2newdocs. No returned inventory or startup/connected/remote/OIDC/email proof yet; native To Do preserved.",
+      "native_observed_at": "2026-11-17T04:40:35.953216+00:00",
+      "note": "Original AC1 current-port inventory continues in exact2newdocs under same coordinator; actual2Sonnet sourceworker activity observed. Inventory returns, actual startup selection and original connected/remote/OIDC/email proof remain open. Native To Do preserved.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T04:29:20.251043+00:00",
-          "evidence": "Two source-inventory workers have interleaved actual tool execution through04:29:19UTC; exact2docs still pending. Sonnet5.5 observed, effective effort unverified. No runtime or full acceptance."
+          "observed_at": "2026-11-17T04:40:19.704859+00:00",
+          "evidence": "Actual source-reading worker tools observed04:39:55/04:38:46UTC. Exact2doc return pending; no runtime, startup composition proof or full originalAC completion."
         },
         {
           "id": "startup",
@@ -8766,19 +8766,19 @@
           "name": "Yakko",
           "harness": "claude-code",
           "role": "F481 current port inventory; disjoint source domains",
-          "observed_at": "2026-11-17T04:29:19.200000+00:00",
-          "expires_at": "2026-11-17T04:44:19.200000+00:00",
+          "observed_at": "2026-11-17T04:39:55.393000+00:00",
+          "expires_at": "2026-11-17T04:54:55.393000+00:00",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "actual source tools observed; Sonnet5.5; effort unverified; no runtime"
+          "status": "actual source reads observed; Sonnet5.5; effective effort unverified; no runtime"
         },
         {
           "name": "Wile E. Coyote",
           "harness": "claude-code",
           "role": "F481 current port inventory; disjoint source domains",
-          "observed_at": "2026-11-17T04:28:34.521000+00:00",
-          "expires_at": "2026-11-17T04:43:34.521000+00:00",
+          "observed_at": "2026-11-17T04:38:46.349000+00:00",
+          "expires_at": "2026-11-17T04:53:46.349000+00:00",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "actual source tools observed; Sonnet5.5; effort unverified; no runtime"
+          "status": "actual source reads observed; Sonnet5.5; effective effort unverified; no runtime"
         }
       ]
     }
