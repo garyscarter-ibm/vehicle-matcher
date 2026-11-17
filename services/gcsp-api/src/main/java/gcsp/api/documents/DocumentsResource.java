@@ -86,6 +86,14 @@ public class DocumentsResource {
         return render(service.acknowledge(context(p), p.employeeId(), parsed));
     }
 
+    /** The inventory replacement path for Node's tasks/complete: the same acknowledgement command and answers. */
+    @POST
+    @Path("/tasks/complete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response complete(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, String body) {
+        return acknowledge(authorization, body);
+    }
+
     private static RunContext context(Principal p) {
         return new RunContext(p.environmentId(), p.runId(), p.subject());
     }
