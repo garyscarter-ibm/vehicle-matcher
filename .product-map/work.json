@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T05:09:07Z",
+      "observed_at": "2026-11-17T05:17:43Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,14 +8731,14 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T04:53:13.825383+00:00",
-      "note": "Both source inventories returned: action/event35records and read/input24records; these counts are worker records, not a deduplicated completeport count. Coordinator actual source reconciliation05:08; final2productdocs pending. OriginalAC and all runtime/connected/remote proof remain open; native To Do preserved.",
+      "note": "Two-document source inventory increment integrated at3a7a4acb2 after parent bounded corrections.59 overlapping/grouped records, not uniqueports. JSON/counts and469 reference spans valid; selected facts sampled, not every semantic claim. OriginalAC/startup/local/remote/connected proof remain open; nativeToDo preserved.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T04:42:55.312158+00:00",
-          "evidence": "Action/event worker returned35record sourceJSON04:40:52, parent JSONparse/count only. Coordinator sourcechecking; read/input/final2docs pending. No runtime or originalAC completion."
+          "observed_at": "2026-11-17T05:17:43.502148+00:00",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established."
         },
         {
           "id": "startup",
@@ -8785,9 +8785,9 @@
           "harness": "claude-code",
           "role": "F481 inventory reconciliation and demo-preparation mapping",
           "observed_at": "2026-11-17T05:08:17.689Z",
-          "expires_at": "2026-11-17T05:23:17.689000+00:00",
+          "expires_at": "2026-11-17T05:11:56.259Z",
           "source": "claude-assist-fucq481-provider-inventory-2026-11-17-13",
-          "status": "actual source and combined-result checks observed05:08; Opus5.5, effective effort unverified; no runtime"
+          "status": "returned exact2doc checkpoint53524c5d1; parent corrected/integrated3a7a4acb2; no current worker execution inferred"
         }
       ]
     }
