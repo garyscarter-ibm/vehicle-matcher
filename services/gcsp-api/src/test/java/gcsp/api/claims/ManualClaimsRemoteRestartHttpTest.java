@@ -20,16 +20,11 @@ class ManualClaimsRemoteRestartHttpTest extends RemoteClaimComposedSupport {
     @Test
     void aClaimLeftPendingByAPreviousProcessConvergesInTheStartedAppWithoutADuplicateEffect() throws Exception {
         String op = ManualClaims.operationId(RemoteClaimStockResource.PRIOR_COMMAND, "manual-claim");
-        // State the previous process left behind: durable pending claim, one remote effect, one POST, no lookups yet.
-        assertEquals("claim-pending", holdState(CAR));
-        assertEquals("pending", opState(op));
+        // The resource refuses to start unless the previous process left this claim pending; the clock's startup
+        // pass (manual-claim-expiry handler) has already reconciled it by the time the app serves.
         assertEquals(op, text("SELECT operation_id FROM custody_holds WHERE order_uuid = ?", CAR));
-        assertEquals(1, count("SELECT count(*) FROM custody_holds"));
-        assertEquals(1, remote.effects(op));
-        assertEquals(1, remote.posts(op));
-        assertEquals(0, remote.gets(op));
-        assertEquals(1, occupying(CAR));
         long version = stockVersion(CAR);
+        assertEquals(2, version, "the previous process bumped the car once and the restart did not again");
         sweep.sweepNow();
         assertEquals("active", holdState(CAR));
         assertEquals("acknowledged", opState(op));

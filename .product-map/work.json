@@ -7199,7 +7199,7 @@
     {
       "assignee": "",
       "id": "FUCQ-463",
-      "observed_at": "2026-11-17T15:28:44Z",
+      "observed_at": "2026-11-17T15:33:01Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Claim and release manual selections safely",
@@ -7244,10 +7244,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration: base merge and scoped started-app validation on native PostgreSQL",
-          "observed_at": "2026-11-17T15:28:44Z",
-          "evidence": "Base merged 51b9b766e; gcsp-api verify 971/0/0 on native PG17; lead review of all slices"
+          "observed_at": "2026-11-17T15:33:01Z",
+          "evidence": "Base merge a44e836fe; scoped started-app set 189 (1 restart-test assumption fixed for FUCQ-479 startup tick, rerun 1/0) on private PG17; Result in _dev story file"
         }
       ]
     },
