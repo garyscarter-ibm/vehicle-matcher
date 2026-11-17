@@ -1816,3 +1816,8 @@ Several broad source/policy displays and an initial queue display again truncate
 - **F473 merged** to `gcsp-poc-dev` at `0e9745711` (built, scoped 391/0; pending the batch verify). Return source is bound to `OrderingReturnSource` and handover to `appointments.ReturnsHandover`; a completed handover changes the current car once, through the returns reconcile.
 - **Hosted dev needs one more setting:** `GCSP_RETURNS_PROVIDER=synthetic`, proposed in `render-service.proposed.yaml`, with `render.gcsp.yaml` untouched. It also relies on `GCSP_SUPPLY_PROVIDER=demo`, which is already on the 17:10 list: with supply `none`, every return read answers 503.
 - **Low bug candidate:** return reads take their time from supply ticks, not the run clock.
+
+## 2026-11-17 18:00 UTC · Russell Claude Code · DL-20261117-RG-002 · Memory exhaustion crash
+
+- **What happened:** the Mac reached 100% memory and swap and locked up, and had to be restarted. Russell's poller had three story-leads, each with an implementer and a Quarkus Maven JVM. The dispatcher had started the third lead as a lane replacement while the capacity check said `can_start=0` (10.6 GB of swap).
+- **Resolution:** branches pushed, the shared PG cluster recreated, and leads resumed one at a time. A lane replacement is a new start: it needs `can_start>0` like any other. `/tmp` scratch (PG clusters, story DBs) does not survive a reboot.
