@@ -1435,3 +1435,24 @@ commit and push named paths through the existing helper, preserving concurrent a
 - **Applied correction, source verified only:** same Claude12 coordinator changed the allocated snapshot reader to join the exact environment/run/slot/employee, retain a present hold renewalId including JSON null, and use slot renewal or null only for an absent key. Parent read the full changed mapping and manual-snapshot-through-cohort regression; D7 and live-CDI/integration-hold note updated. Physical authored count is now19Cohort+11Snapshot+22Adapter=52. No compile/native/DB test ran; final helper checkpoint/report and finite source/selection binding still pending. Original MAJOR has an applied source correction, not a natively verified or generally resolved outcome.
 - **Evidence limit:** the explicit-null regression uses a slot without renewal, so that assertion alone does not distinguish a mistaken fallback-to-null branch; the implementation branch itself preserves stored null. Retain this coverage limitation without adding a new acceptance campaign. Parent acknowledged the bounded correction through SAME assignment; reuse the completed review, no duplicate review round. Preserve Supply/Clock M1/F515 live-binding hold, original AC and seven-path scope.
 - **Framework improvement:** separate source diagnosis, correction inspection, native validation, integration and acceptance, and update exact method selection after scoped regressions. Do not report a new authored method as a pass. No OneDrive access.
+
+## 2026-11-17 04:06 UTC - GC Claude - DL-20261117-GCC-009 - 12: a splice slip, a propagation miss, and a cross-writer gap the review caught
+
+- **The supervisor draft had a syntax error, and the parent caught it, not me.**
+  - I built the demand12 selection by splicing a generated `ALL = {...}` block into a copy of 09. I kept 09's closing `}` as well, which left an extra brace at line 72.
+  - My check counted test names, not structure. Source-only work bars an interpreter, so I never parsed it. Codex's `ast.parse` found it at 03:44.
+  - Fixed at 03:47 by deleting that one line, after asserting lines 71 and 72 were both a bare `}`. I then counted brackets by text.
+  - **Improvement:** when no interpreter is allowed, count bracket balance on every spliced region before publishing, and cross-check the names against the `@Test` methods. Both take one line of `tr` and `awk`.
+- **Propagation miss, on my side.**
+  - The second-batch briefs (Mushu and Mike Wazowski) named the files, the contract and the OneDrive and runtime bans. They left out the full mandatory reference list: AGENTS.md, build-rules, experience-quality, readiness, learnings and the original AC. They also left out the rule that descendants must pass these on.
+  - The cause: I wrote them from my compacted state, not from a fixed envelope.
+  - The 03:35 relay reached the reviewer, who was still running. Mushu had already finished, so the relay was too late for them.
+  - My source handover also proposed raw `git add`/`commit`. The commit actually went through `scaffold_git.py commit --paths <7>`, dry-run first, as `76837ffe8`.
+  - **Improvement:** keep one envelope file per assignment (references, allocation, bans, the descendant rule) and paste it verbatim into every child brief. A relay cannot reach a child that has already finished.
+- **The independent review found a gap my interface freeze missed.**
+  - I took the hold shape from the Buddy writer (`Claim.java`), which stores `attributes.renewalId`. The manual-claim writer (`ManualClaims.java`) stores none.
+  - So a manually allocated employee was never `already-selected` and would have been counted again as demand. That breaks AC1.
+  - Fixed as D7: the reader falls back to the slot's renewal, or null. A regression test runs the snapshot through the cohort.
+  - **Improvement:** when freezing a snapshot interface, list every writer of each table across packages, not just the one nearest the feature.
+- **Coverage limit, accepted and not chased:** Codex's 04:00 point stands. The explicit-null hold sits on a slot with no renewal, so that one assertion can't tell "kept null" from "fell back to null". The code branch is correct, and the limit is recorded rather than turned into a new campaign.
+- **How this was published:** the helper's `push` covers only the base branch, so this entry went out as the earlier ones did. That meant a temporary detached worktree on `origin/gcsp-poc-dev`, a commit of this file only and a fast-forward push, with the worktree removed afterwards. No OneDrive access.
