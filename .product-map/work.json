@@ -9904,6 +9904,54 @@
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "note": "Producer34 reviewed and one nativePG17 generation plus normal exact comparison eachPASS;12real fixture files, teardown/pins independently audited. Helper35 source ACK20:18:18UTC; actual Angular consumer and connected originalAC remainOPEN."
+    },
+    {
+      "id": "FUCQ-518",
+      "title": "Angular manual review shows Review unavailable: Java claim hold.mode is local, Angular expects new or replacement",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-518",
+      "branch": "bug/FUCQ-518-519",
+      "unsliced": false,
+      "observed_at": "2026-11-17T21:09:23Z",
+      "slices": [
+        {
+          "id": "hold-journey-mode",
+          "status": "not-started",
+          "title": "Java claim hold.mode carries the pinned draft journey mode"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Scoped claims/manual/offers set and started-app proof"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-519",
+      "title": "Emailed offer links show Offer link incomplete: Java offers routes refuse the runId query with 400",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-519",
+      "branch": "bug/FUCQ-518-519",
+      "unsliced": false,
+      "observed_at": "2026-11-17T21:09:23Z",
+      "slices": [
+        {
+          "id": "offer-runid-query",
+          "status": "not-started",
+          "title": "Java offer read and decision-reasons accept one runId equal to the active run"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Scoped claims/manual/offers set and started-app proof"
+        }
+      ]
     }
   ],
   "version": 1

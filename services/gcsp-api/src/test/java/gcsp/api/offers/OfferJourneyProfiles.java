@@ -31,4 +31,7 @@ public final class OfferJourneyProfiles {
 
     /** A distinct profile class gives the decline journey its own app, schema and run clock. */
     public static class Decline extends Accept {}
+
+    /** FUCQ-519: its own app and schema, so the run-selector reads see an untouched pending offer. */
+    public static class RunIdQuery extends Accept {}
 }

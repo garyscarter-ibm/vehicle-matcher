@@ -158,6 +158,8 @@ class OffersHttpTest {
     void queryParametersAreRefused() throws Exception {
         get(ownerToken(), "/" + MINE + "?token=abc").statusCode(400).body("code", equalTo("unsupported-query"));
         get(ownerToken(), "/current?employeeId=E-1002").statusCode(400).body("code", equalTo("unsupported-query"));
+        get(ownerToken(), "/" + MINE + "?runId=" + OffersTestProfile.RUN).statusCode(200).body("value.offerId", equalTo(MINE));
+        get(ownerToken(), "/" + MINE + "?runId=other").statusCode(409).body("status", equalTo("stale-run"));
     }
 
     @Test

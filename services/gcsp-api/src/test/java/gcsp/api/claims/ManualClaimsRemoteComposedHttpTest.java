@@ -52,7 +52,7 @@ class ManualClaimsRemoteComposedHttpTest extends RemoteClaimComposedSupport {
         assertEquals(200, r.status(), r.toString());
         assertEquals("ok", r.state());
         assertEquals("active", r.hold().get("state").asText());
-        assertEquals("remote", r.hold().get("mode").asText());
+        assertEquals("replacement", r.hold().get("mode").asText());
         assertEquals("active", holdState(CAR));
         assertEquals("remote", text("SELECT mode FROM manual_claims WHERE order_uuid = ?", CAR));
         assertEquals("acknowledged", opState(op));
