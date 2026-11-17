@@ -6843,7 +6843,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-456",
-      "observed_at": "2026-11-17T19:53:15Z",
+      "observed_at": "2026-11-17T20:32:05Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -6861,11 +6861,31 @@
           "title": "Atomic reset, environment isolation guard, external-intent CAS and query evidence"
         },
         {
-          "evidence": "story-lead: 54 module tests pass at 0dd710eb on native PG17; two-JVM running-app reset isolation and restart proof; EXPLAIN scope; hosted dev awaits Gary",
+          "evidence": "Result block at c709769e; scoped 172/0/0; callers 1136 run, 6 env errors (gcsp_test_dev name); design doc re-proof and alignment",
           "id": "s3-integration",
-          "observed_at": "2026-11-13T22:40:05Z",
+          "observed_at": "2026-11-17T20:32:05Z",
           "status": "complete",
-          "title": "Story-level validation, alignment record and result"
+          "title": "Story-level validation on today's base, alignment record and result"
+        },
+        {
+          "id": "s4-dev-composition-journey",
+          "status": "complete",
+          "title": "Dev-composition QuarkusTest: concurrent writers, presenter reset, isolation and non-reset refusal",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "ccc488673 reviewed by lead; 9 journey tests pass in scoped 172/0/0 at c709769e on PG17"
+        },
+        {
+          "id": "s5-restart-proof",
+          "status": "complete",
+          "title": "Running-app stop/start proof: state, receipts, authority, uncertain resend, reset isolation",
+          "observed_at": "2026-11-17T20:32:05Z",
+          "evidence": "a0f5f56a reviewed by lead; built-jar proof 7/7 PASS at c709769e, receipt docs/gcsp/evidence/fucq456/restart-proof-2026-11-17.json"
+        },
+        {
+          "id": "s7-hosted-dev",
+          "status": "blocked",
+          "title": "Hosted Render dev connection, restart and reset-isolation evidence (Gary's environment)",
+          "observed_at": "2026-11-17T19:18:12Z"
         }
       ],
       "status": "In Progress",

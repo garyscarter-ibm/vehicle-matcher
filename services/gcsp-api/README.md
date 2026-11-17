@@ -112,6 +112,9 @@ GCSP_TEST_RUNNING_DATABASE_URL='jdbc:postgresql://localhost:55456/gcsp_test_runn
 ./mvnw -B test -Dtest='gcsp.api.persistence.**'
 ```
 
+The built-app restart and reset-isolation proof (one JVM at a time, two throwaway databases on port 55491) is
+`node scripts/gcsp/fucq456-restart-proof.mjs` from the repo root after `./mvnw -B package -DskipTests`.
+
 ## Notifications (FUCQ-469)
 
 Each notification is an intent written in the same transaction as the business change it reports, so it exists only if
