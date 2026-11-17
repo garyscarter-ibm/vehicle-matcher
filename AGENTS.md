@@ -127,6 +127,42 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
 
+## Story test set
+
+Ruled 2026-11-17 (Russell): a story runs a focused set; the full suites run once per batch of merges, in the poller's
+batch run (dev-inbox step E), not per story. The intent is less machine time per story, not a lower bar for done: a
+story is not ready for acceptance until a green batch run covers its merge. This replaces any story-lead's own
+"agreed integration checkpoint". Every agent applies it, and every story-lead brief carries it.
+
+Run once at the end on the story branch, with one throwaway native PostgreSQL 17 you own (never a Render database),
+`GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set as in `services/gcsp-api/README.md`:
+
+1. **The story's own packages**, Java: `./mvnw -B test -Dtest='gcsp.api.<package>.**'` in `services/gcsp-api`, one
+   pattern per package, comma-separated in one run. Node: `node --test --test-concurrency=1 server/test/<file>.test.js`
+   for each module it owns. Angular (`apps/gcsp-web`): that app's own test command for the changed feature folder.
+2. **Every other package it edited**, the same way.
+3. **Callers of a changed contract:** for a changed port, record, HTTP shape, migration or shared fixture, the
+   packages that use it (`grep -rl` the type or route under `services/gcsp-api/src` and `apps/gcsp-web/src`), and the
+   Node parity tests in `services/gcsp-api/src/test/parity` that replay it.
+4. **One end-to-end test per acceptance item**, on the real composition: the `@QuarkusTest` `*HttpTest` in that
+   package started under an OIDC profile (`OidcTestProfile`, `JwksServerResource`: real signed test tokens sent as
+   `Authorization: Bearer`) against the native PostgreSQL above. A `*NoDatabase*`, `*NoProvider*` or `*LiveStub*`
+   test proves the refusal path only; it does not meet an item. A missing end-to-end test is written in the story.
+5. **Startup and wiring:** `DefaultProfileTest`, `OidcContextTest`, `OidcIdentityTest`, `IdentitySelectionTest`,
+   `persistence.PersistenceWiringTest`, `persistence.NotConfiguredReadinessTest`, `claims.ClaimWiringTest`,
+   `notify.NotificationDrainWiringTest`, `appointments.AppointmentsWiringTest`, `ordering.RemoteOrderingStartupTest`.
+
+**The full suite on a story** only for a Flyway migration, a new startup thread or CDI producer, shared
+`application.properties`, `pom.xml` or the Maven wrapper, or the test profiles and support classes themselves. Name
+which in `validation scope`. A story whose `validate` says `npm test`, `./mvnw -B verify` or "the full suite" with no
+such reason writes `full suite: deferred to batch`.
+
+**The batch run** is `inbox.test` (`npm test` at the root), then `./mvnw -B clean verify` in `services/gcsp-api`
+against a fresh throwaway PostgreSQL 17, one after the other, never alongside another full suite. Both must pass
+for the batch to be green. Known
+order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on 2026-11-13) get a Bug and are named
+in `_dev/batches.md`, not retried until green.
+
 ## Concepts and mockups
 
 Gary's direction, 10 November 2026. When asked for a concept, mockup or design option, deliver

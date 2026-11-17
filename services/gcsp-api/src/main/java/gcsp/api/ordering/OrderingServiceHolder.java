@@ -12,7 +12,7 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import java.util.Optional;
 
-/** Builds the one OrderingService lazily over the Agroal datasource and the selected provider; empty without persistence. */
+/** Builds the one OrderingService lazily over the Agroal datasource and the bound provider; empty without persistence. */
 @ApplicationScoped
 public class OrderingServiceHolder {
 
@@ -24,6 +24,9 @@ public class OrderingServiceHolder {
 
     @Inject
     OrderingSelection selection;
+
+    @Inject
+    OrderingProviderBindings bindings;
 
     @Inject
     PolicyService policy;
@@ -45,7 +48,7 @@ public class OrderingServiceHolder {
         if (service == null) {
             AgroalDataSource ds = dataSource.get();
             service = new OrderingService(ds, new OrderingTerms(policy, clock),
-                    OrderingProviderSelection.select(selection.provider(), ds)).withReviewFreeze(this::freeze);
+                    bindings.provider(ds)).withReviewFreeze(this::freeze);
         }
         return Optional.of(service);
     }

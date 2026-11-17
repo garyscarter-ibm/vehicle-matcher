@@ -2,6 +2,10 @@ package gcsp.api.production;
 
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
+import gcsp.api.planning.PlanningClock;
+import gcsp.api.planning.PlanningDemand;
+import gcsp.api.planning.PlanningSupply;
+import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,7 +16,7 @@ import jakarta.inject.Singleton;
 import java.time.Instant;
 import java.util.Optional;
 
-/** Default ports: FUCQ-477 binds the real plan snapshot later, and the clock reads the presenter tick when persistence is on. */
+/** Default ports: the plan port reads Greg's real order plan, and the clock reads the presenter tick when persistence is on. */
 @ApplicationScoped
 public class ProductionWiring {
 
@@ -24,11 +28,24 @@ public class ProductionWiring {
 
     private ProductionClock tick;
 
+    @Inject
+    PolicyService policy;
+
+    @Inject
+    PlanningDemand demand;
+
+    @Inject
+    PlanningSupply supply;
+
+    @Inject
+    PlanningClock planningClock;
+
+    /** The real plan port; a test alternative still overrides it. Unbound planner inputs answer with the planner's own code. */
     @Produces
     @DefaultBean
     @Singleton
-    PlanSnapshotPort unconfiguredPlan() {
-        return new UnconfiguredPlanSnapshot();
+    PlanSnapshotPort plan() {
+        return new PlanningPlanSnapshot(policy, demand, supply, planningClock);
     }
 
     @Produces
