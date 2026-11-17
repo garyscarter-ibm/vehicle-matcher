@@ -1,6 +1,6 @@
 # FUCQ-481 HTTP consumer proof (2026-11-17)
 
-This is a source-only increment of FUCQ-481 acceptance criterion 2. Nothing was compiled or run when it was written.
+This bounded FUCQ-481 increment connects the real HTTP adapters to existing durable consumers. The ten selected cases passed against disposable PostgreSQL16 and loopback HTTP; both original acceptance criteria remain open.
 
 It connects the real HTTP adapters from the previous increment to the existing durable consumers over loopback HTTP and real PostgreSQL:
 - `HttpClaimStock` and `HttpRemoteBuddy` are the adapters.
@@ -23,7 +23,7 @@ This is **component evidence**, not the connected journey. See "What this is not
 `RemoteOperationServer` implements only the wire agreed in `fucq481-remote-operation-providers-2026-11-17.md`. It is not a BMW service and adds no upstream behaviour.
 
 **Endpoints:**
-- **`POST /execute`** applies one effect per call, recorded by operation id. The body's `Idempotency-Key` must name the body's `operationId`.
+- **`POST /execute`** applies one effect per call, recorded by operation id. The HTTP `Idempotency-Key` header must name the body's `operationId`.
 - **`GET /reconcile`** answers from that record and never applies anything. It reports:
   - `rejected` if the operation was rejected;
   - `confirmed` if any effect was applied;
@@ -62,6 +62,14 @@ In outline:
   - When the answer is lost, a restarted consumer's reconcile converts once without another POST.
   - A rejected or mismatched answer restores or keeps the right custody, with no fabricated order.
 
+## Selected validation
+
+- Source checkpoint `604689cfd894150bc9202223593d78f099ba3538`, tree `e6476e901bd2e6d9c12e7bbc4379356b4f830522`. The three Java test sources are unchanged by this documentation receipt.
+- Ten exact methods across `HttpClaimLifecyclePgTest` and `HttpRemoteOfferDecisionPgTest`: native exit 0, ten passed, zero failures, errors or skips. Offline Maven, Java21, one capped test worker, isolated disposable PostgreSQL16 and loopback HTTP. Existing adapter/configuration evidence is reused for unchanged code.
+- The finite run began 2026-11-17T06:04:42Z and took26.3seconds. Peak sampled RSS779681792bytes; scratch155689408bytes. Parent independently matched method names and source/tool pins, then verified all86recorded process identities, seven groups and owned scratch absent, with the host reservation released.
+- Cogsworth3 independently reviewed the four-file source checkpoint and returned PASS with no blocking or major finding. Requested/selected model `gpt-6.1-sol`, effort `high`, no fallback; no reviewer runtime.
+- These are component and recovery checks through the actual HTTP adapters, existing consumers and migrated database. They do not establish the connected journey below.
+
 ## What this is not
 - **Sign-in and offers:** direct service calls with a fixture Principal, plus a seeded remote-offered offer. That is not browser sign-in, real OIDC or an offer produced by a real remote claim.
 - **Notifications:** no email is sent.
@@ -69,7 +77,7 @@ In outline:
 - **Contract:** the wire is GCSP's own. A BMW stock or Buddy service still needs authorised access and real contract evidence.
 
 ## Remaining
-- **The tests are written but have not run.** Both classes need PostgreSQL and skip when `GCSP_TEST_DATABASE_URL` is unset, so they only count once they run against a database.
+- **Future runs need PostgreSQL.** Both classes skip when `GCSP_TEST_DATABASE_URL` is unset. The selected run above supplied an owned database and had zero skips.
 - **AC1 is still open:**
   - the direct `employee_account_records` readers (`allocation/Prepare.java:100`, `allocation/BuddyRemoteLifecycle.java:315`, `account/ManualDrafts.java:113`);
   - the inventory gaps on other ports;
