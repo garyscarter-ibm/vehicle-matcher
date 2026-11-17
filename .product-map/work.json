@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:47:13Z",
+      "observed_at": "2026-11-17T06:56:23Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T06:46:39.520Z",
-      "note": "Readiness18 returned terminal; parent verified12 current source hashes and allocated exactly3 new offer test/profile/resource paths to same Donald Duck3 source-only assignment19. Actual current19 source command observed. No runtime/newpass/Story completion; both originalAC remain open. Full orderHTTP account policy boundary remains peerF458owned.",
+      "native_observed_at": "2026-11-17T06:55:56.358Z",
+      "note": "Authenticated offer composition increment integrated3d196cfb4 after one exactQuarkus/JWT/JWKS/PG/remoteBuddy method passed at30241a729 and independentImhotep2 reviewPASS. Firstprofilecapturedliteral startupfailure preserved, corrected blankconfig rerunpassed. Parent independently72identities/7groups/scratch/reservation clear. Seededprecedingclaim/profilePolicyClock and SQLorder+HTTPofferstatus limits explicit; bothoriginalACopen. All workers/runtime terminal; F481 held at incrementboundary, nativeToDopreserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8744,8 +8744,8 @@
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T05:54:28.677046+00:00",
-          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete."
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen."
         },
         {
           "id": "local-composition",
@@ -8758,8 +8758,8 @@
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T06:33:42.708531+00:00",
-          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved."
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen."
         },
         {
           "id": "integration",
@@ -8935,9 +8935,27 @@
           "harness": "codex",
           "role": "F481 JWT/PG/remote offer partial composition source-only lead",
           "observed_at": "2026-11-17T06:47:13.648019+00:00",
-          "expires_at": "2026-11-17T07:02:13.648019+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
           "source": "codex-fucq481-oidc-remote-offer-19",
-          "status": "executing source-only; compactrev14 current19tool exec-7073aa45-982a-4b68-a6f7-5bc7903b0699 completed. Exactly3newpaths, no runtime; requestedselectedSol/high,nofallback."
+          "status": "terminal3file source30241a729; parentnative1pass/0skip; integrated3d196cfb4 after independentreview. No currentexecution."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent authenticated offer composition source reviewer",
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
+          "source": "parentreview0649",
+          "status": "terminalPASS/no blockingormajor; exact30241a729; requestedselectedSol/high,nofallback, titletoolverified; no runtime"
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Profilecorrection, finite1method, independentcleanup and integration",
+          "observed_at": "2026-11-17T06:56:23.137785+00:00",
+          "expires_at": "2026-11-17T06:56:23.137785+00:00",
+          "source": "dispatcher0649",
+          "status": "terminal1pass/0skip after preservedstartupfailure;72identities/7groups/scratch/reservation clear. Integrated3d196cfb4. No currentruntime."
         }
       ]
     }
