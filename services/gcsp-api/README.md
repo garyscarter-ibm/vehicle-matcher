@@ -49,7 +49,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_OIDC_ROLE_CLAIM` | `realm_access.roles` | oidc: exact top-level claim name (such as a namespaced URL), else a dot path, to the role list. Default is Keycloak realm roles. |
 | `GCSP_OIDC_ACCOUNTS` | none | oidc: required JSON array `[{"subject","roles":["employee"|"greg"|"presenter"],"employeeId"?}]`. Not secret, never commit real subjects. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` | none | oidc: required; interim environment context until later Stories persist run state. |
-| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). |
+| `GCSP_ACCOUNT_PROVIDER` | `none` | Account records port: `none` refuses every account read (`account-provider-not-configured`), `hr-snapshot` reads a dated HR export, `repository` reads PostgreSQL (needs `GCSP_DATABASE_URL`; startup stops without it). Unknown values stop startup. The repository provider only reads: seeding `employees`, `entitlement_slots` and `employee_account_records` is scenario preparation (FUCQ-479). The dev composition is `repository` with `GCSP_SCENARIO_PROVIDER=demo` on the dedicated dev database (`GCSP_RUN_ID=run-1`, `GCSP_POLICY_VERSION=gcsp-policy-v1`), which seeds the fictional people at first start. |
 | `GCSP_ACCOUNT_HR_SNAPSHOT_PATH` | none | hr-snapshot: required path to a `gcsp-hr-export/1` JSON file; checked at startup and re-read on every request, so a file that goes missing or corrupt becomes a 503 source failure. |
 | `JAVA_OPTS` | `-XX:MaxRAMPercentage=75` (image) | JVM options for the container start command. |
 | `GCSP_DATABASE_URL` | unset | JDBC URL of this environment's own PostgreSQL. Unset leaves persistence off (readiness `not-configured`). |
@@ -232,7 +232,7 @@ the principal needs environment, run and policy version, else `unavailable/not-c
 | `GET /api/gcsp/v1/documents` | Employee only: the caller's own document orders. Any query parameter is 400 `unsupported-query`. |
 | `GET /api/gcsp/v1/documents/readiness?orderUuid=` | Employee (own order only), greg or presenter: readiness of one order, or `opened:false` with the reason. |
 | `POST /api/gcsp/v1/documents/tasks/acknowledge` | Employee only. Body `{commandId, orderUuid, itemId, expectedDocumentsRevision}`. See below. |
-| `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy stays `policy-not-configured` (503 source `scheme-collection`) until the PolicyService adapter is wired. `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
+| `GET /api/gcsp/v1/manual/account` | Employee role only, always the caller's own account: `{"status":"ok","value":<account projection>}`. 400 `unsupported-query` for any query parameter; 503 `account-provider-not-configured` or the `manual-source-unavailable` refusal body. Policy rows (manual rules, scheme names, allowance) come from the canonical PolicyService, and `currentCarRelationships` lists the relationships recorded in the returns store when persistence is active (absent when none). `gcsp.api.account.BriefAccountAdapter` serves the brief's `BriefAccountPort` (current contract and facts version) from this projection. |
 | `POST /api/gcsp/v1/recommendations` | Employee role only; the body is the brief. The caller's own recommendations over released stock: `{status:"ok",value}` (see Recommendations). 400 `unsupported-query` or `invalid-brief`; 409 `stale-run`; 503 `persistence-not-configured`, `account-provider-not-configured`, `employee-context-unavailable` or the service's `unavailable` outcome. |
 | `POST /api/gcsp/v1/presenter/releases/ticks` | Deliver `{tickId, now, clockVersion}`; presenter only. |
 | `POST /api/gcsp/v1/presenter/releases/reconcile` | Finish pending ticks, body `{}` or `{limit: 1..100}`. |
@@ -671,7 +671,7 @@ operation count; it is DOWN only when the database errors.
 Config: `GCSP_RETURNS_PROVIDER` and `GCSP_RETURNS_POLICY_FILE` (see the table above). The selection-source
 (`ReturnSourcePort`, FUCQ-468) and handover (`HandoverPort`, FUCQ-472) adapters default to unavailable (`none`) until those
 Stories supply beans that replace the defaults. The current-car relationship lives in `gcsp.api.returns`;
-`gcsp.api.account.CurrentCarPort` (FUCQ-458) can list it later through an adapter.
+`gcsp.api.account.CurrentCarPort` (FUCQ-458) lists it through `ReturnsCurrentCarRelationships` when persistence is active.
 
 ## Comparison (FUCQ-480)
 
@@ -692,8 +692,9 @@ Retained baseline: `server/data/gcsp/comparison/process-only.json`, sha256
 `c2175ec4fbb762a27c42e94d8e720732c7757062cfb25005739ebae0c26de0a5`, digest
 `d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`, resultId `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`.
 Inputs, measures and result assembly match Node (golden files in `src/test/resources/comparison-parity/`). The route
-replay is the `ComparisonReplay` port: its default is honestly unavailable (job fails with that reason, no result)
-until Java allocation (FUCQ-464) and recommendation (FUCQ-461) are bound to it.
+replay is the `ComparisonReplay` port; its default (`DatabaseComparisonReplay`) runs `RouteReplay` for both routes in
+throwaway `cmp_` schemas of the configured database, so the DB user must be able to create and drop schemas. With
+persistence off, jobs stay unavailable.
 
 Config: `GCSP_COMPARISON_RESULT_FILES` (blank: the bundled baseline), `GCSP_COMPARISON_RERUNS` (`true`/`1` enables
 starts; default off) and `GCSP_CODE_REVISION` (result provenance).
@@ -773,13 +774,27 @@ for the presenter). The presenter has scenario controls only: `POST /presenter/p
 quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production-scenario-unsupported`) and `POST /presenter/production/reconcile`
 (`{limit?}`). Employees get 403 everywhere.
 
+- Greg's order routes and the presenter step (same service and store; unknown or extra fields and any query are 400):
+  - `GET /greg/orders` (Greg only): the `GET /greg/production` value plus `versions: {policy, stock, clock}` and each request's `version`.
+    `stock` is a digest of the run's `stock_cars` (order_uuid, version, state); `clock` is the demo clock instant.
+  - `POST /greg/orders` (Greg only; `{commandId, model, derivative, quantity 1-1000, expectedPolicyVersion, expectedStockVersion, plan?}`):
+    one explicit line through the plan's durable path (plan id `manual:<submissionId>`). A stale policy or stock gives 409 `stale-version`
+    (`resource`, `expectedVersion`, `currentVersion`) and writes nothing; the same command replays, changed input is 409
+    `idempotency-input-changed`. Replan history ignores `manual:` submissions.
+  - `POST /greg/orders/queue` (Greg only; `{commandId, requestId}`): queues that request's unqueued confirmations; never asks Production.
+    Answers `{requestId, queued: [{supplyId, eligibleFrom}]}`, an empty list when nothing was waiting; unknown request is 404
+    `request-not-found`; a queue that cannot take one is a retryable 503 and the confirmations stay saved.
+  - `POST /presenter/production` (presenter only; `{commandId, requestId, expectedVersion, action: confirm|delay|refuse, quantity?, delayUntil?,
+    reason?}`): the scripted step of `/presenter/production/responses` plus a request-version check (409 `stale-version`) and a command
+    receipt, so a repeat of the same command replays and scripts nothing twice. Synthetic provider only.
 - One operation per request line: the request id is the provider operation id. Intent is stored before anything is sent, and a retry
   reconciles with the provider before it resubmits, so a lost answer never creates a second order.
 - Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
   supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
-- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
-  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
-  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Each applied answer emits outbox event `production.supply-changed` (no consumer: the replan path is pull-based). Greg's `GET /greg/order-plan`
+  reports `replan` from the stored submissions and responses (`ProductionSubmissionHistory`). `supply-activity` carries `supplyVersion`.
+  The plan port is the planner itself (`PlanningPlanSnapshot`), so submit answers the planner's own 503 code (`planning-forecast-not-configured`
+  or `planning-supply-not-configured`) until FUCQ-475/477 bind its inputs. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
 - Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
   so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
 - Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,

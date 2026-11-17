@@ -329,7 +329,19 @@ public final class BriefService {
                 || consent.get("search").booleanValue() != consent.get("hold").booleanValue())) {
             return Refusal.invalid("invalid-command", "consent", "Engage or disengage Buddy as one function.");
         }
-        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s));
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, true));
+    }
+
+    /** Node's internal confirm with no editor gate (the comparison replay): consent as given, no Account minimum. */
+    public BriefResult confirmWithoutGate(BriefScope scope, JsonNode input) {
+        Refusal bad = envelope(input, false, "consent");
+        if (bad != null) return bad;
+        JsonNode consent = input.get("consent");
+        if (consent != null && (!only(consent, "search", "hold") || !consent.path("search").isBoolean()
+                || !consent.path("hold").isBoolean())) {
+            return Refusal.invalid("invalid-command", "consent", "Explicitly choose search and hold permission independently.");
+        }
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, false));
     }
 
     /**
@@ -559,7 +571,7 @@ public final class BriefService {
         return Refusal.conflict(code, reason, extra);
     }
 
-    private JsonNode confirmWork(Tx tx, Ctx c, State s) throws SQLException {
+    private JsonNode confirmWork(Tx tx, Ctx c, State s, boolean gated) throws SQLException {
         if (s.draft() == null && s.current() == null) throw new Refused(Refusal.notFound("brief-draft"));
         readOnlyCheck(c, s);
         Resolved r = resolve(tx.connection(), c.scope(), c.rules(), s, false);
@@ -569,7 +581,7 @@ public final class BriefService {
         JsonNode consent = c.input().get("consent");
         boolean search = consent != null && consent.get("search").booleanValue();
         boolean hold = consent != null && consent.get("hold").booleanValue();
-        if (search) {
+        if (search && gated) {
             PolicyRules.Grants grants = c.rules().engagement();
             if (!gate.ok()) throw new Refused(Engagement.refusal(gate));
             search = grants.search();

@@ -6,11 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import gcsp.api.account.AccountPolicyPort.PolicyOutcome;
-import gcsp.api.account.AccountPolicyPort.PolicyRead;
 import gcsp.api.persistence.Persistence;
 import io.agroal.api.AgroalDataSource;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.enterprise.inject.Instance;
@@ -61,21 +58,6 @@ class ManualDraftHttpTest {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         GoldenFixture paula = new GoldenFixture("paula");
         GoldenFixture jordan = new GoldenFixture("jordan");
-        PolicyOutcome rules = paula.manualRules;
-        PolicyOutcome names = paula.schemeNames;
-        QuarkusMock.installMockForType(new AccountPolicyPort() {
-            public PolicyOutcome manualRules(PolicyRead r) {
-                return rules;
-            }
-
-            public PolicyOutcome allowance(AccountScope s, PolicyRead r) {
-                return s.employeeId().equals(jordan.scope.employeeId()) ? jordan.allowance : paula.allowance;
-            }
-
-            public PolicyOutcome schemeDisplayNames(PolicyRead r) {
-                return names;
-            }
-        }, AccountPolicyPort.class);
         try (Connection c = dataSource.get().getConnection()) {
             clearDrafts(c);
             for (GoldenFixture fx : List.of(paula, jordan)) {
