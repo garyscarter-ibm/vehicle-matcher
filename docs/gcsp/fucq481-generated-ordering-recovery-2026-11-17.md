@@ -44,3 +44,10 @@ One new method, for the second original acceptance criterion's failure path thro
 - **Not proved:** a registered real OIDC issuer or browser login, real mail, the hosted environment, any BMW service, shaped inputs varied across all ports, and later-clock recovery (FUCQ-516, unrepaired).
 - **Holds:** F477 M1 / FUCQ-515 stays held; Bugs 513-516 remain capture-only.
 - **Not complete:** neither original acceptance criterion. An unrun method is not proof, and a cut-acknowledgement test is not Story acceptance.
+
+## Compile correction, 17 November 2026, 13:33 UTC
+
+- **Parent run.** The parent's native PostgreSQL 17 run of `0d7ec6583` failed at Maven `testCompile`, before any case ran. The error was at `GeneratedClaimRemoteOrderingRecoveryHttpTest.java:[157,9]`: the call `assertEquals(null, ...)` is ambiguous, because both the `Byte` and `Short` overloads match.
+- **Correction.** The line is now `assertNull(pending.get("value.providerReference"))`, with the `assertNull` static import added. The intended null check is the same, and nothing else changed, including the two bounded waits.
+- **Status.** This is still unrun at my end; the parent reruns the one selected method.
+

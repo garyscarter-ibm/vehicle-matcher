@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -154,7 +155,7 @@ class GeneratedClaimRemoteOrderingRecoveryHttpTest {
                 .body("code", equalTo("handoff-pending")).body("operationId", equalTo(selection)).extract().jsonPath();
         assertEquals("pending", pending.getString("value.status"));
         assertEquals("handoff-pending", pending.getString("value.view.state"));
-        assertEquals(null, pending.get("value.providerReference"));
+        assertNull(pending.get("value.providerReference"));
         JsonNode cut = stats();
         assertEquals(1, cut.path("executes").asInt(), "exactly one remote execute");
         assertEquals(1, cut.path("effects").asInt(), "its effect is recorded remotely");
