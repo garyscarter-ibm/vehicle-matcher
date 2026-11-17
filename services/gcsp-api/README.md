@@ -376,9 +376,10 @@ from the bearer principal, never from the request. Any query parameter is refuse
 | `GET /api/gcsp/v1/brief/draft` | Latest saved draft (404 `not-found` before the first save). |
 | `GET /api/gcsp/v1/brief/editor` | Account editor read: context, content to show, buddy view, versions, provenance. |
 | `POST /api/gcsp/v1/brief/draft`, `/preferences`, `/confirm`, `/engage`, `/disengage`, `/pause-search`, `/resume-search` | JSON commands with `commandId`, `expectedBriefVersion`, `expectedDraftVersion`. |
+| `POST /api/gcsp/v1/brief/pause`, `/resume` | Node aliases for disengage and engage: exactly `commandId` and `expectedBriefVersion`; the draft version is read from the editor. |
 
-The Node `/pause` and `/resume` aliases are dropped, and `change-after-decline` and `preview` are other Stories, so
-they are the JSON 404. Refusals: 400 `unsupported-query`, `invalid-command`, `invalid-preferences`,
+`preview` and `change-after-decline` are served (FUCQ-440/443). The offer port reads `buddy_offers`, so an accepted
+offer makes the brief read-only. Refusals: 400 `unsupported-query`, `invalid-command`, `invalid-preferences`,
 `engagement-minimum` (with `remaining`); 401/403 as above; 404 `not-found`; 409 `stale-version` (with
 `expectedVersion`, `currentVersion`, `action: refresh`), `command-input-changed`, `already-engaged`,
 `already-disengaged`, `already-paused`, `already-resumed`, `not-engaged`, `brief-read-only`; 503 `brief-unavailable` (no persistence, policy or account facts; retryable)
