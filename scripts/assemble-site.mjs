@@ -4,6 +4,7 @@ import { readdir, readFile, writeFile, mkdir, lstat, realpath } from 'node:fs/pr
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { employeeEntryUrl } from '../blocks/demo-launcher/entry-context.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEXT = /\.(?:html|js|mjs|css)$/;
@@ -55,7 +56,7 @@ function apiSetting(value, environment) {
 
 function replaceOnce(source, before, after, file) {
   if (source.split(before).length !== 2) throw new Error(`${file}: incompatible frontend revision; expected exactly one ${JSON.stringify(before)}`);
-  return source.replace(before, after);
+  return source.replace(before, () => after);
 }
 
 export function references(source, file) {
@@ -92,7 +93,8 @@ function csp(apiUrl) {
 }
 
 /** Build into an empty directory; never clean an arbitrary user path. */
-export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http://localhost:8787', environment = 'local', employeeEnabled = true, revision = 'unrecorded' } = {}) {
+export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http://localhost:8787', environment = 'local',
+  employeeEnabled = true, employeeFrontendUrl = null, revision = 'unrecorded' } = {}) {
   sourceRoot = await realpath(sourceRoot);
   if (!output) throw new Error('An explicit empty --output directory is required');
   output = path.resolve(output);
@@ -100,6 +102,11 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
   try { if ((await lstat(output)).isSymbolicLink()) throw new Error(`Refusing symbolic link output: ${output}`); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   const api = apiSetting(apiUrl, environment);
+  const employeeEntry = employeeEntryUrl(employeeFrontendUrl);
+  if (employeeFrontendUrl !== null && !employeeEntry) {
+    throw new Error('Employee frontend setting requires an absolute HTTPS or loopback HTTP /gcsp/ URL without credentials, query or fragment');
+  }
+  const frontend = employeeEntry ? new URL('/gcsp/', employeeEntry).href : null;
   await mkdir(output, { recursive: true });
   if ((await readdir(output)).length) throw new Error(`Output must be empty: ${output}`);
   const discovered = await discoverManifest(sourceRoot);
@@ -126,7 +133,8 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
         text = replaceOnce(text, "const REMOTE_API = 'https://bmw-matcher-api.onrender.com';", `const REMOTE_API = ${JSON.stringify(api)};`, file);
       }
       if (file === 'blocks/demo-launcher/demo-launcher.js') {
-        text = replaceOnce(text, 'createEmployeeCapability()', `createEmployeeCapability({ enabled: ${employeeEnabled === true} })`, file);
+        text = replaceOnce(text, 'createEmployeeCapability({ enabled: true, frontendUrl: null })',
+          `createEmployeeCapability({ enabled: ${employeeEnabled === true}, frontendUrl: ${JSON.stringify(frontend)} })`, file);
       }
       if (file === 'block.html') {
         text = replaceOnce(text, 'data-api="http://localhost:8787"', `data-api="${api.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}"`, file);
@@ -166,6 +174,7 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
     { name: 'outbox', block: 'presenter', file: 'gcsp-outbox.html' },
   ].map((page) => ({ ...page, available: files.includes(page.file) }));
   const manifest = { version: 1, revision, environment, apiUrl: api, employeeEnabled: employeeEnabled === true,
+    employeeFrontendUrl: frontend, employeeAvailable: employeeEnabled === true && frontend !== null,
     blocks: discovered.blocks, pages: files.filter((file) => file.endsWith('.html')), demoPages, requiredAssets,
     files: await Promise.all(files.map(async (file) => ({ path: file, sha256: hash(await readFile(path.join(output, file))) }))),
     dependencies: edges.sort((a, b) => `${a.from}:${a.to}`.localeCompare(`${b.from}:${b.to}`, 'en')) };
@@ -192,7 +201,8 @@ export async function verifySite({ output, requireDemoPages = false } = {}) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const args = process.argv.slice(2), options = {};
-    const keys = { '--output': 'output', '--api': 'apiUrl', '--environment': 'environment', '--revision': 'revision', '--source': 'sourceRoot' };
+    const keys = { '--output': 'output', '--api': 'apiUrl', '--environment': 'environment', '--revision': 'revision',
+      '--source': 'sourceRoot', '--employee-frontend': 'employeeFrontendUrl' };
     let release = false;
     for (let i = 0; i < args.length; i += 1) {
       if (args[i] === '--employee-disabled') options.employeeEnabled = false;
@@ -202,7 +212,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     }
     const manifest = await assembleSite(options);
     if (release) await verifySite({ output: options.output, requireDemoPages: true });
-    console.log(`Assembled ${manifest.files.length} files; ${manifest.blocks.length} GCSP blocks; API ${manifest.apiUrl}; employee ${manifest.employeeEnabled ? 'enabled' : 'disabled'}`);
+    console.log(`Assembled ${manifest.files.length} files; ${manifest.blocks.length} GCSP blocks; API ${manifest.apiUrl}; employee ${manifest.employeeAvailable ? 'available' : 'unavailable'}`);
     for (const page of manifest.demoPages.filter((p) => !p.available)) console.log(`INCOMPLETE release gate: GCSP block "${page.block}" direct page ${page.file} is unavailable`);
   } catch (error) { console.error(`Assembly failed: ${error.message}`); process.exitCode = 1; }
 }

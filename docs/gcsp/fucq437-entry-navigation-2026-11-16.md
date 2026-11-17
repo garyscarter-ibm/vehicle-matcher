@@ -51,13 +51,16 @@ foreign Story objects, their order and outer fields are preserved.
   links send only `brand=bmw`; defensive shared-entry mounting uses `location.replace`
   to avoid a redirecting Back entry. Legacy journey/cookie-adapter imports are gone.
   Lead source review found no blocker; all execution remains UNRUN.
-- Actual public `blocks/demo-launcher/demo-launcher.js` still invokes
-  `createEmployeeCapability()` without configuration. `scripts/assemble-site.mjs`
-  only substitutes its enabled flag. Both are outside this allocation. The public
-  entry therefore truthfully remains unavailable. The smallest proposed remaining
-  source boundary is an explicit public frontend URL assembler/caller input and
-  its existing packaging test; actual URL/topology configuration and hosted proof
-  remain original Story work. No hostname or public global was invented.
+- The dispatcher's 23:58 UTC allocation amendment on 16 November added the actual
+  public caller, assembler and its directly matching packaging case under original
+  criterion 2. Assembly now accepts `employeeFrontendUrl` / `--employee-frontend`,
+  validates the explicit root before creating output and safely templates the
+  actual caller. The manifest retains the enabled flag and records the canonical
+  frontend root and actual availability separately. Missing configuration keeps
+  entry unavailable; invalid supplied configuration fails usefully. The changed
+  packaging case retains API and retail assertions, uses one output at a time and
+  exercises literal URL templating. No deployment hostname or configuration was
+  invented. Actual URL/topology configuration and hosted proof remain open.
 - A broad `/gcsp/*` rewrite would mask missing scripts/media with HTML. Existing
   source does not establish an exclusion/regex mechanism. Unknown direct routes
   and dynamic offer refresh remain original work until a supported host contract
@@ -97,7 +100,15 @@ node --test --test-name-pattern='artifact: dev blueprint has independent builds,
 ```
 
 The latter selects one existing blueprint case; fourteen other declared cases
-are excluded. No package assembly/copy is selected for the route metadata change.
+are excluded. The caller/assembler amendment adds exactly its changed packaging
+case, excluding the other twelve cases:
+
+```sh
+node --test --test-concurrency=1 --test-name-pattern='^employee frontend configuration reaches the public caller while retail and availability stay bounded$' server/test/launcher-package.test.js
+```
+
+This is a proposed, unrun selection. It assembles actual public inputs sequentially
+and removes each output before the next variant; no full source copy is selected.
 For the shared `safeReturnTo` consumer, the proposed bounded auth selection is six
 existing OIDC sign-in/callback/retry/expiry cases and two existing ContextClient
 typed/malformed-response cases. Reuse matching retained evidence where exact
@@ -105,8 +116,9 @@ source/input/environment pins support it; otherwise run only those eight cases,
 with the precise names and native exclusions recorded in the released plan.
 
 The proposed first release is therefore 31 Angular route cases, 52 launcher cases,
-one static contract case, plus up to eight bounded existing auth cases if matching
-evidence cannot be reused. These are finite targets, not executed pass counts.
+one static contract case, one changed packaging case, plus up to eight bounded
+existing auth cases if matching evidence cannot be reused. These are finite
+targets, not executed pass counts.
 Use the existing parent supervisor and canonical reservation, with one worker;
 no new runner framework is introduced. Runtime roots and immutable source pins
 must be frozen by the dispatcher before any command starts.
@@ -124,6 +136,11 @@ source; Sally Carrera 3 authors static/launcher source. Both implementers reques
 and selected `gpt-6.1-sol` / `medium`, without fallback. Their own title tools
 confirmed their names and both reported actual overlapping source starts. No
 validator or executed-test credit is assigned in this source-only phase.
+
+Hubie 2 independently reviewed `5d1b8bcdf..e8ebb7e70` and returned **PASS — no
+blocking or major issues found**, source only. Requested/selected
+`gpt-6.1-sol` / `high`, no fallback. The caller/assembler amendment requires its
+own narrow independent source review before the final runtime freeze.
 
 For dispatcher log issue `DL-20261116-GCC-003`, retain the demonstrated difference
 between a source-level entry link and a usable deployed handoff. The existing

@@ -13,7 +13,7 @@ const frontendUrl = 'https://employee.example.test/gcsp/';
 
 test('public entry defaults to unavailable without importing the legacy account journey', () => {
   const source = readFileSync(new URL('../../blocks/demo-launcher/demo-launcher.js', import.meta.url), 'utf8');
-  assert.match(source, /bootDemo\(\{ employeeCapability: createEmployeeCapability\(\) \}\)/);
+  assert.match(source, /bootDemo\(\{ employeeCapability: createEmployeeCapability\(\{ enabled: true, frontendUrl: null \}\) \}\)/);
   assert.equal(ENTRY_REGISTRY.employeeAvailable, false);
   assert.equal(createEmployeeCapability().enabled, false);
   const handoff = readFileSync(new URL('../../blocks/demo-launcher/employee-entry.js', import.meta.url), 'utf8');
