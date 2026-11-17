@@ -7357,7 +7357,7 @@
     {
       "assignee": "",
       "id": "FUCQ-466",
-      "observed_at": "2026-11-15T00:44:24Z",
+      "observed_at": "2026-11-17T16:04:20Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Apply local offer decisions and follow-up",
@@ -7367,30 +7367,30 @@
       "slices": [
         {
           "id": "decline",
-          "status": "complete",
-          "title": "Local decline: locked recheck, release, reasons, replay, outbox and decision-reasons/decision HTTP",
-          "observed_at": "2026-11-14T23:56:39Z",
+          "status": "in-progress",
+          "title": "Local decline: locked recheck, release, reasons, replay, outbox; reviewed offer-journey policy adopted in the started app",
+          "observed_at": "2026-11-17T16:04:19Z",
           "evidence": "Lead review of a16521466 (OfferDecisions decline: hold/offer/car FOR UPDATE recheck, CAS writes with stock_cars.version bump, offer_decisions immutable row, offer-declined outbox in same tx); gcsp.api.offers.** 68 tests 0 failures on native PG 17 :55466"
         },
         {
           "id": "accept",
-          "status": "complete",
-          "title": "Local accept: locked recheck and ordering handoff with custody allocation, revalidation and race proof",
-          "observed_at": "2026-11-15T00:34:46Z",
+          "status": "in-progress",
+          "title": "Local accept: locked recheck and ordering handoff with custody allocation, revalidation, race proof; offers on the run clock",
+          "observed_at": "2026-11-17T16:04:20Z",
           "evidence": "Lead review of a06a7cdef (BuddyOfferConversion inside ordering tx: locked recheck, quote/allowance/eligibility/brief revalidation, CAS allocate with stock_cars.version bump, decision row and offer-accepted event); offers.** 91 tests 0 failures incl. 3x20-round native PG 17 races"
         },
         {
           "id": "followup",
-          "status": "complete",
-          "title": "Follow-up after decline (question, saved change, waiting or comparison)",
-          "observed_at": "2026-11-15T00:34:46Z",
+          "status": "in-progress",
+          "title": "Follow-up after decline: GET offer-followup and POST offer-followup/confirm (question, saved change, waiting, no-match or ready)",
+          "observed_at": "2026-11-17T16:04:20Z",
           "evidence": "Lead review of a16521466 GET /offers/{id}/follow-up: owner-gated decline follow-up (waiting or next-offer); change-after-decline brief command is another Story (README brief section); PG tests passed"
         },
         {
           "id": "integration",
-          "status": "complete",
-          "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-15T00:44:24Z",
+          "status": "in-progress",
+          "title": "Integration: started-app JWT/PG journeys for AC1 and AC2, README, base merge, scoped validation",
+          "observed_at": "2026-11-17T16:04:20Z",
           "evidence": "Lead: README Offer decisions section; base c8d21c25a merged (no drift); ./mvnw -B -q clean verify on native PG 17 :55466: 1425 tests, 0 errors, 0 skipped, 1 failure PresenterClockHttpTest.readinessReportsTheClockCheckAndItsHandlers, which fails identically on base c8d21c25a with a fresh DB (pre-existing); offers.** 91/91"
         }
       ]
