@@ -8723,15 +8723,15 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:39:22Z",
+      "observed_at": "2026-11-17T06:47:13Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T06:32:52.848297+00:00",
-      "note": "DonaldDuck3 executing read-only startup/JWKS/connectedjourney readiness on current7d5020c46. Prior integrated shape3/HTTPconsumer10/adapter65 evidence retained; no newsource/result/runtime thispass. BothoriginalACremainopen; nativeToDopreserved.",
+      "native_observed_at": "2026-11-17T06:46:39.520Z",
+      "note": "Readiness18 returned terminal; parent verified12 current source hashes and allocated exactly3 new offer test/profile/resource paths to same Donald Duck3 source-only assignment19. Actual current19 source command observed. No runtime/newpass/Story completion; both originalAC remain open. Full orderHTTP account policy boundary remains peerF458owned.",
       "slices": [
         {
           "id": "inventory",
@@ -8926,9 +8926,18 @@
           "harness": "codex",
           "role": "F481 next startup or signed-in connected-substitute source readiness",
           "observed_at": "2026-11-17T06:39:22.530587+00:00",
-          "expires_at": "2026-11-17T06:54:22.530587+00:00",
+          "expires_at": "2026-11-17T06:45:04.965900+00:00",
           "source": "codex-fucq481-connected-startup-next-18",
-          "status": "executing actual source tools in current18turn compactrev8; allproductreadonly, no runtime; requestedselectedSol/high, nofallback/descendants"
+          "status": "terminal readiness18 returned/collected; no product writes/runtime"
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 JWT/PG/remote offer partial composition source-only lead",
+          "observed_at": "2026-11-17T06:47:13.648019+00:00",
+          "expires_at": "2026-11-17T07:02:13.648019+00:00",
+          "source": "codex-fucq481-oidc-remote-offer-19",
+          "status": "executing source-only; compactrev14 current19tool exec-7073aa45-982a-4b68-a6f7-5bc7903b0699 completed. Exactly3newpaths, no runtime; requestedselectedSol/high,nofallback."
         }
       ]
     }
