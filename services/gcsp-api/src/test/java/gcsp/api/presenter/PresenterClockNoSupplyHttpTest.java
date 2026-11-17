@@ -47,10 +47,10 @@ class PresenterClockNoSupplyHttpTest {
         post(presenter, "/controls/tick", "{\"commandId\":\"none-1\",\"expectedClockVersion\":" + v
                 + ",\"mode\":\"step\"}").then().statusCode(200)
                 .body("value.tick.handlerOrder.handlerId", contains("manual-claim-expiry", "buddy-expiry",
-                        "lifecycle-documents", "buddy-allocation", "captured-outbox"))
-                .body("value.tick.missingStages", containsInAnyOrder("release-pull"));
+                        "lifecycle-documents", "captured-outbox"))
+                .body("value.tick.missingStages", containsInAnyOrder("release-pull", "buddy-allocation"));
         given().get("/q/health/ready").then().statusCode(200)
-                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("buddy-allocation,buddy-expiry,captured-outbox,"
+                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("buddy-expiry,captured-outbox,"
                         + "lifecycle-documents,manual-claim-expiry"));
     }
 }

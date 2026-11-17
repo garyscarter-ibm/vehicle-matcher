@@ -18,6 +18,7 @@ import io.restassured.path.json.JsonPath;
 import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.UUID;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
@@ -147,12 +148,12 @@ class PresenterFaultsJourneyHttpTest {
                 + tickVersion + "}").then().statusCode(200).body("value.state", equalTo("completed"))
                 .body("value.handlerOrder.handlerId", contains("stock-release", "manual-claim-expiry",
                         "buddy-expiry", "lifecycle-appointments", "lifecycle-documents", "lifecycle-return-outcomes",
-                        "buddy-allocation", "captured-outbox"))
+                        "captured-outbox"))
                 .body("value.handlerOrder.stage", contains("release-pull", "manual-expiry", "buddy-expiry",
                         "pending-reconciliation", "pending-reconciliation", "pending-reconciliation",
-                        "buddy-allocation", "outbox-dispatch"))
+                        "outbox-dispatch"))
                 .extract().jsonPath();
-        assertTrue(done.getList("value.missingStages").isEmpty());
+        assertEquals(List.of("buddy-allocation"), done.getList("value.missingStages"));
         assertEquals("stock-released", done.getString("value.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.kind"));
         as(presenter).get("/api/gcsp/v1/presenter/releases/latest").then().statusCode(200)
                 .body("value.release.trancheId", org.hamcrest.Matchers.notNullValue());
