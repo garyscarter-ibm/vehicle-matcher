@@ -8723,7 +8723,7 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T06:12:42Z",
+      "observed_at": "2026-11-17T06:18:41Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
@@ -8731,7 +8731,7 @@
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
       "native_observed_at": "2026-11-17T06:12:02.645179+00:00",
-      "note": "HTTP consumer increment5ce78b9be integrated: ten exact PostgreSQL/HTTP cases passed with zero skips; Cogsworth3 sourcePASS and verified teardown. Same coordinator16 ACK06:11:43 and actual claim/ownership source inspection06:11:53 for next nonconflicting read composition. No16runtime. Both originalAC remain open; nativeToDo preserved.",
+      "note": "Claude16 returned06:15:33 source readiness; terminal06:15:52. Next exact3newpath component shape proof allocated to fresh Donald Duck3; not executing until tool evidence. Both original AC remain open; native To Do preserved.",
       "slices": [
         {
           "id": "inventory",
@@ -8888,9 +8888,18 @@
           "harness": "claude-code",
           "role": "F481 next nonconflicting read-composition source readiness",
           "observed_at": "2026-11-17T06:11:53.873Z",
-          "expires_at": "2026-11-17T06:26:53.873000+00:00",
+          "expires_at": "2026-11-17T06:15:52.790Z",
           "source": "claude-assist-fucq481-read-composition-next-2026-11-17-16",
-          "status": "ACK16 and actual current lease/claim ownership inspection; next read-composition source readiness only, no runtime/children verified"
+          "status": "terminal read-only proposal returned; no runtime/children"
+        },
+        {
+          "name": "Donald Duck 3",
+          "harness": "codex",
+          "role": "F481 provider shape component proof source-only lead",
+          "observed_at": "2026-11-17T06:18:41.655438+00:00",
+          "expires_at": "2026-11-17T06:18:41.655438+00:00",
+          "source": "codex-fucq481-provider-shape-17",
+          "status": "allocated before launch; execution unverified; requestedselectedSol/high"
         }
       ]
     }
