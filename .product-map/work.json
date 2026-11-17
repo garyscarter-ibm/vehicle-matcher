@@ -9786,7 +9786,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T20:50:21Z",
+      "observed_at": "2026-11-17T20:59:37Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9814,8 +9814,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-17T20:33:52.045370+00:00",
-          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN. Partial consumer increment: real Angular client/store8/8 against Java11envelopes, independent staticPASS/pins/teardown audit. Case4readback adoption only; exact requests case2. Component/saveFull/connected originalAC proof remains; bothACOPEN."
+          "observed_at": "2026-11-17T20:59:37.756737+00:00",
+          "evidence": "Partial only: e687b676 production AOT/boundaries/static assembly, real1440 initial fixture screen and trustedEnter diagnostic, independent source/resource review. ActualJava/OIDC/nativePG/persistence/restart/hosted and narrow/compact/all-state/browser gates unrun; bothAC open; F491 Medium separate/unfixed. See docs/gcsp/fucq-441-preferences-2026-11-14.md. Partial producer increment: Java-generated11response envelopes+manifest, selected generation/normal compare each1pass nativePG17, parent pins/teardown verified. No Angular/registeredOIDC/browser/hosted/coveringbatch proof; bothACOPEN. Partial consumer increment: real Angular client/store8/8 against Java11envelopes, independent staticPASS/pins/teardown audit. Case4readback adoption only; exact requests case2. Component/saveFull/connected originalAC proof remains; bothACOPEN. Component/saveFull37 increment: real PreferencesComponent/store selected6/6PASS over unmodified Java goldens; exact draft/confirm requests except commandId, readback, stale correction and unavailable presentation. Parent fixed five NodeList iteration compile errors; pins and owned teardown independently verified. Both originalAC/connected proof OPEN; no new acceptance gates."
         }
       ],
       "status": "In Progress",
@@ -9928,14 +9928,23 @@
           "harness": "claude-code",
           "role": "component parity test source implementer",
           "source": "claude-assist-fucq441-component-java-parity-2026-11-17-37",
-          "observed_at": "2026-11-17T20:48:37Z",
-          "expires_at": "2026-11-17T21:03:37Z",
-          "status": "active; fresh same-assignment checkpoint plus parent-observed allocated uncommitted source; original helper writes37, successor owns watcher38onward; no runtime/acceptance"
+          "observed_at": "2026-11-17T20:51:06Z",
+          "expires_at": "2026-11-17T20:51:06Z",
+          "status": "returned; parent corrected five NodeList iteration compile errors; selected6/6PASS with independent input/teardown audit; no originalAC completion"
+        },
+        {
+          "name": "Same retained Claude helper successor",
+          "harness": "claude-code",
+          "role": "connected preferences proof source implementer",
+          "source": "claude-assist-fucq441-connected-preferences-proof-2026-11-17-38",
+          "observed_at": "2026-11-17T20:54:14Z",
+          "expires_at": "2026-11-17T21:09:14+00:00",
+          "status": "active; actual source-start ACK; exact one new originalAC proof script, source only; no runtime/acceptance"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "note": "Producer34 reviewed and one nativePG17 generation plus normal exact comparison eachPASS;12real fixture files, teardown/pins independently audited. Helper35 source ACK20:18:18UTC; actual Angular consumer and connected originalAC remainOPEN."
+      "note": "Producer34 selected generation/normal compare eachPASS; consumer35 selected8/8PASS; component/saveFull37 parent-corrected selected6/6PASS and independent input/resource audit. Connected originalAC remainOPEN. Retained successor38 source ACK 2026-11-17T20:54:14Z; no duplicate watcher or runtime."
     }
   ],
   "version": 1
