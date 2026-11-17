@@ -30,7 +30,7 @@ its actual public state without inventing frozen contact/return readback or appr
 Shared kit, authentication, router/stock integration, dependencies/build settings,
 Java and Used Cars remain outside the allocated product edits.
 
-## Current evidence and remaining work — terminal attempt07
+## Current evidence and remaining work — terminal attempt08
 
 Attempt06 tested source is `914dc7a7390aac5386c93c9e5fd042ceefc7dbf4`, tree
 `70494c75364948c062b6fea087a298d0a5648518`, parent
@@ -39,7 +39,9 @@ Attempt06 tested source is `914dc7a7390aac5386c93c9e5fd042ceefc7dbf4`, tree
 `7a673a902071ef709bc35f1e4de6da37e77e4533`, tree
 `3049c14b5643631b43d2fe7a6467edb656eb943a`, parent 914dc7a. All 249 input
 hashes and source bytes match06; the intervening delta is only prior Story/doc/map
-metadata. Current bookkeeping also does not alter those inputs.
+metadata. Attempt08 tested `aac30ad473ff0897e327d8300c0c7842d1dededd`, tree
+`ed4189b174d82571e6fab1473c0fabd904e1691a`, parent 7a673a, with the same 249
+content hashes and absences. Current bookkeeping also does not alter those inputs.
 
 Maximus the Horse 3 independently reviewed all 17 allocated product files:
 **PASS — no blocking or major issues**. Original sorted path-to-SHA256 map:
@@ -58,14 +60,14 @@ exact 13-byte correction. Current 17-file map:
 | c-caller | runner rc 1; native rc/count not captured; empty JSON | none of 14 | 1,392,345,088 | incomplete, RSS grant exceeded |
 | d-boundary | not invoked after caller failure | separate checker, no test count | unavailable | UNRUN |
 
-The current-source total is **110 valid passes**, not 124. The caller exceeded the
+At the attempt06 checkpoint, current-source credit was **110 valid passes**. The caller exceeded the
 unchanged RSS grant of 1,342,177,280 B by 50,167,808 B. Its log reached bundle generation
 and Vitest RUN without case results. Both resource-sampler errors are retained;
 cleanup errors are empty. Disk444,688,608 B and inclusive1,827,523,040 B stayed below
 their respective 805,306,368 B and 2,147,483,648 B grants. The selected sequence did
 not pass. The known inherited checker failure is historical and was not observed
 again in06 because the checker never ran. No later assertions or caller passes are
-inferred. Those 110 passes remain banked and were not rerun in07.
+inferred. Those 110 passes remain banked and were not rerun in07 or08.
 
 Attempt07 was separately released at **2026-11-17T02:23:11Z** for the remaining
 caller 14 then checker, with only global heap 512→448 changed in the same finite
@@ -75,7 +77,7 @@ runner. SAME Goopy ran caller once. Native exit **-6** is captured at
 near 443–446 MiB, before any test result. A secondary esbuild deadlock followed;
 its independent causality is not established. Executed tests 0; JSON report absent;
 no actual case or skip identities. Checker UNRUN on first failure. Total valid
-credit remains 110 and the 14 caller cases remain unverified.
+credit at that checkpoint remained 110 and 14 caller cases were unverified.
 
 Attempt07 sampled disk 434,861,760 B, RSS 830,881,792 B and inclusive 1,265,727,168 B and
 all dual-clock deadlines passed. Supervisor interval 02:23:42.882218–02:24:45.508713Z
@@ -88,7 +90,40 @@ Node, not every borrowed dependency. These are sampled observations, without a
 continuous containment claim. The heap 448 feasibility estimate was a proposal;
 actual attempt07 heap exhaustion does not verify a passing resource configuration.
 
-All three chunks retain exact native commands, case identities where produced,
+Attempt08 was separately released at **2026-11-17T02:39:19.105693Z**. Its only
+runner change was global heap 448→480; source/config/test/dependency bytes and all
+external grants/lifecycle remained unchanged. SAME Goopy ran caller once, then the
+existing checker once after compliant strict caller PASS and verified teardown.
+
+| Attempt08 chunk | Native outcome | Selected test credit | Sampled peak RSS B | Result |
+| --- | --- | ---: | ---: | --- |
+| c-caller | rc0, exact selected identities, no failed/pending/skipped/todo cases | 14/14 | 1,275,297,792 | strict pass |
+| d-boundary | rc1, cases/case-queue.component.html on-screen em dash, checker line 15 | separate native check, 0 tests | 269,664,256 | inherited assertion; strict false |
+
+Composite current-source evidence now supports **124 selected test passes**:
+06 core 78/UI 32 at their actual heap 512 plus08 caller 14 at heap 480. The 110 banked
+cases were not rerun or relabelled as heap 480 evidence. The caller's actual 14-name
+multiset matches the frozen selection, including two distinct cases with the same
+full name; its native JSON has 14 passed and 0 failed/pending/todo/skipped. The
+boundary result is a separate native check. Its known cases-screen assertion is
+outside the allocated 17 consumer files; no blocker in those 17 files was disclosed
+by this assertion. Later checker assertions remain unknown. No overall sequence,
+full suite, original acceptance or deployment PASS is claimed.
+
+Attempt08 caller disk443,990,976 B/RSS1,275,297,792 B/inclusive1,719,280,544 B;
+checker434,988,896/269,664,256/704,653,152 B. Both sampled grant and dual-clock
+deadline checks passed, with empty cleanup/sampler errors. Caller supervisor
+02:40:04.839421–02:41:33.932469Z (89.093295s), native rc 02:40:27.280677–02:40:37.817089Z;
+checker supervisor 02:41:50.037984–02:42:52.341542Z (62.303547s),
+native rc 02:42:12.114016–02:42:14.424659Z. Parent independently audited249 hashes and
+physical identities, clean head/tree and Node for each chunk, plus all 216 caller
+and 187 checker identities, groups 26888/30166, token processes, exact scratch/output
+roots and canonical reservation absence. Borrowed hashes/metadata and Node stayed
+unchanged; parent rehashed Node, not every borrowed dependency. These remain sampled
+observations, not continuous containment or a general heap 480 resource guarantee.
+No checker repair, retry09 or additional runtime occurred.
+
+All three attempt06 chunks retain exact native commands, case identities where produced,
 source and physical input metadata, resource samples and raw outcomes. Parent
 independent audits verified 249 current source pins/head/tree and original process
 identities (core214/UI195/caller196), owned groups/tokens/exact scratch and output
@@ -101,8 +136,8 @@ not prove continuous containment.
 The finite contract stayed disk 768 MiB/RSS 1280 MiB/inclusive 2 GiB, reserve 5 GiB,
 heap 512 MiB, serial TS0, one worker, setup 60/work 480/total 600 seconds on realtime
 and monotonic clocks, cleanup 120 and combined outputs 2 MiB. Only the explicitly
-released06 sequence and separately released07 caller ran, each stopping on its
-first failure; attempt07 used heap 448 with all other runner bytes identical.
+released06 sequence,07 caller and08 caller/checker ran, each stopping on its first
+failure.07 used heap 448;08 used heap 480; all other runner bytes stayed identical.
 
 | Retained review-details attempt | Actual pre-test/terminal outcome |
 | --- | --- |
@@ -113,8 +148,9 @@ first failure; attempt07 used heap 448 with all other runner bytes identical.
 | 05 | heap 512, native 1/actual TS2345 optional-unit nullability; no tests |
 | 06 | reviewed optional-unit correction; core 78/UI 32 pass; caller RSS failure; checkerUNRUN |
 | 07 | same 249 input bytes, heap 448; native -6 V8 heap OOM, no JSON/tests; checkerUNRUN |
+| 08 | same 249 inputs, heap 480; caller 14 PASS; checker native1 inherited cases em-dash; both teardowns audited |
 
-Attempts01–06 artifacts/final reports are unchanged. The06 preparation report
+Attempts01–07 artifacts/final reports are unchanged. The06 preparation report
 `.claude/results/fucq443-unit-correction-20261117-0152.json` remains separate and
 immutable; it is preparation evidence, not a runtime result. Terminal06 result:
 `.claude/results/fucq443-finite06-20261117-0152.json`.
@@ -129,6 +165,11 @@ Its actual terminal result is
 `.claude/test-runs/fucq443/review-details-0152-attempt07/runtime-c-caller/receipt.json`
 and independent audit
 `.claude/fucq443-review-details-0152-attempt07-c-caller-parent-audit-0216.json`.
+Attempt08 preparation remains separate and immutable:
+`.claude/results/fucq443-caller480-preparation-20261117-0232.json`.
+Terminal08 result `.claude/results/fucq443-finite08-20261117-0232.json` retains both
+receipts under `.claude/test-runs/fucq443/review-details-0232-attempt08/runtime-{c-caller,d-boundary}/receipt.json`
+and parent audits `.claude/fucq443-review-details-0232-attempt08-{c-caller,d-boundary}-parent-audit-0232.json`.
 The final result retains full receipt/log/native-report hashes and all earlier
 report references; no earlier failure or causal hypothesis is rewritten as success.
 
@@ -146,10 +187,11 @@ proof, remain open. Map slices remain in-progress/in-progress/not-started and na
 Story stays In Progress. Full suite/build/deployment/live BMW are not claimed.
 
 The parent observed only dispatcher-learning documentation changes on shared base
-since c0043eef; no product/compiler input conflict is known. Existing matching core/UI
-receipts are reusable. Integration is **not ready** because caller 14 lacks a valid
-result. Parent owns any next allocation, publication/integration and native/Jira
-lifecycle; no extra human gate, Story closure or deployment is introduced.
+since c0043eef through 519274967; no product/compiler input conflict is known.
+Matching06 core/UI plus08 caller evidence supports the coherent reviewed 17-file
+consumer partial, retaining the inherited checker failure and original acceptance
+gaps. Parent owns partial integration, publication and native/Jira lifecycle; no
+extra human gate, Story closure, collaborator acceptance or deployment is introduced.
 
 Agents: Pinky 2 lead `gpt-6.1-sol/high`; B-Bot 2 and Marvin the Martian 3 source authors
 `gpt-6.1-sol/medium`; SAME Maximus the Horse 3 reviewer `gpt-6.1-sol/high`; SAME Goopy

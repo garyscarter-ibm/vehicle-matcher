@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-17T02:30:08Z",
+      "observed_at": "2026-11-17T02:45:16Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8385,15 +8385,15 @@
           "id": "claim-review",
           "status": "in-progress",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-17T02:30:08Z",
-          "evidence": "17Nov same249 inputs: banked06 core78/78 PASS, original17 reviewPASS plus reviewed13B unit fix.07 tested7a673a metadata-only head; no core/UI rerun. Attempts01-07 failures retained. Original Java/PostgreSQL/OIDC acceptance open; native In Progress."
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
         },
         {
           "id": "manual-screens",
           "status": "in-progress",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-17T02:30:08Z",
-          "evidence": "17Nov banked UI32/32 PASS;110 total.06 caller RSS breach;07 same-input caller heap448 V8OOM native-6,0tests/noJSON, checkerUNRUN.14 unverified; integration not ready.07 grants/deadlines/teardown parent-audited. Original rendered/connected proof open."
+          "observed_at": "2026-11-17T02:45:16Z",
+          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
         },
         {
           "id": "connected-proof",
