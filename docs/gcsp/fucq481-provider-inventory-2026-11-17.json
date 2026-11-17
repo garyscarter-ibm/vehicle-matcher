@@ -670,7 +670,7 @@
       "silentFallback": false,
       "demoPreparation": "none found",
       "status": "partial",
-      "statusWhy": "Real canonical adapter now selectable. Thirteen matching focused cases cover projection, actual selected CDI injection and PG claim/offer production at one instant; later-clock case characterizes premature release, not successful recovery. Full remote/HTTP/order composition remains open.",
+      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
@@ -686,18 +686,26 @@
           "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/CanonicalCandidatesPgTest.java",
           "kind": "contract-tested",
           "result": "2 exact nativePG methods have matching passes across37b2d964d/71a219f28. Same-instant creates real canonical quote/claim/offer through scripted remote. Later-clock confirms F516. Initial quote JsonNode assertion failure retained; only affected method rerun after Canonical.json assertion correction."
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/GeneratedClaimRemoteOfferHttpTest.java",
+          "kind": "executed-partial-composition",
+          "checkpoint": "4e823b7c50ddde6ca214d87ef6e5bbac7e6e0b2b",
+          "integration": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+          "result": "One exact native Quarkus/JWKS/PG method passed, zero failures/errors/skips. Real startup-selected candidates and injected Allocation generate claim/offer from source rows; owner JWT HTTP decision uses selected remote Buddy, accepted HTTP offer state and SQL selection/quote lineage. Fixed same-instant profile; full order-status HTTP/later-clock recovery/hosted OIDC/email/BMW unproved. Independent source review PASS and independent teardown clear."
         }
       ],
       "gaps": [
         "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
         "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
-        "Full generated claim -> signed-in decision -> actual order/status through startup-selected remote substitute, browser/hostedOIDC, actual email and BMW proof remain open.",
-        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion."
+        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+        "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
       ],
       "bmwGap": "none",
       "side": "read/input",
       "observedAt": "2026-11-17T07:27:14.076549+00:00",
-      "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4"
+      "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00"
     },
     {
       "port": "SupplyProvider",
@@ -1619,7 +1627,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
       "status": "partial",
-      "statusWhy": "Local and remote modes are selectable at startup; actual injected remote mode and bounded transport/component behavior passed. The full claim-to-signed-in-order/status journey and deployed/BMW integration remain unproved.",
+      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/RemoteLifecycleTest.java:22",
@@ -1639,17 +1647,24 @@
           "checkpoint": "55d161477",
           "integration": "18b29be38",
           "result": "65 selected cases passed with zero failures/errors/skips, including injected remote and existing default profiles; not full journey acceptance"
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/GeneratedClaimRemoteOfferHttpTest.java",
+          "kind": "executed-partial-composition",
+          "checkpoint": "4e823b7c50ddde6ca214d87ef6e5bbac7e6e0b2b",
+          "integration": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+          "result": "One exact native Quarkus/JWKS/PG method passed, zero failures/errors/skips. Real startup-selected candidates and injected Allocation generate claim/offer from source rows; owner JWT HTTP decision uses selected remote Buddy, accepted HTTP offer state and SQL selection/quote lineage. Fixed same-instant profile; full order-status HTTP/later-clock recovery/hosted OIDC/email/BMW unproved. Independent source review PASS and independent teardown clear."
         }
       ],
       "gaps": [
         "Allocation.java seam has no injector in main (dead composition).",
         "No TickHandler for stages buddy-allocation, buddy-expiry, manual-expiry (server/gcsp/policy/seed-v1.json:13305-13312; services/gcsp-api/src/test/java/gcsp/api/clock/RunClockTest.java:249).",
-        "Full producer-to-order/status composition, hosted OIDC/email and authorised BMW contract/access evidence remain open."
+        "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
       "side": "action/event",
-      "reconciledAt": "2026-11-17T07:03:16.962620+00:00",
-      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0"
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00",
+      "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3"
     },
     {
       "port": "EligibleCandidates",
@@ -1686,7 +1701,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
       "status": "partial",
-      "statusWhy": "Real canonical adapter now selectable. Thirteen matching focused cases cover projection, actual selected CDI injection and PG claim/offer production at one instant; later-clock case characterizes premature release, not successful recovery. Full remote/HTTP/order composition remains open.",
+      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/recommendation/RecommendationCandidatesTest.java",
@@ -1702,18 +1717,26 @@
           "ref": "services/gcsp-api/src/test/java/gcsp/api/allocation/CanonicalCandidatesPgTest.java",
           "kind": "contract-tested",
           "result": "2 exact nativePG methods have matching passes across37b2d964d/71a219f28. Same-instant creates real canonical quote/claim/offer through scripted remote. Later-clock confirms F516. Initial quote JsonNode assertion failure retained; only affected method rerun after Canonical.json assertion correction."
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/GeneratedClaimRemoteOfferHttpTest.java",
+          "kind": "executed-partial-composition",
+          "checkpoint": "4e823b7c50ddde6ca214d87ef6e5bbac7e6e0b2b",
+          "integration": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+          "result": "One exact native Quarkus/JWKS/PG method passed, zero failures/errors/skips. Real startup-selected candidates and injected Allocation generate claim/offer from source rows; owner JWT HTTP decision uses selected remote Buddy, accepted HTTP offer state and SQL selection/quote lineage. Fixed same-instant profile; full order-status HTTP/later-clock recovery/hosted OIDC/email/BMW unproved. Independent source review PASS and independent teardown clear."
         }
       ],
       "gaps": [
         "Prepare and BuddyRemoteLifecycle still read employee_account_records directly, not selected external-HR snapshot reads.",
         "FUCQ-516: later-clock pending claim reevaluation changes canonical terms and enters release-pending despite unchanged eligibility; captured only.",
-        "Full generated claim -> signed-in decision -> actual order/status through startup-selected remote substitute, browser/hostedOIDC, actual email and BMW proof remain open.",
-        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion."
+        "Frozen Request omits account repositoryVersion/recordSetId; no account CAS or external-HR snapshot-consistency assertion.",
+        "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
       "side": "action/event",
       "observedAt": "2026-11-17T07:27:14.076778+00:00",
-      "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4"
+      "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00"
     },
     {
       "port": "OfferFacts",
@@ -1796,7 +1819,7 @@
       "silentFallback": false,
       "demoPreparation": "Demo preparation (DemoPreparation.java:125-150) seeds principals, employees, account records and entitlement slots only and never writes this port's provider tables; it cannot bypass this seam.",
       "status": "partial",
-      "statusWhy": "RemoteBuddy is startup-selectable. A native Quarkus/JWKS JWT request used injected HttpRemoteBuddy and PostgresOfferRecords for durable acceptance and HTTP offer-state readback. The preceding acknowledged claim/offer was seeded; a profile-scoped fixed PolicyClock was used. SQL order persistence plus HTTP offer state does not prove full order-status HTTP or the complete journey.",
+      "statusWhy": "Startup-selected canonical candidates and remote Buddy compose through an actual generated claim/offer to owner JWT/JWKS HTTP acceptance, accepted offer state and SQL selection/quote lineage. One selected native method passed with review and teardown. Same-instant fixture only; full order-status HTTP, later-clock recovery and broader original acceptance remain open.",
       "evidence": [
         {
           "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/RemoteOfferAcceptPgTest.java:32",
@@ -1816,15 +1839,22 @@
           "checkpoint": "30241a7290283617c05bc94936b898a6064a8c4c",
           "integration": "3d196cfb4f8b1df380b1e256817a1129ed4b3555",
           "result": "Exactly one selected method passed; zero failures/errors/skips. Independent source review PASS. Preceding claim/offer seeded and PolicyClock profile-scoped; no whole-journey/hosted/email/BMW claim."
+        },
+        {
+          "ref": "services/gcsp-api/src/test/java/gcsp/api/offers/GeneratedClaimRemoteOfferHttpTest.java",
+          "kind": "executed-partial-composition",
+          "checkpoint": "4e823b7c50ddde6ca214d87ef6e5bbac7e6e0b2b",
+          "integration": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
+          "result": "One exact native Quarkus/JWKS/PG method passed, zero failures/errors/skips. Real startup-selected candidates and injected Allocation generate claim/offer from source rows; owner JWT HTTP decision uses selected remote Buddy, accepted HTTP offer state and SQL selection/quote lineage. Fixed same-instant profile; full order-status HTTP/later-clock recovery/hosted OIDC/email/BMW unproved. Independent source review PASS and independent teardown clear."
         }
       ],
       "gaps": [
-        "Full claim/offer production through the selected providers, full order-status HTTP, browser/hosted OIDC, actual email delivery and authorised BMW contract/access evidence remain open."
+        "Full GET /api/gcsp/v1/manual/order remains unavailable through refusing AccountSelection policy; browser/hosted OIDC, actual email and authorised BMW evidence remain open. Fixed same-instant passing composition does not prove F516 later-clock recovery."
       ],
       "bmwGap": "No BMW write/read capability evidenced; docs/gcsp/migration-replacement-contracts-2026-11-13.md:98 says the record does not invent BMW write capabilities and docs/gcsp/adapter-readiness-assessment-2026-11-13.md:35 says BMW integrations still need authorised service access and contract evidence.",
       "side": "action/event",
-      "reconciledAt": "2026-11-17T07:03:16.962620+00:00",
-      "sourceSha": "e3c56854add826105cb5832e608d5d09f40a08a0"
+      "reconciledAt": "2026-11-17T07:51:03.227703+00:00",
+      "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3"
     },
     {
       "port": "OrderingProviderPort",
@@ -3128,7 +3158,7 @@
       "signedInDecision": "OffersResource.java:74 over OfferDecisions/RemoteOfferDecisions via RemoteBuddy",
       "orderStatus": "OrderingService.submitTrusted over OrderingProviderPort (synthetic only)",
       "coherentThroughRemoteSubstitute": "no",
-      "why": "Claim stock and RemoteBuddy now have explicit local/remote startup selectors and passing adapter/consumer evidence. One native signed-in offer acceptance/readback composition also passed, starting from a seeded acknowledged remote offer and fixed profile clock. Full producer-to-claim-to-order/status, browser/hosted OIDC, actual email and BMW evidence remain open; allocation candidates and full order AccountPolicy are still unconfigured."
+      "why": "Real canonical startup-selected candidates and injected Allocation now produce a claim/offer accepted through owner JWT/JWKS HTTP and selected remote Buddy, with accepted HTTP offer state/SQL selection lineage. Same-instant fixture only. Full order-status HTTP still refuses AccountSelection policy; later-clock recovery, hosted OIDC/email/BMW and original AC remain open."
     },
     "planning": "PlanningDemand and PlanningSupply stay on unconfigured defaults here. Only the inert DemandCohort and PostgresDemandSnapshot helpers are on this branch (251d89b22); PostgresPlanningDemand (76837ffe8) and PostgresPlanningSupply are held by FUCQ-515.",
     "renderBlueprint": "render.gcsp.yaml sets the dev API's providers explicitly: account, evidence, supply, documents, appointments and returns are none and ordering is synthetic (render.gcsp.yaml:221-254). Identity stays unset until OIDC is registered (:175), and mail stays captured unless Brevo is uncommented (:260). So the dev deployment, as committed, cannot exercise AC2's differently shaped employee or stock inputs."
@@ -3432,13 +3462,15 @@
   ],
   "inventoryCounting": "59 inventory records from 24 read/input and 35 action/event worker records, including grouped contracts and cross-domain duplicates such as EligibleCandidates. Counts are record statuses, not a deduplicated port total or proof of exhaustive AC1 coverage.",
   "currentReconciliation": {
-    "observedAt": "2026-11-17T07:27:14.076818+00:00",
-    "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4",
+    "observedAt": "2026-11-17T07:51:03.227703+00:00",
+    "sourceSha": "4c7f6d3384386bc38c2be72afa6f086f95abfbc3",
     "ports": [
       "EligibleCandidates (read/input)",
-      "EligibleCandidates (action/event)"
+      "EligibleCandidates (action/event)",
+      "RemoteBuddy",
+      "OfferDecision (decision route over RemoteBuddy)"
     ],
-    "basis": "Only these two cross-domain records updated to delivered adapter/startup source and13 matching scoped native passes;57other records preserved from their own observations. Initial13run had12passes/1test assertion failure; corrected affected method passed separately. F516confirmed/captureonly; neither originalAC complete."
+    "basis": "Four existing record identities reconciled to the reviewed/integrated generated-claim proof.55other rows preserved. Exactly1new native method passed; no broad rerun, inventory-completeness or originalAC claim."
   },
   "reconciliationHistory": [
     {
@@ -3450,6 +3482,15 @@
         "OfferDecision (decision route over RemoteBuddy)"
       ],
       "basis": "Reconciled these three records to integrated source and matching retained execution; all other rows retain their original source observation. No new test execution, complete inventory census or original AC completion is claimed."
+    },
+    {
+      "observedAt": "2026-11-17T07:27:14.076818+00:00",
+      "sourceSha": "97cd67aa4f1b5b67e9567eb158c9af9344e170c4",
+      "ports": [
+        "EligibleCandidates (read/input)",
+        "EligibleCandidates (action/event)"
+      ],
+      "basis": "Only these two cross-domain records updated to delivered adapter/startup source and13 matching scoped native passes;57other records preserved from their own observations. Initial13run had12passes/1test assertion failure; corrected affected method passed separately. F516confirmed/captureonly; neither originalAC complete."
     }
   ]
 }

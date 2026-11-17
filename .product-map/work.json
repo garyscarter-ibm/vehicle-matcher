@@ -8723,29 +8723,29 @@
     {
       "assignee": "",
       "id": "FUCQ-481",
-      "observed_at": "2026-11-17T07:41:27Z",
+      "observed_at": "2026-11-17T07:51:03Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Prove provider composition and complete substitution",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-481",
-      "native_observed_at": "2026-11-17T07:38:30.839Z",
-      "note": "Canonical candidate increment97cd67aa4 retained13matching cases and captureonlyF516. Readiness22 returned/40sourcehashesverified; source-only23 assigned to sameDonaldDuck3,3newtests/1method. Actual AGENTS/currentAPI/producer/OIDC source reads confirm execution; no runtime granted, bothoriginalACopen/nativeToDo preserved.",
+      "native_observed_at": "2026-11-17T07:48:51.837Z",
+      "note": "Generated canonical claim/authenticated remote decision proof integrated4c7f6d338: exact1nativepass/reviewPASS/independentteardown; source23/review23 terminal. Same-instant only; full order-status HTTP/F516 recovery/bothoriginalAC open. NativeToDo preserved; held at increment boundary.",
       "slices": [
         {
           "id": "inventory",
           "title": "Current external read/action/event ports and startup binding inventory",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:29:54.291Z",
-          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "evidence": "docs/gcsp/fucq481-provider-inventory-2026-11-17.md and JSON integrated3a7a4acb2. Source inventory increment; complete uniqueport coverage and originalAC not established. Three remote-provider/offer records reconciled c60412730;59record identities/all56otherrows preserved, not complete census. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen."
         },
         {
           "id": "startup",
           "title": "Startup provider selection and demo-preparation boundary",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:29:54.291Z",
-          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "evidence": "Two action ports now select local/remote at startup; actual remote/defaultCDI + transport/adapter checks65pass integrated18b29be38. Other ports and demo-preparation bypass gaps remain; slice notcomplete. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen."
         },
         {
           "id": "local-composition",
@@ -8758,8 +8758,8 @@
           "id": "remote-composition",
           "title": "Differently shaped remote inputs and coherent transactional substitute",
           "status": "in-progress",
-          "observed_at": "2026-11-17T07:29:54.291Z",
-          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open."
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "evidence": "Retained ten PG/HTTP durable consumer passes integrated5ce78b9be. Added three HR/tranche-plan computed variation/failclosed cases integrated39f95cb1c; component evidence only. Connected signed-in journey, OIDC/email/BMW remain unproved. New integrated3d196cfb4 exact1method passes actual Quarkus/JWKS JWT auth, selectedPostgresOfferRecords and injectedremoteBuddy acceptance with durableSQL and HTTPofferstate; seededprecedingclaim/fixedPolicyClock. FulloriginalAC and hosted/email/fullorderstatus remainopen. CanonicalCandidates increment97cd67aa4:13matching scoped passes; actual selected CDI adapter + real canonical PG claim/offer at oneinstant through scripted remote. Laterclock characterization confirms capture-only F516, not recovery. Inventory duplicate candidate records reconciled9ff4fb489; full original acceptance remains open. GeneratedClaimRemoteOfferHttpTest integrated4c7f6d338: actual generated canonical claim→ownerJWT/JWKS HTTP decision through selected remoteBuddy→SQLlineage/HTTPacceptedoffer,1pass/reviewPASS/auditclear. Same-instant only; fullorderstatusHTTP/F516recovery/originalACopen."
         },
         {
           "id": "integration",
@@ -8998,9 +8998,27 @@
           "harness": "codex",
           "role": "Generated canonical claim to actual JWT/remote offer test-source lead",
           "observed_at": "2026-11-17T07:41:27.066685+00:00",
-          "expires_at": "2026-11-17T07:56:27.066685+00:00",
+          "expires_at": "2026-11-17T07:44:43+00:00",
           "source": "codex-fucq481-generated-claim-23",
-          "status": "executingsource23; actual current API/producer/OIDC source reads confirmed. Exact3newtestfiles/1method only,no runtime. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
+          "status": "terminal3file source4e823b7c5; reviewed/tested/integrated4c7f6d338; no current execution. RequestedselectedSol/high,nofallback,effectiveindependentlyunverified."
+        },
+        {
+          "name": "Imhotep 2",
+          "harness": "codex",
+          "role": "Independent generated-claim source reviewer",
+          "source": "codex-fucq481-generated-claim-review-23",
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "expires_at": "2026-11-17T07:51:03.227703+00:00",
+          "status": "terminalPASS/no blocking or major finding; exact4e823b7c5; requestedselectedSol/high,nofallback; no runtime."
+        },
+        {
+          "name": "Codex dispatcher",
+          "harness": "codex",
+          "role": "Finite1method, independentteardown, sourceintegration",
+          "source": "dispatcher0737",
+          "observed_at": "2026-11-17T07:51:03.227703+00:00",
+          "expires_at": "2026-11-17T07:51:03.227703+00:00",
+          "status": "terminal1pass/0skip;70identities/7groups/scratch/reservationsclear;integrated4c7f6d338. No currentruntime."
         }
       ]
     }
