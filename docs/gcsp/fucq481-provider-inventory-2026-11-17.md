@@ -12,8 +12,8 @@ There are 59 inventory records: 24 read/input and 35 action/event. These include
 |---|---|---|
 | local-bound | 15 | A local or repository provider is bound at startup |
 | remote-bound | 1 | `OrderingProviderPort` (action/event), and only when `gcsp.ordering.provider=remote` is set explicitly. Its default is `none`, which refuses |
-| default-unconfigured | 16 | The default gives a refusing or unconfigured provider |
-| partial | 26 | Some provider modes exist, but a required mode or a consumer path is missing |
+| default-unconfigured | 14 | The default gives a refusing or unconfigured provider |
+| partial | 28 | Some provider modes exist, but a required mode or a consumer path is missing |
 | unverified-runtime | 1 | The broad persistence record remains unverified as a complete composition; selected native PostgreSQL evidence exists |
 
 **Selection:** every switchable provider is chosen once at startup from a `gcsp.*` key in `services/gcsp-api/src/main/resources/application.properties`. The keys are identity, account, evidence, supply, documents, appointments, approvals, returns, production, ordering, scenario, mail, claim stock and Buddy.
@@ -39,7 +39,7 @@ There are 59 inventory records: 24 read/input and 35 action/event. These include
    - order stages, handover readiness, return source, plan snapshot and comparison replay;
    - Greg plan submission.
    - The clock also has no handler for the Buddy allocation, Buddy expiry or manual expiry stages.
-5. **Planning reads stay unconfigured on this branch.** Only the inert `DemandCohort` and `PostgresDemandSnapshot` helpers are here (251d89b22). `PostgresPlanningDemand` and `PostgresPlanningSupply` are held by FUCQ-515.
+5. **Planning reads stay unconfigured on this branch.** Only the inert `DemandCohort` and `PostgresDemandSnapshot` helpers are here (251d89b22). `PostgresPlanningDemand` and `PostgresPlanningSupply` are held by FUCQ-515. *(Still true at ROOT `b9041a040`; since F478 these two inputs are also what blocks the bound Production plan port. See the Production section below.)*
 6. **Clocks:** policy, account, planning, learning and comparison read wall time, not the run clock. This is the known FUCQ-515 family, recorded here and not refiled.
 7. **BMW access and capability:** no port names a BMW source. `docs/gcsp/migration-replacement-contracts-2026-11-13.md` lists BMW identity, HR, stock, ordering and lifecycle access and capabilities as unknown, around lines 98 and 128. Mail is IBM-side: Brevo acceptance is not inbox delivery.
 
@@ -52,10 +52,10 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | PolicySource | read/input | local-bound | `(follows persistence)` = retained classpath seed | services/gcsp-api/src/main/java/gcsp/api/policy/PolicySource.java:7 | Bound at startup with no extra config to retained dated tables (classpath) or PostgreSQL. Retained synthetic policy, not a BMW source. Postgres-backed tests skip without GCSP_TEST_DATABASE_U |
 | PolicyClock | read/input | partial | `(none)` = wall clock | services/gcsp-api/src/main/java/gcsp/api/policy/PolicyClock.java:9 | Wall clock only; the presenter RunClock does not feed PolicyClock consumers. No PresenterClock class exists; the presenter clock is RunClock. |
 | AccountRecordsPort | read/input | default-unconfigured | `gcsp.account.provider (+ gcsp.account.hr-snaps` = none | services/gcsp-api/src/main/java/gcsp/api/account/AccountRecordsPort.java:7 | Default none; file and PostgreSQL providers exist; the committed blueprint sets GCSP_ACCOUNT_PROVIDER=none (render.gcsp.yaml:229). |
-| AccountPolicyPort | read/input | local-bound | `(none)` = UnconfiguredAccountPolicy | services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6 | Bound to `PolicyAccountAdapter` over `PolicyService` (ROOT `3542ff697`, `AccountSelection.java:70-74`); was refusing. Peer-reported evidence; no BMW policy. |
-| CurrentCarPort (account) | read/input | local-bound | `(none)` = empty list | services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3 | Returns store bound when persistence is active (ROOT `3542ff697`); without it, still ok with an empty list. |
+| AccountPolicyPort | read/input | local-bound | `(none)` = PolicyAccountAdapter | services/gcsp-api/src/main/java/gcsp/api/account/AccountPolicyPort.java:6 | Bound to `PolicyAccountAdapter` over `PolicyService` (ROOT `3542ff697`, `AccountSelection.java:70-74`); was refusing. Peer-reported evidence; no BMW policy. |
+| CurrentCarPort (account) | read/input | local-bound | `(follows persistence)` = returns store, else empty list | services/gcsp-api/src/main/java/gcsp/api/account/CurrentCarPort.java:3 | Returns store bound when persistence is active (ROOT `3542ff697`); without it, still ok with an empty list. |
 | AccountClockPort | read/input | partial | `gcsp.account.fixed-now (no properties entry)` = unset: system clock | services/gcsp-api/src/main/java/gcsp/api/account/AccountClockPort.java:3 | Wall clock; presenter RunClock does not reach it. |
-| BriefAccountPort / BriefPolicyPort | read/input | partial | `gcsp.environment.policy-version, gcsp.environm` = adapters win | services/gcsp-api/src/main/java/gcsp/api/account/BriefAccountAdapter.java:15 | The account half now runs on the bound policy (ROOT `3542ff697`); `BriefPolicyPort` still only has the `@DefaultBean` fallback. |
+| BriefAccountPort / BriefPolicyPort | read/input | partial | `gcsp.environment.policy-version, gcsp.environm` = adapters win | services/gcsp-api/src/main/java/gcsp/api/account/BriefAccountAdapter.java:15 | The account half runs on the bound policy (ROOT `3542ff697`); non-default `PolicyBriefAdapter` supplies `BriefPolicyPort` over PolicyService. Brief-specific runtime remains unverified. |
 | VehicleProvider / VehicleDetailsConsumer (configuration, specification | read/input | default-unconfigured | `gcsp.evidence.provider (+ store, reference-dir` = none | services/gcsp-api/src/main/java/gcsp/api/evidence/VehicleProvider.java:6 | Default none and the proposed blueprint sets none (services/gcsp-api/render-service.proposed.yaml:63-64). Real providers read retained synthetic files. |
 | StockPort (evidence stock identity) | read/input | local-bound | `(follows persistence)` = bean present | services/gcsp-api/src/main/java/gcsp/api/evidence/StockPort.java:6 | Bound to PostgreSQL when persistence on; reached only when the evidence provider is not none. Postgres-backed tests skip without GCSP_TEST_DATABASE_URL (PgFixture.java:31-39), so connected P |
 | VehicleEvidencePort (recommendation input) | read/input | local-bound | `(none)` = stored stock facts | services/gcsp-api/src/main/java/gcsp/api/recommendation/VehicleEvidencePort.java:11 | Bound by default to stock-row facts stored by the supply provider; not the evidence provider. |
@@ -68,8 +68,8 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | ArtifactStore (learned model artifacts) | read/input | local-bound | `gcsp.learning.artifact-dir` = empty (classpath) | services/gcsp-api/src/main/java/gcsp/api/learning/ArtifactStore.java:6 | Always bound at startup to retained artifacts. |
 | LearningOutcomeRows | read/input | default-unconfigured | `(none)` = bound()=false | services/gcsp-api/src/main/java/gcsp/api/learning/LearningOutcomeRows.java:12 | No outcome producer exists; LearningRecordService has no consumer in main. |
 | DemandPolicyPort / UnmetEvaluationPort / OfferRecordsPort / Allocation | read/input | partial | `(none)` = refusals | services/gcsp-api/src/main/java/gcsp/api/demand/DemandPolicyPort.java:8 | Policy port bound through PolicyDemandAdapter; evaluation, offers and allocation records unbound. |
-| PlanningDemand | read/input | default-unconfigured | `(none)` = planning-forecast-not-config | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10 | No PostgresPlanningDemand class on this branch; FUCQ-477 commit 76837ffe8 is not an ancestor of HEAD (git merge-base --is-ancestor), per docs/gcsp/fucq477-planning-demand-2026-11-17.md:42-57 |
-| PlanningSupply | read/input | default-unconfigured | `(none)` = planning-supply-not-configur | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningSupply.java:10 | No PostgresPlanningSupply class on this branch. |
+| PlanningDemand | read/input | default-unconfigured | `(none)` = planning-forecast-not-config | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningDemand.java:10 | No PostgresPlanningDemand class on this branch; FUCQ-477 commit 76837ffe8 is not an ancestor of HEAD (git merge-base --is-ancestor), per docs/gcsp/fucq477-planning-demand-2026-11-17.md:42-57 Since F478 it also blocks the Production plan submit (503). |
+| PlanningSupply | read/input | default-unconfigured | `(none)` = planning-supply-not-configur | services/gcsp-api/src/main/java/gcsp/api/planning/PlanningSupply.java:10 | No PostgresPlanningSupply class on this branch. Since F478 it also blocks the Production plan submit (503). |
 | Persistence gate (datasource and Flyway activation) | read/input | unverified-runtime | `GCSP_DATABASE_URL (+ gcsp.persistence.* in pro` = off | services/gcsp-api/src/main/java/gcsp/api/persistence/Persistence.java:15 | Selected native PostgreSQL component evidence is retained in docs/gcsp/fucq477-planning-demand-2026-11-17.md:52-59; original connected provider-composition and full AC2 journey remain unproved. |
 | Scenario DemoPreparation (seeding of account tables) | read/input | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/DemoPreparation.java:125 | Direct seeding does not go through the provider ports; worker B owns scenario in detail. |
 | ManualSelectionPort | action/event | partial | `(none)` = ManualSelection over stock:: | services/gcsp-api/src/main/java/gcsp/api/claims/ManualSelectionPort.java:7 | Real implementation exists but only produces results when persistence (GCSP_DATABASE_URL) and an account provider supply stock; otherwise answers not-configured. |
@@ -81,7 +81,7 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | EligibleCandidates | action/event | partial | `gcsp.allocation.candidates.provider` = none; recommendation selectable | services/gcsp-api/src/main/java/gcsp/api/allocation/EligibleCandidates.java:8 | Real canonical candidates produce a PG claim/offer at one instant through the scripted remote. Later-clock reevaluation confirms F516; full startup-selected remote/authenticated/order-status composition remains open. Since ROOT `b220082c9` the selected recommendation reads account facts through the selected `AccountRecordsPort`; the Buddy SQL reads still run but their record is ignored. |
 | OfferFacts | action/event | local-bound | `(none)` = PostgresOfferFacts when its  | services/gcsp-api/src/main/java/gcsp/api/notify/OfferFacts.java:7 | PostgresOfferFacts is an ApplicationScoped bean over local tables. |
 | OfferDecision (decision route over RemoteBuddy) | action/event | partial | `gcsp.buddy.provider` = local-synthetic; remote selectable | services/gcsp-api/src/main/java/gcsp/api/offers/OffersResource.java:74 | One native JWT/JWKS/Quarkus/PG/remote acceptance and HTTP offer-state method passed. Seeded prior offer, fixed profile clock and SQL order readback limit the proof. |
-| OrderingProviderPort | action/event | remote-bound (configured remote only) | `gcsp.ordering.provider` = none (refusing); none, synthetic or remote, bound through `OrderingProviderBindings` and the real Holder | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | GCSP substitute only; owner order/status HTTP read authored (`209bf4f7a`), unrun; the F458 policy blocker is resolved; no BMW live mode |
+| OrderingProviderPort | action/event | remote-bound (configured remote only) | `gcsp.ordering.provider` = none (refusing); none, synthetic or remote, bound through `OrderingProviderBindings` and the real Holder | services/gcsp-api/src/main/java/gcsp/api/ordering/OrderingProviderPort.java:4 | GCSP substitute only; owner order/status HTTP read passed (`209bf4f7a`, integrated `887b2bad6`); the F458 policy blocker is resolved; no BMW live mode |
 | SelectionConversionPort | action/event | partial | `(none)` = UnconfiguredConversion for a | services/gcsp-api/src/main/java/gcsp/api/ordering/SelectionConversionPort.java:11 | Cart is a bean; buddy-offer is constructed inline; every other source type is unsupported. |
 | DocumentProviderPort | action/event | partial | `gcsp.documents.provider` = none | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentProviderPort.java:10 | none/synthetic/unsupported selectable; no live provider; case/stage reads default to unavailable. |
 | DocumentCasePort / DocumentClock | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/documents/DocumentCasePort.java:8; services/gcsp-api/src/main/java/gc | Clock is a real run-clock bean; case/stage port has no real binding in main. |
@@ -98,10 +98,10 @@ Paths are under `services/gcsp-api/src/main/java/gcsp/api/` unless shown in full
 | CaseCarSuitabilityPort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/cases/CaseCarSuitabilityPort.java:7 | Only no-op default. |
 | MailTransport | action/event | partial | `gcsp.mail.transport` = unset = captured | services/gcsp-api/src/main/java/gcsp/api/notify/MailTransport.java:6 | Captured default is local; Brevo is the only real outbound HTTP in main, but inbox delivery is unverified (docs/gcsp/employee-delivery-email-2026-11-11.md:118,130). |
 | ProductionProviderPort | action/event | partial | `gcsp.production.provider` = none | services/gcsp-api/src/main/java/gcsp/api/production/ProductionProviderPort.java:10 | none/synthetic/live-stub selectable; the name is checked at startup, and synthetic without a database yields Unconfigured on first use (ProductionSelection.java:47-55). |
-| PlanSnapshotPort | action/event | default-unconfigured | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9 | Only default in main. |
+| PlanSnapshotPort | action/event | partial | `(none)` = PlanningPlanSnapshot (default bean) | services/gcsp-api/src/main/java/gcsp/api/production/PlanSnapshotPort.java:9 | Bound to the real planner by F478 (`ProductionWiring.java:43-49`); a deployed submit answers 503 `planning-forecast-not-configured` because the planner inputs are unconfigured. Was: only default in main. |
 | SupplyQueuePort | action/event | local-bound | `(none)` = StockReleaseSupplyQueue when | services/gcsp-api/src/main/java/gcsp/api/production/SupplyQueuePort.java:7 | Real local implementation constructed with the service. |
 | ProductionClock | action/event | local-bound | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/production/ProductionClock.java:8 | Bound to ticks. |
-| GregOrderPlan submit action | action/event | default-unconfigured | `(none)` = not applicable | services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29 | No submit action exists; preview and read only. |
+| GregOrderPlan submit action | action/event | partial | `gcsp.production.provider` = none | services/gcsp-api/src/main/java/gcsp/api/planning/GregOrderPlanResource.java:29 | Submit lives in Production: `POST /greg/production/requests`, plus F478 `GregOrdersResource` (`/greg/orders`, `/greg/orders/queue`, guarded `/presenter/production`); 503 until the planner inputs are bound. Was: no submit action. |
 | ComparisonReplay | action/event | default-unconfigured | `gcsp.comparison.reruns` = false (only true or 1 enable | services/gcsp-api/src/main/java/gcsp/api/comparison/ComparisonReplay.java:7 | Only unavailable replay in main; retained result files are served locally. |
 | ScenarioProvider (demo preparation) | action/event | partial | `gcsp.scenario.provider` = none | services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioProvider.java:4 | Only the mechanics scenario gcsp-clock-scenario-v1 is available; ScenarioCatalogue.java:47 marks journeys unavailable via requiredCapabilities (json :1423). |
 | ScenarioFaults | action/event | partial | `(none)` = default bean | services/gcsp-api/src/main/java/gcsp/api/scenario/ScenarioFaults.java:24 | Only the stock adapter fault is injectable. |
@@ -169,7 +169,7 @@ The JSON `uniquePortCensus` counts **declarations**. It covers every `public int
 - **The correction.** Assignment 22 reported 121 declarations, 118 names and 39 internal seams. It also listed `AccountClockPort` as both a clock and an internal seam. The overlap is removed.
 - **Reproducible.** `declarationList` maps each of the 123 by file, line and qualified name to exactly one class. `excludedInterfaces` lists the 50 other interface declarations: 22 implicitly public members of a counted interface, and 28 package-private helpers inside classes.
 - **Judgement.** Which class a name belongs to is source judgement under the stated rules. The disputed cases are `BriefAccountPort`/`BriefPolicyPort` and `OfferFacts`.
-- **Selection coverage.** Six external contracts have only a refusing implementation and no startup key, so there is nothing to select: `OrderStagePort`, `HandoverReadinessPort`, `HandoverPort` (both), `ReturnSourcePort`, `PlanSnapshotPort` and `CaseCarSuitabilityPort`.
+- **Selection coverage.** Six external contracts have only a refusing implementation and no startup key, so there is nothing to select: `OrderStagePort`, `HandoverReadinessPort`, `HandoverPort` (both), `ReturnSourcePort`, `PlanSnapshotPort` and `CaseCarSuitabilityPort`. *(Corrected 13:12 UTC: five. `PlanSnapshotPort` now has the real `PlanningPlanSnapshot` default.)*
 
 The 59 legacy rows are kept with their identities. Some group or duplicate contracts, and some are composition boundaries rather than interfaces. This is a source census, not a runtime proof.
 
@@ -185,7 +185,7 @@ Reconciled against ROOT `b220082c9` (API tree `3213b1af`). The earlier findings 
 | `CurrentCarPort` (account) | Returns store with persistence; empty list without | Delivered code; peer-reported |
 | Brief account facts | Bean over the injected `AccountService`, so on the bound policy | Delivered code; no brief run here |
 | `EligibleCandidates` | Selected `AccountRecordsPort` through `SelectedAccountCandidates` (`b220082c9`) | Delivered code; 10 matching parent passes, review 32 |
-| Owner `GET /manual/order` | Authored in the generated ordering test (`209bf4f7a`) | Unrun, under parent review |
+| Owner `GET /manual/order` | Generated ordering test (`209bf4f7a`, integrated `887b2bad6`) | 1 matching method passed in 26.0s; review33 PASS; cleanup audited |
 
 Still open:
 
@@ -194,3 +194,30 @@ Still open:
 - Six contracts are refusing-only.
 - Not proved: real OIDC, mail, the hosted environment, BMW, shaped inputs across all ports, and FUCQ-516.
 - Both original criteria remain open.
+
+### Parent evidence refresh, 2026-11-17T12:42:24.406039+00:00
+
+Independent review34 identified a source26 error: `PolicyBriefAdapter` is already a non-default `@ApplicationScoped` implementation of `BriefPolicyPort`. Its configured run, pinned policy and required assumptions can still refuse truthfully; brief-specific runtime is unverified. The JSON current Brief row is corrected, with the authored error and its correction explicitly retained in history.
+
+The exact owner order/status HTTP method25 passed at immutable current-root `661185fca`: 1 test, zero failures/errors/skips, 26.0s; review33 PASS and audited cleanup, integrated/pushed `887b2bad6`. This refreshes source26's earlier UNRUN observation. Both original criteria, registered OIDC/browser, actual mail, hosted/BMW, variation across all ports and later-clock recovery remain open. No new runtime was run for this documentation increment.
+
+Review34 also reconciled the current account selection objects, external policy census gap and both candidate owner-HTTP gaps against delivered F458 and the matching HTTP25 pass; previous objects/gaps remain in JSON correction history.
+
+
+## Production reconciliation, 17 November 2026, 13:12 UTC
+
+Checked from source at ROOT `b9041a040` (API tree `bd2c1a5f`). This supersedes the earlier "`PlanSnapshotPort` has only a default" and "no submit action" rows. Nothing was run or bound for it.
+
+| What | Current source | Evidence class |
+|---|---|---|
+| `PlanSnapshotPort` | `@DefaultBean` `PlanningPlanSnapshot` over `OrderPlanService` and `PlanningCatalog` (`ProductionWiring.java:43-49`) | Delivered code (F478 `fb8104aae`, `79c75e99a`) |
+| Planning `SubmissionHistory` | `ProductionSubmissionHistory`, replacing `PlanningDefaults.NoSubmissions` | Delivered code |
+| Greg and presenter routes | `GET`/`POST /greg/orders`, `POST /greg/orders/queue`, guarded `POST /presenter/production` (`GregOrdersResource.java`) | Delivered code (`20bcb771b`) |
+| Planner inputs | `PlanningDemand` and `PlanningSupply` are still `UnconfiguredDemand` and `UnconfiguredSupply` (`PlanningDefaults.java:16-33`) | Absent in deployment |
+| Started-app submit | 503 `planning-forecast-not-configured`, with no submission row (`ProductionPlanCompositionTest.java:52-60`) | Peer-reported |
+| F478 journeys | 228 scoped passes with test beans for the two planner inputs (`DEV-2026-11-13-046.md:113`) | Peer-reported, not rerun here |
+
+- **Counts.** Two rows changed from default-unconfigured to partial, so the counts are now 14 default-unconfigured and 28 partial. All 59 identities are kept.
+- **Census unchanged.** No interface was added or removed since `fc244cc06` (173 declaration lines in `src/main/java`), so 123/121 stands. Five, not six, external contracts are now refusing-only.
+- **Not proved.** Production fed by bound planner inputs, live Production, the hosted environment, real OIDC, mail and BMW.
+- **Input variation (parent pass).** Assignment 27's method passed once. It covers the selected seam with Prepare-shaped rows, plus the remote journey. It is not a run of Prepare itself, and not an acceptance or deployment claim.
