@@ -91,7 +91,7 @@ public class ProductionResource {
         Map<String, String> versions = versions(node, reasons);
         if (!reasons.isEmpty()) return invalid(reasons);
         return serve(principal, (service, scope) -> mapped(
-                service.submit(scope, new ProductionService.SubmitInput(commandId, planId, versions))));
+                service.submit(scope, principal, new ProductionService.SubmitInput(commandId, planId, versions))));
     }
 
     /** Presenter scenario control: scripts one answer on the synthetic provider, then reconciles that request. Never submits. */

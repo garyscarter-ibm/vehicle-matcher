@@ -770,9 +770,10 @@ quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production
   reconciles with the provider before it resubmits, so a lost answer never creates a second order.
 - Startup and the presenter reconcile only ask the provider and apply real answers; they never submit. Confirmed quantity is queued into
   supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
-- Each applied answer emits outbox event `production.supply-changed` as the replan trigger (no consumer yet); `supply-activity` carries
-  `supplyVersion` and `replan.status`. The plan-snapshot port is unbound until FUCQ-477, so submit is 503 `plan-not-configured` in a
-  deployment until then. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER` (see the table above).
+- Each applied answer emits outbox event `production.supply-changed` (no consumer: the replan path is pull-based). Greg's `GET /greg/order-plan`
+  reports `replan` from the stored submissions and responses (`ProductionSubmissionHistory`). `supply-activity` carries `supplyVersion`.
+  The plan port is the planner itself (`PlanningPlanSnapshot`), so submit answers the planner's own 503 code (`planning-forecast-not-configured`
+  or `planning-supply-not-configured`) until FUCQ-475/477 bind its inputs. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
 - Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
   so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
 - Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,

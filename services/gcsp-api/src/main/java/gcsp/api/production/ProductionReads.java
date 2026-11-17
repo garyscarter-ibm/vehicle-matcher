@@ -270,15 +270,68 @@ final class ProductionReads {
         }
     }
 
-    private static ProductionResult activityOf(Data d) {
+    /** The replan value for Greg's order-plan read: the latest submission's state against the plan he now sees (Node replanFor). */
+    ProductionResult replanFor(RunContext ctx, String currentPlanId) {
+        try {
+            Data d = snapshot(c -> load(c, ctx, true));
+            ObjectNode out = replan(d);
+            if ("no-submission".equals(out.path("status").asText())) return new ProductionResult.Ok(out, false);
+            String latest = latestSubmission(d).map(SubmissionRow::submissionId).orElse("");
+            Map<String, Integer> releasedOf = releasedOf(d);
+            Map<String, String> planOf = planOf(d);
+            ObjectNode head = F.objectNode();
+            head.put("status", out.get("status").asText());
+            head.set("submittedPlanId", out.get("submittedPlanId"));
+            head.set("submittedAt", out.get("submittedAt"));
+            head.put("currentPlanId", currentPlanId);
+            head.putArray("changes");
+            ArrayNode mine = head.putArray("requests");
+            d.requests().stream().filter(r -> r.submissionId().equals(latest)).forEach(r -> mine.add(requestJson(r, planOf, releasedOf)));
+            head.set("responses", out.get("responses"));
+            if (out.has("after")) head.set("after", out.get("after"));
+            return new ProductionResult.Ok(head, false);
+        } catch (SQLException | RuntimeException e) {
+            return unavailable();
+        }
+    }
+
+    private static Map<String, Integer> releasedOf(Data d) {
         Map<String, Integer> releasedOf = new HashMap<>();
         for (ConfirmationRow s : d.confirmations()) {
             releasedOf.merge(s.requestId(), d.released().getOrDefault(s.supplyId(), 0), Integer::sum);
         }
-        Map<String, Integer> lastSeq = new HashMap<>();
-        d.responses().forEach(h -> lastSeq.merge(h.requestId(), h.seq(), Math::max));
+        return releasedOf;
+    }
+
+    private static Map<String, String> planOf(Data d) {
         Map<String, String> planOf = new HashMap<>();
         d.submissions().forEach(s -> planOf.put(s.submissionId(), s.planId()));
+        return planOf;
+    }
+
+    private static ObjectNode requestJson(RequestRow r, Map<String, String> planOf, Map<String, Integer> releasedOf) {
+        ObjectNode n = F.objectNode();
+        n.put("requestId", r.requestId());
+        n.put("submissionId", r.submissionId());
+        n.put("planId", planOf.get(r.submissionId()));
+        n.put("model", r.model());
+        n.put("derivative", r.derivative());
+        n.put("quantity", r.quantity());
+        n.put("state", r.state());
+        n.put("confirmedQuantity", r.confirmedQuantity());
+        n.put("releasedQuantity", releasedOf.getOrDefault(r.requestId(), 0));
+        return n;
+    }
+
+    private static Optional<SubmissionRow> latestSubmission(Data d) {
+        return d.submissions().stream().max(Comparator.comparing(SubmissionRow::requestedAt).thenComparing(SubmissionRow::submissionId));
+    }
+
+    private static ProductionResult activityOf(Data d) {
+        Map<String, Integer> releasedOf = releasedOf(d);
+        Map<String, Integer> lastSeq = new HashMap<>();
+        d.responses().forEach(h -> lastSeq.merge(h.requestId(), h.seq(), Math::max));
+        Map<String, String> planOf = planOf(d);
         List<RequestRow> sorted = new ArrayList<>(d.requests());
         sorted.sort(Comparator.comparing(RequestRow::requestId));
         List<ConfirmationRow> supplies = new ArrayList<>(d.confirmations());
@@ -289,18 +342,7 @@ final class ProductionReads {
         ObjectNode out = F.objectNode();
         out.put("supplyVersion", Canonical.digest(basis));
         ArrayNode requests = out.putArray("requests");
-        for (RequestRow r : d.requests()) {
-            ObjectNode n = requests.addObject();
-            n.put("requestId", r.requestId());
-            n.put("submissionId", r.submissionId());
-            n.put("planId", planOf.get(r.submissionId()));
-            n.put("model", r.model());
-            n.put("derivative", r.derivative());
-            n.put("quantity", r.quantity());
-            n.put("state", r.state());
-            n.put("confirmedQuantity", r.confirmedQuantity());
-            n.put("releasedQuantity", releasedOf.getOrDefault(r.requestId(), 0));
-        }
+        for (RequestRow r : d.requests()) requests.add(requestJson(r, planOf, releasedOf));
         ArrayNode responses = out.putArray("responses");
         for (Response h : d.responses()) responses.add(responseJson(h));
         out.set("replan", replan(d));
@@ -314,8 +356,7 @@ final class ProductionReads {
     /** Mirrors the Node replanFor; the "requested" acknowledgement is the submission itself, not a supply response. */
     private static ObjectNode replan(Data d) {
         ObjectNode out = F.objectNode();
-        Optional<SubmissionRow> latest = d.submissions().stream()
-                .max(Comparator.comparing(SubmissionRow::requestedAt).thenComparing(SubmissionRow::submissionId));
+        Optional<SubmissionRow> latest = latestSubmission(d);
         if (latest.isEmpty()) return out.put("status", "no-submission");
         SubmissionRow s = latest.get();
         java.util.Set<String> mine = new java.util.HashSet<>();

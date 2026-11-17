@@ -34,10 +34,10 @@ class GregOrderPlanDefaultsHttpTest {
     SubmissionHistory history;
 
     @Test
-    void the_default_ports_are_the_unconfigured_ones() {
+    void the_default_ports_are_the_unconfigured_ones_and_history_is_production_backed() {
         assertTrue(ClientProxy.unwrap(demand) instanceof PlanningDefaults.UnconfiguredDemand);
         assertTrue(ClientProxy.unwrap(supply) instanceof PlanningDefaults.UnconfiguredSupply);
-        assertTrue(ClientProxy.unwrap(history) instanceof PlanningDefaults.NoSubmissions);
+        assertTrue(ClientProxy.unwrap(history) instanceof gcsp.api.production.ProductionSubmissionHistory);
         assertEquals("no-submission", history.replan(null, null).get("status").textValue());
     }
 

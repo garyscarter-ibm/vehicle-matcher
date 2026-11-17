@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.identity.Principal;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Outcome;
@@ -69,7 +70,7 @@ public final class ProductionService {
         this.reads = new ProductionReads(dataSource, provider, clock);
     }
 
-    public ProductionResult submit(RunContext scope, SubmitInput in) {
+    public ProductionResult submit(RunContext scope, Principal principal, SubmitInput in) {
         ProductionResult invalid = validate(in);
         if (invalid != null) return invalid;
         if ("none".equals(provider.mode())) {
@@ -93,7 +94,7 @@ public final class ProductionService {
                 return new ProductionResult.Unavailable("clock-not-set", "The demo clock has not been set. Try again shortly.", true);
             }
             Instant at = Ids.ms(now.get());
-            Reading reading = plans.current(scope);
+            Reading reading = plans.current(scope, principal);
             if (reading instanceof PlanSnapshotPort.Unavailable u) {
                 return new ProductionResult.Unavailable(u.code(), u.reason(), false);
             }
@@ -467,6 +468,11 @@ public final class ProductionService {
     /** What the planner binds for its supply input and replan display; supplyVersion changes with every applied response. */
     public ProductionResult supplyActivity(RunContext scope) {
         return reads.supplyActivity(scope);
+    }
+
+    /** Greg's order-plan replan value: the latest submission's responses since it was sent, against the plan he now sees. */
+    public ProductionResult replanFor(RunContext scope, String currentPlanId) {
+        return reads.replanFor(scope, currentPlanId);
     }
 
     private JsonNode view(Submission sub, List<RequestRow> rows, boolean pending) {
