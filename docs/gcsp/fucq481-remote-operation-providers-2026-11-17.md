@@ -1,6 +1,6 @@
 # FUCQ-481 remote operation providers (2026-11-17)
 
-This is a source-only increment of FUCQ-481. Nothing was compiled or run when it was written. It adds HTTP adapters for the two existing remote-operation ports, `ClaimStockPort` (manual claim stock) and `RemoteBuddy` (Buddy claim and release). It also adds a startup selector that picks local or remote for each port.
+This is a bounded, component-validated increment of FUCQ-481. Its initial source checkpoint was uncompiled; the corrected product source at `55d161477` subsequently passed the 65 selected tests below. It adds HTTP adapters for the two existing remote-operation ports, `ClaimStockPort` (manual claim stock) and `RemoteBuddy` (Buddy claim and release). It also adds a startup selector that picks local or remote for each port.
 
 This is a GCSP substitute transport, **not a BMW protocol**. It completes neither acceptance criterion: see "Remaining".
 
@@ -63,8 +63,8 @@ This is a GCSP substitute transport, **not a BMW protocol**. It completes neithe
 - Neither `render.gcsp.yaml` nor `render.yaml` sets these keys, so deployed behaviour is unchanged until someone sets them.
 
 ## Remaining
-- **Tests pending execution:** 54 authored cases: 13 transport, 7 selector, 15 claims adapter and 19 Buddy adapter. The remote selector profile boots Quarkus and checks both injected remote modes without a reachable provider. Two existing default-profile neighbours supply 11 regression cases. A direct configured-instance `@PostConstruct` check covers refusal of unknown/missing settings; a full invalid-configuration application launch has not been run. The transport tests include headers plus partial body followed by a stall. The other adapter tests use loopback `HttpServer` on port 0.
-- **Independent review:** Mater 2 identified the streamed-body timeout defect and missing remote CDI coverage. Codex applied the bounded-subscriber/deadline and test-profile corrections inside this allocation; review and execution of the corrected checkpoint are pending.
+- **Selected validation, 17 November 2026:** all 65 exact selected cases passed with zero failures, errors or skips: 54 new cases (13 transport, 7 selector, 15 claims adapter and 19 Buddy adapter), plus 11 existing default-profile regression cases. The remote selector profile boots Quarkus and checks both injected remote modes without a reachable provider. Two existing default-profile neighbours supply 11 regression cases. A direct configured-instance `@PostConstruct` check covers refusal of unknown/missing settings; a full invalid-configuration application launch has not been run. The transport tests include headers plus partial body followed by a stall. The other adapter tests use loopback `HttpServer` on port 0.
+- **Independent review:** Mater 2 identified the streamed-body timeout defect and missing remote CDI coverage. Codex applied the bounded-subscriber/deadline and test-profile corrections inside this allocation; Mater 2 then found no blocking or major source issue. Codex ran the exact six selected classes through the existing Java 21/Maven wrapper in offline mode with capped JVMs, one fork and local isolated scratch. All 65 cases passed in a 28.4-second supervised run; process/scratch/reservation teardown and unchanged input pins were verified. This is component/configuration evidence, with no database or connected live integration.
 - **AC1 is still open:**
   - The direct `employee_account_records` SQL readers bypass the account port: `allocation/Prepare.java:100`, `allocation/BuddyRemoteLifecycle.java:315` and `account/ManualDrafts.java:113`.
   - The other ports in `fucq481-provider-inventory-2026-11-17.json` keep their recorded gaps.
