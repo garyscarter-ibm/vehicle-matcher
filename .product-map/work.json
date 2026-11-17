@@ -6173,133 +6173,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438"
     },
     {
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-13-008",
-      "id": "FUCQ-440",
-      "jira_observed_at": "2026-11-13T20:22:18.041Z",
-      "observed_at": "2026-11-16T11:53:13Z",
-      "original_status": "To Do",
-      "slices": [
-        {
-          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "projection",
-          "observed_at": "2026-11-13T23:43:44Z",
-          "status": "complete",
-          "title": "Typed-account-projection-and-bearer-client"
-        },
-        {
-          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "screen",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "status": "complete",
-          "title": "Native-account-current-car-and-existing-actions"
-        },
-        {
-          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record",
-          "id": "choices",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "status": "complete",
-          "title": "Native-policy-backed-manual-choices-before-stock"
-        },
-        {
-          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
-          "id": "previews",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "status": "complete",
-          "title": "Original-owned-offer-order-preview-composition"
-        },
-        {
-          "id": "preference-coupling",
-          "title": "Published-compact-preferences-and-exact-current-car-rating",
-          "status": "complete",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
-          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
-        },
-        {
-          "id": "shared-order-read",
-          "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
-          "status": "in-progress",
-          "observed_at": "2026-11-14T10:19:43.778349+00:00",
-          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
-        },
-        {
-          "id": "account-order-composition",
-          "title": "Independent-manual-handoff-and-complete-list-account-composition",
-          "status": "in-progress",
-          "observed_at": "2026-11-16T11:53:13.372282+00:00",
-          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
-        },
-        {
-          "evidence": "Original two AC unchecked. Selected composition56/56 is local fixture evidence only. Desktop/narrow rendered, actual Java/OIDC/nativePG ownership/parity/durable refresh/restart and hosted proof remain unrun. Missing Java manual draft/stock/quote/review producers are outside Account allocation.",
-          "id": "integration",
-          "observed_at": "2026-11-14T10:19:43.778349+00:00",
-          "status": "blocked",
-          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
-        }
-      ],
-      "status": "To Do",
-      "title": "Show employee account and current-vehicle information",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
-      "workers": [
-        {
-          "expires_at": "2026-11-16T11:49:22.346146+00:00",
-          "harness": "codex",
-          "name": "Marvin the Martian",
-          "observed_at": "2026-11-16T11:49:22.346146+00:00",
-          "role": "story-lead",
-          "source": "SAME lead gpt-6.1-sol/high, no fallback/descendants. Parent verified61source pins,23008borrowed file hashes and current owned cleanup. No further runtime release.",
-          "status": "HOLD; frozen6216010d tested56/56 and integrated; no executing worker; original rendered/connected acceptance open"
-        },
-        {
-          "expires_at": "2026-11-13T23:43:44.865713+00:00",
-          "harness": "codex",
-          "name": "Toothless",
-          "observed_at": "2026-11-13T23:43:44.865713+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed",
-          "status": "complete; editing stopped"
-        },
-        {
-          "expires_at": "2026-11-13T23:55:25.071818+00:00",
-          "harness": "codex",
-          "name": "Lord Business",
-          "observed_at": "2026-11-13T23:55:25.071818+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed",
-          "status": "complete; editing stopped"
-        },
-        {
-          "expires_at": "2026-11-14T00:13:43.535381+00:00",
-          "harness": "codex",
-          "name": "Merlin the Magic Mouse",
-          "observed_at": "2026-11-14T00:13:43.535381+00:00",
-          "role": "implementer",
-          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed",
-          "status": "complete; source edits stopped; actual acceptance open"
-        },
-        {
-          "expires_at": "2026-11-14T00:21:50.433978+00:00",
-          "harness": "codex",
-          "name": "Mater",
-          "observed_at": "2026-11-14T00:21:50.433978+00:00",
-          "role": "reviewer",
-          "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
-          "status": "review passed implementation checkpoint; stopped; actual acceptance open"
-        },
-        {
-          "name": "Stanley Tiger",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-14T02:54:49.894555+00:00",
-          "expires_at": "2026-11-14T02:54:49.894555+00:00",
-          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
-          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
@@ -9344,6 +9217,144 @@
           "status": "Generated ownerHTTP ordering recovery29 corrected30: immutable validation d9f7a72fcf74133a6cbcc6c574271032fd400074 /tree4f4d2606647e4cb6992e39865a347ac37ca581af combines current integration production with exactly four new files. One selected method lostAcknowledgementStaysPendingForTheOwnerUntilTheSameRecordedOperationIsFound passed on native PostgreSQL17.12:1test/0failures/0errors/0skips,35.9s. Actual generated claim/quote/hold/offer, signedJWT/JWKS owner decision, pending ownerHTTP after recorded remote effect/lostACK, hidden lookup then same receipt settlement, durable lineage/outbox and exactly one execute/effect/replay. Reviews37/38PASS. Parent independently verified85process identities/17groups plus supervisor/scratch/reservation absent and source/tool pins unchanged. Initial two initdb attempts and29compile failure remain retained; no cases ran in those attempts. Partial originalAC2 evidence only: both original criteria remain OPEN. No all-port, realOIDC/browserlogin, mail, hosteddev, BMW, laterclock/F516 or fullStory/coveringgreenbatch claim. The originalAC1 Prepare/BuddyRemoteLifecycle demo-account reads remain outside selected account composition and their files remain unreleased; no current F481 source worker/runtime after30 return. No OneDrive access."
         }
       ]
+    },
+    {
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-13-008",
+      "id": "FUCQ-440",
+      "jira_observed_at": "2026-11-13T20:22:18.041Z",
+      "observed_at": "2026-11-17T13:41:24Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead source/spec/diff review and independent 25/25 scoped Angular checks passed; docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "projection",
+          "observed_at": "2026-11-13T23:43:44Z",
+          "status": "complete",
+          "title": "Typed-account-projection-and-bearer-client"
+        },
+        {
+          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "screen",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "status": "complete",
+          "title": "Native-account-current-car-and-existing-actions"
+        },
+        {
+          "evidence": "Lead source review and 60/60 connected account checks including14 choices checks; delivery record",
+          "id": "choices",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "status": "complete",
+          "title": "Native-policy-backed-manual-choices-before-stock"
+        },
+        {
+          "evidence": "Lead source review, independent93/93 scoped tests and26 rendered captures inspected at synced401b9972. Known Medium shared primary-link contrast FUCQ-487 independently backlogged; actual acceptance remains open. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md",
+          "id": "previews",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "status": "complete",
+          "title": "Original-owned-offer-order-preview-composition"
+        },
+        {
+          "id": "preference-coupling",
+          "title": "Published-compact-preferences-and-exact-current-car-rating",
+          "status": "complete",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "evidence": "Lead accepts reviewed f8d478b1 implementation boundary: Stanley Tiger passed exact98490dca..f8d478b1;33/33 scoped checks,AOT/boundary/static16files,eight inspected fixture captures,84 matching hashes and all5 allocations finalized. Actual Java/OIDC/PG/hosted acceptance remains open; delivery record and preferences-integration/stanley-final-review.json."
+        },
+        {
+          "id": "shared-order-read",
+          "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
+          "status": "in-progress",
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
+          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "id": "account-order-composition",
+          "title": "Independent-manual-handoff-and-complete-list-account-composition",
+          "status": "in-progress",
+          "observed_at": "2026-11-16T11:53:13.372282+00:00",
+          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
+        },
+        {
+          "evidence": "Original two AC unchecked. Selected composition56/56 is local fixture evidence only. Desktop/narrow rendered, actual Java/OIDC/nativePG ownership/parity/durable refresh/restart and hosted proof remain unrun. Missing Java manual draft/stock/quote/review producers are outside Account allocation.",
+          "id": "integration",
+          "observed_at": "2026-11-14T10:19:43.778349+00:00",
+          "status": "blocked",
+          "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Show employee account and current-vehicle information",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-440",
+      "workers": [
+        {
+          "expires_at": "2026-11-16T11:49:22.346146+00:00",
+          "harness": "codex",
+          "name": "Marvin the Martian",
+          "observed_at": "2026-11-16T11:49:22.346146+00:00",
+          "role": "story-lead",
+          "source": "SAME lead gpt-6.1-sol/high, no fallback/descendants. Parent verified61source pins,23008borrowed file hashes and current owned cleanup. No further runtime release.",
+          "status": "HOLD; frozen6216010d tested56/56 and integrated; no executing worker; original rendered/connected acceptance open"
+        },
+        {
+          "expires_at": "2026-11-13T23:43:44.865713+00:00",
+          "harness": "codex",
+          "name": "Toothless",
+          "observed_at": "2026-11-13T23:43:44.865713+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d740-f2f1-7f01-9017-103106f342e9; saved turn_context Sol/medium verified; title tool confirmed",
+          "status": "complete; editing stopped"
+        },
+        {
+          "expires_at": "2026-11-13T23:55:25.071818+00:00",
+          "harness": "codex",
+          "name": "Lord Business",
+          "observed_at": "2026-11-13T23:55:25.071818+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d74c-9cf3-7402-8fc0-6179330bb510; saved turn_context gpt-6.1-sol/medium verified; set_thread_title call confirmed",
+          "status": "complete; editing stopped"
+        },
+        {
+          "expires_at": "2026-11-14T00:13:43.535381+00:00",
+          "harness": "codex",
+          "name": "Merlin the Magic Mouse",
+          "observed_at": "2026-11-14T00:13:43.535381+00:00",
+          "role": "implementer",
+          "source": "thread 01a1d757-15db-72a0-b91b-89b65710a752; saved turn_context gpt-6.1-sol/medium independently verified; title tool confirmed",
+          "status": "complete; source edits stopped; actual acceptance open"
+        },
+        {
+          "expires_at": "2026-11-14T00:21:50.433978+00:00",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-14T00:21:50.433978+00:00",
+          "role": "reviewer",
+          "source": "thread 01a1d769-bc3f-75d2-8087-d162a07a2224; requested/selected/effective gpt-6.1-sol/high verified; title confirmed; no fallback; reviewed9b995759..401b9972; retained mater-final-review.json",
+          "status": "review passed implementation checkpoint; stopped; actual acceptance open"
+        },
+        {
+          "name": "Stanley Tiger",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-14T02:54:49.894555+00:00",
+          "expires_at": "2026-11-14T02:54:49.894555+00:00",
+          "status": "review passed partial checkpoint exact98490dca..f8d478b1; stopped; original acceptance open",
+          "source": "thread 01a1d7f4-ecaa-77f1-9204-49dfa21238d6; requested/selected/effective gpt-6.1-sol/high, no fallback; saved turn_context line8 and read_thread title Stanley Tiger verified; no review tests/resources/descendants"
+        },
+        {
+          "name": "Same Claude coordinator",
+          "harness": "claude-code",
+          "role": "Bounded account composition readiness assessment; no product writes",
+          "source": "claude-assist-fucq440-composed-account-readiness-2026-11-17-31",
+          "observed_at": "2026-11-17T13:38:27Z",
+          "expires_at": "2026-11-17T13:53:27+00:00",
+          "status": "Existing reserved F440 resumed through same single Claude coordinator: exact31 ACK 2026-11-17T13:38:27Z confirms bounded READONLY currentROOT account/Java contract and retained-evidence readiness assessment. No product paths/runtime/descendants/newclaim allocated. Both original account/ownership/loading/saved-state criteria remain open; no activity inferred from reservation/native status. Source implementation or connected/browser evidence needs a concrete subsequent allocation."
+        }
+      ],
+      "note": "Existing reserved F440 resumed through same single Claude coordinator: exact31 ACK 2026-11-17T13:38:27Z confirms bounded READONLY currentROOT account/Java contract and retained-evidence readiness assessment. No product paths/runtime/descendants/newclaim allocated. Both original account/ownership/loading/saved-state criteria remain open; no activity inferred from reservation/native status. Source implementation or connected/browser evidence needs a concrete subsequent allocation.",
+      "native_observed_at": "2026-11-17T13:25:48Z"
     }
   ],
   "version": 1
