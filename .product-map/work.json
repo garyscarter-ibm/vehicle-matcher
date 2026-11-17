@@ -7796,7 +7796,7 @@
     {
       "assignee": "",
       "id": "FUCQ-475",
-      "observed_at": "2026-11-17T17:02:40Z",
+      "observed_at": "2026-11-17T17:05:35Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Calculate Greg's demand and operational projections",
@@ -7855,9 +7855,10 @@
         },
         {
           "id": "r2-s5-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reopened: merge base, scoped targeted set, result",
-          "observed_at": "2026-11-17T17:02:40Z"
+          "observed_at": "2026-11-17T17:05:35Z",
+          "evidence": "merged 4d7f46c17 at e3b37f829; scoped set 136 run with 2 env-only errors (hardcoded gcsp_test_dev), both 3/0 on rerun; demand 82/0"
         }
       ],
       "workers": [
@@ -7875,9 +7876,9 @@
           "harness": "claude-code",
           "role": "story-lead DEV-2026-11-13-043 (reopened)",
           "observed_at": "2026-11-17T16:29:59Z",
-          "expires_at": "2026-11-18T00:29:59Z",
+          "expires_at": "2026-11-17T17:05:35Z",
           "source": "dev/DEV-2026-11-13-043",
-          "status": "building"
+          "status": "finished"
         }
       ]
     },
