@@ -106,3 +106,31 @@
         value: 10s
       - key: JAVA_OPTS
         value: -XX:MaxRAMPercentage=75
+      # Dev composition checked by FUCQ-454 on 2026-11-17 (dispatcher-learnings 12:30, 15:00, 17:10, 17:55):
+      # active values for the providers above that are still commented, plus the dedicated dev database.
+      - key: GCSP_ACCOUNT_PROVIDER
+        value: repository
+      - key: GCSP_SCENARIO_PROVIDER
+        value: demo
+      - key: GCSP_SUPPLY_PROVIDER
+        value: demo
+      - key: GCSP_DATABASE_URL
+        sync: false            # jdbc:postgresql://host:5432/db of the dedicated dev database only
+      - key: GCSP_DATABASE_USER
+        sync: false
+      - key: GCSP_DATABASE_PASSWORD
+        sync: false
+      - key: GCSP_EXPECTED_DATABASE
+        sync: false            # exact database name; mismatch refuses startup and reset
+      - key: GCSP_ENVIRONMENT_ID
+        sync: false
+      - key: GCSP_RUN_ID
+        value: run-1
+      - key: GCSP_POLICY_VERSION
+        value: gcsp-policy-v1
+      - key: GCSP_RESET_ALLOWED
+        value: "true"          # dev database only, fixed at its first claim; never on a running one
+      # Readiness (and so the Render health check) stays 503 until every listed provider is configured.
+      # identity needs GCSP_IDENTITY_PROVIDER=oidc and the GCSP_OIDC_* values (FUCQ-455).
+      - key: GCSP_REQUIRED_PROVIDERS
+        value: identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns
