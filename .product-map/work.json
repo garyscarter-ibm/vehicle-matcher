@@ -7514,7 +7514,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-469",
-      "observed_at": "2026-11-17T19:53:16Z",
+      "observed_at": "2026-11-17T20:03:28Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Capture and deliver notifications through the selected transport",
@@ -7549,6 +7549,20 @@
           "title": "Merge base, policy binding status, full Java verify, AC2 unrun record and story result",
           "observed_at": "2026-11-14T02:17:35Z",
           "evidence": "1e754c80 merged base; full Java verify 346/0 fail native PG17; AC2 recorded unrun; result block"
+        },
+        {
+          "id": "reopen-journey",
+          "status": "complete",
+          "title": "Started-app journey: real offer intent, Brevo loopback delivery with retry, emailed link ownership",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "4041e4fdc+ea81f929f lead review: diff read; NotificationJourneyHttpTest 2/2 started app, RS256 JWTs, native PG17, Brevo loopback stub; dispatcher run-clock defect confirmed and fixed"
+        },
+        {
+          "id": "reopen-integration",
+          "status": "complete",
+          "title": "Reopen: merge base, scoped story test set, result block",
+          "observed_at": "2026-11-17T20:03:28Z",
+          "evidence": "merged base 96816d1b8; scoped set 170 run, all pass except base-known PresenterFaultsJourneyHttpTest handler order (fails on base too); result block"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
