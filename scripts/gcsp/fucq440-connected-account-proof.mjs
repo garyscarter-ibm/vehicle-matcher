@@ -321,11 +321,18 @@ function responseSummary(j) {
   return { status: j.status, code: j.code, value: j.value };
 }
 class Page {
-  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.paused = []; this.errors = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
+  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.paused = []; this.pauseEvents = []; this.accountGate = false; this.errors = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
   send(method, params) { return this.cdp.send(method, params, this.sid); }
   event(m) {
     const p = m.params ?? {};
-    if (m.method === 'Fetch.requestPaused') { this.paused.push(p.requestId); return; }
+    if (m.method === 'Fetch.requestPaused') {
+      const paused = { requestId: p.requestId, networkId: p.networkId ?? null, method: p.request.method, url: p.request.url, doc: this.docs, at: new Date().toISOString() };
+      this.pauseEvents.push(paused);
+      // Fetch patterns match URLs, including CORS preflights. Hold only the real account GET.
+      if (this.accountGate && paused.method === 'GET' && paused.url === `${API_BASE}/manual/account`) this.paused.push(paused);
+      else this.waits.push(this.send('Fetch.continueRequest', { requestId: paused.requestId }).catch((e) => { this.errors.push(`Fetch continue: ${e.message}`); }));
+      return;
+    }
     if (m.method === 'Runtime.exceptionThrown') { this.errors.push(p.exceptionDetails?.text ?? 'exception'); return; }
     // A new main-frame document bumps docs; API calls are tagged with the document generation that issued them.
     if (m.method === 'Page.frameNavigated' && !p.frame.parentId) { this.mainFrame = p.frame.id; this.mainLoader = p.frame.loaderId; this.docs++; return; }
@@ -381,7 +388,7 @@ async function newPage(cdp, label) {
   const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank', browserContextId });
   const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
   const page = new Page(cdp, sessionId, browserContextId, label);
-  await page.send('Page.enable'); await page.send('Network.enable'); await page.send('Network.setCacheDisabled', { cacheDisabled: true }); await page.send('Runtime.enable');
+  await page.send('Page.enable'); await page.send('Emulation.setFocusEmulationEnabled', { enabled: true }); await page.send('Network.enable'); await page.send('Network.setCacheDisabled', { cacheDisabled: true }); await page.send('Runtime.enable');
   await page.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   return page;
 }
@@ -422,10 +429,13 @@ async function openAccount(page) {
   await freshDocument(page, `${ORIGINS.web}/gcsp/account`, { ready: ACCOUNT_READY, what: 'account projection' });
 }
 async function key(page, name, code) {
-  await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: name, code: name, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
-  await page.send('Input.dispatchKeyEvent', { type: 'keyUp', key: name, code: name, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code });
+  // Enter needs its character text for Chromium's native button activation. The Windows key code is not a macOS native key code.
+  await page.send('Page.bringToFront');
+  await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: name, code: name, windowsVirtualKeyCode: code, ...(name === 'Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) });
+  await page.send('Input.dispatchKeyEvent', { type: 'keyUp', key: name, code: name, windowsVirtualKeyCode: code });
 }
 async function snapshot(page) {
+  await page.until(`return !$('.account-details') || (!!$('#notification-email') && !$('#notification-email').disabled);`, 10000, 'actual saved email read settled');
   await page.until(`return [...main.querySelectorAll('.current-car img')].every((img) => img.complete);`, 10000, 'actual car media settled');
   return page.act(`return { text: text(), name: $('.account-details strong')?.textContent.trim() ?? null, email: value('#notification-email'),
     details: !!$('.account-details'), cars: [...main.querySelectorAll('.current-car:not(.delivered-car)')].map((c) => ({ name: c.querySelector('h2')?.textContent.trim(),
@@ -477,7 +487,13 @@ async function scenarioA(cdp, s, pages) {
     && account.currentContract?.months === golden.currentContract.months && account.currentContract?.annualMileage === golden.currentContract.annualMileage;
   s.checks.desktopFits = !shown.overflow;
   s.observations.screenshotDesktop = await page.shot('a1-populated-account-desktop.png');
-  await page.act(`button('View car record').focus(); return true;`); await key(page, 'Enter', 13);
+  s.observations.keyboardBefore = await page.act(`const b = button('View car record'); b.focus(); return { focused: document.activeElement === b, documentFocused: document.hasFocus(), tag: document.activeElement?.tagName, text: document.activeElement?.textContent.trim() };`);
+  s.checks.recordOpenerFocused = s.observations.keyboardBefore.focused && s.observations.keyboardBefore.documentFocused;
+  if (!s.checks.recordOpenerFocused) throw new Error('Car-record opener did not receive focus before real Enter input');
+  await page.eval(`window.__f440Keyboard = []; for (const type of ['keydown', 'keypress', 'keyup', 'click']) document.addEventListener(type, (event) => window.__f440Keyboard.push({ type: event.type, key: event.key ?? null, trusted: event.isTrusted, target: event.target?.textContent?.trim().slice(0, 100) ?? null }), { capture: true });`);
+  await key(page, 'Enter', 13);
+  s.observations.keyboardInput = await page.eval('window.__f440Keyboard');
+  s.checks.realEnterReachedOpener = s.observations.keyboardInput.some((e) => e.type === 'keydown' && e.key === 'Enter' && e.trusted && e.target === 'View car record');
   await page.until(`return !!$('dialog[open]');`, 5000, 'keyboard-opened car record');
   const drawer = await page.act(`return { text: $('dialog').innerText, focusedInside: $('dialog').contains(document.activeElement) };`);
   s.observations.drawer = drawer;
@@ -518,6 +534,28 @@ async function scenarioB(cdp, s, pages) {
   const page = pages.one;
   const other = await newPage(cdp, 'account-other-employees');
   try {
+    // Separation must compare a real nonempty saved value even when scenario A failed before its save.
+    await openAccount(page);
+    const separationEmail = pages.savedEmail ?? `account-${RUN_TOKEN}@example.invalid`;
+    const beforeEmail = await serverEmail();
+    if (beforeEmail.deliveryEmail !== separationEmail) {
+      const mark = page.log.length;
+      const pressed = await page.act(`openEmail(); return setEmail(${JSON.stringify(separationEmail)}) && press('Save email');`);
+      if (!pressed) throw new Error('Could not submit Paula saved-state prerequisite through account UI');
+      await page.until(`return emailStatus() === 'Saved.';`, 5000, 'Paula saved-state prerequisite'); await page.settle();
+      s.observations.separationSave = { before: beforeEmail, calls: posts(page.calls(mark), '/manual/notification-email') };
+    }
+    const paulaSaved = await serverEmail();
+    await freshDocument(page, 'reload', { ready: ACCOUNT_READY, what: 'Paula saved-state prerequisite readback' });
+    const savedShown = await snapshot(page);
+    const emailReads = () => page.calls().filter((e) => e.doc === page.docs && e.method === 'GET' && e.path === '/manual/notification-email');
+    const emailReadDeadline = Date.now() + 5000;
+    while (!emailReads().some((e) => e.status === 200 && e.response?.value?.deliveryEmail === separationEmail) && Date.now() < emailReadDeadline) await sleep(50);
+    s.observations.separationPrerequisite = { server: paulaSaved, shown: savedShown, reads: emailReads() };
+    s.checks.separationUsesDurableSavedValue = paulaSaved.deliveryEmail === separationEmail && s.observations.separationPrerequisite.shown.email === separationEmail
+      && s.observations.separationPrerequisite.reads.some((e) => e.status === 200 && e.response?.value?.deliveryEmail === separationEmail);
+    if (!s.checks.separationUsesDurableSavedValue) throw new Error('Paula saved-state prerequisite was not read back from the real API');
+    pages.savedEmail = separationEmail;
     s.observations.employees = {};
     for (const person of ['alex', 'sam', 'jordan']) {
       if (person !== 'alex') await signOut(other);
@@ -558,10 +596,13 @@ async function scenarioB(cdp, s, pages) {
     s.checks.signOutClearsPrivateAccount = !signedOut.details && !signedOut.cars && signedOut.email === null && !signedOut.text.includes('Paula Mason');
     await signIn(page, 'alex'); await openAccount(page);
     const switched = await snapshot(page); const alex = await serverAccount('alex'); compareAccount(s, 'switched', switched, alex);
-    s.observations.switched = switched;
-    s.checks.sameContextSwitchSeparatesSavedState = switched.name === alex.account.name && switched.email !== paulaEmail.deliveryEmail;
+    const alexEmail = await serverEmail('alex');
+    s.observations.switched = { ...switched, serverEmail: alexEmail };
+    s.checks.sameContextSwitchSeparatesSavedState = switched.name === alex.account.name && switched.email === (alexEmail.deliveryEmail ?? '') && switched.email !== paulaEmail.deliveryEmail;
     await signOut(page); await signIn(page); await openAccount(page);
-    s.checks.returnToPaulaKeepsOnlyPaulaSavedState = (await snapshot(page)).email === paulaEmail.deliveryEmail;
+    const returned = await snapshot(page); const returnedEmail = await serverEmail();
+    s.observations.returnedToPaula = { shown: returned, serverEmail: returnedEmail };
+    s.checks.returnToPaulaKeepsOnlyPaulaSavedState = returned.email === (returnedEmail.deliveryEmail ?? '') && returnedEmail.deliveryEmail === separationEmail;
     s.checks.requestsCarryOnlyTheBearer = ownedCalls(page.calls()) && ownedCalls(other.calls());
   } finally {
     await restoreRecords(); await other.settle();
@@ -579,14 +620,20 @@ async function scenarioC(cdp, s, pages) {
   const reader = await newPage(cdp, 'account-unavailable-reader');
   try {
     await signIn(reader); await openAccount(reader);
+    reader.accountGate = true;
     await reader.send('Fetch.enable', { patterns: [{ urlPattern: `${API_BASE}/manual/account`, requestStage: 'Request' }] });
-    const beforeDoc = reader.docs; await reader.send('Page.reload', { ignoreCache: true });
-    for (let i = 0; !reader.paused.length && i < 150; i++) await sleep(100);
-    await reader.until(`return /Loading your account/.test(text()) && !$('.account-details') && !$('.current-car');`, 15000, 'truthful loading state while actual account request is gated');
-    s.checks.loadingIsARealPendingRequest = reader.docs > beforeDoc && reader.paused.length > 0;
+    const beforeDoc = reader.docs; const gateMark = reader.log.length; const gateStart = Date.now();
+    await reader.send('Page.reload', { ignoreCache: true });
+    while (!reader.paused.length && Date.now() - gateStart < 5000) await sleep(50);
+    s.observations.loadingGate = { beforeDoc, currentDoc: reader.docs, paused: [...reader.paused], events: reader.pauseEvents, calls: reader.calls(gateMark) };
+    if (!reader.paused.length) throw new Error('No actual account GET paused within 5 seconds; see loadingGate events and calls');
+    // Read heading textContent (unaffected by presentation case), and require the semantic busy state.
+    await reader.until(`return [...main.querySelectorAll('.gcsp-status[aria-busy="true"] h1')].some((h) => /^Loading your account$/i.test(h.textContent.trim())) && !$('.account-details') && !$('.current-car');`, 2000, 'truthful loading state while actual account GET is gated');
+    s.checks.loadingIsARealPendingRequest = reader.docs > beforeDoc && reader.paused.some((r) => r.doc === reader.docs && r.method === 'GET' && r.url === `${API_BASE}/manual/account`);
+    s.observations.loadingGate.shown = await reader.act(`return { text: text(), busy: !!$('.gcsp-status[aria-busy="true"]'), details: !!$('.account-details'), car: !!$('.current-car') };`);
     s.observations.screenshotLoading = await reader.shot('c1-real-account-request-delayed.png');
-    for (const requestId of reader.paused.splice(0)) await reader.send('Fetch.continueRequest', { requestId });
-    await reader.send('Fetch.disable'); await reader.until(ACCOUNT_READY, 15000, 'real account response after gate release');
+    for (const { requestId } of reader.paused.splice(0)) await reader.send('Fetch.continueRequest', { requestId });
+    reader.accountGate = false; await reader.send('Fetch.disable'); await reader.until(ACCOUNT_READY, 15000, 'real account response after gate release');
     s.checks.gateRecoveredRealResponse = (await snapshot(reader)).name === (await serverAccount()).account.name;
     const saved = await serverEmail(); await stopApi();
     const mark = page.log.length; const attempted = `unsaved-${RUN_TOKEN}@example.invalid`;
@@ -607,13 +654,15 @@ async function scenarioC(cdp, s, pages) {
     s.checks.failedSaveWroteNothing = restarted.version === saved.version && restarted.deliveryEmail === saved.deliveryEmail;
     await freshDocument(reader, 'reload', { ready: ACCOUNT_READY, what: 'account recovered after API restart' });
     const shown = await snapshot(reader); compareAccount(s, 'recovered', shown, await serverAccount());
-    s.checks.recoveryReadsSavedValue = shown.email === saved.deliveryEmail && shown.email !== attempted;
+    s.checks.recoveryReadsSavedValue = shown.email === (saved.deliveryEmail ?? '') && shown.email !== attempted;
     s.checks.requestsCarryOnlyTheBearer = ownedCalls(page.calls()) && ownedCalls(reader.calls());
     s.observations.screenshotRecovered = await reader.shot('c4-account-recovered.png');
     s.observations.browserRuntimeErrors = [...page.errors, ...reader.errors];
     s.checks.noBrowserRuntimeExceptions = s.observations.browserRuntimeErrors.length === 0;
   } finally {
-    for (const requestId of reader.paused.splice(0)) await reader.send('Fetch.continueRequest', { requestId }).catch(() => {});
+    s.observations.readerDiagnostics = { docs: reader.docs, pausedEvents: reader.pauseEvents, calls: reader.calls(), text: await reader.act('return text();').catch(() => null) };
+    reader.accountGate = false;
+    for (const { requestId } of reader.paused.splice(0)) await reader.send('Fetch.continueRequest', { requestId }).catch(() => {});
     await reader.send('Fetch.disable').catch(() => {}); await reader.settle();
     await cdp.send('Target.disposeBrowserContext', { browserContextId: reader.ctxId }).catch(() => {});
   }
