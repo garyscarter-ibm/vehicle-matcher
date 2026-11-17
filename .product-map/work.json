@@ -7851,7 +7851,7 @@
     {
       "assignee": "",
       "id": "FUCQ-480",
-      "observed_at": "2026-11-14T22:02:46Z",
+      "observed_at": "2026-11-17T15:18:32Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Retain comparison results and supported job behaviour",
@@ -7888,11 +7888,38 @@
           "evidence": "Lead-reviewed slice 4: Greg-only start, idempotent commandId, one running job, progress/failure/timeout/shutdown/restart-interrupted persisted; no cancel/restart route; no outbox rows; 58/58 comparison tests"
         },
         {
+          "id": "experiments-replay",
+          "status": "in-progress",
+          "title": "Experiment arms (points, hold-sweep, order-mix) through the real Java replay equal Node",
+          "observed_at": "2026-11-17T15:18:32Z"
+        },
+        {
+          "id": "started-app-restart",
+          "status": "not-started",
+          "title": "Started-app job progress, interruption and recovery across a real restart, no real email"
+        },
+        {
+          "id": "render-env",
+          "status": "not-started",
+          "title": "Render env delta for comparison (proposed yaml and README)"
+        },
+        {
           "id": "integration",
-          "status": "complete",
-          "title": "Merge base, full Java verify, README and result",
-          "observed_at": "2026-11-14T22:02:46Z",
+          "status": "in-progress",
+          "title": "Story integration: base merge, scoped set, Result",
+          "observed_at": "2026-11-17T15:18:32Z",
           "evidence": "Merged origin/gcsp-poc-dev (b4b3059e9); clean verify 1363/0/0 on native PG17; README section; result block"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Pinky",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-17T15:18:38Z",
+          "expires_at": "2026-11-17T21:18:38Z",
+          "source": "dev poller 2026-11-17 reopen; worktree dev/DEV-2026-11-13-048",
+          "status": "building reopened story"
         }
       ]
     },

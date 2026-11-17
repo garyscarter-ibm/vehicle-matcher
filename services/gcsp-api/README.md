@@ -85,6 +85,9 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_RETURNS_POLICY_FILE` | empty | Retained Node policy file for the return rules. Empty means every read is unavailable (`return-policy-unavailable`). Set but unreadable stops startup. |
 | `GCSP_SCENARIO_PROVIDER` | `none` | Scenario preparation: `none` never seeds anything and the scenario controls answer 403 `scenarios-not-configured`; `demo` explicitly prepares fictional people and the mechanics scenario on a run that has none. Unknown values stop startup. |
 | `GCSP_PRODUCTION_PROVIDER` | `none` | Production request provider: `none` answers 503 `production-not-configured`, `synthetic` is fictional and stores orders in the database, `live-stub` refuses every line as unsupported and sends nothing. Unknown values stop startup. |
+| `GCSP_COMPARISON_RESULT_FILES` | empty | Retained comparison baselines: comma-separated absolute envelope files. Empty imports the bundled `process-only` result at startup. |
+| `GCSP_COMPARISON_RERUNS` | `false` | Greg comparison job starts: exactly `true` or `1` enables them; anything else answers 403 `comparison-reruns-off`. Reads of retained results and job status work either way. A full job needs about a 3 GB heap (FUCQ-507). |
+| `GCSP_CODE_REVISION` | `unknown` | Code revision recorded in each comparison result manifest. Set it to the deployed commit (Render exposes it as `RENDER_GIT_COMMIT`). |
 
 No identity secret is read: the JWKS and the accounts mapping are public data. Mail settings are in
 [Notifications (FUCQ-469)](#notifications-fucq-469).

@@ -78,6 +78,12 @@
       #   sync: false
       # - key: GCSP_VEHICLE_IMAGES_PUBLIC             # opt in only if images must load without a bearer
       #   value: "false"
+      # Comparison jobs (FUCQ-480): reads of retained results need nothing; Greg job starts need the database and true.
+      # A full process-only job takes about 70 minutes and a ~3 GB heap (FUCQ-507), so about a 4 GB instance.
+      # - key: GCSP_COMPARISON_RERUNS
+      #   value: "true"
+      # - key: GCSP_CODE_REVISION     # result provenance; unknown when unset
+      #   sync: false
       - key: GCSP_SHUTDOWN_TIMEOUT
         value: 10s
       - key: JAVA_OPTS
