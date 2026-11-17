@@ -9719,7 +9719,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "observed_at": "2026-11-17T23:14:05Z",
+      "observed_at": "2026-11-17T23:33:58Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9772,10 +9772,10 @@
           "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
         },
         {
-          "evidence": "Partial Java-golden parity14/14 PASS after independent review;69source pins and23009dependency/Node pins independently verified with cleanup. Real OIDC/Java/nativePG17 saved refresh/restart and browser/media/hosted proof remain open. No acceptance inferred; full suite deferred to covering batch.",
+          "evidence": "Real OIDC/Java/Angular/nativePG17 connected proof executed at228299b76 and failed: keyboard car-record opening timeout, return-to-Paula saved-state assertion, delayed-request loading timeout. Causes under current lead diagnosis, no unchanged retry. Angular130/130 and Java122/122 strictPASS, exact matching wiring53/53 reused; API/web builds strictPASS. C3 teardown/resource/deadline PASS. OriginalAC remain open; covering batch pending. Prior parity-only blocked label superseded by actual execution, not acceptance.",
           "id": "integration",
-          "observed_at": "2026-11-17T19:53:11.417746+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-17T23:33:57.993810+00:00",
+          "status": "in-progress",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
       ],
@@ -9861,9 +9861,9 @@
           "name": "Sam Sheepdog 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-17T23:13:48.839139+00:00",
-          "expires_at": "2026-11-17T23:28:48.839139+00:00",
-          "source": "Chat01a1ebc8-732c-7ac1-950a-ac494d8edd40 active/title independently verified; actual Story/contract/worktree audit reported. Requested/selected Sol high, no fallback. Separate account files; runtimes queue after current441 focusedJava lane.",
+          "observed_at": "2026-11-17T23:33:57.993810+00:00",
+          "expires_at": "2026-11-17T23:48:57.993810+00:00",
+          "source": "Live Sam checkpoint and actual receipts: Angular130/130, Account Java122/122 and reused matching startup/wiring53/53. API/web production builds strictPASS. Connected C3 failed three scenarios; current scoped diagnosis underway; owned test lane released to Claude43. Requested/selected/effective Sol/high independently verified.",
           "status": "active"
         }
       ],
@@ -9874,7 +9874,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-17T23:21:17Z",
+      "observed_at": "2026-11-17T23:33:58Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10077,6 +10077,15 @@
           "expires_at": "2026-11-17T23:16:30.138443+00:00",
           "source": "Returned coherent delivery: connected39/39, focused journey14/14 and startup/wiring53/53 PASS, independently audited; serial runtime lane released to account440. Covering parent batch remains outstanding; original AC open.",
           "status": "stopped"
+        },
+        {
+          "name": "Claude A43",
+          "harness": "claude",
+          "role": "covering batch delivery",
+          "observed_at": "2026-11-17T23:27:32.316520+00:00",
+          "expires_at": "2026-11-17T23:42:32.316520+00:00",
+          "source": "Fresh current checkpoint includes input-tree/dependency/test discovery and Wakko supervisor implementer start at measured capacity. Runtime concretely released by account lead23:32:32UTC; batch commands not yet observed. Model/effort retain self-reported Opus5.5/high, independently unverified; child Sonnet/high reported, effective unverified. No green batch/acceptance inferred.",
+          "status": "active"
         }
       ],
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
