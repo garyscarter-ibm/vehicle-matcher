@@ -204,12 +204,12 @@ class PresenterClockHttpTest {
                 + v + ",\"mode\":\"next-release\"}").then().statusCode(200).body("status", equalTo("ok"))
                 .body("value.advance.now", equalTo(at)).body("value.tick.state", equalTo("completed"))
                 .body("value.tick.handlerOrder.handlerId", org.hamcrest.Matchers.contains("stock-release",
-                        "manual-claim-expiry", "buddy-expiry", "lifecycle-documents", "captured-outbox"))
+                        "manual-claim-expiry", "lifecycle-documents", "captured-outbox"))
                 .body("value.tick.handlerOrder.stage", org.hamcrest.Matchers.contains("release-pull", "manual-expiry",
-                        "buddy-expiry", "pending-reconciliation", "outbox-dispatch"))
-                // No candidates provider: buddy-allocation is unregistered, so its stage is missing.
-                .body("value.tick.missingStages", org.hamcrest.Matchers.contains("buddy-allocation"))
-                .body("value.tick.outcomes", hasSize(5)).extract().jsonPath();
+                        "pending-reconciliation", "outbox-dispatch"))
+                // No candidates provider: the FUCQ-464 Buddy handlers are unregistered, so their stages are missing.
+                .body("value.tick.missingStages", org.hamcrest.Matchers.containsInAnyOrder("buddy-expiry", "buddy-allocation"))
+                .body("value.tick.outcomes", hasSize(4)).extract().jsonPath();
         assertEquals("ok", tick.getString("value.tick.outcomes.find { it.handlerId == 'stock-release' }.outcome.status"));
         // The plan's one window is open on the run's dated clock: the run's first full tick releases it (whichever
         // test ticks first), and later ticks report no-release.
@@ -262,7 +262,7 @@ class PresenterClockHttpTest {
         given().get("/q/health/ready").then().statusCode(200)
                 .body("checks.find { it.name == 'clock' }.status", equalTo("UP"))
                 .body("checks.find { it.name == 'clock' }.data.handlers",
-                        equalTo("buddy-expiry,captured-outbox,lifecycle-documents,"
+                        equalTo("captured-outbox,lifecycle-documents,"
                                 + "manual-claim-expiry,stock-release"))
                 .body("checks.find { it.name == 'clock' }.data.startup", equalTo("completed"));
     }

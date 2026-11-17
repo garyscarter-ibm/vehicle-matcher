@@ -46,11 +46,11 @@ class PresenterClockNoSupplyHttpTest {
         long v = get(presenter, "/clock").jsonPath().getLong("value.clockVersion");
         post(presenter, "/controls/tick", "{\"commandId\":\"none-1\",\"expectedClockVersion\":" + v
                 + ",\"mode\":\"step\"}").then().statusCode(200)
-                .body("value.tick.handlerOrder.handlerId", contains("manual-claim-expiry", "buddy-expiry",
+                .body("value.tick.handlerOrder.handlerId", contains("manual-claim-expiry",
                         "lifecycle-documents", "captured-outbox"))
-                .body("value.tick.missingStages", containsInAnyOrder("release-pull", "buddy-allocation"));
+                .body("value.tick.missingStages", containsInAnyOrder("release-pull", "buddy-expiry", "buddy-allocation"));
         given().get("/q/health/ready").then().statusCode(200)
-                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("buddy-expiry,captured-outbox,"
+                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("captured-outbox,"
                         + "lifecycle-documents,manual-claim-expiry"));
     }
 }

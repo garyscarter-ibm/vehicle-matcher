@@ -147,13 +147,13 @@ class PresenterFaultsJourneyHttpTest {
         JsonPath done = post(presenter, "/clock/tick", "{\"tickId\":\"" + tickId + "\",\"expectedClockVersion\":"
                 + tickVersion + "}").then().statusCode(200).body("value.state", equalTo("completed"))
                 .body("value.handlerOrder.handlerId", contains("stock-release", "manual-claim-expiry",
-                        "buddy-expiry", "lifecycle-appointments", "lifecycle-documents", "lifecycle-return-outcomes",
+                        "lifecycle-appointments", "lifecycle-documents", "lifecycle-return-outcomes",
                         "captured-outbox"))
-                .body("value.handlerOrder.stage", contains("release-pull", "manual-expiry", "buddy-expiry",
+                .body("value.handlerOrder.stage", contains("release-pull", "manual-expiry",
                         "pending-reconciliation", "pending-reconciliation", "pending-reconciliation",
                         "outbox-dispatch"))
                 .extract().jsonPath();
-        assertEquals(List.of("buddy-allocation"), done.getList("value.missingStages"));
+        assertEquals(List.of("buddy-expiry", "buddy-allocation"), done.getList("value.missingStages"));
         assertEquals("stock-released", done.getString("value.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.kind"));
         as(presenter).get("/api/gcsp/v1/presenter/releases/latest").then().statusCode(200)
                 .body("value.release.trancheId", org.hamcrest.Matchers.notNullValue());

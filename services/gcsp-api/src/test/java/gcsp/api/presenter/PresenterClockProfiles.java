@@ -94,7 +94,10 @@ public final class PresenterClockProfiles {
     public static class Handlers implements QuarkusTestProfile {
         @Override
         public Map<String, String> getConfigOverrides() {
-            return config(SCHEMA_HANDLERS, "none");
+            Map<String, String> c = config(SCHEMA_HANDLERS, "none");
+            // FUCQ-464's Buddy handlers register only with a candidates provider.
+            c.put("gcsp.allocation.candidates.provider", "recommendation");
+            return c;
         }
 
         @Override
