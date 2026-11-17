@@ -155,6 +155,21 @@ class DemoSupplyProviderTest {
         assertEquals(value(one.pull(req)), value(one.pull(req)));
     }
 
+    @Test
+    void theRunsOwnDatedCueMovesTheWindowsAndTheTemplateIsOnlyTheFallback() {
+        PullRequest req = request(first("release cue"));
+        RunCueLookup later = run -> Map.of("release", Instant.parse("2026-11-17T09:30:00Z"));
+        JsonNode before = value(new DemoSupplyProvider(policy(), lookup(Map.of()), later).pull(req));
+        assertTrue(before.path("tranche").isNull(), "the run's cue is a later day, so nothing is due yet");
+        PullRequest due = new PullRequest(req.runId(), Instant.parse("2026-11-17T09:30:00Z"), "t", req.releaseSize(),
+                req.leadTimeDays(), req.policyVersion(), List.of(), List.of());
+        JsonNode at = value(new DemoSupplyProvider(policy(), lookup(Map.of()), later).pull(due));
+        assertEquals("demo-synthetic-stock-v1:demo-release-1:0", at.at("/tranche/trancheId").asText());
+        RunCueLookup other = run -> Map.of("expiry", Instant.parse("2026-11-17T11:00:00Z"));
+        assertEquals(value(new DemoSupplyProvider(policy(), lookup(Map.of())).pull(req)),
+                value(new DemoSupplyProvider(policy(), lookup(Map.of()), other).pull(req)));
+    }
+
     private static JsonNode first(String name) {
         try {
             for (JsonNode c : JSON.readTree(Files.readAllBytes(GOLDEN)).get("cases")) {

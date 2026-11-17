@@ -30,8 +30,13 @@ public class SupplySelection {
     public record Selected(SupplyProvider provider, ReleasePolicy policy, String policyMode) {}
 
     /** What the choices may bind to: PolicyService (demo stock), its release reader, and confirmed supply. */
-    public record Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup) {
-        static final Deps NONE = new Deps(null, null, null);
+    public record Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup,
+            RunCueLookup cues) {
+        static final Deps NONE = new Deps(null, null, null, RunCueLookup.NONE);
+
+        public Deps(PolicyService policy, ReleasePolicy releasePolicy, ConfirmedSupplyLookup lookup) {
+            this(policy, releasePolicy, lookup, RunCueLookup.NONE);
+        }
     }
 
     @ConfigProperty(name = "gcsp.supply.provider", defaultValue = NONE)
@@ -60,8 +65,9 @@ public class SupplySelection {
     @PostConstruct
     void init() {
         ConfirmedSupplyLookup lookup = new PostgresConfirmedSupplyLookup(dataSource::get, () -> environmentId.orElse("").trim());
+        RunCueLookup cues = new PostgresRunCueLookup(dataSource::get, () -> environmentId.orElse("").trim());
         selected = select(providerName, planFile.orElse(null), policyFile.orElse(null),
-                new Deps(policyService, policyRelease, lookup));
+                new Deps(policyService, policyRelease, lookup, cues));
         LOG.infof("GCSP supply provider: %s, release policy: %s", selected.provider().mode(), selected.policyMode());
     }
 
@@ -96,7 +102,7 @@ public class SupplySelection {
                 if (deps.policy() == null || deps.lookup() == null) {
                     throw new IllegalStateException("gcsp.supply.provider=demo needs PolicyService and the database");
                 }
-                chosen = new DemoSupplyProvider(deps.policy(), deps.lookup());
+                chosen = new DemoSupplyProvider(deps.policy(), deps.lookup(), deps.cues());
                 break;
             default:
                 throw new IllegalStateException("Unknown gcsp.supply.provider '" + name + "'; supported: none, "

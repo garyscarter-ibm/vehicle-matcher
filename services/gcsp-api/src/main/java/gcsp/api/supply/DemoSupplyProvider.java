@@ -53,12 +53,22 @@ public final class DemoSupplyProvider implements SupplyProvider {
 
     private final PolicyService policy;
     private final ConfirmedSupplyLookup lookup;
+    private final RunCueLookup cues;
     private final Map<String, TranchePlanProvider> plans = new HashMap<>();
 
+    /** Windows keyed to the policy template's named times. */
     public DemoSupplyProvider(PolicyService policy, ConfirmedSupplyLookup lookup) {
-        if (policy == null || lookup == null) throw new IllegalArgumentException("Supply a policy service and a lookup.");
+        this(policy, lookup, RunCueLookup.NONE);
+    }
+
+    /** Windows keyed to the run's own dated named times when it has them, else to the policy template's. */
+    public DemoSupplyProvider(PolicyService policy, ConfirmedSupplyLookup lookup, RunCueLookup cues) {
+        if (policy == null || lookup == null || cues == null) {
+            throw new IllegalArgumentException("Supply a policy service, a lookup and a cue lookup.");
+        }
         this.policy = policy;
         this.lookup = lookup;
+        this.cues = cues;
     }
 
     @Override
@@ -171,6 +181,8 @@ public final class DemoSupplyProvider implements SupplyProvider {
         JsonNode cue = config.path("cue");
         Instant at = cue.isTextual() && times.path(cue.asText()).isTextual() ? Iso.parse(times.get(cue.asText()).asText())
                 : null;
+        // The run's clock is dated to its start day, so its own cue wins over the template's when it has one.
+        if (cue.isTextual() && at != null) at = cues.namedTimes(request.runId()).getOrDefault(cue.asText(), at);
         JsonNode list = config.path("windows");
         if (at == null || !list.isArray() || list.isEmpty()) return null;
         Set<String> ids = new HashSet<>();
