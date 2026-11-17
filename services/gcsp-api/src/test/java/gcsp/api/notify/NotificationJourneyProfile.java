@@ -16,7 +16,9 @@ public class NotificationJourneyProfile implements QuarkusTestProfile {
     @Override
     public Map<String, String> getConfigOverrides() {
         Map<String, String> c = BuddyJourneyProfiles.config("local-synthetic");
-        c.put("gcsp.database.expected-name", "gcsp_dev20261113037");
+        String url = System.getenv("GCSP_TEST_DATABASE_URL");
+        // The guard must name the database the test URL points at, whatever cluster runs it.
+        if (url != null && !url.isBlank()) c.put("gcsp.database.expected-name", databaseName(url));
         c.put("gcsp.mail.transport", "brevo");
         c.put("gcsp.mail.brevo.api-key", "test-key-not-a-secret");
         c.put("gcsp.mail.from", "gcsp-test@example.test");
@@ -37,6 +39,13 @@ public class NotificationJourneyProfile implements QuarkusTestProfile {
         return List.of(new TestResourceEntry(JwksServerResource.class),
                 new TestResourceEntry(BuddyJourneyResource.class, Map.of("mode", "local")),
                 new TestResourceEntry(StubResource.class));
+    }
+
+
+    static String databaseName(String url) {
+        String path = url.substring(url.lastIndexOf('/') + 1);
+        int q = path.indexOf('?');
+        return q < 0 ? path : path.substring(0, q);
     }
 
     /** Starts the stub before Quarkus reads config; the test reaches it through STUB. */
