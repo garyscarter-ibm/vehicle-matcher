@@ -121,6 +121,7 @@ Its rules come from `notify.delivery.v1` through `PolicyService` (`PolicyDeliver
 `PostgresOfferFacts` (FUCQ-465); an offer with no record fails as `message-facts-unavailable`. Unset `GCSP_MAIL_TRANSPORT` keeps mail captured.
 With `brevo`, one `pending_operations` row per notification holds the recipient and idempotency key across attempts, so a
 retry never changes either. Brevo's idempotency window is 30 minutes of wall time; later attempts fail `provider-window-expired`.
+The dispatcher's "now" (offer expiry, retry backoff) is the run clock via `OfferClock`, as offers are stamped; Brevo's window stays wall time.
 Retryable codes: `provider-rate-limited`, `provider-unavailable`, `provider-timeout`, `provider-unconfirmed`.
 Endpoints: `GET /api/gcsp/v1/presenter/outbox` (presenter, read-only) and `GET`/`POST /api/gcsp/v1/manual/notification-email`
 (employee, own address only).
