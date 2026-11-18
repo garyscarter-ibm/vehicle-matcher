@@ -44,9 +44,14 @@
         @for (section of detailSections(); track section.title) {
           <details><summary>{{ section.title }}</summary><gcsp-fact-list [rows]="section.rows" /></details>
         }
-      } @else {
+      } @else if (store.detailState() === 'stale' || store.detailState() === 'unavailable') {
         <gcsp-status-screen [title]="store.detailState() === 'stale' ? 'This car needs refreshing' : 'This car is no longer available'" message="Refresh availability to check this exact car. Another car will not be selected for you." [level]="2">
           <button gcspButton type="button" variant="ghost" (click)="reload()">Refresh availability</button>
+        </gcsp-status-screen>
+      } @else if (message(); as state) {
+        <gcsp-status-screen [title]="state[0]" [message]="state[1]" [level]="2">
+          @if (store.detailState() === 'choices-invalid') { <button gcspButton type="button" (click)="back.emit()">Back to your choices</button> }
+          @else if (store.detailState() === 'source-unavailable') { <button gcspButton type="button" variant="ghost" (click)="reload()">Refresh availability</button> }
         </gcsp-status-screen>
       }
     </section>
