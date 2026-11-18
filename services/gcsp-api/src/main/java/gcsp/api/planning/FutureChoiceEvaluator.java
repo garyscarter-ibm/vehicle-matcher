@@ -134,6 +134,15 @@ public final class FutureChoiceEvaluator {
             return Outcomes.unavailable("planning-future-employee-facts-unavailable");
         }
         ObjectNode employeeFacts = facts0.deepCopy();
+        // Prepared records hold eligibility on the employee driver; derive it as every recommendation read path does.
+        if (!employeeFacts.has("driverEligible")) {
+            for (JsonNode d : Js.items(Js.get(Js.get(Js.get(employee, "contract"), "manualContext"), "drivers"))) {
+                if (is(Js.get(d, "kind"), "employee") && eq(Js.get(d, "employeeId"), employee.get("employeeId"))) {
+                    if (Js.get(d, "eligible") != null) employeeFacts.set("driverEligible", d.get("eligible").deepCopy());
+                    break;
+                }
+            }
+        }
         JsonNode employeeEssentials = employeeFacts.get("essentials");
         if (employeeEssentials != null) {
             ObjectNode check = Outcomes.object();
