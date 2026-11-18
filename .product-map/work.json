@@ -6309,7 +6309,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-450",
-      "observed_at": "2026-11-17T19:53:14Z",
+      "observed_at": "2026-11-18T10:08:02Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Operate presenter scenarios",
@@ -6319,29 +6319,31 @@
       "slices": [
         {
           "id": "client",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Typed presenter commands and current readback",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "a02 client44/44passed, unchanged source/dependencies reused. Typed presenter client implemented; actual connected acceptance remains open."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "Focused 89/89 passed in one run on b8fa0aa0c (client, component incl. P20, route policy/guards)"
         },
         {
           "id": "view",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "Composite component30passed: a03unchanged29+a04P20. Enabled native Retry/handler/count2/exact reset pins passed after test render synchronisation; no further product change. Outbox placeholder/comparison inspection open."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "Inspection links grouped; connected r2611181006424e5b strict PASS 201/201 checks (local Java+PG17+signed test OIDC+built web); hosted dev unrun"
         },
         {
           "id": "scoped-validation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Focused Angular command and route verification",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "Composite84passed across a02client44/auth10,a03component29,a04P20; no single84run. Boundary rc1 unchanged case-queue emdash; later checks unreached. Failed attempts retained; input/resource/cleanup audits passed. Connected/visual unrun."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "ng test 4 specs 89/89 PASS; boundary checker stops at inherited case-queue em dash"
         },
         {
           "id": "connected-proof",
-          "status": "not-started",
-          "title": "Original isolated-dev controls and permissions proof"
+          "status": "complete",
+          "title": "Original isolated-dev controls and permissions proof",
+          "observed_at": "2026-11-18T10:08:02Z",
+          "evidence": "connected r2611181006424e5b strict PASS 201/201 checks (local Java+PG17+signed test OIDC+built web); hosted dev unrun"
         }
       ],
       "branch": "dev/DEV-2026-11-13-018",
