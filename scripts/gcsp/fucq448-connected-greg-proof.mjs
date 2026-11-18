@@ -729,15 +729,10 @@ async function main() {
   await scenario('stale-in-ui', 'A later publish makes the open page stale; Preview is refused 409 and the page shows The policy changed with no preview', async (s) => {
     // Java needs a later version's effectiveFrom after every retained one, so the presenter advances the run clock 10 minutes first.
     const prior = await ok('greg', '/greg/policy');
-    const tick = await call('presenter', '/presenter/clock/tick', { tickId: cmd('later'), expectedClockVersion: (await ok('presenter', '/presenter/clock')).clockVersion });
-    let current = await ok('greg', '/greg/policy'); let release = null;
-    if (!(Date.parse(current.asOf) > Date.parse(prior.asOf))) {
-      release = await call('presenter', '/presenter/controls/tick', { commandId: cmd('rel2'), expectedClockVersion: (await ok('presenter', '/presenter/clock')).clockVersion, mode: 'next-release' });
-      current = await ok('greg', '/greg/policy');
-    }
-    const shown = shared.policy1;
-    s.observations.clockTick = { tick: tick.status, release: release?.status ?? null, asOfBefore: prior.asOf, asOfAfter: current.asOf };
-    check(s, 'A presenter tick moves the run clock forward', Date.parse(current.asOf) > Date.parse(prior.asOf));
+    const advance = await call('presenter', '/presenter/clock/advance', { commandId: cmd('later'), expectedClockVersion: (await ok('presenter', '/presenter/clock')).clockVersion, bySeconds: 600 });
+    const current = await ok('greg', '/greg/policy'); const shown = shared.policy1;
+    s.observations.clockAdvance = { http: advance.status, asOfBefore: prior.asOf, asOfAfter: current.asOf };
+    check(s, 'The presenter advances the run clock forward', advance.status >= 200 && advance.status < 300 && Date.parse(current.asOf) > Date.parse(prior.asOf));
     const field = current.fields.find((f) => f.kind === 'price') ?? current.fields[0];
     const next = newVersion();
     const pub = await call('greg', '/greg/policy/publish', publishBody(current.activeVersion, next, current.asOf, [{ id: field.id, value: field.value + 11 }]));
