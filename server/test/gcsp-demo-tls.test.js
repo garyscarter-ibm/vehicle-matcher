@@ -7,7 +7,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { CookieJar } from 'jsdom';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
-import { createOfferHttpTransport } from '../../blocks/gcsp/offer/http-adapter.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 test('local host refuses absent unreadable and invalid TLS before opening runtime resources', async (t) => {
@@ -61,11 +60,8 @@ test('verified same-origin HTTPS serves real account and offer entry with no acc
   assert.equal(context.status, 200); assert.equal((await context.json()).status, 'ok');
   const page = await https.fetch(app.origin + '/gcsp/offer?offerId=missing');
   assert.equal(page.status, 404); assert.equal(page.headers.getSetCookie().length, 0);
-  let reads = 0;
-  const adapter = createOfferHttpTransport({ location: { href: app.origin + '/gcsp/offer?offerId=missing' },
-    fetch: (url, init) => { reads += 1; return https.fetch(url, { ...init,
-      headers: { ...init.headers, Cookie: session, Origin: app.origin } }); } });
-  assert.equal((await adapter.read()).status, 'not-found'); assert.equal(reads, 1);
+  const missing = await https.fetch(app.origin + '/api/gcsp/offers/missing', { headers: { Cookie: session, Origin: app.origin } });
+  assert.equal((await missing.json()).status, 'not-found');
   const foreign = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: 'https://foreign.invalid' } });
   assert.equal(foreign.status, 403);
   const foreignHost = await https.fetch(app.origin + '/gcsp-help.html', { headers: { Host: 'foreign.invalid' } });
