@@ -74,8 +74,8 @@ const good = (reply) => { assert.equal(reply.status, 200, reply.text.slice(0, 40
 
 test('the hosted entry serves the open demo and takes a brief from Paula over one origin', { timeout: 120000 }, async (t) => {
   const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }),
-    '/gcsp/login');
-  assert.match(app.output(), /GCSP hosted demo \(memory\)/);
+    'GCSP hosted API');
+  assert.match(app.output(), /GCSP hosted API \(memory\)/);
   const browser = client(app.base);
   const get = (path, options) => browser.request(path, options);
   const post = (path, json) => browser.request(path, { method: 'POST', json });
@@ -83,16 +83,15 @@ test('the hosted entry serves the open demo and takes a brief from Paula over on
   // Retail API paths fall through the front untouched.
   assert.equal((await get('/health')).status, 200);
 
-  // The bare host sends a browser to the login page, revealing nothing; the favicon is a quiet 204.
+  // No page lives on this host: the bare host answers 404 and issues no cookie; the favicon is a quiet 204.
   const bare = await get('/');
-  assert.equal(bare.status, 303); assert.equal(bare.headers.get('location'), '/gcsp/login');
-  assert.equal(bare.text, ''); assert.deepEqual(bare.headers.getSetCookie(), []);
+  assert.equal(bare.status, 404); assert.deepEqual(bare.headers.getSetCookie(), []);
   assert.equal((await get('/favicon.ico')).status, 204);
 
   // No key form: the access route is gone and pages are served directly.
   assert.notEqual((await get('/gcsp/access')).status, 200);
   assert.equal((await get('/gcsp/offer')).status, 404);
-  assert.equal((await get('/gcsp/login')).status, 200);
+  for (const retiredPage of ['/gcsp/login', '/gcsp-login.html', '/gcsp-help.html', '/gcsp-greg.html']) assert.equal((await get(retiredPage)).status, 404, retiredPage);
   const css = await get('/blocks/gcsp/shell/gcsp-shell.css');
   assert.equal(css.status, 200); assert.equal(css.headers.get('cache-control'), 'private, no-cache');
   assert.equal((await get('/blocks/gcsp/shell/gcsp-shell.css', { headers: { 'If-None-Match': css.headers.get('etag') } })).status, 304);
@@ -100,11 +99,9 @@ test('the hosted entry serves the open demo and takes a brief from Paula over on
   // The legacy presenter page is retired: it answers 404 and issues no cookie.
   const retired = await get('/gcsp-presenter.html');
   assert.equal(retired.status, 404); assert.deepEqual(retired.headers.getSetCookie(), []);
-  assert.equal((await get('/gcsp-help.html')).headers.get('location'), '/gcsp/login');
   const signedIn = good(await post('/api/gcsp/session/login', { email: 'paula.mason@gcsp-demo.com', password: 'fucq' })).context;
   assert.equal(signedIn.principalId, 'demo-paula');
   assert.equal(good(await get('/api/gcsp/context')).principalId, 'demo-paula');
-  assert.equal((await get('/gcsp-help.html')).status, 200);
   assert.equal((await get('/api/gcsp/presenter/controls')).status, 403);
 
   // Paula's brief saves and confirms on the hosted origin. Release ticks are presenter-owned and covered in-process.
@@ -115,9 +112,8 @@ test('the hosted entry serves the open demo and takes a brief from Paula over on
 });
 
 test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {
-  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp/login');
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), 'GCSP hosted API');
   const browser = client(app.base);
-  assert.equal((await browser.request('/gcsp/login')).status, 200);
   good(await browser.request('/api/gcsp/session/login', { method: 'POST', json: { email: 'paula.mason@gcsp-demo.com', password: 'fucq' } }));
   const draft = await browser.request('/api/gcsp/manual/draft');
   assert.equal(draft.status, 200, draft.text.slice(0, 300));

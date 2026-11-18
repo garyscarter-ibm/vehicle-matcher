@@ -86,5 +86,5 @@ test('routePortal ignores keys outside the rail and routeAfterRelease routes onl
   assert.equal(await portal.routeAfterRelease('activity', { held: () => false, release: async () => calls.push('never'), location }), true);
   assert.equal(await portal.routeAfterRelease('cars', { held: () => true, release: async () => ({ status: 'pending' }), location }), false);
   assert.equal(await portal.routeAfterRelease('cars', { held: () => true, release: async () => { throw new Error('boom'); }, location }), false);
-  assert.deepEqual(calls, ['release']); assert.deepEqual(location.assigned, ['/gcsp/login', '/gcsp/login']);
+  assert.deepEqual(calls, ['release']); assert.deepEqual(location.assigned, ['/gcsp/preferences', '/gcsp/activity']);
 });

@@ -305,8 +305,8 @@ export function portalShell({
     if (result?.status === 'ok') {
       clearSession();
       announceSessionChange(root.ownerDocument.defaultView);
-      if (navigate) navigate('/gcsp/login');
-      else root.ownerDocument.defaultView.location.replace('/gcsp/login');
+      if (navigate) navigate('/gcsp/sign-in');
+      else root.ownerDocument.defaultView.location.replace('/gcsp/sign-in');
       return;
     }
     signingOut = false; action.disabled = false; action.textContent = 'Sign out';

@@ -10,9 +10,12 @@ import { createGcspFront, REPO_ROOT } from '../gcsp/host.js';
 const services = { identity: { resolveSession: async () => ({ status: 'ok', value: { roles: ['employee', 'greg'] } }) } };
 const api = { emit: (_e, _req, res) => { res.writeHead(418).end('api'); } };
 let server; let origin; let root;
+const PAGE = '/blocks/gcsp/version-fixture.html';
 before(async () => {
   root = await mkdtemp(join(tmpdir(), 'gcsp-v-'));
-  for (const p of ['blocks', 'assets/brand-logos', 'gcsp-help.html', 'gcsp-greg.html', 'gcsp-employee.css']) await cp(join(REPO_ROOT, p), join(root, p), { recursive: true });
+  for (const p of ['blocks', 'assets/brand-logos', 'gcsp-employee.css']) await cp(join(REPO_ROOT, p), join(root, p), { recursive: true });
+  await writeFile(join(root, PAGE.slice(1)), `<!doctype html><html><head><link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-shell.css"></head>
+<body><script type="module" src="/blocks/gcsp/shell/portal-shell.js"></script></body></html>`);
   server = createServer(); await new Promise((done) => server.listen(0, '127.0.0.1', done));
   origin = `http://127.0.0.1:${server.address().port}`;
   server.on('request', createGcspFront({ root, services, api, origin, fallThrough: true }));
@@ -22,21 +25,19 @@ const get = async (path, headers = {}) => { const r = await fetch(origin + path,
 const versionOf = (html) => /\/_v\/([A-Za-z0-9_-]+)\//.exec(html)?.[1];
 
 test('pages reference static files under the version and preload their whole graph', async () => {
-  const page = await get('/gcsp-greg.html');
+  const page = await get(PAGE);
   assert.equal(page.status, 200); assert.equal(page.headers.get('cache-control'), 'no-store');
   const v = versionOf(page.text); assert.ok(v);
   assert.doesNotMatch(page.text, /(src|href)="\.?\/(blocks|assets)\//);
-  assert.match(page.text, new RegExp(`<script type="module" src="/_v/${v}/blocks/gcsp/greg/harness.js">`));
+  assert.match(page.text, new RegExp(`<script type="module" src="/_v/${v}/blocks/gcsp/shell/portal-shell.js">`));
   const preloads = [...page.text.matchAll(/rel="modulepreload" href="([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(preloads.length > 40, `${preloads.length} modulepreloads`);
-  assert.ok(preloads.includes(`/_v/${v}/blocks/vehicle-matcher/ui.js`));
+  assert.ok(preloads.length > 5, `${preloads.length} modulepreloads`);
+  assert.ok(preloads.includes(`/_v/${v}/blocks/gcsp/shell/portal-shell.js`));
   assert.ok(/rel="preload" as="style" href="\/_v\/[^"]+\.css"/.test(page.text));
-  const help = await get('/gcsp-help.html'); assert.equal(versionOf(help.text), v);
-  assert.match(help.text, /rel="modulepreload" href="\/_v\/[^"]+\/blocks\/vehicle-matcher\/ui\.js"/);
 });
 
 test('current-version static files are immutable; other versions and plain paths revalidate', async () => {
-  const v = versionOf((await get('/gcsp-greg.html')).text);
+  const v = versionOf((await get(PAGE)).text);
   const hit = await get(`/_v/${v}/blocks/gcsp/shell/gcsp-shell.css`);
   assert.equal(hit.status, 200); assert.equal(hit.headers.get('cache-control'), 'private, max-age=31536000, immutable'); assert.ok(hit.headers.get('etag'));
   const plain = await get('/blocks/gcsp/shell/gcsp-shell.css');
@@ -46,21 +47,21 @@ test('current-version static files are immutable; other versions and plain paths
   assert.equal((await get(`/_v/${v}/blocks/gcsp/shell/gcsp-shell.css`, { 'If-None-Match': hit.headers.get('etag') })).status, 304);
 });
 
-test('pages under the prefix redirect to their gate, and nothing outside static paths is served', async () => {
-  const v = versionOf((await get('/gcsp-greg.html')).text);
-  const page = await get(`/_v/${v}/gcsp-greg.html?x=1`);
-  assert.equal(page.status, 303); assert.equal(page.headers.get('location'), '/gcsp-greg.html?x=1');
+test('pages under the prefix redirect to their plain path, and nothing outside static paths is served', async () => {
+  const v = versionOf((await get(PAGE)).text);
+  const page = await get(`/_v/${v}${PAGE}?x=1`);
+  assert.equal(page.status, 303); assert.equal(page.headers.get('location'), `${PAGE}?x=1`);
   for (const path of ['/server/index.js', '/blocks/%2f..%2fserver/index.js', '/../server/index.js', '/gcsp-login.html.bak'])
     assert.equal((await get(`/_v/${v}${path}`)).status, 404, path);
   assert.equal((await get('/_v/bad!/blocks/gcsp/shell/gcsp-shell.css')).status, 418);
 });
 
 test('the version changes when a static file changes, without a restart', async () => {
-  const before = versionOf((await get('/gcsp-greg.html')).text);
+  const before = versionOf((await get(PAGE)).text);
   const file = join(root, 'blocks/gcsp/shell/gcsp-shell.css');
   await writeFile(file, '/* changed */\n', { flag: 'a' }); const later = new Date(Date.now() + 5000); await utimes(file, later, later);
   await new Promise((d) => setTimeout(d, 1100));
-  const after = versionOf((await get('/gcsp-greg.html')).text);
+  const after = versionOf((await get(PAGE)).text);
   assert.notEqual(after, before);
   assert.equal((await get(`/_v/${before}/blocks/gcsp/shell/gcsp-shell.css`)).headers.get('cache-control'), 'private, no-cache');
 });

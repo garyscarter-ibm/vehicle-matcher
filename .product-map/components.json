@@ -403,8 +403,7 @@
         "server/gcsp/fixtures",
         "blocks/gcsp/presenter",
         "server/gcsp/identity",
-        "blocks/gcsp/login",
-        "gcsp-login.html"
+        "blocks/gcsp/login"
       ],
       "stories": [
         "FUCQ-84",

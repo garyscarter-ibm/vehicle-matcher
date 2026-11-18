@@ -22,7 +22,7 @@ test('gcsp-api waits for vehicle corpus readiness before deployment selection', 
   assert.match(api, /^    healthCheckPath: \/health\/vehicle-evidence$/m);
 });
 
-// FUCQ-180: the hosted runtime is opted in, and every live page gcsp-site redirects is one gcsp-api serves.
+// FUCQ-180: the hosted runtime is opted in.
 test('gcsp-api runs the GCSP runtime and declares its settings without committing secrets', () => {
   const api = yaml.slice(yaml.indexOf('name: gcsp-api'), yaml.indexOf('name: gcsp-site'));
   const value = (key) => api.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: "?([^"\\n]+)"?`))?.[1];
@@ -37,12 +37,7 @@ test('gcsp-api runs the GCSP runtime and declares its settings without committin
   for (const path of ['gcsp-*.html', 'blocks/**', 'assets/**']) assert.ok(api.includes(`- ${path}\n`), path);
 });
 
-test('gcsp-site redirects exactly the live pages gcsp-api serves, to GCSP_API_URL', async () => {
-  const host = await readFile(new URL('../gcsp/host.js', import.meta.url), 'utf8');
-  const session = [...host.match(/SESSION_PAGES = \[([^\]]+)\]/)[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
-  const served = [...session, '/gcsp/login', '/gcsp-login.html'];
-  const routes = [...site.matchAll(/- type: redirect\n\s+source: (\S+)\n\s+destination: (\S+)/g)];
-  const apiUrl = site.match(/- key: GCSP_API_URL[^\n]*\n\s+value: (\S+)/)[1];
-  assert.deepEqual(routes.map((m) => m[1]).sort(), [...served].sort());
-  for (const [, source, destination] of routes) assert.equal(destination, `${apiUrl}${source}`);
+test('gcsp-site declares no redirects to retired gcsp-api pages', () => {
+  assert.doesNotMatch(site, /^    routes:/m);
+  assert.doesNotMatch(site, /gcsp(?:-(?:login|greg|help)\.html|\/login)/);
 });

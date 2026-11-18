@@ -5,7 +5,7 @@ import { createContextHttpAdapter } from '../../blocks/gcsp/shell/account-runtim
 
 let dom; let portalShell; let dashboard; let fixtures;
 before(async () => {
-  dom = new JSDOM('<!doctype html><body></body>', { url: 'https://gcsp.test/gcsp-greg.html' });
+  dom = new JSDOM('<!doctype html><body></body>', { url: 'https://gcsp.test/gcsp/greg' });
   for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements']) {
     Object.defineProperty(globalThis, key, { value: key === 'window' ? dom.window : dom.window[key], configurable: true });
   }
@@ -42,7 +42,7 @@ test('the ordering route is shared, and an unknown dashboard identity never show
   const { routePortal, ORDERING_NAVIGATION } = await import('../../blocks/gcsp/employee/portal-navigation.js');
   const destinations = [];
   assert.equal(routePortal('ordering', { assign: (path) => destinations.push(path) }), true);
-  assert.deepEqual(destinations, ['/gcsp-greg.html']);
+  assert.deepEqual(destinations, ['/gcsp/greg']);
   const shell = portalShell({ navigation: ORDERING_NAVIGATION, signOut: false });
   for (const account of [{ status: 'loading' }, { status: 'unavailable' }, { status: 'ready', name: 'Paula', roles: ['employee'] }]) {
     shell.setAccount(account);

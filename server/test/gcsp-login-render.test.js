@@ -133,7 +133,7 @@ test('account menu preserves long email and waits for sign-out before clearing a
   action.click(); action.click();
   assert.equal(action.disabled, true); assert.equal(sent.length, 1); assert.deepEqual(destinations, []);
   finish({ status: 'ok' }); await tick();
-  assert.deepEqual(destinations, ['/gcsp/login']); assert.equal(shell.root.querySelector('.gcsp-account').dataset.status, 'signed-out');
+  assert.deepEqual(destinations, ['/gcsp/sign-in']); assert.equal(shell.root.querySelector('.gcsp-account').dataset.status, 'signed-out');
   shell.destroy();
 });
 

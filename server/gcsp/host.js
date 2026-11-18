@@ -14,15 +14,7 @@ import { createStaticVersioning, splitVersioned } from './static-version.js';
 export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html'];
-const sessionPage = (path) => SESSION_PAGES.includes(path);
-const LOGIN_PATH = '/gcsp/login';
-const loginPage = (path) => [LOGIN_PATH, '/gcsp-login.html'].includes(path);
-const gregPage = (path) => path === '/gcsp-greg.html';
-const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
-  : context?.roles?.includes('employee') ? '/gcsp-help.html' : LOGIN_PATH;
-const publicPath = (path) => loginPage(path) || sessionPage(path) || path === '/gcsp-employee.css'
-  || path.startsWith('/blocks/') || path.startsWith('/assets/');
+const publicPath = (path) => path === '/gcsp-employee.css' || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // The launcher's composition, shared. Callers pass only the defaults that differ.
 export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvironmentId, commandId } = {}) {
@@ -46,14 +38,11 @@ const contentTag = (body) => `"${createHash('sha256').update(body).digest('base6
 const tagMatches = (header, tag) => typeof header === 'string'
   && header.split(',').some((value) => { const given = value.trim(); return given === '*' || given.replace(/^W\//, '') === tag; });
 
-// Page serving needs Host === origin's host. With fallThrough, every other path goes to api.
+// Static serving needs Host === origin's host. With fallThrough, every other path goes to api.
 export function createGcspFront({ root, services, api, origin, fallThrough = false } = {}) {
   const host = new URL(origin).host;
-  const html = (res, status, body, headers = {}) => res.writeHead(status, { 'Content-Type': TYPES['.html'],
-    'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', ...headers }).end(body);
   const redirect = (res, location) => res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end();
-  const staticPath = (path) => path.startsWith('/blocks/') || path.startsWith('/assets/') || path === '/gcsp-employee.css';
-  const versioning = createStaticVersioning({ root, isPublic: staticPath });
+  const versioning = createStaticVersioning({ root, isPublic: publicPath });
 
   return async (req, res) => {
     try {
@@ -62,35 +51,21 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
       const url = new URL(req.url, origin);
       let path = decodeURIComponent(url.pathname);
       if (path.startsWith('/api/gcsp/')) { api.emit('request', req, res); return; }
-      // FUCQ-374: /_v/<version>/ serves the same static file; a page under it goes back through its gate.
+      // FUCQ-374: /_v/<version>/ serves the same static file; an html file under it redirects to its plain path.
       const versioned = hostOk ? splitVersioned(path) : null;
       if (versioned) {
         if (versioned.path.endsWith('.html') && publicPath(versioned.path)) { redirect(res, `${versioned.path}${url.search}`); return; }
-        if (!staticPath(versioned.path)) { res.writeHead(404).end('Not found'); return; }
+        if (!publicPath(versioned.path)) { res.writeHead(404).end('Not found'); return; }
         path = versioned.path;
       }
-      // The bare host and favicon get a browser answer rather than the retail API's 401 or a 404.
-      if (hostOk && req.method === 'GET' && path === '/') {
-        const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
-        redirect(res, session.status === 'ok' ? landing(session.value) : LOGIN_PATH); return;
-      }
+      // No page lives on this host: the bare host answers 404 rather than reaching the retail API's 401.
+      if (hostOk && req.method === 'GET' && path === '/') { res.writeHead(404).end('Not found'); return; }
       if (hostOk && req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204, { 'Cache-Control': 'max-age=86400' }).end(); return; }
       if (fallThrough && (!hostOk || !publicPath(path))) { api.emit('request', req, res); return; }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
-      if (sessionPage(path) || loginPage(path)) {
-        const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
-        const destination = session.status === 'ok' ? landing(session.value) : LOGIN_PATH;
-        if (session.status === 'unavailable') { html(res, 503, 'The service is unavailable. Try again.'); return; }
-        if (loginPage(path)) {
-          if (destination !== LOGIN_PATH) { redirect(res, destination); return; }
-        } else if (destination === LOGIN_PATH || !session.value.roles.includes(gregPage(path) ? 'greg' : 'employee')) {
-          redirect(res, destination); return;
-        }
-      }
-      const assetPath = loginPage(path) ? '/gcsp-login.html' : path;
-      const file = resolve(root, `.${assetPath}`);
+      const file = resolve(root, `.${path}`);
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
-      if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== assetPath
+      if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== path
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
       const body = await readFile(file);
       const type = TYPES[extname(file)] || 'application/octet-stream';
@@ -103,7 +78,7 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
         res.writeHead(200, { 'Content-Type': type, ...headers }).end(body); return;
       }
       res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' });
-      res.end(await versioning.renderPage(assetPath, body.toString('utf8')));
+      res.end(await versioning.renderPage(path, body.toString('utf8')));
     } catch { if (!res.headersSent) res.writeHead(404).end('Not found'); else res.end(); }
   };
 }
@@ -133,7 +108,7 @@ export async function startHostedGcsp({ buildServer, env = process.env, port, ro
     server = createServer(createGcspFront({ root, services, api, origin, fallThrough: true }));
     await new Promise((done, reject) => { server.once('error', reject); server.listen(port, done); });
   } catch { await close(); return { status: 'unavailable' }; }
-  console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp/login`);
+  console.log(`GCSP hosted API (${options.mode}): ${origin}`);
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { close().finally(() => process.exit(0)); });
   return { status: 'ok', value: { server, services, origin, close } };
 }

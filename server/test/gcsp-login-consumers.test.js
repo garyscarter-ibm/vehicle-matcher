@@ -1,6 +1,5 @@
 import { test, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { createAccountHttpAdapter as createShellAccountAdapter } from '../../blocks/gcsp/shell/account-runtime.js';
 import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
@@ -11,7 +10,7 @@ let employee;
 let greg;
 let gregFixtures;
 before(async () => {
-  dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://gcsp.test/gcsp-greg.html' });
+  dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://gcsp.test/gcsp/greg' });
   for (const key of ['window', 'document', 'HTMLElement', 'customElements', 'CustomEvent', 'Node']) {
     Object.defineProperty(globalThis, key, { value: key === 'window' ? dom.window : dom.window[key], configurable: true, writable: true });
   }
@@ -90,25 +89,4 @@ test('Greg fixture elements retain explicit fixture identity without live sign-o
   await tick();
   assert.equal(element.querySelector('.gcsp-account-name')?.textContent, 'Greg Lawson');
   assert.equal(element.querySelector('.gcsp-account-signout'), null); element.remove();
-});
-
-test('signed-in Greg landing mounts the live HTTP composition and its current session menu', async (t) => {
-  const html = readFileSync(new URL('../../gcsp-greg.html', import.meta.url), 'utf8');
-  const markup = new JSDOM(html);
-  const node = markup.window.document.querySelector('gcsp-greg-dashboard');
-  assert.equal(node.hasAttribute('fixture'), false); markup.window.close();
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    if (String(url) === '/api/gcsp/context') return response({ status: 'ok', value: { name: 'Morgan Ashworth', email: 'morgan.ashworth@gcsp-demo.com', roles: ['greg'] } });
-    if (String(url) === '/api/gcsp/greg/demand') return response({ status: 'ok', value: gregFixtures.fixtureProjection('populated') });
-    return response({ status: 'unavailable' }, 503);
-  };
-  t.after(() => { document.body.replaceChildren(); globalThis.fetch = originalFetch; });
-  document.body.append(document.createElement('gcsp-greg-dashboard'));
-  await import('../../blocks/gcsp/greg/harness.js'); await tick(); await tick();
-  const dashboard = document.querySelector('gcsp-greg-dashboard');
-  assert.equal(dashboard.querySelector('.gcsp-account-name')?.textContent, 'Morgan Ashworth');
-  assert.equal(dashboard.querySelector('.gcsp-account-email')?.textContent, 'morgan.ashworth@gcsp-demo.com');
-  assert.equal(dashboard.querySelector('.gcsp-fixture-notice'), null);
-  assert.ok(dashboard.regions.orderTracking.querySelector('.gcsp-orders') || dashboard.regions.orderTracking.querySelector('[role="alert"]'));
 });

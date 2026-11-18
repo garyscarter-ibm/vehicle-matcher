@@ -37,7 +37,7 @@ test('each live configured person signs in through email, receives their stored 
     assert.equal(reply.value.context.name, person.name);
     assert.equal(reply.value.context.email, email);
     assert.ok(reply.value.context.lastName);
-    assert.equal(reply.value.redirectTo, person.roles.includes('greg') ? '/gcsp-greg.html' : '/gcsp-help.html');
+    assert.equal(reply.value.redirectTo, person.roles.includes('employee') ? '/gcsp/account' : '/gcsp/greg');
     assert.match(reply.value.setCookie[0], /; Path=\/; HttpOnly; SameSite=None;.*; Secure$/);
     assert.ok(!reply.value.setCookie.some((c) => c.startsWith('gcsp_presenter=') && !c.includes('Max-Age=0')));
     const resolved = await f.identity.resolveSession({ authorized: true, cookie: cookieOf(reply) });
@@ -137,7 +137,7 @@ test('HTTP login is gated by origin and shared access, rejects context claims, h
   assert.equal(session.status, 401);
 });
 
-test('live HTML requires the user cookie across navigation and never silently signs in an employee', async (t) => {
+test('the page front serves no pages, and the session cookie still resolves through the API', async (t) => {
   const f = await setup();
   const api = buildServer({ gcspIdentity: f.identity });
   const server = createServer();
@@ -147,31 +147,23 @@ test('live HTML requires the user cookie across navigation and never silently si
   server.on('request', createGcspFront({ root: REPO_ROOT, services, api, origin }));
   t.after(async () => { server.closeAllConnections(); await new Promise((done) => server.close(done)); });
   const get = (path, cookie) => fetch(origin + path, { redirect: 'manual', headers: cookie ? { cookie } : {} });
-  assert.equal((await get('/')).headers.get('location'), '/gcsp/login');
-  for (const path of ['/gcsp-help.html', '/gcsp-greg.html']) {
-    const signedOut = await get(path);
-    assert.equal(signedOut.status, 303);
-    assert.equal(signedOut.headers.get('location'), '/gcsp/login');
-    assert.equal(signedOut.headers.get('cache-control'), 'no-store');
-    assert.deepEqual(signedOut.headers.getSetCookie(), []);
-  }
-  assert.equal((await get('/gcsp/login')).status, 200);
   const login = await f.identity.signIn(credentials, 'html-login');
   const cookie = cookieOf(login);
-  for (const path of ['/gcsp-help.html']) {
-    assert.equal((await get(path, cookie)).status, 200, path);
+  for (const path of ['/', '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-login.html', '/gcsp/login']) {
+    for (const sent of [undefined, cookie]) {
+      const page = await get(path, sent);
+      assert.equal(page.status, 404, path);
+      assert.equal(page.headers.get('location'), null, path);
+    }
   }
-  assert.equal((await get('/gcsp-greg.html', cookie)).headers.get('location'), '/gcsp-help.html');
-  assert.equal((await get('/gcsp/login', cookie)).headers.get('location'), '/gcsp-help.html');
-  assert.equal((await get('/', cookie)).headers.get('location'), '/gcsp-help.html');
+  assert.equal((await get('/api/gcsp/context', cookie)).status, 200);
+  assert.equal((await get('/api/gcsp/context')).status, 401);
   const greg = await f.identity.signIn({ email: 'greg.lawson@gcsp-demo.com', password: 'fucq' }, 'greg-html-login');
   assert.equal(greg.status, 'ok');
-  for (const path of ['/gcsp-help.html', '/gcsp-greg.html']) {
-    assert.equal((await get(path, cookieOf(greg))).status, 200, `Greg can open ${path}`);
-  }
+  assert.equal((await get('/api/gcsp/context', cookieOf(greg))).status, 200);
   assert.equal((await f.identity.requireRole(greg.value.context, 'presenter')).status, 'forbidden');
   await f.identity.signOut({ cookie: cookieOf(greg) });
   await f.identity.signOut({ cookie });
-  assert.equal((await get('/gcsp-help.html', cookie)).headers.get('location'), '/gcsp/login');
+  assert.equal((await get('/api/gcsp/context', cookie)).status, 401);
   assert.equal(gcspRuntimeOptions({ env: {} }).mode, 'postgres');
 });

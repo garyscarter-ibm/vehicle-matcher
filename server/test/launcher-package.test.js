@@ -56,7 +56,7 @@ test('a future offer block and its own nested direct page are discovered without
   const output = path.join(root, 'site');
   const manifest = await assembleSite({ sourceRoot, output });
   assert.ok(manifest.pages.includes('blocks/gcsp/offer/preview.html'));
-  assert.deepEqual(manifest.demoPages.map((page) => page.name), ['greg']);
+  assert.deepEqual(manifest.demoPages, []);
   await verifySite({ output, requireDemoPages: true });
   await rm(path.join(output, 'blocks/gcsp/offer/gcsp-offer.js'));
   await assert.rejects(verifySite({ output, requireDemoPages: true }), /GCSP block "offer": missing packaged file/);
