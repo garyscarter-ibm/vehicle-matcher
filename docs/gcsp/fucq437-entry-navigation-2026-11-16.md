@@ -7,15 +7,15 @@ Source work began on 16 November 2026 on `dev/DEV-2026-11-13-005`, claimed at
 ## Original contract and current evidence
 
 1. Direct entry, refresh, role landing, sign-in return and new offer links reach the
-   intended authorized state. **Open:** 31 native route/state and eight auth/context
-   regression passes cover the selected local scenarios; hosted refresh, real OIDC
-   and actual emailed-link return remain unproven.
+   intended authorized state. **Open:** the 18 November local composition passes
+   direct/refresh, role and newly generated offer-link return/ownership scenarios;
+   deployed host, registered provider and actual delivered-email return remain unproven.
 2. Unknown frontend routes and unavailable/invalid API responses produce distinct
-   useful outcomes; shared entry links preserve brand/context. **Open:** source
-   and native checks cover route-state precedence and configured launcher handoff.
-   Actual frontend configuration, supported dynamic/unknown host routing and
-   rendered proof remain open. The selected static contract fails on inherited
-   Bug FUCQ-514; no overall passing validation is claimed.
+   useful outcomes; shared entry links preserve brand/context. **Open:** named offer
+   routing, packaged launcher context, malformed/unavailable API recovery and native
+   unknown-route 404 pass locally. Useful branded unknown-entry recovery and deployed
+   Render behavior remain unproved. The unchanged Java build-filter Bug FUCQ-514 is
+   separate; final local evidence and earlier failed attempts are detailed below.
 
 The original validation remains replaying direct URLs, refresh and email return on
 the static host, plus unknown/API failures and shared launcher/retail navigation.
@@ -235,3 +235,67 @@ formatter mismatch stopped correctly but interrupted delivery; future frozen
 plans should use native formatter parity for parameterized identities. FUCQ-514
 is a separate observed inherited defect, not a resolved Story gate or authority
 to expand this repair. Shared dispatcher-log publication remains with the parent.
+
+## Connected delivery checkpoint — 18 November 2026
+
+Published source `52729e593caf25b0c511e357ceb1cb2b20ec1bf3`; connected proof source
+SHA256 `6ed3060651292c393356c06de6f586aa82512bb689b5c001e1ba2689901fdc2e`. The static builder exports the named
+`/gcsp/offers/:offerId` route. The independent Angular Render service rewrites
+that route to its index and marks offer paths `no-store`; unknown paths and
+missing root/media/assets resources keep native 404s. There is no general SPA
+wildcard. Render's documented placeholder matching was checked; a segment
+that looks like `missing.js` is still a syntactically valid offer ID. Existing
+Java blueprint assertions and earlier Render service sections remain unchanged.
+
+The changed static contract passed **1/1** (55,558,144 B child RSS, child exited,
+empty scratch removed). Existing 31 route/state, eight auth/context, 52 launcher
+and one caller/package passes remain separately qualified above. FUCQ-514's
+unchanged Java build-filter assertion was not rerun or removed. No Java or
+Angular application source changed in this increment. API packaging and Angular
+production builds passed and were hash-bound to equivalent artifact inputs.
+Full suite: deferred to batch; no new full-suite or Java-test replay.
+
+Final local composition passed **68 checks / six scenarios**, with **13 PNGs**:
+actual static Angular, Java API, owned native PostgreSQL 17 and signed local
+OIDC authorization-code/PKCE login. It covers protected direct entry/refresh
+with query/hash, three authorized role destinations, a newly generated offer
+link with owner sign-in and another employee's real 403, actual assembled shared
+launcher/retail context, native unknown-route/missing-asset 404, malformed GET
+response, genuinely stopped API, restart and keyboard retry. Fault injection
+is explicitly limited to malformed GET content; the CORS preflight reaches Java.
+The host is a documented-contract emulator, and the generated link is mapped to
+an owned local origin. Neither is a deployed Render or delivered-email proof.
+
+Parent independently verified all 1,528 exported source files and final evidence
+bytes/hashes, reviewed desktop captures and the byte-identical narrow captures,
+and audited all 12 build/connected receipts: **3916 unique PID/start identities
+absent, 20 ports closed, owned groups/scratch/reservations/native IPC absent**.
+Final connected sampled RSS/disk/inclusive peaks were
+2,334,408,704/432,319,587/2,766,265,219 B. The final
+connected receipt is strict PASS; resource measurements are sampled. All
+attempts retained the original 04:37:58–05:02:58 UTC pipeline deadline.
+
+Three earlier connected failures remain recorded: independent per-read `asOf`
+timestamps compared for equality; Document rather than body text on launcher
+and native error documents; malformed-response injection including OPTIONS.
+Only proof helpers changed for those recoveries; all failed receipts remain
+strict false. Parent observed cumulative retained output at 38,876,956 B against
+the 32 MiB plan, then losslessly compressed verbose immutable metadata with
+verified original hashes. Final retained output is below the cap; this does
+not erase the observed aggregate retention breach.
+
+Pumbaa 3 requested/selected Sol/high; Shaggy 3 and Emmet 2 Sol/medium, no fallback.
+They delivered useful parallel static/proof work. Repeated child IBM422 errors
+interrupted lead/reviewer calls while the parent launcher worked. Parent carried
+source review, three proof-helper corrections, runtime supervision and evidence
+review forward without changing gateway/models or duplicating workers. Sylvester
+2 returned no useful independent review before its422; none is claimed.
+
+**Both original acceptance boxes remain open.** Native unknown-route output is
+a bare404 without established useful branded recovery. Hosted Render topology,
+registered provider, actual email delivery/return, Safari and a green covering
+batch remain unproved. Greg's authorized route currently shows its existing
+unavailable placeholder; route authorization is not Greg capability completion.
+The account capture truthfully retains its existing partial offer/order read
+warning. No new repair scope, Story hold or acceptance gate was introduced.
+FUCQ-513/FUCQ-514 remain separate. No deployment or OneDrive access occurred.
