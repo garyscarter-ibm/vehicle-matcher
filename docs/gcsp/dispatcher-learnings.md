@@ -2754,3 +2754,8 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 05:49 UTC · Gary Codex · DL-20261117-GCC-013 · Child contract-read clipping recurrence
 
 - Sniffles2 reported combined initial contract reads clipped; they recovered the governing sections with bounded reads before decisions. F437 implementation now has a concrete allocated diff and is preparing scoped admission. Omitted text is not evidence; the output-bound issue remains recurring and unresolved. No additional test/reporting gate was introduced.
+
+### 2026-11-18 06:43 UTC · Russell Codex · DL-20261117-GCC-013 · Output bounds and retained reconciliation
+
+- Hugh reported two clipped diagnostic projections, including a discarded greedy-regex parse; anchored bounded projections recovered the required facts. An initial in-memory report pair was 141,804 bytes and was rejected before writing against its 128 KiB cap; compact output is 84,891 bytes. Root independently recovered and checked both full Node logs, all 233 assertion-body ranges and five earlier passing lines. These checks validate the retained comparison, not general prevention of output clipping.
+- This continuation also clipped a combined procedure read and a broad history search containing long ledger lines. Omitted output supplied no decision or acceptance evidence; bounded current ledger/log projections and exact typed artifacts supplied the later facts. Cause remains missing producer-level aggregate character limits. Proposed framework improvement: cap serialized bytes before tool output, use anchored field projections, and reject oversized generated reports before writing. Recurrence remains unresolved; no extra test or approval round was added.
