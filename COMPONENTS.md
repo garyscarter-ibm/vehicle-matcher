@@ -675,5 +675,5 @@ the server's current version and matching preview. Publication stays unavailable
 the server cannot supply that preview. Read-only demand tables use native captions and
 headers with the existing semantic tokens; the shared case table's employee Open action
 does not apply. This routed composition adds no shared primitive or gallery API.
-Selected validation, rendered review and connected Java/OIDC/database acceptance remain
-unrun at this source checkpoint.
+Connected Chromium evidence against Java, local OIDC and PostgreSQL 17 is in the FUCQ-448
+Result; publication through this screen waits on Java policy preview.
