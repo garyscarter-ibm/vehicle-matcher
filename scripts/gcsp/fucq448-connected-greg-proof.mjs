@@ -84,7 +84,7 @@ const dirs = { logs: path.join(SCRATCH, 'logs'), tmp: path.join(SCRATCH, 'tmp'),
   static: path.join(SCRATCH, 'static'), browser: path.join(SCRATCH, 'browser'), evidence: process.env.PROOF_EVIDENCE_DIR ? localInput(process.env.PROOF_EVIDENCE_DIR, 'Evidence dir') : path.join(SCRATCH, 'evidence') };
 const receipt = {
   schema: 'fucq448-connected-greg-proof/1', story: 'DEV-2026-11-13-016 / FUCQ-448', startedAt: new Date().toISOString(),
-  sourceRevision: SOURCE_REVISION, scenarios: {}, processes: [], tools: {},
+  sourceRevision: SOURCE_REVISION, scenarios: {}, processes: [], tools: {}, blockers: [],
   limitations: [
     'Local test OIDC uses real signed RS256 tokens validated by Java; it is not the hosted identity provider.',
     'Java preview always answers 422 preview-unavailable, so the UI publish control (only offered after a matching preview) is not exercised; publish runs at script level.',
@@ -642,41 +642,46 @@ async function main() {
     await greg.viewport(390, 844); await greg.snap('greg-preview-unavailable-390.jpg', true); await greg.viewport(1440, 1000);
   });
 
-  // 4. Publish version checks at script level; offer terms unchanged; reload shows the new version.
-  await scenario('publish-version-checks', 'Java accepts the current version and refuses a stale one; offer terms and reload agree', async (s) => {
+  // 4. Publish at script level (the UI offers publish only after a successful preview, which Java never gives).
+  await scenario('publish-version-checks', 'Publish version checks against Java; offer terms and the reloaded page agree with the server', async (s) => {
     const before = await ok('greg', '/greg/policy');
     const field = before.fields.find((f) => f.kind === 'price') ?? before.fields[0];
-    const body = (expected, version, points, effectiveFrom = before.asOf) => ({ commandId: cmd('pub'), expectedActiveVersion: expected, policyVersion: version, effectiveFrom, changes: [{ id: field.id, value: points }] });
+    const body = (expected, version, effectiveFrom) => ({ commandId: cmd('pub'), expectedActiveVersion: expected, policyVersion: version, effectiveFrom, changes: [{ id: field.id, value: field.value + 25 }] });
     const brief = (r) => ({ http: r.status, status: r.json?.status, code: r.json?.code, reason: r.json?.reason, reasons: r.json?.reasons, expectedVersion: r.json?.expectedVersion, currentVersion: r.json?.currentVersion, accepted: r.json?.accepted });
-    const newVersion = `greg-fucq448-${randomBytes(4).toString('hex')}`;
-    const tries = [];
-    let accepted;
-    for (const [label, from] of [['policy asOf', before.asOf], ['fresh policy asOf', (await ok('greg', '/greg/policy')).asOf], ['current instant', new Date().toISOString()]]) {
-      accepted = await call('greg', '/greg/policy/publish', body(before.activeVersion, newVersion, field.value + 25, from));
+    const version = () => `greg-fucq448-${randomBytes(4).toString('hex')}`;
+    const unknown = await call('greg', '/greg/policy/publish', body('no-such-version', version(), before.asOf));
+    s.observations.unknownVersion = brief(unknown);
+    check(s, 'An unretained expectedActiveVersion is refused 400 invalid-active-version', unknown.status === 400 && unknown.json?.code === 'invalid-active-version');
+    // Java needs effectiveFrom at or after its publish clock and not after its read clock; try each edge.
+    const newVersion = version(); const tries = []; let accepted;
+    for (const [label, from] of [['policy asOf', before.asOf], ['fresh policy asOf', (await ok('greg', '/greg/policy')).asOf], ['current instant', new Date().toISOString()], ['60 s ahead', new Date(Date.now() + 60000).toISOString()]]) {
+      accepted = await call('greg', '/greg/policy/publish', body(before.activeVersion, newVersion, from));
       tries.push({ effectiveFrom: label, ...brief(accepted) });
       if (accepted.status === 200) break;
     }
     s.observations.acceptTries = tries;
-    s.observations.accepted = { http: accepted.status, code: accepted.json?.code, reason: accepted.json?.reason, reasons: accepted.json?.reasons, field: field.id, from: field.value, to: field.value + 25, policyVersion: accepted.json?.value?.policyVersion, state: accepted.json?.value?.state, activation: accepted.json?.value?.activation, heldOffers: accepted.json?.value?.heldOffers };
-    check(s, 'The current expectedActiveVersion is accepted and activates the new version', accepted.status === 200 && accepted.json?.value?.policyVersion === newVersion
-      && accepted.json?.value?.activation?.status === 'active' && accepted.json?.value?.activation?.publishedVersionActive === true);
-    const stale = await call('greg', '/greg/policy/publish', body(before.activeVersion, `greg-fucq448-${randomBytes(4).toString('hex')}`, field.value + 50, tries.at(-1).effectiveFrom === 'current instant' ? new Date().toISOString() : before.asOf));
-    s.observations.stale = brief(stale);
-    check(s, 'A stale expectedActiveVersion is refused 409 stale-version and nothing is accepted', stale.status === 409 && stale.json?.status === 'stale-version' && stale.json?.accepted === false && stale.json?.currentVersion === newVersion);
-    const unknown = await call('greg', '/greg/policy/publish', body('no-such-version', `greg-fucq448-${randomBytes(4).toString('hex')}`, field.value + 60));
-    s.observations.unknownVersion = brief(unknown);
-    check(s, 'An unretained expectedActiveVersion is refused 400 invalid-active-version', unknown.status === 400 && unknown.json?.code === 'invalid-active-version');
+    let published = null;
+    if (accepted.status === 200) {
+      published = accepted.json.value;
+      s.observations.accepted = { http: 200, field: field.id, from: field.value, to: field.value + 25, policyVersion: published.policyVersion, state: published.state, activation: published.activation, heldOffers: published.heldOffers };
+      check(s, 'The current expectedActiveVersion is accepted and activates the new version', published.policyVersion === newVersion && published.activation?.status === 'active' && published.activation?.publishedVersionActive === true);
+      const stale = await call('greg', '/greg/policy/publish', body(before.activeVersion, version(), new Date().toISOString()));
+      s.observations.stale = brief(stale);
+      check(s, 'A stale expectedActiveVersion is refused 409 stale-version and nothing is accepted', stale.status === 409 && stale.json?.status === 'stale-version' && stale.json?.accepted === false && stale.json?.currentVersion === newVersion);
+    } else {
+      receipt.blockers.push({ id: 'publish-accept-and-stale', summary: 'No effectiveFrom satisfies Java: the resource needs it at or before its read clock and the publisher at or after its own clock; both are the wall PolicyClock, so only the same millisecond works. Accepted and stale (409) publishes are not provable until a frozen or run clock backs PolicyClock.', tries });
+    }
     const after = await ok('greg', '/greg/policy');
-    check(s, 'The API now reads the new active version with the changed value', after.activeVersion === newVersion && after.fields.find((f) => f.id === field.id)?.value === field.value + 25, { activeVersion: after.activeVersion, label: after.activeVersionLabel });
+    check(s, 'The API active version is the new one when published, else unchanged', published ? after.activeVersion === newVersion && after.fields.find((f) => f.id === field.id)?.value === field.value + 25 : after.activeVersion === before.activeVersion, { activeVersion: after.activeVersion, label: after.activeVersionLabel });
     if (shared.offerBefore) {
       const offer = await ok(shared.offerBefore.owner, `/offers/${encodeURIComponent(shared.offerBefore.id)}`);
       const unchanged = same(offer.quote ?? offer, shared.offerBefore.terms);
-      check(s, 'The employee offer keeps its terms after the publish', unchanged && ['active', 'pending'].includes(offer.state), { id: shared.offerBefore.id, state: offer.state, unchanged });
-    } else check(s, 'The employee offer keeps its terms after the publish', false, 'no offer was captured');
+      check(s, 'The employee offer keeps its terms after the publish step', unchanged && ['active', 'pending'].includes(offer.state), { id: shared.offerBefore.id, state: offer.state, unchanged, terms: offer.quote ?? offer });
+    } else check(s, 'The employee offer keeps its terms after the publish step', false, 'no offer was captured');
     await greg.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/greg` }); await waitLoaded(greg);
     const pol = await policyDom(greg);
-    check(s, 'Reloaded Greg page shows the new active version and field value from the server', pol.facts.includes(after.activeVersionLabel) && pol.sources.includes(newVersion)
-      && pol.inputs[after.fields.findIndex((f) => f.id === field.id)] === String(field.value + 25), { label: after.activeVersionLabel, facts: pol.facts });
+    check(s, 'Reloaded Greg page shows the server active version and field value', pol.facts.includes(after.activeVersionLabel) && pol.sources.includes(after.activeVersion)
+      && pol.inputs[after.fields.findIndex((f) => f.id === field.id)] === String(after.fields.find((f) => f.id === field.id).value), { label: after.activeVersionLabel, version: after.activeVersion });
     shared.policy1 = after;
   });
 
@@ -785,7 +790,7 @@ function finish(runError) {
   receipt.endedAt = new Date().toISOString();
   if (runError) receipt.runError = runError;
   const required = ['seed-through-routes', 'greg-demand-and-policy', 'preview-unavailable', 'publish-version-checks', 'unavailable', 'denied', 'rendered'];
-  receipt.overall = required.every((name) => receipt.scenarios[name]?.pass === true) && !runError && receipt.teardown?.allOwnedExited === true ? 'PASS' : 'FAIL';
+  receipt.overall = required.every((name) => receipt.scenarios[name]?.pass === true) && !runError && receipt.teardown?.allOwnedExited === true ? receipt.blockers.length ? 'PARTIAL' : 'PASS' : 'FAIL';
   try { writeFileSync(path.join(dirs.evidence, 'fucq448-connected-greg-proof.json'), `${JSON.stringify(receipt, null, 2)}\n`); } catch (error) { console.error('receipt write failed', error.message); }
   for (const name of Object.keys(receipt.scenarios)) {
     const entry = receipt.scenarios[name];
@@ -799,4 +804,4 @@ let runError;
 try { await main(); } catch (error) { runError = error.message; console.error('RUN ERROR:', error.message); }
 clearTimeout(deadline);
 await teardown(); finish(runError);
-process.exit(receipt.overall === 'PASS' ? 0 : 1);
+process.exit(receipt.overall === 'PASS' ? 0 : receipt.overall === 'PARTIAL' ? 3 : 1);

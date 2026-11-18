@@ -6283,7 +6283,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-17T19:53:14Z",
+      "observed_at": "2026-11-18T10:34:27Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Greg's demand and preview/publish controls",
@@ -6302,17 +6302,17 @@
         },
         {
           "id": "frontend-screens",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Demand and policy Angular screens with current-version controls",
-          "observed_at": "2026-11-16T18:56:54.823868+00:00",
-          "evidence": "b02 demand4/policy6 plus c03 actual-route8/8 rc0 pass; sampled RAM1099546624B and deadlines/teardown pass at source3d5a57c59. Actual boundary rc1 inherited cases/case-queue on-screen em dash; overall strict false. 49 distinct checks across runs, no combined49 pass. Original screen/connected acceptance remains open; see delivery record."
+          "observed_at": "2026-11-18T10:32:19Z",
+          "evidence": "ce8eb55cf: Greg specs 50/50; connected Chromium proof vs Java+PG17+local OIDC: demand DOM equals API, preview 422 explicit, unavailable and denied states, 1440/390 captures, focus, 0 CSP"
         },
         {
           "id": "integration",
           "status": "blocked",
           "title": "Java connected preview/publication, pinned offers and affected experience development gates",
-          "observed_at": "2026-11-16T16:12:13.497008+00:00",
-          "evidence": "Original AC open: Java Greg preview HTTP422 preview-unavailable. Connected changed-input/privacy/preview/publication/active-offer-pin and denied-role proof plus rendered desktop/narrow, Safari/private, keyboard/focus/CSP/accessibility evidence unrun; fixtures cannot close acceptance."
+          "observed_at": "2026-11-18T10:34:27Z",
+          "evidence": "Blocked on Java (usget FUCQ-457/475): POST /greg/policy/preview always 422 unsupported/preview-unavailable so UI publish unreachable; script publish refused 400 invalid-policy-change on effectiveFrom (resource needs <= its now, PolicyPublication needs >= its later now). Accepted/stale-409 publish and pin under activation unproven. Proof connected-20261118T103230-attempt6 PARTIAL."
         }
       ]
     },
