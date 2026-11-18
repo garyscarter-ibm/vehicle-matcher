@@ -2867,3 +2867,15 @@ Several broad source/policy displays and an initial queue display again truncate
 - F441's fresh immutable 3c04a4230 prerequisites passed API packaging and web build, then PostgreSQL initialization failed before a database/browser/proof started. Its terminal run reported no remaining processes or teardown errors, but retained scratch/reservation while the lead reconciles an inherited process-group accounting error. Cleanup is pending, not verified. Matching built prerequisites will be reused. Proposed framework improvement remains one reviewed direct-process lifecycle implementation with explicit supervisor group handling and retained cleanup receipts.
 - Both leads received IBM gateway HTTP422 credit text (Hugh cf-rays a5c5f60c8d06001f-LHR / a5c5faf4bf69f6ac-LHR; Wyldstyle a5c5fa87ec9cbd9f-LHR). The launcher continued after resuming their same identities, so project policy applies: preserve diagnostics/checkpoints and continue without inferring balance or changing models/credentials. This verifies those resumed turns only.
 - Shared peer-channel messages claude-002/003/004 were acknowledged append-only. Claude's F500 close and F503 offer-screen allocation are separate from the 14 Codex reservations; no ID/file overlap was observed. Same-login leases remain insufficient ownership evidence. No OneDrive access.
+
+### 2026-11-18 10:4x Russell lane: FUCQ-465 and FUCQ-467 merged; lane stopped
+- FUCQ-465 merged at 02355accf, FUCQ-467 at 96dc7361b. Both are In Review as partial, with external gaps only. 465 needed no new code: the offer projection was already on base in Codex's c63ca4afe. 467 added test-only proofs on top of Sulley's overnight Codex work.
+- Learning: before resuming a story, check `git log` on its story file and its evidence folder for another lane's work. Both leads lost turns rediscovering what was already built.
+- Both leads had died on the IBM gateway credit 422 and were resumed with no loss.
+- Russell's lane has stopped. The batch full verify on gcsp-poc-dev has NOT been run. FUCQ-478 stays In Progress (waiting on FUCQ-477); 477 and 476 are held for Gary's answer (comment 3629825).
+
+### 2026-11-18 11:2x Russell lane: FUCQ-477 coordination moved to dev_mail (MSG-2026-11-18-003)
+- **For Gary's poller:** please answer `_dev/cowork-inbox/MSG-2026-11-18-003.md`. It asks for bd8204652 (not on origin) to be pushed with the planning ports bound, or for the binding to be released to Russell's lane. It also asks whether anyone is actively working on FUCQ-476.
+- Why it moved: the earlier Jira comment 3629825 and learnings entry 9f6be11e2 got no answer in 18 hours. No poller reads Jira comments, and the learnings log is read only when a poller starts or resumes.
+- The inbox was full (max_open_threads 10). Seven unanswered GC threads from 5 and 6 Nov (GC-003 to GC-007, 06-GC-001 and 06-GC-002) were withdrawn to make room, on Russell's instruction. They are in `_dev/cowork-inbox/closed/2026-11/`.
+- Framework gap (scaffolding improvement): dev_mail only runs Code-to-Cowork. Two independent Code pollers have no channel that either one is sure to read.

@@ -59,6 +59,15 @@ describe('actual Greg route, native controls and case focus', () => {
     expect(root().querySelector('img')).toBeNull(); expect(routes.find(r => r.path === 'help')?.data).toEqual({ title: 'Renewal help', roles: ['employee'] });
     expect(routes.find(r => r.path === 'offers/:offerId')?.loadComponent).toBeTypeOf('function'); expect(client.updateCase).not.toHaveBeenCalled();
   });
+  it('renders the offered preference value control and explicit employee-confirmation consequence in review', async () => {
+    const current = options();
+    client.readOptions.mockResolvedValueOnce(ok({ ...current, options: { ...current.options, preferenceRelaxations: { available: true, items: [
+      { type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.body.value', before: ['hatchback'], valueType: 'enum', values: ['estate'] },
+    ] } } }));
+    await open(); field('remedyKey', 'preference:0'); field('preferenceValue', '0'); review();
+    expect(text()).toContain('Body: estate. Employee confirmation is required'); expect(client.updateCase).not.toHaveBeenCalled();
+    expect(root().querySelector('[data-case-review]')).toBe(document.activeElement);
+  });
   it('focuses selected heading, shows facts/history/feasibility and returns Close focus to its named Open', async () => {
     await open(); expect(document.activeElement).toBe(root().querySelector('[data-case-heading]'));
     expect(text()).toContain('Paula · 12345678'); expect(text()).toContain('Dated case history'); expect(text()).toContain('Please help');

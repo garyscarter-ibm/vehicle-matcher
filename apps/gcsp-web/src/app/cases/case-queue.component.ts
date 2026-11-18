@@ -6,7 +6,7 @@ import { FactListComponent } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
-import { carOptionNames, caseNotice, caseTime } from './case.projection';
+import { carOptionNames, caseNotice, caseTime, preferenceLabel, preferenceText } from './case.projection';
 import { CaseQueueStore, QueueDraft } from './case-queue.store';
 
 let serial = 0;
@@ -21,6 +21,8 @@ export class CaseQueueComponent implements OnDestroy {
   readonly id = `gcsp-cases-${++serial}`;
   readonly notice = caseNotice;
   readonly time = (value: string) => caseTime(value, 'scheme-team');
+  readonly preferenceLabel = preferenceLabel;
+  readonly preferenceText = preferenceText;
   readonly columns: readonly DataTableColumn[] = [
     { key: 'employee', label: 'Employee' }, { key: 'deadline', label: 'Renewal deadline (calendar date)' },
     { key: 'trigger', label: 'Opened from' }, { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' },
@@ -48,6 +50,7 @@ export class CaseQueueComponent implements OnDestroy {
         : remedy?.type === 'contract-extension' ? `Contract extension until ${remedy.until}`
         : remedy?.type === 'later-release' ? `Later release: ${this.time(remedy.releaseAt)}; source: ${remedy.source}`
         : remedy?.type === 'alternative-car' ? `${this.store.choices().find(c => typeof c.remedy === 'object' && c.remedy.type === 'alternative-car' && c.remedy.orderUuid === remedy.orderUuid)?.label || 'Alternative car'}; exact reference: ${remedy.orderUuid}`
+        : remedy?.type === 'preference-relaxation' ? `${preferenceLabel(remedy.path)}: ${preferenceText(remedy.value)}. Employee confirmation is required through their brief.`
         : 'Keep the current recorded remedy' }];
   });
   private readonly table = viewChild(DataTableComponent);

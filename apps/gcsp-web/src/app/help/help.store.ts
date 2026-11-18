@@ -2,7 +2,7 @@ import { Injectable, computed, effect, inject, signal, untracked } from '@angula
 import { AuthPort } from '../auth/auth.port';
 import type { SessionState } from '../auth/auth.port';
 import { CaseClient } from '../cases/case.client';
-import type { CaseClientResult, HelpCaseCommand } from '../cases/case.client';
+import type { CaseClientResult, ConfirmedPreference, ConfirmPreferenceCommand, HelpCaseCommand } from '../cases/case.client';
 import { projectCase } from '../cases/case.projection';
 import type { CaseDetailValue, CaseDisplay, CaseHelp, CaseRecord, CaseScope } from '../cases/case.types';
 import { caseReadNotice } from './help.projection';
@@ -15,6 +15,7 @@ interface Scope {
   readonly resource: Extract<CaseScope, { audience: 'employee' }>;
 }
 interface Notice { readonly title: string; readonly text: string }
+type HelpCommand = HelpCaseCommand | ConfirmPreferenceCommand;
 interface Snapshot {
   readonly scope: Scope | null;
   readonly phase: Phase;
@@ -22,7 +23,9 @@ interface Snapshot {
   readonly cases: readonly CaseDisplay[];
   readonly draft: string;
   readonly editing: boolean;
-  readonly review: HelpCaseCommand | null;
+  readonly review: HelpCommand | null;
+  readonly preferenceCaseId: string | null;
+  readonly successMessage: string;
   readonly error: string;
   readonly pending: boolean;
   readonly uncertain: boolean;
@@ -38,6 +41,7 @@ export interface HelpView {
   readonly draft: string;
   readonly editing: boolean;
   readonly reviewReason: string | null;
+  readonly preferenceReview: ConfirmPreferenceCommand['input'] | null;
   readonly error: string;
   readonly pending: boolean;
   readonly uncertain: boolean;
@@ -51,7 +55,7 @@ export interface HelpView {
 }
 const blank = (scope: Scope | null = null): Snapshot => ({ scope, phase: 'loading', help: null, cases: [], draft: '',
   editing: false, review: null, error: '', pending: false, uncertain: false, reconciled: false,
-  recordedCaseId: null, notice: null, message: '' });
+  preferenceCaseId: null, successMessage: '', recordedCaseId: null, notice: null, message: '' });
 const text = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0;
 function scopeOf(session: SessionState): Scope | null {
   if (session.status !== 'ready') return null;
@@ -63,7 +67,7 @@ function scopeOf(session: SessionState): Scope | null {
 const loaded = (s: Snapshot): boolean => s.phase === 'ready' || s.phase === 'empty';
 const same = (a: Scope | null, b: Scope | null): boolean => !!a && !!b && a.session === b.session && a.key === b.key;
 const readFailure = (): CaseClientResult<never> => ({ state: 'failed', value: null, problem: 'transport-unavailable' });
-const unknownMessage = 'Your request has an unknown outcome. Check the current cases before deliberately retrying the same request.';
+const unknownMessage = 'Your change has an unknown outcome. Check the current cases before deliberately retrying the same change.';
 
 /** One Help body owns one draft and command lane. Java remains the authority for cases and actions. */
 @Injectable()
@@ -80,7 +84,7 @@ export class HelpStore {
     const session = this.auth.state();
     const scope = scopeOf(session);
     const s = !this.stopped() && same(scope, this.snapshot().scope) ? this.snapshot() : blank();
-    const base: HelpView = { phase: 'loading', help: null, cases: [], draft: '', editing: false, reviewReason: null,
+    const base: HelpView = { phase: 'loading', help: null, cases: [], draft: '', editing: false, reviewReason: null, preferenceReview: null,
       error: '', pending: false, uncertain: false, recorded: false, notice: null, message: '',
       canAsk: false, canReview: false, canConfirm: false, canRetry: false };
     if (this.stopped()) return base;
@@ -92,7 +96,8 @@ export class HelpStore {
     }
     const actionable = loaded(s) && !s.pending;
     return { phase: s.phase, help: s.help, cases: s.cases, draft: s.draft, editing: s.editing,
-      reviewReason: s.review?.input.reason ?? null, error: s.error, pending: s.pending, uncertain: s.uncertain,
+      reviewReason: s.review?.kind === 'request-help' ? s.review.input.reason : null,
+      preferenceReview: s.review?.kind === 'confirm-preference' ? s.review.input : null, error: s.error, pending: s.pending, uncertain: s.uncertain,
       recorded: s.recordedCaseId !== null, notice: s.notice, message: s.message,
       canAsk: actionable && !s.editing && !s.review,
       canReview: actionable && s.editing && !s.uncertain,
@@ -115,7 +120,30 @@ export class HelpStore {
 
   beginRequest(): void {
     if (!this.view().canAsk) return;
-    this.snapshot.update(s => ({ ...s, editing: true, error: '', notice: null, message: '', recordedCaseId: null }));
+    this.snapshot.update(s => ({ ...s, editing: true, error: '', notice: null, message: '', recordedCaseId: null, successMessage: '' }));
+  }
+  canReviewPreference(record: CaseDisplay): boolean {
+    const s = this.snapshot(); const row = record.source;
+    return loaded(s) && !s.pending && !s.review && !s.editing && this.current(s.scope)
+      && s.cases.includes(record) && !['resolved', 'closed'].includes(row.status) && row.remedy?.type === 'preference-relaxation'
+      && row.relaxation?.applicable === true && row.relaxation.confirmed === false
+      && row.relaxation.currentBriefVersion === row.remedy['expectedBriefVersion'];
+  }
+  reviewPreference(record: CaseDisplay): void {
+    if (!this.canReviewPreference(record)) return;
+    const r = record.source.remedy!;
+    let command: ReturnType<CaseClient['preparePreference']>;
+    try { command = this.client.preparePreference({ commandId: `case-preference-${globalThis.crypto.randomUUID()}`,
+      decisionId: r['decisionId'] as string, expectedBriefVersion: r['expectedBriefVersion'] as number,
+      change: { path: r['path'] as string, value: r['value'] as ConfirmPreferenceCommand['input']['change']['value'] } }); }
+    catch {
+      this.snapshot.update(s => ({ ...s, notice: { title: 'Preference review unavailable', text: 'Refresh cases before reviewing this preference change again.' },
+        message: 'Your preference change has not been sent.' }));
+      return;
+    }
+    if ('state' in command) { this.applyFailure(command, this.snapshot().scope!); return; }
+    this.snapshot.update(s => ({ ...s, review: command, preferenceCaseId: record.caseId, recordedCaseId: null, successMessage: '',
+      error: '', notice: null, message: 'Review the single preference change before confirming.' }));
   }
   setReason(reason: string): void {
     if (!this.view().editing || this.view().pending) return;
@@ -141,7 +169,7 @@ export class HelpStore {
   }
   cancelRequest(): void {
     const view = this.view();
-    if (view.pending || view.uncertain || (!view.editing && view.reviewReason === null)) return;
+    if (view.pending || view.uncertain || (!view.editing && view.reviewReason === null && !view.preferenceReview)) return;
     this.snapshot.update(s => ({ ...s, editing: false, review: null, error: '', notice: loaded(s) ? null : s.notice,
       message: 'Request review cancelled.' }));
   }
@@ -196,7 +224,9 @@ export class HelpStore {
     const operation = this.start();
     const options = { signal: operation.controller.signal };
     this.snapshot.update(s => ({ ...s, phase: 'loading', help: null, cases: [], notice: null, reconciled: false,
-      message: s.recordedCaseId ? 'Your help request was recorded. Loading current cases.' : 'Loading renewal help.' }));
+      review: !s.uncertain && s.review?.kind === 'confirm-preference' ? null : s.review,
+      preferenceCaseId: !s.uncertain ? null : s.preferenceCaseId,
+      message: s.successMessage ? `${s.successMessage} Loading current cases.` : 'Loading renewal help.' }));
     const id = this.snapshot().recordedCaseId;
     const read = async <T>(work: () => Promise<CaseClientResult<T>>): Promise<CaseClientResult<T>> => {
       const result = await this.safeRead(work);
@@ -228,20 +258,23 @@ export class HelpStore {
     if (displayed.some(row => row === null)) { this.applyFailure({ state: 'scope-mismatch', value: null }, scope); return true; }
     this.snapshot.update(s => ({ ...s, phase: rows.length ? 'ready' : 'empty', help: help.value,
       cases: displayed as CaseDisplay[], reconciled: s.uncertain,
-      message: s.uncertain ? 'Current cases loaded. Your previous request still has an unknown outcome; you may deliberately retry the same request.'
-        : s.recordedCaseId ? 'Your help request was recorded. Showing current cases.' : 'Cases refreshed.' }));
+      message: s.uncertain ? 'Current cases loaded. Your previous change still has an unknown outcome; you may deliberately retry the same change.'
+        : s.successMessage ? `${s.successMessage} Showing current cases.` : 'Cases refreshed.' }));
     return true;
   }
-  private async send(scope: Scope, command: HelpCaseCommand): Promise<boolean> {
+  private async send(scope: Scope, command: HelpCommand): Promise<boolean> {
     const operation = this.start();
-    this.snapshot.update(s => ({ ...s, pending: true, notice: null, reconciled: false, message: 'Saving your confirmed request.' }));
-    let result: CaseClientResult<CaseDetailValue>;
-    try { result = await this.client.requestHelp(command, { signal: operation.controller.signal }); }
+    this.snapshot.update(s => ({ ...s, pending: true, notice: null, reconciled: false, message: command.kind === 'request-help' ? 'Saving your confirmed request.' : 'Saving your confirmed preference change.' }));
+    let result: CaseClientResult<CaseDetailValue | ConfirmedPreference>;
+    try { result = command.kind === 'request-help' ? await this.client.requestHelp(command, { signal: operation.controller.signal })
+      : await this.client.confirmPreference(command, { signal: operation.controller.signal }); }
     catch { result = { ...readFailure(), writeOutcome: 'unknown' as const }; }
     if (!this.isCurrent(scope, operation)) return false;
     if (result.state === 'ready') {
-      if (!projectCase(result.value.case, scope.resource)) { this.applyFailure({ state: 'scope-mismatch', value: null }, scope); return true; }
-      this.snapshot.set({ ...blank(scope), recordedCaseId: result.value.case.caseId });
+      if ('case' in result.value && !projectCase(result.value.case, scope.resource)) { this.applyFailure({ state: 'scope-mismatch', value: null }, scope); return true; }
+      const recordedCaseId = 'case' in result.value ? result.value.case.caseId : this.snapshot().preferenceCaseId;
+      this.snapshot.set({ ...blank(scope), recordedCaseId, successMessage: command.kind === 'request-help' ? 'Your help request was recorded.'
+        : 'Your preference change was confirmed. The scheme team will review the current case.' });
       return this.load(scope);
     }
     const privateLoss = this.losesAccess(result);
@@ -275,6 +308,6 @@ export class HelpStore {
       review: lost || stale || !s.uncertain ? null : s.review,
       uncertain: !lost && !stale && s.uncertain,
       editing: !lost && !stale && !s.uncertain && !!s.draft,
-      message: `${s.recordedCaseId ? 'Your help request was recorded. Current case information is unavailable. ' : s.uncertain ? `${unknownMessage} ` : ''}${notice.title}. ${notice.text}` });
+      message: `${s.successMessage ? `${s.successMessage} Current case information is unavailable. ` : s.uncertain ? `${unknownMessage} ` : ''}${notice.title}. ${notice.text}` });
   }
 }
