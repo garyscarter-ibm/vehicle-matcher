@@ -12,6 +12,7 @@ import { notificationBell } from './notification-bell.js';
 import { sideDrawer } from './side-drawer.js';
 import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
+import { dayBar } from '../presenter-controls/day-bar.js';
 import { loadingSkeleton } from './loading-skeleton.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
@@ -159,6 +160,17 @@ export function releaseGridExample() {
   const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}`, label: `${model}, ${paint}` }));
   const replay = button({ label: 'Replay', variant: 'ghost', onClick: () => grid.show(tiles) });
   const row = el('p'); row.append(replay); scope.append(row, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
+}
+
+export function presenterTimeExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-presenter-time';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP presenter time and scheme week'));
+  const scope = el('div', 'gcsp vm-gallery-gcsp'); const time = el('div', 'gcsp-console-time');
+  time.append(el('span', 'gcsp-console-day', 'Day 3'), el('strong', '', 'Wed 11 Nov, 11:30am'));
+  const week = dayBar(); week.update({ now: '2026-11-11T11:30:00.000Z', start: '2026-11-09T09:00:00.000Z' });
+  const unavailable = dayBar();
+  scope.append(time, week.root, el('p', '', 'The week is hidden until the clock is available.'), unavailable.root);
+  section.append(scope); return section;
 }
 
 export function releaseSkeletonExample() {
