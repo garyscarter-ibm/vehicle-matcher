@@ -74,7 +74,7 @@ const good = (reply) => { assert.equal(reply.status, 200, reply.text.slice(0, 40
 
 test('the hosted entry serves the open demo and takes a brief from Paula over one origin', { timeout: 120000 }, async (t) => {
   const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }),
-    '/gcsp/presenter');
+    '/gcsp/login');
   assert.match(app.output(), /GCSP hosted demo \(memory\)/);
   const browser = client(app.base);
   const get = (path, options) => browser.request(path, options);
@@ -115,7 +115,7 @@ test('the hosted entry serves the open demo and takes a brief from Paula over on
 });
 
 test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {
-  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp/presenter');
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp/login');
   const browser = client(app.base);
   assert.equal((await browser.request('/gcsp/login')).status, 200);
   good(await browser.request('/api/gcsp/session/login', { method: 'POST', json: { email: 'paula.mason@gcsp-demo.com', password: 'fucq' } }));

@@ -133,7 +133,7 @@ export async function startHostedGcsp({ buildServer, env = process.env, port, ro
     server = createServer(createGcspFront({ root, services, api, origin, fallThrough: true }));
     await new Promise((done, reject) => { server.once('error', reject); server.listen(port, done); });
   } catch { await close(); return { status: 'unavailable' }; }
-  console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp/presenter`);
+  console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp/login`);
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { close().finally(() => process.exit(0)); });
   return { status: 'ok', value: { server, services, origin, close } };
 }
