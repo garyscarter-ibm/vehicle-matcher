@@ -5,7 +5,7 @@
  "generatedFrom": {
   "generator": "services/gcsp-api/tools/scenario-baseline/generate.mjs",
   "policyVersion": "gcsp-policy-v1",
-  "sourceCommit": "1b228debc01ecaeb9732738e26d051599ff055e6"
+  "sourceCommit": "2552b05151aaf8aa20a601ecaeffb9cd9d89c7bf"
  },
  "capacity": 1,
  "principals": [
@@ -720,18 +720,7 @@
      },
      "requiredBy": {
       "status": "known",
-      "value": "2027-02-26T23:59:59.999Z",
-      "unit": null,
-      "provenance": {
-       "sourceRef": "fixture:manual-records-v1",
-       "version": "manual-records-v1",
-       "observedAt": "2026-11-05T09:00:00.000Z",
-       "assurance": "synthetic-scenario"
-      }
-     },
-     "driverEligible": {
-      "status": "known",
-      "value": true,
+      "value": "2027-03-16T23:59:59.999Z",
       "unit": null,
       "provenance": {
        "sourceRef": "fixture:manual-records-v1",
@@ -770,8 +759,8 @@
         "family"
        ]
       },
-      "actualCollectionDate": "2026-08-27",
-      "contractEndDate": "2027-02-26",
+      "actualCollectionDate": "2026-09-14",
+      "contractEndDate": "2027-03-16",
       "returnedDate": null,
       "annualMileage": 12000,
       "mileageUnit": "mi/year",
@@ -780,8 +769,8 @@
        "value": 5200,
        "unit": "mi"
       },
-      "earliestCollectionDate": "2027-02-07",
-      "latestCollectionDate": "2027-02-26",
+      "earliestCollectionDate": "2027-02-25",
+      "latestCollectionDate": "2027-03-16",
       "source": {
        "mode": "synthetic",
        "sourceRef": "fixture:manual-records-v1",
@@ -824,8 +813,8 @@
           "family"
          ]
         },
-        "actualCollectionDate": "2026-08-27",
-        "contractEndDate": "2027-02-26",
+        "actualCollectionDate": "2026-09-14",
+        "contractEndDate": "2027-03-16",
         "returnedDate": null,
         "annualMileage": 12000,
         "mileageUnit": "mi/year",
@@ -834,8 +823,8 @@
          "value": 5200,
          "unit": "mi"
         },
-        "earliestCollectionDate": "2027-02-07",
-        "latestCollectionDate": "2027-02-26",
+        "earliestCollectionDate": "2027-02-25",
+        "latestCollectionDate": "2027-03-16",
         "source": {
          "mode": "synthetic",
          "sourceRef": "fixture:manual-records-v1",
