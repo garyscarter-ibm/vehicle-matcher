@@ -411,6 +411,8 @@ class Page {
   event(m) {
     const p = m.params ?? {};
     if (m.method === 'Fetch.requestPaused' && this.invalidContextFault) {
+      // CORS preflight must reach the real Java host; inject only the intended invalid GET response.
+      if (p.request.method !== 'GET') { this.waits.push(this.send('Fetch.continueRequest', { requestId: p.requestId })); return; }
       this.faultRequests ??= [];
       this.faultRequests.push({ path: new URL(p.request.url).pathname, method: p.request.method, label: 'Deliberately malformed context; never business success' });
       this.waits.push(this.send('Fetch.fulfillRequest', { requestId: p.requestId, responseCode: 200,
@@ -712,6 +714,7 @@ async function apiFailures(cdp, s) {
   receipt.faultInjection = { boundary: `${API_BASE}/context`, method: 'GET', status: 200, body: { status: 'ok', value: { malformedProofFault: true } }, purpose: 'Deliberately invalid schema only; no business success is mocked' };
   await page.send('Fetch.enable', { patterns: [{ urlPattern: `${API_BASE}/context`, requestStage: 'Request' }] });
   const invalid = await freshDocument(page, 'reload', { readPath: '/context', readOk: false, ready: `return text().includes('Account unavailable') && !!button('Try again');`, what: 'invalid context response refusal' });
+  s.observations.invalidContext = { read: invalid, interceptedRequests: page.faultRequests ?? [], rendered: await page.act(`return { text: text(), accountVisible: !!$('.account-screen') };`) };
   check(s, 'invalid schema produces useful API failure rather than not-found', invalid.status === 200 && invalid.response?.value?.malformedProofFault === true && await page.act(`return !text().includes('Page not found') && !$('.account-screen');`) && page.faultRequests?.length === 1);
   await snapshot(page, s, 'api-invalid-context');
   await page.send('Fetch.disable'); page.invalidContextFault = false;
