@@ -99,6 +99,12 @@ export function createFutureChoiceEvaluator({ policy, identity, terms } = {}) {
         if (validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.charging } }, slider).length) return unavailable('planning-future-brief-invalid');
         const employeeFacts = structuredClone(employee.contract?.manualContext?.employeeFacts);
         if (!object(employeeFacts)) return unavailable('planning-future-employee-facts-unavailable');
+        // Prepared records hold eligibility on the employee driver; derive it as every recommendation read path does.
+        if (employeeFacts.driverEligible === undefined) {
+          const drivers = employee.contract.manualContext.drivers;
+          const driver = Array.isArray(drivers) ? drivers.find((d) => d?.kind === 'employee' && d.employeeId === employee.employeeId) : undefined;
+          if (driver?.eligible !== undefined) employeeFacts.driverEligible = structuredClone(driver.eligible);
+        }
         if (employeeFacts.essentials !== undefined && validateBriefContent({ schemaVersion: 1, preferences: {}, essentials: employeeFacts.essentials }, config, slider).length) return unavailable('planning-future-employee-facts-invalid');
         const suppliedCharging = brief.essentials.charging;
         if (suppliedCharging && !unselectedPracticalAnswer(suppliedCharging)) employeeFacts.charging = { status: suppliedCharging.state === 'confirmed' && suppliedCharging.value !== null ? 'known' : 'unknown',
