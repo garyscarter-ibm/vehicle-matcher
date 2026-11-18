@@ -9,31 +9,25 @@ const employee = '?experience=employee-cars&brand=bmw';
 const flush = async () => { await new Promise(setImmediate); await new Promise(setImmediate); };
 const deferred = () => { let resolve; let reject; const promise = new Promise((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; };
 const action = (win, label) => [...win.document.querySelectorAll('button,a')].find((node) => node.textContent === label);
-const response = (body, status = 200) => ({ status, ok: status >= 200 && status < 300,
-  json: async () => structuredClone(body), clone() { return response(body, status); } });
+const frontendUrl = 'https://employee.example.test/gcsp/';
 
-// Finite transport envelopes exercise the real element and HTTP adapter, not product runtime setup.
-const account = { status: 'ok', value: { state: 'ready', asOf: '2026-11-05T09:00:00Z', actions: [],
-  account: { name: 'Contract Test Employee', company: 'Synthetic company', gradeId: 'Test grade' },
-  contracts: [], drivers: [], histories: [], allowance: { monthlyPoints: 1200 } } };
-
-test('public entry registers the real lazy capability while library routing stays fail-closed', () => {
+test('public entry defaults to unavailable without importing the legacy account journey', () => {
   const source = readFileSync(new URL('../../blocks/demo-launcher/demo-launcher.js', import.meta.url), 'utf8');
-  assert.match(source, /bootDemo\(\{ employeeCapability: createEmployeeCapability\(\) \}\)/);
+  assert.match(source, /bootDemo\(\{ employeeCapability: createEmployeeCapability\(\{ enabled: true, frontendUrl: null \}\) \}\)/);
   assert.equal(ENTRY_REGISTRY.employeeAvailable, false);
-  const loader = readFileSync(new URL('../../blocks/demo-launcher/employee-entry.js', import.meta.url), 'utf8');
-  assert.match(loader, /import\('\.\.\/gcsp\/manual-setup\/journey\.js'\)/);
-  assert.doesNotMatch(loader, /harness|fixtures/);
+  assert.equal(createEmployeeCapability().enabled, false);
+  const handoff = readFileSync(new URL('../../blocks/demo-launcher/employee-entry.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(handoff, /manual-setup|http-adapter|fetch|credentials|customElements|import\(/);
 });
 
-test('legacy retail and disabled or unsupported employee routes never load employee modules', () => {
-  let loads = 0;
+test('retail and disabled or unsupported employee routes never navigate to the employee frontend', () => {
+  const navigations = [];
   for (const [suffix, enabled] of [['?brand=mini&mode=swipe#m=answers', true], [employee, false],
     ['?experience=employee-cars&brand=mini', true], ['?experience=employee-cars', true]]) {
-    const employeeCapability = createEmployeeCapability({ enabled, load: () => { loads += 1; throw Error('must stay lazy'); } });
+    const employeeCapability = createEmployeeCapability({ enabled, frontendUrl, navigate: (url) => navigations.push(url) });
     const { dom, win, mounts } = bootAt(suffix, { employeeCapability });
     try {
-      assert.equal(loads, 0);
+      assert.equal(navigations.length, 0);
       if (suffix.startsWith('?brand=')) assert.equal(mounts.length, 1);
       else {
         assert.ok([...win.document.querySelectorAll('a')].some((node) => node.textContent.includes('Used cars')));
@@ -112,66 +106,77 @@ test('employee API context uses existing public normalization and drops identity
   }
 });
 
-test('direct and refreshed BMW entry mounts the real custom element once and retains session failures', async () => {
-  const loaded = deferred(); const moduleReady = deferred(); const calls = []; let mode = 'ready'; let lazyLoads = 0;
-  const capability = createEmployeeCapability({ load: async () => {
-    lazyLoads += 1; await loaded.promise;
-    const [entry, transport] = await Promise.all([
-      import('../../blocks/gcsp/manual-setup/journey.js'), import('../../blocks/gcsp/account/http-adapter.js'),
-    ]);
-    moduleReady.resolve();
-    return { ...entry, ...transport };
-  }, fetchImpl: async (url, options) => {
-    calls.push({ url, options });
-    if (mode === 'expired') return response({ status: 'expired-session' }, 401);
-    if (mode === 'refused') return response({ status: 'forbidden', view: { supportOwner: 'scheme-support' } }, 403);
-    return response(url.endsWith('/account') ? account : { status: 'not-found' }, url.endsWith('/account') ? 200 : 404);
-  } });
-  const { dom, win } = bootAt(`${employee}&employeeId=other&role=presenter&api=https%3A%2F%2Fname%3Apassword%40api.test%2Fbase%2F%3Ftoken%3Dprivate`,
-    { remote: true, employeeCapability: capability });
+test('direct and refreshed BMW entry hands off only its brand to the configured Angular frontend', async () => {
+  const navigations = [];
+  const capability = createEmployeeCapability({ frontendUrl, navigate: (url) => navigations.push(url) });
+  const source = `${employee}&employeeId=other&role=presenter&mode=swipe&scope=national&retailer=92&answers=private&api=https%3A%2F%2Fapi.test%2Fbase&frontendUrl=https%3A%2F%2Fwrong.test%2Fgcsp%2F#m=answers`;
+  const { dom, win, mounts } = bootAt(source, { remote: true, employeeCapability: capability });
   try {
-    assert.equal(lazyLoads, 1); assert.equal(calls.length, 0);
-    loaded.resolve(); await moduleReady.promise; await flush();
-    const root = win.document.getElementById('demo-root');
-    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
-    assert.equal(root.querySelectorAll('.gcsp-header').length, 1);
-    assert.match(root.textContent, /Contract Test Employee/);
-    assert.equal(win.document.activeElement.tagName, 'H1');
-    // One mount reads account, draft and the current offer link (FUCQ-105); Buddy state rides on the brief (FUCQ-370).
-    assert.equal(calls.length, 3, 'adapter is assigned before attach, with no default duplicate mount');
-    for (const { url, options } of calls) {
-      assert.match(url, /^https:\/\/api\.test\/base\/api\/gcsp\/(manual\/(account|draft)|offers\/current|activity)$/);
-      assert.equal(options.credentials, 'include');
-      assert.equal(options.headers['X-Access-Key'], undefined);
-      assert.equal(options.method ?? 'GET', 'GET'); assert.equal(options.body, undefined);
-      assert.equal(Object.keys(options.headers).some((key) => /employee|role|cookie|authorization/i.test(key)), false);
-    }
-    assert.equal(root.querySelector('gcsp-employee-entry').getAttribute('brand'), 'bmw');
-    for (const link of root.querySelectorAll('nav[aria-label="Car experiences"] a')) {
-      assert.doesNotMatch(link.href, /password|private|employeeId|role|key=/);
-      assert.equal(new URL(link.href).searchParams.get('brand'), 'bmw');
-    }
-    // Re-execute the real boot against the same location, as a host remount/refresh does.
-    const old = root.querySelector('gcsp-employee-entry');
+    await flush();
+    assert.deepEqual(navigations, [`${frontendUrl}?brand=bmw`]);
+    assert.equal(mounts.length, 0);
+    assert.equal(win.document.querySelector('gcsp-employee-entry'), null);
+    assert.equal(win.document.querySelector('link[href*="manual-setup"]'), null);
+    win.dispatchEvent(new win.Event('pageshow')); await flush();
+    assert.equal(navigations.length, 1, 'unchanged location does not repeat the handoff');
     win.eval('bootDemo({ employeeCapability });'); await flush();
-    assert.equal(old.isConnected, false); assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
-    assert.equal(calls.length, 6);
-    for (const failure of ['refused', 'expired']) {
-      mode = failure; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
-      assert.equal(win.document.querySelector('.vm-gate'), null, 'employee rejection does not become demo identity');
-      assert.doesNotMatch(root.textContent, /Contract Test Employee/);
-      assert.match(root.textContent, /account|Account/);
-      assert.ok(action(win, 'Used cars')); assert.ok(action(win, 'Car experiences'));
-    }
-    mode = 'ready'; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
-    assert.match(root.textContent, /Contract Test Employee/);
-    const latest = calls.slice(-3);
-    const signals = latest.map(({ options }) => options.signal);
-    win.history.replaceState({}, '', employee); await flush();
-    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
-    calls.slice(-3).forEach(({ url }) => assert.match(url, /^https:\/\/bmw-matcher-api\.onrender\.com\/api\/gcsp\/(manual\/(account|draft)|offers\/current|activity)$/));
-    win.history.pushState({}, '', '?experience=launcher&brand=bmw'); await flush();
-    assert.equal(root.querySelector('gcsp-employee-entry'), null);
-    signals.forEach((signal) => assert.equal(signal.aborted, true));
+    assert.deepEqual(navigations, [`${frontendUrl}?brand=bmw`, `${frontendUrl}?brand=bmw`]);
+    assert.ok(action(win, 'Used cars')); assert.ok(action(win, 'Car experiences'));
   } finally { dom.window.close(); }
+});
+
+test('configured launcher link goes directly to Angular and remains BMW-only after brand changes', () => {
+  const navigations = [];
+  const capability = createEmployeeCapability({ frontendUrl, navigate: (url) => navigations.push(url) });
+  const { dom, win } = bootAt('?experience=launcher&brand=bmw&mode=swipe&scope=national&retailer=92&api=https%3A%2F%2Fapi.test#m=answers',
+    { employeeCapability: capability });
+  try {
+    assert.equal(action(win, 'Explore Employee cars').href, `${frontendUrl}?brand=bmw`);
+    const used = new URL(action(win, 'Explore BMW Used cars').href);
+    assert.equal(used.searchParams.get('mode'), 'swipe');
+    assert.equal(used.searchParams.get('scope'), 'national');
+    assert.equal(used.searchParams.get('retailer'), '92');
+    assert.equal(used.searchParams.get('api'), 'https://api.test');
+    assert.equal(used.hash, '#m=answers');
+    const select = win.document.querySelector('select');
+    select.value = 'mini'; select.dispatchEvent(new win.Event('change', { bubbles: true }));
+    assert.equal(action(win, 'Explore Employee cars'), undefined);
+    assert.ok(action(win, 'Choose BMW'));
+    action(win, 'Choose BMW').click();
+    assert.equal(action(win, 'Explore Employee cars').href, `${frontendUrl}?brand=bmw`);
+    assert.equal(navigations.length, 0, 'rendering links does not navigate');
+  } finally { dom.window.close(); }
+});
+
+test('missing or invalid frontend configuration shows unavailable with usable retail recovery', () => {
+  for (const value of [undefined, '', '/gcsp/', 'https://employee.test/other', 'http://employee.test/gcsp/',
+    'https://user:password@employee.test/gcsp/', `${frontendUrl}?api=other`, `${frontendUrl}#account`]) {
+    const navigations = [];
+    const capability = createEmployeeCapability({ frontendUrl: value, navigate: (url) => navigations.push(url) });
+    assert.equal(capability.enabled, false);
+    assert.equal(capability.frontendUrl, null);
+    const { dom, win } = bootAt(`${employee}&mode=swipe&api=https%3A%2F%2Fapi.test#m=answers`, { employeeCapability: capability });
+    try {
+      assert.equal(win.document.getElementById('demo-root').dataset.entryState, 'employee-unavailable');
+      assert.ok(action(win, 'Employee cars unavailable').disabled);
+      assert.ok(action(win, 'Explore BMW Used cars'));
+      assert.equal(navigations.length, 0);
+      assert.equal(win.document.querySelector('gcsp-employee-entry'), null);
+    } finally { dom.window.close(); }
+  }
+});
+
+test('defensive handoff ignores disabled, aborted and non-BMW entry requests', () => {
+  const navigations = [];
+  const root = { ownerDocument: { defaultView: { location: { replace: (url) => navigations.push(url) } } } };
+  const capability = createEmployeeCapability({ frontendUrl });
+  const aborted = new AbortController(); aborted.abort();
+  capability.mount(root, { brand: 'bmw' }, { signal: aborted.signal });
+  capability.mount(root, { brand: 'mini' });
+  capability.mount(root, { brand: null });
+  createEmployeeCapability({ enabled: false, frontendUrl }).mount(root, { brand: 'bmw' });
+  createEmployeeCapability().mount(root, { brand: 'bmw' });
+  assert.deepEqual(navigations, []);
+  capability.mount(root, { brand: 'bmw', location: '?role=presenter&api=https://wrong.test' });
+  assert.deepEqual(navigations, [`${frontendUrl}?brand=bmw`]);
 });

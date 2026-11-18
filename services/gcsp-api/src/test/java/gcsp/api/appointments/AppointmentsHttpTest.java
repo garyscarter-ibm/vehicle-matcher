@@ -173,6 +173,60 @@ class AppointmentsHttpTest {
     }
 
     @Test
+    void aNoShowIsGregOnlyAndTheEmployeeRebooksToAnotherSlot() throws Exception {
+        String order = ApptHttp.id();
+        ApptHttpPorts.STAGES.order(order, "employee-paula", 4);
+        Instant t0 = tick(ApptHttp.nextTick(dataSource.get(), persistence));
+        JsonNode first = body(get("paula", order)).get("value");
+        String slot = first.get("offeredSlots").get(0).get("slotId").asText();
+        http.as("paula").body(command("cmd-" + ApptHttp.id(), order, "slotId", slot, 0)).post(BASE + "/appointments/request")
+                .then().statusCode(200);
+        tick(t0.plusSeconds(ApptHarness.DELAY + 1));
+        JsonNode scheduled = body(get("paula", order)).get("value");
+        assertEquals("scheduled", scheduled.get("state").asText());
+        Instant slotStart = Instant.parse(scheduled.get("slot").get("start").asText());
+        long v = scheduled.get("version").asLong();
+
+        for (String who : new String[] {"paula", "alex", "presenter"}) {
+            http.as(who).body(command("cmd-" + ApptHttp.id(), order, null, null, v)).post(BASE + "/appointments/no-show")
+                    .then().statusCode(403).body("code", equalTo("role-required"));
+        }
+        String noShowId = "cmd-" + ApptHttp.id();
+        Response early = http.as("greg").body(command(noShowId, order, null, null, v)).post(BASE + "/appointments/no-show");
+        assertEquals(409, early.statusCode(), early.asString());
+        assertEquals("appointment-outcome-too-early", body(early).get("code").asText());
+
+        tick(slotStart);
+        Response done = http.as("greg").body(command(noShowId, order, null, null, v)).post(BASE + "/appointments/no-show");
+        assertEquals(200, done.statusCode(), done.asString());
+        JsonNode missed = body(done).get("value");
+        assertEquals("no-show", missed.get("state").asText());
+        assertEquals("no-show", missed.get("outcome").get("state").asText());
+        assertTrue(missed.get("outcome").get("providerReference").asText().startsWith("SYN-APT-"));
+        assertEquals(done.asString(), http.as("greg").body(command(noShowId, order, null, null, v))
+                .post(BASE + "/appointments/no-show").asString());
+        assertEquals(1, ApptHttp.count(dataSource.get(), "SELECT count(*) FROM outbox_events WHERE event_type = "
+                + "'appointment-no-show' AND payload->>'orderUuid' = ?", order));
+
+        String missedSlot = missed.get("slot").get("slotId").asText();
+        long mv = missed.get("version").asLong();
+        http.as("paula").body(command("cmd-" + ApptHttp.id(), order, "slotId", missedSlot, mv)).post(BASE + "/appointments/request")
+                .then().statusCode(400).body("reasons[0].field", equalTo("slotId"));
+        String next = null;
+        for (JsonNode offered : missed.get("offeredSlots")) {
+            if (!missedSlot.equals(offered.get("slotId").asText())) next = offered.get("slotId").asText();
+        }
+        assertTrue(next != null, missed.toString());
+        Response rebooked = http.as("paula").body(command("cmd-" + ApptHttp.id(), order, "slotId", next, mv))
+                .post(BASE + "/appointments/request");
+        assertEquals(200, rebooked.statusCode(), rebooked.asString());
+        JsonNode second = body(rebooked).get("value");
+        assertEquals("requested", second.get("state").asText());
+        assertEquals(2, second.get("attempt").asInt());
+        assertEquals(1, second.get("previousAttempts").size());
+    }
+
+    @Test
     void anAnonymousOrBadlyAuthenticatedCallerGetsJson401() {
         String order = ApptHttp.id();
         given().get(BASE + "/appointments?orderUuid=" + order).then().statusCode(401).contentType(containsString("application/json"))
@@ -180,6 +234,7 @@ class AppointmentsHttpTest {
         given().contentType("application/json").body("{}").post(BASE + "/appointments/request").then().statusCode(401);
         given().contentType("application/json").body("{}").post(BASE + "/appointments/accept").then().statusCode(401);
         given().contentType("application/json").body("{}").post(BASE + "/appointments/complete").then().statusCode(401);
+        given().contentType("application/json").body("{}").post(BASE + "/appointments/no-show").then().statusCode(401);
         given().contentType("application/json").body("{}").post(BASE + "/presenter/appointments/ticks").then().statusCode(401);
         given().header("Authorization", "Bearer not.a.jwt").get(BASE + "/appointments?orderUuid=" + order).then()
                 .statusCode(401).body(not(containsString("not.a.jwt")));

@@ -8,7 +8,7 @@ import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
 import { PolicyService, MemoryPolicyProvider, createMemoryPolicyStore } from '../gcsp/policy/index.js';
 
-const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1'];
+const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1', 'offer.declinedCar.reentry.v1'];
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', outcome?.code ?? outcome?.reason); return outcome.value; };
 const open = async (t, extra) => {
   const runtime = good(await createGcspRuntime({ mode: 'memory', environmentId: 'offer-journey-adoption',
@@ -27,11 +27,20 @@ test('the combined offer journey set is the two reviewed offer sets, row for row
     ...getReviewedDefinitionSet('offer-followup-questions-v1').definitions]);
 });
 
+test('the successor adds re-entry without changing the historical journey definitions', () => {
+  const old = getReviewedDefinitionSet('offer-journey-v1');
+  const next = getReviewedDefinitionSet('offer-journey-v2');
+  assert.ok(next, 'The reviewed successor must be adoptable.');
+  assert.deepEqual(next.definitions.slice(0, 2), old.definitions);
+  assert.equal(next.definitions[2].key, 'offer.declinedCar.reentry.v1');
+  assert.equal(old.definitions.length, 2);
+});
+
 test('demo startup adopts decline reasons and follow-up questions through PolicyService', async (t) => {
   const { runtime, employee, reads } = await open(t, { adoptOfferJourney: true });
-  assert.equal(employee.policyVersion, 'gcsp-policy-v1+offer-journey-v1');
+  assert.equal(employee.policyVersion, 'gcsp-policy-v1+offer-journey-v2');
   reads.forEach((read, i) => { assert.equal(read.status, 'ok');
-    assert.deepEqual(read.value.value, getReviewedDefinitionSet('offer-journey-v1').definitions[i].value); });
+    assert.deepEqual(read.value.value, getReviewedDefinitionSet('offer-journey-v2').definitions[i].value); });
   // A second call finds the keys already active and publishes nothing.
   const again = good(await adoptOfferJourneyPolicy({ policy: runtime.policy, identity: runtime.identity, clock: runtime.clock }));
   assert.equal(again.adopted, false); assert.equal(again.policyVersion, employee.policyVersion);
@@ -53,7 +62,7 @@ test('after a scenario reset the presenter session renews and the new run has th
     fixtureVersion: scenario.fixtureVersion, policyVersion: scenario.policyVersion }));
   assert.notEqual(reset.runId, employee.runId);
   const renewed = good(await runtime.identity.createPresenterSession('adoption-presenter-after-reset')).context;
-  assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v1');
+  assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v2');
   const now = good(await runtime.clock.now(renewed)).now;
   const read = await runtime.policy.getAssumption('offer.declineReasons.v1', { runId: renewed.runId, asOf: now, policyVersion: renewed.policyVersion });
   assert.equal(read.status, 'ok');
@@ -83,7 +92,7 @@ test('FUCQ-179: the plain presenter clock reset route also re-adopts the offer s
     expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
   assert.notEqual(good(reset.body).runId, employee.runId);
   const renewed = good(await runtime.identity.createPresenterSession('clock-route-after-reset')).context;
-  assert.equal(renewed.runId, reset.body.value.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v1');
+  assert.equal(renewed.runId, reset.body.value.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v2');
   assert.ok((await offerSetsActive(runtime, renewed)).every((read) => read.status === 'ok'));
 });
 
@@ -102,6 +111,26 @@ test('FUCQ-179: a restart over the same durable stores after a reset reopens on 
   await first.close();
   const second = good(await start()); t.after(() => second.close());
   const renewed = good(await second.identity.createPresenterSession('restart-presenter-after')).context;
-  assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v1');
+  assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v2');
   assert.ok((await offerSetsActive(second, renewed)).every((read) => read.status === 'ok'));
+});
+
+test('a retained v1 publication upgrades at the same frozen clock on the first restart', async (t) => {
+  const store = createMemoryStore(); const policyStore = createMemoryPolicyStore();
+  const start = (adoptOfferJourney) => createGcspRuntime({ mode: 'memory', environmentId: 'retained-offer-v1',
+    policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'retained-offer-bootstrap', adoptOfferJourney,
+    repository: createMemoryRepository({ store }), policy: new PolicyService({ provider: new MemoryPolicyProvider({ store: policyStore }) }) });
+  const first = good(await start(false));
+  const presenter = good(await first.identity.createPresenterSession('retained-policy-presenter')).context;
+  const greg = good(await first.identity.switchPrincipal(presenter, 'demo-greg', 'retained-policy-greg')).context;
+  const now = good(await first.clock.now(greg)).now;
+  good(await first.policy.adoptReviewedAssumptions(greg, { commandId: 'retained-policy-v1', expectedActiveVersion: greg.policyVersion,
+    policyVersion: greg.policyVersion + '+offer-journey-v1', effectiveFrom: now, definitionSetId: 'offer-journey-v1' }));
+  const retained = structuredClone(policyStore.runs.get(greg.runId));
+  await first.close();
+  const second = good(await start(true)); t.after(() => second.close());
+  const current = good(await second.createLocalSession()).context;
+  assert.ok((await offerSetsActive(second, current)).every((read) => read.status === 'ok'));
+  assert.deepEqual(policyStore.runs.get(current.runId).slice(0, retained.length), retained);
+  assert.equal(good(await second.clock.now(current)).now, new Date(Date.parse(now) + 1).toISOString());
 });

@@ -1,22 +1,27 @@
 import { computed, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort } from '../auth/auth.port';
 import { ManualRouteComponent } from './manual-route.component';
+import { ManualReviewComponent } from './manual-review.component';
+import { ManualSummaryComponent } from './manual-summary.component';
 import { ManualStore } from './manual.store';
-import type { ManualClaim, ManualOrder, ManualProjection } from './manual.types';
+import type { ManualClaim, ManualEditableDetails, ManualOrder, ManualProjection } from './manual.types';
 
-const empty = (): ManualProjection => ({ state: 'no-claim', claim: null, order: null, terms: null, declarations: [], wording: null, failure: null,
+const empty = (): ManualProjection => ({ state: 'no-claim', claim: null, order: null, terms: null, reviewDetails: null, declarations: [], wording: null, failure: null,
   canReview: false, canSubmit: false, canRelease: false, approved: false });
 
 describe('manual route command and navigation boundary', () => {
   let fixture: ComponentFixture<ManualRouteComponent>; let navigate: ReturnType<typeof vi.spyOn>;
   const projection = signal(empty()); const loading = signal(false); const signIn = vi.fn(); const scope = signal<string | null>('employee-scope');
+  const detailsDraft = signal<ManualEditableDetails | null>(null); const detailsDirty = signal(false); const canSaveReviewDetails = signal(false);
   const store = { projection, loading, scope, state: computed(() => projection().state), handoff: signal(null), declarations: signal({}), resumeRequired: signal(false), canClaim: signal(false),
+    detailsDraft, detailsDirty, canSaveReviewDetails, setReviewDetails: vi.fn(), saveReviewDetails: vi.fn(),
     enter: vi.fn(), dispose: vi.fn(), release: vi.fn(), checkStatus: vi.fn(), claimSelection: vi.fn(), beginReview: vi.fn(), confirmResume: vi.fn(), setDeclaration: vi.fn(), submit: vi.fn() };
   beforeEach(async () => {
-    projection.set(empty()); scope.set('employee-scope'); loading.set(false); signIn.mockReset();
+    projection.set(empty()); scope.set('employee-scope'); loading.set(false); detailsDraft.set(null); detailsDirty.set(false); canSaveReviewDetails.set(false); signIn.mockReset();
     Object.values(store).forEach((value) => { if (vi.isMockFunction(value)) value.mockReset(); }); store.enter.mockResolvedValue(undefined); store.release.mockResolvedValue(false);
     await TestBed.configureTestingModule({ imports: [ManualRouteComponent], providers: [provideRouter([]), { provide: ManualStore, useValue: store }, { provide: AuthPort, useValue: { signIn } }] }).compileComponents();
     navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
@@ -26,6 +31,17 @@ describe('manual route command and navigation boundary', () => {
   it('checks actual state on direct entry and never claims, reviews or submits automatically', () => {
     expect(store.enter).toHaveBeenCalledExactlyOnceWith(); expect(store.claimSelection).not.toHaveBeenCalled(); expect(store.beginReview).not.toHaveBeenCalled(); expect(store.submit).not.toHaveBeenCalled();
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('No car selected');
+  });
+  it.each(['preview', 'order-review'] as const)('binds controlled details and only explicit events in %s', (phase) => {
+    const draft: ManualEditableDetails = { contact: { phone: '01632 960000', email: 'actual@example.test' }, expectedReturnMileage: null, specialRequirements: '' };
+    detailsDraft.set(draft); detailsDirty.set(true); canSaveReviewDetails.set(true);
+    projection.set({ ...empty(), state: phase === 'preview' ? 'preview' : 'review', claim: { state: 'quoted', hold: { phase, mode: 'new', expiresAt: '2026-11-17T18:00:00Z' },
+      quote: { orderUuid: 'exact-car', facts: {}, terms: {}, validUntil: '2026-11-17T18:00:00Z' } } as ManualClaim }); fixture.detectChanges();
+    const child = fixture.debugElement.query(By.directive(phase === 'preview' ? ManualReviewComponent : ManualSummaryComponent)).componentInstance as ManualReviewComponent | ManualSummaryComponent;
+    expect(child.detailsDraft()).toBe(draft); expect(child.detailsDirty()).toBe(true); expect(child.canSaveDetails()).toBe(true);
+    expect(store.setReviewDetails).not.toHaveBeenCalled(); expect(store.saveReviewDetails).not.toHaveBeenCalled(); expect(store.submit).not.toHaveBeenCalled();
+    child.detailsChange.emit(draft); child.saveDetails.emit(); expect(store.setReviewDetails).toHaveBeenCalledExactlyOnceWith(draft); expect(store.saveReviewDetails).toHaveBeenCalledExactlyOnceWith();
+    if (child instanceof ManualSummaryComponent) { child.submit.emit(); expect(store.submit).toHaveBeenCalledExactlyOnceWith(); }
   });
   it('waits for a successful release before edit or browse navigation', async () => {
     projection.set({ ...empty(), state: 'preview', claim: { state: 'quoted', hold: { phase: 'preview', mode: 'replacement', expiresAt: '2026-11-16T18:00:00Z' },

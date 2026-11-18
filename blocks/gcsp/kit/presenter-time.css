@@ -1,0 +1,6 @@
+/* Presenter time: shared clock/day layout and dayBar week markers; .gcsp scoped, token colours. */
+.gcsp .gcsp-console-time { display: flex; align-items: baseline; gap: var(--gcsp-space-3); } .gcsp .gcsp-console-day { color: var(--gcsp-text-muted); } .gcsp .gcsp-console-time[hidden], .gcsp .gcsp-console-time [hidden] { display: none; }
+.gcsp .gcsp-console-week { display: flex; gap: 4px; margin: var(--gcsp-space-2) 0 0; padding: 0; list-style: none; } .gcsp .gcsp-console-week[hidden] { display: none; }
+.gcsp .gcsp-console-week li { flex: 1; padding: 6px 8px 0; border-top: 3px solid var(--gcsp-divider); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.gcsp .gcsp-console-week li.is-done { border-top-color: var(--gcsp-text-muted); } .gcsp .gcsp-console-week li.is-weekend { opacity: .5; }
+.gcsp .gcsp-console-week li.is-today { border-top-color: var(--gcsp-accent); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }

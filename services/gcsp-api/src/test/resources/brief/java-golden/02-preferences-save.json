@@ -1,0 +1,84 @@
+{
+  "file" : "02-preferences-save.json",
+  "step" : "preferences-save",
+  "method" : "POST",
+  "path" : "/brief/preferences",
+  "request" : {
+    "commandId" : "golden-preferences-1",
+    "expectedBriefVersion" : 0,
+    "expectedDraftVersion" : 0,
+    "changes" : {
+      "comfort" : {
+        "value" : 50
+      }
+    },
+    "currentCarRating" : {
+      "contractId" : "contract-1",
+      "value" : 4
+    }
+  },
+  "status" : 200,
+  "body" : {
+    "status" : "ok",
+    "value" : {
+      "briefVersion" : 0,
+      "draftVersion" : 1,
+      "buddy" : {
+        "state" : "disengaged",
+        "reason" : null,
+        "permissionVersion" : null,
+        "minimumCategories" : 3,
+        "considered" : 1,
+        "remaining" : 2,
+        "sameAgain" : false,
+        "canEngage" : false
+      },
+      "buddyTransition" : null,
+      "accountPreferences" : {
+        "considered" : 1,
+        "categories" : {
+          "body" : {
+            "state" : "unset"
+          },
+          "fuel" : {
+            "state" : "unset"
+          },
+          "sportiness" : {
+            "state" : "unset"
+          },
+          "comfort" : {
+            "state" : "considered",
+            "value" : 50,
+            "importance" : "medium",
+            "exact" : true
+          },
+          "economy" : {
+            "state" : "unset"
+          },
+          "size" : {
+            "state" : "unset"
+          }
+        },
+        "sameAgain" : false,
+        "understanding" : {
+          "kind" : "input-completeness",
+          "value" : 3,
+          "maximum" : 11,
+          "basis" : "categories",
+          "considered" : 1,
+          "policyKey" : "brief.accountPreferences.v1",
+          "policyVersion" : "gcsp-policy-v1"
+        }
+      },
+      "currentCarRating" : {
+        "value" : 4,
+        "contractId" : "contract-1"
+      },
+      "sameAgain" : {
+        "available" : true,
+        "on" : false,
+        "contractId" : "contract-1"
+      }
+    }
+  }
+}

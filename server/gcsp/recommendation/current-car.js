@@ -73,13 +73,24 @@ export function matchDimensions(baselineFacts, facts, dimensions, config, equal,
   return unknown ? 'unknown' : equal;
 }
 
+// Owned by one evaluation; inactive feedback never needs to score its baseline.
+export function createCurrentCarBaselineScorer({ baseline, brief, employeeFacts, config, slider }) {
+  let components;
+  return () => {
+    if (components === undefined) {
+      const facts = Object.fromEntries(Object.entries(baseline.facts).filter(([, fact]) => confirmedFact(fact, config)));
+      components = scorePreferences({ display: { name: 'current car' }, facts }, brief, employeeFacts, config, slider).components;
+    }
+    return components;
+  };
+}
+
 // Same shared utility on both sides; only confirmed expressed preferences count, never price, speed, trim or age.
-export function compareImprovement({ snapshot, scored, baseline, brief, employeeFacts, config, slider, rule }) {
+export function compareImprovement({ snapshot, scored, baseline, brief, employeeFacts, config, slider, rule, baselineScores }) {
   const expressed = Object.entries(brief.preferences).filter(([, p]) => p.importance > slider.minimum
     && p.valueState === 'confirmed' && p.importanceState === 'confirmed').map(([key]) => key);
   if (!expressed.length) return { result: 'not-proven', keys: [] };
-  const facts = Object.fromEntries(Object.entries(baseline.facts).filter(([, fact]) => confirmedFact(fact, config)));
-  const base = scorePreferences({ display: { name: 'current car' }, facts }, brief, employeeFacts, config, slider).components;
+  const base = (baselineScores ?? createCurrentCarBaselineScorer({ baseline, brief, employeeFacts, config, slider }))();
   // An anchored score for a missing model fact (ac6bccdc) is not evidence, so it stays unknown.
   const at = (rows, key) => {
     const row = rows.find((r) => r.field === key);

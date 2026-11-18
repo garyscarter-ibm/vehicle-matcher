@@ -52,9 +52,31 @@ export interface ManualReviewCommand {
   readonly commandId: string; readonly holdId: string; readonly expectedHoldVersion: number; readonly expectedDraftVersion: number;
 }
 export interface ManualReleaseCommand extends ManualReviewCommand { readonly reason: 'cancel' | 'change' | 'back' }
+export interface ManualEditableDetails {
+  readonly contact: { readonly phone: string; readonly email: string };
+  readonly expectedReturnMileage: number | null; readonly specialRequirements: string;
+}
+export interface ManualReviewDetails extends ManualRecord {
+  readonly binding: { readonly runId: string; readonly employeeId: string; readonly entitlementSlotId: string;
+    readonly holdId: string; readonly quoteId: string; readonly expectedHoldVersion: number; readonly expectedDraftVersion: number };
+  readonly reviewDetailsVersion: number;
+  readonly details: { readonly contact: { readonly phone?: string; readonly email?: string };
+    readonly expectedReturnMileage: number | null; readonly specialRequirements?: string };
+  readonly constraints: { readonly maximumSpecialRequirements: number; readonly maximumReturnMileage: number;
+    readonly mileageUnit: 'mi'; readonly textLengthUnit: 'UTF-16 code units'; readonly provenance: ManualRecord };
+  readonly mode: 'new' | 'replacement'; readonly currentContract: ManualRecord | null;
+  readonly requestedCollection: { readonly date: string | null; readonly locationId: string | null };
+  readonly oldContractId: string | null; readonly contract: ManualRecord | null; readonly hold: ManualHold; readonly quote: ManualQuote;
+  readonly orderNumber: string; readonly stockVersion: number; readonly now: string; readonly clockVersion: string;
+  readonly frozen: boolean; readonly editable: boolean; readonly canContinue: boolean;
+  readonly view: { readonly state: string; readonly editable: boolean; readonly action: string; readonly supportOwner: string };
+}
+export interface ManualReviewDetailsCommand extends ManualReviewCommand {
+  readonly quoteId: string; readonly expectedReviewDetailsVersion: number; readonly details: ManualEditableDetails;
+}
 export interface ManualSubmitCommand {
   readonly commandId: string; readonly source: { readonly type: 'cart'; readonly holdId: string; readonly expectedHoldVersion: number; readonly expectedDraftVersion: number };
-  readonly expectedQuoteId: string; readonly expectedStockVersion: number; readonly termsDigest: string;
+  readonly expectedQuoteId: string; readonly expectedStockVersion: number; readonly expectedReviewDetailsVersion: number; readonly termsDigest: string;
   readonly declarations: Readonly<Record<string, boolean>>;
 }
 export type ManualState = 'idle' | 'loading' | 'selection-ready' | 'no-claim' | 'preview' | 'review' | 'resume-required'
@@ -62,6 +84,7 @@ export type ManualState = 'idle' | 'loading' | 'selection-ready' | 'no-claim' | 
   | 'invalid' | 'denied' | 'authentication-required';
 export interface ManualProjection {
   readonly state: ManualState; readonly claim: ManualClaim | null; readonly order: ManualOrder | null; readonly terms: ManualTerms | null;
+  readonly reviewDetails: ManualReviewDetails | null;
   readonly declarations: readonly ManualDeclaration[]; readonly wording: string | null; readonly failure: ManualFailure | null;
   readonly canReview: boolean; readonly canSubmit: boolean; readonly canRelease: boolean; readonly approved: false;
 }

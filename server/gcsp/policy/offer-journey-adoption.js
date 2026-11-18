@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { ok, result } from '../repository/core.js';
 
-export const OFFER_JOURNEY_SET = 'offer-journey-v1';
-const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1'];
+export const OFFER_JOURNEY_SET = 'offer-journey-v2';
+const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1', 'offer.declinedCar.reentry.v1'];
 
 // Demo startup adopts the reviewed decline/follow-up sets once, as Greg, through PolicyService.
 // Policy is per run: a reset starts on the base version, so the runtime re-adopts after scenario and clock resets.
@@ -10,13 +10,20 @@ export async function adoptOfferJourneyPolicy({ policy, identity, clock }) {
   const presenter = await identity.createPresenterSession(`offer-journey-policy:${randomUUID()}`);
   if (presenter.status !== 'ok') return presenter;
   const start = presenter.value.context;
-  const time = await clock.now(start); if (time.status !== 'ok') return time;
+  let time = await clock.now(start); if (time.status !== 'ok') return time;
   const read = { runId: start.runId, asOf: time.value.now, policyVersion: start.policyVersion };
   const present = await Promise.all(KEYS.map((key) => policy.getAssumption(key, read)));
   if (present.every((row) => row.status === 'ok')) return ok({ adopted: false, policyVersion: start.policyVersion });
   const principals = await policy.getAssumption('identity.demo.principals', read);
   const principal = principals.status === 'ok' ? principals.value.value.find((row) => row.roles?.includes('greg')) : null;
   if (!principal) return result('unavailable', { code: 'offer-journey-policy-unavailable' });
+  const snapshot = await policy.getPolicySnapshot(read); if (snapshot.status !== 'ok') return snapshot;
+  if (Date.parse(snapshot.value.effectiveFrom) === Date.parse(time.value.now)) {
+    const advanced = await clock.advance(start, { commandId: `${OFFER_JOURNEY_SET}:clock:${start.runId}:${start.policyVersion}`,
+      expectedClockVersion: time.value.clockVersion, to: new Date(Date.parse(time.value.now) + 1).toISOString() });
+    if (advanced.status !== 'ok') return advanced;
+    time = await clock.now(start); if (time.status !== 'ok') return time;
+  }
   const greg = await identity.switchPrincipal(start, principal.principalId, `offer-journey-policy-greg:${randomUUID()}`);
   if (greg.status !== 'ok') return greg;
   const adopted = await policy.adoptReviewedAssumptions(greg.value.context, { commandId: `adopt:${OFFER_JOURNEY_SET}:${start.runId}`,

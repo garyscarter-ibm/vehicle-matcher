@@ -1,7 +1,8 @@
-import { signal } from '@angular/core';
+import { ErrorHandler, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
+import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { OfferClient } from './offer.client';
 import { OfferScreenComponent } from './offer-screen.component';
 import { offerScreenEmployee, offerScreenFixture } from './offer-screen.fixture';
@@ -169,5 +170,95 @@ describe('native offer read screen', () => {
     const opened = vi.fn(); fixture.componentInstance.offerOpened.subscribe(opened);
     const open = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('gcsp-offer-followup button')).find((button) => button.textContent?.includes('Open this offer'))!;
     open.click(); await settle(); expect(reads.at(-1)!.id).toBe('offer-2'); expect(opened).toHaveBeenCalledWith('offer-2');
+  });
+  describe('focus after opening the next offer', () => {
+    const heading = () => fixture.nativeElement.querySelector('h1') as HTMLElement;
+    const openNext = async () => {
+      client['readFollowup'].mockResolvedValue({ status: 'ok', value: { schemaVersion: 1, state: 'ready', decisionId: 'decision-1', savedChange: savedFollowup(),
+        comparison: { schemaVersion: 1, currentBriefVersion: 8, requirements: [], previous: { offer: offerScreenFixture('declined') }, next: { offer: { ...actionableOffer(), offerId: 'offer-2' } } } } });
+      fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('declined'));
+      const open = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('gcsp-offer-followup button')).find((button) => button.textContent?.includes('Open this offer'))!;
+      open.focus(); open.click(); await settle();
+      expect(reads.at(-1)!.id).toBe('offer-2'); expect(document.activeElement).toBe(heading()); expect(heading().textContent).toContain('Loading your offer');
+    };
+    const resolveNext = async (value: OfferResult<OfferProjection> | OfferFailure, read = reads.at(-1)!) => { read.resolve(value as OfferResult<OfferProjection>); await settle(); };
+
+    it('focuses the final ready heading once a delayed next-offer read completes', async () => {
+      await openNext(); await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } });
+      expect(heading().textContent).not.toContain('Loading your offer'); expect(heading().isConnected).toBe(true);
+      expect(document.activeElement).toBe(heading());
+    });
+    it('focuses the failure heading when the delayed next-offer read fails', async () => {
+      await openNext(); await resolveNext({ status: 'unavailable', code: 'offer-unavailable', retryable: true });
+      expect(heading().textContent).not.toContain('Loading your offer'); expect(document.activeElement).toBe(heading());
+    });
+    it('does not take focus back from a control the user moved to while loading', async () => {
+      const elsewhere = document.body.appendChild(document.createElement('button'));
+      try {
+        await openNext(); elsewhere.focus(); await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } });
+        expect(document.activeElement).toBe(elsewhere);
+      } finally { elsewhere.remove(); }
+    });
+    it('does not move focus for a superseded next-offer read', async () => {
+      await openNext(); const stale = reads.at(-1)!; const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+      fixture.componentRef.setInput('offerId', 'offer-3'); await settle(); expect(reads.at(-1)!.id).toBe('offer-3');
+      await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } }, stale);
+      await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-3' } });
+      expect(heading().textContent).not.toContain('Loading your offer'); expect(focus).not.toHaveBeenCalled();
+    });
+    it('does not move focus for a read completed under a different account', async () => {
+      await openNext(); const stale = reads.at(-1)!;
+      auth.set({ status: 'ready', context: { ...offerScreenEmployee, subject: 'other-subject', employeeId: 'employee-2' } }); await settle();
+      await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } }, stale);
+      expect(heading().textContent).toContain('Loading your offer');
+      expect(reads.at(-1)).not.toBe(stale); await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } });
+      expect(heading().textContent).not.toContain('Loading your offer'); expect(document.activeElement).not.toBe(heading());
+    });
+    it('does not focus anything after the screen is disposed mid-read', async () => {
+      await openNext(); const read = reads.at(-1)!; fixture.destroy(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+      read.resolve({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } }); await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      expect(focus).not.toHaveBeenCalled();
+    });
+  });
+});
+
+describe('native offer read screen through the real offer client', () => {
+  const config: RuntimePublicConfig = { schemaVersion: 1, environmentId: 'dev', apiBaseUrl: 'https://api.example/api/gcsp/v1',
+    oidc: { authority: 'https://identity.example', clientId: 'client', scope: 'openid profile',
+      redirectUri: 'https://portal.example/gcsp/auth/callback', postLogoutRedirectUri: 'https://portal.example/gcsp/' } };
+  const handleError = vi.fn();
+  const render = async (images: unknown[]) => {
+    TestBed.resetTestingModule(); handleError.mockReset();
+    const offer = offerScreenFixture() as unknown as { quote: { facts: { display: { images: unknown[] } } } };
+    offer.quote.facts.display.images = images;
+    const fetcher = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ status: 'ok', value: offer }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    await TestBed.configureTestingModule({ imports: [OfferScreenComponent], providers: [
+      { provide: AuthPort, useValue: { state: signal<SessionState>({ status: 'ready', context: offerScreenEmployee }), getAccessToken: async () => 'access-token' } },
+      { provide: RuntimeConfigService, useValue: { load: async () => config } }, { provide: PORTAL_FETCH, useValue: fetcher },
+      { provide: ErrorHandler, useValue: { handleError } },
+    ] }).compileComponents();
+    const fixture = TestBed.createComponent(OfferScreenComponent);
+    fixture.componentRef.setInput('offerId', 'offer-1');
+    for (let turn = 0; turn < 4; turn += 1) { fixture.detectChanges(); await fixture.whenStable(); await new Promise<void>((resolve) => setTimeout(resolve, 0)); }
+    fixture.detectChanges();
+    return { fixture, fetcher, element: fixture.nativeElement as HTMLElement };
+  };
+  afterEach(() => { TestBed.resetTestingModule(); vi.restoreAllMocks(); });
+
+  it('shows the safe read failure for a null per-image src without reaching the gallery', async () => {
+    const { fixture, fetcher, element } = await render([{ src: null }]);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(element.textContent).toContain('Your offer could not be loaded');
+    expect(element.querySelector('gcsp-media-gallery')).toBeNull();
+    expect(handleError).not.toHaveBeenCalled();
+    fixture.destroy();
+  });
+
+  it('still renders healthy supplied images in the gallery with a null primary photo', async () => {
+    const { fixture, element } = await render([{ src: '/assets/car.webp', alt: 'BMW 330e M Sport Touring', label: 'Front' }]);
+    expect(element.textContent).not.toContain('Your offer could not be loaded');
+    expect(element.querySelector('gcsp-media-gallery img')?.getAttribute('src')).toBe('/assets/car.webp');
+    expect(handleError).not.toHaveBeenCalled();
+    fixture.destroy();
   });
 });

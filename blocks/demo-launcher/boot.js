@@ -54,7 +54,7 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
     const state = el('div', 'vm');
     const stage = el('div');
     const focus = (target) => { target.tabIndex = -1; target.focus(); };
-    state.append(statusScreen({ title: 'Opening Employee cars', message: 'Loading your account.' }));
+    state.append(statusScreen({ title: 'Opening Employee cars', message: 'Opening your car scheme.' }));
     stage.setAttribute('aria-busy', 'true');
     scope.append(chrome, state, stage);
     root.replaceChildren(scope);
@@ -71,7 +71,7 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
       focus(state.querySelector('h2'));
     };
     try {
-      const result = employeeCapability.mount(stage, context, { signal: abort.signal, defaultApi: DEFAULT_API });
+      const result = employeeCapability.mount(stage, context, { signal: abort.signal });
       Promise.resolve(result).then((dispose) => {
         if (abort.signal.aborted) { if (typeof dispose === 'function') dispose(); return; }
         mountedCleanup = typeof dispose === 'function' ? dispose : undefined;
@@ -94,7 +94,8 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
   function render() {
     if (disposed) return;
     clearRoute();
-    const context = resolveEntryContext(window.location.href, { employeeAvailable: available });
+    const context = resolveEntryContext(window.location.href, { employeeAvailable: available,
+      employeeFrontendUrl: employeeCapability?.frontendUrl });
     routeIdentity = identity(context);
     const retail = createRetailChrome({ root, params: new URLSearchParams(window.location.search), DEFAULT_API });
     root.entryContext = context;
@@ -121,7 +122,8 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
   }
   cleanups.push(observeRetailNavigation(window, () => {
     if (disposed || routeIdentity === undefined) return;
-    const context = resolveEntryContext(window.location.href, { employeeAvailable: available });
+    const context = resolveEntryContext(window.location.href, { employeeAvailable: available,
+      employeeFrontendUrl: employeeCapability?.frontendUrl });
     if (identity(context) !== routeIdentity) render();
   }));
   render();

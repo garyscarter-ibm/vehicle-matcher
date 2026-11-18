@@ -6,12 +6,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /** What a brief operation returns; the HTTP layer maps Ok to 200 and a Refusal to its httpStatus and body. */
 public sealed interface BriefResult {
 
-    /** replayed is true when the stored receipt of an earlier identical command was returned. */
-    record Ok(JsonNode value, boolean replayed) implements BriefResult {
+    /** replayed is true when a stored receipt was returned; contractVersion is set only by a pass-through outcome. */
+    record Ok(JsonNode value, boolean replayed, String contractVersion) implements BriefResult {
+        public Ok(JsonNode value, boolean replayed) {
+            this(value, replayed, null);
+        }
+
         public Ok(JsonNode value) {
-            this(value, false);
+            this(value, false, null);
         }
     }
+
+    /** A pass-through outcome that is already the response body (the recommendation preview), with its HTTP status. */
+    record Raw(int httpStatus, ObjectNode body) implements BriefResult {}
 
     /** A typed non-success: status/code/reason/retryable plus optional extra fields merged into the body. */
     record Refusal(int httpStatus, String status, String code, String reason, boolean retryable, JsonNode extra)

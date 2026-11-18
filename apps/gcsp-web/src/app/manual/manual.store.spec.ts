@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, RecoveryNotice, SessionState } from '../auth/auth.port';
 import { ManualClient } from './manual.client';
 import { ManualStore } from './manual.store';
-import type { ManualClaim, ManualHandoff, ManualOrder, ManualScope, ManualTerms } from './manual.types';
+import type { ManualClaim, ManualEditableDetails, ManualHandoff, ManualOrder, ManualReviewDetails, ManualScope, ManualTerms } from './manual.types';
 
 const now = '2026-11-16T12:00:00Z'; const later = '2026-11-16T14:00:00Z';
 const scope: ManualScope = { subject: 'subject', environmentId: 'dev', runId: 'run', employeeId: 'employee' };
@@ -37,15 +37,31 @@ const handoff = (): ManualHandoff => ({ orderUuid: 'car', orderNumber: '123', co
   decisionVersions: { brief: 2, facts: 'facts', policy: 'policy', stock: 'stock', clock: 'clock', snapshot: 'snapshot', terms: null, availability: 'available' },
   claimInput: { orderUuid: 'car', expectedStockVersion: 5, expectedDraftVersion: 2, expectedContextVersion: 'context', expectedTermsDigest: 'claim-digest' } });
 const deferred = <T>() => { let resolve!: (v: T) => void; const promise = new Promise<T>((yes) => { resolve = yes; }); return { promise, resolve }; };
+const details = (c = claim(), revision = 1): ManualReviewDetails => ({
+  binding: { runId: 'run', employeeId: 'employee', entitlementSlotId: 'slot', holdId: c.hold.holdId, quoteId: c.quote.quoteId,
+    expectedHoldVersion: c.hold.version, expectedDraftVersion: c.quote.draftVersion }, reviewDetailsVersion: revision,
+  details: { contact: { phone: '01234 567890', email: 'employee@example.test' }, expectedReturnMileage: 12000, specialRequirements: '' },
+  constraints: { maximumSpecialRequirements: 500, maximumReturnMileage: 200000, mileageUnit: 'mi', textLengthUnit: 'UTF-16 code units',
+    provenance: { key: 'manual.context.v1', policyVersion: 'policy', status: 'assumed', source: 'policy', basis: 'Scheme limits', sourceDate: '2026-11-01',
+      effectiveFrom: now, value: { maximumSpecialRequirements: 500, maximumReturnMileage: 200000 } } },
+  mode: 'replacement', currentContract: { contractId: 'current' }, requestedCollection: { date: '2026-12-01', locationId: 'collection' },
+  oldContractId: 'current', contract: { termMonths: 6 }, hold: { ...c.hold, runId: 'run', quoteId: c.quote.quoteId, policyVersion: 'policy' },
+  quote: { ...c.quote, runId: 'run' }, orderNumber: '1234567', stockVersion: 11, now: '2026-11-16T12:00:01Z', clockVersion: '1',
+  frozen: false, editable: true, canContinue: true, view: { state: 'review', editable: true, action: 'save-review-details', supportOwner: 'employee' } });
+const changedDetails = (): ManualEditableDetails => ({ contact: { phone: '01234 567890', email: 'updated@example.test' },
+  expectedReturnMileage: 14000, specialRequirements: 'Call before collection' });
 
 describe('manual claim and ordering command lane', () => {
   let store: ManualStore; const auth = signal<SessionState>(ready()); const recovery = signal<RecoveryNotice | null>(null);
-  const client = { context: vi.fn(), readOrder: vi.fn(), readClaim: vi.fn(), readTerms: vi.fn(), claim: vi.fn(), review: vi.fn(), release: vi.fn(), submit: vi.fn() };
+  const client = { context: vi.fn(), readOrder: vi.fn(), readClaim: vi.fn(), readTerms: vi.fn(), readReviewDetails: vi.fn(), saveReviewDetails: vi.fn(),
+    claim: vi.fn(), review: vi.fn(), release: vi.fn(), submit: vi.fn() };
   beforeEach(() => {
     auth.set(ready()); recovery.set(null); Object.values(client).forEach((fn) => fn.mockReset());
     client.context.mockImplementation(() => { const state = auth(); return state.status === 'ready'
       ? { subject: state.context.subject, environmentId: state.context.environmentId, runId: state.context.runId, employeeId: state.context.employeeId } : null; });
     client.readOrder.mockResolvedValue(absent); client.readClaim.mockResolvedValue(ok(claim())); client.readTerms.mockResolvedValue(ok(terms()));
+    client.readReviewDetails.mockResolvedValue(ok(details()));
+    client.saveReviewDetails.mockImplementation(async (command) => ok({ ...details(), reviewDetailsVersion: command.expectedReviewDetailsVersion + 1, details: command.details }));
     client.claim.mockResolvedValue(ok(claim('preview', 2))); client.review.mockResolvedValue(ok(claim())); client.submit.mockResolvedValue(ok(order()));
     const c = claim(); client.release.mockResolvedValue(ok({ ...c, state: 'released', hold: { ...c.hold, state: 'released', releaseReason: 'change' },
       view: { ...c.view, state: 'released', action: 'browse-stock' } }));
@@ -72,6 +88,7 @@ describe('manual claim and ordering command lane', () => {
   });
   it('claims with exact supplied pins then reviews with actual returned hold and draft versions', async () => {
     client.readClaim.mockResolvedValueOnce(absent); const source = handoff(); await store.enter(source);
+    client.readReviewDetails.mockResolvedValueOnce(ok(details(claim('preview', 2))));
     expect(store.canClaim()).toBe(true); await store.claimSelection(); expect(store.state()).toBe('preview');
     expect(client.claim.mock.calls[0][0]).toEqual({ ...source.claimInput, commandId: expect.any(String) });
     await store.beginReview(); expect(client.review.mock.calls[0][0]).toEqual({ commandId: expect.any(String), holdId: 'hold', expectedHoldVersion: 2, expectedDraftVersion: 7 });
@@ -82,7 +99,7 @@ describe('manual claim and ordering command lane', () => {
     store.confirmResume(); store.setDeclaration('read', true); await store.submit(); expect(client.submit).not.toHaveBeenCalled();
     store.setDeclaration('first', true); expect(store.declarations()).not.toHaveProperty('first'); store.setDeclaration('return', true); await store.submit();
     expect(client.submit).toHaveBeenCalledOnce(); expect(client.submit.mock.calls[0][0]).toEqual({ commandId: expect.any(String), source: {
-      type: 'cart', holdId: 'hold', expectedHoldVersion: 3, expectedDraftVersion: 7 }, expectedQuoteId: 'quote', expectedStockVersion: 9,
+      type: 'cart', holdId: 'hold', expectedHoldVersion: 3, expectedDraftVersion: 7 }, expectedQuoteId: 'quote', expectedStockVersion: 11, expectedReviewDetailsVersion: 1,
       termsDigest: 'ordering-digest', declarations: { read: true, return: true } }); expect(store.state()).toBe('awaiting-approval');
     await store.submit(); expect(client.submit).toHaveBeenCalledOnce();
   });
@@ -145,5 +162,70 @@ describe('manual claim and ordering command lane', () => {
   it('requires recovery confirmation again without replaying commands', async () => {
     await readyToSubmit(); recovery.set({ message: 'Sign-in restored.', requiresConfirmation: true }); TestBed.tick();
     expect(store.resumeRequired()).toBe(true); expect(store.declarations()).toEqual({}); await store.submit(); expect(client.submit).not.toHaveBeenCalled();
+  });
+  it('keeps revision-zero incomplete fields editable and requires an explicit successful save before submission', async () => {
+    client.readReviewDetails.mockResolvedValueOnce(ok({ ...details(), reviewDetailsVersion: 0, details: { contact: {}, expectedReturnMileage: null } }));
+    await store.enter(); store.confirmResume();
+    expect(store.detailsDraft()).toEqual({ contact: { phone: '', email: '' }, expectedReturnMileage: null, specialRequirements: '' });
+    expect(store.detailsDirty()).toBe(false); expect(store.canSaveReviewDetails()).toBe(false); expect(store.projection().canSubmit).toBe(false);
+    store.setReviewDetails(changedDetails()); expect(store.canSaveReviewDetails()).toBe(true); await store.saveReviewDetails();
+    expect(client.saveReviewDetails.mock.calls[0][0]).toEqual({ commandId: expect.any(String), holdId: 'hold', quoteId: 'quote',
+      expectedHoldVersion: 3, expectedDraftVersion: 7, expectedReviewDetailsVersion: 0, details: changedDetails() });
+    expect(store.detailsDirty()).toBe(false); expect(store.projection().reviewDetails?.reviewDetailsVersion).toBe(1);
+    store.setDeclaration('read', true); store.setDeclaration('return', true); expect(store.projection().canSubmit).toBe(true);
+    await store.submit(); expect(client.submit.mock.calls[0][0].expectedReviewDetailsVersion).toBe(1);
+  });
+  it.each([-1, 1.5, 200001])('retains invalid mileage edit %s, resets declarations and blocks saving/submission', async (mileage) => {
+    await readyToSubmit(); expect(store.projection().canSubmit).toBe(true);
+    store.setReviewDetails({ ...changedDetails(), expectedReturnMileage: mileage });
+    expect(store.detailsDraft()?.expectedReturnMileage).toBe(mileage); expect(store.detailsDirty()).toBe(true);
+    expect(store.declarations()).toEqual({}); expect(store.canSaveReviewDetails()).toBe(false); expect(store.projection().canSubmit).toBe(false);
+    await store.submit(); expect(client.submit).not.toHaveBeenCalled();
+  });
+  it('serializes save against submit/release, then requires fresh declarations for the returned revision', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails()); const sent = deferred<unknown>(); client.saveReviewDetails.mockReturnValueOnce(sent.promise);
+    const saving = store.saveReviewDetails(); const duplicate = store.saveReviewDetails(); await store.submit();
+    expect(await store.release('change')).toBe(false); expect(client.saveReviewDetails).toHaveBeenCalledOnce(); expect(client.submit).not.toHaveBeenCalled();
+    sent.resolve(ok({ ...details(), reviewDetailsVersion: 2, details: changedDetails() })); await Promise.all([saving, duplicate]);
+    expect(store.detailsDirty()).toBe(false); expect(store.declarations()).toEqual({}); expect(store.projection().canSubmit).toBe(false);
+    store.setDeclaration('read', true); store.setDeclaration('return', true); await store.submit();
+    expect(client.submit.mock.calls[0][0]).toMatchObject({ expectedReviewDetailsVersion: 2, expectedStockVersion: 11 });
+  });
+  it('retains a failed save draft and requires explicit refresh after a stale revision', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails());
+    client.saveReviewDetails.mockResolvedValueOnce({ status: 'conflict', code: 'stale-review-details', resource: 'review-details', expectedVersion: 1,
+      currentVersion: 2, retryable: false }); await store.saveReviewDetails();
+    expect(store.state()).toBe('stale'); expect(store.detailsDraft()).toEqual(changedDetails()); expect(store.detailsDirty()).toBe(true);
+    expect(store.canSaveReviewDetails()).toBe(false); expect(store.projection().reviewDetails?.reviewDetailsVersion).toBe(1);
+    client.readReviewDetails.mockResolvedValueOnce(ok({ ...details(), reviewDetailsVersion: 2 })); await store.checkStatus();
+    expect(store.detailsDraft()).toEqual(changedDetails()); expect(store.detailsDirty()).toBe(true); expect(store.canSaveReviewDetails()).toBe(true);
+    await store.saveReviewDetails(); expect(client.saveReviewDetails.mock.calls[1][0].expectedReviewDetailsVersion).toBe(2);
+  });
+  it('reconciles a lost save only by matching the returned revision, binding and actual edited values', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails());
+    client.saveReviewDetails.mockResolvedValueOnce({ status: 'uncertain', code: 'manual-transport-unavailable', retryable: false });
+    client.readReviewDetails.mockResolvedValueOnce(ok({ ...details(), reviewDetailsVersion: 2, details: changedDetails() }));
+    await store.saveReviewDetails(); expect(store.state()).toBe('review'); expect(store.detailsDirty()).toBe(false); expect(store.declarations()).toEqual({});
+    await store.saveReviewDetails(); expect(client.saveReviewDetails).toHaveBeenCalledOnce();
+  });
+  it('retains an unknown save across missing or different reads and route re-entry without another POST', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails());
+    client.saveReviewDetails.mockResolvedValueOnce({ status: 'uncertain', code: 'manual-transport-unavailable', retryable: false });
+    client.readReviewDetails.mockResolvedValueOnce(absent); await store.saveReviewDetails(); expect(store.state()).toBe('uncertain');
+    store.dispose(); client.readReviewDetails.mockResolvedValue(ok({ ...details(), reviewDetailsVersion: 2 })); await store.enter();
+    store.confirmResume(); await store.saveReviewDetails(); await store.submit(); expect(store.state()).toBe('uncertain');
+    expect(client.saveReviewDetails).toHaveBeenCalledOnce(); expect(client.submit).not.toHaveBeenCalled();
+  });
+  it('resets declarations on an external saved revision change and never accepts a mismatched quote as editable', async () => {
+    await readyToSubmit(); client.readReviewDetails.mockResolvedValueOnce(ok({ ...details(), reviewDetailsVersion: 2 })); await store.refresh();
+    expect(store.declarations()).toEqual({});
+    const d = details(); client.readReviewDetails.mockResolvedValueOnce(ok({ ...d, quote: { ...d.quote, facts: { points: 99 } } })); await store.refresh();
+    expect(store.projection().reviewDetails).toBeNull(); expect(store.canSaveReviewDetails()).toBe(false); expect(store.projection().canSubmit).toBe(false);
+  });
+  it('discards a late save response after account scope changes', async () => {
+    await readyToSubmit(); store.setReviewDetails(changedDetails()); const sent = deferred<unknown>(); client.saveReviewDetails.mockReturnValueOnce(sent.promise);
+    const saving = store.saveReviewDetails(); auth.set(ready({ employeeId: 'other' })); TestBed.tick();
+    sent.resolve(ok({ ...details(), reviewDetailsVersion: 2, details: changedDetails() })); await saving;
+    expect(store.detailsDraft()).toBeNull(); expect(store.projection().reviewDetails).toBeNull(); expect(store.declarations()).toEqual({});
   });
 });

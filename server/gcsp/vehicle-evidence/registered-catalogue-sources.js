@@ -4,6 +4,7 @@ import { DEFAULT_ARTIFACT_ROOT, releaseForManifest } from './fleet-release.js';
 import { indexJsonl } from './indexed-jsonl.js';
 import { inputDigest } from '../repository/core.js';
 import { validateBmwCatalogueV2Envelope } from '../../vehicle-evidence/bmw-catalogue-v2.js';
+import { createLoadCheckpoint } from './load-checkpoint.js';
 
 // Admission anchors are code-owned. Neither candidate manifests nor API callers
 // can supply a new registration or replace this retained source artifact.
@@ -44,6 +45,7 @@ const ADMITTED_SOURCES = [
 
 /** Restore trusted source registrations on every process start, entirely offline. */
 export async function registeredCatalogueSources(configurationKey, { manifestDigest, artifactDirectory, artifactRoot = DEFAULT_ARTIFACT_ROOT } = {}) {
+  const checkpoint = createLoadCheckpoint();
   const registrations = []; let sources = ADMITTED_SOURCES;
   const release = releaseForManifest(manifestDigest);
   if (release) {
@@ -59,6 +61,7 @@ export async function registeredCatalogueSources(configurationKey, { manifestDig
     const indexed = await indexJsonl(source.url, { key: (row) => row.configurationId, ...(source.bytes === undefined ? {} : { maxBytes: 33554432 }) });
     if (indexed.checksum !== source.sha256 || !indexed.length) throw new TypeError('Admitted source artifact changed');
     for (const entry of indexed.metadataEntries()) {
+      await checkpoint();
       const record = indexed.get(entry.key); const expected = record.catalogue; const binding = expected?.sourceBinding;
       if (record.admission !== true || record.sourceKind !== 'dated-snapshot' || record.source?.id !== 'bmw-uk-public'
         || record.configurationId !== expected?.lookupIdentity?.configurationId || !binding) throw new TypeError('Unadmitted source row');

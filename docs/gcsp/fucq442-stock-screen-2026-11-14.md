@@ -125,3 +125,12 @@ The final manual order submission is intentionally disabled until Java supplies
 review-details/version authority. No F442 worker is currently executing; its
 reporting reservation moves from blocked to held, native In Progress unchanged.
 No Bug repair, new acceptance gate, Story closure or runtime is implied.
+
+
+## Final connected follow-through — 18 November 2026
+
+The historical fixture-only and onward-consumer gaps above now have actual connected passing evidence at `fcac2338c30b82d5268c14f1d319f0ec520a3dc9`. Production Angular/Java, owned native PostgreSQL17 and signed local-test OIDC/code-PKCE passed all48 checks across four scenarios: actual filters/sorts/paging/history, two same-configuration exact-car detail→real review/quote journeys, missing facts/media/narrow-private paging and empty/source503/withdrawn/stale409/recovery. No browser claim/reserve/submit or HTTP business interception. Final root evidence: `.claude/test-runs/fucq442/stock2353/connected-20261118T002456Z/receipt.json` (complete/strict true), retained full JSON plus11 PNGs; source proof SHA256 `b4dc5a896e4e8864004927d8b5d3ad1b4a862e14e338a9548b47916d1a942e6d`.
+
+Focused152/5 stock specs pass; exact Java123/22 and wiring53/10 evidence reused with unchanged exported inputs. Independent reviewer Wile E. Coyote4 PASS against both original AC; Pumbaa2 personally inspected all11 final captures. Image cropping alone is allowed by FUCQ-403, so a provisional defect label was withdrawn. Wrapped ISO collection date is readable without overflow; separate minor presentation observation, no established AC failure. No automatic Bug pickup or extra acceptance gate.
+
+The final evidence/review and full failed-attempt ledger are in [delivery record](fucq442-delivery.md). Earlier draft400 and strict-false evidence-retention attempts remain failures, resolved by final retained run. All11 runtime receipts finalized; lead resource audit at00:26:36UTC and independent parent audit pass, own scratch/processes/groups/tokens absent. No OneDrive/CloudStorage access. Full suite deferred to a covering green batch before acceptance. Native status and original unchecked AC unchanged; hosted/Safari/live-provider/F443 submission are unproved.

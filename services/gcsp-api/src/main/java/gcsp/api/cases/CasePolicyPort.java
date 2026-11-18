@@ -9,4 +9,7 @@ public interface CasePolicyPort {
 
     /** The whole assumption rows ({key, value, unit, status, basis, ...}) of exactly this version, or empty. */
     Optional<Map<String, JsonNode>> assumptions(String policyVersion);
+
+    /** One whole assumption row by key, checked to be exactly this version, or empty (missing, other version, unreadable). */
+    Optional<JsonNode> assumption(String policyVersion, String key);
 }

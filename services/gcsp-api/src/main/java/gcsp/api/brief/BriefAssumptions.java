@@ -14,6 +14,8 @@ public record BriefAssumptions(String policyVersion, Map<String, JsonNode> entri
     public static final String EDITOR = "brief.editor.v1";
     public static final String ACCOUNT_PREFERENCES = "brief.accountPreferences.v1";
     public static final String ENGAGEMENT = "brief.engagement.v1";
+    /** Optional: present only when a follow-up question set is adopted; never required, so not in KEYS. */
+    public static final String FOLLOWUP_QUESTIONS = "offer.followupQuestions.v1";
     public static final List<String> KEYS = List.of(RECOMMENDATION, SLIDER_MINIMUM, SLIDER_MAXIMUM, LIFECYCLE, EDITOR,
             ACCOUNT_PREFERENCES, ENGAGEMENT);
 

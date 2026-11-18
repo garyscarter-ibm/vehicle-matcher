@@ -53,6 +53,13 @@ public class ManualClaimsResource {
         return serve(principal, (claims, scope) -> claims.readClaim(scope));
     }
 
+    /** Node's readQuote is readClaim: the same body as the claim read. */
+    @GET
+    @Path("/manual/quote")
+    public Response quote(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
+        return read(authorization, uri);
+    }
+
     @POST
     @Path("/manual/claim")
     public Response claim(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,

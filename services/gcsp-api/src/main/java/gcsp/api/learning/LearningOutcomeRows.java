@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * The Node-shaped offer, hold, decision, quote and receipt rows of one run. No merged Java producer writes them yet
- * (offers and decisions FUCQ-466/467, quotes FUCQ-461, Buddy holds FUCQ-464), so the default binding is empty and unbound.
+ * The retained Node-shaped offer, hold, decision, quote and receipt rows of one run. The production adapter reads
+ * actual persisted Java producers within the record service's snapshot; unavailable sources never invent observations.
  */
 public interface LearningOutcomeRows {
 
@@ -16,7 +16,7 @@ public interface LearningOutcomeRows {
         public static final Rows EMPTY = new Rows(List.of(), List.of(), List.of(), List.of(), List.of());
     }
 
-    /** False for the default binding: the read then reports the outcome sources as unknown. */
+    /** False only for an explicitly unbound source: the read reports the outcome sources as unknown. */
     boolean bound();
 
     /** Reads inside the service's one snapshot connection, so a bound producer joins the same consistent read. */

@@ -236,7 +236,103 @@ public final class ReturnPlans implements AutoCloseable {
             if (page.size() < PAGE) break;
             after = page.get(page.size() - 1).orderUuid;
         }
+        applied += applyHandovers(sys, failed);
         return new Summary(orders, applied, waiting, blocked, uncertain, idle, List.copyOf(failed));
+    }
+
+    private static final String HANDOVER_EVENTS = "SELECT o.event_id, o.payload::text, o.created_at FROM outbox_events o "
+            + "WHERE o.environment_id = ? AND o.run_id = ? AND o.event_type = 'appointment-completed' "
+            + "AND NOT EXISTS (SELECT 1 FROM current_car_events e WHERE e.environment_id = o.environment_id "
+            + "AND e.run_id = o.run_id AND e.order_uuid = o.payload->>'orderUuid' AND e.event_type = 'handover-completed') "
+            + "AND (o.created_at, o.event_id) > (?, ?) ORDER BY o.created_at, o.event_id LIMIT ?";
+
+    private record HandoverEvent(String eventId, JsonNode payload, Instant createdAt) {}
+
+    /** Makes each completed handover (the appointments outbox event) the order's current car; runs after the plan rows. */
+    private int applyHandovers(RunContext sys, List<Failure> failed) {
+        int applied = 0;
+        Instant afterAt = Instant.EPOCH;
+        String afterId = "";
+        while (true) {
+            List<HandoverEvent> page = new ArrayList<>();
+            try (Connection c = dataSource.getConnection(); var ps = c.prepareStatement(HANDOVER_EVENTS)) {
+                ps.setString(1, sys.environmentId());
+                ps.setString(2, sys.runId());
+                ps.setObject(3, afterAt.atOffset(java.time.ZoneOffset.UTC));
+                ps.setString(4, afterId);
+                ps.setInt(5, PAGE);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        page.add(new HandoverEvent(rs.getString(1), ReturnJson.JSON.readTree(rs.getString(2)),
+                                rs.getObject(3, java.time.OffsetDateTime.class).toInstant()));
+                    }
+                }
+            } catch (SQLException | com.fasterxml.jackson.core.JsonProcessingException e) {
+                LOG.warn("Handover events unreadable", e);
+                if (failed.size() < 20) failed.add(new Failure(null, "return-plan-unavailable"));
+                break;
+            }
+            for (HandoverEvent ev : page) {
+                String order = ev.payload().path("orderUuid").asText(null);
+                try {
+                    if (applyHandover(sys, ev, failed)) applied++;
+                } catch (Exception e) {
+                    LOG.warnf(e, "Handover current-car change failed for %s", order);
+                    if (failed.size() < 20) failed.add(new Failure(order, "return-plan-unavailable"));
+                }
+            }
+            if (page.size() < PAGE) break;
+            HandoverEvent last = page.get(page.size() - 1);
+            afterAt = last.createdAt();
+            afterId = last.eventId();
+        }
+        return applied;
+    }
+
+    /** True when this event newly changed the current car; failures are recorded, an order with no selection is skipped. */
+    private boolean applyHandover(RunContext sys, HandoverEvent ev, List<Failure> failed) throws SQLException {
+        JsonNode p = ev.payload();
+        String order = p.path("orderUuid").asText(null);
+        ReturnSourceReading reading = order == null ? ReturnSourceReading.invalid() : sources.read(sys, order);
+        if (reading instanceof ReturnSourceReading.NotFound) return false;
+        if (reading instanceof ReturnSourceReading.Invalid i) return fail(failed, order, i.code());
+        if (reading instanceof ReturnSourceReading.Unavailable u) return fail(failed, order, u.code());
+        ReturnSource source = ((ReturnSourceReading.Found) reading).source();
+        String employee = p.path("employeeId").asText(null);
+        if (!source.employeeId().equals(employee)) return fail(failed, order, "current-car-identity-mismatch");
+        String completedRef = p.path("providerReference").asText(null);
+        String bookingRef;
+        try (Connection c = dataSource.getConnection(); var ps = c.prepareStatement("SELECT provider_reference "
+                + "FROM appointment_history WHERE environment_id = ? AND run_id = ? AND order_uuid = ? AND state = 'scheduled' "
+                + "ORDER BY seq DESC LIMIT 1")) {
+            ps.setString(1, sys.environmentId());
+            ps.setString(2, sys.runId());
+            ps.setString(3, order);
+            try (var rs = ps.executeQuery()) {
+                bookingRef = rs.next() ? rs.getString(1) : completedRef;
+            }
+        }
+        ObjectNode input = obj().put("orderUuid", order).put("employeeId", employee)
+                .put("occurredAt", p.path("occurredAt").asText(null)).put("providerReference", completedRef)
+                .put("slotId", p.path("slotId").asText(null)).put("bookingReference", bookingRef);
+        Instant at = ReturnJson.parse(p.path("occurredAt").asText(null));
+        if (at == null) return fail(failed, order, "invalid-current-car-event");
+        CurrentCarEvent e = new CurrentCarEvent(CurrentCarEvent.HANDOVER_COMPLETED, order, employee, at, completedRef, null, null,
+                null, p.path("slotId").asText(null), bookingRef);
+        boolean[] changed = {false};
+        Outcome o = runner.execute(sys, new Command("return-handover-current-car", "handover-car:" + ev.eventId(), input), tx -> {
+            CurrentCarResult r = currentCar.apply(tx, e, source);
+            if (r instanceof CurrentCarResult.Refused x) return WorkResult.refuse(x.code(), x.message());
+            changed[0] = ((CurrentCarResult.Applied) r).applied();
+            return WorkResult.ok(obj().put("applied", changed[0]));
+        });
+        if (o instanceof Outcome.Committed c) return changed[0];
+        return fail(failed, order, o.code());
+    }
+
+    private static boolean fail(List<Failure> failed, String order, String code) {
+        if (failed.size() < 20) failed.add(new Failure(order, code));
+        return false;
     }
 
     // ---------------------------------------------------------------- command transactions

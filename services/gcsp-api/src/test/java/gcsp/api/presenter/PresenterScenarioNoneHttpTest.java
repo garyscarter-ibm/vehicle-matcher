@@ -51,6 +51,8 @@ class PresenterScenarioNoneHttpTest {
         }
         post(presenter, "/scenarios/reset", "{}").then().statusCode(403).body("code", equalTo("scenarios-not-configured"));
         post(employee, "/scenarios/reset", "{}").then().statusCode(403).body("code", equalTo("role-required"));
+        post(presenter, "/clock/reset", "{}").then().statusCode(403).body("code", equalTo("scenarios-not-configured"));
+        post(employee, "/clock/reset", "{}").then().statusCode(403).body("code", equalTo("role-required"));
         try (Connection c = PresenterClockProfiles.plain().getConnection()) {
             c.createStatement().execute("SET search_path TO " + schema);
             for (String table : new String[] {"employees", "employee_account_records", "entitlement_slots", "scenario_runs"}) {

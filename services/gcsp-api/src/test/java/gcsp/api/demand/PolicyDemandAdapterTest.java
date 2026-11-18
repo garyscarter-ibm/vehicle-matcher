@@ -38,8 +38,25 @@ class PolicyDemandAdapterTest {
         assertEquals("untilRelevantConfirmedBriefChange", p.declinedCarExclusion().asText());
         assertTrue(p.recommendationEssentials().has("modelLine"));
         assertEquals("renewalDueThenFitThenSeededLottery", p.allocationRule().asText());
-        // Reasons are a reviewed definition published separately; until then demand fails closed.
-        assertNull(p.declineReasons());
+        // The seed lacks the key at its own pinned version, so the retained reviewed registry is served.
+        assertEquals("body-style", p.declineReasons().get("reasons").get(0).get("code").asText());
+        assertEquals(1, p.declineReasons().get("schemaVersion").asInt());
+    }
+
+    @Test
+    void anAbsentKeyAtAKnownVersionButAnotherRefusalOrVersionStaysNull() {
+        PolicyService seed = new PolicyService(new RetainedFilePolicySource(SEED, List.of()));
+        // An unknown version is a different refusal (no policyVersion), so the reasons stay null.
+        assertNull(adapter(seed, "run-1").read("no-such-version", AS_OF).map(DemandPolicyPort.DemandPolicy::declineReasons).orElse(null));
+        // A service pinned to another version than the one asked for refuses with that other version.
+        PolicyService other = new PolicyService(new RetainedFilePolicySource(SEED, List.of())) {
+            @Override
+            public gcsp.api.policy.PolicyResult getAssumption(String key, gcsp.api.policy.PolicyRead read) {
+                gcsp.api.policy.PolicyResult r = super.getAssumption(key, read);
+                return new gcsp.api.policy.PolicyResult(r.status(), "gcsp-policy-v9", r.body());
+            }
+        };
+        assertNull(adapter(other, "run-1").read("gcsp-policy-v1", AS_OF).map(DemandPolicyPort.DemandPolicy::declineReasons).orElse(null));
     }
 
     @Test
@@ -65,6 +82,25 @@ class PolicyDemandAdapterTest {
             DemandPolicyPort.DemandPolicy p = adapter(service, "run-1").read("gcsp-policy-v1", AS_OF).orElseThrow();
             assertEquals("body-style", p.declineReasons().get("reasons").get(0).get("code").asText());
             assertEquals(1, p.declineReasons().get("schemaVersion").asInt());
+        } finally {
+            Files.deleteIfExists(file);
+        }
+    }
+
+    @Test
+    void aPresentKeyWinsOverTheReviewedRegistryEvenWhenInvalid() throws Exception {
+        ObjectNode seed = (ObjectNode) JSON.readTree(Files.readString(SEED));
+        ObjectNode row = ((ObjectNode) seed.get("assumptions").get(0)).deepCopy();
+        row.put("key", "offer.declineReasons.v1");
+        row.set("value", JSON.readTree("{\"schemaVersion\":1,\"reasons\":[{\"code\":\"only-one\"}]}"));
+        ((ArrayNode) seed.get("assumptions")).add(row);
+        Path file = Files.createTempFile("demand-policy", ".json");
+        try {
+            Files.writeString(file, JSON.writeValueAsString(seed));
+            PolicyService service = new PolicyService(new RetainedFilePolicySource(file, List.of()));
+            JsonNode reasons = adapter(service, "run-1").read("gcsp-policy-v1", AS_OF).orElseThrow().declineReasons();
+            assertEquals("only-one", reasons.get("reasons").get(0).get("code").asText());
+            assertEquals(1, reasons.get("reasons").size());
         } finally {
             Files.deleteIfExists(file);
         }

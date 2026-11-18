@@ -6,7 +6,7 @@ import { StatePageComponent } from './pages/state-page.component';
 const feature = (path: string, title: string, roles: readonly Role[]) => ({ path, component: StatePageComponent, canActivate: [sessionGuard], data: { title, roles } });
 const leaveManual: CanDeactivateFn<ManualRouteComponent> = (component, _current, _state, next) => component.canLeave(next.url);
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', component: StatePageComponent, canActivate: [landingGuard] },
+  { path: '', pathMatch: 'full', component: StatePageComponent, canActivate: [landingGuard], runGuardsAndResolvers: 'always' },
   { path: 'sign-in', component: StatePageComponent, data: { kind: 'sign-in' } },
   { path: 'auth/callback', component: StatePageComponent, data: { kind: 'callback' } },
   { path: 'account', loadComponent: () => import('./account/account.component').then((m) => m.AccountComponent), canActivate: [sessionGuard], data: { title: 'Your cars', roles: ['employee'] } },
@@ -17,7 +17,9 @@ export const routes: Routes = [
   { path: 'activity', loadComponent: () => import('./activity/activity.component').then((m) => m.ActivityComponent), canActivate: [sessionGuard], data: { title: 'Buddy activity', roles: ['employee'] } },
   { path: 'offers/:offerId', loadComponent: () => import('./offers/offer-route.component').then((m) => m.OfferRouteComponent), canActivate: [sessionGuard], data: { title: 'Your offer', roles: ['employee'] } }, { path: 'orders', loadComponent: () => import('./orders/orders.component').then((m) => m.OrdersComponent), canActivate: [sessionGuard], data: { title: 'Order progress', roles: ['employee'] } }, { path: 'help', loadComponent: () => import('./help/help.component').then((m) => m.HelpComponent), canActivate: [sessionGuard], data: { title: 'Renewal help', roles: ['employee'] } },
   { path: 'greg', loadComponent: () => import('./greg-demand-policy/greg-route.component').then((m) => m.GregRouteComponent), canActivate: [sessionGuard], data: { title: 'Employee car ordering', roles: ['greg'] } }, { path: 'greg/cases', loadComponent: () => import('./cases/case-queue.component').then((m) => m.CaseQueueComponent), canActivate: [sessionGuard], data: { title: 'Employee cases', roles: ['greg'] } },
-  feature('presenter', 'Presenter controls', ['presenter']), feature('presenter/outbox', 'Outbox', ['presenter']),
+  { path: 'comparison', loadComponent: () => import('./comparison/comparison.component').then((m) => m.ComparisonComponent), canActivate: [sessionGuard], data: { title: 'Process comparisons', roles: ['greg', 'presenter'] } },
+  { path: 'presenter', loadComponent: () => import('./presenter/presenter.component').then((m) => m.PresenterComponent), canActivate: [sessionGuard], data: { title: 'Presenter controls', roles: ['presenter'] } },
+  { path: 'presenter/outbox', loadComponent: () => import('./outbox/outbox.component').then((m) => m.OutboxComponent), canActivate: [sessionGuard], data: { title: 'Outbox', roles: ['presenter'] } },
   { path: 'components', loadComponent: () => import('./pages/gallery.component').then((m) => m.GalleryComponent) },
   { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } },
   { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } },

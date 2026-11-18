@@ -3,6 +3,7 @@ package gcsp.api.demand;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.clock.ClockReading;
 import gcsp.api.demand.AllocationRecordsPort.RecordedDecision;
 import gcsp.api.demand.DemandPolicyPort.DemandPolicy;
 import gcsp.api.demand.DemandStore.Car;
@@ -12,7 +13,6 @@ import gcsp.api.demand.SuitabilityStore.PageHold;
 import gcsp.api.demand.SuitabilityStore.Person;
 import java.sql.Connection;
 import java.text.Collator;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -48,9 +48,9 @@ public final class SuitabilityService {
     private final DataSource dataSource;
     private final DemandPolicyPort policy;
     private final AllocationRecordsPort records;
-    private final Clock clock;
+    private final DemandClock clock;
 
-    public SuitabilityService(DataSource dataSource, DemandPolicyPort policy, AllocationRecordsPort records, Clock clock) {
+    public SuitabilityService(DataSource dataSource, DemandPolicyPort policy, AllocationRecordsPort records, DemandClock clock) {
         this.dataSource = dataSource;
         this.policy = policy;
         this.records = records;
@@ -73,12 +73,20 @@ public final class SuitabilityService {
         if (page < 1 || buddyPage < 1 || !"all".equals(release) && !"latest".equals(release)) {
             throw new IllegalArgumentException("page and buddyPage start at 1; release is all or latest");
         }
-        Instant asOf = clock.instant();
         try {
-            String rule = allocationRule(scope, asOf);
-            Captured got = capture(scope, page, buddyPage, "latest".equals(release));
-            if (got == null) return DemandResult.Refusal.staleRun();
-            return project(scope, release, asOf, rule, page, buddyPage, got);
+            for (int attempt = 0; attempt < 2; attempt++) {
+                ClockReading before = clock.now(scope).orElse(null);
+                if (before == null) return DemandResult.Refusal.suitabilityUnavailable();
+                Instant asOf = before.now();
+                String rule = allocationRule(scope, asOf);
+                Captured got = capture(scope, page, buddyPage, "latest".equals(release));
+                if (got == null) return DemandResult.Refusal.staleRun();
+                DemandResult result = project(scope, release, asOf, rule, page, buddyPage, got);
+                ClockReading after = clock.now(scope).orElse(null);
+                if (after == null) return DemandResult.Refusal.suitabilityUnavailable();
+                if (before.clockVersion() == after.clockVersion() && before.now().equals(after.now())) return result;
+            }
+            return DemandResult.Refusal.suitabilityUnavailable();
         } catch (Exception e) {
             return DemandResult.Refusal.suitabilityUnavailable();
         }

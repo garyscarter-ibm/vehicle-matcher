@@ -384,6 +384,10 @@
       "max_lines": 39
     },
     {
+      "path": "blocks/gcsp/kit/presenter-time.css",
+      "max_lines": 7
+    },
+    {
       "path": "blocks/gcsp/kit/release-grid.css",
       "max_lines": 13
     },

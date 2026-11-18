@@ -11,17 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import gcsp.api.clock.RunClockDocumentClock;
-import gcsp.api.documents.DocumentClock;
-import gcsp.api.documents.RunClockBackedTestClock;
 import gcsp.api.persistence.Persistence;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.path.json.JsonPath;
 import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.UUID;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
@@ -45,9 +42,6 @@ class PresenterFaultsJourneyHttpTest {
     @Inject
     Persistence persistence;
 
-    @Inject
-    RunClockDocumentClock runClockDocuments;
-
     String presenter;
     String employee;
     String greg;
@@ -56,8 +50,6 @@ class PresenterFaultsJourneyHttpTest {
     void setUp() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
-        // The documents tests' shared @Alternative clock would pin the time; use the real binding here.
-        QuarkusMock.installMockForType(new RunClockBackedTestClock(runClockDocuments), DocumentClock.class);
         presenter = PresenterClockSupport.token(signingJwk, "sub-presenter", "presenter");
         employee = PresenterClockSupport.token(signingJwk, "sub-employee", "employee");
         greg = PresenterClockSupport.token(signingJwk, "sub-greg", "greg");
@@ -154,13 +146,14 @@ class PresenterFaultsJourneyHttpTest {
                 .body("value.faults[0].mode", equalTo("none"));
         JsonPath done = post(presenter, "/clock/tick", "{\"tickId\":\"" + tickId + "\",\"expectedClockVersion\":"
                 + tickVersion + "}").then().statusCode(200).body("value.state", equalTo("completed"))
-                .body("value.handlerOrder.handlerId", contains("stock-release", "lifecycle-appointments",
-                        "lifecycle-documents", "lifecycle-return-outcomes", "captured-outbox"))
-                .body("value.handlerOrder.stage", contains("release-pull", "pending-reconciliation",
-                        "pending-reconciliation", "pending-reconciliation", "outbox-dispatch"))
+                .body("value.handlerOrder.handlerId", contains("stock-release", "manual-claim-expiry",
+                        "lifecycle-appointments", "lifecycle-documents", "lifecycle-return-outcomes",
+                        "renewal-risk-cases", "captured-outbox"))
+                .body("value.handlerOrder.stage", contains("release-pull", "manual-expiry",
+                        "pending-reconciliation", "pending-reconciliation", "pending-reconciliation",
+                        "pending-reconciliation", "outbox-dispatch"))
                 .extract().jsonPath();
-        assertTrue(done.getList("value.missingStages").contains("manual-expiry"));
-        assertTrue(done.getList("value.missingStages").contains("buddy-expiry"));
+        assertEquals(List.of("buddy-expiry", "buddy-allocation"), done.getList("value.missingStages"));
         assertEquals("stock-released", done.getString("value.outcomes.find { it.handlerId == 'stock-release' }.outcome.value.kind"));
         as(presenter).get("/api/gcsp/v1/presenter/releases/latest").then().statusCode(200)
                 .body("value.release.trancheId", org.hamcrest.Matchers.notNullValue());

@@ -27,11 +27,14 @@ public class BriefServiceHolder {
     @Inject
     BriefOfferPort offers;
 
+    @Inject
+    BriefPreviewPort preview;
+
     private BriefService service;
 
     public synchronized Optional<BriefService> service() {
         if (!persistence.active()) return Optional.empty();
-        if (service == null) service = new BriefService(dataSource.get(), policy, account, offers, Clock.systemUTC());
+        if (service == null) service = new BriefService(dataSource.get(), policy, account, offers, preview, Clock.systemUTC());
         return Optional.of(service);
     }
 }

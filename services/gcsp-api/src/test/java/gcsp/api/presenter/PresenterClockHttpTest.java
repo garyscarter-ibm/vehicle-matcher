@@ -16,10 +16,8 @@ import gcsp.api.clock.ClockReading;
 import gcsp.api.clock.RunClockDocumentClock;
 import gcsp.api.clock.RunClockHolder;
 import gcsp.api.documents.DocumentClock;
-import gcsp.api.documents.RunClockBackedTestClock;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.path.json.JsonPath;
@@ -72,8 +70,6 @@ class PresenterClockHttpTest {
     void setUp() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
-        // The documents tests' shared @Alternative clock would pin the time; use the real binding here.
-        QuarkusMock.installMockForType(new RunClockBackedTestClock(runClockDocuments), DocumentClock.class);
         presenter = PresenterClockSupport.token(signingJwk, "sub-presenter", "presenter");
         employee = PresenterClockSupport.token(signingJwk, "sub-employee", "employee");
         greg = PresenterClockSupport.token(signingJwk, "sub-greg", "greg");
@@ -208,12 +204,12 @@ class PresenterClockHttpTest {
                 + v + ",\"mode\":\"next-release\"}").then().statusCode(200).body("status", equalTo("ok"))
                 .body("value.advance.now", equalTo(at)).body("value.tick.state", equalTo("completed"))
                 .body("value.tick.handlerOrder.handlerId", org.hamcrest.Matchers.contains("stock-release",
-                        "lifecycle-documents", "captured-outbox"))
-                .body("value.tick.handlerOrder.stage", org.hamcrest.Matchers.contains("release-pull",
+                        "manual-claim-expiry", "lifecycle-documents", "captured-outbox"))
+                .body("value.tick.handlerOrder.stage", org.hamcrest.Matchers.contains("release-pull", "manual-expiry",
                         "pending-reconciliation", "outbox-dispatch"))
-                .body("value.tick.missingStages", org.hamcrest.Matchers.containsInAnyOrder("manual-expiry",
-                        "buddy-expiry", "buddy-allocation"))
-                .body("value.tick.outcomes", hasSize(3)).extract().jsonPath();
+                // No candidates provider: the FUCQ-464 Buddy handlers are unregistered, so their stages are missing.
+                .body("value.tick.missingStages", org.hamcrest.Matchers.containsInAnyOrder("buddy-expiry", "buddy-allocation"))
+                .body("value.tick.outcomes", hasSize(4)).extract().jsonPath();
         assertEquals("ok", tick.getString("value.tick.outcomes.find { it.handlerId == 'stock-release' }.outcome.status"));
         // The plan's one window is open on the run's dated clock: the run's first full tick releases it (whichever
         // test ticks first), and later ticks report no-release.
@@ -266,7 +262,8 @@ class PresenterClockHttpTest {
         given().get("/q/health/ready").then().statusCode(200)
                 .body("checks.find { it.name == 'clock' }.status", equalTo("UP"))
                 .body("checks.find { it.name == 'clock' }.data.handlers",
-                        equalTo("captured-outbox,lifecycle-documents,stock-release"))
+                        equalTo("captured-outbox,lifecycle-documents,"
+                                + "manual-claim-expiry,stock-release"))
                 .body("checks.find { it.name == 'clock' }.data.startup", equalTo("completed"));
     }
 }
