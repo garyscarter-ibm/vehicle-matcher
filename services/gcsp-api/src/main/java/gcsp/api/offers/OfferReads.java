@@ -1,5 +1,6 @@
 package gcsp.api.offers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gcsp.api.offers.OfferRecords.OfferRecord;
 import gcsp.api.offers.OfferRecords.OfferSummary;
 import java.sql.Connection;
@@ -18,13 +19,23 @@ import javax.sql.DataSource;
 /** Read-only SQL over buddy_offers, custody_holds and buddy_quotes; every statement is a primary-key or indexed lookup. */
 final class OfferReads {
 
+    private static final ObjectMapper JSON = new ObjectMapper();
+
     private static final String JOINED = "SELECT o.offer_id, o.employee_id, o.hold_id, h.state, o.quote_id, "
             + "q.order_uuid, q.configuration_id, o.state, o.expires_at, o.version, h.version, o.created_at, "
             + "o.policy_version, o.brief_version::text, q.quoted_at, q.valid_until, q.monthly_points, q.vehicle_name, "
-            + "q.image_path, q.quote->>'gateStatus' FROM buddy_offers o "
+            + "q.image_path, q.quote->>'gateStatus', o.run_id, h.slot_id, c.clock_version::text, q.quote::text, "
+            + "s.attributes->>'orderNumber', d.decision_id FROM buddy_offers o "
             + "JOIN custody_holds h ON h.environment_id = o.environment_id AND h.run_id = o.run_id AND h.hold_id = o.hold_id "
             + "JOIN buddy_quotes q ON q.environment_id = o.environment_id AND q.run_id = o.run_id "
-            + "AND q.quote_id = o.quote_id WHERE o.environment_id = ? AND o.run_id = ? AND o.offer_id = ?";
+            + "AND q.quote_id = o.quote_id "
+            + "LEFT JOIN run_clocks c ON c.environment_id = o.environment_id AND c.run_id = o.run_id "
+            + "JOIN stock_cars s ON s.environment_id = o.environment_id AND s.run_id = o.run_id AND s.order_uuid = o.order_uuid "
+            + "LEFT JOIN offer_decisions d ON d.environment_id = o.environment_id AND d.run_id = o.run_id "
+            + "AND d.offer_id = o.offer_id AND d.decision = 'decline' "
+            + "WHERE o.environment_id = ? AND o.run_id = ? AND o.offer_id = ? "
+            + "AND q.employee_id = o.employee_id AND q.order_uuid = o.order_uuid AND q.slot_id = h.slot_id "
+            + "AND h.employee_id = o.employee_id AND h.order_uuid = o.order_uuid AND q.configuration_id = s.configuration_id";
 
     private static final String FACTS = "SELECT o.employee_id, o.state, o.expires_at, q.vehicle_name, q.monthly_points, "
             + "q.image_path FROM buddy_offers o JOIN buddy_quotes q ON q.environment_id = o.environment_id "
@@ -80,8 +91,17 @@ final class OfferReads {
                         rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), instant(rs, 9),
                         rs.getLong(10), rs.getLong(11), instant(rs, 12), rs.getString(13), rs.getString(14),
                         instant(rs, 15), instant(rs, 16), integer(rs, 17), rs.getString(18), rs.getString(19),
-                        rs.getString(20)));
+                        rs.getString(20), new OfferRecords.Projection(rs.getString(21), rs.getString(22),
+                                rs.getString(23), json(rs.getString(24)), rs.getString(25), rs.getString(26))));
             }
+        }
+    }
+
+    private static com.fasterxml.jackson.databind.JsonNode json(String value) throws SQLException {
+        try {
+            return JSON.readTree(value);
+        } catch (java.io.IOException e) {
+            throw new SQLException("Invalid stored quote", e);
         }
     }
 

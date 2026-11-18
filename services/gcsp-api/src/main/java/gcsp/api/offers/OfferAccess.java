@@ -2,11 +2,15 @@ package gcsp.api.offers;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.account.AccountRecordsPort;
 import gcsp.api.auth.Access;
 import gcsp.api.identity.Principal;
 import gcsp.api.offers.OfferRecords.OfferRecord;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.policy.PolicyClock;
+import gcsp.api.policy.PolicyService;
+import gcsp.api.ordering.OrderingServiceHolder;
+import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.Instant;
@@ -22,6 +26,10 @@ public class OfferAccess {
 
     @Inject
     OfferRecords records;
+
+    @Inject Instance<AccountRecordsPort> accounts;
+    @Inject PolicyService policy;
+    @Inject OrderingServiceHolder ordering;
 
     PolicyClock clock;
 
@@ -41,6 +49,19 @@ public class OfferAccess {
     public OfferOutcome read(Principal p, String offerId) {
         Resolved r = resolve(p, offerId);
         return r.refusal != null ? r.refusal : OfferOutcome.ok(r.view.toJson());
+    }
+
+    /** The HTTP read: pinned public facts and current handoff/progress after the same owner guard. */
+    public OfferOutcome readForEmployee(Principal p, String offerId) {
+        Resolved r = resolve(p, offerId);
+        if (r.refusal != null) return r.refusal;
+        try {
+            ObjectNode value = OfferPresentation.of(p, r.record, r.view,
+                    accounts.isResolvable() ? accounts.get() : null, policy, ordering);
+            return value == null ? OfferOutcome.inconsistent() : OfferOutcome.ok(value);
+        } catch (RuntimeException e) {
+            return OfferOutcome.unavailable();
+        }
     }
 
     /** The owner's projection of one offer, or empty when the owner read is refused for any reason. */
