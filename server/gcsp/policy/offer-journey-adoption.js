@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { ok, result } from '../repository/core.js';
 
-export const OFFER_JOURNEY_SET = 'offer-journey-v1';
-const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1'];
+export const OFFER_JOURNEY_SET = 'offer-journey-v2';
+const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1', 'offer.declinedCar.reentry.v1'];
 
 // Demo startup adopts the reviewed decline/follow-up sets once, as Greg, through PolicyService.
 // Policy is per run: a reset starts on the base version, so the runtime re-adopts after scenario and clock resets.

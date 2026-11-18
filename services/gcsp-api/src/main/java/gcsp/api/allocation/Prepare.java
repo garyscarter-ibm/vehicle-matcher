@@ -31,7 +31,8 @@ final class Prepare {
     private static final int EMPLOYEE_PAGE = 200;
     private static final Pattern DATE = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 
-    private record Engaged(String employeeId, long briefVersion, JsonNode content, JsonNode buddy, String digest) {}
+    private record Engaged(String employeeId, long briefVersion, JsonNode content, JsonNode buddy, String digest,
+            JsonNode postDeclineChange) {}
 
     private record Owner(long employeeVersion, JsonNode employee, long slotVersion, JsonNode slot) {}
 
@@ -121,6 +122,8 @@ final class Prepare {
             return WorkResult.refuse("candidates-unavailable", "The recommendation engine is unavailable.");
         }
         Map<String, List<String>> declined = declined(c, x, e.employeeId());
+        DeclineReentry.Decline latestDecline = a.declineReentry() == null ? null : latestDecline(c, x, e);
+        boolean answered = DeclineReentry.answered(a.declineReentry(), latestDecline, e.briefVersion(), e.content(), e.postDeclineChange());
         Set<String> letLapse = "buddy-expired".equals(trigger.type()) ? letLapse(c, x, e.employeeId()) : Set.of();
         Instant due = null;
         int currentContracts = 0;
@@ -132,10 +135,16 @@ final class Prepare {
             if (car == null) continue;
             ArrayNode blockers = array(d.blockers());
             String gate = d.gateStatus();
-            if (declined.getOrDefault(d.orderUuid(), List.of()).stream()
+            if (!answered && declined.getOrDefault(d.orderUuid(), List.of()).stream()
                     .anyMatch(old -> old == null || old.equals(e.digest()))) {
                 gate = "ineligible";
                 blockers.addObject().put("code", "declined-unchanged");
+            }
+            String reasonBlocker = DeclineReentry.blocker(a.declineReentry(), latestDecline, e.briefVersion(),
+                    e.content(), e.postDeclineChange(), d.orderUuid(), d.quote());
+            if (reasonBlocker != null) {
+                gate = "ineligible";
+                blockers.addObject().put("code", reasonBlocker);
             }
             boolean contends = "eligible".equals(gate) && Buddy.flag(e.buddy(), "holdConsent")
                     && !letLapse.contains(d.orderUuid());
@@ -225,7 +234,8 @@ final class Prepare {
     }
 
     private static List<Engaged> engagedPage(Connection c, RunContext x, String after) throws SQLException {
-        String sql = "SELECT h.employee_id, h.brief_version, b.content::text, b.buddy::text, b.semantic_digest "
+        String sql = "SELECT h.employee_id, h.brief_version, b.content::text, b.buddy::text, b.semantic_digest, "
+                + "b.post_decline_change::text "
                 + "FROM brief_heads h JOIN briefs b ON b.environment_id = h.environment_id AND b.run_id = h.run_id "
                 + "AND b.employee_id = h.employee_id AND b.brief_version = h.brief_version "
                 + "WHERE h.environment_id = ? AND h.run_id = ? AND h.brief_version > 0 AND h.employee_id > ? "
@@ -233,7 +243,7 @@ final class Prepare {
                 + "AND b.buddy->'paused' = 'false'::jsonb ORDER BY h.employee_id LIMIT ?";
         // The SQL narrows to the same flags Engagement.engaged checks; Buddy.engaged stays the final rule.
         return Sql.query(c, sql, rs -> new Engaged(rs.getString(1), rs.getLong(2), Sql.json(rs.getString(3)),
-                Sql.json(rs.getString(4)), rs.getString(5)), x.environmentId(), x.runId(), after, EMPLOYEE_PAGE);
+                Sql.json(rs.getString(4)), rs.getString(5), Sql.json(rs.getString(6))), x.environmentId(), x.runId(), after, EMPLOYEE_PAGE);
     }
 
     private static Owner owner(Connection c, RunContext x, String employeeId) throws SQLException {
@@ -263,6 +273,30 @@ final class Prepare {
             out.computeIfAbsent(row[0], k -> new ArrayList<>()).add(row[1]);
         }
         return out;
+    }
+
+    /** One exact latest decision; the quote is joined only for the quantitative size comparison. */
+    private static DeclineReentry.Decline latestDecline(Connection c, RunContext x, Engaged employee) throws SQLException {
+        long from = employee.postDeclineChange() == null ? 0 : employee.postDeclineChange().path("fromBriefVersion").asLong();
+        String sql = "SELECT o.order_uuid, d.decision_id, d.offer_id, o.brief_version, d.reason::text, "
+                + "CASE WHEN d.reason_code = 'size' THEN q.quote::text ELSE NULL END, "
+                + "previous.content::text, saved.post_decline_change::text, saved.confirmed_by, saved.confirmed_at "
+                + "FROM (SELECT * FROM offer_decisions WHERE environment_id = ? AND run_id = ? AND employee_id = ? "
+                + "AND decision = 'decline' ORDER BY decided_at DESC, decision_id DESC LIMIT 1) d "
+                + "JOIN buddy_offers o ON o.environment_id = d.environment_id AND o.run_id = d.run_id "
+                + "AND o.offer_id = d.offer_id AND o.employee_id = d.employee_id AND o.state = 'declined' "
+                + "LEFT JOIN buddy_quotes q ON d.reason_code = 'size' AND q.environment_id = o.environment_id "
+                + "AND q.run_id = o.run_id AND q.quote_id = o.quote_id AND q.employee_id = o.employee_id "
+                + "AND q.order_uuid = o.order_uuid AND q.policy_version = o.policy_version "
+                + "AND q.quote->'versions'->>'brief' = o.brief_version::text "
+                + "LEFT JOIN briefs previous ON previous.environment_id = d.environment_id AND previous.run_id = d.run_id "
+                + "AND previous.employee_id = d.employee_id AND previous.brief_version = ? "
+                + "LEFT JOIN briefs saved ON saved.environment_id = d.environment_id AND saved.run_id = d.run_id "
+                + "AND saved.employee_id = d.employee_id AND saved.brief_version = ?";
+        return Sql.one(c, sql, rs -> new DeclineReentry.Decline(rs.getString(1), rs.getString(2), rs.getString(3),
+                rs.getLong(4), Sql.json(rs.getString(5)), Sql.json(rs.getString(6)), Sql.json(rs.getString(7)),
+                Sql.json(rs.getString(8)), rs.getString(9), Sql.instant(rs, 10)), x.environmentId(), x.runId(),
+                employee.employeeId(), from, from + 1);
     }
 
     private static Set<String> letLapse(Connection c, RunContext x, String employeeId) throws SQLException {

@@ -23,8 +23,10 @@ import java.util.regex.Pattern;
 public final class ReviewedDefinitions {
 
     public static final String OFFER_JOURNEY_SET = "offer-journey-v1";
+    public static final String OFFER_JOURNEY_SUCCESSOR_SET = "offer-journey-v2";
     private static final String DECLINE = "gcsp/policy/reviewed/offer-decline-reasons-v1.json";
     private static final String FOLLOWUP = "gcsp/policy/reviewed/offer-followup-questions-v1.json";
+    private static final String REENTRY = "gcsp/policy/reviewed/offer-declined-car-reentry-v1.json";
     private static final List<String> BUNDLE_KEYS = List.of("schemaVersion", "definitionSetId", "revision", "definitions",
             "digest");
     private static final List<String> ROW_KEYS = List.of("key", "value", "unit", "basis", "source", "sourceDate", "status");
@@ -38,23 +40,30 @@ public final class ReviewedDefinitions {
 
     /** The validated set, or null when the id is not a reviewed set; a missing or invalid artifact is source-invalid. */
     public static ObjectNode get(String definitionSetId) throws PolicySourceException {
-        if (!OFFER_JOURNEY_SET.equals(definitionSetId)) {
+        if (!OFFER_JOURNEY_SET.equals(definitionSetId) && !OFFER_JOURNEY_SUCCESSOR_SET.equals(definitionSetId)) {
             return null;
         }
-        return offerJourney();
+        return offerJourney(definitionSetId);
     }
 
     /** The decline reasons and follow-up questions as one set; its digest is the one the Node server computes. */
     static ObjectNode offerJourney() throws PolicySourceException {
+        return offerJourney(OFFER_JOURNEY_SET);
+    }
+
+    private static ObjectNode offerJourney(String definitionSetId) throws PolicySourceException {
         ObjectNode decline = load(DECLINE);
         ObjectNode followup = load(FOLLOWUP);
         ObjectNode set = JsonNodeFactory.instance.objectNode();
         set.put("schemaVersion", 1);
-        set.put("definitionSetId", OFFER_JOURNEY_SET);
+        set.put("definitionSetId", definitionSetId);
         set.put("revision", "1");
         ArrayNode definitions = set.putArray("definitions");
         decline.get("definitions").forEach(row -> definitions.add(row.deepCopy()));
         followup.get("definitions").forEach(row -> definitions.add(row.deepCopy()));
+        if (OFFER_JOURNEY_SUCCESSOR_SET.equals(definitionSetId)) {
+            load(REENTRY).get("definitions").forEach(row -> definitions.add(row.deepCopy()));
+        }
         set.put("digest", Canonical.digest(set));
         if (!valid(set)) {
             throw new PolicySourceException(PolicySourceException.INVALID);
