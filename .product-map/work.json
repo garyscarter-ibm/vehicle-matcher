@@ -8310,87 +8310,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-17T19:53:20Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
-      "slices": [
-        {
-          "id": "inspection",
-          "status": "in-progress",
-          "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-16T22:57:36Z"
-        },
-        {
-          "id": "jobs",
-          "status": "in-progress",
-          "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-16T22:57:36Z"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Connected Java roles and rendered acceptance evidence"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-020",
-      "note": "Partial source/fixture result:28clienta02+30componenta03 pass on matchingclosure; actual boundaryrc1 inheritedcasequeueemdash. BothoriginalACopen:JavaReplay/newrun,parentroute/auth,connected/renderedproof missing. No slice complete.",
-      "workers": [
-        {
-          "name": "Foghorn Leghorn 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T23:20:35.697529+00:00",
-          "expires_at": "2026-11-16T23:20:35.697529+00:00",
-          "source": "/root/foghorn_leghorn_2",
-          "status": "final partial delivery bookkeeping complete; original ACs remain open"
-        },
-        {
-          "name": "Marvin the Martian 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:15Z",
-          "expires_at": "2026-11-16T23:04:38.753688+00:00",
-          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Porky Pig 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:42Z",
-          "expires_at": "2026-11-16T23:04:38.753940+00:00",
-          "source": "/root/foghorn_leghorn_2/porky_pig_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Hugo 3",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-16T23:16:41Z",
-          "expires_at": "2026-11-16T23:16:52Z",
-          "source": "/root/foghorn_leghorn_2/hugo_3",
-          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
-        },
-        {
-          "name": "Bertie 2",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-16T23:18:28Z",
-          "expires_at": "2026-11-16T23:19:03.283520+00:00",
-          "source": "/root/foghorn_leghorn_2/bertie_2",
-          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-443",
       "observed_at": "2026-11-18T02:12:44Z",
       "original_status": "In Progress",
@@ -10292,6 +10211,106 @@
       "note": "18Nov actual local connected composition PASS at proof7c6969d0e supersedes historical missing-rich-producer/query/follow-up blockers. Original AC unchecked, native In Progress unchanged; local substitute proof is not delivered-email/hosted/live integration acceptance. All owned runtime cleanup verified; docs/gcsp/fucq445-delivery-2026-11-14.md. Independent proof-only review PASS,no blocking/major findings; current-car comparison proves unavailable fallback,not populated parity.",
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-18T03:42:22Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "jobs",
+          "status": "in-progress",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-16T22:57:36Z"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Connected Java roles and rendered acceptance evidence",
+          "observed_at": "2026-11-18T03:42:21.797896+00:00"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "Resumed original AC on18Nov: current DatabaseComparisonReplay and route/auth integrated. Focused native/browser proof in progress; earlier missing-producer reason historical. OriginalACs remain open; docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Hugo 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
+          "source": "/root/foghorn_leghorn_2/hugo_3",
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
+        },
+        {
+          "name": "Bertie 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
+          "source": "/root/foghorn_leghorn_2/bertie_2",
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
+        },
+        {
+          "name": "Scrappy Doo 3",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T03:42:21.797896+00:00",
+          "expires_at": "2026-11-18T05:42:21.801915+00:00",
+          "source": "/root/scrappy_doo_3",
+          "status": "current original-scope comparison proof/build/validation"
+        },
+        {
+          "name": "Cuthbert 4",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T03:42:21.797896+00:00",
+          "expires_at": "2026-11-18T04:12:21.801933+00:00",
+          "source": "/root/scrappy_doo_3/cuthbert_4",
+          "status": "authoring allocated connected comparison proof; no runtime"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1
