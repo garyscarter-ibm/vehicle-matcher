@@ -16,6 +16,9 @@ import gcsp.api.account.AccountSelection;
 import gcsp.api.allocation.RemoteBuddy;
 import gcsp.api.identity.IdentityPort;
 import gcsp.api.ordering.OrderingServiceHolder;
+import gcsp.api.policy.PolicyClock;
+import gcsp.api.policy.PolicyContext;
+import gcsp.api.policy.PolicyRead;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
@@ -74,6 +77,7 @@ class OidcRemoteOfferHttpTest {
 
     @Test
     void ownerJwtAcceptsThroughStartupSelectedRemoteBuddyAndReadsAcceptedOffer() throws Exception {
+        pinSeededOfferReadFacts();
         assertEquals("oidc", identity.mode());
         assertEquals("remote", buddy.mode());
         assertEquals("repository", accounts.mode());
@@ -131,6 +135,66 @@ class OidcRemoteOfferHttpTest {
         assertEquals(1, count("SELECT count(*) FROM stock_cars WHERE state = 'allocated'"));
         assertEquals(1, count("SELECT count(*) FROM outbox_events WHERE event_type = 'offer-accepted' "
                 + "AND event_id = 'offer-accepted:' || (SELECT hold_id FROM buddy_offers WHERE offer_id = ?)", offerId));
+    }
+
+    /** This test's hand-built remote boundary also carries the public read pins a generated offer has. */
+    private void pinSeededOfferReadFacts() throws Exception {
+        try (Connection c = dataSource.getConnection()) {
+            c.setAutoCommit(false);
+            try (PreparedStatement read = c.prepareStatement("SELECT o.environment_id, o.run_id, o.policy_version, "
+                    + "o.brief_version, q.quote_id, q.order_uuid, q.vehicle_name, q.image_path, q.monthly_points, "
+                    + "q.quoted_at, q.valid_until, q.quote::text, e.attributes::text, rc.clock_version FROM buddy_offers o "
+                    + "JOIN buddy_quotes q USING (environment_id, run_id, quote_id) "
+                    + "JOIN run_clocks rc USING (environment_id, run_id) "
+                    + "JOIN employees e ON e.environment_id = o.environment_id AND e.run_id = o.run_id "
+                    + "AND e.employee_id = o.employee_id WHERE o.offer_id = ?")) {
+                read.setString(1, offerId);
+                try (ResultSet row = read.executeQuery()) {
+                    assertTrue(row.next());
+                    String environment = row.getString(1), run = row.getString(2), policyVersion = row.getString(3);
+                    String quotedAt = PolicyClock.iso(row.getObject(10, java.time.OffsetDateTime.class).toInstant());
+                    String validUntil = PolicyClock.iso(row.getObject(11, java.time.OffsetDateTime.class).toInstant());
+                    ObjectNode quote = (ObjectNode) DecisionEnv.JSON.readTree(row.getString(12));
+                    var employee = DecisionEnv.JSON.readTree(row.getString(13));
+                    var allowance = DecisionEnv.policy(false).getAllowance(new PolicyContext(run,
+                            employee.path("companyId").asText(), employee.path("schemeId").asText(),
+                            employee.path("gradeId").asText()), new PolicyRead(run, quotedAt, policyVersion));
+                    assertTrue(allowance.ok());
+                    assertEquals(policyVersion, allowance.policyVersion());
+                    ObjectNode provenance = JsonNodeFactory.instance.objectNode().put("sourceRef", "test:oidc-remote-offer-boundary")
+                            .put("observedAt", quotedAt).put("version", policyVersion).put("assurance", "synthetic-scenario");
+                    ObjectNode snapshot = (ObjectNode) quote.get("snapshot");
+                    snapshot.put("contractVersion", "vehicle-snapshot-v1").put("identityKind", "exact-stock")
+                            .put("candidateKey", "stock:" + row.getString(6)).put("sourceNamespace", "test:oidc-remote-offer-boundary")
+                            .put("snapshotVersion", "1").put("observedAt", quotedAt);
+                    snapshot.putObject("sourceKeys").put("stockId", row.getString(6));
+                    snapshot.putObject("display").put("name", row.getString(7)).put("photo", row.getString(8)).putArray("images");
+                    snapshot.path("facts").forEach(fact -> {
+                        ((ObjectNode) fact).putNull("unit").set("provenance", provenance.deepCopy());
+                    });
+                    ObjectNode terms = quote.putObject("terms").put("kind", "employee-scheme")
+                            .put("termsVersion", "seeded-remote-offer-v1").put("validFrom", quotedAt).put("validUntil", validUntil);
+                    terms.putObject("points").put("value", row.getInt(9)).put("unit", "points");
+                    terms.set("provenance", provenance);
+                    terms.putObject("allowanceInputs").putObject("allowance")
+                            .put("value", allowance.value().path("monthlyPoints").longValue()).put("unit", "points");
+                    // The application startup already supplies this run's persisted clock.
+                    quote.putObject("versions").put("brief", row.getLong(4)).put("policy", policyVersion)
+                            .put("clock", row.getString(14));
+                    try (var statement = c.createStatement()) {
+                        statement.execute("ALTER TABLE buddy_quotes DISABLE TRIGGER buddy_quotes_immutable");
+                        try (PreparedStatement update = c.prepareStatement("UPDATE buddy_quotes SET quote = ?::jsonb "
+                                + "WHERE environment_id = ? AND run_id = ? AND quote_id = ?")) {
+                            update.setString(1, quote.toString()); update.setString(2, environment);
+                            update.setString(3, run); update.setString(4, row.getString(5));
+                            assertEquals(1, update.executeUpdate());
+                        }
+                        statement.execute("ALTER TABLE buddy_quotes ENABLE TRIGGER buddy_quotes_immutable");
+                    }
+                }
+            }
+            c.commit();
+        }
     }
 
     private void assertNoSelection() throws SQLException {
