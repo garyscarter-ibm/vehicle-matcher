@@ -6,7 +6,6 @@ import { deriveScenarioClock } from '../gcsp/clock/start-day.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
 import { loadScenarioCatalogue } from '../gcsp/fixtures/scenarios/index.js';
 import { dayClock } from '../../blocks/gcsp/kit/friendly-time.js';
-import { basicModel } from '../../blocks/gcsp/presenter-controls/basic-model.js';
 
 const TEMPLATE = { startsAt: '2026-11-05T09:00:00.000Z',
   namedTimes: { release: '2026-11-05T09:30:00.000Z', expiry: '2026-11-05T11:00:00.000Z' } };
@@ -68,11 +67,7 @@ test('Start again on a later wall day moves Day 1 to that day', async () => {
   assert.deepEqual(run.versions.scenarioClock.namedTimes, { release: '2026-11-12T09:30:00.000Z', expiry: '2026-11-12T11:00:00.000Z' });
 });
 
-test('the presenter console reads Day 1 as the derived start day', () => {
+test('the day clock reads Day 1 as the derived start day', () => {
   const START = '2026-11-11T09:00:00.000Z';
   assert.equal(dayClock(START, START), 'Day 1 · Wed 11 Nov, 9:00am');
-  const model = basicModel({ controls: { runId: 'r', runVersion: 1, now: START, clockVersion: '1', lastTick: null,
-    currentScenario: { scenarioId: 'main-successful-journey', fixtureVersion: 'main-successful-journey-inputs-v1' } },
-  scenario: { inputs: { briefs: [{ principalId: 'demo-paula' }] }, clockStart: START } });
-  assert.equal(model.clock, 'Day 1 · Wed 11 Nov, 9:00am');
 });

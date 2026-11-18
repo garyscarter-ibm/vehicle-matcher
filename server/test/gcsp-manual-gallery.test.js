@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { toManualCar, toManualGallery } from '../../blocks/gcsp/manual-gallery/gallery-model.js';
-import { createManualGalleryController } from '../../blocks/gcsp/manual-gallery/gallery-controller.js';
-import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
 import { createVehicleSnapshot } from '../vehicles/index.js';
 
 // Optional inventory detail is synthetic test input, never a runtime stock source.
@@ -27,7 +25,6 @@ terms: { kind: 'employee-scheme', termsVersion: 'terms-v1', points: { value: 110
 const envelope = (decisions = [decision()], state = decisions.length ? 'available-stock' : 'empty-stock') => ({ status: 'ok', value: {
   state, decisions, cars: decisions.filter((car) => car.gateStatus === 'eligible'), total: 999, ranked: false,
   versions: { policy: 'policy-v1', stock: 'stock-v1', facts: 'facts-v1', clock: 'clock-v1', draft: 2, context: 'context-v1' }, browsingReservesStock: false } });
-const deferred = () => { let resolve; const promise = new Promise((done) => { resolve = done; }); return { resolve, promise }; };
 
 test('all exact decisions remain reachable past five, with independent eligibility and record counts', () => {
   const input = envelope(Array.from({ length: 9 }, (_, index) => decision(index + 1, index === 8 ? { gateStatus: 'ineligible', blockers: [{ code: 'insurance-grade-limit' }] } : {})));
@@ -111,83 +108,6 @@ test('source outage, empty pool, no suitable cars, context refresh and explicit 
   assert.equal(toManualGallery({ status: 'ok', value: { state: 'nothing-released-yet' } }).state, 'nothing-released-yet');
   for (const input of [{ status: 'ok', value: {} }, envelope([decision(), decision()])]) assert.equal(toManualGallery(input).state, 'source-unavailable');
 });
-
-test('controller browsing/detail/control operations have no write effect and only eligible exact review reaches host', async () => {
-  const reviewed = []; let reads = 0; let commands = 0;
-  const input = envelope([decision(), decision(2, { gateStatus: 'ineligible', blockers: [{ code: 'not-available' }] }), decision(3, { gateStatus: 'needs-confirmation' })]);
-  const claimInput = { orderUuid: decision().orderUuid, expectedStockVersion: 8, expectedDraftVersion: 2,
-    expectedContextVersion: 'context-v1', expectedTermsDigest: 'terms-digest-v1' };
-  input.value.decisions[0].claimInput = claimInput;
-  const controller = createManualGalleryController({ adapter: { async browseStock() { reads += 1; return input; } }, onReview: (value) => reviewed.push(value), commandId: () => `attempt-${++commands}` });
-  await controller.load(); controller.openDetail(input.value.decisions[0].orderUuid); controller.setControls({ query: 'Blue', sort: 'points' });
-  assert.equal(reads, 1); assert.equal(reviewed.length, 0);
-  assert.equal(controller.openDetail('catalogue-id'), null);
-  for (const car of input.value.decisions.slice(1)) { assert.equal(controller.review(car.orderUuid).status, 'unavailable');
-    assert.equal(controller.getState().allCars.find((item) => item.id === car.orderUuid).view.members[0].actions[0].disabled, true); }
-  const result = controller.review(input.value.decisions[0].orderUuid); controller.review(input.value.decisions[0].orderUuid);
-  assert.equal(reviewed.length, 2); assert.deepEqual(result.value.claimInput, claimInput); assert.equal(result.value.commandId, reviewed[1].commandId);
-  assert.deepEqual(result.value.facts, input.value.decisions[0].snapshot.facts); assert.deepEqual(result.value.versions, input.value.versions);
-  assert.deepEqual(result.value.decisionVersions, input.value.decisions[0].versions); assert.equal(result.value.draftVersion, 2);
-  assert.equal(result.value.configurationId, input.value.decisions[0].configurationId);
-  assert.equal(controller.getState().cars[0].view.members[0].decision.score, null);
-  assert.deepEqual(controller.getState().cars[0].view.members[0].decision.reasons, []);
-  controller.reportOutcome({ status: 'conflict', reason: 'occupied' }, { orderUuid: input.value.decisions[0].orderUuid });
-  assert.equal(controller.getState().state, 'available-stock'); assert.equal(controller.getState().notice, 'car-taken');
-  controller.setControls({ query: '' }); assert.equal(controller.getState().notice, 'car-taken');
-  assert.equal(controller.review(input.value.decisions[0].orderUuid).status, 'unavailable');
-  await controller.refresh(); assert.equal(controller.getState().state, 'available-stock'); assert.equal(controller.getState().notice, null);
-  assert.equal(controller.review(input.value.decisions[0].orderUuid).value.commandId, result.value.commandId);
-  assert.equal(commands, 1); controller.destroy();
-});
-
-test('missing claimInput disables review while exact detail browsing stays available', async () => {
-  let calls = 0;
-  const controller = createManualGalleryController({ adapter: { browseStock: async () => envelope() }, onReview() { calls += 1; }, commandId: () => 'id' });
-  await controller.load(); assert.ok(controller.openDetail(decision().orderUuid));
-  const result = controller.review(decision().orderUuid);
-  assert.equal(result.status, 'unavailable'); assert.equal(calls, 0);
-  const action = controller.getState().cars[0].view.members[0].actions[0];
-  assert.equal(action.disabled, true); assert.equal(action.disabledReason, 'Refresh to review this car.');
-  const withClaim = decision(2, { claimInput: { orderUuid: decision(2).orderUuid, expectedStockVersion: 1, expectedDraftVersion: 2,
-    expectedContextVersion: 'context-v1', expectedTermsDigest: 'digest' } });
-  const noHost = createManualGalleryController({ adapter: { browseStock: async () => envelope([withClaim]) } });
-  await noHost.load(); assert.equal(noHost.review(withClaim.orderUuid).status, 'unavailable'); controller.destroy(); noHost.destroy();
-});
-
-test('async refresh ignores superseded responses, aborts on destroy and recovers after errors', async () => {
-  const pending = [deferred(), deferred(), deferred()]; const signals = []; const changes = [];
-  const controller = createManualGalleryController({ adapter: { browseStock({ signal }) { signals.push(signal); return pending[signals.length - 1].promise; } }, onChange: (value) => changes.push(value.state) });
-  const old = controller.load(); assert.equal(controller.getState().state, 'loading'); const fresh = controller.refresh();
-  assert.equal(signals[0].aborted, true); pending[1].resolve(envelope([decision(2)])); await fresh;
-  pending[0].resolve(envelope([decision(1)])); await old; assert.equal(controller.getState().cars[0].identity.orderNumber, '0000002');
-  const late = controller.refresh(); const count = changes.length; controller.destroy(); assert.equal(signals[2].aborted, true);
-  pending[2].resolve(envelope()); await late; assert.equal(changes.length, count); assert.equal((await controller.refresh()).state, 'loading');
-  let fail = true; const recover = createManualGalleryController({ adapter: { async browseStock() { if (fail) throw Error('transport'); return envelope([]); } } });
-  await recover.load(); assert.equal(recover.getState().state, 'source-unavailable'); fail = false; await recover.refresh();
-  assert.equal(recover.getState().state, 'empty-stock'); recover.destroy();
-});
-
-test('controller uses an ok initial stock answer for its first load only', async () => {
-  let reads = 0; const adapter = { async browseStock() { reads += 1; return envelope([decision(2)]); } };
-  const seeded = createManualGalleryController({ adapter, initialStock: envelope([decision(1)]) });
-  await seeded.load(); assert.equal(reads, 0); assert.equal(seeded.getState().cars[0].identity.orderNumber, '0000001');
-  await seeded.refresh(); assert.equal(reads, 1); assert.equal(seeded.getState().cars[0].identity.orderNumber, '0000002'); seeded.destroy();
-  for (const initialStock of [{ status: 'unavailable', retryable: true }, null, undefined]) {
-    reads = 0; const plain = createManualGalleryController({ adapter, initialStock });
-    await plain.load(); assert.equal(reads, 1); plain.destroy();
-  }
-  reads = 0; const early = createManualGalleryController({ adapter, initialStock: envelope([decision(1)]) });
-  early.destroy(); await early.load(); assert.equal(reads, 0);
-});
-
-test('default read adapter only GETs the shared manual stock endpoint with trusted cookies', async () => {
-  const calls = []; const input = envelope();
-  const adapter = createAccountHttpAdapter({ fetchImpl: async (url, options) => { calls.push({ url, options }); return { ok: true, status: 200, json: async () => input }; } });
-  const controller = createManualGalleryController({ adapter }); await controller.load(); controller.setControls({ query: 'estate' }); controller.openDetail(decision().orderUuid);
-  assert.equal(calls.length, 1); assert.equal(calls[0].url, '/api/gcsp/manual/stock'); assert.equal(calls[0].options.method, 'GET');
-  assert.equal(calls[0].options.credentials, 'include'); assert.equal(calls[0].options.body, undefined); controller.destroy();
-});
-
 
 test('actual ManualContextService outcomes project all candidates, fail-closed gates and source errors without holds', async (t) => {
   const { createMemoryRepository, createMemoryStore } = await import('../gcsp/repository/index.js');
@@ -274,29 +194,4 @@ test('FUCQ-278: a held offer in browse blocks Review on every car with a stated 
   }
   const free = toManualGallery(withHeld([claimed(1)], null));
   assert.deepEqual([free.notice, free.heldOffer, free.cars[0].view.members[0].actions[0].disabled], [null, null, false]);
-  const handoffs = [];
-  const controller = createManualGalleryController({ adapter: { browseStock: async () => withHeld([claimed(1)], held) }, onReview: (v) => handoffs.push(v), commandId: () => 'id' });
-  await controller.load(); assert.equal(controller.review(claimed(1).orderUuid).status, 'unavailable'); assert.equal(handoffs.length, 0); controller.destroy();
-});
-
-test('FUCQ-278: an offer-held claim answer keeps the list, shows the held offer and blocks Review', async () => {
-  const controller = createManualGalleryController({ adapter: { browseStock: async () => envelope([claimed(1), claimed(2)]) }, onReview() {}, commandId: () => 'id' });
-  await controller.load(); assert.equal(controller.getState().notice, null);
-  controller.reportOutcome({ status: 'conflict', reason: 'offer-held', offerId: 'buddy-offer:9', runId: 'run-9', view: { action: 'view-offer' } }, { orderUuid: claimed(1).orderUuid });
-  const state = controller.getState();
-  assert.deepEqual([state.state, state.notice, state.heldOffer, state.cars.length], ['available-stock', 'offer-held', { offerId: 'buddy-offer:9', runId: 'run-9' }, 2]);
-  assert.ok(state.cars.every((car) => car.view.members[0].actions[0].disabled));
-  controller.destroy();
-});
-
-test('FUCQ-278: a single-car conflict keeps the list, counts and allowance and blocks only that car', async () => {
-  const controller = createManualGalleryController({ adapter: { browseStock: async () => envelope([claimed(1), claimed(2)]) }, onReview() {}, commandId: () => 'id' });
-  await controller.load(); const before = controller.getState().counts;
-  controller.reportOutcome({ status: 'conflict', reason: 'stock-unavailable' }, { orderUuid: claimed(1).orderUuid });
-  const state = controller.getState(); const [one, two] = state.cars.map((car) => car.view.members[0].actions[0]);
-  assert.deepEqual([state.state, state.notice, state.counts], ['available-stock', 'car-taken', before]);
-  assert.deepEqual([one.disabled, one.disabledReason, two.disabled], [true, 'This car is no longer available.', false]);
-  assert.equal(state.allCars[0].cost.allowance, 1300);
-  controller.reportOutcome({ status: 'unavailable' }); assert.equal(controller.getState().state, 'source-unavailable');
-  controller.destroy();
 });

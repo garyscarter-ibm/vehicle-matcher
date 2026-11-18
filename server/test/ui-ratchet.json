@@ -168,18 +168,6 @@
       "max_lines": 18
     },
     {
-      "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.css",
-      "max_lines": 21
-    },
-    {
-      "path": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
-      "max_lines": 29
-    },
-    {
-      "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 51
-    },
-    {
       "path": "blocks/vehicle-matcher/question-controls.css",
       "max_lines": 7
     },
@@ -280,10 +268,6 @@
       "max_lines": 22
     },
     {
-      "path": "blocks/gcsp/brief/gcsp-brief.css",
-      "max_lines": 35
-    },
-    {
       "path": "blocks/gcsp/shell/density-theme.css",
       "max_lines": 167
     },
@@ -300,10 +284,6 @@
       "max_lines": 19
     },
     {
-      "path": "blocks/gcsp/offer/gcsp-offer.css",
-      "max_lines": 10
-    },
-    {
       "path": "blocks/gcsp/kit/stage-tracker.css",
       "max_lines": 19
     },
@@ -318,14 +298,6 @@
     {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
       "max_lines": 29
-    },
-    {
-      "path": "blocks/gcsp/manual-review/manual-review.css",
-      "max_lines": 19
-    },
-    {
-      "path": "blocks/gcsp/manual-summary/manual-summary.css",
-      "max_lines": 19
     },
     {
       "path": "blocks/gcsp/kit/show-more.css",
@@ -414,10 +386,6 @@
     {
       "path": "blocks/gcsp/kit/vehicle-decision.css",
       "max_lines": 57
-    },
-    {
-      "path": "blocks/gcsp/offer/decision-drawer.css",
-      "max_lines": 11
     },
     {
       "path": "blocks/gcsp/kit/option-rows.css",

@@ -108,9 +108,6 @@ services:
         source: /gcsp-greg.html
         destination: https://gcsp-api.onrender.com/gcsp-greg.html
       - type: redirect
-        source: /gcsp-case-queue.html
-        destination: https://gcsp-api.onrender.com/gcsp-case-queue.html
-      - type: redirect
         source: /gcsp-help.html
         destination: https://gcsp-api.onrender.com/gcsp-help.html
     envVars:

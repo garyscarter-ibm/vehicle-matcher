@@ -99,7 +99,7 @@ test('root session cookies preserve explicit Greg login across HTML and API with
   const apiCookies = jar.getCookiesSync(`${app.origin}/api/gcsp/context`);
   assert.deepEqual(apiCookies.map((value) => [value.key, value.value, value.path]), htmlCookies.map((value) => [value.key, value.value, value.path]));
   const actingCookie = htmlCookies[0].value;
-  for (const path of ['/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html']) {
+  for (const path of ['/gcsp-greg.html', '/gcsp-help.html']) {
     assert.ok(jar.getCookiesSync(new URL(path, app.origin).href).some((value) => value.key === 'gcsp_session' && value.value === actingCookie));
     const page = await browse(path);
     const employeeOnly = path === '/gcsp-help.html';

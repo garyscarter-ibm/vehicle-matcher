@@ -66,7 +66,7 @@ test('every literal dynamic import, lazy employee stylesheet and CSS asset is in
   const output = path.join(await owned(t), 'site');
   const manifest = await assembleSite({ output });
   for (const target of ['blocks/gcsp/manual-gallery/fixtures.js', 'blocks/gcsp/account/http-adapter.js',
-    'blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/manual-gallery/gcsp-manual-gallery.css', 'blocks/gcsp/offer/decision-drawer.css']) {
+    'blocks/gcsp/shell/gcsp-shell.css']) {
     assert.ok(manifest.dependencies.some((e) => e.to === target), target);
   }
   for (const block of manifest.blocks) for (const file of block.files) assert.ok(manifest.files.some((f) => f.path === file), file);

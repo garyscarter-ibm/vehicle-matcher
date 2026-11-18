@@ -809,7 +809,7 @@ test('the portal shell builds no presenter controls, even with a presenter cooki
   document.cookie = 'gcsp_presenter=; path=/; max-age=0';
 });
 
-const PAGES = ['help', 'greg', 'case-queue', 'login', 'manual-gallery'];
+const PAGES = ['help', 'greg', 'login'];
 const importsOf = (code) => [...code.matchAll(/\bimport\s*(?:[\w*{}\s,$]*?\s*from\s*)?['"]([^'"]+)['"]|\bimport\(\s*['"]([^'"]+)['"]\s*\)/g)]
   .map((m) => m[1] || m[2]).filter((spec) => spec.startsWith('.'));
 function reachable(entry) {

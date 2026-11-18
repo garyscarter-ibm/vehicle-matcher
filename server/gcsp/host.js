@@ -14,11 +14,11 @@ import { createStaticVersioning, splitVersioned } from './static-version.js';
 export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html'];
+const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html'];
 const sessionPage = (path) => SESSION_PAGES.includes(path);
 const LOGIN_PATH = '/gcsp/login';
 const loginPage = (path) => [LOGIN_PATH, '/gcsp-login.html'].includes(path);
-const gregPage = (path) => ['/gcsp-greg.html', '/gcsp-case-queue.html'].includes(path);
+const gregPage = (path) => path === '/gcsp-greg.html';
 const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
   : context?.roles?.includes('employee') ? '/gcsp-help.html' : LOGIN_PATH;
 const publicPath = (path) => loginPage(path) || sessionPage(path) || path === '/gcsp-employee.css'

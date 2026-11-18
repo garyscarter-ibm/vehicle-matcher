@@ -424,8 +424,6 @@ export function manualGalleryExample() {
       disabled: true, disabledReason: 'Read-only gallery example.' }));
     scope.append(matchCard(null, { view, big: true }));
   }
-  scope.append(button({ label: 'Try manual browse controls', variant: 'ghost',
-    href: './gcsp-manual-gallery.html?fixture=available' }));
   section.append(scope); return section;
 }
 

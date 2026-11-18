@@ -459,8 +459,6 @@ test('queue element pre-upgrade injection, embedding, heading override, refresh,
   try { const actual = document.createElement('gcsp-case-queue'); document.body.append(actual); await tick(); assert.deepEqual(calls, ['/api/gcsp/scheme-team/cases']); actual.remove(); }
   finally { globalThis.fetch = original; }
   await import('../../blocks/gcsp/cases/register.js'); assert.equal(customElements.get('gcsp-case-queue'), queue.GcspCaseQueueElement);
-  const html = readFileSync(new URL('../../gcsp-case-queue.html', import.meta.url), 'utf8');
-  assert.doesNotMatch(html, /\son\w+\s*=|<script(?![^>]*\bsrc=)[^>]*>\s*\S/i); assert.match(html, /queue-harness.js/); assert.match(html, /gcsp-case-queue.css/);
   assert.equal((await queueFixtureAdapter().updateCase({})).status, 'unavailable');
 });
 
