@@ -931,7 +931,8 @@ Documentation-only partial reconciliation, checked after normal refresh at 05:20
     "runtimeCreated": false,
     "scratchCreatedBytes": 0,
     "scratchRemovedBytes": 0,
-    "oneDriveAccess": false
+    "oneDriveAccess": false,
+    "publicationHygiene": "A helper import regenerated one pre-existing tracked 190,246-byte Python cache; the publication guard stopped before push, the cache was restored to HEAD, and subsequent imports disable bytecode. No generated file remains in the diff."
   }
 }
 ```
