@@ -592,7 +592,14 @@ async function entryRefresh(cdp, s) {
   await page.until(`return location.href === ${JSON.stringify(target)} && !!$('.account-screen');`, 20000, 'exact original protected URL');
   const truth = await serverAccount();
   const read = page.calls().find(e => e.path === '/manual/account' && e.status === 200 && e.auth);
-  check(s, 'intended account is real current Java projection', !!read && same(read.response?.value, truth));
+  // AccountService emits a fresh system-clock asOf for each independent read.
+  // Compare every business field and retain both actual timestamps; never equate two separate clock reads.
+  const observedAccount = read?.response?.value;
+  const businessProjection = account => account && Object.fromEntries(Object.entries(account).filter(([key]) => key !== 'asOf'));
+  s.observations.accountComparison = { browser: observedAccount, server: truth, excludedPerReadField: 'asOf' };
+  check(s, 'intended account is real current Java projection', !!read && same(businessProjection(observedAccount), businessProjection(truth))
+    && Number.isFinite(Date.parse(observedAccount.asOf)) && Number.isFinite(Date.parse(truth.asOf))
+    && Math.abs(Date.parse(observedAccount.asOf) - Date.parse(truth.asOf)) < 15000);
   const desktop = await snapshot(page, s, 'entry-authorized-desktop');
   check(s, 'actual static CSP retains external scripts and excludes eval', /script-src 'self'(?:;|$)/.test(desktop.csp ?? '') && !desktop.csp.includes('unsafe-eval'));
   check(s, 'frozen branded shell exists on direct entry', await page.eval(`!!document.querySelector('.gcsp-header .gcsp-mark') && !!document.querySelector('.gcsp-nav') && document.querySelector('.gcsp-title')?.textContent.includes('Group Car Schemes')`));
