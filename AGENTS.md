@@ -8,9 +8,17 @@ limits and report any check that cannot proceed under this restriction. Pass thi
 delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
 local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
 
-## Delivery autonomy and Claude delegation — Gary, 17 November 2026
+## Independent Claude poller — Gary, 18 November 2026
 
-Give Claude coherent delivery increments with enough work to use parallel agents or distinct working sessions
+Claude runs as an independent peer developer and poller. The previous arrangement in which Codex delegated
+delivery assignments to a retained Claude coordinator is discontinued. Coordinate through the existing inbox,
+claims, file ownership, shared resource reservations and Git workflow. Preserve each poller's current work and
+checkpoints; this direction does not transfer Story ownership or change acceptance scope. Earlier instructions
+to maintain or restart the Claude delegation queue are superseded.
+
+## Delivery autonomy — Gary, 17 November 2026
+
+Give delivery leads coherent increments with enough work to use parallel agents or distinct working sessions
 when measured capacity and file ownership permit. Let the delivery lead divide the work, run the necessary
 scoped validation and carry the increment through review. Keep that authority through handovers.
 
