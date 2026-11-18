@@ -10561,6 +10561,27 @@
           "evidence": "RED before fix: client returned ok, gallery TypeError null.trim; after fix 170/170 in 7 files (offers folder plus kit media-gallery) on Node 24.22.3"
         }
       ]
+    },
+    {
+      "id": "FUCQ-503",
+      "type": "Bug",
+      "title": "Keep focus on the final Angular offer heading after opening another offer",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-503",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-021",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation (DEV-2026-11-16-021); no native Jira transition inferred. Offer screen now refocuses the final ready or failure heading after a delayed next-offer read, only for the same offer and account and only when focus was lost. Rendered desktop/narrow keyboard inspection outstanding. Awaiting dispatcher merge into gcsp-poc-dev and a green batch run.",
+      "slices": [
+        {
+          "id": "next-offer-focus",
+          "status": "complete",
+          "title": "Refocus the final heading once the requested next offer settles",
+          "observed_at": "2026-11-18T09:50:00Z",
+          "evidence": "RED before fix: 3 failed of 42 (ready and failure heading focus left on body); after fix 160/160 in 6 offers spec files on Node 24.22.3; guard mutation caught by 3 tests"
+        }
+      ],
+      "observed_at": "2026-11-18T09:36:36Z"
     }
   ],
   "version": 1
