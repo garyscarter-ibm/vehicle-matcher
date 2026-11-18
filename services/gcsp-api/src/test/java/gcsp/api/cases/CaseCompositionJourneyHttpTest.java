@@ -209,8 +209,9 @@ class CaseCompositionJourneyHttpTest {
     @Test
     @Order(2)
     void aTickOutsideTheDeadlineWindowOpensNothing() throws Exception {
-        // The clock starts on today's London date; once the real date is within 14 days of 2026-12-01 this step is moot.
-        Assumptions.assumeTrue(Duration.between(clockNow(), PAULA_DEADLINE).compareTo(Duration.ofDays(14)) > 0);
+        // The profile pins the start to 17 Nov 09:00, the last day outside the 14-day window, so this never skips.
+        assertEquals(Instant.parse(CaseCompositionProfile.WALL), clockNow());
+        assertTrue(Duration.between(clockNow(), PAULA_DEADLINE).compareTo(Duration.ofDays(14)) > 0);
         assertEquals(0, tick().get("opened").asInt());
         assertEquals(0, body(get(paula, CASES), 200).get("value").get("cases").size());
     }
@@ -220,10 +221,11 @@ class CaseCompositionJourneyHttpTest {
     void aTickInsideTheWindowOpensOneSchemeTeamCasePerAtRiskEmployeeAndTheNextTickOpensNone() throws Exception {
         Instant inside = PAULA_DEADLINE.minus(Duration.ofDays(14)).plus(Duration.ofHours(1));
         long needed = Duration.between(clockNow(), inside).toSeconds();
-        if (needed > 0) advance(needed + 1);
+        assertTrue(needed > 0, "the journey must cross the window boundary itself");
+        advance(needed + 1);
         tickedAt = clockNow();
-        // Paula, Alex and Sam end on 2026-12-01; Greg's operator renewal ends on 12-15, still outside the window.
-        assertEquals(3, tick().get("opened").asInt());
+        // Paula and Alex end on 2026-12-01; Sam (2027-03-16, FUCQ-528) and Greg's operator renewal (12-15) are outside.
+        assertEquals(2, tick().get("opened").asInt());
         assertEquals(0, tick().get("opened").asInt());
         assertEquals(tickedAt, clockNow());
 
@@ -247,7 +249,7 @@ class CaseCompositionJourneyHttpTest {
         alexCase = alexCases.get(0).get("caseId").asText();
         assertEquals("employee-alex", alexCases.get(0).get("employeeId").asText());
         assertNotEquals(paulaCase, alexCase);
-        assertEquals(3, body(get(greg, TEAM), 200).get("value").get("cases").size());
+        assertEquals(2, body(get(greg, TEAM), 200).get("value").get("cases").size());
     }
 
     @Test

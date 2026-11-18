@@ -48,6 +48,9 @@
       # - key: GCSP_POLICY_VERSION
       #   sync: false
       # A value ending +offer-journey-v1 (e.g. gcsp-policy-v1+offer-journey-v1) adopts the reviewed decline reasons at startup.
+      # - key: GCSP_LEARNING_ACTIVE_MODEL
+      #   sync: false
+      # sha256:<64 hex> model id; needs GCSP_POLICY_VERSION ending +learned-model-v1 (not combinable with +offer-journey-v1).
       # Account records (FUCQ-458), dedicated dev database only: needs GCSP_DATABASE_URL and the oidc values above.
       # - key: GCSP_ACCOUNT_PROVIDER
       #   value: repository

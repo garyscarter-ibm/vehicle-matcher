@@ -35,6 +35,8 @@ const fakeClient = () => ({
   readOwnCase: vi.fn<CaseClient['readOwnCase']>().mockResolvedValue(ok({ case: row(), asOf: at, policyVersion: 'policy-1' })),
   prepareHelp: vi.fn<CaseClient['prepareHelp']>().mockImplementation(input => Object.freeze({ kind: 'request-help', input: Object.freeze({ ...input }) })),
   requestHelp: vi.fn<CaseClient['requestHelp']>().mockResolvedValue(ok({ case: row() })),
+  preparePreference: vi.fn<CaseClient['preparePreference']>().mockImplementation(input => Object.freeze({ kind: 'confirm-preference', input: Object.freeze(structuredClone(input)) })),
+  confirmPreference: vi.fn<CaseClient['confirmPreference']>().mockResolvedValue(ok({ briefVersion: 3 })),
 });
 @Component({ imports: [HelpComponent], template: '<gcsp-help /><gcsp-help />' })
 class TwoHelpBodies {}
@@ -86,6 +88,18 @@ describe('native Help body, review and current case presentation', () => {
     expect(button(f, 'Ask for help').type).toBe('button');
     expect(root(f).querySelectorAll('[role="status"], [role="alert"]')).toHaveLength(1);
     expect(client.requestHelp).not.toHaveBeenCalled(); expect(client.prepareHelp).not.toHaveBeenCalled();
+  });
+  it('shows the current and proposed preference, focuses review and sends no change before confirmation', async () => {
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ status: 'remedy-proposed', remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } })])));
+    const f = await mount(); expect(content(f)).toContain('hatchback'); expect(content(f)).toContain('estate');
+    button(f, 'Review preference change').click(); f.detectChanges();
+    expect(document.activeElement).toBe(button(f, 'Confirm preference change'));
+    expect(client.confirmPreference).not.toHaveBeenCalled();
+    expect(content(f)).toContain('Your essentials and allowance stay unchanged');
+    button(f, 'Cancel preference change').click(); f.detectChanges(); expect(client.confirmPreference).not.toHaveBeenCalled();
+    expect(root(f).querySelector('[data-preference-confirm]')).toBeNull();
   });
   it('associates the native reason field, its hint and validation error, then focuses it', async () => {
     const f = await mount(); button(f, 'Ask for help').click(); f.detectChanges();
@@ -171,6 +185,16 @@ describe('native Help body, review and current case presentation', () => {
     expect(root(f).querySelector('.help-detail h3')!.textContent).toBe('In progress');
     expect(root(f).querySelector('.help-remedy h4')!.textContent).toBe('Proposed remedy');
   });
+  it('keeps a nested preference confirmation below the level-two Help heading', async () => {
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } })])));
+    const f = await mount({ headingLevel: 2 }); button(f, 'Review preference change').click(); f.detectChanges();
+    expect(root(f).querySelector('.help-confirmation h3')!.textContent).toBe('Confirm your preference change');
+    expect(root(f).querySelector('.help-confirmation h2')).toBeNull();
+    expect(client.confirmPreference).not.toHaveBeenCalled();
+  });
+
   it('nests every status title beneath the section title for default h1, embedded h2 and quiet use', async () => {
     const outline = (f: ComponentFixture<HelpComponent>): string[] => Array.from(root(f).querySelectorAll('h1, h2, h3, h4, h5, h6'))
       .map(h => `${h.tagName.toLowerCase()} ${h.textContent!.trim()}`);

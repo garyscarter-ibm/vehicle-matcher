@@ -40,7 +40,7 @@ test('gcsp-api runs the GCSP runtime and declares its settings without committin
 test('gcsp-site redirects exactly the live pages gcsp-api serves, to GCSP_API_URL', async () => {
   const host = await readFile(new URL('../gcsp/host.js', import.meta.url), 'utf8');
   const session = [...host.match(/SESSION_PAGES = \[([^\]]+)\]/)[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
-  const served = [...session, '/gcsp/login', '/gcsp-login.html', '/gcsp/offer', '/gcsp-offer.html'];
+  const served = [...session, '/gcsp/login', '/gcsp-login.html'];
   const routes = [...site.matchAll(/- type: redirect\n\s+source: (\S+)\n\s+destination: (\S+)/g)];
   const apiUrl = site.match(/- key: GCSP_API_URL[^\n]*\n\s+value: (\S+)/)[1];
   assert.deepEqual(routes.map((m) => m[1]).sort(), [...served].sort());

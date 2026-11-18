@@ -37,9 +37,9 @@ test('default reload follows an empty-href link, so the kit never reads the URL'
   finally { dom.window.HTMLAnchorElement.prototype.click = original; }
 });
 
-test('accessLapsedScreen is an alert whose one action links back to the account by default', () => {
+test('accessLapsedScreen is an alert whose one action links to sign-in by default', () => {
   const screen = kit.accessLapsedScreen(); assert.equal(screen.getAttribute('role'), 'alert');
   assert.match(screen.textContent, new RegExp(kit.ACCESS_LAPSED_TITLE)); assert.equal(screen.querySelectorAll('button').length, 0);
-  assert.equal(screen.querySelector('a').getAttribute('href'), '/gcsp-account.html');
+  assert.equal(screen.querySelector('a').getAttribute('href'), '/gcsp/login');
   assert.equal(kit.accessLapsedScreen({ next: '/gcsp-presenter.html' }).querySelector('a').getAttribute('href'), '/gcsp-presenter.html');
 });

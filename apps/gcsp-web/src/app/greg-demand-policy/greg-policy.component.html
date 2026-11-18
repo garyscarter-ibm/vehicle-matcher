@@ -1,0 +1,97 @@
+<section class="greg-policy" [attr.aria-busy]="view().pending ? 'true' : null">
+  <gcsp-screen-intro title="Preview and publish" kicker="Policy" [level]="2"
+    lede="Try points costs or recommendation weights, compare the preview, then publish on purpose." />
+  @if (view().policy; as policy) {
+    <div class="policy-facts"><gcsp-fact-list [rows]="metadata()" /><p class="gcsp-note">{{ policy.heldOffers.message }}</p></div>
+    <div (click)="onSummaryClick($event)"><gcsp-error-summary [errors]="errors()" /></div>
+    @if (priceGroups().length) {
+      <gcsp-labelled-field [controlId]="id + '-price'" label="Published points row" hint="Switch rows to edit another cost. Your pending edits are retained.">
+        <select [id]="id + '-price'" [value]="selectedPrice()" [disabled]="!view().canEdit" [attr.aria-describedby]="id + '-price-hint'"
+          (change)="selectedPriceId.set($any($event.target).value)">
+          @for (group of priceGroups(); track group.id) { <optgroup [label]="group.label">@for (field of group.fields; track field.id) { <option [value]="field.id">{{ field.label }}</option> }</optgroup> }
+        </select>
+      </gcsp-labelled-field>
+    }
+    @if (policy.weightsAdoptionRequired) { <p class="gcsp-note">Weights start at 1. Publishing a weight change saves all six.</p> }
+    <div class="policy-controls">
+      @for (field of view().fields; track field.id) {
+        <div class="policy-control" [class.price-control]="field.kind === 'price'" [hidden]="field.kind === 'price' && selectedPrice() !== field.id">
+          <gcsp-labelled-field [controlId]="controlId(field.id)" [label]="field.kind === 'price' ? 'Monthly points cost' : field.label"
+            [hint]="'Now ' + field.value + ' ' + field.unitLabel" [error]="field.error">
+            <input type="number" [id]="controlId(field.id)" min="0" step="1" [max]="safeMaximum" [value]="field.draft" [disabled]="!view().canEdit"
+              [attr.aria-describedby]="descriptionIds(field)" [attr.aria-invalid]="field.error ? 'true' : null" (input)="store.setField(field.id, $any($event.target).value)" />
+          </gcsp-labelled-field>
+          @if (field.presentationRange; as range) {
+            <div class="policy-slider" [hidden]="field.outsideRange || !!field.error">
+              <label [for]="controlId(field.id) + '-slider'">{{ field.label }} slider</label>
+              <input type="range" [id]="controlId(field.id) + '-slider'" [min]="range.minimum" [max]="range.maximum" [step]="range.step"
+                [value]="field.draft" [disabled]="!view().canEdit || field.outsideRange || !!field.error" [attr.aria-describedby]="controlId(field.id) + '-range'"
+                (input)="store.setField(field.id, $any($event.target).value)" />
+              <p class="range-limits" [id]="controlId(field.id) + '-range'"><span>{{ range.minimum }} {{ field.unitLabel }}</span><span>{{ range.maximum }} {{ field.unitLabel }}</span></p>
+            </div>
+            @if (field.outsideRange) { <p class="gcsp-note">Exact value {{ field.draft }} is outside the slider range {{ range.minimum }} to {{ range.maximum }}. It is retained. Use the exact input to adjust it.</p> }
+            @if (field.error) { <p class="gcsp-note">Enter an exact whole number to use the slider.</p> }
+          } @else { <p class="gcsp-note">Use exact values. A slider range is not supplied for this policy row.</p> }
+        </div>
+      }
+    </div>
+    <details class="policy-sources"><summary>Sources and assumptions</summary><div class="source-groups">
+      @for (source of sources(); track source.key) { <gcsp-fact-list [rows]="source.rows" /> }
+      <gcsp-fact-list [rows]="[{ label: 'Version reference', value: policy.activeVersion }]" />
+    </div></details>
+  } @else if (view().policyState === 'loading') {
+    <gcsp-status-screen title="Loading policy controls" [level]="2" [busy]="true" [announcement]="null" />
+  } @else if (view().policyState === 'denied') {
+    <gcsp-status-screen title="Access refused" message="Only the scheme ordering lead can open these controls." [level]="2" [announcement]="null" />
+  } @else if (view().policyState === 'auth-required') {
+    <gcsp-status-screen title="Sign in to view policy" [level]="2" [announcement]="null"><button gcspButton type="button" (click)="store.signIn()">Sign in</button></gcsp-status-screen>
+  } @else if (!view().publication && !view().retainedCommand) {
+    <gcsp-status-screen [title]="view().policyState === 'stale' ? 'The policy changed' : 'Policy unavailable'" [level]="2" [announcement]="null" />
+  }
+  <div class="gcsp-actions">
+    <button gcspButton variant="ghost" type="button" [disabled]="!view().canPreview" (click)="run('preview')">Preview changes</button>
+    <button gcspButton type="button" [disabled]="!view().canPublish" (click)="run('publish')">Publish this preview</button>
+    @if (view().canRetry) { <button gcspButton type="button" (click)="run('retry')">Retry original publication</button> }
+    @if (view().policyState !== 'denied' && view().policyState !== 'auth-required') {
+      <button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="store.refresh()">Refresh demand and policy</button>
+    }
+    @if (authenticationUnavailable()) { <button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="store.retryAuthentication()">Retry sign-in connection</button> }
+  </div>
+  <p #status class="policy-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">{{ view().message || view().policyMessage }}</p>
+  @if (view().preview; as preview) {
+    <section class="preview-results" [attr.aria-labelledby]="id + '-preview'">
+      <h3 [id]="id + '-preview'">Compare with the active policy</h3>
+      <p class="gcsp-note">Preview only. No policy or offer has been changed. Recommendation fit is not predicted acceptance.</p>
+      <gcsp-fact-list [rows]="[{ label: 'As of', value: time(preview.asOf) }, { label: 'Active version reference', value: preview.activeVersion }]" />
+      <dl class="preview-metric"><dt>Preview: eligible stock cohort</dt><dd [class.is-band]="preview.draft.fit.employeesWithEligibleStock.kind === 'band'">{{ preview.draft.fit.employeesWithEligibleStock.label }}</dd></dl>
+      <p class="gcsp-note">Employees with a suitable released car. Privacy bands stay hidden.</p>
+      <div class="table-wrap" role="region" aria-label="Preview outcomes" tabindex="0"><table><caption>Preview outcomes</caption>
+        <thead><tr><th scope="col">Measure</th><th scope="col">Active</th><th scope="col">Preview</th><th scope="col">Difference</th></tr></thead>
+        <tbody>@for (row of previewRows(); track row.label) { <tr><th scope="row">{{ row.label }}</th><td [class.is-band]="row.activeBand">{{ row.active }}</td><td [class.is-band]="row.draftBand">{{ row.draft }}</td><td>{{ row.change }}</td></tr> }</tbody>
+      </table></div>
+      <div class="table-wrap" role="region" aria-label="Changed values in this preview" tabindex="0"><table><caption>Changed values in this preview</caption>
+        <thead><tr><th scope="col">Policy field</th><th scope="col">Active</th><th scope="col">Preview</th><th scope="col">Unit</th></tr></thead>
+        <tbody>@for (row of preview.differences; track row.id) { <tr><th scope="row">{{ fieldName(row.id) }}</th><td>{{ row.before }}</td><td>{{ row.after }}</td><td>{{ fieldUnit(row.id) || row.unit }}</td></tr> }</tbody>
+      </table></div><p class="gcsp-note">{{ preview.heldOffers.message }}</p>
+    </section>
+  }
+  @if (view().publication || view().retainedCommand) {
+    <section class="publication" [attr.aria-labelledby]="id + '-publication'">
+      <h3 [id]="id + '-publication'">{{ publicationTitle() }}</h3>
+      @if (view().publication; as publication) {
+        <gcsp-fact-list [rows]="[{ label: 'Saved version reference', value: publication.policyVersion }, { label: 'Effective from', value: time(publication.effectiveFrom) }, { label: 'Publisher', value: publication.publisher }, { label: 'Published at', value: time(publication.publishedAt) }]" />
+        <p class="gcsp-note">{{ publication.heldOffers.message }}</p>
+        @if (publication.activation; as activation) {
+          @if (activation.status === 'pending') { <p class="gcsp-note">{{ activation.reason }}</p><p class="gcsp-note">Refresh to check the current policy before retrying the original publication.</p> }
+          @else { <gcsp-fact-list [rows]="[{ label: 'Active version reference', value: activation.policyVersion }, { label: 'Activation checked at', value: time(activation.asOf) }]" /> }
+        } @else { <p class="gcsp-note">The save was accepted. This response does not confirm which policy is active. Refresh to check the current policy.</p> }
+      } @else { <p class="gcsp-note">The original request is retained. This service cannot reconcile a publication receipt here. Do not create another publication.</p> }
+      @if (view().retainedCommand; as command) {
+        <details><summary>Original publication request</summary><div class="source-groups">
+          <gcsp-fact-list [rows]="[{ label: 'Request reference', value: command.commandId }, { label: 'Version reference', value: command.policyVersion }, { label: 'Expected active version', value: command.expectedActiveVersion }, { label: 'Effective from', value: time(command.effectiveFrom) }]" />
+          <ul>@for (change of command.changes; track change.id) { <li>{{ fieldName(change.id) }}: {{ change.value }} {{ fieldUnit(change.id) }}</li> }</ul>
+        </div></details>
+      }
+    </section>
+  }
+</section>

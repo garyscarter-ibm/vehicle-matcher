@@ -128,7 +128,7 @@ public class RecommendationUnmetEvaluation implements UnmetEvaluationPort {
                 status = "ineligible";
                 if (blockers.stream().noneMatch(g -> "not-available".equals(g.code()))) blockers.add(new Gate("not-available", null));
             }
-            out.add(new CarDecision(k.orderUuid(), status, blockers, gates(d.unknowns())));
+            out.add(new CarDecision(k.orderUuid(), status, blockers, gates(d.unknowns()), d.score()));
         }
         return out;
     }

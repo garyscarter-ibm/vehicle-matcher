@@ -26,6 +26,18 @@ describe('real OIDC authentication adapter', () => {
     const first = service.initialize(); expect(service.initialize()).toBe(first); await first; expect(service.state().status).toBe('ready'); expect(read).toHaveBeenCalledOnce(); expect(load).toHaveBeenCalledOnce(); expect(await service.getAccessToken()).toBe('alice-access');
     read.mockResolvedValue(context('other')); await service.retry(); expect(service.state().status).toBe('denied'); expect(await service.getAccessToken()).toBeNull();
   });
+  it('fills a missing display name and email from the id-token profile', async () => {
+    stored = user('alice', { profile: { sub: 'alice', name: ' Paula Mason ', email: 'paula.mason@gcsp-demo.com' } as User['profile'] }); await service.initialize();
+    const state = service.state(); expect(state.status === 'ready' && [state.context.displayName, state.context.email]).toEqual(['Paula Mason', 'paula.mason@gcsp-demo.com']);
+  });
+  it('keeps the context display name over the profile name', async () => {
+    stored = user('alice', { profile: { sub: 'alice', name: 'Profile Name', email: 'profile@example' } as User['profile'] }); read.mockResolvedValue({ status: 'ok', value: { ...context().value, displayName: 'Context Name' } }); await service.initialize();
+    const state = service.state(); expect(state.status === 'ready' && [state.context.displayName, state.context.email]).toEqual(['Context Name', 'profile@example']);
+  });
+  it('leaves the display name undefined when no profile name is supplied', async () => {
+    stored = user('alice', { profile: { sub: 'alice', name: '  ', email: 7 } as unknown as User['profile'] }); await service.initialize();
+    const state = service.state(); expect(state.status === 'ready' && 'displayName' in state.context).toBe(false); expect(state.status === 'ready' && 'email' in state.context).toBe(false);
+  });
   it('uses authorization code with PKCE and session storage for users and redirect state', async () => {
     await service.initialize(); expect(settings).toMatchObject({ response_type: 'code', disablePKCE: false, automaticSilentRenew: false, monitorSession: false, loadUserInfo: false, fetchRequestCredentials: 'omit' });
     await settings.userStore!.set('test', 'user-value'); await settings.stateStore!.set('test', 'transaction');

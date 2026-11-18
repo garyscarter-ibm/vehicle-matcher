@@ -9,6 +9,12 @@ export interface CaseOwner { readonly role: string; readonly name: string | null
 export interface CaseTrigger extends CaseEvidence { readonly type: string; readonly label?: string }
 // Keep recorded remedy evidence intact; this is not a list of client-permitted commands.
 export interface CaseRemedy extends CaseEvidence { readonly type: string }
+export type CasePreferenceValue = string | number | boolean | null;
+export interface CasePreferenceOption extends CaseRemedy {
+  readonly type: 'preference-relaxation'; readonly decisionId: string; readonly expectedBriefVersion: number;
+  readonly path: string; readonly before: unknown; readonly valueType: 'enum' | 'slider';
+  readonly values?: readonly CasePreferenceValue[]; readonly minimum?: number; readonly maximum?: number; readonly unit?: string | null;
+}
 export interface CaseHistory {
   readonly at: string | null; readonly actorId: string; readonly actorRole: string; readonly status: CaseStatus;
   readonly reason: string; readonly nextAction: string; readonly dueAt: string | null;
@@ -21,12 +27,13 @@ export interface CaseRecord {
   readonly lastUpdatedAt: string | null; readonly renewalDeadline: string | null; readonly renewalDeadlineState: string;
   readonly policyVersion: string; readonly history: readonly CaseHistory[]; readonly remedy: CaseRemedy | null;
   readonly fictional: boolean; readonly version: number; readonly employeeName?: string;
+  readonly relaxation?: { readonly currentBriefVersion: number | null; readonly before: unknown; readonly applicable: boolean; readonly confirmed: boolean };
 }
 export interface CaseList { readonly cases: readonly CaseRecord[]; readonly asOf: string; readonly policyVersion: string }
 // GET one case includes asOf/policyVersion; command readback contains just case.
 export interface CaseDetailValue { readonly case: CaseRecord; readonly asOf?: string; readonly policyVersion?: string }
-export interface CaseOptionGroup {
-  readonly available: boolean; readonly items: readonly CaseRemedy[]; readonly reason?: string;
+export interface CaseOptionGroup<T extends CaseRemedy = CaseRemedy> {
+  readonly available: boolean; readonly items: readonly T[]; readonly reason?: string;
 }
 export interface CaseCarOption extends CaseRemedy {
   readonly type: 'alternative-car'; readonly orderUuid: string;
@@ -36,10 +43,10 @@ export interface CaseOptions {
   readonly case: CaseRecord; readonly nextStatuses: readonly CaseStatus[]; readonly asOf: string;
   readonly policyVersion: string; readonly automaticRecoveryPriority: false;
   readonly options: {
-    readonly alternativeCars: CaseOptionGroup & {
-      readonly items: readonly CaseCarOption[]; readonly needsConfirmation: readonly CaseCarOption[];
+    readonly alternativeCars: CaseOptionGroup<CaseCarOption> & {
+      readonly needsConfirmation: readonly CaseCarOption[];
     };
-    readonly preferenceRelaxations: CaseOptionGroup; readonly laterRelease: CaseOptionGroup;
+    readonly preferenceRelaxations: CaseOptionGroup<CasePreferenceOption>; readonly laterRelease: CaseOptionGroup;
     readonly manualDecision: { readonly available: true; readonly type: 'manual-decision'; readonly requiresDecision: true };
     readonly contractExtension: { readonly available: boolean; readonly type: 'contract-extension';
       readonly contractEndDate: string | null; readonly requiresUntil: true; readonly reason?: string };

@@ -3,14 +3,21 @@ import { AuthPort } from '../auth/auth.port';
 import type { ApplicationContext, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
 import { parseCaseDetail, parseCaseHelp, parseCaseList, parseCaseOptions } from './case.projection';
-import type { CaseAudience, CaseDetailValue, CaseHelp, CaseList, CaseOptions, CaseRead, CaseScope, CaseStatus } from './case.types';
+import type { CaseAudience, CaseDetailValue, CaseHelp, CaseList, CaseOptions, CasePreferenceValue, CaseRead, CaseScope, CaseStatus } from './case.types';
 
 export interface CaseRequestOptions { readonly signal?: AbortSignal }
 export interface HelpCaseInput { readonly commandId: string; readonly reason: string }
 export type CaseCommandRemedy = { readonly type: 'manual-decision'; readonly decision: string }
   | { readonly type: 'contract-extension'; readonly until: string }
   | { readonly type: 'later-release'; readonly releaseAt: string; readonly source: string }
-  | { readonly type: 'alternative-car'; readonly orderUuid: string };
+  | { readonly type: 'alternative-car'; readonly orderUuid: string }
+  | { readonly type: 'preference-relaxation'; readonly decisionId: string; readonly expectedBriefVersion: number; readonly path: string; readonly value: CasePreferenceValue };
+export interface ConfirmPreferenceInput {
+  readonly commandId: string; readonly decisionId: string; readonly expectedBriefVersion: number;
+  readonly change: { readonly path: string; readonly value: CasePreferenceValue };
+}
+export interface ConfirmPreferenceCommand { readonly kind: 'confirm-preference'; readonly input: ConfirmPreferenceInput }
+export interface ConfirmedPreference { readonly briefVersion: number }
 export interface UpdateCaseInput {
   readonly commandId: string; readonly caseId: string; readonly expectedVersion: number;
   readonly status: CaseStatus; readonly reason: string; readonly nextAction: string;
@@ -20,7 +27,7 @@ export interface UpdateCaseInput {
 // same object sends identical bytes. A new intent requires a new caller commandId.
 export interface HelpCaseCommand { readonly kind: 'request-help'; readonly input: HelpCaseInput }
 export interface UpdateCaseCommand { readonly kind: 'update-case'; readonly input: UpdateCaseInput }
-type Command = HelpCaseCommand | UpdateCaseCommand;
+type Command = HelpCaseCommand | UpdateCaseCommand | ConfirmPreferenceCommand;
 type Problem = 'authentication-required' | 'context-unavailable' | 'role-required' | 'context-changed'
   | 'invalid-command' | 'invalid-selector' | 'unrecognized-command' | 'configuration-unavailable'
   | 'environment-mismatch' | 'access-token-unavailable' | 'aborted' | 'timeout' | 'transport-unavailable';
@@ -45,6 +52,8 @@ const object = (v: unknown): v is Record<string, unknown> => v !== null && typeo
 const only = (v: Record<string, unknown>, keys: readonly string[]): boolean => Object.keys(v).every((key) => keys.includes(key));
 const text = (v: unknown, max: number): v is string => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
 const identifier = (v: unknown): v is string => text(v, 128) && v === v.trim() && !/[\u0000-\u001f\u007f]/.test(v);
+const preferencePath = (v: unknown): v is string => typeof v === 'string' && /^preferences\.[^.]+\.value$/.test(v);
+const preferenceValue = (v: unknown): v is CasePreferenceValue => v === null || typeof v === 'string' || typeof v === 'boolean' || typeof v === 'number' && Number.isFinite(v);
 const instant = (v: unknown): v is string => typeof v === 'string'
   && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,3})?(?:Z|[+-]\d\d:\d\d)$/.test(v) && Number.isFinite(Date.parse(v));
 const calendar = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d\d-\d\d$/.test(v)
@@ -62,6 +71,9 @@ function validRemedy(v: unknown): v is CaseCommandRemedy {
     case 'contract-extension': return only(v, ['type', 'until']) && calendar(v['until']);
     case 'later-release': return only(v, ['type', 'releaseAt', 'source']) && instant(v['releaseAt']) && text(v['source'], 2000);
     case 'alternative-car': return only(v, ['type', 'orderUuid']) && identifier(v['orderUuid']);
+    case 'preference-relaxation': return only(v, ['type', 'decisionId', 'expectedBriefVersion', 'path', 'value'])
+      && identifier(v['decisionId']) && Number.isSafeInteger(v['expectedBriefVersion']) && (v['expectedBriefVersion'] as number) > 0
+      && preferencePath(v['path']) && preferenceValue(v['value']);
     default: return false;
   }
 }
@@ -133,6 +145,34 @@ export class CaseClient {
   }
   updateCase(command: UpdateCaseCommand, options: CaseRequestOptions = {}): Promise<CaseClientResult<CaseDetailValue>> {
     return this.submit(command, 'update-case', '/scheme-team/cases/update', options);
+  }
+  preparePreference(input: ConfirmPreferenceInput): ConfirmPreferenceCommand | CaseClientFailure {
+    const captured = this.capture('employee');
+    if ('state' in captured) return captured;
+    if (!object(input) || !only(input, ['commandId', 'decisionId', 'expectedBriefVersion', 'change']) || !identifier(input.commandId)
+      || !identifier(input.decisionId) || !Number.isSafeInteger(input.expectedBriefVersion) || input.expectedBriefVersion < 1
+      || !object(input.change) || !only(input.change, ['path', 'value']) || !preferencePath(input.change.path) || !preferenceValue(input.change.value)) {
+      return failed('invalid-command', { writeOutcome: 'not-sent' });
+    }
+    const command: ConfirmPreferenceCommand = Object.freeze({ kind: 'confirm-preference', input: Object.freeze({ ...input, change: Object.freeze({ ...input.change }) }) });
+    this.intents.set(command, { captured, body: JSON.stringify(command.input) });
+    return command;
+  }
+  confirmPreference(command: ConfirmPreferenceCommand, options: CaseRequestOptions = {}): Promise<CaseClientResult<ConfirmedPreference>> {
+    const intent = command && this.intents.get(command);
+    if (!intent || command.kind !== 'confirm-preference') return Promise.resolve(failed('unrecognized-command', { writeOutcome: 'not-sent' }));
+    return this.request('employee', '/brief/change-after-decline', (body, scope) => {
+      if (object(body) && body['status'] === 'ok' && object(body['value']) && object(body['value']['brief'])) {
+        const brief = body['value']['brief']; const audit = brief['postDeclineChange'];
+        if (scope.audience !== 'employee' || brief['confirmedBy'] !== intent.captured.session.context.subject || !object(audit)
+          || audit['decisionId'] !== command.input.decisionId || audit['fromBriefVersion'] !== command.input.expectedBriefVersion
+          || audit['path'] !== command.input.change.path || JSON.stringify(audit['after']) !== JSON.stringify(command.input.change.value)
+          || brief['briefVersion'] !== command.input.expectedBriefVersion + 1) return { state: 'invalid-response', value: null };
+        return { state: 'ready', value: { briefVersion: brief['briefVersion'] as number }, replayed: body['replayed'] === true };
+      }
+      const refusal = parseCaseDetail(body, scope);
+      return refusal.state === 'ready' ? { state: 'invalid-response', value: null } : refusal;
+    }, options, intent);
   }
 
   private submit(command: Command, kind: Command['kind'], path: string, options: CaseRequestOptions): Promise<CaseClientResult<CaseDetailValue>> {

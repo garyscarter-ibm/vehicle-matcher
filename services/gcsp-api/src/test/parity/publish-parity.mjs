@@ -130,6 +130,23 @@ addPrepare('second-publication-stale-expected-scheduled', { prior: [{ input: inp
 addPrepare('after-first-effective', { now: '2026-11-05T10:30:00.000Z', prior: [{ input: input() }],
   input: input({ commandId: 'cmd-2', policyVersion: 'parity-v3', expectedActiveVersion: 'parity-v2', effectiveFrom: '2026-11-05T11:00:00.000Z' }) });
 
+// A later weight publish: the first adopts the neutral weights, the second edits them on the weighted version.
+const adopted = [{ input: input({ changes: [change('assumptions', 'employee.recommendation.v1', { value: { ...clone(reco.value), preferenceWeights: weights } })] }) }];
+const weightedNow = '2026-11-05T10:30:00.000Z';
+const second = (value, key = 'employee.recommendation.v1') => ({ now: weightedNow, prior: adopted, input: input({ commandId: 'cmd-2', policyVersion: 'parity-v3',
+  expectedActiveVersion: 'parity-v2', effectiveFrom: '2026-11-05T11:00:00.000Z', changes: [change('assumptions', key, { value })] }) });
+const weighted = (overrides, retained = {}) => ({ ...clone(reco.value), ...retained, preferenceWeights: { ...weights, ...overrides } });
+addPrepare('second-weight-change', second(weighted({ body: 3 })));
+addPrepare('second-weight-zero', second(weighted({ body: 0, fuel: 7 })));
+addPrepare('second-weight-unchanged', second(weighted({})));
+addPrepare('second-weight-negative', second(weighted({ body: -1 })));
+addPrepare('second-weight-fractional', second(weighted({ body: 1.5 })));
+addPrepare('second-weight-string', second(weighted({ body: '2' })));
+addPrepare('second-weight-extra-key', second(weighted({ extra: 1 })));
+addPrepare('second-weight-missing-key', second({ ...clone(reco.value), preferenceWeights: Object.fromEntries(Object.entries(weights).slice(1)) }));
+addPrepare('second-weight-changes-retained', second(weighted({ body: 3 }, { displayLimit: 4 })));
+addPrepare('second-weight-on-other-key', second({ preferenceWeights: weights }, HOLD));
+
 const text = `${JSON.stringify({ now: NOW, publisher: PUBLISHER, validate, prepare })}\n`;
 await writeFile(outPath, text);
 console.log(`${validate.length} validate + ${prepare.length} prepare cases, ${text.length} bytes`);

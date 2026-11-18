@@ -45,8 +45,8 @@ test('pages and redirects stay no-store with no ETag', async () => {
   assert.equal(page.status, 200); assert.equal(page.headers.get('cache-control'), 'no-store'); assert.equal(page.headers.get('etag'), null);
   assert.match(page.text, /<html/i);
 
-  const offer = await get('/gcsp/offer');
-  assert.equal(offer.status, 200); assert.equal(offer.headers.get('cache-control'), 'no-store'); assert.equal(offer.headers.get('etag'), null);
+  const login = await get('/gcsp/login');
+  assert.equal(login.status, 200); assert.equal(login.headers.get('cache-control'), 'no-store'); assert.equal(login.headers.get('etag'), null);
 
   const root = await get('/');
   assert.equal(root.status, 303); assert.equal(root.headers.get('cache-control'), 'no-store'); assert.equal(root.headers.get('etag'), null);

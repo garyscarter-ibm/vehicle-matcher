@@ -275,7 +275,7 @@ test('artifact: Java image packages only the active and recovery evidence as roo
     ...[active.selected, active.previous].map((pointer) => `${store}/versions/${pointer.directory}/`),
     `${root}/display-images.v1.json`, `${root}/configuration-definitions.v1.json`, 'assets/gcsp-vehicle-evidence/',
   ];
-  const copies = [...dockerfile.matchAll(/^COPY (?:--chown=(\S+) )?((?:services|server|assets)\/\S+(?: \S+)*) (\S+)$/gmu)];
+  const copies = [...dockerfile.matchAll(/^COPY (?:--chown=(\S+) )?((?:services|server|assets|docs)\/\S+(?: \S+)*) (\S+)$/gmu)];
   const evidence = copies.filter(([, , input]) => input.startsWith(root) || input.startsWith('assets/'));
   assert.deepEqual(evidence.map(([, , input]) => input), expected, 'no whole corpus or extra versions enter the image');
   const runtime = dockerfile.lastIndexOf('\nFROM '); const user = dockerfile.indexOf('\nUSER 1001');
@@ -302,7 +302,7 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    buildFilter:'))), 'supplied Java build/runtime foundation is preserved');
   assert.match(java, /^    dockerContext: \.\s*(?:#.*)?$/mu);
   const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
-  const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets)\/\S+(?: \S+)*) \S+$/gmu)]
+  const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets|docs)\/\S+(?: \S+)*) \S+$/gmu)]
     .flatMap((match) => match[1].split(' '));
   assert.ok(contextInputs.length > 0, 'the current Java image consumes repository inputs');
   for (const input of contextInputs) {
@@ -412,4 +412,28 @@ test('artifact: dev static blueprint recovers unknown routes while preserving re
   const pkg = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
   assert.match(pkg.scripts['gcsp:compile'], /npm --prefix apps\/gcsp-web run build/u);
   assert.equal(pkg.scripts['gcsp:assemble'], 'node scripts/build-gcsp-static.mjs');
+});
+
+test('artifact: Angular routes, static rewrites and security headers agree with the identity flow', async () => {
+  const routes = await readFile(new URL('../../apps/gcsp-web/src/app/routes.ts', import.meta.url), 'utf8');
+  const angular = [...routes.matchAll(/(?:path: |feature\()'([^']*)'/gu)].map((match) => match[1]).filter((path) => path !== '**');
+  assert.deepEqual(angular.map((path) => `/gcsp/${path}`).sort(), [...GCSP_FIXED_ROUTES, ...GCSP_DYNAMIC_ROUTES].sort());
+  const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
+  const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
+  const headers = [...site.matchAll(/- path: (\S+)\n\s+name: (\S+)\n\s+value: ([^\n]+)/gu)].map(([, path, name, value]) => ({ path, name, value }));
+  assert.ok(headers.every((header) => header.path === '/gcsp' || header.path.startsWith('/gcsp/')));
+  // One /gcsp/* rule per security header covers every route, asset and the OIDC callback.
+  for (const [name, value] of [['Content-Security-Policy', '"frame-ancestors \'none\'"'], ['Referrer-Policy', 'no-referrer'], ['X-Content-Type-Options', 'nosniff']]) {
+    assert.deepEqual(headers.filter((header) => header.name === name).map(({ path, value: v }) => [path, v]), [['/gcsp/*', value]], name);
+  }
+  // Connection origins come from the per-environment meta CSP, so the header must not narrow them.
+  assert.doesNotMatch(headers.find((header) => header.name === 'Content-Security-Policy').value, /connect-src|default-src/u);
+  const value = config();
+  const connect = contentSecurityPolicy(value).split('; ').find((entry) => entry.startsWith('connect-src '));
+  for (const url of [value.apiBaseUrl, value.oidc.authority]) assert.ok(connect.split(' ').includes(new URL(url).origin), url);
+  const noStore = new Set(headers.filter((header) => header.name === 'Cache-Control' && header.value === 'no-store').map((header) => header.path));
+  for (const url of [value.oidc.redirectUri, value.oidc.postLogoutRedirectUri]) {
+    const { pathname } = new URL(url);
+    assert.ok(GCSP_FIXED_ROUTES.includes(pathname) && noStore.has(pathname), `${pathname} is a supported, uncached identity route`);
+  }
 });

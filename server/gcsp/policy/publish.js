@@ -25,6 +25,18 @@ function validPreferenceWeightAdoption(change, previous) {
   return Object.keys(preferenceWeights).length === keys.length && keys.every((key) => Object.hasOwn(preferenceWeights, key)
     && Number.isSafeInteger(preferenceWeights[key]) && preferenceWeights[key] >= 0);
 }
+// A later weight publish may change only existing preferenceWeights entries, each a safe integer >= 0.
+function validPreferenceWeightChange(change, previous) {
+  if (change.table !== 'assumptions' || change.key !== 'employee.recommendation.v1'
+    || !object(previous) || !object(previous.preferenceWeights)) return false;
+  const { preferenceWeights, ...retained } = change.patch.value ?? {};
+  const { preferenceWeights: before, ...kept } = previous;
+  if (!object(preferenceWeights) || inputDigest(retained) !== inputDigest(kept)) return false;
+  const keys = Object.keys(before);
+  return Object.keys(preferenceWeights).length === keys.length && keys.every((key) => Object.hasOwn(preferenceWeights, key)
+    && (inputDigest(preferenceWeights[key]) === inputDigest(before[key])
+      || (Number.isSafeInteger(preferenceWeights[key]) && preferenceWeights[key] >= 0)));
+}
 export const policyOutcome = (status, policyVersion, fields) => ({ status, ...structuredClone(fields), contractVersion: '1.0.0', policyVersion });
 export const publishInvalid = (field, reason) => policyOutcome('invalid', null, {
   code: 'invalid-policy-change', accepted: false, reasons: [{ field, reason }],
@@ -105,7 +117,8 @@ export function preparePublication(records, context, input, now) {
       return { outcome: publishInvalid('changes.patch', 'Patch an existing entry field; identifiers and effective dates are immutable.') };
     }
     if (Object.hasOwn(patch, 'value') && !validValue(patch.value, row.value)
-      && !validPreferenceWeightAdoption({ table, key, patch }, row.value)) {
+      && !validPreferenceWeightAdoption({ table, key, patch }, row.value)
+      && !validPreferenceWeightChange({ table, key, patch }, row.value)) {
       return { outcome: publishInvalid('changes.value', 'Preserve the existing value type and shape, with finite nonnegative numbers.') };
     }
     Object.assign(row, structuredClone(patch), { effectiveFrom: input.effectiveFrom });

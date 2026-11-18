@@ -168,10 +168,7 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
     if (!files.includes(edge.to)) throw new Error(`${label(edge.from)}: missing required ${edge.to}, referenced by ${edge.from}`);
   }
   const demoPages = [
-    { name: 'offer', block: 'offer', file: discovered.pages.find((p) => /(?:^|-)offer\.html$/.test(p))
-      || (files.includes('blocks/gcsp/offer/preview.html') ? 'blocks/gcsp/offer/preview.html' : 'gcsp-offer.html') },
     { name: 'greg', block: 'greg', file: 'gcsp-greg.html' },
-    { name: 'outbox', block: 'presenter', file: 'gcsp-outbox.html' },
   ].map((page) => ({ ...page, available: files.includes(page.file) }));
   const manifest = { version: 1, revision, environment, apiUrl: api, employeeEnabled: employeeEnabled === true,
     employeeFrontendUrl: frontend, employeeAvailable: employeeEnabled === true && frontend !== null,

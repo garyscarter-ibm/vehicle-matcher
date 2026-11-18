@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 let mods; let dom;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 6; i += 1) await tick(); };
-const ROUTES = { activity: '/gcsp-activity-live.html', 'order-progress': '/gcsp-order-progress-live.html' };
+const ROUTES = { activity: '/gcsp/activity', 'order-progress': '/gcsp/orders' };
 const IMAGE = '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp';
 
 before(async () => {
@@ -254,15 +254,6 @@ test('employee entry passes ctx.notifications to the shell; absent, no bell', as
   const bare = document.createElement('div'); document.body.append(bare);
   const stopBare = mods.emp.mountEmployee(bare, { loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) });
   await settle(); assert.equal(bare.querySelector('.gcsp-bell'), null); stopBare();
-});
-
-test('offer page: without an employee session the bell shows with no badge and no read', async () => {
-  const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
-  const node = document.createElement('div'); document.body.append(node);
-  const stop = mountOffer(node, { account: { status: 'unavailable' }, notifications: { status: 'unavailable' }, read: async () => ({ status: 'unavailable' }) });
-  await settle();
-  assert.equal(node.querySelector('.gcsp-bell-badge').hidden, true); assert.equal(node.querySelector('.gcsp-bell-btn').getAttribute('aria-label'), 'Notifications, none waiting');
-  stop();
 });
 
 test('kit housekeeping: stylesheet is imported by the shell, tokens only, catalogued and in the gallery', () => {

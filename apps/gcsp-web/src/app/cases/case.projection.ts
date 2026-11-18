@@ -1,5 +1,5 @@
 import type { CaseAudience, CaseDetailValue, CaseDisplay, CaseEvidence, CaseFact, CaseHelp, CaseHistory,
-  CaseList, CaseOptions, CaseRead, CaseRecord, CaseRefusal, CaseRefusalStatus, CaseRemedy, CaseScope, CaseStatus } from './case.types';
+  CaseList, CaseOptions, CasePreferenceOption, CaseRead, CaseRecord, CaseRefusal, CaseRefusalStatus, CaseRemedy, CaseScope, CaseStatus } from './case.types';
 
 // Pure boundary/display projection of Java CaseService, with frozen case-content/queue semantics.
 const object = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -21,6 +21,15 @@ const instant = (v: unknown): v is string => {
     && new Date(wall).toISOString().slice(0, 19) === wall.slice(0, 19);
 };
 const trigger = (v: unknown): boolean => object(v) && text(v['type']) && (v['label'] === undefined || text(v['label']));
+const preferenceValue = (v: unknown): boolean => v === null || typeof v === 'string' || typeof v === 'boolean' || typeof v === 'number' && Number.isFinite(v);
+export function preferenceOption(v: unknown): v is CasePreferenceOption {
+  return object(v) && v['type'] === 'preference-relaxation' && text(v['decisionId']) && positive(v['expectedBriefVersion'])
+    && typeof v['path'] === 'string' && /^preferences\.[^.]+\.value$/.test(v['path'])
+    && (v['valueType'] === 'enum' && Array.isArray(v['values']) && v['values'].length > 0 && v['values'].every(preferenceValue)
+      || v['valueType'] === 'slider' && typeof v['minimum'] === 'number' && Number.isFinite(v['minimum'])
+        && typeof v['maximum'] === 'number' && Number.isFinite(v['maximum']) && v['minimum'] <= v['maximum'])
+    && (v['unit'] == null || typeof v['unit'] === 'string');
+}
 function remedy(v: unknown): v is CaseRemedy {
   if (!object(v) || !text(v['type'])) return false;
   switch (v['type']) {
@@ -29,6 +38,8 @@ function remedy(v: unknown): v is CaseRemedy {
     case 'later-release': return instant(v['releaseAt']) && text(v['source']);
     case 'alternative-car': return text(v['orderUuid']) && (v['carName'] == null || typeof v['carName'] === 'string')
       && (v['snapshot'] === undefined || object(v['snapshot'])) && (v['unknowns'] === undefined || Array.isArray(v['unknowns']));
+    case 'preference-relaxation': return preferenceOption(v) || text(v['decisionId']) && positive(v['expectedBriefVersion'])
+      && typeof v['path'] === 'string' && /^preferences\.[^.]+\.value$/.test(v['path']) && preferenceValue(v['value']);
     default: return true; // Unknown recorded evidence is readable; it grants no client action.
   }
 }
@@ -46,7 +57,9 @@ function record(v: unknown): v is CaseRecord {
     && nullable(v['renewalDeadline'], calendar) && typeof v['renewalDeadlineState'] === 'string' && text(v['policyVersion'])
     && Array.isArray(v['history']) && v['history'].every(history) && nullable(v['remedy'], remedy)
     && typeof v['fictional'] === 'boolean' && positive(v['version'])
-    && (v['employeeName'] === undefined || typeof v['employeeName'] === 'string');
+    && (v['employeeName'] === undefined || typeof v['employeeName'] === 'string')
+    && (v['relaxation'] === undefined || object(v['relaxation']) && nullable(v['relaxation']['currentBriefVersion'], positive)
+      && typeof v['relaxation']['applicable'] === 'boolean' && typeof v['relaxation']['confirmed'] === 'boolean');
 }
 function validScope(scope: CaseScope): boolean {
   return text(scope.runId) && (scope.audience === 'scheme-team' || scope.audience === 'employee' && text(scope.employeeId));
@@ -111,7 +124,8 @@ function options(v: unknown): v is CaseOptions {
   const o = v['options']; const cars = o['alternativeCars']; const manual = o['manualDecision']; const extension = o['contractExtension'];
   return group(cars, 'alternative-car') && object(cars) && Array.isArray(cars['needsConfirmation'])
     && cars['needsConfirmation'].every((car: unknown) => remedy(car) && car.type === 'alternative-car' && Array.isArray(car['unknowns']))
-    && group(o['preferenceRelaxations'], 'preference-relaxation') && group(o['laterRelease'], 'later-release')
+    && group(o['preferenceRelaxations'], 'preference-relaxation') && object(o['preferenceRelaxations'])
+    && (o['preferenceRelaxations']['items'] as unknown[]).every(preferenceOption) && group(o['laterRelease'], 'later-release')
     && object(manual) && manual['available'] === true && manual['type'] === 'manual-decision' && manual['requiresDecision'] === true
     && object(extension) && typeof extension['available'] === 'boolean' && extension['type'] === 'contract-extension'
     && nullable(extension['contractEndDate'], calendar) && (!extension['available'] || calendar(extension['contractEndDate']))
@@ -133,6 +147,10 @@ export function parseCaseHelp(input: unknown, scope: CaseScope): CaseRead<CaseHe
 export const caseNotice = 'Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.';
 const words = (v: string): string => v.replace(/-/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
 export const shownCaseText = (v: unknown): string => text(v) ? v : typeof v === 'number' && Number.isFinite(v) ? String(v) : 'Not supplied';
+export const preferenceLabel = (path: string): string => path.replace(/^preferences\./, '').replace(/\.value$/, '')
+  .replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, letter => letter.toUpperCase());
+export const preferenceText = (v: unknown): string => Array.isArray(v) ? v.map(preferenceText).join(', ')
+  : typeof v === 'boolean' ? String(v) : shownCaseText(v);
 export const caseStatusLabel = (v: CaseStatus): string => ({ open: 'Open', 'in-progress': 'In progress',
   'remedy-proposed': 'Remedy proposed', resolved: 'Resolved', closed: 'Closed' })[v];
 export const caseRoleLabel = (v: string): string => v === 'scheme-team' ? 'Scheme team' : v === 'employee' ? 'Employee'
@@ -164,6 +182,11 @@ export function projectCase(row: CaseRecord, scope: CaseScope): CaseDisplay | nu
     else if (r.type === 'later-release') remedyFacts = facts([[at('Reviewed release'), caseTime(r['releaseAt'], audience)], ['Source', r['source']]]);
     else if (r.type === 'alternative-car') remedyFacts = facts([[['resolved', 'closed'].includes(row.status) ? 'Recorded car' : 'Proposed car',
       text(r['carName']) ? r['carName'] : 'Car details not supplied'], ...(audience === 'scheme-team' ? [['Exact car reference', r['orderUuid']] as const] : [])]);
+    else if (r.type === 'preference-relaxation' && text(r['path']) && 'value' in r) remedyFacts = facts([['Preference', preferenceLabel(r['path'])],
+      ...(audience === 'employee' ? [['Current value', preferenceText(row.relaxation?.before)]] as const : []),
+      ['Proposed value', preferenceText(r['value'])], ['Employee confirmation', row.relaxation?.confirmed || r['confirmationState'] === 'employee-confirmed' ? 'Confirmed'
+        : ['resolved', 'closed'].includes(row.status) ? 'Not confirmed before the case ended'
+          : audience === 'employee' && !row.relaxation?.applicable ? 'Ask the scheme team to review this proposal' : 'Required through the employee brief']]);
     else remedyFacts = facts([['Remedy', words(r.type)]]);
   }
   return { caseId: row.caseId, reference: caseReference(row.caseId), status: caseStatusLabel(row.status),

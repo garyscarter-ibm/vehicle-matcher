@@ -82,7 +82,6 @@ services:
         - index.html
         - block.html
         - components.html
-        - gcsp-employee.html
         - gcsp-employee.css
         - blocks/**
         - assets/**
@@ -90,7 +89,7 @@ services:
     buildCommand: >-
       test -n "$GCSP_API_URL" &&
       mkdir -p _site &&
-      cp -R index.html block.html components.html gcsp-employee.html
+      cp -R index.html block.html components.html
       gcsp-employee.css blocks assets _site/ &&
       sed -i "s|https://bmw-matcher-api.onrender.com|$GCSP_API_URL|" _site/blocks/demo-launcher/boot.js &&
       sed -i "s|data-api=\"http://localhost:8787\"|data-api=\"$GCSP_API_URL\"|" _site/block.html &&
@@ -109,35 +108,14 @@ services:
         source: /gcsp-presenter.html
         destination: https://gcsp-api.onrender.com/gcsp-presenter.html
       - type: redirect
-        source: /gcsp-account.html
-        destination: https://gcsp-api.onrender.com/gcsp-account.html
-      - type: redirect
         source: /gcsp-greg.html
         destination: https://gcsp-api.onrender.com/gcsp-greg.html
-      - type: redirect
-        source: /gcsp-outbox.html
-        destination: https://gcsp-api.onrender.com/gcsp-outbox.html
-      - type: redirect
-        source: /gcsp-brief-live.html
-        destination: https://gcsp-api.onrender.com/gcsp-brief-live.html
-      - type: redirect
-        source: /gcsp-activity-live.html
-        destination: https://gcsp-api.onrender.com/gcsp-activity-live.html
-      - type: redirect
-        source: /gcsp-order-progress-live.html
-        destination: https://gcsp-api.onrender.com/gcsp-order-progress-live.html
       - type: redirect
         source: /gcsp-case-queue.html
         destination: https://gcsp-api.onrender.com/gcsp-case-queue.html
       - type: redirect
         source: /gcsp-help.html
         destination: https://gcsp-api.onrender.com/gcsp-help.html
-      - type: redirect
-        source: /gcsp-offer.html
-        destination: https://gcsp-api.onrender.com/gcsp-offer.html
-      - type: redirect
-        source: /gcsp/offer
-        destination: https://gcsp-api.onrender.com/gcsp/offer
     envVars:
       - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com
@@ -159,6 +137,8 @@ services:
         - server/gcsp/policy/seed-v1.json
         - server/gcsp/policy/reviewed/**
         - server/gcsp/predict/records/policy-definitions.json
+        - server/data/gcsp/comparison/process-only.json
+        - docs/gcsp/models/artifacts/**
         - server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json
         - server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json
         - server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json
@@ -353,6 +333,9 @@ services:
         source: /gcsp/greg/cases
         destination: /gcsp/index.html
       - type: rewrite
+        source: /gcsp/greg/plan
+        destination: /gcsp/index.html
+      - type: rewrite
         source: /gcsp/comparison
         destination: /gcsp/index.html
       - type: rewrite
@@ -447,6 +430,9 @@ services:
         name: Cache-Control
         value: no-store
       - path: /gcsp/greg/cases
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg/plan
         name: Cache-Control
         value: no-store
       - path: /gcsp/comparison

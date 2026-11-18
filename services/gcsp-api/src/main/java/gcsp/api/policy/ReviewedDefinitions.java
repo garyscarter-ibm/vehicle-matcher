@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import gcsp.api.persistence.Canonical;
+import gcsp.api.evidence.CanonicalJson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -18,12 +18,14 @@ import java.util.regex.Pattern;
 
 /**
  * The reviewed definition sets the server may adopt, read from the classpath copies of server/gcsp/policy/reviewed.
- * A port of the validation in reviewed-definitions.js; only the offer journey set is registered so far.
+ * A port of the validation in reviewed-definitions.js; the offer journey sets and the FUCQ-115 choice model set.
  */
 public final class ReviewedDefinitions {
 
     public static final String OFFER_JOURNEY_SET = "offer-journey-v1";
     public static final String OFFER_JOURNEY_SUCCESSOR_SET = "offer-journey-v2";
+    public static final String CHOICE_MODEL_SET = "fucq115-choice-model-v1";
+    private static final String CHOICE_MODEL = "gcsp/policy/reviewed/fucq115-choice-model-v1.json";
     private static final String DECLINE = "gcsp/policy/reviewed/offer-decline-reasons-v1.json";
     private static final String FOLLOWUP = "gcsp/policy/reviewed/offer-followup-questions-v1.json";
     private static final String REENTRY = "gcsp/policy/reviewed/offer-declined-car-reentry-v1.json";
@@ -40,6 +42,9 @@ public final class ReviewedDefinitions {
 
     /** The validated set, or null when the id is not a reviewed set; a missing or invalid artifact is source-invalid. */
     public static ObjectNode get(String definitionSetId) throws PolicySourceException {
+        if (CHOICE_MODEL_SET.equals(definitionSetId)) {
+            return load(CHOICE_MODEL);
+        }
         if (!OFFER_JOURNEY_SET.equals(definitionSetId) && !OFFER_JOURNEY_SUCCESSOR_SET.equals(definitionSetId)) {
             return null;
         }
@@ -64,7 +69,7 @@ public final class ReviewedDefinitions {
         if (OFFER_JOURNEY_SUCCESSOR_SET.equals(definitionSetId)) {
             load(REENTRY).get("definitions").forEach(row -> definitions.add(row.deepCopy()));
         }
-        set.put("digest", Canonical.digest(set));
+        set.put("digest", CanonicalJson.digest(set));
         if (!valid(set)) {
             throw new PolicySourceException(PolicySourceException.INVALID);
         }
@@ -109,7 +114,7 @@ public final class ReviewedDefinitions {
         }
         ObjectNode body = ((ObjectNode) bundle).deepCopy();
         body.remove("digest");
-        return Canonical.digest(body).equals(digest.textValue());
+        return CanonicalJson.digest(body).equals(digest.textValue());
     }
 
     private static boolean only(JsonNode node, List<String> keys) {

@@ -16,6 +16,17 @@ claims, file ownership, shared resource reservations and Git workflow. Preserve 
 checkpoints; this direction does not transfer Story ownership or change acceptance scope. Earlier instructions
 to maintain or restart the Claude delegation queue are superseded.
 
+## Poller-to-poller mail — Russell, 18 November 2026
+
+Pollers talk to each other only through `_tools/dev_mail.py` (agent-scaffolding 0.10.0). A question, job or notice
+for another poller is a thread addressed to that member's poller (work that needs their own sign-in), `any` poller,
+or `all` of them; `dev_mail.py` commits and pushes it. Every poller runs `dev_mail.py inbox` at the start of every
+session and every pass, idle passes included, and acknowledges then answers, does or throws back (with the error)
+each thread waiting on it in that pass. Business questions go to the `business-analyst` agent. Jira comments, the
+learnings log and `.claude/claude-poller-claims.json` are not a channel: nobody is sure to read them. The learnings
+log stays the record of observed issues, as below. Once a session, a poller may send the others a `chat` line;
+anything it says about a person is a compliment.
+
 ## Delivery autonomy — Gary, 17 November 2026
 
 Give delivery leads coherent increments with enough work to use parallel agents or distinct working sessions
@@ -186,6 +197,34 @@ acceptance item checked on a screen creates it (a scripted Playwright test that 
 registers it with `set-inbox --suite web-e2e=...;kind=browser`. The `scripts/gcsp/walk-*.mjs` walk-throughs are one-off
 evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on
 2026-11-13) get a Bug and are named in `_dev/batches.md`, not retried until green.
+
+## Shared local test stack — Gary, 18 November 2026
+
+This 16 GB Mac can't afford a new PostgreSQL cluster, `npm ci` and builds on every run. Every local story run, proof
+and batch run uses the shared stack instead. State lives in `~/Library/Caches/gcsp-test-stack` (never OneDrive).
+
+- **PostgreSQL:** `python3 -B _tools/test_stack.py pg up` starts or reuses one cluster. Then
+  `eval "$(python3 -B _tools/test_stack.py pg db create --run <id> [--running] [--owner-pid <pid>])"` sets
+  `GCSP_TEST_DATABASE_URL` (and `GCSP_TEST_RUNNING_DATABASE_URL`) for a fresh database per run, and
+  `pg db drop --run <id>` removes it. A database belongs to the calling shell unless `--owner-pid` names a longer-lived
+  one; `pg gc` drops orphans. Leave the cluster running between runs; `pg down --if-idle` stops it when nothing is held.
+- **Focused Java tests:** `python3 -B _tools/test_stack.py java-test --worktree <wt> --run <id> [--running] --
+  -Dtest='gcsp.api.<package>.**'` takes the heavy slot, then creates and drops `gcsp_test_dev` (and
+  `gcsp_test_running`), the names the `*HttpTest` profiles pin, and caps Maven at 512m
+  and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
+- **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
+  place of `npm ci`; `node unlink` before removing the worktree.
+- **Builds:** `build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
+  `PROOF_WEB_BROWSER=` for the connected proofs, built once per committed tree and reused (a dirty tree builds in place,
+  uncached). Run `build gc` only between runs.
+- **One heavy run at a time:** wrap anything that starts Java, a proof, Chrome or a full suite in
+  `python3 -B _tools/test_stack.py heavy --label <id> [--ram-gib N] -- <command>`. It waits for the machine-wide slot
+  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget.
+- **Proof JVMs:** the connected proofs take their API heap from `scripts/gcsp/proof-jvm.mjs` (`PROOF_API_HEAP` raises
+  it for one run). Don't add per-script `-Xmx` flags.
+- **Connected browser checks run once per story**, at the end on the final commit, not on every attempt. Earlier
+  iterations use the focused unit and HTTP tests. Runs that need more than about 3 GiB (FUCQ-452's full-size job) go
+  overnight or to CI, not into a daytime queue.
 
 ## Concepts and mockups
 
