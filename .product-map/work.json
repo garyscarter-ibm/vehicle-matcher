@@ -10434,8 +10434,8 @@
     {
       "branch": "gcsp-poc-dev",
       "id": "FUCQ-388",
-      "note": "Local integration observation; native Jira status retained, not refreshed. Partial repair0dd1bd714 has scoped evidence. UI quality FAILED/originalAC5 partial under F445 ownership. Covering run6793f49f: Node completed5465tests/5178pass/125fail/162skip/0cancel, normalexit1; Java clean verify running on owned nativePG17. No green batch or acceptance.",
-      "observed_at": "2026-11-18T06:23:18Z",
+      "note": "Local integration observation; native Jira status retained, not refreshed. Partial F388 repair0dd1bd714 retains scoped evidence; originalAC5/UI quality remains partial under GaryF445. Covering6793f49f completed RED: Node5465/125fail,Java2082/12fail/5error; prior120Node/17Java problems persist plus5newstaleNodeassertions. Canonical cleanup recovered/static/root-audited. NewNodefailures selectedoncealone separately; no green batch or acceptance.",
+      "observed_at": "2026-11-18T06:53:54Z",
       "slices": [
         {
           "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim. Refreshed repair regression31/31 PASS; partial merge0dd1bd714; independent cleanupf910d3ce.",
@@ -10456,11 +10456,11 @@
           "title": "Generated stock outcomes and desktop/narrow critique"
         },
         {
-          "evidence": "Actual covering run at6793f49f: Node normalexit1,5465tests/5178pass/125fail/162skip/0cancel in2504.431s; Java exact clean verify started06:19:53.976UTC on fresh ownedPG17. Root node-boundary audit5e86a111 verifies counts/quiescentNodegroup,PGPID/start/listenport and readmitted2GiBdisk/3GiBram reservation. Exact failure delta under independent read-only review; no cause/green/nativeacceptance claim.",
+          "evidence": "Exact serial covering6793f49f normalexit1:Node5465/5178pass/125fail/162skip;Java340classes/2082tests/12fail/5error/3skip. Hughbound all17Java/fiveNode delta; root verified233Nodebodyranges, final17ID/sixreportbindings, all2563sourcehashes and postrecovery1795groups/port/IPC/filesystem/lane/reservationabsence. Recovery staticPASS79f1533d/rootce02eb89; originalincompletereceiptpreserved. Evidence docs/gcsp/evidence/batch-2026-11-18-0540.md. NewfourNode modules selectedoncealone. RED; no green/nativeacceptance.",
           "id": "covering-batch",
           "status": "in-progress",
           "title": "Covering batch verification",
-          "observed_at": "2026-11-18T06:23:18.813745+00:00"
+          "observed_at": "2026-11-18T06:53:54.266371+00:00"
         }
       ],
       "status": "In Progress",
