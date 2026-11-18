@@ -7869,28 +7869,29 @@
       "branch": "dev/DEV-2026-11-13-007",
       "id": "FUCQ-439",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "note": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
-      "observed_at": "2026-11-17T19:53:18Z",
+      "note": "Built on dev/DEV-2026-11-13-007 (36570ce7f): login, role landing, direct entry, refresh, denied/unavailable, renewal, expiry return with saved progress and no auto-submit, sign-out and account change all proved against a local mock issuer. Hosted/CSP/Safari checks stay with FUCQ-436/437. Awaiting dispatcher review and merge.",
+      "observed_at": "2026-11-18T13:40:00Z",
       "original_status": "In Progress",
       "slices": [
         {
           "id": "shell",
-          "observed_at": "2026-11-13T21:24:46Z",
-          "status": "in-progress",
-          "title": "Angular21-toolchain-native-shell-and-router"
+          "observed_at": "2026-11-18T13:40:00Z",
+          "status": "complete",
+          "title": "Angular21-toolchain-native-shell-and-router",
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md."
         },
         {
-          "evidence": "Native OIDC/config/context/account-isolation checkpoint: lead independent51/51; final AOT/boundaries pass; production audit0. Actual provider/Java/browser/hosted/saved-progress acceptance remains unrun. Delivery record _dev/in-progress/DEV-2026-11-13-007.md.",
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md.",
           "id": "auth",
-          "observed_at": "2026-11-13T21:56:25Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-18T13:40:00Z",
+          "status": "complete",
           "title": "OIDC-context-recovery-and-account-isolation"
         },
         {
-          "evidence": "Foundation checkpoint worker27d4c205cb982b8fec7b9063c6766032ef827d7e published and locally integrated9fecfada/855d6fd6; shared publication verified at952605ea9806ce170258ef6732b61914fa9ca975 after full-metadata intake reconciliation withF424claim826b9819. Independent review FAILED on MAJOR/actualMedium retained-route recovery finding, separately linked backlog BugF486; not browser reproduced, no unauthorized data/command demonstrated. Standing belowHighBug policy preserves checkpoint integration without new repair dependency or waiver. All original AC remain open, actual hosted OIDC/Java/rendered gates unrun. Native/file InProgress and lease retained; not built/InReview/Done.",
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md.",
           "id": "integration",
-          "observed_at": "2026-11-13T23:18:25.492855+00:00",
-          "status": "not-started",
+          "observed_at": "2026-11-18T13:40:00Z",
+          "status": "complete",
           "title": "Actual-Java-OIDC-browser-accessibility-and-hosted-gates"
         }
       ],
