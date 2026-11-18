@@ -18,6 +18,7 @@ final class AnswerJson {
             case ProviderAnswer.Accepted d -> done(o, "accepted", d);
             case ProviderAnswer.Scheduled d -> done(o, "scheduled", d);
             case ProviderAnswer.Completed d -> done(o, "completed", d);
+            case ProviderAnswer.NoShow d -> done(o, "no-show", d);
             case ProviderAnswer.Proposed d -> {
                 done(o, "proposed", d);
                 o.set("proposedSlot", d.proposedSlot().toJson());
@@ -49,7 +50,7 @@ final class AnswerJson {
                 return new ProviderAnswer.Unsupported(n.path("code").asText(null), n.path("reason").asText(null));
             case "conflict":
                 return new ProviderAnswer.Conflict(n.path("reason").asText(null));
-            case "accepted", "scheduled", "completed", "proposed":
+            case "accepted", "scheduled", "completed", "no-show", "proposed":
                 break;
             default:
                 return new ProviderAnswer.Unknown();
@@ -63,6 +64,7 @@ final class AnswerJson {
             case "accepted" -> new ProviderAnswer.Accepted(op, order, step, slot, ref, at);
             case "scheduled" -> new ProviderAnswer.Scheduled(op, order, step, slot, ref, at);
             case "completed" -> new ProviderAnswer.Completed(op, order, step, slot, ref, at);
+            case "no-show" -> new ProviderAnswer.NoShow(op, order, step, slot, ref, at);
             default -> {
                 Slot proposed = Slot.fromJson(n.get("proposedSlot"));
                 yield proposed == null || !Values.id(n.get("proposalId"), 512) ? new ProviderAnswer.Unknown()

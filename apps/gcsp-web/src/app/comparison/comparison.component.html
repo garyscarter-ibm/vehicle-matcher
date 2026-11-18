@@ -1,0 +1,80 @@
+<div class="gcsp-comparison">
+  <gcsp-screen-intro kicker="Route comparison" title="Route comparison" lede="Stored results of the comparison. Both routes get the same employees, cars and releases." />
+  <div class="comparison-bar">
+    <p class="gcsp-note" role="status">@if (view() === 'ready') { Active policy: {{ activePolicy() }} } @else if (view() === 'loading') { Loading the stored comparisons. }</p>
+    <button gcspButton variant="ghost" type="button" [disabled]="!canRefresh()" (click)="refresh()">Refresh</button>
+  </div>
+  @if (view() === 'loading') {
+    <gcsp-status-screen title="Loading the stored comparisons" [level]="2" [busy]="true" />
+  } @else if (view() !== 'ready') {
+    <gcsp-status-screen [title]="failureTitle()" [message]="view() === 'forbidden' ? 'Only the scheme ordering lead or the presenter can inspect route comparisons.' : readError()" [level]="2" announcement="alert">
+      @if (view() === 'authentication-required') { <button gcspButton type="button" (click)="recover()">Sign in</button> }
+      @else if (view() === 'stale-run' || view() === 'account-changed' || view() === 'unavailable') { <button gcspButton variant="ghost" type="button" (click)="recover()">Refresh session</button> }
+    </gcsp-status-screen>
+  } @else {
+    <gcsp-labelled-field controlId="comparison-experiment" label="Experiment">
+      <select id="comparison-experiment" [value]="selectedId()" [disabled]="commandBusy() || uncertain()" (change)="select($event)">
+        @for (id of experiments; track id) { <option [value]="id" [selected]="selectedId() === id">{{ label(id) }}</option> }
+      </select>
+    </gcsp-labelled-field>
+    @if (job(); as job) {
+      <section class="comparison-job" aria-labelledby="comparison-job-title" [attr.aria-busy]="job.status === 'running'">
+        <h2 id="comparison-job-title">{{ label(job.experimentId) }}: {{ job.status === 'interrupted' ? 'Stopped before it finished' : job.status === 'succeeded' ? 'Finished' : words(job.status) }}</h2>
+        <p role="status">Seeds done: {{ job.progress.seedsDone }} of {{ job.progress.seedsTotal }}. Steps: {{ job.progress.stepsDone }} of {{ job.progress.stepsTotal }}.</p>
+        @if (job.reason) { <p>{{ job.reason }}</p> }
+        @if (job.status === 'failed' || job.status === 'interrupted') { <p>No result was stored. @if (selected()) { The result below is still the latest stored. }</p> }
+        @if (job.status === 'succeeded') { <p>{{ newResultMatched() ? 'New result stored and read back.' : 'This job’s result has not been read back here. Refresh to check it.' }}</p> }
+        <details><summary>Run details</summary><dl><div><dt>Job</dt><dd>{{ job.jobId }}</dd></div><div><dt>Started</dt><dd>{{ job.startedAt }}</dd></div><div><dt>Finished</dt><dd>{{ job.finishedAt ?? 'Not finished' }}</dd></div><div><dt>Result identity</dt><dd>{{ job.resultId ?? 'No result' }}</dd></div></dl><pre>{{ json(job.request) }}</pre></details>
+      </section>
+    }
+    @if (jobError()) { <p class="comparison-error" role="alert">{{ jobError() }}</p> }
+    @if (readError()) { <p class="comparison-error" role="alert">{{ readError() }}</p> }
+    @if (isGreg()) {
+      <section class="comparison-command" aria-labelledby="comparison-command-title">
+        <h2 id="comparison-command-title">Prepare {{ label(selectedId()).toLowerCase() }} comparison</h2>
+        <p class="gcsp-note">Seeds and workload sizes stay unchanged. A tried value is never published as live policy.</p>
+        @if (!rerunsAvailable()) { <p>Starting comparisons is unavailable.</p> }
+        @if (selectedId() !== 'process-only') {
+          <gcsp-labelled-field controlId="comparison-values" [label]="selectedId() === 'points' ? 'Points allowance multiplier' : selectedId() === 'hold-sweep' ? 'Hold durations, in whole seconds' : 'Model line weights'" [hint]="selectedId() === 'order-mix' ? 'One modelLine=weight per line. The service checks supported values.' : selectedId() === 'hold-sweep' ? 'Separate whole-second values with commas. The service checks supported values.' : 'The service checks supported values.'">
+            <textarea id="comparison-values" rows="3" aria-describedby="comparison-values-hint" [value]="valueDraft()" [disabled]="!canStart()" (input)="draft('value', $event)"></textarea>
+          </gcsp-labelled-field>
+          <gcsp-labelled-field controlId="comparison-basis" label="Why try these values">
+            <textarea id="comparison-basis" rows="2" [value]="basisDraft()" [disabled]="!canStart()" (input)="draft('basis', $event)"></textarea>
+          </gcsp-labelled-field>
+        }
+        @if (commandError()) { <p class="comparison-error" role="alert">{{ commandError() }}</p> }
+        @if (fieldErrors().length) { <ul class="comparison-error">@for (error of fieldErrors(); track $index) { <li>{{ error.field }}: {{ error.reason }}</li> }</ul> }
+        @if (uncertain()) { <p>Start is unconfirmed. Retry sends the same values and command identity.</p><button gcspButton type="button" [disabled]="commandBusy() || !rerunsAvailable()" (click)="retryCommand()">Retry same command</button> }
+        @else { <button gcspButton type="button" [disabled]="!canStart()" (click)="start()">{{ commandBusy() ? 'Starting comparison' : 'Start comparison' }}</button> }
+      </section>
+    }
+    @if (selected(); as stored) {
+      <section class="comparison-result" aria-labelledby="comparison-result-title">
+        <h2 id="comparison-result-title">{{ newResultMatched() ? 'New result' : 'Stored result' }}: {{ label(stored.result.experimentId) }}</h2>
+        <p>{{ stored.origin === 'retained' ? 'Retained baseline' : 'Run result' }} · Completed {{ stored.result.completedAt }}</p>
+        <p>Result {{ stored.resultId }} · Policy {{ stored.policyVersion }}</p>
+        @if (!stored.policyCurrent) { <p class="comparison-policy">Older policy version. Made under policy {{ stored.policyVersion }}. The active policy is {{ stored.activePolicyVersion }}.</p> }
+        <p>{{ plain(stored.result.caveat) }}</p>
+        @if (stored.result.kind === 'process-comparison') {
+          @for (difference of stored.result.differences ?? []; track difference.measure) {
+            <section class="comparison-measure"><h3>{{ measure(difference.measure) }}</h3><p class="comparison-verdict">{{ verdict(difference.verdict) }}</p><p class="gcsp-note">{{ words(difference.betterWhen) }} is better · Mean and range across seeds</p><dl class="comparison-pair"><div><dt>Today's release route</dt><dd>{{ stats(difference.measure, difference.current) }}</dd></div><div><dt>Buddy route</dt><dd>{{ stats(difference.measure, difference.buddy) }}</dd></div></dl><p>Difference (buddy minus today): {{ stats(difference.measure, difference.difference, true) }}</p></section>
+          }
+        } @else {
+          @for (arm of stored.result.arms ?? []; track arm.armId) {
+            <section class="comparison-measure"><h3>{{ arm.armId === 'baseline' ? "Today’s value" : 'Tried value' }}: {{ json(arm.value) }}</h3><p class="gcsp-note">Arm {{ arm.armId }} · Mean and range across seeds</p>
+              @for (difference of arm.differences; track difference.measure) { <h4>{{ measure(difference.measure) }}</h4><p>{{ verdict(difference.verdict) }}</p><dl class="comparison-pair"><div><dt>Today's release route</dt><dd>{{ stats(difference.measure, difference.current) }}</dd></div><div><dt>Buddy route</dt><dd>{{ stats(difference.measure, difference.buddy) }}</dd></div></dl><p>Difference (buddy minus today): {{ stats(difference.measure, difference.difference, true) }}</p> }
+              <details><summary>Arm measurements and per-seed results</summary><pre>{{ json(arm.measures) }}</pre><pre>{{ json(arm.perSeed) }}</pre></details>
+            </section>
+          }
+          <details><summary>Effects of tried values against today’s value, by route</summary><pre>{{ json(stored.result.effects) }}</pre></details>
+        }
+        <details class="comparison-fold"><summary>Assumptions, seeds and provenance</summary>
+          <div class="comparison-table" role="region" aria-label="Comparison assumptions" tabindex="0"><table><caption>Assumptions supplied with this result</caption><thead><tr><th scope="col">Setting</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Status</th><th scope="col">Basis</th></tr></thead><tbody>@for (assumption of stored.result.assumptions; track assumption.key) { <tr><th scope="row">{{ assumption.key }}</th><td><pre>{{ json(assumption.value) }}</pre>@if (assumption.source !== undefined) { <p>Source: {{ json(assumption.source) }}</p> }@if (assumption.policyVersion) { <p>Policy: {{ assumption.policyVersion }}</p> }</td><td>{{ plain(assumption.unit) }}</td><td>{{ words(assumption.status) }}</td><td>{{ plain(assumption.basis) }}</td></tr> }</tbody></table></div>
+          <dl><div><dt>Seeds</dt><dd>{{ stored.result.manifest.seeds.join(', ') }}</dd></div><div><dt>Stored at</dt><dd>{{ stored.storedAt }}</dd></div><div><dt>Digest</dt><dd>{{ stored.resultDigest }}</dd></div></dl>
+          <h3>Manifest and unchanged workload</h3><pre>{{ json(stored.result.manifest) }}</pre><h3>Comparison rule</h3><pre>{{ json(stored.result.rule) }}</pre><h3>Measurements and per-seed results</h3><pre>{{ json(stored.result.measures) }}</pre><pre>{{ json(stored.result.perSeed) }}</pre>
+        </details>
+        <section><h3>What this replay leaves out</h3><ul>@for (limitation of stored.result.limitations; track $index) { <li>{{ plain(limitation) }}</li> }</ul></section>
+      </section>
+    } @else { <gcsp-status-screen title="No stored result yet" message="This comparison has not been run yet." [level]="2" /> }
+  }
+</div>

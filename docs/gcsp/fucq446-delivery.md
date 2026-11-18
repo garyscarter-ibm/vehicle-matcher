@@ -569,3 +569,224 @@ update changes no screen/product/source behavior and supplies no new rendered ev
 Commit only the three named metadata paths locally with the Codex trailer, then HOLD.
 Dispatcher owns exact-boundary audit/publication/integration. No worker push, source sync/
 rebase/merge, native update, browser/service, deployment/email or final switch is authorised.
+
+
+## Employee lifecycle screen checkpoint — 14 November 2026
+
+**PARTIAL; HOLD for parent publication/integration.** The 1700 implementation release
+starts at `6a75a85b1bdf920380c6d3fb1070a2c7ac74e96a`. Complete finite evidence, local
+receipt hashes, actual failed attempts, parent route/catalogue recipe and dispatcher
+learning events are in [the lifecycle screen record](fucq446-lifecycle-screen-2026-11-14.md).
+
+Implemented the native employee lifecycle screen, the exact existing Java read/command
+facade and reviewed command coordinator. Complete-list/snapshot reads reuse AccountClient;
+shared auth/runtime/fetch/kit stay unchanged. Own employee authority, exact scope/order,
+returned version/slot/proposal/choice IDs, explicit review, no duplicate/replayed writes,
+pending/refusal/uncertain evidence, abort/late-context handling and supplied current-car
+relationships remain explicit. No inferred current car or Java rebooking repair.
+
+Current selected Angular run **native-5: 116 PASS, eight files, rc0, zero failures/skips**
+at 17:22:55–17:23:32 UTC: controller 31/projection 18/client 26/actions 14/component 11/
+account preview 6/route policy 5/route guards 5. All 136 current source/config/reference inputs
+match its manifest; no source changed afterward. Earlier native-1 and native-2 returned
+rc1/zero tests, native-3 had 103 pass/11 fail, native-4 had 114 pass/2 fail. Their causal fixture/
+type/assertion corrections and full receipts remain recorded; those attempts remain failed.
+
+One finite browser attempt compiled a development fixture bundle, then timed out after
+90 seconds with zero rendered checks/captures. Browser proof is incomplete, precise cause
+unresolved; no retry/repair campaign. Actual desktop/narrow/keyboard visual evidence,
+Safari/private/CSP/accessibility, real Java/OIDC/nativePG, transaction/restart/concurrency,
+email, hosted/full-Story acceptance and production/full builds remain open/unrun.
+
+All six attempts used bounded owned nonsynced local scratch, with explicit local output
+root/reason, canonical locked budgets, private copied dependencies and one worker. Largest
+recorded disk 449686744 B and aggregate RSS 1397555200 B stay below 2 GiB. Each receipt records
+owned groups/scratch/reservation absent, unchanged selected borrowed hashes/metadata/Node
+and source, cleanup errors[]. Latest native/browser receipts include empty group-port
+readbacks; earlier four lack separate port readbacks. Browser also records a preexisting
+unrelated token absent at final readback: cause unverified, foreign continuity not claimed.
+No OneDrive access or historical cloud runner/cleanup operation occurred in this release.
+
+Local retained evidence index `.claude/test-runs/fucq446/lifecycle-screen-local/evidence-index.json`
+SHA256 `f1f60f3d39cf91f6da629ef614d08325620ac02ebed9b27e76cfe3d6ab768968`
+pins 36 files. Native-5 receipt SHA256
+`efc3ba2cf986d80d7ef2c7bc35a4cf7718f240986f3dc2461833fbb499a31c7f`;
+browser-1 receipt SHA256
+`20b82f64f638a65e50a38c90d15c9081a8c424e03560c14f426857169c117c0e`.
+
+Original Story prefix/two unchecked AC and five slices totaling 13 points remain fixed. Only the
+FUCQ-446 map object changes: progress-read, employee-actions and view-parity are
+in-progress/PARTIAL; review-proof/java-integration remain not-started. Native observations,
+expired worker observation and foreign map rows remain intact. FUCQ-499 Low/FUCQ-501 Medium
+stay separate/unfixed; rebooking 3629452 unresolved. Parent binds the route and owns shared
+catalogue/publication/integration. Same parent-verified gpt-6.1-sol/high, no fallback/settings
+change/children. Commit only named paths locally with the Codex trailer, then HOLD; no
+worker push/sync/merge/Jira/lease/deployment/email/external activation/final switch.
+
+
+## Orders route checkpoint — 16 November 2026
+
+**PARTIAL; HOLD for parent publication/integration.** Starting at verified clean
+`cbcd0aac5672968ba89b9cb93cb59b8a4392f3ee`, replaced only the orders placeholder route
+with the existing lazy native OrdersComponent, retaining sessionGuard/employee role/title
+and every other route byte. Added its accurate public `gcsp-orders` catalogue entry and
+five real-router fixture checks. No lifecycle/shared-kit/backend source changed.
+
+Current selected route/guard/policy validation: **15 PASS, three files, rc0, zero failures/
+skips**, 07:55:12–07:55:49 UTC. All 144 current input pins match. Reviewed earlier 116-test
+evidence is reused only for unchanged lifecycle/account behavior; five old manifest inputs
+changed in disjoint routes/gallery/media work, so it is not relabelled a current whole-tree
+run. No browser retry, full suite/build or connected environment was started.
+
+The corrected local runner reserved 768 MiB disk + 1280 MiB aggregate RAM, enforced their
+inclusive 2 GiB sum, included its supervisor/sampler and tracked recursive/group/token
+descendants. Sampled disk/RSS/sum peaks: 440676736/1051574272/1483329408 B, total 36.665 s.
+Selected tests/resource flags and independent owned cleanup passed; continuous detached
+peak and whole borrowed-tree bytes beyond the pinned closure remain unproven. No OneDrive
+access. Full receipt hashes, scope/reuse qualifications, remaining checks and the
+DL-20261114-GC-009 mitigation event are in [the route record](fucq446-orders-route-2026-11-16.md).
+
+Original Story prefix/two unchecked AC, entire map and all five slice IDs/points remain
+unchanged. No native lifecycle/acceptance transition or new defect pickup. Parent publishes
+the frozen local checkpoint. Same parent-verified Sol/high; no fallback/settings change/
+children. Hold after commit; no push/sync/merge/Jira/lease/service activation/final switch.
+
+
+## Coherent delivery recovery — 18 November 2026
+
+A46 transfers the original two-criterion lifecycle increment to Goofy 3 after the prior
+Claude launcher ended with a 422 response. The earlier checkpoint-specific HOLD and
+publication limits above are historical. Current authority covers the allocated Orders
+consumer, its connected proof, focused validation, independent review and coherent
+commit/push; the dispatcher retains merge, native Jira lifecycle and final acceptance.
+The 15 existing Orders files are unchanged at recovery base
+`72e1eeb47afc08105a8446a23212b6ac9e365781`. Java approvals, documents, appointments and
+returns interfaces were traced against their consumers; no consumer contract correction
+was identified by that source inspection.
+
+Added `scripts/gcsp/fucq446-connected-lifecycle-proof.mjs`: prebuilt production Angular
+and Java, owned native PostgreSQL 17, local signed OIDC with PKCE, actual employee DOM
+actions and explicit provider/role refusals, followed by physical handover/return,
+reload and restart relationship checks. The owned return policy fixture mirrors the
+existing `ReturnOutcomeJourneyProfile` by changing only its proposal and outcome
+switches; no production policy or lifecycle backend source changes.
+
+Validation at this checkpoint is syntax/source review only. The current focused Java
+packages plus named startup/wiring group, six Orders Angular specs, production builds
+and composed four-scenario proof are prepared and **unrun**. Full suites are deferred
+to the covering serial batch. Original AC checkboxes and map/native status are unchanged.
+The current named runtime handoff is A46 at 02:11:42 UTC; each finite supervisor still
+requires fresh capacity and atomic foreign-reservation rejection before allocation.
+
+All runtime scratch stays under owned `/private/tmp`; no OneDrive/CloudStorage access.
+Disk 2 GiB, RSS 3 GiB, inclusive 5 GiB, aggregate logs 2 MiB, 5 GiB free reserve, one
+heavy worker; C1/C2 <=300 s, C3 <=600 s and shared pipeline <=1500 s including cleanup.
+Local manifests/identity pins and final process/listener/token/scratch receipts remain
+required. Real hosted IdP, live BMW providers, Safari and hosted deployment remain
+unrun; this harness does not claim them.
+
+Agents: lead Goofy 3 requested/selected Sol/high; implementer Henery Hawk 3
+requested/selected Sol/medium; independent reviewer Lego Batman 2 requested/selected
+Sol/high, no fallback. Lead/implementer titles and effective choices independently
+verified by the dispatcher; reviewer verification is pending.
+
+
+### Focused evidence and first composed attempt — 18 November 2026
+
+Focused Angular: 105 PASS across the six Orders spec files; production web build PASS.
+Focused Java coverage: 371 PASS / 64 original selected classes, combining 121 checks
+from the corrected export with 250 exact-source, independently revalidated green checks.
+The first two Java attempts remain incomplete: Metaspace exhaustion (45 pass/1 error),
+then a missing exported document-policy fixture (253 pass/39 setup errors), followed by
+the XML retention cap. Only 250 checks from 37 wholly green classes were reused; all
+four failed classes were rerun. Raw current XML is retained losslessly compressed.
+
+The first connected run reached 85/86 scenario-a checks and passed missing-provider
+scenario d; b/c remained unrun. Its sole failed assertion tested global page text for
+readiness when documents were not yet open. The stages panel correctly names the
+'Ready for handover' stage with 'Not supplied'; the Documents panel correctly explains
+when checks open. The harness now checks the Documents panel specifically. No product
+source changed. Node syntax PASS; composed rerun and final keeper cleanup pending.
+Original AC checkboxes/native state remain unchanged; full suite deferred to batch.
+
+
+## Connected lifecycle result — 18 November 2026
+
+**PARTIAL; changes required for original acceptance.** At source
+`9ef2eda5dc4def98a533446a404bc174f439ab76`, all **128 connected assertions passed**
+(a86/d4/b3/c35), using production Angular and Java, owned native PostgreSQL 17 and a
+local OIDC issuer with signed JWTs and browser code/PKCE login. The composed journey
+performs actual employee acknowledgement, handover request and return request/proposal
+acceptance; Java provider progression, Greg physical handover, physical return, ownership
+refusals, missing-provider refusals, reload and API restart retain the expected authority
+and current-car relationship. This proves these exercised paths locally; the harness's
+`originalAcceptance: pass` fields describe its assertions, not complete Story acceptance.
+The original two checkboxes and native Story status remain unchanged.
+
+Independent reviewer Lego Batman 2 and lead Goofy 3 viewed all 16 actual final PNGs.
+**Review: CHANGES REQUIRED.** `old-car-returned.png` and `restart-current-car.png`
+show a correct Returned heading, outcome/reference and old-car relationship, followed
+by the contradictory current instruction `New time proposed ... Not booked yet.`
+The Java truth is `plan.state=returned`, `scheduled=false`, with a retained historical
+`proposedSlot`; `orders.component.html:109-111` interprets any retained proposal as
+current after the scheduled branch. `returns/PlanView.java:94-95,109-112` intentionally
+retains proposal history; `ReturnPlans.java:559-562` records acceptance without clearing
+that history. The isolated presentation fault leaves the original accurate-state criteria
+unmet. The harness lacks an assertion excluding terminal proposal copy. It remains
+unfixed and is handed to the dispatcher for separate Bug capture/triage; no repair scope
+or additional acceptance criterion was invented. Existing FUCQ-499/FUCQ-501 and the
+separately captured FUCQ-521 refusal-lock issue remain separate.
+
+The booked screen also shows the stages producer's `Appointment to be arranged`
+next step beside the appointment producer's booked state. Source trace confirms this
+is current producer semantics: `approvals/ApprovalView.java:28-35,65-66` uses the
+sent-to-ordering policy owner/nextStep until physical completion, while Orders preserves
+each producer's owner/nextStep under the existing contract and appends appointment
+stage rows. A precedence/source-label change needs an agreed bounded contract; the
+consumer must not silently rewrite provider authority. Missing car label/photo/location
+fields in this seeded path remain an evidence limitation; the captures alone do not
+establish supplied data was lost or reproduce the separate manual-selection defect.
+
+Focused coverage is **105 Angular tests in six Orders specs** plus production web build,
+and **371 Java checks across 64 selected classes** plus the Java package build. Of these,
+121 checks in 27 classes have new lossless gzip XML; 250 in 37 wholly green classes reuse
+the exact-source earlier execution, independently revalidated against its complete log.
+All 1424 API and 650 web source-input hashes match. The earlier Metaspace failure,
+missing export fixture/retention failure, global readiness assertion failure, and C2
+preflight false rejection are retained as failed/incomplete attempts. The final preflight
+compares every actual C1/C2 input; only the exact separately pinned C3 proof file is
+excluded from the web build diff. Proof SHA256:
+`5057d9ef102480379cae00170426777d4338ac2f29515ed38920b754a8ccc917`.
+No Orders or backend product source changed during this recovery.
+
+Root-local evidence base: `.claude/test-runs/fucq446/connected-0218/`.
+C1 `api-20261118T022200Z`, C2 `web-20261118T022508Z`, and C3
+`connected-20261118T023117Z` all finalized **complete / strict_result=true** with
+empty cleanup errors. Build times170.155s/34.981s; C3 38.122s. C3 sampled peaks were
+disk333795556/RSS2574073856/inclusive2907021348 bytes. Final original pipeline elapsed
+987.257s of1500s; all owned scratch, links, reservations, process groups and listeners
+were absent. Source/borrowed selected hashes stayed unchanged. Sampled limits/deadlines
+passed; continuous/kernel-contained peak remains unproven. No OneDrive operation.
+The dispatcher owns independent cleanup audit and the next lane handoff.
+
+Final proof JSON SHA256 `6ae0a3311c900ef6923775e59d2543fb9d09c8a0d59d7964de8717ec4447c65f`.
+Both terminal PNGs have SHA256
+`088d04a1c1c6049477f5eb1ea0bbf46623ed8ff90e396f923ec969930ae61582`.
+Reviewer independently checked all 17 retained proof artifacts and final C1/C2/C3 receipts.
+Desktop/narrow and isolated Chrome storage plus visible keyboard focus are covered;
+Safari, full accessibility/CSP audit, real hosted IdP, live BMW, real email, deployment
+and hosted acceptance remain unrun. **Full suite: deferred to covering batch.**
+
+Agents requested/selected/effective: Goofy 3 Sol/high; Henery Hawk 3 Sol/medium;
+Lego Batman 2 Sol/high, no fallback. Titles/gateway/effective selections were verified.
+Commit/push is authorized; dispatcher retains merge, Jira lifecycle and final acceptance.
+
+
+Dispatcher reconciliation at02:38 UTC: the terminal return rendering fault is native
+**FUCQ-522 (Medium)**, related to FUCQ-446 under FUCQ-432; both actual terminal PNGs
+are attached as937958/937959 (151257bytes each). The booked-handover stale nextStep is
+already described by **FUCQ-299** and remains existing related evidence, with no duplicate
+Bug or silent producer precedence change. FUCQ-521 is unchanged. Parent independently
+audited all five runtime allocations,1792 observed identities and nine ports: cleanup
+PASS, lane released. Overall review stays CHANGES REQUIRED; the proof/tooling source
+has a scoped pass for the128 exercised assertions and bounded validation only.

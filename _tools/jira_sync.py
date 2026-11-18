@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.3.1+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
+VERSION = "1.5.0+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -29,7 +29,8 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                                skipped, not imported.
                            Then the last pass is set to --now (else the newest `updated` seen) in .claude/jira-sync.json.
                            Prints a JSON report: imported, updated, changed_in_progress, skipped, comments, notify, failed,
-                           evidence_downloads. Each evidence item is {key, story, attachment_id, filename, mime_type, size?};
+                           evidence_downloads, unparented ({key, type} for each open non-Epic in FILE with no parent: run
+                           `audit` for the fix). Each evidence item is {key, story, attachment_id, filename, mime_type, size?};
                            no URLs. Requests repeat for every open local Bug, even on an empty input page, until the
                            session verifies its local cache. Metadata is never treated as delivered bytes.
                            `comments` are the once-only comments the poller posts on issues whose description lacks
@@ -42,14 +43,14 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                            survive release/merge. It never calls Jira, writes no story and takes no lease. Ops:
                              {"op": "transition", "key", "to": <kit status>, "board_status": <the board's name>,
                               "label"?, "resolution"?, "clear_labels"?}
-                               In Progress: the story is in in-progress/ or holds a story lease. In Review: it is merged
-                               (a `Merge dev/<id>` commit on the base branch, or a `closed: ... merged` line) and in
-                               done/. To Do: it is back in code-inbox with no lease, and a transition was pushed for it
+                               In Progress: the story is in in-progress/, holds a story lease, or is merged with a
+                               Result `status: partial` (unmet acceptance). In Review: it is merged (a `Merge dev/<id>`
+                               commit on the base branch, or a `closed: ... merged` line), in done/ and not partial. To Do: it is back in code-inbox with no lease, and a transition was pushed for it
                                before (a story never pushed is already To Do in Jira). Rejected: it is in done/ with a
                                `closed: <date> rejected` line (dev_mail's rule), a `rejected:` line or `status: rejected`.
                                An epic (a story's `epic: <KEY>`): In Review when every one of its stories is in done/ (a
-                               rejected story counts as closed, at least one is done), In Progress when one is claimed and
-                               not all are closed. Never Done: only the owner moves an item there.
+                               rejected story counts as closed, at least one is done, none is partial), In Progress when one
+                               is claimed or partial and not all are fully closed. Never Done: only the owner moves an item there.
                                `board_status` is the record's `statuses` entry for the kit name (a name, or {status, label,
                                resolution}); a name the record lacks falls back to the kit's own (In Review is In Progress
                                plus label `review`, Rejected is Done plus label `wont-do`). `label` and `resolution` are in
@@ -96,6 +97,18 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                            git state prints nothing on the next pass.
                            --mark-done FILE takes the ops the poller applied (the list push printed, or a subset) and records
                            them as pushed; ops not marked are printed again next time. Prints {"marked": [...]}.
+  audit --issues FILE [--origins FILE ...] [--check]
+                           the parenting check, offline. FILE holds every page of `jql`'s `audit` query (unparented
+                           non-Epics and open Bugs). A Story/Task needs an Epic parent. A Bug needs its origin (bug_origin's
+                           rule: one native story link) and that Story's Epic as parent; with origin unknown it needs some
+                           parent (`backlog.triage_epic` when configured) and is listed in `origin_unknown`. A parent that
+                           is the triage Epic, or on a Bug labelled `origin-unknown`, is provisional: once the origin is
+                           linked, set_parent moves it. Rejected,
+                           wont-do and subtasks are exempt. Prints {checked, clean, set_parent, needs_epic, parent_mismatch,
+                           fetch, origin_unknown, exempt}. `set_parent` ({op, key, parent, basis}) is derived, so the
+                           poller applies it with editJiraIssue `parent`; needs_epic and parent_mismatch go to a person.
+                           `fetch` lists origin Stories not in FILE: fetch them (parent, issuetype) and pass --origins.
+                           --check exits 1 unless clean (origin_unknown alone is clean: it is tracked, not silent).
   status                   print the state file and the import leases (refs/leases/jira/*).
 
 State: <shared checkout>/.claude/jira-sync.json, per machine, kept out of git (scaffold_git's LOCAL_FILES):
@@ -381,7 +394,9 @@ def parse_issue(raw):
         attachments.append(meta)
     attachments.sort(key=lambda a: (int(a["attachment_id"]), a["filename"]))
     return {"key": raw["key"], "summary": f.get("summary") or "",
-            "issue_type": _name(f.get("issuetype")), "relationships": relationships, "attachments": attachments,
+            "issue_type": _name(f.get("issuetype")),
+            "subtask": bool(isinstance(f.get("issuetype"), dict) and f["issuetype"].get("subtask")),
+            "relationships": relationships, "attachments": attachments,
             "attachments_known": isinstance(f.get("attachment"), list),
             "description": unescape_md(_text_of_adf(desc) if isinstance(desc, dict) else (desc or "")),
             "status": _name(status), "status_category": cat,
@@ -402,6 +417,8 @@ def read_issues(path):
         data = data["data"]
     if isinstance(data, dict):
         data = data.get("issues")
+    if isinstance(data, dict):                  # the MCP's newer {"issues": {"nodes": [...]}} page shape
+        data = data.get("nodes")
     if not isinstance(data, list):
         raise Refused("%s holds no list of issues (expected a list, or an object with `issues`)" % path)
     out = []
@@ -528,6 +545,10 @@ def bug_origin(issue, rec, key_to_story, secs):
             return stated
         reverse = {sid: key for key, sid in key_to_story.items()}
         stated = reverse.get(stated, stated)
+        if not KEY_RE.fullmatch(stated):        # prose naming the origin, e.g. "FUCQ-59; established Epic FUCQ-20"
+            named = {reverse.get(t, t) for t in re.findall(r"\b[A-Z][A-Z0-9]+-\d+\b|\bDEV-[\w-]*\d\b", stated)}
+            pick = named if len(named) == 1 else named & native
+            stated = next(iter(pick)) if len(pick) == 1 else stated
         if not KEY_RE.fullmatch(stated) or not stated.startswith(project):
             return "unresolved: Related story must name a same-project Story or resolved DEV Story ID"
         typed = [r for r in issue.get("relationships", []) if r["key"] == stated and r["issue_type"]]
@@ -580,6 +601,62 @@ def issue_blocks(issue, rec, key_to_story):
         else:
             blocks[field] = block(field, secs[field].split("\n"))
     return blocks
+
+
+def audit_parenting(issues, rec):
+    """The parenting report for parsed issues (see `audit` in the module doc). Origin is bug_origin's rule."""
+    epic_type = (rec.get("epic_type") or "Epic").casefold()
+    bug_type = (rec.get("bug_type") or "Bug").casefold()
+    triage = rec.get("triage_epic")
+    parents = {i["key"]: i["parent"] for i in issues}
+    out = {"checked": 0, "clean": True, "set_parent": [], "needs_epic": [], "parent_mismatch": [], "fetch": [],
+           "origin_unknown": [], "exempt": []}
+    for i in sorted(issues, key=lambda i: (len(i["key"]), i["key"])):
+        kind = i["issue_type"].casefold()
+        if kind == epic_type or i.get("subtask") or i.get("role") == "origin":
+            continue
+        if i["status"].casefold() == "rejected" or "wont-do" in [l.casefold() for l in i["labels"]]:
+            out["exempt"].append(i["key"])
+            continue
+        out["checked"] += 1
+        row = {"key": i["key"], "type": i["issue_type"], "summary": i["summary"][:80]}
+        if kind != bug_type:
+            if not i["parent"]:
+                out["needs_epic"].append(dict(row, reason="no Epic parent"))
+            continue
+        origin = bug_origin(i, rec, {}, sections(i["description"]))
+        if origin.startswith("unresolved:"):
+            why = origin[len("unresolved:"):].strip()
+            if i["parent"]:
+                out["origin_unknown"].append(dict(row, parent=i["parent"], reason=why))
+            elif triage:
+                out["set_parent"].append({"op": "set_parent", "key": i["key"], "parent": triage,
+                                          "basis": "origin unknown (%s): triage Epic" % why})
+            else:
+                out["needs_epic"].append(dict(row, reason="origin unknown (%s); no triage_epic configured" % why))
+            continue
+        if origin not in parents:
+            if origin not in out["fetch"]:
+                out["fetch"].append(origin)
+            continue
+        epic = parents[origin]
+        if not epic:
+            out["needs_epic"].append(dict(row, reason="originating Story %s has no Epic" % origin))
+        elif not i["parent"] or i["parent"] == triage or "origin-unknown" in [l.casefold() for l in i["labels"]]:
+            out["set_parent"].append({"op": "set_parent", "key": i["key"], "parent": epic,
+                                      "basis": "originating Story %s is in %s" % (origin, epic)})
+        elif i["parent"] != epic:
+            out["parent_mismatch"].append(dict(row, parent=i["parent"], origin=origin, expected=epic))
+    out["clean"] = not any(out[k] for k in ("set_parent", "needs_epic", "parent_mismatch", "fetch"))
+    return out
+
+
+def audit_jql(rec):
+    """Every unparented non-Epic, plus every open Bug (its parent must match its origin Story's Epic)."""
+    bug = jql_name(rec.get("bug_type") or "Bug")
+    return ("project = %s AND issuetype != %s AND issuetype not in subTaskIssueTypes() AND (parent is EMPTY OR "
+            "(issuetype = %s AND statusCategory != Done)) ORDER BY key ASC"
+            % (rec["project"], jql_name(rec.get("epic_type") or "Epic"), bug))
 
 
 def missing_fields(blocks):
@@ -697,7 +774,7 @@ class Pass:
         self.login = sg.member_login(root)
         self.team = sg.team_block(root)
         self.report = {"imported": [], "updated": [], "changed_in_progress": [], "skipped": [], "comments": [],
-                       "notify": [], "failed": [], "evidence_downloads": []}
+                       "notify": [], "failed": [], "evidence_downloads": [], "unparented": []}
         self.known = {}
         self.reserved = set()
 
@@ -1029,6 +1106,11 @@ class Pass:
             else:
                 self.new_issue(issue)
         self.resolve_preconditions()
+        epic_type = (self.rec.get("epic_type") or "Epic").casefold()
+        for issue in self.issues:                  # every item needs a parent; `audit` says which one
+            if not issue["parent"] and issue["issue_type"].casefold() != epic_type and not issue.get("subtask") \
+                    and issue["status"].casefold() != "rejected" and issue["status_category"] != "done":
+                self.report["unparented"].append({"key": issue["key"], "type": issue["issue_type"]})
         if self.ahead():
             rc, msg = self.publish()
             if rc != 0:
@@ -1202,6 +1284,11 @@ class Push:
         return False
 
     # --- what a story is
+    def is_partial(self, s):
+        """A merged story whose Result says `status: partial`: some original acceptance is unmet, so it stays open."""
+        status = section_line(s["text"], "status")
+        return bool(status and status.split()[0].lower().strip(",;.") == "partial")
+
     def is_rejected(self, s):
         if s["where"] != "done":
             return False
@@ -1296,7 +1383,7 @@ class Push:
             return [transition_op(rec, key, "Rejected")]
         if s["where"] == "done":
             if "dev/" + sid in merged or CLOSED_MERGED.match(f.get("closed", "")):
-                ops.append(transition_op(rec, key, "In Review"))
+                ops.append(transition_op(rec, key, "In Progress" if self.is_partial(s) else "In Review"))
         elif s["where"] == "in-progress" or lease:
             ops.append(transition_op(rec, key, "In Progress"))
         else:
@@ -1341,9 +1428,10 @@ class Push:
             members = groups[key]
             closed = [s for s in members if s["where"] == "done"]
             done = [s for s in closed if not self.is_rejected(s)]
-            if len(closed) == len(members) and done:
+            if len(closed) == len(members) and done and not any(self.is_partial(s) for s in done):
                 ops.append(transition_op(self.rec, key, "In Review"))
-            elif any(s["where"] == "in-progress" or s["id"] in self.lease_map for s in members if s["where"] != "done"):
+            elif any(self.is_partial(s) if s["where"] == "done" else s["where"] == "in-progress" or s["id"] in self.lease_map
+                     for s in members):
                 ops.append(transition_op(self.rec, key, "In Progress"))
         return ops
 
@@ -1497,7 +1585,8 @@ def cmd_jql(args, root):
             "project = %s AND issuetype = %s AND statusCategory != Done ORDER BY updated ASC" %
             (rec["project"], jql_name(rec.get("bug_type") or "Bug")), "fields": FIELDS}
     print(json.dumps({"jql": build_jql(rec, state.get("last_pass")), "fields": FIELDS,
-                      "reconcile_bugs": reconciliation}, indent=2))
+                      "reconcile_bugs": reconciliation,
+                      "audit": {"jql": audit_jql(rec), "fields": FIELDS}}, indent=2))
     return 0
 
 
@@ -1512,6 +1601,20 @@ def cmd_pull(args, root):
             print(line, file=sys.stderr)
     print(json.dumps(report, indent=2))
     return 3 if report["failed"] else 0
+
+
+def cmd_audit(args, root):
+    rec = jira_record(root)
+    try:
+        issues = read_issues(args.issues)
+        seen = {i["key"] for i in issues}
+        for path in args.origins:
+            issues += [dict(o, role="origin") for o in read_issues(path) if o["key"] not in seen]
+    except ValueError as e:
+        raise Refused(str(e))
+    report = audit_parenting(issues, rec)
+    print(json.dumps(report, indent=2))
+    return 1 if args.check and not report["clean"] else 0
 
 
 def cmd_push(args, root):
@@ -1552,6 +1655,12 @@ def build_parser():
     p.add_argument("--json", action="store_true", help="print the operations as a JSON list")
     p.add_argument("--mark-done", metavar="FILE", help="record the ops in FILE (the list push printed, or a subset) as pushed")
     p.set_defaults(func=cmd_push)
+    p = sub.add_parser("audit", help="report items without the Epic parent or Bug origin they need (offline)")
+    p.add_argument("--issues", required=True, metavar="FILE")
+    p.add_argument("--origins", action="append", default=[], metavar="FILE",
+                   help="issues fetched for `fetch` (origin Stories); read for their parent only")
+    p.add_argument("--check", action="store_true", help="exit 1 when anything but origin_unknown is reported")
+    p.set_defaults(func=cmd_audit)
     sub.add_parser("status", help="print the state file and the import leases").set_defaults(func=cmd_status)
     return ap
 

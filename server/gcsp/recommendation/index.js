@@ -3,7 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
 import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
-import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement } from './current-car.js';
+import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement, createCurrentCarBaselineScorer } from './current-car.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
@@ -125,6 +125,51 @@ function timingGates(candidate, employeeFacts, brief, now, config) {
 }
 
 const EMPTY_SCORES = { score: null, components: [], reasons: [], tradeOffs: [], unknowns: [] };
+const staticCaches = new WeakSet();
+const canonicalData = (value) => JSON.stringify(value, (_key, entry) => entry && !Array.isArray(entry) && typeof entry === 'object'
+  ? Object.fromEntries(Object.keys(entry).sort().map((key) => [key, entry[key]])) : entry);
+
+// Cache preference evidence alone; operational gates and quote identities stay with each evaluation.
+export function createStaticSuitabilityCache({ maxEntries = 512, maxBytes = 4 * 1024 * 1024 } = {}) {
+  const entries = new Map();
+  let bytes = 0; let scope; let hits = 0; let misses = 0; let computations = 0; let evictions = 0;
+  const reset = () => { entries.clear(); bytes = 0; scope = undefined; };
+  const cache = {
+    reset,
+    stats: () => Object.freeze({ entries: entries.size, bytes, hits, misses, computations, evictions }),
+    score(snapshot, brief, employeeFacts, config, slider, context) {
+      let key;
+      try {
+        const currentScope = canonicalData([context.runId, context.environmentId]);
+        if (scope !== currentScope) { reset(); scope = currentScope; }
+        const inputs = { name: snapshot.display.name, facts: snapshot.facts, preferences: brief.preferences,
+          preferenceOrder: Object.keys(brief.preferences), bundleFamilyOrder: Object.keys(config.optionEvidence?.bundleFamilies ?? {}),
+          employeeFacts, config, slider };
+        if (Number.isSafeInteger(maxEntries) && maxEntries > 0 && Number.isSafeInteger(maxBytes) && maxBytes > 0 && jsonData(inputs)) key = canonicalData(inputs);
+      } catch { /* Unsupported cache inputs retain the uncached calculation path. */ }
+      const found = key === undefined ? undefined : entries.get(key);
+      if (found) {
+        hits++; entries.delete(key); entries.set(key, found);
+        return structuredClone(found.value);
+      }
+      misses++; computations++;
+      const value = scorePreferences(snapshot, brief, employeeFacts, config, slider);
+      if (key !== undefined) {
+        const retained = freezeVehicleData(structuredClone(value));
+        const size = Buffer.byteLength(key) + Buffer.byteLength(JSON.stringify(retained));
+        if (size <= maxBytes) {
+          while (entries.size >= maxEntries || bytes + size > maxBytes) {
+            const oldest = entries.keys().next().value; bytes -= entries.get(oldest).size; entries.delete(oldest); evictions++;
+          }
+          entries.set(key, { value: retained, size }); bytes += size;
+        }
+      }
+      return value;
+    },
+  };
+  staticCaches.add(cache);
+  return Object.freeze(cache);
+}
 const typedFields = ['currentCarRating', 'sameAgain'];
 const typedValid = { currentCarRating: currentCarRatingValid, sameAgain: sameAgainValid };
 const plainRequest = (v) => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -156,7 +201,8 @@ function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, con
   }
   if (base.rating.class !== 'positive') return { record, reasons: [] };
   if (similarity === 'similar') return { record: { ...record, effect: 'kept', reasonCode: 'feedback-similar' }, reasons: [{ code: 'feedback-similar', keys: dims }] };
-  const better = compareImprovement({ snapshot: candidate.snapshot, scored, baseline, brief, employeeFacts, config, slider, rule: rules.improvement });
+  const better = compareImprovement({ snapshot: candidate.snapshot, scored, baseline, brief, employeeFacts, config, slider, rule: rules.improvement,
+    baselineScores: fb.baselineScores });
   if (better.result === 'proven') return { record: { ...record, improvement: 'proven', effect: 'kept', reasonCode: 'feedback-improvement' }, reasons: [{ code: 'feedback-improvement', keys: better.keys }] };
   return { record: { ...record, improvement: better.result, effect: 'omitted', reasonCode: 'feedback-not-similar-or-better' }, omit: { code: 'feedback-not-similar-or-better', keys: dims } };
 }
@@ -211,7 +257,7 @@ function evaluateRecommendation(ports, context, request, preview = null, project
   return typeof ports.policy?.withReadScope === 'function' ? ports.policy.withReadScope(work) : work();
 }
 
-async function evaluateScopedRecommendation({ provider, policy, time }, context, request, preview, projection) {
+async function evaluateScopedRecommendation({ provider, policy, time, staticCache }, context, request, preview, projection) {
       if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return unavailable('provider-not-configured');
       if (!['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'].every((key) => text(context[key]))) return invalid('invalid-context', [{ field: 'context', reason: 'The server must resolve a complete employee context.' }]);
       try {
@@ -288,6 +334,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
             const inertCode = !baseline ? 'feedback-baseline-unavailable' : Object.keys(typed).some((key) => !matches(typed[key])) ? 'feedback-contract-mismatch' : 'feedback-neutral';
             fb = { policy: row.value.value, policyVersion: row.policyVersion, baseline, rating, usable, inertCode,
               sameOn: usable.sameAgain && typed.sameAgain.on === true,
+              baselineScores: createCurrentCarBaselineScorer({ baseline, brief, employeeFacts: source.employeeFacts, config, slider }),
               identity: `${FEEDBACK_KEY}@${row.policyVersion}${baseline ? `+${baseline.source.sourceVersion}` : ''}` };
           }
         }
@@ -308,7 +355,9 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
             blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
           }
           let gateStatus = blockers.length ? 'ineligible' : unknowns.length ? 'needs-confirmation' : 'eligible';
-          let scores = gateStatus === 'eligible' ? scorePreferences(candidate.snapshot, brief, source.employeeFacts, config, slider) : EMPTY_SCORES;
+          let scores = gateStatus === 'eligible' ? (staticCaches.has(staticCache)
+            ? staticCache.score(candidate.snapshot, brief, source.employeeFacts, config, slider, context)
+            : scorePreferences(candidate.snapshot, brief, source.employeeFacts, config, slider)) : EMPTY_SCORES;
           let feedback = feedbackRecord;
           if (fb) {
             const judged = judgeFeedback({ fb, gated: gateStatus !== 'eligible', candidate, scored: scores, brief, employeeFacts: source.employeeFacts, config, slider });
@@ -397,11 +446,11 @@ export function createStoredSubjectRecommendationEvaluator({ provider, policy, t
 }
 
 // Internal allocation calculation; callers supply frozen planning ports and one-car sources for quotes.
-export function createAllocationRecommendationEvaluator({ provider, policy, time } = {}) {
+export function createAllocationRecommendationEvaluator({ provider, policy, time, staticCache } = {}) {
   const evaluate = (context, request, projection) => {
     if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return Promise.resolve(unavailable('provider-not-configured'));
     if (!context?.roles?.includes('employee')) return Promise.resolve(result('forbidden', { reason: 'An employee context is required.' }));
-    return evaluateRecommendation({ provider, policy, time }, context, request, null, projection);
+    return evaluateRecommendation({ provider, policy, time, staticCache }, context, request, null, projection);
   };
   return {
     evaluate: (context, request) => evaluate(context, request, 'compact'),

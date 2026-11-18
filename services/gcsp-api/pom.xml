@@ -96,6 +96,21 @@
           <include>policy-definitions.json</include>
         </includes>
       </resource>
+      <resource>
+        <directory>${project.basedir}/../../server/data/gcsp/comparison</directory>
+        <targetPath>gcsp/comparison</targetPath>
+        <includes>
+          <include>process-only.json</include>
+        </includes>
+      </resource>
+      <!-- Retained learned-model artifacts (FUCQ-476), read in place from docs/gcsp/models/artifacts. -->
+      <resource>
+        <directory>${project.basedir}/../../docs/gcsp/models/artifacts</directory>
+        <targetPath>gcsp/learning/artifacts</targetPath>
+        <includes>
+          <include>*.json</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>

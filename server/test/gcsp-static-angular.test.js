@@ -369,6 +369,7 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   assert.match(site, /npm run gcsp:compile/u); assert.match(site, /npm run gcsp:assemble/u);
   assert.doesNotMatch(site, /gradle|mvn|docker|services\/gcsp-api/u);
   const rewrites = [...site.matchAll(/- type: rewrite\n\s+source: (\S+)\n\s+destination: (\S+)/gu)];
+  assert.ok(GCSP_FIXED_ROUTES.includes('/gcsp/comparison'), 'comparison supports direct entry and refresh');
   assert.deepEqual(rewrites.map((match) => match[1]), GCSP_FIXED_ROUTES);
   assert.ok(rewrites.every((match) => match[2] === '/gcsp/index.html' && !/[*:]/u.test(match[1])));
   for (const path of ['/gcsp/runtime-config.json', '/gcsp/missing.js', '/gcsp/media/missing.woff2', '/api/gcsp/v1/context', '/gcsp/offers/missing.js']) assert.ok(!GCSP_FIXED_ROUTES.includes(path));

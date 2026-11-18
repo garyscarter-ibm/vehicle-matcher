@@ -22,20 +22,34 @@ public final class RunReset {
     private final DataSource dataSource;
     private final String expectedDatabase;
     private final String environmentId;
+    private final boolean configResetAllowed;
 
+    /** For callers that have already checked the configured flag; deployments use the four-argument form. */
     public RunReset(DataSource dataSource, String expectedDatabase, String environmentId) {
+        this(dataSource, expectedDatabase, environmentId, true);
+    }
+
+    /** Reset needs both this configured flag (GCSP_RESET_ALLOWED) and the flag stored at the database's first claim. */
+    public RunReset(DataSource dataSource, String expectedDatabase, String environmentId, boolean configResetAllowed) {
         this.dataSource = dataSource;
         this.expectedDatabase = expectedDatabase == null ? "" : expectedDatabase.trim();
         this.environmentId = environmentId == null ? "" : environmentId.trim();
+        this.configResetAllowed = configResetAllowed;
     }
 
     /** Committed result carries {retiredRunId, activatedRunId} at revision 0; replayed is true for a stored reset. */
     public Outcome reset(String targetEnvironmentId, String actorId, String commandId, String expectedActiveRunId,
             String newRunId) {
+        return reset(targetEnvironmentId, actorId, commandId, expectedActiveRunId, newRunId, null);
+    }
+
+    /** As above; input (such as the selected scenario and versions) joins the replay digest when not null. */
+    public Outcome reset(String targetEnvironmentId, String actorId, String commandId, String expectedActiveRunId,
+            String newRunId, JsonNode input) {
         if (blank(actorId) || blank(commandId) || blank(expectedActiveRunId) || blank(newRunId)) {
             return new Outcome.Refused("reset-input-invalid", "Actor, command and run ids are required");
         }
-        String digest = digest(expectedActiveRunId, newRunId);
+        String digest = digest(expectedActiveRunId, newRunId, input);
         Connection c = null;
         boolean commitStarted = false;
         try {
@@ -88,8 +102,11 @@ public final class RunReset {
         }
     }
 
-    /** Database name, stored environment and reset_allowed must all match the configuration; null when they do. */
+    /** Configured and stored reset_allowed, database name and stored environment must all match the configuration; null when they do. */
     private Outcome checkIsolation(Connection c, String targetEnvironmentId) throws SQLException {
+        if (!configResetAllowed) {
+            return new Outcome.Refused("reset-not-allowed", "This deployment does not allow reset");
+        }
         if (expectedDatabase.isEmpty() || environmentId.isEmpty()) {
             return new Outcome.Refused("reset-isolation-mismatch", "Reset is not configured for this deployment");
         }
@@ -197,10 +214,11 @@ public final class RunReset {
         return n;
     }
 
-    private static String digest(String expectedActiveRunId, String newRunId) {
+    private static String digest(String expectedActiveRunId, String newRunId, JsonNode input) {
         ObjectNode n = JSON.createObjectNode();
         n.put("expectedActiveRunId", expectedActiveRunId);
         n.put("newRunId", newRunId);
+        if (input != null) n.set("input", input);
         return Canonical.digest(n);
     }
 

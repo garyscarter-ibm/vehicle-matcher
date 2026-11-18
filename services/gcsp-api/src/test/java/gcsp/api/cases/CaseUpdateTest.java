@@ -215,7 +215,7 @@ class CaseUpdateTest {
     }
 
     @Test
-    void alternativeCarIsUnavailableAndPreferenceRelaxationIsForbidden() throws SQLException {
+    void alternativeCarIsUnavailableAndAnIncompletePreferenceRelaxationIsInvalid() throws SQLException {
         JsonNode c = move(f, open(f), "in-progress");
         List<Long> before = f.snapshot();
         ObjectNode car = update(f, c, "remedy-proposed");
@@ -226,8 +226,8 @@ class CaseUpdateTest {
         refused(f.service.update(f.greg, badCar), 400, "invalid-case-command");
         ObjectNode relax = update(f, c, "remedy-proposed");
         relax.set("remedy", CaseJson.obj().put("type", "preference-relaxation").put("decisionId", "d-1"));
-        CaseResult.Refusal r = refused(f.service.update(f.greg, relax), 403, "forbidden");
-        assertEquals("A recorded decline for this employee is required.", r.reason());
+        CaseResult.Refusal r = refused(f.service.update(f.greg, relax), 400, "invalid-case-command");
+        assertEquals("Propose exactly one preference value. Essentials and allowance remain unchanged.", r.reason());
         assertEquals(before, f.snapshot());
     }
 

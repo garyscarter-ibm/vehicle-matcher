@@ -1,3 +1,41 @@
+## OneDrive access — explicit human restriction, 14 November 2026
+
+Gary says: "Don't touch my onedrive please". Do not access his OneDrive locations: no reads, writes,
+existence checks, copies, moves, deletion, cleanup or sync operations. This overrides inherited scaffolding
+instructions to place archives or generated output in OneDrive, including the 256 MiB rule, and existing
+runtime/audit releases. Use bounded local scratch outside synced folders where authorised. Preserve resource
+limits and report any check that cannot proceed under this restriction. Pass this restriction to every
+delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
+local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
+
+## Delivery autonomy and Claude delegation — Gary, 17 November 2026
+
+Give Claude coherent delivery increments with enough work to use parallel agents or distinct working sessions
+when measured capacity and file ownership permit. Let the delivery lead divide the work, run the necessary
+scoped validation and carry the increment through review. Keep that authority through handovers.
+
+Do not add single-file, source-only, no-child, fixed-session or repeated parent-approval limits without an
+explicit human instruction or a concrete scope, ownership, technical or resource reason. An earlier dispatcher
+restriction is not authority for continuing it. Remove an unjustified limit rather than repeatedly asking a
+collaborator to lift it. Existing Story acceptance, specific holds, access restrictions and resource rules apply.
+
+## Shared dispatcher learnings
+
+Gary's direction, 14 November 2026: both pollers maintain `docs/gcsp/dispatcher-learnings.md` so observed
+delivery issues and their resolutions can inform improvements to agent-scaffolding.
+
+- Read the log at dispatcher startup/resume. Whenever an issue is identified, resolved, recurs or a diagnosis
+  changes, promptly append a dated event with the poller, evidence, impact, cause or uncertainty, action,
+  observed outcome and proposed framework improvement. Reuse the issue's ID; preserve earlier observations.
+- Distinguish a proposed fix, an applied mitigation and a verified resolution. Record actual failures,
+  skipped/unrun checks and remaining limitations; an instruction change alone does not prove delivery improved.
+- Both pollers may append through the normal Git helper on `gcsp-poc-dev`. Pull before writing, preserve the
+  other poller's entries, and reconcile concurrent appends without replacing history. Commit and push promptly.
+- Pass the log path in worker briefs; workers include identified issues and resolution evidence in their
+  result for their dispatcher to record. Keep personal coordination and sensitive/runtime output out of the log.
+- Logging creates no new Story scope, acceptance gate, Jira change or framework implementation authority.
+  Keep entries brief and use existing evidence; do not add a reporting, test or approval round to write one.
+
 ## Jira updates resumed
 
 Gary explicitly lifted the project-wide Jira-write pause on 13 November 2026: “You can stop the wider pause too.”
@@ -37,22 +75,7 @@ skill instructions to stop on credit errors for this condition.
 - Preserve the exact error as diagnostic evidence. It does not verify the credit balance or make key rotation
   a prerequisite. Keep the configured gateway and credentials unless a collaborator directs a change.
 
-## Demo delivery, defects and claimed scope
-
-Gary's standing direction, 6 November 2026, applies to every harness, session, reviewer and descendant.
-Follow the full policy in `docs/gcsp/build-rules.md`, section "Demo delivery and scope control".
-
-- Prioritise a complete, working, demoable product and prompt integration of coherent increments. Keep
-  optional hardening, refactoring and validation-framework expansion off the current delivery path.
-- Triage defects honestly. Capture every defect below Critical/High as a linked backlog Bug for independent
-  prioritisation; it does not expand or block the current Story's review/merge. Critical/High defects require
-  resolution or an explicit collaborator decision to defer them. Preserve any specifically authorised deferral.
-- Keep a claimed Story's acceptance criteria fixed. New feature requests and proposed AC additions/changes
-  become separate backlog Stories for collaborator review and prioritisation before pickup/build. Agent or
-  dispatcher authorisation alone cannot expand the claimed contract. Preserve the original Story's scope and
-  distinguish an unmet original criterion from a proposed addition.
-- Record actual failed, skipped and unrun checks, known defects and any authorised merge exception. A merged
-  integration checkpoint does not establish full acceptance or authorise a Done transition.
+## Claimed Story scope
 
 Gary reaffirmed strict Story scope on 14 November 2026. At pickup and in every delegated brief, identify the
 original acceptance criteria, the applicable existing contracts and exact allocated files. Build, validate and
@@ -60,7 +83,7 @@ review against that bounded contract. Do not turn a shared quality document into
 require a broader migration or deployment campaign for a narrower Story, or add features, refactoring or
 hardening to its completion gates. Reuse matching evidence. Record any necessary work outside the contract
 separately for collaborator review before pickup; report an unmet original criterion as remaining Story work.
-Dispatcher or reviewer approval cannot expand the scope. Apply the existing severity policy to separate Bugs.
+Dispatcher or reviewer approval cannot expand the scope. Handle separately found defects as Bugs through the defects procedure.
 
 Pass these rules and their document path in every delegated brief. Changes to project policy belong in shared
 project instructions; Gary's personal polling setup and local coordination files remain local.
@@ -114,6 +137,42 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   in each contributing clone, and IBM Pages serves the committed static files from main.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
+
+## Story test set
+
+Ruled 2026-11-17 (Russell): a story runs a focused set; the full suites run once per batch of merges, in the poller's
+batch run (dev-inbox step E), not per story. The intent is less machine time per story, not a lower bar for done: a
+story is not ready for acceptance until a green batch run covers its merge. This replaces any story-lead's own
+"agreed integration checkpoint". Every agent applies it, and every story-lead brief carries it.
+
+Run once at the end on the story branch, with one throwaway native PostgreSQL 17 you own (never a Render database),
+`GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set as in `services/gcsp-api/README.md`:
+
+1. **The story's own packages**, Java: `./mvnw -B test -Dtest='gcsp.api.<package>.**'` in `services/gcsp-api`, one
+   pattern per package, comma-separated in one run. Node: `node --test --test-concurrency=1 server/test/<file>.test.js`
+   for each module it owns. Angular (`apps/gcsp-web`): that app's own test command for the changed feature folder.
+2. **Every other package it edited**, the same way.
+3. **Callers of a changed contract:** for a changed port, record, HTTP shape, migration or shared fixture, the
+   packages that use it (`grep -rl` the type or route under `services/gcsp-api/src` and `apps/gcsp-web/src`), and the
+   Node parity tests in `services/gcsp-api/src/test/parity` that replay it.
+4. **One end-to-end test per acceptance item**, on the real composition: the `@QuarkusTest` `*HttpTest` in that
+   package started under an OIDC profile (`OidcTestProfile`, `JwksServerResource`: real signed test tokens sent as
+   `Authorization: Bearer`) against the native PostgreSQL above. A `*NoDatabase*`, `*NoProvider*` or `*LiveStub*`
+   test proves the refusal path only; it does not meet an item. A missing end-to-end test is written in the story.
+5. **Startup and wiring:** `DefaultProfileTest`, `OidcContextTest`, `OidcIdentityTest`, `IdentitySelectionTest`,
+   `persistence.PersistenceWiringTest`, `persistence.NotConfiguredReadinessTest`, `claims.ClaimWiringTest`,
+   `notify.NotificationDrainWiringTest`, `appointments.AppointmentsWiringTest`, `ordering.RemoteOrderingStartupTest`.
+
+**The full suite on a story** only for a Flyway migration, a new startup thread or CDI producer, shared
+`application.properties`, `pom.xml` or the Maven wrapper, or the test profiles and support classes themselves. Name
+which in `validation scope`. A story whose `validate` says `npm test`, `./mvnw -B verify` or "the full suite" with no
+such reason writes `full suite: deferred to batch`.
+
+**The batch run** is `inbox.test` (`npm test` at the root), then `./mvnw -B clean verify` in `services/gcsp-api`
+against a fresh throwaway PostgreSQL 17, one after the other, never alongside another full suite. Both must pass
+for the batch to be green. Known
+order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on 2026-11-13) get a Bug and are named
+in `_dev/batches.md`, not retried until green.
 
 ## Concepts and mockups
 
@@ -169,17 +228,3 @@ Completion still requires the story's acceptance evidence; fixtures do not prove
 Keep explicit pauses and date holds, source/access limits, claim ownership, conflicting file ownership, and actual
 technical blockers. Retain Jira links unless a collaborator separately requests their amendment. See
 `docs/gcsp/technical-readiness-2026-11-05.md` and pass this rule to every story lead and descendant.
-
-## Defects found during delivery
-
-Gary's standing direction, 6 November 2026: when a defect is found during a story or review,
-assess and record its severity from its actual impact. For a defect below Critical or High
-severity, raise or reuse a linked backlog Bug for independent later pickup and continue
-the current story toward merge. Do not expand that story to repair the defect or make
-the separate Bug a merge dependency. Preserve the diagnosis, reproduction status,
-acceptance gaps and known limitations; do not describe the defect as fixed.
-
-Critical and High severity defects require prompt active triage and are not automatically
-deferred under this rule. A collaborator may explicitly defer a specific finding. Never
-lower severity merely to clear a merge. Existing test and acceptance obligations remain
-unless a collaborator explicitly revises them; an unrun check is not a passing check.

@@ -439,7 +439,7 @@ Looked at `tabs` (panels, not tiles), `renderOptionList` (a radiogroup of choice
 
 FUCQ-398 adds a separate **Allocation** region below release stats, labelled **Buddy offers · this run**, using `factList`, `statusScreen` and `loadingSkeleton`. `readLatestRelease.value.allocation` is `{ pending, declined, accepted }` or `null`. Pending requires an active Buddy offer and hold strictly before the DemoClock deadline; Accepted requires an accepted offer and allocated hold; Declined requires a rejected/declined offer and released hold with `releaseReason: offer-declined`. Expiry, reconciliation and stock occupancy do not substitute for offer outcomes. Missing/invalid counts show **Allocation unavailable**. Release, reset and actual Advanced **Refresh readback** update the figures; the optional `mountPresenterControls` callback `onReadback(state)` supplies the authoritative read. No new kit primitive or gallery entry is needed for this composition.
 
-**Release charts and day bar (Gary, 11 November 2026).** Looked at `rangeBar` (a mean and its range on a shared scale, label above the track) and `factList` (text only); neither draws the mockup's label, bar and count row, so `countBars({ label, rows: [{ label, count }], limit, otherLabel, level, id })` (`blocks/gcsp/kit/count-bars.js` and `.css`) is new: a `figure` labelled by its heading, bars scaled to the largest count through the `--gcsp-count-share` custom property (aria-hidden; the count text carries the meaning), rows past `limit` folded into one `otherLabel` row. Today's release shows its totals in one row and puts Model line, Colour, Points a month and Fuel in a closed "Latest release stats" `details`, the same disclosure pattern as What happened, built from the read's `modelLines` and `charts`. `dayBar()` (`presenter-controls/day-bar.js`, console only) is the mockup's Mon to Sun week strip under the Basic actions: past days since the run began are done, today is `aria-current="date"`, weekends dim. The header shows the day muted beside the bold clock.
+**Release charts and day bar (Gary, 11 November 2026).** Looked at `rangeBar` (a mean and its range on a shared scale, label above the track) and `factList` (text only); neither draws the mockup's label, bar and count row, so `countBars({ label, rows: [{ label, count }], limit, otherLabel, level, id })` (`blocks/gcsp/kit/count-bars.js` and `.css`) is new: a `figure` labelled by its heading, bars scaled to the largest count through the `--gcsp-count-share` custom property (aria-hidden; the count text carries the meaning), rows past `limit` folded into one `otherLabel` row. Today's release shows its totals in one row and puts Model line, Colour, Points a month and Fuel in a closed "Latest release stats" `details`, the same disclosure pattern as What happened, built from the read's `modelLines` and `charts`. `dayBar()` (`presenter-controls/day-bar.js`, console only) is the mockup's Mon to Sun week strip under the Basic actions: past days since the run began are done, today is `aria-current="date"`, weekends dim. The header shows the day muted beside the bold clock. Its time/day layout and week marker styles belong to the separately capped `kit/presenter-time.css`, linked immediately after `presenter-console.css` by the standalone entry and explicitly by `components.html`. Reuse `dayBar()` and its `update({ now, start })` handle rather than copying week markup or restyling its markers in a view. Gallery: **GCSP presenter time and scheme week** (past/current/weekend and unavailable-clock states). Console clock typography remains console-owned.
 
 ### GCSP help tip (`blocks/gcsp/kit/help-tip.js`, FUCQ-367)
 
@@ -602,6 +602,8 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
 | `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
+| `gcsp-vehicle-card` | Released-car presenter with required exact `memberId`/`name`, optional line/order number, provided images/fallback, nullable points/allowance/contribution, supplied eligibility, `reviewDisabled`/`disabledReason` and `FactRow[]`. Emits `{ memberId, action: 'review' \| 'details' }`; no fetch, policy or claim. Native collapsed Car facts retains missing/zero/false. Disabled review reasons have unique accessible IDs. Gallery: Released vehicle card, with unavailable review and explicit details feedback. |
+| `gcsp-media-gallery` | Provided ordered `{ src, alt?, caption? }[]`, name and placeholder; default feature/thumbnails/dialog with keyboard navigation and focus return. Optional `compact` defaults false; stock cards use a 180px cover/fallback with no thumbnail/caption/enlarge controls. Switching compact closes the viewer and resets selection; no generated imagery or source lookup. |
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
 
 App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
@@ -634,3 +636,32 @@ search and Disengage actions. It reports paused search separately from withdrawn
 uncertain requests available for an explicit same-command retry, and provides a status reload. Its
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
+
+### Angular manual review and summary (FUCQ-443)
+
+`ManualRouteComponent` composes the existing screen intro, status, vehicle media, facts,
+native fields, declarations and buttons at employee-guarded `manual/review` and
+`manual/summary`. Stock passes its exact supplied selection through the scoped in-memory
+`ManualStore`; navigation history carries no quote or command authority. Leaving an open
+claim waits for actual release. Saved orders use the existing order-progress destination.
+The current Java response lacks the frozen contact/return details and review version,
+so final submission stays unavailable. This composition adds no shared primitive;
+connected and rendered acceptance remains open.
+
+### Angular employee order progress (FUCQ-446)
+
+`gcsp-orders` (`apps/gcsp-web/src/app/orders/orders.component.ts`) is the native standalone
+employee screen at `/gcsp/orders`, with optional `?orderUuid=...` for an exact order. It has
+no component inputs or outputs; the router supplies query state and the injected
+`OrdersClient` supplies authenticated reads and supported employee commands. The screen
+composes `gcsp-screen-intro`, `gcsp-status-screen`, `gcsp-fact-list`, `gcsp-labelled-field`
+and `gcspButton` with supplied stage, task, slot and history lists. It uses the existing
+semantic tokens, exact vehicle imagery with a missing-image fallback and the designated
+current-car relationship source.
+
+The orders screen owns lifecycle presentation and explicit action review/confirmation;
+the existing client/controller/actions own scoped reads and the employee command lane.
+Refresh reads authoritative state, and authentication recovery does not replay a write.
+This is a routed composition, with no new shared primitive or gallery API. Selected
+component/route tests provide fixture evidence; rendered browser and connected Java/OIDC/
+database acceptance remain separate, open checks.

@@ -25,6 +25,15 @@ public record AccountOutcome(String status, JsonNode value, JsonNode refusal) {
         return new AccountOutcome("unavailable", null, body);
     }
 
+    /** Any other refusal; the body carries its own status (invalid, conflict, stale-version, not-found). */
+    public static AccountOutcome refused(ObjectNode body) {
+        return new AccountOutcome(body.get("status").textValue(), null, body);
+    }
+
+    public static AccountOutcome notFound(String resourceType) {
+        return refused(JsonNodeFactory.instance.objectNode().put("status", "not-found").put("resourceType", resourceType));
+    }
+
     public boolean isOk() {
         return "ok".equals(status);
     }

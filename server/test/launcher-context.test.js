@@ -2,12 +2,50 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { bootAt } from './helpers/launcher-dom.js';
 import {
-  ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl,
+  ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl, employeeEntryUrl,
 } from '../../blocks/demo-launcher/entry-context.js';
 
 const origin = 'https://example.test/vehicle-matcher/';
 const entry = (suffix = '', options) => resolveEntryContext(`${origin}index.html${suffix}`, options);
 const enabled = { employeeAvailable: true };
+
+test('employee destination accepts an explicit frontend root and only BMW presentation context', () => {
+  for (const base of ['https://employee.example/gcsp/', 'http://localhost:4200/gcsp/',
+    'http://127.0.0.1:4200/gcsp/', 'http://[::1]:4200/gcsp/']) {
+    const target = new URL(employeeEntryUrl(base));
+    assert.equal(target.href, `${base}?brand=bmw`);
+    assert.deepEqual([...target.searchParams], [['brand', 'bmw']]);
+    assert.equal(target.hash, '');
+    for (const brand of ['mini', 'unknown', '', null]) assert.equal(employeeEntryUrl(base, brand), null);
+  }
+});
+
+test('employee destination refuses missing, relative, unsafe and context-bearing frontend configuration', () => {
+  for (const base of [undefined, null, '', '/gcsp/', '//employee.example/gcsp/', 'https:employee.example/gcsp/',
+    'https://employee.example/gcsp', 'https://employee.example/gcsp/account', 'http://employee.example/gcsp/',
+    'http://localhost.evil.example/gcsp/', 'javascript:alert(1)', 'https://user:password@employee.example/gcsp/',
+    'https://employee.example/gcsp/?api=https://api.example', 'https://employee.example/gcsp/?',
+    'https://employee.example/gcsp/#', 'https://employee.example/gcsp/#account', ' https://employee.example/gcsp/',
+    'https://employee.example/\\gcsp/', 'https://employee.example/gcsp/\n']) assert.equal(employeeEntryUrl(base), null);
+});
+
+test('configured employee links use only the agreed brand while retail links retain their context', () => {
+  const input = `${origin}index.html?experience=launcher&brand=bmw&mode=swipe&scope=national&retailer=92&api=https%3A%2F%2Fapi.example&employeeId=other&role=presenter#m=answers`;
+  const context = resolveEntryContext(input, { ...enabled, employeeFrontendUrl: 'https://employee.example/gcsp/' });
+  assert.equal(context.employeeFrontendUrl, 'https://employee.example/gcsp/');
+  assert.equal(context.links.employeeCars, 'https://employee.example/gcsp/?brand=bmw');
+  assert.equal(context.links.employeeBmw, context.links.employeeCars);
+  const retail = new URL(context.links.usedCars, origin);
+  for (const [key, value] of [['brand', 'bmw'], ['mode', 'swipe'], ['scope', 'national'], ['retailer', '92'], ['api', 'https://api.example']]) {
+    assert.equal(retail.searchParams.get(key), value);
+  }
+  assert.equal(retail.hash, '#m=answers');
+  const supplied = new URL(input);
+  supplied.searchParams.set('employeeFrontendUrl', 'https://wrong.example/gcsp/');
+  const queryOnly = resolveEntryContext(supplied, enabled);
+  assert.equal(queryOnly.employeeFrontendUrl, null);
+  assert.equal(new URL(queryOnly.links.employeeCars, origin).origin, new URL(origin).origin);
+});
 
 test('registry separates experience, six retail brands, five public mode keys and employee availability', () => {
   assert.deepEqual(ENTRY_REGISTRY.experiences, ['launcher', 'used-cars', 'employee-cars']);

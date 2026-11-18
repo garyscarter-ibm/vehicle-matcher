@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.5.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.5.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -33,6 +33,8 @@ Subcommands
                            merge commit); aborts cleanly on conflict, so the branch is as it was. Refused (2) while a
                            merge is already in progress there (MERGE_HEAD exists): it is never aborted for you
   worktree --id ID         new worktree .claude/worktrees/ID on a new branch dev/ID from the base branch
+  refresh --id ID          bring the local base into that clean dev/ID worktree, from the shared checkout; preserves
+                           shared staging and both histories, aborts its own conflicting merge, never switches branches
   merge --branch dev/ID    merge a dev/ branch into the base branch in the shared checkout; aborts cleanly on conflict
   drop-branch --id ID      remove merged dev/ID from the configured remote and local checkout, then release our lease;
                            repeat by ID after any refusal/partial failure, even when the local branch is absent
@@ -70,7 +72,7 @@ Settings: top-level keys of <project>/.claude/scaffolding.json (the record test_
 Extension: <project>/_tools/scaffold_ext.py, optional
   def commit_lock(root) -> ("held", detail) | ("free", detail)
       Whether something in the project is mid-write, so that a commit would capture half-finished files (the corpus's
-      apply lock). Held: commit, pull and merge refuse (exit 2) and say why. ("free", "") is no lock. ("free", detail)
+      apply lock). Held: commit, pull, refresh and merge refuse (exit 2) and say why. ("free", "") is no lock. ("free", detail)
       with a non-empty detail is no lock either, and commit says it first as `NOTE <detail>` (the corpus uses it for a
       stale apply lock it is proceeding past). The file is loaded by path with importlib,
       so _tools is never put on sys.path for it; an extension that needs its siblings adds the path itself. An
@@ -90,7 +92,7 @@ Extension: <project>/_tools/scaffold_ext.py, optional
 
 One command at a time per checkout
 ----------------------------------
-pull, merge, claim, claim-release, commit, drop-branch, worktree and the pen's take, renew, release and sync each hold a
+pull, refresh, merge, claim, claim-release, commit, drop-branch, worktree and the pen's take, renew, release and sync each hold a
 mutex for their whole run: fcntl.flock on `scaffold-git.mutex` in the shared checkout's git common dir (so every worktree
 of the repository shares it; the name does not end `.lock`, so no sweep touches it). A command that finds it held retries
 for up to 30 seconds, then exits 2 "another scaffold_git.py command is running in <root>". It is re-entrant within one
@@ -219,6 +221,11 @@ open). The rule:
     sweeps that one lock, only if it is older than the minimum age, and is retried once;
   - the `sweep` command always sweeps the locks older than the minimum age.
   The minimum age is the record's number when "sweep_locks" is one, else 10 minutes.
+Cowork's VM mounts the checkout under /sessions/<vm>/mnt/ with the same refusal, and there even a successful git call
+leaks a lock it created (index.lock, HEAD.lock, a next-index-*.lock, objects/maintenance.lock). So when in_cowork_vm(root)
+git() notes which of those exist before the call and, after a call that succeeded, moves aside at once (no age check)
+each one that was absent before and is zero bytes or a next-index-*.lock. A lock that was there before the call keeps
+the age rule above. Every read-only call passes --no-optional-locks, so a read does not refresh the index and leak one.
 
 Route every dev-inbox write through this module, so one place decides the base branch, the remote, the identity check,
 the size guard and the lock.
@@ -235,7 +242,7 @@ Exit codes
 Cleanup may return non-zero after removing a remote ref or local resource; its message identifies partial cleanup.
 Retry drop-branch by ID. Other refused writes leave uncommitted work visible for a human.
 
-Stdlib only. No network except fetch, push, pull, drop-branch and the lease commands (claim, claim-release, leases,
+Stdlib only. No network except fetch, push, pull, refresh's team ownership check, drop-branch and the lease commands (claim, claim-release, leases,
 pen); guard never touches the network.
 Session-agnostic: the project root is derived from this file's
 location (<root>/_tools/scaffold_git.py) unless --root is given.
@@ -321,6 +328,18 @@ def is_repo(root):
 
 def is_linked_worktree(root):
     return os.path.isfile(os.path.join(root, ".git"))
+
+
+VM_MOUNT_RE = re.compile(r"^/sessions/[^/]+/mnt(/|$)")      # where Cowork's VM mounts a folder; a path rule, never a hostname
+OWN_LOCK_TEMP = re.compile(r"^next-index-.*\.lock$")         # git's temporary index, left behind by a failed unlink
+
+
+def in_cowork_vm(path):
+    """True when path resolves under /sessions/<vm>/mnt/, the Cowork VM's mount, which refuses unlink."""
+    try:
+        return bool(VM_MOUNT_RE.match(os.path.realpath(path)))
+    except (OSError, ValueError, TypeError):
+        return False
 
 
 def _lock_is_stale(path, min_age):
@@ -440,16 +459,76 @@ def _sweep_failed_lock(root, err):
     return _move_aside(path, os.path.join(gitdir, "_stale"), os.path.relpath(path, gitdir))
 
 
+def _git_dirs(root):
+    """(gitdir, common dir) of the checkout at root: both root/.git for a main checkout; for a linked worktree (.git is a
+    file "gitdir: X") X and the directory X/commondir names. (None, None) when root is not a checkout."""
+    dot = os.path.join(root, ".git")
+    if os.path.isdir(dot):
+        return dot, dot
+    try:
+        with open(dot, encoding="utf-8") as f:
+            text = f.read().strip()
+    except OSError:
+        return None, None
+    if not text.startswith("gitdir:"):
+        return None, None
+    gitdir = os.path.normpath(os.path.join(root, text[len("gitdir:"):].strip()))
+    common = gitdir
+    try:
+        with open(os.path.join(gitdir, "commondir"), encoding="utf-8") as f:
+            common = os.path.normpath(os.path.join(gitdir, f.read().strip()))
+    except OSError:
+        pass
+    return gitdir, common
+
+
+def _lock_candidates(root):
+    """{lock path: the .git directory holding it} for the lock files a git call from the VM can leak."""
+    gitdir, common = _git_dirs(root)
+    found = {}
+    if gitdir is None:
+        return found
+    for d in {gitdir, common}:
+        names = ["index.lock", "HEAD.lock"]
+        try:
+            names += [n for n in os.listdir(d) if OWN_LOCK_TEMP.match(n)]
+        except OSError:
+            pass
+        for n in names:
+            found[os.path.join(d, n)] = d
+    found[os.path.join(common, "objects", "maintenance.lock")] = common
+    return {p: d for p, d in found.items() if os.path.lexists(p)}
+
+
+def _clear_own_locks(before, root):
+    """After a git call from the VM that succeeded: move aside every candidate lock that is new since `before` and is
+    zero bytes or a next-index-*.lock. No age check: the call that made it has finished."""
+    for path, d in _lock_candidates(root).items():
+        if path in before:
+            continue
+        try:
+            empty = os.stat(path).st_size == 0
+        except OSError:
+            continue
+        if empty or OWN_LOCK_TEMP.match(os.path.basename(path)):
+            _move_aside(path, os.path.join(d, "_stale"), os.path.relpath(path, d))
+
+
 def git(root, args, capture=True, input=None):
     """Run git in root. Returns (rc, out, err). With "sweep_locks" true (or a number of seconds) in the record, stale
     locks (older than lock_min_age) are swept before and after. Either way, a call that fails on "Unable to create '...lock': File exists" sweeps that one
-    lock if it is stale, and is retried once."""
+    lock if it is stale, and is retried once. From the Cowork VM (in_cowork_vm), a call that succeeded also moves aside
+    at once the zero-byte or next-index-*.lock locks it created (see "Why this file exists")."""
     sweeping = _sweeping_on(root)
     if sweeping:
         sweep(root)
+    vm = in_cowork_vm(root)
+    before = set(_lock_candidates(root)) if vm else ()
     p = subprocess.run(["git", "-C", root] + args, capture_output=capture, text=True, input=input)
     if p.returncode != 0 and _sweep_failed_lock(root, p.stderr):
         p = subprocess.run(["git", "-C", root] + args, capture_output=capture, text=True, input=input)
+    if vm and p.returncode == 0:
+        _clear_own_locks(before, root)
     if sweeping:
         sweep(root)
     return p.returncode, (p.stdout or ""), (p.stderr or "")
@@ -475,7 +554,7 @@ _mutex_held = threading.local()      # per thread: mutex file -> how many times 
 def _mutex_path(root):
     """The mutex file in the shared checkout's git common dir (one per repository, whichever worktree root is), or None
     when git cannot say."""
-    rc, out, _ = git(root, ["rev-parse", "--git-common-dir"])
+    rc, out, _ = git(root, ["--no-optional-locks", "rev-parse", "--git-common-dir"])
     if rc != 0 or not out.strip():
         return None
     common = os.path.realpath(os.path.join(root, out.strip()))
@@ -544,7 +623,7 @@ def _serialised(fn):
 
 def shared_checkout(root):
     """The folder of the main checkout, from any worktree of it; root itself when git cannot say."""
-    rc, out, _ = git(root, ["rev-parse", "--git-common-dir"])
+    rc, out, _ = git(root, ["--no-optional-locks", "rev-parse", "--git-common-dir"])
     if rc != 0 or not out.strip():
         return root
     return os.path.dirname(os.path.normpath(os.path.join(root, out.strip())))
@@ -666,7 +745,7 @@ def ensure_ignored(root, names=LOCAL_FILES):
     keeping what is there; creates the file if absent. Idempotent, best effort (a read-only .git is left alone). Returns
     True when every name is covered afterwards."""
     try:
-        rc, out, _ = git(root, ["rev-parse", "--git-path", "info/exclude"])    # the common dir's, from any worktree
+        rc, out, _ = git(root, ["--no-optional-locks", "rev-parse", "--git-path", "info/exclude"])    # the common dir's, from any worktree
         if rc != 0 or not out.strip():
             return False
         path = os.path.join(root, out.strip())
@@ -690,7 +769,7 @@ def client_id(root):
     """This clone's id: `git config scaffold.clientId` of the shared checkout, made (uuid4().hex[:12]) and written there
     the first time. Two Macs with one member login differ by it, so a lease says which clone holds it."""
     shared = shared_checkout(root)
-    rc, out, _ = git(shared, ["config", "--local", "--get", "scaffold.clientId"])
+    rc, out, _ = git(shared, ["--no-optional-locks", "config", "--local", "--get", "scaffold.clientId"])
     if rc == 0 and out.strip():
         return out.strip()
     cid = uuid.uuid4().hex[:12]
@@ -816,7 +895,7 @@ def list_tree(root, ref, prefix):
     """The file paths under prefix in ref (e.g. origin/main), read from the object store only. BadArgument for a ref or
     prefix that starts with '-'."""
     _no_option(ref=ref, prefix=prefix)
-    rc, o, e = git(root, ["ls-tree", "-r", "--name-only", ref, "--", prefix])
+    rc, o, e = git(root, ["--no-optional-locks", "ls-tree", "-r", "--name-only", ref, "--", prefix])
     if rc != 0:
         raise RuntimeError("git ls-tree %s failed: %s" % (ref, (e or o).strip()[:300]))
     return [l for l in o.splitlines() if l]
@@ -825,7 +904,7 @@ def list_tree(root, ref, prefix):
 def show(root, ref, path):
     """The text of path in ref, read from the object store only. BadArgument for a ref or path that starts with '-'."""
     _no_option(ref=ref, path=path)
-    rc, o, e = git(root, ["show", "%s:%s" % (ref, path)])
+    rc, o, e = git(root, ["--no-optional-locks", "show", "%s:%s" % (ref, path)])
     if rc != 0:
         raise RuntimeError("git show %s:%s failed: %s" % (ref, path, (e or o).strip()[:300]))
     return o
@@ -835,7 +914,7 @@ def changed_files(root, base, head):
     """The paths that differ between base and head: what head's branch changed since it left base (three-dot).
     BadArgument for a base or head that starts with '-'."""
     _no_option(base=base, head=head)
-    rc, o, e = git(root, ["diff", "--name-only", "-z", "--no-renames", "%s...%s" % (base, head)])
+    rc, o, e = git(root, ["--no-optional-locks", "diff", "--name-only", "-z", "--no-renames", "%s...%s" % (base, head)])
     if rc != 0:
         raise RuntimeError("git diff %s...%s failed: %s" % (base, head, (e or o).strip()[:300]))
     return [p for p in o.split("\0") if p]            # -z: names as they are, never quoted; no renames: both sides
@@ -843,24 +922,29 @@ def changed_files(root, base, head):
 
 def current_branch(root):
     """The checked-out branch's name ('HEAD' when detached)."""
-    rc, o, e = git(root, ["rev-parse", "--abbrev-ref", "HEAD"])
+    rc, o, e = git(root, ["--no-optional-locks", "symbolic-ref", "--quiet", "HEAD"])
+    if rc == 1:
+        return "HEAD"
     if rc != 0:
-        raise RuntimeError("git rev-parse failed: %s" % (e or o).strip()[:300])
-    return o.strip()
+        raise RuntimeError("git symbolic-ref failed: %s" % (e or o).strip()[:300])
+    ref = o.strip()
+    if not ref.startswith("refs/heads/"):
+        raise RuntimeError("HEAD points outside refs/heads: %s" % ref[:300])
+    return ref[len("refs/heads/"):]
 
 
 def identity(root):
-    rc1, name, _ = git(root, ["config", "--local", "--get", "user.name"])
-    rc2, mail, _ = git(root, ["config", "--local", "--get", "user.email"])
+    rc1, name, _ = git(root, ["--no-optional-locks", "config", "--local", "--get", "user.name"])
+    rc2, mail, _ = git(root, ["--no-optional-locks", "config", "--local", "--get", "user.email"])
     return (name.strip() if rc1 == 0 else ""), (mail.strip() if rc2 == 0 else "")
 
 
 def _branch_exists(root, branch):
-    return git(root, ["show-ref", "--verify", "--quiet", "refs/heads/" + branch])[0] == 0
+    return git(root, ["--no-optional-locks", "show-ref", "--verify", "--quiet", "refs/heads/" + branch])[0] == 0
 
 
 def _merged_into(root, branch, base):
-    return git(root, ["merge-base", "--is-ancestor", branch, base])[0] == 0
+    return git(root, ["--no-optional-locks", "merge-base", "--is-ancestor", branch, base])[0] == 0
 
 
 def _spec(paths):
@@ -869,7 +953,7 @@ def _spec(paths):
 
 
 def staged_paths(root, paths=None):
-    rc, out, _ = git(root, ["diff", "--cached", "--name-only", "-z"] + _spec(paths))
+    rc, out, _ = git(root, ["--no-optional-locks", "diff", "--cached", "--name-only", "-z"] + _spec(paths))
     if rc != 0:
         return []
     return [p for p in out.split("\0") if p]
@@ -881,8 +965,8 @@ def known_paths(root, paths):
     files)."""
     keep = []
     for p in paths:
-        rc1, cur, _ = git(root, ["ls-files", "--cached", "--others", "--exclude-standard", "--", p])
-        rc2, old, _ = git(root, ["ls-tree", "-r", "--name-only", "HEAD", "--", p])   # fails before a first commit
+        rc1, cur, _ = git(root, ["--no-optional-locks", "ls-files", "--cached", "--others", "--exclude-standard", "--", p])
+        rc2, old, _ = git(root, ["--no-optional-locks", "ls-tree", "-r", "--name-only", "HEAD", "--", p])   # fails before a first commit
         if (rc1 == 0 and cur.strip()) or (rc2 == 0 and old.strip()):
             keep.append(p)
     return keep
@@ -893,7 +977,7 @@ def status_lines(root, paths=None):
     given. Read-only; raises RuntimeError."""
     if not is_repo(root):
         raise RuntimeError("%s is not a git repository" % root)
-    rc, out, err = git(root, ["status", "--porcelain", "--untracked-files=all"] + _spec(paths))
+    rc, out, err = git(root, ["--no-optional-locks", "status", "--porcelain", "--untracked-files=all"] + _spec(paths))
     if rc != 0:
         raise RuntimeError("git status failed: %s" % err.strip()[:500])
     return [l for l in out.splitlines() if l.strip()]
@@ -913,7 +997,7 @@ def dirty_entries(root, paths=None):
     RuntimeError on a folder that is not a repository or when git fails."""
     if not is_repo(root):
         raise RuntimeError("%s is not a git repository" % root)
-    rc, out, err = git(root, ["status", "--porcelain", "-z", "-b", "--untracked-files=all"] + _spec(paths))
+    rc, out, err = git(root, ["--no-optional-locks", "status", "--porcelain", "-z", "-b", "--untracked-files=all"] + _spec(paths))
     if rc != 0:
         raise RuntimeError("git status failed: %s" % err.strip()[:500])
     parts = out.split("\0")
@@ -980,7 +1064,7 @@ def commit_paths(root, message, paths=None, own_lock=False, dry_run=False, log=N
     if rc != 0:
         return 3, "ERR git add failed: %s" % err.strip()[:500]
 
-    rc, _, _ = git(root, ["diff", "--cached", "--quiet"] + _spec(only))
+    rc, _, _ = git(root, ["--no-optional-locks", "diff", "--cached", "--quiet"] + _spec(only))
     if rc == 0:
         return 0, ("NOCHANGES nothing staged -- working tree already matches HEAD"
                    + (" under %s" % " ".join(only) if only else ""))
@@ -1020,7 +1104,7 @@ def commit_paths(root, message, paths=None, own_lock=False, dry_run=False, log=N
     rc, out, err = git(root, ["commit", "-q", "-m", message] + _spec(only))   # others' staged work stays staged
     if rc != 0:
         return 3, "ERR git commit failed: %s" % (err.strip() or out.strip())[:500]
-    rc, sha, _ = git(root, ["rev-parse", "--short", "HEAD"])
+    rc, sha, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])
     return 0, "COMMITTED %s  %d files  %d bytes" % (sha.strip(), len(staged), total)
 
 
@@ -1030,7 +1114,7 @@ def _remote_matches_base(root, base):
     """Whether the remote's base branch, freshly fetched, is the local one."""
     if fetch(root, base)[0] != 0:
         return False
-    rc, o, _ = git(root, ["rev-parse", base, "%s/%s" % (remote_name(root), base)])
+    rc, o, _ = git(root, ["--no-optional-locks", "rev-parse", base, "%s/%s" % (remote_name(root), base)])
     shas = o.split()
     return rc == 0 and len(shas) == 2 and shas[0] == shas[1]
 
@@ -1044,7 +1128,7 @@ def push(root):
     if rc != 0 and "couldn't find remote ref" not in msg:
         return 3, "fetching %s/%s failed: %s" % (remote, base, msg[:300])
     if remote_known:
-        rc, o, e = git(root, ["log", "--oneline", "%s..%s/%s" % (base, remote, base)])
+        rc, o, e = git(root, ["--no-optional-locks", "log", "--oneline", "%s..%s/%s" % (base, remote, base)])
         if rc != 0:
             return 3, "git log failed: %s" % (e or o).strip()[:300]
         ahead = [l for l in o.splitlines() if l]
@@ -1056,10 +1140,10 @@ def push(root):
         # git can exit non-zero after the remote has taken the commits, e.g. when another writer pushes the same
         # branch at the same moment. Only the remote's branch says whether the push happened.
         if _remote_matches_base(root, base):
-            rc2, o2, _ = git(root, ["rev-parse", "--short", base])
+            rc2, o2, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", base])
             return 0, "PUSHED %s %s (git exited %d, but %s's %s already matches)" % (base, o2.strip(), rc, remote, base)
         return 3, "git push failed: %s" % _git_error(e or o)
-    rc, o, e = git(root, ["rev-parse", "--short", base])
+    rc, o, e = git(root, ["--no-optional-locks", "rev-parse", "--short", base])
     return 0, "PUSHED %s %s" % (base, o.strip())
 
 
@@ -1068,7 +1152,7 @@ def _publish_refusal(root, base, prefix, branch, extra_files):
     if branch == base:
         return "refusing to publish to %s: it is the base branch, which must never be replaced" % branch
     if (not isinstance(branch, str) or not branch or branch.startswith(("-", "dev/"))
-            or git(root, ["check-ref-format", "--branch", branch])[0] != 0):
+            or git(root, ["--no-optional-locks", "check-ref-format", "--branch", branch])[0] != 0):
         return "%r is not a usable publish branch (it must be a valid branch name, not start with '-' or 'dev/')" % (
             branch,)
     if (not isinstance(prefix, str) or not prefix.strip("/") or prefix.startswith(("/", "-")) or ".." in prefix
@@ -1100,10 +1184,10 @@ def publish_tree(root, prefix, branch, extra_files=(".nojekyll",)):
     if refusal:
         return 2, refusal
     src = prefix.strip("/")
-    rc, o, e = git(root, ["rev-parse", "--verify", "-q", "refs/heads/%s:%s" % (base, src)])
-    if rc != 0 or git(root, ["cat-file", "-t", o.strip()])[1].strip() != "tree":
+    rc, o, e = git(root, ["--no-optional-locks", "rev-parse", "--verify", "-q", "refs/heads/%s:%s" % (base, src)])
+    if rc != 0 or git(root, ["--no-optional-locks", "cat-file", "-t", o.strip()])[1].strip() != "tree":
         return 3, "%s has no %s/ committed" % (base, src)
-    rc, listing, e = git(root, ["ls-tree", o.strip()])
+    rc, listing, e = git(root, ["--no-optional-locks", "ls-tree", o.strip()])
     if rc != 0:
         return 3, "git ls-tree failed: %s" % _git_error(e or listing)
     rc, blob, e = git(root, ["hash-object", "-w", "-t", "blob", "--stdin"], input="")      # the empty file
@@ -1119,10 +1203,10 @@ def publish_tree(root, prefix, branch, extra_files=(".nojekyll",)):
     if rc != 0 and "couldn't find remote ref" not in msg:
         return 3, "fetching %s/%s failed: %s" % (remote, branch, msg[:300])
     if rc == 0:
-        rc, old, _ = git(root, ["rev-parse", "--verify", "-q", "%s/%s^{tree}" % (remote, branch)])
+        rc, old, _ = git(root, ["--no-optional-locks", "rev-parse", "--verify", "-q", "%s/%s^{tree}" % (remote, branch)])
         if rc == 0 and old.strip() == tree:
             return 0, "UNCHANGED %s" % branch
-    rc, short, e = git(root, ["rev-parse", "--short", "refs/heads/" + base])
+    rc, short, e = git(root, ["--no-optional-locks", "rev-parse", "--short", "refs/heads/" + base])
     rc, commit, e = git(root, ["commit-tree", tree, "-m", "publish %s/ from %s %s" % (src, base, short.strip())])
     if rc != 0:
         return 3, "git commit-tree failed: %s" % _git_error(e or commit)
@@ -1130,7 +1214,7 @@ def publish_tree(root, prefix, branch, extra_files=(".nojekyll",)):
     rc, o, e = git(root, ["push", "--quiet", "--force", remote, "%s:refs/heads/%s" % (commit, branch)])
     if rc != 0:
         return 3, "git push failed: %s" % _git_error(e or o)
-    rc, short, _ = git(root, ["rev-parse", "--short", commit])
+    rc, short, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", commit])
     return 0, "PUBLISHED %s %s" % (branch, short.strip())
 
 
@@ -1157,9 +1241,9 @@ def bundle(root, out):
 def _merge_failure(root, e, o, theirs=None):
     """After a failed merge: abort it and say what conflicted, or git's own error. Only our own merge is aborted: when
     MERGE_HEAD is not the commit we tried to merge (someone started theirs in between), it is left alone."""
-    rc2, conflicts, _ = git(root, ["diff", "--name-only", "--diff-filter=U"])
-    rc_m, head, _ = git(root, ["rev-parse", "-q", "--verify", "MERGE_HEAD"])
-    rc_t, want, _ = git(root, ["rev-parse", "-q", "--verify", theirs + "^{commit}"]) if theirs else (1, "", "")
+    rc2, conflicts, _ = git(root, ["--no-optional-locks", "diff", "--name-only", "--diff-filter=U"])
+    rc_m, head, _ = git(root, ["--no-optional-locks", "rev-parse", "-q", "--verify", "MERGE_HEAD"])
+    rc_t, want, _ = git(root, ["--no-optional-locks", "rev-parse", "-q", "--verify", theirs + "^{commit}"]) if theirs else (1, "", "")
     if rc_m == 0 and (theirs is None or (rc_t == 0 and head.strip() == want.strip())):
         git(root, ["merge", "--abort"])
     return ("conflicts in %s" % ", ".join(conflicts.split()[:8])) if conflicts.strip() else _git_error(e or o)
@@ -1168,7 +1252,7 @@ def _merge_failure(root, e, o, theirs=None):
 def _merge_in_progress(root):
     """A refusal when a merge is already under way in root (MERGE_HEAD exists), else None. Whoever is mid-merge is
     resolving it by hand; a command here would abort it or build on it."""
-    if git(root, ["rev-parse", "-q", "--verify", "MERGE_HEAD"])[0] == 0:
+    if git(root, ["--no-optional-locks", "rev-parse", "-q", "--verify", "MERGE_HEAD"])[0] == 0:
         return "a merge is already in progress in %s; finish or abort it first" % root
     return None
 
@@ -1206,13 +1290,13 @@ def pull(root):
     theirs = "%s/%s" % (remote, base)
 
     def short(ref):
-        return git(root, ["rev-parse", "--short", ref])[1].strip()
-    rc, o, e = git(root, ["merge-base", "--is-ancestor", theirs, base])
+        return git(root, ["--no-optional-locks", "rev-parse", "--short", ref])[1].strip()
+    rc, o, e = git(root, ["--no-optional-locks", "merge-base", "--is-ancestor", theirs, base])
     if rc == 0:
         return 0, "UP TO DATE %s %s" % (base, short(base))
     if rc != 1:
         return 3, "git merge-base failed: %s" % _git_error(e or o)
-    rc, o, e = git(root, ["merge-base", "--is-ancestor", base, theirs])
+    rc, o, e = git(root, ["--no-optional-locks", "merge-base", "--is-ancestor", base, theirs])
     if rc == 0:
         rc, o, e = git(root, ["merge", "--ff-only", "-q", theirs])
         if rc == 0:
@@ -1260,6 +1344,80 @@ def worktree_add(root, story_id):
 
 
 @_serialised
+def refresh_branch(root, story_id):
+    """Bring the local base into an existing clean dev/<id> worktree, without touching the shared index or HEAD.
+    Run from the shared checkout after pull. Returns 0 up to date/refreshed, 2 refused, 3 git failed or conflicted.
+    A conflicting merge started here is aborted; an existing human merge is never touched."""
+    if not DEV_ID.match(story_id or ""):
+        return 2, "story id %r is not usable as a branch name" % story_id
+    base = base_branch(root)
+    refusal = _shared_checkout_guard(root, base, "refresh") or _merge_in_progress(root)
+    if refusal:
+        return 2, refusal
+    branch, path = _dev_branch(story_id), worktree_path(root, story_id)
+    if not _branch_exists(root, branch):
+        return 2, "branch %s does not exist" % branch
+    if not is_linked_worktree(path) or os.path.realpath(shared_checkout(path)) != os.path.realpath(root):
+        return 2, "%s is not a linked worktree of this shared checkout" % path
+    refusal = _merge_in_progress(path)
+    if refusal:
+        return 2, refusal
+    refusal = lock_refusal(root, "the refresh") or lock_refusal(path, "the refresh")
+    if refusal:
+        return 2, refusal
+    try:
+        cur, entries = dirty_entries(path)
+    except RuntimeError as e:
+        return 3, str(e)
+    if cur != branch:
+        return 2, "%s has %r checked out; refresh needs %s" % (path, cur, branch)
+    if entries:
+        return 2, "%s has uncommitted changes; commit or preserve them before refresh" % path
+    name, mail = identity(path)
+    if not name or not mail:
+        return 2, "no repo-local git identity in .git/config"
+    try:
+        if team_block(root) is not None:
+            me = member_login(root)
+            if not me:
+                return 2, "no team member on this machine; refresh is refused"
+            rc, msg, who = story_claimer(root, branch, base)
+            if rc != 0:
+                return rc, "cannot tell who claimed %s: %s" % (branch, msg)
+            if who != me:
+                return 2, "%s is claimed by %s, not %s; refresh is refused" % (branch, who or "unknown", me)
+    except SettingsError as e:
+        return 2, "%s; the refresh is refused" % e
+    # Pin the source commit so error recovery cannot abort a different merge if the base moves outside this tool.
+    rc, theirs, e = git(root, ["--no-optional-locks", "rev-parse", "--verify", "refs/heads/" + base + "^{commit}"])
+    if rc != 0:
+        return 3, "cannot resolve %s: %s" % (base, _git_error(e or theirs))
+    theirs = theirs.strip()
+    rc, o, e = git(path, ["--no-optional-locks", "merge-base", "--is-ancestor", theirs, "HEAD"])
+    if rc == 0:
+        return 0, "UP TO DATE %s with %s %s" % (branch, base, theirs[:8])
+    if rc != 1:
+        return 3, "git merge-base failed: %s" % _git_error(e or o)
+    rc, o, e = git(path, ["--no-optional-locks", "merge-base", "--is-ancestor", "HEAD", theirs])
+    if rc == 0:
+        args = ["merge", "--ff-only", "-q", theirs]
+        result = "FAST-FORWARDED"
+    elif rc == 1:
+        args = ["merge", "--no-ff", "-q", "-m", "Merge %s into %s\n\n%s" % (base, branch, ATTRIBUTION), theirs]
+        result = "REFRESHED"
+    else:
+        return 3, "git merge-base failed: %s" % _git_error(e or o)
+    rc, o, e = git(path, args)
+    if rc != 0:
+        what = _merge_failure(path, e, o, theirs)
+        if _merge_in_progress(path):
+            return 3, "refresh of %s failed (%s); could not abort automatically, inspect %s" % (branch, what, path)
+        return 3, "refresh of %s failed (%s); aborted, %s is as it was" % (branch, what, branch)
+    rc, sha, _ = git(path, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])
+    return 0, "%s %s from %s %s at %s" % (result, branch, base, theirs[:8], sha.strip())
+
+
+@_serialised
 def merge_branch(root, branch):
     """Merge a dev/ branch into the base branch (a merge commit) in the shared checkout. Returns (rc, message):
     0 merged, 2 refused, 3 git failed or conflicted (the merge is aborted, so the base branch is as it was)."""
@@ -1286,7 +1444,7 @@ def merge_branch(root, branch):
     if rc != 0:
         what = _merge_failure(root, e, o, branch)
         return 3, "merge of %s failed (%s); aborted, %s is as it was" % (branch, what, base)
-    rc, sha, _ = git(root, ["rev-parse", "--short", "HEAD"])
+    rc, sha, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])
     return 0, "MERGED %s into %s at %s" % (branch, base, sha.strip())
 
 
@@ -1343,12 +1501,12 @@ def _drop_remote_branch(root, branch, base, remote):
                          tip, published_base])
     if rc != 0:
         return 3, "fetching exact cleanup tips failed: %s" % _git_error(e or o)
-    rc, o, e = git(root, ["merge-base", "--is-ancestor", tip, published_base])
+    rc, o, e = git(root, ["--no-optional-locks", "merge-base", "--is-ancestor", tip, published_base])
     if rc == 1:
         return 2, "live %s is not merged into published %s/%s; it is preserved" % (branch, remote, base)
     if rc != 0:
         return 3, "checking published ancestry failed: %s" % _git_error(e or o)
-    rc, hook, e = git(root, ["rev-parse", "--git-path", "hooks/pre-push"])
+    rc, hook, e = git(root, ["--no-optional-locks", "rev-parse", "--git-path", "hooks/pre-push"])
     if rc != 0:
         return 3, "finding the existing pre-push hook failed: %s" % _git_error(e or hook)
     hook = os.path.abspath(os.path.join(root, hook.strip()))
@@ -1484,7 +1642,7 @@ def _lease_holder(root, remote, ref, sha):
     rc, o, e = git(root, ["fetch", "--quiet", remote, ref])               # the commit object only, into FETCH_HEAD
     if rc != 0:
         return 3, "fetching %s failed: %s" % (ref, _git_error(e or o)), None
-    rc, o, e = git(root, ["show", "-s", "--format=%B", sha])
+    rc, o, e = git(root, ["--no-optional-locks", "show", "-s", "--format=%B", sha])
     if rc != 0:
         return 3, "git show %s failed: %s" % (sha[:8], _git_error(e or o)), None
     return 0, "", dict(_lease_json(o), sha=sha)
@@ -1566,7 +1724,7 @@ def lease_list(root, prefix=""):
         return 3, "fetching the leases failed: %s" % _git_error(e or o), []
     out = []
     for ref, sha in found:
-        rc, o, e = git(root, ["show", "-s", "--format=%B", sha])
+        rc, o, e = git(root, ["--no-optional-locks", "show", "-s", "--format=%B", sha])
         if rc != 0:
             return 3, "git show %s failed: %s" % (sha[:8], _git_error(e or o)), []
         out.append(dict(_lease_json(o), sha=sha, ref=ref))
@@ -1642,7 +1800,7 @@ def _commit_two(root, message, paths):
     if rc != 0:
         git(root, ["reset", "-q", "--"] + paths)
         return 3, "git commit failed: %s" % _git_error(e or o)
-    return 0, git(root, ["rev-parse", "--short", "HEAD"])[1].strip()
+    return 0, git(root, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])[1].strip()
 
 
 @_serialised
@@ -2148,9 +2306,9 @@ def pen_release(root, now=None):
     base, remote = base_branch(root), remote_name(root)
     rc, msg = fetch(root, base)
     if rc == 0:
-        rc, o, e = git(root, ["rev-list", "--count", "%s/%s..%s" % (remote, base, base)])
+        rc, o, e = git(root, ["--no-optional-locks", "rev-list", "--count", "%s/%s..%s" % (remote, base, base)])
     elif "couldn't find remote ref" in msg:
-        rc, o, e = git(root, ["rev-list", "--count", base])
+        rc, o, e = git(root, ["--no-optional-locks", "rev-list", "--count", base])
     else:
         return keep((3, "fetching %s/%s failed: %s" % (remote, base, msg[:300])))
     if rc != 0:
@@ -2211,7 +2369,7 @@ def pen_sync(root, now=None):
 def _base_story_text(root, base, story_id):
     """The story's file as the base branch holds it (_dev/in-progress/<id>.md), or None. Never the branch being merged:
     its author can write anything into its own copy."""
-    rc, o, _ = git(root, ["show", "%s:%s%s.md" % (base, WIP, story_id)])
+    rc, o, _ = git(root, ["--no-optional-locks", "show", "%s:%s%s.md" % (base, WIP, story_id)])
     return o if rc == 0 else None
 
 
@@ -2235,7 +2393,7 @@ def story_claimer(root, branch, base):
 def _team_value_at(root, ref):
     """The `team` value of .claude/scaffolding.json as `ref` holds it: None when the file or the key is absent, a
     marker string when the file is not JSON, so that an unreadable file differs from a readable one."""
-    rc, o, _ = git(root, ["show", "%s:%s" % (ref, SCAFFOLDING_RECORD)])
+    rc, o, _ = git(root, ["--no-optional-locks", "show", "%s:%s" % (ref, SCAFFOLDING_RECORD)])
     if rc != 0:
         return None
     try:
@@ -2286,7 +2444,7 @@ def merge_refusal(root, branch, base):
             claimed.append(story_claimer(root, branch, base))
         return claimed[0]
 
-    rc, mb, e = git(root, ["merge-base", base, branch])           # where the branch left the base: a team change made on
+    rc, mb, e = git(root, ["--no-optional-locks", "merge-base", base, branch])           # where the branch left the base: a team change made on
     if rc != 0 or not mb.strip():                                   # the base since then is not the branch's change
         return 3, "git merge-base %s %s failed: %s" % (base, branch, _git_error(e or mb))
     if _team_value_at(root, mb.strip()) != _team_value_at(root, branch):
@@ -2442,6 +2600,10 @@ def cmd_merge(args):
     return _report(merge_branch(project_root(args.root), args.branch))
 
 
+def cmd_refresh(args):
+    return _report(refresh_branch(project_root(args.root), args.id))
+
+
 def cmd_drop_branch(args):
     return _report(drop_branch(project_root(args.root), args.id))
 
@@ -2508,6 +2670,9 @@ def _core_commands(sub):
     wt = sub.add_parser("worktree", help="new worktree .claude/worktrees/ID on a new branch dev/ID from the base branch")
     wt.add_argument("--id", required=True)
     wt.set_defaults(func=cmd_worktree)
+    rf = sub.add_parser("refresh", help="bring the local base into a clean dev/ID worktree; aborts its own conflict")
+    rf.add_argument("--id", required=True)
+    rf.set_defaults(func=cmd_refresh)
     mg = sub.add_parser("merge", help="merge a dev/ID branch into the base branch (shared checkout); aborts on conflict")
     mg.add_argument("--branch", required=True)
     mg.set_defaults(func=cmd_merge)

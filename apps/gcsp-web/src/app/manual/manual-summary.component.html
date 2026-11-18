@@ -1,0 +1,63 @@
+<section class="manual-summary" [attr.aria-busy]="busy()">
+  <gcsp-screen-intro [title]="title()" />
+  @if (projection().order; as order) {
+    <section class="gcsp-panel manual-outcome" aria-labelledby="manual-outcome-title">
+      <h2 id="manual-outcome-title">{{ order.status === 'acknowledged' ? 'Awaiting approval' : order.status === 'refused' ? 'Handoff failed' : 'Handoff pending' }}</h2>
+      <p role="status">{{ outcome() }}</p>
+      <gcsp-fact-list [rows]="[{label:'Order reference',value:order.orderReference},{label:'Car order number',value:order.selection.orderNumber},{label:'Car ID',value:order.selection.orderUuid}]" />
+      <ol class="manual-stages" aria-label="Order stages">
+        @for (stage of order.progress.stages; track $index) {
+          <li [class.is-complete]="stage.state === 'complete'"><span>{{ stageLabel(stage.name) }}</span><span>{{ stageLabel(stage.state) }}</span></li>
+        }
+      </ol>
+      @if (order.failure?.reason) { <p>{{ order.failure?.reason }}</p> }
+      <div class="gcsp-actions">
+        @if (order.status === 'pending') { <button gcspButton type="button" [disabled]="busy()" (click)="check.emit()">Check order status</button> }
+        @else if (order.status === 'acknowledged') { <button gcspButton type="button" (click)="orders.emit()">View order progress</button> }
+        @else { <button gcspButton type="button" (click)="help.emit()">Contact scheme support</button> }
+      </div>
+    </section>
+  } @else if (projection().claim; as claim) {
+    <div class="manual-layout">
+      <section class="gcsp-panel manual-vehicle" aria-labelledby="manual-summary-car">
+        <gcsp-media-gallery [name]="vehicle().name" [images]="vehicle().images" placeholder="No image available for this car" />
+        <p class="gcsp-note">{{ vehicle().identity }}</p><h2 id="manual-summary-car">{{ vehicle().name }}</h2>
+        <gcsp-fact-list [rows]="vehicle().termRows" />
+        <details><summary>Car facts</summary><gcsp-fact-list [rows]="vehicle().rows" hideMissing="More details not supplied" /></details>
+      </section>
+      <section class="gcsp-panel manual-confirmation" aria-labelledby="manual-confirmation-title">
+        <h2 id="manual-confirmation-title">Your order review</h2>
+        @if (resumeRequired()) {
+          <p>Review this unfinished selection before continuing. No order has been placed by returning here.</p>
+          <button gcspButton type="button" [disabled]="busy()" (click)="resume.emit()">Continue reviewing this selection</button>
+        }
+        <gcsp-manual-review-details [projection]="projection()" [detailsDraft]="detailsDraft()" [detailsDirty]="detailsDirty()"
+          [canSaveDetails]="canSaveDetails()" [busy]="busy()" [resumeRequired]="resumeRequired()"
+          (detailsChange)="detailsChange.emit($event)" (saveDetails)="saveDetails.emit()" />
+        <form class="manual-submit" (submit)="submitOrder($event)">
+        @if (projection().wording; as wording) { <p class="manual-terms">{{ wording }}</p> }
+        @if (projection().terms; as terms) {
+          <gcsp-fact-list [rows]="[{label:'Terms version',value:terms.termsVersion},{label:'Terms valid until',value:terms.validUntil}]" />
+          <fieldset [disabled]="busy() || resumeRequired() || projection().state !== 'review'">
+            <legend>Confirm each declaration</legend>
+            @for (declaration of projection().declarations; track declaration.id; let index = $index) {
+              <label class="manual-declaration" [for]="'manual-declaration-' + index">
+                <input type="checkbox" [id]="'manual-declaration-' + index" [checked]="declarations()[declaration.id] === true"
+                  required
+                  (change)="changeDeclaration(declaration.id, $event)" />
+                <span>{{ declaration.label }}</span>
+              </label>
+            }
+          </fieldset>
+        }
+        <button gcspButton type="submit" [disabled]="busy() || resumeRequired() || !projection().canSubmit" aria-describedby="manual-details-status">Place order</button>
+        </form>
+        <div class="gcsp-actions">
+          <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="edit.emit()">Edit choices</button>
+          <button gcspButton variant="ghost" type="button" [disabled]="!projection().canRelease || busy()" (click)="browse.emit()">Change car</button>
+          <button gcspButton variant="ghost" type="button" [disabled]="busy()" (click)="check.emit()">Check current claim</button>
+        </div>
+      </section>
+    </div>
+  }
+</section>

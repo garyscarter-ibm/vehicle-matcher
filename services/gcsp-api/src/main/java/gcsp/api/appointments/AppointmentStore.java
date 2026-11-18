@@ -24,7 +24,8 @@ final class AppointmentStore {
     static final int PAGE = 100;
     private static final String COLUMNS = "order_uuid, employee_id, state, policy_version, provider_mode, opening::text, "
             + "confirmation::text, requested_slot::text, slot::text, proposed_slot::text, proposal_id, "
-            + "accepted_proposal_id, pending_step, pending_operation_id, blocked::text, outcome::text, version";
+            + "accepted_proposal_id, pending_step, pending_operation_id, blocked::text, outcome::text, version, attempt, "
+            + "previous_attempts::text";
     /** The tick's page over the partial index appointments_actionable (same predicate), after a cursor. */
     static final String ACTIONABLE_PAGE = "SELECT " + COLUMNS + " FROM appointments WHERE environment_id = ? AND run_id = ? "
             + "AND order_uuid > ? AND (state = 'requested' OR pending_step IS NOT NULL) ORDER BY order_uuid LIMIT " + PAGE;
@@ -45,12 +46,12 @@ final class AppointmentStore {
     record Row(String orderUuid, String employeeId, String state, String policyVersion, String providerMode,
             JsonNode opening, JsonNode confirmation, Slot requestedSlot, Slot slot, Slot proposedSlot, String proposalId,
             String acceptedProposalId, String pendingStep, String pendingOperationId, JsonNode blocked, JsonNode outcome,
-            long version, List<Hist> history) {
+            long version, int attempt, JsonNode previousAttempts, List<Hist> history) {
 
         Row withHistory(List<Hist> h) {
             return new Row(orderUuid, employeeId, state, policyVersion, providerMode, opening, confirmation, requestedSlot,
                     slot, proposedSlot, proposalId, acceptedProposalId, pendingStep, pendingOperationId, blocked, outcome,
-                    version, List.copyOf(h));
+                    version, attempt, previousAttempts, List.copyOf(h));
         }
     }
 
@@ -194,11 +195,12 @@ final class AppointmentStore {
                 orderUuid, employeeId, policyVersion, providerMode, opening, confirmation, requested.toJson(), operationId);
     }
 
-    static void insertInput(Tx tx, String operationId, String step, String orderUuid, JsonNode payload)
+    static void insertInput(Tx tx, String operationId, String step, String orderUuid, int attempt, JsonNode payload)
             throws SQLException {
         RunContext c = tx.context();
-        tx.write("INSERT INTO appointment_operation_inputs (environment_id, run_id, operation_id, order_uuid, step, payload) "
-                + "VALUES (?, ?, ?, ?, ?, ?)", c.environmentId(), c.runId(), operationId, orderUuid, step, payload);
+        tx.write("INSERT INTO appointment_operation_inputs (environment_id, run_id, operation_id, order_uuid, step, attempt, "
+                + "payload) VALUES (?, ?, ?, ?, ?, ?, ?)", c.environmentId(), c.runId(), operationId, orderUuid, step, attempt,
+                payload);
     }
 
     /** Version-checked update of every column a settle or accept can move; the guard trigger needs version + 1. */
@@ -210,6 +212,18 @@ final class AppointmentStore {
                 e.slot == null ? null : e.slot.toJson(), e.proposedSlot == null ? null : e.proposedSlot.toJson(),
                 e.proposalId, e.acceptedProposalId, e.pendingStep, e.pendingOperationId, e.blocked, e.outcome, c.environmentId(),
                 c.runId(), row.orderUuid(), row.version());
+    }
+
+    /** Starts the next attempt of a no-show appointment: reset to not-requested at the chosen slot with the request open. */
+    static void rebook(Tx tx, Row row, Slot slot, int attempt, JsonNode previousAttempts, String operationId)
+            throws SQLException {
+        RunContext c = tx.context();
+        tx.cas("UPDATE appointments SET state = 'not-requested', requested_slot = ?, slot = NULL, proposed_slot = NULL, "
+                + "proposal_id = NULL, accepted_proposal_id = NULL, outcome = NULL, blocked = NULL, attempt = ?, "
+                + "previous_attempts = ?, pending_step = 'request', pending_operation_id = ?, version = version + 1, "
+                + "updated_at = now() WHERE environment_id = ? AND run_id = ? AND order_uuid = ? AND version = ? "
+                + "AND state = 'no-show' AND pending_step IS NULL", slot.toJson(), attempt, previousAttempts, operationId,
+                c.environmentId(), c.runId(), row.orderUuid(), row.version());
     }
 
     static void addHistory(Tx tx, String orderUuid, String state, Instant at, String providerReference)
@@ -226,7 +240,7 @@ final class AppointmentStore {
                 json(rs.getString(6)), json(rs.getString(7)), Slot.fromJson(json(rs.getString(8))),
                 Slot.fromJson(json(rs.getString(9))), Slot.fromJson(json(rs.getString(10))), rs.getString(11),
                 rs.getString(12), rs.getString(13), rs.getString(14), json(rs.getString(15)), json(rs.getString(16)),
-                rs.getLong(17), List.of());
+                rs.getLong(17), rs.getInt(18), json(rs.getString(19)), List.of());
     }
 
     static JsonNode json(String text) throws SQLException {

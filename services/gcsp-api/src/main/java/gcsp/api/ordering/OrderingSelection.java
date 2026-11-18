@@ -13,6 +13,8 @@ public class OrderingSelection {
 
     public static final String NONE = "none";
     public static final String SYNTHETIC = "synthetic";
+    /** The GCSP remote ordering substitute (FUCQ-481); its settings are validated by OrderingProviderBindings. */
+    public static final String REMOTE = OrderingProviderBindings.REMOTE;
     private static final Logger LOG = Logger.getLogger(OrderingSelection.class);
 
     @ConfigProperty(name = "gcsp.ordering.provider", defaultValue = NONE)
@@ -33,8 +35,9 @@ public class OrderingSelection {
     /** The normalised name, or an IllegalStateException that stops startup. */
     public static String validate(String name) {
         String n = name == null || name.isBlank() ? NONE : name.trim();
-        if (!NONE.equals(n) && !SYNTHETIC.equals(n)) {
-            throw new IllegalStateException("Unknown gcsp.ordering.provider '" + n + "'; supported: " + NONE + ", " + SYNTHETIC);
+        if (!NONE.equals(n) && !SYNTHETIC.equals(n) && !REMOTE.equals(n)) {
+            throw new IllegalStateException("Unknown gcsp.ordering.provider '" + n + "'; supported: " + NONE + ", " + SYNTHETIC
+                    + ", " + REMOTE);
         }
         return n;
     }

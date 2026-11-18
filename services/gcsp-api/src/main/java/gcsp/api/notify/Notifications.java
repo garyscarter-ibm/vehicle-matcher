@@ -1,6 +1,7 @@
 package gcsp.api.notify;
 
 import gcsp.api.persistence.Persistence;
+import gcsp.api.offers.OfferClock;
 import gcsp.api.policy.PolicyService;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.TransactionRunner;
@@ -8,7 +9,6 @@ import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import java.time.InstantSource;
 import java.util.Optional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -26,7 +26,13 @@ public class Notifications {
     MailTransportSelection transports;
 
     @Inject
+    OfferClock clock;
+
+    @Inject
     Instance<AgroalDataSource> sources;
+
+    @Inject
+    Instance<OfferFacts> offerFacts;
 
     @ConfigProperty(name = "gcsp.environment-id")
     Optional<String> environmentId;
@@ -55,12 +61,13 @@ public class Notifications {
         return new RunContext(run.environmentId(), run.runId(), actorId);
     }
 
-    /** Built once, on first use. */
+    /** Built once, on first use; "now" is the offers clock (the run clock when deployed), as the offers are stamped. */
     public synchronized NotificationDispatcher dispatcher() {
         if (dispatcher == null) {
-            // Offer facts are bound by the Java offer Story; until then every delivery retries as unavailable.
+            // Offer facts come from the offers bean when bound; otherwise every delivery retries as unavailable.
             dispatcher = new NotificationDispatcher(dataSource(), new PolicyDeliveryRules(policy),
-                    new UnconfiguredOfferFacts(), transports.transport(), InstantSource.system(),
+                    offerFacts.isResolvable() ? offerFacts.get() : new UnconfiguredOfferFacts(),
+                    transports.transport(), clock::now,
                     environmentId.orElse(""), publicBaseUrl.filter(url -> !url.isBlank()));
         }
         return dispatcher;

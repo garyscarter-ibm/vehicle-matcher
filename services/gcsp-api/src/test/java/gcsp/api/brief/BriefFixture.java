@@ -125,6 +125,17 @@ final class BriefFixture implements AutoCloseable {
     /** Reads the retained Node policy seed (never a copy), optionally editing an entry before use. */
     static final class Policy implements BriefPolicyPort {
         private final Map<String, BiConsumer<ObjectNode, ObjectNode>> edits = new LinkedHashMap<>();
+        /** When set, the adopted follow-up question set the policy carries (absent by default, as in the seed). */
+        volatile JsonNode followup;
+
+        /** The retained Node follow-up definition, as the policy entry value. */
+        static JsonNode retainedFollowup() throws IOException {
+            for (JsonNode d : Json.M.readTree(Files.readString(Path.of("../../server/gcsp/offers/followup-policy-definitions.json")))
+                    .get("definitions")) {
+                if ("offer.followupQuestions.v1".equals(d.get("key").asText())) return d.get("value").deepCopy();
+            }
+            throw new IllegalStateException("follow-up definition missing");
+        }
 
         /** Edit an entry's value object (the second argument) in place before the service sees it. */
         void edit(String key, java.util.function.Consumer<ObjectNode> change) {
@@ -142,6 +153,10 @@ final class BriefFixture implements AutoCloseable {
                     ObjectNode copy = a.deepCopy();
                     if (edits.containsKey(key) && copy.get("value") instanceof ObjectNode value) edits.get(key).accept(copy, value);
                     entries.put(key, copy);
+                }
+                if (followup != null && !entries.isEmpty()) {
+                    entries.put(BriefAssumptions.FOLLOWUP_QUESTIONS, Json.obj().put("key", BriefAssumptions.FOLLOWUP_QUESTIONS)
+                            .put("status", "assumed").put("policyVersion", policyVersion).set("value", followup.deepCopy()));
                 }
                 return entries.isEmpty() ? Optional.empty() : Optional.of(new BriefAssumptions(policyVersion, entries));
             } catch (IOException e) {

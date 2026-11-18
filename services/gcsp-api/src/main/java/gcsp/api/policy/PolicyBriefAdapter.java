@@ -10,7 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-/** The brief's pinned assumptions from PolicyService, for the configured run (the port has none); all keys or empty. */
+/** The brief's pinned assumptions from PolicyService, for the configured run (the port has none); all keys or empty.
+ *  The optional follow-up question set is added only when the pinned version carries it. */
 @ApplicationScoped
 public class PolicyBriefAdapter implements BriefPolicyPort {
 
@@ -44,6 +45,10 @@ public class PolicyBriefAdapter implements BriefPolicyPort {
                     return Optional.empty();
                 }
                 entries.put(key, found.value().deepCopy());
+            }
+            PolicyResult followup = policy.getAssumption(BriefAssumptions.FOLLOWUP_QUESTIONS, read);
+            if (followup.ok() && policyVersion.equals(followup.policyVersion())) {
+                entries.put(BriefAssumptions.FOLLOWUP_QUESTIONS, followup.value().deepCopy());
             }
             return Optional.of(new BriefAssumptions(policyVersion, entries));
         } catch (RuntimeException e) {

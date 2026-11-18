@@ -39,6 +39,7 @@ class DemandHttpTest {
     void gregReadsDemandWithNoStore() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownEveryBrief();
+        DemandHttpProfiles.ensureRunClock();
         as().get(DEMAND).then().statusCode(200).header("Cache-Control", equalTo("no-store"))
                 .contentType(containsString("application/json")).body("status", equalTo("ok"))
                 .body("value.privacy.policyVersion", equalTo("gcsp-policy-v1")).body("value.asOf", notNullValue());

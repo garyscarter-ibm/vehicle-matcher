@@ -49,6 +49,8 @@ final class ReadModel {
         if (eligibility.code() == null) e.putNull("code"); else e.put("code", eligibility.code());
         if (eligibility.reason() == null) e.putNull("reason"); else e.put("reason", eligibility.reason());
         o.put("policyVersion", cfg.policyVersion());
+        o.put("attempt", p.attempt());
+        o.set("previousAttempts", p.previousAttempts() == null ? JSON.createArrayNode() : p.previousAttempts());
         ArrayNode assumptions = o.putArray("assumptions");
         for (AppointmentConfig.Assumption a : cfg.assumptions()) {
             assumptions.addObject().put("key", a.key()).put("status", a.status()).put("unit", a.unit())

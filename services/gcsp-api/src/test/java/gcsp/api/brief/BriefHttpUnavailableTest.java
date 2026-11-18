@@ -25,5 +25,8 @@ class BriefHttpUnavailableTest {
         given().header("Authorization", "Bearer " + BriefHttpProfiles.TOKEN).contentType(ContentType.JSON)
                 .body("{\"commandId\":\"a\",\"expectedBriefVersion\":0,\"expectedDraftVersion\":0}")
                 .post("/api/gcsp/v1/brief/engage").then().statusCode(503).body("code", equalTo("brief-unavailable"));
+        given().header("Authorization", "Bearer " + BriefHttpProfiles.TOKEN).contentType(ContentType.JSON)
+                .body("{\"kind\":\"unsaved-draft\",\"baseBriefVersion\":0,\"draftVersion\":0,\"brief\":{\"schemaVersion\":1}}")
+                .post("/api/gcsp/v1/brief/preview").then().statusCode(503).body("code", equalTo("brief-unavailable"));
     }
 }

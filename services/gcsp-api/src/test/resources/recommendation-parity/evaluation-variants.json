@@ -1,0 +1,640 @@
+{
+ "seed": [
+  []
+ ],
+ "successor": [
+  [
+   {
+    "op": "revise",
+    "policyVersion": "gcsp-policy-v2",
+    "effectiveFrom": "2026-11-06T00:00:00.000Z"
+   },
+   {
+    "op": "rows",
+    "table": "allowances",
+    "where": {
+     "schemeId": "choices-fs-uk",
+     "gradeId": "G7"
+    },
+    "set": {
+     "monthlyPoints": 900,
+     "value": 900
+    }
+   },
+   {
+    "op": "rows",
+    "table": "pricePlans",
+    "where": {
+     "schemeId": "choices-fs-uk",
+     "matchValue": "G20 Saloon|320i"
+    },
+    "set": {
+     "monthlyPoints": 1250,
+     "value": 1250
+    }
+   },
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 20
+   },
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 2
+   }
+  ],
+  [
+   {
+    "op": "set",
+    "path": "effectiveTo",
+    "value": "2026-11-06T00:00:00.000Z"
+   }
+  ]
+ ],
+ "no-feedback-policy": [
+  [
+   {
+    "op": "dropAssumption",
+    "key": "employee.currentCarFeedback.v1"
+   }
+  ]
+ ],
+ "bad-feedback-policy": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "precedence",
+    "value": [
+     "rating",
+     "gates"
+    ]
+   }
+  ]
+ ],
+ "feedback-thresholds": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "rating",
+    "value": {
+     "positive": [
+      5
+     ],
+     "negative": [
+      1
+     ],
+     "neutral": [
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "similarity.dimensions",
+    "value": [
+     "modelLine",
+     "body",
+     "fuel",
+     "sizeClass"
+    ]
+   }
+  ]
+ ],
+ "feedback-lenient-same": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "sameAgain.dimensions",
+    "value": [
+     "body"
+    ]
+   }
+  ]
+ ],
+ "feedback-improvement-two": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "improvement.requireBetterOnAtLeast",
+    "value": 2
+   },
+   {
+    "op": "assumption",
+    "key": "employee.currentCarFeedback.v1",
+    "path": "improvement.requireNoWorseOnAll",
+    "value": false
+   }
+  ]
+ ],
+ "ranking-0": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 0
+   }
+  ]
+ ],
+ "ranking-4": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 4
+   }
+  ]
+ ],
+ "ranking-5": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 5
+   }
+  ]
+ ],
+ "ranking-100": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 100
+   }
+  ]
+ ],
+ "ranking-4.999": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 4.999
+   }
+  ]
+ ],
+ "no-ranking": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking"
+   }
+  ]
+ ],
+ "bad-ranking-rule": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.rule",
+    "value": "other"
+   }
+  ]
+ ],
+ "bad-ranking-tolerance": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "ranking.fitTolerance",
+    "value": 101
+   }
+  ]
+ ],
+ "display-1": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 1
+   }
+  ]
+ ],
+ "display-2": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 2
+   }
+  ]
+ ],
+ "display-10": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 10
+   }
+  ]
+ ],
+ "display-0": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 0
+   }
+  ]
+ ],
+ "display-fraction": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "displayLimit",
+    "value": 1.5
+   }
+  ]
+ ],
+ "charging-optional": [
+  [
+   {
+    "op": "assumption",
+    "key": "eligibility.homeCharging.requiredForPlugIn",
+    "path": "",
+    "value": false
+   }
+  ]
+ ],
+ "charging-not-boolean": [
+  [
+   {
+    "op": "assumption",
+    "key": "eligibility.homeCharging.requiredForPlugIn",
+    "path": "",
+    "value": "yes"
+   }
+  ]
+ ],
+ "driver-optional": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "driverEligibilityRequired",
+    "value": false
+   }
+  ]
+ ],
+ "driver-not-boolean": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "driverEligibilityRequired",
+    "value": "yes"
+   }
+  ]
+ ],
+ "no-calibration": [
+  [
+   {
+    "op": "dropAssumption",
+    "key": "employee.recommendation.v1"
+   }
+  ]
+ ],
+ "slider-conflict": [
+  [
+   {
+    "op": "assumption",
+    "key": "brief.slider.maximum",
+    "path": "",
+    "value": 50
+   }
+  ]
+ ],
+ "slider-minimum": [
+  [
+   {
+    "op": "assumption",
+    "key": "brief.slider.minimum",
+    "path": "",
+    "value": 10
+   }
+  ]
+ ],
+ "no-lifecycle": [
+  [
+   {
+    "op": "dropAssumption",
+    "key": "brief.lifecycle.v1"
+   }
+  ]
+ ],
+ "lifecycle-bad": [
+  [
+   {
+    "op": "assumption",
+    "key": "brief.lifecycle.v1",
+    "path": "charging.values"
+   }
+  ]
+ ],
+ "lifecycle-charging-other": [
+  [
+   {
+    "op": "assumption",
+    "key": "brief.lifecycle.v1",
+    "path": "charging.values",
+    "value": [
+     "solar",
+     "wind"
+    ]
+   }
+  ]
+ ],
+ "allowance-1100": [
+  [
+   {
+    "op": "rows",
+    "table": "allowances",
+    "where": {
+     "schemeId": "choices-fs-uk",
+     "gradeId": "G7"
+    },
+    "set": {
+     "monthlyPoints": 1100,
+     "value": 1100
+    }
+   }
+  ]
+ ],
+ "allowance-1099": [
+  [
+   {
+    "op": "rows",
+    "table": "allowances",
+    "where": {
+     "schemeId": "choices-fs-uk",
+     "gradeId": "G7"
+    },
+    "set": {
+     "monthlyPoints": 1099,
+     "value": 1099
+    }
+   }
+  ]
+ ],
+ "allowance-0": [
+  [
+   {
+    "op": "rows",
+    "table": "allowances",
+    "where": {
+     "schemeId": "choices-fs-uk",
+     "gradeId": "G7"
+    },
+    "set": {
+     "monthlyPoints": 0,
+     "value": 0
+    }
+   }
+  ]
+ ],
+ "points-test": [
+  [
+   {
+    "op": "dropRows",
+    "table": "pricePlans",
+    "where": {
+     "schemeId": "choices-fs-uk"
+    }
+   },
+   {
+    "op": "addRow",
+    "table": "pricePlans",
+    "from": {
+     "schemeId": "choices-rr-production"
+    },
+    "set": {
+     "key": "points-test-0",
+     "priceEntryId": "points-test-0",
+     "schemeId": "choices-fs-uk",
+     "matchField": "configurationId",
+     "matchValue": "points-test-low",
+     "monthlyPoints": 800,
+     "value": 800
+    }
+   },
+   {
+    "op": "addRow",
+    "table": "pricePlans",
+    "from": {
+     "schemeId": "choices-rr-production"
+    },
+    "set": {
+     "key": "points-test-1",
+     "priceEntryId": "points-test-1",
+     "schemeId": "choices-fs-uk",
+     "matchField": "configurationId",
+     "matchValue": "points-test-high",
+     "monthlyPoints": 1200,
+     "value": 1200
+    }
+   },
+   {
+    "op": "addRow",
+    "table": "pricePlans",
+    "from": {
+     "schemeId": "choices-rr-production"
+    },
+    "set": {
+     "key": "points-test-2",
+     "priceEntryId": "points-test-2",
+     "schemeId": "choices-fs-uk",
+     "matchField": "configurationId",
+     "matchValue": "points-test-mid",
+     "monthlyPoints": 1000,
+     "value": 1000
+    }
+   }
+  ]
+ ],
+ "price-ambiguous": [
+  [
+   {
+    "op": "addRow",
+    "table": "pricePlans",
+    "from": {
+     "schemeId": "choices-fs-uk"
+    },
+    "set": {
+     "key": "price.parity.config",
+     "priceEntryId": "price.parity.config",
+     "configurationId": "RzIxOlMx"
+    },
+    "delete": [
+     "matchField",
+     "matchValue"
+    ]
+   }
+  ]
+ ],
+ "bad-field": [
+  [
+   {
+    "op": "assumption",
+    "key": "eligibility.rule.matchField",
+    "path": "",
+    "value": "otherField"
+   }
+  ]
+ ],
+ "bad-precedence": [
+  [
+   {
+    "op": "assumption",
+    "key": "eligibility.rule.precedence",
+    "path": "",
+    "value": "includeThenExclude"
+   }
+  ]
+ ],
+ "exclude-overlap": [
+  [
+   {
+    "op": "addRow",
+    "table": "eligibilityRules",
+    "from": {
+     "ruleId": "choices-fs-uk-001-include"
+    },
+    "set": {
+     "key": "parity-exclude-001",
+     "ruleId": "parity-exclude-001",
+     "effect": "exclude"
+    }
+   },
+   {
+    "op": "addRow",
+    "table": "schemeRuleLinks",
+    "from": {
+     "ruleId": "choices-fs-uk-001-include"
+    },
+    "set": {
+     "key": "parity-link-exclude-001",
+     "linkId": "parity-link-exclude-001",
+     "ruleId": "parity-exclude-001",
+     "value": "parity-exclude-001"
+    }
+   }
+  ]
+ ],
+ "malformed": [
+  [
+   {
+    "raw": "not json"
+   }
+  ]
+ ],
+ "missing-file": [
+  [
+   {
+    "missing": true
+   }
+  ]
+ ],
+ "terms-tiny": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "termValiditySeconds",
+    "value": 0.0005
+   }
+  ]
+ ],
+ "terms-fraction": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "termValiditySeconds",
+    "value": 1.5
+   }
+  ]
+ ],
+ "terms-huge": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "termValiditySeconds",
+    "value": 1000000000000000.0
+   }
+  ]
+ ],
+ "terms-zero": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "termValiditySeconds",
+    "value": 0
+   }
+  ]
+ ],
+ "availability-narrow": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "availabilityStates",
+    "value": [
+     "available",
+     "unknown"
+    ]
+   }
+  ]
+ ],
+ "assurances-build-only": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "confirmedAssurances",
+    "value": [
+     "confirmed-build"
+    ]
+   }
+  ]
+ ],
+ "retail-budget-on": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "retailBudgetEnabled",
+    "value": true
+   }
+  ]
+ ],
+ "no-preferences": [
+  [
+   {
+    "op": "assumption",
+    "key": "employee.recommendation.v1",
+    "path": "preferences"
+   }
+  ]
+ ]
+}

@@ -79,6 +79,12 @@ public class AppointmentsResource {
     }
 
     @POST
+    @Path("/appointments/no-show")
+    public Response noShow(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        return command(authorization, uri, body, Role.GREG, AppointmentService::noShow);
+    }
+
+    @POST
     @Path("/presenter/appointments/ticks")
     public Response tick(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
         Principal who = auth.authenticate(authorization);

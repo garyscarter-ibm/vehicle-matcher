@@ -71,3 +71,11 @@ Restart merge `c0d6a08` retained the helper's default Claude Code trailer, and
 claim `7dd5988` omitted the trailer because the dispatcher did not wrap
 `_commit_two`. This follow-up records Codex responsibility for both checkpoints
 without rewriting their published identities.
+
+## 16 November 2026: `partial` status
+
+The fork is now `1.5.0+vehicle-matcher.1`: upstream scaffolding 1.5.0's `partial` mapping (agent-scaffolding
+`551291d`) applied by hand on top of the `ui:` repair. A merged story whose Result says `status: partial` stays
+In Progress in Jira, and so does its epic; only a fully met `built` story goes to In Review. The
+`test_jira_sync_ui.py` checks still pass. Cause: DL-20261116-RG-002 in `dispatcher-learnings.md`.
+

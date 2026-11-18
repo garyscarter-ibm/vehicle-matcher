@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -111,12 +112,11 @@ class PresenterOutboxResourceTest {
 
         // notify.delivery.v1 comes from PolicyService; offer facts are unbound, so the attempt truthfully retries.
         String where = " FROM notification_deliveries WHERE environment_id = ? AND run_id = ? AND event_id = ?";
-        assertEquals("retrying", NotifySeed.text(ds, "SELECT state" + where, run.environmentId(), run.runId(), eventId));
-        assertEquals("transport-unavailable",
+        assertEquals("failed", NotifySeed.text(ds, "SELECT state" + where, run.environmentId(), run.runId(), eventId));
+        assertEquals("message-facts-unavailable",
                 NotifySeed.text(ds, "SELECT error" + where, run.environmentId(), run.runId(), eventId));
-        assertEquals("30", NotifySeed.text(ds, "SELECT extract(epoch FROM next_attempt_at - attempted_at)::int" + where,
-                run.environmentId(), run.runId(), eventId));
-        assertEquals("pending", NotifySeed.text(ds,
+        assertNull(NotifySeed.text(ds, "SELECT next_attempt_at::text" + where, run.environmentId(), run.runId(), eventId));
+        assertEquals("failed", NotifySeed.text(ds,
                 "SELECT state FROM outbox_events WHERE environment_id = ? AND run_id = ? AND event_id = ?",
                 run.environmentId(), run.runId(), eventId));
     }

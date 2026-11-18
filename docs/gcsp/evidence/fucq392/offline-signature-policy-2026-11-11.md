@@ -30,3 +30,10 @@ cd server && GCSP_FLEET_BUILD_EXPLICIT=1 npm install && env -u GCSP_DATABASE_URL
 ```
 
 The unset applies to that child process only. Keep the runtime service's database setting configured. This removes the build dependency; it does not recover an unavailable PostgreSQL service. No Render command or service setting was changed here.
+
+
+## Current-tree reconciliation — 18 November 2026
+
+The repair is already present and remains byte-identical in artifact restore. The 60/60 result above belongs to its original 11 November variant; it is not a current-tree claim. After parent refresh to `578ace04ff597e38fba66f4782db5e8b32d1606d` (including F376), the existing-store CLI regression was extended to use the unavailable runtime database URL as well as the retained empty-URL replay. Both replays assert idempotence. The five-file command now passes **64/64**, zero failures/skips, on exact official Node **20.20.2** (8.241 s runner; 8.797 s supervised test chunk). Cold restore, unavailable-DB replay, exact conflict reason and selection/inventory preservation are covered. No production implementation was duplicated.
+
+Current source pins, checksum-verified runtime acquisition, scoped proof, independent review and final local cleanup: `../fucq396/validation-review-2026-11-18.md`. Parent retains integration, covering batch and native acceptance. Live Render recovery remains unknown; no new deployment gate is added to the original bounded Bug acceptance.

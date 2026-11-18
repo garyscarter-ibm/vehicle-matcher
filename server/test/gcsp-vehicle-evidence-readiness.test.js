@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { performance } from 'node:perf_hooks';
+import { once } from 'node:events';
+import { buildServer } from '../index.js';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
@@ -82,4 +85,36 @@ test('an injected lookup without readiness cannot report a ready deployment', as
     assert.equal(response.status, 503);
     assert.equal(response.json.vehicleEvidence.code, 'readiness-unavailable');
   } finally { await server.close(); }
+});
+
+// This must use default buildServer composition and the retained real corpus:
+// a small fixture or injected lookup does not reproduce the startup CPU loops.
+test('default server keeps timers and health responsive while the real corpus becomes ready', { timeout: 30000 }, async () => {
+  const started = performance.now(); let previous = started; let maxGap = 0; let loadingResponses = 0;
+  const timer = setInterval(() => {
+    const now = performance.now(); maxGap = Math.max(maxGap, now - previous); previous = now;
+  }, 5);
+  const server = buildServer(); server.listen(0, '127.0.0.1');
+  try {
+    await once(server, 'listening');
+    const base = `http://127.0.0.1:${server.address().port}`;
+    let state;
+    do {
+      const response = await fetch(`${base}/health/vehicle-evidence`);
+      state = (await response.json()).vehicleEvidence;
+      if (state.status === 'loading') {
+        loadingResponses += 1;
+        assert.equal(response.status, 503);
+        assert.deepEqual(await (await fetch(`${base}/health`)).json(), { ok: true });
+        await new Promise((resolve) => setTimeout(resolve, 5));
+      } else assert.equal(response.status, 200);
+    } while (state.status === 'loading' && performance.now() - started < 25000);
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    assert.equal(state.status, 'ready');
+    assert.ok(loadingResponses > 0, 'the real background load was observed');
+    assert.ok(maxGap <= 100, `5ms timer maximum gap was ${Math.round(maxGap)}ms`);
+  } finally {
+    clearInterval(timer);
+    await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+  }
 });

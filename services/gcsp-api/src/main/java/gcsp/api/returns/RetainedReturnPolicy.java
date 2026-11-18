@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -65,12 +66,27 @@ public final class RetainedReturnPolicy implements ReturnPolicyPort {
         if (root == null || !version.equals(root.path("policyVersion").asText(null))) return null;
         Instant from = ReturnJson.parse(root.path("effectiveFrom").asText(null));
         if (from == null || from.isAfter(asOf)) return null;
-        Row options = row(root, OPTIONS, version, asOf);
-        Row slots = row(root, SLOTS, version, asOf);
-        Row confirmation = row(root, CONFIRMATION, version, asOf);
-        Row scenario = row(root, SCENARIO, version, asOf);
-        Row ownership = row(root, OWNERSHIP, version, asOf);
-        Row outcome = row(root, OUTCOME, version, asOf);
+        return build(version, asOf, key -> fileRow(root, key, version));
+    }
+
+    /** The first row of this key and version in the file, or null; the shared build validates it. */
+    private static JsonNode fileRow(JsonNode root, String key, String version) {
+        JsonNode rows = root.path("assumptions");
+        if (!rows.isArray()) return null;
+        for (JsonNode r : rows) {
+            if (key.equals(r.path("key").asText(null)) && version.equals(r.path("policyVersion").asText(null))) return r;
+        }
+        return null;
+    }
+
+    /** The validation both the file reader and the canonical PolicyService adapter run over a key to row lookup. */
+    static ReturnPolicy build(String version, Instant asOf, Function<String, JsonNode> rows) {
+        Row options = row(rows.apply(OPTIONS), OPTIONS, version, asOf);
+        Row slots = row(rows.apply(SLOTS), SLOTS, version, asOf);
+        Row confirmation = row(rows.apply(CONFIRMATION), CONFIRMATION, version, asOf);
+        Row scenario = row(rows.apply(SCENARIO), SCENARIO, version, asOf);
+        Row ownership = row(rows.apply(OWNERSHIP), OWNERSHIP, version, asOf);
+        Row outcome = row(rows.apply(OUTCOME), OUTCOME, version, asOf);
         if (options == null || slots == null || confirmation == null || scenario == null || ownership == null
                 || outcome == null) {
             return null;
@@ -111,28 +127,26 @@ public final class RetainedReturnPolicy implements ReturnPolicyPort {
     private record Row(JsonNode value, ReturnPolicy.Assumption assumption) {}
 
     /** The row of exactly this version and key that is effective now and carries its basis, unit and status. */
-    private static Row row(JsonNode root, String key, String version, Instant asOf) {
-        JsonNode rows = root.path("assumptions");
-        if (!rows.isArray()) return null;
-        for (JsonNode r : rows) {
-            if (!key.equals(r.path("key").asText(null)) || !version.equals(r.path("policyVersion").asText(null))) continue;
-            if (r.has("effectiveFrom")) {
-                Instant from = ReturnJson.parse(r.get("effectiveFrom").asText(null));
-                if (from == null || from.isAfter(asOf)) return null;
-            }
-            if (r.has("effectiveTo")) {
-                Instant to = ReturnJson.parse(r.get("effectiveTo").asText(null));
-                if (to == null || !to.isAfter(asOf)) return null;
-            }
-            String status = r.path("status").asText(null);
-            if (!ReturnJson.text(r.path("basis").asText(null), 2000) || !ReturnJson.text(r.path("unit").asText(null), 200)
-                    || !("assumed".equals(status) || "verified".equals(status)) || !r.path("value").isObject()) {
-                return null;
-            }
-            return new Row(r.get("value"), new ReturnPolicy.Assumption(key, status, r.get("unit").asText(),
-                    r.get("basis").asText(), r.path("source").asText(null), r.path("sourceDate").asText(null), version));
+    private static Row row(JsonNode r, String key, String version, Instant asOf) {
+        if (r == null || !r.isObject() || !key.equals(r.path("key").asText(null))
+                || !version.equals(r.path("policyVersion").asText(null))) {
+            return null;
         }
-        return null;
+        if (r.has("effectiveFrom")) {
+            Instant from = ReturnJson.parse(r.get("effectiveFrom").asText(null));
+            if (from == null || from.isAfter(asOf)) return null;
+        }
+        if (r.has("effectiveTo")) {
+            Instant to = ReturnJson.parse(r.get("effectiveTo").asText(null));
+            if (to == null || !to.isAfter(asOf)) return null;
+        }
+        String status = r.path("status").asText(null);
+        if (!ReturnJson.text(r.path("basis").asText(null), 2000) || !ReturnJson.text(r.path("unit").asText(null), 200)
+                || !("assumed".equals(status) || "verified".equals(status)) || !r.path("value").isObject()) {
+            return null;
+        }
+        return new Row(r.get("value"), new ReturnPolicy.Assumption(key, status, r.get("unit").asText(),
+                r.get("basis").asText(), r.path("source").asText(null), r.path("sourceDate").asText(null), version));
     }
 
     private static boolean options(JsonNode v, List<ReturnPolicy.Choice> choices, Map<String, ReturnPolicy.Rule> rules) {

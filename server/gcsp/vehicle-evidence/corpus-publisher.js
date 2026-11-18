@@ -9,6 +9,7 @@ import { inputDigest } from '../repository/core.js';
 import { indexJsonl, JsonlError, JSONL_MAX_BYTES } from './indexed-jsonl.js';
 import { createVinProfileRegistry, VIN_PROFILE_REGISTRY_VERSION } from './vin-profiles.js';
 import { generateVin, VIN_GENERATOR_VERSION } from './vin-generator.js';
+import { createLoadCheckpoint } from './load-checkpoint.js';
 
 export const CORPUS_SCHEMA_VERSION = '1';
 export const CORPUS_FILES = Object.freeze(['configurations.jsonl', 'vins.jsonl', 'images.jsonl']);
@@ -174,15 +175,17 @@ async function validateConfiguration(row, policy, catalogueAdapter) {
     'configuration-provenance', 'Dated catalogue evidence must preserve the exact FUCQ-39 identity, selected options, dates, units, unknowns and fitted-equipment limits.');
   }
 }
-function summary(configurations, vins, images) {
+async function summary(configurations, vins, images) {
+  const checkpoint = createLoadCheckpoint();
   const counts = { configurations: configurations.length, distinctConfigurations: 0, vinMappings: vins.length, images: images.length };
   const coverage = { markets: {}, steering: {}, models: {}, wmis: {} };
   const completeness = { selectedOptions: {}, sourceKinds: {}, imagesMissing: 0 };
   const signatures = new Set(); const qualifying = new Set(); let observed = 0; let v2 = false;
   const imagedConfigurations = new Set();
-  for (const image of images) imagedConfigurations.add(image.configurationId);
+  for (const image of images) { await checkpoint(); imagedConfigurations.add(image.configurationId); }
   const count = (values, key) => { values[key] = (values[key] || 0) + 1; };
   for (const row of configurations) {
+    await checkpoint();
     signatures.add(row.canonicalSignature); v2 ||= row.catalogue?.schemaVersion === '2';
     if (row.sourceContext.sourceKind === 'dated-snapshot' && row.canonicalIdentity.provenance.kind === 'observed') {
       observed++;
@@ -197,7 +200,7 @@ function summary(configurations, vins, images) {
     count(completeness.sourceKinds, row.sourceContext.sourceKind);
     if (!row.imageIds.length && !imagedConfigurations.has(row.configurationId)) completeness.imagesMissing++;
   }
-  for (const row of vins) count(coverage.wmis, row.vin17.slice(0, 3));
+  for (const row of vins) { await checkpoint(); count(coverage.wmis, row.vin17.slice(0, 3)); }
   counts.distinctConfigurations = signatures.size;
   if (v2) Object.assign(counts, { sourceConfigurations: observed, qualifyingCompleteDistinctSourceConfigurations: qualifying.size });
   return { counts, coverage, completeness };
@@ -220,10 +223,12 @@ function projectVins(inventory) {
   return [...unique.values()].sort((a, b) => a.vehicleId.localeCompare(b.vehicleId));
 }
 async function validateRows(configurations, vins, images, manifest, options) {
+  const checkpoint = createLoadCheckpoint();
   requireValue(configurations.length > 0 && configurations.length <= 100000, 'configuration-schema', 'A valid corpus needs at least one configuration; absence is source-unavailable.');
   const ids = new Map(); const signatures = new Set();
   let catalogueAdapter; let currentEnvelope;
   for (const row of configurations) {
+    await checkpoint();
     requireValue(!ids.has(row.configurationId), 'duplicate-configuration', 'Duplicate configurationId.');
     if (row.catalogue?.schemaVersion === '2') {
       if (!catalogueAdapter) {
@@ -255,6 +260,7 @@ async function validateRows(configurations, vins, images, manifest, options) {
   }
   const imageIds = new Map();
   for (const image of images) {
+    await checkpoint();
     requireValue(keys(image, ['imageId', 'configurationId', 'asset', 'role', 'fidelity', 'sourceKind', 'observedDate'])
       && text(image.imageId) && text(image.asset) && !imageIds.has(image.imageId) && ids.has(image.configurationId)
       && ['representative-model', 'representative-configuration'].includes(image.role)
@@ -277,6 +283,7 @@ async function validateRows(configurations, vins, images, manifest, options) {
   }
   const seen = new Set(); const physical = new Set(); const suffixes = new Set();
   for (const row of vins) {
+    await checkpoint();
     requireValue(keys(row, identityFields) && ['current-car', 'delivered-car'].includes(row.usage) && row.identityKind === 'synthetic'
       && ['vehicleId', 'configurationId', 'snapshotVersion', 'configurationHash', 'corpusVersion', 'originatingDatasetId'].every((key) => text(row[key]))
       && object(row.vinAllocationOrigin) && ['seed', 'runId', 'originatingDatasetId'].every((key) => text(row.vinAllocationOrigin[key]))
@@ -296,7 +303,7 @@ async function validateRows(configurations, vins, images, manifest, options) {
     for (const field of ['vin17', 'vin7', 'serial', 'profile', 'sourceKind', 'sources', 'confidence', 'unknownFields', 'completeVinDecoded',
       'modelYear', 'productionEra', 'productionDate', 'registrationDate']) requireValue(equal(row[field], generated[field]), 'vin-profile-mismatch', `VIN field ${field} disagrees with retained profile evidence.`);
   }
-  const computed = summary(configurations, vins, images);
+  const computed = await summary(configurations, vins, images);
   requireValue(equal(computed.counts, manifest.counts), 'count-mismatch', 'Declared record/distinct/VIN/image counts do not reconcile.');
   requireValue(equal(computed.coverage, manifest.coverage) && equal(computed.completeness, manifest.completeness),
     'summary-mismatch', 'Coverage or completeness does not reconcile; a small fixture never proves the 200/10000 target.');
@@ -471,7 +478,7 @@ export async function writeCorpusCandidate(directory, input, options = {}) {
     const metadata = structuredClone(input.metadata); delete metadata.technicalSupplements;
     const manifest = { ...metadata, schemaVersion: technical.length ? '2' : CORPUS_SCHEMA_VERSION,
       ...(technical.length ? { technicalSupplements: technical } : {}), signaturePolicy: policy, qualification: 'bounded-fixture-or-partial-corpus',
-      ...summary(...prepared.map((item) => item.rows)), checksums };
+      ...(await summary(...prepared.map((item) => item.rows))), checksums };
     await durableWrite(join(staging, 'manifest.json'), canonicalContent(manifest), true);
     const validated = await validateCorpusDirectory(staging, { ...options, indexed: true });
     if (validated.status !== 'ok') return validated;

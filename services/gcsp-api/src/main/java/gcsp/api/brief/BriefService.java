@@ -31,7 +31,7 @@ import javax.sql.DataSource;
  */
 public final class BriefService {
 
-    private enum Kind { SAVE_DRAFT, SAVE_PREFERENCES, CONFIRM, ENGAGE, DISENGAGE, PAUSE, RESUME }
+    private enum Kind { SAVE_DRAFT, SAVE_PREFERENCES, CONFIRM, DECLINE_CHANGE, ENGAGE, DISENGAGE, PAUSE, RESUME }
 
     /** A brief and its pending draft as they stand at one head read. */
     record State(long briefVersion, long draftVersion, BriefRow current, DraftRow draft) {}
@@ -61,10 +61,17 @@ public final class BriefService {
     private final BriefPolicyPort policy;
     private final BriefAccountPort account;
     private final BriefOfferPort offers;
+    private final BriefPreviewPort preview;
     private final Clock clock;
 
     public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
             Clock clock) {
+        this(dataSource, policy, account, offers, (scope, input) -> BriefPreviewPort.unconfigured(), clock);
+    }
+
+    public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
+            BriefPreviewPort preview, Clock clock) {
+        this.preview = preview;
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.policy = policy;
@@ -137,9 +144,11 @@ public final class BriefService {
             initial.set("buddy", Engagement.view(r.initial(), buddy, rules, facts));
             initial.putObject("consent").put("search", flag(buddy, "searchConsent")).put("hold", flag(buddy, "holdConsent"));
             ObjectNode out = Json.obj();
-            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS)));
+            String contextVersion = AccountEditor.contextVersion(scope, facts);
+            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS), contextVersion));
             out.set("initial", initial);
-            out.putObject("versions").put("policy", scope.policyVersion()).put("facts", facts.get().factsVersion());
+            out.putObject("versions").put("policy", scope.policyVersion()).put("context", contextVersion)
+                    .put("facts", AccountEditor.factsVersion(facts)).put("clock", AccountEditor.clockVersion(facts));
             if (accepted.isPresent() && s.current() != null) {
                 ObjectNode sel = out.putObject("selection").put("state", "accepted");
                 if (accepted.get().briefVersion() == null) sel.putNull("briefVersion");
@@ -153,6 +162,63 @@ public final class BriefService {
             else provenance.put("approvedBriefVersion", s.briefVersion());
             return new BriefResult.Ok(out);
         });
+    }
+
+    /**
+     * Evaluates an unsaved editor brief at the saved versions it was made against; nothing is stored. The recommendation
+     * outcome is passed through, and the saved versions are checked again after the evaluation.
+     */
+    public BriefResult preview(BriefScope scope, JsonNode input) {
+        if (!only(input, "kind", "baseBriefVersion", "draftVersion", "brief") || !"unsaved-draft".equals(input.path("kind").asText(null))
+                || !Json.revision(input.get("baseBriefVersion")) || !Json.revision(input.get("draftVersion"))) {
+            return invalidPreview("preview");
+        }
+        long baseBrief = input.get("baseBriefVersion").longValue();
+        long draft = input.get("draftVersion").longValue();
+        try {
+            Optional<PolicyRules> rules = PolicyRules.load(policy, scope.policyVersion());
+            if (rules.isEmpty()) return Refusal.unavailable();
+            BriefContent.defaults(rules.get());
+            Head now = headOf(scope);
+            if (baseBrief != now.briefVersion()) return Refusal.staleVersion("brief", baseBrief, now.briefVersion());
+            if (draft != now.draftVersion()) return Refusal.staleVersion("draft", draft, now.draftVersion());
+            if (BriefContent.validate(input.get("brief"), rules.get(), false) != null) return invalidPreview("brief");
+            ObjectNode request = Json.obj();
+            request.set("brief", input.get("brief").deepCopy());
+            request.put("baseBriefVersion", baseBrief).put("baseDraftVersion", draft);
+            ObjectNode outcome = preview.preview(scope, request);
+            Head latest = headOf(scope);
+            if (latest.briefVersion() != now.briefVersion()) return Refusal.staleVersion("brief", now.briefVersion(), latest.briefVersion());
+            if (latest.draftVersion() != now.draftVersion()) return Refusal.staleVersion("draft", now.draftVersion(), latest.draftVersion());
+            return passThrough(outcome);
+        } catch (SQLException | RuntimeException e) {
+            return Refusal.unavailable();
+        }
+    }
+
+    private Head headOf(BriefScope scope) throws SQLException {
+        try (Connection c = dataSource.getConnection()) {
+            return BriefStore.head(c, scope).orElse(new Head(0, 0));
+        }
+    }
+
+    private static Refusal invalidPreview(String field) {
+        return Refusal.invalid("invalid-preview", field, "Use the registered editable brief and current saved versions.");
+    }
+
+    /** The recommendation outcome as the HTTP body it already is: ok keeps its value, others keep status, code and reasons. */
+    private static BriefResult passThrough(ObjectNode outcome) {
+        String status = outcome.path("status").asText("");
+        if ("ok".equals(status) && outcome.has("value")) {
+            return new BriefResult.Ok(outcome.get("value"), false, outcome.path("contractVersion").asText(null));
+        }
+        int http = switch (status) {
+            case "invalid" -> 400;
+            case "forbidden" -> 403;
+            case "stale-run" -> 409;
+            default -> 503;
+        };
+        return new BriefResult.Raw(http, outcome);
     }
 
     @FunctionalInterface
@@ -265,7 +331,37 @@ public final class BriefService {
                 || consent.get("search").booleanValue() != consent.get("hold").booleanValue())) {
             return Refusal.invalid("invalid-command", "consent", "Engage or disengage Buddy as one function.");
         }
-        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s));
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, true));
+    }
+
+    /** Node's internal confirm with no editor gate (the comparison replay): consent as given, no Account minimum. */
+    public BriefResult confirmWithoutGate(BriefScope scope, JsonNode input) {
+        Refusal bad = envelope(input, false, "consent");
+        if (bad != null) return bad;
+        JsonNode consent = input.get("consent");
+        if (consent != null && (!only(consent, "search", "hold") || !consent.path("search").isBoolean()
+                || !consent.path("hold").isBoolean())) {
+            return Refusal.invalid("invalid-command", "consent", "Explicitly choose search and hold permission independently.");
+        }
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, false));
+    }
+
+    /**
+     * The one confirmed change an employee makes after declining an offer: a new confirmed version recording which field
+     * changed, from what to what and which decline it answers.
+     */
+    public BriefResult changeAfterDecline(BriefScope scope, JsonNode input) {
+        JsonNode id = input == null ? null : input.get("commandId");
+        if (!only(input, "commandId", "expectedBriefVersion", "decisionId", "change") || !Json.text(id)
+                || !Json.revision(input.get("expectedBriefVersion"))) {
+            return Refusal.invalid("invalid-command", "command", "Supply a command ID and expected versions.");
+        }
+        JsonNode change = input.get("change");
+        if (!Json.text(input.get("decisionId")) || !only(change, "path", "value") || !change.has("value")
+                || !FeedbackChange.routePath(change.get("path"))) {
+            return Refusal.invalid("invalid-brief", "change", "Change exactly one registered preference value or essential.");
+        }
+        return command(scope, Kind.DECLINE_CHANGE, input, (tx, c, s) -> declineChangeWork(tx, c, s));
     }
 
     public BriefResult engage(BriefScope scope, JsonNode input) {
@@ -274,6 +370,33 @@ public final class BriefService {
 
     public BriefResult disengage(BriefScope scope, JsonNode input) {
         return simple(scope, Kind.DISENGAGE, input);
+    }
+
+    /** The Node /pause alias: disengage at the versions the editor read reports, after checking the caller's brief version. */
+    public BriefResult legacyPause(BriefScope scope, JsonNode input) {
+        return legacy(scope, input, false);
+    }
+
+    /** The Node /resume alias: engage, with the same version check as the pause alias. */
+    public BriefResult legacyResume(BriefScope scope, JsonNode input) {
+        return legacy(scope, input, true);
+    }
+
+    private BriefResult legacy(BriefScope scope, JsonNode input, boolean engage) {
+        JsonNode id = input == null ? null : input.get("commandId");
+        if (!only(input, "commandId", "expectedBriefVersion") || id == null || !id.isTextual() || id.asText().isBlank()
+                || !Json.revision(input.get("expectedBriefVersion"))) {
+            return Refusal.invalid("invalid-command", "command", "Supply a command ID and the expected brief version.");
+        }
+        BriefResult read = readEditor(scope);
+        if (!(read instanceof BriefResult.Ok ok)) return read;
+        JsonNode initial = ok.value().get("initial");
+        long brief = initial.get("briefVersion").longValue();
+        long expected = input.get("expectedBriefVersion").longValue();
+        if (expected != brief) return Refusal.staleVersion("brief", expected, brief);
+        ObjectNode forwarded = ((ObjectNode) input).deepCopy();
+        forwarded.put("expectedDraftVersion", initial.get("draftVersion").longValue());
+        return engage ? engage(scope, forwarded) : disengage(scope, forwarded);
     }
 
     public BriefResult pauseSearch(BriefScope scope, JsonNode input) {
@@ -319,8 +442,10 @@ public final class BriefService {
         }
         Instant now = clock.instant().truncatedTo(ChronoUnit.MILLIS);
         Optional<BriefAccountPort.AccountFacts> facts = account.facts(scope.environmentId(), scope.runId(), scope.employeeId());
+        // The decline change carries no draft version: it is checked against the brief version only.
+        boolean draftChecked = input.has("expectedDraftVersion");
         Ctx ctx = new Ctx(scope, rules, now, facts, input.get("expectedBriefVersion").longValue(),
-                input.get("expectedDraftVersion").longValue(), input);
+                draftChecked ? input.get("expectedDraftVersion").longValue() : -1, input);
         ObjectNode digestInput = Json.obj();
         digestInput.put("operation", kind.name());
         digestInput.set("input", input);
@@ -332,7 +457,7 @@ public final class BriefService {
                 if (ctx.expectedBrief() != s.briefVersion()) {
                     throw new Refused(Refusal.staleVersion("brief", ctx.expectedBrief(), s.briefVersion()));
                 }
-                if (ctx.expectedDraft() != s.draftVersion()) {
+                if (draftChecked && ctx.expectedDraft() != s.draftVersion()) {
                     throw new Refused(Refusal.staleVersion("draft", ctx.expectedDraft(), s.draftVersion()));
                 }
                 JsonNode result = body.run(tx, ctx, s);
@@ -360,7 +485,7 @@ public final class BriefService {
             // A concurrent writer won the version check; report the versions as they now stand.
             try (Connection c = dataSource.getConnection()) {
                 Head h = BriefStore.head(c, scope).orElse(new Head(0, 0));
-                boolean brief = ctx.expectedBrief() != h.briefVersion();
+                boolean brief = ctx.expectedBrief() != h.briefVersion() || ctx.expectedDraft() < 0;
                 return Refusal.staleVersion(brief ? "brief" : "draft", brief ? ctx.expectedBrief() : ctx.expectedDraft(),
                         brief ? h.briefVersion() : h.draftVersion());
             } catch (SQLException e) {
@@ -475,7 +600,7 @@ public final class BriefService {
         return Refusal.conflict(code, reason, extra);
     }
 
-    private JsonNode confirmWork(Tx tx, Ctx c, State s) throws SQLException {
+    private JsonNode confirmWork(Tx tx, Ctx c, State s, boolean gated) throws SQLException {
         if (s.draft() == null && s.current() == null) throw new Refused(Refusal.notFound("brief-draft"));
         readOnlyCheck(c, s);
         Resolved r = resolve(tx.connection(), c.scope(), c.rules(), s, false);
@@ -485,7 +610,7 @@ public final class BriefService {
         JsonNode consent = c.input().get("consent");
         boolean search = consent != null && consent.get("search").booleanValue();
         boolean hold = consent != null && consent.get("hold").booleanValue();
-        if (search) {
+        if (search && gated) {
             PolicyRules.Grants grants = c.rules().engagement();
             if (!gate.ok()) throw new Refused(Engagement.refusal(gate));
             search = grants.search();
@@ -502,6 +627,67 @@ public final class BriefService {
         out.set("validation", validation(brief.content(), c.rules()));
         out.set("event", eventJson(c, brief));
         return out;
+    }
+
+    private JsonNode declineChangeWork(Tx tx, Ctx c, State s) throws SQLException {
+        BriefScope scope = c.scope();
+        JsonNode in = c.input();
+        if (s.current() == null) throw new Refused(Refusal.notFound("brief"));
+        String decisionId = in.get("decisionId").asText();
+        BriefStore.Decision decision = BriefStore.decision(tx.connection(), scope, decisionId)
+                .orElseThrow(() -> new Refused(Refusal.notFound("decisions")));
+        if (!scope.employeeId().equals(decision.employeeId())) {
+            throw new Refused(new Refusal(403, "forbidden", "decline-not-owned", "The decline belongs to another employee.", false, null));
+        }
+        if (!"decline".equals(decision.decision()) || decision.offerId() == null || decision.offerId().isBlank()) {
+            throw new Refused(Refusal.invalid("invalid-brief", "decisionId", "A recorded decline is required."));
+        }
+        if (BriefStore.declineChangeRecorded(tx.connection(), scope, decisionId)) {
+            ObjectNode extra = Json.obj();
+            extra.putObject("current").put("briefVersion", s.briefVersion());
+            throw new Refused(Refusal.conflict("decline-change-already-recorded", "decline-change-already-recorded", extra));
+        }
+        if (!approvedVersion(tx.connection(), scope, decision.versions())) {
+            throw new Refused(Refusal.invalid("invalid-brief", "decisionId", "The decline must reference an approved brief version."));
+        }
+        String path = in.get("change").get("path").asText();
+        JsonNode value = in.get("change").get("value");
+        ObjectNode content = s.current().content().deepCopy();
+        FeedbackChange.Applied applied = FeedbackChange.addTarget(content, path, value, c.rules(), c.rules().followupQuestions(),
+                c.nowText());
+        if (applied == null) applied = FeedbackChange.apply(content, path, value, c.nowText());
+        if (!applied.ok()) {
+            boolean unknown = "unknown-field".equals(applied.code());
+            throw new Refused(Refusal.invalid("invalid-brief", unknown ? "change.path" : "change.value",
+                    "unchanged-value".equals(applied.code()) ? "Confirm a different value."
+                            : "Change an existing registered field with an explicitly confirmed value."));
+        }
+        Refusal bad = BriefContent.validate(applied.brief(), c.rules(), true);
+        if (bad != null) throw new Refused(bad);
+        ObjectNode record = Json.obj();
+        record.put("decisionId", decisionId).put("offerId", decision.offerId()).put("fromBriefVersion", s.briefVersion());
+        record.put("path", path);
+        record.set("before", applied.before() == null ? Json.M.nullNode() : applied.before());
+        record.set("after", applied.after());
+        record.put("confirmedBy", scope.principalId()).put("confirmedAt", c.nowText());
+        BriefRow base = newBrief(c, s, "changed-after-decline", applied.brief(), s.current().buddy().deepCopy());
+        BriefRow brief = new BriefRow(base.version(), base.previousVersion(), base.operation(), base.content(), base.buddy(),
+                base.digest(), base.policyVersion(), base.accountFactsVersion(), base.confirmedBy(), base.confirmedAt(), record);
+        bump(tx, c, s, brief, s.draftVersion());
+        ObjectNode out = Json.obj();
+        out.set("brief", briefJson(brief));
+        out.set("activity", activity(scope, brief.buddy()));
+        out.set("validation", validation(brief.content(), c.rules()));
+        out.set("event", eventJson(c, brief));
+        return out;
+    }
+
+    /** The decline must point at a confirmed version of this employee's brief history (versions.brief, or briefVersion). */
+    private static boolean approvedVersion(Connection conn, BriefScope scope, JsonNode versions) throws SQLException {
+        JsonNode v = versions == null ? null : versions.has("brief") ? versions.get("brief") : versions.get("briefVersion");
+        if (v == null || !Json.integer(v) || v.longValue() <= 0) return false;
+        for (BriefRow r : BriefStore.history(conn, scope)) if (r.version() == v.longValue()) return true;
+        return false;
     }
 
     private JsonNode engagementWork(Tx tx, Ctx c, State s, Kind kind) throws SQLException {
@@ -631,6 +817,7 @@ public final class BriefService {
         b.put("status", "confirmed").put("operation", r.operation());
         b.set("buddy", r.buddy().deepCopy());
         b.put("policyVersion", r.policyVersion()).put("confirmedBy", r.confirmedBy()).put("confirmedAt", r.confirmedAt().toString());
+        if (r.postDeclineChange() != null) b.set("postDeclineChange", r.postDeclineChange().deepCopy());
         if (r.accountFactsVersion() == null) b.putNull("accountFactsVersion");
         else b.put("accountFactsVersion", r.accountFactsVersion());
         return b;
