@@ -6,7 +6,7 @@ This increment reconciles the original allowance-aware recommendation repair and
 
 The ranking helper is identical to the original repair: after suitability gates, create fit bands anchored to each best remaining preference score, then sort monthly points descending inside each five-point band, fit and stable UUID. The canonical policy remains `similarFitThenPoints` / `fitTolerance: 5`. Saved recommendations, unsaved previews and feedback share the helper. Preference percentages remain unchanged; the points-aware badge remains `Recommended` with an allowance explanation. Older policy pins preserve their former score/UUID ordering; allocation fairness and retail scoring are separate.
 
-| Original acceptance | Existing current test proof selected; execution pending |
+| Original acceptance | Existing current test proof selected |
 | --- | --- |
 | Eligible equally matched cars using more allowance rank higher | `employee-recommendation-order`: fuller-use band, tie ordering, provider-order independence; `employee-recommendation`: actual PolicyService/service equal-fit 1200-before-800 case. |
 | Mismatch, essentials, unknown eligibility and excessive points cannot buy recommendation | Ordering test excludes failed/unknown gates and prevents chained near ties; actual recommendation cases exercise matrix/allowance gates, exact essentials, eligibility/points unknowns and central-policy revisions. |
@@ -15,7 +15,28 @@ The ranking helper is identical to the original repair: after suitability gates,
 
 Selected existing files are the ten named in `reconciliation-inputs-2026-11-18.md`. The automatic selector has no configured Node mapping; explicit modules follow affected ownership, fixture/subprocess and HTTP/retail boundaries. Actual assertions and their fixture limits are retained: PolicyService/provider/time service fixtures and real local HTTP/memory repository/identity composition prove the original read-only contract; fixture render tests are not fresh visual critique or live-provider proof.
 
-The parent's required serial covering batch `batch-next-20261118T023236Z` is already running on `26d73b760ba26cd99610ff738c95c0c1355cc7f3`: `npm test`, then Java `./mvnw -B clean verify` with fresh native PostgreSQL 17. All 2,551 retained batch source/input hashes match the claimed F381 tree. This establishes an input boundary only: no F381 acceptance case had executed when this checkpoint was prepared. Do not infer a pass from manifest equality. No competing test/application runtime is started. If the running batch supplies matching executed proof, reuse it; if it does not reach required cases, coordinate only the missing scoped commands after the parent's lane handoff.
+The parent's required serial covering batch `batch-next-20261118T023236Z` is running on `26d73b760ba26cd99610ff738c95c0c1355cc7f3`: `npm test`, then Java `./mvnw -B clean verify` with fresh native PostgreSQL 17. All 2,551 retained batch source/input hashes match the claimed F381 tree. Manifest equality establishes the input boundary; executed cases below provide partial current proof. No competing test/application runtime is started. If the batch does not reach required cases, coordinate only the missing scoped commands after the parent's lane handoff.
+
+## Executed checkpoint — 02:44 UTC
+
+The live `batch-next-20261118T023236Z-node-cases.jsonl` ledger reports the following selected literal test titles. These are case observations, not successful module exit counts or a green full command. The batch is incomplete; no final receipt or Java result exists at this checkpoint.
+
+| Selected module | Observed passed | Observed failed | Titles not yet observed | Ledger sequences |
+| --- | ---: | ---: | ---: | --- |
+| `employee-recommendation-order` | 5 | 0 | 0 | 388–392 |
+| `employee-recommendation` | 29 | 0 | 0 | 393–421 |
+| `feedback-actions` | 18 | 0 | 0 | 475–492 |
+| `gcsp-brief-render` | 24 | 1 | 0 | 1094–1118 |
+| `employee-recommendation-api` | 8 | 2 | 0 | 362–371 |
+| `gcsp-brief-transport` | 6 | 0 | 0 | 1124–1129 |
+| `gcsp-plain-copy` | 0 | 0 | 8 | Pending |
+| `gcsp-recommendation-stored-subject` | 0 | 0 | 11 | Pending |
+| `gcsp-policy-service` | 0 | 0 | 21 | Pending |
+| `recommendation-compat` | 0 | 0 | 8 | Pending |
+
+The original fuller-allowance ordering case passed at sequence 388; hard/unknown gate and anchored-band cases passed at 389–392. Sequence 400 passed actual saved recommendation and unsaved preview calls with 1200 points before 800 for equal fit. Sequence 485 passed feedback recomputation after exclusions. Sequence 1105 passed the points-aware badge case without asserting the highest preference score. These observed passes do not substitute for pending retail/shared-boundary proof or green covering batch coverage.
+
+Selected failures remain visible: HTTP guard cases at 362 and 370, and the `FUCQ-326` editor/rail terminology case at 1112. The HTTP source expects Greg to receive 403, while the current canonical seed grants Greg both `greg` and `employee`; the fixture seeds that real identity adapter and the route requires `employee`. This is a source-backed stale role-expectation hypothesis; final expected/actual stacks are not yet emitted, so the exact failure cause remains unconfirmed. No source, fixture, identity role or unrelated wording is changed under F381. The parent owns separate Bug triage and the full batch outcome. All four acceptance items remain open.
 
 ## Historical evidence and limits
 

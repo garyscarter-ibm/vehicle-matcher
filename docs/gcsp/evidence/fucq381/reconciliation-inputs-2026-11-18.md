@@ -1,11 +1,11 @@
 # FUCQ-381 current input identity — 18 November 2026
 
-Prepared identity and acceptance-proof selection. Current execution remains pending; the historical 297-pass result is not substituted. Exact file pins below are a compact review subset; all 2551 batch-manifest source/input hashes independently matched the claimed tree. The retained batch manifest hash and tested Git pin bind the wider input set.
+Prepared identity and acceptance-proof selection, with a partial executed-case checkpoint. The covering batch remains incomplete; the historical 297-pass result is not substituted. Exact file pins below are a compact review subset; all 2551 batch-manifest source/input hashes independently matched the claimed tree. The retained batch manifest hash and tested Git pin bind the wider input set.
 
 ```json
 {
   "workItem": "FUCQ-381",
-  "state": "prepared; current executed acceptance proof pending",
+  "state": "partial executed case evidence; covering batch incomplete",
   "checkedAt": "2026-11-18T02:39:03+00:00",
   "claimedHead": "b769513fd1ea07a251381175c7df8ca5699b58d5",
   "originalRepair": "94a9eaf0cf715d096544a3b41d2d9870ec4200c3",
@@ -139,7 +139,7 @@ Prepared identity and acceptance-proof selection. Current execution remains pend
         "target": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
       }
     },
-    "status": "running; no F381 test execution claim yet"
+    "status": "running; selected cases90passed/3failed/48unobserved; no complete Node or Java result"
   },
   "historicalProof": {
     "run": "fucq381-points-20261111",
@@ -152,6 +152,199 @@ Prepared identity and acceptance-proof selection. Current execution remains pend
   "coverageLimitation": "No measured per-test V8 contexts; static ownership/import/fixture mapping is not measured coverage. Unobserved paths remain unknown.",
   "newScratchBytes": 0,
   "noOneDriveAccess": true,
-  "newRuntime": false
+  "newRuntime": false,
+  "reconciliationHead": "c8de4dcfb6835ec9d1a2735530b11929430bfe81",
+  "executionCheckpoint": {
+    "observedAt": "2026-11-18T02:44:00+00:00",
+    "ledgerSequenceLimit": 1212,
+    "selectionMethod": "Exact decoded literal test titles matched against reporter case events; not module exit counts, measured coverage or full suite totals.",
+    "observedPasses": 90,
+    "observedFailures": 3,
+    "unobservedTitles": 48,
+    "modules": [
+      {
+        "file": "server/test/employee-recommendation-order.test.js",
+        "literalTitles": 5,
+        "observedPasses": 5,
+        "observedFailures": 0,
+        "unobservedTitles": 0,
+        "sequences": [
+          388,
+          389,
+          390,
+          391,
+          392
+        ]
+      },
+      {
+        "file": "server/test/employee-recommendation.test.js",
+        "literalTitles": 29,
+        "observedPasses": 29,
+        "observedFailures": 0,
+        "unobservedTitles": 0,
+        "sequences": [
+          393,
+          394,
+          395,
+          396,
+          397,
+          398,
+          399,
+          400,
+          401,
+          402,
+          403,
+          404,
+          405,
+          406,
+          407,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          418,
+          419,
+          420,
+          421
+        ]
+      },
+      {
+        "file": "server/test/feedback-actions.test.js",
+        "literalTitles": 18,
+        "observedPasses": 18,
+        "observedFailures": 0,
+        "unobservedTitles": 0,
+        "sequences": [
+          475,
+          476,
+          477,
+          478,
+          479,
+          480,
+          481,
+          482,
+          483,
+          484,
+          485,
+          486,
+          487,
+          488,
+          489,
+          490,
+          491,
+          492
+        ]
+      },
+      {
+        "file": "server/test/gcsp-brief-render.test.js",
+        "literalTitles": 25,
+        "observedPasses": 24,
+        "observedFailures": 1,
+        "unobservedTitles": 0,
+        "sequences": [
+          1094,
+          1095,
+          1096,
+          1097,
+          1098,
+          1099,
+          1100,
+          1101,
+          1102,
+          1103,
+          1104,
+          1105,
+          1106,
+          1107,
+          1108,
+          1109,
+          1110,
+          1111,
+          1112,
+          1113,
+          1114,
+          1115,
+          1116,
+          1117,
+          1118
+        ]
+      },
+      {
+        "file": "server/test/gcsp-plain-copy.test.js",
+        "literalTitles": 8,
+        "observedPasses": 0,
+        "observedFailures": 0,
+        "unobservedTitles": 8,
+        "sequences": []
+      },
+      {
+        "file": "server/test/employee-recommendation-api.test.js",
+        "literalTitles": 10,
+        "observedPasses": 8,
+        "observedFailures": 2,
+        "unobservedTitles": 0,
+        "sequences": [
+          362,
+          363,
+          364,
+          365,
+          366,
+          367,
+          368,
+          369,
+          370,
+          371
+        ]
+      },
+      {
+        "file": "server/test/gcsp-recommendation-stored-subject.test.js",
+        "literalTitles": 11,
+        "observedPasses": 0,
+        "observedFailures": 0,
+        "unobservedTitles": 11,
+        "sequences": []
+      },
+      {
+        "file": "server/test/gcsp-policy-service.test.js",
+        "literalTitles": 21,
+        "observedPasses": 0,
+        "observedFailures": 0,
+        "unobservedTitles": 21,
+        "sequences": []
+      },
+      {
+        "file": "server/test/gcsp-brief-transport.test.js",
+        "literalTitles": 6,
+        "observedPasses": 6,
+        "observedFailures": 0,
+        "unobservedTitles": 0,
+        "sequences": [
+          1124,
+          1125,
+          1126,
+          1127,
+          1128,
+          1129
+        ]
+      },
+      {
+        "file": "server/test/recommendation-compat.test.js",
+        "literalTitles": 8,
+        "observedPasses": 0,
+        "observedFailures": 0,
+        "unobservedTitles": 8,
+        "sequences": []
+      }
+    ],
+    "nodeCommandCompleted": false,
+    "javaResultObserved": false,
+    "acceptance": "All four items remain open; green covering batch required."
+  }
 }
 ```
