@@ -6203,106 +6203,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-442",
-      "observed_at": "2026-11-17T19:53:13Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Browse released stock and inspect an exact vehicle",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442",
-      "branch": "dev/DEV-2026-11-13-010",
-      "workers": [
-        {
-          "id": "01a1d901-2715-7062-8602-8b96ff614b2e",
-          "name": "Emmet",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-14T17:30:03Z",
-          "expires_at": "2026-11-14T17:30:03Z",
-          "source": "stock host/history 31589e3f4c57445744c6652edd5f4ed8353fd41a;27selected/15browser checks and local input/resource audit complete",
-          "status": "inactive awaiting dispatcher audit/publication"
-        },
-        {
-          "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
-          "name": "Imhotep",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T07:54:37.273554+00:00",
-          "expires_at": "2026-11-14T07:54:37.273554+00:00",
-          "source": "verified final result; idle, source checkpoint0c547fdb, runtime Sol/medium"
-        },
-        {
-          "id": "01a1d914-f018-7810-ac0d-9c54e7484979",
-          "name": "Hugh",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T08:12:55.257765+00:00",
-          "expires_at": "2026-11-14T08:12:55.257765+00:00",
-          "source": "verified final/idle; source 3e6551e3; effective Sol/medium; saved title and parentage verified"
-        },
-        {
-          "id": "01a1d92c-d0a7-7443-85a3-f703aa8c3d2c",
-          "name": "Cecil Turtle",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T08:45:34.165207+00:00",
-          "expires_at": "2026-11-14T08:45:34.165207+00:00",
-          "source": "verified final/idle on87961dfb; requested/selected/effective Sol/medium, no fallback/descendants; identity verified",
-          "status": "inactive; seven-file checkpoint reviewed; owned resources cleaned"
-        },
-        {
-          "id": "01a1d94f-1cbb-7663-abae-d273ab01fe65",
-          "name": "Mickey Mouse",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-14T09:11:46.487247+00:00",
-          "expires_at": "2026-11-14T09:11:46.487247+00:00",
-          "source": "verified final/idle on daf51ad6; requested/selected/effective Sol/medium, no fallback/descendants; saved title/parentage/depth1 verified",
-          "status": "inactive; two-file source checkpoint reviewed; owned resources cleaned"
-        }
-      ],
-      "slices": [
-        {
-          "id": "typed-projection",
-          "status": "complete",
-          "title": "Typed-source-backed-exact-stock-projection",
-          "observed_at": "2026-11-14T07:54:37Z",
-          "evidence": "Lead source/producer/caller review PASS at pure typed boundary on0c547fdb; 50/50 named spec; tested tree e3668979; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-projection-review.json. Actual Java integration remains open."
-        },
-        {
-          "id": "browse-state",
-          "status": "complete",
-          "title": "Browse-history-and-detail-state",
-          "observed_at": "2026-11-14T08:12:56Z",
-          "evidence": "Lead full source/spec/frozen-gallery/auth-client review PASS at frontend state boundary on 3e6551e3; 51/51 named spec; tested tree 310aabc0; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-browse-state-review.json. Actual routes/rendered/Java integration remain open."
-        },
-        {
-          "id": "view-parity",
-          "status": "in-progress",
-          "title": "Native-Angular-view-parity",
-          "observed_at": "2026-11-14T17:30:04Z",
-          "evidence": "Host/history 31589e3f4;27selectedPASS,15actualChrome router checks,178pinsmatch/localcleanupverified; route/gallery wired. Original reviewconsumer/Java/wholeStoryproof open;F504/F505/F499 separateunfixed. docs/gcsp/fucq442-stock-screen-2026-11-14.md"
-        },
-        {
-          "id": "review-proof",
-          "status": "not-started",
-          "title": "Selected-proof-and-independent-review"
-        },
-        {
-          "id": "java-integration",
-          "status": "not-started",
-          "title": "Actual-Java-and-journey-integration"
-        }
-      ],
-      "story_points": 13,
-      "started_at": "2026-11-14",
-      "note": "Stock host/history source 31589e3f4;27 selectedPASS,15actual router Chromechecks,178finalpinsmatch; route/gallery now wired. Reviewconsumer + actualJava/originalAC remainopen. F504Medium/F505Low/F499Low separateunfixed. Heldfordispatcherpublication.",
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-446",
       "observed_at": "2026-11-17T19:53:13Z",
       "original_status": "In Progress",
@@ -10091,6 +9991,116 @@
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "note": "API and Angular production builds passed with source/dependency/artifact pins independently audited. Connected failures retained; four proof assumptions corrected and reviewed (integrated719ff9743/79d197213). Corrected attempt22:45:57 stopped at resource admission before proof; retained build RAM grants are the identified obstacle to the next chunk. Same Claude delivery lead owns grant correction, serial rerun and parallel focused-Java work without per-phase parent permission. Both original AC OPEN; focused checks and covering batch remain outstanding."
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-442",
+      "observed_at": "2026-11-18T00:01:16Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Browse released stock and inspect an exact vehicle",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-442",
+      "branch": "dev/DEV-2026-11-13-010",
+      "workers": [
+        {
+          "id": "01a1d901-2715-7062-8602-8b96ff614b2e",
+          "name": "Emmet",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-14T17:30:03Z",
+          "expires_at": "2026-11-14T17:30:03Z",
+          "source": "stock host/history 31589e3f4c57445744c6652edd5f4ed8353fd41a;27selected/15browser checks and local input/resource audit complete",
+          "status": "inactive awaiting dispatcher audit/publication"
+        },
+        {
+          "id": "01a1d903-a79d-7442-b019-cf6aaee90264",
+          "name": "Imhotep",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T07:54:37.273554+00:00",
+          "expires_at": "2026-11-14T07:54:37.273554+00:00",
+          "source": "verified final result; idle, source checkpoint0c547fdb, runtime Sol/medium"
+        },
+        {
+          "id": "01a1d914-f018-7810-ac0d-9c54e7484979",
+          "name": "Hugh",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:12:55.257765+00:00",
+          "expires_at": "2026-11-14T08:12:55.257765+00:00",
+          "source": "verified final/idle; source 3e6551e3; effective Sol/medium; saved title and parentage verified"
+        },
+        {
+          "id": "01a1d92c-d0a7-7443-85a3-f703aa8c3d2c",
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T08:45:34.165207+00:00",
+          "expires_at": "2026-11-14T08:45:34.165207+00:00",
+          "source": "verified final/idle on87961dfb; requested/selected/effective Sol/medium, no fallback/descendants; identity verified",
+          "status": "inactive; seven-file checkpoint reviewed; owned resources cleaned"
+        },
+        {
+          "id": "01a1d94f-1cbb-7663-abae-d273ab01fe65",
+          "name": "Mickey Mouse",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-14T09:11:46.487247+00:00",
+          "expires_at": "2026-11-14T09:11:46.487247+00:00",
+          "source": "verified final/idle on daf51ad6; requested/selected/effective Sol/medium, no fallback/descendants; saved title/parentage/depth1 verified",
+          "status": "inactive; two-file source checkpoint reviewed; owned resources cleaned"
+        },
+        {
+          "id": "01a1ebf1-e254-7060-a87e-ef017b83078c",
+          "name": "Pumbaa 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T00:01:16.290529+00:00",
+          "expires_at": "2026-11-18T00:16:16.290529+00:00",
+          "status": "active source and connected-proof implementation; runtime queued after A43 and Sam440",
+          "source": "Confirmed actual source reads, gateway PASS and branch refresh e5f5295c4; requested/selected/effective Sol/high, no fallback; saved title verified. Connected-proof implementer The Brain 2 active per lead; original acceptance open."
+        }
+      ],
+      "slices": [
+        {
+          "id": "typed-projection",
+          "status": "complete",
+          "title": "Typed-source-backed-exact-stock-projection",
+          "observed_at": "2026-11-14T07:54:37Z",
+          "evidence": "Lead source/producer/caller review PASS at pure typed boundary on0c547fdb; 50/50 named spec; tested tree e3668979; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-projection-review.json. Actual Java integration remains open."
+        },
+        {
+          "id": "browse-state",
+          "status": "complete",
+          "title": "Browse-history-and-detail-state",
+          "observed_at": "2026-11-14T08:12:56Z",
+          "evidence": "Lead full source/spec/frozen-gallery/auth-client review PASS at frontend state boundary on 3e6551e3; 51/51 named spec; tested tree 310aabc0; docs/gcsp/fucq442-delivery.md and root .claude/test-runs/fucq442/lead-browse-state-review.json. Actual routes/rendered/Java integration remain open."
+        },
+        {
+          "id": "view-parity",
+          "status": "in-progress",
+          "title": "Native-Angular-view-parity",
+          "observed_at": "2026-11-14T17:30:04Z",
+          "evidence": "Host/history 31589e3f4;27selectedPASS,15actualChrome router checks,178pinsmatch/localcleanupverified; route/gallery wired. Original reviewconsumer/Java/wholeStoryproof open;F504/F505/F499 separateunfixed. docs/gcsp/fucq442-stock-screen-2026-11-14.md"
+        },
+        {
+          "id": "review-proof",
+          "status": "not-started",
+          "title": "Selected-proof-and-independent-review"
+        },
+        {
+          "id": "java-integration",
+          "status": "not-started",
+          "title": "Actual-Java-and-journey-integration"
+        }
+      ],
+      "story_points": 13,
+      "started_at": "2026-11-14",
+      "note": "Resumed existing stock increment with confirmed source execution. Current StockRoute exact-selection handoff is consumed by ManualRoute; historical source obstacle removed. Actual Java and connected rendered proof remain open. Existing five-slice plan and native status preserved; runtime A43 then Sam440 then Pumbaa442.",
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1
