@@ -238,3 +238,54 @@ At 09:32:47 UTC the canonical reservation registry was empty, but the canonical 
 The shared Claude claims channel was re-read: FUCQ-500 is closed and FUCQ-503 / DEV-2026-11-16-021 owns only its offer-screen focus files and own records, disjoint from this allocation. Shared-login identity supplies no authority over that peer claim. A reported gateway 422 credit-text response (`cf-ray a5c5f60c8d06001f-LHR`) is retained as a diagnostic only; available launcher calls continued without credential or model changes, and no balance conclusion was drawn.
 
 The local checkpoint, immutable reviewed plan, supervisor hashes and subsequent source-pin equivalence audit are retained under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/`; current status/result records use suffix `0902`. Original OOM message/region/allocation/cause remain unknown. Both original ACs, new-result evidence and the three stable slices remain open. Reused checks retain their earlier qualified scope; no unchanged focused/full suite ran. Full suite: deferred to the still-red covering batch. No OneDrive/CloudStorage access occurred.
+
+## Acceptance decision — 18 November 2026
+
+A Claude story-lead resumed the same claim for the Claude dev poller after the Codex poller stopped. The topic was refreshed from local `gcsp-poc-dev` `e66cf7008` by merge `e1cc5a0b8`. Only `.product-map/work.json` conflicted: the base copy was kept because its FUCQ-452 row was the newer observation of the same facts. The merge brought shared changes to `allocation/Prepare.java`, `Assumptions.java` and the new `DeclineReentry.java`. The seven comparison product files are unchanged.
+
+Focused validation ran once at `e1cc5a0b8` on one owned native PostgreSQL 17.12, with `GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set:
+
+- **Java:** `./mvnw -B test -Dtest='gcsp.api.comparison.**,DefaultProfileTest,OidcContextTest,OidcIdentityTest,IdentitySelectionTest,PersistenceWiringTest,NotConfiguredReadinessTest,ClaimWiringTest,NotificationDrainWiringTest,AppointmentsWiringTest,RemoteOrderingStartupTest'` under JDK 21.
+  - Result: **Tests run 121, Failures 0, Errors 0, Skipped 2**, BUILD SUCCESS in 1:36.
+  - The two skips are the opt-in `ComparisonJobFullSizeTest` and `RouteReplayFullSizeTest`.
+  - This one green aggregate supersedes the earlier assembled 119+2. The three earlier export errors do not recur when the tests run in place, with the Node fixtures present.
+  - Two earlier invocations ran no tests: one was offline under the default JDK 11 and could not resolve dependencies; the other was refused by the JDK 11 enforcer.
+- **Angular:** client 28 and component 30, **58/58 passed**.
+- **`check:boundaries`:** fails only on the known base `case-queue.component.html` em dash.
+
+A full suite is deferred to the batch, because no migration, startup, CDI producer, shared properties, pom or test-support file was changed.
+
+**AC2 is met locally.**
+
+- The connected `connected-20261118T035403Z` proof shows:
+  - presenter read-only behaviour, checked in both the DOM and the API (403 on POST, no command section);
+  - an honest unavailable state;
+  - durable interrupted jobs with no stored result;
+  - unchanged three seeds and the full workload.
+
+  Its receipt and proof SHA-256 values were re-verified as `0ea7383d…` and `ee41b1be…`.
+- The failed full-size job reported Java's honest reason, "The comparison could not be completed.", and stored no result.
+- The component spec renders the exact failed and interrupted reasons, and copy makes no promise of improvement.
+- Java `ComparisonHttpTest` (7), `ComparisonJobHttpTest` (8) and `ComparisonNativeTest` (5) passed in the run above.
+
+**AC1 is not met.**
+
+- These parts are proven: retained result identity, measures, assumptions, policy and provenance as actual data, plus Greg's start, rerun, progress and interrupted states.
+- These parts are not: no completed new result and no populated experiment has ever been rendered. The only full-size completion attempt, a hold-sweep at a 2 GiB heap, failed with `OutOfMemoryError` at 1/12 steps.
+- The prepared 3 GiB diagnostic variant under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/` is unconsumed. Its reviewed `launch.py` hard-codes build base `9a92a107` and refuses any build-path change from it. The refresh changed `Prepare.java`, so running it at the current head needs updated pins and a re-review. Running it at the old `b22801518` would mean undoing the refresh.
+- Either way, it needs about 2 to 3.3 hours of the machine's single heavy-runtime lane. That scheduling is for the dispatcher. A memory fix to the shared Java producer would belong to its owners.
+
+Not done, with reasons:
+
+- Safari/WebKit and actual private browsing: no WebKit runner is in the local toolchain, and Chromium isolated contexts only approximate private sessions.
+- Hosted deployment: Gary's isolated Render dev environment.
+- Real identity provider: only local signed test OIDC.
+- Screen-reader and dedicated CSP enforcement checks.
+
+Resources: scratch under `/private/tmp/claude-501/fucq452-20261118T103122Z` with its manifest, a cloned `node_modules` and `services/gcsp-api/target` were all removed and verified absent. PostgreSQL was stopped, its port is closed and its shared-memory segment was released. The retained summary is `.claude/test-runs/fucq452/claude-resume-1031/summary.json`. OneDrive was not accessed.
+
+Separate Bug candidate, source-only and unreproduced:
+
+- In `apps/gcsp-web/src/app/comparison/comparison.component.ts`, the auth effect at line 68 clears the draft, the pending command and the uncertain flag on `signed-out`, and `ngOnDestroy` clears them again.
+- Real OIDC expiry with a failed silent renewal goes to `signed-out` and navigates to sign-in. An edited hold-sweep or points value and any uncertain command would therefore be lost on return, against the shared "sign in and return with saved progress" contract.
+- Specs cover only same-account recovery while the component survives.
