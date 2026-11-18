@@ -9951,7 +9951,7 @@
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "observed_at": "2026-11-18T00:07:54Z",
+      "observed_at": "2026-11-18T00:09:48Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10103,10 +10103,10 @@
           "name": "Sam Sheepdog 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T00:07:54.171382+00:00",
+          "observed_at": "2026-11-18T00:09:48.296548+00:00",
           "expires_at": "2026-11-18T00:22:54.171382+00:00",
-          "status": "active corrected connected-account pipeline C1",
-          "source": "Actual API build supervisor89822/start2026-11-18T00:07:30; sole canonical token2a8eeb5e067d424f93aa19629f93ad20; source b5a0f6094; reviewed proof e371470a. OriginalAC open. Prior raced C1 interrupted and finalized; strict resource receipt is not a test pass. Focused Java actual XML123 plus wiring53 and Angular130 retained."
+          "status": "active corrected account pipeline; source proof unchanged",
+          "source": "Corrected account pipeline execution confirmed: API supervisor92522/start2026-11-18T00:08:49 artifact-ready; corrected web builder resumed. Earlier C1/C2 sampler rejected own later pipeline token, both incomplete/cleaned; assertion removed from newly loaded sources. No connected proof pass. OriginalAC open; retained focused Java XML123/wiring53/Angular130."
         }
       ],
       "note": "Original2AC open; corrected connected proof independently statically reviewed/pushed767d1668b, actual rerun pending. First connected proof failed. Angular130/Java122/wiring53 and production builds strictPASS at their recorded scopes. Held waiting for Claude43 serial batch release; native In Progress and all existing slice statuses retained.",
