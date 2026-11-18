@@ -6125,15 +6125,31 @@
     {
       "assignee": "",
       "id": "FUCQ-438",
-      "observed_at": "2026-11-17T19:53:13Z",
+      "observed_at": "2026-11-18T16:04:16Z",
       "original_status": "To Do",
       "status": "To Do",
       "title": "Release independent artifacts and hand over the final switch",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-438",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "slices": [
+        {
+          "id": "release-proof",
+          "status": "complete",
+          "title": "Local-A-B-independent-release-and-restart-proof",
+          "observed_at": "2026-11-18T16:04:16Z",
+          "evidence": "Local proof scripts/gcsp/fucq438-release-proof.mjs on fb603d49a: 6/6 phases PASS (fresh start, frontend-only, API-only, previous web on new API, restart both) with real A/B builds, native PG17, mock OIDC, Chrome. Hosted Render check is Gary's end-of-build review."
+        },
+        {
+          "id": "handover",
+          "status": "complete",
+          "title": "Final-build-configuration-evidence-and-merge-steps",
+          "observed_at": "2026-11-18T16:04:16Z",
+          "evidence": "docs/gcsp/fucq438-release-handover-2026-11-18.md: build/config evidence and Gary's merge and Render steps (unrun). Blueprint checks 18/20; 2 failures are open Bug FUCQ-514."
+        }
+      ]
     },
     {
       "assignee": "Gary Carter",
