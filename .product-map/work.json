@@ -10629,7 +10629,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-476",
-      "observed_at": "2026-11-18T18:03:47Z",
+      "observed_at": "2026-11-18T19:16:47Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Consume learned artifacts and capture new learning records",
@@ -10667,16 +10667,17 @@
         },
         {
           "id": "s4-learned-success",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Started-app learned-success and fallback HTTP over the real planning inputs after trusted model activation",
-          "observed_at": "2026-11-18T17:45:56Z"
+          "observed_at": "2026-11-18T19:16:47Z",
+          "evidence": "c82dd7d36 lead-reviewed; LearnedPlanJourneyHttpTest 7 + LearnedPlanDefaultHttpTest 1 on started app, real JWT/PG17: available, artifact-missing, artifact-invalid, no-active-model; scoped 189/0 and 306/1 (base failure)"
         },
         {
           "id": "s3-integration",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Existing learned-view hookup, scoped composed acceptance and durable result",
-          "observed_at": "2026-11-18T00:15:19.375157Z",
-          "evidence": "Java learned-view hookup and10planner/13input-parity cases green; actual learned-success HTTP/rendered evidence remains open FUCQ-476 pending held FUCQ-477/M1/FUCQ-515 live PlanningDemand/Supply/Clock bindings; full suite deferred covering batch."
+          "observed_at": "2026-11-18T19:16:47Z",
+          "evidence": "rendered AC1 blocked on FUCQ-449 Angular order-plan screen (unmerged)"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
