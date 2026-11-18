@@ -246,7 +246,7 @@ async function serverEditor() {
   if (r.status !== 200 || r.json?.status !== 'ok') throw new Error(`server editor read failed: ${r.status} ${r.json?.code ?? ''}`);
   const v = r.json.value; const i = v.initial;
   const prefs = Object.fromEntries(Object.entries(i.brief.preferences ?? {}).map(([k, x]) => [k, { value: x.value, importance: x.importance, valueState: x.valueState, importanceState: x.importanceState }]));
-  return { briefVersion: i.briefVersion, draftVersion: i.draftVersion, prefs, buddy: i.buddy?.state, consent: i.consent, rating: i.currentCarRating?.value ?? null, contractId: i.currentCarRating?.contractId ?? null,
+  return { briefVersion: i.briefVersion, draftVersion: i.draftVersion, prefs, buddy: i.buddy?.state, consent: i.consent, essentials: i.brief.essentials ?? {}, rating: i.currentCarRating?.value ?? null, contractId: i.currentCarRating?.contractId ?? null,
     model: v.context?.knownFacts?.currentContract?.value?.model ?? null };
 }
 
@@ -633,12 +633,18 @@ async function scenarioD(cdp, s, pages) {
   await page.key('ArrowLeft');
   s.observations.buddyChoiceImage = await page.shot('d3-narrow-buddy-choice-keyboard.png');
   s.checks.buddyChoiceHasVisibleFocus = (await page.act('return focusEvidence();')).focusVisible === true;
+  // Practical need by keyboard: towbar 'Not sure yet' -> 'Yes' (two arrows up the radio group).
+  s.observations.practicalFocus = await page.tabTo('input[name="practical-equipment"]:checked');
+  await page.key('ArrowLeft'); await page.key('ArrowLeft');
+  s.checks.nativeArrowChangesPracticalNeed = (await page.act("return checkedLabel('practical-equipment');")).includes('Yes');
   s.observations.saveFocus = await page.tabTo('button[type="submit"]');
   await page.key('Enter');
   const status = await waitStatus(page, `/^Your preferences were confirmed|not confirmed|changed elsewhere/.test(s)`, 'keyboard save outcome');
   const saved = await serverEditor();
   s.observations.keyboardSave = { status, beforeVersion: before.briefVersion, savedVersion: saved.briefVersion };
-  s.checks.keyboardSaveUsesTheServer = Number(CONFIRMED.exec(status)?.[1]) === saved.briefVersion && saved.briefVersion === before.briefVersion + HELD_SAVE_STEP && saved.prefs.comfort?.value === oldValue && saved.prefs.comfort?.importance === oldImportance;
+  s.checks.keyboardSaveUsesTheServer = Number(CONFIRMED.exec(status)?.[1]) === saved.briefVersion && saved.briefVersion === before.briefVersion + HELD_SAVE_STEP && saved.prefs.comfort?.value === oldValue && saved.prefs.comfort?.importance === oldImportance
+    && JSON.stringify(saved.essentials.equipment?.value) === JSON.stringify(['towbar']) && JSON.stringify(before.essentials.equipment?.value ?? null) !== JSON.stringify(['towbar']);
+  s.observations.keyboardSave.equipment = { before: before.essentials.equipment ?? null, saved: saved.essentials.equipment ?? null };
   s.observations.pauseFocus = await page.tabTo('gcsp-buddy-controls button:first-of-type');
   s.checks.pauseReachableByKeyboard = s.observations.pauseFocus.focus.text === 'Pause search' && s.observations.pauseFocus.focus.focusVisible;
   await page.key('Enter');
