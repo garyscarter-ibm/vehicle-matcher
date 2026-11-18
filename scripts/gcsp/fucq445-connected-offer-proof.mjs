@@ -427,7 +427,7 @@ const responseSummary = (body) => body;
 const bearerSub = (h) => { const v = hdr(h ?? {}, 'authorization'); try { return JSON.parse(Buffer.from(String(v).split('.')[1], 'base64url').toString()).sub ?? null; } catch { return null; } };
 class Page {
   constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.errors = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
-  send(method, params) { return this.cdp.send(method, params, this.sid); }
+  send(method, params) { return Promise.race([this.cdp.send(method, params, this.sid), sleep(45000).then(() => { throw new Error(`${this.label}: CDP ${method} did not answer in 45s`); })]); }
   event(m) {
     const p = m.params ?? {};
     if (m.method === 'Runtime.exceptionThrown') { this.errors.push(p.exceptionDetails?.text ?? 'exception'); return; }
@@ -453,7 +453,7 @@ class Page {
   }
   async settle() { await sleep(300); await Promise.allSettled(this.waits.splice(0)); }
   calls(from = 0) { return this.log.slice(from).filter((e) => e.method !== 'OPTIONS'); }
-  async eval(expression) { const r = await this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.text}`); return r.result.value; }
+  async eval(expression) { const r = await Promise.race([this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }), sleep(30000).then(() => { throw new Error(`${this.label}: page eval did not answer in 30s`); })]); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.text}`); return r.result.value; }
   // Runs a statement body with the DOM helpers in scope and returns its value.
   act(body) { return this.eval(`(() => { ${HELPERS}\n${body} })()`); }
   async until(body, timeout = 30000, what = body) {
@@ -465,6 +465,7 @@ class Page {
     throw new Error(`${this.label}: timed out waiting for ${what}; page text: ${text}; navigation/API diagnostics: ${JSON.stringify({ location, calls })}`);
   }
   async shot(name) {
+    await this.send('Page.bringToFront');
     const metrics = await this.send('Page.getLayoutMetrics'); const size = metrics.cssContentSize ?? metrics.contentSize;
     const r = await this.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: size.width, height: Math.min(size.height, 10000), scale: 1 } });
     writeFileSync(path.join(dirs.evidence, name), Buffer.from(r.data, 'base64')); return path.join(dirs.evidence, name);
@@ -782,20 +783,22 @@ async function switchAccount(s, pages) {
   const page = pages.paula; const paulaName = seen.paula?.name; const wording = seen.paula?.wording;
   check(s, 'paula offer details were rendered before the switch', !!paulaName && !!wording && (await page.eval(`document.body.textContent`)).includes(paulaName));
   const mark = page.log.length;
-  check(s, 'Sign out is operable from the account menu', await page.eval(`(() => { const d = document.querySelector('summary.gcsp-account-summary'); const b = document.querySelector('button.gcsp-account-signout'); if (!d || !b) return false; d.click(); b.click(); return true; })()`));
+  check(s, 'Sign out is operable from the account menu', await page.eval(`(() => { const d = document.querySelector('summary.gcsp-account-summary'); const b = document.querySelector('button.gcsp-account-signout'); if (!d || !b) return false; d.click(); setTimeout(() => b.click(), 0); return true; })()`));
+  log('switch: sign-out clicked');
   await page.until(`return location.origin === '${ORIGINS.web}' && !!button('Sign in');`, 30000, 'signed-out sign-in screen');
+  log('switch: signed out');
   const out = await snapshot(page, s, 'switch-signed-out');
   check(s, 'signed-out page shows no paula vehicle or terms', !out.text.includes(paulaName) && !out.text.includes(wording) && !out.actions.length);
   // Leak watch: records any paula vehicle, terms or decision action in every later document of this tab.
-  const watch = `(() => { const name = ${JSON.stringify(paulaName)}, words = ${JSON.stringify(wording)}; const note = () => { const t = document.body ? document.body.textContent : ''; const hit = { name: t.includes(name), terms: t.includes(words), actions: !!document.querySelector('[data-offer-action]') }; if (hit.name || hit.terms || hit.actions) { try { sessionStorage.setItem('f445leak', JSON.stringify({ ...JSON.parse(sessionStorage.getItem('f445leak') ?? '{}'), ...Object.fromEntries(Object.entries(hit).filter(([, v]) => v)) })); } catch {} } }; addEventListener('DOMContentLoaded', () => { note(); new MutationObserver(note).observe(document, { subtree: true, childList: true, characterData: true, attributes: true }); }); })()`;
+  const watch = `(() => { const name = ${JSON.stringify(paulaName)}, words = ${JSON.stringify(wording)}; const note = () => { try { sessionStorage.setItem('f445runs', String(1 + Number(sessionStorage.getItem('f445runs') ?? 0))); } catch {} const t = document.body ? document.body.textContent : ''; const hit = { name: t.includes(name), terms: t.includes(words), actions: !!document.querySelector('[data-offer-action]') }; if (hit.name || hit.terms || hit.actions) { try { sessionStorage.setItem('f445leak', JSON.stringify({ ...JSON.parse(sessionStorage.getItem('f445leak') ?? '{}'), ...Object.fromEntries(Object.entries(hit).filter(([, v]) => v)) })); } catch {} } }; addEventListener('DOMContentLoaded', () => { note(); new MutationObserver(note).observe(document, { subtree: true, childList: true, characterData: true, attributes: true }); }); })()`;
   const { identifier } = await page.send('Page.addScriptToEvaluateOnNewDocument', { source: watch });
-  await deepLinkLogin(page, 'bruno', offers.paula, { from: mark });
+  log('switch: leak watch installed'); await deepLinkLogin(page, 'bruno', offers.paula, { from: mark }); log('switch: bruno signed in');
   await page.until(`return !!$('gcsp-status-screen') && !text().includes('Loading');`, 20000, 'switched account denial');
   const dom = await snapshot(page, s, 'switch-bruno-denied');
   await page.settle(); await sleep(1000); await page.settle();
-  const leak = JSON.parse(await page.eval(`sessionStorage.getItem('f445leak') ?? '{}'`)); s.observations.leakWatch = leak;
+  const leak = JSON.parse(await page.eval(`sessionStorage.getItem('f445leak') ?? '{}'`)); const runs = Number(await page.eval(`sessionStorage.getItem('f445runs') ?? 0`)); s.observations.leakWatch = { leak, observerRuns: runs };
   await page.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
-  check(s, 'bruno sees no paula vehicle, terms or decision actions', !dom.text.includes(paulaName) && !dom.text.includes(wording) && !dom.actions.length && Object.keys(leak).length === 0);
+  check(s, 'bruno sees no paula vehicle, terms or decision actions', !dom.text.includes(paulaName) && !dom.text.includes(wording) && !dom.actions.length && Object.keys(leak).length === 0 && runs > 0);
   const reads = page.calls(mark).filter(e => e.path === offerPath(offers.paula) && e.method === 'GET');
   s.observations.switchReads = reads.map(({ path: p, auth, sub, status }) => ({ path: p, auth, sub, status }));
   check(s, 'every paula offer read after the switch carried bruno bearer and returned 403', reads.length > 0 && reads.every(e => e.auth && e.sub === 'sub-bruno' && e.status === 403));
