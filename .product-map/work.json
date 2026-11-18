@@ -8310,87 +8310,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-17T19:53:20Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
-      "slices": [
-        {
-          "id": "inspection",
-          "status": "in-progress",
-          "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-16T22:57:36Z"
-        },
-        {
-          "id": "jobs",
-          "status": "in-progress",
-          "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-16T22:57:36Z"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Connected Java roles and rendered acceptance evidence"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-020",
-      "note": "Partial source/fixture result:28clienta02+30componenta03 pass on matchingclosure; actual boundaryrc1 inheritedcasequeueemdash. BothoriginalACopen:JavaReplay/newrun,parentroute/auth,connected/renderedproof missing. No slice complete.",
-      "workers": [
-        {
-          "name": "Foghorn Leghorn 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T23:20:35.697529+00:00",
-          "expires_at": "2026-11-16T23:20:35.697529+00:00",
-          "source": "/root/foghorn_leghorn_2",
-          "status": "final partial delivery bookkeeping complete; original ACs remain open"
-        },
-        {
-          "name": "Marvin the Martian 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:15Z",
-          "expires_at": "2026-11-16T23:04:38.753688+00:00",
-          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Porky Pig 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:42Z",
-          "expires_at": "2026-11-16T23:04:38.753940+00:00",
-          "source": "/root/foghorn_leghorn_2/porky_pig_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Hugo 3",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-16T23:16:41Z",
-          "expires_at": "2026-11-16T23:16:52Z",
-          "source": "/root/foghorn_leghorn_2/hugo_3",
-          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
-        },
-        {
-          "name": "Bertie 2",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-16T23:18:28Z",
-          "expires_at": "2026-11-16T23:19:03.283520+00:00",
-          "source": "/root/foghorn_leghorn_2/bertie_2",
-          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-443",
       "observed_at": "2026-11-18T02:12:44Z",
       "original_status": "In Progress",
@@ -10329,6 +10248,118 @@
           "title": "Covering batch verification"
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-18T04:03:30Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+        },
+        {
+          "id": "jobs",
+          "status": "in-progress",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Connected Java roles and rendered acceptance evidence",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "18Nov local connected comparison PASS39checks/4scenarios/6JPEG at proofb6293525c, artifacts7bd3f43; Angular58PASS; Java119distinctPASS+2gatedSKIP with failedaggregates retained. OriginalACs remainopen: completednewresult/populatedexperiments,currentfullsize/browser/hosted evidence and greenbatch. IndependentreviewPASS; allownedruntimecleaned. docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Hugo 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
+          "source": "/root/foghorn_leghorn_2/hugo_3",
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
+        },
+        {
+          "name": "Bertie 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
+          "source": "/root/foghorn_leghorn_2/bertie_2",
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
+        },
+        {
+          "name": "Scrappy Doo 3",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3",
+          "status": "partial connected result published; original ACs open; owned runtime cleaned"
+        },
+        {
+          "name": "Cuthbert 4",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3/cuthbert_4",
+          "status": "proof author returned; syntax and connected39checks pass after proof corrections"
+        },
+        {
+          "name": "Sam Sheepdog 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3/sam_sheepdog_3",
+          "status": "independent source/receipt/six-image review PASS; original ACs remain open"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1
