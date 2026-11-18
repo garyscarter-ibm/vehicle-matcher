@@ -40,7 +40,7 @@
             @if (!options.options.alternativeCars.available) { <p>Alternative car — Not available: {{ options.options.alternativeCars.reason || 'No suitable car was supplied.' }}</p> }
             @if (!options.options.laterRelease.available) { <p>Later release — Not available: {{ options.options.laterRelease.reason || 'No reviewed release was supplied.' }}</p> }
             @if (!options.options.contractExtension.available) { <p>Contract extension — Not available: {{ options.options.contractExtension.reason || 'An extension is not permitted.' }}</p> }
-            <p>Preference changes — Not available: {{ options.options.preferenceRelaxations.reason || 'Preference confirmation is unavailable for this case.' }}</p>
+            @if (!options.options.preferenceRelaxations.available) { <p>Preference changes: {{ options.options.preferenceRelaxations.reason || 'No preference change is currently available.' }}</p> }
             @if (needsConfirmation().length) { <p>These cars need confirmation and cannot be chosen:</p><ul>@for (car of needsConfirmation(); track $index) { <li>{{ car }}</li> }</ul> }
           </section>
           @if (!options.nextStatuses.length) { <p class="gcsp-note">No further status changes are permitted for this case.</p>
@@ -66,6 +66,19 @@
                     <option value="">Keep the current recorded remedy</option>@for (choice of store.choices(); track choice.key) { <option [value]="choice.key">{{ choice.label }}</option> }
                   </select>
                 </gcsp-labelled-field>
+                @if (store.selectedPreference(); as preference) {
+                  <p>{{ preferenceLabel(preference.path) }} is currently {{ preferenceText(preference.before) }}. The employee must confirm this single change through their brief.</p>
+                  <gcsp-labelled-field [controlId]="control('preferenceValue')" label="Proposed preference value" [error]="view().errors.preferenceValue || ''">
+                    @if (preference.valueType === 'enum') {
+                      <select [id]="control('preferenceValue')" [value]="view().draft.preferenceValue" [attr.aria-describedby]="described('preferenceValue')" [attr.aria-invalid]="view().errors.preferenceValue ? 'true' : null" (change)="edit('preferenceValue', $event)">
+                        <option value="">Choose the proposed value</option>@for (value of preference.values; track $index) { <option [value]="$index">{{ preferenceText(value) }}</option> }
+                      </select>
+                    } @else {
+                      <input [id]="control('preferenceValue')" type="number" step="1" [min]="preference.minimum!" [max]="preference.maximum!" [value]="view().draft.preferenceValue" [attr.aria-describedby]="described('preferenceValue')" [attr.aria-invalid]="view().errors.preferenceValue ? 'true' : null" (input)="edit('preferenceValue', $event)" />
+                      <p>From {{ preference.minimum }} to {{ preference.maximum }} {{ preference.unit || '' }}.</p>
+                    }
+                  </gcsp-labelled-field>
+                }
                 @if (view().draft.remedyKey === 'manual') {
                   <gcsp-labelled-field [controlId]="control('decision')" label="Scheme-team decision" [error]="view().errors.decision || ''">
                     <textarea [id]="control('decision')" rows="3" maxlength="2000" [value]="view().draft.decision" [attr.aria-describedby]="described('decision')" [attr.aria-invalid]="view().errors.decision ? 'true' : null" (input)="edit('decision', $event)"></textarea>

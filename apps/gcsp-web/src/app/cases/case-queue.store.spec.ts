@@ -59,10 +59,26 @@ describe('Greg queue authority, review and readback', () => {
     expect(store.view().detail?.owner).toBe('Greg'); expect(store.view().options?.case.version).toBe(3);
     expect(client.prepareUpdate).not.toHaveBeenCalled(); expect(client.updateCase).not.toHaveBeenCalled();
   });
-  it('uses only returned choices and never permits cars needing confirmation or preference commands', async () => {
+  it('uses only returned choices and never permits cars needing confirmation or unavailable preference commands', async () => {
     await select(); expect(store.choices().map(c => c.key)).toEqual(['car:0', 'later:0', 'manual', 'extension']);
     draft(); store.edit('remedyKey', 'unknown-1'); expect(store.review()).toBe(false); expect(store.view().errors.remedyKey).toBeTruthy();
     store.edit('remedyKey', 'car:0'); expect(store.review()).toBe(true); expect(store.view().review?.input.remedy).toEqual({ type: 'alternative-car', orderUuid: 'exact-1' });
+  });
+  it('reviews only current offered enum and bounded slider preference values without changing essentials', async () => {
+    const original = options();
+    client.readOptions.mockResolvedValueOnce(ok({ ...original, options: { ...original.options, preferenceRelaxations: { available: true, items: [
+      { type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.body.value', before: ['hatchback'], valueType: 'enum', values: ['estate', 'saloon'] },
+      { type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.size.value', before: 50, valueType: 'slider', minimum: 0, maximum: 100 },
+    ] } } }));
+    await select(); draft(); store.edit('remedyKey', 'preference:0');
+    expect(store.review()).toBe(false); store.edit('preferenceValue', '9'); expect(store.review()).toBe(false);
+    store.edit('preferenceValue', '0'); expect(store.review()).toBe(true);
+    expect(store.view().review?.input.remedy).toEqual({ type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' });
+    expect(client.updateCase).not.toHaveBeenCalled(); store.cancelReview(); store.edit('remedyKey', 'preference:1');
+    expect(store.view().draft.preferenceValue).toBe('');
+    for (const value of ['', '50', '75.5', '101', 'invalid']) { store.edit('preferenceValue', value); expect(store.review()).toBe(false); }
+    store.edit('preferenceValue', '75'); expect(store.review()).toBe(true);
+    expect(store.view().review?.input.remedy).toMatchObject({ path: 'preferences.size.value', value: 75 });
   });
   it('reviews immutable current-version intent, cancels without POST and confirms only deliberately', async () => {
     await select(); const command = reviewed();
