@@ -10252,7 +10252,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T05:43:26Z",
+      "observed_at": "2026-11-18T06:13:51Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10264,26 +10264,26 @@
           "id": "inspection",
           "status": "in-progress",
           "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
         },
         {
           "id": "jobs",
           "status": "in-progress",
           "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Connected Java roles and rendered acceptance evidence",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "18Nov one real hold-sweep completion attempt running at proof0ee22999f:12steps/3seeds/full workload, no seeded success or retry. Both production builds and keeper final cleanup strict true; exported syntax rc0. Existing39check lifecycle proof reused. OriginalACs/slices remainopen; browser/hosted gaps and red covering batch retained. docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "note": "18Nov sole current fullsize hold-sweep attempt at0ee22999f failed1of12/0of3/noresult; logOutOfMemoryError, heapvsnonheap unresolved underXmx2g. Builds/syntax/keepercleanup pass, actualproofFAIL; independent honestfailed-evidence/resource reviewPASS. OriginalACs/all3slices remainopen. Existing39checks/Angular58/Java119+2skips reused; failedaggregates/redbatch and browser/hosted gaps retained. Allownedruntimecleaned/no retry. docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10361,37 +10361,37 @@
           "name": "Hugh 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T05:43:26.040464+00:00",
-          "expires_at": "2026-11-18T06:13:26.040464+00:00",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
           "source": "/root/hugh_2",
-          "status": "observed supervising one real12-step hold-sweep attempt; original ACs remain open"
+          "status": "one actual completion attempt failed1of12/OOMclass; final review PASS on honest failed evidence; no runtime; original ACs open"
         },
         {
           "name": "Petunia Pig 2",
           "harness": "codex",
           "role": "runner",
-          "observed_at": "2026-11-18T05:43:26.040464+00:00",
-          "expires_at": "2026-11-18T06:13:26.040464+00:00",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
           "source": "/root/hugh_2/petunia_pig_2",
-          "status": "observed running owned fixed-clock completion pipeline; builds finalized strict true; real job running"
+          "status": "returned: builds stricttrue, actual proofFAIL, owned runtime/resources cleaned; no retry"
         },
         {
           "name": "Heihei 3",
           "harness": "codex",
           "role": "mechanic",
-          "observed_at": "2026-11-18T05:07:50.659270+00:00",
-          "expires_at": "2026-11-18T05:37:50.659270+00:00",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
           "source": "/root/hugh_2/heihei_3",
-          "status": "source returned; proof syntax reviewed; no active runtime"
+          "status": "returned proof author; no runtime; final syntax passed before failed workload"
         },
         {
           "name": "Pluto 3",
           "harness": "codex",
           "role": "reviewer",
-          "observed_at": "2026-11-18T05:43:26.040464+00:00",
-          "expires_at": "2026-11-18T05:43:26.040464+00:00",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
           "source": "/root/hugh_2/pluto_3",
-          "status": "source/supervisor exact-hash review returned PASS; actual evidence review pending"
+          "status": "returned independent failed-evidence/cleanup/image review PASS; no blocker/major; no runtime"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
