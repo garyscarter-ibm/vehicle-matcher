@@ -7499,7 +7499,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-18T16:52:04Z",
+      "observed_at": "2026-11-18T17:34:08Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Submit Production requests and reconcile responses",
@@ -7558,14 +7558,17 @@
         },
         {
           "id": "s8-deployed-journey",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Started-app journey over the real bound planner inputs (PostgresPlanningDemand/Supply, RunPlanningClock), no test beans",
-          "observed_at": "2026-11-18T16:52:04Z"
+          "observed_at": "2026-11-18T17:34:08Z",
+          "evidence": "ProductionDeployedJourneyHttpTest 7/7 at a0ad20c63, no alternatives; plan-based submit blocked: demo employeeFacts lack driverEligible"
         },
         {
           "id": "s9-deployed-integration",
-          "status": "not-started",
-          "title": "Story-level scoped validation on the merged head and result for the deployed proof"
+          "status": "complete",
+          "title": "Story-level scoped validation on the merged head and result for the deployed proof",
+          "observed_at": "2026-11-18T17:34:08Z",
+          "evidence": "lead review of a0ad20c63; scoped 290/0/0 (production 66, planning 170, wiring/startup 54) on merged head, native PG17"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
