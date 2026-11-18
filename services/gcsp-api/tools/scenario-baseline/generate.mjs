@@ -24,6 +24,25 @@ const run = (await repository.currentRun('scenario-baseline')).value;
 const read = { runId: run.runId, asOf: instant, policyVersion: run.policyVersion };
 const seed = await loadDemoPrincipalSeed(policy, read);
 const principals = [];
+// FUCQ-528: Sam gets a plug-in essential no released car meets and a renewal moved to 2027-03-16, so Greg's plan
+// orders for him while the run date is 2026-11-17 to 2027-01-19 (horizon 120d, lead 56d; DemoOrderWindowGuardTest).
+const ORDERABLE = 'employee-sam';
+const later = (date) => new Date(Date.parse(date) + 105 * 86400000).toISOString().slice(0, date.length);
+const laterContract = (c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k,
+  /Date$/.test(k) && k !== 'returnedDate' && typeof v === 'string' ? later(v) : v]));
+const withOrderableNeed = (employeeId, record) => {
+  if (employeeId !== ORDERABLE) return record;
+  const own = record.drivers.find((d) => d.kind === 'employee' && d.employeeId === employeeId);
+  const current = record.contracts.find((c) => c.status === 'current');
+  const fuel = { value: 'phev', operator: 'equals', unit: null, state: 'confirmed', source: own.eligible.provenance.sourceRef,
+    confirmedAt: own.eligible.provenance.observedAt };
+  const facts = record.employeeFacts;
+  return { ...record,
+    employeeFacts: { ...facts, essentials: { ...facts.essentials, fuel },
+      requiredBy: { ...facts.requiredBy, value: later(facts.requiredBy.value) } },
+    contracts: record.contracts.map((c) => (c === current ? laterContract(c) : c)),
+    histories: record.histories.map((h) => ({ ...h, entries: h.entries.map((e) => (e.contractId === current.contractId ? laterContract(e) : e)) })) };
+};
 for (const p of seed.value.principals.filter((x) => x.roles.includes('employee'))) {
   const context = (await identity.switchPrincipal(presenter, p.principalId, `switch-${p.principalId}`)).value.context;
   await seedManualDemoContext({ repository, policy, clock, identity, context });
@@ -31,7 +50,7 @@ for (const p of seed.value.principals.filter((x) => x.roles.includes('employee')
   const slots = (await repository.query(context, 'entitlement_slots', { employeeId: p.employeeId })).value;
   const attributes = ({ employeeId, entitlementSlotId, capacity, runId, version, createdAt, updatedAt, ...rest }) => rest;
   principals.push({ employeeId: p.employeeId, name: p.name, roles: p.roles, companyId: p.companyId, schemeId: p.schemeId,
-    gradeId: p.gradeId, entitlementSlotId: p.entitlementSlotId, record: employee.contract.manualContext, recordVersion: employee.version,
+    gradeId: p.gradeId, entitlementSlotId: p.entitlementSlotId, record: withOrderableNeed(p.employeeId, employee.contract.manualContext), recordVersion: employee.version,
     slots: slots.map((s) => ({ slotId: s.entitlementSlotId, capacity: s.capacity, attributes: attributes(s), version: s.version })) });
 }
 const catalogue = (await loadScenarioCatalogue({ policy, read })).value;

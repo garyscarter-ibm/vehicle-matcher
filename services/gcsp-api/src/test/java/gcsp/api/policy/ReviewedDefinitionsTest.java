@@ -24,6 +24,14 @@ class ReviewedDefinitionsTest {
     }
 
     @Test
+    void theChoiceModelSetHasTheDigestNodeComputes() throws Exception {
+        ObjectNode set = ReviewedDefinitions.get("fucq115-choice-model-v1");
+        assertEquals("dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d", set.get("digest").textValue());
+        assertEquals(7, set.get("definitions").size());
+        assertTrue(ReviewedDefinitions.valid(set));
+    }
+
+    @Test
     void anUnknownSetIsNotAdoptable() throws Exception {
         assertNull(ReviewedDefinitions.get("presenter-controls-v1"));
         assertNull(ReviewedDefinitions.get(null));

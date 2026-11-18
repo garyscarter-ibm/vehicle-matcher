@@ -16,6 +16,17 @@ claims, file ownership, shared resource reservations and Git workflow. Preserve 
 checkpoints; this direction does not transfer Story ownership or change acceptance scope. Earlier instructions
 to maintain or restart the Claude delegation queue are superseded.
 
+## Poller-to-poller mail — Russell, 18 November 2026
+
+Pollers talk to each other only through `_tools/dev_mail.py` (agent-scaffolding 0.10.0). A question, job or notice
+for another poller is a thread addressed to that member's poller (work that needs their own sign-in), `any` poller,
+or `all` of them; `dev_mail.py` commits and pushes it. Every poller runs `dev_mail.py inbox` at the start of every
+session and every pass, idle passes included, and acknowledges then answers, does or throws back (with the error)
+each thread waiting on it in that pass. Business questions go to the `business-analyst` agent. Jira comments, the
+learnings log and `.claude/claude-poller-claims.json` are not a channel: nobody is sure to read them. The learnings
+log stays the record of observed issues, as below. Once a session, a poller may send the others a `chat` line;
+anything it says about a person is a compliment.
+
 ## Delivery autonomy — Gary, 17 November 2026
 
 Give delivery leads coherent increments with enough work to use parallel agents or distinct working sessions
