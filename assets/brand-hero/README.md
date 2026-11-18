@@ -17,6 +17,7 @@ One landscape photo per brand, named exactly:
 | `ford.jpg` | Ford |
 | `honda.jpg` | Honda |
 | `motorrad.jpg` | BMW Motorrad |
+| `ram.jpg` | RAM |
 
 The shell probes `assets/brand-hero/<brand>.jpg` at load; the filename is the
 only wiring. (To change it, see `renderShell`'s `heroUrl` in index.html.)
@@ -40,6 +41,8 @@ images):
 - BMW / MINI / BMW Motorrad -> BMW Group PressClub (press.bmwgroup.com)
 - Ford -> Ford Media Center (media.ford.com / media.ford.co.uk)
 - Honda -> Honda News EU (hondanews.eu)
+
+RAM provenance (2026-11-18): `ram.jpg` is the official [2026 RAM 1500 marketing hero](https://www.ramtrucks.com/content/dam/fca-brands/na/ramtrucks/en_us/2026/ram-1500/overview/desktop/my26-ram-1500-vlp-hero-slider-02-desktop.jpg), resized to 1600 pixels wide. It illustrates the brand; result cards use each listing's own photo. `../brand-logos/ram.svg` embeds the unaltered official [RAM header mark](https://www.ramtrucks.com/content/dam/fca-brands/na/ramtrucks/en_us/global/header/ram-logo-black.jpg). Both source assets were linked by the official RAM 1500 page.
 
 ## Licensing
 

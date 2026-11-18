@@ -41,11 +41,11 @@
  */
 
 import { apiPool, apiGeocode } from '../engine.js';
-import { el, gbp } from '../ui.js';
+import { el, gbp, fuelLabel } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
 import { renderRangeSlider, renderOptionList } from './question-ui.js';
 import {
-  matchCard, SPEC_LABELS, FUEL_SPEC, SWATCH_HEX, CONCEPT_LABELS,
+  matchCard, SPEC_LABELS, SWATCH_HEX, CONCEPT_LABELS,
 } from './result-card.js';
 import { celebrate, cap } from './match-signal.js';
 
@@ -538,6 +538,19 @@ const GUESS_WHO_COPY = {
   },
 };
 
+GUESS_WHO_COPY.ram = {
+  ...GUESS_WHO_COPY.bmw,
+  wordmark: 'RAM Truck Finder',
+  title: 'Find the truck. Make it yours.',
+  startNote: ({ total }) => `${total} RAM trucks in this inventory. Set your limits to build your shortlist.`,
+  liveNote: ({ left, gone }) => `${gone} ruled out. ${left} trucks still in the running.`,
+  oneNote: 'One truck left. Take a closer look.',
+  fewNote: ({ left }) => `${left} trucks left. Compare the details and make your call.`,
+  emptyTitle: 'No trucks match every choice.',
+  emptyNote: 'Open up a filter or undo your last choice to bring trucks back.',
+  prompts: { ...GUESS_WHO_COPY.bmw.prompts, colour: 'Which colors work for you?', body: 'Which truck body are you looking for?' },
+};
+
 const copyFor = (brand) => GUESS_WHO_COPY[brand] || GUESS_WHO_COPY.bmw;
 const labelFor = (brand, key) => FILTER_LABELS_BY_BRAND[brand]?.[key] || FILTER_LABELS[key];
 
@@ -621,6 +634,7 @@ function matchAt(pool, i, big) {
       retailerName: pool.retailers[pool.retailer[i]],
       colour: shade ? { colour: shade, manufacturerColour: paint || shade } : null,
       priceMin: price,
+      currency: pool.currency,
       priceMax: price,
       listingCount: 1,
       mileage: pool.mileage[i] < 0 ? null : pool.mileage[i],
@@ -634,7 +648,7 @@ function matchAt(pool, i, big) {
       // server/index.js). A card-sized card deserves the bigger variant, so it
       // is reconstructed here rather than sent for all 12,000.
       photo: big ? fullPhoto(photo) : photo,
-      link: pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null,
+      link: pool.links?.[i] || (pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null),
     },
   };
 }
@@ -866,7 +880,7 @@ function mount(root, ctx) {
       const lo = Math.floor(priceSpan[0] / PRICE_STEP) * PRICE_STEP;
       const hi = Math.ceil(priceSpan[1] / PRICE_STEP) * PRICE_STEP;
       const q = {
-        id: 'price', type: 'slider', range: true, min: lo, max: hi, step: PRICE_STEP, format: 'gbp', thumbNoun: 'price', title: copy.prompts.price,
+        id: 'price', type: 'slider', range: true, min: lo, max: hi, step: PRICE_STEP, format: pool.currency === 'USD' ? 'usd' : 'gbp', currency: pool.currency, thumbNoun: 'price', title: copy.prompts.price,
       };
       f.price = [lo, hi];
       axes.push({
@@ -875,7 +889,7 @@ function mount(root, ctx) {
         narrowed: () => f.price[0] > lo || f.price[1] < hi,
         // Always the actual figures, never "Any": the range IS set from the
         // start, and printing "Any" over a live filter would misdescribe it.
-        summary: () => `${gbp(f.price[0])} – ${gbp(f.price[1])}`,
+        summary: () => `${gbp(f.price[0], pool.currency)} – ${gbp(f.price[1], pool.currency)}`,
         build: (host) => renderRangeSlider(host, q, f, { onChange: filtersChanged }),
         clear: () => { f.price = [lo, hi]; },
         test: () => {
@@ -913,7 +927,7 @@ function mount(root, ctx) {
     const siteLat = sites.lat || [];
     const siteLon = sites.lon || [];
     const located = siteLat.reduce((n, v, at) => (v != null && siteLon[at] != null ? n + 1 : n), 0);
-    if (located > 1) {
+    if (located > 1 && ctx.brand !== 'ram') {
       // Miles from the buyer to every retailer, memoised on the postcode. Rebuilt
       // only when the origin moves, not on every filter change: `test()` is called
       // for each axis on each render, and a postcode is typed once per session.
@@ -1037,7 +1051,7 @@ function mount(root, ctx) {
         },
       });
     };
-    dictAxis('fuel', pool.fuels, pool.fuel, (v) => FUEL_SPEC[v] || cap(v), false);
+    dictAxis('fuel', pool.fuels, pool.fuel, (v) => fuelLabel(v, ctx.brand) || cap(v), false);
     dictAxis('body', pool.bodies, pool.body, (v) => SPEC_LABELS[v] || cap(v), false);
     dictAxis('colour', pool.shades, pool.shade, (v) => cap(v), true);
 
@@ -1287,7 +1301,7 @@ function mount(root, ctx) {
       node.append(photoFor(i, false, pool.names[pool.name[i]]));
       const body = el('div', 'vm-gw-tile-body');
       body.append(el('span', 'vm-gw-tile-name', pool.names[pool.name[i]]));
-      if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i])));
+      if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i], pool.currency)));
       node.append(body);
       node.append(rejectBlock(i));
       return;
@@ -1563,6 +1577,9 @@ function mount(root, ctx) {
     const gone = total - left;
     noteEl.textContent = (() => {
       if (!left) return '';
+      if (ctx.brand === 'ram' && state.layout?.stage === 'dot') {
+        return 'Each colored tile is a truck. Narrow your choices to reveal photos and details.';
+      }
       if (left === total) return copy.startNote({ total: miles(total) });
       if (left === 1) return copy.oneNote;
       if (left <= 6) return copy.fewNote({ left });
@@ -1802,7 +1819,7 @@ function mount(root, ctx) {
       const capped = Math.floor((pool.price[i] - 1) / PRICE_STEP) * PRICE_STEP;
       if (capped >= price.q.min && capped < f.price[1]) {
         out.push({
-          label: copy.reject.price({ price: gbp(pool.price[i]) }),
+          label: copy.reject.price({ price: gbp(pool.price[i], pool.currency) }),
           apply: () => setAxis('price', [Math.min(f.price[0], capped), capped]),
         });
       }
@@ -1933,6 +1950,9 @@ function mount(root, ctx) {
     tools.append(undoBtn, resetBtn);
 
     barEl.append(lead, chipsEl, tools);
+    if (ctx.brand === 'ram') {
+      barEl.append(el('p', 'vm-gw-swipe-hint', 'Swipe filters for more choices.'));
+    }
 
     board = el('div', 'vm-gw-board');
 

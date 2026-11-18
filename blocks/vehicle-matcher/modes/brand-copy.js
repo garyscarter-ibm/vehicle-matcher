@@ -660,3 +660,50 @@ export function tradeLines(brandKey, trades) {
     return line.charAt(0).toUpperCase() + line.slice(1);
   });
 }
+
+
+// Original truck-first copy informed by RAM's work, open-road and ownership pages.
+BRAND_COPY.ram = {
+  ...BRAND_COPY.bmw,
+  name: 'RAM',
+  title: 'Find the RAM for your next chapter.',
+  cta: 'Find my RAM',
+  lede: ({ questions, retailer }) => `${questions} quick questions. Choose your budget, truck series, fuel, seats and equipment priorities. We’ll put the RAM trucks at ${retailer} to the test against your answers.`,
+  unmet: ({ list, retailer }) => `No ${list} in the ${retailer} inventory right now. These trucks come closest to the rest of your brief.`,
+  tasteTitle: ({ model }) => `The ${model}. Ready for your shortlist.`,
+  tasteTitleHere: ({ model, retailer }) => `Your pick at ${retailer}: the ${model}.`,
+  tasteLede: () => 'These trucks cover the same ground on fit. This one lines up best with the things you put first.',
+  tiedTitle: ({ count }) => `${cardinal(count)} trucks. One strong shortlist.`,
+  tiedTitleHere: ({ count, retailer }) => `${cardinal(count)} trucks at ${retailer} share the lead.`,
+  tiedLede: () => 'Your answers put these trucks level. Take a closer look at the equipment, mileage and finish to choose yours.',
+  refineLabel: ({ count }) => count > 1 ? `Work these ${count} down to your truck` : 'Fine-tune your truck search',
+  refineStatus: ({ shown, wants }) => `${shown} ${shown === 1 ? 'truck' : 'trucks'} still in the running, with ${wants}.`,
+  refineStatusPlain: ({ shown }) => `${shown} ${shown === 1 ? 'truck' : 'trucks'} still in the running.`,
+  refineEmpty: ({ wants }) => `No truck here combines ${wants}. Remove a choice to bring more trucks back.`,
+  refineEmptyHidden: 'Every truck is ruled out. Bring one back or reset your search.',
+  rejectPrompt: 'What would make it a better fit?',
+  rejectHint: 'Rule it out and see the next truck.',
+  pickLabel: 'Choose your truck',
+  kitLabel: 'Listed equipment',
+  briefLabel: 'Your truck brief',
+  closestLede: () => 'Each truck misses part of your brief. Check the reasons before you choose.',
+  weakLede: () => 'These are the closest trucks in this inventory, but each misses something you asked for. Adjust your brief or check again as stock changes.',
+  searchingNearby: 'Checking the available inventory',
+  workingLabel: 'THE MATCH, EXPLAINED',
+  working: ({ total, eligible }) => `We checked ${total} RAM trucks. ${eligible} met your budget and seating needs.`,
+  workingMargin: ({ margin }) => ` The next truck finished ${margin} points behind.`,
+  workingWeak: ({ top }) => ` The highest match score was ${top}%.`,
+  workingScore: ' Match scores compare trucks with your answers. Equal scores mean equal fit.',
+  fuelLabels: { petrol: 'Gasoline' },
+};
+
+
+UNMET_PHRASES.ram = {
+  fuel: { petrol: 'gasoline trucks', diesel: 'diesel trucks', phev: 'plug-in hybrid trucks', ev: 'electric trucks' },
+  bodyStyles: { pickup: 'pickups' },
+};
+TRADE_COPY.ram = {
+  label: 'Check the fit',
+  fuel: { petrol: 'gasoline', diesel: 'diesel', phev: 'a plug-in hybrid', ev: 'electric' },
+  bodyStyles: { pickup: 'a pickup' },
+};

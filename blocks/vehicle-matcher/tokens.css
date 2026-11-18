@@ -344,3 +344,32 @@
   --vm-ease: cubic-bezier(0.22, 0.61, 0.24, 1);
   --vm-pop: 0.46s;
 }
+
+
+.vm.vm-ram {
+  /* Neutral type keeps the RAM demo independent of other marques' proprietary faces. */
+  --vm-font-heading: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --vm-font-body: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --vm-font-bold: var(--vm-font-body);
+  --vm-ink: #161616;
+  --vm-ink-strong: #000000;
+  --vm-ink-muted: #595959;
+  --vm-surface: #ffffff;
+  --vm-surface-alt: #f4f4f4;
+  --vm-surface-dark: #101010;
+  --vm-accent: #111111;
+  --vm-accent-ink: #ffffff;
+  --vm-accent-secondary: #555555;
+  --vm-accent-spot: #707070;
+  --vm-accent-soft: rgba(0, 0, 0, 0.06);
+  --vm-line: #c9c9c9;
+  --vm-radius: 0px;
+  --vm-radius-control: 0px;
+  --vm-btn-height: 48px;
+  --vm-btn-padding: 13px 24px 15px;
+  --vm-btn-min-width: 220px;
+  --vm-btn-transform: uppercase;
+  --vm-btn-letter-spacing: 0.04em;
+  --vm-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --vm-pop: 0.38s;
+}

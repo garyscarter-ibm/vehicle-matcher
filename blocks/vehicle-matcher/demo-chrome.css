@@ -355,3 +355,8 @@
 /* Text-wordmark fallback sits on the same white plate, so it needs dark ink. */
 .demo-picker-logo .demo-picker-tile-label { color: #16191e; }
 .demo-picker-tile-label { font-size: 13px; font-weight: 400; }
+
+.vm-ram .demo-hero-title {
+  font-weight: 700;
+  text-transform: uppercase;
+}

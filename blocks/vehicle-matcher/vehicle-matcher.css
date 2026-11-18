@@ -4040,6 +4040,8 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   min-height: 1.2em;
 }
 
+.vm.vm-ram .vm-gw-swipe-hint { display: none; }
+
 /* --- the chips: one per filter, each showing what it is set to --- */
 
 .vm-gw-chips {
@@ -4472,6 +4474,14 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
    point of this mode is watching cars disappear, so the controls cannot own the
    screen they disappear from. --- */
 @media (max-width: 767px) {
+  .vm.vm-ram .vm-gw-swipe-hint {
+    display: block;
+    flex: 1 1 100%;
+    order: 4;
+    margin: calc(-1 * var(--vm-space-2)) 0 0;
+    color: var(--vm-ink-muted);
+    font-size: var(--vm-text-label);
+  }
   .vm-gw-chips {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -4531,4 +4541,21 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
      in and out, so it is simply always there at tile stage. */
   .vm-gw-reject .vm-reject-open { opacity: 1; }
   .vm-gw-skeleton .vm-skel { animation: none; background-image: none; }
+}
+
+
+.vm.vm-ram :is(.vm-title, .vm-question, .vm-subhead, .vm-preview-heading, .vm-nearby-heading) {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.vm.vm-ram .vm-switcher-select {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.vm.vm-ram .vm-btn-primary {
+  background: #111111;
+  color: #ffffff;
 }

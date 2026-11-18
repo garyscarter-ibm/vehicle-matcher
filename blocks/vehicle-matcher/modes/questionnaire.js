@@ -88,7 +88,7 @@ function briefFromAnswers(ctx) {
   bits.push(...labelsFor('bodyStyles', (ctx.answers.bodyStyles || []).filter((v) => v !== 'any')));
   const budgetQ = ctx.questions.find((x) => x.id === 'budget');
   if (budgetQ) {
-    const b = pillFor(budgetQ, ctx.answers);
+    const b = pillFor(budgetQ, ctx.answers, ctx.brand);
     if (b) bits.push(b);
   }
   return bits;
@@ -538,7 +538,7 @@ function renderRefine(
     }
     const dearer = Number.isFinite(shown.priceMin) ? shown.priceMin : car.priceMin;
     if (Number.isFinite(dearer) && survives((l) => l.priceMin < dearer)) {
-      add(`!p:${dearer}`, `Under ${gbp(dearer)}`, (l) => l.priceMin < dearer);
+      add(`!p:${dearer}`, `Under ${gbp(dearer, shown.currency || car.currency)}`, (l) => l.priceMin < dearer);
     }
     const higher = Number.isFinite(shown.mileage) ? shown.mileage : car.mileage;
     if (Number.isFinite(higher) && survives((l) => l.mileage != null && l.mileage < higher)) {
@@ -1182,7 +1182,8 @@ function renderIntro(root, ctx) {
   // how the block sits under a host page's own "FIND YOUR MINI." heading
   // without repeating it (see copyRow).
   const { title: titleOverride, kicker: kickerOverride } = ctx.overrides;
-  const kicker = kickerOverride === undefined ? 'The unofficial UK matchmaker' : kickerOverride;
+  const defaultKicker = ctx.brand === 'ram' ? '' : 'The unofficial UK matchmaker';
+  const kicker = kickerOverride === undefined ? defaultKicker : kickerOverride;
   const title = titleOverride === undefined ? copy.title : titleOverride;
   if (kicker) intro.append(el('p', 'vm-kicker', kicker));
   if (title) intro.append(el('h1', 'vm-title', title));
@@ -1335,7 +1336,7 @@ function renderAnswerPills(ctx, questions, index) {
   const row = el('div', 'vm-pills');
   for (let i = 0; i < index; i += 1) {
     const question = questions[i];
-    const label = pillFor(question, ctx.answers);
+    const label = pillFor(question, ctx.answers, ctx.brand);
     if (!label) continue; // unanswered (shouldn't happen before `index`, but safe)
     const pill = el('button', 'vm-pill');
     pill.type = 'button';
@@ -1851,12 +1852,17 @@ async function renderResults(root, ctx, answers) {
   const share = el('button', 'vm-btn vm-btn-primary', 'Copy share link');
   share.type = 'button';
   share.addEventListener('click', async () => {
-    const url = `${window.location.origin}${window.location.pathname}#${HASH_KEY}=${encodeAnswers(answers)}`;
+    const url = new URL(window.location.href);
+    const sharedParams = new Set(['brand', 'api', 'mode', 'scope', 'retailer', 'retailerName']);
+    for (const key of [...url.searchParams.keys()]) {
+      if (!sharedParams.has(key)) url.searchParams.delete(key);
+    }
+    url.hash = `${HASH_KEY}=${encodeAnswers(answers)}`;
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(url.href);
       share.textContent = 'Link copied';
     } catch {
-      window.prompt('Copy your results link:', url);
+      window.prompt('Copy your results link:', url.href);
     }
     setTimeout(() => { share.textContent = 'Copy share link'; }, 2000);
   });

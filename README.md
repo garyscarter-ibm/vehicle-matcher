@@ -1,12 +1,12 @@
 # Vehicle Matcher
 
-A consumer-facing car-matcher for the UK market: answer a few quick questions
+A consumer-facing matcher for UK approved-used vehicles and US RAM CPO trucks: answer a few quick questions
 about your budget, lifestyle and driving, and get matched with the approved-used
 cars your retailer actually has — with a plain-English explanation of *why* each
 one suits you.
 
 The matcher is **brand-agnostic**: the brand (BMW, MINI, Ford, Honda, BMW
-Motorrad, Ferrari) is authored config, not baked in, and the same engine serves
+Motorrad, Ferrari, RAM) is authored config, not baked in, and the same engine serves
 every brand — calibrated per brand by config, never by forking the scorers. The UI is a **portable
 Adobe Edge Delivery Services (EDS) block** — vanilla JS + CSS, no framework, no
 build step — built around interchangeable interface **modes** (see
@@ -21,6 +21,9 @@ never shipped to the browser.
 > **New here, or coming back to it?** Read
 > **[docs/how-it-works.md](docs/how-it-works.md)** — the whole system on one
 > page. The rest of `docs/` is the record of *why* each decision was made.
+
+For RAM's live Spoticar feed, USD pricing and first-run cache preparation, see
+[docs/ram-spoticar.md](docs/ram-spoticar.md).
 
 ## Architecture: UI block + backend
 
@@ -126,7 +129,7 @@ server/
   data.js           # test fixture cars                     (server/test only)
   test/             # node --test suite (engine, brand, api, render, …)
   package.json      # server: start / test scripts
-index.html          # site root: branded demo homepage / picker (?brand=bmw|mini|ford|honda|motorrad|ferrari)
+index.html          # site root: branded demo homepage / picker (?brand=bmw|mini|ford|honda|motorrad|ferrari|ram)
 block.html          # standalone preview harness (brand-agnostic; same ?brand= keys)
 scripts/serve.js    # zero-dep static server for the block (npm run serve)
 scripts/dump-stock.js         # national stock snapshot -> fixtures/ (--remap: no network)
@@ -153,7 +156,7 @@ after the block, self-contained folder), so porting is a copy-paste:
 3. Add config rows below the block name — first cell the key, second the value.
    All are read with a `readBlockConfig()` helper, the standard `aem-boilerplate`
    convention:
-   - **Brand** — one of `BMW`, `MINI`, `Ford`, `Honda`, `Motorrad`, `Ferrari`
+   - **Brand** — one of `BMW`, `MINI`, `Ford`, `Honda`, `Motorrad`, `Ferrari`, `RAM`
      (defaults to BMW). The block is brand-agnostic; this row is the only thing
      that themes it and picks which live feed it sources from.
    - **Mode** — which interface to show, and whether visitors can switch. Set it

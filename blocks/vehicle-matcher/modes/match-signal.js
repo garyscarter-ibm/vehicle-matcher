@@ -20,7 +20,7 @@
  * would reject (MINI has no saloon/coupe/mpv/diesel — those are brands:['bmw']).
  */
 
-import { el, gbp } from '../ui.js';
+import { el, gbp, currencySymbol } from '../ui.js';
 
 /*
  * Below this the engine stops calling its leader a match at all — the client's
@@ -66,17 +66,17 @@ export function budgetBandsFromQuestion(budgetQ) {
   const tops = [];
   for (let top = step; top < max; top += step) tops.push(top);
   const bands = tops.map((top, i) => ({
-    label: i === 0 ? `Under ${gbpShort(top)}` : `Up to ${gbpShort(top)}`,
+    label: i === 0 ? `Under ${gbpShort(top, budgetQ?.currency)}` : `Up to ${gbpShort(top, budgetQ?.currency)}`,
     range: [0, top],
   }));
   // Open-topped final band, from the last ceiling to the engine's max.
   const floor = tops.length ? tops[tops.length - 1] : 0;
-  bands.push({ label: `${gbpShort(floor)} plus`, range: [floor, max] });
+  bands.push({ label: `${gbpShort(floor, budgetQ?.currency)} plus`, range: [floor, max] });
   return bands;
 }
 
 /** "£20k", "£150k" — compact money for the budget tiles. */
-export const gbpShort = (n) => (n % 1000 === 0 ? `£${n / 1000}k` : gbp(n));
+export const gbpShort = (n, currency = 'GBP') => (n % 1000 === 0 ? `${currencySymbol(currency)}${n / 1000}k` : gbp(n, currency));
 
 /**
  * The `primaryUse` options as the seed's "what's it for" tiles, taken straight
@@ -165,9 +165,9 @@ export const swatchFor = (car) => SHADE_HEX[shadeOf(car)] || NEUTRAL_SWATCH;
 
 /** Price line for a card: single used price, or a grouped range. */
 export function priceLabel(car) {
-  if (car.listingCount > 1 && car.priceFrom !== car.priceTo) return `from ${gbp(car.priceFrom)}`;
-  if (car.priceMin === car.priceMax) return gbp(car.priceMin);
-  return `${gbp(car.priceMin)}–${gbp(car.priceMax)}`;
+  if (car.listingCount > 1 && car.priceFrom !== car.priceTo) return `from ${gbp(car.priceFrom, car.currency)}`;
+  if (car.priceMin === car.priceMax) return gbp(car.priceMin, car.currency);
+  return `${gbp(car.priceMin, car.currency)}–${gbp(car.priceMax, car.currency)}`;
 }
 
 /** Cap-first a value for display ("electric" → "Electric"). */
@@ -417,6 +417,7 @@ export function idOf(car) {
  * never broken here — it just starts understated until it opts into warmth.
  */
 const BRAND_CELEBRATION = {
+  ram: { count: 22 },
   bmw: { count: 26 },
   ford: { count: 26 },
   mini: { count: 40 },

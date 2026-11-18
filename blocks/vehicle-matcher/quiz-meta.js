@@ -1,3 +1,5 @@
+import { currencySymbol, fuelLabel } from './ui.js';
+
 /*
  * Client-only quiz metadata.
  *
@@ -70,6 +72,7 @@ export const PILL_LABEL = {
     roadtrips: 'Road trips', fun: 'Weekend fun',
   },
   people: { solo: 'Just me', family: 'Small family', crew: '5+ seats' },
+  truckClass: { 1500: 'RAM 1500', 2500: 'RAM 2500', 3500: 'RAM 3500', open: 'Any RAM series' },
   // Bespoke MINI-only questions (see brands.js questions.add); harmless on BMW.
   miniVibe: { classic: 'Classic', exclusive: 'Exclusive', sport: 'Sport' },
   doors: { 3: '3-door', 5: '5-door', either: 'Any doors' },
@@ -85,19 +88,19 @@ export const PILL_LABEL = {
   // option label as-is (they're already short), so it has no entry here.
   bodyStyles: {
     hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV',
-    coupe: 'Coupé', convertible: 'Convertible', mpv: 'Family carrier', any: 'Any body',
+    coupe: 'Coupé', convertible: 'Convertible', mpv: 'Family carrier', pickup: 'Pickup', any: 'Any body',
   },
 };
 
 /** Short priorities labels (multi-select) — terser than the option prompts. */
 const PRIORITY_LABEL = {
   economy: 'Running costs', performance: 'Performance', comfort: 'Comfort',
-  tech: 'Tech', image: 'Style',
+  tech: 'Tech', image: 'Style', '4wd': 'Four-wheel drive',
 };
 
 /** Money as a compact "£50–70k" band label (min 0 renders as "Under £Xk"). */
-function bandLabel([min, max]) {
-  const k = (n) => `£${Math.round(n / 1000)}k`;
+function bandLabel([min, max], currency) {
+  const k = (n) => `${currencySymbol(currency)}${Math.round(n / 1000)}k`;
   if (!min) return `Under ${k(max)}`;
   if (max >= 250000) return `${k(min)}+`;
   return `${k(min)}–${Math.round(max / 1000)}k`;
@@ -105,13 +108,13 @@ function bandLabel([min, max]) {
 
 /** A single slider budget as "£62k" (or "£150k+" at the slider ceiling). */
 function budgetValueLabel(value, question) {
-  const k = `£${Math.round(value / 1000)}k`;
+  const k = `${currencySymbol(question?.currency)}${Math.round(value / 1000)}k`;
   return question?.plusAtMax && value >= question.max ? `${k}+` : k;
 }
 
 /** A dual-thumb budget range as "£40–75k" ("£40k+" when max hits the ceiling). */
 function budgetRangeLabel([lo, hi], question) {
-  const k = (n) => `£${Math.round(n / 1000)}k`;
+  const k = (n) => `${currencySymbol(question?.currency)}${Math.round(n / 1000)}k`;
   if (question?.plusAtMax && hi >= question.max) return `${k(lo)}+`;
   return `${k(lo)}–${Math.round(hi / 1000)}k`;
 }
@@ -130,7 +133,7 @@ function mileageValueLabel(value, question) {
  *   budget        → derived band, e.g. "£50–70k"
  *   multi-select  → "First +N" (e.g. "SUV +1"), or "Any body" when 'any' picked
  */
-export function pillFor(question, answers) {
+export function pillFor(question, answers, brand) {
   const { id, multi } = question;
   const value = answers[id];
   if (value == null || (multi && value.length === 0)) return null;
@@ -141,7 +144,7 @@ export function pillFor(question, answers) {
     if (Array.isArray(value)) return budgetRangeLabel(value, question);
     if (typeof value === 'number') return budgetValueLabel(value, question);
     const band = BUDGET_BANDS[value];
-    return band ? bandLabel(band) : null;
+    return band ? bandLabel(band, question.currency) : null;
   }
 
   if (id === 'mileage' && typeof value === 'number') {
@@ -152,11 +155,11 @@ export function pillFor(question, answers) {
     const values = Array.isArray(value) ? value : [value];
     const label = (v) => (id === 'priorities'
       ? (PRIORITY_LABEL[v] || v)
-      : (PILL_LABEL[id]?.[v] || v));
+      : ((id === 'fuel' ? fuelLabel(v, brand) : null) || PILL_LABEL[id]?.[v] || v));
     if (values.includes('any')) return PILL_LABEL[id]?.any || 'Any';
     const [first, ...rest] = values;
     return rest.length ? `${label(first)} +${rest.length}` : label(first);
   }
 
-  return PILL_LABEL[id]?.[value] || String(value);
+  return (id === 'fuel' ? fuelLabel(value, brand) : null) || PILL_LABEL[id]?.[value] || String(value);
 }

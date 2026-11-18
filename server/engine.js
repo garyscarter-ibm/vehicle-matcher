@@ -47,7 +47,7 @@ export const PRIORITY_BOOSTS = {
 export const STRETCH_FACTOR = 1.15;
 
 const clamp = (v, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
-const gbp = (n) => `£${Math.round(n / 1000)}k`;
+const money = (n, currency = 'GBP') => `${currency === 'USD' ? '$' : '£'}${Math.round(n / 1000)}k`;
 
 /**
  * Resolve a budget answer to a [min, max] £ range. Budget is a dual-thumb range
@@ -105,11 +105,12 @@ function canChargeAt(charging) {
  *  Per-dimension scorers. Each returns { score: 0..1, reason? }.    *
  * ---------------------------------------------------------------- */
 
-function scoreBudget(car, answers) {
+function scoreBudget(car, answers, tuning) {
   const [min, max] = budgetRange(answers);
   // A slider budget has min 0, so phrase the "in budget" reason as an upper
   // limit ("up to £62k") rather than a "£0k–£62k" band.
-  const budgetReason = min > 0 ? `Sits right in your ${gbp(min)}–${gbp(max)} budget` : `Comfortably within your ${gbp(max)} budget`;
+  const cash = (n) => money(n, car.currency || tuning.currency);
+  const budgetReason = min > 0 ? `Sits right in your ${cash(min)}–${cash(max)} budget` : `Comfortably within your ${cash(max)} budget`;
   if (car.priceMin > max) {
     // Survivor of the hard filter → it's a stretch buy.
     return { score: 0.35, stretch: true };
@@ -140,7 +141,7 @@ function scoreBody(car, answers, tuning) {
   if (picks.includes(car.body)) {
     const labels = {
       hatchback: 'hatchback', saloon: 'saloon', estate: 'estate', suv: 'SUV',
-      coupe: 'coupé', convertible: 'convertible', mpv: 'family carrier',
+      coupe: 'coupé', convertible: 'convertible', mpv: 'family carrier', pickup: 'pickup',
     };
     return { score: b.match, reason: `The ${labels[car.body]} shape you asked for` };
   }
@@ -179,6 +180,7 @@ const FUEL_TABLE = {
 
 /** Score one car against a single fuel preference. Returns { score, reason? }. */
 function scoreOneFuel(pref, car, answers, tuning) {
+  if (!FUEL_LABELS[car.fuel]) return { score: 0.5 };
   const charging = answers.charging || 'none';
   const canCharge = canChargeAt(charging);
   // EVs and PHEVs make much less sense with no charging access. "either" and
@@ -205,9 +207,10 @@ function scoreOneFuel(pref, car, answers, tuning) {
         ? `Fully electric with a ${car.evRange}-mile range, ideal with your charging setup`
         : `Fully electric with a ${car.evRange}-mile range`;
     } else if (pref !== 'open') {
-      reason = `The ${FUEL_LABELS[car.fuel]} power you wanted`;
+      reason = `The ${tuning.fuelLabels?.[car.fuel] || FUEL_LABELS[car.fuel]} power you wanted`;
     } else if (car.fuel === 'diesel' && isHighMileage(answers, tuning)) {
-      reason = 'Diesel torque and economy suit your big annual mileage';
+      reason = tuning.reasons?.dieselHighMileage?.(car)
+        || 'Diesel torque and economy suit your big annual mileage';
     }
   }
   return { score, reason };
@@ -414,6 +417,7 @@ function scoreCharacter(car, answers, tuning) {
   if (style >= 4) wanted.add('drivers-car');
   if (style <= 2) wanted.add('cruiser');
   for (const p of answers.priorities || []) {
+    if (tuning.priorityTags?.[p]) wanted.add(tuning.priorityTags[p]);
     if (p === 'tech') wanted.add('tech');
     if (p === 'image') wanted.add('image');
     if (p === 'comfort') wanted.add('cruiser');
@@ -446,8 +450,9 @@ function scoreStyleLine(car, answers, tuning) {
   const hit = want === 'sport'
     ? (car.styleLine === 'sport' || car.styleLine === 'jcw')
     : car.styleLine === want;
+  const label = cfg.labels?.[car.styleLine] || STYLE_LINE_LABEL[car.styleLine];
   return hit
-    ? { score: cfg.match, reason: `${STYLE_LINE_LABEL[car.styleLine]} trim, just the character you asked for` }
+    ? { score: cfg.match, reason: cfg.reason ? cfg.reason(label) : `${label} trim, just the character you asked for` }
     : { score: cfg.miss };
 }
 
@@ -522,6 +527,7 @@ function fitWeights(answers, tuning) {
   if (prefs.length > 0 && !prefs.includes('open')) w.fuel += tuning.fuelStrictBoost;
   // An unanswered/no-preference doors question stays fully inert.
   if (!answers.doors || answers.doors === 'either') delete w.doors;
+  for (const dim of tuning.disabledDimensions || []) delete w[dim];
   return w;
 }
 
@@ -548,6 +554,7 @@ function tasteWeights(answers, tuning) {
   if (Number(answers.style) <= 2) w.performance = Math.max(0.5, w.performance - 0.5);
   // styleLine only weighs in when its question was actually answered.
   if (!answers.styleLine) delete w.styleLine;
+  for (const dim of tuning.disabledDimensions || []) delete w[dim];
   return w;
 }
 
@@ -579,6 +586,7 @@ function effectiveWeights(answers, tuning) {
   // (unknown ≠ wrong), just at the now-active weight.
   if (!answers.styleLine) delete w.styleLine;
   if (!answers.doors || answers.doors === 'either') delete w.doors;
+  for (const dim of tuning.disabledDimensions || []) delete w[dim];
   return w;
 }
 
@@ -651,7 +659,7 @@ export function rankCars(answers, cars, tuning = DEFAULT_TUNING) {
       // "…but maybe worth it" was a nudge, and a nudge is the thing a buyer
       // who assumes the tool ranks on margin is watching for. State the fact
       // and let them price it.
-      if (stretch) reasons.push(`A stretch at ${gbp(car.priceMin)}+, over the budget you set`);
+      if (stretch) reasons.push(`A stretch at ${money(car.priceMin, car.currency || tuning.currency)}+, over the budget you set`);
       let ratio = fitWeighted / fitTotal;
       // Whole-score penalty for a "crew" buyer's sub-7-seat car: strong enough
       // that genuine 7-seaters top when in stock, but 5-seaters still rank (and
@@ -821,7 +829,7 @@ export const LISTING_SAMPLE = 24;
  * listing happened to rank first.
  */
 export function groupListings(ranked) {
-  const key = (c) => [c.line, c.body, c.fuel, c.zeroTo62, c.styleLine ?? ''].join('|');
+  const key = (c) => c.groupKey || [c.line, c.body, c.fuel, c.zeroTo62, c.styleLine ?? ''].join('|');
   const groups = new Map();
   for (const match of ranked) {
     const k = key(match.car);

@@ -86,6 +86,17 @@ main {
     //         do not ship to production (see the plan's licensing note).
     // ------------------------------------------------------------------
     const BRANDS = {
+      ram: {
+        label: 'RAM',
+        origin: 'ramtrucks.com',
+        navLinks: ['Trucks', 'Certified Pre-Owned', 'Find a Dealer', 'Owners'],
+        heroKicker: 'RAM Certified Pre-Owned',
+        heroTitle: 'Find Your Next RAM.',
+        heroSub: 'Your working week. Your open road. Find a truck that fits both.',
+        heroCta: 'Find my RAM',
+        footerLinks: ['Privacy', 'Terms', 'Contact'],
+        footerNote: 'Internal demonstration only. This prototype is not an official RAM site and is not affiliated with or endorsed by RAM or Stellantis.',
+      },
       bmw: {
         label: 'BMW',
         origin: 'usedcars.bmw.co.uk',
@@ -178,7 +189,7 @@ main {
     };
 
     // Picker tile order (BMW, MINI, Ford, Honda, Motorrad, Ferrari).
-    const PICKER_ORDER = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
+    const PICKER_ORDER = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari', 'ram'];
 
     // ---- carried over from block.html ---------------------------------------
     // The Retailer Name row names the pool the block SEARCHED, and ?scope=
@@ -206,6 +217,7 @@ main {
       ford: 'Ford Approved Used',
       motorrad: 'BMW Motorrad Approved Used',
       ferrari: 'Ferrari Approved',
+      ram: 'Spoticar Certified Pre-Owned',
     };
     const DEALER_NAMES = { 96: 'Grassicks Garage', 92: 'Sytner Luton' };
     const BRAND_RETAILER_IDS = { bmw: '96', mini: '92' };

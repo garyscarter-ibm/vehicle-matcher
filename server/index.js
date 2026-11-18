@@ -41,7 +41,7 @@ import {
 import {
   QUESTIONS, BUDGET_BANDS, questionsForBrand, applyBespokeAnswers,
 } from './questions.js';
-import { normalizeBrand, brandTuning } from './brands.js';
+import { normalizeBrand, brandTuning, brandConfig } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 
@@ -178,6 +178,7 @@ function publicCar(car) {
     fuel: car.fuel,
     priceMin: car.priceMin,
     priceMax: car.priceMax,
+    ...(car.currency ? { currency: car.currency } : {}),
     zeroTo62: car.zeroTo62,
     mpg: car.mpg,
     evRange: car.evRange,
@@ -214,6 +215,11 @@ function publicCar(car) {
     // card may state them as the listing's own.
     cc: car.cc,
     power: car.power,
+    ...(car.powerUnit ? { powerUnit: car.powerUnit } : {}),
+    ...(car.driveType ? { driveType: car.driveType } : {}),
+    ...(car.cab ? { cab: car.cab } : {}),
+    ...(car.bed ? { bed: car.bed } : {}),
+    ...(car.engineDescription ? { engineDescription: car.engineDescription } : {}),
     topSpeed: car.topSpeed,
     fullServiceHistory: car.fullServiceHistory,
     previousOwners: car.previousOwners,
@@ -372,6 +378,10 @@ function publicPool(brand, cars, directory = null) {
     brand,
     n: cars.length,
     linkPrefix,
+    ...(brandConfig(brand).currency ? {
+      currency: brandConfig(brand).currency,
+      links: cars.map((c) => c.link || null),
+    } : {}),
     // Dictionaries. Each pairs with the same-named column below.
     names, lines, bodies, fuels, transmissions, retailers, shades, paints,
     featureKeys,
@@ -867,6 +877,7 @@ export function buildServer(deps = {}) {
         questions: publicQuestions(brand),
         budgetBands: BUDGET_BANDS,
         topMatches: TOP_MATCHES,
+        ...(brandConfig(brand).currency ? { currency: brandConfig(brand).currency } : {}),
       });
     }
 
@@ -886,7 +897,7 @@ export function buildServer(deps = {}) {
       // Resolved, not raw: a typo'd scope silently becomes 'dealer', and the
       // payload echoes what was actually used so a misconfigured embed shows up
       // as a wrong `scope` in the response rather than a mysteriously small pool.
-      const scope = normalizeScope(searchParams.get('scope'));
+      const scope = brand === 'ram' ? 'national' : normalizeScope(searchParams.get('scope'));
       try {
         const cars = await resolved.fetchRetailerStock(
           brand, searchParams.get('retailer') || undefined, scope,
@@ -896,7 +907,7 @@ export function buildServer(deps = {}) {
         // practice; a directory that is down costs the pool nothing but its
         // `sites` table, which is a state the client already handles. Never
         // allowed to fail the request — the mode's premise is every car.
-        const directory = await resolved.fetchDealerDirectory().catch((err) => {
+        const directory = brandConfig(brand).source === 'live-spoticar' ? null : await resolved.fetchDealerDirectory().catch((err) => {
           console.warn('[pool] dealer directory unavailable:', err?.message);
           return null;
         });
@@ -1002,6 +1013,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
       fetchRetailerStock('ford'),
       fetchRetailerStock('motorrad'),
       fetchRetailerStock('ferrari'),
+      fetchRetailerStock('ram'),
     ]).then((r) => {
       const failed = r.filter((x) => x.status === 'rejected');
       if (failed.length) {

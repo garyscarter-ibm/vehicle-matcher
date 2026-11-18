@@ -387,6 +387,24 @@ const PODIUM_COPY = {
 /* ------------------------------ helpers ------------------------------ */
 
 /** Copy for the active brand, BMW as the fallback (matches ctx.brand shape). */
+PODIUM_COPY.ram = {
+  ...PODIUM_COPY.bmw,
+  wordmark: 'RAM Podium',
+  title: 'Put your next truck out front.',
+  bannerStart: 'Your budget sets the starting lineup. Your answers put the right trucks ahead.',
+  bannerProgress: ({ done, total }) => `${done} of ${total} answered. Your truck lineup is taking shape.`,
+  bannerComplete: 'Your brief is ready. Lock in your match.',
+  commitCta: 'Find my RAM',
+  commitBusy: 'Checking your truck match',
+  commitDone: 'Your RAM match',
+  liveUpdated: ({ model }) => `The ${model} moves to the front.`,
+  emptyNote: 'No trucks meet that brief. Adjust an answer to bring more back.',
+  unmetNote: ({ list, retailer }) => `No ${list} at ${retailer}. These are the closest trucks to the rest of your brief.`,
+  weakNote: ({ retailer }) => `No strong fit at ${retailer} right now. Check what each truck misses before you choose.`,
+  popTitle: 'What would make it a better fit?',
+  colourOption: ({ shade }) => `No trucks in ${shade}`,
+};
+
 const copyFor = (brand) => PODIUM_COPY[brand] || PODIUM_COPY.bmw;
 
 /*

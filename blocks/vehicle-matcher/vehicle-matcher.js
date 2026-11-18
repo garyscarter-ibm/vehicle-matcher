@@ -121,7 +121,7 @@ function retailerName(block) {
  * client mirror the shell needs to pick a theme class and reject typos. Keep it
  * in step when a brand is onboarded — one line per brand, no other client edit.
  * DEFAULT_BRAND is the fallback when no (or an unknown) "Brand" row is set. */
-const KNOWN_BRANDS = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
+const KNOWN_BRANDS = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari', 'ram'];
 const DEFAULT_BRAND = 'bmw';
 
 /** Brand for this block instance: authored "Brand" config row, lower-cased,
