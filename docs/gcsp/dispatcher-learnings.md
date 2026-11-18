@@ -2722,3 +2722,7 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 05:24 UTC · Gary Codex · DL-20261117-GCC-009 · Expensive proof checked against actual result contract
 
 - F452lead preflight found a prospective completion assertion expected generator cohort/horizon/seeds inside result assumptions, while the actual result contract exposes route assumptions. Correction is underway before launch: actual manifest seeds, per-route1000employees/850cars and exact retained input hashes establish unchanged inputs;90days/9releases remain pinned source/input provenance. No runtime failure or product defect is claimed, and no workload reduction or new acceptance criterion was added. Runtime verification remains pending. Proposed improvement: check expensive-proof assertions against actual producer shapes before allocating long runs, preserving provenance separately from displayed fields.
+
+### 2026-11-18 05:30 UTC · Gary Codex · DL-20261117-GCC-013 · Resume output clipping recurred
+
+- Two resume reads again exceeded their output budgets: a whole prior receipt and a combined documentation read. Narrow native/status/lease projections were then reread completely before reconciliation; no omitted text supports a delivery decision. This remains a recurring dispatcher issue, not a verified fix. Subsequent producers bound serialized content before printing; proposed framework improvement remains an enforced total producer limit with complete snapshots retained locally. No product test or acceptance gate was added.
