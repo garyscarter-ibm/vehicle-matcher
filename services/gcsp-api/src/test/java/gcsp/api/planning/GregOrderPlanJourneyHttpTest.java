@@ -340,6 +340,46 @@ class GregOrderPlanJourneyHttpTest {
         assertNull(heldFor(heldCar), "a released car is no longer held");
     }
 
+    // ---- 7: FUCQ-528, a confirmed driver lets the plan order for Sam ----
+
+    @Test
+    @Order(7)
+    void gregsPlanOrdersA330eForSamAndTheSubmissionIsAccepted() throws Exception {
+        confirmBrief("sub-sam");
+
+        // Only a new 330e meets Sam's need; before the fix every configuration was driver-unconfirmed.
+        JsonNode plan = readPlan();
+        assertTrue(plan.get("orderQuantity").asInt() > 0, "the plan orders cars: " + plan.get("quantities"));
+        assertTrue(quantity(plan, "g20-saloon-330e") >= 1, plan.get("quantities").toString());
+        assertNull(unmet(plan, "slot-sam"), "Sam's need is met: " + plan.get("unmetNeeds"));
+        String source = null;
+        for (JsonNode a : plan.get("allocations")) {
+            if ("slot-sam".equals(a.get("entitlementId").asText())) source = a.get("source").asText();
+        }
+        assertEquals("new-order", source, plan.get("allocations").toString());
+
+        ObjectNode submit = M.createObjectNode().put("commandId", cmd()).put("planId", plan.get("planId").asText());
+        submit.set("versions", plan.get("versions"));
+        Resp accepted = post(greg, REQUESTS, submit.toString());
+        assertEquals(200, accepted.status(), accepted.toString());
+        assertTrue(accepted.body().at("/value/requests").size() > 0, accepted.toString());
+        assertEquals(1, count("SELECT count(*) FROM production_submissions"));
+        assertTrue(count("SELECT count(*) FROM production_requests WHERE derivative LIKE '%330e%'") > 0);
+    }
+
+    private JsonNode readPlan() throws Exception {
+        Resp read = get(greg, PLAN);
+        assertEquals(200, read.status(), read.toString());
+        return read.body().at("/value/plan");
+    }
+
+    private static JsonNode unmet(JsonNode plan, String entitlementId) {
+        for (JsonNode need : plan.get("unmetNeeds")) {
+            if (entitlementId.equals(need.get("entitlementId").asText())) return need;
+        }
+        return null;
+    }
+
     // ---- helpers ----
 
     /** The slot the app's own supply reading says the car is held for, or null when it is not held. */

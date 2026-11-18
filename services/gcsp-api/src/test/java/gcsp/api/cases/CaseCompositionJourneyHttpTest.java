@@ -224,8 +224,8 @@ class CaseCompositionJourneyHttpTest {
         assertTrue(needed > 0, "the journey must cross the window boundary itself");
         advance(needed + 1);
         tickedAt = clockNow();
-        // Paula, Alex and Sam end on 2026-12-01; Greg's operator renewal ends on 12-15, still outside the window.
-        assertEquals(3, tick().get("opened").asInt());
+        // Paula and Alex end on 2026-12-01; Sam (2027-03-16, FUCQ-528) and Greg's operator renewal (12-15) are outside.
+        assertEquals(2, tick().get("opened").asInt());
         assertEquals(0, tick().get("opened").asInt());
         assertEquals(tickedAt, clockNow());
 
@@ -249,7 +249,7 @@ class CaseCompositionJourneyHttpTest {
         alexCase = alexCases.get(0).get("caseId").asText();
         assertEquals("employee-alex", alexCases.get(0).get("employeeId").asText());
         assertNotEquals(paulaCase, alexCase);
-        assertEquals(3, body(get(greg, TEAM), 200).get("value").get("cases").size());
+        assertEquals(2, body(get(greg, TEAM), 200).get("value").get("cases").size());
     }
 
     @Test
