@@ -10191,47 +10191,6 @@
       ]
     },
     {
-      "id": "FUCQ-505",
-      "type": "Bug",
-      "title": "Return focus to the exact car after restoring stock detail navigation",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-505",
-      "status": "In Progress",
-      "branch": "dev/DEV-2026-11-16-023",
-      "unsliced": false,
-      "workers": [
-        {
-          "name": "Sulley",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T03:12:23.269511+00:00",
-          "expires_at": "2026-11-18T03:42:23.269511+00:00",
-          "source": "Codex /root/sulley; run01a1ebdc-f57d-7813-b7d0-16318126fabe",
-          "status": "assigned original two focus criteria at Sol/high"
-        }
-      ],
-      "note": "Local delivery/worker observation; native Jira unavailable. Claim54f55680f. F504 integrated and ownership cleared; original focus criteria only. Full covering batch remains required.",
-      "observed_at": "2026-11-18T03:12:23Z",
-      "slices": [
-        {
-          "id": "exact-focus",
-          "status": "in-progress",
-          "title": "Current exact selection focus return",
-          "observed_at": "2026-11-18T03:12:23Z",
-          "evidence": "Current source diagnosis and valid intake; readiness .claude/poller/run-20261117-2335/f505-readiness.md. Lead assigned after F504 cleanup."
-        },
-        {
-          "id": "navigation-proof",
-          "status": "not-started",
-          "title": "Restored ordinary and unavailable keyboard proof"
-        },
-        {
-          "id": "covering-batch",
-          "status": "not-started",
-          "title": "Covering batch verification"
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-445",
       "observed_at": "2026-11-18T03:17:52Z",
@@ -10337,6 +10296,39 @@
         }
       ],
       "observed_at": "2026-11-18T03:32:42Z"
+    },
+    {
+      "id": "FUCQ-505",
+      "type": "Bug",
+      "title": "Return focus to the exact car after restoring stock detail navigation",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-505",
+      "status": "In Progress",
+      "branch": "gcsp-poc-dev",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation; native Jira unavailable, no native transition/acceptance inferred. Integrated4ec7a753c; exact161selected tests and original2AC/14renderstates22captures independently reviewed. Canonical26d73b760 excludes this fix; covering green required.",
+      "observed_at": "2026-11-18T03:45:36Z",
+      "slices": [
+        {
+          "id": "exact-focus",
+          "status": "complete",
+          "title": "Current exact selection focus return",
+          "observed_at": "2026-11-18T03:45:36.485424+00:00",
+          "evidence": "Source9505bf9c0 integrated4ec7a753c; trueRED3expected/20pass then161/161selected tests. docs/gcsp/evidence/fucq505/validation.md"
+        },
+        {
+          "id": "navigation-proof",
+          "status": "complete",
+          "title": "Restored ordinary and unavailable keyboard proof",
+          "observed_at": "2026-11-18T03:45:36.485545+00:00",
+          "evidence": "Original2AC,14realAngularstates/22captures at1440/390, independentA/BPASS; exactinputrefresh verified, ownedruntimeclean. docs/gcsp/evidence/fucq505/rendered.md"
+        },
+        {
+          "id": "covering-batch",
+          "status": "not-started",
+          "title": "Covering batch verification"
+        }
+      ]
     }
   ],
   "version": 1
