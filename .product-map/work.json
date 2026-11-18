@@ -6281,7 +6281,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-447",
-      "observed_at": "2026-11-18T03:16:48Z",
+      "observed_at": "2026-11-18T03:41:09.252589+00:00",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Use employee help and Greg's case queue",
@@ -6291,45 +6291,45 @@
       "slices": [
         {
           "id": "contracts",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Case/help contracts and pure display projections",
-          "observed_at": "2026-11-14T10:59:22Z",
-          "evidence": "Frozen d75d369ce14193252bf53154905a8a9282befa19 pure boundary: cases19/help7 passed,0 failed/skipped/todo; Wakko source/executable and parent runtime/teardown audit passed. Still in-progress; typecheck/AOT, five later slices and actual UI/Java/OIDC/nativePG/hosted/fullAC open. F501 Medium separate/unfixed/nonblocking. docs/gcsp/fucq447-delivery.md; root .claude/fucq447-contracts-runtime-parent-audit-1058.json."
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Supported original slice delivered/reviewed;source completion does not imply acceptance. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         },
         {
           "id": "client",
           "status": "complete",
           "title": "Scoped six-operation Java case client",
-          "observed_at": "2026-11-14T11:58:43Z",
-          "evidence": "Lead bounded client delivery: source a0d905b64cb09411f914ea57ae195cd306e4e7f8;59/59 client assertions PASS,0fail/skip/TODO;Elmer source1119, parent+Elmer executable1147 and parent actual result/inputs/teardown1147 PASS. Actual six Java paths/body,bearer/role/scope/session/abort,explicit identical intent retry/refusal/uncertain boundaries checked. Original2AC,typecheck/AOT/composedUI/Java/OIDC/nativePG/hosted remain open. docs/gcsp/fucq447-delivery.md"
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Supported original slice delivered/reviewed;source completion does not imply acceptance. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         },
         {
           "id": "employee-help",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Employee help, confirmation and current readback",
-          "observed_at": "2026-11-14T15:19:32.070107+00:00",
-          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Supported original slice delivered/reviewed;source completion does not imply acceptance. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         },
         {
           "id": "greg-queue",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Greg queue, feasible remedies and reviewed updates",
-          "observed_at": "2026-11-14T16:57:58Z",
-          "evidence": "Partial native Greg queue/detail/current options/review/Confirm/readback+shared table;final scoped compiler+64testsPASS(0fail/skip/TODO). Browser smoke blankDOM/30stimeout;actualJava/realOIDC/nativePG/rendered/full2AC open. Parent review/integration pending;workerHOLD. docs/gcsp/fucq447-greg-queue-2026-11-14.md"
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Supported original slice delivered/reviewed;source completion does not imply acceptance. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         },
         {
           "id": "composition",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Feature exports and dispatcher-owned shared composition",
-          "observed_at": "2026-11-14T15:19:32.070107+00:00",
-          "evidence": "Partial employee Help route integrated88403ac62;corrected19/19 nativePASS and independent source+local parent auditPASS;Greg/full original capability remains open. docs/gcsp/fucq447-route-2026-11-14.md"
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Supported original slice delivered/reviewed;source completion does not imply acceptance. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Actual Java/OIDC/PostgreSQL journey and rendered acceptance",
-          "observed_at": "2026-11-18T03:16:48Z",
-          "evidence": "18Nov coherent original Help/Greg resumption; disjoint connected proof author active; runtime not started; original AC open. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "evidence": "Final sourced0b06369e:207/207 focused AngularPASS;133/133 connected realOIDC/Java/PG17PASS,18actualcaptures;Granny2independentreviewPASS. Required Java130tests/8failures/1skip RED(F523);Safari/hosted/screenreader unrun;original2ACunchecked;coveringbatchrequired. docs/gcsp/fucq447-connected-cases-2026-11-18.md"
         }
       ],
       "branch": "dev/DEV-2026-11-13-015",
@@ -6338,22 +6338,31 @@
           "name": "Cecil Turtle 3",
           "harness": "codex",
           "role": "story-lead",
-          "status": "active: supported-remedy UI and connected proof",
-          "observed_at": "2026-11-18T03:16:48.195755+00:00",
-          "expires_at": "2026-11-18T05:16:48.195755+00:00",
-          "source": "thread01a1ec9f-c74c-7732-a524-3d3a4b4c39d0;Sol/high;root authority18Nov"
+          "status": "delivered: final source/evidence; no runtime",
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "expires_at": "2026-11-18T03:41:09.252589+00:00",
+          "source": "01a1ec9f-c74c-7732-a524-3d3a4b4c39d0;Sol/high"
         },
         {
           "name": "Mickey Mouse 2",
           "harness": "codex",
           "role": "implementer",
-          "status": "active: disjoint connected proof author",
-          "observed_at": "2026-11-18T03:16:48.195755+00:00",
-          "expires_at": "2026-11-18T05:16:48.195755+00:00",
-          "source": "thread01a1eca6-07df-73f3-aba4-05ab0d82abae;Sol/medium"
+          "status": "complete: proof authored and reviewed",
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "expires_at": "2026-11-18T03:41:09.252589+00:00",
+          "source": "01a1eca6-07df-73f3-aba4-05ab0d82abae;Sol/medium"
+        },
+        {
+          "name": "Granny 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "status": "complete: independent source/evidence/actual-image PASS",
+          "observed_at": "2026-11-18T03:41:09.252589+00:00",
+          "expires_at": "2026-11-18T03:41:09.252589+00:00",
+          "source": "01a1ecb3-74e2-7dd1-acfb-5611c9164154;Sol/high"
         }
       ],
-      "note": "Resumed original supported Help/Greg capability18Nov; current Java supports preference-relaxation and employee confirmation. Lead implements allocated UI/client/spec; child authors exact connected proof. Original2AC remain open; six stableIDs preserved. OneDrive forbidden.",
+      "note": "Original twoAC remain unchecked/nativeInProgress. Five source slices complete;integration remains in-progress: required cases JavaRED/F523 separatecapture-only;final Angular207PASS+connected133PASS;independentreviewPASS. No OneDrive access. docs/gcsp/fucq447-connected-cases-2026-11-18.md",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
