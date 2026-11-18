@@ -10073,7 +10073,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-18T00:54:19Z",
+      "observed_at": "2026-11-18T01:26:47Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -10131,28 +10131,37 @@
           "name": "Sam Sheepdog 2",
           "role": "story-lead connected completion",
           "harness": "codex",
-          "observed_at": "2026-11-18T00:54:13.247202+00:00",
-          "expires_at": "2026-11-18T01:04:13.247202+00:00",
+          "observed_at": "2026-11-18T01:26:47Z",
+          "expires_at": "2026-11-18T01:26:47Z",
           "source": "linked chat 01a1ebc8-732c-7ac1-950a-ac494d8edd40",
-          "status": "source review and finite pipeline preparation active"
+          "status": "local connected delivery and final review complete; runtime released; parent integration/batch/acceptance remain"
         },
         {
           "name": "Road Runner 3",
           "role": "implementer Activity current-state consumer",
           "harness": "codex",
-          "observed_at": "2026-11-18T00:54:13.247202+00:00",
-          "expires_at": "2026-11-18T00:54:13.247202+00:00",
+          "observed_at": "2026-11-18T01:26:47Z",
+          "expires_at": "2026-11-18T01:26:47Z",
           "source": "linked chat 01a1ec1f-9aee-70e1-89e1-beb54e11686c; saved title independently read",
-          "status": "source complete; inactive; runtime validation held"
+          "status": "consumer source complete;105Java applicable/fresh61Angular and six connected scenarios passed; inactive"
         },
         {
           "name": "Foghorn Leghorn 4",
           "role": "implementer actual connected Activity proof",
           "harness": "codex",
-          "observed_at": "2026-11-18T00:54:13.247202+00:00",
-          "expires_at": "2026-11-18T01:04:13.247202+00:00",
+          "observed_at": "2026-11-18T01:26:47Z",
+          "expires_at": "2026-11-18T01:26:47Z",
           "source": "linked chat 01a1ec1f-ed20-7f11-8dd8-b15e4452c0f9; saved title independently read",
-          "status": "proof source authoring active; no runtime"
+          "status": "actual connected proof complete, six scenarios/71checks and14captures passed; inactive"
+        },
+        {
+          "name": "Michigan J. Frog 2",
+          "role": "independent final source/evidence reviewer",
+          "harness": "codex",
+          "observed_at": "2026-11-18T01:26:47Z",
+          "expires_at": "2026-11-18T01:26:47Z",
+          "source": "linked chat 01a1ec28-d0eb-7352-a71d-069bb75ca2bb; saved title independently read; requested/selected gpt-6.1-sol/high, no fallback",
+          "status": "final PASS; source, exact105Java reuse,fresh61Angular,all6actualscenarios,all14capturehashes/screens,resources/cleanup; inactive"
         }
       ],
       "slices": [
@@ -10160,35 +10169,35 @@
           "id": "client",
           "status": "complete",
           "title": "Scoped native activity and command client",
-          "observed_at": "2026-11-14T05:32:16Z",
-          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
+          "observed_at": "2026-11-18T01:26:47Z",
+          "evidence": "Final consumer source b4701dae retains versioned backend state and terminal isolation; fresh20client checks within61Angular PASS; actual6scenario proof covers original2AC. docs/gcsp/fucq444-delivery.md."
         },
         {
           "id": "view",
           "status": "complete",
           "title": "Server-projected Angular Buddy activity and controls",
-          "observed_at": "2026-11-14T06:14:03Z",
-          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
+          "observed_at": "2026-11-18T01:26:47Z",
+          "evidence": "Current backend expiry/superseded/released and accepted controls reviewed; scoped View offer label restored. Fresh16component+25store within61Angular PASS; all14desktop/narrow captures reviewed by lead+Michigan. F487 broader scope/F495 remain open."
         },
         {
           "id": "proof",
           "status": "complete",
           "title": "Selected state and desktop/narrow browser review",
-          "observed_at": "2026-11-14T09:14:30Z",
-          "evidence": "Lead and independent Wakko source/all10capture review passed; attempt8 59/59, prior client19/store-component29 retained. Route attempt2 adds17/17 + bothAOT builds +2captures. docs/gcsp/fucq444-delivery.md. F487/F495 independent open/unfixed; connected integration remains open."
+          "observed_at": "2026-11-18T01:26:47Z",
+          "evidence": "Six actual connected scenarios/71checks PASS, zero unrun; all14capturehashes match and screens reviewed by Sam+Michigan.105Java exact-input evidence reused, fresh61Angular+productionbuild PASS. Final strict receipts and11receipt/15port cleanup audit PASS. docs/gcsp/fucq444-delivery.md."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Connected route Java OIDC PostgreSQL acceptance",
-          "observed_at": "2026-11-14T09:13:53Z",
-          "evidence": "Parent-allocated lazy employee Activity route locally proved: both production AOT/static builds +17/17 route checks,2captures; lead-final-review.json 7b37b729. Java/OIDC/nativePG/restart/concurrency/hosted/Safari/private/accessibility and both originalAC remain open; awaiting parent route publication/audit."
+          "observed_at": "2026-11-18T01:26:47Z",
+          "evidence": "Local originalAC1/AC2 evidence PASS atb4701dae: productionAngular/actualJavaHTTP/ownednativePG17/localtestOIDC codePKCE signedbearer/JWKS; terminaldeclined/expired reload/Back never revive/mutate. Michigan finalPASS. Coveringbatch/humanacceptance separate; hosted/provider,Safari,email,fullaccessibility unrun."
         }
       ],
       "tracker_observed_at": "2026-11-14T05:11:48Z",
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "Current rich offer HTTP producer verified at ed6af65a; old internal-OfferView missing-producer diagnosis is stale. Original connected AC remains open. Consumer backend-expiry correction source-reviewed; actual Java/OIDC/nativePG proof preparation active, runtime held for A43→A44→F444 release."
+      "note": "Local development complete at b4701dae; both original AC have actual local connected evidence PASS and Michigan independent PASS. Original acceptance boxes/status remain unchanged pending parent integration, covering green batch and human acceptance. No remaining original local implementation item. Runtime released; no OneDrive access. Historical observations/failed attempts and exact limitations: docs/gcsp/fucq444-delivery.md."
     }
   ],
   "version": 1

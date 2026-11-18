@@ -2,15 +2,65 @@
 
 Native acceptance remains the two original criteria in `_dev/in-progress/DEV-2026-11-13-012.md`. This is a delivery checkpoint, not acceptance.
 
-## Connected completion resumed — 18 November 2026
+## Connected completion delivered — 18 November 2026
 
-Sam Sheepdog 2 resumed the existing owned Story at refreshed `ed6af65a595e5f52b5df81323be1de306ed1b1d5`, keeping both original acceptance criteria and the fifteen allocated paths. Earlier missing-producer reporting inspected internal `OfferView`; the current HTTP read is `OffersResource.offer` → `OfferAccess.readForEmployee` → `OfferPresentation.of` → `FollowupComparison.offer` and supplies the rich pinned presentation. That obstacle is no longer current; connected acceptance is still unproved.
+Local development and independent review passed at source `b4701dae078808d9861d4ae0d51e0a7079de67d1`. Both original acceptance items now have actual Java/Angular/native-PostgreSQL evidence. The original acceptance boxes remain unchecked: the parent owns lifecycle and integration, a covering green batch is still required, and human acceptance remains separate. No actual local acceptance item is left unrun; hosted/provider compatibility and the limitations below are not claimed.
 
-Road Runner 3 prepared the bounded Activity correction: keep validated backend offer presentation state/version, reconcile an equal/newer matching offer without reviving a terminal Activity row, and display the current Java terminal states. The backend offer projection can report expiry before the stored Activity row changes; browser time remains nonauthoritative. Client/store/component regressions cover expiry, acceptance, stale references/versions/runs and terminal non-revival. Foghorn Leghorn 4 is authoring the real Java/OIDC/native-PostgreSQL proof. Both requested/selected `gpt-6.1-sol/high` under the explicit night instruction, without fallback; saved desktop titles independently read. Sam retains review, runtime supervision, documentation and publication.
+Sam Sheepdog 2 resumed the owned Story at `ed6af65a595e5f52b5df81323be1de306ed1b1d5`, preserving both original criteria and the fifteen allocated paths. The actual rich HTTP offer read is `OffersResource.offer` → `OfferAccess.readForEmployee` → `OfferPresentation.of` → `FollowupComparison.offer`; the earlier missing-producer diagnosis inspected internal `OfferView` and is stale.
 
-Current runtime policy supersedes every historical allocation instruction below: no OneDrive or CloudStorage access of any kind. Only bounded local `/private/tmp` scratch and `.claude/test-runs/fucq444/` receipts are permitted. The named lane remains A43 covering batch → A44 F443 → F444; no test, build, browser, server or PostgreSQL runtime has started in this resumption. Actual runtime requires its concrete release and atomic admission rejecting foreign live reservations. The owned pipeline is one actual worker, serial checks/builds, disk 2 GiB, RSS 3 GiB, inclusive 5 GiB, logs 2 MiB, free reserve 5 GiB, C1/C2 at most 300 seconds each, C3/focused chunk at most 600 seconds and total pipeline 1,500 seconds including failed work and cleanup. Resource observations are sampled, not kernel containment.
+The Activity consumer now retains validated backend offer presentation state/version and reconciles a matching equal/newer offer while preserving terminal Activity state. This displays backend expiry even when the stored Activity row still says active, and supports Java `superseded`/`released` states. A countdown never decides business state. Regressions cover expiry, acceptance, stale references/versions/runs and terminal non-revival. The existing FUCQ-487 CSS cascade was visible in the actual captures; a scoped Activity selector restores the existing on-accent token on View offer. All final relevant captures visibly show the label. FUCQ-487 remains open for its broader scope, and FUCQ-495 remains separate and open; no Bug closure is claimed.
 
-Validation scope: the three Activity Angular specs; current Java `gcsp.api.activity` plus the directly consumed offer read/clock tests and required named startup/wiring checks, using an owned native PostgreSQL 17 and signed test OIDC. The connected proof covers original searching, no-match, unavailable, live offer, expiry, supported follow-up and reload/return behavior against the actual API. No Java/shared configuration changes are allocated. Full suite: deferred to batch. Earlier local fixture results below remain historical scoped evidence and do not substitute for this connected run.
+Source checkpoints are consumer/proof `747c2df5870d2aea08e7dc6ae59fbf0c3e0a4c9c`, actual browser-Back correction `e0e337ba3367d71cd01b44d3c7fc16e2ad8ab806`, and scoped label correction `b4701dae078808d9861d4ae0d51e0a7079de67d1`. No Java, auth, shared routes, shared kit, configuration or dependencies were changed.
+
+### Actual evidence against the original criteria
+
+The final proof uses the production Angular build, actual Java HTTP commands/reads, an owned throwaway native PostgreSQL 17, and local test OIDC authorization-code/PKCE login with signed bearer/JWKS validation. It uses no mocked success route or SQL offer fixture. The issuer is a local test provider, not the configured hosted identity provider. Explicit decline is public-API preparation; the supported follow-up then uses the real UI. This Activity proof does not claim the separate Angular acceptance/decline protocol.
+
+| Actual scenario | Original item | Outcome |
+| --- | --- | --- |
+| Signed-in searching before evaluation, then actual release/no-match and keyboard Keep searching | AC1 | PASS; current reads, grounded no-match and no implicit command |
+| Real Paula/Alex held offers; explicit Disengage/Engage | AC1 | PASS; hold remains and browser time changes no authority |
+| Supported decline, UI body-style follow-up, terminal reload and browser Back | AC1, AC2 | PASS; GET readback, no terminal revival or automatic command |
+| Advance backend clock without a tick; raw Activity active versus offer read expired | AC1, AC2 | PASS; expired display, no deadline/decision actions, reload/Back stays expired |
+| Presenter stock fault/tick and retained last successful evidence | AC1 | PASS; truthful source-unavailable state |
+| Bearer/CSP/reduced-motion, focus and desktop/narrow checks across the above | Both, scoped experience evidence | PASS; no recorded browser exception/CSP violation or horizontal overflow |
+
+The proof contains **6 passing scenarios, 71 passing checks and no unrun scenarios**. Sam and independent reviewer Michigan J. Frog 2 opened **all 14 original desktop/narrow PNGs**, verified their hashes and reviewed them against the frozen body reference `gcsp-activity-live.html` at `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, the employee-account shell reference, COMPONENTS and the experience contract. Layout, hierarchy, controls, vehicle presentation and terminal/unavailable copy are readable without clipping. Narrow captures are full-page images from a 375×812 viewport; desktop is 1440×1000.
+
+Validation scope was the three Activity specs, Java `gcsp.api.activity.**`, consumed `OfferViewTest`, `OfferAccessTest`, `OffersHttpTest`, `OfferClockTest`, and all named startup/wiring tests from AGENTS.md. **105 Java tests in 16 classes passed**, zero failures/errors/skips, against the owned native PostgreSQL. Final Java packaging reuses that green test evidence only after exact equality of the complete selected-input SHA maps; it did not re-execute those tests. After the CSS change, **61 Angular tests passed freshly** (20 client, 16 component, 25 store) and the production build passed. The final proof independently matches API/web artifacts and changed build paths to the committed source. **Full suite: deferred to covering batch.** No green covering batch is claimed here.
+
+### Retained receipts and independent review
+
+All paths below are relative to the root local receipt directory `.claude/test-runs/fucq444/activity0055/`, outside synced folders.
+
+| Receipt | Evidence |
+| --- | --- |
+| `api-20261118T010747Z/receipt.json` and `surefire/` | Original actual 105-test Java run and raw XML |
+| `api-20261118T011705Z/receipt.json` | Final API package, exact-input test reuse; strict PASS |
+| `web-20261118T011854Z/receipt.json` | Fresh corrected-source 61-test run and production build; strict PASS |
+| `connected-20261118T012034Z/receipt.json` | Final six-scenario connected run; strict PASS |
+| `connected-20261118T012034Z/evidence/connected-activity-proof.json` | Actual API/display observations, 71 checks and original-AC mapping |
+| `connected-20261118T012034Z/evidence/*.png` | Fourteen original captures, hashes retained in proof and lead review |
+| `lead-final-review.json` | Lead/reviewer verdict, receipt/capture hashes and preserved failures; SHA-256 `1effdd10316ff26df503633d335e96a285ff531da95994c22ff02e6f5c999a73` |
+| `lead-final-release-audit.json` | Observed 01:22:14.628376Z: 11 receipts, 15 ports, 3312 unchanged source hashes; release PASS |
+
+The committed proof script SHA-256 is `15bad93b0cdddb0ef6ff95169bf6abd0a639e0e5bce2fc9540b45a2c34af61f5`. Final API jar SHA-256 is `76dda5b32720a2203e3624011da25475cfbc59801319eff6f96757cb4c98edd4`; web index SHA-256 is `550a8e8eb2cf806dcc99999fda452118b9de11ccebe645d88e9c54a4907cd7f7`.
+
+Michigan independently reviewed final source, the actual Java seam, exact-input Java evidence reuse, fresh Angular tests/build, all six actual scenarios, all fourteen capture hashes/screens, resource receipts and teardown: **PASS, no blocking or major findings**. Lead Sam, implementers Road Runner 3/Foghorn Leghorn 4 and reviewer Michigan all requested/selected `gpt-6.1-sol/high`, no fallback; saved desktop titles were independently read. No review runtime was launched.
+
+### Preserved failures, resources and limitations
+
+Earlier results remain intact. `web-20261118T010849Z` failed Angular compilation before tests because the isolated export omitted imported Java JSON fixtures; only the local supervisor input copy changed. `connected-20261118T011134Z` failed startup because public-base validation rejects localhost; all six scenarios were explicitly unrun. The existing proof override then used `https://gcsp.example.test` for captured notification URLs, with no email-delivery claim. `connected-20261118T011522Z` passed a/b/c and d through decline/follow-up/reload before a missing Activity-anchor assumption failed; e/f remained unrun. The harness now uses actual history Back. `web-20261118T011744Z` was an old-CSS build-only artifact explicitly discarded and cleaned before the scoped label correction. The actual subsequent run, rather than these earlier attempts, supplies the final PASS.
+
+The admitted A45 pipeline has released its lane to the parent. Final C1/C2/C3 receipts include keeper cleanup, are complete/strict PASS, and report no sampler or cleanup errors. The lead audit observed no exact owned live identities/groups, inherited-token processes, reservations, scratch or listeners on the fifteen owned ports. Canonical reservation registry was empty at the audit time. All 3312 current source pins matched before this documentation checkpoint. The parent independently confirmed release at 01:25:13.836431Z in root `.claude/fucq444-final-parent-audit-0104.json`, checking all 11 receipts, 4420 retained identity records, 15 ports and the same 3312 source pins. Borrowed dependencies/runtime identities were preserved; OneDrive/CloudStorage operations were zero.
+
+The envelope remained one actual serial worker, disk 2 GiB, RSS 3 GiB, inclusive 5 GiB, logs 2 MiB, free reserve 5 GiB; C1/C2 300 seconds, C3 600 seconds, whole pipeline 1500 seconds including failures and cleanup. The final connected run observed disk 331,124,421 bytes, RSS 2,460,729,344 and inclusive 2,791,853,765. Last keeper cleanup completed at **797.572 seconds realtime**, with a **909.513-second conservative monotonic upper bound**. macOS Python 3.9 monotonic epochs are process-relative, so earlier cross-process raw differences are invalid and remain labelled historical. The corrected bound adds the full first-C1 local duration to an overlapping native CLOCK_MONOTONIC interval, overcounting rather than omitting time. Resource bounds are sampled observations, not continuous/kernel containment.
+
+Hosted topology/provider compatibility, delivered email, Safari/private-browsing compatibility and full accessibility remain unrun. Fresh isolated Chrome contexts exercise storage isolation; this is no Safari claim. This proof does not establish unrelated restart/concurrency, remote BMW integration or final hosted deployment. These limitations do not invent additional original Story criteria. Parent-owned merge/integration, the covering green batch and collaborator acceptance remain outstanding.
+
+## Historical delivery observations
+
+The sections below retain their original observation times, failed attempts and then-current instructions. The current delivery, authority, local-only output policy and remaining limitations are recorded above; historical holds or output paths do not authorize any new access or runtime.
 
 
 - Lead Rocky, they/them; requested/selected/effective gpt-6.1-sol/high, no fallback. Own rollout turn_context verified; title tool returned Rocky and thread 01a1d877-1599-7882-95ec-b3b9083b2e79.
