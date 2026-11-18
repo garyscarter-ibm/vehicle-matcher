@@ -7476,7 +7476,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-17T19:53:17Z",
+      "observed_at": "2026-11-18T16:52:04Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Submit Production requests and reconcile responses",
@@ -7532,6 +7532,17 @@
           "title": "Reopened-story validation through the started app, merged-tree verify and result",
           "observed_at": "2026-11-17T12:51:31Z",
           "evidence": "Merged origin/gcsp-poc-dev at 15abc3d82; scoped set (production, planning, supply, Wiring/Startup, readiness) 228/228 on native PG17 incl. ProductionPlanJourneyTest; Result committed"
+        },
+        {
+          "id": "s8-deployed-journey",
+          "status": "in-progress",
+          "title": "Started-app journey over the real bound planner inputs (PostgresPlanningDemand/Supply, RunPlanningClock), no test beans",
+          "observed_at": "2026-11-18T16:52:04Z"
+        },
+        {
+          "id": "s9-deployed-integration",
+          "status": "not-started",
+          "title": "Story-level scoped validation on the merged head and result for the deployed proof"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
