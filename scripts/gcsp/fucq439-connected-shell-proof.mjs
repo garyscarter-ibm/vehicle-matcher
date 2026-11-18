@@ -112,7 +112,7 @@ const receipt = { schema: 'fucq439-connected-shell-proof/1', story: 'DEV-2026-11
     'Every sign-on item is proved against a local mock issuer (code/PKCE, refresh grant, provider session cookie, end-session). The real hosted provider is not exercised.',
     'Access-token lifetime and refresh-token issue are issuer policy changed between scenarios, so expiry is real (short lifetime) rather than simulated in the browser.',
     'Only the upstream account, stock and one saved draft are seeded through Java and the run-owned schema; the unfinished order is made through the Angular controls.',
-    'GET /context carries no displayName, so the header shows the app fallback "Account" for every user; identity is asserted from the context subject and roles instead.',
+    'GET /context carries no displayName; the mock id_token supplies name and email for paula and greg and none for the presenter, so the header name comes from the Angular profile fallback.',
     'Chrome only, desktop viewport 1280x800; Safari and hosted deployment remain unrun.',
     'The outer supervisor owns HostBudget, manifest/finalizer, aggregate output/RSS limits and final process/listener/schema/scratch audit.'] };
 const owned = [];
@@ -204,6 +204,8 @@ function makeCerts() {
 
 // ---------- LOCAL MOCK OIDC issuer: code/PKCE, refresh grant, provider session cookie, end-session, request log ----------
 const SUBJECT_ROLES = { 'sub-paula': ['employee'], 'sub-greg': ['greg'], 'sub-presenter': ['presenter'] };
+// The presenter has no name claim on purpose, to prove the header fallback.
+const PROFILES = { 'sub-paula': { name: 'Paula Mason', email: 'paula.mason@gcsp-demo.com' }, 'sub-greg': { name: 'Greg Lawson', email: 'greg.lawson@gcsp-demo.com' } };
 const SESSION_COOKIE = 'gcsp_idp_sid';
 const COOKIE_PATH = '/realms/gcsp-local/';
 const POST_LOGOUT = `${ORIGINS.web}/gcsp/`;
@@ -238,7 +240,7 @@ function startIdp(tls) {
   const note = (entry) => { const row = { seq: idp.requests.length, at: Date.now(), ...entry }; idp.requests.push(row); return row; };
   const issue = (subject, { nonce, authTime, sid }) => {
     const now = Math.floor(Date.now() / 1000); const lifetime = idp.policy.lifetimeSec;
-    const idToken = signJwt({ iss: ISSUER, sub: subject, aud: 'gcsp-web', azp: 'gcsp-web', iat: now, exp: now + 300, auth_time: authTime, sid, ...(nonce ? { nonce } : {}) }, idp.keys.privateKey);
+    const idToken = signJwt({ iss: ISSUER, sub: subject, aud: 'gcsp-web', azp: 'gcsp-web', iat: now, exp: now + 300, auth_time: authTime, sid, ...PROFILES[subject], ...(nonce ? { nonce } : {}) }, idp.keys.privateKey);
     const access = signJwt(accessClaims(subject, SUBJECT_ROLES[subject], lifetime), idp.keys.privateKey);
     const body = { access_token: access, token_type: 'Bearer', expires_in: lifetime, scope: 'openid profile gcsp-api', id_token: idToken };
     if (idp.policy.refresh) { const rt = randomBytes(24).toString('hex'); idp.refresh.set(rt, { subject, sid, authTime, used: false }); body.refresh_token = rt; }
@@ -671,14 +673,14 @@ async function login(page, person, { from = null } = {}) {
 }
 async function snap(page, s, name) {
   await page.settle();
-  const dom = await page.act(`return { path: location.pathname + location.search, heading: heading(), rail: railItems(), account: accountName(), notice: notice(), text: text().slice(0, 400), oidcUsers: oidcUsers(), overflow: document.documentElement.scrollWidth > innerWidth + 1 };`);
+  const dom = await page.act(`return { path: location.pathname + location.search, heading: heading(), rail: railItems(), account: accountName(), avatar: document.querySelector('.gcsp-avatar')?.textContent.trim() ?? null, notice: notice(), text: text().slice(0, 400), oidcUsers: oidcUsers(), overflow: document.documentElement.scrollWidth > innerWidth + 1 };`);
   s.observations[name] = { dom, screenshot: path.basename(await page.shot(`${s.id}-${name}.png`)), errors: [...page.errors] };
   return dom;
 }
 const waitFor = (page, body, what, timeout = 20000) => page.until(body, timeout, what);
 const contextCalls = (calls) => calls.filter((e) => e.path === '/context');
 
-const LANDING = { paula: { path: '/gcsp/account', rail: ['Your cars', 'Order progress'] }, greg: { path: '/gcsp/greg', rail: ['Employee car ordering', 'Process comparisons'] }, presenter: { path: '/gcsp/presenter', rail: ['Presenter controls'] } };
+const LANDING = { paula: { path: '/gcsp/account', rail: ['Your cars', 'Order progress'], name: 'Paula Mason', avatar: 'PM' }, greg: { path: '/gcsp/greg', rail: ['Employee car ordering', 'Process comparisons'], name: 'Greg Lawson', avatar: 'GL' }, presenter: { path: '/gcsp/presenter', rail: ['Presenter controls'], name: 'Account', avatar: '?' } };
 
 // AC1: login and role landing for each role, bearer on every API call.
 async function scenarioLanding(cdp, s) {
@@ -693,7 +695,7 @@ async function scenarioLanding(cdp, s) {
       check(s, `${person}: Angular sign-in page then issuer, prompt=login`, r.signInUrl.startsWith('/gcsp/sign-in') && r.authRequest?.prompt === 'login' && r.picker.length === 3);
       check(s, `${person}: lands on ${LANDING[person].path}`, dom.path === LANDING[person].path);
       check(s, `${person}: rail items are exactly the role's`, same(dom.rail, LANDING[person].rail));
-      check(s, `${person}: account control in the header`, !!dom.account);
+      check(s, `${person}: header shows ${LANDING[person].name} with avatar ${LANDING[person].avatar}`, dom.account === LANDING[person].name && dom.avatar === LANDING[person].avatar);
       check(s, `${person}: context API call authorised and answered`, ctx.length >= 1 && ctx.every((e) => e.status === 200) && same(ctx.at(-1).response?.value?.roles, SUBJECT_ROLES[`sub-${person}`]));
       check(s, `${person}: every API request carried Authorization Bearer`, calls.length > 0 && calls.every((e) => e.scheme === 'Bearer'));
       check(s, `${person}: no runtime exception`, page.errors.length === 0);
@@ -880,6 +882,7 @@ async function scenarioSignOut(cdp, s) {
     await waitFor(page, `return location.pathname === '/gcsp/account' && !!heading();`, 'account landing');
     const paulaTokens = new Set(page.calls().map((e) => e.token));
     const sessionsBefore = idp.sessions.size;
+    check(s, 'before sign-out the header shows Paula Mason', (await page.act('return accountName();')) === 'Paula Mason');
     check(s, 'before sign-out: app holds a user and the provider holds a session', (await page.act('return oidcUsers();')) === 1 && sessionsBefore >= 1);
     await snap(page, s, 'signed-in');
     const mark = idp.requests.length; const logMark = page.log.length;
@@ -904,6 +907,7 @@ async function scenarioSignOut(cdp, s) {
     const calls = page.calls(logMark); const ctx = contextCalls(calls);
     s.observations.second = { authRequest: second.authRequest, picker: second.picker, contextSubject: ctx.at(-1)?.response?.value?.subject ?? null };
     check(s, 'the next /auth request asked for the account picker (prompt=login) with no provider session', second.authRequest?.prompt === 'login' && second.authRequest.cookie === false && second.picker.includes('sub-paula') && second.picker.includes('sub-greg'));
+    check(s, 'header shows Greg Lawson and never Paula Mason after the account change', dom.account === 'Greg Lawson' && dom.avatar === 'GL' && !body.includes('Paula Mason'));
     check(s, 'a different account (greg) lands on /gcsp/greg', dom.path === '/gcsp/greg' && same(dom.rail, LANDING.greg.rail) && ctx.at(-1)?.response?.value?.subject === 'sub-greg');
     check(s, 'no paula name or data in the DOM or session storage', !/paula/i.test(body) && !body.includes(CAR.paula));
     check(s, 'greg calls never used paula tokens', calls.filter((e) => e.token).every((e) => !paulaTokens.has(e.token)));
