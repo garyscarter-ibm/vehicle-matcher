@@ -689,3 +689,22 @@ Agents: lead Goofy 3 requested/selected Sol/high; implementer Henery Hawk 3
 requested/selected Sol/medium; independent reviewer Lego Batman 2 requested/selected
 Sol/high, no fallback. Lead/implementer titles and effective choices independently
 verified by the dispatcher; reviewer verification is pending.
+
+
+### Focused evidence and first composed attempt — 18 November 2026
+
+Focused Angular: 105 PASS across the six Orders spec files; production web build PASS.
+Focused Java coverage: 371 PASS / 64 original selected classes, combining 121 checks
+from the corrected export with 250 exact-source, independently revalidated green checks.
+The first two Java attempts remain incomplete: Metaspace exhaustion (45 pass/1 error),
+then a missing exported document-policy fixture (253 pass/39 setup errors), followed by
+the XML retention cap. Only 250 checks from 37 wholly green classes were reused; all
+four failed classes were rerun. Raw current XML is retained losslessly compressed.
+
+The first connected run reached 85/86 scenario-a checks and passed missing-provider
+scenario d; b/c remained unrun. Its sole failed assertion tested global page text for
+readiness when documents were not yet open. The stages panel correctly names the
+'Ready for handover' stage with 'Not supplied'; the Documents panel correctly explains
+when checks open. The harness now checks the Documents panel specifically. No product
+source changed. Node syntax PASS; composed rerun and final keeper cleanup pending.
+Original AC checkboxes/native state remain unchanged; full suite deferred to batch.

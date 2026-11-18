@@ -564,7 +564,10 @@ async function capture(page, s, name) {
   s.checks[`${name}: no horizontal overflow`] = !dom.overflow;
   const owner = (v) => v === 'employee' ? 'You' : String(v ?? '').replace(/-/g, ' ').replace(/^./, c => c.toUpperCase());
   s.checks[`${name}: next authority presented`] = [t.stages, t.appointment, t.plan].every(v => (!v.owner || dom.text.includes(owner(v.owner))) && (!v.nextStep || dom.text.includes(v.nextStep)));
-  s.checks[`${name}: readiness presented`] = t.document ? dom.text.includes(t.document.readiness.ready ? 'Ready for handover' : 'Not ready for handover') : !dom.text.includes('Ready for handover');
+  const readinessText = dom.panels.find(p => p.title === 'Documents and checks')?.text ?? '';
+  // The stages panel always names its readiness stage; only the documents panel presents the current readiness fact.
+  s.checks[`${name}: readiness presented`] = t.document ? readinessText.includes(t.document.readiness.ready ? 'Ready for handover' : 'Not ready for handover')
+    : readinessText.includes('Documents and checks open once your order is sent to ordering.');
   s.checks[`${name}: no browser exception`] = page.errors.length === 0;
   return t;
 }
