@@ -11,6 +11,9 @@ import net from 'node:net';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync, readdirSync, createWriteStream, rmSync, copyFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { apiJvmArgs, jvmLimitsReceipt } from './proof-jvm.mjs';
+
+const API_JVM_ARGS = apiJvmArgs({ heap: '512m' });
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const T0 = Date.now();
@@ -267,7 +270,7 @@ let api = null; let apiStarts = 0;
 function spawnApi(kind, over) {
   apiStarts++;
   const name = `api-${apiStarts}-${kind}`;
-  api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'), ['-Xmx512m', `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`, `-Djava.io.tmpdir=${dirs.tmp}`, '-jar', JAR], apiEnv(kind, over), PORTS.api);
+  api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'), [...API_JVM_ARGS, `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`, `-Djava.io.tmpdir=${dirs.tmp}`, '-jar', JAR], apiEnv(kind, over), PORTS.api);
   return api;
 }
 async function startApi(kind, over) {
@@ -871,8 +874,8 @@ async function main() {
     jar: { path: path.relative(ROOT, JAR), sha256: sha256File(JAR) }, appJars: readdirSync(path.join(path.dirname(JAR), 'app')).filter((f) => f.endsWith('.jar')).map((f) => ({ file: f, sha256: sha256File(path.join(path.dirname(JAR), 'app', f)) })),
     webBrowser: { path: path.relative(ROOT, WEB_BROWSER), indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) }, fixtures: { tranchePlan: planInfo, supplyPolicy: sha256File(path.join(SUPPLY, 'policy.json')), returnsPolicy: sha256File(RETURNS_POLICY) } };
   receipt.composition = { running: { environmentId: ENV_RUN, database: DB_RUN, scenarioProvider: 'none', accountProvider: 'none', resetAllowed: false, note: 'local stand-in for the running deployment (FUCQ-456 poc shape)' },
-    dev: { environmentId: ENV_DEV, database: DB_DEV, scenarioProvider: 'demo', accountProvider: 'repository', resetAllowed: true, supply: 'tranche-plan (repo test fixture)', appointments: 'synthetic', returns: 'synthetic', jvm: '-Xmx512m, one JVM at a time' } };
-  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
+    dev: { environmentId: ENV_DEV, database: DB_DEV, scenarioProvider: 'demo', accountProvider: 'repository', resetAllowed: true, supply: 'tranche-plan (repo test fixture)', appointments: 'synthetic', returns: 'synthetic', jvm: `${API_JVM_ARGS.join(' ')}, one JVM at a time` } };
+  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), apiJvm: jvmLimitsReceipt(API_JVM_ARGS), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
   log('certificates'); tls = makeCerts();
   log('static assembly of the prebuilt web for both environments');
   const assemble = await import(pathToFileURL(path.join(ROOT, 'scripts/build-gcsp-static.mjs')).href);
