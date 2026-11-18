@@ -72,3 +72,8 @@ Local evidence: `/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117
 ## Independent review
 
 Sulley independently reviewed all three original acceptance criteria, the sole test delta, existing production repair, security and retained proof: **passed, no actionable findings**. All 53 input pins matched the current files. His independent observation at 2026-11-18 02:16:02 UTC found all 13 recorded PIDs, the exact owned root/links/reservation and this run's lane absent. Reviewer ran no runtime/children/scratch (0 B reviewer cleanup). Exact report: `independent-review-2026-11-18.md`. Parent retains covering batch, integration, claim lifecycle and native acceptance.
+
+
+## Post-proof refresh reconciliation — 18 November 2026
+
+Parent refreshed the clean Story worktree to `3afcac0167edd41ba92dc649f49c5229f6e06d4e` from root `33807da0b1126bdc6d16f359f5f9b2422bff0dd8`. All **53** tested input/dependency SHA-256 pins still match the final receipt, independently of the changed Git commit ID. The parent-reported root delta is F376 closure/cleanup, F387 claim, product-map metadata and peer F443 manual proof/docs/Story records; no server, package, dependency or runtime source changed. The existing **64/64 exact Node 20.20.2** proof and source/security review are reused with those unchanged identities. No application runtime or duplicate test run was started; Mater owns the separate F387 proof lane. Local exact observation: `resources/f396/post-refresh-reconciliation.json`. Measured V8/per-worker coverage remains uncollected; a static ownership map is not measured coverage. Parent covering batch and acceptance remain outstanding.
