@@ -9214,7 +9214,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-18T09:30:09Z",
+      "observed_at": "2026-11-18T10:28:33Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9242,8 +9242,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-17T23:18:08.317447+00:00",
-          "evidence": "Connected real Java/Angular/PG17 browser proof39/39 plus focused OIDC/nativePG Java journeys14/14 and exact10startup/wiring classes53/53 independently audited PASS. First wiring failed metaspace256MiB, causal retry768MiB within approved resource grant passed; failed/refused attempts retained. See docs/gcsp/fucq-441-preferences-2026-11-14.md for audit limits. Covering green batch remains; native In Progress and originalAC remain open."
+          "observed_at": "2026-11-18T10:28:33Z",
+          "evidence": "2026-11-18 resume at 294e8f831: connected Java/Angular/native-PG17/local signed OIDC proof 60/60 (save/reload, stale 409 and correction, stopped-API recovery, 1440/375/320 full and compact layouts, keyboard disclosure/preference/practical/Buddy/save and visible recovery banners); focused Java brief package 127/127 and ten startup/wiring classes 53/53; Angular preferences 74/74. Hosted dev, Safari/private and assistive-technology checks remain external."
         }
       ],
       "status": "In Progress",
