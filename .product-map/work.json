@@ -6138,7 +6138,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-446",
-      "observed_at": "2026-11-17T19:53:13Z",
+      "observed_at": "2026-11-18T10:34:08Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Track the existing order and lifecycle journey",
@@ -6148,43 +6148,43 @@
       "slices": [
         {
           "id": "progress-read",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Read owned order and lifecycle facts",
           "points": 3,
-          "observed_at": "2026-11-18T02:36:13Z",
-          "evidence": "PARTIAL: Orders105PASS/6specs plus production build; real composed Java/nativePG17/local signed OIDC reads and128 lifecycle assertions pass at9ef2eda. Original accurate-state criteria remain open: terminal return stale proposal copy observed. See docs/gcsp/fucq446-delivery.md connected result; full suite deferred batch."
+          "observed_at": "2026-11-18T10:34:07Z",
+          "evidence": "COMPLETE locally: Orders 107 PASS/6 specs + production build; connected Java/nativePG17/local signed OIDC proof 141/141 PASS at f065057 (a/b/c/d). FUCQ-522 terminal return copy fixed. Safari/hosted unrun; full suite deferred to batch."
         },
         {
           "id": "employee-actions",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Perform supported employee lifecycle actions",
           "points": 3,
-          "observed_at": "2026-11-18T02:36:13Z",
-          "evidence": "PARTIAL: actual Angular document acknowledgement, handover request, return request/proposal acceptance, signed role/ownership refusals and reload/restart exercised in128PASS connected assertions. Original AC unchecked; terminal return copy fault separately captured, no product repair. docs/gcsp/fucq446-delivery.md."
+          "observed_at": "2026-11-18T10:34:07Z",
+          "evidence": "COMPLETE locally: actual Angular acknowledgement, handover request, return request and proposal acceptance, signed ownership/role refusals, missing-provider refusals, reload and restart in 141/141 connected PASS at f065057."
         },
         {
           "id": "view-parity",
           "status": "in-progress",
           "title": "Preserve order progress screen and shared navigation",
           "points": 3,
-          "observed_at": "2026-11-18T02:36:13Z",
-          "evidence": "PARTIAL: lead and independent reviewer viewed all16 final desktop/narrow PNGs and keyboard focus. CHANGES REQUIRED: Returned panel also says historical proposal Not booked yet; html109-111 interprets retained proposedSlot as current. Seeded missing car fields are an evidence limitation; Safari/hosted/full accessibility/CSP unrun. docs/gcsp/fucq446-delivery.md."
+          "observed_at": "2026-11-18T10:34:07Z",
+          "evidence": "PARTIAL: all 16 desktop/narrow/keyboard captures viewed at f065057; FUCQ-522 fixed (no proposal copy once returned, live proposal intact). Safari/private browsing unrun (needs safaridriver enable by Gary); FUCQ-299 next-step semantics separate."
         },
         {
           "id": "review-proof",
           "status": "in-progress",
           "title": "Review experience and original acceptance evidence",
           "points": 2,
-          "observed_at": "2026-11-18T02:36:13Z",
-          "evidence": "IN PROGRESS: independent Sol/high review verified source1424API+650web pins,121rawXML/250exact-source reused Java checks,105Angular and17proof artifact hashes; all final receipts strict/clean. CHANGES REQUIRED for terminal proposal text; original AC/native status unchanged. docs/gcsp/fucq446-delivery.md."
+          "observed_at": "2026-11-18T10:34:08Z",
+          "evidence": "IN PROGRESS: story-lead reviewed FUCQ-522 diff, 2 focused tests (red then green) and all 16 captures; independent re-review of the fix and final acceptance remain with the dispatcher."
         },
         {
           "id": "java-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Prove composed Java lifecycle journey",
           "points": 2,
-          "observed_at": "2026-11-18T02:36:14Z",
-          "evidence": "IN PROGRESS: production Java/nativePG17+Angular/local code-PKCE signed OIDC, four scenarios128PASS including provider-none/ownership/physical outcomes/reload/restart. Focused Java371/64classes+package PASS. Visual terminal proposal copy fault remains original accuracy work; full suite deferred covering batch. docs/gcsp/fucq446-delivery.md."
+          "observed_at": "2026-11-18T10:34:08Z",
+          "evidence": "COMPLETE locally: production Java 21 jar + Angular production build, owned native PG17, local code/PKCE signed OIDC; 141/141 connected PASS incl. 13 new per-capture FUCQ-522 checks, reload and restart. No Java source change; Java tests not rerun."
         }
       ],
       "story_points": 13,
@@ -9222,7 +9222,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-18T09:30:09Z",
+      "observed_at": "2026-11-18T10:28:33Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9250,8 +9250,8 @@
           "id": "native-integration",
           "status": "in-progress",
           "title": "Actual Java OIDC PostgreSQL journey restart visual and hosted evidence",
-          "observed_at": "2026-11-17T23:18:08.317447+00:00",
-          "evidence": "Connected real Java/Angular/PG17 browser proof39/39 plus focused OIDC/nativePG Java journeys14/14 and exact10startup/wiring classes53/53 independently audited PASS. First wiring failed metaspace256MiB, causal retry768MiB within approved resource grant passed; failed/refused attempts retained. See docs/gcsp/fucq-441-preferences-2026-11-14.md for audit limits. Covering green batch remains; native In Progress and originalAC remain open."
+          "observed_at": "2026-11-18T10:28:33Z",
+          "evidence": "2026-11-18 resume at 294e8f831: connected Java/Angular/native-PG17/local signed OIDC proof 60/60 (save/reload, stale 409 and correction, stopped-API recovery, 1440/375/320 full and compact layouts, keyboard disclosure/preference/practical/Buddy/save and visible recovery banners); focused Java brief package 127/127 and ten startup/wiring classes 53/53; Angular preferences 74/74. Hosted dev, Safari/private and assistive-technology checks remain external."
         }
       ],
       "status": "In Progress",
