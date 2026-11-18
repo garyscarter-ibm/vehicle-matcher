@@ -16,7 +16,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Adopts a reviewed definition set into a run as a new successor policy version (port of prepareReviewedAdoption in
@@ -27,6 +29,7 @@ public class PolicyAdoption {
 
     static final String COMMAND_TYPE = "policy.adopt-reviewed";
     private static final JsonNodeFactory JSON = JsonNodeFactory.instance;
+    private static final List<String> OVERRIDDEN = List.of("value", "status", "basis", "source", "sourceDate");
 
     /** status is adopted, present (target version already existed), nothing-to-adopt, refused or unavailable. */
     public record Result(String status, String policyVersion, String detail, boolean written, PolicyResult activation) {
@@ -70,6 +73,15 @@ public class PolicyAdoption {
      */
     public Result adopt(RunContext context, String definitionSetId, String targetVersion, Instant now,
             String expectedBase) {
+        return adopt(context, definitionSetId, targetVersion, now, expectedBase, null);
+    }
+
+    /**
+     * As above, with each override replacing the named definition's value, status, basis, source and sourceDate
+     * (a reviewed placeholder made concrete). The overrides are stored in the adoption and in the command input.
+     */
+    public Result adopt(RunContext context, String definitionSetId, String targetVersion, Instant now,
+            String expectedBase, Map<String, ObjectNode> overrides) {
         if (!database.active()) {
             return new Result("unavailable", null, "Persistence is not configured.", false, null);
         }
@@ -78,8 +90,22 @@ public class PolicyAdoption {
             if (bundle == null) {
                 return new Result("refused", null, "Unknown reviewed definition set " + definitionSetId + ".", false, null);
             }
+            Map<String, ObjectNode> changes = overrides == null ? Map.of() : new TreeMap<>(overrides);
+            Set<String> setKeys = new HashSet<>();
+            bundle.get("definitions").forEach(row -> setKeys.add(row.get("key").textValue()));
+            for (Map.Entry<String, ObjectNode> change : changes.entrySet()) {
+                if (!setKeys.contains(change.getKey())) {
+                    return new Result("refused", null,
+                            "Override " + change.getKey() + " is not a definition of " + definitionSetId + ".", false, null);
+                }
+                for (String field : OVERRIDDEN) {
+                    if (change.getValue() == null || !change.getValue().hasNonNull(field)) {
+                        return new Result("refused", null, "Override " + change.getKey() + " needs " + field + ".", false, null);
+                    }
+                }
+            }
             Refusal refusal = new Refusal();
-            Outcome outcome = execute(context, bundle, targetVersion, now, expectedBase, refusal);
+            Outcome outcome = execute(context, bundle, targetVersion, now, expectedBase, changes, refusal);
             Result result = map(outcome, refusal, targetVersion);
             if (!result.ok()) {
                 return result;
@@ -97,13 +123,18 @@ public class PolicyAdoption {
     }
 
     private Outcome execute(RunContext context, ObjectNode bundle, String targetVersion, Instant now,
-            String expectedBase, Refusal refusal) {
+            String expectedBase, Map<String, ObjectNode> overrides, Refusal refusal) {
         String nowText = PolicyClock.iso(now);
         String definitionSetId = bundle.get("definitionSetId").textValue();
         ObjectNode commandInput = JSON.objectNode();
         commandInput.put("definitionSetId", definitionSetId);
         commandInput.put("digest", bundle.get("digest").textValue());
         commandInput.put("policyVersion", targetVersion);
+        ArrayNode overrideRows = JSON.arrayNode();
+        overrides.forEach((key, row) -> overrideRows.addObject().put("key", key).set("value", row.get("value").deepCopy()));
+        if (!overrideRows.isEmpty()) {
+            commandInput.set("overrides", overrideRows);
+        }
         Command command = new Command(COMMAND_TYPE, commandId(definitionSetId, context.runId()), commandInput);
         return database.runner().execute(context, command, tx -> {
             Connection c = tx.connection();
@@ -151,6 +182,12 @@ public class PolicyAdoption {
             for (JsonNode definition : bundle.get("definitions")) {
                 if (!existing.contains(definition.get("key").textValue())) {
                     ObjectNode row = ((ObjectNode) definition).deepCopy();
+                    ObjectNode override = overrides.get(definition.get("key").textValue());
+                    if (override != null) {
+                        for (String field : OVERRIDDEN) {
+                            row.set(field, override.get(field).deepCopy());
+                        }
+                    }
                     row.put("policyVersion", targetVersion);
                     row.put("effectiveFrom", nowText);
                     added.add(row);
@@ -168,6 +205,9 @@ public class PolicyAdoption {
             adoption.put("revision", bundle.get("revision").textValue());
             adoption.put("digest", bundle.get("digest").textValue());
             adoption.set("addedKeys", keys);
+            if (!overrideRows.isEmpty()) {
+                adoption.set("overrides", overrideRows);
+            }
             PolicyPublication.Published published = PolicyPublication.completePublication(seeds, successor,
                     context.actorId(), nowText, adoption);
             if (published.seed() == null) {
