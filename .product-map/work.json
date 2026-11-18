@@ -9214,7 +9214,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-18T00:07:27Z",
+      "observed_at": "2026-11-18T09:21:38Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9422,15 +9422,27 @@
           "name": "Claude A43",
           "harness": "claude",
           "role": "covering batch delivery",
-          "observed_at": "2026-11-18T00:07:27.319748+00:00",
-          "expires_at": "2026-11-18T00:07:27.319748+00:00",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
           "source": "Claude status waiting-for-lane/runtimefalse; attempt2 stopped without finalizer, manual cleanup followed by parent exact PID/group/scratch/reservation/PG port absence checks00:06:37. Current source/test execution not confirmed. Attempt1 invalid setup; no green covering batch.",
-          "status": "held; corrected covering batch queued after account and stock"
+          "status": "returned; covering batch incomplete at00:53:17, cleanup independently verified00:55:34; no current execution"
+        },
+        {
+          "name": "Taz 2",
+          "source": "/root/taz_2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:36:10.201039+00:00",
+          "status": "actual start ACK; read-only independent final source/evidence review",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
         }
       ],
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "API and Angular production builds passed with source/dependency/artifact pins independently audited. Connected failures retained; four proof assumptions corrected and reviewed (integrated719ff9743/79d197213). Corrected attempt22:45:57 stopped at resource admission before proof; retained build RAM grants are the identified obstacle to the next chunk. Same Claude delivery lead owns grant correction, serial rerun and parallel focused-Java work without per-phase parent permission. Both original AC OPEN; focused checks and covering batch remain outstanding."
+      "note": "Existing connected39/39, focused Java journey14/14 and wiring53/53 PASS at recorded source identities; proof corrections integrated719ff9743/79d197213. Prior covering batch A43 NOTGREEN: root npm timed out1380s after about98of344files; Java phase unrun. OriginalAC1/AC2 remain open. Retired Claude delegation is superseded by independent peer poller mode. Actual Taz2 read-only independent final source/evidence review resumed this pass; no new claim/runtime or broader acceptance gate."
     },
     {
       "assignee": "Gary Carter",
@@ -10061,7 +10073,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T09:06:04Z",
+      "observed_at": "2026-11-18T09:21:39Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10092,7 +10104,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "18Nov sole current fullsize hold-sweep attempt at0ee22999f failed1of12/0of3/noresult; logOutOfMemoryError, heapvsnonheap unresolved underXmx2g. Builds/syntax/keepercleanup pass, actualproofFAIL; independent honestfailed-evidence/resource reviewPASS. OriginalACs/all3slices remainopen. Existing39checks/Angular58/Java119+2skips reused; failedaggregates/redbatch and browser/hosted gaps retained. Allownedruntimecleaned/no retry. docs/gcsp/fucq452-process-comparisons-2026-11-16.md Dispatcher collected published failed-result checkpoint bffc1b08c; no running attempt or retry. Original completed-result acceptance remains open; native status preserved. Actual original completed-result failure remains unresolved. Hugh2 resumed at09:04:49UTC on published bffc1b08c for bounded evidence/source/environment investigation; no comparison runtime or result claimed. Claude is an independent peer poller.",
+      "note": "Prior original-size2GiB-heap attempt at0ee22999f failed1of12steps/0of3seeds/noresult; OutOfMemoryError region/allocation remains unresolved. Honest failed-result checkpoint bffc1b08c retained and all owned runtime cleaned. Hugh2 actively investigated retained evidence/source; tiny synthetic telemetry smoke PASS shows bounded JVM logging captures caughtOOM detail, not productAC. Recovered F507 record documents historical3GiB success and1536MiB OOM; three matching allocator blobs do not establish whole-current-source equivalence. Preparing one evidence-backed original-size3GiB+telemetry plan/review with fresh admission; no comparison runtime/new result. OriginalAC/all3slices remain open; covering batch red.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10170,10 +10182,10 @@
           "name": "Hugh 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T09:06:04.349256+00:00",
-          "expires_at": "2026-11-18T09:16:04.349256+00:00",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:36:10.201039+00:00",
           "source": "/root/hugh_2",
-          "status": "Executing bounded retained evidence/source/environment investigation; no new runtime or unchanged retry"
+          "status": "actual source/telemetry investigation; preparing reviewed evidence-backed3GiB original-workload plan, no comparison runtime"
         },
         {
           "name": "Petunia Pig 2",
@@ -10320,7 +10332,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-18T09:06:04Z",
+      "observed_at": "2026-11-18T09:21:38Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Enter and refresh replacement frontend routes",
@@ -10419,10 +10431,10 @@
           "name": "Sniffles 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T05:44:04.931871+00:00",
-          "expires_at": "2026-11-18T06:04:04.931871+00:00",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
           "source": "Direct gateway/title/scope-start ACK; parent verified saved thread01a1ed2d-a109-75c0-b026-11846ec06fd2 title and active turn.",
-          "status": "active; original branded unknown-route recovery implementation and necessary focused proof/review",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime",
           "requested": "gpt-6.1-sol/high",
           "selected": "gpt-6.1-sol/high",
           "fallback": null
@@ -10432,23 +10444,23 @@
           "source": "/root/sniffles_2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T09:06:04.349256+00:00",
-          "expires_at": "2026-11-18T09:16:04.349256+00:00",
-          "status": "Scoped state17 and static1 PASS; build PASS; narrow browser-proof continuation after CDP timeout"
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime"
         },
         {
           "name": "Mulan5",
           "source": "/root/sniffles_2/mulan_5",
           "harness": "codex",
           "role": "reviewer",
-          "observed_at": "2026-11-18T08:59:05.638993+00:00",
-          "expires_at": "2026-11-18T09:09:05.638993+00:00",
-          "status": "Independent product and corrected supervisor review PASS; runtime result pending"
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime"
         }
       ],
       "jira_observed_at": "2026-11-18T05:40:29.435Z",
       "native_observed_at": "2026-11-18T05:40:29.435Z",
-      "note": " 18 Nov: useful branded unknown-route recovery has concrete scoped source; initial local validation supervisor failed before selected tests. Exact owned scratch/token cleaned, signal outcomes unverified. Independent supervisor correction review PASS; one corrected scoped attempt is starting, outcome pending. Current unknown-route increment: static1/state17 and production build passed; rendered check hit CDP timeout before page request. Owned attempt03 scratch/token/groups independently absent; positive Chrome signal journal retained. Narrow rendered continuation uses matching passing evidence."
+      "note": "Published reviewed partial increment d34de1971: branded unknown direct-entry/refresh/home recovery preserves MINI query+fragment; missing resources retain404. Static1/state17/production build and desktop+narrow3scenarios/7viewedPNGs PASS, independent Mulan5 PASS; prior connected68 reused. Both originalAC and all existing slice completion remain open: hosted Render wildcard/caching, provider/actual email return, Safari/private and green covering batch. Corrected attempt07 natural-exit cleanup independently verified; attempt01 signal targets/outcomes remain unverified. Dispatcher integrating normal shared branch; no Story acceptance/closure."
     },
     {
       "branch": "gcsp-poc-dev",
