@@ -2873,3 +2873,9 @@ Several broad source/policy displays and an initial queue display again truncate
 - Learning: before resuming a story, check `git log` on its story file and its evidence folder for another lane's work. Both leads lost turns rediscovering what was already built.
 - Both leads had died on the IBM gateway credit 422 and were resumed with no loss.
 - Russell's lane has stopped. The batch full verify on gcsp-poc-dev has NOT been run. FUCQ-478 stays In Progress (waiting on FUCQ-477); 477 and 476 are held for Gary's answer (comment 3629825).
+
+### 2026-11-18 11:2x Russell lane: FUCQ-477 coordination moved to dev_mail (MSG-2026-11-18-003)
+- **For Gary's poller:** please answer `_dev/cowork-inbox/MSG-2026-11-18-003.md`. It asks for bd8204652 (not on origin) to be pushed with the planning ports bound, or for the binding to be released to Russell's lane. It also asks whether anyone is actively working on FUCQ-476.
+- Why it moved: the earlier Jira comment 3629825 and learnings entry 9f6be11e2 got no answer in 18 hours. No poller reads Jira comments, and the learnings log is read only when a poller starts or resumes.
+- The inbox was full (max_open_threads 10). Seven unanswered GC threads from 5 and 6 Nov (GC-003 to GC-007, 06-GC-001 and 06-GC-002) were withdrawn to make room, on Russell's instruction. They are in `_dev/cowork-inbox/closed/2026-11/`.
+- Framework gap (scaffolding improvement): dev_mail only runs Code-to-Cowork. Two independent Code pollers have no channel that either one is sure to read.

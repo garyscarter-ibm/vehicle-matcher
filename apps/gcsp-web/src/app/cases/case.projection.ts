@@ -10,10 +10,16 @@ const statuses: readonly CaseStatus[] = ['open', 'in-progress', 'remedy-proposed
 const status = (v: unknown): v is CaseStatus => typeof v === 'string' && statuses.includes(v as CaseStatus);
 const calendar = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
   && Number.isFinite(Date.parse(`${v}T00:00:00Z`)) && new Date(`${v}T00:00:00Z`).toISOString().slice(0, 10) === v;
-// Instant.toString() can carry nanoseconds; do not impose JavaScript's three-digit precision on the wire.
-const instant = (v: unknown): v is string => typeof v === 'string'
-  && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?Z$/.test(v) && Number.isFinite(Date.parse(v))
-  && new Date(v).toISOString().slice(0, 19) === v.slice(0, 19);
+// Java CaseJson.instant: Z or a ZoneOffset-range ±HH:MM. Instant.toString() can carry nanoseconds, so keep up to nine.
+const instantShape = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-](\d{2}):(\d{2}))$/;
+const instant = (v: unknown): v is string => {
+  const shape = typeof v === 'string' ? instantShape.exec(v) : null;
+  if (!shape || !Number.isFinite(Date.parse(v as string))) return false;
+  const [hours, minutes] = [Number(shape[1] ?? 0), Number(shape[2] ?? 0)];
+  const wall = `${(v as string).slice(0, 19)}Z`;
+  return minutes < 60 && hours * 60 + minutes <= 18 * 60 && Number.isFinite(Date.parse(wall))
+    && new Date(wall).toISOString().slice(0, 19) === wall.slice(0, 19);
+};
 const trigger = (v: unknown): boolean => object(v) && text(v['type']) && (v['label'] === undefined || text(v['label']));
 function remedy(v: unknown): v is CaseRemedy {
   if (!object(v) || !text(v['type'])) return false;

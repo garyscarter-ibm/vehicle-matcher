@@ -13,6 +13,8 @@ gcsp-root, gcsp-screen-intro, gcsp-status-screen, gcsp-labelled-field { display:
 .gcsp-actions { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-3); }
 .gcsp-actions:empty { display: none; }
 .gcsp-status { max-width: 720px; }
+/* A nested intro (level 3) keeps the shell's h2 size and the UA h2 block margin, so only the outline changes. */
+.gcsp h3.gcsp-intro-title { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); margin-block: 0.83em; }
 .gcsp-status .gcsp-actions { margin-top: var(--gcsp-space-5); }
 gcsp-status-screen + gcsp-status-screen, gcsp-gallery > section, gcsp-gallery > gcsp-status-screen { margin-top: var(--gcsp-space-5); }
 .gcsp-field { display: grid; gap: var(--gcsp-space-2); margin-top: var(--gcsp-space-5); max-width: 480px; }

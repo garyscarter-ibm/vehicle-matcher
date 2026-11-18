@@ -24,7 +24,7 @@ export class HelpComponent implements OnDestroy {
   readonly id = `gcsp-help-${++instance}`;
   readonly reasonId = `${this.id}-reason`;
   readonly notice = caseNotice;
-  readonly childLevel = computed(() => this.quiet() ? 2 : this.headingLevel() + 1);
+  readonly childLevel = computed<2 | 3>(() => this.quiet() || this.headingLevel() === 1 ? 2 : 3);
   readonly caveat = computed(() => this.view().cases.length > 0 || this.view().editing || this.view().reviewReason !== null);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly changeDetector = inject(ChangeDetectorRef);

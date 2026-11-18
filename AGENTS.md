@@ -176,11 +176,16 @@ Run once at the end on the story branch, with one throwaway native PostgreSQL 17
 which in `validation scope`. A story whose `validate` says `npm test`, `./mvnw -B verify` or "the full suite" with no
 such reason writes `full suite: deferred to batch`.
 
-**The batch run** is `inbox.test` (`npm test` at the root), then `./mvnw -B clean verify` in `services/gcsp-api`
-against a fresh throwaway PostgreSQL 17, one after the other, never alongside another full suite. Both must pass
-for the batch to be green. Known
-order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on 2026-11-13) get a Bug and are named
-in `_dev/batches.md`, not retried until green.
+**The batch run** is shared: any collaborator's poller claims a due suite with `_tools/scaffold_git.py batch claim`,
+so exactly one machine runs it (dev-inbox step E). The suites are `inbox.suites` in `.claude/scaffolding.json`:
+`node` (`npm test`), `java` (`./mvnw -B clean verify` in `services/gcsp-api`, against a fresh throwaway PostgreSQL 17
+with `GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set) and `web` (`npm ci && npm test` in
+`apps/gcsp-web`). Each is due only on merges touching its paths, and each needs its own green line. A machine without
+JDK 21 or PostgreSQL 17 skips `java` for another poller to take. There is no browser suite yet: the first story with an
+acceptance item checked on a screen creates it (a scripted Playwright test that starts the app and signs in), and
+registers it with `set-inbox --suite web-e2e=...;kind=browser`. The `scripts/gcsp/walk-*.mjs` walk-throughs are one-off
+evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on
+2026-11-13) get a Bug and are named in `_dev/batches.md`, not retried until green.
 
 ## Concepts and mockups
 
