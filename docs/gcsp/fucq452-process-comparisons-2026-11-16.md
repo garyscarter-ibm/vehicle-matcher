@@ -289,3 +289,50 @@ Separate Bug candidate, source-only and unreproduced:
 - In `apps/gcsp-web/src/app/comparison/comparison.component.ts`, the auth effect at line 68 clears the draft, the pending command and the uncertain flag on `signed-out`, and `ngOnDestroy` clears them again.
 - Real OIDC expiry with a failed silent renewal goes to `signed-out` and navigates to sign-in. An edited hold-sweep or points value and any uncertain command would therefore be lost on return, against the shared "sign in and return with saved progress" contract.
 - Specs cover only same-account recovery while the component survives.
+
+## Auth-recovery repair and full-size re-pin — 18 November 2026
+
+The coordinator allocated two items to this Story: the auth-recovery candidate and one 3 GiB full-size run.
+
+**Auth recovery is reproduced and repaired at `4c9afcad6`.**
+
+- **Reproduction.** Two new component cases failed on the unchanged source: expiry lost the hold-sweep draft (`expected 'process-only' to be 'hold-sweep'`) and the uncertain command (`Start is unconfirmed` missing). Each case drives `signed-out` with the auth service's expiry notice, then recreates the screen as the sign-in redirect does, then returns with the same account.
+- **Cause.** The auth effect cleared the draft and the pending command on every `signed-out`. The OIDC redirect also discards in-memory state, so even without the clear there was nothing to return to.
+- **Impact.** Greg lost an edited experiment and any unconfirmed start after a real expiry, against the shared "return to the authorized page with saved progress" contract. No command was ever resent automatically.
+- **Repair.** On `signed-out` with an expiry notice only, the screen saves the selection, drafts and pending command in this tab's `sessionStorage`. On the next ready state for the exact same subject, environment, run and roles it restores them once, as an unconfirmed command that only the explicit retry control resends. Explicit sign-out, denial, and a different account or run discard the saved copy. The auth service already uses this tab's session storage, so this adds no new component or connection.
+- **Tests.** Angular comparison 61/61 (28 client, 33 component); auth route policy and guards 15/15.
+
+**Full-size re-pin, reviewed by the lead.** The shared delta since `9a92a107` is the declined-car re-entry rule:
+
+- `Assumptions` records it when the pinned policy carries it.
+- `Prepare` adds one latest-decline lookup per engaged employee, only when the rule is present.
+- The lookup returns one small row per employee and grows no retained per-run collection. It is not a plausible cause of, or cure for, the earlier out-of-memory failure.
+
+The four ignored supervisors keep their reviewed logic, limits, ownership and teardown. Only the recorded build base and the plan's source/tree/proof pins move to the refreshed source that includes this repair. The proof blob is unchanged at SHA-256 `f7eb4223…`. Progress checkpoints are written under the Hugh 2 run directory, outside scratch. The twelve-step job itself is indivisible: an OS kill leaves its progress record, not a resumable job.
+
+If the 3 GiB attempt runs out of memory again, it stops there. That would be a memory fix for the Java comparison/allocation owners, not another retry.
+
+## Re-pinned 3 GiB attempt refused at admission — 18 November 2026
+
+The heavy-runtime lane was waited out: FUCQ-451 and another session's Java test shard finished, then there were two quiet minutes with an empty reservation registry. At 10:56 UTC the capacity check reported 8.8 GB free and `can_start=3`.
+
+The re-pinned pipeline then started once at `a8b8ec706`.
+
+- **Builds and checks.** The production API and Angular builds passed (rc 0) and their artifacts were hash-verified and consumed. The exported proof passed `node --check`.
+- **Refusal.** The connected supervisor then refused its 4.5 GiB proof grant with `CapacityError('chunk needs 4831838208 bytes RAM; available 3790274560')`. That measure is the helper's own: free plus inactive plus purgeable pages.
+- **What did not run.** No PostgreSQL, browser, Java service or comparison job started, and no job, result or progress exists. The launcher exited `incomplete` after 68 seconds.
+- **Clock.** The one-time pipeline clock for this run directory is consumed; it was not reset.
+
+The run also exposed a runtime fault in the revised supervisors.
+
+- **Symptom.** All three supervisors reported `owned process or process-group absence is unresolved`, so they preserved their scratch roots and two host reservations.
+- **Cause.** The only "unresolved" process was each supervisor's own `/bin/ps` sampling child, observed during its final audit. The owned groups were absent (`groups_after` false). This comes from the 09:3x change to include each supervisor's own RSS.
+- **Cleanup.** After confirming the owners were dead, no open files and no group members, all three roots were removed through the project's `test_resources.reconcile` on their ownership manifests. Both dead-owner reservations were released through `HostBudget.release`. Scratch and registry are verified empty; no IPC or port was created.
+- **Retained.** About 11 MiB of receipts under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/`, with the pre-repin supervisor copies in `pre-repin/`.
+
+AC1 therefore stays unmet. A real attempt needs two things outside this Story:
+
+- **Memory.** At least 4,831,838,208 bytes of conservative available RAM. On this 16 GB machine with the desktop apps resident, the helper measured 3.59 to 3.79 GB at both observations today.
+- **Supervisor fix.** A reviewed fix so the teardown audit excludes the supervisors' own `ps` children.
+
+Lowering the heap, the RSS grant or the workload is not allowed. If a run is admitted and runs out of memory again at 3 GiB, that is a fix for the Java comparison/allocation owners.

@@ -10093,154 +10093,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-452",
-      "observed_at": "2026-11-18T09:30:09Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Inspect and run supported process comparisons",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
-      "slices": [
-        {
-          "id": "inspection",
-          "status": "in-progress",
-          "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
-        },
-        {
-          "id": "jobs",
-          "status": "in-progress",
-          "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Connected Java roles and rendered acceptance evidence",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#failed-full-workload-attempt--18-november-2026"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-020",
-      "note": "Prior original-size2GiB-heap attempt at0ee22999f failed1of12steps/0of3seeds/noresult; OutOfMemoryError region/allocation remains unresolved. Honest failed-result checkpoint bffc1b08c retained and all owned runtime cleaned. Hugh2 actively investigated retained evidence/source; tiny synthetic telemetry smoke PASS shows bounded JVM logging captures caughtOOM detail, not productAC. Recovered F507 record documents historical3GiB success and1536MiB OOM; three matching allocator blobs do not establish whole-current-source equivalence. Published proof-plan checkpoint e7f2abcf3; independent reviewer found daemonizedPG registration gap before launch. Adapting ignored supervisor to direct foreground PostgreSQL with exact positive ownership, re-review pending. Fresh conservative memory admission below4.5GiB+reserve; no comparison runtime/new result. Actual source/lifecycle correction/review continues; no unsafe retry or admission bypass. OriginalAC/all3slices remain open; covering batch red.",
-      "workers": [
-        {
-          "name": "Foghorn Leghorn 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T23:20:35.697529+00:00",
-          "expires_at": "2026-11-16T23:20:35.697529+00:00",
-          "source": "/root/foghorn_leghorn_2",
-          "status": "final partial delivery bookkeeping complete; original ACs remain open"
-        },
-        {
-          "name": "Marvin the Martian 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:15Z",
-          "expires_at": "2026-11-16T23:04:38.753688+00:00",
-          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Porky Pig 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:58:42Z",
-          "expires_at": "2026-11-16T23:04:38.753940+00:00",
-          "source": "/root/foghorn_leghorn_2/porky_pig_2",
-          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
-        },
-        {
-          "name": "Hugo 3",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-16T23:16:41Z",
-          "expires_at": "2026-11-16T23:16:52Z",
-          "source": "/root/foghorn_leghorn_2/hugo_3",
-          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
-        },
-        {
-          "name": "Bertie 2",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-16T23:18:28Z",
-          "expires_at": "2026-11-16T23:19:03.283520+00:00",
-          "source": "/root/foghorn_leghorn_2/bertie_2",
-          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
-        },
-        {
-          "name": "Scrappy Doo 3",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "expires_at": "2026-11-18T03:58:02.732112+00:00",
-          "source": "/root/scrappy_doo_3",
-          "status": "partial connected result published; original ACs open; owned runtime cleaned"
-        },
-        {
-          "name": "Cuthbert 4",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "expires_at": "2026-11-18T03:58:02.732112+00:00",
-          "source": "/root/scrappy_doo_3/cuthbert_4",
-          "status": "proof author returned; syntax and connected39checks pass after proof corrections"
-        },
-        {
-          "name": "Sam Sheepdog 3",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "expires_at": "2026-11-18T03:58:02.732112+00:00",
-          "source": "/root/scrappy_doo_3/sam_sheepdog_3",
-          "status": "independent source/receipt/six-image review PASS; original ACs remain open"
-        },
-        {
-          "name": "Hugh 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T09:30:08.459774+00:00",
-          "expires_at": "2026-11-18T09:45:08.459774+00:00",
-          "source": "/root/hugh_2",
-          "status": "actual source/lifecycle correction and independent review; current proof checkpoint e7f2abcf3; no comparison runtime, admission shortfall recorded"
-        },
-        {
-          "name": "Petunia Pig 2",
-          "harness": "codex",
-          "role": "runner",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "expires_at": "2026-11-18T06:13:51.671570+00:00",
-          "source": "/root/hugh_2/petunia_pig_2",
-          "status": "returned: builds stricttrue, actual proofFAIL, owned runtime/resources cleaned; no retry"
-        },
-        {
-          "name": "Heihei 3",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "expires_at": "2026-11-18T06:13:51.671570+00:00",
-          "source": "/root/hugh_2/heihei_3",
-          "status": "returned proof author; no runtime; final syntax passed before failed workload"
-        },
-        {
-          "name": "Pluto 3",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "expires_at": "2026-11-18T06:13:51.671570+00:00",
-          "source": "/root/hugh_2/pluto_3",
-          "status": "returned independent failed-evidence/cleanup/image review PASS; no blocker/major; no runtime"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-451",
       "observed_at": "2026-11-18T04:28:39Z",
       "original_status": "In Progress",
@@ -10591,6 +10443,163 @@
         }
       ],
       "observed_at": "2026-11-18T09:36:36Z"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-452",
+      "observed_at": "2026-11-18T10:59:35Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect and run supported process comparisons",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-452",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "blocked",
+          "title": "Retained and new result inspection with actual measures and assumptions",
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+        },
+        {
+          "id": "jobs",
+          "status": "complete",
+          "title": "Greg commands and truthful progress and interrupted states",
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Connected Java roles and rendered acceptance evidence",
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-020",
+      "note": "18Nov Claude: auth-recovery defect reproduced and repaired at 4c9afcad6 (Angular 61/61, routes 15/15); Java focused 121/0/2 skip green. AC2 met locally. AC1 blocked: 3GiB re-pinned run at a8b8ec706 built then refused admission (needs 4.83GB, 3.79GB available); no job ran. Supervisor teardown counts own ps child as unresolved; leftovers reconciled. Safari/private/hosted unrun; full suite deferred to batch.",
+      "workers": [
+        {
+          "name": "Foghorn Leghorn 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T23:20:35.697529+00:00",
+          "expires_at": "2026-11-16T23:20:35.697529+00:00",
+          "source": "/root/foghorn_leghorn_2",
+          "status": "final partial delivery bookkeeping complete; original ACs remain open"
+        },
+        {
+          "name": "Marvin the Martian 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:15Z",
+          "expires_at": "2026-11-16T23:04:38.753688+00:00",
+          "source": "/root/foghorn_leghorn_2/marvin_the_martian_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Porky Pig 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:58:42Z",
+          "expires_at": "2026-11-16T23:04:38.753940+00:00",
+          "source": "/root/foghorn_leghorn_2/porky_pig_2",
+          "status": "source returned; 28 client or 30 component authored cases, runtime unrun"
+        },
+        {
+          "name": "Hugo 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T23:16:41Z",
+          "expires_at": "2026-11-16T23:16:52Z",
+          "source": "/root/foghorn_leghorn_2/hugo_3",
+          "status": "exact bounded test-wait review returned PASS; runtime cause remains hypothesis"
+        },
+        {
+          "name": "Bertie 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-16T23:18:28Z",
+          "expires_at": "2026-11-16T23:19:03.283520+00:00",
+          "source": "/root/foghorn_leghorn_2/bertie_2",
+          "status": "a03 returned:30component pass,boundaryrc1;28clientpasses reused;cleanup/inputaudits pass"
+        },
+        {
+          "name": "Scrappy Doo 3",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3",
+          "status": "partial connected result published; original ACs open; owned runtime cleaned"
+        },
+        {
+          "name": "Cuthbert 4",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3/cuthbert_4",
+          "status": "proof author returned; syntax and connected39checks pass after proof corrections"
+        },
+        {
+          "name": "Sam Sheepdog 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3/sam_sheepdog_3",
+          "status": "independent source/receipt/six-image review PASS; original ACs remain open"
+        },
+        {
+          "name": "Hugh 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T09:30:08.459774+00:00",
+          "expires_at": "2026-11-18T09:45:08.459774+00:00",
+          "source": "/root/hugh_2",
+          "status": "actual source/lifecycle correction and independent review; current proof checkpoint e7f2abcf3; no comparison runtime, admission shortfall recorded"
+        },
+        {
+          "name": "Petunia Pig 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
+          "source": "/root/hugh_2/petunia_pig_2",
+          "status": "returned: builds stricttrue, actual proofFAIL, owned runtime/resources cleaned; no retry"
+        },
+        {
+          "name": "Heihei 3",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
+          "source": "/root/hugh_2/heihei_3",
+          "status": "returned proof author; no runtime; final syntax passed before failed workload"
+        },
+        {
+          "name": "Pluto 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T06:13:51.671570+00:00",
+          "expires_at": "2026-11-18T06:13:51.671570+00:00",
+          "source": "/root/hugh_2/pluto_3",
+          "status": "returned independent failed-evidence/cleanup/image review PASS; no blocker/major; no runtime"
+        },
+        {
+          "name": "story-lead (Claude)",
+          "harness": "claude",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "expires_at": "2026-11-18T10:59:35.712000+00:00",
+          "source": "claude dev poller",
+          "status": "returned: repair committed; 3GiB run refused at admission; leftovers reconciled; AC1 blocked"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1

@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AuthPort, Role, SessionState } from '../auth/auth.port';
+import { AuthPort, RecoveryNotice, Role, SessionState } from '../auth/auth.port';
 import { ComparisonClient } from './comparison.client';
 import { ComparisonComponent } from './comparison.component';
 import { COMPARISON_EXPERIMENTS, ComparisonCatalogue, ComparisonJob, ComparisonResponse, StoredComparison } from './comparison.types';
@@ -27,16 +27,17 @@ describe('comparison inspection and supported Greg commands', () => {
   let start: ReturnType<typeof vi.fn<ComparisonClient['start']>>;
   let retry: ReturnType<typeof vi.fn>;
   let signIn: ReturnType<typeof vi.fn>;
+  let recovery: ReturnType<typeof signal<RecoveryNotice | null>>;
   beforeEach(async () => {
     vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
-    authState = signal(session()); readResults = vi.fn<ComparisonClient['readResults']>().mockResolvedValue(catalogue());
+    authState = signal(session()); recovery = signal<RecoveryNotice | null>(null); sessionStorage.clear(); readResults = vi.fn<ComparisonClient['readResults']>().mockResolvedValue(catalogue());
     readJob = vi.fn<ComparisonClient['readJob']>().mockResolvedValue({ status: 'ok', value: { job: null, reruns: true } });
     start = vi.fn<ComparisonClient['start']>().mockResolvedValue({ status: 'pending', value: job() }); retry = vi.fn().mockResolvedValue(undefined); signIn = vi.fn().mockResolvedValue(undefined);
     await TestBed.configureTestingModule({ imports: [ComparisonComponent], providers: [
-      { provide: AuthPort, useValue: { state: authState, retry, signIn } }, { provide: ComparisonClient, useValue: { readResults, readJob, start } },
+      { provide: AuthPort, useValue: { state: authState, recovery, retry, signIn } }, { provide: ComparisonClient, useValue: { readResults, readJob, start } },
     ] }).compileComponents();
   });
-  afterEach(() => { fixture?.destroy(); fixture = undefined; vi.useRealTimers(); vi.restoreAllMocks(); TestBed.resetTestingModule(); });
+  afterEach(() => { fixture?.destroy(); fixture = undefined; sessionStorage.clear(); vi.useRealTimers(); vi.restoreAllMocks(); TestBed.resetTestingModule(); });
   const root = () => fixture!.nativeElement as HTMLElement;
   const text = () => root().textContent ?? '';
   const button = (label: string) => Array.from(root().querySelectorAll('button')).find(b => b.textContent?.trim() === label)!;
@@ -121,6 +122,28 @@ describe('comparison inspection and supported Greg commands', () => {
   });
   it('offers only explicit authentication recovery and never automatically starts', async () => {
     authState.set({ status: 'signed-out' }); await render(); await click('Sign in'); expect(signIn).toHaveBeenCalledWith('/gcsp/comparison'); expect(start).not.toHaveBeenCalled(); expect(retry).not.toHaveBeenCalled();
+  });
+  const expired: RecoveryNotice = { message: 'Your session expired. Sign in to continue with your saved progress.', requiresConfirmation: true };
+  // Real expiry: signed-out with a recovery notice, then a sign-in redirect that recreates the screen.
+  async function expireAndReturn(next: SessionState = session()) {
+    recovery.set(expired); authState.set({ status: 'signed-out' }); fixture!.detectChanges(); fixture!.destroy(); fixture = undefined;
+    authState.set(next); await render();
+  }
+  it('keeps the draft through session expiry, sign-in and same-account return', async () => {
+    await render(); select('hold-sweep'); input('values', '7200,3600'); input('basis', 'Keep through expiry'); await expireAndReturn();
+    expect(fixture!.componentInstance.selectedId()).toBe('hold-sweep'); expect(root().querySelector<HTMLTextAreaElement>('#comparison-values')!.value).toBe('7200,3600');
+    expect(root().querySelector<HTMLTextAreaElement>('#comparison-basis')!.value).toBe('Keep through expiry'); expect(start).not.toHaveBeenCalled();
+  });
+  it('keeps an uncertain command through expiry and resends it only on explicit retry', async () => {
+    await render(); select('points'); input('values', '1.3'); input('basis', 'Exact intent'); start.mockReturnValueOnce(new Promise(() => undefined)); button('Start comparison').click(); fixture!.detectChanges();
+    const original = start.mock.calls[0][0]; await expireAndReturn();
+    expect(start).toHaveBeenCalledOnce(); expect(text()).toContain('Start is unconfirmed'); await click('Retry same command'); expect(start.mock.calls[1][0]).toEqual(original);
+  });
+  it('does not restore a draft after sign-out or for another account', async () => {
+    await render(); select('points'); input('values', '1.3'); input('basis', 'Private draft'); authState.set({ status: 'signed-out' }); fixture!.detectChanges(); fixture!.destroy(); fixture = undefined;
+    authState.set(session()); await render(); select('points'); expect(root().querySelector<HTMLTextAreaElement>('#comparison-values')!.value).toBe('');
+    input('values', '2'); input('basis', 'Other account must not see'); await expireAndReturn(session(['greg'], 'greg-2')); select('points');
+    expect(root().querySelector<HTMLTextAreaElement>('#comparison-values')!.value).toBe(''); expect(text()).not.toContain('Other account must not see');
   });
   it('inspects a conflict’s actual running job identity', async () => {
     await render(); start.mockResolvedValueOnce({ status: 'conflict', code: 'busy', reason: 'Already running', retryable: false, jobId: 'busy-2' }); readJob.mockResolvedValueOnce({ status: 'ok', value: { job: job({ jobId: 'busy-2' }), reruns: true } }); await click('Start comparison'); expect(readJob.mock.calls.at(-1)![0]?.jobId).toBe('busy-2'); expect(text()).toContain('busy-2');
