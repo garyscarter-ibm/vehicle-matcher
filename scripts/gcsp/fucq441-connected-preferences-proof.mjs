@@ -615,7 +615,10 @@ async function scenarioD(cdp, s, pages) {
   const oldValue = Number(await page.act("return value('#preference-comfort');"));
   await page.key('ArrowRight');
   const nextValue = Number(await page.act("return value('#preference-comfort');"));
-  s.checks.nativeArrowChangesPreference = nextValue === oldValue + 1 && versionOf(await page.act('return versionNote();'))?.saved === false;
+  // The note re-renders after the input event, so wait briefly for it rather than reading it in the same task.
+  const draftNote = await page.until(`return /^Unsaved draft/.test(versionNote() ?? '');`, 5000, 'unsaved draft note').then(() => page.act('return versionNote();'), () => page.act('return versionNote();'));
+  s.observations.preferenceArrow = { oldValue, nextValue, note: draftNote };
+  s.checks.nativeArrowChangesPreference = nextValue === oldValue + 1 && versionOf(draftNote)?.saved === false;
   s.observations.preferenceKeyboardImage = await page.shot('d2-narrow-preference-keyboard.png');
   s.checks.preferenceHasVisibleKeyboardFocus = s.observations.preferenceFocus.focus.focusVisible && s.observations.preferenceFocus.focus.visible && parseFloat(s.observations.preferenceFocus.focus.outlineWidth) >= 2;
   await page.key('ArrowLeft');
@@ -646,7 +649,7 @@ async function scenarioD(cdp, s, pages) {
   s.observations.resumeFocus = await page.tabTo('gcsp-buddy-controls button:first-of-type');
   await page.key('Enter');
   await page.until(`return $('gcsp-buddy-controls .buddy-state')?.textContent.trim() === 'Saved status: Engaged' && !!button('Pause search');`, 30000, 'keyboard resume saved');
-  s.checks.keyboardPauseAndResumeSaved = (await serverEditor()).buddy === 'engaged' && page.calls().some((e) => e.method === 'POST' && /buddy/.test(e.path) && e.status === 200);
+  s.checks.keyboardPauseAndResumeSaved = (await serverEditor()).buddy === 'engaged' && ['/brief/pause-search', '/brief/resume-search'].every((p) => posts(page.calls(), p).some((e) => e.status === 200));
   await freshDocument(page, `${ORIGINS.web}/gcsp/account`, { ready: `return !!$('gcsp-account-preferences .category-title');`, what: 'compact account editor' });
   s.observations.compactLayouts = [];
   for (const width of [1440, 375, 320]) {
