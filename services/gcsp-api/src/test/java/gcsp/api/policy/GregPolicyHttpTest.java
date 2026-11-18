@@ -14,7 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.clock.ClockReading;
+import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Persistence;
+import gcsp.api.persistence.RunContext;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -29,17 +32,22 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 /** Greg's policy controls over HTTP on the native test cluster, in a throwaway schema; skips without the URL. */
 @QuarkusTest
 @TestProfile(GregPolicyProfiles.Persisted.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GregPolicyHttpTest {
 
     private static final String V1 = "gcsp-policy-v1";
@@ -62,6 +70,9 @@ class GregPolicyHttpTest {
     PolicyService policy;
 
     @Inject
+    RunClockHolder runClock;
+
+    @Inject
     Instance<AgroalDataSource> dataSource;
 
     private String greg;
@@ -73,6 +84,7 @@ class GregPolicyHttpTest {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
         QuarkusMock.installMockForType(CLOCK, WallPolicyClock.class);
+        QuarkusMock.installMockForType(new GregPolicyClock(CLOCK, ctx -> Optional.of(CLOCK.now)), GregPolicyClock.class);
         greg = GregPolicyHttp.token(signingJwk, "sub-greg", "greg");
         employee = GregPolicyHttp.token(signingJwk, "sub-employee", "employee");
         presenter = GregPolicyHttp.token(signingJwk, "sub-presenter", "presenter");
@@ -422,6 +434,38 @@ class GregPolicyHttpTest {
         Response republish = post(greg, "/publish", change(uniqueName("c"), active, "greg-" + uniqueName("q"), CLOCK.now, id, points + 6));
         assertEquals(409, republish.statusCode(), republish.asString());
         assertEquals("stale-version", json(republish).get("status").textValue());
+    }
+
+    @Test
+    @Order(Integer.MAX_VALUE)
+    void publishOnATickingWallClockStillAcceptsThePreviewsAsOf() throws Exception {
+        // Runs last: it publishes at run-clock time, which would postdate the StepClock versions of the other tests.
+        Instant[] wall = {Instant.now()};
+        WallPolicyClock ticking = new WallPolicyClock() {
+            @Override
+            public Instant now(RunContext context) {
+                wall[0] = wall[0].plusSeconds(1);
+                return wall[0];
+            }
+        };
+        QuarkusMock.installMockForType(ticking, WallPolicyClock.class);
+        QuarkusMock.installMockForType(new GregPolicyClock(ticking, ctx -> {
+            try {
+                return runClock.clock().now(ctx.environmentId(), ctx.runId()).map(ClockReading::now);
+            } catch (RuntimeException e) {
+                return Optional.empty();
+            }
+        }), GregPolicyClock.class);
+        JsonNode before = read();
+        JsonNode first = before.get("fields").get(0);
+        String id = first.get("id").textValue();
+        int points = first.get("value").intValue();
+        String active = before.get("activeVersion").textValue();
+        JsonNode preview = json(post(greg, "/preview", previewBody(active, id, points + 3))).get("value");
+        Instant asOf = Instant.parse(preview.get("asOf").textValue());
+        Response published = post(greg, "/publish", change(uniqueName("c"), active, "greg-" + uniqueName("t"), asOf, id, points + 3));
+        assertEquals(200, published.statusCode(), published.asString());
+        assertEquals(points + 3, field(read(), id).get("value").intValue());
     }
 
     @Test

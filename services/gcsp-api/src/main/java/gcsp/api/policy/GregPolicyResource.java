@@ -43,7 +43,7 @@ public class GregPolicyResource {
     PolicyService policy;
 
     @Inject
-    PolicyClock clock;
+    GregPolicyClock clock;
 
     @Inject
     GregPolicyPreview previews;
@@ -116,7 +116,7 @@ public class GregPolicyResource {
             changeSet.set(key, input.get(key).deepCopy());
         }
         changeSet.set("changes", prepared.changes());
-        PolicyResult published = policy.publishPolicyVersion(principal, changeSet);
+        PolicyResult published = policy.publishPolicyVersion(principal, changeSet, now);
         if (!published.ok()) {
             return PolicyResponses.failure(published);
         }
