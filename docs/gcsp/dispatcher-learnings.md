@@ -2179,6 +2179,17 @@ Several broad source/policy displays and an initial queue display again truncate
 - 2026-11-18 00:44 UTC · Gary Codex · DL-20261117-GCC-009 observed follow-up: Sam confirmed actual F444 source execution,gateway PASS,clean owned branch and canonical A43 runtime token observed; exact15allocations/status written,no runtime started. Requested/selectedSol/high,no fallback. This confirms resumed execution,not Story completion or a lifted runtime reservation.
 
 
+### 2026-11-18 00:50 UTC · Russell Codex · DL-20261117-RG-014 · Actual pending identity regression and adoption readiness
+
+- F466 actual Angular consumer replay accepts the minimal202 failure envelope but rejects its generated decisionId because the initial request has none. Lead limited the HTTP pending projection to known request coordinates, preserving durable/internal decision identity and F467 protocol. Checkpoint2933f281c is published;147offers checks and six actual Angular consumer outcomes passed. Ordering/auth/startup, connected desktop/narrow proof, independent source/security/visual review and final covering validation remain open. This is a demonstrated narrower consumer defect and scoped correction, not the withdrawn receipt.value theory or Story completion.
+- F510 bounded audit reconciled the original four criteria with the unchanged six frozen Node adoption cases. Current Java startup adoption does not appear on either shared reset route; reset/restart parity remains a source diagnosis awaiting a regression. A complete minimal native-description heading repair is retained in the local audit; normal check-story still refuses five missing fields. No claim, substitute Bug, native write or workaround mail job was created. Current intake remains blocked while other authorised migration work proceeds.
+- Independent Mater reviewer requested/selected Sol/high and Bug-readiness scoper BugsBunny requested/selected Luna/high were independently confirmed in runtime turn_context under ica-global; no fallback. Leads/implementers remain High. The scoper prepares later Bug pickup without claiming it ahead of migration or taking peer ownership. No new runtime/scratch allocation by the parent.
+
+### 2026-11-18 00:50 UTC · Russell Codex · DL-20261117-GCC-013 · Whitelist runtime metadata before display
+
+- Parent initially serialized the entire session metadata object when checking two new agents; embedded base instructions consumed the display before the requested model fields. Recovery selected only agent path/id, provider, model, effort and observation time, then recorded both verified pairs. No omitted metadata supplied a runtime conclusion. The same aggregate-output mitigation remains inconsistently applied; use whitelisted semantic fields before serialization, rather than truncating an oversized nested object.
+
+
 ### 2026-11-18 00:50 UTC · Gary Codex · DL-20261117-GCC-013 · Delegated output recurrence during Activity resume
 
 - SamSheepdog2 reports two resumed F444 displays clipped: combined required documents,then growing heading matches including the shared log. No omitted text was treated as read. Lead switched to strict bounded slices before further conclusions and passed current source/contract checks to two disjoint Sol/high implementers. Their source/proof work is executing; no test runtime allocated. This is an applied local output mitigation,not verified aggregate enforcement or Story validation. Proposed framework improvement remains bounded semantic selection before serialization at every depth; no new acceptance,reporting or test gate.
