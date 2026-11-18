@@ -106,7 +106,9 @@ const PROOF_DEADLINE_WALL_MS = T0 + DEADLINE_MS;
 const PROOF_DEADLINE_MONO_MS = DEADLINE_MS;
 const COMPLETED_JOB_TIMEOUT_MS = 10800000;
 const COMPLETED_RESULT_RESERVE_MS = 300000;
-const COMPLETED_API_JVM_ARGS = ['-Xms128m', '-Xmx2g', '-XX:MaxMetaspaceSize=256m', '-XX:ReservedCodeCacheSize=128m'];
+const COMPLETED_API_JVM_ARGS = ['-Xms128m', '-Xmx3g', '-XX:MaxMetaspaceSize=256m', '-XX:ReservedCodeCacheSize=128m'];
+const JVM_LOG_ROTATION_BYTES = 1024 * 1024;
+const FIRST_BROWSER_STEP_WINDOW_MS = 180000;
 const HOLD_SWEEP_BASIS = 'Check the effect of a 3,600-second hold against the actual current setting; keep this as a what-if, not a policy change.';
 const EXPECTED_SEEDS = ['comparison-a', 'comparison-b', 'comparison-c'];
 
@@ -144,10 +146,12 @@ const receipt = {
     expectedSteps: 12, expectedSeeds: 3, canonicalJobTimeoutSeconds: COMPLETED_JOB_TIMEOUT_MS / 1000,
     estimate: '100–200 minutes, based on historical 913–1,918 seconds per seed',
     timeoutRisk: 'The Java job timeout is 180 minutes; a slower replay can fail at that limit.',
-    apiJvmArgs: COMPLETED_API_JVM_ARGS, apiHeapLimit: '2 GiB maximum heap',
+    apiJvmArgs: COMPLETED_API_JVM_ARGS, apiHeapLimit: '3 GiB maximum heap',
+    resourceBasis: 'Historical FUCQ-507 completed the full three-seed process job at -Xmx3g. This current hold-sweep variant remains unproven and does not diagnose the prior 2 GiB OOM.',
+    browserLifetime: 'Initial Greg start/progress chunk, no live Chrome during signed-API polling, then fresh Chrome after the post-completion ordinary API restart.',
   } : { expectedSteps: 6, scenario: 'original bounded lifecycle proof' },
   startedAt: new Date().toISOString(), sourceRevision: { value: SOURCE_REVISION, provenance: 'Supplied and verified by the parent; this script does not read git.' },
-  inputs: null, tools: {}, scenarios: {}, actualBaseline: null, processes: [],
+  inputs: null, tools: {}, scenarios: {}, actualBaseline: null, processes: [], signals: [],
   originalAcceptance: {
     AC1: { text: 'Retained/new actual results, measures, assumptions and experiments display actual data; supported start/rerun/progress and interrupted-job states work for Greg.', evidence: 'incomplete', closure: PROOF_MODE === 'completed-experiment'
       ? 'OPEN: this mode covers one real completed hold-sweep start, progress and result readback; it does not re-exercise rerun/interruption. Existing lifecycle evidence is separate; the covering batch, current-browser and hosted evidence remain outstanding.'
@@ -160,7 +164,7 @@ const receipt = {
     'This mode starts exactly one real hold-sweep job through Greg’s Angular form, using the server-owned three seeds and unchanged current workload; it does not seed or edit successful job/result rows.',
     'The only trial value is 3,600 seconds against the current policy baseline. The basis is shown in the command form, the experiment remains a what-if and no trial value is published as policy.',
     'The expected plan is baseline plus one variant across three seeds and two routes (12 steps). Full-size completion is estimated at 100–200 minutes from historical 913–1,918 seconds per seed; the Java job timeout is 180 minutes, so slower execution can fail.',
-    'The initial Greg browser context is disposed after the first real step is observed; signed API reads then monitor the durable job until terminal state. There is no continuous DOM observation during the remaining run.',
+    'The initial Greg context and Chrome stop after the bounded initial progress observation; signed API reads then monitor the durable job until terminal state. Fresh Chrome/sign-in inspect the result after an ordinary API restart. There is no continuous DOM observation during the remaining run.',
     'The outer supervisor owns the database, resource manifest, aggregate limits, scratch/output audit and teardown. This script leaves its per-run schema and files for that finalizer.',
     'CDP browser contexts approximate fresh private sessions. Safari/WebKit, actual private-browser behaviour and hosted deployment were not run by this local Chromium proof.',
     'No access tokens, database credentials, OIDC codes, private keys or run-token values are written to receipts.',
@@ -175,6 +179,7 @@ const receipt = {
   ],
 };
 const owned = [];
+const baselineProcessStarts = new Map();
 const CHILD_LOG_LIMIT = 1024 * 1024;
 const LOG_LIMIT_MARKER = Buffer.from('\nPROOF FAILURE: shared 1MiB child log budget exhausted; remaining child output discarded.\n');
 const SCREENSHOT_BUDGET = 1536 * 1024;
@@ -186,6 +191,9 @@ let teardownPromise;
 let tls;
 let api = null;
 let apiStarts = 0;
+let browserStarts = 0;
+let browserProcess = null;
+let activeCdp = null;
 let webServer = null;
 const idp = { codes: new Map(), txns: new Map(), subjects: OIDC_SUBJECTS, keys: null, server: null };
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -196,21 +204,48 @@ const cap = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8'
 
 // ---------- owned child processes (the parent retains the outer resource supervisor) ----------
 function processIdentity(pid) {
-  if (!pid) return null;
-  const result = spawnSync('/bin/ps', ['-p', String(pid), '-o', 'pid=', '-o', 'pgid=', '-o', 'lstart=', '-o', 'comm='],
+  if (!Number.isInteger(pid) || pid <= 1 || pid === process.pid) return null;
+  const result = spawnSync('/bin/ps', ['-p', String(pid), '-o', 'pid=', '-o', 'ppid=', '-o', 'pgid=', '-o', 'lstart=', '-o', 'comm='],
     { encoding: 'utf8', timeout: 1000, env: childEnv(process.env) });
   const parts = (result.stdout ?? '').trim().split(/\s+/);
-  return result.status === 0 && parts.length >= 8
-    ? { pid: Number(parts[0]), pgid: Number(parts[1]), start: parts.slice(2, 7).join(' '), executable: parts.slice(7).join(' ') } : null;
+  if (result.status !== 0 || result.stderr || parts.length < 9
+    || !parts.slice(0, 3).every((value) => /^\d+$/.test(value) && Number(value) > 0)
+    || Number(parts[0]) !== pid || !parts.slice(3, 8).every(Boolean)) return null;
+  return { pid: Number(parts[0]), ppid: Number(parts[1]), pgid: Number(parts[2]),
+    start: parts.slice(3, 8).join(' '), executable: parts.slice(8).join(' ') };
+}
+function captureProcessBaseline() {
+  const result = spawnSync('/bin/ps', ['-axo', 'pid=,lstart='], { encoding: 'utf8', timeout: 1000, env: childEnv(process.env) });
+  if (result.status !== 0 || result.stderr || !result.stdout?.trim()) throw new Error('Complete process baseline is unavailable');
+  for (const line of result.stdout.trim().split('\n')) {
+    const parts = line.trim().split(/\s+/);
+    if (parts.length !== 6 || !/^\d+$/.test(parts[0]) || Number(parts[0]) <= 0) throw new Error('Process baseline contains an incomplete identity');
+    baselineProcessStarts.set(Number(parts[0]), parts.slice(1).join(' '));
+  }
+  receipt.processBaseline = { identities: baselineProcessStarts.size, capturedAt: new Date().toISOString() };
+}
+function persistSignalJournal() {
+  const file = path.join(dirs.evidence, 'owned-signal-journal.json');
+  const temporary = `${file}.tmp`;
+  writeFileSync(temporary, `${JSON.stringify(receipt.signals, null, 2)}\n`, { mode: 0o600 });
+  renameSync(temporary, file);
 }
 function killGroup(child, signal) {
   if (child.done) return;
   const current = processIdentity(child.pid);
-  if (!current) return;
-  if (!child.identity || JSON.stringify(current) !== JSON.stringify(child.identity) || current.pgid !== child.pid) {
-    throw new Error(`Refused signal: owned identity changed for ${child.pid}`);
+  const entry = { at: new Date().toISOString(), signal, target: 'owned-direct-child-process-group',
+    expected: child.identity, observed: current, result: 'intent' };
+  receipt.signals.push(entry);
+  persistSignalJournal();
+  if (!current || !child.identity || child.identity.ppid !== process.pid
+    || baselineProcessStarts.get(child.pid) === child.identity.start
+    || JSON.stringify(current) !== JSON.stringify(child.identity) || current.pgid !== child.pid) {
+    entry.result = 'refused-unverified-or-changed-identity'; persistSignalJournal();
+    throw new Error(`Refused signal: owned identity is unavailable or changed for ${child.pid}`);
   }
-  process.kill(-child.pid, signal);
+  try { process.kill(-child.pid, signal); entry.result = 'sent'; }
+  catch (error) { entry.result = 'error'; entry.error = `${error.code ?? error.name}: ${error.message}`; throw error; }
+  finally { persistSignalJournal(); }
 }
 const SUPERVISOR_MARKERS = ['F452_LOCAL_TOKEN', 'TEST_RESOURCE_PARENT_RESERVATION', 'PROOF_RUN_TOKEN', 'PROOF_ABSOLUTE_DEADLINE_MS'];
 function childEnv(env) {
@@ -235,6 +270,8 @@ function spawnOwned(name, cmd, args, env, portNumber = null) {
   child.logClosed = new Promise((resolve) => output.once('finish', resolve));
   child.once('close', () => output.end());
   child.identity = processIdentity(child.pid);
+  if (child.identity && (child.identity.ppid !== process.pid || child.identity.pgid !== child.pid
+    || baselineProcessStarts.get(child.pid) === child.identity.start)) child.identity = null;
   const record = { name, pid: child.pid, identity: child.identity, executable: path.basename(cmd), port: portNumber,
     startedAt: new Date().toISOString(), exit: null };
   receipt.processes.push(record);
@@ -433,16 +470,24 @@ async function startApi() {
   apiStarts++;
   const name = `api-${apiStarts}`;
   const jvmLimits = PROOF_MODE === 'completed-experiment' ? COMPLETED_API_JVM_ARGS : [];
+  const jvmTelemetry = PROOF_MODE === 'completed-experiment' ? [
+    `-Xlog:exceptions=info:file=${path.join(dirs.logs, `${name}-exceptions.log`)}:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=1m`,
+    `-Xlog:gc*=info:file=${path.join(dirs.logs, `${name}-gc.log`)}:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=1m`,
+  ] : [];
   if (PROOF_MODE === 'completed-experiment') receipt.executionPlan.apiLaunch = {
-    arguments: jvmLimits, maximumHeapBytes: 2147483648, maximumMetaspaceBytes: 268435456,
+    arguments: [...jvmLimits, ...jvmTelemetry.map((argument) => argument.replace(`${dirs.logs}${path.sep}`, '<owned-proof-logs>/'))],
+    maximumHeapBytes: 3221225472, maximumMetaspaceBytes: 268435456,
     maximumReservedCodeCacheBytes: 134217728, initialHeapBytes: 134217728,
+    telemetry: { selections: ['exceptions=info', 'gc*=info'], bytesPerFile: JVM_LOG_ROTATION_BYTES,
+      rotatedFilesPerSelection: 1, nominalTotalBytes: JVM_LOG_ROTATION_BYTES * 4,
+      qualification: 'JVM rotation occurs at record boundaries; the outer aggregate scratch/output caps remain binding. No heap dump.' },
   };
   const properties = [
     `-Dquarkus.datasource.jdbc.additional-jdbc-properties.currentSchema=${SCHEMA}`,
     `-Dquarkus.flyway.schemas=${SCHEMA}`, `-Dquarkus.flyway.default-schema=${SCHEMA}`,
   ];
   api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'),
-    [...jvmLimits, `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,
+    [...jvmLimits, ...jvmTelemetry, `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,
       `-Djava.io.tmpdir=${dirs.tmp}`, ...properties, '-jar', JAR], apiEnv(), PORTS.api);
   for (let i = 0; ; i++) {
     if (api.done) throw new Error(`${name} exited during startup`);
@@ -481,6 +526,59 @@ class Cdp {
   send(method, params = {}, sessionId) {
     const id = ++this.id;
     return new Promise((resolve, reject) => { this.pending.set(id, { resolve, reject }); this.ws.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) })); });
+  }
+}
+async function startBrowser() {
+  if (browserProcess && !browserProcess.done) throw new Error('An owned browser is already running');
+  browserStarts++;
+  const profile = path.join(dirs.browser, `profile-${browserStarts}`);
+  browserProcess = spawnOwned(`chrome-${browserStarts}`, CHROME, ['--headless=new', `--user-data-dir=${profile}`,
+    '--remote-debugging-port=0', '--remote-allow-origins=*',
+    `--ignore-certificate-errors-spki-list=${tls.spki}`, '--no-first-run', '--no-default-browser-check',
+    '--disable-extensions', '--disable-background-networking', '--window-size=1440,1000', 'about:blank'],
+    { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp });
+  let wsUrl;
+  for (let i = 0; i < 80 && !wsUrl; i++) {
+    if (browserProcess.done) throw new Error('Chrome exited during startup');
+    try { const [debugPort, wsPath] = readFileSync(path.join(profile, 'DevToolsActivePort'), 'utf8').trim().split('\n'); wsUrl = `ws://127.0.0.1:${debugPort}${wsPath}`; }
+    catch { await sleep(250); }
+  }
+  if (!wsUrl) throw new Error('Chrome DevTools endpoint was not found');
+  activeCdp = await Cdp.connect(wsUrl);
+  receipt.browser = { engine: 'Chromium headless via CDP', contextsAreIsolated: true, starts: browserStarts };
+  return activeCdp;
+}
+async function stopBrowser() {
+  try { activeCdp?.ws.close(); } catch { /* child exit is independently joined below */ }
+  activeCdp = null;
+  if (browserProcess) {
+    const stopped = browserProcess;
+    await stopped.stop();
+    await stopped.logClosed;
+    if (!stopped.identity || stopped.identity.pgid !== stopped.pid) throw new Error('Chrome private group identity is unavailable for exit audit');
+    const groupAudit = { pgid: stopped.identity.pgid, snapshots: [], absent: false };
+    receipt.executionPlan.browserStops ??= [];
+    receipt.executionPlan.browserStops.push({ at: new Date().toISOString(), pid: stopped.pid,
+      exited: stopped.done, groupAudit, reason: 'Owned browser chunk complete; no session state is replayed.' });
+    const joinDeadline = Date.now() + 10000;
+    do {
+      const result = spawnSync('/bin/ps', ['-axo', 'pid=,pgid=,stat='],
+        { encoding: 'utf8', timeout: 1000, env: childEnv(process.env) });
+      if (result.status !== 0 || result.stderr || !result.stdout?.trim()) throw new Error('Chrome group exit snapshot is unavailable');
+      const members = [];
+      for (const line of result.stdout.trim().split('\n')) {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length !== 3 || !parts.slice(0, 2).every((value) => /^\d+$/.test(value) && Number(value) > 0)
+          || !parts[2]) throw new Error('Chrome group exit snapshot has an incomplete identity');
+        if (Number(parts[1]) === groupAudit.pgid) members.push({ pid: Number(parts[0]), pgid: Number(parts[1]), state: parts[2] });
+      }
+      groupAudit.snapshots.push({ at: new Date().toISOString(), members });
+      if (members.length === 0) { groupAudit.absent = true; break; }
+      if (Date.now() < joinDeadline) await sleep(250);
+    } while (Date.now() < joinDeadline);
+    if (!groupAudit.absent) throw new Error('Chrome private group remains after its main child joined');
+    // Detached descendants remain within the outer supervisor's retained identity audit.
+    browserProcess = null;
   }
 }
 const hdr = (headers = {}, name) => Object.entries(headers).find(([key]) => key.toLowerCase() === name)?.[1];
@@ -1041,7 +1139,7 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
       startedWallMs: jobStartedWallMs, startedMonotonicElapsedMs: jobStartedMonotonicMs,
       deadlineWallMs: jobDeadlineWallMs, deadlineMonotonicElapsedMs: jobDeadlineMonotonicMs,
       afterCompletionReserveSeconds: COMPLETED_RESULT_RESERVE_MS / 1000, pollingIntervalSeconds: 30,
-      firstStepObservationWindowSeconds: 2400 };
+      firstStepObservationWindowSeconds: FIRST_BROWSER_STEP_WINDOW_MS / 1000 };
     const started = await startHoldSweepThroughDom(gregPage);
     const jobId = started.jobId;
     let latest = validateHoldJob(started.initial, jobId);
@@ -1091,8 +1189,8 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
       if (wait > 0) await sleep(wait);
     };
     let firstStepObserved = false;
-    const firstStepDeadlineWall = Math.min(jobStartedWallMs + 2400000, jobDeadlineWallMs);
-    const firstStepDeadlineMonotonic = Math.min(jobStartedMonotonicMs + 2400000, jobDeadlineMonotonicMs);
+    const firstStepDeadlineWall = Math.min(jobStartedWallMs + FIRST_BROWSER_STEP_WINDOW_MS, jobDeadlineWallMs);
+    const firstStepDeadlineMonotonic = Math.min(jobStartedMonotonicMs + FIRST_BROWSER_STEP_WINDOW_MS, jobDeadlineMonotonicMs);
     while (latest.status === 'running' && latest.progress.stepsDone < 1 && hasJobTime()
       && Date.now() < firstStepDeadlineWall && monoElapsedMs() < firstStepDeadlineMonotonic) {
       await sleepForPoll();
@@ -1118,7 +1216,7 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
     } else {
       const runningFacts = await domFacts(gregPage);
       s.observations.runningDom = { status: latest.status, progress: latest.progress, firstStepObserved: false,
-        observationDeadlineSeconds: 2400,
+        observationDeadlineSeconds: FIRST_BROWSER_STEP_WINDOW_MS / 1000,
         jobText: runningFacts.job, resultVisible: !!runningFacts.result,
         note: 'No completed step was observed in the initial Greg context before its bounded observation window ended.' };
     }
@@ -1126,6 +1224,9 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
     s.observations.initialGregContextDisposed = { disposed, browserContextId: gregPage.ctxId,
       firstStepObserved, observation: 'No DOM polling continues; each subsequent API call mints a fresh signed token.' };
     gregPage = null;
+    await stopBrowser();
+    s.observations.initialBrowserStopped = { stoppedAt: new Date().toISOString(), noContinuousDom: true,
+      observation: 'Only signed Java API polling continues; a fresh browser and real sign-in are required for result inspection.' };
 
     while (latest.status === 'running' && hasJobTime()) {
       await sleepForPoll();
@@ -1180,6 +1281,7 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
         && persistence.jobId === jobId && persistence.status === 'succeeded' && persistence.resultId === latest.resultId
         && persistence.resultDigest === stored.resultDigest, persistence);
 
+    cdp = await startBrowser();
     let readbackPage = await newPage(cdp, 'Greg completed hold-sweep result', 1440, 1000);
     try {
       const readbackLogin = await signIn(readbackPage, 'greg');
@@ -1304,6 +1406,8 @@ async function runCompletedExperimentMode(cdp, catalogue, baseline) {
 
 async function main() {
   for (const directory of Object.values(dirs)) mkdirSync(directory, { recursive: true });
+  captureProcessBaseline();
+  persistSignalJournal();
   for (const [name, number] of Object.entries(PORTS)) if (!(await portFree(number))) throw new Error(`Port ${number} (${name}) is in use`);
   receipt.inputs = {
     scratch: 'parent-owned local scratch; actual per-run path withheld from receipt',
@@ -1369,19 +1473,7 @@ async function main() {
   };
   receipt.actualBaseline = baselineReceipt;
 
-  const chrome = spawnOwned('chrome', CHROME, ['--headless=new', `--user-data-dir=${path.join(dirs.browser, 'profile')}`,
-    '--remote-debugging-port=0', '--remote-allow-origins=*',
-    `--ignore-certificate-errors-spki-list=${tls.spki}`, '--no-first-run', '--no-default-browser-check',
-    '--disable-extensions', '--disable-background-networking', '--window-size=1440,1000', 'about:blank'],
-    { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp });
-  let wsUrl;
-  for (let i = 0; i < 80 && !wsUrl; i++) {
-    if (chrome.done) throw new Error('Chrome exited during startup');
-    try { const [debugPort, wsPath] = readFileSync(path.join(dirs.browser, 'profile', 'DevToolsActivePort'), 'utf8').trim().split('\n'); wsUrl = `ws://127.0.0.1:${debugPort}${wsPath}`; }
-    catch { await sleep(250); }
-  }
-  if (!wsUrl) throw new Error('Chrome DevTools endpoint was not found');
-  const cdp = await Cdp.connect(wsUrl); receipt.browser = { engine: 'Chromium headless via CDP', contextsAreIsolated: true };
+  const cdp = await startBrowser();
 
   if (PROOF_MODE === 'completed-experiment') {
     await runCompletedExperimentMode(cdp, catalogue, baseline);
@@ -1592,15 +1684,16 @@ async function main() {
 function teardown() {
   if (teardownPromise) return teardownPromise;
   teardownPromise = (async () => {
-    try { receipt.cdp?.ws.close(); } catch { /* already closed */ }
-    delete receipt.cdp;
+    try { activeCdp?.ws.close(); } catch { /* already closed */ }
+    activeCdp = null;
+    const cleanupErrors = [];
     for (const child of owned.slice().reverse()) {
-      try { await child.stop(); await child.logClosed; } catch (error) { log('owned child stop error', child.pid, error.message); }
+      try { await child.stop(); await child.logClosed; } catch (error) { cleanupErrors.push(`${child.pid}: ${error.message}`); log('owned child stop error', child.pid, error.message); }
     }
     await closeServer(webServer);
     await closeServer(idp.server);
     receipt.teardown = { ownedProcesses: receipt.processes.map((run) => ({ name: run.name, pid: run.pid, exit: run.exit })),
-      allOwnedExited: owned.every((child) => child.done), serversClosed: true,
+      allOwnedExited: owned.every((child) => child.done), cleanupErrors, serversClosed: true,
       schemaLeftForParent: true, scratchLeftForParent: true, screenshotBytes,
       note: 'Parent owns the per-run database schema, scratch/output roots and final audit.' };
   })();
@@ -1616,7 +1709,7 @@ function finish(runError) {
     ? ['completed-hold-sweep', 'completed-presenter-inspection']
     : ['retained-and-experiments', 'presenter-and-role-refusals', 'transport-unavailable', 'greg-job-progress-interruption-rerun'];
   receipt.overall = required.every((name) => receipt.scenarios[name]?.pass === true) && !runError
-    && !logLimitFailure && receipt.teardown?.allOwnedExited === true ? 'PASS' : 'FAIL';
+    && !logLimitFailure && receipt.teardown?.allOwnedExited === true && receipt.teardown.cleanupErrors.length === 0 ? 'PASS' : 'FAIL';
   if (PROOF_MODE === 'completed-experiment') {
     receipt.originalAcceptance.AC1.evidence = 'incomplete';
     receipt.originalAcceptance.AC1.closure = 'OPEN: this mode covers one actual completed hold-sweep result, rendered measures and assumptions, and progress from the same 12-step job; it does not re-exercise rerun/interruption. Existing matching lifecycle evidence is separate, and the covering batch, current-browser, hosted and final acceptance remain outstanding.';
