@@ -20,6 +20,7 @@ public final class ProductionDeployedJourneyProfile implements QuarkusTestProfil
     private static final String ACCOUNTS = "["
             + "{\"subject\":\"sub-paula\",\"roles\":[\"employee\"],\"employeeId\":\"employee-paula\"},"
             + "{\"subject\":\"sub-alex\",\"roles\":[\"employee\"],\"employeeId\":\"employee-alex\"},"
+            + "{\"subject\":\"sub-sam\",\"roles\":[\"employee\"],\"employeeId\":\"employee-sam\"},"
             + "{\"subject\":\"sub-greg\",\"roles\":[\"greg\"]},"
             + "{\"subject\":\"sub-presenter\",\"roles\":[\"presenter\"]}]";
 
