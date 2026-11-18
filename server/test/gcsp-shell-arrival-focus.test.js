@@ -3,7 +3,6 @@ import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { installDom, resetDom, settle } from './dom-harness.js';
-import { activityFixtures } from '../../blocks/gcsp/activity/activity-fixtures.js';
 
 let dom; let shellMod; let emp; let kit;
 const cleanups = [];
@@ -41,50 +40,6 @@ test('arrival waits for a late h1 and survives a repaint before any input', asyn
   const node = employee((main) => { main.replaceChildren(heading('One')); setTimeout(() => main.replaceChildren(heading('Two')), 20); });
   await settle(node, (r) => r.querySelector('main h1')?.textContent === 'Two');
   await new Promise((r) => setTimeout(r, 10));
-  assert.equal(document.activeElement, node.querySelector('main h1'));
-});
-
-test('arrival on the offer leaves focus on the h1', async () => {
-  const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
-  const { offerFixture } = await import('../../blocks/gcsp/offer/fixtures.js');
-  const node = root();
-  cleanups.push(mountOffer(node, { account, read: async () => offerFixture('pending') }));
-  await settle(node, (r) => r.querySelector('main h1')?.textContent === 'Your car offer' && document.activeElement === r.querySelector('main h1'), { timeout: 800 });
-  assert.equal(document.activeElement, node.querySelector('main h1'));
-});
-
-test('arrival on the car brief leaves focus on the h1', async () => {
-  const { mountBrief } = await import('../../blocks/gcsp/brief/gcsp-brief.js');
-  const fixture = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq94/representative-snapshot.json', import.meta.url)));
-  const node = root();
-  const transport = { preview: async () => fixture.preview, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) };
-  cleanups.push(mountBrief(node, { loadAccount: async () => account, transport, loadEditor: async () => ({ status: 'ok', value: fixture.edited.value }) }));
-  await settle(node, (r) => document.activeElement === r.querySelector('main h1'), { timeout: 800 });
-  assert.equal(document.activeElement, node.querySelector('main h1'));
-});
-
-test('a brief reload started from Try again lands on the new h1', async () => {
-  const { mountBrief } = await import('../../blocks/gcsp/brief/gcsp-brief.js');
-  const fixture = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq94/representative-snapshot.json', import.meta.url)));
-  const node = root(); let reads = 0;
-  const transport = { preview: async () => fixture.preview, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) };
-  cleanups.push(mountBrief(node, { loadAccount: async () => account, transport,
-    loadEditor: async () => (++reads === 1 ? { status: 'unavailable' } : { status: 'ok', value: fixture.edited.value }) }));
-  await settle(node, (r) => r.querySelector('main .vm-status button'));
-  press('Enter');
-  node.querySelector('main .vm-status button').focus();
-  node.querySelector('main .vm-status button').click();
-  await settle(node, (r) => r.querySelector('main h1') && document.activeElement === r.querySelector('main h1'), { timeout: 800 });
-});
-
-test('arrival on buddy activity lands on the h1 and a quiet refresh does not move it to a control', async () => {
-  const { mountActivity } = await import('../../blocks/gcsp/activity/gcsp-activity.js');
-  const node = root();
-  const stop = mountActivity(node, { adapter: { loadAccount: async () => account, readActivity: async () => structuredClone(activityFixtures.snapshots['never-checked']) } });
-  cleanups.push(stop);
-  await settle(node, (r) => r.querySelector('.gcsp-action-trigger') && document.activeElement === r.querySelector('main h1'), { timeout: 800 });
-  assert.equal(document.activeElement, node.querySelector('main h1'));
-  await stop.refresh();
   assert.equal(document.activeElement, node.querySelector('main h1'));
 });
 

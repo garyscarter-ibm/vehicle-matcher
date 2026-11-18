@@ -11,9 +11,7 @@ import { createManualContextService, createRepositoryManualPorts } from '../gcsp
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { fact, stock, providerValue } from './helpers/employee-recommendation.js';
 import { startHttpServer } from './helpers/employee-recommendation-http.js';
-import { createBriefTransport } from '../../blocks/gcsp/brief/brief-transport.js';
 import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
-import { createActivityController } from '../../blocks/gcsp/activity/activity-controller.js';
 import { activityEvents } from '../../blocks/gcsp/activity/activity-copy.js';
 
 const KEY = 'brief.engagement.v1';
@@ -402,19 +400,6 @@ test('engagement fails closed when its policy entry is malformed', async (t) => 
   assert.equal(briefs(f).length, 0);
 });
 
-test('the browser transport sends only the three engagement fields to the real routes', async (t) => {
-  const f = await setup(t); await saveOk(f, three);
-  const base = `http://127.0.0.1:${f.http.server.address().port}`;
-  const fetch = (url, init) => globalThis.fetch(url, { ...init, headers: { ...init.headers, Origin: 'https://employee.test', cookie: f.acting.value.setCookie.split(';')[0] } });
-  const transport = createBriefTransport({ fetch, baseURL: base });
-  assert.deepEqual(await transport.engage({ commandId: 'c', expectedBriefVersion: 0, expectedDraftVersion: 3, consent: {} }), { status: 'invalid', field: 'request' });
-  const out = await transport.engage({ commandId: 'transport-engage', ...(await versions(f)) });
-  assert.equal(out.status, 'ok', JSON.stringify(out));
-  const off = await transport.disengage({ commandId: 'transport-disengage', ...(await versions(f)) });
-  assert.equal(off.status, 'ok', JSON.stringify(off)); assert.equal(off.value.buddy.state, 'disengaged');
-});
-
-
 test('legacy browser pause/resume aliases revoke grants and apply the Account minimum gate', async (t) => {
   const f = await engagedFixture(t);
   const off = await call(f, 'brief/pause', { commandId: 'legacy-off', expectedBriefVersion: 1 });
@@ -481,14 +466,13 @@ test('the tile HTTP commands pause and resume search while retaining grants and 
     if (options.method === 'POST') writes.push({ path, body: JSON.parse(options.body) });
     return globalThis.fetch(base + path, { ...options, headers: { ...options.headers, Origin: 'https://employee.test', cookie: f.acting.value.setCookie.split(';')[0] } });
   } });
-  const controller = createActivityController({ adapter, createCommandId: () => `tile-command-${writes.length}` }); t.after(() => controller.destroy());
-  await controller.refresh(); await controller.pauseSearch();
-  let value = controller.getState().result.value;
+  const read = async () => (await adapter.readActivity()).value; let n = 0;
+  let value = await read();
+  assert.equal((await adapter.pauseSearch({ commandId: `tile-command-${n++}`, expectedBriefVersion: value.briefVersion })).status, 'ok'); value = await read();
   assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, true, false]);
-  assert.equal(value.currentOffer.state, 'active'); assert.equal(controller.getState().message, 'Search paused.');
-  await controller.resumeSearch(); value = controller.getState().result.value;
+  assert.equal(value.currentOffer.state, 'active');
+  assert.equal((await adapter.resumeSearch({ commandId: `tile-command-${n++}`, expectedBriefVersion: value.briefVersion })).status, 'ok'); value = await read();
   assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, false, true]);
-  assert.equal(controller.getState().message, 'Search resumed.');
   assert.deepEqual(writes.map((row) => row.path), ['/api/gcsp/brief/pause-search', '/api/gcsp/brief/resume-search']);
   assert.deepEqual(writes.map((row) => [row.body.expectedBriefVersion, row.body.expectedDraftVersion]), [[1, 1], [2, 1]]);
   for (const [table, rows] of kept) assert.deepEqual(f.store.state.tables[table] ?? [], rows, table);

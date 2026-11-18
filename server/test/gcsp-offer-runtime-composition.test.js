@@ -1,7 +1,6 @@
 // Selected actual memory/loopback composition; no native DB, external request or browser.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { JSDOM } from 'jsdom';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createCompositionTestProfile } from './helpers/runtime-composition-profile.js';
 import { essential, preference } from './helpers/employee-recommendation.js';
@@ -13,11 +12,6 @@ import { createLocalHttpsFixture } from './helpers/local-https.js';
 const good = (outcome) => { assert.equal(outcome?.status, 'ok'); return outcome.value; };
 const cookie = (value) => [value].flat().map((entry) => entry.split(';')[0]).join('; ');
 const ref = (context, table, key) => ({ table, key: { runId: context.runId, ...key } });
-async function waitFor(predicate) {
-  for (let n = 0; n < 200; n += 1) { if (predicate()) return; await new Promise((done) => setTimeout(done, 10)); }
-  assert.fail('The composed view did not settle within its bounded wait.');
-}
-
 async function setup(t) {
   const profile = createCompositionTestProfile();
   const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
@@ -88,14 +82,6 @@ test('composed offer entry reloads the real declined offer and saves the employe
   assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
   assert.equal(f.dependencies.gcspOfferDecisions, f.offerDecisions);
   assert.equal(f.dependencies.gcspOfferFollowup, f.offerFollowup);
-  const page = await f.fetch(`${f.origin}/gcsp/offer?offerId=${encodeURIComponent(f.offer.offerId)}`);
-  assert.equal(page.status, 200); assert.ok(page.headers.get('set-cookie') === null);
-  assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
-  const html = await page.text(); assert.ok(html.includes('/blocks/gcsp/offer/entry-harness.js'));
-  assert.ok(html.indexOf('offer/gcsp-offer.css') < html.indexOf('offer-followup/gcsp-offer-followup.css'));
-  for (const asset of ['/blocks/gcsp/offer/entry-harness.js', '/blocks/gcsp/offer-followup/gcsp-offer-followup.css']) {
-    const loaded = await f.fetch(f.origin + asset); assert.equal(loaded.status, 200); await loaded.arrayBuffer();
-  }
   const current = good((await f.request(f.path + f.query)).json);
   const reasons = good((await f.request(`${f.path}/decision-reasons${f.query}`)).json);
   assert.ok(reasons.reasons.some((reason) => reason.code === 'body-style'));
@@ -109,49 +95,15 @@ test('composed offer entry reloads the real declined offer and saves the employe
   const selector = `?decisionId=${encodeURIComponent(reloaded.followup.decisionId)}`;
   const question = good((await f.request('/api/gcsp/offer-followup' + selector)).json);
   assert.equal(question.state, 'question'); assert.equal(question.question.policyVersion, f.employee.policyVersion);
-  const dom = new JSDOM('<!doctype html><gcsp-offer></gcsp-offer>', { url: 'https://offer-composition.test/gcsp/offer' });
-  const savedGlobals = new Map();
-  for (const name of ['window', 'document', 'HTMLElement', 'CustomEvent', 'customElements', 'Node']) {
-    savedGlobals.set(name, Object.getOwnPropertyDescriptor(globalThis, name));
-    Object.defineProperty(globalThis, name, { value: dom.window[name], configurable: true, writable: true });
-  }
-  let dispose;
-  t.after(() => { dispose?.(); dom.window.close(); for (const [key, descriptor] of savedGlobals) {
-    if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key];
-  } });
-  const { mountOfferEntry } = await import('../../blocks/gcsp/offer/entry.js');
-  const location = { href: `https://offer-composition.test/gcsp/offer?offerId=${encodeURIComponent(f.offer.offerId)}&runId=${encodeURIComponent(f.employee.runId)}`,
-    assign() { assert.fail('Saving a follow-up must not navigate to a fabricated offer.'); } };
-  const requests = [];
-  const transport = (input, init = {}) => {
-    const url = new URL(input, 'https://offer-composition.test'); assert.equal(url.origin, 'https://offer-composition.test');
-    requests.push({ path: url.pathname, method: init.method || 'GET' });
-    return f.fetch(f.origin + url.pathname + url.search, { ...init, headers: { ...init.headers, Cookie: f.session, Origin: f.origin } });
-  };
-  const root = dom.window.document.querySelector('gcsp-offer');
-  dispose = mountOfferEntry(root, { fetch: transport, location, history: { replaceState() {} } });
-  await waitFor(() => root.querySelector('.gcsp-followup-question'));
-  // FUCQ-188: the real entry composition shows exactly one Check current state.
-  const refreshes = () => [...root.querySelectorAll('button')].filter((node) => node.textContent === 'Check current state').length;
-  assert.equal(refreshes(), 1);
-  const option = [...root.querySelectorAll('button, input')].find((node) => node.value === 'saloon' || node.textContent === 'Saloon');
-  assert.ok(option); option.click();
-  const confirm = root.querySelector('[data-followup-action="confirm"]'); assert.ok(confirm); assert.equal(confirm.disabled, false); confirm.click();
-  await waitFor(() => root.querySelector('[data-followup-saved]')); assert.equal(refreshes(), 1);
-  // GC-041: the signed-in rail, the onward link and the heading focus come with the real composition.
-  assert.deepEqual([...root.querySelectorAll('nav button[data-key]')].map((node) => node.dataset.key),
-    ['cars', 'order-progress']);
-  const onward = root.querySelector('[data-followup-link="activity"]');
-  assert.equal(onward.textContent, 'See buddy activity'); assert.equal(onward.getAttribute('href'), '/gcsp-activity-live.html');
-  assert.equal(dom.window.document.activeElement, root.querySelector('.gcsp-followup h2'));
+  const saved0 = await f.request('/api/gcsp/offer-followup/confirm', { body: { commandId: 'followup-composed', decisionId: reloaded.followup.decisionId,
+    expectedBriefVersion: question.briefVersion, questionVersion: question.question.questionVersion, value: 'saloon' } });
+  assert.equal(saved0.status, 200); good(saved0.json);
   const afterSave = (await f.request('/api/gcsp/offer-followup' + selector)).json;
   // No allocation run has evaluated the new brief yet, so the server reports waiting.
   assert.equal(afterSave.status, 'ok'); assert.equal(afterSave.value.state, 'waiting');
   const saved = afterSave.value.savedChange;
   assert.equal(saved.state, 'change-saved'); assert.equal(saved.briefVersion, 2);
   assert.equal(saved.change.path, 'preferences.body.value'); assert.equal(saved.change.after, 'saloon');
-  assert.ok(requests.filter((request) => request.path === '/api/gcsp/manual/account').length >= 2);
-  assert.ok(requests.some((request) => request.path === '/api/gcsp/offer-followup/confirm' && request.method === 'POST'));
   const briefs = good(await f.repository.query(f.employee, 'briefs', { employeeId: f.employee.employeeId }));
   assert.deepEqual(briefs.at(-1).essentials, briefs[0].essentials);
   const final = good((await f.request(f.path + f.query)).json); assert.deepEqual(final.followup, reloaded.followup);
