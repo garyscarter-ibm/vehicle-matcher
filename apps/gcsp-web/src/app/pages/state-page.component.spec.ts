@@ -38,6 +38,13 @@ describe('route state presentation', () => {
     expect(TestBed.inject(Router).url).toBe('/missing-page?brand=mini');
     expect(completeSignIn).not.toHaveBeenCalled(); expect(retry).not.toHaveBeenCalled();
   });
+  it('returns from an unknown page to the authorized home with its brand context', async () => {
+    state.set({ status: 'ready', context: { ...context, roles: ['greg'] } });
+    const harness = await RouterTestingHarness.create('/missing/nested-page?brand=mini#entry');
+    harness.routeNativeElement!.querySelector('button')!.click(); await harness.fixture.whenStable();
+    expect(TestBed.inject(Router).url).toBe('/greg?brand=mini#entry');
+    expect(signIn).not.toHaveBeenCalled(); expect(retry).not.toHaveBeenCalled();
+  });
   it('retains a new offer link including its query and fragment when starting sign-in', async () => {
     state.set({ status: 'signed-out' });
     const harness = await RouterTestingHarness.create('/offers/offer-7?brand=mini#decision');

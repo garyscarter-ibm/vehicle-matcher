@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** The allocation and hold assumptions read from the canonical policy at one version; recorded whole in the plan. */
-record Assumptions(String tieBreakRule, String seed, long durationSeconds, long maxActive, ArrayNode recorded) {
+record Assumptions(String tieBreakRule, String seed, long durationSeconds, long maxActive, ArrayNode recorded,
+        JsonNode declineReentry) {
 
     static final String RULE_RENEWAL_FIRST = "renewalDueThenFitThenSeededLottery";
     static final String RULE_FIT_FIRST = "fitThenRenewalDueThenSeededLottery";
@@ -54,7 +55,23 @@ record Assumptions(String tieBreakRule, String seed, long durationSeconds, long 
         if (valid && "buddy-expired".equals(trigger.type())) valid = EXPIRY_RULE.equals(text(values.get(8)));
         if (valid && "offer-declined".equals(trigger.type())) valid = DECLINE_RULE.equals(text(values.get(8)));
         if (!valid) return new Failed("policy-invalid", "The allocation policy assumptions are not usable.");
-        return new Ok(new Assumptions(rule, seed, values.get(3).longValue(), values.get(4).longValue(), recorded));
+        JsonNode reentry = null;
+        try {
+            PolicyResult next = policy.getAssumption(DeclineReentry.KEY, read);
+            if (next.ok() && scope.policyVersion().equals(next.policyVersion()) && next.value() != null) {
+                reentry = next.value().path("value");
+                if (!DeclineReentry.KEY.equals(next.value().path("key").asText()) || !DeclineReentry.valid(reentry)) {
+                    return new Failed("policy-invalid", "The declined-car re-entry rule is invalid.");
+                }
+                recorded.add(next.value());
+            } else if (!"invalid".equals(next.status()) || !"unknown-assumption".equals(next.code())
+                    || !scope.policyVersion().equals(next.policyVersion())) {
+                return new Failed("policy-unavailable", "The declined-car re-entry rule is unavailable.");
+            }
+        } catch (RuntimeException e) {
+            return new Failed("policy-unavailable", "The declined-car re-entry rule could not be read.");
+        }
+        return new Ok(new Assumptions(rule, seed, values.get(3).longValue(), values.get(4).longValue(), recorded, reentry));
     }
 
     private static String text(JsonNode n) {

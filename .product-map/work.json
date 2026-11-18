@@ -6123,72 +6123,6 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "assignee": "Gary Carter",
-      "id": "FUCQ-437",
-      "observed_at": "2026-11-17T19:53:13Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Enter and refresh replacement frontend routes",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
-      "slices": [
-        {
-          "id": "route-state",
-          "status": "in-progress",
-          "title": "Authorized route and recovery states",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "Independent source PASS; a02 route/state 31 native passes plus a04 auth/context 8 passes at 2912d73b5. a02 outer 1/strict false from five quoted-name mappings remains. Local scenarios do not establish hosted/OIDC/email/rendered acceptance. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        },
-        {
-          "id": "static-launcher",
-          "status": "in-progress",
-          "title": "Static routes and shared launcher handoff",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "a03 launcher 52 native passes and a04 actual caller/package 1 pass at 2912d73b5. Static blueprint 1 inherited FUCQ-514 failure; later frontend assertions were not reached. Deployed URL and safe dynamic/unknown host contract remain open. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Original entry refresh OIDC email and rendered validation",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "Original 93 selected: 92 native passes, 1 inherited FUCQ-514 failure, 0 unrun; 48 exclusions. No overall PASS. Original hosted refresh, real OIDC, actual email, rendered proof and dynamic/unknown host work remain; both AC unchecked. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-005",
-      "workers": [
-        {
-          "name": "Sally Carrera 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-16T23:55:56Z",
-          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "returned; source authored/reviewed, execution unrun"
-        },
-        {
-          "name": "Sally Carrera 3",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-16T23:55:56Z",
-          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "returned; source authored/reviewed, execution unrun"
-        },
-        {
-          "name": "Yakko 2",
-          "harness": "codex",
-          "role": "validator",
-          "observed_at": "2026-11-17T00:27:56Z",
-          "expires_at": "2026-11-17T00:28:24Z",
-          "source": "direct returned child result; lead native/input/teardown audits",
-          "status": "returned; four individually released attempts; 92 native passes, 1 inherited failure; original AC open"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
       "assignee": "",
       "id": "FUCQ-438",
       "observed_at": "2026-11-17T19:53:13Z",
@@ -6375,7 +6309,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-450",
-      "observed_at": "2026-11-17T19:53:14Z",
+      "observed_at": "2026-11-18T10:08:02Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Operate presenter scenarios",
@@ -6385,29 +6319,31 @@
       "slices": [
         {
           "id": "client",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Typed presenter commands and current readback",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "a02 client44/44passed, unchanged source/dependencies reused. Typed presenter client implemented; actual connected acceptance remains open."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "Focused 89/89 passed in one run on b8fa0aa0c (client, component incl. P20, route policy/guards)"
         },
         {
           "id": "view",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Presenter controls and read-only inspection entry",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "Composite component30passed: a03unchanged29+a04P20. Enabled native Retry/handler/count2/exact reset pins passed after test render synchronisation; no further product change. Outbox placeholder/comparison inspection open."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "Inspection links grouped; connected r2611181006424e5b strict PASS 201/201 checks (local Java+PG17+signed test OIDC+built web); hosted dev unrun"
         },
         {
           "id": "scoped-validation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Focused Angular command and route verification",
-          "observed_at": "2026-11-16T22:25:03.397416Z",
-          "evidence": "Composite84passed across a02client44/auth10,a03component29,a04P20; no single84run. Boundary rc1 unchanged case-queue emdash; later checks unreached. Failed attempts retained; input/resource/cleanup audits passed. Connected/visual unrun."
+          "observed_at": "2026-11-18T10:08:01Z",
+          "evidence": "ng test 4 specs 89/89 PASS; boundary checker stops at inherited case-queue em dash"
         },
         {
           "id": "connected-proof",
-          "status": "not-started",
-          "title": "Original isolated-dev controls and permissions proof"
+          "status": "complete",
+          "title": "Original isolated-dev controls and permissions proof",
+          "observed_at": "2026-11-18T10:08:02Z",
+          "evidence": "connected r2611181006424e5b strict PASS 201/201 checks (local Java+PG17+signed test OIDC+built web); hosted dev unrun"
         }
       ],
       "branch": "dev/DEV-2026-11-13-018",
@@ -8230,86 +8166,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-451",
-      "observed_at": "2026-11-17T19:53:19Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Inspect notifications and follow delivered offer links",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
-      "slices": [
-        {
-          "id": "inspection",
-          "status": "in-progress",
-          "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-16T22:48:58Z",
-          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
-        },
-        {
-          "id": "offer-return",
-          "status": "not-started",
-          "title": "Delivered offer link sign-in and ownership return"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Route, rendered Java and newly received email acceptance"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-019",
-      "workers": [
-        {
-          "name": "Scrappy Doo 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
-          "status": "returned coherent partial increment; original acceptance waiting"
-        },
-        {
-          "name": "Wile E. Coyote 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
-          "status": "returned client source; a01 client 20/20 passed"
-        },
-        {
-          "name": "Mulan 3",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
-          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
-        },
-        {
-          "name": "Goofy 2",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
-          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
-        },
-        {
-          "name": "Cecil Turtle 2",
-          "harness": "codex",
-          "role": "validator",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
-          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-443",
       "observed_at": "2026-11-18T02:12:44Z",
       "original_status": "In Progress",
@@ -9360,7 +9216,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-18T00:07:27Z",
+      "observed_at": "2026-11-18T09:30:09Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9568,15 +9424,39 @@
           "name": "Claude A43",
           "harness": "claude",
           "role": "covering batch delivery",
-          "observed_at": "2026-11-18T00:07:27.319748+00:00",
-          "expires_at": "2026-11-18T00:07:27.319748+00:00",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
           "source": "Claude status waiting-for-lane/runtimefalse; attempt2 stopped without finalizer, manual cleanup followed by parent exact PID/group/scratch/reservation/PG port absence checks00:06:37. Current source/test execution not confirmed. Attempt1 invalid setup; no green covering batch.",
-          "status": "held; corrected covering batch queued after account and stock"
+          "status": "returned; covering batch incomplete at00:53:17, cleanup independently verified00:55:34; no current execution"
+        },
+        {
+          "name": "Taz 2",
+          "source": "/root/taz_2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T09:30:08.459774+00:00",
+          "expires_at": "2026-11-18T09:30:08.459774+00:00",
+          "status": "returned independent source/identity/visual-evidence review PASS; original gaps retained, no tests/runtime",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
+        },
+        {
+          "name": "Wyldstyle 2",
+          "source": "/root/wyldstyle_2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T09:27:15.491775+00:00",
+          "expires_at": "2026-11-18T09:45:08.459774+00:00",
+          "status": "actual ACK; source/preparation for original narrow/keyboard/recovery proof; no heavy runtime",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
         }
       ],
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "API and Angular production builds passed with source/dependency/artifact pins independently audited. Connected failures retained; four proof assumptions corrected and reviewed (integrated719ff9743/79d197213). Corrected attempt22:45:57 stopped at resource admission before proof; retained build RAM grants are the identified obstacle to the next chunk. Same Claude delivery lead owns grant correction, serial rerun and parallel focused-Java work without per-phase parent permission. Both original AC OPEN; focused checks and covering batch remain outstanding."
+      "note": "Independent Taz2 final source/evidence review PASS, no new blocker/major. Retained connected39/Java14+53 evidence matches pinned22b656aef/79d197213, not current wholeHEAD (15broader export inputs changed). All9evidence hashes matched and8captures viewed; missing affected narrow/compact/preference-Buddy keyboard and below-fold recovery images remain original work. Wyldstyle2 actual ACK09:27:15: preparing finite extension of existing proof on fresh current export, own script/docs/Story only; no heavy runtime. NativeInProgress/originalAC open; covering batch NOTGREEN (Node1380s/~98of344files; Java unrun). Claude independent peer claims excluded through shared channel."
     },
     {
       "assignee": "Gary Carter",
@@ -10172,51 +10052,6 @@
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00"
     },
     {
-      "id": "FUCQ-388",
-      "type": "Bug",
-      "title": "Paula can receive the same declined car after a saved fuel change",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
-      "status": "In Progress",
-      "branch": "dev/DEV-2026-11-16-034",
-      "unsliced": false,
-      "workers": [
-        {
-          "name": "Mater",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T03:32:42.157058+00:00",
-          "expires_at": "2026-11-18T04:02:42.157058+00:00",
-          "source": "Codex /root/mater; run01a1ebdc-f57d-7813-b7d0-16318126fabe",
-          "status": "Sol/high ownership/rule plan observed; implementation assigned after claim"
-        }
-      ],
-      "note": "Local claim7bd3f43ed and writer coordinationMSG-2026-11-18-001; native Jira lifecycle unavailable. Original5AC; additive canonical reason-specific reentry, Node/Java consumer parity; OfferDecisions and Angular read-only. Runtime serial with active batch/F505.",
-      "slices": [
-        {
-          "id": "policy-node",
-          "title": "Canonical reason-specific rule and Node repair",
-          "status": "in-progress",
-          "evidence": "Valid intake/source cause; named ownership announced; parent-owned allocator/policy transfer authorised. Fresh reproduction pending."
-        },
-        {
-          "id": "java-parity",
-          "title": "Java allocation consumer and focused parity",
-          "status": "not-started"
-        },
-        {
-          "id": "employee-proof",
-          "title": "Generated stock outcomes and desktop/narrow critique",
-          "status": "not-started"
-        },
-        {
-          "id": "covering-batch",
-          "title": "Covering batch verification",
-          "status": "not-started"
-        }
-      ],
-      "observed_at": "2026-11-18T03:32:42Z"
-    },
-    {
       "id": "FUCQ-505",
       "type": "Bug",
       "title": "Return focus to the exact car after restoring stock detail navigation",
@@ -10252,7 +10087,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T06:13:51Z",
+      "observed_at": "2026-11-18T09:30:09Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10283,7 +10118,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "18Nov sole current fullsize hold-sweep attempt at0ee22999f failed1of12/0of3/noresult; logOutOfMemoryError, heapvsnonheap unresolved underXmx2g. Builds/syntax/keepercleanup pass, actualproofFAIL; independent honestfailed-evidence/resource reviewPASS. OriginalACs/all3slices remainopen. Existing39checks/Angular58/Java119+2skips reused; failedaggregates/redbatch and browser/hosted gaps retained. Allownedruntimecleaned/no retry. docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "note": "Prior original-size2GiB-heap attempt at0ee22999f failed1of12steps/0of3seeds/noresult; OutOfMemoryError region/allocation remains unresolved. Honest failed-result checkpoint bffc1b08c retained and all owned runtime cleaned. Hugh2 actively investigated retained evidence/source; tiny synthetic telemetry smoke PASS shows bounded JVM logging captures caughtOOM detail, not productAC. Recovered F507 record documents historical3GiB success and1536MiB OOM; three matching allocator blobs do not establish whole-current-source equivalence. Published proof-plan checkpoint e7f2abcf3; independent reviewer found daemonizedPG registration gap before launch. Adapting ignored supervisor to direct foreground PostgreSQL with exact positive ownership, re-review pending. Fresh conservative memory admission below4.5GiB+reserve; no comparison runtime/new result. Actual source/lifecycle correction/review continues; no unsafe retry or admission bypass. OriginalAC/all3slices remain open; covering batch red.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10361,10 +10196,10 @@
           "name": "Hugh 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T06:13:51.671570+00:00",
-          "expires_at": "2026-11-18T06:13:51.671570+00:00",
+          "observed_at": "2026-11-18T09:30:08.459774+00:00",
+          "expires_at": "2026-11-18T09:45:08.459774+00:00",
           "source": "/root/hugh_2",
-          "status": "one actual completion attempt failed1of12/OOMclass; final review PASS on honest failed evidence; no runtime; original ACs open"
+          "status": "actual source/lifecycle correction and independent review; current proof checkpoint e7f2abcf3; no comparison runtime, admission shortfall recorded"
         },
         {
           "name": "Petunia Pig 2",
@@ -10396,6 +10231,359 @@
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-451",
+      "observed_at": "2026-11-18T04:28:39Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect notifications and follow delivered offer links",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Read-only current-run notification inspection",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Actual Java/nativePG17/signed-local-OIDC browser proof: recipient, capture, filters, read-only authority, native keyboard/focus, desktop/narrow/CSP PASS. Angular59/59+AOT PASS. Separate preview styling BugFUCQ-524. Safari/hosted/covering batch remain open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
+        },
+        {
+          "id": "offer-return",
+          "status": "in-progress",
+          "title": "Delivered offer link sign-in and ownership return",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Captured offer exact path returns through local code/PKCE/signed JWT login to owned offer; wrong account refused. Connected041801 and supplemental042109 PASS. Actual inbox delivery and hosted provider/origin topology unproved; originalAC2 open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Route, rendered Java and newly received email acceptance",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Four connected scenarios/41checks PASS; supplemental narrow viewport paints. Java composite48classes/284tests: interrupted83 native-log passes plus remaining201 strictPASS, no overlap. Full suite deferred to batch. Both originalACs open; no acceptance/Done claim. Final resource audit17runs clean."
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-019",
+      "workers": [
+        {
+          "name": "Scrappy Doo 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
+          "status": "returned coherent partial increment; original acceptance waiting"
+        },
+        {
+          "name": "Wile E. Coyote 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
+          "status": "returned client source; a01 client 20/20 passed"
+        },
+        {
+          "name": "Mulan 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
+          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
+        },
+        {
+          "name": "Goofy 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
+          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
+        },
+        {
+          "name": "Cecil Turtle 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
+          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
+        },
+        {
+          "name": "Tweety 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T04:25:40.978399Z",
+          "expires_at": "2026-11-18T04:25:40.978399Z",
+          "source": "01a1ecd1-5c2b-7c20-beee-cad378bea403",
+          "status": "delivery work complete; publishing reviewed coherent partial result; original acceptance open"
+        },
+        {
+          "name": "Timone 3",
+          "harness": "codex",
+          "role": "proof-author",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "expires_at": "2026-11-18T04:23:14.365176Z",
+          "source": "01a1ecd2-cd7a-7dc1-9fdb-f5fc0e9ccd4c",
+          "status": "returned final proof; focused/composite/connected evidence and17-run cleanup audited"
+        },
+        {
+          "name": "Marvin the Martian 4",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T04:25:40.978399Z",
+          "expires_at": "2026-11-18T04:25:40.978399Z",
+          "source": "01a1ecd3-15f2-7db2-9306-bca69f23e23b",
+          "status": "returned final source/evidence/images/metadata PASS; no blocker or major; FUCQ-524 separate"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-437",
+      "observed_at": "2026-11-18T09:49:33Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Enter and refresh replacement frontend routes",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
+      "slices": [
+        {
+          "id": "route-state",
+          "status": "complete",
+          "title": "Authorized route and recovery states",
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Route/state/auth/offer specs 129/129 PASS on merged b8fa0aa0c; connected signed-local-OIDC direct/refresh/role/offer ownership PASS reused. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        },
+        {
+          "id": "static-launcher",
+          "status": "complete",
+          "title": "Static routes and shared launcher handoff",
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Static offer/unknown rules 1/1, launcher 52/52, branded unknown recovery render PASS at unchanged inputs. Deployed Render matching tracked under integration."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Original entry refresh OIDC email and rendered validation",
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Both AC met locally; blocked on hosted static host, registered OIDC provider, delivered email return, Safari capture and covering green batch. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-005",
+      "workers": [
+        {
+          "name": "Sally Carrera 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Sally Carrera 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Yakko 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-17T00:27:56Z",
+          "expires_at": "2026-11-17T00:28:24Z",
+          "source": "direct returned child result; lead native/input/teardown audits",
+          "status": "returned; four individually released attempts; 92 native passes, 1 inherited failure; original AC open"
+        },
+        {
+          "name": "Pumbaa 3",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "errored HTTP422; parent carried checkpoint forward"
+        },
+        {
+          "name": "Shaggy 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "returned; static1PASS"
+        },
+        {
+          "name": "Emmet 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "errored HTTP422 after proof source delivery"
+        },
+        {
+          "name": "Parent dispatcher",
+          "harness": "codex",
+          "role": "reviewer/validator",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "returned; coherent local increment; originalAC open"
+        },
+        {
+          "name": "Sniffles 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
+          "source": "Direct gateway/title/scope-start ACK; parent verified saved thread01a1ed2d-a109-75c0-b026-11846ec06fd2 title and active turn.",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
+        },
+        {
+          "name": "Sniffles2",
+          "source": "/root/sniffles_2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime"
+        },
+        {
+          "name": "Mulan5",
+          "source": "/root/sniffles_2/mulan_5",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T09:21:10.201039+00:00",
+          "expires_at": "2026-11-18T09:21:10.201039+00:00",
+          "status": "returned; scoped source/rendered proof and independent review PASS; checkpoint published, no runtime"
+        }
+      ],
+      "jira_observed_at": "2026-11-18T05:40:29.435Z",
+      "native_observed_at": "2026-11-18T05:40:29.435Z",
+      "note": "Published reviewed partial increment d34de1971: branded unknown direct-entry/refresh/home recovery preserves MINI query+fragment; missing resources retain404. Static1/state17/production build and desktop+narrow3scenarios/7viewedPNGs PASS, independent Mulan5 PASS; prior connected68 reused. Both originalAC and all existing slice completion remain open: hosted Render wildcard/caching, provider/actual email return, Safari/private and green covering batch. Corrected attempt07 natural-exit cleanup independently verified; attempt01 signal targets/outcomes remain unverified. Normal shared merge c8433daff is pushed; increment complete and held with no current worker/runtime. No Story acceptance/closure."
+    },
+    {
+      "branch": "gcsp-poc-dev",
+      "id": "FUCQ-388",
+      "note": "Local integration observation; native Jira status retained, not refreshed. Partial F388 repair0dd1bd714 retains scoped evidence; originalAC5/UI quality remains partial under GaryF445. Covering6793f49f completed RED: Node5465/125fail,Java2082/12fail/5error; prior120Node/17Java problems persist plus5newstaleNodeassertions. Canonical cleanup recovered/static/root-audited. NewNodefailures selectedoncealone separately; no green batch or acceptance.",
+      "observed_at": "2026-11-18T06:53:54Z",
+      "slices": [
+        {
+          "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim. Refreshed repair regression31/31 PASS; partial merge0dd1bd714; independent cleanupf910d3ce.",
+          "id": "policy-node",
+          "status": "complete",
+          "title": "Canonical reason-specific rule and Node repair"
+        },
+        {
+          "evidence": "Leaddelivery3de251db2;61classes/377tests scopedPASS(171allocation-policy/153offers/53startup),signedOIDC/nativePG17DeclineReentryHttpTestPASS,unchangedcomparisonseamreviewe3dd457a. Exactsourceclosure/cleanup rootaudited; no fullsuiteclaim.",
+          "id": "java-parity",
+          "status": "complete",
+          "title": "Java allocation consumer and focused parity"
+        },
+        {
+          "evidence": "All6guardedgeneratedcasesPASS/7declines.26actualdesktop/narrowcaptures inspected,A7400edea/B4ba31845currentqualityFAILED with four inheritedGaryF445P2; originalAC5qualitypartial, no filetakeover. Latercleanup9e40d82bPASS/current defaultregistryabsent; historicalresolvedregistryunobserved. Refresh matches226/228 old Angular inputs; no fresh browser/composition PASS. Four inherited F445 corrections remain open.",
+          "id": "employee-proof",
+          "status": "in-progress",
+          "title": "Generated stock outcomes and desktop/narrow critique"
+        },
+        {
+          "evidence": "Exact serial covering6793f49f normalexit1:Node5465/5178pass/125fail/162skip;Java340classes/2082tests/12fail/5error/3skip. Hughbound all17Java/fiveNode delta; root verified233Nodebodyranges, final17ID/sixreportbindings, all2563sourcehashes and postrecovery1795groups/port/IPC/filesystem/lane/reservationabsence. Recovery staticPASS79f1533d/rootce02eb89; originalincompletereceiptpreserved. Evidence docs/gcsp/evidence/batch-2026-11-18-0540.md. NewfourNode modules selectedoncealone. RED; no green/nativeacceptance.",
+          "id": "covering-batch",
+          "status": "in-progress",
+          "title": "Covering batch verification",
+          "observed_at": "2026-11-18T06:53:54.266371+00:00"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Paula can receive the same declined car after a saved fuel change",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
+      "workers": [
+        {
+          "name": "Mater",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T05:23:24.209192+00:00",
+          "expires_at": "2026-11-18T05:23:24.209192+00:00",
+          "source": "Observed Sol/high report0b7705f29, fresh31/31 regression and independent recorded-resource auditf910d3ce. No fallback or retained F388 runtime.",
+          "status": "F388 refreshed validation completed and returned; subsequent batch planning is separate."
+        },
+        {
+          "name": "Sulley",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T05:07:04.739916+00:00",
+          "expires_at": "2026-11-18T05:07:04.739916+00:00",
+          "source": "Observed final existing-agent reports and independent cleanup; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback. Other batch work is separate.",
+          "status": "F388 delivery/review completed and returned; no owned F388 runtime or allocation retained."
+        },
+        {
+          "name": "Hugh",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T05:07:04.739916+00:00",
+          "expires_at": "2026-11-18T05:07:04.739916+00:00",
+          "source": "Observed final existing-agent reports and independent cleanup; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback. Other batch work is separate.",
+          "status": "F388 delivery/review completed and returned; no owned F388 runtime or allocation retained."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-500",
+      "type": "Bug",
+      "title": "Reject null image sources before presenting an Angular offer",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-500",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-019",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation (DEV-2026-11-16-019); no native Jira transition inferred. Validator now rejects a null per-image src; nullable display.photo kept. Awaiting dispatcher merge into gcsp-poc-dev and a green batch run.",
+      "observed_at": "2026-11-18T09:22:33Z",
+      "slices": [
+        {
+          "id": "null-image-src",
+          "status": "complete",
+          "title": "Reject null per-image src at the offer client boundary",
+          "observed_at": "2026-11-18T09:22:33Z",
+          "evidence": "RED before fix: client returned ok, gallery TypeError null.trim; after fix 170/170 in 7 files (offers folder plus kit media-gallery) on Node 24.22.3"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-503",
+      "type": "Bug",
+      "title": "Keep focus on the final Angular offer heading after opening another offer",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-503",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-021",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation (DEV-2026-11-16-021); no native Jira transition inferred. Offer screen now refocuses the final ready or failure heading after a delayed next-offer read, only for the same offer and account and only when focus was lost. Rendered desktop/narrow keyboard inspection outstanding. Awaiting dispatcher merge into gcsp-poc-dev and a green batch run.",
+      "slices": [
+        {
+          "id": "next-offer-focus",
+          "status": "complete",
+          "title": "Refocus the final heading once the requested next offer settles",
+          "observed_at": "2026-11-18T09:50:00Z",
+          "evidence": "RED before fix: 3 failed of 42 (ready and failure heading focus left on body); after fix 160/160 in 6 offers spec files on Node 24.22.3; guard mutation caught by 3 tests"
+        }
+      ],
+      "observed_at": "2026-11-18T09:36:36Z"
     }
   ],
   "version": 1

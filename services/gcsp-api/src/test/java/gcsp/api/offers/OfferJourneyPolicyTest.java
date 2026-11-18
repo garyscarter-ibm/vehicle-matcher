@@ -39,4 +39,11 @@ class OfferJourneyPolicyTest {
     void theObserverRunsAfterTheRunClockAndTheComparisonJobs() {
         assertTrue(OfferJourneyPolicy.AFTER_CLOCK > jakarta.interceptor.Interceptor.Priority.LIBRARY_AFTER + 10);
     }
+
+    @Test
+    void theSuccessorAlsoUsesTheExistingPersistedStartupAdoption() {
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+                () -> with("gcsp-policy-v1+offer-journey-v2", "env", "run-1").ensure());
+        assertTrue(e.getMessage().contains("PostgreSQL"), e.getMessage());
+    }
 }
