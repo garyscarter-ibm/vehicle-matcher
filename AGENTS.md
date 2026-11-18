@@ -198,7 +198,8 @@ and batch run uses the shared stack instead. State lives in `~/Library/Caches/gc
   `pg db drop --run <id>` removes it. A database belongs to the calling shell unless `--owner-pid` names a longer-lived
   one; `pg gc` drops orphans. Leave the cluster running between runs; `pg down --if-idle` stops it when nothing is held.
 - **Focused Java tests:** `python3 -B _tools/test_stack.py java-test --worktree <wt> --run <id> [--running] --
-  -Dtest='gcsp.api.<package>.**'` creates and drops its own database, runs in the heavy queue, and caps Maven at 512m
+  -Dtest='gcsp.api.<package>.**'` takes the heavy slot, then creates and drops `gcsp_test_dev` (and
+  `gcsp_test_running`), the names the `*HttpTest` profiles pin, and caps Maven at 512m
   and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
 - **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
   place of `npm ci`; `node unlink` before removing the worktree.
