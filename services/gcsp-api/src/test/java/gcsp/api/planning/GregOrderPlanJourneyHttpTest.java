@@ -178,7 +178,8 @@ class GregOrderPlanJourneyHttpTest {
         // Demand and supply are non-empty, from the saved brief and the released cars.
         assertEquals(1, plan.at("/expectedAcceptableCoverage/total").asInt());
         assertEquals(6, plan.at("/unallocatedStockRisk/totalSupply").asInt());
-        assertEquals(6, plan.at("/unallocatedStockRisk/bySource").size());
+        assertEquals(5, plan.at("/unallocatedStockRisk/bySource").size());
+        assertEquals(1, plan.at("/expectedAcceptableCoverage/covered").asInt());
         assertFalse(plan.at("/unboundStock").isMissingNode());
 
         // Supported quantities, coverage and risk, alternatives and explanations are all present.
@@ -189,8 +190,9 @@ class GregOrderPlanJourneyHttpTest {
         assertEquals(List.of("zero-new-orders-baseline", "next-best-distinct-feasible"), kinds(plan.get("alternatives")));
         assertTrue(plan.get("bindingConstraints").size() > 0);
         assertTrue(plan.at("/objective/tradeOff").asText().length() > 0);
-        assertEquals(1, plan.get("unmetNeeds").size(), "the brief's unmet need is explained, not dropped");
-        assertTrue(plan.at("/unmetNeeds/0/gates").size() > 0);
+        assertEquals(0, plan.get("unmetNeeds").size(), "Paula's confirmed driver lets released stock cover her (FUCQ-530)");
+        assertEquals("slot-paula", plan.at("/allocations/0/entitlementId").asText());
+        assertTrue(plan.at("/allocations/0/sourceId").asText().startsWith("stock:"), plan.get("allocations").toString());
         assertTrue(plan.at("/solver/complete").asBoolean());
 
         // Equivalent decision outcomes: the same solver over the same port readings gives the same decisions.
@@ -268,7 +270,8 @@ class GregOrderPlanJourneyHttpTest {
         assertEquals(firstPlan.at("/versions/cohort"), plan.at("/versions/cohort"), "the cohort is employees and slots, not briefs");
         assertEquals(1, firstPlan.at("/expectedAcceptableCoverage/total").asInt());
         assertEquals(2, plan.at("/expectedAcceptableCoverage/total").asInt(), "the second brief is now demand");
-        assertEquals(2, plan.get("unmetNeeds").size());
+        assertEquals(2, plan.at("/expectedAcceptableCoverage/covered").asInt());
+        assertEquals(0, plan.get("unmetNeeds").size(), "both briefs are met by released stock (FUCQ-530)");
 
         ObjectNode submit = M.createObjectNode().put("commandId", cmd()).put("planId", firstPlan.get("planId").asText());
         submit.set("versions", firstPlan.get("versions"));
