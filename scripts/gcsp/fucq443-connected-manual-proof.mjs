@@ -994,6 +994,7 @@ async function scenarioD(cdp, s, pages) {
   await tickAll(page);
   const snap = await serverState('jordan', { order: false }); const hold = snap.claim.body.value.hold;
   await setProvider(true);
+  page.dropped = []; // F (scope all) shares this page; count only D's own drops.
   await page.interceptOrder(); page.drop('POST'); page.drop('GET');
   const mark = page.log.length;
   await placeOrder(page);
