@@ -9168,7 +9168,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-18T01:33:01Z",
+      "observed_at": "2026-11-18T10:51:11Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Complete remote offer acceptance and decline",
@@ -9191,11 +9191,18 @@
           "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
         },
         {
+          "id": "started-app-edges",
+          "status": "complete",
+          "title": "Started-app proof: intent before I/O at the stub, real timeout then tick reconcile, expiry and stale run via presenter routes",
+          "observed_at": "2026-11-18T10:51:11Z",
+          "evidence": "Lead review 18 Nov of fb3d8c775 (RemoteDecisionTimeoutHttpTest, RemoteDecisionExpiryHttpTest): rerun green on merged 317cadc53; scoped offers+remote 175/175, callers+clock+wiring+startup 112/112, native PG17 :55491"
+        },
+        {
           "id": "integration",
           "status": "in-progress",
           "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-18T01:33:01Z",
-          "evidence": "18Nov partial: 224 unique Java/40 classes (171 remote+offers,53 wiring);14 browser checks/16 captures; independent source/security/rendered review pass. Upstream Buddy decisions only; F466 downstream gap stays open. Original AC unchecked; covering batch/hosted/provider/actual email and unmatched experience gates remain. Identities, failed attempts, cleanup: docs/gcsp/evidence/fucq467/validation-review-2026-11-18.md"
+          "observed_at": "2026-11-18T10:51:11Z",
+          "evidence": "Scoped set green on 317cadc53 (287 tests/50 classes); open external: real BMW remote, hosted Render dev, real OIDC provider, actual email delivery"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
