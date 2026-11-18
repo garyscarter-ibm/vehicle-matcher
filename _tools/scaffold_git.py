@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.6.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.7.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -47,6 +47,9 @@ Subcommands
   batch claim|renew|release|status
                            the batch-run lease: one poller on any machine runs each full test suite for a base commit
                            (see "Batch runs")
+  thread claim|release|status
+                           the thread lease: one poller at a time works a dev_mail thread addressed to `any`
+                           (see "Thread leases")
   guard                    offline: exit 0 when this machine may write the protected paths, else exit 2 with the reason
                            (see "Protected paths and the merge check")
 
@@ -244,6 +247,33 @@ Without a remote (no remote of that name is configured), claim, renew and releas
 remote` and write nothing, and status prints `none`: one clone cannot race itself. Library: batch_claim, batch_renew,
 batch_release, batch_status (root, suite, ... , now=None) returning (rc, message), and batch_ref(suite).
 
+Thread leases
+-------------
+A dev_mail thread addressed to `any` member's poller must be worked by exactly one poller. The thread lease is the lock:
+refs/leases/thread/<id> on the remote, where <id> is the thread's id (`MSG-YYYY-MM-DD-NNN`, or with a 2 to 4 letter
+initials part, `MSG-YYYY-MM-DD-AB-NNN`; anything else is refused, 2). It is built exactly as the batch lease: the same
+parentless empty-tree commit, whose message is JSON {"login","host","client","thread","taken","expires"}, written only by
+compare-and-swap pushes; it expires, so a holder that died stops blocking everyone once its TTL has passed; any member, or
+a single-player clone with a remote, may hold one. `login` is the member's login in team mode, else git's user.email (or
+`local`), the same rule as the batch lease. A lease is ours when login and client both match.
+  thread claim --id ID --ttl SECONDS
+               create the lease (create-only push). Held by someone else and unexpired: refused (2) with `TAKEN thread
+               <id> by <login> on <host> until <expires>`. Expired: replaced by a compare-and-swap against its commit, and
+               the answer ends `(TAKEN OVER expired lease of <login>)`. Already ours: renewed. Done: `CLAIMED thread <id>
+               until <expires>` (exit 0). Losing the race to another live holder is exit 2; a push git reports as failed
+               that nevertheless landed is done. SECONDS is 60 to 86400. Git failed: 3.
+  thread release --id ID
+               delete our own lease: `RELEASED thread <id>` (exit 0; also when it is already gone, `RELEASED thread <id>:
+               no lease`); 2 when it is someone else's (expired or not); 3 when git failed.
+  thread status [--id ID]
+               read-only; one line per thread lease, tab-separated: id, login, host, expires, `live` or `expired`; `none`
+               when there are none.
+Without a remote, claim and release exit 0 with `THREAD lease not used: no remote` and write nothing, and status prints
+`none`. Library: thread_claim(root, tid, ttl, now=None), thread_release(root, tid, now=None) returning (rc, message);
+thread_holder(root, tid, now=None) returning (rc, message, holder), holder None when there is no lease, else a dict with
+login, host, expires, client, `live` (expires is in the future) and `ours` (lease_ours); read-only. thread_ref(tid).
+The per-machine file .claude/mail-read.json (written by dev_mail.py) is in LOCAL_FILES: never committed.
+
 Why this file exists
 --------------------
 Some mounts (OneDrive, Box) refuse unlink ("Operation not permitted") but permit rename. git tolerates a failed
@@ -338,11 +368,15 @@ SCAFFOLDING_RECORD = ".claude/scaffolding.json"
 STALE_LOCK_SECS = 600               # a git lockfile younger than this may belong to a command that is running
 PEN_SKEW_SECS = 300                 # the guard treats the pen as expired this long before its expiry (clock skew)
 LOCAL_FILES = (".claude/member.json", ".claude/pen.json", ".claude/pen.json.released", ".claude/pen-wanted.json",
-               ".claude/jira-sync.json")      # per-machine files; never committed
+               ".claude/jira-sync.json", ".claude/mail-read.json")      # per-machine files; never committed
 CLONE_NOTE = " (another clone of the same member)"
 BATCH_ROOT = LEASE_ROOT + "batch/"    # refs/leases/batch/<suite>
 BATCH_TTL_MIN, BATCH_TTL_MAX = 60, 86400
 BATCH_UNUSED = "BATCH lease not used: no remote"
+THREAD_ROOT = LEASE_ROOT + "thread/"  # refs/leases/thread/<id>
+THREAD_TTL_MIN, THREAD_TTL_MAX = 60, 86400
+THREAD_UNUSED = "THREAD lease not used: no remote"
+THREAD_ID = re.compile(r"^MSG-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}$")
 HEX_SHA = re.compile(r"[0-9a-f]{40}|[0-9a-f]{64}")
 
 
@@ -2608,6 +2642,177 @@ def batch_status(root, suite=None, now=None):
     return 0, "\n".join(lines) or "none"
 
 
+# ---------------------------------------------------------------- thread leases
+
+def thread_ref(tid):
+    """refs/leases/thread/<id>; raises ValueError for an id that is not a dev_mail thread id."""
+    if not isinstance(tid, str) or not THREAD_ID.match(tid):
+        raise ValueError("--id %r is not a thread id (MSG-YYYY-MM-DD-NNN or MSG-YYYY-MM-DD-AB-NNN)" % (tid,))
+    return THREAD_ROOT + tid
+
+
+def _thread_setup(root, tid, ttl=None):
+    """(ctx, None) for a thread command that goes ahead, else (None, (rc, message)): 2 for a bad --id or --ttl (or a bad
+    record), 0 THREAD lease not used when there is no remote. ctx: ref, thread, login."""
+    try:
+        ref = thread_ref(tid)
+    except ValueError as e:
+        return None, (2, str(e))
+    if ttl is not None and (isinstance(ttl, bool) or not isinstance(ttl, int)
+                            or not THREAD_TTL_MIN <= ttl <= THREAD_TTL_MAX):
+        return None, (2, "--ttl must be a whole number of seconds from %d to %d, not %r" % (THREAD_TTL_MIN, THREAD_TTL_MAX, ttl))
+    try:
+        login, bad = _batch_login(root)
+        if bad:
+            return None, (2, bad)
+        if not _batch_has_remote(root):
+            return None, (0, THREAD_UNUSED)
+    except SettingsError as e:
+        return None, (2, str(e))
+    return {"ref": ref, "thread": tid, "login": login}, None
+
+
+def _thread_taken(ctx, h):
+    return "TAKEN thread %s by %s on %s until %s" % (ctx["thread"], h["login"], h.get("host", "?"), h["expires"])
+
+
+def _thread_lease_commit(root, ctx, taken, now, ttl):
+    rec = {"login": ctx["login"], "host": socket.gethostname(), "client": client_id(root), "thread": ctx["thread"],
+           "taken": iso(taken), "expires": iso(now + ttl)}
+    rc, msg, sha = lease_commit(root, rec)
+    return (rc, msg, None) if rc != 0 else (0, "", dict(rec, sha=sha))
+
+
+@_serialised
+def thread_claim(root, tid, ttl, now=None):
+    """Claim the lease of thread `tid` for ttl seconds: create it, replace it when expired, or renew it when already
+    ours. Returns (rc, message): 0 CLAIMED, 2 refused (TAKEN by a live holder; bad arguments), 3 git failed."""
+    ctx, early = _thread_setup(root, tid, ttl)
+    if early:
+        return early
+    now, login, ref = _now(now), ctx["login"], ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    note = ""
+    if h and not lease_ours(root, h, login):
+        if h["exp"] > now:
+            return 2, _thread_taken(ctx, h)
+        note = " (TAKEN OVER expired lease of %s)" % h["login"]
+    taken = (parse_iso(h.get("taken")) or now) if h and not note else now
+    rc, msg, new = _thread_lease_commit(root, ctx, taken, now, ttl)
+    if rc != 0:
+        return rc, msg
+    rc, msg = lease_push(root, ref, new["sha"], h["sha"] if h else "")
+    if rc != 0:
+        rc2, _, h2 = pen_read(root, ref)
+        if rc2 == 0 and h2 and h2["sha"] == new["sha"]:
+            pass                                                # git said failed, but our lease is on the remote
+        elif rc2 == 0 and h2 and not lease_ours(root, h2, login) and h2["exp"] > now:
+            return 2, _thread_taken(ctx, h2)
+        else:
+            return 3, "git push of the thread lease failed: %s" % msg
+    return 0, "CLAIMED thread %s until %s%s" % (tid, new["expires"], note)
+
+
+@_serialised
+def thread_release(root, tid, now=None):
+    """Delete our own lease of thread `tid`. Returns (rc, message): 0 released (also when it is already gone), 2 refused
+    (someone else's, bad arguments), 3 git failed."""
+    ctx, early = _thread_setup(root, tid)
+    if early:
+        return early
+    now, login, ref = _now(now), ctx["login"], ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    if not h:
+        return 0, "RELEASED thread %s: no lease" % tid
+    if not lease_ours(root, h, login):
+        return 2, "the thread lease is not ours (%s); nothing to release" % _batch_describe(h, now)
+    rc, msg = lease_push(root, ref, None, h["sha"])
+    if rc != 0:
+        rc2, _, h2 = pen_read(root, ref)
+        if rc2 == 0 and not h2:
+            pass                                                # git said failed, but the lease is gone
+        elif rc2 == 0 and not lease_ours(root, h2, login):
+            return 2, "the thread lease is no longer ours (%s)" % _batch_describe(h2, now)
+        else:
+            return 3, "git push of the thread lease failed: %s" % msg
+    return 0, "RELEASED thread %s" % tid
+
+
+def thread_holder(root, tid, now=None):
+    """Read-only. Returns (rc, message, holder): holder None when the thread has no lease, else a dict with login, host,
+    expires, client, `live` (expires is in the future) and `ours` (this clone's). 2 for a bad id; 3 git failed. A project
+    with no remote has no leases: (0, THREAD_UNUSED, None)."""
+    ctx, early = _thread_setup(root, tid)
+    if early:
+        return early[0], early[1], None
+    now = _now(now)
+    rc, msg, h = pen_read(root, ctx["ref"])
+    if rc != 0:
+        return rc, msg, None
+    if not h:
+        return 0, "none", None
+    return 0, "", {"login": h["login"], "host": h.get("host", "?"), "expires": h["expires"], "client": h.get("client"),
+                   "live": h["exp"] > now, "ours": lease_ours(root, h, ctx["login"])}
+
+
+def thread_holders(root, now=None):
+    """Read-only: every thread lease in one remote read. Returns (rc, message, {id: holder}); each holder as thread_holder
+    gives it (login, host, expires, client, live, ours). No remote: (0, THREAD_UNUSED, {})."""
+    try:
+        login, bad = _batch_login(root)
+        if bad:
+            return 2, bad, {}
+        if not _batch_has_remote(root):
+            return 0, THREAD_UNUSED, {}
+    except SettingsError as e:
+        return 2, str(e), {}
+    now = _now(now)
+    rc, msg, found = lease_list(root, "thread/")
+    if rc != 0:
+        return rc, msg, {}
+    out = {}
+    for h in found:
+        name = h["ref"][len(THREAD_ROOT):]
+        if "/" in name or "login" not in h:
+            continue
+        exp = parse_iso(h.get("expires")) or 0
+        out[name] = {"login": h["login"], "host": h.get("host", "?"), "expires": h.get("expires", "?"),
+                     "client": h.get("client"), "live": exp > now, "ours": lease_ours(root, h, login)}
+    return 0, "", out
+
+
+def thread_status(root, tid=None, now=None):
+    """Read-only. Returns (rc, message): 0 with one tab-separated line per thread lease (id, login, host, expires,
+    live|expired), or `none`; 2 for a bad --id; 3 git failed. A project with no remote has none."""
+    if tid is not None:
+        try:
+            thread_ref(tid)
+        except ValueError as e:
+            return 2, str(e)
+    try:
+        if not _batch_has_remote(root):
+            return 0, "none"
+    except SettingsError as e:
+        return 2, str(e)
+    now = _now(now)
+    rc, msg, found = lease_list(root, "thread/")
+    if rc != 0:
+        return rc, msg
+    lines = []
+    for h in found:
+        name = h["ref"][len(THREAD_ROOT):]
+        if "/" in name or (tid and name != tid):
+            continue
+        exp = parse_iso(h.get("expires")) or 0
+        lines.append("\t".join([name] + [str(h.get(k) or "-") for k in ("login", "host", "expires")]
+                               + ["live" if exp > now else "expired"]))
+    return 0, "\n".join(lines) or "none"
+
+
 # ---------------------------------------------------------------- the merge check
 
 def _base_story_text(root, base, story_id):
@@ -2994,9 +3199,32 @@ def _batch_commands(sub):
     bt.set_defaults(func=cmd_batch)
 
 
+def cmd_thread(args):
+    root = project_root(args.root)
+    if args.thread_cmd == "claim":
+        return _report(thread_claim(root, args.id, args.ttl))
+    if args.thread_cmd == "release":
+        return _report(thread_release(root, args.id))
+    return _report(thread_status(root, args.id))
+
+
+def _thread_commands(sub):
+    th = sub.add_parser("thread", help="the thread lease: one poller at a time works a dev_mail thread addressed to "
+                                       "`any` (claim, release, status)")
+    tsub = th.add_subparsers(dest="thread_cmd", required=True)
+    for name, text in (("claim", "take (or renew, or take over when expired) the thread's lease"),
+                       ("release", "delete our own lease"),
+                       ("status", "list the thread leases (read-only)")):
+        p = tsub.add_parser(name, help=text)
+        p.add_argument("--id", required=name != "status", metavar="ID", help="the thread id, e.g. MSG-2026-11-18-001")
+        if name == "claim":
+            p.add_argument("--ttl", required=True, type=int, metavar="SECONDS", help="60 to 86400")
+    th.set_defaults(func=cmd_thread)
+
+
 # Each registrar adds its subparsers to `sub`. Later groups of commands (claims and leases, the pen) append theirs
 # here instead of editing build_parser.
-COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands, _batch_commands]
+COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands, _batch_commands, _thread_commands]
 
 
 def build_parser():

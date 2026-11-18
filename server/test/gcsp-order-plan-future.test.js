@@ -90,6 +90,48 @@ test('future choices retain essential, driver, charging and matrix gates before 
   }
 });
 
+// FUCQ-530: prepared records hold eligibility on the employee driver, not in employeeFacts.
+const driverOnly = (f, driver) => {
+  const context = f.args.employee.contract.manualContext;
+  delete context.employeeFacts.driverEligible;
+  if (driver === undefined) delete context.drivers;
+  else context.drivers = [{ driverId: 'drv-1', kind: 'employee', employeeId: f.args.employee.employeeId, ...driver }];
+};
+const codesOf = (decision, list) => decision[list].map((g) => g.code);
+
+test('FUCQ-530 parity: employee driver eligibility is derived when the stored fact is absent', async () => {
+  const f = await fixture(); driverOnly(f, { eligible: fact(true) });
+  const d = (await f.evaluate()).value.decisions[0];
+  assert.ok(codesOf(d, 'reasons').includes('driver-eligible')); assert.ok(!codesOf(d, 'unknowns').includes('driver-unconfirmed'));
+  assert.equal(d.gateStatus, 'eligible');
+});
+
+test('FUCQ-530 parity: a stored driverEligible fact wins over the employee driver', async () => {
+  const f = await fixture(); driverOnly(f, { eligible: fact(false) });
+  f.args.employee.contract.manualContext.employeeFacts.driverEligible = fact(true);
+  const d = (await f.evaluate()).value.decisions[0];
+  assert.ok(codesOf(d, 'reasons').includes('driver-eligible')); assert.ok(!codesOf(d, 'blockers').includes('driver-ineligible'));
+});
+
+test('FUCQ-530 parity: missing, foreign, wrong-kind or unconfirmed drivers stay driver-unconfirmed', async () => {
+  const cases = [undefined, { employeeId: 'someone-else', eligible: fact(true) }, { kind: 'household', eligible: fact(true) },
+    {}, { eligible: fact(null) }, { eligible: { ...fact(true), status: 'unknown' } }];
+  for (const driver of cases) {
+    const f = await fixture(); driverOnly(f, driver);
+    const out = await f.evaluate(); assert.equal(out.status, 'ok', `${JSON.stringify(driver)} ${out.code}`);
+    const d = out.value.decisions[0];
+    assert.ok(codesOf(d, 'unknowns').includes('driver-unconfirmed'), JSON.stringify(driver));
+    assert.ok(!codesOf(d, 'reasons').includes('driver-eligible'), JSON.stringify(driver));
+  }
+});
+
+test('FUCQ-530 parity: an ineligible employee driver blocks the configuration', async () => {
+  const f = await fixture(); driverOnly(f, { eligible: fact(false) });
+  const out = await f.evaluate(); const d = out.value.decisions[0];
+  assert.ok(codesOf(d, 'blockers').includes('driver-ineligible')); assert.ok(!codesOf(d, 'unknowns').includes('driver-unconfirmed'));
+  assert.deepEqual(out.value.acceptableDerivativeIds, []);
+});
+
 test('low preference fit remains advisory and unconfirmed preferences are not invented', async () => {
   const f = await fixture(); f.configuration.facts.body = fact('saloon');
   let out = await f.evaluate(); assert.deepEqual(out.value.acceptableDerivativeIds, ['a']);

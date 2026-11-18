@@ -208,6 +208,71 @@ class FutureChoiceEvaluatorTest {
         assertEquals(800, d.get("evidence").get("points").get("monthlyPoints").intValue());
     }
 
+    // ---- FUCQ-530: driver eligibility derived from the employee driver ----
+
+    private static JsonNode eligibleFact(String json) {
+        return PlanningFixtures.json(json);
+    }
+
+    private static ObjectNode driversOnly(ObjectNode in, String kind, String employeeId, JsonNode eligible) {
+        ObjectNode context = (ObjectNode) in.get("employee").get("contract").get("manualContext");
+        ((ObjectNode) context.get("employeeFacts")).remove("driverEligible");
+        ObjectNode driver = context.putArray("drivers").addObject();
+        driver.put("driverId", "drv-1").put("kind", kind).put("employeeId", employeeId);
+        if (eligible != null) {
+            driver.set("eligible", eligible);
+        }
+        return in;
+    }
+
+    private static final String KNOWN = """
+            {"status": "known", "value": %s, "unit": null,
+             "provenance": {"sourceRef": "hr", "version": "h1", "observedAt": "2026-11-01T00:00:00.000Z",
+                "assurance": "confirmed-listing"}}""";
+
+    @Test
+    void fucq530EmployeeDriverEligibilityIsDerivedWhenTheStoredFactIsAbsent() {
+        ObjectNode in = driversOnly(input(), "employee", "emp-1", eligibleFact(KNOWN.formatted("true")));
+        JsonNode d = decision(evaluator.evaluateChoices(GREG, in), "cfg-hatch");
+        assertTrue(codes(d.get("reasons")).contains("driver-eligible"), d.toString());
+        assertFalse(codes(d.get("unknowns")).contains("driver-unconfirmed"), d.toString());
+    }
+
+    @Test
+    void fucq530StoredDriverFactWinsOverTheEmployeeDriver() {
+        ObjectNode in = input();
+        ObjectNode context = (ObjectNode) in.get("employee").get("contract").get("manualContext");
+        context.putArray("drivers").addObject().put("kind", "employee").put("employeeId", "emp-1")
+                .set("eligible", eligibleFact(KNOWN.formatted("false")));
+        JsonNode d = decision(evaluator.evaluateChoices(GREG, in), "cfg-hatch");
+        assertTrue(codes(d.get("reasons")).contains("driver-eligible"), d.toString());
+        assertFalse(codes(d.get("blockers")).contains("driver-ineligible"), d.toString());
+    }
+
+    @Test
+    void fucq530NoEmployeeDriverStaysUnconfirmed() {
+        ObjectNode none = input();
+        ((ObjectNode) none.get("employee").get("contract").get("manualContext").get("employeeFacts")).remove("driverEligible");
+        assertTrue(codes(decision(evaluator.evaluateChoices(GREG, none), "cfg-hatch").get("unknowns")).contains("driver-unconfirmed"));
+        for (ObjectNode in : List.of(
+                driversOnly(input(), "employee", "emp-2", eligibleFact(KNOWN.formatted("true"))),
+                driversOnly(input(), "household", "emp-1", eligibleFact(KNOWN.formatted("true"))),
+                driversOnly(input(), "employee", "emp-1", null),
+                driversOnly(input(), "employee", "emp-1", eligibleFact(KNOWN.formatted("null").replace("\"known\"", "\"unknown\""))))) {
+            JsonNode d = decision(evaluator.evaluateChoices(GREG, in), "cfg-hatch");
+            assertTrue(codes(d.get("unknowns")).contains("driver-unconfirmed"), d.toString());
+            assertFalse(codes(d.get("reasons")).contains("driver-eligible"), d.toString());
+        }
+    }
+
+    @Test
+    void fucq530IneligibleEmployeeDriverBlocks() {
+        ObjectNode in = driversOnly(input(), "employee", "emp-1", eligibleFact(KNOWN.formatted("false")));
+        JsonNode d = decision(evaluator.evaluateChoices(GREG, in), "cfg-hatch");
+        assertTrue(codes(d.get("blockers")).contains("driver-ineligible"), d.toString());
+        assertFalse(codes(d.get("unknowns")).contains("driver-unconfirmed"), d.toString());
+    }
+
     @Test
     void decisionsAreSortedByConfigurationIdAndTheVersionIsStable() {
         ObjectNode in = with(i -> {

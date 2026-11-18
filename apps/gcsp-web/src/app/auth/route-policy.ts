@@ -14,7 +14,7 @@ export function permits(roles: readonly Role[], required: readonly Role[]): bool
   if (roles.includes('presenter')) return required.includes('presenter');
   return required.some((role) => roles.includes(role));
 }
-const privateRoute = /^(?:account|preferences|stock|manual\/(?:review|summary)|activity|offers\/[^/?#]+|orders|help|greg(?:\/cases)?|comparison|presenter(?:\/outbox)?)$/;
+const privateRoute = /^(?:account|preferences|stock|manual\/(?:review|summary)|activity|offers\/[^/?#]+|orders|help|greg(?:\/(?:cases|plan))?|comparison|presenter(?:\/outbox)?)$/;
 export function safeReturnTo(value: string | null | undefined): string {
   if (!value?.startsWith('/gcsp/')) return '/gcsp/';
   const path = value.slice('/gcsp/'.length).split(/[?#]/)[0];
