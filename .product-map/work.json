@@ -9168,7 +9168,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-18T01:33:01Z",
+      "observed_at": "2026-11-18T10:19:54Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Complete remote offer acceptance and decline",
@@ -9189,6 +9189,12 @@
           "title": "Remote accept: persisted selection intent, remote conversion drive, confirmed ordering conversion once, refusal restore, races, lost responses and restart",
           "observed_at": "2026-11-16T11:51:15Z",
           "evidence": "Lead review of remote accept (selection intent before I/O, confirmed then ordering submitTrusted conversion once via RemoteSelectionConversion, rejected restores active with original deadline, unknown keeps custody); native PG 17 :55467 RemoteOfferAcceptPgTest 13/13, offers+allocation+ordering 203 incl. ordering HTTP 11/11 on matching DB name, clock 50/50"
+        },
+        {
+          "id": "started-app-edges",
+          "status": "in-progress",
+          "title": "Started-app proof: intent before I/O at the stub, real timeout then tick reconcile, expiry and stale run via presenter routes",
+          "observed_at": "2026-11-18T10:19:54Z"
         },
         {
           "id": "integration",
