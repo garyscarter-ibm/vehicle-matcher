@@ -10252,7 +10252,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T04:03:30Z",
+      "observed_at": "2026-11-18T05:07:50Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10356,6 +10356,33 @@
           "expires_at": "2026-11-18T03:58:02.732112+00:00",
           "source": "/root/scrappy_doo_3/sam_sheepdog_3",
           "status": "independent source/receipt/six-image review PASS; original ACs remain open"
+        },
+        {
+          "name": "Hugh 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T05:07:50.659270+00:00",
+          "expires_at": "2026-11-18T05:37:50.659270+00:00",
+          "source": "/root/hugh_2",
+          "status": "observed executing owned resumed completion increment"
+        },
+        {
+          "name": "Petunia Pig 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-18T05:07:50.659270+00:00",
+          "expires_at": "2026-11-18T05:37:50.659270+00:00",
+          "source": "/root/hugh_2/petunia_pig_2",
+          "status": "observed executing source/runtime inventory"
+        },
+        {
+          "name": "Heihei 3",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T05:07:50.659270+00:00",
+          "expires_at": "2026-11-18T05:37:50.659270+00:00",
+          "source": "/root/hugh_2/heihei_3",
+          "status": "observed executing completion proof implementation"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
