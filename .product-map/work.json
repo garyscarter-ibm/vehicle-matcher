@@ -10073,7 +10073,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-444",
-      "observed_at": "2026-11-18T01:26:47Z",
+      "observed_at": "2026-11-18T01:57:28Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Buddy activity and search outcomes",
@@ -10131,10 +10131,10 @@
           "name": "Sam Sheepdog 2",
           "role": "story-lead connected completion",
           "harness": "codex",
-          "observed_at": "2026-11-18T01:26:47Z",
-          "expires_at": "2026-11-18T01:26:47Z",
+          "observed_at": "2026-11-18T01:57:27.810383+00:00",
+          "expires_at": "2026-11-18T01:57:27.810383+00:00",
           "source": "linked chat 01a1ebc8-732c-7ac1-950a-ac494d8edd40",
-          "status": "local connected delivery and final review complete; runtime released; parent integration/batch/acceptance remain"
+          "status": "refreshed connected delivery and independent final review PASS; runtime released; inactive"
         },
         {
           "name": "Road Runner 3",
@@ -10158,10 +10158,10 @@
           "name": "Michigan J. Frog 2",
           "role": "independent final source/evidence reviewer",
           "harness": "codex",
-          "observed_at": "2026-11-18T01:26:47Z",
-          "expires_at": "2026-11-18T01:26:47Z",
+          "observed_at": "2026-11-18T01:57:27.810383+00:00",
+          "expires_at": "2026-11-18T01:57:27.810383+00:00",
           "source": "linked chat 01a1ec28-d0eb-7352-a71d-069bb75ca2bb; saved title independently read; requested/selected gpt-6.1-sol/high, no fallback",
-          "status": "final PASS; source, exact105Java reuse,fresh61Angular,all6actualscenarios,all14capturehashes/screens,resources/cleanup; inactive"
+          "status": "final D2 PASS; refreshed source/128 Java +61 Angular reuse, all6actualscenarios/all14newcaptures,3322input/evidencehashes and resources verified; inactive"
         }
       ],
       "slices": [
@@ -10169,35 +10169,35 @@
           "id": "client",
           "status": "complete",
           "title": "Scoped native activity and command client",
-          "observed_at": "2026-11-18T01:26:47Z",
+          "observed_at": "2026-11-18T01:56:10.000415+00:00",
           "evidence": "Final consumer source b4701dae retains versioned backend state and terminal isolation; fresh20client checks within61Angular PASS; actual6scenario proof covers original2AC. docs/gcsp/fucq444-delivery.md."
         },
         {
           "id": "view",
           "status": "complete",
           "title": "Server-projected Angular Buddy activity and controls",
-          "observed_at": "2026-11-18T01:26:47Z",
+          "observed_at": "2026-11-18T01:56:10.000415+00:00",
           "evidence": "Current backend expiry/superseded/released and accepted controls reviewed; scoped View offer label restored. Fresh16component+25store within61Angular PASS; all14desktop/narrow captures reviewed by lead+Michigan. F487 broader scope/F495 remain open."
         },
         {
           "id": "proof",
           "status": "complete",
           "title": "Selected state and desktop/narrow browser review",
-          "observed_at": "2026-11-18T01:26:47Z",
-          "evidence": "Six actual connected scenarios/71checks PASS, zero unrun; all14capturehashes match and screens reviewed by Sam+Michigan.105Java exact-input evidence reused, fresh61Angular+productionbuild PASS. Final strict receipts and11receipt/15port cleanup audit PASS. docs/gcsp/fucq444-delivery.md."
+          "observed_at": "2026-11-18T01:56:10.000415+00:00",
+          "evidence": "Refreshed43069cb8 actual six connected scenarios/71checks PASS, zero unrun; all14neworiginaldesktop/narrow captures opened by Sam and Michigan; independent final review PASS. Fresh packages, verified128Java/61Angular reuse; finalstrictreceipts and6receipt/8port/3322hashreleaseaudit PASS. Fullsuite deferred to coveringbatch; detailed failures/limitations in docs/gcsp/fucq444-delivery.md."
         },
         {
           "id": "integration",
           "status": "complete",
           "title": "Connected route Java OIDC PostgreSQL acceptance",
-          "observed_at": "2026-11-18T01:26:47Z",
-          "evidence": "Local originalAC1/AC2 evidence PASS atb4701dae: productionAngular/actualJavaHTTP/ownednativePG17/localtestOIDC codePKCE signedbearer/JWKS; terminaldeclined/expired reload/Back never revive/mutate. Michigan finalPASS. Coveringbatch/humanacceptance separate; hosted/provider,Safari,email,fullaccessibility unrun."
+          "observed_at": "2026-11-18T01:56:10.000415+00:00",
+          "evidence": "Original AC1/AC2 PASS again at43069cb8 using productionAngular/actualJavaHTTP/ownedPG17/localtestOIDC PKCE/signedbearer/JWKS, updatedpublicdeclinepayload and terminalreload/Back. No terminalrevival. Shared1375.023199s/1500 including wait,retries,cleanup. Runtime released; no hosted/provider/email/Safari/fullaccessibility or coveringbatch claim. Michigan independent final source/evidence/capture/resource review PASS, no blocking or major findings."
         }
       ],
       "tracker_observed_at": "2026-11-14T05:11:48Z",
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "Local development complete at b4701dae; both original AC have actual local connected evidence PASS and Michigan independent PASS. Original acceptance boxes/status remain unchanged pending parent integration, covering green batch and human acceptance. No remaining original local implementation item. Runtime released; no OneDrive access. Historical observations/failed attempts and exact limitations: docs/gcsp/fucq444-delivery.md."
+      "note": "Refreshed local integration PASS at 43069cb8: fresh Java/web production packages, six actual connected scenarios/71 checks and original two AC PASS. Sam and Michigan independently reviewed all 14 new captures; Michigan final PASS, no blocking/major findings. Guarded reuse supports actual 128 Java/61 Angular tests; first three incomplete C1 receipts and omitted parity XML remain explicit. Final three receipts strict PASS, shared 1375.023199s<1500; lead and parent independently verified release. Parent integration, covering batch and human acceptance remain separate; status/AC boxes unchanged. docs/gcsp/fucq444-delivery.md."
     }
   ],
   "version": 1
