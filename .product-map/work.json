@@ -8236,7 +8236,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-18T15:14:29Z",
+      "observed_at": "2026-11-18T15:30:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Calculate Greg's constrained next-order plan",
@@ -8273,13 +8273,15 @@
         },
         {
           "id": "s5",
-          "status": "not-started",
-          "title": "FUCQ-515 cart-hold expiry on the claims time authority"
+          "status": "in-progress",
+          "title": "FUCQ-515 cart-hold expiry on the claims time authority",
+          "observed_at": "2026-11-18T15:29:59Z"
         },
         {
           "id": "s6",
-          "status": "not-started",
-          "title": "Started-app AC journey over RS256/JWKS and native PostgreSQL"
+          "status": "in-progress",
+          "title": "Started-app AC journey over RS256/JWKS and native PostgreSQL",
+          "observed_at": "2026-11-18T15:30:00Z"
         },
         {
           "id": "integration",
