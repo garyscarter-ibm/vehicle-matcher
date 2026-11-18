@@ -7878,17 +7878,17 @@
           "observed_at": "2026-11-18T13:40:00Z",
           "status": "complete",
           "title": "Angular21-toolchain-native-shell-and-router",
-          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Evidence docs/gcsp/evidence/fucq439/."
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md."
         },
         {
-          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Evidence docs/gcsp/evidence/fucq439/.",
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md.",
           "id": "auth",
           "observed_at": "2026-11-18T13:40:00Z",
           "status": "complete",
           "title": "OIDC-context-recovery-and-account-isolation"
         },
         {
-          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Evidence docs/gcsp/evidence/fucq439/.",
+          "evidence": "Connected proof scripts/gcsp/fucq439-connected-shell-proof.mjs on 36570ce7f: 8/8 scenarios, 87/87 checks against a local mock OIDC issuer (Gary 18 Nov: sign-on mocked for the PoC), started Java API, native PG17, headless Chrome 1280. Focused ng specs 87/87. Summary docs/gcsp/evidence/fucq439/README.md.",
           "id": "integration",
           "observed_at": "2026-11-18T13:40:00Z",
           "status": "complete",
