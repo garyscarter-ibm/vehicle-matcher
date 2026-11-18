@@ -66,6 +66,12 @@ public class PolicyService {
         return selected == null ? PolicyPublisher.unsupported() : selected.publish(principal, changeSet);
     }
 
+    /** As above, but the caller's own now is the only instant read, so a ticking clock cannot split the request. */
+    public PolicyResult publishPolicyVersion(Principal principal, JsonNode changeSet, String now) {
+        PolicyPublisher selected = publisher != null ? publisher : publishers == null ? null : publishers.get();
+        return selected == null ? PolicyPublisher.unsupported() : selected.publish(principal, changeSet, now);
+    }
+
     private static boolean text(String value) {
         return PolicyTime.text(value);
     }

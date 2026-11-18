@@ -103,6 +103,38 @@ describe('Java case/help source contracts and frozen display projection', () => 
       .toBe('invalid-response');
   });
 
+  it('reads Java numeric-offset later-release instants in list, detail, history and options, keeping the wire value', () => {
+    const offset = '2026-12-05T10:00:00+01:00';
+    const later = { type: 'later-release', releaseAt: offset, source: 'Reviewed plan' };
+    const value = row({ status: 'remedy-proposed', remedy: later, history: [{ ...row().history[0], at: '2026-07-14T11:00:00.123+01:00', remedy: later }] });
+    const listed = parseCaseList(list([value]), employee);
+    expect(listed).toMatchObject({ state: 'ready', value: { cases: [{ remedy: { releaseAt: offset }, history: [{ remedy: { releaseAt: offset } }] }] } });
+    expect(parseCaseDetail(ok({ case: value }), greg, value.caseId)).toMatchObject({ state: 'ready', value: { case: { remedy: { releaseAt: offset } } } });
+    const source = options({ case: value });
+    const withRelease = { ...source, options: { ...source.options, laterRelease: { available: true, items: [later] } } };
+    expect(parseCaseOptions(ok(withRelease), greg, value.caseId)).toMatchObject({ state: 'ready', value: { options: { laterRelease: { items: [later] } } } });
+    for (const [wire, uk, utc] of [[offset, '5 Dec 2026, 09:00', '2026-12-05 09:00:00 UTC'], ['2026-12-05T09:00:00Z', '5 Dec 2026, 09:00', '2026-12-05 09:00:00 UTC'],
+      ['2026-07-14T05:30:00-04:30', '14 Jul 2026, 11:00', '2026-07-14 10:00:00 UTC']]) {
+      expect([caseTime(wire, 'employee'), caseTime(wire, 'scheme-team')]).toEqual([uk, utc]);
+    }
+    expect(projectCase(value, employee)!.remedy!.facts).toContainEqual({ label: 'Reviewed release', value: '5 Dec 2026, 09:00' });
+    expect(projectCase(value, greg)!.remedy!.facts).toContainEqual({ label: 'Reviewed release (UTC)', value: '2026-12-05 09:00:00 UTC' });
+  });
+
+  it('still rejects malformed instants and out-of-range offsets, whatever their suffix', () => {
+    for (const bad of ['2026-12-05T10:00:00', '2026-12-05T10:00:00+0100', '2026-12-05T10:00:00+01', '2026-12-05T10:00:00+19:00',
+      '2026-12-05T10:00:00+18:30', '2026-12-05T10:00:00+01:60', '2026-02-30T10:00:00+01:00', '2026-12-05T24:00:00+01:00',
+      '2026-12-05T10:60:00Z', '2026-12-05 10:00:00+01:00', '2026-12-05T10:00:00.+01:00', '2026-12-05T10:00:00+01:00Z']) {
+      const later = { type: 'later-release', releaseAt: bad, source: 'Reviewed plan' };
+      expect(caseTime(bad, 'employee')).toBe('Not supplied');
+      expect(parseCaseList(list([row({ remedy: later })]), employee).state).toBe('invalid-response');
+      expect(parseCaseList(list([row({ dueAt: bad })]), greg).state).toBe('invalid-response');
+    }
+    expect(caseTime('2026-12-05T10:00:00+18:00', 'scheme-team')).toBe('2026-12-04 16:00:00 UTC');
+    expect(parseCaseList(list([row({ employeeId: 'another', remedy: { type: 'later-release', releaseAt: '2026-12-05T10:00:00+01:00', source: 'Plan' } })]), employee).state)
+      .toBe('scope-mismatch');
+  });
+
   it('requires the actual help policy flags and employee authority, without enabling extension by default', () => {
     const value = { opensCase: false, ownerRole: 'scheme-team', extensionPermitted: false, nextAction: 'Ask for help.',
       automaticRecoveryPriority: false, policyVersion: 'policy-1', assumptions: [] };

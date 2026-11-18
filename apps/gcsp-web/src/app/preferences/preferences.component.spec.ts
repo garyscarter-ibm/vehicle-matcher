@@ -108,6 +108,21 @@ describe('native preference controls', () => {
     const status = root.querySelector('.brief-form .gcsp-actions + p[role=status]')!.textContent;
     expect(status).toContain('Your preferences were confirmed. Current readback is unavailable.'); expect(status).not.toContain('not confirmed as saved');
   });
+  it('keeps full and compact controls usable when an older preview turns stale during the save readback (FUCQ-491)', async () => {
+    let older!: (value: unknown) => void; let readback!: (value: unknown) => void;
+    const preview = vi.fn().mockReturnValueOnce(new Promise((done) => { older = done; })).mockResolvedValue({ status: 'ok', value: representativePreviewFixture() }); Object.assign(client, { preview });
+    const full = TestBed.createComponent(PreferencesComponent); const compact = TestBed.createComponent(AccountPreferencesComponent); await full.whenStable(); await compact.whenStable();
+    const store = full.componentInstance.store; client.saveDraft.mockResolvedValue({ status: 'ok', value: { draftVersion: 3, baseBriefVersion: 4, brief: briefEditorFixture().initial.brief } }); client.confirm.mockResolvedValue({ status: 'ok', value: currentBriefFixture() });
+    store.updatePreference('economy', { value: 88 }); const previewing = store.requestPreview();
+    const server = briefEditorFixture(); client.readEditor.mockReturnValueOnce(new Promise((done) => { readback = done; }));
+    const saving = store.saveFull(); await full.whenStable(); older({ status: 'stale-version' }); await previewing;
+    readback({ status: 'ok', value: { ...server, initial: { ...server.initial, briefVersion: 5, draftVersion: 3 } } }); await saving; await full.whenStable(); await compact.whenStable();
+    const root = full.nativeElement as HTMLElement; const compactRoot = compact.nativeElement as HTMLElement; const submit = root.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    expect(store.failure()).toBeNull(); expect(submit.disabled).toBe(false); expect(submit.tabIndex).toBe(0);
+    expect(root.querySelector<HTMLFieldSetElement>('fieldset.full-preference')!.disabled).toBe(false); expect(compactRoot.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(false);
+    expect(root.textContent).toContain('Showing saved version 5.'); expect(root.textContent).not.toContain('changed elsewhere'); expect(compactRoot.textContent).not.toContain('changed elsewhere');
+    Reflect.deleteProperty(client, 'preview');
+  });
   it('keeps full-page Buddy choice as one deferred search-and-hold preference', async () => {
     const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
     const root = fixture.nativeElement as HTMLElement;

@@ -9,18 +9,16 @@ alternatives). Where an item is external (hosted dev, a real OIDC provider, real
 ## Done (merged to gcsp-poc-dev, Jira In Review)
 - Built: 460, 462, 464, 466, 468, 471, 472, 473, 474, 475, 479, 480, 507.
 - Partial, external gaps only: 435, 454, 455, 456 (hosted dev); 458 (hosted dev); 463 (real stock system, hosted dev);
-  469 (real email to an agreed recipient, hosted dev).
+  469 (real email to an agreed recipient, hosted dev); 465 (real OIDC, real email, hosted dev; 02355accf);
+  467 (real BMW remote, hosted dev, real OIDC, real email; 96dc7361b, test-only proofs).
 - Bugs fixed: FUCQ-516 (in 464), FUCQ-506 (in 479), FUCQ-510 (in 466), FUCQ-518 and FUCQ-519 (4290a3bdc).
 - Each Jira story has a merge comment with its AC evidence, the scoped test counts and any hosted settings needed.
 
 ## Not done
-- FUCQ-465 (The Brain) and FUCQ-467 (Ralph Wolf): started at 21:45, after being missed from the lane plan post-crash.
-  - 465 must make Java's offer payload pass Angular's `isOfferProjection`. A known offer still shows "Your offer could not
-    be loaded" (see `docs/gcsp/evidence/fucq518-519/result-2026-11-17.md`).
 - FUCQ-478: merged partial, In Progress. Its planner inputs, `PlanningDemand` and `PlanningSupply` (FUCQ-477), are unbound.
 - FUCQ-477 and FUCQ-476: not started. Waiting on Gary's answer (FUCQ-477 comment 3629825; learnings 9f6be11e2) on whether
   his lane binds the planning ports and whether Russell's lane may build 476 first.
-- The ONE full verify on gcsp-poc-dev: not run yet. Run it after 465 and 467 merge, in a fresh detached worktree, under
+- The ONE full verify on gcsp-poc-dev: not run (Russell, 18 Nov: finish the in-flight stories, then stop). Run it next, in a fresh detached worktree, under
   `/tmp/vm-poller-java-verify.lock`. Any In Review story it breaks goes back to In Progress, with the failure in a comment.
   - Known failures on base: PresenterFaultsJourneyHttpTest, ManualDraftHttpTest and ManualStockHttpTest.
   - FUCQ-517: about 21 profiles need a database called `gcsp_test_dev`.

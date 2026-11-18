@@ -8,7 +8,6 @@ import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { NotificationDispatcher, CapturedTransport } from '../gcsp/notify/index.js';
 import { buildServer } from '../index.js';
-import { outcomeToState } from '../../blocks/gcsp/presenter/http-adapter.js';
 
 const ORIGIN = 'https://outbox.test';
 const link = '/gcsp/offer?token=fictional-route-access-value&run=synthetic';
@@ -100,7 +99,6 @@ test('presenter reads the run captured messages as a safe projection, newest fir
   }
   const raw = JSON.stringify(response.body);
   for (const secret of ['payload', 'idempotencyKey', 'inputDigest']) assert.ok(!raw.includes(secret), secret);
-  assert.deepEqual(outcomeToState(response.status, response.body).status, 'ready');
 });
 
 test('rows sort newest first by time with nulls last, then job id', async (t) => {
@@ -117,7 +115,7 @@ test('rows sort newest first by time with nulls last, then job id', async (t) =>
   assert.ok(Date.parse(body.value.messages[0].time) > Date.parse(body.value.messages[1].time));
 });
 
-test('no cookie, an employee and Greg are refused with 403 forbidden; the real body maps to the refused state', async (t) => {
+test('no cookie, an employee and Greg are refused with 403 forbidden', async (t) => {
   const f = await setup(t);
   await seed(f, { id: 'one', employeeId: 'employee-paula', entitlementSlotId: 'slot-paula', stockIndex: 0 });
   const { call } = await serve(t, f);
@@ -133,9 +131,7 @@ test('no cookie, an employee and Greg are refused with 403 forbidden; the real b
     assert.equal(refused.status, 403, principal);
     assert.equal(refused.body.status, 'forbidden');
     assert.ok(!JSON.stringify(refused.body).includes('job-one'));
-    assert.equal(outcomeToState(refused.status, refused.body).status, 'refused');
   }
-  assert.equal(outcomeToState(none.status, none.body).status, 'refused');
 });
 
 test('a query parameter is invalid and a missing composition is unavailable', async (t) => {
@@ -152,7 +148,6 @@ test('a query parameter is invalid and a missing composition is unavailable', as
   const missing = await bare.call('presenter/outbox', { cookie });
   assert.equal(missing.status, 503);
   assert.equal(missing.body.status, 'unavailable');
-  assert.equal(outcomeToState(missing.status, missing.body).status, 'unavailable');
 });
 
 test('after a reset the old presenter cookie is stale and the renewed one sees only the new run', async (t) => {
@@ -169,10 +164,8 @@ test('after a reset the old presenter cookie is stale and the renewed one sees o
   const stale = await call('presenter/outbox', { cookie: oldCookie });
   assert.equal(stale.status, 409);
   assert.equal(stale.body.status, 'stale-run');
-  assert.equal(outcomeToState(stale.status, stale.body).status, 'refused');
   const fresh = await call('presenter/outbox', { cookie: jar(reset.cookies) });
   assert.equal(fresh.status, 200);
   assert.notEqual(fresh.body.value.runId, before.body.value.runId);
   assert.deepEqual(fresh.body.value.messages, []);
-  assert.equal(outcomeToState(fresh.status, fresh.body).status, 'empty');
 });

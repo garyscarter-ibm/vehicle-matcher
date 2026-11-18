@@ -4,22 +4,22 @@
     [attr.aria-live]="announce() ? null : 'polite'" [attr.aria-atomic]="announce() ? null : 'true'">{{ view().message }}</p>
 
   @if (view().notice; as failure) {
-    <gcsp-status-screen [title]="failure.title" [message]="failure.text" [level]="2" [announcement]="null">
+    <gcsp-status-screen [title]="failure.title" [message]="failure.text" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="refresh()">Refresh cases</button>
       @if (view().phase === 'auth-required') { <button gcspButton type="button" (click)="store.signIn()">Sign in</button> }
     </gcsp-status-screen>
   } @else if (view().phase === 'loading' || view().phase === 'auth-loading') {
-    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="2" [announcement]="null" />
+    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="childLevel()" [announcement]="null" />
   } @else if (view().phase === 'signed-out') {
-    <gcsp-status-screen title="Sign in to continue" [level]="2" [announcement]="null">
+    <gcsp-status-screen title="Sign in to continue" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" (click)="store.signIn()">Sign in</button>
     </gcsp-status-screen>
   } @else if (view().phase === 'auth-unavailable') {
-    <gcsp-status-screen title="Sign-in unavailable" [level]="2" [announcement]="null">
+    <gcsp-status-screen title="Sign-in unavailable" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" (click)="store.retryAuthentication()">Try again</button>
     </gcsp-status-screen>
   } @else if (view().phase === 'access-denied') {
-    <gcsp-status-screen title="You cannot open these cases" [level]="2" [announcement]="null" />
+    <gcsp-status-screen title="You cannot open these cases" [level]="childLevel()" [announcement]="null" />
   }
 
   @if (view().help || view().editing || view().reviewReason) {
@@ -58,7 +58,7 @@
           </div>
         </section>
       }
-      @if (view().uncertain) {
+      @if (view().uncertain && !view().preferenceReview) {
         <p class="help-reason">{{ view().reviewReason }}</p>
         <div class="gcsp-actions">
           <button gcspButton type="button" variant="ghost" [disabled]="view().pending || view().phase === 'loading'" (click)="refresh()">Check current cases</button>
@@ -68,7 +68,25 @@
     </section>
   }
 
-  @if (view().phase === 'empty' && !view().editing && !view().reviewReason) {
+  @if (view().preferenceReview; as preference) {
+    <section class="help-confirmation">
+      @if (childLevel() === 3) { <h3>Confirm your preference change</h3> }
+      @else { <h2>Confirm your preference change</h2> }
+      <p>Only {{ preferenceLabel(preference.change.path).toLowerCase() }} will change to {{ preferenceText(preference.change.value) }}. Your essentials and allowance stay unchanged.</p>
+      @if (!view().uncertain) {
+        <div class="gcsp-actions">
+          <button gcspButton type="button" data-preference-confirm [disabled]="!view().canConfirm" (click)="confirm()">Confirm preference change</button>
+          <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="cancel()">Cancel preference change</button>
+        </div>
+      } @else {
+        <p>This change has an unknown outcome. Check the current case before deliberately retrying the same change.</p>
+        <button gcspButton type="button" variant="ghost" [disabled]="view().pending || view().phase === 'loading'" (click)="refresh()">Check current cases</button>
+        @if (view().canRetry) { <button gcspButton type="button" (click)="retry()">Retry the same preference change</button> }
+      }
+    </section>
+  }
+
+  @if (view().phase === 'empty' && !view().editing && !view().reviewReason && !view().preferenceReview) {
     <p class="gcsp-note">No renewal case. Help is available if you need the scheme team to review your renewal.</p>
   }
   <div class="help-cases">
@@ -84,6 +102,7 @@
             @else { <h3 class="help-subheading">{{ remedy.title }}</h3> }
             <gcsp-fact-list [rows]="remedy.facts" />
           </section>
+          @if (store.canReviewPreference(record)) { <button gcspButton type="button" variant="ghost" (click)="reviewPreference(record)">Review preference change</button> }
         }
         <details class="help-history">
           <summary>Dated case history</summary>

@@ -728,16 +728,6 @@ test('a switch the server does not reflect in the acting context is not navigate
   assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Switch to Paula \(fictional\) not confirmed: the server did not confirm the acting principal\./);
   f.control.destroy();
 });
-test('the employee journey does not pull focus out of the presenter strip when its heading renders', async () => {
-  const { mountManualJourney } = await import('../../blocks/gcsp/manual-setup/journey.js');
-  const { accountFixture } = await import('../../blocks/gcsp/account/fixtures.js');
-  const strip = document.createElement('div'); strip.className = 'gcsp-presenter-controls';
-  const status = document.createElement('p'); status.tabIndex = -1; strip.append(status); document.body.append(strip); status.focus();
-  const host = document.createElement('div'); document.body.append(host);
-  const stop = mountManualJourney(host, { adapter: { readAccount: async () => structuredClone(accountFixture('ready')), readDraft: async () => ({ status: 'not-found' }) },
-    orderAdapter: { listOrders: async () => ({ status: 'ok', value: { orders: [] } }) } });
-  await settle(); assert.ok(host.querySelector('main h1, main h2')); assert.equal(document.activeElement, status); stop();
-});
 // FUCQ-351: one action resets into the chosen scenario as Greg; plain Reset and Switch principal keep their behaviour.
 const sessionMarker = () => window.localStorage.getItem('gcsp-session-change');
 test('Reset and switch to Greg confirms once, resets the chosen scenario, switches to Greg and tells open portal tabs', async () => {

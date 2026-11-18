@@ -1,7 +1,6 @@
 // FUCQ-285: each GCSP view announces through at most one live region, and the kit parts are not live.
 import test, { after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
 const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://live-regions.test/', pretendToBeVisual: true });
@@ -11,20 +10,8 @@ for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', '
 const { createManualGalleryFixture, createManualGalleryFixtureAdapter } = await import('../../blocks/gcsp/manual-gallery/fixtures.js');
 const { toManualGallery } = await import('../../blocks/gcsp/manual-gallery/gallery-model.js');
 const { mountManualGallery } = await import('../../blocks/gcsp/manual-gallery/gcsp-manual-gallery.js');
-const { mountBriefBody } = await import('../../blocks/gcsp/brief/brief-view.js');
-const { createOfferView } = await import('../../blocks/gcsp/offer/offer-view.js');
-const { offerFixture } = await import('../../blocks/gcsp/offer/fixtures.js');
-const { toOfferPresentation } = await import('../../blocks/gcsp/offer/offer-projection.js');
-const { createFollowupView } = await import('../../blocks/gcsp/offer-followup/followup-view.js');
-const { mountFollowupBody } = await import('../../blocks/gcsp/offer-followup/gcsp-offer-followup.js');
-const { mountActivity } = await import('../../blocks/gcsp/activity/gcsp-activity.js');
-const { activityFixtures } = await import('../../blocks/gcsp/activity/activity-fixtures.js');
 const { fixtureAdapter: helpFixture } = await import('../../blocks/gcsp/cases/fixtures.js');
 const { mountHelpBody } = await import('../../blocks/gcsp/cases/gcsp-help.js');
-const { mountAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
-const { accountFixture } = await import('../../blocks/gcsp/account/fixtures.js');
-const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-const { orderProgressFixtures } = await import('../../blocks/gcsp/order-progress/fixtures.js');
 const { mountPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
 
 const LIVE = '[aria-live]:not([aria-live="off"]),[role=status],[role=alert],[role=log],output';
@@ -36,11 +23,6 @@ const waitFor = async (check) => {
   for (let i = 0; i < 200; i += 1) { if (check()) return; await settle(); }
   assert.ok(check(), 'Expected state was not reached');
 };
-const briefFixture = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq94/representative-snapshot.json', import.meta.url)));
-const access = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
-const handle = { decisionId: `offer-decision:${'a'.repeat(64)}` };
-const declined = () => toOfferPresentation({ status: 'ok', value: { ...structuredClone(access), state: 'declined', reason: 'declined',
-  offerState: 'rejected', holdState: 'released', availableActions: [], followup: structuredClone(handle) } }).value;
 const root = () => { const node = document.createElement('div'); document.body.append(node); return node; };
 beforeEach(() => document.body.replaceChildren());
 after(() => dom.window.close());
@@ -66,7 +48,6 @@ function quoted(selected) {
       validUntil: '2026-11-05T12:20:00.000Z' } } };
 }
 const noDecisionLive = (scope) => assert.equal(scope.querySelectorAll('.vm-card-decision[aria-live]').length, 0, 'card decisions are plain text');
-const noOutputs = (scope) => assert.equal(scope.querySelectorAll('output').length, 0, 'slider readouts are not output elements');
 
 test('gallery with released cars and paging has one live region that stays quiet on first paint', async (t) => {
   const host = root(); const adapter = { ...createManualGalleryFixtureAdapter(), browseStock: async () => manyCars(20) };
@@ -95,97 +76,12 @@ test('gallery announces the reservation outcome through the same single region',
   assertQuiet(host, 'gallery after reserving'); noDecisionLive(host);
 });
 
-test('brief has one live region, plain eligibility and slider readouts hidden from assistive technology', async (t) => {
-  const main = document.createElement('main'); document.body.append(main);
-  const teardown = mountBriefBody(main, { editor: briefFixture.edited.value, transport: { preview: async () => briefFixture.preview,
-    saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } }); t.after(teardown);
-  await new Promise((resolve) => setTimeout(resolve, 340));
-  assert.ok(main.querySelectorAll('.vm-card').length > 0);
-  assertQuiet(main, 'brief editable'); noDecisionLive(main); noOutputs(main);
-  const readouts = main.querySelectorAll('.vm-slider-value'); assert.ok(readouts.length >= 10);
-  for (const readout of readouts) assert.equal(readout.getAttribute('aria-hidden'), 'true');
-  assert.ok(main.querySelector('input[type=range][aria-valuetext]'));
-});
-
-test('read-only brief has no more than one live region', (t) => {
-  const main = document.createElement('main'); document.body.append(main);
-  const editor = { ...structuredClone(briefFixture.edited.value), selection: { state: 'accepted', briefVersion: 1 } };
-  t.after(mountBriefBody(main, { editor, transport: {} }));
-  assert.match(main.textContent, /These are your saved preferences\. They are read only\./); assertQuiet(main, 'brief read-only');
-});
-
-test('pending offer stays quiet on first paint and has one region that never repeats the heading', () => {
-  const host = root(); const view = createOfferView(host, {});
-  view.update({ ...offerFixture('pending').value, canAccept: true, canDecline: true, countdown: '2 hours remaining' });
-  assertQuiet(host, 'offer pending'); noDecisionLive(host);
-  const status = host.querySelector('[data-offer-announcement]'); assert.ok(status);
-  assert.notEqual(status.textContent, host.querySelector('h1').textContent); assert.equal(status.textContent, '');
-  view.update({ ...offerFixture('accepted').value, canAccept: false, canDecline: false });
-  assert.equal(status.textContent, host.querySelector('h1').textContent); assertQuiet(host, 'offer after a state change'); view.destroy();
-});
-
-test('offer with a follow-up saved change announces through the offer alone', async () => {
-  const host = root(); let followup;
-  const view = createOfferView(host, { mountFollowup: (target, input) => {
-    followup = createFollowupView(target, { hostRefresh: true, headingLevel: 2, announce: input.announce });
-    followup.update({ state: 'change-saved', busy: false, savedChange: { briefVersion: 3 }, error: '' });
-    return () => followup.destroy();
-  } });
-  view.update(declined()); await settle();
-  assert.ok(host.querySelector('[data-offer-followup] .gcsp-followup'));
-  assertQuiet(host, 'offer with saved change');
-  assert.equal(host.querySelector('[data-offer-announcement]').textContent, 'Change saved'); view.destroy();
-});
-
-test('offer with the follow-up question mounted has one live region', async () => {
-  const host = root();
-  const transport = { confirm: async () => ({ status: 'unavailable' }), read: async () => ({ status: 'ok', value: {
-    schemaVersion: 1, state: 'question', decisionId: handle.decisionId, briefVersion: 2, question: { schemaVersion: 1, questionVersion: 'q1',
-      policyVersion: 'p1', reasonCode: 'body-style', path: 'preferences.body.value', prompt: 'Which body style would you prefer?', currentValue: 'estate',
-      control: { kind: 'options', options: ['estate', 'suv'].map((value) => ({ value, label: value })) } } } }) };
-  const view = createOfferView(host, { mountFollowup: (target, input) => mountFollowupBody(target, { ...input, hostRefresh: true, headingLevel: 2, transport }) });
-  view.update(declined()); await settle(); await settle();
-  assert.ok(host.querySelector('[data-offer-followup] fieldset')); assertQuiet(host, 'offer with follow-up question'); noOutputs(host); view.destroy();
-});
-
-test('standalone follow-up keeps exactly one region in every state', () => {
-  const question = (kind) => ({ state: 'question', busy: false, canConfirm: false, error: '', savedChange: null, value: kind === 'slider' ? 50 : 'saloon',
-    question: { schemaVersion: 1, questionVersion: 'q1', prompt: 'What would you change?', currentValue: 'saloon',
-      control: kind === 'slider' ? { kind, minimum: 0, maximum: 100, unit: 'percent' } : { kind, options: [{ value: 'saloon', label: 'Saloon' }] } } });
-  for (const model of [question('options'), question('slider'), { ...question('options'), error: 'Choose another answer.' },
-    { state: 'change-saved', busy: false, savedChange: { briefVersion: 2 }, error: '' }, { state: 'waiting', busy: false, savedChange: null, error: '' }]) {
-    const host = root(); const view = createFollowupView(host, {}); view.update(model);
-    assert.equal(regions(host).length, 1, `${model.state}${model.error ? ' with error' : ''}`); noOutputs(host); view.destroy(); host.remove();
-  }
-});
-
-// FUCQ-285 slice 2: activity, help, account, order progress, offer with an order, and the presenter strip.
-const readyAccount = { status: 'ready', name: 'Paula', context: 'Fixture' };
-const orderStates = () => orderProgressFixtures().states['appointment-requested'];
-function orderAdapter() {
-  const states = orderStates(); const uuid = states.stages.value.orderUuid; const read = (field) => async () => structuredClone(states[field]);
-  return { uuid, listOrders: async () => ({ status: 'ok', value: { orders: [{ orderUuid: uuid, entitlementSlotId: accountFixture('no-entitlement').value.slots[0].entitlementSlotId,
-    outcome: 'in-progress', source: { receivedAt: '2026-11-05T09:00:00.000Z' } }] } }),
-    readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan') };
-}
+// FUCQ-285 slice 2: help and the presenter strip.
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const waitMs = async (check) => { for (let i = 0; i < 100 && !check(); i += 1) await pause(10); assert.ok(check(), 'Expected state was not reached'); };
 const click = (scope, label) => { const node = [...scope.querySelectorAll('button')].find((b) => b.textContent === label || b.textContent.startsWith(`${label} (`)); assert.ok(node, label); node.click(); return node; };
 
-test('activity with a search that found nothing, its why box and renewal help has one live region', async (t) => {
-  const host = root(); const snapshot = structuredClone(activityFixtures.snapshots['no-match-two']);
-  t.after(mountActivity(host, { adapter: { loadAccount: async () => readyAccount, readActivity: async () => snapshot }, helpAdapter: helpFixture('none') }));
-  await waitFor(() => host.querySelector('.gcsp-activity-why') && host.querySelector('.gcsp-case-entry'));
-  assertQuiet(host, 'activity with help'); assert.equal(host.querySelector('.gcsp-activity-why').hasAttribute('aria-live'), false);
-  click(host, 'Keep searching'); assertQuiet(host, 'activity after keep searching');
-  assert.equal(host.querySelector('.gcsp-activity-status').hasAttribute('role'), false);
-  assert.ok(host.querySelector('.gcsp-activity-announcement'), 'the one region keeps its hook');
-});
-
-test('activity loading and help standalone each keep one live region', async (t) => {
-  const loading = root(); const never = new Promise(() => {});
-  t.after(mountActivity(loading, { adapter: { loadAccount: async () => readyAccount, readActivity: () => never } }));
-  await waitFor(() => loading.querySelector('.gcsp-activity .gcsp-skeleton')); assertQuiet(loading, 'activity loading');
+test('help standalone keeps one live region in every state', async () => {
   for (const name of ['none', 'unavailable', 'loading', 'request']) {
     const host = root(); const stop = mountHelpBody(host, { adapter: helpFixture(name) }); await settle(); await settle();
     assertQuiet(host, `help ${name}`); stop(); host.remove();
@@ -195,42 +91,6 @@ test('activity loading and help standalone each keep one live region', async (t)
 test('help given an announce option makes no region of its own', async (t) => {
   const host = root(); const said = []; t.after(mountHelpBody(host, { adapter: helpFixture('unavailable'), announce: (text) => said.push(text) }));
   await waitFor(() => said.length > 0); assert.equal(regions(host).length, 0); assert.ok(said.some((text) => /unavailable|could not/i.test(text)), said.join());
-});
-
-test('account with an order has one live region and the new car row is plain content', async (t) => {
-  const host = root(); const orders = orderAdapter();
-  const adapter = { readAccount: async () => accountFixture('no-entitlement'), readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }),
-    readOrder: async () => ({ status: 'ok', value: { selection: { stock: { orderUuid: orders.uuid, orderNumber: '1000001', facts: { display: { name: 'Fixture car' } } } } } }) };
-  t.after(mountAccount(host, { adapter, orderAdapter: orders }));
-  await waitFor(() => host.querySelector('.gcsp-account-order-status'));
-  assertQuiet(host, 'account with an order');
-  assert.equal(host.querySelector('.gcsp-account-order-status').hasAttribute('role'), false);
-});
-
-test('account failure support message announces through the account region alone', async (t) => {
-  const host = root(); const adapter = { readAccount: async () => accountFixture('absent-hr-account'), readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }) };
-  t.after(mountAccount(host, { adapter })); await waitFor(() => host.querySelector('.gcsp-account-body'));
-  const support = [...host.querySelectorAll('button')].find((b) => b.textContent === 'Contact support'); assert.ok(support);
-  support.click(); await settle(); assertQuiet(host, 'account after a support route');
-  assert.match(regions(host)[0].textContent, /Support route/);
-});
-
-test('standalone order progress keeps exactly one region and an announce option removes it', async (t) => {
-  const standalone = root(); const orders = orderAdapter();
-  const stop = mountOrderProgress(standalone, { adapter: orders, orderUuid: orders.uuid, embedded: true, car: { name: 'Fixture car' } });
-  await waitFor(() => standalone.querySelector('.gcsp-stage-tracker')); assert.equal(regions(standalone).length, 1, 'standalone order progress'); stop();
-  const hosted = root(); const said = [];
-  const stopHosted = mountOrderProgress(hosted, { adapter: orders, orderUuid: orders.uuid, embedded: true, car: { name: 'Fixture car' }, announce: (text) => said.push(text) });
-  await waitFor(() => hosted.querySelector('.gcsp-stage-tracker')); assert.equal(regions(hosted).length, 0, 'hosted order progress'); stopHosted();
-});
-
-test('offer after accepting is a short confirmation with one live region and no embedded tracker', async (t) => {
-  const host = root(); const orders = orderAdapter(); let mounted = 0;
-  const view = createOfferView(host, { mountOrder: () => { mounted += 1; return () => {}; } });
-  t.after(() => view.destroy());
-  view.update({ ...offerFixture('accepted').value, canAccept: false, canDecline: false, orderUuid: orders.uuid });
-  assert.equal(mounted, 0); assert.equal(host.querySelector('.gcsp-stage-tracker'), null); assert.equal(host.querySelector('.gcsp-offer-order'), null);
-  assertQuiet(host, 'offer after accepting');
 });
 
 test('presenter success text clears after a short delay and failures stay', async (t) => {

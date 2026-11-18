@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, computed, ElementRef, HostListener, inject, signal, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, ElementRef, HostListener, inject, signal, untracked, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthPort } from '../auth/auth.port';
-import { safeReturnTo, navigationFor } from '../auth/route-policy';
+import { AuthPort, Role } from '../auth/auth.port';
+import { safeReturnTo, navigationFor, permits } from '../auth/route-policy';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { ButtonDirective } from '../kit/button.directive';
 @Component({ selector: 'gcsp-root', imports: [RouterLink, RouterOutlet, RouterLinkActive, ButtonDirective, StatusScreenComponent], templateUrl: './shell.component.html', encapsulation: ViewEncapsulation.None })
@@ -16,14 +16,18 @@ export class ShellComponent {
   });
   readonly navigation = computed(() => navigationFor(this.context()?.roles ?? []));
   readonly employee = computed(() => this.context()?.roles.includes('employee') && !this.context()?.roles.includes('presenter'));
-  readonly privateRoute = signal(false);
+  private readonly routeRoles = signal<readonly Role[] | null>(null);
+  // A retained private route mounts only for a context its roles permit (recovery or restore may change them).
+  readonly routeAllowed = computed(() => { const roles = this.routeRoles(); const context = this.context(); return roles === null || (context !== null && permits(context.roles, roles)); });
   expanded = false; menuOpen = false; signOutBusy = false; signOutFailed = false;
   constructor() {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd), takeUntilDestroyed()).subscribe(() => {
       this.menuOpen = false;
-      this.privateRoute.set(Array.isArray(this.router.routerState.snapshot.root.firstChild?.data['roles']));
+      const roles = this.router.routerState.snapshot.root.firstChild?.data['roles'];
+      this.routeRoles.set(Array.isArray(roles) ? roles : null);
       requestAnimationFrame(() => document.querySelector<HTMLElement>('main h1')?.focus());
     });
+    effect(() => { if (this.context() && !this.routeAllowed()) untracked(() => void this.router.navigate(['/access-denied'], { replaceUrl: true })); });
   }
   // Flush auth's synchronous pagehide invalidation before the browser freezes its page snapshot.
   @HostListener('window:pagehide') hidePrivateSnapshot(): void { this.changeDetector.detectChanges(); }

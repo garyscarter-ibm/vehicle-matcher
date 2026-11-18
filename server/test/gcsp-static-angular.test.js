@@ -275,7 +275,7 @@ test('artifact: Java image packages only the active and recovery evidence as roo
     ...[active.selected, active.previous].map((pointer) => `${store}/versions/${pointer.directory}/`),
     `${root}/display-images.v1.json`, `${root}/configuration-definitions.v1.json`, 'assets/gcsp-vehicle-evidence/',
   ];
-  const copies = [...dockerfile.matchAll(/^COPY (?:--chown=(\S+) )?((?:services|server|assets)\/\S+(?: \S+)*) (\S+)$/gmu)];
+  const copies = [...dockerfile.matchAll(/^COPY (?:--chown=(\S+) )?((?:services|server|assets|docs)\/\S+(?: \S+)*) (\S+)$/gmu)];
   const evidence = copies.filter(([, , input]) => input.startsWith(root) || input.startsWith('assets/'));
   assert.deepEqual(evidence.map(([, , input]) => input), expected, 'no whole corpus or extra versions enter the image');
   const runtime = dockerfile.lastIndexOf('\nFROM '); const user = dockerfile.indexOf('\nUSER 1001');
@@ -302,7 +302,7 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    buildFilter:'))), 'supplied Java build/runtime foundation is preserved');
   assert.match(java, /^    dockerContext: \.\s*(?:#.*)?$/mu);
   const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
-  const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets)\/\S+(?: \S+)*) \S+$/gmu)]
+  const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets|docs)\/\S+(?: \S+)*) \S+$/gmu)]
     .flatMap((match) => match[1].split(' '));
   assert.ok(contextInputs.length > 0, 'the current Java image consumes repository inputs');
   for (const input of contextInputs) {
