@@ -440,7 +440,7 @@ class Page {
   }
   async settle() { await sleep(300); await Promise.allSettled(this.waits.splice(0)); }
   calls(from = 0) { return this.log.slice(from).filter((e) => e.method !== 'OPTIONS'); }
-  async eval(expression) { const r = await this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.text}`); return r.result.value; }
+  async eval(expression) { const r = await this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.exception?.description ?? r.exceptionDetails.text}`); return r.result.value; }
   // Runs a statement body with the DOM helpers in scope and returns its value.
   act(body) { return this.eval(`(() => { ${HELPERS}\n${body} })()`); }
   async until(body, timeout = 30000, what = body) {
@@ -459,7 +459,7 @@ class Page {
 }
 // DOM-only selectors follow the offer components and shared portal shell.
 const HELPERS = `
-const main = document.querySelector('#gcsp-main') ?? document;
+const main = document.querySelector('#gcsp-main') ?? document.body ?? document;
 const $ = (s) => main.querySelector(s);
 const button = (label) => [...main.querySelectorAll('button')].find((b) => b.textContent.trim() === label);
 const press = (label) => { const b = button(label); if (!b || b.disabled) return false; b.click(); return true; };
