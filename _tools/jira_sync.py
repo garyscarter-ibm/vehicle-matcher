@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.4.0+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
+VERSION = "1.5.0+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -43,14 +43,14 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                            survive release/merge. It never calls Jira, writes no story and takes no lease. Ops:
                              {"op": "transition", "key", "to": <kit status>, "board_status": <the board's name>,
                               "label"?, "resolution"?, "clear_labels"?}
-                               In Progress: the story is in in-progress/ or holds a story lease. In Review: it is merged
-                               (a `Merge dev/<id>` commit on the base branch, or a `closed: ... merged` line) and in
-                               done/. To Do: it is back in code-inbox with no lease, and a transition was pushed for it
+                               In Progress: the story is in in-progress/, holds a story lease, or is merged with a
+                               Result `status: partial` (unmet acceptance). In Review: it is merged (a `Merge dev/<id>`
+                               commit on the base branch, or a `closed: ... merged` line), in done/ and not partial. To Do: it is back in code-inbox with no lease, and a transition was pushed for it
                                before (a story never pushed is already To Do in Jira). Rejected: it is in done/ with a
                                `closed: <date> rejected` line (dev_mail's rule), a `rejected:` line or `status: rejected`.
                                An epic (a story's `epic: <KEY>`): In Review when every one of its stories is in done/ (a
-                               rejected story counts as closed, at least one is done), In Progress when one is claimed and
-                               not all are closed. Never Done: only the owner moves an item there.
+                               rejected story counts as closed, at least one is done, none is partial), In Progress when one
+                               is claimed or partial and not all are fully closed. Never Done: only the owner moves an item there.
                                `board_status` is the record's `statuses` entry for the kit name (a name, or {status, label,
                                resolution}); a name the record lacks falls back to the kit's own (In Review is In Progress
                                plus label `review`, Rejected is Done plus label `wont-do`). `label` and `resolution` are in
@@ -1284,6 +1284,11 @@ class Push:
         return False
 
     # --- what a story is
+    def is_partial(self, s):
+        """A merged story whose Result says `status: partial`: some original acceptance is unmet, so it stays open."""
+        status = section_line(s["text"], "status")
+        return bool(status and status.split()[0].lower().strip(",;.") == "partial")
+
     def is_rejected(self, s):
         if s["where"] != "done":
             return False
@@ -1378,7 +1383,7 @@ class Push:
             return [transition_op(rec, key, "Rejected")]
         if s["where"] == "done":
             if "dev/" + sid in merged or CLOSED_MERGED.match(f.get("closed", "")):
-                ops.append(transition_op(rec, key, "In Review"))
+                ops.append(transition_op(rec, key, "In Progress" if self.is_partial(s) else "In Review"))
         elif s["where"] == "in-progress" or lease:
             ops.append(transition_op(rec, key, "In Progress"))
         else:
@@ -1423,9 +1428,10 @@ class Push:
             members = groups[key]
             closed = [s for s in members if s["where"] == "done"]
             done = [s for s in closed if not self.is_rejected(s)]
-            if len(closed) == len(members) and done:
+            if len(closed) == len(members) and done and not any(self.is_partial(s) for s in done):
                 ops.append(transition_op(self.rec, key, "In Review"))
-            elif any(s["where"] == "in-progress" or s["id"] in self.lease_map for s in members if s["where"] != "done"):
+            elif any(self.is_partial(s) if s["where"] == "done" else s["where"] == "in-progress" or s["id"] in self.lease_map
+                     for s in members):
                 ops.append(transition_op(self.rec, key, "In Progress"))
         return ops
 

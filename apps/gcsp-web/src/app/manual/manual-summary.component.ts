@@ -3,12 +3,12 @@ import { ButtonDirective } from '../kit/button.directive';
 import { FactListComponent } from '../kit/fact-list.component';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
-import { manualVehicle } from './manual-review.component';
-import type { ManualProjection } from './manual.types';
+import { ManualReviewDetailsComponent, manualVehicle } from './manual-review.component';
+import type { ManualEditableDetails, ManualProjection } from './manual.types';
 
 @Component({
   selector: 'gcsp-manual-summary',
-  imports: [ButtonDirective, FactListComponent, MediaGalleryComponent, ScreenIntroComponent],
+  imports: [ButtonDirective, FactListComponent, MediaGalleryComponent, ScreenIntroComponent, ManualReviewDetailsComponent],
   templateUrl: './manual-summary.component.html', styleUrl: './manual-summary.component.css',
 })
 export class ManualSummaryComponent {
@@ -16,6 +16,9 @@ export class ManualSummaryComponent {
   readonly declarations = input<Readonly<Record<string, boolean>>>({});
   readonly busy = input(false);
   readonly resumeRequired = input(false);
+  readonly detailsDraft = input<ManualEditableDetails | null>(null);
+  readonly detailsDirty = input(false); readonly canSaveDetails = input(false);
+  readonly detailsChange = output<ManualEditableDetails>(); readonly saveDetails = output<void>(); readonly submit = output<void>();
   readonly declarationChange = output<{ readonly id: string; readonly checked: boolean }>();
   readonly resume = output<void>(); readonly edit = output<void>(); readonly browse = output<void>();
   readonly check = output<void>(); readonly orders = output<void>(); readonly help = output<void>();
@@ -28,12 +31,13 @@ export class ManualSummaryComponent {
     ? 'Your order has reached ordering and is awaiting approval.' : this.projection().order?.status === 'refused'
       ? 'Your order is saved, but it could not be sent to ordering. Contact scheme support.'
       : 'Your order is saved and is being sent to ordering. Check again shortly.');
-  // The current Java DTO has no contact/return review or expectedReviewDetailsVersion authority.
-  // Keep the frozen required review boundary closed until its real producer is composed.
-  readonly reviewDetailsUnavailable = 'Your contact and return details are unavailable. Check again before placing your order.';
-  blockSubmit(event: Event): void { event.preventDefault(); }
+  submitOrder(event: Event): void {
+    event.preventDefault();
+    if (!this.busy() && !this.resumeRequired() && !this.projection().order && this.projection().canSubmit
+      && (event.target as HTMLFormElement).reportValidity()) this.submit.emit();
+  }
   changeDeclaration(id: string, event: Event): void {
-    if (!this.busy() && !this.resumeRequired() && !this.projection().order) {
+    if (!this.busy() && !this.resumeRequired() && !this.projection().order && this.projection().state === 'review') {
       this.declarationChange.emit({ id, checked: (event.target as HTMLInputElement).checked });
     }
   }

@@ -107,12 +107,63 @@ describe('released stock screen', () => {
     expect(events.some(event => !event.replace && event.snapshot?.selectedId === 'stock-8')).toBe(true);
     fixture.componentRef.setInput('navigation', { ...snapshot, scope: 'another-user' }); await fixture.whenStable(); expect(component.store.selectedId()).toBe('stock-8');
   });
+  it.each(['rendered', 'missing', 'filtered'] as const)('returns focus for a different restored exact detail: %s', async outcome => {
+    const { root, component, fixture } = await screen();
+    button(root.querySelector<HTMLElement>('[data-member-id="stock-1"]')!, 'Vehicle details').click();
+    fixture.detectChanges(); await fixture.whenStable();
+    button(root, 'Back to released cars').click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(document.activeElement?.getAttribute('data-details-id')).toBe('stock-1');
+    const selectedId = outcome === 'missing' ? 'stock-missing' : 'stock-2';
+    const snapshot = component.store.navigationSnapshot()!;
+    fixture.componentRef.setInput('navigation', { ...snapshot, selectedId,
+      controls: { ...snapshot.controls, query: outcome === 'filtered' ? 'BMW car 1' : '' } });
+    fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(component.store.selectedId()).toBe(selectedId);
+    expect(root.querySelector('[aria-label="Selected vehicle"]')?.textContent)
+      .toContain(outcome === 'missing' ? 'This car is no longer available' : 'BMW car 2');
+    button(root, 'Back to released cars').click(); fixture.detectChanges(); await fixture.whenStable();
+    const target = outcome === 'rendered' ? root.querySelector('[data-details-id="stock-2"]') : root.querySelector('#stock-query');
+    expect(target).not.toBeNull(); expect(document.activeElement).toBe(target);
+    expect(document.activeElement?.getAttribute('data-details-id')).not.toBe('stock-1');
+    expect(component.store.selectedId()).toBeNull();
+  });
   it('hides stale facts during reload and keeps missing exact selection unavailable without substitution', async () => {
     const { root, component, fixture } = await screen(); component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
     let resolve!: (value: unknown) => void; client.readStock.mockReturnValueOnce(new Promise(done => resolve = done));
     const load = component.reload(); fixture.detectChanges(); expect(root.textContent).toContain('Refreshing this car'); expect(root.textContent).not.toContain('BMW car 1');
     resolve({ status: 'ok', value: stock(0) }); await load; fixture.detectChanges();
     expect(root.textContent).toContain('This car is no longer available'); expect(component.store.selectedId()).toBe('stock-1'); expect(component.store.selectedCar()).toBeNull();
+  });
+  it.each([
+    [{ status: 'unavailable', retryable: true }, 'Stock is unavailable', 'Refresh availability'],
+    [{ status: 'forbidden' }, 'Released stock is not available to this account', null],
+    [{ status: 'unauthenticated' }, 'Sign in to browse released cars', null],
+    [{ status: 'authentication-required' }, 'Sign in to browse released cars', null],
+    [{ status: 'invalid' }, 'Check your choices', 'Back to your choices'],
+  ])('keeps selected-detail failure and recovery authoritative for %j', async (failure, title, action) => {
+    const { root, component, fixture } = await screen();
+    component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
+    client.readStock.mockResolvedValueOnce(failure); await component.reload(); fixture.detectChanges();
+    const detail = root.querySelector<HTMLElement>('[aria-label="Selected vehicle"]')!;
+    expect(detail.textContent).toContain(title);
+    expect(detail.textContent).not.toContain('This car is no longer available');
+    expect(detail.textContent).not.toContain('BMW car 1');
+    expect(component.store.selectedId()).toBe('stock-1'); expect(component.store.selectedSource()).toBeNull();
+    expect(buttons(detail).map(node => node.textContent?.trim())).toEqual(['Back to released cars', ...(action ? [action] : [])]);
+    expect(client.readStock).toHaveBeenCalledTimes(2);
+    // The next authoritative response restores only this exact selection, never a sibling configuration.
+    await component.reload(); fixture.detectChanges();
+    expect(component.store.selectedId()).toBe('stock-1'); expect(root.querySelector('[data-detail-heading]')?.textContent).toBe('BMW car 1');
+  });
+  it('retries a selected source failure through loading and honours a confirmed taken response', async () => {
+    const { root, component, fixture } = await screen(); component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
+    client.readStock.mockResolvedValueOnce({ status: 'unavailable' }); await component.reload(); fixture.detectChanges();
+    let resolve!: (value: unknown) => void; client.readStock.mockReturnValueOnce(new Promise(done => resolve = done));
+    button(root, 'Refresh availability').click(); fixture.detectChanges();
+    expect(root.textContent).toContain('Refreshing this car'); expect(component.store.selectedId()).toBe('stock-1');
+    resolve({ status: 'conflict', view: { state: 'car-taken' } }); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.textContent).toContain('This car is no longer available'); expect(component.store.selectedId()).toBe('stock-1');
+    expect(component.store.selectedSource()).toBeNull(); expect(button(root, 'Refresh availability')).toBeDefined();
   });
   it.each([
     [{ status: 'unavailable', retryable: true }, 'Stock is unavailable'],

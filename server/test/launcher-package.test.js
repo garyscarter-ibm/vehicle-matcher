@@ -5,8 +5,10 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'node:http';
+import { spawnSync } from 'node:child_process';
 import { JSDOM } from 'jsdom';
 import { assembleSite, discoverManifest, verifySite } from '../../scripts/assemble-site.mjs';
+import { createEmployeeCapability } from '../../blocks/demo-launcher/employee-entry.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEPLOYED = 'https://gcsp-api.example.test/service';
@@ -128,24 +130,62 @@ test('invalid deployed API and incompatible frontend defaults fail actionably', 
   await assert.rejects(assembleSite({ sourceRoot, output: path.join(root, 'incompatible') }), /boot\.js: incompatible frontend revision/);
 });
 
-test('employee availability switch keeps the complete retail brand and mode registry', async (t) => {
+test('employee frontend configuration reaches the public caller while retail and availability stay bounded', async (t) => {
   const root = await owned(t);
-  for (const employeeEnabled of [true, false]) {
-    const output = path.join(root, String(employeeEnabled));
-    const manifest = await assembleSite({ output, employeeEnabled });
-    assert.equal(manifest.employeeEnabled, employeeEnabled);
-    assert.match(await content(output, 'blocks/demo-launcher/demo-launcher.js'), new RegExp(`createEmployeeCapability\\(\\{ enabled: ${employeeEnabled} \\}\\)`));
-    const { ENTRY_REGISTRY, resolveEntryContext } = await import(`file://${output}/blocks/demo-launcher/entry-context.js`);
-    for (const brand of ENTRY_REGISTRY.retailBrands) for (const mode of ENTRY_REGISTRY.retailModes) {
-      for (const prefix of ['/', '/vehicle-matcher/']) {
-        const context = resolveEntryContext(`https://static.example.test${prefix}index.html?experience=used-cars&brand=${brand}&mode=${mode}`, { employeeAvailable: employeeEnabled });
-        assert.equal(context.state, 'retail');
-        assert.equal(context.brand, brand);
-        assert.ok(context.links.launcher.startsWith(prefix));
+  const output = path.join(root, 'site');
+  const frontend = 'https://employee$&.example.test/gcsp/';
+  const assembler = path.join(ROOT, 'scripts/assemble-site.mjs');
+  for (const variant of [{ employeeEnabled: true, employeeFrontendUrl: null },
+    { employeeEnabled: true, employeeFrontendUrl: frontend, cli: true },
+    { employeeEnabled: false, employeeFrontendUrl: frontend }]) {
+    try {
+      let manifest;
+      if (variant.cli) {
+        const run = spawnSync(process.execPath, [assembler, '--output', output, '--api', DEPLOYED,
+          '--environment', 'deployed', '--employee-frontend', variant.employeeFrontendUrl],
+        { encoding: 'utf8', timeout: 30000, maxBuffer: 64 * 1024 });
+        assert.equal(run.error, undefined);
+        assert.equal(run.status, 0, run.stderr);
+        manifest = JSON.parse(await content(output, 'site-manifest.json'));
+      } else manifest = await assembleSite({ output, apiUrl: DEPLOYED, environment: 'deployed', ...variant });
+      const available = variant.employeeEnabled && variant.employeeFrontendUrl !== null;
+      assert.equal(manifest.apiUrl, DEPLOYED);
+      assert.equal(manifest.employeeEnabled, variant.employeeEnabled);
+      assert.equal(manifest.employeeFrontendUrl, variant.employeeFrontendUrl);
+      assert.equal(manifest.employeeAvailable, available);
+      const caller = await content(output, 'blocks/demo-launcher/demo-launcher.js');
+      const dom = new JSDOM('', { url: 'https://launcher.example.test/', runScripts: 'outside-only' });
+      let registered;
+      try {
+        dom.window.createEmployeeCapability = createEmployeeCapability;
+        dom.window.bootDemo = ({ employeeCapability }) => { registered = employeeCapability; };
+        dom.window.eval(caller.replace(/^import[^\n]*\n/gmu, ''));
+        assert.equal(registered.enabled, available);
+        assert.equal(registered.frontendUrl, available ? frontend : null);
+      } finally { dom.window.close(); }
+      const { ENTRY_REGISTRY, resolveEntryContext } = await import(`file://${output}/blocks/demo-launcher/entry-context.js`);
+      for (const brand of ENTRY_REGISTRY.retailBrands) for (const mode of ENTRY_REGISTRY.retailModes) {
+        for (const prefix of ['/', '/vehicle-matcher/']) {
+          const context = resolveEntryContext(`https://static.example.test${prefix}index.html?experience=used-cars&brand=${brand}&mode=${mode}`,
+            { employeeAvailable: registered.enabled, employeeFrontendUrl: registered.frontendUrl });
+          assert.equal(context.state, 'retail');
+          assert.equal(context.brand, brand);
+          assert.ok(context.links.launcher.startsWith(prefix));
+        }
       }
-    }
-    assert.equal(resolveEntryContext('https://static.example.test/?experience=employee-cars&brand=bmw', { employeeAvailable: employeeEnabled }).state,
-      employeeEnabled ? 'employee' : 'employee-unavailable');
+      const context = resolveEntryContext('https://static.example.test/?experience=employee-cars&brand=bmw&api=https://other.example&role=presenter#m=answers',
+        { employeeAvailable: registered.enabled, employeeFrontendUrl: registered.frontendUrl });
+      assert.equal(context.state, available ? 'employee' : 'employee-unavailable');
+      if (available) assert.equal(context.links.employeeCars, `${frontend}?brand=bmw`);
+      const boot = await content(output, 'blocks/demo-launcher/boot.js');
+      assert.ok(boot.includes(`const LOCAL_API = ${JSON.stringify(DEPLOYED)};`));
+      assert.ok(boot.includes(`const REMOTE_API = ${JSON.stringify(DEPLOYED)};`));
+    } finally { await rm(output, { recursive: true, force: true }); }
+  }
+  for (const employeeFrontendUrl of ['', '/gcsp/', 'javascript:alert(1)', 'http://employee.example.test/gcsp/',
+    'https://user:password@employee.example.test/gcsp/', `${frontend}?api=other`, `${frontend}#account`]) {
+    await assert.rejects(assembleSite({ output, employeeFrontendUrl }), /Employee frontend setting requires/u);
+    await assert.rejects(readdir(output), { code: 'ENOENT' });
   }
 });
 

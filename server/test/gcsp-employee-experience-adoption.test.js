@@ -19,7 +19,7 @@ const oldSeed = () => { const old = structuredClone(seed); old.assumptions = old
   return old; };
 const configuredFeedback = (value) => ({ ...structuredClone(value), rating: { positive: [5], negative: [1, 2, 3], neutral: [4] },
   similarity: { dimensions: ['fuel'] }, improvement: { requireNoWorseOnAll: false, requireBetterOnAtLeast: 2 } });
-async function fixture(t, { retained = oldSeed() } = {}) {
+async function fixture(t, { retained = oldSeed(), initialJourney = true } = {}) {
   const store = createMemoryStore(); const policyStore = createMemoryPolicyStore(); let current;
   const start = async (adoptOfferJourney = false) => {
     const policy = new PolicyService({ provider: new MemoryPolicyProvider({ store: policyStore, seedProvider: { loadVersions: async () => [retained] } }) });
@@ -28,10 +28,22 @@ async function fixture(t, { retained = oldSeed() } = {}) {
     return current;
   };
   t.after(async () => current?.close());
-  const runtime = await start(); good(await adoptOfferJourneyPolicy(runtime));
+  const runtime = await start(); if (initialJourney) good(await adoptOfferJourneyPolicy(runtime));
   const context = good(await runtime.createLocalSession()).context;
   return { store, policyStore, runtime, context, start };
 }
+
+test('a genuinely old retained run adopts re-entry immediately after its employee refresh', async (t) => {
+  const f = await fixture(t, { initialJourney: false });
+  const retained = structuredClone(f.policyStore.runs.get(f.context.runId));
+  await f.runtime.close(); const reopened = await f.start(true);
+  const current = good(await reopened.createLocalSession()).context;
+  const now = good(await reopened.clock.now(current)).now;
+  for (const name of ['brief.engagement.v1', key, 'offer.declineReasons.v1', 'offer.followupQuestions.v1', 'offer.declinedCar.reentry.v1']) {
+    assert.equal((await reopened.policy.getAssumption(name, { runId: current.runId, asOf: now, policyVersion: current.policyVersion })).status, 'ok', name);
+  }
+  assert.deepEqual(f.policyStore.runs.get(current.runId).slice(0, retained.length), retained);
+});
 
 test('retained policy reproduces Engage 503; startup appends reviewed grants and feedback without losing preferences/history', async (t) => {
   const f = await fixture(t); const { runtime, context } = f;
@@ -77,7 +89,7 @@ test('repeated startup is idempotent; scenario reset adopts the combined reviewe
   const now = good(await reopened.clock.now(renewed)).now;
   for (const name of ['brief.engagement.v1', key, 'offer.declineReasons.v1', 'offer.followupQuestions.v1'])
     assert.equal((await reopened.policy.getAssumption(name, { runId: renewed.runId, asOf: now, policyVersion: renewed.policyVersion })).status, 'ok');
-  assert.equal(f.policyStore.runs.get(renewed.runId).length, 2, 'one combined publication, including offer sets');
+  assert.equal(f.policyStore.runs.get(renewed.runId).length, 3, 'immutable employee refresh followed by the current offer successor');
 });
 
 test('current reviewed values do not create another publication or move the clock', async (t) => {

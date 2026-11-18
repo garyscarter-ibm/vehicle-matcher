@@ -38,10 +38,14 @@ const copy: Partial<Record<ManualState, readonly [string, string]>> = {
     }
     @if (showSummary()) {
       <gcsp-manual-summary [projection]="store.projection()" [declarations]="store.declarations()" [busy]="store.loading()" [resumeRequired]="store.resumeRequired()"
+        [detailsDraft]="store.detailsDraft()" [detailsDirty]="store.detailsDirty()" [canSaveDetails]="store.canSaveReviewDetails()"
+        (detailsChange)="store.setReviewDetails($event)" (saveDetails)="store.saveReviewDetails()" (submit)="store.submit()"
         (declarationChange)="store.setDeclaration($event.id, $event.checked)" (resume)="store.confirmResume()"
         (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" (orders)="orders()" (help)="help()" />
     } @else if (hasBody()) {
       <gcsp-manual-review [projection]="store.projection()" [selection]="store.handoff()" [busy]="store.loading()" [canClaim]="store.canClaim()"
+        [detailsDraft]="store.detailsDraft()" [detailsDirty]="store.detailsDirty()" [canSaveDetails]="store.canSaveReviewDetails()"
+        (detailsChange)="store.setReviewDetails($event)" (saveDetails)="store.saveReviewDetails()"
         (claim)="store.claimSelection()" (continue)="store.beginReview()" (resume)="store.confirmResume()" (edit)="edit()" (browse)="browse()" (check)="store.checkStatus()" />
     }
   `,

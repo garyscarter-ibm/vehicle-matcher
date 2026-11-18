@@ -32,7 +32,12 @@ final class BuddyOfferConversion implements SelectionConversionPort {
 
     /** What this one accept was asked for. */
     record Ask(Principal principal, String offerId, String commandId, String digest, long expectedOfferVersion,
-            Long expectedReturnMileage) {}
+            Long expectedReturnMileage, boolean browserCommand) {
+        Ask(Principal principal, String offerId, String commandId, String digest, long expectedOfferVersion,
+                Long expectedReturnMileage) {
+            this(principal, offerId, commandId, digest, expectedOfferVersion, expectedReturnMileage, false);
+        }
+    }
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final Pattern PHONE = Pattern.compile("^\\+?[0-9 ()-]{7,30}$");
@@ -120,13 +125,13 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         }
     }
 
-    private static boolean validContact(JsonNode c) {
+    static boolean validContact(JsonNode c) {
         if (!c.isObject() || c.size() != 2 || !c.path("phone").isTextual() || !c.path("email").isTextual()) return false;
         return PHONE.matcher(c.get("phone").textValue()).matches() && c.get("email").textValue().length() <= 254
                 && EMAIL.matcher(c.get("email").textValue()).matches();
     }
 
-    private static JsonNode employeeDriver(JsonNode drivers, String employeeId) {
+    static JsonNode employeeDriver(JsonNode drivers, String employeeId) {
         for (JsonNode d : drivers) {
             if ("employee".equals(d.path("kind").asText()) && employeeId.equals(d.path("employeeId").asText(null))) return d;
         }
@@ -145,7 +150,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         }
     }
 
-    private static boolean driverOk(JsonNode d, String today) {
+    static boolean driverOk(JsonNode d, String today) {
         if (d == null || !text(d.get("name")) || !d.path("eligible").path("value").isBoolean()
                 || !d.path("eligible").path("value").booleanValue()) {
             return false;
@@ -160,7 +165,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
                 && !from.isAfter(t) && !until.isBefore(t);
     }
 
-    private static JsonNode currentContract(JsonNode contracts, String slotId) {
+    static JsonNode currentContract(JsonNode contracts, String slotId) {
         for (JsonNode c : contracts) {
             if ("current".equals(c.path("status").asText()) && slotId.equals(c.path("slotId").asText(null))
                     && (c.path("returnedDate").isMissingNode() || c.path("returnedDate").isNull())) {
@@ -170,7 +175,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         return null;
     }
 
-    private static boolean returnOk(JsonNode c) {
+    static boolean returnOk(JsonNode c) {
         JsonNode odo = c.path("currentOdometer");
         return text(c.get("model")) && date(c.get("contractEndDate")) != null && odo.path("value").isNumber()
                 && odo.path("value").doubleValue() >= 0 && text(odo.get("unit"));
@@ -181,7 +186,9 @@ final class BuddyOfferConversion implements SelectionConversionPort {
     @Override
     public Conversion convert(Tx tx, OrderingScope scope, ConversionRequest q) throws SQLException {
         Principal p = ask.principal();
-        Instant now = q.now();
+        // The offers clock, not ordering's: holds and offers are stamped on the run clock.
+        Instant now = decisions.clock().now(scope.context());
+        if (now == null) return unavailable();
         Locked l = decisions.lock(tx, p, ask.offerId(), ask.expectedOfferVersion(), q.expectedHoldVersion(),
                 q.expectedStockVersion(), now, verdict);
         if (l == null) return new Refusal(verdict.outcome.code());
@@ -298,6 +305,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         String env = scope.environmentId();
         String run = scope.runId();
         String nowText = PolicyClock.iso(now);
+        ObjectNode browserFacts = OfferDecisionPresentation.capture(tx, l, now, ask.browserCommand());
         ObjectNode patch = F.objectNode().put("allocatedAt", nowText);
         tx.cas("UPDATE custody_holds SET state = 'allocated', attributes = attributes || ?, version = version + 1, "
                 + "updated_at = now() WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ? "
@@ -322,6 +330,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         value.put("decidedAt", nowText);
         value.putArray("availableActions");
         value.put("operationId", q.operationId());
+        OfferDecisionPresentation.retain(value, browserFacts);
         ObjectNode versions = F.objectNode();
         versions.put("offer", l.offer().version());
         versions.put("hold", l.hold().version());

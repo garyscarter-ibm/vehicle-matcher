@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.Tx;
 import gcsp.api.production.ProductionProviderPort.Answer;
@@ -93,6 +94,20 @@ final class ProductionStore {
         return out;
     }
 
+    /** The run's stock version: a digest of every car's (order_uuid, version, state) from one ordered query; read and request share it. */
+    static String stockVersion(Connection c, RunContext ctx) throws SQLException {
+        ArrayNode rows = F.arrayNode();
+        try (PreparedStatement ps = c.prepareStatement("SELECT order_uuid, version, state FROM stock_cars "
+                + "WHERE environment_id = ? AND run_id = ? ORDER BY order_uuid COLLATE \"C\"")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) rows.addArray().add(rs.getString(1)).add(rs.getLong(2)).add(rs.getString(3));
+            }
+        }
+        return Canonical.digest(rows);
+    }
+
     record SubmissionRow(String submissionId, String planId, Instant requestedAt) {}
 
     static List<SubmissionRow> submissionsOfRun(Connection c, RunContext ctx) throws SQLException {
@@ -124,6 +139,20 @@ final class ProductionStore {
     static Optional<RequestRow> request(Connection c, RunContext ctx, String requestId) throws SQLException {
         try (PreparedStatement ps = c.prepareStatement(SELECT_REQUEST
                 + "WHERE environment_id = ? AND run_id = ? AND request_id = ?")) {
+            ps.setString(1, ctx.environmentId());
+            ps.setString(2, ctx.runId());
+            ps.setString(3, requestId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? Optional.of(map(rs)) : Optional.empty();
+            }
+        }
+    }
+
+    /** The request row under a row lock, so a concurrent step waits and then sees the new version. */
+    static Optional<RequestRow> lockedRequest(Tx tx, String requestId) throws SQLException {
+        RunContext ctx = tx.context();
+        try (PreparedStatement ps = tx.connection().prepareStatement(SELECT_REQUEST
+                + "WHERE environment_id = ? AND run_id = ? AND request_id = ? FOR UPDATE")) {
             ps.setString(1, ctx.environmentId());
             ps.setString(2, ctx.runId());
             ps.setString(3, requestId);

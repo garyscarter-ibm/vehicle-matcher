@@ -83,6 +83,12 @@ public class BriefResource {
     }
 
     @POST
+    @Path("/change-after-decline")
+    public Response changeAfterDecline(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        return command(authorization, uri, body, BriefService::changeAfterDecline);
+    }
+
+    @POST
     @Path("/engage")
     public Response engage(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
         return command(authorization, uri, body, BriefService::engage);
@@ -92,6 +98,18 @@ public class BriefResource {
     @Path("/disengage")
     public Response disengage(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
         return command(authorization, uri, body, BriefService::disengage);
+    }
+
+    @POST
+    @Path("/pause")
+    public Response legacyPause(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        return legacy(authorization, uri, body, BriefService::legacyPause);
+    }
+
+    @POST
+    @Path("/resume")
+    public Response legacyResume(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri, String body) {
+        return legacy(authorization, uri, body, BriefService::legacyResume);
     }
 
     @POST
@@ -115,6 +133,18 @@ public class BriefResource {
         return serve(authorization, uri, (service, scope) -> op.apply(service, scope));
     }
 
+    /** The Node aliases answer any query parameter as invalid-command rather than unsupported-query. */
+    private Response legacy(String authorization, UriInfo uri, String body, Command op) {
+        return serve(authorization, uri, BriefResult.Refusal.invalid("invalid-command", "command",
+                "Supply a command ID and the expected brief version."), (service, scope) -> {
+            JsonNode input = parse(body);
+            if (input == null) {
+                return BriefResult.Refusal.invalid("invalid-command", "body", "Send the command as a JSON object.");
+            }
+            return op.run(service, scope, input);
+        });
+    }
+
     private Response command(String authorization, UriInfo uri, String body, Command op) {
         return serve(authorization, uri, (service, scope) -> {
             JsonNode input = parse(body);
@@ -126,11 +156,13 @@ public class BriefResource {
     }
 
     private Response serve(String authorization, UriInfo uri, BiFunction<BriefService, BriefScope, BriefResult> op) {
+        return serve(authorization, uri, BriefResult.Refusal.invalid("unsupported-query", "query", "This operation takes no query parameters."), op);
+    }
+
+    private Response serve(String authorization, UriInfo uri, BriefResult onQuery, BiFunction<BriefService, BriefScope, BriefResult> op) {
         Principal principal = auth.authenticate(authorization);
         BriefScope scope = scope(principal);
-        if (!uri.getQueryParameters().isEmpty()) {
-            return respond(BriefResult.Refusal.invalid("unsupported-query", "query", "This operation takes no query parameters."));
-        }
+        if (!uri.getQueryParameters().isEmpty()) return respond(onQuery);
         Optional<BriefService> service = scope == null ? Optional.empty() : holder.service();
         if (service.isEmpty()) return respond(BriefResult.Refusal.unavailable());
         return respond(op.apply(service.get(), scope));

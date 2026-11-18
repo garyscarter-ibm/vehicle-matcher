@@ -4,6 +4,7 @@ import io.quarkus.test.junit.QuarkusTestProfile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** OIDC accounts and the native test database together; the principal's run is the one the guard claims. */
 public class DocumentsTestProfile implements QuarkusTestProfile {
@@ -43,6 +44,11 @@ public class DocumentsTestProfile implements QuarkusTestProfile {
             c.put("gcsp.database.expected-name", "gcsp_test_dev");
         }
         return c;
+    }
+
+    @Override
+    public Set<Class<?>> getEnabledAlternatives() {
+        return Set.of(DocumentsTestPorts.Policy.class, DocumentsTestPorts.Cases.class, DocumentsTestPorts.Clock.class);
     }
 
     @Override

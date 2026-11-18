@@ -2,6 +2,7 @@ package gcsp.api.presenter;
 
 import static gcsp.api.presenter.PresenterClockSupport.get;
 import static gcsp.api.presenter.PresenterClockSupport.post;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -95,9 +96,11 @@ class PresenterScenarioHttpTest {
                 get(who, path).then().statusCode(403).body("code", equalTo("role-required"));
             }
         }
-        post(null, "/scenarios/reset", "{}").then().statusCode(401);
-        for (String who : new String[] {employee, greg}) {
-            post(who, "/scenarios/reset", "{}").then().statusCode(403).body("code", equalTo("role-required"));
+        for (String reset : new String[] {"/scenarios/reset", "/clock/reset"}) {
+            post(null, reset, "{}").then().statusCode(401);
+            for (String who : new String[] {employee, greg}) {
+                post(who, reset, "{}").then().statusCode(403).body("code", equalTo("role-required"));
+            }
         }
     }
 
@@ -116,7 +119,54 @@ class PresenterScenarioHttpTest {
         post(presenter, "/scenarios/reset", "{\"commandId\":\"c\"}").then().statusCode(400)
                 .body("reasons.field", hasItem("expectedRunId"));
         post(presenter, "/scenarios/reset", "not json").then().statusCode(400);
+        post(presenter, "/clock/reset?runId=x", "{}").then().statusCode(400).body("code", equalTo("unsupported-query"));
+        String clockBody = clockResetBody(id(), run);
+        for (String foreign : new String[] {"scenarioId", "employeeId"}) {
+            post(presenter, "/clock/reset", clockBody.replace("}", ",\"" + foreign + "\":\"gcsp-clock-scenario-v1\"}"))
+                    .then().statusCode(400).body("code", equalTo("invalid-scenario-command")).body("reasons.field", hasItem(foreign));
+        }
+        post(presenter, "/clock/reset", "not json").then().statusCode(400);
         assertEquals(run, current().getString("value.runId"));
+    }
+
+    String clockResetBody(String command, String expectedRun) {
+        JsonPath c = get(presenter, "/scenarios").jsonPath();
+        String base = "value.scenarios.find { it.scenarioId == 'gcsp-clock-scenario-v1' }.";
+        return "{\"commandId\":\"" + command + "\",\"expectedRunId\":\"" + expectedRun + "\",\"scenarioVersion\":\""
+                + c.getString(base + "scenarioVersion") + "\",\"fixtureVersion\":\"" + c.getString(base + "fixtureVersion")
+                + "\",\"policyVersion\":\"" + c.getString(base + "policyVersion") + "\"}";
+    }
+
+    @Test
+    void clockResetIsTheMechanicsScenarioResetAndReplaysByCommandId() {
+        String run = current().getString("value.runId");
+        String command = id();
+        String body = clockResetBody(command, run);
+        String activated = post(presenter, "/clock/reset", body).then().statusCode(200).body("status", equalTo("ok"))
+                .body("value.retiredRunId", equalTo(run)).body("value.replayed", equalTo(false))
+                .body("value.scenario.scenarioId", equalTo("gcsp-clock-scenario-v1")).extract().jsonPath()
+                .getString("value.activatedRunId");
+        assertTrue(activated.startsWith("demo-"));
+        assertEquals(activated, current().getString("value.runId"));
+        post(presenter, "/clock/reset", body).then().statusCode(200).body("value.replayed", equalTo(true))
+                .body("value.activatedRunId", equalTo(activated));
+        post(presenter, "/clock/reset", body.replace(run, activated)).then().statusCode(409)
+                .body("code", equalTo("command-input-changed"));
+        post(presenter, "/clock/reset", clockResetBody(id(), run)).then().statusCode(409).body("code", equalTo("stale-run"));
+    }
+
+    @Test
+    void principalsFollowTheActiveRunAfterAPresenterReset() {
+        String run = current().getString("value.runId");
+        String activated = post(presenter, "/scenarios/reset", resetBody(id(), run, "gcsp-clock-scenario-v1")).then()
+                .statusCode(200).extract().jsonPath().getString("value.activatedRunId");
+        assertTrue(activated.startsWith("demo-"));
+        for (String who : new String[] {employee, greg}) {
+            given().header("Authorization", "Bearer " + who).get("/api/gcsp/v1/context").then().statusCode(200)
+                    .body("value.runId", equalTo(activated));
+        }
+        given().header("Authorization", "Bearer " + employee).get("/api/gcsp/v1/manual/account").then().statusCode(200)
+                .body("status", equalTo("ok"));
     }
 
     @Test

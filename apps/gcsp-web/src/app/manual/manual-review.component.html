@@ -14,6 +14,9 @@
         <p class="gcsp-note">{{ reservation() }}</p>
         @if (projection().claim; as claimValue) {
           <gcsp-fact-list [rows]="[{label:'Journey',value:claimValue.hold.mode === 'replacement' ? 'Replacement' : 'New order'}, {label:'Quote valid until',value:claimValue.quote.validUntil}]" />
+          <gcsp-manual-review-details [projection]="projection()" [detailsDraft]="detailsDraft()" [detailsDirty]="detailsDirty()"
+            [canSaveDetails]="canSaveDetails()" [busy]="busy()" [resumeRequired]="projection().state === 'resume-required'"
+            (detailsChange)="detailsChange.emit($event)" (saveDetails)="saveDetails.emit()" />
         }
         @if (projection().state === 'resume-required') {
           <p>Review this unfinished selection before continuing.</p>

@@ -19,13 +19,24 @@ final class BriefStore {
     record Head(long briefVersion, long draftVersion) {}
 
     record BriefRow(long version, Long previousVersion, String operation, ObjectNode content, ObjectNode buddy,
-            String digest, String policyVersion, String accountFactsVersion, String confirmedBy, Instant confirmedAt) {}
+            String digest, String policyVersion, String accountFactsVersion, String confirmedBy, Instant confirmedAt,
+            ObjectNode postDeclineChange) {
+
+        BriefRow(long version, Long previousVersion, String operation, ObjectNode content, ObjectNode buddy, String digest,
+                String policyVersion, String accountFactsVersion, String confirmedBy, Instant confirmedAt) {
+            this(version, previousVersion, operation, content, buddy, digest, policyVersion, accountFactsVersion, confirmedBy,
+                    confirmedAt, null);
+        }
+    }
+
+    /** A recorded offer decision as the post-decline change reads it. */
+    record Decision(String employeeId, String decision, String offerId, JsonNode versions) {}
 
     record DraftRow(long version, long baseBriefVersion, ObjectNode content, String digest, String policyVersion,
             String accountFactsVersion, String savedBy, Instant savedAt) {}
 
     private static final String BRIEF_COLUMNS = "brief_version, previous_brief_version, operation, content::text, buddy::text, "
-            + "semantic_digest, policy_version, account_facts_version, confirmed_by, confirmed_at";
+            + "semantic_digest, policy_version, account_facts_version, confirmed_by, confirmed_at, post_decline_change::text";
     private static final String DRAFT_COLUMNS = "draft_version, base_brief_version, content::text, semantic_digest, "
             + "policy_version, account_facts_version, saved_by, saved_at";
 
@@ -96,6 +107,32 @@ final class BriefStore {
         }
     }
 
+    /** The decision with this id in the run, if any (offer_decisions is immutable, so a plain read inside the command is safe). */
+    static Optional<Decision> decision(Connection c, BriefScope s, String decisionId) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("SELECT employee_id, decision, offer_id, versions::text FROM offer_decisions "
+                + "WHERE environment_id = ? AND run_id = ? AND decision_id = ?")) {
+            ps.setString(1, s.environmentId());
+            ps.setString(2, s.runId());
+            ps.setString(3, decisionId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return Optional.empty();
+                return Optional.of(new Decision(rs.getString(1), rs.getString(2), rs.getString(3), object(rs.getString(4))));
+            }
+        }
+    }
+
+    /** True when some confirmed version already records a change after this decline. */
+    static boolean declineChangeRecorded(Connection c, BriefScope s, String decisionId) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement("SELECT 1 FROM briefs WHERE environment_id = ? AND run_id = ? "
+                + "AND employee_id = ? AND post_decline_change ->> 'decisionId' = ? LIMIT 1")) {
+            key(ps, s);
+            ps.setString(4, decisionId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
     /** The one version check of a write: loses with stale-version when another writer moved either version. */
     static void casHead(Tx tx, BriefScope s, Head from, Head to, Instant now) throws SQLException {
         tx.cas("UPDATE brief_heads SET brief_version = ?, draft_version = ?, version = version + 1, updated_at = ? "
@@ -106,10 +143,11 @@ final class BriefStore {
 
     static void insertBrief(Tx tx, BriefScope s, BriefRow r) throws SQLException {
         tx.write("INSERT INTO briefs (environment_id, run_id, employee_id, brief_version, previous_brief_version, operation, "
-                + "content, buddy, semantic_digest, policy_version, account_facts_version, confirmed_by, confirmed_at, command_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", s.environmentId(), s.runId(), s.employeeId(), r.version(),
-                r.previousVersion(), r.operation(), r.content(), r.buddy(), r.digest(), r.policyVersion(),
-                r.accountFactsVersion(), r.confirmedBy(), r.confirmedAt(), tx.commandId());
+                + "content, buddy, semantic_digest, policy_version, account_facts_version, confirmed_by, confirmed_at, command_id, "
+                + "post_decline_change) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", s.environmentId(), s.runId(),
+                s.employeeId(), r.version(), r.previousVersion(), r.operation(), r.content(), r.buddy(), r.digest(),
+                r.policyVersion(), r.accountFactsVersion(), r.confirmedBy(), r.confirmedAt(), tx.commandId(),
+                r.postDeclineChange());
     }
 
     static void insertDraft(Tx tx, BriefScope s, DraftRow r) throws SQLException {
@@ -124,7 +162,7 @@ final class BriefStore {
         long prev = rs.getLong(2);
         return new BriefRow(rs.getLong(1), rs.wasNull() ? null : prev, rs.getString(3), object(rs.getString(4)),
                 object(rs.getString(5)), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
-                rs.getObject(10, OffsetDateTime.class).toInstant());
+                rs.getObject(10, OffsetDateTime.class).toInstant(), rs.getString(11) == null ? null : object(rs.getString(11)));
     }
 
     private static void key(PreparedStatement ps, BriefScope s) throws SQLException {

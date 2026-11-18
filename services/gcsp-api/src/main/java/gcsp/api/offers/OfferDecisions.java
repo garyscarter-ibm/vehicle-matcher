@@ -48,7 +48,7 @@ public class OfferDecisions {
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     static final com.fasterxml.jackson.databind.ObjectMapper MAPPER = new com.fasterxml.jackson.databind.ObjectMapper();
     private static final Set<String> KEYS = Set.of("commandId", "decision", "reasonCode", "expectedOfferVersion",
-            "expectedHoldVersion", "termsDigest", "declarations", "expectedReturnMileage");
+            "expectedHoldVersion", "termsDigest", "declarations", "expectedReturnMileage", "runId", "expectedQuoteVersion");
     static final String OCCUPYING = "('active', 'claim-pending', 'release-pending', 'selection-pending')";
 
     @Inject
@@ -63,7 +63,6 @@ public class OfferDecisions {
     @Inject
     PolicyService policy;
 
-    @Inject
     PolicyClock clock;
 
     @Inject
@@ -82,6 +81,12 @@ public class OfferDecisions {
     private Supplier<AccountRecordsPort> accounts;
 
     OfferDecisions() {}
+
+    /** The CDI path reads the run clock through OfferClock, not the global PolicyClock. */
+    @Inject
+    void useOfferClock(OfferClock offerClock) {
+        this.clock = offerClock;
+    }
 
     OfferDecisions(BooleanSupplier active, Supplier<DataSource> source, OfferAccess access, PolicyService policy,
             PolicyClock clock, Supplier<RemoteBuddy> buddy) {
@@ -133,10 +138,20 @@ public class OfferDecisions {
         OfferAuthority authority = access.authorizeDecision(p, offerId, offerVersion);
         // The two 409s may be a replay of a stored decision; the locked recheck gives the authoritative answer.
         if (authority instanceof OfferAuthority.Refused r && !replayable(r.refusal())) return r.refusal();
+        if (body.has("runId") && !p.runId().equals(body.get("runId").textValue())) return OfferOutcome.staleRun();
+        // buddy_quotes are immutable (V464_1); the public quote revision is exactly 1, as on the read projection.
+        if (body.has("expectedQuoteVersion") && body.get("expectedQuoteVersion").longValue() != 1) {
+            return OfferOutcome.of(409, "conflict", "stale-version",
+                    "This quote has changed. Reload your offer and try again.", false);
+        }
         if (!active().getAsBoolean()) return unavailable();
         boolean remoteMode = "remote".equals(buddy().get().mode());
         ObjectNode input = F.objectNode();
         input.put("offerId", offerId);
+        if (body.has("runId")) {
+            input.set("runId", body.get("runId"));
+            input.set("expectedQuoteVersion", body.get("expectedQuoteVersion"));
+        }
         input.put("decision", accept ? "accept" : "decline");
         if (accept) {
             input.set("termsDigest", body.get("termsDigest"));
@@ -168,13 +183,26 @@ public class OfferDecisions {
             Command command = new Command("offer.decide", "offer-decision:" + offerId + ":" + commandId, input);
             Verdict refusal = new Verdict();
             Outcome o = new TransactionRunner(source().get()).execute(ctx, command,
-                    tx -> decline(tx, p, offerId, commandId, digest, reasonCode, offerVersion, holdVersion, now, refusal));
+                    tx -> decline(tx, p, offerId, commandId, digest, reasonCode, offerVersion, holdVersion, now, refusal, body.has("runId")));
             if (o instanceof Outcome.Committed c) return ok(c.result(), c.replayed());
             OfferOutcome mapped = map(o, refusal);
             // A concurrent identical command may have won: answer from the stored decision when there is one.
             Stored after = stored(p, offerId);
             return after != null && !"offer-from-earlier-run".equals(mapped.code()) ? fromStored(after, commandId, digest)
                     : mapped;
+        } catch (SQLException | RuntimeException e) {
+            return unavailable();
+        }
+    }
+
+    /** Canonical HTTP command; compact in-process callers retain their existing contract. */
+    public OfferOutcome decideForEmployee(Principal p, String offerId, JsonNode body) {
+        if (!valid(body) || !body.has("runId") || !body.has("expectedQuoteVersion")) return invalid();
+        OfferOutcome answer = decide(p, offerId, body);
+        if (answer.http() != 200) return answer;
+        try (Connection c = source().get().getConnection()) {
+            ObjectNode value = OfferDecisionPresentation.of(c, p, offerId, answer.value());
+            return value == null ? unavailable() : OfferOutcome.ok(value);
         } catch (SQLException | RuntimeException e) {
             return unavailable();
         }
@@ -221,7 +249,7 @@ public class OfferDecisions {
         Long mileage = body.has("expectedReturnMileage") ? body.get("expectedReturnMileage").longValue() : null;
         Verdict verdict = new Verdict();
         BuddyOfferConversion converter = new BuddyOfferConversion(this, verdict,
-                new BuddyOfferConversion.Ask(p, offerId, commandId, digest, offerVersion, mileage));
+                new BuddyOfferConversion.Ask(p, offerId, commandId, digest, offerVersion, mileage, body.has("runId")));
         OrderingResult result = service.submitTrusted(scope, in, converter);
         Stored after = stored(p, offerId);
         // A converter refusal rolled everything back and is the exact answer, unless a concurrent command decided first.
@@ -258,13 +286,18 @@ public class OfferDecisions {
         if (owned.http() != 200) return owned;
         try {
             Instant now = clock.now(context(p));
-            JsonNode registry = now == null ? null : registry(p, now);
-            if (registry == null) return reasonsUnavailable();
+            JsonNode row = now == null ? null : registryRow(p, now);
+            if (row == null) return reasonsUnavailable();
             ObjectNode value = F.objectNode();
             value.put("schemaVersion", 1);
-            value.put("policyVersion", p.policyVersion());
             value.put("key", REASONS_KEY);
-            value.set("reasons", registry.get("reasons").deepCopy());
+            value.put("policyVersion", p.policyVersion());
+            value.set("reasons", row.get("value").get("reasons").deepCopy());
+            ObjectNode provenance = value.putObject("provenance");
+            for (String field : new String[] {"status", "basis", "source", "sourceDate"}) {
+                if (!row.path(field).isTextual() || row.get(field).textValue().isBlank()) return reasonsUnavailable();
+                provenance.set(field, row.get(field));
+            }
             return OfferOutcome.ok(value);
         } catch (RuntimeException e) {
             return reasonsUnavailable();
@@ -367,7 +400,7 @@ public class OfferDecisions {
     }
 
     private WorkResult decline(Tx tx, Principal p, String offerId, String commandId, String digest, String reasonCode,
-            long expectedOffer, long expectedHold, Instant now, Verdict refusal) throws SQLException {
+            long expectedOffer, long expectedHold, Instant now, Verdict refusal, boolean browserCommand) throws SQLException {
         Prepared d = prepare(tx, p, offerId, reasonCode, expectedOffer, expectedHold, now, refusal, false);
         if (d == null) return WorkResult.refuse(refusal.outcome.code(), refusal.outcome.reason());
         Locked l = d.locked();
@@ -377,6 +410,7 @@ public class OfferDecisions {
         Offer offer = l.offer();
         Hold hold = l.hold();
         Car car = l.car();
+        ObjectNode browserFacts = OfferDecisionPresentation.capture(tx, l, now, browserCommand);
 
         String nowText = PolicyClock.iso(now);
         ObjectNode patch = F.objectNode().put("releaseReason", "offer-declined").put("releasedAt", nowText);
@@ -392,6 +426,7 @@ public class OfferDecisions {
         String decisionId = decisionId(run, offerId);
         ObjectNode value = declinedValue(offerId, decisionId, commandId, reasonCode, offer.version() + 1,
                 hold.version() + 1, nowText);
+        OfferDecisionPresentation.retain(value, browserFacts);
         ObjectNode versions = F.objectNode();
         versions.put("offer", offer.version());
         versions.put("hold", hold.version());
@@ -534,8 +569,13 @@ public class OfferDecisions {
         }
     }
 
-    /** The registry value at the principal's policy version when it is exactly the documented shape, else null. */
     private JsonNode registry(Principal p, Instant now) {
+        JsonNode row = registryRow(p, now);
+        return row == null ? null : row.get("value");
+    }
+
+    /** The registry row at the principal's policy version when its value is exactly the documented shape, else null. */
+    private JsonNode registryRow(Principal p, Instant now) {
         if (p.policyVersion() == null) return null;
         PolicyResult r = policy.getAssumption(REASONS_KEY, new PolicyRead(p.runId(), PolicyClock.iso(now), p.policyVersion()));
         if (!r.ok() || !p.policyVersion().equals(r.policyVersion()) || r.value() == null) return null;
@@ -551,7 +591,7 @@ public class OfferDecisions {
                 return null;
             }
         }
-        return v;
+        return r.value();
     }
 
     private static boolean text(JsonNode n) {
@@ -559,12 +599,14 @@ public class OfferDecisions {
     }
 
     private static boolean positive(JsonNode n) {
-        return n != null && n.isIntegralNumber() && n.canConvertToLong() && n.longValue() > 0;
+        return n != null && n.isIntegralNumber() && n.canConvertToLong() && n.longValue() > 0 && n.longValue() <= 9007199254740991L;
     }
 
     private static boolean valid(JsonNode body) {
         if (body == null || !body.isObject()) return false;
         for (String name : (Iterable<String>) body::fieldNames) if (!KEYS.contains(name)) return false;
+        if ((body.has("runId") || body.has("expectedQuoteVersion"))
+                && (!text(body.get("runId")) || !positive(body.get("expectedQuoteVersion")))) return false;
         if (!text(body.get("commandId")) || !positive(body.get("expectedOfferVersion"))
                 || !positive(body.get("expectedHoldVersion"))) {
             return false;

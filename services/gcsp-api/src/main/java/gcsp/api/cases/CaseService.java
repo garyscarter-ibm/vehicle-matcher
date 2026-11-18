@@ -23,7 +23,6 @@ import gcsp.api.persistence.TxConflict;
 import gcsp.api.persistence.WorkResult;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -40,6 +39,7 @@ import javax.sql.DataSource;
  */
 public final class CaseService {
 
+    static final String RISK_ACTOR = "renewal-risk-clock";
     static final String DEFAULT_ACTION = "Scheme team to review your renewal and contact you.";
     private static final Map<String, List<String>> TRANSITIONS = Map.of("open", List.of("in-progress", "closed"),
             "in-progress", List.of("remedy-proposed", "resolved", "closed"),
@@ -53,10 +53,10 @@ public final class CaseService {
     private final CaseAccountPort account;
     private final CaseNotificationPort notifications;
     private final CaseCarSuitabilityPort suitability;
-    private final Clock clock;
+    private final CaseClock clock;
 
     public CaseService(DataSource dataSource, CasePolicyPort policy, CaseAccountPort account,
-            CaseNotificationPort notifications, CaseCarSuitabilityPort suitability, Clock clock) {
+            CaseNotificationPort notifications, CaseCarSuitabilityPort suitability, CaseClock clock) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.policy = policy;
@@ -97,18 +97,33 @@ public final class CaseService {
                 if (!found.get().employeeId().equals(scope.employeeId())) {
                     return Refusal.forbidden("not-resource-owner", "This renewal case belongs to another employee.");
                 }
-                out.set("case", caseJson(found.get(), scope.runId()));
+                out.set("case", own(c, scope, List.of(found.get())).get(0));
             } else {
                 ArrayNode cases = out.putArray("cases");
-                for (Row r : CaseStore.read(c, scope.environmentId(), scope.runId(), scope.employeeId(), null)) {
-                    cases.add(caseJson(r, scope.runId()));
-                }
+                own(c, scope, CaseStore.read(c, scope.environmentId(), scope.runId(), scope.employeeId(), null)).forEach(cases::add);
             }
-            out.put("asOf", iso(now())).put("policyVersion", scope.policyVersion());
+            Optional<Instant> asOf = now(scope.environmentId(), scope.runId());
+            if (asOf.isEmpty()) return Refusal.unavailable();
+            out.put("asOf", iso(asOf.get())).put("policyVersion", scope.policyVersion());
             return new CaseResult.Ok(out);
         } catch (SQLException e) {
             return Refusal.unavailable();
         }
+    }
+
+    /** The employee's cases; one with a preference-relaxation remedy also shows the brief state (one briefs read at most). */
+    private List<ObjectNode> own(Connection c, EmployeeScope scope, List<Row> rows) throws SQLException {
+        List<CaseRelaxation.Brief> briefs = null;
+        List<ObjectNode> out = new ArrayList<>();
+        for (Row r : rows) {
+            ObjectNode n = caseJson(r, scope.runId());
+            if (CaseRelaxation.isRelaxation(r.remedy())) {
+                if (briefs == null) briefs = CaseRelaxation.briefs(c, scope.environmentId(), scope.runId(), scope.employeeId());
+                n.set("relaxation", CaseRelaxation.projection(briefs, r.remedy(), scope.principalId()));
+            }
+            out.add(n);
+        }
+        return out;
     }
 
     /** Every case of the run with history and the employee's name (the id when no name is known). */
@@ -128,7 +143,9 @@ public final class CaseService {
             for (Row r : rows) cases.add(withName(caseJson(r, scope.runId()), names.get(r.employeeId())));
             ObjectNode out = CaseJson.obj();
             out.set("cases", cases);
-            out.put("asOf", iso(now())).put("policyVersion", scope.policyVersion());
+            Optional<Instant> asOf = now(scope.environmentId(), scope.runId());
+            if (asOf.isEmpty()) return Refusal.unavailable();
+            out.put("asOf", iso(asOf.get())).put("policyVersion", scope.policyVersion());
             return new CaseResult.Ok(out);
         } catch (SQLException e) {
             return Refusal.unavailable();
@@ -154,11 +171,22 @@ public final class CaseService {
         CaseAccountPort.Lookup renewal = account.renewal(scope.environmentId(), scope.runId(), row.employeeId());
         Refusal refusal = renewalRefusal(renewal, row);
         if (refusal != null) return refusal;
-        Instant now = now();
-        CaseCarSuitabilityPort.Options cars = suitability.options(scope.environmentId(), scope.runId(), row.employeeId());
+        Optional<Instant> clockNow = now(scope.environmentId(), scope.runId());
+        if (clockNow.isEmpty()) return Refusal.unavailable();
+        Instant now = clockNow.get();
+        CaseCarSuitabilityPort.Options cars = suitability.options(scope.environmentId(), scope.runId(), row.employeeId(),
+                scope.policyVersion());
+        ArrayNode relaxations;
+        try (Snapshot snap = snapshot()) {
+            relaxations = CaseRelaxation.options(snap.connection, policy, scope.environmentId(), scope.runId(), row.employeeId(),
+                    scope.policyVersion());
+        } catch (SQLException e) {
+            return Refusal.unavailable();
+        }
+        if (relaxations == null) return Refusal.unavailable();
         ObjectNode options = CaseJson.obj();
         options.set("alternativeCars", carOptions(cars));
-        options.set("preferenceRelaxations", available(CaseJson.arr(),
+        options.set("preferenceRelaxations", available(relaxations,
                 "A current confirmed brief and an unused recorded decline are required."));
         options.set("laterRelease", available(laterReleases(row, now),
                 "No reviewed future release date and source are recorded for this case."));
@@ -195,7 +223,9 @@ public final class CaseService {
         if (!text(renewal.renewalId(), 128)) {
             return missingRenewal();
         }
-        Instant now = now();
+        Optional<Instant> clockNow = now(scope.environmentId(), scope.runId());
+        if (clockNow.isEmpty()) return Refusal.unavailable();
+        Instant now = clockNow.get();
         String commandId = input.get("commandId").textValue();
         String reason = input.get("reason").textValue();
         String renewalId = renewal.renewalId();
@@ -203,29 +233,38 @@ public final class CaseService {
         CasePolicy rule = rules.get();
         return command(scope.runContext(), "case.request", commandId, input, null, tx -> {
             ObjectNode trigger = CaseJson.obj().put("type", "employee-request").put("requestId", commandId);
-            Optional<Row> active = CaseStore.lockActive(tx, scope.employeeId(), renewalId);
-            String caseId;
-            if (active.isEmpty()) {
-                caseId = "renewal-" + Canonical.digest(CaseJson.arr().add(scope.employeeId()).add(renewalId).add(trigger))
-                        .substring(0, 40);
-                Row fresh = new Row(caseId, scope.employeeId(), renewalId, "open", rule.ownerRole(), "Scheme team", reason,
-                        trigger, DEFAULT_ACTION, now.plus(rule.dueHours(), ChronoUnit.HOURS), now, now, end,
-                        end == null ? "needs-confirmation" : "supplied-demo-fact", scope.policyVersion(), null, 1, List.of());
-                if (CaseStore.insert(tx, fresh)) {
-                    CaseStore.appendHistory(tx, caseId, new History(now, scope.principalId(), "employee", "open", reason,
-                            trigger, DEFAULT_ACTION, fresh.dueAt(), null));
-                    return finish(tx, caseId);
-                }
-                // A concurrent request opened the case first; fall back to appending to it.
-                active = CaseStore.lockActive(tx, scope.employeeId(), renewalId);
-                if (active.isEmpty()) throw new TxConflict("duplicate-record", "A record with this identity already exists");
-            }
-            Row current = active.get();
-            CaseStore.appendHistory(tx, current.caseId(), new History(now, scope.principalId(), "employee", current.status(),
-                    reason, trigger, current.nextAction(), current.dueAt(), null));
-            CaseStore.casTouch(tx, current.caseId(), current.version(), now);
-            return finish(tx, current.caseId());
+            return openOrAppend(tx, new Open(scope.employeeId(), renewalId, trigger, reason, scope.principalId(), "employee",
+                    now, rule, end, scope.policyVersion()));
         });
+    }
+
+    /** What opens or extends an owned case: who, why, when and under which rules. */
+    private record Open(String employeeId, String renewalId, ObjectNode trigger, String reason, String actorId,
+            String actorRole, Instant now, CasePolicy rule, LocalDate end, String policyVersion) {}
+
+    /** Opens the employee's case for the renewal, or appends this trigger to the active one; queues the notification. */
+    private ObjectNode openOrAppend(Tx tx, Open o) throws SQLException {
+        Optional<Row> active = CaseStore.lockActive(tx, o.employeeId(), o.renewalId());
+        if (active.isEmpty()) {
+            String caseId = "renewal-" + Canonical.digest(CaseJson.arr().add(o.employeeId()).add(o.renewalId()).add(o.trigger()))
+                    .substring(0, 40);
+            Row fresh = new Row(caseId, o.employeeId(), o.renewalId(), "open", o.rule().ownerRole(), "Scheme team", o.reason(),
+                    o.trigger(), DEFAULT_ACTION, o.now().plus(o.rule().dueHours(), ChronoUnit.HOURS), o.now(), o.now(), o.end(),
+                    o.end() == null ? "needs-confirmation" : "supplied-demo-fact", o.policyVersion(), null, 1, List.of());
+            if (CaseStore.insert(tx, fresh)) {
+                CaseStore.appendHistory(tx, caseId, new History(o.now(), o.actorId(), o.actorRole(), "open", o.reason(),
+                        o.trigger(), DEFAULT_ACTION, fresh.dueAt(), null));
+                return finish(tx, caseId);
+            }
+            // A concurrent request opened the case first; fall back to appending to it.
+            active = CaseStore.lockActive(tx, o.employeeId(), o.renewalId());
+            if (active.isEmpty()) throw new TxConflict("duplicate-record", "A record with this identity already exists");
+        }
+        Row current = active.get();
+        CaseStore.appendHistory(tx, current.caseId(), new History(o.now(), o.actorId(), o.actorRole(), current.status(),
+                o.reason(), o.trigger(), current.nextAction(), current.dueAt(), null));
+        CaseStore.casTouch(tx, current.caseId(), current.version(), o.now());
+        return finish(tx, current.caseId());
     }
 
     /** The scheme team moves a case on: status, reason, next action, due date and (when needed) a remedy. */
@@ -238,7 +277,9 @@ public final class CaseService {
         }
         Optional<CasePolicy> rules = CasePolicy.load(policy, scope.policyVersion());
         if (rules.isEmpty()) return Refusal.unavailable();
-        Instant now = now();
+        Optional<Instant> clockNow = now(scope.environmentId(), scope.runId());
+        if (clockNow.isEmpty()) return Refusal.unavailable();
+        Instant now = clockNow.get();
         Instant dueAt = instant(input.get("dueAt"));
         if (!dueAt.isAfter(now)) return Refusal.invalid("dueAt", "Choose a future due time.");
         String caseId = input.get("caseId").textValue();
@@ -269,8 +310,12 @@ public final class CaseService {
                 JsonNode submitted = input.has("remedy") ? input.get("remedy") : c.remedy();
                 if (!input.has("remedy") && submitted != null && "alternative-car".equals(submitted.path("type").asText())) {
                     submitted = CaseJson.obj().put("type", "alternative-car").set("orderUuid", submitted.get("orderUuid"));
+                } else if (!input.has("remedy") && CaseRelaxation.isRelaxation(submitted)) {
+                    ObjectNode own = CaseJson.obj();
+                    for (String k : List.of("type", "decisionId", "expectedBriefVersion", "path", "value")) own.set(k, submitted.get(k));
+                    submitted = own;
                 }
-                remedy = checkRemedy(scope, c, renewal, rule, now, submitted);
+                remedy = checkRemedy(tx.connection(), scope, c, renewal, rule, now, submitted, status.equals("resolved"));
             }
             CaseStore.appendHistory(tx, c.caseId(), new History(now, scope.principalId(), rule.ownerRole(), status,
                     input.get("reason").textValue(), null, input.get("nextAction").textValue(), dueAt, remedy));
@@ -279,10 +324,58 @@ public final class CaseService {
         });
     }
 
+    // ---- renewal-risk clock tick ----
+
+    /**
+     * Opens or extends cases for deadlines and lifecycle exceptions at the run clock's now. Bounded work: three reads
+     * per tick (employees, events, slots), two account reads per employee, one command per trigger.
+     */
+    public CaseResult tick(RunContext scope, Instant now, String policyVersion) {
+        Optional<CasePolicy> rules = policyVersion == null ? Optional.empty() : CasePolicy.load(policy, policyVersion);
+        if (rules.isEmpty()) return Refusal.unavailable();
+        CasePolicy rule = rules.get();
+        List<String> employees;
+        List<RenewalRiskTriggers.Event> events;
+        Map<String, RenewalRiskTriggers.Slot> slots;
+        try (Snapshot snap = snapshot()) {
+            employees = RenewalRiskTriggers.employees(snap.connection, scope.environmentId(), scope.runId());
+            events = RenewalRiskTriggers.events(snap.connection, scope.environmentId(), scope.runId(), rule);
+            slots = RenewalRiskTriggers.slots(snap.connection, scope.environmentId(), scope.runId());
+        } catch (SQLException e) {
+            return Refusal.unavailable();
+        }
+        RunContext clock = new RunContext(scope.environmentId(), scope.runId(), RISK_ACTOR);
+        Instant at = now.truncatedTo(ChronoUnit.MILLIS);
+        int opened = 0;
+        int unsupported = 0;
+        for (String employeeId : employees) {
+            CaseAccountPort.Lookup renewal = account.renewal(scope.environmentId(), scope.runId(), employeeId);
+            if (!renewal.ok()) return Refusal.unavailable();
+            if (!text(renewal.renewalId(), 128)) continue;
+            RenewalRiskTriggers.Found found = RenewalRiskTriggers.find(rule, employeeId, renewal, at, events, slots);
+            unsupported += found.unsupported();
+            LocalDate end = date(renewal.contractEndDate());
+            for (ObjectNode trigger : found.triggers()) {
+                ArrayNode key = CaseJson.arr().add(employeeId).add(renewal.renewalId()).add(trigger.get("sourceId").textValue());
+                Outcome outcome = runner.execute(clock, new Command("case.trigger", "case.trigger:" + Canonical.digest(key), trigger),
+                        tx -> WorkResult.ok(openOrAppend(tx, new Open(employeeId, renewal.renewalId(), trigger,
+                                trigger.get("reason").textValue(), RISK_ACTOR, "system", at, rule, end, policyVersion))));
+                if (outcome instanceof Outcome.Committed c) {
+                    if (!c.replayed()) opened++;
+                } else if (!(outcome instanceof Outcome.Conflict k && "command-input-changed".equals(k.code()))) {
+                    return Refusal.unavailable();
+                }
+            }
+        }
+        ObjectNode out = CaseJson.obj().put("opened", opened);
+        if (unsupported > 0) out.put("unsupported", unsupported);
+        return new CaseResult.Ok(out);
+    }
+
     // ---- remedies ----
 
-    private ObjectNode checkRemedy(GregScope scope, Row c, CaseAccountPort.Lookup renewal, CasePolicy rule, Instant now,
-            JsonNode remedy) {
+    private ObjectNode checkRemedy(Connection conn, GregScope scope, Row c, CaseAccountPort.Lookup renewal, CasePolicy rule,
+            Instant now, JsonNode remedy, boolean resolving) throws SQLException {
         if (!CaseJson.object(remedy) || !text(remedy.get("type"), 128)) {
             throw new Refused(Refusal.invalid("remedy", "The scheme team must record a remedy before resolving this case."));
         }
@@ -313,13 +406,13 @@ public final class CaseService {
                 return (ObjectNode) remedy.deepCopy();
             }
             case "preference-relaxation":
-                throw new Refused(Refusal.forbidden("forbidden", "A recorded decline for this employee is required."));
+                return relaxation(conn, scope, c, renewal, remedy, resolving);
             case "alternative-car": {
                 if (!only(remedy, "type", "orderUuid") || !text(remedy.get("orderUuid"), 128)) {
                     throw new Refused(Refusal.invalid("remedy.orderUuid", "Choose a current suitable available car."));
                 }
                 CaseCarSuitabilityPort.Check check = suitability.check(scope.environmentId(), scope.runId(), c.employeeId(),
-                        remedy.get("orderUuid").textValue());
+                        scope.policyVersion(), remedy.get("orderUuid").textValue());
                 if (check.verdict() == CaseCarSuitabilityPort.Verdict.UNAVAILABLE) throw new Refused(Refusal.unavailable());
                 if (check.verdict() == CaseCarSuitabilityPort.Verdict.UNSUITABLE || check.remedy() == null) {
                     throw new Refused(Refusal.invalid("remedy.orderUuid",
@@ -330,6 +423,36 @@ public final class CaseService {
             default:
                 throw new Refused(Refusal.invalid("remedy.type", "Choose a supported scheme-team remedy."));
         }
+    }
+
+    /** A relaxation needs this employee's decline, a preference of the confirmed brief and (to resolve) her confirmation. */
+    private static ObjectNode relaxation(Connection conn, GregScope scope, Row c, CaseAccountPort.Lookup renewal, JsonNode remedy,
+            boolean resolving) throws SQLException {
+        JsonNode path = remedy.get("path");
+        if (!only(remedy, "type", "decisionId", "expectedBriefVersion", "path", "value", "confirmationState", "confirmedBy",
+                "confirmedAt", "briefVersion") || !text(remedy.get("decisionId"), 128)
+                || !CaseJson.integer(remedy.get("expectedBriefVersion")) || remedy.get("expectedBriefVersion").doubleValue() < 1
+                || path == null || !path.isTextual() || !path.textValue().matches("^preferences\\.[^.]+\\.value$") || !remedy.has("value")) {
+            throw new Refused(Refusal.invalid("remedy", "Propose exactly one preference value. Essentials and allowance remain unchanged."));
+        }
+        List<CaseRelaxation.Brief> briefs = CaseRelaxation.briefs(conn, scope.environmentId(), scope.runId(), c.employeeId());
+        CaseRelaxation.Brief before = CaseRelaxation.version(briefs, remedy.get("expectedBriefVersion").longValue());
+        if (before == null || !before.preferences().has(path.textValue().split("\\.")[1])) {
+            throw new Refused(Refusal.invalid("remedy.path", "Choose a preference in the confirmed employee brief."));
+        }
+        CaseRelaxation.Decline decision = CaseRelaxation.decision(conn, scope.environmentId(), scope.runId(),
+                remedy.get("decisionId").textValue());
+        if (decision == null) throw new Refused(Refusal.notFound("No recorded decision exists with that reference."));
+        if (!decision.employeeId().equals(c.employeeId()) || !"decline".equals(decision.decision())) {
+            throw new Refused(Refusal.forbidden("forbidden", "A recorded decline for this employee is required."));
+        }
+        boolean confirmed = CaseRelaxation.confirmed(briefs, remedy, null);
+        if (resolving && !confirmed) {
+            String who = text(renewal.name(), 200) ? renewal.name() : "The employee";
+            throw new Refused(Refusal.invalid("employee-confirmation-required", "remedy",
+                    who + " must confirm the single preference change in the brief before this case can be resolved."));
+        }
+        return CaseRelaxation.stored(remedy, briefs, confirmed);
     }
 
     private static boolean validLater(JsonNode remedy, Instant now) {
@@ -362,6 +485,7 @@ public final class CaseService {
         n.set("items", items);
         n.set("needsConfirmation", unconfirmed);
         if (!cars.connected()) n.put("reason", NOT_CONNECTED);
+        else if (items.isEmpty() && cars.reason() != null) n.put("reason", cars.reason());
         else if (items.isEmpty()) {
             n.put("reason", unconfirmed.isEmpty() ? "No suitable available car is currently recorded."
                     : "No available car is confirmed as suitable yet. The cars listed need confirmation first.");
@@ -444,8 +568,8 @@ public final class CaseService {
         return null;
     }
 
-    private Instant now() {
-        return clock.instant().truncatedTo(ChronoUnit.MILLIS);
+    private Optional<Instant> now(String environmentId, String runId) {
+        return clock.now(environmentId, runId).map(t -> t.truncatedTo(ChronoUnit.MILLIS));
     }
 
     /** One consistent snapshot for a read that spans the cases and history queries; close restores the connection. */

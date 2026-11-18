@@ -1,0 +1,14 @@
+{
+  "file" : "10-editor-unavailable.json",
+  "step" : "editor-unavailable",
+  "method" : "GET",
+  "path" : "/brief/editor",
+  "request" : null,
+  "status" : 503,
+  "body" : {
+    "status" : "unavailable",
+    "code" : "brief-unavailable",
+    "reason" : "The brief service is unavailable.",
+    "retryable" : true
+  }
+}

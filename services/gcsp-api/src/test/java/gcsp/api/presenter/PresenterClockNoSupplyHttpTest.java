@@ -7,11 +7,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 
-import gcsp.api.clock.RunClockDocumentClock;
-import gcsp.api.documents.DocumentClock;
-import gcsp.api.documents.RunClockBackedTestClock;
 import gcsp.api.persistence.Persistence;
-import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
@@ -37,9 +33,6 @@ class PresenterClockNoSupplyHttpTest {
     @Inject
     Persistence persistence;
 
-    @Inject
-    RunClockDocumentClock runClockDocuments;
-
     @AfterAll
     static void drop() throws Exception {
         PresenterClockSupport.dropSchema(ownedSchema);
@@ -49,15 +42,15 @@ class PresenterClockNoSupplyHttpTest {
     void releasePullIsAMissingStageAndTheOtherHandlersStillRun() throws Exception {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         ownedSchema = schema;
-        QuarkusMock.installMockForType(new RunClockBackedTestClock(runClockDocuments), DocumentClock.class);
         String presenter = PresenterClockSupport.token(signingJwk, "sub-presenter", "presenter");
         long v = get(presenter, "/clock").jsonPath().getLong("value.clockVersion");
         post(presenter, "/controls/tick", "{\"commandId\":\"none-1\",\"expectedClockVersion\":" + v
                 + ",\"mode\":\"step\"}").then().statusCode(200)
-                .body("value.tick.handlerOrder.handlerId", contains("lifecycle-documents", "captured-outbox"))
-                .body("value.tick.missingStages", containsInAnyOrder("release-pull", "manual-expiry", "buddy-expiry",
-                        "buddy-allocation"));
+                .body("value.tick.handlerOrder.handlerId", contains("manual-claim-expiry",
+                        "lifecycle-documents", "captured-outbox"))
+                .body("value.tick.missingStages", containsInAnyOrder("release-pull", "buddy-expiry", "buddy-allocation"));
         given().get("/q/health/ready").then().statusCode(200)
-                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("captured-outbox,lifecycle-documents"));
+                .body("checks.find { it.name == 'clock' }.data.handlers", equalTo("captured-outbox,"
+                        + "lifecycle-documents,manual-claim-expiry"));
     }
 }

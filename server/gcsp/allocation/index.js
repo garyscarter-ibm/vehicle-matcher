@@ -12,6 +12,7 @@ import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEval
 import { DECISION_EVENTS } from '../offers/decision.js';
 import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
 import { allocationLimitations, summarizeAllocation } from './summary.js';
+import { REENTRY_KEY, createDeclineReentry, validDeclineReentryRule } from './decline-reentry.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -40,6 +41,41 @@ const intent = (brief) => ({
     { value: e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value,
       operator: e.operator, unit: e.unit, state: e.state }])),
 });
+function declineExclusions(rows) {
+  const carsByOffer = new Map(); const briefsByEmployee = new Map(); const declinesByEmployee = new Map();
+  for (const offer of rows.offers) {
+    const offerId = offer.offerId; if (Number.isNaN(offerId)) continue;
+    if (!carsByOffer.has(offerId)) carsByOffer.set(offerId, new Set());
+    carsByOffer.get(offerId).add(offer.orderUuid);
+  }
+  for (const brief of rows.briefs) {
+    if (!briefsByEmployee.has(brief.employeeId)) briefsByEmployee.set(brief.employeeId, new Map());
+    const versions = briefsByEmployee.get(brief.employeeId);
+    // Retain find's first row, including draft and legacy versions.
+    if (!versions.has(brief.briefVersion)) versions.set(brief.briefVersion, brief);
+  }
+  for (const decision of rows.decisions) {
+    if (decision.decision !== 'decline') continue;
+    const cars = carsByOffer.get(decision.offerId); if (!cars) continue;
+    if (!declinesByEmployee.has(decision.employeeId)) declinesByEmployee.set(decision.employeeId, new Map());
+    const byCar = declinesByEmployee.get(decision.employeeId);
+    for (const orderUuid of cars) {
+      if (!byCar.has(orderUuid)) byCar.set(orderUuid, []);
+      byCar.get(orderUuid).push(decision);
+    }
+  }
+  const digests = new WeakMap();
+  const digest = (brief) => {
+    if (!digests.has(brief)) digests.set(brief, inputDigest(intent(brief)));
+    return digests.get(brief);
+  };
+  return (employeeId, orderUuid, brief) => (declinesByEmployee.get(employeeId)?.get(orderUuid) ?? []).some((decision) => {
+    const version = decision.versions?.brief;
+    // Map uses SameValueZero; the former strict comparison never matched NaN versions.
+    const previous = Number.isNaN(version) ? undefined : briefsByEmployee.get(employeeId)?.get(version);
+    return !previous || digest(previous) === digest(brief);
+  });
+}
 const visible = (row, employee) => Array.isArray(row.visibility?.companyIds) && Array.isArray(row.visibility?.schemeIds)
   && row.visibility.companyIds.includes(employee.companyId) && row.visibility.schemeIds.includes(employee.schemeId)
   && (row.visibility.employeeIds === null || Array.isArray(row.visibility.employeeIds) && row.visibility.employeeIds.includes(employee.employeeId));
@@ -190,7 +226,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
       policyVersion: context.policyVersion, assumptions, contenders: [], evaluatedEmployees: [], pool: [...entries.values()],
       inputVersions: { policy: context.policyVersion, clock: instant.clockVersion,
         stock: rows.stock.map((r) => ({ orderUuid: r.orderUuid, version: r.version, revision: r.revision ?? null })).sort((a, b) => ordinal(a.orderUuid, b.orderUuid)), briefs: [] } };
-    const slices = [];
+    const slices = []; const declinedUnchanged = declineExclusions(rows);
+    const reentryRule = assumptions.find((a) => a.key === REENTRY_KEY)?.value;
+    const reentry = reentryRule ? createDeclineReentry({ rows, rule: reentryRule }) : null;
     for (const brief of briefs) {
       const employee = rows.employees.find((e) => e.employeeId === brief.employeeId);
       const slot = rows.entitlement_slots.find((s) => s.entitlementSlotId === brief.entitlementSlotId && s.employeeId === brief.employeeId);
@@ -234,13 +272,19 @@ export function createAllocationService({ repository, policy, clock, identity, c
       if (evaluated.status !== 'ok') return unavailable('employee-evaluation-unavailable');
       // Decisions arrive frozen; copy only what the decline check below changes.
       const decisions = evaluated.value.decisions.map((d) => ({ ...d, blockers: [...d.blockers] }));
+      const declined = reentry?.forBrief(brief);
+      // Size alone needs the original rejected observation: read that exact quote, never quote history.
+      let rejectedQuote;
+      if (declined?.answered && declined.mapping.match === 'closer-fit' && text(declined.offer.quoteId)) {
+        const loadedQuote = await repository.read(context, { table: 'quotes', key: { runId: context.runId, quoteId: declined.offer.quoteId } });
+        if (loadedQuote.status === 'ok') rejectedQuote = loadedQuote.value;
+        else if (loadedQuote.status !== 'not-found') return unavailable('decline-quote-unavailable');
+      }
       let contending = false; let excluded = false;
       for (const decision of decisions) {
-        const declined = rows.decisions.filter((d) => d.employeeId === employee.employeeId && d.decision === 'decline'
-          && rows.offers.some((o) => o.offerId === d.offerId && o.orderUuid === decision.orderUuid));
-        if (declined.some((d) => { const previous = rows.briefs.find((b) => b.employeeId === employee.employeeId && b.briefVersion === d.versions?.brief);
-          return !previous || inputDigest(intent(previous)) === inputDigest(intent(brief)); })) {
-          decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push({ code: 'declined-unchanged' });
+        const blocker = reentry?.blocks(declined, decision, entries.get(decision.orderUuid)?.snapshot, rejectedQuote);
+        if (blocker || !declined?.answered && declinedUnchanged(employee.employeeId, decision.orderUuid, brief)) {
+          decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push(blocker ?? { code: 'declined-unchanged' });
         }
         if (decision.gateStatus !== 'eligible' || brief.buddy.holdConsent !== true || letLapse.has(`${employee.employeeId}|${decision.orderUuid}`)) continue;
         const stock = stockByOrderId.get(decision.orderUuid);
@@ -386,6 +430,13 @@ export function createAllocationService({ repository, policy, clock, identity, c
           if (!compare(assumptions[0].value) || !text(assumptions[1].value)
             || assumptions[2].value !== 'untilRelevantConfirmedBriefChange'
             || returned && assumptions[3]?.value !== returned[1]) return unavailable('policy-invalid');
+          const reentry = await policy.getAssumption(REENTRY_KEY, read);
+          if (reentry.status === 'ok') {
+            if (reentry.policyVersion !== context.policyVersion || reentry.value?.key !== REENTRY_KEY
+              || !validDeclineReentryRule(reentry.value.value)) return unavailable('policy-invalid');
+            assumptions.push(reentry.value);
+          } else if (reentry.status !== 'invalid' || reentry.code !== 'unknown-assumption'
+            || reentry.policyVersion !== context.policyVersion) return unavailable('policy-unavailable');
           const recorded = await prepareAndRecord(context, event, time.value, assumptions, digest);
           if (recorded.status !== 'ok') return recorded;
           receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
@@ -450,11 +501,20 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const quote = await quoteFor(contender, resolved.value); if (quote.status !== 'ok') return quote;
           assignments.push({ ...contender, quote: quote.value, operationId: attempt.operationId, claim: attempt.outcome.value });
         }
+        const occupied = { employeeId: new Set(), entitlementSlotId: new Set(), renewalId: new Set(), orderUuid: new Set() };
+        const occupy = (assignment) => {
+          for (const key of Object.keys(occupied)) {
+            const value = assignment[key];
+            // Set uses SameValueZero; the previous strict comparisons never matched NaN.
+            if (!Number.isNaN(value)) occupied[key].add(value);
+          }
+        };
+        for (const assignment of assignments) occupy(assignment);
         // Skipped contenders need no write: on retry they are skipped again from the same assignments.
         while (next < plan.contenders.length) {
           const contender = plan.contenders[next]; next += 1;
-          const assigned = assignments.some((a) => a.employeeId === contender.employeeId || a.entitlementSlotId === contender.entitlementSlotId
-            || contender.renewalId && a.renewalId === contender.renewalId || a.orderUuid === contender.orderUuid);
+          const assigned = occupied.employeeId.has(contender.employeeId) || occupied.entitlementSlotId.has(contender.entitlementSlotId)
+            || contender.renewalId && occupied.renewalId.has(contender.renewalId) || occupied.orderUuid.has(contender.orderUuid);
           if (!assigned) {
             const resolved = await identity.resolveEmployeeContext(context, contender.employeeId); if (resolved.status !== 'ok') return resolved;
             const quote = await quoteFor(contender, resolved.value); if (quote.status !== 'ok') return quote;
@@ -463,7 +523,11 @@ export function createAllocationService({ repository, policy, clock, identity, c
             const outcome = await claim.tryClaim(resolved.value, { ...candidate, operationId, eventId: event.eventId, runId: context.runId });
             if (!['ok', 'conflict', 'stale-version'].includes(outcome?.status)) return unavailable('claim-pending');
             const attempt = { employeeId: candidate.employeeId, orderUuid: candidate.orderUuid, operationId, outcome };
-            attempts.push(attempt); if (outcome.status === 'ok') assignments.push({ ...candidate, operationId, claim: outcome.value });
+            attempts.push(attempt);
+            if (outcome.status === 'ok') {
+              const assignment = { ...candidate, operationId, claim: outcome.value };
+              assignments.push(assignment); occupy(assignment);
+            }
             const saved = legacy ? { next, attempts, assignments } : { next, count: attempts.length };
             const advanced = await repository.transaction(context, command(`allocation:advance:${event.eventId}:${version}`, legacy ? saved : { ...saved, attempt }),
               async (tx) => {

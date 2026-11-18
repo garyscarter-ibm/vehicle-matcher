@@ -86,7 +86,7 @@ final class PolicyPublication {
     }
 
     /** The version active at now, by the latest effectiveFrom, or null. */
-    private static ObjectNode activeAt(List<ObjectNode> seeds, long now) {
+    static ObjectNode activeAt(List<ObjectNode> seeds, long now) {
         ObjectNode best = null;
         long bestFrom = Long.MIN_VALUE;
         for (ObjectNode seed : seeds) {
