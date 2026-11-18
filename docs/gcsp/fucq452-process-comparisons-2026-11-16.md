@@ -336,3 +336,38 @@ AC1 therefore stays unmet. A real attempt needs two things outside this Story:
 - **Supervisor fix.** A reviewed fix so the teardown audit excludes the supervisors' own `ps` children.
 
 Lowering the heap, the RSS grant or the workload is not allowed. If a run is admitted and runs out of memory again at 3 GiB, that is a fix for the Java comparison/allocation owners.
+
+## Supervisor teardown fix — 18 November 2026
+
+The coordinator merged the branch into `gcsp-poc-dev` at `a43062ac5` and allocated the teardown fix plus one admitted 3 GiB attempt.
+
+**Fix.** All four supervisors shared one `process_snapshot()`. It ran `/bin/ps` through `subprocess.run`, so the `ps` child appeared in its own output as a descendant of the supervisor. Since the 09:3x self-RSS revision, the supervisor counts itself as owned, so that child became an owned active process. Every final audit therefore reported "absence is unresolved" and preserved scratch and reservations.
+
+The fixed copies in `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-1130/` start `ps` with `Popen` and drop exactly that PID when its parent is the supervisor. They also kill and reap `ps` on timeout. Nothing else changed: 14 diff lines per file, with identical logic, limits, pins and teardown. The `0918` directory stays as the consumed record.
+
+These supervisors are ignored local run files, like every earlier F452 supervisor, so this record carries the change rather than the repository.
+
+**Focused check.** `.claude/test-runs/fucq452/hugh2/check-snapshot-self.py` loads each file's `process_snapshot` from its AST and runs it beside a real `sleep` child. It returned `pass: true`:
+
+- all four old copies report their own `ps` child, which reproduces the fault;
+- all four fixed copies omit it and still report the real child.
+
+All four files parse.
+
+**Runtime check of the teardown fix.** The fix is verified on the next three pipelines. The API, web and connected supervisors all finalized with `process_teardown_verified` true, `cleanup_errors` empty, and reservation and scratch absent. The host registry and `/private/tmp/test-stamp-shard-*` were verified empty afterwards.
+
+## 3 GiB admission window — 18 November 2026
+
+This is the last local attempt, under the coordinator's 40-minute window. The run must be admitted at the helper's 4,831,838,208-byte proof grant. That grant is checked after the API and web builds, about 60 to 80 seconds after launch.
+
+| Pipeline | Pre-launch helper measure | Outcome |
+|---|---|---|
+| `1130`, launched 11:13:50Z | 4,882,399,232 B | The builds stopped on the Hugh 2 32 MiB retained-output root cap, which earlier receipts had filled. No proof ran. Byte-identical inventories were then deduplicated or gzipped, with their SHA-256 values listed in `hugh2/compressed-retained.sha256`. |
+| `1117`, launched 11:25:53Z | 6,386,647,040 B | The builds passed. The grant was refused at 4,399,333,376 B available. |
+| `1137`, launched 11:37:08Z, with a 1 GiB launch margin | 6,021,054,464 B | The builds passed. The grant was refused at **4,741,726,208 B** available, against a **4,831,838,208 B** minimum. |
+
+Other readings: 11:03:49Z 4,238,917,632 B and 11:15:52Z 4,756,242,432 B (no launch).
+
+No PostgreSQL, browser, Java service or comparison job started, and no job, result or progress exists. No process was closed to make room. Each run directory's pipeline clock was created once and never reset.
+
+The window closed at 11:44Z, so the attempt stops here. AC1 still needs one admitted full-size run. That means sustained conservative available RAM of at least 4,831,838,208 B at grant time; on this 16 GB machine the measure moved between 4.2 and 6.4 GB within minutes. A larger machine would also do.
