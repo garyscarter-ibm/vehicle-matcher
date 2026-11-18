@@ -229,3 +229,19 @@ Frozen `57e66de11c1a0083ba0cc7dfd4594a8e789dfab8` received parent review indepen
 **Correction to the resource description above:** source inspection shows the runner reserved2GiB disk PLUS2GiB RAM and checked each separately, contrary to the intended inclusive2GiB sum. Recorded disk+RSS peak sums were below2GiB (largest approximately1.84GB), so an actual overrun is not established; complete recursive/detached RSS coverage is unproven. Raw receipts remain unchanged. Correct inclusive allocation, supervisor/all-descendant accounting and the aggregate sum guard before reusing this runner. Do not repeat matching tests solely to improve the receipt.
 
 The disappearing unrelated token96debdcd10e345f98a8753ecb1ba8828 and exact owner PID74610/start identity match F442's first stopped stock-host run, whose own cleanup records removal at2026-11-14T17:24:36.365UTC within this browser attempt. This is consistent with normal independent completion, not evidence of foreign cleanup; preserve the original continuity caveat. No OneDrive path was accessed for the audit or correlation.
+
+
+## Connected recovery evidence — 18 November 2026
+
+At9ef2eda5dc4def98a533446a404bc174f439ab76 the composed production Angular/Java/nativePG17/
+local signed OIDC proof passed128 assertions in four scenarios; focused Orders105 and
+Java371 checks plus production builds passed. Final C1/C2/C3 strict receipts and cleanup
+passed. Full details, retained attempt failures, source hashes, all16 PNGs and limitations
+are in `docs/gcsp/fucq446-delivery.md`, Connected lifecycle result.
+
+**PARTIAL / CHANGES REQUIRED:** visual review proves the terminal Returned panel also
+renders stale proposal text `Not booked yet` from historical proposedSlot. Original
+accurate-state criteria remain unmet/unchecked; no product repair or acceptance switch
+occurred. Booked stages nextStep is preserved producer semantics and needs a bounded
+contract decision before precedence changes. Safari/hosted/real IdP/email/live BMW and
+full accessibility/CSP remain unrun; full suite deferred to covering batch.

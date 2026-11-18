@@ -708,3 +708,75 @@ readiness when documents were not yet open. The stages panel correctly names the
 when checks open. The harness now checks the Documents panel specifically. No product
 source changed. Node syntax PASS; composed rerun and final keeper cleanup pending.
 Original AC checkboxes/native state remain unchanged; full suite deferred to batch.
+
+
+## Connected lifecycle result — 18 November 2026
+
+**PARTIAL; changes required for original acceptance.** At source
+`9ef2eda5dc4def98a533446a404bc174f439ab76`, all **128 connected assertions passed**
+(a86/d4/b3/c35), using production Angular and Java, owned native PostgreSQL 17 and a
+local OIDC issuer with signed JWTs and browser code/PKCE login. The composed journey
+performs actual employee acknowledgement, handover request and return request/proposal
+acceptance; Java provider progression, Greg physical handover, physical return, ownership
+refusals, missing-provider refusals, reload and API restart retain the expected authority
+and current-car relationship. This proves these exercised paths locally; the harness's
+`originalAcceptance: pass` fields describe its assertions, not complete Story acceptance.
+The original two checkboxes and native Story status remain unchanged.
+
+Independent reviewer Lego Batman 2 and lead Goofy 3 viewed all 16 actual final PNGs.
+**Review: CHANGES REQUIRED.** `old-car-returned.png` and `restart-current-car.png`
+show a correct Returned heading, outcome/reference and old-car relationship, followed
+by the contradictory current instruction `New time proposed ... Not booked yet.`
+The Java truth is `plan.state=returned`, `scheduled=false`, with a retained historical
+`proposedSlot`; `orders.component.html:109-111` interprets any retained proposal as
+current after the scheduled branch. `returns/PlanView.java:94-95,109-112` intentionally
+retains proposal history; `ReturnPlans.java:559-562` records acceptance without clearing
+that history. The isolated presentation fault leaves the original accurate-state criteria
+unmet. The harness lacks an assertion excluding terminal proposal copy. It remains
+unfixed and is handed to the dispatcher for separate Bug capture/triage; no repair scope
+or additional acceptance criterion was invented. Existing FUCQ-499/FUCQ-501 and the
+separately captured FUCQ-521 refusal-lock issue remain separate.
+
+The booked screen also shows the stages producer's `Appointment to be arranged`
+next step beside the appointment producer's booked state. Source trace confirms this
+is current producer semantics: `approvals/ApprovalView.java:28-35,65-66` uses the
+sent-to-ordering policy owner/nextStep until physical completion, while Orders preserves
+each producer's owner/nextStep under the existing contract and appends appointment
+stage rows. A precedence/source-label change needs an agreed bounded contract; the
+consumer must not silently rewrite provider authority. Missing car label/photo/location
+fields in this seeded path remain an evidence limitation; the captures alone do not
+establish supplied data was lost or reproduce the separate manual-selection defect.
+
+Focused coverage is **105 Angular tests in six Orders specs** plus production web build,
+and **371 Java checks across 64 selected classes** plus the Java package build. Of these,
+121 checks in 27 classes have new lossless gzip XML; 250 in 37 wholly green classes reuse
+the exact-source earlier execution, independently revalidated against its complete log.
+All 1424 API and 650 web source-input hashes match. The earlier Metaspace failure,
+missing export fixture/retention failure, global readiness assertion failure, and C2
+preflight false rejection are retained as failed/incomplete attempts. The final preflight
+compares every actual C1/C2 input; only the exact separately pinned C3 proof file is
+excluded from the web build diff. Proof SHA256:
+`5057d9ef102480379cae00170426777d4338ac2f29515ed38920b754a8ccc917`.
+No Orders or backend product source changed during this recovery.
+
+Root-local evidence base: `.claude/test-runs/fucq446/connected-0218/`.
+C1 `api-20261118T022200Z`, C2 `web-20261118T022508Z`, and C3
+`connected-20261118T023117Z` all finalized **complete / strict_result=true** with
+empty cleanup errors. Build times170.155s/34.981s; C3 38.122s. C3 sampled peaks were
+disk333795556/RSS2574073856/inclusive2907021348 bytes. Final original pipeline elapsed
+987.257s of1500s; all owned scratch, links, reservations, process groups and listeners
+were absent. Source/borrowed selected hashes stayed unchanged. Sampled limits/deadlines
+passed; continuous/kernel-contained peak remains unproven. No OneDrive operation.
+The dispatcher owns independent cleanup audit and the next lane handoff.
+
+Final proof JSON SHA256 `6ae0a3311c900ef6923775e59d2543fb9d09c8a0d59d7964de8717ec4447c65f`.
+Both terminal PNGs have SHA256
+`088d04a1c1c6049477f5eb1ea0bbf46623ed8ff90e396f923ec969930ae61582`.
+Reviewer independently checked all 17 retained proof artifacts and final C1/C2/C3 receipts.
+Desktop/narrow and isolated Chrome storage plus visible keyboard focus are covered;
+Safari, full accessibility/CSP audit, real hosted IdP, live BMW, real email, deployment
+and hosted acceptance remain unrun. **Full suite: deferred to covering batch.**
+
+Agents requested/selected/effective: Goofy 3 Sol/high; Henery Hawk 3 Sol/medium;
+Lego Batman 2 Sol/high, no fallback. Titles/gateway/effective selections were verified.
+Commit/push is authorized; dispatcher retains merge, Jira lifecycle and final acceptance.
