@@ -642,7 +642,7 @@ async function readOffer(cdp, s, pages) {
   await page.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
 }
 // The accept command exactly as the browser sends it; versions from `o`, terms digest and declarations from `h`.
-const acceptBody = (o, h = o) => ({ commandId: command(), offerId: o.offerId, runId: RUN_ID, decision: 'accept', expectedOfferVersion: o.offerVersion, expectedHoldVersion: o.holdVersion, expectedQuoteVersion: o.quote.revisions.quote,
+const acceptBody = (o, h = o) => ({ commandId: command(), runId: RUN_ID, decision: 'accept', expectedOfferVersion: o.offerVersion, expectedHoldVersion: o.holdVersion, expectedQuoteVersion: o.quote.revisions.quote,
   termsDigest: h.handoff.termsDigest, declarations: Object.fromEntries(h.handoff.declarations.map(({ id }) => [id, true])), ...(h.handoff.mode === 'replacement' ? { expectedReturnMileage: 5400 } : {}) });
 async function authority(cdp, s, pages) {
   const owner = await value('paula', `${offerPath(offers.paula)}?runId=${RUN_ID}`);
@@ -691,7 +691,7 @@ async function acceptOffer(s, pages) {
   const truth = await value('paula', offerPath(offers.paula)); s.observations.current = truth;
   s.observations.afterAccept = {};
   for (const person of ['bruno', 'presenter']) {
-    const decline = await call(person, `${offerPath(offers.paula)}/decision`, { commandId: command(), offerId: truth.offerId, runId: RUN_ID, decision: 'decline', expectedQuoteVersion: truth.quote.revisions.quote, expectedOfferVersion: truth.offerVersion, expectedHoldVersion: truth.holdVersion, reasonCode: 'body-style' });
+    const decline = await call(person, `${offerPath(offers.paula)}/decision`, { commandId: command(), runId: RUN_ID, decision: 'decline', expectedQuoteVersion: truth.quote.revisions.quote, expectedOfferVersion: truth.offerVersion, expectedHoldVersion: truth.holdVersion, reasonCode: 'body-style' });
     const accept = await call(person, `${offerPath(offers.paula)}/decision`, acceptBody(truth, seen.paula));
     s.observations.afterAccept[person] = { decline: decline.status, accept: accept.status };
     check(s, `${person} decline on accepted offer refused with 403`, decline.status === 403);
