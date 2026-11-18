@@ -86,7 +86,8 @@ const MEDIA_FILES = ['07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1d
 for (const file of [PSQL, MEDIA_ROOT, JAR, WEB_BROWSER, JAVA_HOME, CHROME]) if (/CloudStorage|OneDrive/i.test(file)) refuse('An input path points into a forbidden synced folder');
 if (!existsSync(PSQL)) refuse('PROOF_PSQL_BIN must name the parent-pinned native PostgreSQL 17 psql');
 for (const name of MEDIA_FILES) if (!existsSync(path.join(MEDIA_ROOT, name))) refuse(`Missing parent-pinned actual media ${name}`);
-if (!Number.isFinite(DEADLINE_MS) || DEADLINE_MS <= 0 || DEADLINE_MS > 600000) refuse('PROOF_DEADLINE_SEC must be in (0, 600]');
+const MAX_DEADLINE_MS = Number(process.env.PROOF_HOLD_MIN ?? 0) > 0 ? 3600000 : 600000; // a manual hold may run an hour
+if (!Number.isFinite(DEADLINE_MS) || DEADLINE_MS <= 0 || DEADLINE_MS > MAX_DEADLINE_MS) refuse(`PROOF_DEADLINE_SEC must be in (0, ${MAX_DEADLINE_MS / 1000}]`);
 const SCHEMA = `gcsp_s_f437c_${RUN_TOKEN.replace(/-/g, '_')}`;
 const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), certs: path.join(PROOF, 'certs'), static: path.join(PROOF, 'static'), browser: path.join(PROOF, 'browser'), launcher: path.join(PROOF, 'launcher'), evidence: path.join(PROOF, 'evidence') };
 
@@ -106,6 +107,8 @@ const LOG_LIMIT_MARKER = Buffer.from('\nPROOF FAILURE: shared 1MiB child log bud
 let childLogBytes = 0; let logLimitFailure = false;
 let finished = false; let teardownPromise;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// PROOF_HOLD_MIN > 0 keeps the composed stack up for a person in another browser (Safari) instead of headless Chrome.
+const HOLD_MIN = Number(process.env.PROOF_HOLD_MIN ?? 0);
 const b64u = (buf) => Buffer.from(buf).toString('base64url');
 const sha256b64u = (s) => createHash('sha256').update(s).digest('base64url');
 const sha256File = (f) => createHash('sha256').update(readFileSync(f)).digest('hex');
@@ -768,6 +771,7 @@ async function main() {
   receipt.launcherPackage = { revision: launcher.revision, files: launcher.files.length, frontend: launcher.employeeFrontendUrl, manifestSha256: sha256File(path.join(dirs.launcher, 'site-manifest.json')) };
   await startLauncher(tls);
   log('API (repository accounts, native PG)'); await startApi();
+  if (HOLD_MIN > 0) { log('seed upstream sources, then actual Buddy allocation'); await seedSources(); return holdForManualCheck(); }
   const profile = path.join(dirs.browser, 'profile'); mkdirSync(profile, { recursive: true });
   const chrome = spawnOwned('chrome', CHROME, ['--headless=new', `--user-data-dir=${profile}`, '--remote-debugging-port=0', '--remote-allow-origins=*', `--ignore-certificate-errors-spki-list=${tls.spki}`, '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-background-networking', '--window-size=1280,900', 'about:blank'], { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp });
   let wsUrl;
@@ -782,6 +786,16 @@ async function main() {
   await scenario('unknown-static', 'Unknown frontend and missing assets are genuine HTTP 404', 'AC2 local', s => unknownStatic(cdp, s));
   await scenario('api-failures', 'Invalid response and unavailable API show useful account failure, distinct from unknown routes', 'AC2 local', s => apiFailures(cdp, s));
 
+}
+// Prints the local links, then waits for SIGINT, the stop file or PROOF_HOLD_MIN; teardown is unchanged.
+async function holdForManualCheck() {
+  const stop = path.join(PROOF, 'stop');
+  const info = { web: `${ORIGINS.web}/gcsp/`, launcher: `${ORIGINS.launcher}/`, issuer: ORIGINS.idp, api: ORIGINS.api,
+    paulaOffer: offerUrl(offers.paula), brunoOffer: offerUrl(offers.bruno), subjects: Object.keys(idp.subjects), stopFile: stop, holdMinutes: HOLD_MIN };
+  writeFileSync(path.join(dirs.evidence, 'hold.json'), `${JSON.stringify(info, null, 2)}\n`);
+  receipt.mode = 'manual-hold'; log('HOLD', JSON.stringify(info));
+  const until = Date.now() + HOLD_MIN * 60000;
+  while (Date.now() < until && !existsSync(stop)) await sleep(2000);
 }
 function teardown() {
   if (teardownPromise) return teardownPromise;
