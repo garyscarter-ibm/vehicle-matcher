@@ -911,7 +911,7 @@ Documentation-only partial reconciliation, checked after normal refresh at 05:20
       "failures": 10,
       "errors": 0,
       "skipped": 1,
-      "variantLimit": "Original manual5 reused, isolated singles22 and corrected same-JVM phase pairs16; original zero-test orderer refusal excluded. Not a canonical green or F381 deployed-composition proof.",
+      "variantLimit": "Original manual5 reused, isolated singles22 and corrected same-JVM phase pairs16; original zero-test orderer refusal excluded. Not a canonical green or new F381 execution proof.",
       "path": ".claude/poller/run-20261117-2335/resources/batch-java-final-disposition.json",
       "bytes": 62581,
       "sha256": "74b5f6e6088639c7a2adefff6f207fd30c95ea13f35d9515ebe421b621b1243f"
@@ -927,12 +927,24 @@ Documentation-only partial reconciliation, checked after normal refresh at 05:20
       "removedFileAllocatedBytes": 608141312,
       "method": "Parent normal drop-branch; no force, foreign-resource or OneDrive cleanup. Not performed by this reconciliation."
     },
-    "acceptance": "partial; all four original criteria remain unchecked. F381 owns its original proof and persisted-policy rollout gaps; parent owns separate failing-boundary Bug disposition and covering batch. No native acceptance, source fix or new intake.",
+    "acceptance": "partial; four original sign-offs remain unchecked as recorded, with passing outcome evidence retained. Actual selected local boundary gaps are the later assertions unreached after the two Greg role failures and missing brief navigation. Parent owns separate failing-boundary Bug disposition. Green covering batch is a separate acceptance prerequisite. No deployment or policy-publication/reset gate, native acceptance, source fix or new intake.",
     "runtimeCreated": false,
     "scratchCreatedBytes": 0,
     "scratchRemovedBytes": 0,
     "oneDriveAccess": false,
     "publicationHygiene": "A helper import regenerated one pre-existing tracked 190,246-byte Python cache; the publication guard stopped before push, the cache was restored to HEAD, and subsequent imports disable bytecode. No generated file remains in the diff."
+  },
+  "contractCorrection": {
+    "basis": "The original four authored acceptance criteria and validate field in _dev/in-progress/DEV-2026-11-16-049.md. Neither requires hosted/deployed proof or successor policy publication/reset. The defects workflow asks for authorised post-deploy smoke when available.",
+    "correction": "Withdraw added mandatory deployed-composition/rollout wording. Keep actual 302 passed / three failed, original scope and unchanged unchecked sign-offs; this documentation correction makes no new acceptance decision.",
+    "missingLocalSupportingEvidence": [
+      "The two employee-recommendation-api cases stop at Greg role assertions before later presenter/origin/custom-call assertions.",
+      "The gcsp-brief-render terminology case stops at missing brief navigation before later editor/body assertions."
+    ],
+    "passingOutcomeEvidence": "Original ranking, gates, actual saved/unsaved preview service, feedback, truthful badge and 169 retail observations pass. The three supporting boundary failures do not establish a failure in each original criterion.",
+    "postDeploymentConsiderations": "An older persisted run may need successor policy publication or an authorised reset to adopt the tuned seed. An authorised smoke check is relevant when deployment is available. Neither is an added mandatory F381 gate or rollout campaign.",
+    "separateAcceptancePrerequisite": "A green covering batch is required before offering acceptance; it is distinct from the four authored outcomes.",
+    "newSourceOrTestScope": false
   }
 }
 ```
