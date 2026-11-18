@@ -1,10 +1,35 @@
 # FUCQ-451 notification inspection — 16 November 2026
 
 Original Story: `DEV-2026-11-13-019`, 8 points, branch `dev/DEV-2026-11-13-019`.
-The two original acceptance criteria remain open. Bounded local evidence is composite: 58 a01
+The two original acceptance criteria remain open. Historical bounded local evidence is composite: 58 a01
 passes plus one corrected refresh-case pass from a02. The app boundary checker failed on an
 unchanged case-queue em dash. This does not establish a received email, integrated Java journey
-or rendered acceptance, and the Story remains waiting.
+or rendered acceptance. The owned Story resumed on 18 November 2026 at `1fce88975` for the
+original connected inspection and offer-return work; its native status remains In Progress.
+
+## Connected delivery resumed, 18 November 2026
+
+Current source already composes `presenter/outbox` with `OutboxComponent`, the presenter guard
+and the existing Java `PresenterOutboxResource`/`OutboxView` read. Earlier statements below
+about an unmade route edit describe the 16 November source checkpoint, not a current blocker.
+
+Tweety 2 leads the existing `inspection`, `offer-return` and `integration` slices without changing
+their original acceptance. Timone 3 owns the new bounded connected proof, and Marvin the Martian 4
+independently reviews source and resulting evidence. Runtime selection follows the current
+`AGENTS.md` Story test set: outbox feature tests, relevant actual Java notify/offer HTTP and
+startup/wiring checks, and rendered desktop/narrow/browser/focus evidence. Full suite: deferred
+to batch. The historical finite source-only exclusions below no longer restrict this increment.
+
+Configuration inspection at 04:04 UTC found no MAIL, BREVO, OIDC, GCSP or SMTP environment names
+in the launching shell. The Java contract supports captured mail by default and requires explicit
+Brevo sender/key/public-base settings for external delivery. No agreed external recipient or
+usable hosted OIDC/mail configuration has been established by this observation. It is not a
+check of remote secret stores. Local signed test OIDC, capture and browser evidence can progress;
+a newly received email and its real provider sign-in/ownership journey remain original open work.
+No external email, provisioning or Render database operation is authorized by this observation.
+
+Evidence and owned local supervisors are retained under root `.claude/test-runs/fucq451/`.
+OneDrive and CloudStorage access remain prohibited, including cleanup and existence checks.
 
 ## Contract and source scope
 

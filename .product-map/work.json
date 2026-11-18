@@ -8230,86 +8230,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-451",
-      "observed_at": "2026-11-17T19:53:19Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Inspect notifications and follow delivered offer links",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
-      "slices": [
-        {
-          "id": "inspection",
-          "status": "in-progress",
-          "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-16T22:48:58Z",
-          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
-        },
-        {
-          "id": "offer-return",
-          "status": "not-started",
-          "title": "Delivered offer link sign-in and ownership return"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Route, rendered Java and newly received email acceptance"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-019",
-      "workers": [
-        {
-          "name": "Scrappy Doo 2",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
-          "status": "returned coherent partial increment; original acceptance waiting"
-        },
-        {
-          "name": "Wile E. Coyote 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
-          "status": "returned client source; a01 client 20/20 passed"
-        },
-        {
-          "name": "Mulan 3",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
-          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
-        },
-        {
-          "name": "Goofy 2",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
-          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
-        },
-        {
-          "name": "Cecil Turtle 2",
-          "harness": "codex",
-          "role": "validator",
-          "observed_at": "2026-11-16T22:49:16Z",
-          "expires_at": "2026-11-16T22:49:16Z",
-          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
-          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-452",
       "observed_at": "2026-11-17T19:53:20Z",
       "original_status": "In Progress",
@@ -10329,6 +10249,115 @@
           "title": "Covering batch verification"
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-451",
+      "observed_at": "2026-11-18T04:04:44Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Inspect notifications and follow delivered offer links",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-451",
+      "slices": [
+        {
+          "id": "inspection",
+          "status": "in-progress",
+          "title": "Read-only current-run notification inspection",
+          "observed_at": "2026-11-16T22:48:58Z",
+          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+        },
+        {
+          "id": "offer-return",
+          "status": "not-started",
+          "title": "Delivered offer link sign-in and ownership return"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Route, rendered Java and newly received email acceptance",
+          "observed_at": "2026-11-18T04:04:44Z",
+          "evidence": "Current route is composed. Timone 3 executing bounded local Java/nativePG17/signed-OIDC outbox proof; external newly received email remains unverified. Original AC unchanged."
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-019",
+      "workers": [
+        {
+          "name": "Scrappy Doo 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e679-272e-7713-adf8-103f292da6f2",
+          "status": "returned coherent partial increment; original acceptance waiting"
+        },
+        {
+          "name": "Wile E. Coyote 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67a-7f89-7981-b451-371e4067adf1",
+          "status": "returned client source; a01 client 20/20 passed"
+        },
+        {
+          "name": "Mulan 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e67b-2bcd-7e50-baff-9d98a120ac2f",
+          "status": "returned component source; composite 38 a01 plus 1 corrected a02 pass"
+        },
+        {
+          "name": "Goofy 2",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e681-699f-7052-a7fd-56220177fd2c",
+          "status": "returned full and affected source-only PASS; runtime acceptance not reviewed"
+        },
+        {
+          "name": "Cecil Turtle 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-16T22:49:16Z",
+          "expires_at": "2026-11-16T22:49:16Z",
+          "source": "01a1e683-7488-7b10-939e-82deb2790a08",
+          "status": "returned a01/a02 receipts; composite 58 plus 1 passes; inherited boundary failure"
+        },
+        {
+          "name": "Tweety 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T04:04:44Z",
+          "expires_at": "2026-11-18T04:49:44Z",
+          "source": "01a1ecd1-5c2b-7c20-beee-cad378bea403",
+          "status": "active original-scope connected inspection delivery"
+        },
+        {
+          "name": "Timone 3",
+          "harness": "codex",
+          "role": "proof-author",
+          "observed_at": "2026-11-18T04:04:44Z",
+          "expires_at": "2026-11-18T04:49:44Z",
+          "source": "01a1ecd2-cd7a-7dc1-9fdb-f5fc0e9ccd4c",
+          "status": "active original-scope connected inspection delivery"
+        },
+        {
+          "name": "Marvin the Martian 4",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T04:04:44Z",
+          "expires_at": "2026-11-18T04:49:44Z",
+          "source": "01a1ecd3-15f2-7db2-9306-bca69f23e23b",
+          "status": "active original-scope connected inspection delivery"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     }
   ],
   "version": 1
