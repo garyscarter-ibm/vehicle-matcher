@@ -91,6 +91,8 @@ All in `render.gcsp.yaml` at `1d57ed5ca` (FUCQ-453 is editing that file in paral
    are `Cache-Control: no-store`; a hashed `/gcsp/*.js` is `public, max-age=31536000, immutable`; every `/gcsp/`
    response carries `frame-ancestors 'none'`, `Referrer-Policy: no-referrer` and `nosniff`; the browser console
    shows no CSP errors after sign-in.
+   On Greg's policy screen (FUCQ-448), check that a stale preview or publish reads clearly: it shows a status line
+   with the buttons disabled, not a full "The policy changed" screen.
 8. **Final switch:** merge `gcsp-poc-dev` into `gcsp-poc`. The Java and Angular entries track `gcsp-poc-dev` today,
    so the cutover needs one blueprint decision, taken with the retirement work (FUCQ-453 and E3.S29):
    - either repoint those two entries to `branch: gcsp-poc`;
