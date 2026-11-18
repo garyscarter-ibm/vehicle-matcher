@@ -6319,7 +6319,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-18T10:34:27Z",
+      "observed_at": "2026-11-18T17:25:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Greg's demand and preview/publish controls",
@@ -6340,15 +6340,15 @@
           "id": "frontend-screens",
           "status": "complete",
           "title": "Demand and policy Angular screens with current-version controls",
-          "observed_at": "2026-11-18T10:32:19Z",
-          "evidence": "ce8eb55cf: Greg specs 50/50; connected Chromium proof vs Java+PG17+local OIDC: demand DOM equals API, preview 422 explicit, unavailable and denied states, 1440/390 captures, focus, 0 CSP"
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "0bac934cf: preview fit accepts Java score/100 unit; Greg specs 51/51 (6 files)"
         },
         {
           "id": "integration",
-          "status": "blocked",
+          "status": "complete",
           "title": "Java connected preview/publication, pinned offers and affected experience development gates",
-          "observed_at": "2026-11-18T10:34:27Z",
-          "evidence": "Blocked on Java (usget FUCQ-457/475): POST /greg/policy/preview always 422 unsupported/preview-unavailable so UI publish unreachable; script publish refused 400 invalid-policy-change on effectiveFrom (resource needs <= its now, PolicyPublication needs >= its later now). Accepted/stale-409 publish and pin under activation unproven. Proof connected-20261118T103230-attempt6 PARTIAL."
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "9b3e2590b connected proof vs Java+PG17+local OIDC+Chrome: 9/9 scenarios, 82/82 checks: preview-ready DOM equals API, UI publish 200 active, offer terms pinned, 400 unknown, 409 stale publish/preview, stale UI explicit"
         }
       ]
     },
