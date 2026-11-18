@@ -5,15 +5,15 @@ import { record, text, validPlanValue, validProduction, validSubmission, version
 import { PlanChange, PlanningFailure, PlanningFailureStatus, PlanningOptions, PlanningResult, PlanValueDto,
   ProductionCommand, ProductionSubmissionDto, ProductionValueDto } from './planning.types';
 
-const only = (v: unknown, keys: readonly string[]): v is Record<string, unknown> => record(v)
+const exactKeys = (v: unknown, keys: readonly string[]): v is Record<string, unknown> => record(v)
   && Object.keys(v).length === keys.length && keys.every(k => Object.hasOwn(v, k));
 const whole = (v: unknown): boolean => Number.isSafeInteger(v) && (v as number) >= 0;
 function validChanges(v: unknown): v is readonly PlanChange[] {
   return Array.isArray(v) && v.length > 0 && v.length <= 3 && v.every(c => {
-    if (!only(c, ['key', 'value'])) return false;
+    if (!exactKeys(c, ['key', 'value'])) return false;
     if (c['key'] === 'orderPlan.budgetMinor') return whole(c['value']);
     const id = c['key'] === 'orderPlan.modelBounds' ? 'modelId' : c['key'] === 'orderPlan.derivativeBounds' ? 'derivativeId' : null;
-    return !!id && Array.isArray(c['value']) && c['value'].every(b => only(b, [id, 'min', 'max'])
+    return !!id && Array.isArray(c['value']) && c['value'].every(b => exactKeys(b, [id, 'min', 'max'])
       && text(b[id]) && whole(b['min']) && whole(b['max']) && (b['min'] as number) <= (b['max'] as number));
   }) && new Set(v.map(c => c.key)).size === v.length;
 }
@@ -42,7 +42,7 @@ export class PlanningClient {
     return this.request('greg/production', validProduction, options);
   }
   submit(input: ProductionCommand, options: PlanningOptions = {}): Promise<PlanningResult<ProductionSubmissionDto>> {
-    if (!only(input, ['commandId', 'planId', 'versions']) || !text(input['commandId']) || input['commandId'].length > 200
+    if (!exactKeys(input, ['commandId', 'planId', 'versions']) || !text(input['commandId']) || input['commandId'].length > 200
       || !text(input['planId']) || input['planId'].length > 512 || !versionPins(input['versions'])) {
       return Promise.resolve(failure('invalid', 'invalid-production-command', 'Supply the current plan and its unchanged input versions.'));
     }
