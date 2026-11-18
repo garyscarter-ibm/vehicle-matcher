@@ -151,14 +151,14 @@ test('the real offline restore CLI validates retained policy without the runtime
   const cli = await restoreFixtureCLI(root, cachedStore, digest, input.metadata);
   const cachedInventory = await readFile(join(cachedStore, 'identity-inventory.json'));
   // Cold restore then existing-store replay must both ignore runtime database configuration.
-  for (const [index, connectionString] of [unavailableDatabase, ''].entries()) {
+  for (const [index, connectionString] of [unavailableDatabase, unavailableDatabase, ''].entries()) {
     const child = spawnSync(process.execPath, [cli, 'restore', '--release', digest, '--store', store, '--cache', cache, '--network', 'offline'],
       { cwd: root, env: { ...process.env, GCSP_DATABASE_URL: connectionString }, encoding: 'utf8', timeout: 10000 });
     assert.equal(child.error, undefined); assert.equal(child.status, 0, child.stdout + child.stderr); assert.equal(child.stderr, '');
     const report = JSON.parse(child.stdout);
     assert.equal(report.status, 'ok'); assert.equal(report.active.manifestDigest, digest); assert.equal(report.externalCalls, 0);
     assert.equal(report.mode, index === 0 ? 'cold-restore' : 'publish-existing');
-    if (index === 1) assert.equal(report.idempotent, true);
+    if (index > 0) assert.equal(report.idempotent, true);
     assert.deepEqual(await readFile(join(store, 'identity-inventory.json')), cachedInventory);
     for (const file of ['manifest.json', 'configurations.jsonl', 'vins.jsonl', 'images.jsonl']) {
       assert.deepEqual(await readFile(join(store, 'versions', digest, file)), await readFile(join(candidate, file)));
