@@ -8236,7 +8236,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-17T19:53:20Z",
+      "observed_at": "2026-11-18T15:14:29Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Calculate Greg's constrained next-order plan",
@@ -8264,6 +8264,22 @@
           "title": "Greg order-plan HTTP read and preview, no submission",
           "observed_at": "2026-11-14T09:49:44Z",
           "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
+        },
+        {
+          "id": "s4",
+          "status": "in-progress",
+          "title": "PostgreSQL demand/supply and run clock bound in the started app (F477 WIP reviewed and run)",
+          "observed_at": "2026-11-18T15:14:29Z"
+        },
+        {
+          "id": "s5",
+          "status": "not-started",
+          "title": "FUCQ-515 cart-hold expiry on the claims time authority"
+        },
+        {
+          "id": "s6",
+          "status": "not-started",
+          "title": "Started-app AC journey over RS256/JWKS and native PostgreSQL"
         },
         {
           "id": "integration",
