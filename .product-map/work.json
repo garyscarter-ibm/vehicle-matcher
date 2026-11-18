@@ -10447,7 +10447,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T10:59:35Z",
+      "observed_at": "2026-11-18T11:38:59Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10459,26 +10459,26 @@
           "id": "inspection",
           "status": "blocked",
           "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-18T10:59:35.712000+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+          "observed_at": "2026-11-18T11:38:59.623667+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#3-gib-admission-window--18-november-2026"
         },
         {
           "id": "jobs",
           "status": "complete",
           "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-18T10:59:35.712000+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+          "observed_at": "2026-11-18T11:38:59.623667+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#3-gib-admission-window--18-november-2026"
         },
         {
           "id": "integration",
           "status": "blocked",
           "title": "Connected Java roles and rendered acceptance evidence",
-          "observed_at": "2026-11-18T10:59:35.712000+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
+          "observed_at": "2026-11-18T11:38:59.623667+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#3-gib-admission-window--18-november-2026"
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "18Nov Claude: auth-recovery defect reproduced and repaired at 4c9afcad6 (Angular 61/61, routes 15/15); Java focused 121/0/2 skip green. AC2 met locally. AC1 blocked: 3GiB re-pinned run at a8b8ec706 built then refused admission (needs 4.83GB, 3.79GB available); no job ran. Supervisor teardown counts own ps child as unresolved; leftovers reconciled. Safari/private/hosted unrun; full suite deferred to batch.",
+      "note": "18Nov Claude: auth-recovery repaired (Angular 61/61), Java focused 121/0/2skip, supervisor teardown self-audit fixed and runtime-verified. AC2 met locally. AC1 blocked: four 3GiB pipelines at e1637252c built but none admitted to its proof grant (needs 4,831,838,208B; best at grant 4,741,726,208B in the 40-min window); no job ran. Full suite deferred to batch.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10592,10 +10592,10 @@
           "name": "story-lead (Claude)",
           "harness": "claude",
           "role": "story-lead",
-          "observed_at": "2026-11-18T10:59:35.712000+00:00",
-          "expires_at": "2026-11-18T10:59:35.712000+00:00",
+          "observed_at": "2026-11-18T11:38:59.623667+00:00",
+          "expires_at": "2026-11-18T11:38:59.623667+00:00",
           "source": "claude dev poller",
-          "status": "returned: repair committed; 3GiB run refused at admission; leftovers reconciled; AC1 blocked"
+          "status": "returned: teardown fix verified; 3GiB not admitted in window; AC1 blocked"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
