@@ -649,3 +649,34 @@ browsing and complete broader experience evidence remain unrun; FUCQ-520 remains
 separately captured/unallocated. Live BMW/provider access is unproved, and the
 covering green batch and human acceptance remain outstanding. Full suite:
 deferred to batch. Parent retains integration/Jira/closure authority.
+
+
+Post-proof refresh: normal guarded refresh merged shared `d9390b427` into
+`060f32386f713a3faf492ac26b83fb357f570ef0`. The proof SHA256 remains
+`9012c7e0fc6e077c973179794c07f3dbba703129ff6a0fc9398c000fbaf8b5bc`.
+Java/API source, Angular source, shell styles and selected build configuration
+are unchanged from tested `c5fdf83ac`. The broad export is not byte-identical:
+peer presenter-gallery changes edit `blocks/gcsp/kit/form-controls-gallery.js`,
+add `blocks/gcsp/kit/presenter-time.css`, edit
+`blocks/gcsp/presenter-controls/presenter-console.css` and edit
+`blocks/vehicle-matcher/component-gallery.js`; F446 also adds its own independent
+proof. These files are not imported by the selected Angular/manual composition.
+`angular.json` includes only shell CSS and `src/styles.css`; neither those inputs
+nor Angular source references the changed gallery/presenter styles. The selected
+`build-gcsp-static.mjs` imports the unchanged `references` helper from
+`assemble-site.mjs`, without calling its gallery-reading `discoverManifest`.
+This is a precise reuse exception for unconsumed broad-export files, not a claim
+that every exported input is unchanged. No matching product check was rerun.
+
+
+Parent independent audit at 02:48:03 UTC passed:
+`.claude/fucq443-recovery-final-parent-audit-0242.json`. It verified all six
+allocations, 1,230 retained process identities, eight ports, owned groups,
+scratch and tokens absent, and an empty canonical registry. It checked all
+30 F/G assertions and six capture hashes, and rehashed the final 151-file API
+and 36-file web artifact manifests with exact consumer/source/receipt links.
+The broad source comparison matched 1,249 of 1,250 retained export inputs; the
+single changed retained file is the unimported presenter gallery described
+above. The audit separately verified that import boundary. The heavy runtime is
+physically released. These checks do not claim full Story acceptance or a green
+covering batch.
