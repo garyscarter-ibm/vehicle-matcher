@@ -35,6 +35,8 @@ const fakeClient = () => ({
   readOwnCase: vi.fn<CaseClient['readOwnCase']>().mockResolvedValue(ok({ case: row(), asOf: at, policyVersion: 'policy-1' })),
   prepareHelp: vi.fn<CaseClient['prepareHelp']>().mockImplementation(input => Object.freeze({ kind: 'request-help', input: Object.freeze({ ...input }) })),
   requestHelp: vi.fn<CaseClient['requestHelp']>().mockResolvedValue(ok({ case: row() })),
+  preparePreference: vi.fn<CaseClient['preparePreference']>().mockImplementation(input => Object.freeze({ kind: 'confirm-preference', input: Object.freeze(structuredClone(input)) })),
+  confirmPreference: vi.fn<CaseClient['confirmPreference']>().mockResolvedValue(ok({ briefVersion: 3 })),
   readQueue: vi.fn(), readOptions: vi.fn(), updateCase: vi.fn(),
 });
 
@@ -61,6 +63,38 @@ describe('employee HelpStore intent, readback and privacy boundary', () => {
     if (!command || 'state' in command) throw new Error('No reviewed command');
     return command;
   }
+
+  it('reviews and explicitly confirms one applicable proposal, then rereads the authoritative case', async () => {
+    await ready();
+    const proposed = row({ status: 'remedy-proposed', remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate', confirmationState: 'employee-confirmation-required' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } });
+    client.readOwnCases.mockResolvedValueOnce(ok(list([proposed]))); await store.refresh();
+    const displayed = store.view().cases[0]; expect(store.canReviewPreference(displayed)).toBe(true);
+    store.reviewPreference(displayed); expect(store.view().preferenceReview).toMatchObject({ decisionId: 'decline-1', expectedBriefVersion: 2,
+      change: { path: 'preferences.body.value', value: 'estate' } });
+    expect(client.confirmPreference).not.toHaveBeenCalled(); store.cancelRequest(); expect(store.view().preferenceReview).toBeNull();
+    store.reviewPreference(displayed);
+    const current = { ...proposed, relaxation: { currentBriefVersion: 3, before: ['estate'], applicable: false, confirmed: true } };
+    client.readOwnCases.mockResolvedValueOnce(ok(list([current])));
+    client.readOwnCase.mockResolvedValueOnce(ok({ case: current, asOf: at, policyVersion: 'policy-1' }));
+    await store.confirm(); expect(client.confirmPreference).toHaveBeenCalledOnce();
+    expect(store.view()).toMatchObject({ recorded: true, preferenceReview: null, pending: false });
+    expect(store.view().message).toContain('Your preference change was confirmed');
+    expect(store.canReviewPreference(store.view().cases[0])).toBe(false);
+  });
+  it('does not confirm an ended or superseded proposal and clears a reviewed preference on account loss', async () => {
+    await ready(); const remedy = { type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' };
+    const relaxation = { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false };
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ remedy, relaxation, status: 'closed' }),
+      row({ caseId: 'different', remedy, relaxation: { ...relaxation, currentBriefVersion: 3, applicable: false } })])));
+    await store.refresh(); for (const record of store.view().cases) { expect(store.canReviewPreference(record)).toBe(false); store.reviewPreference(record); }
+    expect(client.preparePreference).not.toHaveBeenCalled();
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ remedy, relaxation })]))); await store.refresh();
+    store.reviewPreference(store.view().cases[0]); state.set({ status: 'signed-out' });
+    expect(store.view()).toMatchObject({ preferenceReview: null, cases: [], canConfirm: false });
+    expect(await store.confirm()).toBe(false); expect(client.confirmPreference).not.toHaveBeenCalled();
+  });
 
   it('loads guidance and a proven empty list; Ask, review and cancel never POST', async () => {
     await ready();

@@ -4,7 +4,8 @@ import { FactListComponent } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
-import { caseNotice } from '../cases/case.projection';
+import { caseNotice, preferenceLabel, preferenceText } from '../cases/case.projection';
+import type { CaseDisplay } from '../cases/case.types';
 import { HelpStore } from './help.store';
 
 let instance = 0;
@@ -24,6 +25,8 @@ export class HelpComponent implements OnDestroy {
   readonly id = `gcsp-help-${++instance}`;
   readonly reasonId = `${this.id}-reason`;
   readonly notice = caseNotice;
+  readonly preferenceLabel = preferenceLabel;
+  readonly preferenceText = preferenceText;
   readonly childLevel = computed(() => this.quiet() ? 2 : this.headingLevel() + 1);
   readonly caveat = computed(() => this.view().cases.length > 0 || this.view().editing || this.view().reviewReason !== null);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -45,6 +48,7 @@ export class HelpComponent implements OnDestroy {
     this.focus(this.view().error ? 'textarea' : this.view().reviewReason ? '[data-help-confirm]' : '[data-help-status]');
   }
   cancel(): void { this.store.cancelRequest(); this.focus('[data-help-ask]'); }
+  reviewPreference(record: CaseDisplay): void { this.store.reviewPreference(record); this.focus('[data-preference-confirm]'); }
   async confirm(): Promise<void> { await this.perform(() => this.store.confirm()); }
   async retry(): Promise<void> { await this.perform(() => this.store.retryRequest()); }
   async refresh(): Promise<void> { await this.perform(() => this.store.refresh()); }
