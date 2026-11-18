@@ -1,0 +1,101 @@
+<section class="greg-demand" [attr.aria-busy]="view().demandState === 'loading' ? 'true' : null">
+  <gcsp-screen-intro title="Demand and supply" [level]="2"
+    lede="What employees have saved and confirmed they need, set against released stock and the outcomes of offers." />
+  <p class="demand-status" role="status" aria-live="polite" aria-atomic="true">{{ status() }}</p>
+
+  @if (view().demand; as demand) {
+    <div class="demand-meta"><gcsp-fact-list [rows]="meta()" /></div>
+    <p class="basis"><strong>{{ demand.basisLabel }}</strong>. {{ demand.basisNote }}</p>
+    <p class="gcsp-note">{{ demand.privacyNote }}</p>
+    @if (!demand.demand.byModelLine.length) {
+      <p class="gcsp-note">No employee has confirmed a brief yet, so there is no saved demand to show.</p>
+    }
+    <section class="demand-section" [attr.aria-labelledby]="id + '-headline'">
+      <h3 [id]="id + '-headline'">At a glance</h3>
+      <dl class="demand-metrics">
+        @for (item of headline(); track item.label) {
+          <div><dt>{{ item.label }}</dt><dd [class.is-band]="item.count.kind === 'band'">{{ item.count.label }}</dd></div>
+        }
+      </dl>
+    </section>
+
+    <section class="demand-section" [attr.aria-labelledby]="id + '-briefs'">
+      <h3 [id]="id + '-briefs'">Demand</h3>
+      <p class="gcsp-note">One latest brief each. Each table groups the same briefs a different way.</p>
+      <div class="demand-groups">
+        @for (group of groups(); track group.key) {
+          <div class="table-wrap" role="region" [attr.aria-label]="group.caption" tabindex="0">
+            <table><caption>{{ group.caption }}</caption><thead><tr><th scope="col">{{ group.label }}</th><th scope="col">Briefs</th></tr></thead>
+              <tbody>@for (row of group.rows; track row.key) {
+                <tr><th scope="row">{{ row.label }}</th><td [class.is-band]="row.count.kind === 'band'">{{ row.count.label }}</td></tr>
+              } @empty { <tr><td colspan="2">No briefs in this group yet.</td></tr> }</tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div class="table-wrap" role="region" aria-label="Essential requirements" tabindex="0">
+        <table><caption>By essential requirement</caption><thead><tr><th scope="col">Requirement</th><th scope="col">State</th><th scope="col">Briefs</th></tr></thead>
+          <tbody>@for (row of demand.demand.essentials; track $index) {
+            <tr><th scope="row">{{ row.label }}</th><td>{{ row.state === 'confirmed' ? 'Confirmed' : 'Needs confirmation' }}</td><td [class.is-band]="row.count.kind === 'band'">{{ row.count.label }}</td></tr>
+          } @empty { <tr><td colspan="3">No essential requirements saved yet.</td></tr> }</tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="demand-columns">
+      <section class="demand-section" [attr.aria-labelledby]="id + '-unmet'">
+        <h3 [id]="id + '-unmet'">Unmet needs</h3><p class="gcsp-note">{{ demand.overlapNote }}</p>
+        <div class="table-wrap" role="region" aria-label="Unmet needs by gate" tabindex="0">
+          <table><caption>Briefs with no suitable car, by gate</caption><thead><tr><th scope="col">Gate</th><th scope="col">Effect</th><th scope="col">Briefs</th></tr></thead>
+            <tbody>@for (row of demand.demand.unmet.byGate; track row.key) {
+              <tr><th scope="row">{{ gateLabel(row) }}</th><td>{{ row.severityLabel }}</td><td [class.is-band]="row.count.kind === 'band'">{{ row.count.label }}</td></tr>
+            } @empty { <tr><td colspan="3">No unmet needs at this time.</td></tr> }</tbody>
+          </table>
+        </div>
+      </section>
+      <section class="demand-section" [attr.aria-labelledby]="id + '-stock'">
+        <h3 [id]="id + '-stock'">Stock</h3>
+        @if (demand.stock.unavailable) {
+          <p class="gcsp-note stock-warning">{{ demand.stock.source.reason === 'stale' ? 'Stock data too old to use. Figures may be out of date.' : 'Stock source unavailable. Figures may be out of date.' }}</p>
+        }
+        <p class="gcsp-note">Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection.</p>
+        <div class="table-wrap" role="region" aria-label="Stock by model line" tabindex="0">
+          <table><caption>Stock by model line</caption><thead><tr><th scope="col">Model line</th><th scope="col">Released</th><th scope="col">Held</th><th scope="col">Allocated</th></tr></thead>
+            <tbody>@for (row of demand.stock.byModelLine; track row.key) {
+              <tr><th scope="row">{{ row.label }}</th><td [class.is-band]="row.released.count.kind === 'band'">{{ row.released.count.label }}</td>
+                <td [class.is-band]="row.held.count.kind === 'band'">{{ row.held.count.label }}</td><td [class.is-band]="row.allocated.count.kind === 'band'">{{ row.allocated.count.label }}</td></tr>
+            } @empty { <tr><td colspan="4">{{ demand.stock.empty ? 'No stock has been released yet.' : 'New stock could not be checked.' }}</td></tr> }</tbody>
+          </table>
+        </div>
+        <p class="gcsp-note">Stock source: {{ demand.stock.source.status }}{{ demand.stock.source.reason ? ' · ' + demand.stock.source.reason : '' }}</p>
+      </section>
+    </div>
+
+    <section class="demand-section" [attr.aria-labelledby]="id + '-offers'">
+      <h3 [id]="id + '-offers'">Offers</h3><p class="gcsp-note">Recorded outcomes of offers made. They are not predictions and not a measure of satisfaction.</p>
+      <dl class="demand-metrics offer-metrics">@for (item of offers(); track item.label) {
+        <div><dt>{{ item.label }}</dt><dd [class.is-band]="item.count.kind === 'band'">{{ item.count.label }}</dd></div>
+      }</dl>
+      <div class="table-wrap" role="region" aria-label="Declined offers by reason" tabindex="0">
+        <table><caption>Declined offers, by reason</caption><thead><tr><th scope="col">Reason</th><th scope="col">Declined</th></tr></thead>
+          <tbody>@for (row of demand.offers.declinedByReason; track row.key) {
+            <tr><th scope="row">{{ row.label }}</th><td [class.is-band]="row.count.kind === 'band'">{{ row.count.label }}</td></tr>
+          } @empty { <tr><td colspan="2">No declines with a recorded reason yet.</td></tr> }</tbody>
+        </table>
+      </div>
+    </section>
+  } @else if (view().demandState === 'loading') {
+    <gcsp-status-screen title="Loading the demand figures" [level]="2" [busy]="true" [announcement]="null" />
+  } @else if (view().demandState === 'denied') {
+    <gcsp-status-screen title="Access refused" message="Only the scheme ordering lead can open these figures." [level]="2" [announcement]="null" />
+  } @else if (view().demandState === 'auth-required') {
+    <gcsp-status-screen title="Sign in to view demand" [level]="2" [announcement]="null"><button gcspButton type="button" (click)="store.signIn()">Sign in</button></gcsp-status-screen>
+  } @else {
+    <gcsp-status-screen [title]="view().demandState === 'stale' ? 'The demand figures changed' : 'Demand figures unavailable'" [level]="2" [announcement]="null" />
+  }
+  @if (view().demandState !== 'denied' && view().demandState !== 'auth-required') {
+    <div class="gcsp-actions"><button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="store.refresh()">Refresh demand and policy</button>
+      @if (authenticationUnavailable()) { <button gcspButton variant="ghost" type="button" [disabled]="view().pending" (click)="store.retryAuthentication()">Retry sign-in connection</button> }
+    </div>
+  }
+</section>

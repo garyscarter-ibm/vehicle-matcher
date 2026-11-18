@@ -6319,15 +6319,38 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-17T19:53:14Z",
+      "observed_at": "2026-11-18T17:25:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Greg's demand and preview/publish controls",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "slices": [
+        {
+          "id": "frontend-core",
+          "status": "complete",
+          "title": "Bearer transport, faithful demand/policy projections and scoped store",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "evidence": "31 distinct passing checks with matching inputs: a02 projection9/store12 (wrapper failed from client fixture); a03 client10 strict pass. No combined31-run. Production/core specs unchanged at final runtime3d5a57c59. Failed attempts retained; see delivery record."
+        },
+        {
+          "id": "frontend-screens",
+          "status": "complete",
+          "title": "Demand and policy Angular screens with current-version controls",
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "0bac934cf: preview fit accepts Java score/100 unit; Greg specs 51/51 (6 files)"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Java connected preview/publication, pinned offers and affected experience development gates",
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "9b3e2590b connected proof vs Java+PG17+local OIDC+Chrome: 9/9 scenarios, 82/82 checks: preview-ready DOM equals API, UI publish 200 active, offer terms pinned, 400 unknown, 409 stale publish/preview, stale UI explicit"
+        }
+      ]
     },
     {
       "assignee": "Gary Carter",
@@ -7476,7 +7499,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-478",
-      "observed_at": "2026-11-17T19:53:17Z",
+      "observed_at": "2026-11-18T17:34:08Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Submit Production requests and reconcile responses",
@@ -7532,6 +7555,20 @@
           "title": "Reopened-story validation through the started app, merged-tree verify and result",
           "observed_at": "2026-11-17T12:51:31Z",
           "evidence": "Merged origin/gcsp-poc-dev at 15abc3d82; scoped set (production, planning, supply, Wiring/Startup, readiness) 228/228 on native PG17 incl. ProductionPlanJourneyTest; Result committed"
+        },
+        {
+          "id": "s8-deployed-journey",
+          "status": "blocked",
+          "title": "Started-app journey over the real bound planner inputs (PostgresPlanningDemand/Supply, RunPlanningClock), no test beans",
+          "observed_at": "2026-11-18T17:34:08Z",
+          "evidence": "ProductionDeployedJourneyHttpTest 7/7 at a0ad20c63, no alternatives; plan-based submit blocked: demo employeeFacts lack driverEligible"
+        },
+        {
+          "id": "s9-deployed-integration",
+          "status": "complete",
+          "title": "Story-level scoped validation on the merged head and result for the deployed proof",
+          "observed_at": "2026-11-18T17:34:08Z",
+          "evidence": "lead review of a0ad20c63; scoped 290/0/0 (production 66, planning 170, wiring/startup 54) on merged head, native PG17"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -8252,7 +8289,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-17T19:53:20Z",
+      "observed_at": "2026-11-18T16:34:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Calculate Greg's constrained next-order plan",
@@ -8282,11 +8319,32 @@
           "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
         },
         {
+          "id": "s4",
+          "status": "complete",
+          "title": "PostgreSQL demand/supply and run clock bound in the started app (F477 WIP reviewed and run)",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
+          "id": "s5",
+          "status": "complete",
+          "title": "FUCQ-515 cart-hold expiry on the claims time authority",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
+          "id": "s6",
+          "status": "complete",
+          "title": "Started-app AC journey over RS256/JWKS and native PostgreSQL",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Original demand and supply integration",
-          "observed_at": "2026-11-17T04:11:39.197356+00:00",
-          "evidence": "Independent Terms/Evaluator/Renewal integrateda93dd42c5 (53passes); independent Cohort/Snapshot helpers integrated251d89b22 (30matching passes). Parent executed52demand methods total, including22held adapter cases. Original connected demand/supply acceptance and M1/F515 remain unresolved; slice is incomplete.",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives",
           "prior_complete_evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
         }
       ],
@@ -9668,76 +9726,6 @@
       "native_observed_at": "2026-11-18T00:12:04.756Z"
     },
     {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-476",
-      "observed_at": "2026-11-18T00:30:35Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Consume learned artifacts and capture new learning records",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
-      "slices": [
-        {
-          "id": "s1-inference",
-          "status": "complete",
-          "title": "Java artifact verification, active model reference and learned demand forecast with Node parity bounds",
-          "observed_at": "2026-11-14T09:29:50Z",
-          "evidence": "ad949c0eb lead-reviewed; 12 learning tests incl 187 Node parity cases (92 forecast), max diff 5.55e-17 within 1e-12/1e-9 bounds, outcomes exact; Node regeneration identical; verify 858 tests 0 fail"
-        },
-        {
-          "id": "s2-records",
-          "status": "complete",
-          "title": "Java learning-record envelope and observed projection over Node-shaped rows with Node parity",
-          "observed_at": "2026-11-14T09:58:24Z",
-          "evidence": "472a1be43 lead-reviewed; 16 learning tests; 56 projection + 48 failure + 4 random + 132 validator Node cases replay exactly incl projectionVersion; Node regeneration identical"
-        },
-        {
-          "id": "s2b-source",
-          "status": "complete",
-          "title": "Java PostgreSQL record source, Greg-only service port and native PostgreSQL proof",
-          "observed_at": "2026-11-14T10:25:43Z",
-          "evidence": "9e97b7aca lead-reviewed; 29 learning tests on native PG17 0 fail; real BriefService producer record, 37 bound-port cases equal projection, stale-run/forbidden/read-only; 2000 briefs 4 statements ~0.4 s"
-        },
-        {
-          "id": "s2c-producers",
-          "status": "complete",
-          "title": "Actual persisted producer rows and same-snapshot run-clock provenance",
-          "observed_at": "2026-11-18T00:15:19.375157Z",
-          "evidence": "Lead-reviewed signed OIDC/nativePG actual presenter offers, employee decline/accept, injected production learning readback; same-snapshot clock and5set reads;203scoped green +33final learning delta green; validation-2026-11-18.md. Pending intent mapping separately synthetic/rollback, no live provider claim. Post465 refreshed composition7299d79c1: unchanged actual LearningCaptureHttpTest1green18.37s; integration-2026-11-18.md."
-        },
-        {
-          "id": "s3-integration",
-          "status": "in-progress",
-          "title": "Existing learned-view hookup, scoped composed acceptance and durable result",
-          "observed_at": "2026-11-18T00:15:19.375157Z",
-          "evidence": "Java learned-view hookup and10planner/13input-parity cases green; actual learned-success HTTP/rendered evidence remains open FUCQ-476 pending held FUCQ-477/M1/FUCQ-515 live PlanningDemand/Supply/Clock bindings; full suite deferred covering batch."
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "workers": [
-        {
-          "name": "Sulley",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T00:00:09.840904+00:00",
-          "expires_at": "2026-11-18T00:15:19.375157Z",
-          "source": "/root/sulley, requested/selected gpt-6.1-sol/high",
-          "status": "running"
-        },
-        {
-          "name": "Goopy Geer",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-18T00:00:09.840904+00:00",
-          "expires_at": "2026-11-18T00:15:19.375157Z",
-          "source": "/root/sulley/goopy_geer, requested/selected gpt-6.1-sol/high, explicit user override",
-          "status": "running"
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-442",
       "observed_at": "2026-11-18T00:37:07Z",
@@ -10637,6 +10625,92 @@
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-476",
+      "observed_at": "2026-11-18T19:16:47Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Consume learned artifacts and capture new learning records",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
+      "slices": [
+        {
+          "id": "s1-inference",
+          "status": "complete",
+          "title": "Java artifact verification, active model reference and learned demand forecast with Node parity bounds",
+          "observed_at": "2026-11-14T09:29:50Z",
+          "evidence": "ad949c0eb lead-reviewed; 12 learning tests incl 187 Node parity cases (92 forecast), max diff 5.55e-17 within 1e-12/1e-9 bounds, outcomes exact; Node regeneration identical; verify 858 tests 0 fail"
+        },
+        {
+          "id": "s2-records",
+          "status": "complete",
+          "title": "Java learning-record envelope and observed projection over Node-shaped rows with Node parity",
+          "observed_at": "2026-11-14T09:58:24Z",
+          "evidence": "472a1be43 lead-reviewed; 16 learning tests; 56 projection + 48 failure + 4 random + 132 validator Node cases replay exactly incl projectionVersion; Node regeneration identical"
+        },
+        {
+          "id": "s2b-source",
+          "status": "complete",
+          "title": "Java PostgreSQL record source, Greg-only service port and native PostgreSQL proof",
+          "observed_at": "2026-11-14T10:25:43Z",
+          "evidence": "9e97b7aca lead-reviewed; 29 learning tests on native PG17 0 fail; real BriefService producer record, 37 bound-port cases equal projection, stale-run/forbidden/read-only; 2000 briefs 4 statements ~0.4 s"
+        },
+        {
+          "id": "s2c-producers",
+          "status": "complete",
+          "title": "Actual persisted producer rows and same-snapshot run-clock provenance",
+          "observed_at": "2026-11-18T00:15:19.375157Z",
+          "evidence": "Lead-reviewed signed OIDC/nativePG actual presenter offers, employee decline/accept, injected production learning readback; same-snapshot clock and5set reads;203scoped green +33final learning delta green; validation-2026-11-18.md. Pending intent mapping separately synthetic/rollback, no live provider claim. Post465 refreshed composition7299d79c1: unchanged actual LearningCaptureHttpTest1green18.37s; integration-2026-11-18.md."
+        },
+        {
+          "id": "s4-learned-success",
+          "status": "complete",
+          "title": "Started-app learned-success and fallback HTTP over the real planning inputs after trusted model activation",
+          "observed_at": "2026-11-18T19:16:47Z",
+          "evidence": "c82dd7d36 lead-reviewed; LearnedPlanJourneyHttpTest 7 + LearnedPlanDefaultHttpTest 1 on started app, real JWT/PG17: available, artifact-missing, artifact-invalid, no-active-model; scoped 189/0 and 306/1 (base failure)"
+        },
+        {
+          "id": "s3-integration",
+          "status": "blocked",
+          "title": "Existing learned-view hookup, scoped composed acceptance and durable result",
+          "observed_at": "2026-11-18T19:16:47Z",
+          "evidence": "rendered AC1 blocked on FUCQ-449 Angular order-plan screen (unmerged)"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "workers": [
+        {
+          "name": "Sulley",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T00:00:09.840904+00:00",
+          "expires_at": "2026-11-18T00:15:19.375157Z",
+          "source": "/root/sulley, requested/selected gpt-6.1-sol/high",
+          "status": "stopped"
+        },
+        {
+          "name": "Goopy Geer",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-18T00:00:09.840904+00:00",
+          "expires_at": "2026-11-18T00:15:19.375157Z",
+          "source": "/root/sulley/goopy_geer, requested/selected gpt-6.1-sol/high, explicit user override",
+          "status": "stopped"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T18:03:47.017907+00:00",
+          "expires_at": "2026-11-18T18:03:47.017907+00:00",
+          "source": "dispatcher e266c562, story-lead opus",
+          "status": "stopped"
+        }
+      ]
     }
   ],
   "version": 1

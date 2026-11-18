@@ -1,27 +1,53 @@
 #!/usr/bin/env python3
-"""dev_mail.py: the two-way dev mailbox between Cowork and Claude Code for this project, and the guard that stops
-it looping (the rules for Cowork are in the managed `dev-inbox` skill).
+VERSION = "1.12.0"
+"""dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
+guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
 Cowork -> Code: a user story in _dev/code-inbox/ (written by Cowork).
-Code -> Cowork: a thread in _dev/cowork-inbox/MSG-<date>-<nnn>.md (MSG-<date>-<PFX>-<nnn> in team mode), opened by this tool. Two kinds:
-  question  Code needs a clarification to build a story. Cowork answers in the same file.
-  job       a follow-on for Cowork once a story is built ("the route is done, now load all the data").
+Everything else is a thread in _dev/cowork-inbox/MSG-<date>-<nnn>.md (MSG-<date>-<PFX>-<nnn> in team mode), opened and moved only by
+this tool. One route for every message: a poller asks a peer, tells all its peers, hands work over, or asks Cowork, the same way.
+Header fields: id, kind, to, from, topic, story, chain, depth, status, opened, needs, counter_questions_used, acks, tried_by, lease,
+spawned, subject, closed (a thread written before 1.12.0 has no `to`/`from`/`topic`: it reads as to cowork, from the id's owner,
+technical).
+  kind   question  needs an answer (a reply format is required)
+         job       needs doing ("the route is done, now load all the data")
+         note      needs only an acknowledgement (`ack`); the only kind that may go to `all`
+  to     <login>   that member's poller only; nobody else may ack, claim or answer it
+         any       any other member's poller: the first to `ack` takes the thread lease (the git tool's thread_claim), so one works it
+         all       every other member's poller (notes only): it closes when the last of them has acked
+         cowork    the old meaning, the opener's own Cowork (a thread without `to` reads as this)
+  topic  technical (default; the poller answers itself) | business (the poller hands it to the business-analyst agent)
+  status awaiting-reply (the addressee's turn) | awaiting-opener (a counter-question came back) | answered | closed.
+         The older awaiting-cowork and awaiting-code read as the first two; every write uses the new names.
+A question or job may have `--story none` (its chain is the thread id and its depth 0; the per-story limits do not apply).
+Who may do what (team mode; single-player lets every command through): the opener (the thread's `from` login) closes, withdraws and
+answers a counter-question (`--as opener`, alias `code`); the addressee (`--as addressee`, alias `cowork`: the named login, the lease
+holder on `any`, any other member on `all`) acks, answers, declines, counter-questions once or throws back. A throw-back (only on
+`any`) releases the lease, adds the login to `tried_by` and returns the thread to awaiting-reply; the thrower's inbox no longer offers
+it, and once every member has thrown it back the opener's inbox shows `ALERT <id> nobody could do it`.
+Every write (open, ack, reply, close, spawn-story) then commits its paths and pushes them through the project's git tool
+(commit_paths, push; on a refused push, pull and push once more) when the project has a remote and this is not Cowork's VM; any
+failure prints `NOTE not pushed: ...` on stderr and the command still succeeds. A git tool without thread leases means no lease
+(`NOTE` says so).
 Cowork may spawn a user story from a thread it is working (a bug the job surfaced); the tool stamps it.
 
 Every post goes through this tool, and the tool enforces the limits in _config/dev-mail.json, so neither side can
 loop the other by choice or by mistake. The limits (change a number there to change the rule, no code):
   max_question_rounds_per_story         question threads one story may open (a round = one question and its answer)
-  max_counter_questions_per_question    times Cowork's reply may ask back; terse, and it must say the reply format
+  max_counter_questions_per_question    times the addressee's reply may ask back; terse, and it must say the reply format
   max_counter_question_chars            the length cap on a counter-question
   max_body_chars                        the length cap on every other turn
   max_jobs_per_story                    follow-on jobs one story may open
   max_chain_depth                       root story 0, a job from it 1, a story spawned from that job 2. Deeper is refused
   max_stories_spawned_per_thread        stories Cowork may spawn from one thread
-  max_open_threads                      threads open at once, over the whole mailbox
   max_posts_per_day                     threads opened plus stories spawned in one day, a backstop
   stale_after_days                      `list` flags a thread older than this, so a poller that isn't running shows
-Structural rules (not numbers): only a person starts a chain; one open question per story; a reply from Code is an
-answer and never a question; a thread has one status that moves forward; a refusal is final, not retried (the
+  ack_alert_hours (optional, 24)        an unacknowledged thread older than this is an ALERT in its opener's `inbox`
+  thread_lease_minutes (optional, 240)  how long `ack` holds the thread lease on an `any` thread
+  max_chats_per_day (optional, 3)       chat messages per member per day (`chat`)
+  (max_open_threads is gone: a config that still has it loads, and the key is ignored.)
+Structural rules (not numbers): only a person starts a chain; one open question per story; an addressee's reply is an
+answer and never a question after its one counter-question; a thread has one status that moves forward; a refusal is final, not retried (the
 caller records it under "for <owner>" in the story's result block; the owner is `inbox.owner` in .claude/scaffolding.json).
 Story fields (stories dated 2026-10-27 or later): a story carries `epic: none | B-<nnn>` (an item in backlog/), `priority: P<1-5>`
 with `priority_reason: <rubric line>`, `size: XS|S|M|L|XL` and `depends_on: none | <story ids, comma separated>` (conditions that
@@ -38,7 +64,7 @@ take turns holding the pen (scaffold_git.py pen; `team` prints its state, read t
 `team --grant-writer LOGIN` / `--revoke-writer LOGIN`, which rewrite `data_writers` in scaffolding.json (commit and push it after). The git-ignored .claude/member.json ({"login": ...}) says which
 member this machine is (`team --me LOGIN` writes it). Ids then carry the minter's prefix (DEV-<date>-GC-<nnn>, MSG-<date>-GC-<nnn>),
 numbered among that prefix's ids only, so two machines never mint the same id. A story or thread belongs to the member whose prefix its
-id carries (unprefixed: the owner); `list` shows only your own threads; `check-story` wants the owner member's name on the
+id carries (unprefixed: the owner); `list --for code` shows only your own threads (`from` your login) and `inbox` what is waiting on you; `check-story` wants the owner member's name on the
 `requested:` line. The story queue is shared (Russell, 2026-10-28): `queue` shows every member's waiting stories, and a claim takes a
 lease on origin (scaffold_git.py claim), so the first Mac to claim a story builds it. A claimed story belongs to its `claimed_by:` member
 (claimer_of), else the id's. A story with `needs: data-writer` is left out of the queue on a Mac that is not a data writer.
@@ -60,16 +86,27 @@ read; no story is rewritten.
 A story that names a backlog item in `requested:` (or as `priority_reason: from B-<nnn>`) must carry that item as its `epic:`, or the
 check refuses it. `epics` reads which stories belong to which backlog item (story_epic) and keeps each item's status in step.
 
-Commands (exit 0 done, 1 error, 2 refused by a limit):
+Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
   limits                                          print the limits
   budget --story ID                               what ID may still open
-  list --for code|cowork                          threads waiting on that side; `NOTHING` when none
+  inbox                                           the one call a poller makes every session and every pass: for this machine's member,
+        `REPLY <id> <kind> <topic> to=<to> from=<login> | <subject>` (waiting on you), `ANSWERED ...` and `COUNTER ...` (your own
+        threads to close or answer back), `ALERT <id> <why> | <subject>` (your own, unacknowledged past ack_alert_hours or thrown back
+        by everyone); `NOTHING` when there is none. A business REPLY carries `business` so it goes to the business-analyst.
+  list --for code|cowork                          code: your own threads waiting on you (opener side); cowork: threads waiting on
+        Cowork (to cowork, or in single-player any) plus anything addressed to this member; `NOTHING` when none
   show THREAD
-  open --kind question|job --story ID --subject S (--body T | --body-file F|-) [--reply-format R] [--after-merge]   (Code)
-        --after-merge (jobs): Cowork's list hides the job until the story is in done/ (the route is on master)
-  reply THREAD --as cowork|code --type answer|cannot-answer|counter-question|done|declined
-        (--body T | --body-file F|-) [--reply-format R]
-  close THREAD [--withdraw]                       (Code) file an answered thread; --withdraw drops one still waiting
+  chat [--to LOGIN|all] (--body T | --body-file F|-)   banter for the other pollers, one file in _dev/chat/<yyyy-mm>/, committed and
+        pushed; at most max_chats_per_day per member per day; never an instruction. `chat --read` prints unread chat (to you or
+        all, from others) and marks it read in the git-ignored .claude/mail-read.json; `inbox` lists it as `CHAT <name> ...`
+  open --kind question|job|note --story ID|none [--to LOGIN|any|all|cowork] [--topic business|technical] --subject S
+        (--body T | --body-file F|-) [--reply-format R] [--after-merge]   (default: --to any --topic technical)
+        --after-merge (jobs): the addressee's list hides the job until the story is in done/ (the route is on master)
+  ack THREAD                                      the addressee records it has read the thread (`acks:`); on `any` it takes the thread
+        lease (TAKEN, exit 2, when another holds it live); on `all` the last member's ack closes the note
+  reply THREAD --as addressee|opener --type answer|cannot-answer|counter-question|done|declined|throw-back
+        (--body T | --body-file F|-) [--reply-format R]     (--as cowork = addressee, --as code = opener)
+  close THREAD [--withdraw]                       the opener's alone: file an answered thread; --withdraw drops one still waiting
   spawn-story --thread THREAD --file DRAFT.md     (Cowork) write a stamped story into _dev/code-inbox/
   check-story ID                                  verify a story before building it (Code, at claim): its lineage (who asked),
         a ui story's `ui:` line (when the components piece or inbox.require_ui is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning
@@ -103,19 +140,25 @@ Run it from any checkout or worktree: the root is the project, found from this f
 """
 import argparse, datetime, glob, hashlib, importlib.util, json, os, re, subprocess, sys
 
-VERSION = "1.11.0"
 
 CONFIG_REL = os.path.join("_config", "dev-mail.json")
 LIMIT_MIN = {
     "max_question_rounds_per_story": 0, "max_counter_questions_per_question": 0, "max_counter_question_chars": 1,
     "max_body_chars": 1, "max_jobs_per_story": 0, "max_chain_depth": 0, "max_stories_spawned_per_thread": 0,
-    "max_open_threads": 1, "max_posts_per_day": 1, "stale_after_days": 1,
+    "max_posts_per_day": 1, "stale_after_days": 1,
 }
+OPTIONAL_LIMITS = {"ack_alert_hours": (24, 1), "thread_lease_minutes": (240, 1), "max_chats_per_day": (3, 0)}   # key: (default, minimum)
+IGNORED_KEYS = ("max_open_threads",)    # gone in 1.12.0: a config that still has it loads, and the key is dropped
 STORY_FIELDS = ["title", "kind", "design_impact", "requested", "goal", "acceptance", "files_or_areas", "decided",
                 "out_of_scope", "validate"]
-HEAD_ORDER = ["id", "kind", "story", "chain", "depth", "status", "opened", "needs", "counter_questions_used", "spawned",
-              "subject", "closed"]
-COWORK_TYPES = {"question": ("answer", "cannot-answer", "counter-question"), "job": ("done", "declined")}
+HEAD_ORDER = ["id", "kind", "to", "from", "topic", "story", "chain", "depth", "status", "opened", "needs", "counter_questions_used",
+              "acks", "tried_by", "lease", "spawned", "subject", "closed"]
+KINDS = ("question", "job", "note")
+ADDRESSEE_TYPES = {"question": ("answer", "cannot-answer", "counter-question"), "job": ("done", "declined"), "note": ("answer",)}
+TOPICS = ("technical", "business")
+ROLES = {"addressee": "addressee", "cowork": "addressee", "opener": "opener", "code": "opener"}   # --as, with the old names as aliases
+STATUS_NAMES = {"awaiting-cowork": "awaiting-reply", "awaiting-code": "awaiting-opener"}          # read as; every write uses the right-hand names
+THREAD_UNUSED = "THREAD lease not used"    # the start of the git tool's answer when the project has no remote (no thread leases)
 STORY_RE = re.compile(r"^DEV-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}$")
 PRIORITY_FROM = "2026-10-27"   # stories with ids dated before this carry no priority/size/depends_on rules
 FIELDS_FROM = "2026-10-27"     # from this day a story keeps epic, priority, priority_reason, depends_on and title to one form each;
@@ -158,10 +201,13 @@ def load_config(path):
             cfg = json.load(f)
     except FileNotFoundError:
         raise MailError(f"{path} is missing: it holds the mailbox limits")
-    bad = sorted(set(cfg) ^ set(LIMIT_MIN))
+    cfg = {k: v for k, v in cfg.items() if k not in IGNORED_KEYS}
+    bad = sorted((set(cfg) - set(LIMIT_MIN) - set(OPTIONAL_LIMITS)) | (set(LIMIT_MIN) - set(cfg)))
     if bad:
         raise MailError(f"{path}: unknown or missing keys {bad}")
-    for k, lo in LIMIT_MIN.items():
+    for k, (default, _) in OPTIONAL_LIMITS.items():
+        cfg.setdefault(k, default)
+    for k, lo in dict(LIMIT_MIN, **{k: lo for k, (_, lo) in OPTIONAL_LIMITS.items()}).items():
         if not isinstance(cfg[k], int) or isinstance(cfg[k], bool) or cfg[k] < lo:
             raise MailError(f"{path}: {k} must be a whole number >= {lo}")
     return cfg
@@ -391,7 +437,7 @@ def load_team(root):
 
 DEFAULT_GIT_TOOL = "_tools/scaffold_git.py"
 LOCAL_FILES = (".claude/member.json", ".claude/pen.json", ".claude/pen.json.released", ".claude/pen-wanted.json",
-               ".claude/jira-sync.json")   # the per-machine files scaffold_git.py keeps out of git (its LOCAL_FILES)
+               ".claude/jira-sync.json", ".claude/mail-read.json")   # the per-machine files scaffold_git.py keeps out of git (its LOCAL_FILES)
 
 
 def git_tool_rel(root):
@@ -991,7 +1037,7 @@ def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None,
 
 def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None):
     """stories: [{"id", "where": "code-inbox"|"in-progress"|"done"|"staged", "fields": dict, "rejected": bool,
-                  "status": str|None}]  # status: the Result block's `- status:` word, if known (built|blocked|failed|waiting)
+                  "status": str|None}]  # status: the Result block's `- status:` word, if known (built|partial|blocked|failed|waiting)
     Duplicates are resolved by the caller. Returns {"order": [ready ids in claim order], "held": [(id, why)],
     "info": {id: {priority, priority_now, size, expedite, deps, waits_for, blocks, state, why, age_days, problems}},
     "alerts": [str]}."""
@@ -1178,8 +1224,13 @@ EPICS_JSON_KEYS = ("id", "status", "done", "open", "rejected", "waits_on", "verd
 
 
 class Mail:
-    def __init__(self, root, today=None, action_status=None):
+    def __init__(self, root, today=None, action_status=None, now=None):
         self.root = root
+        self._clock = now                    # a datetime for tests; else the real time
+        self.notes = []                      # NOTE lines for stderr (a git step that did not happen); the command still succeeds
+        self._git_cache = None
+        self._warned = set()
+        self._holders = None                 # {id: holder} from one thread_holders read, False when unusable
         self._action_status = action_status   # id -> "open"|"done"|"dropped"|None; else the project's _tools/backlog_waits.py
         self._hook = None
         self.today = today or datetime.date.today()
@@ -1321,14 +1372,14 @@ class Mail:
         return sum(1 for h, _, _ in self.threads() if h.get("story") == story and h.get("kind") == kind)
 
     def _need_room(self):
-        open_n = sum(1 for h, _, _ in self.threads() if h.get("status") != "closed")
-        if open_n >= self.cfg["max_open_threads"]:
-            raise Refused(f"{open_n} threads are already open (max_open_threads {self.cfg['max_open_threads']})")
         if self.posts_today() >= self.cfg["max_posts_per_day"]:
             raise Refused(f"today's posting cap is reached (max_posts_per_day {self.cfg['max_posts_per_day']})")
 
+    def _now_dt(self):
+        return self._clock or datetime.datetime.now()
+
     def _now(self):
-        return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+        return self._now_dt().strftime("%Y-%m-%dT%H:%M")
 
     def _check_body(self, body, limit_key="max_body_chars"):
         if not body or not body.strip():
@@ -1355,27 +1406,203 @@ class Mail:
                 "question_rounds_left": max(0, c["max_question_rounds_per_story"] - self._used(story, "question")),
                 "jobs_left": 0 if s["depth"] + 1 > c["max_chain_depth"] else max(0, c["max_jobs_per_story"] - self._used(story, "job"))}
 
-    # --- Code opens a thread -------------------------------------------------------------------------------
-    def open(self, kind, story, subject, body, reply_format=None, after_merge=False):
-        if kind not in COWORK_TYPES:
-            raise MailError(f"kind must be question or job, not {kind!r}")
+    # --- who is who: identity, addressing, git -------------------------------------------------------------
+    def _login(self):
+        """This machine's member login; in single-player the owner or `local` (no permission is checked there)."""
+        if self.team:
+            self._need_me()
+            return self.me
+        return self.owner or "local"
+
+    def _norm(self, h):
+        """A thread's header as it reads now: to, from, topic, status, acks {login: time}, tried_by [login]. A thread written
+        before 1.12.0 has no `to`/`from`/`topic` (it reads as to cowork, from the id's owner, technical) and may carry the
+        older status names."""
+        frm = h.get("from") or (owner_of(h.get("id"), self.team) if self.team else (self.owner or "local")) or ""
+        acks = {}
+        for part in (h.get("acks") or "").split(","):
+            who, _, at = part.strip().partition(" ")
+            if who and who != "none":
+                acks[who] = at.strip()
+        tried = [t.strip() for t in (h.get("tried_by") or "").split(",") if t.strip() and t.strip() != "none"]
+        return {"to": h.get("to") or "cowork", "from": frm, "topic": h.get("topic") or "technical",
+                "status": STATUS_NAMES.get(h.get("status"), h.get("status")), "acks": acks, "tried_by": tried}
+
+    def _addressees(self, hn):
+        """Team mode: the logins that may act as the addressee. `any` and `all` mean every member but the opener; `cowork` is
+        the opener's own Cowork (the same login)."""
+        if hn["to"] in ("any", "all"):
+            return [m for m in self.team["members"] if m != hn["from"]]
+        return [hn["from"]] if hn["to"] == "cowork" else [hn["to"]]
+
+    def _is_addressee(self, hn, login):
+        return not self.team or login in self._addressees(hn)
+
+    def _is_opener(self, hn, login):
+        return not self.team or hn["from"] == login
+
+    def _need_addressee(self, tid, hn, login):
+        if not self._is_addressee(hn, login):
+            raise TeamRefused(f"{tid} is not addressed to {login} (to {hn['to']}, from {hn['from']}): only the addressee may do this")
+        if self.team and hn["to"] == "any" and login in hn["tried_by"]:
+            raise TeamRefused(f"{login} threw {tid} back: it is not offered to {login} again")
+
+    def _need_opener(self, tid, hn, login):
+        if not self._is_opener(hn, login):
+            raise TeamRefused(f"{tid} was opened by {hn['from']}, not {login}: only the opener may do this")
+
+    def _turn_from(self, role, login):
+        return login if self.team else ("cowork" if role == "addressee" else "code")
+
+    # --- git: the thread lease and the commit-and-push of every write --------------------------------------
+    def _git(self):
+        if self._git_cache is None:
+            self._git_cache = load_git_tool(self.root)
+        return self._git_cache
+
+    def _tool_with(self, attr, what):
+        """The git tool module when it has `attr`, else None with one NOTE line saying `what` is not done."""
+        mod, rel = self._git()
+        if mod is not None and hasattr(mod, attr):
+            return mod
+        if what not in self._warned:
+            self._warned.add(what)
+            self.notes.append(f"NOTE {what}: {rel} {'not found' if mod is None else 'has no ' + attr}")
+        return None
+
+    def _claim(self, tid):
+        """Take the thread lease (ttl thread_lease_minutes). Returns the lease line's expiry, or None when there is no lease
+        system (no remote, or no git tool). TAKEN by a live holder is a TeamRefused naming the holder."""
+        mod = self._tool_with("thread_claim", "thread lease not used")
+        if mod is None:
+            return None
+        try:
+            self._holders = None
+            rc, msg = mod.thread_claim(self.root, tid, self.cfg["thread_lease_minutes"] * 60)
+        except Exception as e:
+            raise MailError(f"could not take the lease of {tid}: {e}")
+        if rc == 0:
+            m = re.search(r"until (\S+)", msg or "")
+            return None if (msg or "").startswith(THREAD_UNUSED) or not m else m.group(1)
+        if rc == 2:
+            raise TeamRefused(f"{tid} is TAKEN: {msg}")
+        raise MailError(f"could not take the lease of {tid}: {msg}")
+
+    def _holder(self, tid):
+        """(usable, holder): the thread lease's live-or-expired holder from the git tool. Not usable when there is no lease
+        system or the read failed. Within one command, every lease is read once (thread_holders) where the tool has it."""
+        if self._holders is None:
+            mod, _ = self._git()
+            self._holders = False
+            if mod is not None and hasattr(mod, "thread_holders"):
+                try:
+                    rc, msg, found = mod.thread_holders(self.root)
+                    if rc == 0 and not (msg or "").startswith(THREAD_UNUSED):
+                        self._holders = found
+                except Exception:
+                    pass
+        if self._holders is not False:
+            return True, self._holders.get(tid)
+        mod = self._tool_with("thread_holder", "thread lease not used")
+        if mod is None:
+            return False, None
+        try:
+            rc, msg, holder = mod.thread_holder(self.root, tid)
+        except Exception:
+            return False, None
+        return (rc == 0 and not (msg or "").startswith(THREAD_UNUSED)), (holder if rc == 0 else None)
+
+    def _release(self, tid):
+        mod = self._tool_with("thread_release", "thread lease not released")
+        if mod is None:
+            return
+        try:
+            self._holders = None
+            rc, msg = mod.thread_release(self.root, tid)
+        except Exception as e:
+            rc, msg = 3, str(e)
+        if rc == 3:
+            self.notes.append(f"NOTE thread lease not released: {msg}")
+
+    def _has_remote(self):
+        try:
+            r = subprocess.run(["git", "-C", self.root, "remote"], capture_output=True, text=True, timeout=20)
+        except (OSError, subprocess.SubprocessError):
+            return False
+        return r.returncode == 0 and bool(r.stdout.strip())
+
+    def _sync(self, verb, tid, paths):
+        """Commit `paths` (absolute) and push them through the project's git tool. Skipped without a remote, and in Cowork's VM.
+        Any failure becomes a NOTE and never fails the command: the poller's next pass pushes."""
+        if not self._has_remote():
+            return
+        mod, rel = self._git()
+        if mod is None or not all(hasattr(mod, a) for a in ("commit_paths", "push", "pull")):
+            self.notes.append(f"NOTE not pushed: {rel} {'not found' if mod is None else 'lacks commit_paths, push or pull'}")
+            return
+        try:
+            if hasattr(mod, "in_cowork_vm") and mod.in_cowork_vm(self.root):
+                self.notes.append("NOTE not committed (Cowork VM)")
+                return
+            rels = []
+            for p in paths:
+                r = os.path.relpath(p, self.root).replace(os.sep, "/")
+                if r not in rels:
+                    rels.append(r)
+            rc, msg = mod.commit_paths(self.root, f"mail: {verb} {tid} ({self._login()})", rels)
+            if rc != 0:
+                self.notes.append(f"NOTE not pushed: {msg}")
+                return
+            rc, msg = mod.push(self.root)
+            if rc == 2:
+                rc, msg = mod.pull(self.root)
+                if rc == 0:
+                    rc, msg = mod.push(self.root)
+            if rc != 0:
+                self.notes.append(f"NOTE not pushed: {msg}")
+        except Exception as e:
+            self.notes.append(f"NOTE not pushed: {e}")
+
+    # --- opening a thread -----------------------------------------------------------------------------------
+    def open(self, kind, story, subject, body, reply_format=None, after_merge=False, to="any", topic="technical"):
+        if kind not in KINDS:
+            raise MailError(f"kind must be question, job or note, not {kind!r}")
+        if topic not in TOPICS:
+            raise MailError(f"topic must be business or technical, not {topic!r}")
         if after_merge and kind != "job":
             raise MailError("--after-merge is for jobs only")
-        s = self.find_story(story, active_only=True)
+        no_story = story == "none"
+        if after_merge and no_story:
+            raise MailError("--after-merge needs a story")
+        login = self._login()
+        if to == "all" and kind != "note":
+            raise MailError("only a note may go to all: a question or a job goes to one poller (--to any or a login)")
+        if self.team:
+            others = [m for m in self.team["members"] if m != login]
+            if to in ("any", "all") and not others:
+                raise MailError(f"--to {to} needs another team member, and {login} is the only one")
+            if to not in ("any", "all", "cowork") and to not in self.team["members"]:
+                raise MailError(f"--to {to!r}: not a team member (members: {', '.join(self.team['members'])}; or any, all, cowork)")
+            if to == login:
+                raise MailError(f"--to {to}: that is this member; use --to cowork for your own Cowork")
+        elif to not in ("any", "cowork"):
+            raise MailError("this project has no team: --to is any or cowork")
         c = self.cfg
+        s = None if no_story else self.find_story(story, active_only=True)
         self._check_body(body)
         subject = " ".join(subject.split())
         if not subject:
             raise MailError("a thread needs a subject")
+        depth = 0 if no_story else s["depth"]
         if kind == "question":
             if not reply_format:
                 raise MailError("a question must say the reply format it needs (--reply-format), e.g. 'one of A | B' or 'a date'")
-            if self._used(story, "question") >= c["max_question_rounds_per_story"]:
-                raise Refused(f"{story} has used its {c['max_question_rounds_per_story']} question rounds (max_question_rounds_per_story)")
-            if any(h.get("story") == story and h.get("kind") == "question" and h.get("status") != "closed" for h, _, _ in self.threads()):
-                raise Refused(f"{story} already has a question open: wait for its answer")
-            depth = s["depth"]
-        else:
+            if not no_story:
+                if self._used(story, "question") >= c["max_question_rounds_per_story"]:
+                    raise Refused(f"{story} has used its {c['max_question_rounds_per_story']} question rounds (max_question_rounds_per_story)")
+                if any(h.get("story") == story and h.get("kind") == "question" and h.get("status") != "closed" for h, _, _ in self.threads()):
+                    raise Refused(f"{story} already has a question open: wait for its answer")
+        elif kind == "job" and not no_story:
             if s["depth"] + 1 > c["max_chain_depth"]:
                 raise Refused(f"{story} is at chain depth {s['depth']} and a job would be depth {s['depth'] + 1} (max_chain_depth {c['max_chain_depth']})")
             if self._used(story, "job") >= c["max_jobs_per_story"]:
@@ -1386,32 +1613,111 @@ class Mail:
         n = self._next_id("MSG", [os.path.basename(p) for p in self._thread_files()])
         while True:
             tid = f"MSG-{self.today.isoformat()}-{self._id_tag()}{n:03d}"
-            h = {"id": tid, "kind": kind, "story": story, "chain": s["chain"], "depth": str(depth), "status": "awaiting-cowork",
+            h = {"id": tid, "kind": kind, "to": to, "from": login, "topic": topic, "story": story,
+                 "chain": tid if no_story else s["chain"], "depth": str(depth), "status": "awaiting-reply",
                  "opened": self.today.isoformat(), "counter_questions_used": "0", "spawned": "none", "subject": subject}
-            turn = {"from": "code", "type": kind, "at": self._now(), "body": _clean(body)}
+            turn = {"from": self._turn_from("opener", login), "type": kind, "at": self._now(), "body": _clean(body)}
             if reply_format:
                 turn["reply_format"] = " ".join(reply_format.split())
             if after_merge:
                 h["needs"] = "story-merged"
-            if _publish(os.path.join(self.box, tid + ".md"), render_thread(h, [turn])):
+            path = os.path.join(self.box, tid + ".md")
+            if _publish(path, render_thread(h, [turn])):
+                self._sync("open", tid, [path])
                 return tid
             n += 1
 
-    # --- a reply -------------------------------------------------------------------------------------------
-    def reply(self, tid, who, typ, body, reply_format=None):
+    # --- acknowledging --------------------------------------------------------------------------------------
+    @staticmethod
+    def _put_acks(h, acks):
+        if acks:
+            h["acks"] = ", ".join(f"{who} {at}".strip() for who, at in acks.items())
+
+    def _close_file(self, h, turns, path, withdrawn=False):
+        """Mark the thread closed and move it into closed/<yyyy-mm>/. Returns the new path."""
+        h["status"] = "closed"
+        h["closed"] = self.today.isoformat() + (" withdrawn" if withdrawn else "")
+        dest = os.path.join(self.closed_dir, self.today.strftime("%Y-%m"))
+        os.makedirs(dest, exist_ok=True)
+        _replace(path, render_thread(h, turns))
+        new = os.path.join(dest, h["id"] + ".md")
+        os.rename(path, new)  # rename, not copy and delete: the mount refuses unlink
+        return new
+
+    def _take(self, tid, h, hn, login):
+        """The addressee takes the thread: on `any` the lease (TAKEN refuses), and its ack is recorded. Returns whether h changed."""
+        changed = False
+        if self.team and hn["to"] == "any":
+            expires = self._claim(tid)
+            if expires:
+                h["lease"] = f"{login} until {expires}"
+                changed = True
+        if login not in hn["acks"]:
+            hn["acks"][login] = self._now()
+            self._put_acks(h, hn["acks"])
+            changed = True
+        return changed
+
+    def ack(self, tid):
+        """`ack THREAD`: the addressee says it has read the thread (and, on `any`, takes the lease). Returns (status, lease line).
+        A note needs nothing more: acked by its one addressee it is answered (for the opener to close); sent to `all` it closes
+        itself when the last member has acked."""
         h, turns, path = self.load(tid)
-        if who not in ("code", "cowork"):
-            raise MailError("--as must be code or cowork")
-        status, kind, c = h["status"], h["kind"], self.cfg
+        hn = self._norm(h)
+        login = self._login()
+        if hn["status"] != "awaiting-reply":
+            raise MailError(f"{tid} is {hn['status']}: nothing to acknowledge")
+        self._need_addressee(tid, hn, login)
+        changed = self._take(tid, h, hn, login)
+        paths = [path]
+        if h["kind"] == "note":
+            if hn["to"] == "all":
+                if self.team and set(self._addressees(hn)) <= set(hn["acks"]):
+                    paths.append(self._close_file(h, turns, path))
+                    self._sync("ack", tid, paths)
+                    return "closed", None
+            else:
+                h["status"] = "answered"
+                changed = True
+        if changed:
+            _replace(path, render_thread(h, turns))
+            self._sync("ack", tid, paths)
+        return h["status"], h.get("lease")
+
+    # --- a reply --------------------------------------------------------------------------------------------
+    def reply(self, tid, who, typ, body, reply_format=None):
+        role = ROLES.get(who)
+        if not role:
+            raise MailError("--as must be addressee or opener (cowork and code still work for these)")
+        h, turns, path = self.load(tid)
+        hn = self._norm(h)
+        status, kind, c = hn["status"], h["kind"], self.cfg
+        login = self._login()
         if status == "closed" or status == "answered":
             raise MailError(f"{tid} is {status}: nothing to reply to")
-        turn = {"from": who, "type": typ, "at": self._now()}
-        if who == "cowork":
-            if status != "awaiting-cowork":
-                raise MailError(f"{tid} is {status}: not Cowork's turn")
-            if typ not in COWORK_TYPES[kind]:
-                raise MailError(f"on a {kind} thread Cowork replies with one of {', '.join(COWORK_TYPES[kind])}, not {typ!r}")
-            if typ == "counter-question":
+        turn = {"from": self._turn_from(role, login), "type": typ, "at": self._now()}
+        paths = [path]
+        if role == "addressee":
+            if status != "awaiting-reply":
+                raise MailError(f"{tid} is {status}: not the addressee's turn")
+            self._need_addressee(tid, hn, login)
+            if typ == "throw-back":
+                if hn["to"] != "any" or not self.team:
+                    raise MailError("throw-back is for a thread sent to any poller (--to any) in a team")
+                self._check_body(body)
+                holder_known, holder = self._holder(tid)
+                if holder_known and holder and holder["live"] and not holder["ours"] and holder["login"] != login:
+                    raise TeamRefused(f"{tid} is TAKEN: the lease is {holder['login']}'s until {holder['expires']}")
+                h["tried_by"] = ", ".join(hn["tried_by"] + [login])
+                hn["acks"].pop(login, None)
+                h.pop("acks", None)
+                self._put_acks(h, hn["acks"])
+                h.pop("lease", None)
+                h["status"] = "awaiting-reply"
+                self._release(tid)
+            elif typ not in ADDRESSEE_TYPES[kind]:
+                raise MailError(f"on a {kind} thread the addressee replies with one of {', '.join(ADDRESSEE_TYPES[kind])}, not {typ!r}")
+            elif typ == "counter-question":
                 used = int(h["counter_questions_used"])
                 if used >= c["max_counter_questions_per_question"]:
                     raise Refused(f"{tid} has used its {c['max_counter_questions_per_question']} counter-questions "
@@ -1419,43 +1725,73 @@ class Mail:
                 if not reply_format:
                     raise MailError("a counter-question must say the reply format it needs (--reply-format)")
                 self._check_body(body, "max_counter_question_chars")
+                self._reply_take(tid, h, hn, login)
                 h["counter_questions_used"] = str(used + 1)
-                h["status"] = "awaiting-code"
+                h["status"] = "awaiting-opener"
                 turn["reply_format"] = " ".join(reply_format.split())
             else:
-                self._check_body(body)
-                h["status"] = "answered"
+                if kind == "note" and not (body or "").strip():
+                    body = "(acknowledged)"
+                else:
+                    self._check_body(body)
+                self._reply_take(tid, h, hn, login)
+                h["status"] = "awaiting-reply" if (kind == "note" and hn["to"] == "all") else "answered"
+                if self.team and hn["to"] == "any" and h.get("lease"):
+                    self._release(tid)                     # the work is done: the lease would only sit until it expired
+                    h.pop("lease", None)
         else:
-            if status != "awaiting-code":
-                raise MailError(f"{tid} is {status}: not Code's turn")
+            if status != "awaiting-opener":
+                raise MailError(f"{tid} is {status}: not the opener's turn")
+            self._need_opener(tid, hn, login)
             if typ != "answer":
-                raise MailError("Code replies to a counter-question with an answer, never a question")
+                raise MailError("the opener replies to a counter-question with an answer, never a question")
             self._check_body(body)
-            h["status"] = "awaiting-cowork"
+            h["status"] = "awaiting-reply"
         turn["body"] = _clean(body)
         _replace(path, render_thread(h, turns + [turn]))
+        if h["status"] == "awaiting-reply" and kind == "note" and hn["to"] == "all" and self.team \
+                and set(self._addressees(hn)) <= set(self._norm(h)["acks"]):
+            _, t2, p2 = self.load(tid)
+            paths.append(self._close_file(h, t2, p2))
+        self._sync("reply", tid, paths)
         return h["status"]
 
-    # --- Code files a thread -------------------------------------------------------------------------------
+    def _reply_take(self, tid, h, hn, login):
+        """Before an addressee's answer or counter-question: on `any` it must hold the lease (taking it, and so acking, if it has
+        not yet; a lease someone else holds live is TAKEN) or there is no lease system; on `all` the reply counts as its ack."""
+        if not self.team:
+            return
+        if hn["to"] == "any":
+            known, holder = self._holder(tid)
+            live = known and holder and holder["live"]
+            if live and not (holder["ours"] or holder["login"] == login):
+                raise TeamRefused(f"{tid} is TAKEN: the lease is {holder['login']}'s until {holder['expires']}")
+            if login not in hn["acks"] or (known and not live):
+                self._take(tid, h, hn, login)
+        elif login not in hn["acks"]:
+            hn["acks"][login] = self._now()
+            self._put_acks(h, hn["acks"])
+
+    # --- the opener files a thread --------------------------------------------------------------------------
     def close(self, tid, withdraw=False):
         h, turns, path = self.load(tid)
-        if h["status"] == "closed":
+        hn = self._norm(h)
+        if hn["status"] == "closed":
             raise MailError(f"{tid} is already closed")
-        if h["status"] != "answered" and not withdraw:
-            raise MailError(f"{tid} is {h['status']}: close only an answered thread (--withdraw drops one still waiting)")
-        h["status"] = "closed"
-        h["closed"] = self.today.isoformat() + (" withdrawn" if withdraw else "")
-        dest = os.path.join(self.closed_dir, self.today.strftime("%Y-%m"))
-        os.makedirs(dest, exist_ok=True)
-        _replace(path, render_thread(h, turns))
-        os.rename(path, os.path.join(dest, tid + ".md"))  # rename, not copy and delete: the mount refuses unlink
+        self._need_opener(tid, hn, self._login())
+        if hn["status"] != "answered" and not withdraw:
+            raise MailError(f"{tid} is {hn['status']}: close only an answered thread (--withdraw drops one still waiting)")
+        new = self._close_file(h, turns, path, withdraw)
+        self._sync("close" if not withdraw else "withdraw", tid, [path, new])
 
     # --- Cowork spawns a story -----------------------------------------------------------------------------
     def spawn_story(self, tid, draft_text):
         h, turns, path = self.load(tid)
         c = self.cfg
-        if h["status"] != "awaiting-cowork":
-            raise MailError(f"{tid} is {h['status']}: Cowork spawns a story only while it is working the thread")
+        hn = self._norm(h)
+        if hn["status"] != "awaiting-reply":
+            raise MailError(f"{tid} is {hn['status']}: Cowork spawns a story only while it is working the thread")
+        self._need_addressee(tid, hn, self._login())
         depth = int(h["depth"]) + 1
         if depth > c["max_chain_depth"]:
             raise Refused(f"a story spawned from {tid} would be chain depth {depth} (max_chain_depth {c['max_chain_depth']}): "
@@ -1480,11 +1816,13 @@ class Mail:
             sid = f"DEV-{self.today.isoformat()}-{self._id_tag()}{n:03d}"
             stamp = (f"id: {sid}\norigin: {tid}\nchain: {h['chain']}\ndepth: {depth}\nspawned: {self.today.isoformat()}\n"
                      f"requested: {self.today.isoformat()}, spawned by Cowork from {tid} (story {h['story']}), not a new request from {self.owner or 'the owner'}\n")
-            if _publish(os.path.join(self.stories_dir, sid + ".md"), stamp + body):
+            story_path = os.path.join(self.stories_dir, sid + ".md")
+            if _publish(story_path, stamp + body):
                 break
             n += 1
         h["spawned"] = ", ".join(spawned + [sid])
         _replace(path, render_thread(h, turns))
+        self._sync("spawn-story", tid, [path, story_path])
         return sid, depth
 
     # --- story priority -------------------------------------------------------------------------------------
@@ -1825,19 +2163,162 @@ class Mail:
     def story_merged(self, sid):
         return bool(glob.glob(os.path.join(self.dev, "done", "*", sid + ".md")))
 
+    def _lease_blocks(self, tid, login):
+        """On an `any` thread: a live lease held by someone else hides it from `login` (and an unreadable lease does not)."""
+        known, holder = self._holder(tid)
+        return bool(known and holder and holder["live"] and not holder["ours"] and holder["login"] != login)
+
+    def _waiting_on_me(self, h, hn):
+        """The inbox's REPLY rule: this thread waits on this member's poller."""
+        if hn["status"] != "awaiting-reply" or not self.team:
+            return False
+        me = self._login()
+        if hn["from"] == me:
+            return False
+        if h.get("needs") == "story-merged" and not self.story_merged(h["story"]):
+            return False
+        if hn["to"] == me:
+            return True
+        if hn["to"] == "all":
+            return me in self._addressees(hn) and me not in hn["acks"]
+        if hn["to"] == "any":
+            return me in self._addressees(hn) and me not in hn["tried_by"] and not self._lease_blocks(h["id"], me)
+        return False
+
+    def _line(self, h, hn):
+        return f"{h['kind']} {hn['topic']} to={hn['to']} from={hn['from']} | {h['subject']}"
+
+    def _opened_at(self, h, turns):
+        try:
+            return datetime.datetime.strptime(turns[0]["at"], "%Y-%m-%dT%H:%M")
+        except (IndexError, KeyError, ValueError):
+            return datetime.datetime.combine(datetime.date.fromisoformat(h["opened"]), datetime.time())
+
+    # --- chat: banter between pollers, never an instruction ------------------------------------------------
+    CHAT_RE = re.compile(r"^CHAT-(\d{4}-\d{2}-\d{2})T(\d{4})-([A-Za-z0-9._@-]+)-[0-9a-f]{4}\.md$")
+
+    def _chat_files(self):
+        return sorted(glob.glob(os.path.join(self.dev, "chat", "*", "CHAT-*.md")))
+
+    def chat(self, to, body):
+        """`chat --to LOGIN|all`: one message in its own file under _dev/chat/<yyyy-mm>/, committed and pushed. Returns its name."""
+        login = self._login()
+        if self.team and to != "all" and to not in self.team["members"]:
+            raise MailError(f"--to {to!r}: not a team member (members: {', '.join(self.team['members'])}; or all)")
+        self._check_body(body, "max_counter_question_chars")
+        day = self.today.isoformat()
+        sent = sum(1 for p in self._chat_files() for m in [self.CHAT_RE.match(os.path.basename(p))]
+                   if m and m.group(1) == day and m.group(3) == login)
+        if sent >= self.cfg["max_chats_per_day"]:
+            raise TeamRefused(f"{login} has sent {sent} chats today (max_chats_per_day {self.cfg['max_chats_per_day']}); "
+                              "save it for tomorrow")
+        now = self._now_dt()
+        folder = os.path.join(self.dev, "chat", now.strftime("%Y-%m"))
+        os.makedirs(folder, exist_ok=True)
+        while True:
+            name = f"CHAT-{day}T{now.strftime('%H%M')}-{login}-{os.urandom(2).hex()}.md"
+            path = os.path.join(folder, name)
+            text = f"from: {login}\nto: {to}\nat: {self._now()}\n\n{_clean(body)}\n"
+            if _publish(path, text):
+                self._sync("chat", name[:-3], [path])
+                return name[:-3]
+
+    def _chat_read_path(self):
+        return os.path.join(self.root, ".claude", "mail-read.json")
+
+    def _chat_marks(self):
+        """{login: the last chat name read}, from .claude/mail-read.json (per machine, keyed by member)."""
+        try:
+            with open(self._chat_read_path(), encoding="utf-8") as f:
+                marks = json.load(f).get("chat_read_until", {})
+            return {k: v for k, v in marks.items() if isinstance(v, str)} if isinstance(marks, dict) else {}
+        except (OSError, ValueError, AttributeError):
+            return {}
+
+    def _chat_seen(self):
+        return self._chat_marks().get(self._login(), "")
+
+    def chats_unread(self):
+        """[(name, header, body)] for chat to this member or all, from someone else, newer than the last `chat --read`."""
+        me, seen, out = self._login(), self._chat_seen(), []
+        for p in self._chat_files():
+            name = os.path.basename(p)[:-3]
+            if name <= seen:
+                continue
+            hd, _, body = _read(p).partition("\n\n")
+            h = dict(l.split(": ", 1) for l in hd.splitlines() if ": " in l)
+            if h.get("from") == me or h.get("to") not in ("all", me):
+                continue
+            out.append((name, h, body.strip()))
+        return out
+
+    def chat_read(self):
+        """`chat --read`: print the unread chat and remember where reading stopped (in the git-ignored .claude/mail-read.json)."""
+        msgs = self.chats_unread()
+        names = [os.path.basename(p)[:-3] for p in self._chat_files()]
+        if names:
+            os.makedirs(os.path.dirname(self._chat_read_path()), exist_ok=True)
+            marks = dict(self._chat_marks(), **{self._login(): max(names)})
+            _replace(self._chat_read_path(), json.dumps({"chat_read_until": marks}, sort_keys=True) + "\n")
+            keep_ignored(self.root)
+        return [f"{h.get('from')} to {h.get('to')} at {h.get('at')}: {body}" for _, h, body in msgs]
+
+    def inbox(self):
+        """The inbox lines for this machine's member: REPLY (waiting on you), ANSWERED and COUNTER (your own threads to close or
+        answer back), ALERT (your own, unacknowledged past ack_alert_hours or thrown back by every member); [] when nothing."""
+        me = self._login()
+        out = {"REPLY": [], "ANSWERED": [], "COUNTER": [], "ALERT": []}
+        hours = self.cfg["ack_alert_hours"]
+        for h, turns, _ in self.threads():
+            hn = self._norm(h)
+            if hn["status"] == "closed":
+                continue
+            tid = h["id"]
+            if self._waiting_on_me(h, hn):
+                out["REPLY"].append(f"REPLY {tid} " + self._line(h, hn))
+            if hn["from"] != me:
+                continue
+            if hn["status"] == "answered":
+                out["ANSWERED"].append(f"ANSWERED {tid} " + self._line(h, hn))
+            elif hn["status"] == "awaiting-opener":
+                out["COUNTER"].append(f"COUNTER {tid} " + self._line(h, hn))
+            elif hn["status"] == "awaiting-reply" and self.team and hn["to"] != "cowork":
+                who = self._addressees(hn)
+                if hn["to"] == "any" and who and set(who) <= set(hn["tried_by"]):
+                    out["ALERT"].append(f"ALERT {tid} nobody could do it ({', '.join(hn['tried_by'])} threw it back) | {h['subject']}")
+                    continue
+                silent = [w for w in who if w not in hn["acks"]] if hn["to"] != "any" else (who if not hn["acks"] else [])
+                age = (self._now_dt() - self._opened_at(h, turns)).total_seconds() / 3600
+                if silent and age >= hours:
+                    names = "any poller" if hn["to"] == "any" else ", ".join(silent)
+                    out["ALERT"].append(f"ALERT {tid} unacknowledged by {names} for {int(age)}h (ack_alert_hours {hours}) | {h['subject']}")
+        chat = [f"CHAT {n} from={h.get('from')} | {(b.splitlines() or [''])[0][:120]}" for n, h, b in self.chats_unread()] \
+            if self.team else []
+        return out["REPLY"] + out["ANSWERED"] + out["COUNTER"] + out["ALERT"] + chat
+
     def waiting(self, side):
-        want = {"code": ("awaiting-code", "answered"), "cowork": ("awaiting-cowork",)}[side]
+        """`list --for code|cowork`: code is this member's own threads waiting on them (answered, or a counter-question back);
+        cowork is the threads waiting on Cowork (to cowork from this member; in single-player also any) and anything addressed
+        to this member. The older line format, with the new status names."""
         out, held = [], 0
         if self.team:
             self._need_me()
+        me = self._login()
         for h, turns, _ in self.threads():
-            if h.get("status") in want and self._mine(h.get("id")):
-                if side == "cowork" and h.get("needs") == "story-merged" and not self.story_merged(h["story"]):
-                    held += 1
-                    continue
-                age = (self.today - datetime.date.fromisoformat(h["opened"])).days
-                flag = " STALE" if age >= self.cfg["stale_after_days"] else ""
-                out.append(f"{h['id']} {h['kind']} {h['status']} story={h['story']} depth={h['depth']}{flag} | {h['subject']}")
+            hn = self._norm(h)
+            if side == "code":
+                ok = hn["status"] in ("awaiting-opener", "answered") and (not self.team or hn["from"] == me)
+            else:
+                mine = (not self.team and hn["to"] in ("cowork", "any")) or (hn["to"] == "cowork" and hn["from"] == me)
+                ok = hn["status"] == "awaiting-reply" and (mine or self._waiting_on_me(h, hn))
+            if not ok:
+                continue
+            if side == "cowork" and h.get("needs") == "story-merged" and not self.story_merged(h["story"]):
+                held += 1
+                continue
+            age = (self.today - datetime.date.fromisoformat(h["opened"])).days
+            flag = " STALE" if age >= self.cfg["stale_after_days"] else ""
+            out.append(f"{h['id']} {h['kind']} {hn['status']} story={h['story']} depth={h['depth']}{flag} | {h['subject']}")
         if held:
             out.append(f"({held} job(s) held until their story is merged)") if out else None
         return out
@@ -1864,11 +2345,16 @@ def main(argv=None):
     p = sub.add_parser("list"); p.add_argument("--for", dest="side", choices=["code", "cowork"], required=True)
     p = sub.add_parser("show"); p.add_argument("thread")
     p = sub.add_parser("open")
-    p.add_argument("--kind", required=True, choices=["question", "job"]); p.add_argument("--story", required=True)
+    p.add_argument("--kind", required=True, choices=list(KINDS)); p.add_argument("--story", required=True, help="a story id, or none")
+    p.add_argument("--to", default="any", help="a member login, any, all (notes only) or cowork"); p.add_argument("--topic", default="technical", choices=list(TOPICS))
     p.add_argument("--subject", required=True); p.add_argument("--body"); p.add_argument("--body-file"); p.add_argument("--reply-format")
     p.add_argument("--after-merge", action="store_true")
-    p = sub.add_parser("reply"); p.add_argument("thread"); p.add_argument("--as", dest="who", required=True, choices=["code", "cowork"])
-    p.add_argument("--type", required=True, choices=["answer", "cannot-answer", "counter-question", "done", "declined"])
+    sub.add_parser("inbox")
+    p = sub.add_parser("ack"); p.add_argument("thread")
+    p = sub.add_parser("chat"); p.add_argument("--to", default="all"); p.add_argument("--body"); p.add_argument("--body-file")
+    p.add_argument("--read", action="store_true", help="print unread chat and mark it read")
+    p = sub.add_parser("reply"); p.add_argument("thread"); p.add_argument("--as", dest="who", required=True, choices=sorted(ROLES))
+    p.add_argument("--type", required=True, choices=["answer", "cannot-answer", "counter-question", "done", "declined", "throw-back"])
     p.add_argument("--body"); p.add_argument("--body-file"); p.add_argument("--reply-format")
     p = sub.add_parser("close"); p.add_argument("thread"); p.add_argument("--withdraw", action="store_true")
     p = sub.add_parser("spawn-story"); p.add_argument("--thread", required=True); p.add_argument("--file", required=True)
@@ -1880,6 +2366,7 @@ def main(argv=None):
     if a.cmd == "version":
         print(VERSION)
         return 0
+    m = None
     try:
         m = Mail(a.root)
         if a.cmd == "limits":
@@ -1894,8 +2381,20 @@ def main(argv=None):
         elif a.cmd == "show":
             print(_read(m.load(a.thread)[2]), end="")
         elif a.cmd == "open":
-            tid = m.open(a.kind, a.story, a.subject, _body(a), a.reply_format, a.after_merge)
-            print(f"OPENED {tid} (awaiting-cowork)")
+            tid = m.open(a.kind, a.story, a.subject, _body(a), a.reply_format, a.after_merge, a.to, a.topic)
+            print(f"OPENED {tid} (awaiting-reply, to {a.to})")
+        elif a.cmd == "inbox":
+            lines = m.inbox()
+            print("\n".join(lines) if lines else "NOTHING")
+        elif a.cmd == "chat":
+            if a.read:
+                lines = m.chat_read()
+                print("\n".join(lines) if lines else "NOTHING")
+            else:
+                print(f"SENT {m.chat(a.to, _body(a))}")
+        elif a.cmd == "ack":
+            status, lease = m.ack(a.thread)
+            print(f"ACKED {a.thread} now {status}" + (f" (lease {lease})" if lease else ""))
         elif a.cmd == "reply":
             print(f"REPLIED {a.thread} now {m.reply(a.thread, a.who, a.type, _body(a), a.reply_format)}")
         elif a.cmd == "close":
@@ -1926,10 +2425,14 @@ def main(argv=None):
             stories, result = m.queue_view()
             print("\n".join(format_queue(stories, result, a.stats)))
     except MailError as e:
+        for note in (m.notes if m else []):
+            print(note, file=sys.stderr)
         print(("REFUSED: " if isinstance(e, Refused) else "ERROR: ") + str(e), file=sys.stderr)
         if isinstance(e, Refused) and not isinstance(e, (TeamRefused, ModeRefused)):
             print(f"Final. Do not retry or work round it: record it under 'for {load_owner(a.root) or 'the owner'}' in the story's result.", file=sys.stderr)
         return e.exit_code
+    for note in m.notes:
+        print(note, file=sys.stderr)
     return 0
 
 

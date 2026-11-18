@@ -333,6 +333,9 @@ services:
         source: /gcsp/greg/cases
         destination: /gcsp/index.html
       - type: rewrite
+        source: /gcsp/greg/plan
+        destination: /gcsp/index.html
+      - type: rewrite
         source: /gcsp/comparison
         destination: /gcsp/index.html
       - type: rewrite
@@ -427,6 +430,9 @@ services:
         name: Cache-Control
         value: no-store
       - path: /gcsp/greg/cases
+        name: Cache-Control
+        value: no-store
+      - path: /gcsp/greg/plan
         name: Cache-Control
         value: no-store
       - path: /gcsp/comparison

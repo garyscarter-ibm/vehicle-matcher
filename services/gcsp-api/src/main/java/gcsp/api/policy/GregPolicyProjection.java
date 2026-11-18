@@ -23,6 +23,7 @@ final class GregPolicyProjection {
     private static final List<String> PROVENANCE = List.of("source", "sourceDate", "basis", "status", "unit");
     private static final Set<String> PUBLISH_KEYS =
             Set.of("expectedActiveVersion", "changes", "commandId", "policyVersion", "effectiveFrom");
+    private static final Set<String> PREVIEW_KEYS = Set.of("expectedActiveVersion", "changes");
 
     /** A recommendation policy that is missing or malformed: the read is unavailable, as Node throws. */
     static final class Unavailable extends RuntimeException {
@@ -31,8 +32,8 @@ final class GregPolicyProjection {
         }
     }
 
-    /** Exactly one is non-null: the invalid outcome, or the table changes to publish. */
-    record Prepared(PolicyResult error, ArrayNode changes) {
+    /** Exactly one of error and changes is non-null; differences lists each changed field as {id, before, after, unit}. */
+    record Prepared(PolicyResult error, ArrayNode changes, ArrayNode differences) {
     }
 
     private GregPolicyProjection() {
@@ -272,26 +273,28 @@ final class GregPolicyProjection {
         return true;
     }
 
-    /** Node changesFor(publishing=true): validates the body against the pinned base and builds the table patches. */
-    static Prepared changesFor(ObjectNode base, long now, JsonNode input) {
-        if (!onlyKeys(input, PUBLISH_KEYS) || !text(input.get("expectedActiveVersion"))
+    /** Node changesFor: validates the body against the pinned base and builds the table patches and differences. */
+    static Prepared changesFor(ObjectNode base, long now, JsonNode input, boolean publishing) {
+        if (!onlyKeys(input, publishing ? PUBLISH_KEYS : PREVIEW_KEYS) || !text(input.get("expectedActiveVersion"))
                 || input.get("changes") == null || !input.get("changes").isArray() || input.get("changes").isEmpty()
-                || input.get("changes").size() > 100 || !text(input.get("commandId")) || !text(input.get("policyVersion"))
-                || !input.path("effectiveFrom").isTextual() || !PolicyTime.validInstant(input.get("effectiveFrom").textValue())
-                || millis(input.get("effectiveFrom")) > now) {
+                || input.get("changes").size() > 100 || publishing && (!text(input.get("commandId"))
+                        || !text(input.get("policyVersion")) || !input.path("effectiveFrom").isTextual()
+                        || !PolicyTime.validInstant(input.get("effectiveFrom").textValue())
+                        || millis(input.get("effectiveFrom")) > now)) {
             return new Prepared(invalid("invalid-change-set", "changeSet", "Supply the active version and 1 to 100 "
-                    + "editable changes; new publication takes effect at the current time; retries retain that instant."), null);
+                    + "editable changes; new publication takes effect at the current time; retries retain that instant."),
+                    null, null);
         }
-        long editTime = millis(input.get("effectiveFrom"));
+        long editTime = publishing ? millis(input.get("effectiveFrom")) : now;
         ArrayNode editable;
         try {
             editable = fields(base, editTime);
         } catch (Unavailable e) {
-            return new Prepared(PolicyBodies.unavailable(), null);
+            return new Prepared(PolicyBodies.unavailable(), null, null);
         }
         Set<String> seen = new HashSet<>();
         Map<String, ObjectNode> patches = new LinkedHashMap<>();
-        int differences = 0;
+        ArrayNode differences = JSON.arrayNode();
         for (JsonNode change : input.get("changes")) {
             JsonNode field = null;
             if (change != null && change.isObject() && change.path("id").isTextual()) {
@@ -305,12 +308,19 @@ final class GregPolicyProjection {
             if (!onlyKeys(change, Set.of("id", "value")) || field == null || !seen.add(change.get("id").textValue())
                     || !safe(value) || value.doubleValue() < 0) {
                 return new Prepared(invalid("invalid-editable-field", "changes",
-                        "Use each published price or recommendation weight once, with a nonnegative safe integer."), null);
+                        "Use each published price or recommendation weight once, with a nonnegative safe integer."),
+                        null, null);
             }
             if (value.doubleValue() == field.get("value").doubleValue()) {
                 continue;
             }
-            differences++;
+            ObjectNode difference = differences.addObject();
+            difference.set("id", field.get("id").deepCopy());
+            difference.set("before", field.get("value").deepCopy());
+            difference.put("after", value.longValue());
+            if (field.has("unit")) {
+                difference.set("unit", field.get("unit").deepCopy());
+            }
             String key = field.get("key").textValue();
             if ("price".equals(field.get("kind").textValue())) {
                 ObjectNode patch = JSON.objectNode();
@@ -331,8 +341,8 @@ final class GregPolicyProjection {
                 ((ObjectNode) next.get("preferenceWeights")).put(key, value.longValue());
             }
         }
-        if (differences == 0) {
-            return new Prepared(invalid("no-policy-change", "changes", "Change at least one published value."), null);
+        if (differences.isEmpty()) {
+            return new Prepared(invalid("no-policy-change", "changes", "Change at least one published value."), null, null);
         }
         String date = Instant.ofEpochMilli(editTime).toString().substring(0, 10);
         ArrayNode changes = JSON.arrayNode();
@@ -344,7 +354,7 @@ final class GregPolicyProjection {
             patch.put("basis", "Greg adjusted this points or preference-weight assumption.");
             changes.add(change);
         }
-        return new Prepared(null, changes);
+        return new Prepared(null, changes, differences);
     }
 
     private static ObjectNode tableChange(String table, String key, ObjectNode patch) {

@@ -47,6 +47,11 @@ public class PolicyPublisher {
     }
 
     public PolicyResult publish(Principal principal, JsonNode changeSet) {
+        return publish(principal, changeSet, null);
+    }
+
+    /** A non-null fixedNow is used for the publication and the activation; null reads the clock as before. */
+    public PolicyResult publish(Principal principal, JsonNode changeSet, String fixedNow) {
         if (!database.active()) {
             return unsupported();
         }
@@ -65,9 +70,9 @@ public class PolicyPublisher {
                 return invalid;
             }
             RunContext context = new RunContext(principal.environmentId(), principal.runId(), principal.subject());
-            String now = PolicyClock.iso(clock.now(context));
+            String now = fixedNow != null ? fixedNow : PolicyClock.iso(clock.now(context));
             PolicyResult outcome = execute(context, principal.subject(), changeSet, now);
-            return outcome.ok() ? withActivation(outcome, activation.activate(context)) : outcome;
+            return outcome.ok() ? withActivation(outcome, activation.activate(context, fixedNow)) : outcome;
         } catch (RuntimeException e) {
             return PolicyBodies.unavailable();
         } finally {

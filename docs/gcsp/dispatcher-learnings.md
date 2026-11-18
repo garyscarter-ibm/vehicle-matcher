@@ -2879,3 +2879,11 @@ Several broad source/policy displays and an initial queue display again truncate
 - Why it moved: the earlier Jira comment 3629825 and learnings entry 9f6be11e2 got no answer in 18 hours. No poller reads Jira comments, and the learnings log is read only when a poller starts or resumes.
 - The inbox was full (max_open_threads 10). Seven unanswered GC threads from 5 and 6 Nov (GC-003 to GC-007, 06-GC-001 and 06-GC-002) were withdrawn to make room, on Russell's instruction. They are in `_dev/cowork-inbox/closed/2026-11/`.
 - Framework gap (scaffolding improvement): dev_mail only runs Code-to-Cowork. Two independent Code pollers have no channel that either one is sure to read.
+
+### 2026-11-18 19:50 UTC · Gary Claude · DL-20261118-GCL-001 · Cross-worktree write block: poller moved to the shared checkout
+
+- Evidence: at ~18:40 the Claude poller, running in its own isolated worktree (`poller-agent-scaffold-3eeb1a`), could not have its story-leads write in `.claude/worktrees/DEV-2026-11-18-GC-006`; FUCQ-528 stopped after a Bash-made commit (00bb6f280), with the guard test, focused run and push undone.
+- Cause: the app blocks a session's agents from writing other worktrees' files, and a dispatcher's job spans story worktrees.
+- Action (applied mitigation, Gary "Yes, move it"): the poller now runs from the shared checkout `/Users/garycarter/Code/GitHub/vehicle-matcher` on `gcsp-poc-dev` (branch never switched). Hand-over in that old worktree's `poller-handover/`.
+- Observed outcome: at 19:4x the new poller wrote and deleted a probe file in the GC-006 worktree with its own Write tool, and a runner subagent edited it with Edit; both succeeded. The FUCQ-528 story-lead started from this checkout. Verified for these two cases; not yet for implementers started by a story-lead.
+- Proposed framework improvement: dispatchers start in the shared checkout, never an isolated worktree, and probe a story-worktree write before their first brief.
