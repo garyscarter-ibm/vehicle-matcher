@@ -87,7 +87,6 @@ const receipt = {
   sourceRevision: SOURCE_REVISION, scenarios: {}, processes: [], tools: {}, blockers: [],
   limitations: [
     'Local test OIDC uses real signed RS256 tokens validated by Java; it is not the hosted identity provider.',
-    'Java preview always answers 422 preview-unavailable, so the UI publish control (only offered after a matching preview) is not exercised; publish runs at script level.',
     'Chromium only via CDP isolated contexts; Safari/WebKit and the hosted deployment are not covered.',
     'No tokens, database credentials, OIDC codes or private keys are written to this receipt.',
   ],
@@ -461,7 +460,31 @@ function countLabels(value, into = new Set()) {
   }
   return into;
 }
-const POLICY_REFUSAL = 'Policy preview is not available on this service yet.';
+const publishBody = (expected, version, effectiveFrom, changes) => ({ commandId: cmd('pub'), expectedActiveVersion: expected, policyVersion: version, effectiveFrom, changes });
+const newVersion = () => `greg-fucq448-${randomBytes(4).toString('hex')}`;
+const brief = (r) => ({ http: r.status, status: r.json?.status, code: r.json?.code, reason: r.json?.reason, expectedVersion: r.json?.expectedVersion, currentVersion: r.json?.currentVersion, accepted: r.json?.accepted });
+const scoreText = (m) => (m?.status === 'available' ? `${m.value.toFixed(1)} / 100` : 'Suppressed for privacy');
+function expectedPreviewRows(v) {
+  const unmet = (side) => v[side].demand.demand.unmet.total.count.label;
+  const fit = (side, key) => v[side].fit[key].label;
+  return [['Briefs with unmet demand', unmet('active'), unmet('draft')], ['Employees with eligible stock', fit('active', 'employeesWithEligibleStock'), fit('draft', 'employeesWithEligibleStock')],
+    ['Scored saved briefs', fit('active', 'scoredBriefs'), fit('draft', 'scoredBriefs')],
+    ['Mean best recommendation fit', scoreText(v.active.fit.meanBestScore), scoreText(v.draft.fit.meanBestScore)]];
+}
+// Types a changed value into the first visible number field; returns the field and the new value.
+async function typeDraft(page, policy, delta) {
+  const target = await page.act("const i = $('.greg-policy .policy-control:not([hidden]) input[type=number]'); return { index: [...document.querySelectorAll('.greg-policy .policy-control input[type=number]')].indexOf(i), value: i.value };");
+  const field = policy.fields[target.index]; const to = field.value + delta;
+  await page.act("const i = $('.greg-policy .policy-control:not([hidden]) input[type=number]'); i.focus(); i.select(); return true;");
+  for (const ch of String(to)) await page.key(ch, { code: `Digit${ch}`, text: ch });
+  await page.until("return !button('Preview changes', $('.greg-policy')).disabled;", 5000, 'Preview enabled by the typed draft');
+  return { field, to };
+}
+async function previewDom(page) {
+  return page.act(`const r = $('.greg-policy .preview-results'); if (!r) return null;
+    const table = (cap) => { const t = [...r.querySelectorAll('table')].find((x) => norm(x.querySelector('caption').textContent) === cap); return t ? [...t.querySelectorAll('tbody tr')].map((tr) => [...tr.children].map((c) => norm(c.textContent))) : null; };
+    return { outcomes: table('Preview outcomes'), changed: table('Changed values in this preview'), cohort: norm($('.preview-metric dd', r)?.textContent), text: norm(r.textContent) };`);
+}
 
 async function demandDom(page) {
   return page.act(`const section = $('.greg-demand');
@@ -607,16 +630,12 @@ async function main() {
     await greg.viewport(1440, 1000); await greg.snap('greg-policy-1440.jpg', true);
   });
 
-  // 3. Preview: keyboard edit, Tab to the button, Java answers 422 preview-unavailable.
-  await scenario('preview-unavailable', 'A keyboard edit and Preview send a signed request; Java refuses 422 and the draft is kept', async (s) => {
+  // 3. Preview: keyboard edit, Tab to the button, Java answers 200 preview-ready and the DOM shows the server results.
+  await scenario('preview-ready', 'A keyboard edit and Preview send a signed request; Java answers 200 preview-ready and the DOM shows the server results', async (s) => {
     const policy = shared.policy0;
     await selectTab(greg, 'Policy');
-    const target = await greg.act("const i = $('.greg-policy .policy-control:not([hidden]) input[type=number]'); return { index: [...document.querySelectorAll('.greg-policy .policy-control input[type=number]')].indexOf(i), value: i.value };");
-    const field = policy.fields[target.index];
-    typed.id = field.id; typed.from = field.value; typed.to = field.value + 7;
-    await greg.act("const i = $('.greg-policy .policy-control:not([hidden]) input[type=number]'); i.focus(); i.select(); return true;");
-    for (const ch of String(typed.to)) await greg.key(ch, { code: `Digit${ch}`, text: ch });
-    await greg.until(`return !button('Preview changes', $('.greg-policy')).disabled;`, 5000, 'Preview enabled by the typed draft');
+    const { field, to } = await typeDraft(greg, policy, 7);
+    typed.id = field.id; typed.from = field.value; typed.to = to;
     let tabs = 0; let reached = false;
     for (; tabs < 60 && !reached; tabs++) {
       await greg.key('Tab', { code: 'Tab', windowsVirtualKeyCode: 9 });
@@ -628,61 +647,108 @@ async function main() {
     const before = greg.log.length;
     await greg.key('Enter', { code: 'Enter', windowsVirtualKeyCode: 13, text: '\r' });
     const [row] = await waitCall(greg, before, 'POST', '/greg/policy/preview');
-    s.observations.previewRequest = { status: row.status, bearer: row.bearer, body: row.body, response: { status: row.response?.status, code: row.response?.code, reason: row.response?.reason } };
+    const value = row.response?.value;
+    shared.preview = value;
+    s.observations.previewRequest = { status: row.status, bearer: row.bearer, body: row.body, response: { status: row.response?.status, state: value?.state, activeVersion: value?.activeVersion, asOf: value?.asOf, differences: value?.differences } };
     check(s, 'Preview was sent by keyboard with Authorization: Bearer', row.bearer === true && reached);
     check(s, 'Request carried expectedActiveVersion equal to the API active version and the typed change',
       row.body?.expectedActiveVersion === policy.activeVersion && same(row.body?.changes, [{ id: typed.id, value: typed.to }]), { expected: policy.activeVersion, changes: row.body?.changes });
-    check(s, 'Java answered 422 unsupported / preview-unavailable', row.status === 422 && row.response?.status === 'unsupported' && row.response?.code === 'preview-unavailable');
-    await greg.until(`return norm($('.greg-policy .policy-status')?.textContent).includes(${JSON.stringify(POLICY_REFUSAL)});`, 10000, 'preview unavailable message');
-    const pol = await policyDom(greg);
-    check(s, 'DOM shows the explicit preview-unavailable message', pol.status.includes(POLICY_REFUSAL), pol.status);
+    check(s, 'Java answered 200 ok with state preview-ready for the active version', row.status === 200 && row.response?.status === 'ok' && value?.state === 'preview-ready'
+      && value?.preview === true && value?.activeVersion === policy.activeVersion);
+    check(s, 'The differences are exactly the typed edit (id, before, after, unit)', same(value?.differences, [{ id: typed.id, before: typed.from, after: typed.to, unit: field.unit }]), value?.differences);
+    await greg.until("return !!$('.greg-policy .preview-results');", 10000, 'preview results');
+    const prev = await previewDom(greg); const pol = await policyDom(greg);
+    const expected = expectedPreviewRows(value);
+    check(s, 'DOM changed-values table shows the server difference (name, before, after, unit)',
+      same(prev.changed?.map((r) => r.slice(0, 4)), [[field.label, String(typed.from), String(typed.to), field.unitLabel || field.unit]]), prev.changed);
+    check(s, 'DOM outcome rows show only the server fit and demand labels (no fabricated totals)', same(prev.outcomes?.map((r) => r.slice(0, 3)), expected), { dom: prev.outcomes, expected });
+    check(s, 'DOM eligible-stock cohort and held-offer message equal the response', prev.cohort === value.draft.fit.employeesWithEligibleStock.label && prev.text.includes(value.heldOffers.message)
+      && prev.text.includes(value.activeVersion), { cohort: prev.cohort });
+    check(s, 'Publish this preview is enabled and Preview changes stays available', pol.publishDisabled === false && pol.previewDisabled === false);
     check(s, 'The draft value is kept in the field', pol.inputs[policy.fields.findIndex((f) => f.id === typed.id)] === String(typed.to), pol.inputs);
-    check(s, 'Publish is disabled and no preview result is shown', pol.publishDisabled === true && !pol.hasPreview);
-    await greg.snap('greg-preview-unavailable-1440.jpg', true);
-    await greg.viewport(390, 844); await greg.snap('greg-preview-unavailable-390.jpg', true); await greg.viewport(1440, 1000);
+    await greg.snap('greg-preview-ready-1440.jpg', true);
+    await greg.viewport(390, 844); await greg.snap('greg-preview-ready-390.jpg', true); await greg.viewport(1440, 1000);
   });
 
-  // 4. Publish at script level (the UI offers publish only after a successful preview, which Java never gives).
-  await scenario('publish-version-checks', 'Publish version checks against Java; offer terms and the reloaded page agree with the server', async (s) => {
-    const before = await ok('greg', '/greg/policy');
-    const field = before.fields.find((f) => f.kind === 'price') ?? before.fields[0];
-    const body = (expected, version, effectiveFrom) => ({ commandId: cmd('pub'), expectedActiveVersion: expected, policyVersion: version, effectiveFrom, changes: [{ id: field.id, value: field.value + 25 }] });
-    const brief = (r) => ({ http: r.status, status: r.json?.status, code: r.json?.code, reason: r.json?.reason, reasons: r.json?.reasons, expectedVersion: r.json?.expectedVersion, currentVersion: r.json?.currentVersion, accepted: r.json?.accepted });
-    const version = () => `greg-fucq448-${randomBytes(4).toString('hex')}`;
-    const unknown = await call('greg', '/greg/policy/publish', body('no-such-version', version(), before.asOf));
-    s.observations.unknownVersion = brief(unknown);
-    check(s, 'An unretained expectedActiveVersion is refused 400 invalid-active-version', unknown.status === 400 && unknown.json?.code === 'invalid-active-version');
-    // Java needs effectiveFrom at or after its publish clock and not after its read clock; try each edge.
-    const newVersion = version(); const tries = []; let accepted;
-    for (const [label, from] of [['policy asOf', before.asOf], ['fresh policy asOf', (await ok('greg', '/greg/policy')).asOf], ['current instant', new Date().toISOString()], ['60 s ahead', new Date(Date.now() + 60000).toISOString()]]) {
-      accepted = await call('greg', '/greg/policy/publish', body(before.activeVersion, newVersion, from));
-      tries.push({ effectiveFrom: label, ...brief(accepted) });
-      if (accepted.status === 200) break;
-    }
-    s.observations.acceptTries = tries;
-    let published = null;
-    if (accepted.status === 200) {
-      published = accepted.json.value;
-      s.observations.accepted = { http: 200, field: field.id, from: field.value, to: field.value + 25, policyVersion: published.policyVersion, state: published.state, activation: published.activation, heldOffers: published.heldOffers };
-      check(s, 'The current expectedActiveVersion is accepted and activates the new version', published.policyVersion === newVersion && published.activation?.status === 'active' && published.activation?.publishedVersionActive === true);
-      const stale = await call('greg', '/greg/policy/publish', body(before.activeVersion, version(), new Date().toISOString()));
-      s.observations.stale = brief(stale);
-      check(s, 'A stale expectedActiveVersion is refused 409 stale-version and nothing is accepted', stale.status === 409 && stale.json?.status === 'stale-version' && stale.json?.accepted === false && stale.json?.currentVersion === newVersion);
-    } else {
-      receipt.blockers.push({ id: 'publish-accept-and-stale', summary: 'No effectiveFrom satisfies Java: the resource needs it at or before its read clock and the publisher at or after its own clock; both are the wall PolicyClock, so only the same millisecond works. Accepted and stale (409) publishes are not provable until a frozen or run clock backs PolicyClock.', tries });
-    }
+  // 4. Publish the reviewed preview from the browser; Java activates it and the reloaded page agrees.
+  await scenario('publish-through-ui', 'Publish this preview sends the preview asOf; Java accepts and activates, offer terms are kept, the reloaded page agrees', async (s) => {
+    const policy = shared.policy0; const preview = shared.preview;
+    check(s, 'A preview-ready result from the previous scenario is available to publish', !!preview?.asOf);
+    const before = greg.log.length;
+    await greg.act("return press('Publish this preview', $('.greg-policy'));");
+    const [row] = await waitCall(greg, before, 'POST', '/greg/policy/publish');
+    const value = row.response?.value;
+    s.observations.publishRequest = { status: row.status, bearer: row.bearer, body: row.body, response: { status: row.response?.status, state: value?.state, accepted: value?.accepted, activation: value?.activation } };
+    check(s, 'Publish carried Authorization: Bearer', row.bearer === true);
+    check(s, 'Request carried the old active version, effectiveFrom equal to the preview asOf and the previewed change',
+      row.body?.expectedActiveVersion === policy.activeVersion && row.body?.effectiveFrom === preview?.asOf && same(row.body?.changes, [{ id: typed.id, value: typed.to }]) && /^greg-/.test(row.body?.policyVersion ?? ''),
+      { expected: row.body?.expectedActiveVersion, effectiveFrom: row.body?.effectiveFrom, previewAsOf: preview?.asOf });
+    check(s, 'Java answered 200 accepted with state published and the new version active', row.status === 200 && row.response?.status === 'ok' && value?.accepted === true && value?.state === 'published'
+      && value?.policyVersion === row.body?.policyVersion && value?.effectiveFrom === row.body?.effectiveFrom && value?.activation?.status === 'active' && value?.activation?.publishedVersionActive === true);
     const after = await ok('greg', '/greg/policy');
-    check(s, 'The API active version is the new one when published, else unchanged', published ? after.activeVersion === newVersion && after.fields.find((f) => f.id === field.id)?.value === field.value + 25 : after.activeVersion === before.activeVersion, { activeVersion: after.activeVersion, label: after.activeVersionLabel });
+    check(s, 'GET /greg/policy reports the published version active with the new field value', after.activeVersion === row.body?.policyVersion && after.fields.find((f) => f.id === typed.id)?.value === typed.to,
+      { activeVersion: after.activeVersion, label: after.activeVersionLabel });
+    await greg.until("return norm($('.greg-policy .publication h3')?.textContent) === 'Policy published and active';", 15000, 'published and active outcome');
+    const pol = await policyDom(greg);
+    check(s, 'DOM shows the publication outcome and no preview result remains', !pol.hasPreview && pol.text.includes(row.body?.policyVersion ?? '?'), pol.status);
+    await greg.snap('greg-published-1440.jpg', true);
     if (shared.offerBefore) {
       const offer = await ok(shared.offerBefore.owner, `/offers/${encodeURIComponent(shared.offerBefore.id)}`);
       const unchanged = same(offer.quote ?? offer, shared.offerBefore.terms);
-      check(s, 'The employee offer keeps its terms after the publish step', unchanged && ['active', 'pending'].includes(offer.state), { id: shared.offerBefore.id, state: offer.state, unchanged, terms: offer.quote ?? offer });
-    } else check(s, 'The employee offer keeps its terms after the publish step', false, 'no offer was captured');
+      check(s, 'The employee offer made before activation keeps its terms after activation', unchanged && ['active', 'pending'].includes(offer.state), { id: shared.offerBefore.id, state: offer.state, unchanged, terms: offer.quote ?? offer });
+    } else check(s, 'The employee offer made before activation keeps its terms after activation', false, 'no offer was captured');
     await greg.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/greg` }); await waitLoaded(greg);
-    const pol = await policyDom(greg);
-    check(s, 'Reloaded Greg page shows the server active version and field value', pol.facts.includes(after.activeVersionLabel) && pol.sources.includes(after.activeVersion)
-      && pol.inputs[after.fields.findIndex((f) => f.id === field.id)] === String(after.fields.find((f) => f.id === field.id).value), { label: after.activeVersionLabel, version: after.activeVersion });
+    const reloaded = await policyDom(greg);
+    check(s, 'Reloaded Greg page shows the server active version and field value', reloaded.facts.includes(after.activeVersionLabel) && reloaded.sources.includes(after.activeVersion)
+      && reloaded.inputs[after.fields.findIndex((f) => f.id === typed.id)] === String(typed.to), { label: after.activeVersionLabel, version: after.activeVersion });
     shared.policy1 = after;
+  });
+
+  // 5. Version checks at script level: unknown and stale versions are refused and nothing is activated.
+  await scenario('publish-version-checks', 'Unknown and stale versions are refused by Java on publish and preview, and nothing is activated', async (s) => {
+    const old = shared.policy0; const current = await ok('greg', '/greg/policy');
+    check(s, 'Setup: the active version moved on from the first read', current.activeVersion !== old.activeVersion && current.activeVersion === shared.policy1?.activeVersion);
+    const field = current.fields.find((f) => f.kind === 'price') ?? current.fields[0];
+    const changes = [{ id: field.id, value: field.value + 25 }];
+    const unknown = await call('greg', '/greg/policy/publish', publishBody('no-such-version', newVersion(), current.asOf, changes));
+    s.observations.unknownVersion = brief(unknown);
+    check(s, 'An unretained expectedActiveVersion is refused 400 invalid-active-version', unknown.status === 400 && unknown.json?.code === 'invalid-active-version');
+    const stale = await call('greg', '/greg/policy/publish', publishBody(old.activeVersion, newVersion(), current.asOf, changes));
+    s.observations.stalePublish = brief(stale);
+    check(s, 'A stale publish (old version, fresh asOf) is refused 409 stale-version with accepted false', stale.status === 409 && stale.json?.status === 'stale-version' && stale.json?.accepted === false
+      && stale.json?.expectedVersion === old.activeVersion && stale.json?.currentVersion === current.activeVersion);
+    const preview = await call('greg', '/greg/policy/preview', { expectedActiveVersion: old.activeVersion, changes });
+    s.observations.stalePreview = { ...brief(preview), hasAccepted: !!preview.json && 'accepted' in preview.json, action: preview.json?.action };
+    check(s, 'A stale preview is refused 409 stale-version with no accepted key', preview.status === 409 && preview.json?.status === 'stale-version' && !!preview.json && !('accepted' in preview.json)
+      && preview.json?.expectedVersion === old.activeVersion && preview.json?.currentVersion === current.activeVersion && preview.json?.retryable === false && preview.json?.action === 'refresh');
+    const after = await ok('greg', '/greg/policy');
+    check(s, 'Nothing was activated: the active version and field value are unchanged', after.activeVersion === current.activeVersion && after.fields.find((f) => f.id === field.id)?.value === field.value, { activeVersion: after.activeVersion });
+  });
+
+  // 6. Stale in the UI: the page still shows the previous active version when another publish lands.
+  await scenario('stale-in-ui', 'A later publish makes the open page stale; Preview is refused 409 and the page shows The policy changed with no preview', async (s) => {
+    const shown = shared.policy1; const current = await ok('greg', '/greg/policy');
+    const field = current.fields.find((f) => f.kind === 'price') ?? current.fields[0];
+    const next = newVersion();
+    const pub = await call('greg', '/greg/policy/publish', publishBody(current.activeVersion, next, current.asOf, [{ id: field.id, value: field.value + 11 }]));
+    s.observations.laterPublish = brief(pub);
+    check(s, 'A later script-level publish with a fresh asOf is accepted and activates', pub.status === 200 && pub.json?.value?.accepted === true && pub.json?.value?.policyVersion === next && pub.json?.value?.activation?.status === 'active');
+    await selectTab(greg, 'Policy');
+    const { field: edited, to } = await typeDraft(greg, shown, 3);
+    const before = greg.log.length;
+    await greg.act("return press('Preview changes', $('.greg-policy'));");
+    const [row] = await waitCall(greg, before, 'POST', '/greg/policy/preview');
+    s.observations.stalePreview = { status: row.status, bearer: row.bearer, body: row.body, response: row.response };
+    check(s, 'The browser preview carried the old active version and a bearer', row.bearer === true && row.body?.expectedActiveVersion === shown.activeVersion && same(row.body?.changes, [{ id: edited.id, value: to }]));
+    check(s, 'Java answered 409 stale-version naming the new active version, with no accepted key', row.status === 409 && row.response?.status === 'stale-version' && row.response?.currentVersion === next
+      && row.response?.expectedVersion === shown.activeVersion && !('accepted' in (row.response ?? {})));
+    await greg.until("return norm($('.greg-policy')?.textContent).includes('The policy changed');", 10000, 'explicit policy changed state');
+    const pol = await policyDom(greg);
+    check(s, 'DOM shows The policy changed, no preview result, and Preview and Publish disabled', pol.text.includes('The policy changed') && !pol.hasPreview && pol.publishDisabled === true && pol.previewDisabled === true, pol.status);
+    await greg.snap('greg-stale-1440.jpg', true);
+    await greg.act("return press('Refresh demand and policy', $('.greg-policy'));"); await waitLoaded(greg);
+    const refreshed = await policyDom(greg);
+    check(s, 'A deliberate refresh shows the new active version reference', refreshed.sources.includes(next), { version: next });
   });
 
   // 5. Unavailable: abort each read through CDP Fetch; no stale numbers stay painted.
@@ -761,7 +827,7 @@ async function main() {
   await scenario('rendered', 'Captures, overflow, keyboard focus and CSP across the states above', async (s) => {
     const names = render.captures.map((c) => c.file);
     s.observations.captures = render.captures;
-    for (const name of ['greg-demand-1440.jpg', 'greg-demand-390.jpg', 'greg-policy-1440.jpg', 'greg-policy-390.jpg', 'greg-preview-unavailable-1440.jpg', 'greg-preview-unavailable-390.jpg',
+    for (const name of ['greg-demand-1440.jpg', 'greg-demand-390.jpg', 'greg-policy-1440.jpg', 'greg-policy-390.jpg', 'greg-preview-ready-1440.jpg', 'greg-preview-ready-390.jpg', 'greg-published-1440.jpg', 'greg-stale-1440.jpg',
       'denied-paula-1440.jpg', 'denied-paula-390.jpg', 'greg-demand-unavailable-1440.jpg', 'greg-demand-unavailable-390.jpg']) check(s, `Captured ${name}`, names.includes(name));
     check(s, 'No capture has horizontal overflow (scrollWidth <= innerWidth)', render.captures.every((c) => !c.overflow), render.captures.filter((c) => c.overflow));
     s.observations.focus = render.focus;
@@ -789,7 +855,7 @@ function finish(runError) {
   finished = true;
   receipt.endedAt = new Date().toISOString();
   if (runError) receipt.runError = runError;
-  const required = ['seed-through-routes', 'greg-demand-and-policy', 'preview-unavailable', 'publish-version-checks', 'unavailable', 'denied', 'rendered'];
+  const required = ['seed-through-routes', 'greg-demand-and-policy', 'preview-ready', 'publish-through-ui', 'publish-version-checks', 'stale-in-ui', 'unavailable', 'denied', 'rendered'];
   receipt.overall = required.every((name) => receipt.scenarios[name]?.pass === true) && !runError && receipt.teardown?.allOwnedExited === true ? receipt.blockers.length ? 'PARTIAL' : 'PASS' : 'FAIL';
   try { writeFileSync(path.join(dirs.evidence, 'fucq448-connected-greg-proof.json'), `${JSON.stringify(receipt, null, 2)}\n`); } catch (error) { console.error('receipt write failed', error.message); }
   for (const name of Object.keys(receipt.scenarios)) {
