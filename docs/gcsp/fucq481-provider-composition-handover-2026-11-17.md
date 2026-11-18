@@ -103,3 +103,12 @@ Checked from source at ROOT `b9041a040`.
 - **Peer-reported.** F478's 228 scoped passes, which use test beans for the two planner inputs, and the 503 composition test. Neither was rerun here.
 - **Parent pass.** Assignment 27's input-variation method passed once. It covers the selected seam over Prepare-shaped rows, plus the remote journey. It does not run Prepare itself, and it is not an acceptance claim.
 - **Next smallest original-AC work.** Binding the planner inputs belongs to FUCQ-475 (demand) and FUCQ-477 (supply, held under M1/FUCQ-515), not this lane. The Buddy SQL read removal still needs a release of `allocation/Prepare.java` and `allocation/BuddyRemoteLifecycle.java`. No other source-only AC1 increment is ready here.
+
+## Local acceptance state, 18 November 2026
+
+Run on `29f5b1d21` (base `gcsp-poc-dev` at merge `28bfa5ba4` plus three new test files), native PostgreSQL through the shared test stack.
+
+- **Demo preparation through the composition.** `DemoScenarioRemoteOrderingHttpTest`: `scenario=demo`, run `run-1`, `account=repository`, `candidates=recommendation`, real `HttpOrderingProvider` over loopback. Demo preparation alone creates Paula's employee, account record and slot. She confirms a brief with her RS256 JWT, a presenter tick claims for her from an eligible selected-candidates decision, she accepts over HTTP, and her `GET /manual/order` reads `acknowledged` with exactly one remote execute, unchanged on a repeat read.
+- **Candidates cannot bypass the account selection.** `CandidatesSelection` offers only `none` (refuses) or `recommendation`, which reads the selected `AccountRecordsPort`; the Buddy SQL read of the record stays ignored there.
+- **Focused set.** 135 tests in 30 classes, 0 failures/errors/skips: the four generated/demo journeys, `ordering.**`, the two candidates tests and the startup and wiring set. Summary: `.claude/test-runs/receipts/fucq481/focused-20261118/summary.txt`.
+- **Still for hosted acceptance (Gary).** Registered real test OIDC issuer and browser login, real test email delivery, the hosted dev environment. Remaining BMW gaps and refusing-only contracts are as listed above; the returns and production downgrade refuses rather than fabricating.
