@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * A loopback stand-in for the FUCQ-481 GCSP substitute wire (not a BMW service): POST execute applies effects by
@@ -47,7 +48,9 @@ public final class RemoteOperationServer implements AutoCloseable {
         /** Apply nothing and answer confirmed for another operation id. */
         MISMATCH,
         /** Apply nothing and answer HTTP 500. */
-        FAIL_500
+        FAIL_500,
+        /** Apply one effect, hold the answer for the stall time, then answer confirmed: a client timeout sees nothing. */
+        APPLY_THEN_STALL
     }
 
     /** What the next GET does; an empty queue plays LOOKUP. */
@@ -74,6 +77,8 @@ public final class RemoteOperationServer implements AutoCloseable {
     private final List<Request> requests = new CopyOnWriteArrayList<>();
     private final Map<String, AtomicInteger> effects = new ConcurrentHashMap<>();
     private final Set<String> rejected = ConcurrentHashMap.newKeySet();
+    private volatile Consumer<Request> beforeAnswer = r -> { };
+    private volatile Duration stall = Duration.ofSeconds(4);
 
     private RemoteOperationServer() throws IOException {
         executor = Executors.newFixedThreadPool(2);
@@ -100,6 +105,18 @@ public final class RemoteOperationServer implements AutoCloseable {
         synchronized (reconciles) {
             reconciles.addAll(List.of(steps));
         }
+        return this;
+    }
+
+    /** Observes each accepted POST after it is recorded and before its scripted step runs. */
+    public RemoteOperationServer beforeAnswer(Consumer<Request> hook) {
+        this.beforeAnswer = hook == null ? r -> { } : hook;
+        return this;
+    }
+
+    /** How long APPLY_THEN_STALL holds its answer; keep it bounded so close() still returns. */
+    public RemoteOperationServer stallFor(Duration time) {
+        this.stall = time;
         return this;
     }
 
@@ -194,7 +211,9 @@ public final class RemoteOperationServer implements AutoCloseable {
             return;
         }
         String type = body.has("type") ? body.path("type").asText(null) : body.path("operationType").asText(null);
-        requests.add(new Request("POST", path, op, run, order, type, body, authorization));
+        Request received = new Request("POST", path, op, run, order, type, body, authorization);
+        requests.add(received);
+        beforeAnswer.accept(received);
         Execute step;
         synchronized (executes) {
             step = executes.isEmpty() ? Execute.APPLY : executes.poll();
@@ -213,6 +232,16 @@ public final class RemoteOperationServer implements AutoCloseable {
             case DROP -> { }
             case MISMATCH -> respond(exchange, 200, ack("confirmed", "other-" + op, run, order, false));
             case FAIL_500 -> respond(exchange, 500, "{}");
+            case APPLY_THEN_STALL -> {
+                apply(op);
+                try {
+                    Thread.sleep(stall.toMillis());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                respond(exchange, 200, ack("confirmed", op, run, order, true));
+            }
             default -> respond(exchange, 500, "{}");
         }
     }
