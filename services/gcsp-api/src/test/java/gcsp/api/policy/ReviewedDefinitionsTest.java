@@ -30,6 +30,19 @@ class ReviewedDefinitionsTest {
     }
 
     @Test
+    void theSuccessorAddsTheReasonRuleWhileTheRetainedJourneyStaysReadable() throws Exception {
+        ObjectNode old = ReviewedDefinitions.get("offer-journey-v1");
+        ObjectNode next = ReviewedDefinitions.get("offer-journey-v2");
+        assertTrue(next != null, "The new run must be able to adopt the re-entry rule.");
+        assertEquals(old.get("definitions").get(0), next.get("definitions").get(0));
+        assertEquals(old.get("definitions").get(1), next.get("definitions").get(1));
+        assertEquals("offer.declinedCar.reentry.v1", next.get("definitions").get(2).get("key").textValue());
+        assertEquals(3, next.get("definitions").size());
+        assertEquals(NODE_DIGEST, old.get("digest").textValue());
+        assertTrue(ReviewedDefinitions.valid(next));
+    }
+
+    @Test
     void aBundleWithTheWrongDigestKeysOrRowsIsInvalid() throws Exception {
         ObjectNode set = ReviewedDefinitions.get("offer-journey-v1");
         assertTrue(ReviewedDefinitions.valid(set));

@@ -12,6 +12,7 @@ import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEval
 import { DECISION_EVENTS } from '../offers/decision.js';
 import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
 import { allocationLimitations, summarizeAllocation } from './summary.js';
+import { REENTRY_KEY, createDeclineReentry, validDeclineReentryRule } from './decline-reentry.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -226,6 +227,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
       inputVersions: { policy: context.policyVersion, clock: instant.clockVersion,
         stock: rows.stock.map((r) => ({ orderUuid: r.orderUuid, version: r.version, revision: r.revision ?? null })).sort((a, b) => ordinal(a.orderUuid, b.orderUuid)), briefs: [] } };
     const slices = []; const declinedUnchanged = declineExclusions(rows);
+    const reentryRule = assumptions.find((a) => a.key === REENTRY_KEY)?.value;
+    const reentry = reentryRule ? createDeclineReentry({ rows, rule: reentryRule }) : null;
     for (const brief of briefs) {
       const employee = rows.employees.find((e) => e.employeeId === brief.employeeId);
       const slot = rows.entitlement_slots.find((s) => s.entitlementSlotId === brief.entitlementSlotId && s.employeeId === brief.employeeId);
@@ -269,10 +272,19 @@ export function createAllocationService({ repository, policy, clock, identity, c
       if (evaluated.status !== 'ok') return unavailable('employee-evaluation-unavailable');
       // Decisions arrive frozen; copy only what the decline check below changes.
       const decisions = evaluated.value.decisions.map((d) => ({ ...d, blockers: [...d.blockers] }));
+      const declined = reentry?.forBrief(brief);
+      // Size alone needs the original rejected observation: read that exact quote, never quote history.
+      let rejectedQuote;
+      if (declined?.answered && declined.mapping.match === 'closer-fit' && text(declined.offer.quoteId)) {
+        const loadedQuote = await repository.read(context, { table: 'quotes', key: { runId: context.runId, quoteId: declined.offer.quoteId } });
+        if (loadedQuote.status === 'ok') rejectedQuote = loadedQuote.value;
+        else if (loadedQuote.status !== 'not-found') return unavailable('decline-quote-unavailable');
+      }
       let contending = false; let excluded = false;
       for (const decision of decisions) {
-        if (declinedUnchanged(employee.employeeId, decision.orderUuid, brief)) {
-          decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push({ code: 'declined-unchanged' });
+        const blocker = reentry?.blocks(declined, decision, entries.get(decision.orderUuid)?.snapshot, rejectedQuote);
+        if (blocker || !declined?.answered && declinedUnchanged(employee.employeeId, decision.orderUuid, brief)) {
+          decision.gateStatus = 'ineligible'; decision.suitable = false; decision.blockers.push(blocker ?? { code: 'declined-unchanged' });
         }
         if (decision.gateStatus !== 'eligible' || brief.buddy.holdConsent !== true || letLapse.has(`${employee.employeeId}|${decision.orderUuid}`)) continue;
         const stock = stockByOrderId.get(decision.orderUuid);
@@ -418,6 +430,13 @@ export function createAllocationService({ repository, policy, clock, identity, c
           if (!compare(assumptions[0].value) || !text(assumptions[1].value)
             || assumptions[2].value !== 'untilRelevantConfirmedBriefChange'
             || returned && assumptions[3]?.value !== returned[1]) return unavailable('policy-invalid');
+          const reentry = await policy.getAssumption(REENTRY_KEY, read);
+          if (reentry.status === 'ok') {
+            if (reentry.policyVersion !== context.policyVersion || reentry.value?.key !== REENTRY_KEY
+              || !validDeclineReentryRule(reentry.value.value)) return unavailable('policy-invalid');
+            assumptions.push(reentry.value);
+          } else if (reentry.status !== 'invalid' || reentry.code !== 'unknown-assumption'
+            || reentry.policyVersion !== context.policyVersion) return unavailable('policy-unavailable');
           const recorded = await prepareAndRecord(context, event, time.value, assumptions, digest);
           if (recorded.status !== 'ok') return recorded;
           receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
