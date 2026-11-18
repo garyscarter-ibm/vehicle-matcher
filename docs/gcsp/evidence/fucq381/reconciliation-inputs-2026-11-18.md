@@ -1,11 +1,11 @@
 # FUCQ-381 current input identity — 18 November 2026
 
-Final scoped Node evidence: 302 passed, three failed and zero unobserved among 305 completed selected cases. The canonical Node command completed normally with exit 1 (5148 passed, 120 failed, 162 skipped); the covering batch is not green. Java21 clean verify was running at the recorded observation, with no final Java result inferred. The historical 297-pass result and partial checkpoints remain historical. All 48 compact source pins and all 2551 batch-manifest source/input hashes match the claimed tree.
+Documentation-only partial reconciliation, checked after normal refresh at 05:20:15 UTC. All 48 compact F381 source/test/fixture pins still match. Of the historical 2,551-input batch manifest, 2,543 match the refreshed tree; the eight later Angular stock/static-build/manual-proof changes are listed below and are outside the selected F381 Node boundary. The original 2,551 match remains a historical pre-refresh observation. Reused selected Node evidence is 302 passed, three failed and zero unobserved among 305 completed cases. Canonical Node and Java phases both finished RED at their original pin; the completed 43-case Java diagnostic composite does not change that result. All four original AC remain unchecked.
 
 ```json
 {
   "workItem": "FUCQ-381",
-  "state": "completed scoped Node case reconciliation; selected boundary red; covering batch not green",
+  "state": "documentation-only partial result; selected Node boundary remains red; no green covering batch or acceptance",
   "checkedAt": "2026-11-18T03:18:46+00:00",
   "claimedHead": "b769513fd1ea07a251381175c7df8ca5699b58d5",
   "originalRepair": "94a9eaf0cf715d096544a3b41d2d9870ec4200c3",
@@ -139,7 +139,7 @@ Final scoped Node evidence: 302 passed, three failed and zero unobserved among 3
         "target": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
       }
     },
-    "status": "Node completed normally with exit1:5148passed/120failed/162skipped; Java21 clean verify running at observedAt; no green batch result or parent cleanup claimed",
+    "status": "Final canonical result at pin26d73b760 remains RED: Node5430/5148passed/120failed/162skipped; Java2073/2053passed/12failures/5errors/3skipped; both normal exit1. Historical2551-input match predates refresh; current2543/2551 recorded in publicationReconciliation.",
     "nodePhase": {
       "command": [
         "/opt/homebrew/bin/npm",
@@ -536,7 +536,7 @@ Final scoped Node evidence: 302 passed, three failed and zero unobserved among 3
       ],
       "excludedSource": "server/test/gcsp-activity-transport.test.js",
       "excludedSourceSha256": "46c048af0f1f10039ed94831317b2c11f4ddcd638028fcbc2246a9eccb47194d",
-      "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768\u2013772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124\u20131129. All these source files are included in the matched2551-input batch manifest.",
+      "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768–772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124–1129. All these source files are included in the matched2551-input batch manifest.",
       "candidateWorkerFiles": "Sampled field is stale across these blocks and is not used for attribution."
     },
     "retail": {
@@ -554,7 +554,7 @@ Final scoped Node evidence: 302 passed, three failed and zero unobserved among 3
   },
   "historicalIdentityCheckedAt": "2026-11-18T02:39:03+00:00",
   "historicalReconciliationHead": "c8de4dcfb6835ec9d1a2735530b11929430bfe81",
-  "reconciliationHeadMeaning": "Published documentation base before final Node reconciliation; claimedHead retains the original identity-check head.",
+  "reconciliationHeadMeaning": "Historical published documentation base before final Node reconciliation; claimedHead and historical observations remain unchanged. publicationReconciliation records the refreshed publication base.",
   "executionHistory": [
     {
       "observedAt": "2026-11-18T02:44Z",
@@ -771,7 +771,7 @@ Final scoped Node evidence: 302 passed, three failed and zero unobserved among 3
         ],
         "excludedSource": "server/test/gcsp-activity-transport.test.js",
         "excludedSourceSha256": "46c048af0f1f10039ed94831317b2c11f4ddcd638028fcbc2246a9eccb47194d",
-        "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768\u2013772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124\u20131129. All these source files are included in the matched2551-input batch manifest.",
+        "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768–772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124–1129. All these source files are included in the matched2551-input batch manifest.",
         "candidateWorkerFiles": "Sampled field is stale across these blocks and is not used for attribution."
       }
     },
@@ -828,6 +828,110 @@ Final scoped Node evidence: 302 passed, three failed and zero unobserved among 3
     "bytes": 15619,
     "sha256": "94f20f4c147b1dfd8f5ada7d7edb9782b000ec6744e0dd1a9d26a912e569aec4"
   },
-  "resourceOwnership": "Parent owns canonical Node/Java batch and cleanup; this receipt makes no parent cleanup claim. No owned runtime/scratch/children created by this reconciliation."
+  "resourceOwnership": "Parent owns canonical batch and its retained cleanup receipts. This reconciliation creates no runtime, scratch or child; reported parent cleanup is attributed to its independently hashed final receipt.",
+  "publicationReconciliation": {
+    "observedAt": "2026-11-18T05:20:15.069840+00:00",
+    "refreshedHead": "00a0de8bada56b8ae3c77c3fd54d2bf1d39ae949",
+    "refreshedTree": "86f73eb973f001f6516b56706050a5d96b066ea6",
+    "integratedBase": "e45e4cac7503f5bfc7f8bd87f764e450e6546a27",
+    "compactCompared": 48,
+    "compactMatched": 48,
+    "batchCompared": 2551,
+    "batchMatched": 2543,
+    "batchMismatches": [
+      {
+        "path": "apps/gcsp-web/src/app/stock/stock.component.html",
+        "batchSha256": "55884a73fc2f7787025bcdfdac41a28da64d091f216570c6327ef8be1c98781d",
+        "currentSha256": "3feec8eb4ea5eb2dbf7d134aed2b232ffa56754b85f38127e346a4c658077c7c"
+      },
+      {
+        "path": "apps/gcsp-web/src/app/stock/stock.component.spec.ts",
+        "batchSha256": "c29629cb30ff16a08817fb6ec3dab11a751cf581a78bedc2fb07b59bc21e8cdc",
+        "currentSha256": "e30c3b1b16826bd4d7d78cd2080bd7810e403dd2d8d3e9dbb7717dabfe167ce3"
+      },
+      {
+        "path": "apps/gcsp-web/src/app/stock/stock.component.ts",
+        "batchSha256": "e30e6e29bc142230093765a6145995834bc9749c8f3a54dac15e2c28c4104cab",
+        "currentSha256": "7ac6c8312a352f1949dd3c71a009c7c8db7e302c8a76222e36a2ee138b82d57d"
+      },
+      {
+        "path": "apps/gcsp-web/src/app/stock/stock.store.spec.ts",
+        "batchSha256": "079fa6051f9f7680f4998d2d8de10d641c3e43cb8e336c7fdea35456ac343a42",
+        "currentSha256": "80f7ce4380ce1d88c9766808dfe1043e9ada13c0710f2990397f06cf5708af11"
+      },
+      {
+        "path": "apps/gcsp-web/src/app/stock/stock.store.ts",
+        "batchSha256": "86772d95d15a6a7f4813daa8df84541d8e38640adfdb411814680edd221fcb0c",
+        "currentSha256": "d38669bedcc491680f8a3f66fe25320707879a6d7e9aea31303244b8d561e5dd"
+      },
+      {
+        "path": "scripts/build-gcsp-static.mjs",
+        "batchSha256": "fa281bd8b58e83034930e3e8c68705926837497b80fe3f4766cea2278e76fe4b",
+        "currentSha256": "5dd1ee996bb77f65bd421cf5b3e2c1c20e70fac0f51936207841fa65f88c53c5"
+      },
+      {
+        "path": "scripts/gcsp/fucq443-connected-manual-proof.mjs",
+        "batchSha256": "f92fb037a004560113b5cf1a548a6df22197ced7abfb6c6db06c4fc808f7560e",
+        "currentSha256": "9012c7e0fc6e077c973179794c07f3dbba703129ff6a0fc9398c000fbaf8b5bc"
+      },
+      {
+        "path": "server/test/gcsp-static-angular.test.js",
+        "batchSha256": "ae23f9b5519be0344e8a45883ff1e43667da6292dd33fa123f482526b0532531",
+        "currentSha256": "2fa1655b91be6fe6802fefd248e4c2aa1b25d28745c530f6fd63d6d40def6231"
+      }
+    ],
+    "boundaryReview": "Eight later base changes affect Angular stock (five files), the Angular static builder/test and a connected-manual proof script. The ten selected F381 Node tests and all48 documented ranking/service/feedback/policy/brief/retail input pins remain exact. Selected direct imports and fixture/subprocess boundaries were reviewed; this is scoped evidence reuse, not full current-tree equivalence or a new execution.",
+    "validationSelection": "Read-only source/retained-receipt identity reconciliation, named three-path diff review and git diff --check. No source change, test rerun, full suite, browser or native database check selected for this documentation-only increment.",
+    "canonical": {
+      "pin": "26d73b760ba26cd99610ff738c95c0c1355cc7f3",
+      "status": "RED",
+      "node": {
+        "tests": 5430,
+        "passed": 5148,
+        "failures": 120,
+        "skipped": 162,
+        "cancelled": 0,
+        "exitCode": 1
+      },
+      "java": {
+        "classes": 338,
+        "tests": 2073,
+        "passed": 2053,
+        "failures": 12,
+        "errors": 5,
+        "skipped": 3,
+        "exitCode": 1
+      }
+    },
+    "javaDiagnostics": {
+      "units": 6,
+      "classes": 8,
+      "tests": 43,
+      "passed": 32,
+      "failures": 10,
+      "errors": 0,
+      "skipped": 1,
+      "variantLimit": "Original manual5 reused, isolated singles22 and corrected same-JVM phase pairs16; original zero-test orderer refusal excluded. Not a canonical green or F381 deployed-composition proof.",
+      "path": ".claude/poller/run-20261117-2335/resources/batch-java-final-disposition.json",
+      "bytes": 62581,
+      "sha256": "74b5f6e6088639c7a2adefff6f207fd30c95ea13f35d9515ebe421b621b1243f"
+    },
+    "parentCleanup": {
+      "observedAt": "2026-11-18T05:14:51.743866+00:00",
+      "path": ".claude/poller/run-20261117-2335/resources/batch-canonical-worktree-cleanup-final.json",
+      "bytes": 456,
+      "sha256": "d2935c9b7415d5ddc23b64e3a3a84e7b8b9dc0cafff9a8ff1fb2347d8d1f6825",
+      "worktreeAbsent": true,
+      "registrationAbsent": true,
+      "localBranchAbsent": true,
+      "removedFileAllocatedBytes": 608141312,
+      "method": "Parent normal drop-branch; no force, foreign-resource or OneDrive cleanup. Not performed by this reconciliation."
+    },
+    "acceptance": "partial; all four original criteria remain unchecked. F381 owns its original proof and persisted-policy rollout gaps; parent owns separate failing-boundary Bug disposition and covering batch. No native acceptance, source fix or new intake.",
+    "runtimeCreated": false,
+    "scratchCreatedBytes": 0,
+    "scratchRemovedBytes": 0,
+    "oneDriveAccess": false
+  }
 }
 ```
