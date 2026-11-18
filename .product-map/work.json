@@ -10215,7 +10215,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T03:42:22Z",
+      "observed_at": "2026-11-18T03:58:02Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10227,23 +10227,26 @@
           "id": "inspection",
           "status": "in-progress",
           "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-16T22:57:36Z"
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
         },
         {
           "id": "jobs",
           "status": "in-progress",
           "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-16T22:57:36Z"
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Connected Java roles and rendered acceptance evidence",
-          "observed_at": "2026-11-18T03:42:21.797896+00:00"
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "Resumed original AC on18Nov: current DatabaseComparisonReplay and route/auth integrated. Focused native/browser proof in progress; earlier missing-producer reason historical. OriginalACs remain open; docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "note": "18Nov local connected comparison PASS39checks/4scenarios/6JPEG at proofb6293525c, artifacts7bd3f43; Angular58PASS; Java119distinctPASS+2gatedSKIP with failedaggregates retained. OriginalACs remainopen: completednewresult/populatedexperiments,currentfullsize/browser/hosted evidence and greenbatch. IndependentreviewPASS; allownedruntimecleaned. docs/gcsp/fucq452-process-comparisons-2026-11-16.md",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10294,19 +10297,28 @@
           "name": "Scrappy Doo 3",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T03:42:21.797896+00:00",
-          "expires_at": "2026-11-18T05:42:21.801915+00:00",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
           "source": "/root/scrappy_doo_3",
-          "status": "current original-scope comparison proof/build/validation"
+          "status": "partial connected result published; original ACs open; owned runtime cleaned"
         },
         {
           "name": "Cuthbert 4",
           "harness": "codex",
           "role": "mechanic",
-          "observed_at": "2026-11-18T03:42:21.797896+00:00",
-          "expires_at": "2026-11-18T04:12:21.801933+00:00",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
           "source": "/root/scrappy_doo_3/cuthbert_4",
-          "status": "authoring allocated connected comparison proof; no runtime"
+          "status": "proof author returned; syntax and connected39checks pass after proof corrections"
+        },
+        {
+          "name": "Sam Sheepdog 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T03:58:02.732112+00:00",
+          "expires_at": "2026-11-18T03:58:02.732112+00:00",
+          "source": "/root/scrappy_doo_3/sam_sheepdog_3",
+          "status": "independent source/receipt/six-image review PASS; original ACs remain open"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
