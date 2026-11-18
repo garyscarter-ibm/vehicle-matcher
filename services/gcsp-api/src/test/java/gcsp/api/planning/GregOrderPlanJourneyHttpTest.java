@@ -337,28 +337,31 @@ class GregOrderPlanJourneyHttpTest {
         assertNull(heldFor(heldCar), "a released car is no longer held");
     }
 
-    // ---- 7: FUCQ-528, a confirmed driver lets the plan cover Sam ----
+    // ---- 7: FUCQ-528, a confirmed driver lets the plan order for Sam ----
 
     @Test
     @Order(7)
-    void samsConfirmedDriverLetsThePlanCoverHimAndNoLongerBlocksAnOrder() throws Exception {
+    void gregsPlanOrdersA330eForSamAndTheSubmissionIsAccepted() throws Exception {
         confirmBrief("sub-sam");
 
-        // With released stock, Sam is allocated a car: before the fix every configuration was driver-unconfirmed.
+        // Only a new 330e meets Sam's need; before the fix every configuration was driver-unconfirmed.
         JsonNode plan = readPlan();
-        boolean allocated = false;
-        for (JsonNode a : plan.get("allocations")) allocated |= "slot-sam".equals(a.get("entitlementId").asText());
-        assertTrue(allocated, "Sam is allocated a car: " + plan.get("allocations"));
+        assertTrue(plan.get("orderQuantity").asInt() > 0, "the plan orders cars: " + plan.get("quantities"));
+        assertTrue(quantity(plan, "g20-saloon-330e") >= 1, plan.get("quantities").toString());
         assertNull(unmet(plan, "slot-sam"), "Sam's need is met: " + plan.get("unmetNeeds"));
-
-        // With no stock, ordering is held only by lead time before renewal, not by the driver gate.
-        try (Connection c = dataSource.get().getConnection(); Statement st = c.createStatement()) {
-            st.executeUpdate("UPDATE stock_cars SET state = 'collected' WHERE state = 'released'");
+        String source = null;
+        for (JsonNode a : plan.get("allocations")) {
+            if ("slot-sam".equals(a.get("entitlementId").asText())) source = a.get("source").asText();
         }
-        JsonNode sam = unmet(readPlan(), "slot-sam");
-        assertNotNull(sam, "with no stock Sam is unmet inside the lead time");
-        assertFalse(M.convertValue(sam.get("gates"), List.class).contains("driver-unconfirmed"), sam.toString());
-        assertTrue(sam.get("constraintIds").toString().contains("lead-time-before-renewal"), sam.toString());
+        assertEquals("new-order", source, plan.get("allocations").toString());
+
+        ObjectNode submit = M.createObjectNode().put("commandId", cmd()).put("planId", plan.get("planId").asText());
+        submit.set("versions", plan.get("versions"));
+        Resp accepted = post(greg, REQUESTS, submit.toString());
+        assertEquals(200, accepted.status(), accepted.toString());
+        assertTrue(accepted.body().at("/value/requests").size() > 0, accepted.toString());
+        assertEquals(1, count("SELECT count(*) FROM production_submissions"));
+        assertTrue(count("SELECT count(*) FROM production_requests WHERE derivative LIKE '%330e%'") > 0);
     }
 
     private JsonNode readPlan() throws Exception {
