@@ -14,6 +14,8 @@ public final class CaseCompositionProfile implements QuarkusTestProfile {
     static final String URL = System.getenv("GCSP_TEST_DATABASE_URL");
     /** Unique per JVM; the journey test drops it when it finishes. */
     static final String SCHEMA = "gcsp_s_casejny_" + Long.toHexString(System.nanoTime());
+    /** The pinned wall instant: the clock starts on this London day at the scenario template's time. */
+    static final String WALL = "2026-11-17T09:00:00.000Z";
     private static final String ACCOUNTS = "["
             + "{\"subject\":\"sub-paula\",\"roles\":[\"employee\"],\"employeeId\":\"employee-paula\"},"
             + "{\"subject\":\"sub-alex\",\"roles\":[\"employee\"],\"employeeId\":\"employee-alex\"},"
@@ -45,6 +47,9 @@ public final class CaseCompositionProfile implements QuarkusTestProfile {
         c.put("gcsp.mail.transport", "");
         c.put("gcsp.claims.sweep-interval", "10m");
         c.put("gcsp.notify.drain-interval", "10m");
+        // FUCQ-523: the journey starts on 17 Nov, outside the 14-day window, whatever today's date is.
+        c.put(CaseJourneyClockStart.PROPERTY, WALL);
+        c.put("gcsp.account.fixed-now", WALL);
         // Other suites' global test alternatives must not replace the real beans the journey proves.
         c.put("quarkus.arc.exclude-types", "gcsp.api.offers.OffersTestPorts$Records,"
                 + "gcsp.api.documents.DocumentsTestPorts$Policy,gcsp.api.documents.DocumentsTestPorts$Cases,"
