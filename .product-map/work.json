@@ -10061,7 +10061,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T05:44:05Z",
+      "observed_at": "2026-11-18T05:45:06Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10165,6 +10165,42 @@
           "expires_at": "2026-11-18T03:58:02.732112+00:00",
           "source": "/root/scrappy_doo_3/sam_sheepdog_3",
           "status": "independent source/receipt/six-image review PASS; original ACs remain open"
+        },
+        {
+          "name": "Hugh 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T05:43:26.040464+00:00",
+          "expires_at": "2026-11-18T06:13:26.040464+00:00",
+          "source": "/root/hugh_2",
+          "status": "observed supervising one real12-step hold-sweep attempt; original ACs remain open"
+        },
+        {
+          "name": "Petunia Pig 2",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-18T05:43:26.040464+00:00",
+          "expires_at": "2026-11-18T06:13:26.040464+00:00",
+          "source": "/root/hugh_2/petunia_pig_2",
+          "status": "observed running owned fixed-clock completion pipeline; builds finalized strict true; real job running"
+        },
+        {
+          "name": "Heihei 3",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-18T05:07:50.659270+00:00",
+          "expires_at": "2026-11-18T05:37:50.659270+00:00",
+          "source": "/root/hugh_2/heihei_3",
+          "status": "source returned; proof syntax reviewed; no active runtime"
+        },
+        {
+          "name": "Pluto 3",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T05:43:26.040464+00:00",
+          "expires_at": "2026-11-18T05:43:26.040464+00:00",
+          "source": "/root/hugh_2/pluto_3",
+          "status": "source/supervisor exact-hash review returned PASS; actual evidence review pending"
         }
       ],
       "jira_observed_at": "2026-11-18T05:40:29.435Z",
