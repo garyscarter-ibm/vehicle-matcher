@@ -1,12 +1,12 @@
 # FUCQ-381 current input identity — 18 November 2026
 
-Prepared identity and acceptance-proof selection, with a partial executed-case checkpoint. The covering batch remains incomplete; the historical 297-pass result is not substituted. Exact file pins below are a compact review subset; all 2551 batch-manifest source/input hashes independently matched the claimed tree. The retained batch manifest hash and tested Git pin bind the wider input set.
+Final scoped Node evidence: 302 passed, three failed and zero unobserved among 305 completed selected cases. The canonical Node command completed normally with exit 1 (5148 passed, 120 failed, 162 skipped); the covering batch is not green. Java21 clean verify was running at the recorded observation, with no final Java result inferred. The historical 297-pass result and partial checkpoints remain historical. All 48 compact source pins and all 2551 batch-manifest source/input hashes match the claimed tree.
 
 ```json
 {
   "workItem": "FUCQ-381",
-  "state": "partial executed case evidence; covering batch incomplete",
-  "checkedAt": "2026-11-18T02:39:03+00:00",
+  "state": "completed scoped Node case reconciliation; selected boundary red; covering batch not green",
+  "checkedAt": "2026-11-18T03:18:46+00:00",
   "claimedHead": "b769513fd1ea07a251381175c7df8ca5699b58d5",
   "originalRepair": "94a9eaf0cf715d096544a3b41d2d9870ec4200c3",
   "dataStrategy": {
@@ -139,7 +139,52 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
         "target": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
       }
     },
-    "status": "running; selected cases90passed/3failed/48unobserved; no complete Node or Java result"
+    "status": "Node completed normally with exit1:5148passed/120failed/162skipped; Java21 clean verify running at observedAt; no green batch result or parent cleanup claimed",
+    "nodePhase": {
+      "command": [
+        "/opt/homebrew/bin/npm",
+        "test"
+      ],
+      "completed": true,
+      "exitCode": 1,
+      "status": "failed",
+      "startedAt": 1794969186.369045,
+      "endedAt": 1794971710.024727,
+      "observedTotals": {
+        "cancelled": 0,
+        "duration_ms": 2523076.609583,
+        "fail": 120,
+        "pass": 5148,
+        "skipped": 162,
+        "tests": 5430
+      },
+      "logTruncated": false,
+      "ownedLiveProcessCount": 0
+    },
+    "artifacts": {
+      "inputs.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/batch-next-20261118T023236Z-inputs.json",
+        "bytes": 348026,
+        "sha256": "10df3d1d7594d8d62416b36d7c5451fcc573fc828cee7c0c9bf2149e1a0b32e7"
+      },
+      "node.log": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/batch-next-20261118T023236Z-node.log",
+        "bytes": 844523,
+        "sha256": "080147f60490b3fd82dac8e805be4db36689b12f8e5fd0558a4cdae3e57ff358"
+      },
+      "node-cases.jsonl": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/batch-next-20261118T023236Z-node-cases.jsonl",
+        "bytes": 1550205,
+        "sha256": "034a0fc30b18ffe797122879eed10590f1573971ff3f4141197d0563411bdbe3"
+      },
+      "failures.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/batch-next-20261118T023236Z-failures.json",
+        "bytes": 51923,
+        "sha256": "24e9d9f578d3f8dec087317c5bd0244e0524eb868532d3b1e4dc9d267c66dd08"
+      }
+    },
+    "failureJsonRecords": 128,
+    "failureRecordsAreTestCount": false
   },
   "historicalProof": {
     "run": "fucq381-points-20261111",
@@ -153,21 +198,32 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
   "newScratchBytes": 0,
   "noOneDriveAccess": true,
   "newRuntime": false,
-  "reconciliationHead": "c8de4dcfb6835ec9d1a2735530b11929430bfe81",
+  "reconciliationHead": "b2716ddb7b331db9f051d5c08b0c4e5101920838",
   "executionCheckpoint": {
-    "observedAt": "2026-11-18T02:44Z",
-    "ledgerSequenceLimit": 1212,
-    "selectionMethod": "Match the complete ordered literal source-title list as a unique contiguous block in the serial --test-concurrency=1 reporter ledger. File attribution is inferred from that unique source signature, not candidateWorkerFiles. Counts are case observations, not module exit counts, measured coverage or full suite totals.",
-    "observedPasses": 90,
+    "observedAt": "2026-11-18T03:18:46+00:00",
+    "ledgerSequenceLimit": 5431,
+    "selectionMethod": "Each complete ordered source signature matches uniquely among completed case events. Expand stored-subject provider-field loop (3), retail perturbation loop (5), and retail frozen server/client nested checks (2x(67+11)=156). Exclude the retail opening suite marker; include its completed parent result. Do not attribute by sampled candidateWorkerFiles.",
+    "sourceExpandedCases": 305,
+    "observedPasses": 302,
     "observedFailures": 3,
-    "unobservedTitles": 48,
+    "unobservedCases": 0,
+    "literalTopLevelCases": 141,
+    "generatedTopLevelCases": 8,
+    "nestedCases": 156,
     "modules": [
       {
         "file": "server/test/employee-recommendation-order.test.js",
-        "literalTitles": 5,
+        "literalTopLevelCases": 5,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 5,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "13947e4a729bddb3060c3e64c8f000a5c632738c77e1c5b00c66b414d9953da6",
         "observedPasses": 5,
         "observedFailures": 0,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 388,
+        "sequenceLast": 392,
         "sequences": [
           388,
           389,
@@ -175,14 +231,21 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           391,
           392
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/employee-recommendation.test.js",
-        "literalTitles": 29,
+        "literalTopLevelCases": 29,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 29,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "7f86c0664c8462a0266a0d5a55bf231b6560f768837b81ada138fe0817a15440",
         "observedPasses": 29,
         "observedFailures": 0,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 393,
+        "sequenceLast": 421,
         "sequences": [
           393,
           394,
@@ -214,14 +277,21 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           420,
           421
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/feedback-actions.test.js",
-        "literalTitles": 18,
+        "literalTopLevelCases": 18,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 18,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "e205754585522bf8e8c305f7de7551ffc082f7f9b9f121a1caec603b58b65b8e",
         "observedPasses": 18,
         "observedFailures": 0,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 475,
+        "sequenceLast": 492,
         "sequences": [
           475,
           476,
@@ -242,14 +312,21 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           491,
           492
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/gcsp-brief-render.test.js",
-        "literalTitles": 25,
+        "literalTopLevelCases": 25,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 25,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "cde5044e71a0c98c18d9909810ffdabc774fe335b5353af98e60ae2fa5cd8400",
         "observedPasses": 24,
         "observedFailures": 1,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 1094,
+        "sequenceLast": 1118,
         "sequences": [
           1094,
           1095,
@@ -277,23 +354,46 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           1117,
           1118
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/gcsp-plain-copy.test.js",
-        "literalTitles": 8,
-        "observedPasses": 0,
+        "literalTopLevelCases": 8,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 8,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "ce796ab26431b069d55bae219078b893693bcf238c186bbc30ad0879efd63d7c",
+        "observedPasses": 8,
         "observedFailures": 0,
-        "unobservedTitles": 8,
-        "sequences": [],
-        "attribution": "No complete ordered source-title block observed by the checkpoint."
+        "unobservedCases": 0,
+        "sequenceFirst": 3726,
+        "sequenceLast": 3733,
+        "sequences": [
+          3726,
+          3727,
+          3728,
+          3729,
+          3730,
+          3731,
+          3732,
+          3733
+        ],
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/employee-recommendation-api.test.js",
-        "literalTitles": 10,
+        "literalTopLevelCases": 10,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 10,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "a8b71ed7b7579ac7e3484b77e142e29312787b5625a782a1a30df0fcd77eff9e",
         "observedPasses": 8,
         "observedFailures": 2,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 362,
+        "sequenceLast": 371,
         "sequences": [
           362,
           363,
@@ -306,32 +406,90 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           370,
           371
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/gcsp-recommendation-stored-subject.test.js",
-        "literalTitles": 11,
-        "observedPasses": 0,
+        "literalTopLevelCases": 11,
+        "generatedTopLevelCases": 3,
+        "nestedCases": 0,
+        "sourceExpandedCases": 14,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "915c96f4d870f6e784b4e5b1a3c6be25d471d63a1dba42bebd0922219255ce76",
+        "observedPasses": 14,
         "observedFailures": 0,
-        "unobservedTitles": 11,
-        "sequences": [],
-        "attribution": "No complete ordered source-title block observed by the checkpoint."
+        "unobservedCases": 0,
+        "sequenceFirst": 4057,
+        "sequenceLast": 4070,
+        "sequences": [
+          4057,
+          4058,
+          4059,
+          4060,
+          4061,
+          4062,
+          4063,
+          4064,
+          4065,
+          4066,
+          4067,
+          4068,
+          4069,
+          4070
+        ],
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/gcsp-policy-service.test.js",
-        "literalTitles": 21,
-        "observedPasses": 0,
+        "literalTopLevelCases": 21,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 21,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "e01329e545975bedf8e3c51e3e891b5ea4ba80d10782941f3dfd57fa7fed0187",
+        "observedPasses": 21,
         "observedFailures": 0,
-        "unobservedTitles": 21,
-        "sequences": [],
-        "attribution": "No complete ordered source-title block observed by the checkpoint."
+        "unobservedCases": 0,
+        "sequenceFirst": 3772,
+        "sequenceLast": 3792,
+        "sequences": [
+          3772,
+          3773,
+          3774,
+          3775,
+          3776,
+          3777,
+          3778,
+          3779,
+          3780,
+          3781,
+          3782,
+          3783,
+          3784,
+          3785,
+          3786,
+          3787,
+          3788,
+          3789,
+          3790,
+          3791,
+          3792
+        ],
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/gcsp-brief-transport.test.js",
-        "literalTitles": 6,
+        "literalTopLevelCases": 6,
+        "generatedTopLevelCases": 0,
+        "nestedCases": 0,
+        "sourceExpandedCases": 6,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "8922d17c0e22d9264c5ee5df8730038dbd4cb7714eda6303666ac38c7a9c4ec1",
         "observedPasses": 6,
         "observedFailures": 0,
-        "unobservedTitles": 0,
+        "unobservedCases": 0,
+        "sequenceFirst": 1124,
+        "sequenceLast": 1129,
         "sequences": [
           1124,
           1125,
@@ -340,21 +498,30 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           1128,
           1129
         ],
-        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       },
       {
         "file": "server/test/recommendation-compat.test.js",
-        "literalTitles": 8,
-        "observedPasses": 0,
+        "literalTopLevelCases": 8,
+        "generatedTopLevelCases": 5,
+        "nestedCases": 156,
+        "sourceExpandedCases": 169,
+        "uniqueExpandedSourceMatches": 1,
+        "sourceSignatureSha256": "b5c2b7b7a67cdfa357b55d5af7ec1a9305c7dee01f046a2c6c44cc33b55ed395",
+        "observedPasses": 169,
         "observedFailures": 0,
-        "unobservedTitles": 8,
-        "sequences": [],
-        "attribution": "No complete ordered source-title block observed by the checkpoint."
+        "unobservedCases": 0,
+        "sequenceFirst": 4852,
+        "sequenceLast": 5020,
+        "sequences": null,
+        "attribution": "Unique complete ordered expanded source signature among completed case events; sampled worker labels are not attribution."
       }
     ],
-    "nodeCommandCompleted": false,
+    "nodeCommandCompleted": true,
+    "nodeExitCode": 1,
     "javaResultObserved": false,
-    "acceptance": "All four items remain open; green covering batch required.",
+    "javaStateAtObservation": "running; parent reports real Java21 clean verify; no final result reused/inferred",
+    "acceptance": "All four original items remain unchecked; selected failures are retained and green covering-batch coverage is absent.",
     "duplicateTitleAttribution": {
       "title": "a 401 with no status (lapsed access key) reads access-required; a status keeps its own result",
       "includedSequence": 1127,
@@ -369,9 +536,298 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
       ],
       "excludedSource": "server/test/gcsp-activity-transport.test.js",
       "excludedSourceSha256": "46c048af0f1f10039ed94831317b2c11f4ddcd638028fcbc2246a9eccb47194d",
-      "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768–772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124–1129. All these source files are included in the matched2551-input batch manifest.",
+      "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768\u2013772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124\u20131129. All these source files are included in the matched2551-input batch manifest.",
       "candidateWorkerFiles": "Sampled field is stale across these blocks and is not used for attribution."
+    },
+    "retail": {
+      "nestedFixtureServerKeys": 67,
+      "nestedFixtureClientKeys": 11,
+      "passes": 2,
+      "nestedCompleted": 156,
+      "topLevelCompleted": 13,
+      "allCompleted": 169,
+      "allPassed": 169,
+      "completedParentSequence": 5008,
+      "tasteShareChildSequence": 5019,
+      "openingMarkerIsPass": false
     }
-  }
+  },
+  "historicalIdentityCheckedAt": "2026-11-18T02:39:03+00:00",
+  "historicalReconciliationHead": "c8de4dcfb6835ec9d1a2735530b11929430bfe81",
+  "reconciliationHeadMeaning": "Published documentation base before final Node reconciliation; claimedHead retains the original identity-check head.",
+  "executionHistory": [
+    {
+      "observedAt": "2026-11-18T02:44Z",
+      "ledgerSequenceLimit": 1212,
+      "selectionMethod": "Match the complete ordered literal source-title list as a unique contiguous block in the serial --test-concurrency=1 reporter ledger. File attribution is inferred from that unique source signature, not candidateWorkerFiles. Counts are case observations, not module exit counts, measured coverage or full suite totals.",
+      "observedPasses": 90,
+      "observedFailures": 3,
+      "unobservedTitles": 48,
+      "modules": [
+        {
+          "file": "server/test/employee-recommendation-order.test.js",
+          "literalTitles": 5,
+          "observedPasses": 5,
+          "observedFailures": 0,
+          "unobservedTitles": 0,
+          "sequences": [
+            388,
+            389,
+            390,
+            391,
+            392
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/employee-recommendation.test.js",
+          "literalTitles": 29,
+          "observedPasses": 29,
+          "observedFailures": 0,
+          "unobservedTitles": 0,
+          "sequences": [
+            393,
+            394,
+            395,
+            396,
+            397,
+            398,
+            399,
+            400,
+            401,
+            402,
+            403,
+            404,
+            405,
+            406,
+            407,
+            408,
+            409,
+            410,
+            411,
+            412,
+            413,
+            414,
+            415,
+            416,
+            417,
+            418,
+            419,
+            420,
+            421
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/feedback-actions.test.js",
+          "literalTitles": 18,
+          "observedPasses": 18,
+          "observedFailures": 0,
+          "unobservedTitles": 0,
+          "sequences": [
+            475,
+            476,
+            477,
+            478,
+            479,
+            480,
+            481,
+            482,
+            483,
+            484,
+            485,
+            486,
+            487,
+            488,
+            489,
+            490,
+            491,
+            492
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/gcsp-brief-render.test.js",
+          "literalTitles": 25,
+          "observedPasses": 24,
+          "observedFailures": 1,
+          "unobservedTitles": 0,
+          "sequences": [
+            1094,
+            1095,
+            1096,
+            1097,
+            1098,
+            1099,
+            1100,
+            1101,
+            1102,
+            1103,
+            1104,
+            1105,
+            1106,
+            1107,
+            1108,
+            1109,
+            1110,
+            1111,
+            1112,
+            1113,
+            1114,
+            1115,
+            1116,
+            1117,
+            1118
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/gcsp-plain-copy.test.js",
+          "literalTitles": 8,
+          "observedPasses": 0,
+          "observedFailures": 0,
+          "unobservedTitles": 8,
+          "sequences": [],
+          "attribution": "No complete ordered source-title block observed by the checkpoint."
+        },
+        {
+          "file": "server/test/employee-recommendation-api.test.js",
+          "literalTitles": 10,
+          "observedPasses": 8,
+          "observedFailures": 2,
+          "unobservedTitles": 0,
+          "sequences": [
+            362,
+            363,
+            364,
+            365,
+            366,
+            367,
+            368,
+            369,
+            370,
+            371
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/gcsp-recommendation-stored-subject.test.js",
+          "literalTitles": 11,
+          "observedPasses": 0,
+          "observedFailures": 0,
+          "unobservedTitles": 11,
+          "sequences": [],
+          "attribution": "No complete ordered source-title block observed by the checkpoint."
+        },
+        {
+          "file": "server/test/gcsp-policy-service.test.js",
+          "literalTitles": 21,
+          "observedPasses": 0,
+          "observedFailures": 0,
+          "unobservedTitles": 21,
+          "sequences": [],
+          "attribution": "No complete ordered source-title block observed by the checkpoint."
+        },
+        {
+          "file": "server/test/gcsp-brief-transport.test.js",
+          "literalTitles": 6,
+          "observedPasses": 6,
+          "observedFailures": 0,
+          "unobservedTitles": 0,
+          "sequences": [
+            1124,
+            1125,
+            1126,
+            1127,
+            1128,
+            1129
+          ],
+          "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
+        },
+        {
+          "file": "server/test/recommendation-compat.test.js",
+          "literalTitles": 8,
+          "observedPasses": 0,
+          "observedFailures": 0,
+          "unobservedTitles": 8,
+          "sequences": [],
+          "attribution": "No complete ordered source-title block observed by the checkpoint."
+        }
+      ],
+      "nodeCommandCompleted": false,
+      "javaResultObserved": false,
+      "acceptance": "All four items remain open; green covering batch required.",
+      "duplicateTitleAttribution": {
+        "title": "a 401 with no status (lapsed access key) reads access-required; a status keeps its own result",
+        "includedSequence": 1127,
+        "includedBlock": [
+          1124,
+          1129
+        ],
+        "excludedSequence": 770,
+        "excludedBlock": [
+          768,
+          772
+        ],
+        "excludedSource": "server/test/gcsp-activity-transport.test.js",
+        "excludedSourceSha256": "46c048af0f1f10039ed94831317b2c11f4ddcd638028fcbc2246a9eccb47194d",
+        "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768\u2013772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124\u20131129. All these source files are included in the matched2551-input batch manifest.",
+        "candidateWorkerFiles": "Sampled field is stale across these blocks and is not used for attribution."
+      }
+    },
+    {
+      "observedAt": "2026-11-18T03:06:36+00:00",
+      "ledgerSequenceLimit": 4024,
+      "passes": 119,
+      "failures": 3,
+      "unobservedLiteralTitles": 19
+    },
+    {
+      "observedAt": "2026-11-18T03:09:23+00:00",
+      "ledgerSequenceLimit": 4265,
+      "passes": 133,
+      "failures": 3,
+      "unobservedLiteralTitles": 8,
+      "pendingRetailSourceExpectedCases": 169
+    }
+  ],
+  "selectedFailures": [
+    {
+      "sequence": 362,
+      "file": "server/test/employee-recommendation-api.test.js",
+      "testLine": 23,
+      "assertionLine": 33,
+      "code": "ERR_ASSERTION",
+      "actual": 200,
+      "expected": 403,
+      "finding": "Greg request expected403 but returned200; current canonical seed explicitly grants Greg both greg and employee. This test stops here before its later presenter/origin assertions."
+    },
+    {
+      "sequence": 370,
+      "file": "server/test/employee-recommendation-api.test.js",
+      "testLine": 271,
+      "assertionLine": 281,
+      "code": "ERR_ASSERTION",
+      "actual": 200,
+      "expected": 403,
+      "finding": "Same Greg role-expectation mismatch; preceding employee200 and customCalls0 checks passed, later customCalls assertion not reached."
+    },
+    {
+      "sequence": 1112,
+      "file": "server/test/gcsp-brief-render.test.js",
+      "testLine": 231,
+      "assertionLine": 233,
+      "code": "TypeError",
+      "message": "Cannot read properties of undefined (reading 'label')",
+      "finding": "PORTAL_NAVIGATION.find(item.key === 'brief') returns no item before the editor/body terminology assertions; truthful badge case1105 separately passed."
+    }
+  ],
+  "selectedCaseIdentitySha256": "3242f5ba60deba7e1afadceb8d857ab615e64e75b4e6b175d27747fd7977f8f3",
+  "finalNodeReceipt": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/f381-final-node-reconciliation.json",
+    "bytes": 15619,
+    "sha256": "94f20f4c147b1dfd8f5ada7d7edb9782b000ec6744e0dd1a9d26a912e569aec4"
+  },
+  "resourceOwnership": "Parent owns canonical Node/Java batch and cleanup; this receipt makes no parent cleanup claim. No owned runtime/scratch/children created by this reconciliation."
 }
 ```
