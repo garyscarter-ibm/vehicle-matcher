@@ -8167,7 +8167,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-18T02:12:44Z",
+      "observed_at": "2026-11-18T10:54:51Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8177,24 +8177,24 @@
       "slices": [
         {
           "id": "claim-review",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Claim-review-contract-and-versioned-state",
-          "observed_at": "2026-11-17T02:45:16Z",
-          "evidence": "17Nov same249 inputs: composite124 selected passes (06 core78/UI32 atheap512 +08 caller14 at480),0skip; original17 reviewPASS plus reviewed13B unit fix. Inherited checker native1 outside17files; no overallPASS. Original Java/PostgreSQL/OIDC AC open; native In Progress."
+          "observed_at": "2026-11-18T10:54:51Z",
+          "evidence": "18Nov 8c246f642 connected A/B/F strict PASS: exact car, quote, terms, draft/hold versions and declarations held through claim, edit, save, restart and submit."
         },
         {
           "id": "manual-screens",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Manual-review-and-summary-screens",
-          "observed_at": "2026-11-17T02:45:16Z",
-          "evidence": "17Nov08 caller14/14 strictPASS,06 UI32/core78 reused:124 selected total. Existing checker native1 inherited cases em-dash; later assertions unknown.08 grants/deadlines/teardown parent-audited. Reviewed17-file consumer partial; original rendered/connected/durable proof open."
+          "observed_at": "2026-11-18T10:54:51Z",
+          "evidence": "18Nov FUCQ-520 fixed (dff5b1ec2): pinned name/photo/facts from Java quote envelope; review/route/summary specs 33/33; desktop and 375px captures inspected."
         },
         {
           "id": "connected-proof",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Real-claim-to-order-and-rendered-proof",
-          "observed_at": "2026-11-18T02:12:44Z",
-          "evidence": "18Nov source90086d0b9 actual Angular/Java/nativePG17/signed testOIDC A–E all PASS, strict true; parent audit02:11:18 passed592 identities/all4ports/owned teardown. Display observation captured FUCQ-520; narrow/Safari/keyboard/CSP/durable gaps remain. Both original AC open, In Progress. docs/gcsp/fucq443-manual-review-2026-11-16.md"
+          "observed_at": "2026-11-18T10:54:51Z",
+          "evidence": "18Nov actual Angular/Java/nativePG17/local signed OIDC: A19 B13 C12 F22 D12 E8 and F22 G8 checks PASS. Safari/private, hosted dev, real IdP and live BMW ordering not run."
         }
       ],
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
