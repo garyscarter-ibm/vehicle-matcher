@@ -565,3 +565,26 @@ support outcome, then require read-only reentry with no second browser/provider
 submit. The real external/live provider remains unrun. Pinned syntax checking and
 the existing single-file unresolved-name diagnostic check (TS2304 only) passed;
 this records source validation only. F/G runtime remains unrun at this checkpoint.
+
+
+First F/G runtime — 18 November 2026, 02:37 UTC: the exact `a65d70cac`
+proof retained a failed receipt at sharedroot
+`.claude/test-runs/fucq443/recovery-mater3-20261118/connected-20261118T023705Z/`.
+F passed 16 recorded checks through durable lost-save/restart recovery, narrow
+layout, actual Tab focus and a visible 2px outline, then timed out on Enter
+activation; G was not run. The proof omitted the carriage-return `text` and
+`unmodifiedText` already used by the passing F440/F442/F444 keyboard helpers.
+The one-line proof correction adopts that existing event shape; it does not
+establish a product defect or a passing keyboard journey. C1/C2 build-only
+receipts are strict complete; C3 remains failed. All three finalizers report
+owned groups/processes/scratch/reservations absent, with no cleanup errors.
+
+Runtime timing diagnosis: the macOS Python 3.9 `time.monotonic()` epoch is process
+relative, so its inherited cross-process pipeline subtraction was incomparable.
+The original common realtime deadline was enforced and each phase's own elapsed
+clock remains valid. The first C3 records wall pipeline139.917s versus local
+monotonic39.554s; no independent original common-monotonic claim is made. The
+retry keeps the original 03:00:25 UTC deadline and will use a shared native
+`CLOCK_MONOTONIC` anchor plus an explicitly estimated conservative prefix for
+time before that anchor. That prefix assumes no backward realtime adjustment;
+it is not a measured original monotonic baseline. Earlier receipts stay unchanged.

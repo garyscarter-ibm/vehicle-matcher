@@ -916,7 +916,7 @@ async function scenarioF(cdp, s, pages) {
   s.checks.resumeFocusIsVisible = s.checks.keyboardReachesExplicitResume && (focus.outline !== 'none' && focus.outlineWidth !== '0px' || focus.shadow !== 'none');
   s.observations.screenshotKeyboardFocus = await page.shot('f3-restart-keyboard-focus.png');
   if (!s.checks.keyboardReachesExplicitResume) throw new Error('Keyboard did not reach the explicit resume button');
-  await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+  await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r', unmodifiedText: '\r' });
   await page.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
   await page.until(`return !button('Continue reviewing this selection') && declarations().length > 0 && declarations().every((d) => !d.checked && !d.disabled);`, 15000, 'keyboard-confirmed resume');
   s.checks.explicitResumeKeepsSavedDetailsAndClearsConsent = await page.act(`return $('#manual-special-requirements')?.value === ${JSON.stringify(savedText)} && declarations().every((d) => !d.checked) && button('Place order')?.disabled === true;`);
