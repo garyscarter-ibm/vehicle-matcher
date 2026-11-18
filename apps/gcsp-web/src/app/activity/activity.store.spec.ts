@@ -178,6 +178,100 @@ describe('component-scoped activity store', () => {
     expect(client.readControlVersions).toHaveBeenCalledOnce();
   });
 
+  describe('actual backend disengaged projection (FUCQ-495)', () => {
+    // Mirrors server/gcsp/brief/index.js disengaged(): both consents revoked and not paused.
+    const revoked = { searchConsent: false, holdConsent: false, paused: false, permissionVersion: 9, canSearch: false, canHold: false };
+    const disengaged = (patch: Partial<ActivityProjection> = {}) => projection({ state: 'paused', permission: revoked, ...patch });
+
+    it('offers only Engage Buddy and ignores a stale disengage click', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      expect(store.view().showControls).toBe(true);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.updateBuddy('disengage');
+      expect(client.readControlVersions).not.toHaveBeenCalled();
+      expect(client.command).not.toHaveBeenCalled();
+    });
+
+    it('keeps the terminal accepted-offer guard when disengaged', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ currentOffer: offer('accepted'), state: 'offer-closed' })));
+      await store.refresh();
+      await ready();
+      expect(store.view().showControls).toBe(false);
+      expect(store.view().controlOperation).toBeNull();
+      await store.updateBuddy('engage');
+      expect(client.command).not.toHaveBeenCalled();
+    });
+
+    it('confirms an uncertain disengage from readback without a retry and then offers Engage', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      expect(store.view().retryAvailable).toBe(true);
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      expect(store.view().phase).toBe('ready');
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+
+    it('does not offer a retry or controls when the readback shows an accepted offer', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ currentOffer: offer('accepted'), state: 'offer-closed' })));
+      await store.refresh();
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().showControls).toBe(false);
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+
+    it('keeps a pending engage retryable while readback still shows disengaged', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
+      await store.updateBuddy('engage');
+      const input = client.command.mock.calls[0][1];
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      expect(store.view().phase).toBe('recovery');
+      expect(store.view().showControls).toBe(false);
+      await store.retryUpdate();
+      expect(client.command.mock.calls[1][0]).toBe('engage');
+      expect(client.command.mock.calls[1][1]).toBe(input);
+    });
+
+    it('shows denial without controls or retry when an engage is forbidden', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      client.command.mockResolvedValueOnce(failure('forbidden'));
+      await store.updateBuddy('engage');
+      expect(store.view().phase).toBe('denied');
+      expect(store.view().showControls).toBe(false);
+      expect(store.view().retryAvailable).toBe(false);
+    });
+
+    it('drops an uncertain disengage when the scope changes, even if the new scope reads disengaged', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ runId: 'run-two', employeeId: 'employee-two' })));
+      state.set({ status: 'ready', context: { ...employee, runId: 'run-two', employeeId: 'employee-two' } });
+      TestBed.flushEffects();
+      await vi.waitFor(() => expect(store.view().projection?.employeeId).toBe('employee-two'));
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+  });
+
   it('clears retained commands on sign-out and only signs in after a deliberate action', async () => {
     await ready();
     client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
