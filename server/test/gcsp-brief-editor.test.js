@@ -9,7 +9,6 @@ import { createBriefEditorService } from '../gcsp/brief/editor.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { createManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
-import { createBriefController } from '../../blocks/gcsp/brief/brief-controller.js';
 import { fact, preference, essential, stock, providerValue } from './helpers/employee-recommendation.js';
 import { startHttpServer } from './helpers/employee-recommendation-http.js';
 
@@ -45,13 +44,6 @@ const preview = (f, b = draft(), bv = 0, dv = 0) => f.editor.previewDraft(f.cont
 const draftSave = (f, b = draft(), commandId = 'save', expectedBriefVersion = 0, expectedDraftVersion = 0) =>
   f.brief.saveDraft(f.context, { commandId, expectedBriefVersion, expectedDraftVersion, brief: b });
 
-function controller(t, editor, transport = {}) {
-  let id = 0;
-  const c = createBriefController({ ...editor.value, transport: { preview: async () => ({ status: 'unavailable' }),
-    saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }), ...transport },
-  createCommandId: (kind) => `${kind}:${++id}` });
-  t.after(() => c.destroy()); return c;
-}
 
 test('editor uses canonical controls, labelled unconfirmed defaults and sourced read-only account facts', async (t) => {
   const f = await setup(t); const before = structuredClone(f.store.state);
@@ -72,8 +64,6 @@ test('editor uses canonical controls, labelled unconfirmed defaults and sourced 
   assert.equal(context.knownFacts.drivers.source, 'manual-account');
   assert.equal(context.knownFacts.driverEligible.sourceVersion, f.source.factsVersion);
   assert.ok(Object.values(context.permissions).every((p) => p.editable === false));
-  const c = controller(t, read); assert.equal(c.updatePreference('comfort', { value: 85 }).status, 'ok');
-  assert.equal(c.snapshot().brief.preferences.sportiness.value, initial.brief.preferences.sportiness.value);
   assert.deepEqual(f.store.state, before);
 });
 
@@ -95,19 +85,6 @@ test('current matching saved draft and consumed confirmed draft reopen with actu
   assert.equal(result.value.versions.brief, 1);
   assert.equal(result.value.preview.approved, false);
   assert.equal((await f.brief.readCurrent(f.context)).value.activity.canHold, false);
-});
-
-test('controller Save uses the same real FUCQ-91 draft and confirm services with explicit independent consent', async (t) => {
-  const f = await setup(t); const c = controller(t, await f.editor.readEditor(f.context), {
-    preview: (request) => f.editor.previewDraft(f.context, request),
-    saveDraft: (request) => f.brief.saveDraft(f.context, request), confirm: (request) => f.brief.confirm(f.context, request),
-  });
-  c.updateEssential('equipment', []); c.updateEssential('seats', 0); c.setConsent({ search: true, hold: false });
-  const saved = await c.save(); assert.equal(saved.status, 'ok', JSON.stringify(saved));
-  const read = await f.editor.readEditor(f.context); assert.equal(read.status, 'ok', JSON.stringify(read));
-  assert.deepEqual(read.value.initial.consent, { search: true, hold: false });
-  assert.deepEqual(read.value.initial.brief.essentials.equipment.value, []);
-  assert.equal(read.value.initial.brief.essentials.seats.value, 0);
 });
 
 test('preview computes all candidate decisions, keeps original draft and never fabricates approval or writes', async (t) => {

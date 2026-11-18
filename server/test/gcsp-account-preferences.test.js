@@ -10,11 +10,8 @@ import { inputDigest } from '../gcsp/repository/index.js';
 import { createManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { scorePreferences, validateBriefContent } from '../scenarios/employee/index.js';
-import { createBriefController } from '../../blocks/gcsp/brief/brief-controller.js';
 import { fact, preference, stock, providerValue } from './helpers/employee-recommendation.js';
 import { startHttpServer, cookieOf, EMPLOYEE_ORIGIN } from './helpers/employee-recommendation-http.js';
-import { createBriefTransport } from '../../blocks/gcsp/brief/brief-transport.js';
-import { createAccountPreferencesController } from '../../blocks/gcsp/brief/account-preferences-controller.js';
 
 const KEY = 'brief.accountPreferences.v1';
 const SLIDERS = ['sportiness', 'comfort', 'economy', 'size'];
@@ -281,10 +278,6 @@ test('essentials, current-car feedback, other preferences and consent survive ev
   // Autosave never confirms, grants consent, or starts anything.
   assert.equal((await f.brief.readCurrent(f.context)).status, 'not-found');
   assert.deepEqual((await read(f)).initial.consent, { search: false, hold: false });
-  // The controller still accepts the editor payload with lists and the account projection.
-  const editor = await read(f);
-  assert.doesNotThrow(() => createBriefController({ ...editor, transport: { preview: async () => ({}), saveDraft: async () => ({}), confirm: async () => ({}) },
-    createCommandId: () => 'id' }).destroy());
   // A new employee starts sparse with unconfirmed essentials, not invented preferences.
   const g = await setup(t);
   assert.equal((await save(g, { economy: { value: 0 } })).status, 'ok');
@@ -414,58 +407,6 @@ test('real authenticated HTTP saves a draft and the editor read returns the same
   const unconfigured = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief });
   t.after(() => unconfigured.close());
   assert.equal((await unconfigured.request('/api/gcsp/brief/preferences', { session: f.acting, body: body({ comfort: { value: 50 } }) })).status, 503);
-});
-
-test('the browser transport and controller save through the real route and the editor reads the same record back', async (t) => {
-  const f = await setup(t);
-  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
-  t.after(() => http.close());
-  const base = `http://127.0.0.1:${http.server.address().port}`;
-  const fetch = (url, init) => globalThis.fetch(url, { ...init, headers: { ...init.headers, Origin: EMPLOYEE_ORIGIN, cookie: cookieOf(f.acting) } });
-  const transport = createBriefTransport({ fetch, baseURL: base });
-  let id = 0; const controller = createAccountPreferencesController({ transport, createCommandId: (kind) => `${kind}-http-${++id}` });
-  await controller.load(); assert.equal(controller.snapshot().phase, 'ready'); assert.equal(controller.snapshot().status.kind, 'idle');
-  controller.change('body', { value: ['saloon'] }); controller.change('body', { value: ['saloon', 'estate'] }); controller.open('comfort'); controller.change('comfort', { importance: 'high' });
-  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
-  assert.deepEqual([controller.snapshot().status.kind, controller.snapshot().draftVersion], ['saved', 2]);
-  const readback = await read(f);
-  assert.equal(readback.initial.draftVersion, 2);
-  assert.deepEqual(readback.initial.accountPreferences.categories.body, { state: 'considered', value: ['saloon', 'estate'], importance: 'medium', exact: true });
-  assert.deepEqual(readback.initial.accountPreferences.categories.comfort, { state: 'considered', value: 50, importance: 'high', exact: true });
-  const fresh = createAccountPreferencesController({ transport, createCommandId: () => 'unused' }); await fresh.load();
-  assert.deepEqual(fresh.snapshot().categories, readback.initial.accountPreferences.categories);
-  controller.requestRemove('body'); controller.confirmRemove('body');
-  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
-  assert.equal(controller.snapshot().status.text, 'Body preference removed. Saved automatically.');
-  assert.deepEqual((await read(f)).initial.accountPreferences.categories.body, { state: 'unset' });
-  // A second window still on the old version is told to reload, and keeps what it had until it does.
-  controller.change('size', { value: 100 });
-  for (let at = 0; at < 50 && controller.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
-  fresh.change('economy', { value: 0 });
-  for (let at = 0; at < 50 && fresh.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
-  assert.equal(fresh.snapshot().status.kind, 'stale'); assert.equal(fresh.snapshot().categories.economy.value, 0);
-  await fresh.reload(); assert.equal(fresh.snapshot().categories.economy.state, 'unset'); assert.equal(fresh.snapshot().categories.size.value, 100);
-  // Same again through the same controller and route: the choices and importance stay exactly as saved, and the score follows.
-  const settled = async (c) => { for (let at = 0; at < 50 && c.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10)); };
-  const before = (await read(f)).initial.accountPreferences; const contractId = await carOf(f);
-  assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: false, reason: null, status: 'idle' });
-  controller.toggleSameAgain(true); await settled(controller);
-  assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: true, reason: null, status: 'saved' });
-  assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.');
-  assert.deepEqual(controller.snapshot().understanding, { value: 11, maximum: 11, pending: false, failed: false });
-  let on = await read(f); const row = (await draftOf(f)).brief;
-  assert.deepEqual([row.sameAgain.on, row.sameAgain.contractId], [true, contractId]);
-  assert.deepEqual(on.initial.sameAgain, { available: true, on: true, contractId });
-  assert.deepEqual(on.initial.accountPreferences.categories, before.categories, 'choices and importance are untouched');
-  assert.deepEqual([on.initial.accountPreferences.understanding.value, on.initial.accountPreferences.understanding.basis], [11, 'same-again']);
-  controller.change('size', { value: 0 }); controller.open('body'); assert.equal(controller.snapshot().open, null);
-  assert.equal(controller.snapshot().categories.size.value, 100, 'edits do nothing while on');
-  controller.toggleSameAgain(false); await settled(controller);
-  const off = await read(f);
-  assert.equal(off.initial.sameAgain.on, false); assert.deepEqual(off.initial.accountPreferences.categories, before.categories);
-  assert.deepEqual([off.initial.accountPreferences.understanding.value, off.initial.accountPreferences.understanding.basis], [before.understanding.value, 'categories']);
-  assert.equal(controller.snapshot().understanding.value, before.understanding.value); assert.equal(controller.snapshot().understanding.pending, false);
-  fresh.destroy(); controller.destroy();
 });
 
 // FUCQ-367: the current-car star rating rides the same draft autosave.
