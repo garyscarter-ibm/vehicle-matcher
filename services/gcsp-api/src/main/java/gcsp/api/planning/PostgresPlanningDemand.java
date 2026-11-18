@@ -51,16 +51,23 @@ public final class PostgresPlanningDemand implements PlanningDemand {
     private final Rows rows;
     private final PlanningClock clock;
     private final Evaluator evaluator;
+    private final boolean predictionContext;
 
     PostgresPlanningDemand(Rows rows, PlanningClock clock, Evaluator evaluator) {
+        this(rows, clock, evaluator, false);
+    }
+
+    /** With predictionContext the value also carries the saved briefs behind the entitlements (Node's opt-in, for the learned view). */
+    PostgresPlanningDemand(Rows rows, PlanningClock clock, Evaluator evaluator, boolean predictionContext) {
         this.rows = rows;
         this.clock = clock;
         this.evaluator = evaluator;
+        this.predictionContext = predictionContext;
     }
 
     static PostgresPlanningDemand over(DataSource source, PlanningClock clock) {
         return new PostgresPlanningDemand(source == null ? null : context -> PostgresDemandSnapshot.load(source, context),
-                clock, FUTURE_CHOICES);
+                clock, FUTURE_CHOICES, true);
     }
 
     /** Binds the adapter only when persistence is active; otherwise the unconfigured default stays the bean. */
@@ -121,6 +128,7 @@ public final class PostgresPlanningDemand implements PlanningDemand {
             ArrayNode entitlements = Outcomes.array();
             ArrayNode evaluations = Outcomes.array();
             ArrayNode excluded = Outcomes.array();
+            ArrayNode contexts = Outcomes.array();
             for (DemandCohort.Step step : DemandCohort.steps(before, read.horizonEnd())) {
                 if (step instanceof DemandCohort.Failure f) {
                     return Outcomes.unavailable(f.code());
@@ -141,6 +149,13 @@ public final class PostgresPlanningDemand implements PlanningDemand {
                 }
                 evaluations.add(value);
                 entitlements.add(entitlement(m, value));
+                ObjectNode saved = contexts.addObject();
+                saved.set("entitlementId", m.slot().get("entitlementSlotId").deepCopy());
+                saved.set("brief", m.brief().deepCopy());
+                ObjectNode who = saved.putObject("employee");
+                for (String k : List.of("employeeId", "companyId", "schemeId", "gradeId", "entitlementSlotId", "renewalId")) {
+                    if (m.employee().has(k)) who.set(k, m.employee().get(k).deepCopy());
+                }
             }
             ObjectNode after = rows.load(context);
             PlanningClock.Observation end = clock.observe(context);
@@ -152,7 +167,11 @@ public final class PostgresPlanningDemand implements PlanningDemand {
                     || !CanonicalJson.digest(catalog).equals(CanonicalJson.digest(choicesAfter.get("value")))) {
                 return Outcomes.conflict("planning-forecast-changed");
             }
-            return Outcomes.ok(value(read, readJson, before, catalog, entitlements, evaluations, excluded));
+            ObjectNode ok = value(read, readJson, before, catalog, entitlements, evaluations, excluded);
+            if (predictionContext) {
+                ok.putObject("predictionContext").set("entitlements", contexts);
+            }
+            return Outcomes.ok(ok);
         } catch (SQLException | RuntimeException e) {
             return Outcomes.unavailable("planning-expressed-forecast-unavailable");
         }

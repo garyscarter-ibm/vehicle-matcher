@@ -102,4 +102,29 @@ class PolicyAdoptionPostgresTest {
                 TARGET, PolicyPg.T0, V1).status());
         assertEquals(0, pg.count("SELECT count(*) FROM policy_versions"));
     }
+
+    @Test
+    void anOverrideReplacesTheReviewedPlaceholderAndIsRecorded() throws Exception {
+        String target = V1 + "+learned-model-v1";
+        var override = Seeds.MAPPER.createObjectNode();
+        override.set("value", Seeds.MAPPER.readTree("{\"artifactId\":\"sha256:" + "a".repeat(64)
+                + "\",\"featureVersion\":\"vehicle-preference-v1\",\"schemaVersion\":1}"));
+        override.put("status", "assumed").put("basis", "Test basis").put("source", "docs/test.md").put("sourceDate", "2026-11-06");
+        var ctx = new RunContext(PolicyPg.ENV, "run-1", "startup");
+        assertEquals("refused", adoption.adopt(ctx, "fucq115-choice-model-v1", target, PolicyPg.T0, V1,
+                java.util.Map.of("no.such.key", override)).status());
+        assertEquals(0, pg.count("SELECT count(*) FROM policy_versions"));
+        PolicyAdoption.Result result = adoption.adopt(ctx, "fucq115-choice-model-v1", target, PolicyPg.T0, V1,
+                java.util.Map.of("choice.model.reference", override));
+        assertTrue(result.ok(), result.toString());
+        PolicyResult row = pg.service.getAssumption("choice.model.reference", new PolicyRead("run-1", AFTER, target));
+        assertTrue(row.ok(), row.body().toString());
+        assertEquals("sha256:" + "a".repeat(64), row.value().get("value").get("artifactId").textValue());
+        assertEquals("Test basis", row.value().get("basis").textValue());
+        JsonNode stored = Seeds.MAPPER.readTree(pg.text("SELECT adoption::text FROM policy_versions WHERE policy_version = ?",
+                target));
+        assertEquals("choice.model.reference", stored.get("overrides").get(0).get("key").textValue());
+        assertEquals("sha256:" + "a".repeat(64), stored.get("overrides").get(0).get("value").get("artifactId").textValue());
+        assertEquals(7, stored.get("addedKeys").size());
+    }
 }

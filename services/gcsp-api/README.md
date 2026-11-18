@@ -76,6 +76,7 @@ retained policy data from `server/gcsp`, so the build context is the repository,
 | `GCSP_APPOINTMENTS_PROVIDER` | `none` | Appointment provider: `none` answers 503 `appointments-provider-not-configured`, `synthetic` books fictional slots in the database, `live` is an explicit stub that answers 422 `live-appointments-unsupported`. Unknown values stop startup. | The dev journey (order, approvals, documents, handover) needs `synthetic` here and for `GCSP_ORDERING_PROVIDER`, `GCSP_APPROVALS_PROVIDER` and `GCSP_DOCUMENTS_PROVIDER`, with persistence on.
 | `GCSP_VEHICLE_EVIDENCE_PROVIDER` | `none` | Vehicle evidence provider: `none` answers every read source-unavailable, `lookup` (in-process) or `alternate-offline` (offline-cards/1). Unknown values stop startup. |
 | `GCSP_LEARNING_ARTIFACT_DIR` | empty | Learned-model artifact directory (absolute, existing). Empty reads the artifacts packaged with the service. |
+| `GCSP_LEARNING_ACTIVE_MODEL` | empty | `sha256:<64 hex>` id of the learned choice model to activate. Needs `GCSP_POLICY_VERSION` ending `+learned-model-v1` (for example `gcsp-policy-v1+learned-model-v1`), PostgreSQL and the oidc run values; startup adopts the reviewed `fucq115-choice-model-v1` set with `choice.model.reference` naming the verified artifact. One setting without the other stops startup. Not combinable with `+offer-journey-v1` in this build. |
 | `GCSP_VEHICLE_EVIDENCE_STORE` | empty | Absolute path of the retained corpus store (for example `<repo>/server/data/gcsp/vehicle-evidence/fleet-source.v1`). Required with either provider; relative, missing or not a directory stops startup. |
 | `GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR` | empty | Absolute directory holding `display-images.v1.json` and `configuration-definitions.v1.json` (`<repo>/server/data/gcsp/vehicle-evidence`). Required with either provider. |
 | `GCSP_VEHICLE_ASSETS_ROOT` | empty | Absolute directory that contains `assets/gcsp-vehicle-evidence/` (the repository root). Required with either provider. |
@@ -208,8 +209,9 @@ injects `LearnedDemandForecastPort.forecast(predictionInput, PolicyRead)` and ge
 - Artifacts are read in place: the pom packages `docs/gcsp/models/artifacts/*.json` under `gcsp/learning/artifacts/`
   (the Dockerfile copies the same folder). `GCSP_LEARNING_ARTIFACT_DIR` (absolute, existing directory, else startup fails)
   overrides it. Both stores keep the 8 MiB cap and the `<hex>.json` name; a verified artifact is cached by size and mtime.
-- Activation needs a `choice.model.reference` policy row; the seed has none, so the default is fallback `no-active-model`
-  (Java has no reviewed definition-set adoption yet, as in Node).
+- Activation needs a `choice.model.reference` policy row; the seed has none, so the default is fallback `no-active-model`.
+  `GCSP_LEARNING_ACTIVE_MODEL` with a `+learned-model-v1` policy version adopts it at startup (see the env table); an existing
+  version naming another artifact stops startup, so use a new `GCSP_POLICY_VERSION` to change model.
 - Bounds against Node: per-employee choice, wait and acceptance probabilities within 1e-12, aggregate expected/low/high
   within 1e-9 (absolute). Statuses, reasons, limitation strings, `version` digest, coverage lists, kept sets and ranking are exact.
 - `node services/gcsp-api/src/test/parity/learning-parity.mjs` (repository root; needs `server/node_modules`) rewrites
