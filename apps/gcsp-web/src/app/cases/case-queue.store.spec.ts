@@ -76,7 +76,7 @@ describe('Greg queue authority, review and readback', () => {
     expect(store.view().review?.input.remedy).toEqual({ type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' });
     expect(client.updateCase).not.toHaveBeenCalled(); store.cancelReview(); store.edit('remedyKey', 'preference:1');
     expect(store.view().draft.preferenceValue).toBe('');
-    for (const value of ['', '50', '101', 'invalid']) { store.edit('preferenceValue', value); expect(store.review()).toBe(false); }
+    for (const value of ['', '50', '75.5', '101', 'invalid']) { store.edit('preferenceValue', value); expect(store.review()).toBe(false); }
     store.edit('preferenceValue', '75'); expect(store.review()).toBe(true);
     expect(store.view().review?.input.remedy).toMatchObject({ path: 'preferences.size.value', value: 75 });
   });

@@ -95,6 +95,17 @@ describe('employee HelpStore intent, readback and privacy boundary', () => {
     expect(store.view()).toMatchObject({ preferenceReview: null, cases: [], canConfirm: false });
     expect(await store.confirm()).toBe(false); expect(client.confirmPreference).not.toHaveBeenCalled();
   });
+  it('keeps a failed preference preparation unsent and offers useful recovery', async () => {
+    await ready();
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } })])));
+    await store.refresh(); client.preparePreference.mockImplementationOnce(() => { throw new Error('Preparation unavailable'); });
+    expect(() => store.reviewPreference(store.view().cases[0])).not.toThrow();
+    expect(store.view()).toMatchObject({ preferenceReview: null, canConfirm: false, message: 'Your preference change has not been sent.' });
+    expect(store.view().notice?.title).toBe('Preference review unavailable');
+    expect(client.confirmPreference).not.toHaveBeenCalled();
+  });
 
   it('loads guidance and a proven empty list; Ask, review and cancel never POST', async () => {
     await ready();

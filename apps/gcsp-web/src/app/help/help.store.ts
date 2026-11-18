@@ -132,9 +132,15 @@ export class HelpStore {
   reviewPreference(record: CaseDisplay): void {
     if (!this.canReviewPreference(record)) return;
     const r = record.source.remedy!;
-    const command = this.client.preparePreference({ commandId: `case-preference-${globalThis.crypto.randomUUID()}`,
+    let command: ReturnType<CaseClient['preparePreference']>;
+    try { command = this.client.preparePreference({ commandId: `case-preference-${globalThis.crypto.randomUUID()}`,
       decisionId: r['decisionId'] as string, expectedBriefVersion: r['expectedBriefVersion'] as number,
-      change: { path: r['path'] as string, value: r['value'] as ConfirmPreferenceCommand['input']['change']['value'] } });
+      change: { path: r['path'] as string, value: r['value'] as ConfirmPreferenceCommand['input']['change']['value'] } }); }
+    catch {
+      this.snapshot.update(s => ({ ...s, notice: { title: 'Preference review unavailable', text: 'Refresh cases before reviewing this preference change again.' },
+        message: 'Your preference change has not been sent.' }));
+      return;
+    }
     if ('state' in command) { this.applyFailure(command, this.snapshot().scope!); return; }
     this.snapshot.update(s => ({ ...s, review: command, preferenceCaseId: record.caseId, error: '', notice: null, message: 'Review the single preference change before confirming.' }));
   }

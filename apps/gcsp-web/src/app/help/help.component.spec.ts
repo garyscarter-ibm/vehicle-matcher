@@ -185,6 +185,15 @@ describe('native Help body, review and current case presentation', () => {
     expect(root(f).querySelector('.help-detail h3')!.textContent).toBe('In progress');
     expect(root(f).querySelector('.help-remedy h4')!.textContent).toBe('Proposed remedy');
   });
+  it('keeps a nested preference confirmation below the level-two Help heading', async () => {
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } })])));
+    const f = await mount({ headingLevel: 2 }); button(f, 'Review preference change').click(); f.detectChanges();
+    expect(root(f).querySelector('.help-confirmation h3')!.textContent).toBe('Confirm your preference change');
+    expect(root(f).querySelector('.help-confirmation h2')).toBeNull();
+    expect(client.confirmPreference).not.toHaveBeenCalled();
+  });
   it('shows honest unknown outcome, readback before retry and the identical prepared command', async () => {
     const f = await mount(); askAndReview(f);
     client.requestHelp.mockResolvedValueOnce({ state: 'failed', value: null, problem: 'timeout', writeOutcome: 'unknown' });

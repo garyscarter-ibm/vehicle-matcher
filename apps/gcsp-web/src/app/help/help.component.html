@@ -70,7 +70,8 @@
 
   @if (view().preferenceReview; as preference) {
     <section class="help-confirmation">
-      <h2>Confirm your preference change</h2>
+      @if (childLevel() === 3) { <h3>Confirm your preference change</h3> }
+      @else { <h2>Confirm your preference change</h2> }
       <p>Only {{ preferenceLabel(preference.change.path).toLowerCase() }} will change to {{ preferenceText(preference.change.value) }}. Your essentials and allowance stay unchanged.</p>
       @if (!view().uncertain) {
         <div class="gcsp-actions">

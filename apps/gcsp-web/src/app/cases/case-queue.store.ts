@@ -132,7 +132,7 @@ export class CaseQueueStore {
       const value = option.valueType === 'enum' ? /^\d+$/.test(d.preferenceValue) ? option.values?.[Number(d.preferenceValue)] : undefined : Number(d.preferenceValue);
       const held = Array.isArray(option.before) ? option.before.includes(value) : option.before === value;
       if (!d.preferenceValue || value === undefined || held || option.valueType === 'slider'
-        && (typeof value !== 'number' || !Number.isFinite(value) || value < option.minimum! || value > option.maximum!)) {
+        && (typeof value !== 'number' || !Number.isInteger(value) || value < option.minimum! || value > option.maximum!)) {
         errors.preferenceValue = 'Choose a different preference value supplied by the server.';
       } else remedy = { type: 'preference-relaxation', decisionId: option.decisionId, expectedBriefVersion: option.expectedBriefVersion, path: option.path, value };
     } else if (choice) remedy = choice.remedy as CaseCommandRemedy;
