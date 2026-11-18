@@ -485,3 +485,32 @@ that audit file was written. It preserved peer processes/reservations and made n
 signals. Proof03 did not retain explicit HTTP/CDP ports, so no port-specific03
 absence audit is claimed; recorded own identity/group closure is verified.
 The dispatcher's independent audit remains separate from this lead observation.
+
+
+## Claude story-lead resume and result — 18 November 2026
+
+A Claude story-lead resumed the Story after the Codex poller stopped. The branch was
+fast-forwarded to `gcsp-poc-dev` `b8fa0aa0c`. Since `d34de1971` the base changed only
+other Stories' files; the Angular offer screen/validation (DEV-2026-11-16-021) is the
+one delta that touches an AC1 path. No product change was needed or made.
+
+The connected receipt (`pumbaa3/cors-recovery/connected-20261118T045437Z`, strict
+true) was re-read: its six checkpoints cover protected direct entry and refresh after
+signed local OIDC PKCE login, three role landings, a newly produced offer URL with
+owner sign-in, refresh and another employee's refusal, shared launcher context,
+unknown/missing-asset 404 and API failures. The lead inspected the wrong-account offer
+and desktop unknown-recovery captures. Static, launcher and render inputs are
+unchanged since that evidence, so it is reused, not replayed.
+
+On the merged tree, one Angular run (Node 24.22.3, owned scratch) passed **7 files /
+129 tests**: state-page 17, route guards 9, route policy 6, OIDC auth 22, context
+client 8, offer client 25, offer screen 42. Peak RSS 1,162,149,888 B; the in-place
+`node_modules` (284 MiB) and scratch were removed and verified absent. Full suite:
+deferred to batch.
+
+Result: **blocked** on external evidence only. Both acceptance items are met on local
+evidence; neither box is ticked, because the Story's validation names the hosted static
+host and email return. Remaining, all external: deployed `gcsp-angular-dev` routing
+(including the `*.*` exclusion) and caching, a registered hosted test OIDC provider,
+actual delivered-email return, Safari/private-browser capture, and a green covering
+batch that includes this merge.

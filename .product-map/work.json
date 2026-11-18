@@ -10346,7 +10346,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-18T09:30:08Z",
+      "observed_at": "2026-11-18T09:49:33Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Enter and refresh replacement frontend routes",
@@ -10356,24 +10356,24 @@
       "slices": [
         {
           "id": "route-state",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Authorized route and recovery states",
-          "observed_at": "2026-11-18T04:56:43Z",
-          "evidence": "Existing31route/state+8auth/context passes; connected signed-local-OIDC direct/refresh/role/offer ownership PASS at52729e593. Hosted/provider/mail/Safari unproved. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Route/state/auth/offer specs 129/129 PASS on merged b8fa0aa0c; connected signed-local-OIDC direct/refresh/role/offer ownership PASS reused. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
         },
         {
           "id": "static-launcher",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Static routes and shared launcher handoff",
-          "observed_at": "2026-11-18T04:56:43Z",
-          "evidence": "Named offer rewrite/no-store and focused static1PASS; actual packaged launcher BMW/retail context PASS. Native404 kept; useful branded unknown-entry recovery and deployed Render behavior open. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Static offer/unknown rules 1/1, launcher 52/52, branded unknown recovery render PASS at unchanged inputs. Deployed Render matching tracked under integration."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Original entry refresh OIDC email and rendered validation",
-          "observed_at": "2026-11-18T04:56:43Z",
-          "evidence": "Connected68checks/6scenarios/13PNGs strictPASS; parent1528sourcepins/all12cleanup receipts audited.3harness failures retained; cumulative output overrun recorded/recovered losslessly. Both originalAC open; coveringbatch red. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+          "observed_at": "2026-11-18T09:49:33Z",
+          "evidence": "Both AC met locally; blocked on hosted static host, registered OIDC provider, delivered email return, Safari capture and covering green batch. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
         }
       ],
       "branch": "dev/DEV-2026-11-13-005",
