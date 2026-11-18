@@ -22,7 +22,10 @@ function shown(v: unknown): string | number | boolean | null {
 }
 /** Display the server-pinned snapshot only. Gallery facts cannot replace an acquired quote. */
 export function manualVehicle(quote: ManualQuote | null, handoff: ManualHandoff | null = null) {
-  const snapshot: ManualRecord = quote?.facts ?? handoff?.snapshot ?? {};
+  // Java ManualSelection pins the stock snapshot as quote.facts = { facts: snapshot } (FUCQ-520).
+  const pinned = quote?.facts; const inner: unknown = pinned?.['facts'];
+  const unwrapped = manualObject(inner) && Object.keys(pinned ?? {}).length === 1 ? inner : pinned;
+  const snapshot: ManualRecord = unwrapped ?? handoff?.snapshot ?? {};
   const display = manualObject(snapshot['display']) ? snapshot['display'] : {};
   const facts = manualObject(snapshot['facts']) ? snapshot['facts'] : snapshot;
   const terms = quote?.terms ?? handoff?.terms ?? {};

@@ -7,6 +7,26 @@ Actual email receipt, hosted provider/origin evidence and Safari remain unproved
 resumed at `1fce88975`; its native status remains In Progress. The 16 November source-only
 evidence and failures below are retained as history, with the current result recorded first.
 
+## Coherent focused run and acceptance decision, 18 November 2026 (Claude story-lead)
+
+The branch was fast-forwarded to `gcsp-poc-dev` `836324f8d` (tree `199570d1…`). Outbox, Java
+`notify`/`presenter` and Angular `auth` sources are unchanged since `b2b31ac06`, so the connected
+browser proof still applies to them. The base did change offers and allocation, and the run below covers that.
+
+| Evidence (root `.claude/test-runs/fucq451/lead4-20261118T103538Z/`) | Result |
+| --- | --- |
+| Angular outbox client and component specs | **59/59 PASS** in one run |
+| Java `notify.**`, `offers.**` and the ten startup/wiring classes on one throwaway native PostgreSQL 17 | **One green run: 49 classes, 286 tests**, 0 failures, errors or skips; peak sampled RSS 2.87 GB |
+| `attempt1-metaspace`, `attempt2-metaspace-1g` | My own JVM metaspace caps were too low: one failed before any test ran, the other hit Metaspace OOM after 60 passes. Kept as environment failures. |
+
+**AC1 is met locally.** `NotificationJourneyHttpTest` uses signed JWKS tokens on native PostgreSQL.
+It shows the actual recipient, the captured, retrying and sent states with transport, and no
+address. The presenter is refused an employee's offer and the employee email command.
+**AC2 stays open.** It requires a newly received real email, and only local substitutes have
+passed: the Brevo-stub link, and the captured link through local OIDC. The agreed recipient,
+mail configuration, hosted provider and origins, and Safari evidence are all external.
+Full suite: deferred to batch.
+
 ## Connected delivery resumed, 18 November 2026
 
 Current source already composes `presenter/outbox` with `OutboxComponent`, the presenter guard

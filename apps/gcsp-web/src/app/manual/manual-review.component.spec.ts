@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ManualReviewComponent, ManualReviewDetailsComponent, manualVehicle } from './manual-review.component';
-import type { ManualClaim, ManualEditableDetails, ManualHandoff, ManualProjection, ManualReviewDetails } from './manual.types';
+import type { ManualClaim, ManualEditableDetails, ManualHandoff, ManualProjection, ManualQuote, ManualReviewDetails } from './manual.types';
 
 const claim = { state: 'quoted', hold: { mode: 'replacement', expiresAt: '2026-11-16T18:00:00Z' }, quote: {
   orderUuid: 'exact-car', facts: { display: { name: 'Pinned BMW', photo: '/pinned.webp' }, facts: { model: { status: 'known', value: 'i4', unit: null } } },
@@ -23,6 +23,13 @@ describe('manual selected-car review composition', () => {
     fixture.detectChanges(); expect(text()).toContain('Pinned BMW'); expect(text()).toContain('Car ID exact-car'); expect(text()).not.toContain('Wrong gallery car');
     expect(text()).toContain('0 GBP / month'); expect((fixture.nativeElement as HTMLElement).querySelector('img')?.getAttribute('src')).toBe('/pinned.webp');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1')).toHaveLength(1);
+  });
+  it('reads name, photo and facts from the Java quote envelope (FUCQ-520)', () => {
+    const snapshot = { display: { name: 'BMW 3 Series Touring 320i', photo: '/java.webp' }, facts: { model: { status: 'known', value: '320i', unit: null } }, snapshotVersion: 1 };
+    const vehicle = manualVehicle({ ...claim.quote, facts: { facts: snapshot } } as unknown as ManualQuote);
+    expect(vehicle.name).toBe('BMW 3 Series Touring 320i'); expect(vehicle.images).toEqual([{ src: '/java.webp', alt: 'BMW 3 Series Touring 320i' }]);
+    expect(vehicle.rows[0].value).toBe('320i'); expect(vehicle.identity).toBe('Car ID exact-car');
+    expect(manualVehicle({ ...claim.quote, facts: { facts: {} } } as unknown as ManualQuote).name).toBe('Car name not supplied');
   });
   it('uses the shared missing-image frame when no image is supplied', () => {
     const p = projection(); fixture.componentRef.setInput('projection', { ...p, claim: { ...claim, quote: { ...claim.quote, facts: {} } } }); fixture.detectChanges();
