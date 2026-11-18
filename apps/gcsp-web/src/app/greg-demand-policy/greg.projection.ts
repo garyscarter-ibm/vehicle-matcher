@@ -138,10 +138,12 @@ function policy(raw: unknown): GregPolicy {
 function fit(v: unknown): GregFit {
   const o = object(v); const s = object(o['meanBestScore']);
   let meanBestScore: GregFit['meanBestScore'];
+  // Java's FitSummary labels the score 'score/100'; any other unit is not this score.
+  if (s['unit'] !== undefined && s['unit'] !== 'score/100') return bad();
   if (s['status'] === 'available' && typeof s['value'] === 'number' && Number.isFinite(s['value']) && s['value'] >= 0 && s['value'] <= 100) {
-    keysOnly(s, ['status', 'value']); meanBestScore = { status: 'available', value: s['value'] };
+    keysOnly(s, ['status', 'value', 'unit']); meanBestScore = { status: 'available', value: s['value'] };
   } else if (s['status'] === 'suppressed') {
-    keysOnly(s, ['status', 'fewerThan']); const fewerThan = integer(s['fewerThan']); if (!fewerThan) return bad();
+    keysOnly(s, ['status', 'fewerThan', 'unit']); const fewerThan = integer(s['fewerThan']); if (!fewerThan) return bad();
     meanBestScore = { status: 'suppressed', fewerThan };
   } else return bad();
   return { employeesWithEligibleStock: parseGregCount(o['employeesWithEligibleStock']), scoredBriefs: parseGregCount(o['scoredBriefs']), meanBestScore };

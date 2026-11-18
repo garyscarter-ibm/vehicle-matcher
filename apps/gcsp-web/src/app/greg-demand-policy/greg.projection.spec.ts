@@ -97,6 +97,22 @@ describe('Greg server projection allowlists', () => {
     expect(parseGregPreview(refusal)).toEqual({ state: 'refused', value: null, refusal });
     expect(parseGregPreview(ok({ preview: true, activeVersion: 'policy-1', asOf: at, differences: [] })).state).toBe('invalid-response');
   });
+  it('reads the Java preview-ready shape with fit units, and the stale preview body without accepted', () => {
+    const fitOf = (mean: Record<string, unknown>) => ({ basis: 'saved-brief-recommendation-fit', label: 'Recommendation fit, not predicted acceptance',
+      employeesWithEligibleStock: { ...band }, scoredBriefs: { kind: 'exact', value: 7, label: '7' }, meanBestScore: mean });
+    const java = (mean: Record<string, unknown>) => ok({ state: 'preview-ready', preview: true, activeVersion: 'policy-1', draftVersion: 'draft-1', asOf: at,
+      clockVersion: 1, differences: [{ id: 'weight:body', before: 1, after: 2, unit: 'relative-weight' }],
+      active: { demand: demand(), fit: fitOf(mean) }, draft: { demand: demand(), fit: fitOf(mean) },
+      heldOffers: { count: null, unit: 'offers', message: 'Refresh to see active offers keeping their earlier terms.' } });
+    const ready = parseGregPreview(java({ status: 'available', value: 72.5, unit: 'score/100' }));
+    expect(ready.state).toBe('ready');
+    expect(ready.value?.draft.fit.meanBestScore).toEqual({ status: 'available', value: 72.5 });
+    expect(parseGregPreview(java({ status: 'suppressed', fewerThan: 5, unit: 'score/100' })).value?.active.fit.meanBestScore).toEqual({ status: 'suppressed', fewerThan: 5 });
+    expect(parseGregPreview(java({ status: 'available', value: 72.5, unit: 'percent' })).state).toBe('invalid-response');
+    const stale = { status: 'stale-version', code: 'stale-version', reason: 'The policy changed. Refresh and try again.', retryable: false,
+      expectedVersion: 'policy-1', currentVersion: 'policy-2', action: 'refresh' };
+    expect(parseGregPreview(stale)).toEqual({ state: 'refused', value: null, refusal: stale });
+  });
   it('accepts Java publication without requiring legacy activation metadata and never invents activation', () => {
     const value = { state: 'published', accepted: true, policyVersion: 'greg-1', effectiveFrom: at, publisher: 'greg-subject', publishedAt: at,
       heldOffers: { count: null, message: 'Refresh active offers.' } };
