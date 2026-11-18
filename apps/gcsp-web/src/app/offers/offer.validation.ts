@@ -131,7 +131,8 @@ function imageUrl(value: unknown): value is string | null {
 }
 
 function image(value: unknown): boolean {
-  if (!only(value, ['src', 'alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label']) || !imageUrl(value['src'])) return false;
+  // Unlike the nullable primary photo, every gallery entry needs a real src.
+  if (!only(value, ['src', 'alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label']) || value['src'] === null || !imageUrl(value['src'])) return false;
   return ['alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label'].every((key) => value[key] === undefined || typeof value[key] === 'string');
 }
 

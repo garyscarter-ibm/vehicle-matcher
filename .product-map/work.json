@@ -10528,6 +10528,27 @@
           "status": "F388 delivery/review completed and returned; no owned F388 runtime or allocation retained."
         }
       ]
+    },
+    {
+      "id": "FUCQ-500",
+      "type": "Bug",
+      "title": "Reject null image sources before presenting an Angular offer",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-500",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-019",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation (DEV-2026-11-16-019); no native Jira transition inferred. Validator now rejects a null per-image src; nullable display.photo kept. Awaiting dispatcher merge into gcsp-poc-dev and a green batch run.",
+      "observed_at": "2026-11-18T09:22:33Z",
+      "slices": [
+        {
+          "id": "null-image-src",
+          "status": "complete",
+          "title": "Reject null per-image src at the offer client boundary",
+          "observed_at": "2026-11-18T09:22:33Z",
+          "evidence": "RED before fix: client returned ok, gallery TypeError null.trim; after fix 170/170 in 7 files (offers folder plus kit media-gallery) on Node 24.22.3"
+        }
+      ]
     }
   ],
   "version": 1
