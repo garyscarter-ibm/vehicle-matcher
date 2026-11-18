@@ -207,7 +207,7 @@ export class DemoIdentityAdapter {
     if (!principal || !principal.roles.some((role) => ['employee', 'greg'].includes(role))) return refused('forbidden');
     const issued = await this.#issue(state, principal, principal, commandId);
     if (issued.status !== 'ok') return issued;
-    return ok({ ...issued.value, redirectTo: principal.roles.includes('greg') ? '/gcsp-greg.html' : '/gcsp-account.html',
+    return ok({ ...issued.value, redirectTo: principal.roles.includes('greg') ? '/gcsp-greg.html' : '/gcsp-help.html',
       setCookie: [issued.value.setCookie, ...this.#expiredCookies().filter((c) => !c.startsWith(`${SESSION_COOKIE}=; Path=/;`))] });
   }
 

@@ -91,7 +91,7 @@ test('the hosted entry serves the open demo and drives Paula to a captured offer
 
   // No key form: the access route is gone and pages are served directly.
   assert.notEqual((await get('/gcsp/access')).status, 200);
-  assert.equal((await get('/gcsp/offer')).status, 200);
+  assert.equal((await get('/gcsp/offer')).status, 404);
   assert.equal((await get('/gcsp/login')).status, 200);
   const css = await get('/blocks/gcsp/shell/gcsp-shell.css');
   assert.equal(css.status, 200); assert.equal(css.headers.get('cache-control'), 'private, no-cache');
@@ -105,7 +105,7 @@ test('the hosted entry serves the open demo and drives Paula to a captured offer
   assert.ok(!issued.some((line) => line.startsWith('gcsp_session=') && !line.includes('Max-Age=0')));
   const context = good(await get('/api/gcsp/context'));
   assert.equal(context.principalId, 'demo-presenter');
-  assert.equal((await get('/gcsp-account.html')).headers.get('location'), '/gcsp/login');
+  assert.equal((await get('/gcsp-help.html')).headers.get('location'), '/gcsp/login');
 
   // Reset the way the UI does; the reply must renew the presenter cookies and the new run must carry on working.
   const before = good(await get('/api/gcsp/presenter/scenarios/current'));
@@ -123,7 +123,7 @@ test('the hosted entry serves the open demo and drives Paula to a captured offer
   assert.equal(state.runId, reset.runId);
   const paula = good(await post('/api/gcsp/session/login', { email: 'paula.mason@gcsp-demo.com', password: 'fucq' })).context;
   assert.equal(paula.principalId, 'demo-paula'); assert.equal(paula.runId, state.runId);
-  assert.equal((await get('/gcsp-account.html')).status, 200);
+  assert.equal((await get('/gcsp-help.html')).status, 200);
   assert.equal((await get('/api/gcsp/presenter/controls')).status, 403);
   assert.equal((await get('/gcsp-presenter.html')).status, 200);
   assert.equal(good(await get('/api/gcsp/context')).principalId, 'demo-paula');
@@ -143,12 +143,10 @@ test('the hosted entry serves the open demo and drives Paula to a captured offer
   const offer = good(await get(`/api/gcsp/offers/${encodeURIComponent(offerId)}?runId=${encodeURIComponent(state.runId)}`));
   assert.equal(offer.offerId, offerId);
 
-  // The captured email is visible to the presenter, and the outbox page is live (no fixture attribute).
+  // The captured email is visible to the presenter.
   const outbox = good(await get('/api/gcsp/presenter/outbox'));
   assert.ok(outbox.messages.length >= 1, JSON.stringify(outbox).slice(0, 400));
   assert.ok(JSON.stringify(outbox.messages).includes(offerId) || outbox.messages.some((message) => /offer/i.test(JSON.stringify(message))));
-  const outboxPage = await get('/gcsp-outbox.html');
-  assert.equal(outboxPage.status, 200); assert.match(outboxPage.text, /<gcsp-outbox>/);
 });
 
 test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {

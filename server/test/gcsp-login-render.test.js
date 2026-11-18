@@ -78,9 +78,9 @@ test('pending login posts credentials only once, keeps password out of the URL a
   assert.equal(sent[0].url, '/api/gcsp/session/login');
   assert.equal(sent[0].options.method, 'POST'); assert.equal(sent[0].options.credentials, 'same-origin');
   assert.deepEqual(JSON.parse(sent[0].options.body), { email: 'PAULA.ROBINSON@gcsp-demo.com', password: ' fucq ' });
-  finish(response('ok', { value: { context: { name: 'Paula Robinson', email: 'paula.robinson@gcsp-demo.com' }, redirectTo: '/gcsp-account.html' } }));
+  finish(response('ok', { value: { context: { name: 'Paula Robinson', email: 'paula.robinson@gcsp-demo.com' }, redirectTo: '/gcsp-help.html' } }));
   await tick();
-  assert.deepEqual(destinations, ['/gcsp-account.html']); assert.equal(view.password.value, '');
+  assert.deepEqual(destinations, ['/gcsp-help.html']); assert.equal(view.password.value, '');
   assert.doesNotMatch(JSON.stringify(window.localStorage), /paula|robinson|fucq|@/i);
   assert.equal(window.sessionStorage.length, 0);
   assert.equal(window.location.search, '');
@@ -107,7 +107,7 @@ test('login network failure stays on screen with retry feedback', async () => {
 });
 
 test('Greg reaches the server-selected page and unknown redirect targets fail closed', async () => {
-  for (const target of ['/gcsp-greg.html', 'https://elsewhere.test/', '//elsewhere.test/', '/gcsp-account.html?principal=other', '/gcsp-presenter.html']) {
+  for (const target of ['/gcsp-greg.html', 'https://elsewhere.test/', '//elsewhere.test/', '/gcsp-help.html?principal=other', '/gcsp-presenter.html']) {
     const destinations = [];
     const view = await login(async () => response('ok', { value: { context: { name: 'Greg' }, redirectTo: target } }), (to) => destinations.push(to));
     submit(view); await tick();
@@ -162,7 +162,7 @@ test('explicit fixture sign-out opt-out keeps preview accounts from changing a l
 });
 
 test('successful login announces a credential-free session change for other live pages', async () => {
-  const view = await login(async () => response('ok', { value: { context: { name: 'Paula Robinson' }, redirectTo: '/gcsp-account.html' } }));
+  const view = await login(async () => response('ok', { value: { context: { name: 'Paula Robinson' }, redirectTo: '/gcsp-help.html' } }));
   submit(view); await tick();
   const marker = window.localStorage.getItem('gcsp-session-change');
   assert.ok(marker); assert.doesNotMatch(marker, /paula|robinson|fucq|@/i);

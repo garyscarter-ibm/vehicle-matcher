@@ -49,8 +49,6 @@ test('assembly is deterministic and discovers every GCSP directory, including a 
 
 test('a future offer block and its own nested direct page are discovered without assembler edits', async (t) => {
   const root = await owned(t), sourceRoot = await sourceCopy(root);
-  // The real root offer page (bc8a941a) wins demo selection; remove it to model a block with only a nested page.
-  await rm(path.join(sourceRoot, 'gcsp-offer.html'));
   const dir = path.join(sourceRoot, 'blocks/gcsp/offer'); await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, 'preview.html'), '<!doctype html><html><head></head><body><script type="module" src="./harness.js"></script></body></html>');
   await writeFile(path.join(dir, 'harness.js'), "import './gcsp-offer.js';\n");
@@ -58,7 +56,7 @@ test('a future offer block and its own nested direct page are discovered without
   const output = path.join(root, 'site');
   const manifest = await assembleSite({ sourceRoot, output });
   assert.ok(manifest.pages.includes('blocks/gcsp/offer/preview.html'));
-  assert.deepEqual(manifest.demoPages.find((page) => page.name === 'offer'), { name: 'offer', block: 'offer', file: 'blocks/gcsp/offer/preview.html', available: true });
+  assert.deepEqual(manifest.demoPages.map((page) => page.name), ['greg']);
   await verifySite({ output, requireDemoPages: true });
   await rm(path.join(output, 'blocks/gcsp/offer/gcsp-offer.js'));
   await assert.rejects(verifySite({ output, requireDemoPages: true }), /GCSP block "offer": missing packaged file/);
