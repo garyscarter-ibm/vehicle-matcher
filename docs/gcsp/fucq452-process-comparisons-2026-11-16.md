@@ -289,3 +289,25 @@ Separate Bug candidate, source-only and unreproduced:
 - In `apps/gcsp-web/src/app/comparison/comparison.component.ts`, the auth effect at line 68 clears the draft, the pending command and the uncertain flag on `signed-out`, and `ngOnDestroy` clears them again.
 - Real OIDC expiry with a failed silent renewal goes to `signed-out` and navigates to sign-in. An edited hold-sweep or points value and any uncertain command would therefore be lost on return, against the shared "sign in and return with saved progress" contract.
 - Specs cover only same-account recovery while the component survives.
+
+## Auth-recovery repair and full-size re-pin — 18 November 2026
+
+The coordinator allocated two items to this Story: the auth-recovery candidate and one 3 GiB full-size run.
+
+**Auth recovery is reproduced and repaired at `4c9afcad6`.**
+
+- **Reproduction.** Two new component cases failed on the unchanged source: expiry lost the hold-sweep draft (`expected 'process-only' to be 'hold-sweep'`) and the uncertain command (`Start is unconfirmed` missing). Each case drives `signed-out` with the auth service's expiry notice, then recreates the screen as the sign-in redirect does, then returns with the same account.
+- **Cause.** The auth effect cleared the draft and the pending command on every `signed-out`. The OIDC redirect also discards in-memory state, so even without the clear there was nothing to return to.
+- **Impact.** Greg lost an edited experiment and any unconfirmed start after a real expiry, against the shared "return to the authorized page with saved progress" contract. No command was ever resent automatically.
+- **Repair.** On `signed-out` with an expiry notice only, the screen saves the selection, drafts and pending command in this tab's `sessionStorage`. On the next ready state for the exact same subject, environment, run and roles it restores them once, as an unconfirmed command that only the explicit retry control resends. Explicit sign-out, denial, and a different account or run discard the saved copy. The auth service already uses this tab's session storage, so this adds no new component or connection.
+- **Tests.** Angular comparison 61/61 (28 client, 33 component); auth route policy and guards 15/15.
+
+**Full-size re-pin, reviewed by the lead.** The shared delta since `9a92a107` is the declined-car re-entry rule:
+
+- `Assumptions` records it when the pinned policy carries it.
+- `Prepare` adds one latest-decline lookup per engaged employee, only when the rule is present.
+- The lookup returns one small row per employee and grows no retained per-run collection. It is not a plausible cause of, or cure for, the earlier out-of-memory failure.
+
+The four ignored supervisors keep their reviewed logic, limits, ownership and teardown. Only the recorded build base and the plan's source/tree/proof pins move to the refreshed source that includes this repair. The proof blob is unchanged at SHA-256 `f7eb4223…`. Progress checkpoints are written under the Hugh 2 run directory, outside scratch. The twelve-step job itself is indivisible: an OS kill leaves its progress record, not a resumable job.
+
+If the 3 GiB attempt runs out of memory again, it stops there. That would be a memory fix for the Java comparison/allocation owners, not another retry.
