@@ -9328,7 +9328,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-17T21:37:04Z",
+      "observed_at": "2026-11-18T00:20:16Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Resolve offer links under OIDC ownership",
@@ -9340,22 +9340,22 @@
           "id": "access",
           "status": "complete",
           "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
-          "observed_at": "2026-11-14T07:33:53Z",
-          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
+          "observed_at": "2026-11-18T00:14:57Z",
+          "evidence": "c63ca4afe: reviewed ownership-first full browser projection; signed-JWT/nativePG and actual Angular validator/owner-link/restart proof. External provider/delivery/hosted acceptance remains open."
         },
         {
           "id": "postgres",
           "status": "complete",
           "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
-          "observed_at": "2026-11-14T07:46:40Z",
-          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
+          "observed_at": "2026-11-18T00:14:57Z",
+          "evidence": "c63ca4afe: exact indexed persisted quote/clock/stock joins, notify caller scope; 274 reconciled Java tests, real API-process restart on same nativePG. No schema or shared support change."
         },
         {
           "id": "integration",
           "status": "complete",
           "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T07:51:47Z",
-          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
+          "observed_at": "2026-11-18T00:20:16Z",
+          "evidence": "c63ca4afe: 274 unique scoped Java checks; actual Angular validator and isolated signed-OIDC/nativePG link/restart/refusal/terminal read proof; independent A/B source/security/visual review passed. Native browser acceptance remains separate F466 gap; external mail/provider/hosted and green batch acceptance open. See docs/gcsp/evidence/fucq465/validation-2026-11-18.md."
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
@@ -9908,8 +9908,8 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-008",
       "id": "FUCQ-440",
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "observed_at": "2026-11-18T00:09:48Z",
+      "jira_observed_at": "2026-11-18T00:12:04.756Z",
+      "observed_at": "2026-11-18T00:19:26Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9950,22 +9950,22 @@
         {
           "id": "shared-order-read",
           "title": "Shared-Java-order-page-traversal-and-manual-snapshot-read",
-          "status": "in-progress",
-          "observed_at": "2026-11-14T10:19:43.778349+00:00",
-          "evidence": "Wakko independently PASS partial shared-reader source checkpoint; integrated by dispatcher into frozen4680. Historical39/39 client/preview retained with Low RESOURCE/PROCESS EVIDENCE LIMITATION. Component source prepared separately; current component checks UNRUN. Delivery record docs/gcsp/fucq-440-account-2026-11-13.md"
+          "status": "complete",
+          "observed_at": "2026-11-18T00:15:05.888228+00:00",
+          "evidence": "Local originalAC evidence PASS at b5a0f6094: Account Angular130/130, raw Surefire123/123 in22classes (corrects earlier122), unchanged wiring53/53; actual production Angular→signed localOIDC→Quarkus→repository/nativePG17 connected90/90 across3scenarios, all13captures inspected. Earlier failed/interrupted receipts preserved; all finalizers/audits clean. Parent independent originalAC review PASS; lifecycle/integration and covering green batch remain. docs/gcsp/fucq-440-account-2026-11-13.md; local account2309/connected-20261118T001005Z/receipt.json."
         },
         {
           "id": "account-order-composition",
           "title": "Independent-manual-handoff-and-complete-list-account-composition",
-          "status": "in-progress",
-          "observed_at": "2026-11-16T11:53:13.372282+00:00",
-          "evidence": "Recovered retained fa4996cd; frozen6216010d integrated into gcsp-poc-dev. 56/56 Account component/preferences checks; parent61pins/evidence/dependency/ownedcleanup audit passed16Nov. Rendered proof UNRUN; original two AC remain unchecked. docs/gcsp/fucq-440-account-2026-11-13.md"
+          "status": "complete",
+          "observed_at": "2026-11-18T00:15:05.888228+00:00",
+          "evidence": "Local originalAC evidence PASS at b5a0f6094: Account Angular130/130, raw Surefire123/123 in22classes (corrects earlier122), unchanged wiring53/53; actual production Angular→signed localOIDC→Quarkus→repository/nativePG17 connected90/90 across3scenarios, all13captures inspected. Earlier failed/interrupted receipts preserved; all finalizers/audits clean. Parent independent originalAC review PASS; lifecycle/integration and covering green batch remain. docs/gcsp/fucq-440-account-2026-11-13.md; local account2309/connected-20261118T001005Z/receipt.json."
         },
         {
-          "evidence": "Real OIDC/Java/Angular/nativePG17 connected proof executed at228299b76 and failed: keyboard car-record opening timeout, return-to-Paula saved-state assertion, delayed-request loading timeout. Causes under current lead diagnosis, no unchanged retry. Angular130/130 and Java122/122 strictPASS, exact matching wiring53/53 reused; API/web builds strictPASS. C3 teardown/resource/deadline PASS. OriginalAC remain open; covering batch pending. Prior parity-only blocked label superseded by actual execution, not acceptance.",
+          "evidence": "Local originalAC evidence PASS at b5a0f6094: Account Angular130/130, raw Surefire123/123 in22classes (corrects earlier122), unchanged wiring53/53; actual production Angular→signed localOIDC→Quarkus→repository/nativePG17 connected90/90 across3scenarios, all13captures inspected. Earlier failed/interrupted receipts preserved; all finalizers/audits clean. Parent independent originalAC review PASS; lifecycle/integration and covering green batch remain. docs/gcsp/fucq-440-account-2026-11-13.md; local account2309/connected-20261118T001005Z/receipt.json.",
           "id": "integration",
-          "observed_at": "2026-11-17T23:33:57.993810+00:00",
-          "status": "in-progress",
+          "observed_at": "2026-11-18T00:15:05.888228+00:00",
+          "status": "complete",
           "title": "Rendered-and-actual-Java-OIDC-ownership-saved-state-gates"
         }
       ],
@@ -10051,29 +10051,28 @@
           "name": "Sam Sheepdog 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-17T23:46:27.235137+00:00",
-          "expires_at": "2026-11-17T23:46:27.235137+00:00",
-          "source": "Lead final return767d1668b; proof SHAe371470a, syntax/diffPASS and independent static review. Both originalAC open; failed connected proof preserved. Angular130/Java122/wiring53 retained on unchanged inputs. No current execution; next causal proof after Claude43 finalizes/releases runtime.",
-          "status": "held; reviewed proof checkpoint pushed; waiting for concrete batch runtime release"
+          "observed_at": "2026-11-18T00:19:26.509668+00:00",
+          "expires_at": "2026-11-18T00:19:26.509668+00:00",
+          "status": "delivery complete; integrated and independently reviewed; no current execution; covering green batch pending",
+          "source": "thread 01a1ebc8-732c-7ac1-950a-ac494d8edd40; requested/selected Sol/high, no fallback; title tool confirmed"
         },
         {
-          "id": "01a1ebc8-732c-7ac1-950a-ac494d8edd40",
-          "name": "Sam Sheepdog 2",
+          "name": "Yakko 3",
           "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T00:09:48.296548+00:00",
-          "expires_at": "2026-11-18T00:22:54.171382+00:00",
-          "status": "active corrected account pipeline; source proof unchanged",
-          "source": "Corrected account pipeline execution confirmed: API supervisor92522/start2026-11-18T00:08:49 artifact-ready; corrected web builder resumed. Earlier C1/C2 sampler rejected own later pipeline token, both incomplete/cleaned; assertion removed from newly loaded sources. No connected proof pass. OriginalAC open; retained focused Java XML123/wiring53/Angular130."
+          "role": "implementer",
+          "observed_at": "2026-11-18T00:19:26.509668+00:00",
+          "expires_at": "2026-11-18T00:19:26.509668+00:00",
+          "status": "delivery complete; integrated and independently reviewed; no current execution; covering green batch pending",
+          "source": "thread 01a1ebca-0c27-7581-ac7e-772f5bd8359e; requested/selected Sol/medium, no fallback; title tool confirmed"
         }
       ],
-      "note": "Original2AC open; corrected connected proof independently statically reviewed/pushed767d1668b, actual rerun pending. First connected proof failed. Angular130/Java122/wiring53 and production builds strictPASS at their recorded scopes. Held waiting for Claude43 serial batch release; native In Progress and all existing slice statuses retained.",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+      "note": "Built local originalAC evidence independently reviewed and integrated/pushed3e8223147; archived local delivery, not accepted. Covering green batch pending. Native In Progress preserved at00:12:04Z; no current Account worker/runtime.",
+      "native_observed_at": "2026-11-18T00:12:04.756Z"
     },
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-476",
-      "observed_at": "2026-11-18T00:16:45Z",
+      "observed_at": "2026-11-18T00:27:43Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Consume learned artifacts and capture new learning records",
