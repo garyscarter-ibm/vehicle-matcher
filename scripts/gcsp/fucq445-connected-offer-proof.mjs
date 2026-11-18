@@ -447,7 +447,9 @@ class Page {
     const end = Date.now() + timeout;
     while (Date.now() < end) { try { if (await this.act(body)) return true; } catch { /* navigating */ } await sleep(250); }
     const text = await this.eval(`document.body.innerText.replace(/\\s+/g,' ').slice(0,300)`).catch(() => '?');
-    throw new Error(`${this.label}: timed out waiting for ${what}; page text: ${text}`);
+    const location = await this.eval(`({ origin: location.origin, pathname: location.pathname, queryKeys: [...new URL(location.href).searchParams.keys()], hasFragment: !!location.hash })`).catch(() => null);
+    const calls = this.calls().slice(-16).map(({ method, path, query, auth, status, failed }) => ({ method, path, query, auth, status, failed }));
+    throw new Error(`${this.label}: timed out waiting for ${what}; page text: ${text}; navigation/API diagnostics: ${JSON.stringify({ location, calls })}`);
   }
   async shot(name) {
     const metrics = await this.send('Page.getLayoutMetrics'); const size = metrics.cssContentSize ?? metrics.contentSize;
@@ -556,7 +558,8 @@ async function deepLinkLogin(page, person, id) {
   await page.act(`return press('Sign in');`);
   await page.until(`return location.origin === '${ORIGINS.idp}' && !!document.querySelector('button[data-subject="sub-${person}"]');`, 30000, 'real PKCE issuer form');
   await page.eval(`document.querySelector('button[data-subject="sub-${person}"]').click()`);
-  await page.until(`return location.origin === '${ORIGINS.web}' && location.pathname === ${JSON.stringify(new URL(offerUrl(id)).pathname)};`, 30000, 'return to exact offer');
+  // Angular may serialize ':' literally after parsing an encoded route segment. Decode only that segment.
+  await page.until(`const parts = location.pathname.split('/'); return location.origin === '${ORIGINS.web}' && parts.length === 4 && parts[1] === 'gcsp' && parts[2] === 'offers' && decodeURIComponent(parts[3]) === ${JSON.stringify(id)} && location.search === '' && location.hash === '';`, 30000, 'return to exact offer');
 }
 async function openOffer(page, id, state, how = offerUrl(id)) {
   return freshDocument(page, how, { readPath: offerPath(id), ready: `return !!$('.offer-page') && !!$('gcsp-screen-intro') && text().includes(${JSON.stringify(({ pending: 'Your offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired' })[state])}) ${state === 'accepted' ? "|| !!$('.offer-page') && text().includes('Your selection was not sent to ordering')" : ''};`, what: `${state} offer current read` });
