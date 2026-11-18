@@ -337,6 +337,43 @@ class GregOrderPlanJourneyHttpTest {
         assertNull(heldFor(heldCar), "a released car is no longer held");
     }
 
+    // ---- 7: FUCQ-528, a confirmed driver lets the plan cover Sam ----
+
+    @Test
+    @Order(7)
+    void samsConfirmedDriverLetsThePlanCoverHimAndNoLongerBlocksAnOrder() throws Exception {
+        confirmBrief("sub-sam");
+
+        // With released stock, Sam is allocated a car: before the fix every configuration was driver-unconfirmed.
+        JsonNode plan = readPlan();
+        boolean allocated = false;
+        for (JsonNode a : plan.get("allocations")) allocated |= "slot-sam".equals(a.get("entitlementId").asText());
+        assertTrue(allocated, "Sam is allocated a car: " + plan.get("allocations"));
+        assertNull(unmet(plan, "slot-sam"), "Sam's need is met: " + plan.get("unmetNeeds"));
+
+        // With no stock, ordering is held only by lead time before renewal, not by the driver gate.
+        try (Connection c = dataSource.get().getConnection(); Statement st = c.createStatement()) {
+            st.executeUpdate("UPDATE stock_cars SET state = 'collected' WHERE state = 'released'");
+        }
+        JsonNode sam = unmet(readPlan(), "slot-sam");
+        assertNotNull(sam, "with no stock Sam is unmet inside the lead time");
+        assertFalse(M.convertValue(sam.get("gates"), List.class).contains("driver-unconfirmed"), sam.toString());
+        assertTrue(sam.get("constraintIds").toString().contains("lead-time-before-renewal"), sam.toString());
+    }
+
+    private JsonNode readPlan() throws Exception {
+        Resp read = get(greg, PLAN);
+        assertEquals(200, read.status(), read.toString());
+        return read.body().at("/value/plan");
+    }
+
+    private static JsonNode unmet(JsonNode plan, String entitlementId) {
+        for (JsonNode need : plan.get("unmetNeeds")) {
+            if (entitlementId.equals(need.get("entitlementId").asText())) return need;
+        }
+        return null;
+    }
+
     // ---- helpers ----
 
     /** The slot the app's own supply reading says the car is held for, or null when it is not held. */
