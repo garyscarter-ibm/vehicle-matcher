@@ -245,3 +245,13 @@ accurate-state criteria remain unmet/unchecked; no product repair or acceptance 
 occurred. Booked stages nextStep is preserved producer semantics and needs a bounded
 contract decision before precedence changes. Safari/hosted/real IdP/email/live BMW and
 full accessibility/CSP remain unrun; full suite deferred to covering batch.
+
+
+Dispatcher reconciliation at02:38 UTC: the terminal return rendering fault is native
+**FUCQ-522 (Medium)**, related to FUCQ-446 under FUCQ-432; both actual terminal PNGs
+are attached as937958/937959 (151257bytes each). The booked-handover stale nextStep is
+already described by **FUCQ-299** and remains existing related evidence, with no duplicate
+Bug or silent producer precedence change. FUCQ-521 is unchanged. Parent independently
+audited all five runtime allocations,1792 observed identities and nine ports: cleanup
+PASS, lane released. Overall review stays CHANGES REQUIRED; the proof/tooling source
+has a scoped pass for the128 exercised assertions and bounded validation only.
