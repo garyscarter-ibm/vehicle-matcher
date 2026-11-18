@@ -499,3 +499,18 @@ Minnie Mouse2 remained requested/selected `gpt-6.1-sol/high`, no fallback. No ch
 was started after the retained agent-thread-limit refusal. Parent owns independent
 resource audit, review/integration, Jira lifecycle and the separately found display
 observation.
+
+
+Parent follow-through, observed18 November2026 at02:11:18.361620Z:
+`.claude/fucq443-final-parent-audit-0148.json` independently passed592 retained
+process identities, exact owned groups/scratch/tokens, all four recorded ports
+60483/60485/60486/60487 and empty canonical registry. Its initial parser incorrectly
+treated nonempty group-ID→false dictionaries as active groups; the retained audit
+records that diagnostic and corrected boolean-value interpretation at02:11:42Z.
+Independent process-group inspection found none. No OneDrive check occurred.
+
+The parent captured and verified **FUCQ-520**, related to originating StoryFUCQ-443,
+with the actual `a2-review-ticked.png` attachment937957 (205,642 bytes). The
+quote-facts-wrapper explanation remains a hypothesis for Bug triage. No product
+repair was allocated. The runtime lane is handed back to A46; no moreF443 runtime
+is planned in this increment.
