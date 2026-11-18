@@ -307,7 +307,7 @@ services:
         - apps/gcsp-web/**/*.md
         - apps/gcsp-web/vitest.config.ts
         - apps/gcsp-web/tsconfig.spec.json
-    # Restrict app rewrites to known routes; other missing paths retain the host's 404.
+    # Existing app routes precede resource exclusions and unknown-page recovery.
     # Render placeholders match one segment, including asset-looking offer IDs.
     routes:
       - type: redirect
@@ -372,6 +372,24 @@ services:
         destination: /gcsp/index.html
       - type: rewrite
         source: /gcsp/offers/:offerId
+        destination: /gcsp/index.html
+      # Existing files are served before Render evaluates rewrites. Reserve
+      # resource namespaces and filenames so a missing asset stays a real 404.
+      # The absent destination is outside the Angular fallback and build output.
+      - type: rewrite
+        source: /gcsp/assets/*
+        destination: /gcsp-static-resource-not-found
+      - type: rewrite
+        source: /gcsp/media/*
+        destination: /gcsp-static-resource-not-found
+      - type: rewrite
+        source: /gcsp/api/*
+        destination: /gcsp-static-resource-not-found
+      - type: rewrite
+        source: /gcsp/*.*
+        destination: /gcsp-static-resource-not-found
+      - type: rewrite
+        source: /gcsp/*
         destination: /gcsp/index.html
     headers:
       - path: /gcsp/*
