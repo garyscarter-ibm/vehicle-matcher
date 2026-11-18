@@ -2843,3 +2843,9 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Combined skill/directive/receipt reads clipped again during resume. Small whitelist projections recovered current directives, exact source/result identities, all66 native rows and cleanup facts before decisions; no omitted output supplied acceptance evidence. A broad process-baseline field also obscured useful receipt fields until an explicit whitelist excluded it. The recurrence shows prior guidance is still an applied mitigation, not a verified prevention. Proposed framework improvement: producer-level total character budgets and named-field projections before serialization; do not repeat full historical aliases or large logs on resume.
 
+
+### 2026-11-18 09:35 UTC · Gary Claude · DL-20261118-GCL-001 · Peer Claude poller: first story delivered; two worker setup frictions
+
+- Claude Code now runs its own dev-inbox poller (Gary's instruction); claims are listed and Codex/Claude comms run through the local `.claude/claude-poller-claims.json`. First pickup DEV-2026-11-16-019 / FUCQ-500 merged 1b0ed4bfc, closed f39d66ba3, cleanup complete.
+- A story-lead started from another worktree could not Edit/Write in `.claude/worktrees/<id>`: a cross-worktree write hook refused it until the lead entered that worktree. Proposed: story-lead briefs say to enter the story worktree first.
+- Host Node 26 plus `.npmrc` `engine-strict` makes `npm ci` refuse in `apps/gcsp-web`; `npx -p node@24.22.3 -p npm@11.19.1` worked. Proposed: name the pinned runner in worker briefs. The known case-queue em dash still fails `check:boundaries` on base (unchanged).
