@@ -650,3 +650,42 @@ Original Story prefix/two unchecked AC, entire map and all five slice IDs/points
 unchanged. No native lifecycle/acceptance transition or new defect pickup. Parent publishes
 the frozen local checkpoint. Same parent-verified Sol/high; no fallback/settings change/
 children. Hold after commit; no push/sync/merge/Jira/lease/service activation/final switch.
+
+
+## Coherent delivery recovery — 18 November 2026
+
+A46 transfers the original two-criterion lifecycle increment to Goofy 3 after the prior
+Claude launcher ended with a 422 response. The earlier checkpoint-specific HOLD and
+publication limits above are historical. Current authority covers the allocated Orders
+consumer, its connected proof, focused validation, independent review and coherent
+commit/push; the dispatcher retains merge, native Jira lifecycle and final acceptance.
+The 15 existing Orders files are unchanged at recovery base
+`72e1eeb47afc08105a8446a23212b6ac9e365781`. Java approvals, documents, appointments and
+returns interfaces were traced against their consumers; no consumer contract correction
+was identified by that source inspection.
+
+Added `scripts/gcsp/fucq446-connected-lifecycle-proof.mjs`: prebuilt production Angular
+and Java, owned native PostgreSQL 17, local signed OIDC with PKCE, actual employee DOM
+actions and explicit provider/role refusals, followed by physical handover/return,
+reload and restart relationship checks. The owned return policy fixture mirrors the
+existing `ReturnOutcomeJourneyProfile` by changing only its proposal and outcome
+switches; no production policy or lifecycle backend source changes.
+
+Validation at this checkpoint is syntax/source review only. The current focused Java
+packages plus named startup/wiring group, six Orders Angular specs, production builds
+and composed four-scenario proof are prepared and **unrun**. Full suites are deferred
+to the covering serial batch. Original AC checkboxes and map/native status are unchanged.
+The current named runtime handoff is A46 at 02:11:42 UTC; each finite supervisor still
+requires fresh capacity and atomic foreign-reservation rejection before allocation.
+
+All runtime scratch stays under owned `/private/tmp`; no OneDrive/CloudStorage access.
+Disk 2 GiB, RSS 3 GiB, inclusive 5 GiB, aggregate logs 2 MiB, 5 GiB free reserve, one
+heavy worker; C1/C2 <=300 s, C3 <=600 s and shared pipeline <=1500 s including cleanup.
+Local manifests/identity pins and final process/listener/token/scratch receipts remain
+required. Real hosted IdP, live BMW providers, Safari and hosted deployment remain
+unrun; this harness does not claim them.
+
+Agents: lead Goofy 3 requested/selected Sol/high; implementer Henery Hawk 3
+requested/selected Sol/medium; independent reviewer Lego Batman 2 requested/selected
+Sol/high, no fallback. Lead/implementer titles and effective choices independently
+verified by the dispatcher; reviewer verification is pending.
