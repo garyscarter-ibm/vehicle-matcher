@@ -10434,8 +10434,8 @@
     {
       "branch": "gcsp-poc-dev",
       "id": "FUCQ-388",
-      "note": "Local integration observation; native Jira status retained, not refreshed. Partial repair merged at0dd1bd714. Fresh31/31 regression and matching prior scoped inputs retained. UI quality FAILED/originalAC5 partial under F445 ownership. Covering batch launched05:38:05UTC at6793f49f; Node running, Java pending. No green batch or acceptance.",
-      "observed_at": "2026-11-18T05:43:07Z",
+      "note": "Local integration observation; native Jira status retained, not refreshed. Partial repair0dd1bd714 has scoped evidence. UI quality FAILED/originalAC5 partial under F445 ownership. Covering run6793f49f: Node completed5465tests/5178pass/125fail/162skip/0cancel, normalexit1; Java clean verify running on owned nativePG17. No green batch or acceptance.",
+      "observed_at": "2026-11-18T06:23:18Z",
       "slices": [
         {
           "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim. Refreshed repair regression31/31 PASS; partial merge0dd1bd714; independent cleanupf910d3ce.",
@@ -10456,11 +10456,11 @@
           "title": "Generated stock outcomes and desktop/narrow critique"
         },
         {
-          "evidence": "Actual batch-covering-20261118T0540Z-run launched05:38:05UTC at6793f49f; exact npm test running before Java clean verify. Independent staticreviewad76151a; root launch audit batch-covering-20261118-0540-launch-root-audit.json verifies hashes, pin, PID/start, owned root, lane and2GiBdisk/3GiBram reservation. Results/cleanup pending; no native acceptance.",
+          "evidence": "Actual covering run at6793f49f: Node normalexit1,5465tests/5178pass/125fail/162skip/0cancel in2504.431s; Java exact clean verify started06:19:53.976UTC on fresh ownedPG17. Root node-boundary audit5e86a111 verifies counts/quiescentNodegroup,PGPID/start/listenport and readmitted2GiBdisk/3GiBram reservation. Exact failure delta under independent read-only review; no cause/green/nativeacceptance claim.",
           "id": "covering-batch",
           "status": "in-progress",
           "title": "Covering batch verification",
-          "observed_at": "2026-11-18T05:43:07.636714+00:00"
+          "observed_at": "2026-11-18T06:23:18.813745+00:00"
         }
       ],
       "status": "In Progress",
