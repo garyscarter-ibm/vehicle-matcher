@@ -10237,54 +10237,6 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "branch": "dev/DEV-2026-11-16-034",
-      "id": "FUCQ-388",
-      "note": "Local delivery observation; native Jira unavailable and original5AC remain open. Corrected production f8913a5f2 independent source reviewPASS; scopedNode99/99,pureJava14/14 and signedOIDC/nativePG1/1PASS. Lead reports six generated cases and historical exact-repeat reproduction; final tool/evidence review pending. Final allocation/policy22classesPASS; offers/startup and actual desktop/narrow critique pending. First combined native selection resource-stopped with named cleanup reconciliation, no final verdict. Canonical26d73b760RED excludes branch.",
-      "observed_at": "2026-11-18T04:23:10Z",
-      "slices": [
-        {
-          "evidence": "Corrected production f8913a5f2; independent Sulley reviewPASS at exact pin, affectedNode99/99. Generatedproof finaltool/pins pending; no overallcompletion.",
-          "id": "policy-node",
-          "status": "in-progress",
-          "title": "Canonical reason-specific rule and Node repair"
-        },
-        {
-          "evidence": "PureJava14/14 and signedOIDC/nativePG1/1PASS; parent1210inputhash/cleanup auditPASS1170e54a. Final allocation/policy22classesPASS; offers/startup remaining; earliercombinedresourceerror retained.",
-          "id": "java-parity",
-          "status": "in-progress",
-          "title": "Java allocation consumer and focused parity"
-        },
-        {
-          "evidence": "Lead reports six independent generated casesPASS plus retained-v1exactrepeat and v2samevaluescomparator; productionAngularbuildPASS. ActualJava/OIDC/Angular desktop/narrowcaptures/independentcritique pending.",
-          "id": "employee-proof",
-          "status": "in-progress",
-          "title": "Generated stock outcomes and desktop/narrow critique"
-        },
-        {
-          "evidence": "Canonical26d73b760RED excludesF388; no coveringgreen/nativeacceptance.",
-          "id": "covering-batch",
-          "status": "not-started",
-          "title": "Covering batch verification"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Paula can receive the same declined car after a saved fuel change",
-      "type": "Bug",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
-      "workers": [
-        {
-          "expires_at": "2026-11-18T04:53:10.224863+00:00",
-          "harness": "codex",
-          "name": "Mater",
-          "observed_at": "2026-11-18T04:23:10.224863+00:00",
-          "role": "story-lead",
-          "source": "Observed current /root/mater messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
-          "status": "Coherent F388 delivery: scoped package/startup completion and actual Java/OIDC/Angular visual proof in progress. Source review completed; originalAC/native acceptance pending."
-        }
-      ]
-    },
-    {
       "assignee": "Gary Carter",
       "id": "FUCQ-451",
       "observed_at": "2026-11-18T04:28:39Z",
@@ -10394,6 +10346,72 @@
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "branch": "dev/DEV-2026-11-16-034",
+      "id": "FUCQ-388",
+      "note": "Local delivery observation; native Jira unavailable, original5AC remain explicitly reconciled by lead before closure. Corrected production f8913a5f2 source reviewPASS; scopedNode99/99,Java377/377 over61classes, signedOIDC/nativePG1/1. Actual26desktop/narrowimages and Bnativebrowser positive/no-match/reload evidence retained; A identifies four unresolvedP2, B attributes inheritedGaryF445Angular/noF388regression. No unconditionalUIqualitypass. Guardedgeneratedsource sixcaseclosure pending; priorbusinesspasses/sourceguardgap preserved. Canonical26d73b760RED excludesbranch.",
+      "observed_at": "2026-11-18T04:50:44Z",
+      "slices": [
+        {
+          "evidence": "Corrected f8913a5f2 independent source reviewPASS, affectedNode99/99; original5AC/finalguardedgeneratedtool evidence review pending.",
+          "id": "policy-node",
+          "status": "in-progress",
+          "title": "Canonical reason-specific rule and Node repair"
+        },
+        {
+          "evidence": "Scoped61classes/377testsPASS(171allocation-policy/153offers/53startup); root1210hash/process/group/port/cleanup auditsPASS; independent unchanged-comparisonseam reviewPASS e3dd457a. Nofullsuiteclaim.",
+          "id": "java-parity",
+          "status": "in-progress",
+          "title": "Java allocation consumer and focused parity"
+        },
+        {
+          "evidence": "Actual26desktop/narrowstates+Bnative refresh/reload/nextoffernavigation observed. A7400edea fourP2, BsourceattributioninheritedF445pendingfinalreport; visualcorrectionsremainunresolved. Sixguardedgeneratedsourcecases selected after explicitfactoryfallback gap; noacceptancewaiver.",
+          "id": "employee-proof",
+          "status": "in-progress",
+          "title": "Generated stock outcomes and desktop/narrow critique"
+        },
+        {
+          "evidence": "Canonical26d73b760RED excludesF388; no coveringgreen/nativeacceptance.",
+          "id": "covering-batch",
+          "status": "not-started",
+          "title": "Covering batch verification"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Paula can receive the same declined car after a saved fuel change",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
+      "workers": [
+        {
+          "name": "Mater",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T04:50:43.980331+00:00",
+          "expires_at": "2026-11-18T05:20:43.980331+00:00",
+          "source": "Observed current /root/mater messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
+          "status": "F388 guardedgeneratedproof closure/evidence and originalACreconciliation; source/runtimecomplete, unresolvedvisualfindings attributed separately."
+        },
+        {
+          "name": "Sulley",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T04:50:43.980331+00:00",
+          "expires_at": "2026-11-18T05:20:43.980331+00:00",
+          "source": "Observed current /root/sulley messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
+          "status": "Independent Bsource/experience attribution and generatedtoolsourceguard review; no repair/claim/nativewrites."
+        },
+        {
+          "name": "Hugh",
+          "harness": "codex",
+          "role": "reviewer",
+          "observed_at": "2026-11-18T04:50:43.980331+00:00",
+          "expires_at": "2026-11-18T05:20:43.980331+00:00",
+          "source": "Observed current /root/hugh messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
+          "status": "Completed independent26image A; current bounded supervisorwitness-launcher safetyreview, no runtime/sourcewrites."
+        }
+      ]
     }
   ],
   "version": 1
