@@ -114,3 +114,23 @@ test('FUCQ-179: a restart over the same durable stores after a reset reopens on 
   assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v2');
   assert.ok((await offerSetsActive(second, renewed)).every((read) => read.status === 'ok'));
 });
+
+test('a retained v1 publication upgrades at the same frozen clock on the first restart', async (t) => {
+  const store = createMemoryStore(); const policyStore = createMemoryPolicyStore();
+  const start = (adoptOfferJourney) => createGcspRuntime({ mode: 'memory', environmentId: 'retained-offer-v1',
+    policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'retained-offer-bootstrap', adoptOfferJourney,
+    repository: createMemoryRepository({ store }), policy: new PolicyService({ provider: new MemoryPolicyProvider({ store: policyStore }) }) });
+  const first = good(await start(false));
+  const presenter = good(await first.identity.createPresenterSession('retained-policy-presenter')).context;
+  const greg = good(await first.identity.switchPrincipal(presenter, 'demo-greg', 'retained-policy-greg')).context;
+  const now = good(await first.clock.now(greg)).now;
+  good(await first.policy.adoptReviewedAssumptions(greg, { commandId: 'retained-policy-v1', expectedActiveVersion: greg.policyVersion,
+    policyVersion: greg.policyVersion + '+offer-journey-v1', effectiveFrom: now, definitionSetId: 'offer-journey-v1' }));
+  const retained = structuredClone(policyStore.runs.get(greg.runId));
+  await first.close();
+  const second = good(await start(true)); t.after(() => second.close());
+  const current = good(await second.createLocalSession()).context;
+  assert.ok((await offerSetsActive(second, current)).every((read) => read.status === 'ok'));
+  assert.deepEqual(policyStore.runs.get(current.runId).slice(0, retained.length), retained);
+  assert.equal(good(await second.clock.now(current)).now, new Date(Date.parse(now) + 1).toISOString());
+});

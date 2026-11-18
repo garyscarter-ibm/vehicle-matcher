@@ -78,11 +78,15 @@ class DeclineReentryHttpTest {
         ObjectNode draft = BuddyJourneySupport.JSON.createObjectNode().put("commandId", "reentry-draft")
                 .put("expectedBriefVersion", 1).put("expectedDraftVersion", 0);
         draft.set("brief", content);
-        post(paula, API + "/brief/draft", draft.toString()).then().statusCode(200);
-        post(paula, API + "/brief/confirm", """
-                {"commandId":"reentry-confirm","expectedBriefVersion":1,"expectedDraftVersion":1,
-                 "consent":{"search":true,"hold":true}}
-                """).then().statusCode(200);
+        JsonNode drafted = body(post(paula, API + "/brief/draft", draft.toString())
+                .then().statusCode(200).extract().response()).path("value");
+        if (!drafted.has("confirmed")) {
+            ObjectNode initialConfirm = BuddyJourneySupport.JSON.createObjectNode().put("commandId", "reentry-confirm")
+                    .put("expectedBriefVersion", current.path("briefVersion").asLong())
+                    .put("expectedDraftVersion", drafted.path("draftVersion").asLong());
+            initialConfirm.putObject("consent").put("search", true).put("hold", true);
+            post(paula, API + "/brief/confirm", initialConfirm.toString()).then().statusCode(200);
+        }
 
         String previousOffer = OfferDecisionJourneySupport.allocate(s, presenter, BuddyJourneySeed.PAULA);
         JsonNode offered = view(paula, previousOffer);
@@ -97,6 +101,15 @@ class DeclineReentryHttpTest {
         JsonNode saved = body(post(paula, API + "/offer-followup/confirm", confirm.toString())
                 .then().statusCode(200).extract().response()).path("value");
         assertEquals("change-saved", saved.path("state").asText());
+        long savedVersion = saved.path("briefVersion").asLong();
+        JsonNode editor = body(get(paula, API + "/brief/editor").then().statusCode(200).extract().response()).path("value");
+        long draftVersion = editor.path("initial").path("draftVersion").asLong();
+        post(paula, API + "/brief/pause-search", "{\"commandId\":\"reentry-pause\",\"expectedBriefVersion\":" + savedVersion
+                + ",\"expectedDraftVersion\":" + draftVersion + "}")
+                .then().statusCode(200);
+        post(paula, API + "/brief/resume-search", "{\"commandId\":\"reentry-resume\",\"expectedBriefVersion\":" + (savedVersion + 1)
+                + ",\"expectedDraftVersion\":" + draftVersion + "}")
+                .then().statusCode(200);
         assertEquals("completed", s.tick(presenter, "reentry-after-ev").path("state").asText());
         JsonNode reloaded = body(get(paula, followup).then().statusCode(200).extract().response()).path("value");
         assertEquals("no-match", reloaded.path("state").asText());

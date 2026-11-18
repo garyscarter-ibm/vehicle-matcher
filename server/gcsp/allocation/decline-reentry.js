@@ -36,21 +36,27 @@ const preferenceObserved = (decision, field) => {
 
 // Build joins once, rather than scan whole offer/brief history for every candidate.
 export function createDeclineReentry({ rows, rule }) {
-  const offers = new Map(); const briefs = new Map(); const newest = new Map();
+  const offers = new Map(); const briefs = new Map(); const newest = new Map(); const savedAnswers = new Map();
   for (const row of rows.offers) if (!offers.has(row.offerId)) offers.set(row.offerId, row);
   for (const row of rows.briefs) {
     if (!briefs.has(row.employeeId)) briefs.set(row.employeeId, new Map());
     const versions = briefs.get(row.employeeId);
     if (!versions.has(row.briefVersion)) versions.set(row.briefVersion, row);
+    const change = row.postDeclineChange;
+    if (row.status === 'confirmed' && plain(change) && revision(change.fromBriefVersion)
+      && row.briefVersion === change.fromBriefVersion + 1 && text(change.decisionId)) {
+      const prior = savedAnswers.get(change.decisionId);
+      if (!prior || row.briefVersion < prior.briefVersion) savedAnswers.set(change.decisionId, row);
+    }
   }
   for (const decision of rows.decisions) {
     const offer = offers.get(decision.offerId);
     if (decision.decision !== 'decline' || !offer || offer.employeeId !== decision.employeeId
       || offer.runId !== decision.runId || !text(offer.orderUuid)) continue;
-    const previous = newest.get(decision.employeeId)?.decision;
-    const key = [decision.createdAt ?? '', decision.decisionId ?? ''];
-    const oldKey = [previous?.createdAt ?? '', previous?.decisionId ?? ''];
-    if (!previous || key[0] > oldKey[0] || key[0] === oldKey[0] && key[1] > oldKey[1]) {
+    const previous = newest.get(decision.employeeId);
+    const key = [decision.createdAt ?? '', offer.briefVersion ?? 0, decision.decisionId ?? ''];
+    const oldKey = [previous?.decision.createdAt ?? '', previous?.offer.briefVersion ?? 0, previous?.decision.decisionId ?? ''];
+    if (!previous || key[0] > oldKey[0] || key[0] === oldKey[0] && (key[1] > oldKey[1] || key[1] === oldKey[1] && key[2] > oldKey[2])) {
       newest.set(decision.employeeId, { decision, offer });
     }
   }
@@ -58,7 +64,7 @@ export function createDeclineReentry({ rows, rule }) {
   function forBrief(brief) {
     const latest = newest.get(brief.employeeId);
     if (!latest || latest.decision.runId !== brief.runId) return null;
-    const { decision, offer } = latest; const change = brief.postDeclineChange;
+    const { decision, offer } = latest; const saved = savedAnswers.get(decision.decisionId); const change = saved?.postDeclineChange;
     const mapping = mappings.get(decision.reason?.code);
     const state = { decision, offer, mapping, answered: false };
     if (!mapping || !plain(change) || change.decisionId !== decision.decisionId || change.offerId !== offer.offerId
@@ -70,8 +76,7 @@ export function createDeclineReentry({ rows, rule }) {
       || decision.outcome.value.decisionId !== decision.decisionId || !text(decision.reason.policyVersion)) return state;
     const previous = briefs.get(brief.employeeId)?.get(change.fromBriefVersion);
     if (!previous || previous.status !== 'confirmed' || previous.runId !== brief.runId) return state;
-    const saved = briefs.get(brief.employeeId)?.get(change.fromBriefVersion + 1);
-    if (!saved || saved.status !== 'confirmed' || saved.confirmedBy !== change.confirmedBy
+    if (!saved || saved.employeeId !== brief.employeeId || saved.runId !== brief.runId || saved.briefVersion > brief.briefVersion || saved.status !== 'confirmed' || saved.confirmedBy !== change.confirmedBy
       || saved.confirmedAt !== change.confirmedAt || !plain(saved.postDeclineChange) || !same(saved.postDeclineChange, change)) return state;
     const answer = mapping.match === 'essential-met' ? brief.essentials?.[mapping.field] : brief.preferences?.[mapping.field];
     if (!answer || answer.source !== 'employee' || (mapping.match === 'essential-met'

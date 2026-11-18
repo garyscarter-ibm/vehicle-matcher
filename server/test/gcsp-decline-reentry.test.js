@@ -188,6 +188,28 @@ test('a repeated unanswered decline holds the exact car despite the previous res
   assert.ok(f.evaluation.decisions[0].blockers.some((b) => b.code === 'declined-unresolved'));
 });
 
+test('an immutable saved answer survives a later confirmed head without its marker', async (t) => {
+  const f = await fixture(t, { mutate: ({ current, extra }) => {
+    extra.push(['briefs', structuredClone(current)]);
+    current.briefVersion = 4; current.previousBriefVersion = 3; delete current.postDeclineChange;
+  }, candidateFacts: [{ fuel: fact('diesel') }, { fuel: fact('petrol') }] }); good(f.out);
+  assert.deepEqual(f.evaluation.decisions.map((d) => d.gateStatus), ['ineligible', 'ineligible']);
+  assert.ok(f.evaluation.decisions.every((d) => d.blockers.some((b) => b.code === 'decline-answer-mismatch')));
+});
+
+test('same-time repeat declines use the later pinned brief before arbitrary decision identifiers', async (t) => {
+  const f = await fixture(t, { before: 'petrol', after: 'diesel', mutate: (input) => {
+    input.decision.createdAt = '2099-01-01T00:00:00.000Z'; input.decision.decisionId = 'zz-old';
+    input.decision.outcome = ok({ state: 'declined', decisionId: 'zz-old' });
+    input.current.postDeclineChange.decisionId = 'zz-old';
+    laterDecline(input);
+    const newer = input.extra.find(([table]) => table === 'decisions')[1];
+    newer.decisionId = 'aa-new'; newer.outcome = ok({ state: 'declined', decisionId: 'aa-new' });
+  }, candidateFacts: [{ fuel: fact('diesel') }] }); good(f.out);
+  assert.equal(f.evaluation.decisions[0].gateStatus, 'ineligible');
+  assert.ok(f.evaluation.decisions[0].blockers.some((b) => b.code === 'declined-unresolved'));
+});
+
 test('a later resolved reason can readmit a historical exact car without a permanent blacklist', async (t) => {
   const f = await fixture(t, { mutate: (input) => laterDecline(input, { answer: true }),
     candidateFacts: [{ fuel: fact('diesel') }] }); good(f.out);
