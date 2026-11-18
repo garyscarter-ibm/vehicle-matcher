@@ -10216,6 +10216,39 @@
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "note": "Refreshed local integration PASS at 43069cb8: fresh Java/web production packages, six actual connected scenarios/71 checks and original two AC PASS. Sam and Michigan independently reviewed all 14 new captures; Michigan final PASS, no blocking/major findings. Guarded reuse supports actual 128 Java/61 Angular tests; first three incomplete C1 receipts and omitted parity XML remain explicit. Final three receipts strict PASS, shared 1375.023199s<1500; lead and parent independently verified release. Parent integration, covering batch and human acceptance remain separate; status/AC boxes unchanged. docs/gcsp/fucq444-delivery.md."
+    },
+    {
+      "id": "FUCQ-504",
+      "type": "Bug",
+      "title": "Distinguish stock detail source failures from a car becoming unavailable",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-504",
+      "status": "In Progress",
+      "branch": "gcsp-poc-dev",
+      "unsliced": false,
+      "workers": [],
+      "note": "Local delivery observation only; native Jira unavailable, no native transition/acceptance inferred. Integrated 3ebe0eb6b; earlier running batch26d73b760 excludes this fix. Full covering green still required.",
+      "observed_at": "2026-11-18T03:09:32Z",
+      "slices": [
+        {
+          "id": "failure-state",
+          "status": "complete",
+          "title": "Truthful selected detail state",
+          "observed_at": "2026-11-18T03:09:32Z",
+          "evidence": "Source8647a5c8 integrated3ebe0eb6b; RED5expected failures/15passes then144stocktestsPASS. docs/gcsp/evidence/fucq504/scoped-unit.md"
+        },
+        {
+          "id": "boundary-proof",
+          "status": "complete",
+          "title": "Original two Angular criteria and visual proof",
+          "observed_at": "2026-11-18T03:09:32Z",
+          "evidence": "22actual Angular states desktop1440/narrow390; independent A/B/sourcePASS, rootcleanup03:05:28absent. Refreshedinputsidentical. NoJava/OIDC/hostedclaim. docs/gcsp/evidence/fucq504/rendered.md"
+        },
+        {
+          "id": "covering-batch",
+          "status": "not-started",
+          "title": "Covering batch verification"
+        }
+      ]
     }
   ],
   "version": 1
