@@ -10,7 +10,6 @@ import static gcsp.api.offers.OfferDecisionJourneySupport.termsDigest;
 import static gcsp.api.offers.OfferDecisionJourneySupport.view;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -156,7 +155,7 @@ class DemoScenarioRemoteOrderingHttpTest {
         s.assertCustodyInvariants(1);
     }
 
-    /** The employee's brief through the real routes: three categories and Same again, then confirm with consent. */
+    /** The employee's brief through the real routes: three preferences without Same again, then confirm with consent. */
     private static void confirmBrief(String token) throws Exception {
         JsonNode initial = body(get(token, API + "/brief/editor").then().statusCode(200).extract().response())
                 .at("/value/initial");
@@ -168,7 +167,6 @@ class DemoScenarioRemoteOrderingHttpTest {
                 + "\",\"expectedBriefVersion\":" + initial.get("briefVersion") + ",\"expectedDraftVersion\":" + draft
                 + ",\"consent\":{\"search\":true,\"hold\":true}}").then().statusCode(200).extract().response());
         assertEquals(1, confirmed.at("/value/brief/briefVersion").asInt(), confirmed.toString());
-        assertNotNull(confirmed.at("/value/brief"));
     }
 
     private static String cmd() {
