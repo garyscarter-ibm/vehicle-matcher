@@ -64,6 +64,4 @@ Remaining original work: obtain green required cases validation through separate
 
 ## Retained visual evidence
 
-Six unchanged actual captures from the final connected run are retained in [the evidence directory](evidence/fucq447/connected-2026-11-18/manifest.json): employee preference review desktop/narrow, Greg queue desktop/narrow, actual stale refusal and transport unavailable. The manifest pins each image hash/size to final source and proof. Lead also re-opened final-source narrow employee review and desktop Greg queue after the repeat.
-
-![Employee preference review at390px](evidence/fucq447/connected-2026-11-18/employee-preference-review-narrow.png)
+A [tracked Markdown manifest](evidence/fucq447/connected-2026-11-18/README.md) pins six unchanged actual final-run captures: employee preference review desktop/narrow, Greg queue desktop/narrow, actual stale refusal and transport unavailable. Binaries remain in the bounded local evidence root named there, under the repository’s existing capture policy; they are not committed. Lead also re-opened final-source narrow employee review and desktop Greg queue after the repeat.
