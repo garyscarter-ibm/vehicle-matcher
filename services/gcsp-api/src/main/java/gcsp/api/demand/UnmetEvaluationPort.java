@@ -25,7 +25,13 @@ public interface UnmetEvaluationPort {
         record Unavailable() implements Evaluation {}
     }
 
-    record CarDecision(String orderUuid, String gateStatus, List<Gate> blockers, List<Gate> unknowns) {}
+    /** score is the recommendation score of an evaluated car, null when absent or not finite. */
+    record CarDecision(String orderUuid, String gateStatus, List<Gate> blockers, List<Gate> unknowns, Double score) {
+
+        public CarDecision(String orderUuid, String gateStatus, List<Gate> blockers, List<Gate> unknowns) {
+            this(orderUuid, gateStatus, blockers, unknowns, null);
+        }
+    }
 
     record Gate(String code, String field) {}
 }

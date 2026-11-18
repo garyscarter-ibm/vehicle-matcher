@@ -78,6 +78,27 @@ class GregPolicyHttpTest {
         presenter = GregPolicyHttp.token(signingJwk, "sub-presenter", "presenter");
     }
 
+    private long policyRows() throws Exception {
+        try (Connection c = GregPolicyProfiles.plain().getConnection(); Statement st = c.createStatement()) {
+            st.execute("SET search_path TO " + schema);
+            try (java.sql.ResultSet rs = st.executeQuery("SELECT (SELECT count(*) FROM policy_documents) "
+                    + "+ (SELECT count(*) FROM policy_versions) + (SELECT count(*) FROM policy_run_activation)")) {
+                rs.next();
+                return rs.getLong(1);
+            }
+        }
+    }
+
+    private static ObjectNode previewBody(String expected, Object... edits) {
+        ObjectNode body = JSON.createObjectNode();
+        body.put("expectedActiveVersion", expected);
+        com.fasterxml.jackson.databind.node.ArrayNode changes = body.putArray("changes");
+        for (int i = 0; i < edits.length; i += 2) {
+            changes.addObject().put("id", (String) edits[i]).put("value", (Integer) edits[i + 1]);
+        }
+        return body;
+    }
+
     @AfterAll
     static void dropSchema() throws Exception {
         if (ownedSchema == null || !ownedSchema.startsWith("gcsp_p_http_")) {
@@ -298,14 +319,146 @@ class GregPolicyHttpTest {
     }
 
     @Test
-    void previewIs422BecauseGregDemandAndFitAreNotInJavaYet() throws Exception {
-        Response response = post(greg, "/preview", "{}");
-        assertEquals(422, response.statusCode());
+    void aPriceChangePreviewReturnsTheNodeShapeWithBothDemandsAndWritesNothing() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        JsonNode first = before.get("fields").get(0);
+        String id = first.get("id").textValue();
+        int points = first.get("value").intValue();
+        String active = before.get("activeVersion").textValue();
+        long rows = policyRows();
+
+        Response response = post(greg, "/preview", previewBody(active, id, points + 7));
+        assertEquals(200, response.statusCode(), response.asString());
         JsonNode body = json(response);
-        assertEquals("unsupported", body.get("status").textValue());
-        assertEquals("preview-unavailable", body.get("code").textValue());
-        assertEquals("Policy preview is not available on this service yet.", body.get("reason").textValue());
-        assertFalse(body.get("retryable").booleanValue());
+        assertEquals("ok", body.get("status").textValue());
+        JsonNode value = body.get("value");
+        assertEquals("preview-ready", value.get("state").textValue());
+        assertTrue(value.get("preview").booleanValue());
+        assertEquals(active, value.get("activeVersion").textValue());
+        String draft = value.get("draftVersion").textValue();
+        assertTrue(draft.matches("preview-[0-9a-f]{24}"), draft);
+        assertEquals(PolicyClock.iso(CLOCK.now), value.get("asOf").textValue());
+        assertEquals(1, value.get("clockVersion").longValue());
+        assertEquals(1, value.get("differences").size());
+        JsonNode difference = value.get("differences").get(0);
+        assertEquals(id, difference.get("id").textValue());
+        assertEquals(points, difference.get("before").intValue());
+        assertEquals(points + 7, difference.get("after").intValue());
+        assertEquals(first.path("unit").textValue(), difference.path("unit").textValue());
+        assertEquals(active, value.at("/active/demand/privacy/policyVersion").textValue());
+        assertEquals(draft, value.at("/draft/demand/privacy/policyVersion").textValue());
+        assertTrue(value.at("/active/demand/privacy/threshold").intValue() >= 1);
+        assertTrue(value.get("heldOffers").get("count").isNull());
+        for (String side : new String[] {"active", "draft"}) {
+            JsonNode fit = value.at("/" + side + "/fit");
+            assertEquals("saved-brief-recommendation-fit", fit.get("basis").textValue());
+            assertEquals("Recommendation fit, not predicted acceptance", fit.get("label").textValue());
+            assertEquals("band", fit.at("/employeesWithEligibleStock/kind").textValue());
+            assertEquals("band", fit.at("/scoredBriefs/kind").textValue());
+            assertEquals("suppressed", fit.at("/meanBestScore/status").textValue());
+            assertEquals("score/100", fit.at("/meanBestScore/unit").textValue());
+            assertFalse(fit.at("/scoredBriefs").has("value"));
+        }
+
+        assertEquals(draft, json(post(greg, "/preview", previewBody(active, id, points + 7))).at("/value/draftVersion").textValue());
+        assertNotEquals(draft, json(post(greg, "/preview", previewBody(active, id, points + 8))).at("/value/draftVersion").textValue());
+        assertEquals(rows, policyRows());
+        assertEquals(active, read().get("activeVersion").textValue());
+        assertEquals(points, field(read(), id).get("value").intValue());
+    }
+
+    @Test
+    void aWeightChangePreviewDiffersOnTheWeight() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        int old = field(before, "weight:body").get("value").intValue();
+        String active = before.get("activeVersion").textValue();
+        Response response = post(greg, "/preview", previewBody(active, "weight:body", old + 2));
+        assertEquals(200, response.statusCode(), response.asString());
+        JsonNode difference = json(response).at("/value/differences/0");
+        assertEquals("weight:body", difference.get("id").textValue());
+        assertEquals(old, difference.get("before").intValue());
+        assertEquals(old + 2, difference.get("after").intValue());
+        assertEquals("relative-weight", difference.get("unit").textValue());
+    }
+
+    @Test
+    void aPreviewAgainstAStaleActiveVersionIs409WithTheCurrentVersion() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        JsonNode first = before.get("fields").get(0);
+        String id = first.get("id").textValue();
+        int points = first.get("value").intValue();
+        Response stale = post(greg, "/preview", previewBody("older-version", id, points + 1));
+        assertEquals(409, stale.statusCode(), stale.asString());
+        JsonNode error = json(stale);
+        assertEquals("stale-version", error.get("status").textValue());
+        assertEquals("older-version", error.get("expectedVersion").textValue());
+        assertEquals(before.get("activeVersion").textValue(), error.get("currentVersion").textValue());
+        assertEquals("refresh", error.get("action").textValue());
+        assertFalse(error.has("accepted"));
+    }
+
+    @Test
+    void publishAcceptsAPreviewAtTheCurrentVersionAndThatPreviewIsThenStale() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        JsonNode first = before.get("fields").get(0);
+        String id = first.get("id").textValue();
+        int points = first.get("value").intValue();
+        String active = before.get("activeVersion").textValue();
+        JsonNode preview = json(post(greg, "/preview", previewBody(active, id, points + 4))).get("value");
+        assertEquals(active, preview.get("activeVersion").textValue());
+        // The screen publishes the preview's binding with effectiveFrom = preview asOf.
+        Instant asOf = Instant.parse(preview.get("asOf").textValue());
+        Response published = post(greg, "/publish", change(uniqueName("c"), active, "greg-" + uniqueName("p"), asOf, id, points + 4));
+        assertEquals(200, published.statusCode(), published.asString());
+        assertEquals(points + 4, field(read(), id).get("value").intValue());
+
+        CLOCK.advance();
+        Response again = post(greg, "/preview", previewBody(active, id, points + 6));
+        assertEquals(409, again.statusCode(), again.asString());
+        Response republish = post(greg, "/publish", change(uniqueName("c"), active, "greg-" + uniqueName("q"), CLOCK.now, id, points + 6));
+        assertEquals(409, republish.statusCode(), republish.asString());
+        assertEquals("stale-version", json(republish).get("status").textValue());
+    }
+
+    @Test
+    void invalidPreviewChangeSetsAre400AndNothingIsStored() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        String old = before.get("activeVersion").textValue();
+        JsonNode first = before.get("fields").get(0);
+        String id = first.get("id").textValue();
+        int points = first.get("value").intValue();
+        long rows = policyRows();
+
+        assertInvalid(post(greg, "/preview", previewBody(old, "price:nope", 5)), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", previewBody(old, "weight:unknown", 1)), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", previewBody(old, id, -1)), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", previewBody(old, id, points)), "no-policy-change", "changes");
+        assertInvalid(post(greg, "/preview", "{\"expectedActiveVersion\":\"" + old + "\",\"changes\":[{\"id\":\"" + id
+                + "\",\"value\":0.5}]}"), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", "{\"expectedActiveVersion\":\"" + old + "\",\"changes\":[{\"id\":\"" + id
+                + "\",\"value\":9007199254740992}]}"), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", "{\"expectedActiveVersion\":\"" + old + "\",\"changes\":[{\"id\":\"" + id
+                + "\",\"value\":" + (points + 1) + ",\"path\":\"essentials\"}]}"), "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", "{\"expectedActiveVersion\":\"" + old + "\",\"changes\":[{\"id\":\"" + id
+                + "\",\"value\":" + (points + 1) + "},{\"id\":\"" + id + "\",\"value\":" + (points + 2) + "}]}"),
+                "invalid-editable-field", "changes");
+        assertInvalid(post(greg, "/preview", "{\"expectedActiveVersion\":\"" + old + "\",\"changes\":[]}"),
+                "invalid-change-set", "changeSet");
+        ObjectNode extra = previewBody(old, id, points + 1);
+        extra.put("unknown", true);
+        assertInvalid(post(greg, "/preview", extra), "invalid-change-set", "changeSet");
+        ObjectNode publishKeys = previewBody(old, id, points + 1);
+        publishKeys.put("commandId", "c-1");
+        assertInvalid(post(greg, "/preview", publishKeys), "invalid-change-set", "changeSet");
+        assertInvalid(post(greg, "/preview", "{}"), "invalid-change-set", "changeSet");
+        assertInvalid(post(greg, "/preview", "not json"), "invalid-change-set", "body");
+        assertInvalid(post(greg, "/preview", "[]"), "invalid-change-set", "body");
+        assertEquals(rows, policyRows());
     }
 
     @Test
@@ -332,6 +485,7 @@ class GregPolicyHttpTest {
         String version = "greg-" + uniqueName("outcome");
         Map<String, String> names = new TreeMap<>(Map.of(version, "<new>", old, "<old>", PolicyClock.iso(CLOCK.now), "<now>"));
 
+        Response preview = post(greg, "/preview", previewBody(old, id, points + 9));
         Response accepted = post(greg, "/publish", change(uniqueName("o"), old, version, CLOCK.now, id, points + 9));
         CLOCK.advance();
         Response stale = post(greg, "/publish", change(uniqueName("o"), old, "greg-" + uniqueName("s"), CLOCK.now, id, points + 10));
@@ -339,7 +493,6 @@ class GregPolicyHttpTest {
         Response invalid = post(greg, "/publish", change("o-invalid", version, "greg-x", CLOCK.now, "price:nope", 1));
         Response forbidden = post(employee, "/publish", "{}");
         Response unauthenticated = post(null, "/publish", "{}");
-        Response preview = post(greg, "/preview", "{}");
 
         ObjectNode outcomes = JSON.createObjectNode();
         outcomes.set("accepted", outcome(accepted, names));
@@ -347,7 +500,7 @@ class GregPolicyHttpTest {
         outcomes.set("stale", outcome(stale, names));
         outcomes.set("forbidden", outcome(forbidden, names));
         outcomes.set("unauthenticated", outcome(unauthenticated, names));
-        outcomes.set("previewUnavailable", outcome(preview, names));
+        outcomes.set("preview", outcome(preview, names));
         if (Boolean.getBoolean("gcsp.snapshot.update")) {
             Files.createDirectories(OUTCOMES.getParent());
             Files.writeString(OUTCOMES, JSON.writerWithDefaultPrettyPrinter().writeValueAsString(outcomes) + "\n");
@@ -364,7 +517,8 @@ class GregPolicyHttpTest {
     }
 
     private static ObjectNode outcome(Response response, Map<String, String> names) throws Exception {
-        String text = response.asString();
+        String text = response.asString().replaceAll("preview-[0-9a-f]{24}", "<draft>")
+                .replaceAll("\"projectionVersion\":\"[0-9a-f]{64}\"", "\"projectionVersion\":\"<digest>\"");
         for (Map.Entry<String, String> name : names.entrySet()) {
             text = text.replace(name.getKey(), name.getValue());
         }
