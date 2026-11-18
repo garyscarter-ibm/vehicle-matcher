@@ -13,7 +13,9 @@ const instant = (v: unknown): string => {
   const s = text(v);
   return /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?(?:Z|[+-]\d\d:\d\d)$/.test(s) && Number.isFinite(Date.parse(s)) ? s : bad();
 };
-function versions(v: unknown): GregVersions { const o = object(v); return { brief: list(o['brief'], text), policy: list(o['policy'], text) }; }
+// Java sends brief versions as integers; they are shown as text.
+const briefVersion = (v: unknown): string => typeof v === 'number' ? String(integer(v)) : text(v);
+function versions(v: unknown): GregVersions { const o = object(v); return { brief: list(o['brief'], briefVersion), policy: list(o['policy'], text) }; }
 export function parseGregCount(v: unknown): GregCount {
   const o = object(v); const label = text(o['label']);
   if (o['kind'] === 'exact') { keysOnly(o, ['kind', 'value', 'label']); return { kind: 'exact', value: integer(o['value']), label }; }

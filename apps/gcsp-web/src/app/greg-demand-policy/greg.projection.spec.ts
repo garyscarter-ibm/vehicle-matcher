@@ -33,6 +33,14 @@ describe('Greg server projection allowlists', () => {
       expect(() => parseGregCount(malicious)).toThrow();
     }
   });
+  it('accepts the integer brief versions Java sends and shows them as text', () => {
+    const raw = demand(); raw.versions = { brief: [1], policy: ['policy-1'], revision: 2 } as never;
+    raw.demand.activeBriefs.versions = { brief: [1, 3], policy: ['policy-1'] } as never;
+    const result = parseGregDemand(ok(raw), 'run-1', 'policy-1');
+    expect(result.state).toBe('ready'); if (result.state !== 'ready') return;
+    expect(result.value.versions.brief).toEqual(['1']); expect(result.value.demand.activeBriefs.versions.brief).toEqual(['1', '3']);
+    for (const bad of [-1, 1.5, null, {}]) expect(parseGregDemand(ok({ ...raw, versions: { brief: [bad], policy: ['policy-1'], revision: 2 } }), 'run-1', 'policy-1').state).toBe('invalid-response');
+  });
   it('maps real groups, versions and privacy caveats without dashboard arithmetic', () => {
     const raw = demand(); const result = parseGregDemand(ok({ ...raw, privateEmployeeIds: ['never-display'] }), 'run-1', 'policy-1');
     expect(result.state).toBe('ready'); if (result.state !== 'ready') return;
