@@ -2796,3 +2796,13 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 08:17 UTC · Russell Codex · DL-20261117-GCC-013 · Resume output clipping recurred
 
 - A combined resumed skill/checkpoint read and an unfiltered queue projection clipped. The exact latest directive/checkpoint, typed queue counts and tool availability were recovered in bounded reads before new work allocation; no omitted output supplied pickup or acceptance evidence. Subsequent projections cap producer output. The underlying general output-bound issue remains unresolved; no additional test or approval gate was added.
+
+
+### 2026-11-18 08:34 UTC · Russell Codex · DL-20261118-RG-022 · Corrected launcher executed within admission budget
+
+- Applied the nonempty matching process-start and process-group guards in the new F479 launcher; frozen overnight scripts remain unchanged. Prelaunch review caught a helper/code-digest naming collision before admission; renaming the helper to process_witness resolved it in this launcher. Two host-RAM refusals allocated no scratch or children. The admitted one-worker run passed 18 classes/80 scoped Java tests in 57.78s, with 146,353,856B peak scratch and 1,647,493,120B peak RSS. Independent audit verified owned processes, listener, scratch and reservations absent and the original target identity restored. Removed-byte accounting is not measured free-space recovery. This is a verified bounded execution/cleanup outcome, not a general framework fix.
+- F479's exact handler/stage assertion correction is merged at d32422fb8; source review found no issue. Original acceptance and the covering Java batch remain outstanding. The human stop-after-Hugh boundary is applied: recurring automation deleted, no further pickup or batch. Proposed framework improvement remains a shared positive-identity predicate and prelaunch symbol/ownership checks.
+
+### 2026-11-18 08:34 UTC · Russell Codex · DL-20261117-GCC-013 · Resumed closeout read clipped
+
+- A combined resumed instruction/checkpoint read clipped again. Bounded follow-up projections recovered the latest Result, test receipt, cleanup audit and exact branch/source identities before mutation. No truncated output supplied an acceptance decision. The output-bound issue remains unresolved; no extra test or approval gate was added.
