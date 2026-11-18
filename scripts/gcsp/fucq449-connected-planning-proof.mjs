@@ -107,8 +107,8 @@ const TRUST_PASS = 'proof-local-trust';
 const ENVIRONMENT_ID = `fucq449-connected-${RUN_TOKEN}`;
 const RUN_ID = 'run-1';
 const POLICY_VERSION = 'gcsp-policy-v1';
-const SUBJECTS = { greg: ['greg'], presenter: ['presenter'], employee: ['employee'], paula: ['employee'], alex: ['employee'] };
-const EMPLOYEE_IDS = { employee: 'employee-probe', paula: 'employee-paula', alex: 'employee-alex' };
+const SUBJECTS = { greg: ['greg'], presenter: ['presenter'], employee: ['employee'], paula: ['employee'], alex: ['employee'], sam: ['employee'] };
+const EMPLOYEE_IDS = { employee: 'employee-probe', paula: 'employee-paula', alex: 'employee-alex', sam: 'employee-sam' };
 const API_JVM_ARGS = apiJvmArgs();
 const OIDC_SUBJECTS = Object.fromEntries(Object.entries(SUBJECTS).map(([name, roles]) => [`sub-${name}`, roles]));
 const SCHEMA = `gcsp_s_fucq449_${RUN_TOKEN.replace(/-/g, '_')}`;
@@ -122,7 +122,7 @@ const receipt = {
     'Local test OIDC uses real signed RS256 tokens and Java bearer validation; this is not the hosted identity provider.',
     'Demand is a confirmed brief saved through the employee routes and supply is the demo provider released by one presenter tick; both are API steps, not Greg UI.',
     'GCSP_PRODUCTION_PROVIDER=synthetic is a labelled local substitute; no real Production system is involved.',
-    'Production tracking lines are created with POST /greg/orders (an API step); the plan-submit path is blocked because no API route yields a current plan that orders vehicles.',
+    'Extra Production tracking lines are created with POST /greg/orders (an API step); the plan submission and its retry are made from the Greg page, and the lost answer is injected by the harness (CDP Fetch).',
     'CDP browser contexts approximate fresh private sessions. Safari/WebKit and hosted deployment were not run.',
     'No access tokens, database credentials, OIDC codes or private keys are written to receipts.',
   ],
@@ -437,12 +437,12 @@ function requestSummary(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
   return { keys: Object.keys(body).sort(), experimentId: body.experimentId ?? null,
     hasCommandId: typeof body.commandId === 'string' && body.commandId.length > 0, commandId: body.commandId ?? null, change: body.change ?? null, changes: body.changes ?? null,
-    planId: body.planId ?? null };
+    planId: body.planId ?? null, versions: body.versions ?? null };
 }
 class Page {
   constructor(cdp, sessionId, contextId, label) {
     this.cdp = cdp; this.sid = sessionId; this.ctxId = contextId; this.label = label;
-    this.log = []; this.byId = new Map(); this.waits = []; this.errors = []; this.csp = []; this.consoleErrors = []; this.httpErrors = [];
+    this.log = []; this.byId = new Map(); this.waits = []; this.errors = []; this.csp = []; this.consoleErrors = []; this.httpErrors = []; this.hook = null; this.hookWaits = [];
     cdp.listeners.push((message) => message.sessionId === sessionId && this.event(message));
   }
   send(method, params = {}) { return this.cdp.send(method, params, this.sid); }
@@ -454,6 +454,7 @@ class Page {
       if (p.entry?.level === 'error') (/content.security|content-security|\bcsp\b/i.test(p.entry?.text ?? '') ? this.csp : this.consoleErrors).push(p.entry.text);
       return;
     }
+    if (message.method === 'Fetch.requestPaused') { this.paused(p); return; }
     if (message.method === 'Network.requestWillBeSent') {
       if (!p.request.url.startsWith(ORIGINS.api)) return;
       const url = new URL(p.request.url);
@@ -474,6 +475,22 @@ class Page {
       if (entry && entry.method !== 'OPTIONS') this.waits.push(this.send('Network.getResponseBody', { requestId: p.requestId })
         .then((result) => { entry.response = parse(result.base64Encoded ? Buffer.from(result.body, 'base64').toString('utf8') : result.body); }).catch(() => {}));
     }
+  }
+  // Lost answer: the server has answered when the response stage pauses; the first POST is then reset once.
+  paused(p) {
+    const hook = this.hook; const drop = !!hook && !hook.fired && p.request.method === 'POST';
+    if (drop) { hook.fired = true; hook.serverStatus = p.responseStatusCode ?? null; }
+    const run = drop ? this.send('Fetch.failRequest', { requestId: p.requestId, errorReason: 'ConnectionReset' })
+      : this.send('Fetch.continueResponse', { requestId: p.requestId }).catch(() => this.send('Fetch.continueRequest', { requestId: p.requestId }));
+    this.hookWaits.push(run.catch((error) => { if (hook) hook.error = error.message; }));
+  }
+  async dropNextAnswer(urlPattern) {
+    this.hook = { fired: false, serverStatus: null, error: null }; this.hookWaits = [];
+    await this.send('Fetch.enable', { patterns: [{ urlPattern, requestStage: 'Response' }] });
+  }
+  async endDrop() {
+    await Promise.allSettled(this.hookWaits); await this.send('Fetch.disable');
+    const hook = this.hook; this.hook = null; return hook;
   }
   calls(from = 0) { return this.log.slice(from).filter((entry) => entry.method !== 'OPTIONS'); }
   async settle() { await sleep(250); await Promise.allSettled(this.waits.splice(0)); }
@@ -635,6 +652,7 @@ const SETTLED = `return !main.querySelector('[aria-busy="true"]') && !!($('[data
   && (!!$('.production-empty') || !!$('.production-request') || /Production status unavailable|access required|Sign in/i.test(text()));`;
 const apiCalls = (page, from = 0) => page.calls(from);
 const isPlanGet = (e) => e.method === 'GET' && e.path === '/greg/order-plan';
+const isSubmitPost = (e) => e.method === 'POST' && e.path === '/greg/production/requests';
 const brief = (e) => ({ method: e.method, path: e.path, status: e.status, auth: e.auth, failed: e.failed });
 async function probe(person, suffix) {
   const r = await call(person, suffix);
@@ -985,8 +1003,11 @@ async function main() {
     { cspLogEntries: greg.csp, cspViolationEvents: violations, uncaughtExceptions: exceptions, consoleErrorsOther: otherConsole,
       browserEchoedResourceLoadErrors: resourceLoad, nonApiHttpErrors: greg.httpErrors, note: 'Chrome logs a console line for any HTTP error response; those are listed separately and are the expected echo of the actual API status.' });
   const gregPosts = apiCalls(greg).filter((e) => e.method === 'POST');
-  rec('AC.posts', 'Across the whole run the browser sent only the two preview POSTs: no production request POST and no other write',
-    gregPosts.length === 2 && gregPosts.every((e) => e.path === '/greg/order-plan/preview' && e.status === 200 && e.auth === true), { posts: gregPosts.map(brief) });
+  const previewPosts = gregPosts.filter((e) => e.path === '/greg/order-plan/preview'); const submitPosts = gregPosts.filter(isSubmitPost);
+  rec('AC.posts', 'Across the whole run the browser sent only the two preview POSTs and two POST /greg/production/requests with one command id (the first answer lost in transit, the retry answered 200); no other write',
+    gregPosts.length === 4 && previewPosts.length === 2 && previewPosts.every((e) => e.status === 200 && e.auth === true)
+      && submitPosts.length === 2 && submitPosts.every((e) => e.auth === true) && !!submitPosts[0].failed && submitPosts[1].status === 200
+      && !!submitPosts[0].request?.commandId && submitPosts[0].request.commandId === submitPosts[1].request?.commandId, { posts: gregPosts.map((e) => ({ ...brief(e), commandId: e.request?.commandId ?? null })) });
   receipt.networkGreg = allCalls;
   receipt.phase = phase;
 }
@@ -1014,13 +1035,13 @@ async function orderPlanAndProduction(greg, phase) {
   const miss1 = api1.status === 200 ? planMismatches(api1.body.value, dom1) : [{ what: 'api status', api: api1.status }];
   const browserPlan1 = step1.seen['GET /greg/order-plan'].at(-1);
   pngs.feasible = await png(greg, 'ac1-feasible-1280x900.png', true);
-  rec('AC1.feasible.api', 'Direct GET /greg/order-plan as Greg is a feasible current plan with quantities, coverage, risk, two alternatives, binding constraints, trade-off and an explained unmet need',
-    api1.status === 200 && plan1.status === 'feasible' && api1.body.value.mode === 'current' && plan1.quantities.length === 5 && plan1.expectedAcceptableCoverage.total === 1
+  rec('AC1.feasible.api', 'Direct GET /greg/order-plan as Greg is a feasible current plan with quantities, coverage, risk, two alternatives, binding constraints and trade-off; Paula is covered 1 of 1 with no unmet need',
+    api1.status === 200 && plan1.status === 'feasible' && api1.body.value.mode === 'current' && plan1.quantities.length === 5 && plan1.expectedAcceptableCoverage.total === 1 && plan1.expectedAcceptableCoverage.covered === 1
       && plan1.unallocatedStockRisk.totalSupply === 6 && plan1.alternatives.length === 2 && plan1.bindingConstraints.length > 0 && plan1.objective.tradeOff.length > 0
-      && plan1.unmetNeeds.length === 1 && plan1.unmetNeeds[0].gates.length > 0 && api1.body.value.replan.status === 'no-submission',
+      && plan1.unmetNeeds.length === 0 && api1.body.value.replan.status === 'no-submission',
     { status: api1.status, planId: plan1?.planId, orderQuantity: plan1?.orderQuantity, coverage: plan1?.expectedAcceptableCoverage, risk: { quantity: plan1?.unallocatedStockRisk?.quantity, totalSupply: plan1?.unallocatedStockRisk?.totalSupply },
       alternatives: plan1?.alternatives?.map((a) => a.kind), binding: plan1?.bindingConstraints?.length, tradeOff: plan1?.objective?.tradeOff, unmet: plan1?.unmetNeeds, replan: api1.body?.value?.replan, versions: plan1?.versions });
-  rec('AC1.feasible.dom', 'The page shows that plan: title, quantities, coverage and risk, model totals, alternatives, binding constraints and the unmet need all equal the API body',
+  rec('AC1.feasible.dom', 'The page shows that plan: title, quantities, coverage and risk, model totals, alternatives, binding constraints and the (empty) unmet needs all equal the API body',
     miss1.length === 0 && dom1.submit.present && dom1.submit.disabled === true && /no current order to request/i.test(dom1.submitNote ?? ''),
     { mismatches: miss1, title: dom1.title, lines: dom1.lines, metrics: dom1.metrics, alternatives: dom1.alternatives, binding: dom1.binding, unmet: dom1.unmet, submit: dom1.submit, submitNote: dom1.submitNote, replanNote: dom1.replanNote, capture: pngs.feasible });
   rec('AC1.feasible.net', 'The browser read GET /greg/order-plan with a Bearer token, got 200 and the same plan id as the direct read, and sent no POST',
@@ -1105,7 +1126,7 @@ async function orderPlanAndProduction(greg, phase) {
   const stale = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan1.planId, versions: plan1.versions });
   const counts5 = dbCounts();
   rec('AC1.stale.api', 'After Alex confirms a second brief, submitting the earlier plan answers 409 replan-needed with the new current plan and the changed inputs, and writes nothing',
-    alex.status === 200 && fresh.status === 200 && plan5.planId !== plan1.planId && plan5.expectedAcceptableCoverage.total === 2 && plan5.unmetNeeds.length === 2
+    alex.status === 200 && fresh.status === 200 && plan5.planId !== plan1.planId && plan5.expectedAcceptableCoverage.total === 2 && plan5.expectedAcceptableCoverage.covered === 2 && plan5.unmetNeeds.length === 0
       && stale.status === 409 && stale.json?.code === 'replan-needed' && stale.json?.current?.planId === plan5.planId
       && ['plan', 'forecast'].every((k) => (stale.json?.changedInputs ?? []).includes(k)) && counts5.production_submissions === 0 && counts5.production_requests === 0,
     { alex, newPlanId: plan5?.planId, oldPlanId: plan1.planId, coverage: plan5?.expectedAcceptableCoverage, unmet: plan5?.unmetNeeds?.length, staleSubmit: { status: stale.status, code: stale.json?.code, changedInputs: stale.json?.changedInputs, currentPlanId: stale.json?.current?.planId }, db: counts5 });
@@ -1115,31 +1136,99 @@ async function orderPlanAndProduction(greg, phase) {
   const dom5 = await greg.act(PLAN_DOM);
   const miss5 = planMismatches(fresh.body.value, dom5);
   pngs.stale = await png(greg, 'ac1-after-second-brief-1280x900.png', true);
-  rec('AC1.stale.dom', 'Before refresh the page still shows the earlier plan (it cannot submit an order-less plan); the refresh path shows the new plan, coverage 0 of 2 and two unmet needs, equal to the API',
-    domBefore.planFacts['Plan reference'] === plan1.planId && domBefore.submit.disabled === true && miss5.length === 0 && dom5.metrics['Acceptable coverage before renewal'] === '0 of 2' && dom5.unmet.length === 2
+  rec('AC1.stale.dom', 'Before refresh the page still shows the earlier plan (it cannot submit an order-less plan); the refresh path shows the new plan, coverage 2 of 2 and no unmet needs, equal to the API',
+    domBefore.planFacts['Plan reference'] === plan1.planId && domBefore.submit.disabled === true && miss5.length === 0 && dom5.metrics['Acceptable coverage before renewal'] === '2 of 2' && dom5.unmet.length === 0
       && dom5.planFacts['Plan reference'] === plan5.planId && !dom5.staleNotice,
     { pageBeforeRefresh: { planReference: domBefore.planFacts['Plan reference'], submit: domBefore.submit }, mismatches: miss5, metrics: dom5.metrics, unmet: dom5.unmet, planReference: dom5.planFacts['Plan reference'], capture: pngs.stale });
-  const noOrderSubmit = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan5.planId, versions: plan5.versions });
 
-  // ----- AC2: what Java allows, then the Production tracking against the real provider answers -----
-  const policy = await probe('greg', '/greg/policy');
-  const publishBody = { commandId: newCmd(), expectedActiveVersion: policy.body?.value?.activeVersion, policyVersion: 'gcsp-policy-v2-proof',
-    effectiveFrom: policy.body?.value?.asOf, changes: [{ id: 'orderPlan.derivativeBounds', value: 2 }] };
-  const publish = await call('greg', '/greg/policy/publish', publishBody);
-  const editableIds = (policy.body?.value?.fields ?? []).map((f) => f.id);
-  const counts6 = dbCounts();
-  const gregSubmitPosts = apiCalls(greg).filter((e) => e.method === 'POST' && e.path === '/greg/production/requests');
-  rec('AC2.blocked.evidence', 'Java gives no way to make a current plan that orders vehicles: demand never orders, the policy editor offers only price and weight fields, and an order-less plan cannot be submitted',
-    noOrderSubmit.status === 400 && noOrderSubmit.json?.code === 'plan-has-no-order' && publish.status === 400 && publish.json?.code === 'invalid-editable-field'
-      && editableIds.every((id) => /^(price|weight):/.test(id)) && plan5.orderQuantity === 0 && counts6.production_submissions === 0 && gregSubmitPosts.length === 0,
-    { currentPlanOrderQuantity: plan5.orderQuantity, submitCurrentPlan: { request: { planId: plan5.planId, versions: '(the plan versions)' }, status: noOrderSubmit.status, body: noOrderSubmit.json },
-      publishRequest: { path: 'POST /greg/policy/publish', body: { ...publishBody, commandId: '(omitted)' } }, publishResponse: { status: publish.status, body: publish.json },
-      editableFieldKinds: [...new Set(editableIds.map((id) => id.split(':')[0]))], editableFieldCount: editableIds.length, db: counts6 });
-  blocked('AC2.submit', 'Deliberate submission of a plan from the UI: needs a current plan that orders vehicles (UI keeps Request from Production disabled and the API refuses with plan-has-no-order)', { reason: 'see AC2.blocked.evidence' });
-  blocked('AC2.retry', 'First submit answer lost in transit, then retry with the same commandId: needs a submittable plan', { reason: 'see AC2.blocked.evidence' });
-  blocked('AC2.replan.submitted', 'Replan status after Production answered a submitted plan: replan stays no-submission because submissions from POST /greg/orders are ignored by replan', { reason: 'see AC2.track.replan' });
+  // ----- AC2: Sam's brief makes the plan order a 330e; Greg submits it, the answer is lost, the retry continues it -----
+  const sam = await confirmBrief('sam');
+  const apiS = await probe('greg', '/greg/order-plan');
+  const planS = apiS.body?.value?.plan;
+  const q330 = (planS?.quantities ?? []).find((q) => q.derivativeId === 'g20-saloon-330e')?.quantity ?? 0;
+  const samAllocation = (planS?.allocations ?? []).find((a) => a.entitlementId === 'slot-sam');
+  const countsS = dbCounts();
+  rec('AC2.setup', 'After Sam confirms a brief (API step), a direct GET /greg/order-plan as Greg is a new feasible current plan that orders at least one 330e for Sam (new-order) and nothing is submitted yet',
+    sam.status === 200 && apiS.status === 200 && apiS.body.value.mode === 'current' && planS.status === 'feasible' && planS.planId !== plan5.planId && planS.orderQuantity > 0
+      && q330 >= 1 && samAllocation?.source === 'new-order' && countsS.production_submissions === 0 && countsS.production_requests === 0,
+    { sam, planId: planS?.planId, orderQuantity: planS?.orderQuantity, quantity330e: q330, samAllocation, canSubmitByRule: apiS.body?.value?.mode === 'current' && planS?.orderQuantity > 0,
+      coverage: planS?.expectedAcceptableCoverage, replan: apiS.body?.value?.replan, versions: planS?.versions, db: countsS });
+  if (!checks.at(-1).pass) return;
+
+  const stepS = await clickAndWait(greg, 'Replan with the latest inputs', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(planS.planId)});`, 20000, "Sam's plan shown");
+  const domS = await greg.act(PLAN_DOM);
+  const missS = planMismatches(apiS.body.value, domS);
+  const postsBeforeClick = apiCalls(greg).filter(isSubmitPost).length;
+  const countsBeforeClick = dbCounts();
+  await greg.dropNextAnswer('*/greg/production/requests*');
+  const fromSubmit = greg.log.length; let pressed = false; let hook = null;
+  try {
+    pressed = await greg.act("return press('Request from Production');");
+    if (pressed) await greg.until("return !main.querySelector('[aria-busy=\"true\"]') && text().includes('The earlier request is retained') && !!button('Retry same request');", 30000, 'retained outcome after the lost answer');
+  } finally { hook = await greg.endDrop(); }
+  await greg.settle();
+  const firstPosts = apiCalls(greg, fromSubmit).filter(isSubmitPost); const first = firstPosts[0];
+  const planIdSql = planS.planId.replace(/'/g, "''");
+  const countsLost = dbCounts();
+  const submissionsForPlan = Number(sql(`SELECT count(*) FROM production_submissions WHERE plan_id = '${planIdSql}'`));
+  rec('AC2.submit', 'Greg replans, the page shows that plan with Request from Production enabled and "Nothing is ordered until Production confirms."; nothing is sent before the click; one click sends one Bearer POST with the plan id and versions and the server records one submission',
+    missS.length === 0 && domS.submit.present && domS.submit.disabled === false && domS.submitNote === 'Nothing is ordered until Production confirms.'
+      && postsBeforeClick === 0 && countsBeforeClick.production_submissions === 0 && pressed && firstPosts.length === 1 && first.auth === true
+      && first.request?.hasCommandId === true && same(first.request.keys, ['commandId', 'planId', 'versions']) && first.request.planId === planS.planId
+      && same(sortDeep(first.request.versions), sortDeep(planS.versions)) && !!hook && hook.fired === true && hook.serverStatus === 200 && !hook.error
+      && submissionsForPlan === 1 && countsLost.production_submissions === 1,
+    { mismatches: missS, title: domS.title, submit: domS.submit, submitNote: domS.submitNote, replanCalls: apiCalls(greg, stepS.from).map(brief), postsBeforeClick, dbBeforeClick: countsBeforeClick,
+      pressed, post: first ? { ...brief(first), request: first.request } : null, answerHook: hook, submissionsForPlan, dbAfterClick: countsLost });
+
+  // The browser lost the answer: the page keeps the same request for a deliberate retry.
+  const factsU = await greg.act(FACTS); const domU = await greg.act(PLAN_DOM);
+  const retryButton = factsU.buttons.find((b) => b.label === 'Retry same request');
+  const requestsAfterLost = countsLost.production_requests;
+  const fromRetry = greg.log.length;
+  if (!(await greg.act("return press('Retry same request');"))) throw new Error('Button "Retry same request" is missing or disabled');
+  const retryPosts = await waitCalls(greg, fromRetry, 'POST', '/greg/production/requests');
+  await waitCalls(greg, fromRetry, 'GET', '/greg/production');
+  await greg.until("return !main.querySelector('[aria-busy=\"true\"]') && text().includes('Production response received');", 20000, 'retry answer shown');
+  const prodU = await probe('greg', '/greg/production');
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && main.querySelectorAll('.production-request').length === ${prodU.body?.value?.requests?.length ?? -1};`, 20000, 'submitted lines shown');
+  const factsV = await greg.act(FACTS); const domPU = await greg.act(PROD_DOM);
+  const missPU = productionMismatches(prodU.body.value, domPU);
+  pngs.submitted = await png(greg, 'ac2-submitted-1280x900.png', true);
+  const countsRetry = dbCounts(); const retry = retryPosts[0];
+  rec('AC2.retry', 'With the answer lost the page says the earlier request is retained and offers Retry same request; the retry is a second POST with the same command id, plan id and versions answered 200, adds no submission or request row, and the page Production lines then equal GET /greg/production and include the 330e',
+    factsU.text.includes('The earlier request is retained') && factsU.text.includes('Production outcome pending') && retryButton?.disabled === false && factsU.submit.disabled === true
+      && domU.submitNote === 'An earlier request needs a deliberate retry before another can be sent.'
+      && retryPosts.length === 1 && retry.auth === true && retry.status === 200 && retry.response?.status === 'ok' && retry.response.value?.requests?.length > 0
+      && retry.request?.commandId === first?.request?.commandId && retry.request.planId === first.request.planId && same(sortDeep(retry.request.versions), sortDeep(first.request.versions))
+      && countsRetry.production_submissions === 1 && requestsAfterLost > 0 && countsRetry.production_requests === requestsAfterLost
+      && !factsV.text.includes('The earlier request is retained') && missPU.length === 0 && domPU.requests.length === prodU.body.value.requests.length
+      && prodU.body.value.requests.some((r) => /330e/.test(r.derivative)) && domPU.requests.some((r) => /330e/.test(r.heading)),
+    { retainedShown: factsU.text.includes('The earlier request is retained'), retryButton, submitNote: domU.submitNote, retryPosts: retryPosts.map((e) => ({ ...brief(e), request: e.request })),
+      dbAfterLost: countsLost, dbAfterRetry: countsRetry, mismatches: missPU, requests: domPU.requests.map((r) => ({ heading: r.heading, stage: r.stage, ref: r.ref })), capture: pngs.submitted });
+
+  // Replan after Production answers the submitted 330e request(s) in full.
+  const apiR1 = await probe('greg', '/greg/order-plan'); const replan1 = apiR1.body?.value?.replan;
+  const confirms = [];
+  for (const r of prodU.body.value.requests.filter((x) => /330e/.test(x.derivative))) {
+    const answered = await call('presenter', '/presenter/production/responses', { requestId: r.requestId, action: 'confirm', quantity: r.quantity });
+    confirms.push({ requestId: r.requestId, quantity: r.quantity, status: answered.status, outcome: answered.json?.value?.requests?.[0]?.outcome });
+  }
+  const stepRs = await clickAndWait(greg, 'Replan after Production response', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
+  const apiR2 = await probe('greg', '/greg/order-plan'); const replan2 = apiR2.body?.value?.replan;
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(wordsOf('replanned'))});`, 20000, 'replanned note shown');
+  const domR = await greg.act(PLAN_DOM);
+  const missR = apiR2.status === 200 ? planMismatches(apiR2.body.value, domR) : [{ what: 'api status', api: apiR2.status }];
+  rec('AC2.replan.submitted', 'Before any answer the API says unchanged-since-submission for the submitted plan; after the presenter confirms the 330e request(s) in full, Replan after Production response reads production then the plan and the API and the page say replanned for that plan, with the confirmation listed',
+    apiR1.status === 200 && replan1?.status === 'unchanged-since-submission' && replan1.submittedPlanId === planS.planId && confirms.length > 0 && confirms.every((c) => c.status === 200)
+      && replan2?.status === 'replanned' && replan2.submittedPlanId === planS.planId
+      && confirms.every((c) => (replan2.responses ?? []).some((h) => h.requestId === c.requestId && /confirmed/.test(h.state)))
+      && missR.length === 0 && domR.replanNote.includes(wordsOf(replan2.status)),
+    { before: replan1, confirms, after: replan2, replanNoteOnPage: domR.replanNote, mismatches: missR, calls: apiCalls(greg, stepRs.from).map(brief), db: dbCounts() });
 
   // Production tracking: explicit order lines (API step) answered by the presenter's synthetic provider scripts.
+  // The plan submission's lines are already on the page and in the database, so every count here is relative to this baseline.
+  const baseline = { page: (await greg.act(PROD_DOM)).requests.length, db: Number(sql('SELECT count(*) FROM production_requests')) };
   const ledger = await call('greg', '/greg/orders');
   const versions = { ...ledger.json?.value?.versions };
   const lines = [['3 Series Saloon', '320i', 4], ['3 Series Touring', '320i', 2], ['i5 Touring', 'eDrive40', 2]];
@@ -1155,12 +1244,13 @@ async function orderPlanAndProduction(greg, phase) {
   await greg.until(`return !main.querySelector('[aria-busy="true"]') && main.querySelectorAll('.production-request').length === ${prod1.body?.value?.requests?.length ?? -1};`, 20000, 'requested lines shown');
   const domP1 = await greg.act(PROD_DOM);
   const missP1 = productionMismatches(prod1.body.value, domP1);
-  rec('AC2.track.requested', 'Three explicit lines (API step) show on the page, after a refresh, as requested with the quantities, stages and references the API reports; before the refresh the page showed none',
-    created.every((c) => c.status === 200 && c.state === 'requested') && domStale.requests.length === 0 && missP1.length === 0 && domP1.requests.every((r) => r.stage === 'Requested')
-      && domP1.requests.length === 3 && Number(sql('SELECT count(*) FROM production_requests')) === 3,
-    { created, pageBeforeRefresh: { requests: domStale.requests.length, empty: domStale.empty }, mismatches: missP1, requests: domP1.requests, db: dbCounts() });
-
   const ids = created.map((c) => c.requestId);
+  rec('AC2.track.requested', 'Three explicit lines (API step) show on the page, after a refresh, as requested with the quantities, stages and references the API reports; before the refresh the page showed only the lines it already had',
+    created.every((c) => c.status === 200 && c.state === 'requested') && domStale.requests.length === baseline.page && missP1.length === 0
+      && domP1.requests.filter((r) => ids.includes(r.ref)).length === 3 && domP1.requests.filter((r) => ids.includes(r.ref)).every((r) => r.stage === 'Requested')
+      && domP1.requests.length === baseline.page + 3 && Number(sql('SELECT count(*) FROM production_requests')) === baseline.db + 3,
+    { created, baseline, pageBeforeRefresh: { requests: domStale.requests.length, empty: domStale.empty }, mismatches: missP1, requests: domP1.requests, db: dbCounts() });
+
   const responses = [];
   for (const body of [{ requestId: ids[0], action: 'confirm', quantity: 3 }, { requestId: ids[1], action: 'delay', delayUntil: '2026-12-10T09:00:00.000Z', reason: 'Plant slot moved' },
     { requestId: ids[2], action: 'refuse', reason: 'No build slot this quarter' }]) {
@@ -1183,14 +1273,14 @@ async function orderPlanAndProduction(greg, phase) {
       && byRef(ids[1])?.state === 'delayed' && byRef(ids[1])?.delayUntil === '2026-12-10T09:00:00Z' && byRef(ids[2])?.state === 'refused' && byRef(ids[2])?.reason === 'No build slot this quarter',
     { responses, lines: prod2.body?.value?.requests?.map((r) => ({ id: r.requestId, line: `${r.model} ${r.derivative}`, requested: r.quantity, state: r.state, confirmed: r.confirmedQuantity, queued: r.queuedQuantity, outstanding: r.outstandingQuantity, delayUntil: r.delayUntil, reason: r.reason })) });
   rec('AC2.track.dom', 'After Greg refreshes, the page shows each line\'s stage, quantities, delay date, reason and history exactly as GET /greg/production answers, with no horizontal overflow at 375',
-    missP2.length === 0 && domP2.requests.length === 3 && !mobile.overflow && mobile.scrollWidth <= mobile.innerWidth,
+    missP2.length === 0 && domP2.requests.length === baseline.page + 3 && !mobile.overflow && mobile.scrollWidth <= mobile.innerWidth,
     { mismatches: missP2, requests: domP2.requests.map((r) => ({ heading: r.heading, stage: r.stage, message: r.message, reason: r.reason, facts: r.facts })), mobile: { scrollWidth: mobile.scrollWidth, innerWidth: mobile.innerWidth }, captures: { desktop: pngs.tracking, mobile: pngs.trackingMobile } });
 
   const stepR3 = await clickAndWait(greg, 'Replan after Production response', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
   const api7 = await probe('greg', '/greg/order-plan');
   await greg.until(PLAN_READY, 20000, 'plan after replan');
   const dom7 = await greg.act(PLAN_DOM);
-  rec('AC2.track.replan', 'Replan after Production response reads production then the plan; the page shows the replan status the API reports (no-submission, since explicit lines are not plan submissions) and the plan still equals the API',
+  rec('AC2.track.replan', 'Replan after Production response reads production then the plan; the page shows the replan status the API reports for the plan submission (explicit lines are not plan submissions) and the plan still equals the API',
     api7.status === 200 && planMismatches(api7.body.value, dom7).length === 0 && dom7.replanNote.includes(wordsOf(api7.body.value.replan.status)),
     { replan: api7.body?.value?.replan, replanNoteOnPage: dom7.replanNote, calls: apiCalls(greg, stepR3.from).map(brief), db: dbCounts() });
   phase.pngs = pngs;
@@ -1225,7 +1315,7 @@ function finish(runError) {
   receipt.pngBytes = pngBytes;
   receipt.checks = checks;
   const required = ['S1', 'S2.dom', 'S2.net', 'S3.dom', 'S4.presenter.dom', 'S4.employee.dom', 'S4.api', 'S5.overflow', 'S6', 'S7',
-    'AC1.setup', 'AC1.feasible.dom', 'AC1.edit.dom', 'AC1.edit.active', 'AC1.infeasible.dom', 'AC1.stale.api', 'AC1.stale.dom', 'AC2.blocked.evidence', 'AC2.track.dom', 'AC2.track.replan', 'AC.posts'];
+    'AC1.setup', 'AC1.feasible.dom', 'AC1.edit.dom', 'AC1.edit.active', 'AC1.infeasible.dom', 'AC1.stale.api', 'AC1.stale.dom', 'AC2.submit', 'AC2.retry', 'AC2.replan.submitted', 'AC2.track.dom', 'AC2.track.replan', 'AC.posts'];
   const failed = checks.filter((c) => !c.pass && !c.blocked).map((c) => c.id);
   receipt.failedChecks = failed; receipt.blockedChecks = checks.filter((c) => c.blocked).map((c) => c.id);
   receipt.overall = required.every((id) => checks.find((c) => c.id === id)?.pass === true) && failed.length === 0 && !runError
