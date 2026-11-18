@@ -10317,61 +10317,52 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "id": "FUCQ-388",
-      "type": "Bug",
-      "title": "Paula can receive the same declined car after a saved fuel change",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
-      "status": "In Progress",
       "branch": "dev/DEV-2026-11-16-034",
-      "unsliced": false,
-      "workers": [
-        {
-          "name": "Mater",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T04:09:41.941690+00:00",
-          "expires_at": "2026-11-18T04:39:41.941690+00:00",
-          "source": "Observed active /root/mater messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
-          "status": "Corrected source f8913a5f2 published; Node99/99 and pureJava14/14; generated-stock proof underway, PG/visual pending"
-        },
-        {
-          "name": "Sulley",
-          "harness": "codex",
-          "role": "reviewer",
-          "observed_at": "2026-11-18T04:09:41.941690+00:00",
-          "expires_at": "2026-11-18T04:39:41.941690+00:00",
-          "source": "Observed active /root/sulley message; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
-          "status": "Independent four-finding review at corrected exact pin f8913a5f2; initial82453d85d review failed and retained"
-        }
-      ],
-      "note": "Local delivery observation only; native Jira unavailable, lifecycle status not refreshed. Original5AC remain open. Source f8913a5f2, scopedNode99/99 and pureJava14/14; generated-stock producer proof, OIDC/PG and actual desktop/narrow critique pending. Canonical covering batch26d73b760 RED and excludes this branch. Preserve immutable v1/additive canonicalv2 and allocated Node/Java ownership.",
+      "id": "FUCQ-388",
+      "note": "Local delivery observation; native Jira unavailable and original5AC remain open. Corrected production f8913a5f2 independent source reviewPASS; scopedNode99/99,pureJava14/14 and signedOIDC/nativePG1/1PASS. Lead reports six generated cases and historical exact-repeat reproduction; final tool/evidence review pending. Final allocation/policy22classesPASS; offers/startup and actual desktop/narrow critique pending. First combined native selection resource-stopped with named cleanup reconciliation, no final verdict. Canonical26d73b760RED excludes branch.",
+      "observed_at": "2026-11-18T04:23:10Z",
       "slices": [
         {
+          "evidence": "Corrected production f8913a5f2; independent Sulley reviewPASS at exact pin, affectedNode99/99. Generatedproof finaltool/pins pending; no overallcompletion.",
           "id": "policy-node",
-          "title": "Canonical reason-specific rule and Node repair",
           "status": "in-progress",
-          "evidence": "Corrected canonical/Node source f8913a5f2; affectedNode99/99, initial four review findings fixed pending independent exact-pin verdict; no overall completion."
+          "title": "Canonical reason-specific rule and Node repair"
         },
         {
+          "evidence": "PureJava14/14 and signedOIDC/nativePG1/1PASS; parent1210inputhash/cleanup auditPASS1170e54a. Final allocation/policy22classesPASS; offers/startup remaining; earliercombinedresourceerror retained.",
           "id": "java-parity",
-          "title": "Java allocation consumer and focused parity",
           "status": "in-progress",
-          "evidence": "Corrected scoped pureJava14/14 in10.42s; actual OIDC/nativePG test and required package/callers/startup remain pending."
+          "title": "Java allocation consumer and focused parity"
         },
         {
+          "evidence": "Lead reports six independent generated casesPASS plus retained-v1exactrepeat and v2samevaluescomparator; productionAngularbuildPASS. ActualJava/OIDC/Angular desktop/narrowcaptures/independentcritique pending.",
           "id": "employee-proof",
-          "title": "Generated stock outcomes and desktop/narrow critique",
           "status": "in-progress",
-          "evidence": "Actual generated provider proof underway after fixture/resource corrections; no initial-offer outcome established, no rendered visual pass."
+          "title": "Generated stock outcomes and desktop/narrow critique"
         },
         {
+          "evidence": "Canonical26d73b760RED excludesF388; no coveringgreen/nativeacceptance.",
           "id": "covering-batch",
-          "title": "Covering batch verification",
           "status": "not-started",
-          "evidence": "Canonical26d73b760 batch RED and excludes F388 branch; no covering green or native acceptance."
+          "title": "Covering batch verification"
         }
       ],
-      "observed_at": "2026-11-18T04:09:42Z"
+      "status": "In Progress",
+      "title": "Paula can receive the same declined car after a saved fuel change",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
+      "workers": [
+        {
+          "expires_at": "2026-11-18T04:53:10.224863+00:00",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-18T04:23:10.224863+00:00",
+          "role": "story-lead",
+          "source": "Observed current /root/mater messages; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback",
+          "status": "Coherent F388 delivery: scoped package/startup completion and actual Java/OIDC/Angular visual proof in progress. Source review completed; originalAC/native acceptance pending."
+        }
+      ]
     }
   ],
   "version": 1
