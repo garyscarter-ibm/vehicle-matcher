@@ -49,6 +49,7 @@ const employeeScope = (state: SessionState): EmployeeScope | null => {
 };
 const sameScope = (left: EmployeeScope, right: EmployeeScope): boolean => left.subject === right.subject
   && left.environmentId === right.environmentId && left.runId === right.runId && left.employeeId === right.employeeId;
+const closedOfferStates = new Set(['accepted', 'rejected', 'declined', 'expired', 'superseded', 'released']);
 const accepted = (projection: ActivityProjection | null): boolean => projection?.currentOffer?.state === 'accepted';
 const engaged = (projection: ActivityProjection): boolean => projection.permission?.searchConsent === true
   && projection.permission.holdConsent === true && projection.permission.paused === false;
@@ -182,7 +183,7 @@ export class ActivityStore {
       this.applyReadFailure(key, result, retry);
       return;
     }
-    const projection = result.value;
+    let projection = result.value;
     if (projection.runId !== scope.runId || projection.employeeId !== scope.employeeId) {
       this.setSnapshot({ scopeKey: key, phase: 'restarted', projection: null, offerDisplay: null,
         message: 'This session has changed. Refresh activity to read the current status.', pending: false, retry: null });
@@ -199,11 +200,23 @@ export class ActivityStore {
       if (!this.isCurrentRead(generation, controller, scope)) return;
     }
 
+    if (offerDisplay) projection = this.withCurrentOfferState(projection, offerDisplay);
+
     let nextRetry = retry;
     if (accepted(projection) || retry && retry.scopeKey !== key || retry && this.operationApplied(projection, retry.operation)) nextRetry = null;
     this.setSnapshot({ scopeKey: key, phase: nextRetry ? 'recovery' : 'ready', projection, offerDisplay,
       message: nextRetry && !message ? 'The update outcome could not be confirmed. Retry update or refresh activity.' : message,
       pending: false, retry: nextRetry });
+  }
+
+  private withCurrentOfferState(projection: ActivityProjection, display: ActivityOfferDisplay): ActivityProjection {
+    const offer = projection.currentOffer;
+    if (!offer || offer.offerRef.offerId !== display.offerRef.offerId || display.version < offer.version
+      || closedOfferStates.has(offer.state)) return projection;
+    const currentOffer = { ...offer, state: display.state, displayState: display.state, version: display.version };
+    return { ...projection, currentOffer,
+      state: projection.state === 'offer' && closedOfferStates.has(display.state) ? 'offer-closed' : projection.state,
+      offers: projection.offers.map((entry) => entry.offerRef.offerId === offer.offerRef.offerId ? currentOffer : entry) };
   }
 
   private applyReadFailure(key: string, failure: ActivityFailure, retry: PendingRetry | null): void {

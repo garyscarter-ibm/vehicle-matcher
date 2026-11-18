@@ -380,3 +380,303 @@ Both original ACs remain unchecked; missing Java review-details/version authorit
 actual Java/PostgreSQL/OIDC journeys and rendered evidence remain open. Final
 submission remains disabled including native form submission. Retain all failed
 attempts and the inherited boundary rc1; no combined strict pass or Story closure.
+
+
+## Connected-proof helper recovery — 18 November 2026
+
+The 01:50:06Z C3 attempt stopped before scenarios with `STOCK_IDS is not defined`.
+This was a proof-harness failure; it establishes no product failure or acceptance pass.
+Retained receipt: root `.claude/test-runs/fucq443/connected-0140/connected-20261118T015006Z/receipt.json`; parent cleanup audit `.claude/fucq443-first-attempt-parent-audit-0148.json`.
+
+The proof script now supplies its omitted exact-stock identities/numbers, existing demo
+contact identities, signed test-OIDC API helper, run-scoped SQL JSON/count/order readbacks
+and reversible synthetic-ordering store outage. Database order readback joins the real
+`selection_orders` and `pending_operations` records; it does not invent state. A labelled
+stale-quote negative probe complements the existing stale-terms and stale-review probes,
+matching the original Story validation. Existing scenario assertions remain intact.
+
+Scoped source checks: pinned Node `--check` passed; TypeScript single-file `checkJs`
+code-2304 unresolved-name diagnostics are empty. These are source checks only. Connected
+Java/native-PostgreSQL17/OIDC/browser replay and rendered inspection remain unrun for
+this correction pending the existing A46 → F443 test-lane handoff. No product source
+changed; matching selected Angular evidence is retained, and full suites are deferred
+to the batch. No OneDrive/CloudStorage access, runtime allocation or cleanup was made.
+
+Minnie Mouse 2 lead requested/selected `gpt-6.1-sol/high`, no fallback; own desktop title
+set successfully. Capacity allowed one reviewer, but the collaboration tool refused
+Cuthbert 3 with `agent thread limit reached`; no reviewer child started. The lead
+reviewed helper SQL/API shapes against current Java migrations/services and Angular
+manual templates. Independent review and runtime evidence remain outstanding.
+
+
+## Connected replay after base refresh — 18 November 2026
+
+The retained base first returned `/manual/account` 503 `manual-source-unavailable`
+before scenarios. Refresh `af8415a9ff39be93522f153681ff6ac4f9aa5bc4` includes the
+existing integrated account-policy binding; the next actual replay reached account,
+saved drafts and all five scenarios. This verifies that specific 503 mitigation.
+
+The 02:05:03Z C3 replay passed A, C, D and E. B failed only
+`staleQuoteRefusedByServer`: the real 409 conflict code was
+`quote-binding-changed`, while the new proof expected `quote-changed`. Existing
+`OrderingJourneyHttpTest:258` and `ManualReviewDetails:311` establish the exact
+existing contract; the assertion now requires `quote-binding-changed`. No product
+change or weakened HTTP/status check is involved. The failed receipt is preserved at
+root `.claude/test-runs/fucq443/connected-0203-refresh/connected-20261118T020503Z/receipt.json`
+with full observations/screens in `evidence/connected-manual-proof.json`. Its
+originalAcceptance/overall remain failed. A fresh corrected replay is pending.
+
+C1/C2 strict receipts passed. C3 work finished in 45.103 seconds with sampled
+peaks disk 333,062,501 B, RSS 2,947,907,584 B, inclusive 3,278,949,989 B, within
+2 GiB/3 GiB/5 GiB bounds. Cleanup and sampler error arrays are empty, all proof
+children exited and scratch is absent. These are supervisor observations; the
+parent owns independent audit. No OneDrive access occurred.
+
+
+## Corrected connected replay — 18 November 2026
+
+Source `90086d0b93b97d750fdfb7fd0095428b43d7b221`, proof SHA256
+`f92fb037a004560113b5cf1a548a6df22197ced7abfb6c6db06c4fc808f7560e`,
+passed all five connected scenarios and every named assertion against prebuilt
+production Angular, Java21/Quarkus, a fresh owned native PostgreSQL17 database and
+real signed local test-OIDC tokens. The proof's pass labels cover this replay;
+original Story acceptance stays open for the remaining experience evidence and review.
+
+| Scenario | Observed result |
+| --- | --- |
+| A | Exact car/quote/terms/draft/review revision and declarations retained; browser double click creates one acknowledged order. |
+| B | Stale terms, quote binding and review revision refused; no order written; refresh clears consent and corrected submit creates one order with version2 details. |
+| C | Missing declarations block UI submission; missing/false/extra declarations receive invalid400 with no order; reload requires explicit unfinished-review confirmation. |
+| D | Actual202 POST and following GET responses dropped after server answers; UI stays unconfirmed, explicit read shows pending, restored synthetic store reconciles to acknowledgement with one POST. |
+| E | Reentry uses reads, same/new command same intent replay the original order, changed intent is refused, at most one order per employee. |
+
+Retained root `.claude/test-runs/fucq443/connected-0209-code-contract/` contains
+`attempt-summary.json`, immutable plans/hashes, C1 `api-20261118T020728Z`, C2
+`web-20261118T020800Z` and C3 `connected-20261118T020916Z` receipts. C3 contains
+`evidence/connected-manual-proof.json`,12 actual desktop PNG captures and proof logs.
+Prior pre-scenario helper/base failures and the exact failed error-code expectation
+remain in their original receipts. No failure was relabelled.
+
+All three final supervisors report strict true, sampled resource/deadline checks
+true, cleanup/sampler errors empty, verified process/group teardown, owned scratch
+and reservation absent. C1/C2 source checks passed; C3 tool/borrowed-Node pins passed.
+C3 finished at02:10:02.510729Z, before the retained absolute pipeline deadline
+02:23:27Z (original start01:58:27Z). No plan clock was restarted for the correction.
+The phase supervisors measured their own realtime and monotonic durations.
+
+| Phase | Elapsed seconds (max clock) | Disk peak B | Aggregate RSS peak B | Disk plus RSS peak B |
+| --- | ---: | ---: | ---: | ---: |
+| C1 API |111.166288|88,712,864|93,962,240|182,671,008|
+| C2 web |79.277453|149,338,816|237,125,632|386,460,352|
+| C3 connected |45.546592|333,254,948|2,949,791,744|3,280,846,436|
+
+Limits remain disk2GiB/RSS3GiB/inclusive5GiB, log2MiB, reserve5GiB, one actual
+worker; C1/C2 work300s and C3 work600s. Peaks are sampled, without a continuous
+containment claim. Parent independent audit remains separately owned. Neither the
+124 matching selected Angular tests nor the inherited boundary failure was rerun;
+full suite: deferred to batch.
+
+The lead inspected actual desktop `a2-review-ticked`, `a3-awaiting-approval`,
+`b1-stale-details-refused`, `c2-reload-needs-confirmation`, `d1-outcome-not-confirmed`
+and `d2-handoff-pending` PNGs. The shared shell, saved fields, terms/declarations and
+truthful stale/unconfirmed/pending/acknowledged notices are visible and readable.
+However, review screens show `Car name not supplied` and no image despite the seeded
+display values; exact ID/order number remain visible. This observation is unresolved,
+not a visual pass; parent defects intake was requested with the original a2 PNG and
+producer/consumer-shape hypothesis. No product repair was allocated or made.
+
+Remaining original evidence: narrow/Safari/explicit private-browser checks, keyboard/
+focus/CSP/accessibility proof, lost-save response and process-restart durable readback.
+The script uses isolated Chrome contexts and checks selected-detail heading focus;
+those limited observations do not replace the missing browser/keyboard review.
+`handoff-failed` provider refusal was not provoked because this labelled synthetic
+provider has no rejection path. Local synthetic ordering and the local test issuer
+do not prove unavailable live providers. Both Story ACs remain unchecked and native
+status is In Progress; no In Review/Done/acceptance/deployment claim. No OneDrive
+access, including cleanup verification, occurred.
+
+Minnie Mouse2 remained requested/selected `gpt-6.1-sol/high`, no fallback. No child
+was started after the retained agent-thread-limit refusal. Parent owns independent
+resource audit, review/integration, Jira lifecycle and the separately found display
+observation.
+
+
+Parent follow-through, observed18 November2026 at02:11:18.361620Z:
+`.claude/fucq443-final-parent-audit-0148.json` independently passed592 retained
+process identities, exact owned groups/scratch/tokens, all four recorded ports
+60483/60485/60486/60487 and empty canonical registry. Its initial parser incorrectly
+treated nonempty group-ID→false dictionaries as active groups; the retained audit
+records that diagnostic and corrected boolean-value interpretation at02:11:42Z.
+Independent process-group inspection found none. No OneDrive check occurred.
+
+The parent captured and verified **FUCQ-520**, related to originating StoryFUCQ-443,
+with the actual `a2-review-ticked.png` attachment937957 (205,642 bytes). The
+quote-facts-wrapper explanation remains a hypothesis for Bug triage. No product
+repair was allocated. The runtime lane is handed back to A46; no moreF443 runtime
+is planned in this increment.
+
+## Lost-save and restart proof extension — 18 November 2026
+
+Mater 3 resumed the same original 8-point Story and refreshed its clean branch
+through the normal helper to `ec240de06`. Only this existing proof and delivery
+records are allocated; product source stays unchanged. Both original ACs remain
+unchecked. The five-scenario connected pass above and matching 124 Angular checks
+remain historical evidence on their recorded inputs; this extension does not rerun
+or relabel them.
+
+The existing connected proof now has a `PROOF_SCOPE=recovery` selection for one
+new scenario F. It drops the actual successful review-details POST response and
+following automatic GET response, checks truthful uncertainty and one persisted
+new revision, then reconciles only through reads. It stops and joins the actual
+Java process, starts a fresh Java process against the same owned database/schema,
+and compares immutable saved rows and the exact car/quote/draft/terms authority.
+The observation timestamp `now` is recorded but excluded from saved-authority
+equality. Reentry must require explicit unfinished-selection confirmation, clear
+consent and issue no save or order command. The same journey records narrow 375px
+layout, actual Tab/Enter recovery, visible focus, browser accessibility names and
+deployed CSP violations. These are selected checks, not Safari or complete
+accessibility evidence. Recovery-only receipts label original unselected scenarios
+`not-run`; their overall result describes only the declared selected scope.
+
+Pinned Node syntax checking passed. The lead reviewed the delta against the actual
+Angular save/reconciliation/resume code, Java projection and immutable table
+schema. Runtime remains unrun at this source checkpoint, pending A46's actual
+cleanup and serial lane release. A read-only comparison found all 1,424 A46 C1
+input hashes identical to this refreshed branch; no artifact was copied and its
+keeper was not extended. A fresh bounded build-only fallback is being prepared.
+No product repair, provider refusal, Safari pass, full-suite pass or acceptance is
+claimed. FUCQ-520 remains separately captured and unallocated.
+
+Mater 3 requested/selected `gpt-6.1-sol/high`, no fallback; own saved desktop title
+set successfully. No descendant started while all four agent slots were occupied.
+No runtime reservation, database, scratch allocation or OneDrive/CloudStorage
+access occurred for this source checkpoint. Full suite: deferred to batch.
+
+The existing `HttpOrderingProvider` and startup binding make original provider-
+refusal evidence technically ready. A further `PROOF_SCOPE=recovery-refusal`
+selection runs F then G. G restarts the actual API with
+`GCSP_ORDERING_PROVIDER=remote`, execute/reconcile HTTPS URLs on the existing owned
+issuer server, an ephemeral configured bearer token and a five-second timeout.
+The labelled substitute rejects every valid execute through the existing exact-ID
+acknowledgement contract. It does not alter any browser API response. The selected
+checks compare the resulting Java `refused` / `handoff-failed` /
+`remote-ordering-rejected` state, one durable exact-selection row and the rendered
+support outcome, then require read-only reentry with no second browser/provider
+submit. The real external/live provider remains unrun. Pinned syntax checking and
+the existing single-file unresolved-name diagnostic check (TS2304 only) passed;
+this records source validation only. F/G runtime remains unrun at this checkpoint.
+
+
+First F/G runtime — 18 November 2026, 02:37 UTC: the exact `a65d70cac`
+proof retained a failed receipt at sharedroot
+`.claude/test-runs/fucq443/recovery-mater3-20261118/connected-20261118T023705Z/`.
+F passed 16 recorded checks through durable lost-save/restart recovery, narrow
+layout, actual Tab focus and a visible 2px outline, then timed out on Enter
+activation; G was not run. The proof omitted the carriage-return `text` and
+`unmodifiedText` already used by the passing F440/F442/F444 keyboard helpers.
+The one-line proof correction adopts that existing event shape; it does not
+establish a product defect or a passing keyboard journey. C1/C2 build-only
+receipts are strict complete; C3 remains failed. All three finalizers report
+owned groups/processes/scratch/reservations absent, with no cleanup errors.
+
+Runtime timing diagnosis: the macOS Python 3.9 `time.monotonic()` epoch is process
+relative, so its inherited cross-process pipeline subtraction was incomparable.
+The original common realtime deadline was enforced and each phase's own elapsed
+clock remains valid. The first C3 records wall pipeline139.917s versus local
+monotonic39.554s; no independent original common-monotonic claim is made. The
+retry keeps the original 03:00:25 UTC deadline and will use a shared native
+`CLOCK_MONOTONIC` anchor plus an explicitly estimated conservative prefix for
+time before that anchor. That prefix assumes no backward realtime adjustment;
+it is not a measured original monotonic baseline. Earlier receipts stay unchanged.
+
+
+## Fresh F/G connected evidence — 18 November 2026
+
+The corrected proof at `c5fdf83ac4240a4e31d820cbafd14c608e0697bd`, SHA256
+`9012c7e0fc6e077c973179794c07f3dbba703129ff6a0fc9398c000fbaf8b5bc`,
+passed the selected F/G journey: **F22 + G8 = 30 named checks**, no failures.
+The real Angular → Java/native PostgreSQL17 composition used signed local test
+OIDC. A fresh API package (`-DskipTests`) and production web build supplied exact
+hash-checked artifacts; no banked A–E or selected Angular tests were rerun.
+
+F proves the lost successful review-details POST200 and automatic GET200,
+truthful uncertainty, one durable revision, read-only reconciliation and no replay.
+The actual old Java process exited and a fresh Java process used the same database
+and schema; immutable saved details/quote/hold/terms stayed exact. At375px, return
+required explicit unfinished-selection confirmation. Real Tab/Enter input reached
+and activated resume with a visible2px outline; saved details remained and fresh
+unchecked declarations blocked placement. Selected browser AX names, deployed
+CSP/no observed violations and no runtime exceptions passed. These are selected
+Chrome observations, not a full accessibility or Safari claim.
+
+G started the actual `HttpOrderingProvider` through deployment configuration,
+using an ephemeral configured bearer token and the existing owned issuer HTTPS
+server as a uniformly rejecting, labelled remote-contract substitute. One
+intentional browser submit caused one authenticated remote execute and one durable
+exact-selection refusal. Java readback and the screen agreed on `refused`,
+`handoff-failed`, `remote-ordering-rejected` and Contact scheme support. Reload
+only read that refusal; no second browser/provider submit or order appeared.
+No browser response was forged. External/live providers remain unrun.
+
+Evidence root (sharedroot-relative):
+`.claude/test-runs/fucq443/recovery-mater3-20261118/`.
+The final selected receipt is
+`connected-20261118T024352Z/receipt.json`, with
+`evidence/connected-manual-proof.json` and all six PNGs. Mater3 viewed
+`f1-save-outcome-not-confirmed`, `f2-restart-narrow-needs-confirmation`,
+`f3-restart-keyboard-focus`, `f4-restart-narrow-resumed`,
+`g1-remote-provider-handoff-failed` and `g2-remote-refusal-reentry`.
+Screens show truthful uncertainty, explicit narrow resume/focus, retained fields
+and cleared consent, then the same actual refusal/support outcome before/after
+reload. The existing FUCQ-520 missing name/photo persists; no product repair or
+visual acceptance is claimed. Original AC aggregate fields correctly say
+`not-run` for this selected F/G receipt; the banked A–E receipt is unchanged.
+
+Both attempts' six allocations are terminal. First C3 remains failed; the other
+five are strict complete. Every finalizer reports no owned live processes/groups,
+scratch or reservation, with no cleanup errors. Retry C3 finished02:44:20UTC in
+27.757s with sampled peaks330149316B disk/1891074048B RSS/2218983844B inclusive,
+below2GiB/3GiB/5GiB. The original03:00:25UTC common deadline was retained across
+both attempts: final realtime pipeline534.735649s. Native `CLOCK_MONOTONIC`
+anchor131268.868135 plus estimated pre-anchor302s prefix gives536.270880s; that
+prefix assumes no backwards realtime adjustment and is not a measured original
+common-monotonic baseline. Earlier Python3.9 cross-process clock limitation and
+failed receipts remain explicit. Ignored retained evidence24,105,974B is below
+the32MiB ownership bound. No OneDrive/CloudStorage access occurred.
+
+Both original ACs remain unchecked and Story In Progress. Safari, explicit private
+browsing and complete broader experience evidence remain unrun; FUCQ-520 remains
+separately captured/unallocated. Live BMW/provider access is unproved, and the
+covering green batch and human acceptance remain outstanding. Full suite:
+deferred to batch. Parent retains integration/Jira/closure authority.
+
+
+Post-proof refresh: normal guarded refresh merged shared `d9390b427` into
+`060f32386f713a3faf492ac26b83fb357f570ef0`. The proof SHA256 remains
+`9012c7e0fc6e077c973179794c07f3dbba703129ff6a0fc9398c000fbaf8b5bc`.
+Java/API source, Angular source, shell styles and selected build configuration
+are unchanged from tested `c5fdf83ac`. The broad export is not byte-identical:
+peer presenter-gallery changes edit `blocks/gcsp/kit/form-controls-gallery.js`,
+add `blocks/gcsp/kit/presenter-time.css`, edit
+`blocks/gcsp/presenter-controls/presenter-console.css` and edit
+`blocks/vehicle-matcher/component-gallery.js`; F446 also adds its own independent
+proof. These files are not imported by the selected Angular/manual composition.
+`angular.json` includes only shell CSS and `src/styles.css`; neither those inputs
+nor Angular source references the changed gallery/presenter styles. The selected
+`build-gcsp-static.mjs` imports the unchanged `references` helper from
+`assemble-site.mjs`, without calling its gallery-reading `discoverManifest`.
+This is a precise reuse exception for unconsumed broad-export files, not a claim
+that every exported input is unchanged. No matching product check was rerun.
+
+
+Parent independent audit at 02:48:03 UTC passed:
+`.claude/fucq443-recovery-final-parent-audit-0242.json`. It verified all six
+allocations, 1,230 retained process identities, eight ports, owned groups,
+scratch and tokens absent, and an empty canonical registry. It checked all
+30 F/G assertions and six capture hashes, and rehashed the final 151-file API
+and 36-file web artifact manifests with exact consumer/source/receipt links.
+The broad source comparison matched 1,249 of 1,250 retained export inputs; the
+single changed retained file is the unimported presenter gallery described
+above. The audit separately verified that import boundary. The heavy runtime is
+physically released. These checks do not claim full Story acceptance or a green
+covering batch.

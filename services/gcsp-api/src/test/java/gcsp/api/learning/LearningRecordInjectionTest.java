@@ -1,13 +1,14 @@
 package gcsp.api.learning;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-/** The default profile resolves the service with the unbound outcome port and the wall clock; persistence is off. */
+/** The production record source is bound; a missing run clock is unavailable when persistence is off. */
 @QuarkusTest
 class LearningRecordInjectionTest {
 
@@ -22,8 +23,8 @@ class LearningRecordInjectionTest {
 
     @Test
     void defaultBeansResolve() {
-        assertFalse(outcomes.bound());
-        assertEquals("wall-clock", clock.now(new gcsp.api.persistence.RunContext("e", "r", "a")).clockVersion());
+        assertTrue(outcomes.bound());
+        assertNull(clock.now(new gcsp.api.persistence.RunContext("e", "r", "a")));
         assertEquals("forbidden", service.readRecords(LearningDb.employee()).status());
     }
 }

@@ -228,6 +228,23 @@ describe('Angular offer API client', () => {
     expect((await client.readOffer('offer-1')).status).toBe('unavailable');
   });
 
+  it('rejects a null per-image src but keeps a nullable primary photo and healthy images', async () => {
+    const withDisplay = (display: Record<string, unknown>) => {
+      const value = offer() as { quote: { facts: { display: unknown } } };
+      value.quote.facts.display = display;
+      return value;
+    };
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: withDisplay({ name: 'BMW 3 Series', photo: '/assets/car.webp', images: [{ src: null }] }) }));
+    expect(await client.readOffer('offer-1')).toEqual({ status: 'unavailable', code: 'invalid-offer-response', retryable: true });
+    const healthy = [{ src: '/assets/car.webp', alt: 'BMW 3 Series', label: 'Front' }, { src: 'https://cdn.example/side.webp' }];
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: withDisplay({ name: 'BMW 3 Series', photo: null, images: healthy }) }));
+    const result = await client.readOffer('offer-1');
+    expect(result.status).toBe('ok');
+    if (result.status !== 'ok') return;
+    expect(result.value.quote.facts.display.photo).toBeNull();
+    expect(result.value.quote.facts.display.images).toEqual(healthy);
+  });
+
   it('accepts only the versioned server reason registry and preserves its policy provenance', async () => {
     fetcher.mockResolvedValueOnce(json({ status: 'ok', value: reasons() }));
     const result = await client.readDecisionReasons('offer/one', 'run-1');

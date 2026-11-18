@@ -1,0 +1,23 @@
+{
+  "file" : "11-preferences-unavailable.json",
+  "step" : "preferences-unavailable",
+  "method" : "POST",
+  "path" : "/brief/preferences",
+  "request" : {
+    "commandId" : "golden-unavailable-1",
+    "expectedBriefVersion" : 2,
+    "expectedDraftVersion" : 2,
+    "changes" : {
+      "size" : {
+        "value" : 100
+      }
+    }
+  },
+  "status" : 503,
+  "body" : {
+    "status" : "unavailable",
+    "code" : "brief-unavailable",
+    "reason" : "The brief service is unavailable.",
+    "retryable" : true
+  }
+}

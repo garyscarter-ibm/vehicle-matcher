@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.identity.Principal;
+import gcsp.api.learning.LearnedPlanView;
 import gcsp.api.persistence.RunContext;
 import gcsp.api.policy.PolicyClock;
 import gcsp.api.policy.PolicyRead;
@@ -16,16 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Greg's order-plan read and preview, ported from Node createOrderPlanOperations. Preview plans under a disposable
- * in-memory draft policy that goes through the same validation; nothing is saved, published or ordered.
- */
+/** Greg's read and preview from Node createOrderPlanOperations; disposable policy drafts save and order nothing. */
 public final class OrderPlanOperations {
 
     static final String PREVIEW_MESSAGE = "Preview only. Nothing is saved, published or ordered.";
-    private static final String LEARNED_LABEL = "Learned model";
-    private static final String LEARNED_UNAVAILABLE =
-            "The learned forecast is unavailable right now, so only the baseline plan is shown.";
     private static final Map<String, String> BOUNDS = Map.of("orderPlan.modelBounds", "modelId", "orderPlan.derivativeBounds",
             "derivativeId");
 
@@ -34,14 +29,21 @@ public final class OrderPlanOperations {
     private final PlanningSupply supply;
     private final PlanningClock clock;
     private final SubmissionHistory history;
+    private final LearnedPlanView learned;
 
     public OrderPlanOperations(PolicyService policy, PlanningDemand demand, PlanningSupply supply, PlanningClock clock,
             SubmissionHistory history) {
+        this(policy, demand, supply, clock, history, null);
+    }
+
+    public OrderPlanOperations(PolicyService policy, PlanningDemand demand, PlanningSupply supply, PlanningClock clock,
+            SubmissionHistory history, LearnedPlanView learned) {
         this.policy = policy;
         this.demand = demand;
         this.supply = supply;
         this.clock = clock;
         this.history = history;
+        this.learned = learned;
     }
 
     /** What every operation starts from: the trusted run, the instant, the planning rules and Greg's editable keys. */
@@ -80,7 +82,7 @@ public final class OrderPlanOperations {
         return new OrderPlanService(under, demand, source, clock).readPlan(principal, policyVersion);
     }
 
-    /** The current plan from current inputs, with its replan state, presentation and the learned placeholder. */
+    /** The current plan from current inputs, with its replan state, presentation and learned advice. */
     public ObjectNode readPlan(Principal principal) {
         try {
             Started started = start(principal);
@@ -103,7 +105,7 @@ public final class OrderPlanOperations {
             value.set("plan", plan);
             value.set("replan", replan);
             value.set("presentation", presentation.get("value"));
-            value.set("learned", learnedUnavailable());
+            value.set("learned", learnedFor(principal, base, plan, null));
             return finish(principal, value);
         } catch (RuntimeException e) {
             return Outcomes.operationsUnavailable("order-plan-operations-unavailable");
@@ -202,7 +204,7 @@ public final class OrderPlanOperations {
             value.set("plan", plan);
             value.set("activePlan", activePlan);
             value.set("presentation", presentation.get("value"));
-            value.set("learned", learnedUnavailable());
+            value.set("learned", learnedFor(principal, base, plan, changes.changes()));
             return finish(principal, value);
         } catch (RuntimeException e) {
             return Outcomes.operationsUnavailable("order-plan-operations-unavailable");
@@ -213,16 +215,15 @@ public final class OrderPlanOperations {
         return OrderPlanService.greg(principal) ? Outcomes.ok(value) : Outcomes.forbidden();
     }
 
-    /** The learned forecast belongs to FUCQ-476, so this service only ever reports it unavailable. */
-    private static ObjectNode learnedUnavailable() {
-        ObjectNode n = Outcomes.object();
-        n.put("status", "unavailable");
-        n.put("label", LEARNED_LABEL);
-        n.put("recommended", false);
-        n.put("submittable", false);
-        n.put("reason", "learned-forecast-not-configured");
-        n.put("limitation", LEARNED_UNAVAILABLE);
-        return n;
+    private ObjectNode learnedFor(Principal principal, Base base, JsonNode baseline, ArrayNode changes) {
+        if (learned == null) return LearnedPlanView.unavailable("learned-forecast-not-configured");
+        try {
+            return changes == null
+                    ? learned.read(principal, policy, base.read().policyVersion(), demand, supply, clock, baseline)
+                    : draftPlan(principal, base, changes, baseline);
+        } catch (RuntimeException e) {
+            return LearnedPlanView.unavailable("learned-plan-unavailable");
+        }
     }
 
     private static boolean only(JsonNode value, List<String> keys) {
@@ -342,9 +343,14 @@ public final class OrderPlanOperations {
 
     /** The plan under a disposable draft of the active policy. Nothing is written anywhere. */
     private ObjectNode draftPlan(Principal principal, Base base, ArrayNode changes) {
+        return draftPlan(principal, base, changes, null);
+    }
+
+    private ObjectNode draftPlan(Principal principal, Base base, ArrayNode changes, JsonNode baseline) {
         PolicyResult snapshot = policy.getPolicySnapshot(new PolicyRead(principal.runId(), base.now(), base.read().policyVersion()));
         if (!snapshot.ok()) {
-            return snapshot.body();
+            return baseline == null ? snapshot.body()
+                    : LearnedPlanView.unavailable(snapshot.body().path("code").asText("learned-plan-unavailable"));
         }
         ObjectNode draft = ((ObjectNode) snapshot.value()).deepCopy();
         ObjectNode digest = Outcomes.object();
@@ -390,7 +396,8 @@ public final class OrderPlanOperations {
             ((ObjectNode) copy.get("value").get("versions")).put("catalog", version + ":" + catalog.textValue().substring(active.length() + 1));
             return copy;
         };
-        return plan(principal, draftPolicy, version, draftSupply);
+        return baseline == null ? plan(principal, draftPolicy, version, draftSupply)
+                : learned.read(principal, draftPolicy, version, demand, draftSupply, clock, baseline);
     }
 
     /** Display names and editor keys for the panel, from the policy catalogue. */

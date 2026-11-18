@@ -48,8 +48,24 @@ test('the console has no portal chrome and the page links only what it needs', (
   assert.match(html, /<title>Presenter console<\/title>/); assert.match(html, /<body class="gcsp">/);
   assert.doesNotMatch(html, /gcsp-shell\.css|gcsp-account|manual|greg|case|portalShell/i);
   assert.match(html, /presenter-controls\/presenter-controls\.css/); assert.match(html, /presenter-console\.css/);
+  const sheets = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map((m) => m[1]);
+  const consoleSheet = sheets.indexOf('./blocks/gcsp/presenter-controls/presenter-console.css');
+  assert.equal(sheets[consoleSheet + 1], './blocks/gcsp/kit/presenter-time.css', 'time/week styles retain their cascade position');
+  assert.equal(sheets[consoleSheet + 2], './blocks/gcsp/presenter-controls/release-section.css');
   assert.doesNotMatch(html, /<script(?![^>]*\ssrc=)[^>]*>|\son[a-z]+\s*=/i);
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/harness.js', import.meta.url), 'utf8'), /workspace/);
+});
+
+test('the gallery reuses the scheme-week component and loads its capped styles', async () => {
+  const { presenterTimeExample } = await import('../../blocks/gcsp/kit/form-controls-gallery.js');
+  const section = presenterTimeExample();
+  const [week, unavailable] = section.querySelectorAll('.gcsp-console-week');
+  assert.equal(week.getAttribute('aria-label'), 'Scheme week'); assert.equal(week.hidden, false);
+  assert.equal(week.querySelectorAll('li').length, 7); assert.equal(week.querySelectorAll('.is-done').length, 2);
+  assert.equal(week.querySelector('[aria-current="date"]').textContent, 'Wed 11');
+  assert.equal(week.querySelectorAll('.is-weekend').length, 2); assert.equal(unavailable.hidden, true);
+  assert.match(readFileSync(new URL('../../components.html', import.meta.url), 'utf8'), /kit\/presenter-time\.css/);
+  assert.match(readFileSync(new URL('../../blocks/vehicle-matcher/component-gallery.js', import.meta.url), 'utf8'), /presenterTimeExample\(\)/);
 });
 
 test('Basic is the default with two buttons and the portal link', async () => {

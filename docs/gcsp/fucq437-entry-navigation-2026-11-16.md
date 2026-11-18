@@ -7,15 +7,17 @@ Source work began on 16 November 2026 on `dev/DEV-2026-11-13-005`, claimed at
 ## Original contract and current evidence
 
 1. Direct entry, refresh, role landing, sign-in return and new offer links reach the
-   intended authorized state. **Open:** 31 native route/state and eight auth/context
-   regression passes cover the selected local scenarios; hosted refresh, real OIDC
-   and actual emailed-link return remain unproven.
+   intended authorized state. **Open:** the 18 November local composition passes
+   direct/refresh, role and newly generated offer-link return/ownership scenarios;
+   deployed host, registered provider and actual delivered-email return remain unproven.
 2. Unknown frontend routes and unavailable/invalid API responses produce distinct
-   useful outcomes; shared entry links preserve brand/context. **Open:** source
-   and native checks cover route-state precedence and configured launcher handoff.
-   Actual frontend configuration, supported dynamic/unknown host routing and
-   rendered proof remain open. The selected static contract fails on inherited
-   Bug FUCQ-514; no overall passing validation is claimed.
+   useful outcomes; shared entry links preserve brand/context. **Open:** named offer
+   routing, packaged launcher context, malformed/unavailable API recovery and native
+   unknown-route handling pass locally. The 18 November recovery increment also passes
+   useful branded unknown-entry recovery at desktop/narrow sizes, refresh and keyboard
+   return with context preserved. Deployed Render behavior remains unproved. The
+   unchanged Java build-filter Bug FUCQ-514 is
+   separate; final local evidence and earlier failed attempts are detailed below.
 
 The original validation remains replaying direct URLs, refresh and email return on
 the static host, plus unknown/API failures and shared launcher/retail navigation.
@@ -68,10 +70,10 @@ foreign Story objects, their order and outer fields are preserved.
   packaging case retains API and retail assertions, uses one output at a time and
   exercises literal URL templating. No deployment hostname or configuration was
   invented. Actual URL/topology configuration and hosted proof remain open.
-- A broad `/gcsp/*` rewrite would mask missing scripts/media with HTML. Existing
-  source does not establish an exclusion/regex mechanism. Unknown direct routes
-  and dynamic offer refresh remain original work until a supported host contract
-  and its evidence exist.
+- Initial source finding: a broad `/gcsp/*` rewrite alone would mask missing
+  scripts/media with HTML. The later connected checkpoint supplied named offer
+  routing; the 18 November recovery increment below adds ordered resource
+  exclusions before the unknown-page fallback. Hosted matching remains unverified.
 
 ## Validation and resources
 
@@ -235,3 +237,280 @@ formatter mismatch stopped correctly but interrupted delivery; future frozen
 plans should use native formatter parity for parameterized identities. FUCQ-514
 is a separate observed inherited defect, not a resolved Story gate or authority
 to expand this repair. Shared dispatcher-log publication remains with the parent.
+
+## Connected delivery checkpoint — 18 November 2026
+
+Published source `52729e593caf25b0c511e357ceb1cb2b20ec1bf3`; connected proof source
+SHA256 `6ed3060651292c393356c06de6f586aa82512bb689b5c001e1ba2689901fdc2e`. The static builder exports the named
+`/gcsp/offers/:offerId` route. The independent Angular Render service rewrites
+that route to its index and marks offer paths `no-store`; unknown paths and
+missing root/media/assets resources keep native 404s. There is no general SPA
+wildcard. Render's documented placeholder matching was checked; a segment
+that looks like `missing.js` is still a syntactically valid offer ID. Existing
+Java blueprint assertions and earlier Render service sections remain unchanged.
+
+The changed static contract passed **1/1** (55,558,144 B child RSS, child exited,
+empty scratch removed). Existing 31 route/state, eight auth/context, 52 launcher
+and one caller/package passes remain separately qualified above. FUCQ-514's
+unchanged Java build-filter assertion was not rerun or removed. No Java or
+Angular application source changed in this increment. API packaging and Angular
+production builds passed and were hash-bound to equivalent artifact inputs.
+Full suite: deferred to batch; no new full-suite or Java-test replay.
+
+Final local composition passed **68 checks / six scenarios**, with **13 PNGs**:
+actual static Angular, Java API, owned native PostgreSQL 17 and signed local
+OIDC authorization-code/PKCE login. It covers protected direct entry/refresh
+with query/hash, three authorized role destinations, a newly generated offer
+link with owner sign-in and another employee's real 403, actual assembled shared
+launcher/retail context, native unknown-route/missing-asset 404, malformed GET
+response, genuinely stopped API, restart and keyboard retry. Fault injection
+is explicitly limited to malformed GET content; the CORS preflight reaches Java.
+The host is a documented-contract emulator, and the generated link is mapped to
+an owned local origin. Neither is a deployed Render or delivered-email proof.
+
+Parent independently verified all 1,528 exported source files and final evidence
+bytes/hashes, reviewed desktop captures and the byte-identical narrow captures,
+and audited all 12 build/connected receipts: **3916 unique PID/start identities
+absent, 20 ports closed, owned groups/scratch/reservations/native IPC absent**.
+Final connected sampled RSS/disk/inclusive peaks were
+2,334,408,704/432,319,587/2,766,265,219 B. The final
+connected receipt is strict PASS; resource measurements are sampled. All
+attempts retained the original 04:37:58–05:02:58 UTC pipeline deadline.
+
+Three earlier connected failures remain recorded: independent per-read `asOf`
+timestamps compared for equality; Document rather than body text on launcher
+and native error documents; malformed-response injection including OPTIONS.
+Only proof helpers changed for those recoveries; all failed receipts remain
+strict false. Parent observed cumulative retained output at 38,876,956 B against
+the 32 MiB plan, then losslessly compressed verbose immutable metadata with
+verified original hashes. Final retained output is below the cap; this does
+not erase the observed aggregate retention breach.
+
+Pumbaa 3 requested/selected Sol/high; Shaggy 3 and Emmet 2 Sol/medium, no fallback.
+They delivered useful parallel static/proof work. Repeated child IBM422 errors
+interrupted lead/reviewer calls while the parent launcher worked. Parent carried
+source review, three proof-helper corrections, runtime supervision and evidence
+review forward without changing gateway/models or duplicating workers. Sylvester
+2 returned no useful independent review before its422; none is claimed.
+
+**Both original acceptance boxes remain open.** Native unknown-route output is
+a bare404 without established useful branded recovery. Hosted Render topology,
+registered provider, actual email delivery/return, Safari and a green covering
+batch remain unproved. Greg's authorized route currently shows its existing
+unavailable placeholder; route authorization is not Greg capability completion.
+The account capture truthfully retains its existing partial offer/order read
+warning. No new repair scope, Story hold or acceptance gate was introduced.
+FUCQ-513/FUCQ-514 remain separate. No deployment or OneDrive access occurred.
+
+
+## Branded unknown-entry recovery increment — 18 November 2026
+
+This increment closes the local bare-404 presentation gap within the original
+second acceptance item. It reuses Angular's existing wildcard StatePage,
+StatusScreen, ButtonDirective and portal shell; no component, style, alias or
+business contract is added. The recovery action now preserves the query and
+fragment when the existing landing guard selects the authorized role home or
+sign-in return.
+
+The separate `gcsp-angular-dev` service retains its fixed and offer rewrites,
+then reserves `assets/`, `media/`, `api/` and filename-shaped paths before a final
+`/gcsp/*` rewrite to the compiled index. The missing-resource destination is
+outside `/gcsp/` and the assembler's output, so it cannot enter the fallback.
+Existing packaged resources retain their content and cache metadata; the separate
+`/api/gcsp/v1` URL space receives no frontend rewrite. A named offer ID keeps its
+existing unrestricted segment contract, including an asset-looking ID.
+
+Provider basis: Render's [redirect/rewrite documentation](https://render.com/docs/redirects-rewrites),
+observed 18 November 2026, says existing resources bypass rules, rules are matched
+in order and only the first matching rule is applied, wildcards match arbitrary
+strings, and placeholders match whole URL segments. The `*.*` filename exclusion
+uses that documented wildcard rule; the documentation does not provide an exact
+suffix-wildcard example. This remains a provider uncertainty until actual hosted
+replay. No unsupported custom-404 artifact behavior is assumed. Existing cache
+headers remain unchanged because precedence for overlapping header rules was
+not established. Local routing proof does not establish deployed Render routing
+or unknown-path caching.
+
+Validation scope is the changed static-blueprint case, the existing Angular
+state-page spec with its new context regression, production compilation needed
+for actual rendered desktop/narrow refresh and keyboard recovery, and native
+resource/API 404 responses under a local model of the documented static rules.
+No Java, PostgreSQL or previously passing 68-check composition replay is needed
+for this frontend/configuration boundary. Full suite: deferred to batch. Hosted,
+registered-provider, delivered-email, Safari/private-browser and covering-green
+acceptance gaps remain explicit; both original checkboxes remain open.
+
+The first owned validation supervisor failed before any selected command ran:
+an absent-parent `None == None` comparison contaminated its process collection,
+and its cleanup raised `PermissionError` while attempting a signal. The target
+PID/start and any preceding successful signal attempts were not retained and
+remain unverified; no zero-impact claim is made. The contaminated collection was
+never reused for corrective signals. Exact own-manifest recovery verified a dead
+supervisor, zero registered child groups, matching scratch device/inode and no
+open files, removed 8,727,328 bytes, and removed only its exact reservation token.
+Original source, initial receipt and traceback remain retained in the local
+`sniffles2/attempt01-*` evidence. Independent review requires positive parent
+membership, direct-child registration, baseline identity exclusion, a persisted
+per-signal identity journal, cancellation on sampler errors and fail-closed
+teardown before any reattempt. This is a supervisor failure, not a product-test
+failure; no selected product checks ran in that attempt.
+
+
+The corrected supervisor was independently source-reviewed by Mulan 5 before
+attempt02. It requires positive parent membership in both observed identity maps,
+excludes baseline identities, registers roots from the direct Popen object and
+current parent/start/group, journals each signal intent and result, and retains
+uncertain resources. Attempt02 passed the changed static blueprint case **1/1**,
+then Angular compilation stopped before assertions because two existing JSON
+fixture directories were absent from the private copied input closure. Build and
+render were unrun. Its clean natural-exit teardown had no signal intents, sampler
+errors or teardown errors; both owned groups, scratch and token were absent.
+
+Attempt03 added only the exact account/node-baseline and brief/java-golden fixture
+families and reused the passing static result at matching hashes. The state-page
+spec passed **17/17**, and production compilation passed. Existing optional-chain
+warnings in outbox/stock remain outside this change. The local HTTP proof passed
+eight missing-resource/API checks and served a packaged script as JavaScript, but
+the first browser `Page.navigate` timed out before any browser request reached the
+local server. No rendered product outcome is inferred. Its failed receipt remains
+strict false. Cleanup journaled one TERM to a positively recorded Chrome identity
+after a fresh exact PID/start/PGID and baseline check; all owned groups, scratch and
+token were subsequently absent, with no sampler or teardown errors. Mulan 5 read
+both terminal receipts. This exercises that bounded signal/cleanup path; it does
+not prove the earlier failed supervisor's unknown signal target or all lifecycle
+branches safe.
+
+Attempt04 reuses the static and 17 state results at matching complete input hashes.
+The prior compiled artifact was removed by verified cleanup, so production
+compilation is regenerated only as the prerequisite for remaining rendered proof;
+the new hash-listed artifact is retained within the aggregate 32 MiB output cap.
+The helper now connects directly to the existing owned blank page's CDP socket,
+uses the established headless GPU-disable recipe and retains bounded Chrome
+stderr. The precise first timeout cause remains unproved. Mulan 5 independently
+passed this helper delta before fresh atomic admission; no product change or
+broader test selection was added.
+
+
+Attempt04's direct-page socket did not resolve the first-navigation timeout; the
+failed receipt and bounded Chrome stderr remain retained. Display-link errors
+were observed, but no causal attribution is made. The rebuilt artifact passed
+compilation and its retained hashes support all later render-only attempts;
+static/state/build commands and npm dependency copying are not replayed again.
+
+Attempt05's finite data-document diagnostic succeeded and the actual desktop
+unknown route, branded shell, refresh, arrival focus and Tab recovery-button focus
+rendered correctly in two retained PNGs. The helper then failed waiting for home
+recovery after Enter, with the document unchanged and no Runtime exceptions.
+Attempt06 isolated that input issue on a native data-document button: the old
+Enter keyDown/up payload caused **zero activations**, whereas supplying carriage
+return text and unmodifiedText caused **one activation**. The app proof adopts
+the verified full-text recipe; no product handler change was needed. That attempt
+then encountered another 10-second navigation-command timeout, with the captured
+document at the expected app URL and Angular boot loading. Both receipts remain
+strict false and both clean natural-exit teardowns recorded no signals, sampler
+errors or teardown errors. The intermittent command timing remains unproved.
+
+Attempt07 reuses the native key diagnosis and all matching prior results/artifact,
+with only navigation/reload command waits increased to 30 seconds; other CDP calls
+remain 10 seconds and the 300-second phase/600-second run bounds are unchanged.
+Actual rendered state, URL, brand, refresh, focus, keyboard and context assertions
+are unchanged. Mulan 5 reviewed this bounded mitigation. A diagnostic output
+projection clipped and was replaced by a bounded typed reread before conclusions;
+no omitted output supplies the result (DL-20261117-GCC-013 recurrence).
+
+
+The final scoped result is **PASS**: attempt07 completed at **09:11:18 UTC,
+18 November 2026**, native/outer exit 0 and strict result true. Actual compiled
+Angular under the documented-rule local static-host model passed desktop
+1440×1000 and narrow 375×812 unknown direct entry and refresh, branded shell/logo,
+no horizontal overflow, arrival heading focus, Tab focus and full Enter recovery
+to Sign in. The return URL retained `/gcsp/?brand=mini#entry`. The narrow unavailable
+screen remained visibly distinct. Seven final PNGs were inspected by the lead:
+unknown, keyboard focus and recovered Sign in at both sizes, plus narrow Account
+unavailable. No visual defect was found; the existing shared shell/card/button,
+palette and focus outline remain intact. This is browser evidence, not deployed
+Render/provider/API success evidence.
+
+The changed static case **1/1** and Angular state-page cases **17/17** are reused
+at exact matching product/input hashes. Production compilation passed in attempts
+03 and 04; later render attempts use the verified retained attempt04 artifact,
+without dependency copy or recompilation. Eight actual local missing-resource/API
+requests returned plain 404 and a packaged script returned JavaScript/200 in the
+retained attempt04 HTTP proof. The existing actual Java/native PostgreSQL 17/static
+Angular/signed-local-OIDC **68 checks / six scenarios / 13 PNGs** remain separately
+qualified evidence and were not replayed.
+
+Attempt07 used 8.598 seconds, sampled peak RSS **1,162,330,112 B** and inclusive
+sampled scratch/retained-output peak **136,651,928 B**. It exited naturally with
+no signal intents, sampler errors or teardown errors; its owned group, processes,
+scratch and reservation were absent. Corrected attempts02–07 each recorded clean
+closure; their largest sampled RSS/disk peaks were **1,324,498,944 B** and
+**460,753,048 B**, within the granted 2 GiB RAM/1 GiB disk bounds. These are sampled
+measurements, not an exhaustive peak guarantee. Failed attempts remain immutable;
+none is relabelled passing. Attempt01's signal-target/preceding-signal uncertainty
+remains unresolved and is not erased by later successful cleanup. Final local
+receipts, hash-listed source/artifact inputs and PNGs are retained beneath
+`.claude/test-runs/fucq437/sniffles2/`; the dispatcher independently audits closure.
+
+Sniffles 2 leads and Mulan 5 independently reviews; both requested and selected
+`gpt-6.1-sol` / `high`, without fallback. An earlier Buzz Lightyear 4 spawn was
+refused by the actual thread limit and created no child; it was not treated as a
+permanent session cap. The bounded product delta remains four paths: the dev static
+service rules, their existing test, and StatePage source/spec. Allocated delivery
+documentation and this Story are the only other tracked changes. No Java/API,
+provider, launcher, component or styling change was required.
+
+**Both original acceptance criteria remain open.** Useful branded unknown-entry
+recovery is now locally proved. Actual Render suffix/wildcard matching, unknown-path
+caching and hosted topology, registered-provider and actual delivered-email return,
+Safari/private-browser evidence and a green covering batch remain unproved. Full
+suite: deferred to batch. The existing Greg placeholder/account partial-read
+limitations, FUCQ-513/FUCQ-514 and attempt01 uncertainty remain as recorded. No new
+Story scope, deployment, Jira lifecycle change, real email or OneDrive access occurred.
+
+
+Mulan 5's final independent source/rendered review returned **PASS — no blocking
+or major issues found**. It inspected all seven final PNGs and matched all
+**359 current source-input hashes** and **36 retained compiled-artifact hashes**.
+The local review receipt is `.claude/results/fucq437-mulan5-review.json`, SHA256
+`be85f8118bb04a7cb22663466395845ae3fe7e0acc74be5b1313af75f8ac201e`.
+The review preserves the original acceptance limits and failed-attempt/unknown
+signal history; it does not infer deployed routing or blanket framework safety.
+
+
+The lead's separate read-only closure audit at **09:15:16 UTC** found all **726
+recorded PID/start identities** and **10 owned groups** absent, exact corrected-run
+scratch paths and six tokens absent, and retained output **2,768,736 B** before
+that audit file was written. It preserved peer processes/reservations and made no
+signals. Proof03 did not retain explicit HTTP/CDP ports, so no port-specific03
+absence audit is claimed; recorded own identity/group closure is verified.
+The dispatcher's independent audit remains separate from this lead observation.
+
+
+## Claude story-lead resume and result — 18 November 2026
+
+A Claude story-lead resumed the Story after the Codex poller stopped. The branch was
+fast-forwarded to `gcsp-poc-dev` `b8fa0aa0c`. Since `d34de1971` the base changed only
+other Stories' files; the Angular offer screen/validation (DEV-2026-11-16-021) is the
+one delta that touches an AC1 path. No product change was needed or made.
+
+The connected receipt (`pumbaa3/cors-recovery/connected-20261118T045437Z`, strict
+true) was re-read: its six checkpoints cover protected direct entry and refresh after
+signed local OIDC PKCE login, three role landings, a newly produced offer URL with
+owner sign-in, refresh and another employee's refusal, shared launcher context,
+unknown/missing-asset 404 and API failures. The lead inspected the wrong-account offer
+and desktop unknown-recovery captures. Static, launcher and render inputs are
+unchanged since that evidence, so it is reused, not replayed.
+
+On the merged tree, one Angular run (Node 24.22.3, owned scratch) passed **7 files /
+129 tests**: state-page 17, route guards 9, route policy 6, OIDC auth 22, context
+client 8, offer client 25, offer screen 42. Peak RSS 1,162,149,888 B; the in-place
+`node_modules` (284 MiB) and scratch were removed and verified absent. Full suite:
+deferred to batch.
+
+Result: **blocked** on external evidence only. Both acceptance items are met on local
+evidence; neither box is ticked, because the Story's validation names the hosted static
+host and email return. Remaining, all external: deployed `gcsp-angular-dev` routing
+(including the `*.*` exclusion) and caching, a registered hosted test OIDC provider,
+actual delivered-email return, Safari/private-browser capture, and a green covering
+batch that includes this merge.

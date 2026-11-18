@@ -7,7 +7,7 @@ import { ApplicationContext, AuthPort, SessionState } from '../auth/auth.port';
 import { ActivityClient } from './activity.client';
 import { ActivityComponent } from './activity.component';
 import { isApprovedActivityImage } from './activity-image-registry';
-import { ActivityOffer, ActivityProjection, ActivityResult, ActivityStateChange } from './activity.types';
+import { ActivityOffer, ActivityOfferState, ActivityProjection, ActivityResult, ActivityStateChange } from './activity.types';
 
 const employee: ApplicationContext & { readonly employeeId: string } = { subject: 'subject-one', roles: ['employee'], environmentId: 'env-one', runId: 'run-one',
   employeeId: 'employee-one', policyVersion: 'policy-one', capabilities: ['activity:read'] };
@@ -21,8 +21,9 @@ const projection = (patch: Partial<ActivityProjection> = {}): ActivityProjection
   currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'not-recorded', rejectedReceipts: 0 }, ...patch,
 });
 const ok = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-const display = (offerId = 'offer-one', images: readonly { src: string; alt?: string; caption?: string; fidelity?: string }[] = []) => ({
-  status: 'ok' as const, value: { offerRef: { offerId }, title: 'BMW X3', images },
+const display = (offerId = 'offer-one', images: readonly { src: string; alt?: string; caption?: string; fidelity?: string }[] = [],
+  state: ActivityOfferState = 'active', version = 4) => ({
+  status: 'ok' as const, value: { offerRef: { offerId }, state, version, title: 'BMW X3', images },
 });
 const imageOne = { src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp',
   alt: 'BMW X3 side view', fidelity: 'representative-configuration', caption: 'Side view' };
@@ -148,6 +149,35 @@ describe('native employee activity view', () => {
     expect(Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button')).map((button) => button.textContent.trim()))
       .not.toContain('Engage Buddy');
   });
+
+  it('shows backend-confirmed expiry without an open-offer heading or response deadline', async () => {
+    const row = offer();
+    client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer', currentOffer: row, offers: [row] })));
+    client.readOfferDisplay.mockResolvedValueOnce(display('offer-one', [], 'expired'));
+    const fixture = await mount();
+    expect(pageText(fixture)).toContain('Expired');
+    expect(pageText(fixture)).not.toContain('Waiting for you');
+    expect(pageText(fixture)).not.toContain('Respond by');
+    expect(pageText(fixture)).not.toContain('Your buddy found a car');
+    expect(fixture.nativeElement.querySelector('a[href="/offers/offer-one"]')).toBeTruthy();
+    expect(client.command).not.toHaveBeenCalled();
+  });
+
+  it.each([['superseded', 'Offer replaced'], ['released', 'Released']] as const)(
+    'shows the current Java %s terminal state and supported no-match follow-up', async (state, label) => {
+      const row = offer(state);
+      client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer-closed', currentOffer: row, offers: [row],
+        lastSuccessfulCheck: { checkedAt: '2026-11-14T07:30:00.000Z', carsChecked: 2, suitableCars: 0,
+          exclusions: [{ essential: 'seats', requirement: { value: 9 }, cars: 2 }], outcome: 'no-match' } })));
+      const fixture = await mount();
+      expect(pageText(fixture)).toContain(label);
+      expect(pageText(fixture)).toContain('No released car has 9 seats.');
+      expect(pageText(fixture)).toContain('Keep searching');
+      expect(pageText(fixture)).not.toContain('Waiting for you');
+      expect(pageText(fixture)).not.toContain('Respond by');
+      expect(fixture.nativeElement.querySelector('a[href="/preferences"]')).toBeTruthy();
+      expect(client.command).not.toHaveBeenCalled();
+    });
 
   it('keeps the update pending without optimistic changes and presents explicit recovery choices', async () => {
     const commandResult = deferred<ActivityResult<{ readonly version?: number }>>();

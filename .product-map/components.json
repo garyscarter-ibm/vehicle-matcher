@@ -494,7 +494,10 @@
         "FUCQ-458",
         "FUCQ-463",
         "FUCQ-468",
-        "FUCQ-481"
+        "FUCQ-481",
+        "FUCQ-518",
+        "FUCQ-504",
+        "FUCQ-505"
       ],
       "references": [
         "FUCQ-7",
@@ -598,7 +601,8 @@
         "FUCQ-462",
         "FUCQ-463",
         "FUCQ-464",
-        "FUCQ-467"
+        "FUCQ-467",
+        "FUCQ-388"
       ],
       "references": [
         "FUCQ-87",
@@ -683,7 +687,9 @@
         "FUCQ-465",
         "FUCQ-466",
         "FUCQ-467",
-        "FUCQ-481"
+        "FUCQ-481",
+        "FUCQ-519",
+        "FUCQ-388"
       ],
       "references": [
         "FUCQ-89",

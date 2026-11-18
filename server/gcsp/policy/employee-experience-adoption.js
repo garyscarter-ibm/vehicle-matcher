@@ -40,5 +40,7 @@ export async function adoptEmployeeExperiencePolicy({ policy, identity, clock })
   if (adopted.status !== 'ok' || adopted.value?.activation?.status !== 'active') return unavailable();
   const seeded = await identity.seedPrincipals();
   if (seeded.status !== 'ok') return seeded;
-  return ok({ adopted: true, policyVersion: adopted.value.activation.policyVersion, adoption: adopted.value.adoption });
+  const journey = await adoptOfferJourneyPolicy({ policy, identity, clock });
+  if (journey.status !== 'ok') return journey;
+  return ok({ adopted: true, policyVersion: journey.value.policyVersion, adoption: adopted.value.adoption });
 }

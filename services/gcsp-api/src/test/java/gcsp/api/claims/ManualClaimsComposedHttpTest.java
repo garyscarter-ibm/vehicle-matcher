@@ -371,7 +371,7 @@ class ManualClaimsComposedHttpTest {
             assertEquals(holdId, read.hold().get("holdId").asText());
             assertEquals("quoted", read.value().get("state").asText());
             assertEquals("preview", read.hold().get("phase").asText());
-            assertEquals("local", read.hold().get("mode").asText());
+            assertEquals("replacement", read.hold().get("mode").asText());
             assertEquals(held.value().at("/quote/termsDigest").asText(), read.value().at("/quote/termsDigest").asText());
             assertEquals("manual-quote:" + holdId.substring("manual-hold:".length()), read.value().at("/quote/quoteId").asText());
             assertEquals(text("SELECT terms_digest FROM manual_claims WHERE hold_id = ?", holdId), read.value().at("/quote/termsDigest").asText());

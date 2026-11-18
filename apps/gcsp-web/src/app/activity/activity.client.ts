@@ -17,7 +17,7 @@ type Method = 'GET' | 'POST';
 
 const knownActivityStates = new Set(['no-brief', 'paused', 'offer', 'offer-closed', 'searching', 'never-searched']);
 const sourceStatuses = new Set(['not-checked', 'evidence-unavailable', 'unavailable', 'delayed', 'ok']);
-const offerStates = new Set<ActivityOfferState>(['active', 'decision-pending', 'release-pending', 'accepted', 'rejected', 'declined', 'expired']);
+const offerStates = new Set<ActivityOfferState>(['active', 'decision-pending', 'release-pending', 'accepted', 'rejected', 'declined', 'expired', 'superseded', 'released']);
 const operations = new Set(['confirmed', 'paused', 'resumed', 'changed-after-decline', 'engaged', 'disengaged', 'preferences-updated']);
 const activityOperations = new Set<ActivityOperation>(['engage', 'disengage', 'pause-search', 'resume-search']);
 const responseFailureStatuses = new Set<ActivityFailureStatus>(['authentication-required', 'forbidden', 'conflict', 'stale-version',
@@ -172,13 +172,16 @@ function sourceDisplayImage(value: unknown): ActivityDisplayImage | null {
 
 function offerDisplay(value: unknown, offerId: string, runId: string): ActivityOfferDisplay | null {
   if (!object(value) || value['schemaVersion'] !== 1 || value['offerId'] !== offerId || value['runId'] !== runId
-    || !['pending', 'accepted', 'declined', 'expired', 'superseded'].includes(value['state'] as string) || !text(value['reason'])
+    || !['pending', 'accepted', 'declined', 'expired', 'superseded', 'released'].includes(value['state'] as string) || !text(value['reason'])
     || !instant(value['serverNow']) || !instant(value['expiresAt']) || !text(value['clockVersion'])
     || !positive(value['offerVersion']) || !positive(value['holdVersion']) || !text(value['holdState']) || !text(value['offerState'])
     || !Array.isArray(value['availableActions']) || !value['availableActions'].every((action) => ['accept', 'decline'].includes(action as string))
     || new Set(value['availableActions']).size !== value['availableActions'].length
     || value['availableActions'].includes('accept') && !value['availableActions'].includes('decline')
     || value['state'] !== 'pending' && value['availableActions'].length !== 0) return null;
+  const state = value['state'] === 'pending' ? value['offerState'] : value['state'];
+  if (!offerStates.has(state as ActivityOfferState)
+    || value['state'] === 'pending' && !['active', 'decision-pending', 'release-pending'].includes(state as string)) return null;
   const quote = value['quote'];
   if (!object(quote) || !['quoteId', 'configurationId', 'orderUuid', 'policyVersion'].every((key) => text(quote[key]))
     || !positive(quote['briefVersion']) || !(quote['orderNumber'] === null || typeof quote['orderNumber'] === 'string' && /^\d{7}$/.test(quote['orderNumber']))
@@ -189,7 +192,8 @@ function offerDisplay(value: unknown, offerId: string, runId: string): ActivityO
     || !object(facts['sourceKeys']) || facts['sourceKeys']['stockId'] !== quote['orderUuid'] || !object(display)
     || !text(display['name']) || !sourceUrl(display['photo']) || !Array.isArray(display['images'])) return null;
   const images = display['images'].map(sourceDisplayImage); if (images.some((image) => image === null)) return null;
-  return { offerRef: { offerId }, title: display['name'], images: images as ActivityDisplayImage[] };
+  return { offerRef: { offerId }, state: state as ActivityOfferState, version: value['offerVersion'],
+    title: display['name'], images: images as ActivityDisplayImage[] };
 }
 
 function currentHint(value: unknown): ActivityFailure['current'] {

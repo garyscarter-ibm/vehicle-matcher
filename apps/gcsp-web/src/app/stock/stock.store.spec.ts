@@ -199,7 +199,8 @@ describe('scoped released stock browse state', () => {
     store.openDetail('stock-1'); await supply(failure);
     expect(store.state()).toBe(state); expect(store.failure()).toEqual(failure);
     expect(store.allCars()).toEqual([]); expect(store.releaseHistory()).toBeNull(); expect(store.selectedSource()).toBeNull();
-    expect(store.detailState()).toBe(state === 'context-refresh' ? 'stale' : 'unavailable');
+    expect(store.detailState()).toBe(state === 'context-refresh' ? 'stale' : state === 'car-taken' ? 'unavailable' : state);
+    expect(store.selectedId()).toBe('stock-1');
   });
 
   it('rejects an invalid projection and exposes a retryable failure after thrown reads', async () => {

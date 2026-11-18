@@ -68,7 +68,7 @@ class ClaimRemoteTest {
     void aConfirmedRemoteClaimIsActiveWithOneRemoteEffect() throws Exception {
         JsonNode h = claimed("e1", "car-1");
         assertEquals("active", h.get("state").asText());
-        assertEquals("remote", h.get("mode").asText());
+        assertTrue(h.get("mode").isNull(), "the fixture seeds no draft, so there is no journey mode");
         assertEquals("active", f.text("SELECT state FROM custody_holds"));
         assertEquals("acknowledged", opState());
         assertEquals(1, stock.ledger.totalEffects());
