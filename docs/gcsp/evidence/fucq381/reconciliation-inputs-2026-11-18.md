@@ -1,0 +1,157 @@
+# FUCQ-381 current input identity — 18 November 2026
+
+Prepared identity and acceptance-proof selection. Current execution remains pending; the historical 297-pass result is not substituted. Exact file pins below are a compact review subset; all 2551 batch-manifest source/input hashes independently matched the claimed tree. The retained batch manifest hash and tested Git pin bind the wider input set.
+
+```json
+{
+  "workItem": "FUCQ-381",
+  "state": "prepared; current executed acceptance proof pending",
+  "checkedAt": "2026-11-18T02:39:03+00:00",
+  "claimedHead": "b769513fd1ea07a251381175c7df8ca5699b58d5",
+  "originalRepair": "94a9eaf0cf715d096544a3b41d2d9870ec4200c3",
+  "dataStrategy": {
+    "mode": "default",
+    "contract": "docs/gcsp/employee-recommendation.md; canonical employee.recommendation.v1; existing gate/score/rank boundary",
+    "delta": "No new data access, persistence, query or policy change."
+  },
+  "codeKey": "bf4674640102cfc8fcf80ad22e0a705795a1eca935ce668785a67c27c0680210",
+  "inputSha256": {
+    "blocks/gcsp/brief/brief-controller.js": "ec5101486858f0726b8995617ee94dd5630f33f275c0e5b690f8e8a530b848b3",
+    "blocks/gcsp/brief/brief-transport.js": "1447c5cb5a1c4eb734ed807a8d96592edebeb6b1119d18d7179570b7ddeeb2cf",
+    "blocks/gcsp/brief/brief-view-model.js": "540013ceddeb2da656c13c62b7d22da8b0a034d783a07c3d5b701603143057a2",
+    "blocks/gcsp/brief/brief-view.js": "3ea695388c0e49e5581dfa36bf57b2b6241c2fe5dde9aa0ff90c1a483f006eaf",
+    "blocks/gcsp/kit/plain-copy.js": "163ca4074a574833a00370b26eef7907963d24bf47f87a78381454e1d0ef8fe9",
+    "blocks/vehicle-matcher/feedback-actions.js": "1d688f39b0e08ab3b2ebf77673dd5656a5048deea4cced1057b03d2f9431446d",
+    "blocks/vehicle-matcher/modes/result-card.js": "73d45a2604882064812a4aa02be0113fea7724ff8bc37fbd269d5c918a130ea0",
+    "docs/gcsp/evidence/fucq94/representative-snapshot.json": "7425c1147b58756c96261748297cd9d5bab088025179a5eff7725bbbd52f1685",
+    "docs/gcsp/shared-contracts.md": "edf633de2325f0d7450a1e44acd229fb1cea67e39b59dbb4227b35bdf4983f37",
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "3dfdb7d1b133ea3eeab0c7431f599f67021727ace403e4bb1e615b9ac4190490",
+    "server/brands.js": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+    "server/engine.js": "a3a9460b71173984866c997ad2bc80f8ba4e5bf3105ebcdc0f5016bad20b8613",
+    "server/gcsp/policy/file-provider.js": "d309528f446c4f82726a45595942a5095aa716cf12146e2047b51affa5e86c10",
+    "server/gcsp/policy/index.js": "bcb722c43b687d00f571a1508ff34238189072605cd05b4e28fadcabf54f4042",
+    "server/gcsp/policy/seed-v1.json": "23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591",
+    "server/gcsp/recommendation/current-car.js": "c734fba90e9a65511231eb8fdf0a3447d94c4dafc311aca538c18dc8f67d7cbd",
+    "server/gcsp/recommendation/index.js": "254472221a4aa988d9c5ae6cdd8f51c7059c3d24d727213d136a96862c161e11",
+    "server/index.js": "fe1d6e16fdb4594fa5fef2ad1e30c30064f132e8ce58202d282736e4873687a8",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "2f4a5fb161b15aa241fbd1d23e82fd319f916fffd30bb7167fae0b71f68044e8",
+    "server/scenarios/employee/feedback.js": "ae7dfaa21a56b2bcb76e0f1e93cd430711cf6668a23e4a744906981ea49f8464",
+    "server/scenarios/employee/index.js": "ba6f32e11244d9ca377b190d70937501cb8bca1f5eb4767973539fa9347cfb20",
+    "server/scenarios/employee/option-evidence.js": "0ad2d6f615f122d9eae6d75e39585fbaa8495bddf94f2f3e336f589fcc290911",
+    "server/test/dom-harness.js": "06112a704fe7f75f1d1a9ebc8ebb7bc0898b8211f36abe04e64345bf7c9c24ad",
+    "server/test/employee-recommendation-api.test.js": "ec860f11ae6d5af5e5086f1925bc46b0103c6d6d5315e34e74117b8795764a53",
+    "server/test/employee-recommendation-order.test.js": "0c49f9e0803efaaa2136460582bedb61fdd3250dbd30b800a5c49dd90edfc171",
+    "server/test/employee-recommendation.test.js": "d3c45cebac415976e851110359d4f75e2996a3a38c2d4473ae06f178c83e6a82",
+    "server/test/feedback-actions.test.js": "5a803adba2ee0cbbee01559d36402e174f8d0053e04a0d50c0aee08a82af8c0d",
+    "server/test/fixtures/gcsp-policy-projection.json": "a6dc31c246dab75ea7d1fae3bad020d2b203c59376b9b4073d517e993461a9e7",
+    "server/test/fixtures/retail-compat-v1/expected.json": "140db30fe605e364d4b88f2143e770a8ad9195f014f2f08d6bf64a732c9447ea",
+    "server/test/fixtures/retail-compat-v1/inputs.json": "05ec09609fc1c5707c92a0e7e8ad80335dc4ffac6859985f3fb18953c824c0d5",
+    "server/test/fixtures/retail-compat-v1/manifest.json": "8b84acdda1bec310cf4add2dac14527030b094face2247df74e127e5f3a1cf3f",
+    "server/test/gcsp-brief-render.test.js": "5aedbdfe9e113c1b793c873d28cc30fd4f5d017318428fa9672232494c95fb74",
+    "server/test/gcsp-brief-transport.test.js": "ab076fea223b808ed41cefb07a0162fe37577ab50b5847a561435f7a08e4c1ba",
+    "server/test/gcsp-plain-copy.test.js": "ed037af99e4a3461e14186488caf1370975a4435859b23366ee3f7a8ee1922b5",
+    "server/test/gcsp-policy-service.test.js": "8fab460802cde4b98e1151e55140a7e7d7e765d2b1c40c596d3b60ada590c24f",
+    "server/test/gcsp-recommendation-stored-subject.test.js": "1d1b33592dbc0eadf74cb9150e11b6fc51b64e4174e67123e315b75cd8d9512b",
+    "server/test/helpers/employee-recommendation-http.js": "2ec9678f593c827c0b8b594258453daab3040d83df77724bd2f3a93c7530425a",
+    "server/test/helpers/employee-recommendation.js": "23e5e9529981671b4e77f08f0dcdfcc7d76a971426c10750e5a8b4fb6e7133df",
+    "server/test/helpers/retail-parity-child.js": "ce1e491c2524b22aa1fb850e92c7abbda44ada4d2f4a3be870ce109bc86cbae5",
+    "server/test/helpers/retail-parity.js": "8d7f130eda34495e09bc9e9555d4bc885356a0d1a006f8cf4b22c37cb1311004",
+    "server/test/helpers/retail-reference-r1/engine.js": "17b1434d0453379c9cdb13d30ffad9d1e60b163be3350736044aebfc87f6728e",
+    "server/test/recommendation-compat.test.js": "1de9ebc159f38fa381ffcbe9cee47cdd38fa2aecfd9d7ea309f1f498e54295a9",
+    "server/test/retail-compat-client-harness.js": "3508a2dd10a0e3a5f3192d0ca5a5f95809836b69aff5bd4f7aab783607915e9e",
+    "server/test/retail-compat-harness.js": "78940c81181abc41a7d6f259243f1c3e6701f9e0dbd903dd66caebb10d22560e",
+    "server/vehicles/index.js": "873faa815290de68d9e0af765156a49c5f05e6caf0352769fe17ae018a8c6fbe"
+  },
+  "selectedTestFiles": [
+    "server/test/employee-recommendation-order.test.js",
+    "server/test/employee-recommendation.test.js",
+    "server/test/feedback-actions.test.js",
+    "server/test/gcsp-brief-render.test.js",
+    "server/test/gcsp-plain-copy.test.js",
+    "server/test/employee-recommendation-api.test.js",
+    "server/test/gcsp-recommendation-stored-subject.test.js",
+    "server/test/gcsp-policy-service.test.js",
+    "server/test/gcsp-brief-transport.test.js",
+    "server/test/recommendation-compat.test.js"
+  ],
+  "batch": {
+    "run": "batch-next-20261118T023236Z",
+    "pin": "26d73b760ba26cd99610ff738c95c0c1355cc7f3",
+    "tree": "99e62499107d8f0f23591455b7b2961b0b638245",
+    "inputManifestSha256": "10df3d1d7594d8d62416b36d7c5451fcc573fc828cee7c0c9bf2149e1a0b32e7",
+    "sourceAggregateSha256": "0f918b49698e9f2d5927fe0371c0446a95edec96cbebf61cb8d358a7f2872422",
+    "comparedInputCount": 2551,
+    "matchedInputCount": 2551,
+    "mismatchedInputs": [],
+    "versions": {
+      "initdb": "initdb (PostgreSQL) 17.12 (Homebrew)",
+      "java": "openjdk version \"21.0.13.0.3\" 2026-10-24\nOpenJDK Runtime Environment Homebrew (build 21.0.13.0.3)\nOpenJDK 64-Bit Server VM Homebrew (build 21.0.13.0.3, mixed mode, sharing)",
+      "javac": "javac 21.0.13.0.3",
+      "node": "v26.7.0",
+      "npm": "11.19.0",
+      "postgres": "postgres (PostgreSQL) 17.12 (Homebrew)"
+    },
+    "nodeCommand": [
+      "npm",
+      "test"
+    ],
+    "javaCommand": [
+      "./mvnw",
+      "-B",
+      "clean",
+      "verify"
+    ],
+    "nodeEnvironment": {
+      "NODE_OPTIONS": "--experimental-vm-modules --max-old-space-size=1536",
+      "PATH": "/opt/homebrew/bin:/opt/homebrew/opt/openjdk@21/bin:/opt/homebrew/opt/postgresql@17/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    },
+    "dependencies": {
+      "installedJsdom": {
+        "path": "/Users/usget/Claude/vehicle-matcher/node_modules/jsdom/package.json",
+        "sha256": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9"
+      },
+      "installedPg": {
+        "path": "/Users/usget/Claude/vehicle-matcher/server/node_modules/pg/package.json",
+        "sha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435"
+      },
+      "installedRootLock": {
+        "path": "/Users/usget/Claude/vehicle-matcher/node_modules/.package-lock.json",
+        "sha256": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118"
+      },
+      "installedServerLock": {
+        "path": "/Users/usget/Claude/vehicle-matcher/server/node_modules/.package-lock.json",
+        "sha256": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+      },
+      "rootLock": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/batch-20261118-0232/package-lock.json",
+        "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+      },
+      "serverLock": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/batch-20261118-0232/server/package-lock.json",
+        "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+      },
+      "serverWorktreeLink": {
+        "created": false,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/batch-20261118-0232/server/node_modules",
+        "target": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
+      }
+    },
+    "status": "running; no F381 test execution claim yet"
+  },
+  "historicalProof": {
+    "run": "fucq381-points-20261111",
+    "passed": 297,
+    "identity": "bc7e9fec221dbfa12153a50fed767a1f42799121a51a429b8f4dcb3c40e6fdcd",
+    "currentWholeFileMatches": 2,
+    "recordedWholeFileCount": 10,
+    "scope": "Historical diagnosis/repair evidence only; not current pass."
+  },
+  "coverageLimitation": "No measured per-test V8 contexts; static ownership/import/fixture mapping is not measured coverage. Unobserved paths remain unknown.",
+  "newScratchBytes": 0,
+  "noOneDriveAccess": true,
+  "newRuntime": false
+}
+```
