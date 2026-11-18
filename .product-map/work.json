@@ -10061,7 +10061,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T04:03:30Z",
+      "observed_at": "2026-11-18T05:44:05Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10080,8 +10080,8 @@
           "id": "jobs",
           "status": "in-progress",
           "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-18T03:58:02.732112+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#connected-partial-result--18-november-2026"
+          "observed_at": "2026-11-18T05:44:04.931871+00:00",
+          "evidence": "Reviewed proof0ee22999f published; strict API/web builds consumed after hash verification; actual unchanged12step job comparison-job-c0230ad5-b38c-4007-8155-ad6830f04fa7 started05:40:39Z, last observed1/12 and no result. Whole fixed deadline08:59:27Z; no completion inferred."
         },
         {
           "id": "integration",
@@ -10167,8 +10167,8 @@
           "status": "independent source/receipt/six-image review PASS; original ACs remain open"
         }
       ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+      "jira_observed_at": "2026-11-18T05:40:29.435Z",
+      "native_observed_at": "2026-11-18T05:40:29.435Z"
     },
     {
       "assignee": "Gary Carter",
@@ -10284,7 +10284,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-18T04:57:20Z",
+      "observed_at": "2026-11-18T05:44:05Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Enter and refresh replacement frontend routes",
@@ -10378,10 +10378,22 @@
           "expires_at": "2026-11-18T04:56:43Z",
           "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
           "status": "returned; coherent local increment; originalAC open"
+        },
+        {
+          "name": "Sniffles 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T05:44:04.931871+00:00",
+          "expires_at": "2026-11-18T06:04:04.931871+00:00",
+          "source": "Direct gateway/title/scope-start ACK; parent verified saved thread01a1ed2d-a109-75c0-b026-11846ec06fd2 title and active turn.",
+          "status": "active; original branded unknown-route recovery implementation and necessary focused proof/review",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
         }
       ],
-      "jira_observed_at": "2026-11-18T04:50:07.991Z",
-      "native_observed_at": "2026-11-18T04:50:07.991Z"
+      "jira_observed_at": "2026-11-18T05:40:29.435Z",
+      "native_observed_at": "2026-11-18T05:40:29.435Z"
     },
     {
       "branch": "gcsp-poc-dev",
