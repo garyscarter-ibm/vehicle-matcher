@@ -9470,7 +9470,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-465",
-      "observed_at": "2026-11-17T21:37:04Z",
+      "observed_at": "2026-11-18T00:20:16Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Resolve offer links under OIDC ownership",
@@ -9482,22 +9482,22 @@
           "id": "access",
           "status": "complete",
           "title": "Offer access: OIDC ownership, current-state read, refusals and decision-authority check behind an offer-records port",
-          "observed_at": "2026-11-14T07:33:53Z",
-          "evidence": "Lead review of offers package at lead boundary; gcsp.api.offers.** 33 tests (OfferViewTest 8, OfferAccessTest 15, OffersHttpTest 10) passed, 0 failures"
+          "observed_at": "2026-11-18T00:14:57Z",
+          "evidence": "c63ca4afe: reviewed ownership-first full browser projection; signed-JWT/nativePG and actual Angular validator/owner-link/restart proof. External provider/delivery/hosted acceptance remains open."
         },
         {
           "id": "postgres",
           "status": "complete",
           "title": "Postgres offer records over FUCQ-464 tables, notify OfferFacts binding, native PG restart proof",
-          "observed_at": "2026-11-14T07:46:40Z",
-          "evidence": "Lead review; PostgresOfferRecords/PostgresOfferFacts over FUCQ-464 tables, notify bound; native PG 17 :55465 offers.** 43 and notify.** 79 tests passed, 0 skipped"
+          "observed_at": "2026-11-18T00:14:57Z",
+          "evidence": "c63ca4afe: exact indexed persisted quote/clock/stock joins, notify caller scope; 274 reconciled Java tests, real API-process restart on same nativePG. No schema or shared support change."
         },
         {
           "id": "integration",
           "status": "complete",
           "title": "Integration: README, base merge, Java verify and native PostgreSQL validation",
-          "observed_at": "2026-11-14T07:51:47Z",
-          "evidence": "Lead: README offers section, origin/gcsp-poc-dev merged at fe419c5b1, ./mvnw -B verify with native PG 17 :55465 Tests run 623, Failures 0, Errors 0, Skipped 2 (RunResetIsolationTest needs second DB), BUILD SUCCESS"
+          "observed_at": "2026-11-18T00:20:16Z",
+          "evidence": "c63ca4afe: 274 unique scoped Java checks; actual Angular validator and isolated signed-OIDC/nativePG link/restart/refusal/terminal read proof; independent A/B source/security/visual review passed. Native browser acceptance remains separate F466 gap; external mail/provider/hosted and green batch acceptance open. See docs/gcsp/evidence/fucq465/validation-2026-11-18.md."
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
