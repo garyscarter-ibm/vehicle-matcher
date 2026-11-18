@@ -25,7 +25,7 @@ const read = { runId: run.runId, asOf: instant, policyVersion: run.policyVersion
 const seed = await loadDemoPrincipalSeed(policy, read);
 const principals = [];
 // FUCQ-528: Sam gets a plug-in essential no released car meets and a renewal moved to 2027-03-16, so Greg's plan
-// orders for him while the run date is 2026-11-16 to 2027-01-19 (horizon 120d, lead 56d; DemoOrderWindowGuardTest).
+// orders for him while the run date is 2026-11-17 to 2027-01-19 (horizon 120d, lead 56d; DemoOrderWindowGuardTest).
 const ORDERABLE = 'employee-sam';
 const later = (date) => new Date(Date.parse(date) + 105 * 86400000).toISOString().slice(0, date.length);
 const laterContract = (c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k,
