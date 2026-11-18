@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // FUCQ-449 connected proof: prebuilt Angular Greg planning -> Java API (local signed test OIDC, owned PostgreSQL 17), headless Chrome.
-// Reuses the FUCQ-452 harness. Seeds no plan or Production data; records what the actual Java API answers and what the page shows.
+// Reuses the FUCQ-452 harness. Plan inputs go in through the real writers (presenter tick, employees' briefs); every claim compares an API body with the DOM.
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, createSign, generateKeyPairSync, randomBytes } from 'node:crypto';
 import { createServer } from 'node:https';
@@ -9,6 +9,7 @@ import net from 'node:net';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync, createWriteStream, lstatSync, readlinkSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { apiJvmArgs, jvmLimitsReceipt } from './proof-jvm.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const T0 = Date.now();
@@ -62,11 +63,9 @@ const DB_OPTIONS = new URLSearchParams(DB[4] ?? '');
 const DB_USER = process.env.GCSP_DATABASE_USER || DB_OPTIONS.get('user') || 'gcsp';
 const DB_PASSWORD = process.env.GCSP_DATABASE_PASSWORD ?? DB_OPTIONS.get('password') ?? '';
 
-const SCENARIO_PROVIDER = process.env.PROOF_SCENARIO_PROVIDER ?? 'none';
-if (!['none', 'demo'].includes(SCENARIO_PROVIDER)) refuse('PROOF_SCENARIO_PROVIDER must be none or demo');
-const SUPPLY_PROVIDER = process.env.PROOF_SUPPLY_PROVIDER ?? 'none';
-if (!['none', 'demo'].includes(SUPPLY_PROVIDER)) refuse('PROOF_SUPPLY_PROVIDER must be none or demo');
-const PRESENTER_TICK = process.env.PROOF_PRESENTER_TICK === '1';
+const SCENARIO_PROVIDER = process.env.PROOF_SCENARIO_PROVIDER ?? 'demo';
+const SUPPLY_PROVIDER = process.env.PROOF_SUPPLY_PROVIDER ?? 'demo';
+if (SCENARIO_PROVIDER !== 'demo' || SUPPLY_PROVIDER !== 'demo') refuse('The bound planning ports need PROOF_SCENARIO_PROVIDER=demo and PROOF_SUPPLY_PROVIDER=demo');
 const PROOF = path.join(SCRATCH, 'proof', `run-${RUN_TOKEN}`);
 if (existsSync(PROOF)) refuse('The proof directory already exists; the parent must supply a fresh run token');
 const JAVA_HOME = localInput(process.env.JAVA_HOME ?? '/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home', 'JAVA_HOME');
@@ -108,7 +107,9 @@ const TRUST_PASS = 'proof-local-trust';
 const ENVIRONMENT_ID = `fucq449-connected-${RUN_TOKEN}`;
 const RUN_ID = 'run-1';
 const POLICY_VERSION = 'gcsp-policy-v1';
-const SUBJECTS = { greg: ['greg'], presenter: ['presenter'], employee: ['employee'] };
+const SUBJECTS = { greg: ['greg'], presenter: ['presenter'], employee: ['employee'], paula: ['employee'], alex: ['employee'] };
+const EMPLOYEE_IDS = { employee: 'employee-probe', paula: 'employee-paula', alex: 'employee-alex' };
+const API_JVM_ARGS = apiJvmArgs();
 const OIDC_SUBJECTS = Object.fromEntries(Object.entries(SUBJECTS).map(([name, roles]) => [`sub-${name}`, roles]));
 const SCHEMA = `gcsp_s_fucq449_${RUN_TOKEN.replace(/-/g, '_')}`;
 const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), certs: path.join(PROOF, 'certs'),
@@ -119,8 +120,9 @@ const receipt = {
   inputs: null, tools: {}, processes: [], resources: { peakRssKiB: 0, peakScratchKiB: 0, samples: 0 },
   limitations: [
     'Local test OIDC uses real signed RS256 tokens and Java bearer validation; this is not the hosted identity provider.',
-    'The planner demand and supply ports are unbound on this Java base (FUCQ-475/477), so no feasible, infeasible or stale plan can be produced; none is seeded or faked here.',
-    'GCSP_PRODUCTION_PROVIDER=synthetic is a labelled local substitute; no real Production system is involved and no request is submitted.',
+    'Demand is a confirmed brief saved through the employee routes and supply is the demo provider released by one presenter tick; both are API steps, not Greg UI.',
+    'GCSP_PRODUCTION_PROVIDER=synthetic is a labelled local substitute; no real Production system is involved.',
+    'Production tracking lines are created with POST /greg/orders (an API step); the plan-submit path is blocked because no API route yields a current plan that orders vehicles.',
     'CDP browser contexts approximate fresh private sessions. Safari/WebKit and hosted deployment were not run.',
     'No access tokens, database credentials, OIDC codes or private keys are written to receipts.',
   ],
@@ -343,13 +345,13 @@ function apiEnv() {
     GCSP_OIDC_JWKS_URI: `https://127.0.0.1:${PORTS.idp}/realms/gcsp-local/protocol/openid-connect/certs`,
     GCSP_OIDC_AUDIENCE: 'gcsp-api', GCSP_OIDC_AUTHORIZED_PARTY: 'gcsp-web', GCSP_OIDC_REQUIRED_SCOPES: 'gcsp-api',
     GCSP_OIDC_ACCOUNTS: JSON.stringify(Object.entries(SUBJECTS).map(([name, roles]) => ({ subject: `sub-${name}`, roles,
-      ...(roles.includes('employee') ? { employeeId: 'employee-probe' } : {}) }))),
+      ...(roles.includes('employee') ? { employeeId: EMPLOYEE_IDS[name] } : {}) }))),
     GCSP_ENVIRONMENT_ID: ENVIRONMENT_ID, GCSP_RUN_ID: RUN_ID, GCSP_POLICY_VERSION: POLICY_VERSION,
     GCSP_DATABASE_URL: DB_URL, GCSP_DATABASE_USER: DB_USER, GCSP_DATABASE_PASSWORD: DB_PASSWORD, GCSP_EXPECTED_DATABASE: DB_NAME,
     GCSP_RESET_ALLOWED: SCENARIO_PROVIDER === 'demo' ? 'true' : 'false', GCSP_PUBLIC_BASE_URL: PUBLIC_BASE_URL, 
     GCSP_CODE_REVISION: SOURCE_REVISION,
-    GCSP_ACCOUNT_PROVIDER: 'none', GCSP_SCENARIO_PROVIDER: SCENARIO_PROVIDER, GCSP_BUDDY_PROVIDER: 'local-synthetic',
-    GCSP_CLAIM_STOCK_PROVIDER: 'local', GCSP_SUPPLY_PROVIDER: SUPPLY_PROVIDER, GCSP_ORDERING_PROVIDER: 'none',
+    GCSP_ACCOUNT_PROVIDER: SCENARIO_PROVIDER === 'demo' ? 'repository' : 'none', GCSP_SCENARIO_PROVIDER: SCENARIO_PROVIDER, GCSP_BUDDY_PROVIDER: 'local-synthetic',
+    GCSP_CLAIM_STOCK_PROVIDER: 'local', GCSP_SUPPLY_PROVIDER: SUPPLY_PROVIDER, GCSP_ORDERING_PROVIDER: SCENARIO_PROVIDER === 'demo' ? 'synthetic' : 'none',
     GCSP_APPOINTMENTS_PROVIDER: 'none', GCSP_DOCUMENTS_PROVIDER: 'none', GCSP_APPROVALS_PROVIDER: 'none',
     GCSP_RETURNS_PROVIDER: 'none', GCSP_PRODUCTION_PROVIDER: 'synthetic',
     GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m',
@@ -388,7 +390,7 @@ async function startApi() {
     `-Dquarkus.flyway.schemas=${SCHEMA}`, `-Dquarkus.flyway.default-schema=${SCHEMA}`,
   ];
   api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'),
-    [`-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,
+    [...API_JVM_ARGS, `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,
       `-Djava.io.tmpdir=${dirs.tmp}`, ...properties, '-jar', JAR], apiEnv(), PORTS.api);
   for (let i = 0; ; i++) {
     if (api.done) throw new Error(`${name} exited during startup`);
@@ -434,7 +436,8 @@ const parse = (value) => { try { return JSON.parse(value); } catch { return null
 function requestSummary(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
   return { keys: Object.keys(body).sort(), experimentId: body.experimentId ?? null,
-    hasCommandId: typeof body.commandId === 'string' && body.commandId.length > 0, change: body.change ?? null };
+    hasCommandId: typeof body.commandId === 'string' && body.commandId.length > 0, commandId: body.commandId ?? null, change: body.change ?? null, changes: body.changes ?? null,
+    planId: body.planId ?? null };
 }
 class Page {
   constructor(cdp, sessionId, contextId, label) {
@@ -577,7 +580,7 @@ const rec = (id, name, pass, observed = undefined) => {
   log(`${pass === true ? 'PASS' : 'FAIL'} ${id} ${name}`);
   return pass === true;
 };
-const PNG_BUDGET = 8 * 1024 * 1024;
+const PNG_BUDGET = 14 * 1024 * 1024;
 let pngBytes = 0;
 async function png(page, name, fullPage) {
   let clip;
@@ -641,6 +644,128 @@ async function addCspProbe(page) {
   await page.send('Page.addScriptToEvaluateOnNewDocument', { source: "window.__cspViolations = []; document.addEventListener('securitypolicyviolation', (e) => window.__cspViolations.push({ directive: e.violatedDirective, blocked: e.blockedURI }));" });
 }
 
+
+// ---------- FUCQ-449 plan and Production DOM extraction, API-vs-DOM comparison ----------
+const PLAN_DOM = `
+const sec = (id) => main.querySelector('#' + id)?.closest('section') ?? null;
+const lis = (el) => el ? [...el.querySelectorAll('li')].map((li) => li.textContent.replace(/\\s+/g, ' ').trim()) : [];
+const facts = (el) => el ? Object.fromEntries([...el.querySelectorAll('.gcsp-fact')].map((f) => [f.querySelector('dt').textContent.trim(), f.querySelector('dd').textContent.trim()])) : {};
+const rows = (label) => { const t = main.querySelector('.plan-table[aria-label="' + label + '"] tbody'); return t ? [...t.querySelectorAll('tr')].map((tr) => [...tr.children].map((c) => c.textContent.replace(/\\s+/g, ' ').trim())) : null; };
+const unmetBox = sec('unmet-needs');
+const submit = button('Request from Production');
+return { title: $('[data-plan-result]')?.textContent.trim() ?? null,
+  previewText: [...main.querySelectorAll('.plan-notice')].filter((n) => n.querySelector('strong')?.textContent.trim() === 'Preview').map((n) => n.querySelector('p')?.textContent.trim())[0] ?? null,
+  staleNotice: [...main.querySelectorAll('.plan-notice strong')].some((s) => s.textContent.trim() === 'Replan needed'),
+  replanNote: [...main.querySelectorAll('section.planning-page > p.gcsp-note')].map((n) => n.textContent.trim()),
+  lines: rows('Proposed order'), comparison: rows('Differences from the current plan'),
+  modelTotals: facts(sec('model-totals')), metrics: facts($('.plan-metrics')), riskSources: facts(sec('risk-sources')),
+  unmet: unmetBox ? [...unmetBox.querySelectorAll(':scope > div')].map((d) => ({ label: d.querySelector('p').textContent.trim(), reasons: lis(d),
+    note: d.querySelector('p.gcsp-note')?.textContent.trim() ?? null })) : null,
+  unmetEmpty: unmetBox?.querySelector(':scope > p.gcsp-note')?.textContent.trim() ?? null,
+  binding: lis(sec('binding-constraints')), conflicts: lis(sec('plan-conflicts')),
+  alternatives: sec('alternative-plans') ? [...sec('alternative-plans').querySelectorAll('article.alternative')].map((a) => ({ label: a.querySelector('h4').textContent.trim(),
+    verdict: a.querySelector(':scope > p').textContent.trim(), facts: facts(a), items: lis(a) })) : null,
+  forecast: $('#forecast-source')?.textContent.trim() ?? null, planFacts: facts(sec('forecast-source')),
+  submit: submit ? { present: true, disabled: submit.disabled } : { present: false }, submitNote: $('#plan-submit-consequence')?.textContent.trim() ?? null,
+  inputs: [...main.querySelectorAll('.plan-limits input')].map((i) => ({ id: i.id, label: i.closest('gcsp-labelled-field')?.querySelector('label')?.textContent.trim() ?? null, value: i.value })),
+  editorErrors: lis($('#plan-editor-errors')), busy: !!main.querySelector('[aria-busy="true"]') };`;
+const PROD_DOM = `
+const facts = (el) => el ? Object.fromEntries([...el.querySelectorAll('.gcsp-fact')].map((f) => [f.querySelector('dt').textContent.trim(), f.querySelector('dd').textContent.trim()])) : {};
+return { asOf: $('.production-page > p.gcsp-note, .production-page [aria-live] ~ p.gcsp-note')?.textContent.trim() ?? null,
+  empty: $('.production-empty')?.textContent.trim() ?? null, notice: $('.production-notice')?.innerText.replace(/\\s+/g, ' ').trim() ?? null,
+  requests: [...main.querySelectorAll('.production-request')].map((a) => ({ heading: a.querySelector('h3').textContent.trim(),
+    stage: a.querySelector('.request-heading strong').textContent.trim(), reason: a.querySelector('.production-reason')?.textContent.trim() ?? null,
+    message: [...a.querySelectorAll(':scope > p')].filter((p) => !p.classList.contains('production-reason')).map((p) => p.textContent.trim())[0] ?? null,
+    facts: facts(a.querySelector(':scope > gcsp-fact-list')), ref: (/Request reference: (request-[0-9a-f]+)/.exec(a.textContent) ?? [])[1] ?? null,
+    history: [...a.querySelectorAll('details ol > li > strong')].map((x) => x.textContent.trim()) })) };`;
+const PLAN_READY = `return !main.querySelector('[aria-busy="true"]') && !!$('[data-plan-result]');`;
+const fmt = (n) => Number(n).toLocaleString('en-GB');
+const wordsOf = (v) => String(v).replace(/[-_]/g, ' ').replace(/^./, (c) => c.toUpperCase());
+const sortDeep = (v) => Array.isArray(v) ? v.map(sortDeep) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, sortDeep(v[k])])) : v;
+const newCmd = () => `cmd-449-${randomBytes(12).toString('hex')}`;
+const inputSel = (key, row = '', edge = '') => `[id="plan-limit-${encodeURIComponent(JSON.stringify([key, row, edge]))}"]`;
+function sql(query) {
+  return cap(PSQL, ['-X', '-A', '-t', '-h', DB_HOST, '-p', DB_PORT, '-U', DB_USER, '-d', DB_NAME, '-c', query],
+    { env: childEnv({ PATH: process.env.PATH, HOME: process.env.HOME, PGCONNECT_TIMEOUT: '10', PGPASSWORD: DB_PASSWORD, PGOPTIONS: `-c search_path=${SCHEMA}` }) });
+}
+const dbCounts = () => Object.fromEntries(['production_submissions', 'production_requests'].map((t) => [t, Number(sql(`SELECT count(*) FROM ${t}`))]));
+function namer(presentation) {
+  const d = new Map((presentation.derivatives ?? []).map((x) => [x.derivativeId, [x.model, x.derivative].filter(Boolean).join(' ')]));
+  const m = new Map((presentation.models ?? []).map((x) => [x.modelId, x.model]));
+  return { d: (id) => d.get(id) ?? id, m: (id) => m.get(id) ?? id };
+}
+const conflictText = (list) => (list ?? []).map((c) => `${c.id}: ${c.detail}`);
+/** Differences between one API plan value and what the page shows; empty when the page reflects it. */
+function planMismatches(value, dom) {
+  const plan = value.plan; const n = namer(value.presentation); const bad = [];
+  const eq = (what, api, shown) => { if (!same(api, shown)) bad.push({ what, api, dom: shown }); };
+  const altLabel = (k) => k === 'zero-new-orders-baseline' ? 'No new orders' : k === 'next-best-distinct-feasible' ? 'Next best plan' : k;
+  if (plan.status === 'infeasible') {
+    eq('title', 'No plan meets these limits', dom.title); eq('conflicts', conflictText(plan.conflicts), dom.conflicts);
+    eq('no quantities table', null, dom.lines); eq('no metrics', {}, dom.metrics); eq('submit disabled', true, dom.submit.present ? dom.submit.disabled : true);
+    return bad;
+  }
+  const c = plan.expectedAcceptableCoverage; const r = plan.unallocatedStockRisk;
+  eq('title', c.total === 0 ? 'No saved demand to plan for yet' : plan.orderQuantity === 0 ? 'No new order recommended' : `Order ${plan.orderQuantity} vehicles`, dom.title);
+  eq('quantities', plan.quantities.map((q) => [n.m(q.modelId), n.d(q.derivativeId), fmt(q.quantity)]), dom.lines);
+  eq('metrics', { 'Acceptable coverage before renewal': `${c.covered} of ${c.total}`, 'Unallocated-stock risk': `${r.quantity} of ${r.totalSupply}`,
+    [`Spend (${plan.currency} minor units)`]: fmt(plan.spendMinor), 'Vehicles in this order': fmt(plan.orderQuantity) }, dom.metrics);
+  eq('model totals', Object.fromEntries(plan.modelQuantities.map((m) => [n.m(m.modelId), fmt(m.quantity)])), dom.modelTotals);
+  eq('risk by source', Object.fromEntries((r.bySource ?? []).map((x) => [String(x.sourceId), fmt(x.quantity)])), dom.riskSources);
+  eq('binding constraints', conflictText(plan.bindingConstraints), dom.binding);
+  eq('unmet needs', plan.unmetNeeds.map((u) => [`Renewal ${u.renewalAt}`, u.gates.map(wordsOf), u.constraintIds?.length ? `Held back by: ${u.constraintIds.join(', ')}` : null]),
+    (dom.unmet ?? []).map((u) => [u.label, u.reasons, u.note]));
+  eq('alternatives', plan.alternatives.map((a) => [altLabel(a.kind), a.status === 'feasible' ? (a.identicalToRecommendation === true ? 'Same as the recommendation' : 'Different from the recommendation') : 'Not possible inside these limits',
+    a.status === 'feasible' ? a.quantities.map((q) => `${n.d(q.derivativeId)}: ${q.quantity}`) : conflictText(a.conflicts)]),
+    (dom.alternatives ?? []).map((a) => [a.label, a.verdict, a.items]));
+  eq('plan reference', plan.planId, dom.planFacts['Plan reference']);
+  eq('submit enabled only when the plan orders vehicles', plan.orderQuantity > 0 && value.mode === 'current', dom.submit.present && dom.submit.disabled === false);
+  return bad;
+}
+function productionMismatches(apiValue, dom) {
+  const bad = []; const eq = (what, api, shown) => { if (!same(api, shown)) bad.push({ what, api, dom: shown }); };
+  eq('request count', apiValue.requests.length, dom.requests.length);
+  eq('request order and references', apiValue.requests.map((r) => r.requestId), dom.requests.map((r) => r.ref));
+  apiValue.requests.forEach((r, i) => {
+    const d = dom.requests[i] ?? {};
+    eq(`${r.requestId} heading`, `${r.model} ${r.derivative}`, d.heading); eq(`${r.requestId} stage`, wordsOf(r.stage), d.stage);
+    eq(`${r.requestId} reason`, r.reason ?? null, d.reason ?? null); eq(`${r.requestId} message`, r.message ?? null, d.message ?? null);
+    eq(`${r.requestId} quantities`, [fmt(r.quantity), fmt(r.confirmedQuantity), fmt(r.queuedQuantity), fmt(r.releasedQuantity), fmt(r.outstandingQuantity), r.delayUntil ?? 'Not supplied'],
+      ['Requested', 'Confirmed', 'Queued for release', 'Released to stock', 'Outstanding', 'Delayed until'].map((k) => d.facts?.[k]));
+    eq(`${r.requestId} history`, (r.history ?? []).map((h) => wordsOf(h.state)), d.history);
+  });
+  return bad;
+}
+async function waitCalls(page, from, method, endpoint, count = 1) {
+  const end = Date.now() + 25000;
+  while (Date.now() < end) {
+    await page.settle();
+    const rows = page.calls(from).filter((entry) => entry.method === method && entry.path === endpoint);
+    if (rows.length >= count && rows.every((entry) => entry.status !== null && (entry.response !== undefined || entry.failed))) return rows;
+    await sleep(100);
+  }
+  throw new Error(`No completed browser ${method} ${endpoint}`);
+}
+async function clickAndWait(page, label, expected) {
+  const from = page.log.length;
+  if (!(await page.act(`return press(${JSON.stringify(label)});`))) throw new Error(`Button "${label}" is missing or disabled`);
+  const seen = {};
+  for (const [method, endpoint] of expected) seen[`${method} ${endpoint}`] = await waitCalls(page, from, method, endpoint);
+  await page.settle();
+  return { from, seen };
+}
+async function confirmBrief(person) {
+  const editor = (await call(person, '/brief/editor')).json?.value?.initial;
+  const contract = editor?.currentCarRating?.contractId;
+  const saved = await call(person, '/brief/preferences', { commandId: newCmd(), expectedBriefVersion: editor.briefVersion, expectedDraftVersion: editor.draftVersion,
+    changes: { comfort: { value: 50 }, body: { value: ['estate'] }, sportiness: { value: 50 } }, sameAgain: { contractId: contract, on: true } });
+  if (saved.status !== 200) return { person, step: 'preferences', status: saved.status, body: saved.json };
+  const confirmed = await call(person, '/brief/confirm', { commandId: newCmd(), expectedBriefVersion: editor.briefVersion,
+    expectedDraftVersion: saved.json.value.draftVersion, consent: { search: true, hold: true } });
+  return { person, step: 'confirm', status: confirmed.status, briefVersion: confirmed.json?.value?.brief?.briefVersion ?? null };
+}
+const blocked = (id, name, observed) => { checks.push({ id, name, pass: false, blocked: true, observed }); log(`BLOCKED ${id} ${name}`); };
+
 async function main() {
   for (const directory of Object.values(dirs)) mkdirSync(directory, { recursive: true });
   for (const [name, number] of Object.entries(PORTS)) if (!(await portFree(number))) throw new Error(`Port ${number} (${name}) is in use`);
@@ -649,7 +774,7 @@ async function main() {
     database: { source: DB_SOURCE, host: DB_HOST, port: DB_PORT, name: DB_NAME }, schema: SCHEMA, ports: PORTS,
     jar: { path: path.relative(ROOT, JAR), sha256: sha256File(JAR) },
     webBrowser: { indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) }, sourceRevision: SOURCE_REVISION,
-    scenarioProvider: SCENARIO_PROVIDER, supplyProvider: SUPPLY_PROVIDER, presenterTick: PRESENTER_TICK, productionProvider: 'synthetic (labelled local substitute; no real Production system)',
+    scenarioProvider: SCENARIO_PROVIDER, supplyProvider: SUPPLY_PROVIDER, apiJvm: jvmLimitsReceipt(API_JVM_ARGS), productionProvider: 'synthetic (labelled local substitute; no real Production system)',
   };
   const psqlVersion = cap(PSQL, ['--version']);
   const serverVersion = Number(cap(PSQL, ['-X', '-A', '-t', '-h', DB_HOST, '-p', DB_PORT, '-U', DB_USER, '-d', DB_NAME,
@@ -677,14 +802,6 @@ async function main() {
   await startWeb(listed ? [...assemble.GCSP_FIXED_ROUTES] : [...assemble.GCSP_FIXED_ROUTES, PLAN_ROUTE]);
   await startApi();
 
-  if (PRESENTER_TICK) {
-    // Exactly one signed presenter tick, so the Production clock can read a release tick; the answer is recorded as-is.
-    const before = await probe('presenter', '/presenter/clock');
-    const version = before.body?.value?.clockVersion;
-    const tick = await call('presenter', '/presenter/clock/tick', { tickId: `proof-449-${RUN_TOKEN}`, expectedClockVersion: version });
-    rec('S3.tick', 'Informational: one signed presenter clock tick issued before the browser scenarios; actual answer recorded', true,
-      { clockBefore: { status: before.status, clockVersion: version }, tickStatus: tick.status, tickBody: tick.json, supplyProvider: SUPPLY_PROVIDER });
-  }
   const chrome = spawnOwned('chrome', CHROME, ['--headless=new', `--user-data-dir=${path.join(dirs.browser, 'profile')}`,
     '--remote-debugging-port=0', '--remote-allow-origins=*',
     `--ignore-certificate-errors-spki-list=${tls.spki}`, '--no-first-run', '--no-default-browser-check',
@@ -848,7 +965,16 @@ async function main() {
       presenterObserved: { orderPlan: presPlan.status, production: presProd.status } });
   if (denied.capture) rec('S4.capture', 'Denial state captured as PNG', denied.capture.bytes > 5000, denied.capture);
 
-  // ----- S7 and global no-POST rule -----
+  // ----- baseline: no browser POST before the plan inputs exist -----
+  const baselinePosts = [...apiCalls(greg), ...Object.values(denied).flatMap((d) => d.calls ?? [])].filter((e) => e.method === 'POST');
+  rec('S3.nopost', 'Baseline (before any input is entered): no POST (preview or production/requests) was sent by any browser context', baselinePosts.length === 0,
+    { posts: baselinePosts, gregCalls: apiCalls(greg).map(brief) });
+
+  // ----- AC1 / AC2: Greg order plan and Production against the bound planning ports -----
+  const phase = { notes: [] };
+  try { await orderPlanAndProduction(greg, phase); } catch (error) { rec('AC.run', 'Order plan and Production scenarios ran to the end', false, { error: error.message, phase }); }
+
+  // ----- S7 and the global POST accounting -----
   const allCalls = apiCalls(greg).map(brief);
   const exceptions = greg.errors.slice();
   const resourceLoad = []; const otherConsole = [];
@@ -858,9 +984,216 @@ async function main() {
     greg.csp.length === 0 && (violations ?? []).length === 0 && otherConsole.length === 0 && exceptions.length === 0,
     { cspLogEntries: greg.csp, cspViolationEvents: violations, uncaughtExceptions: exceptions, consoleErrorsOther: otherConsole,
       browserEchoedResourceLoadErrors: resourceLoad, nonApiHttpErrors: greg.httpErrors, note: 'Chrome logs a console line for any HTTP error response; those are listed separately and are the expected echo of the actual API status.' });
-  const everyPost = [...apiCalls(greg), ...Object.values(denied).flatMap((d) => d.calls ?? [])].filter((e) => e.method === 'POST');
-  rec('S3.nopost', 'No POST (preview or production/requests) was sent by any browser context at any point', everyPost.length === 0, { posts: everyPost, gregCalls: allCalls });
+  const gregPosts = apiCalls(greg).filter((e) => e.method === 'POST');
+  rec('AC.posts', 'Across the whole run the browser sent only the two preview POSTs: no production request POST and no other write',
+    gregPosts.length === 2 && gregPosts.every((e) => e.path === '/greg/order-plan/preview' && e.status === 200 && e.auth === true), { posts: gregPosts.map(brief) });
   receipt.networkGreg = allCalls;
+  receipt.phase = phase;
+}
+
+async function orderPlanAndProduction(greg, phase) {
+  await viewport(greg, 1280, 900); await sleep(400);
+  const pngs = {};
+
+  // ----- AC1.setup: inputs through the real writers (API steps, not Greg UI) -----
+  const clock = await probe('presenter', '/presenter/clock');
+  const tick = await call('presenter', '/presenter/controls/tick', { commandId: newCmd(), expectedClockVersion: clock.body?.value?.clockVersion, mode: 'next-release' });
+  const paula = await confirmBrief('paula');
+  const setup = { tickStatus: tick.status, tickState: tick.json?.value?.tick?.state, released: Number(sql("SELECT count(*) FROM stock_cars WHERE state = 'released'")),
+    releases: Number(sql('SELECT count(*) FROM stock_releases')), paula, paulaBriefs: Number(sql("SELECT count(*) FROM briefs WHERE employee_id = 'employee-paula' AND brief_version = 1")), db: dbCounts() };
+  rec('AC1.setup', 'Supply is the demo provider released by one presenter tick (API) and demand is Paula\'s own brief saved and confirmed through the brief routes (API)',
+    setup.tickStatus === 200 && setup.tickState === 'completed' && setup.released === 6 && paula.status === 200 && setup.paulaBriefs === 1 && setup.db.production_submissions === 0, setup);
+  if (!checks.at(-1).pass) return;
+
+  // ----- AC1.feasible: Greg replans and the page shows the current plan the API reports -----
+  const step1 = await clickAndWait(greg, 'Replan with the latest inputs', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
+  const api1 = await probe('greg', '/greg/order-plan');
+  const plan1 = api1.body?.value?.plan;
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(plan1?.planId ?? 'none')});`, 20000, 'plan 1 shown');
+  const dom1 = await greg.act(PLAN_DOM);
+  const miss1 = api1.status === 200 ? planMismatches(api1.body.value, dom1) : [{ what: 'api status', api: api1.status }];
+  const browserPlan1 = step1.seen['GET /greg/order-plan'].at(-1);
+  pngs.feasible = await png(greg, 'ac1-feasible-1280x900.png', true);
+  rec('AC1.feasible.api', 'Direct GET /greg/order-plan as Greg is a feasible current plan with quantities, coverage, risk, two alternatives, binding constraints, trade-off and an explained unmet need',
+    api1.status === 200 && plan1.status === 'feasible' && api1.body.value.mode === 'current' && plan1.quantities.length === 5 && plan1.expectedAcceptableCoverage.total === 1
+      && plan1.unallocatedStockRisk.totalSupply === 6 && plan1.alternatives.length === 2 && plan1.bindingConstraints.length > 0 && plan1.objective.tradeOff.length > 0
+      && plan1.unmetNeeds.length === 1 && plan1.unmetNeeds[0].gates.length > 0 && api1.body.value.replan.status === 'no-submission',
+    { status: api1.status, planId: plan1?.planId, orderQuantity: plan1?.orderQuantity, coverage: plan1?.expectedAcceptableCoverage, risk: { quantity: plan1?.unallocatedStockRisk?.quantity, totalSupply: plan1?.unallocatedStockRisk?.totalSupply },
+      alternatives: plan1?.alternatives?.map((a) => a.kind), binding: plan1?.bindingConstraints?.length, tradeOff: plan1?.objective?.tradeOff, unmet: plan1?.unmetNeeds, replan: api1.body?.value?.replan, versions: plan1?.versions });
+  rec('AC1.feasible.dom', 'The page shows that plan: title, quantities, coverage and risk, model totals, alternatives, binding constraints and the unmet need all equal the API body',
+    miss1.length === 0 && dom1.submit.present && dom1.submit.disabled === true && /no current order to request/i.test(dom1.submitNote ?? ''),
+    { mismatches: miss1, title: dom1.title, lines: dom1.lines, metrics: dom1.metrics, alternatives: dom1.alternatives, binding: dom1.binding, unmet: dom1.unmet, submit: dom1.submit, submitNote: dom1.submitNote, replanNote: dom1.replanNote, capture: pngs.feasible });
+  rec('AC1.feasible.net', 'The browser read GET /greg/order-plan with a Bearer token, got 200 and the same plan id as the direct read, and sent no POST',
+    step1.seen['GET /greg/order-plan'].every((e) => e.auth === true && e.status === 200) && browserPlan1?.response?.value?.plan?.planId === plan1?.planId
+      && apiCalls(greg, step1.from).every((e) => e.method === 'GET'), { calls: apiCalls(greg, step1.from).map(brief), browserPlanId: browserPlan1?.response?.value?.plan?.planId });
+
+  // ----- AC1.edit: an edited constraint through the UI controls is a preview and nothing else -----
+  const prov = (plan1.policyProvenance ?? []).find((x) => x.key === 'orderPlan.derivativeBounds')?.value ?? [];
+  const TOURING = 'g21-touring-320i';
+  const original = prov.find((b) => b.derivativeId === TOURING);
+  await greg.act("main.querySelector('details.plan-limits > summary')?.click(); return true;");
+  await greg.until(`return !!$(${JSON.stringify(inputSel('orderPlan.derivativeBounds', TOURING, 'min'))});`, 10000, 'derivative minimum input');
+  const initialInputs = await greg.act(PLAN_DOM);
+  const edited = sortDeep(prov.map((b) => (b.derivativeId === TOURING ? { ...b, min: 2 } : b)));
+  await greg.act(`return setValue(${JSON.stringify(inputSel('orderPlan.derivativeBounds', TOURING, 'min'))}, '2');`);
+  await sleep(300);
+  const step2 = await clickAndWait(greg, 'Preview changed limits', [['POST', '/greg/order-plan/preview']]);
+  const previewRow = step2.seen['POST /greg/order-plan/preview'].at(-1);
+  const pv = previewRow.response?.value; const pvPlan = pv?.plan;
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(pvPlan?.planId ?? 'none')});`, 20000, 'preview plan shown');
+  const dom2 = await greg.act(PLAN_DOM);
+  const miss2 = pv ? planMismatches(pv, dom2) : [{ what: 'no preview response' }];
+  const sameAfter = await probe('greg', '/greg/order-plan');
+  const touringRow = dom2.comparison?.find((r) => r[0] === namer(pv?.presentation ?? { derivatives: [] }).d(TOURING));
+  const apiTouring = (list) => list.find((q) => q.derivativeId === TOURING)?.quantity;
+  pngs.preview = await png(greg, 'ac1-preview-1280x900.png', true);
+  const counts2 = dbCounts();
+  rec('AC1.edit.net', 'Editing the Touring 320i minimum to 2 and pressing Preview sent exactly one POST /greg/order-plan/preview carrying the edited limits, and no production POST',
+    !!original && Number(original.min) !== 2 && initialInputs.inputs.some((i) => i.id.includes(encodeURIComponent(TOURING)) && i.value === String(original.min))
+      && apiCalls(greg, step2.from).filter((e) => e.method === 'POST').length === 1 && previewRow.status === 200 && previewRow.auth === true
+      && same(sortDeep(previewRow.request?.changes), [{ key: 'orderPlan.derivativeBounds', value: edited }]),
+    { originalMinimum: original?.min, inputShownBefore: initialInputs.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))).map((i) => ({ label: i.label, value: i.value })),
+      sentChanges: previewRow.request?.changes, calls: apiCalls(greg, step2.from).map(brief) });
+  rec('AC1.edit.api', 'The preview response is a labelled preview of a different feasible plan: draft policy, active plan untouched, writes none, the edited minimum honoured',
+    previewRow.status === 200 && pv?.mode === 'preview' && pv.writes === 'none' && pvPlan.status === 'feasible' && pvPlan.planId !== plan1.planId && pv.activePlan?.planId === plan1.planId
+      && String(pv.draftPolicyVersion).startsWith('preview-') && pvPlan.orderQuantity >= 2 && apiTouring(pvPlan.quantities) >= 2 && pvPlan.spendMinor > 0,
+    { mode: pv?.mode, writes: pv?.writes, draftPolicyVersion: pv?.draftPolicyVersion, activePolicyVersion: pv?.activePolicyVersion, activePlanId: pv?.activePlan?.planId, previewPlanId: pvPlan?.planId,
+      orderQuantity: pvPlan?.orderQuantity, touringQuantity: apiTouring(pvPlan?.quantities ?? []), spendMinor: pvPlan?.spendMinor });
+  rec('AC1.edit.dom', 'The page labels the result Preview and its quantities, comparison with the current plan, metrics and alternatives equal the preview response; submit stays disabled',
+    miss2.length === 0 && !!dom2.previewText && /Preview only/.test(dom2.submitNote ?? '') && dom2.submit.disabled === true
+      && !!touringRow && touringRow[1] === fmt(apiTouring(plan1.quantities)) && touringRow[2] === fmt(apiTouring(pvPlan.quantities))
+      && dom2.comparison.some((r) => r[0] === 'Vehicles ordered' && r[1] === fmt(plan1.orderQuantity) && r[2] === fmt(pvPlan.orderQuantity)),
+    { mismatches: miss2, title: dom2.title, previewText: dom2.previewText, comparison: dom2.comparison, lines: dom2.lines, metrics: dom2.metrics, submit: dom2.submit, submitNote: dom2.submitNote, capture: pngs.preview });
+  rec('AC1.edit.active', 'A direct GET /greg/order-plan after the preview returns the unchanged active plan, and no production submission or request row exists',
+    sameAfter.status === 200 && sameAfter.body.value.plan.planId === plan1.planId && sameAfter.body.value.plan.versions.policy === plan1.versions.policy
+      && counts2.production_submissions === 0 && counts2.production_requests === 0,
+    { activePlanId: sameAfter.body?.value?.plan?.planId, policy: sameAfter.body?.value?.plan?.versions?.policy, db: counts2 });
+
+  // ----- AC1.infeasible: conflicting limits through the same controls -----
+  await greg.act(`return setValue(${JSON.stringify(inputSel('orderPlan.derivativeBounds', TOURING, 'min'))}, '3');`);
+  await greg.act(`return setValue(${JSON.stringify(inputSel('orderPlan.budgetMinor'))}, '0');`);
+  await sleep(300);
+  const step3 = await clickAndWait(greg, 'Preview changed limits', [['POST', '/greg/order-plan/preview']]);
+  const infRow = step3.seen['POST /greg/order-plan/preview'].at(-1);
+  const inf = infRow.response?.value;
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes('No plan meets these limits');`, 20000, 'infeasible preview shown');
+  const dom3 = await greg.act(PLAN_DOM);
+  const miss3 = inf ? planMismatches(inf, dom3) : [{ what: 'no preview response' }];
+  const active3 = await probe('greg', '/greg/order-plan');
+  pngs.infeasible = await png(greg, 'ac1-infeasible-1280x900.png', true);
+  rec('AC1.infeasible.api', 'A minimum of 3 with a zero budget previews as infeasible: named conflicts, no quantities, no alternatives, and the active plan is untouched',
+    infRow.status === 200 && inf?.plan?.status === 'infeasible' && inf.plan.conflicts.length > 0 && inf.plan.quantities.length === 0 && inf.plan.alternatives.length === 0
+      && inf.activePlan?.status === 'feasible' && active3.body?.value?.plan?.planId === plan1.planId && sameDeepSent(infRow.request?.changes),
+    { status: infRow.status, planStatus: inf?.plan?.status, conflicts: inf?.plan?.conflicts, quantities: inf?.plan?.quantities?.length, alternatives: inf?.plan?.alternatives?.length,
+      activePlanStatus: inf?.activePlan?.status, sentKeys: (infRow.request?.changes ?? []).map((c) => c.key), activePlanIdAfter: active3.body?.value?.plan?.planId });
+  rec('AC1.infeasible.dom', 'The page shows "No plan meets these limits" with the API conflicts, no order table and a disabled Request from Production',
+    miss3.length === 0 && dom3.title === 'No plan meets these limits' && dom3.lines === null && dom3.submit.present && dom3.submit.disabled === true && !!dom3.previewText,
+    { mismatches: miss3, title: dom3.title, conflicts: dom3.conflicts, lines: dom3.lines, submit: dom3.submit, submitNote: dom3.submitNote, capture: pngs.infeasible });
+  function sameDeepSent(changes) { return Array.isArray(changes) && changes.some((c) => c.key === 'orderPlan.budgetMinor' && c.value === 0) && changes.some((c) => c.key === 'orderPlan.derivativeBounds'); }
+
+  // ----- back to the current plan, then AC1.stale: a second confirmed brief -----
+  const step4 = await clickAndWait(greg, 'Back to current plan', [['GET', '/greg/order-plan']]);
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(plan1.planId)}) && ![...main.querySelectorAll('.plan-notice strong')].some((s) => s.textContent.trim() === 'Preview');`, 20000, 'current plan back');
+  const dom4 = await greg.act(PLAN_DOM);
+  rec('AC1.reset', 'Back to current plan returns the page to the same current plan and the original limits',
+    planMismatches(api1.body.value, dom4).length === 0 && !dom4.previewText
+      && dom4.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))).every((i) => i.value === String(i.label?.endsWith('minimum') ? original.min : original.max)),
+    { title: dom4.title, inputs: dom4.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))), calls: apiCalls(greg, step4.from).map(brief) });
+
+  const alex = await confirmBrief('alex');
+  const fresh = await probe('greg', '/greg/order-plan'); const plan5 = fresh.body?.value?.plan;
+  const stale = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan1.planId, versions: plan1.versions });
+  const counts5 = dbCounts();
+  rec('AC1.stale.api', 'After Alex confirms a second brief, submitting the earlier plan answers 409 replan-needed with the new current plan and the changed inputs, and writes nothing',
+    alex.status === 200 && fresh.status === 200 && plan5.planId !== plan1.planId && plan5.expectedAcceptableCoverage.total === 2 && plan5.unmetNeeds.length === 2
+      && stale.status === 409 && stale.json?.code === 'replan-needed' && stale.json?.current?.planId === plan5.planId
+      && ['plan', 'forecast'].every((k) => (stale.json?.changedInputs ?? []).includes(k)) && counts5.production_submissions === 0 && counts5.production_requests === 0,
+    { alex, newPlanId: plan5?.planId, oldPlanId: plan1.planId, coverage: plan5?.expectedAcceptableCoverage, unmet: plan5?.unmetNeeds?.length, staleSubmit: { status: stale.status, code: stale.json?.code, changedInputs: stale.json?.changedInputs, currentPlanId: stale.json?.current?.planId }, db: counts5 });
+  const domBefore = await greg.act(PLAN_DOM);
+  const step5 = await clickAndWait(greg, 'Replan with the latest inputs', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(plan5.planId)});`, 20000, 'plan after second brief shown');
+  const dom5 = await greg.act(PLAN_DOM);
+  const miss5 = planMismatches(fresh.body.value, dom5);
+  pngs.stale = await png(greg, 'ac1-after-second-brief-1280x900.png', true);
+  rec('AC1.stale.dom', 'Before refresh the page still shows the earlier plan (it cannot submit an order-less plan); the refresh path shows the new plan, coverage 0 of 2 and two unmet needs, equal to the API',
+    domBefore.planFacts['Plan reference'] === plan1.planId && domBefore.submit.disabled === true && miss5.length === 0 && dom5.metrics['Acceptable coverage before renewal'] === '0 of 2' && dom5.unmet.length === 2
+      && dom5.planFacts['Plan reference'] === plan5.planId && !dom5.staleNotice,
+    { pageBeforeRefresh: { planReference: domBefore.planFacts['Plan reference'], submit: domBefore.submit }, mismatches: miss5, metrics: dom5.metrics, unmet: dom5.unmet, planReference: dom5.planFacts['Plan reference'], capture: pngs.stale });
+  const noOrderSubmit = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan5.planId, versions: plan5.versions });
+
+  // ----- AC2: what Java allows, then the Production tracking against the real provider answers -----
+  const policy = await probe('greg', '/greg/policy');
+  const publishBody = { commandId: newCmd(), expectedActiveVersion: policy.body?.value?.activeVersion, policyVersion: 'gcsp-policy-v2-proof',
+    effectiveFrom: policy.body?.value?.asOf, changes: [{ id: 'orderPlan.derivativeBounds', value: 2 }] };
+  const publish = await call('greg', '/greg/policy/publish', publishBody);
+  const editableIds = (policy.body?.value?.fields ?? []).map((f) => f.id);
+  const counts6 = dbCounts();
+  const gregSubmitPosts = apiCalls(greg).filter((e) => e.method === 'POST' && e.path === '/greg/production/requests');
+  rec('AC2.blocked.evidence', 'Java gives no way to make a current plan that orders vehicles: demand never orders, the policy editor offers only price and weight fields, and an order-less plan cannot be submitted',
+    noOrderSubmit.status === 400 && noOrderSubmit.json?.code === 'plan-has-no-order' && publish.status === 400 && publish.json?.code === 'invalid-editable-field'
+      && editableIds.every((id) => /^(price|weight):/.test(id)) && plan5.orderQuantity === 0 && counts6.production_submissions === 0 && gregSubmitPosts.length === 0,
+    { currentPlanOrderQuantity: plan5.orderQuantity, submitCurrentPlan: { request: { planId: plan5.planId, versions: '(the plan versions)' }, status: noOrderSubmit.status, body: noOrderSubmit.json },
+      publishRequest: { path: 'POST /greg/policy/publish', body: { ...publishBody, commandId: '(omitted)' } }, publishResponse: { status: publish.status, body: publish.json },
+      editableFieldKinds: [...new Set(editableIds.map((id) => id.split(':')[0]))], editableFieldCount: editableIds.length, db: counts6 });
+  blocked('AC2.submit', 'Deliberate submission of a plan from the UI: needs a current plan that orders vehicles (UI keeps Request from Production disabled and the API refuses with plan-has-no-order)', { reason: 'see AC2.blocked.evidence' });
+  blocked('AC2.retry', 'First submit answer lost in transit, then retry with the same commandId: needs a submittable plan', { reason: 'see AC2.blocked.evidence' });
+  blocked('AC2.replan.submitted', 'Replan status after Production answered a submitted plan: replan stays no-submission because submissions from POST /greg/orders are ignored by replan', { reason: 'see AC2.track.replan' });
+
+  // Production tracking: explicit order lines (API step) answered by the presenter's synthetic provider scripts.
+  const ledger = await call('greg', '/greg/orders');
+  const versions = { ...ledger.json?.value?.versions };
+  const lines = [['3 Series Saloon', '320i', 4], ['3 Series Touring', '320i', 2], ['i5 Touring', 'eDrive40', 2]];
+  const created = [];
+  for (const [model, derivative, quantity] of lines) {
+    const made = await call('greg', '/greg/orders', { commandId: newCmd(), model, derivative, quantity, expectedPolicyVersion: versions.policy, expectedStockVersion: versions.stock });
+    created.push({ model, derivative, quantity, status: made.status, state: made.json?.value?.requests?.[0]?.state, requestId: made.json?.value?.requests?.[0]?.requestId });
+    versions.stock = (await call('greg', '/greg/orders')).json?.value?.versions?.stock;
+  }
+  const domStale = await greg.act(PROD_DOM);
+  const stepR1 = await clickAndWait(greg, 'Refresh Production status', [['GET', '/greg/production']]);
+  const prod1 = await probe('greg', '/greg/production');
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && main.querySelectorAll('.production-request').length === ${prod1.body?.value?.requests?.length ?? -1};`, 20000, 'requested lines shown');
+  const domP1 = await greg.act(PROD_DOM);
+  const missP1 = productionMismatches(prod1.body.value, domP1);
+  rec('AC2.track.requested', 'Three explicit lines (API step) show on the page, after a refresh, as requested with the quantities, stages and references the API reports; before the refresh the page showed none',
+    created.every((c) => c.status === 200 && c.state === 'requested') && domStale.requests.length === 0 && missP1.length === 0 && domP1.requests.every((r) => r.stage === 'Requested')
+      && domP1.requests.length === 3 && Number(sql('SELECT count(*) FROM production_requests')) === 3,
+    { created, pageBeforeRefresh: { requests: domStale.requests.length, empty: domStale.empty }, mismatches: missP1, requests: domP1.requests, db: dbCounts() });
+
+  const ids = created.map((c) => c.requestId);
+  const responses = [];
+  for (const body of [{ requestId: ids[0], action: 'confirm', quantity: 3 }, { requestId: ids[1], action: 'delay', delayUntil: '2026-12-10T09:00:00.000Z', reason: 'Plant slot moved' },
+    { requestId: ids[2], action: 'refuse', reason: 'No build slot this quarter' }]) {
+    const answered = await call('presenter', '/presenter/production/responses', body);
+    responses.push({ action: body.action, quantity: body.quantity ?? null, status: answered.status, outcome: answered.json?.value?.requests?.[0]?.outcome });
+  }
+  const stepR2 = await clickAndWait(greg, 'Refresh Production status', [['GET', '/greg/production']]);
+  const prod2 = await probe('greg', '/greg/production');
+  await greg.until(`return !main.querySelector('[aria-busy="true"]') && [...main.querySelectorAll('.production-request .request-heading strong')].some((s) => s.textContent.trim() === 'Refused');`, 20000, 'responses shown');
+  const domP2 = await greg.act(PROD_DOM);
+  const missP2 = productionMismatches(prod2.body.value, domP2);
+  const byRef = (r) => prod2.body.value.requests.find((x) => x.requestId === r);
+  pngs.tracking = await png(greg, 'ac2-tracking-1280x900.png', true);
+  await viewport(greg, 375, 812); await sleep(700);
+  const mobile = await greg.act(FACTS);
+  pngs.trackingMobile = await png(greg, 'ac2-tracking-375x812.png', true);
+  await viewport(greg, 1280, 900); await sleep(500);
+  rec('AC2.track.api', 'Presenter (own token) confirms 3 of 4, delays one and refuses one; GET /greg/production reports partly-confirmed with outstanding 1, delayed with its date, and refused with the reason',
+    responses.every((r) => r.status === 200) && byRef(ids[0])?.state === 'partly-confirmed' && byRef(ids[0])?.confirmedQuantity === 3 && byRef(ids[0])?.outstandingQuantity === 1
+      && byRef(ids[1])?.state === 'delayed' && byRef(ids[1])?.delayUntil === '2026-12-10T09:00:00Z' && byRef(ids[2])?.state === 'refused' && byRef(ids[2])?.reason === 'No build slot this quarter',
+    { responses, lines: prod2.body?.value?.requests?.map((r) => ({ id: r.requestId, line: `${r.model} ${r.derivative}`, requested: r.quantity, state: r.state, confirmed: r.confirmedQuantity, queued: r.queuedQuantity, outstanding: r.outstandingQuantity, delayUntil: r.delayUntil, reason: r.reason })) });
+  rec('AC2.track.dom', 'After Greg refreshes, the page shows each line\'s stage, quantities, delay date, reason and history exactly as GET /greg/production answers, with no horizontal overflow at 375',
+    missP2.length === 0 && domP2.requests.length === 3 && !mobile.overflow && mobile.scrollWidth <= mobile.innerWidth,
+    { mismatches: missP2, requests: domP2.requests.map((r) => ({ heading: r.heading, stage: r.stage, message: r.message, reason: r.reason, facts: r.facts })), mobile: { scrollWidth: mobile.scrollWidth, innerWidth: mobile.innerWidth }, captures: { desktop: pngs.tracking, mobile: pngs.trackingMobile } });
+
+  const stepR3 = await clickAndWait(greg, 'Replan after Production response', [['GET', '/greg/production'], ['GET', '/greg/order-plan']]);
+  const api7 = await probe('greg', '/greg/order-plan');
+  await greg.until(PLAN_READY, 20000, 'plan after replan');
+  const dom7 = await greg.act(PLAN_DOM);
+  rec('AC2.track.replan', 'Replan after Production response reads production then the plan; the page shows the replan status the API reports (no-submission, since explicit lines are not plan submissions) and the plan still equals the API',
+    api7.status === 200 && planMismatches(api7.body.value, dom7).length === 0 && dom7.replanNote.includes(wordsOf(api7.body.value.replan.status)),
+    { replan: api7.body?.value?.replan, replanNoteOnPage: dom7.replanNote, calls: apiCalls(greg, stepR3.from).map(brief), db: dbCounts() });
+  phase.pngs = pngs;
 }
 
 
@@ -891,15 +1224,16 @@ function finish(runError) {
   receipt.logBudget ??= { limitBytes: CHILD_LOG_LIMIT, writtenBytes: childLogBytes, exhausted: false };
   receipt.pngBytes = pngBytes;
   receipt.checks = checks;
-  const required = ['S1', 'S2.dom', 'S2.net', 'S3.dom', 'S4.presenter.dom', 'S4.employee.dom', 'S4.api', 'S5.overflow', 'S6', 'S7'];
-  const failed = checks.filter((c) => !c.pass).map((c) => c.id);
-  receipt.failedChecks = failed;
+  const required = ['S1', 'S2.dom', 'S2.net', 'S3.dom', 'S4.presenter.dom', 'S4.employee.dom', 'S4.api', 'S5.overflow', 'S6', 'S7',
+    'AC1.setup', 'AC1.feasible.dom', 'AC1.edit.dom', 'AC1.edit.active', 'AC1.infeasible.dom', 'AC1.stale.api', 'AC1.stale.dom', 'AC2.blocked.evidence', 'AC2.track.dom', 'AC2.track.replan', 'AC.posts'];
+  const failed = checks.filter((c) => !c.pass && !c.blocked).map((c) => c.id);
+  receipt.failedChecks = failed; receipt.blockedChecks = checks.filter((c) => c.blocked).map((c) => c.id);
   receipt.overall = required.every((id) => checks.find((c) => c.id === id)?.pass === true) && failed.length === 0 && !runError
-    && !logLimitFailure && receipt.teardown?.allOwnedExited === true ? 'PASS' : 'FAIL';
+    && !logLimitFailure && receipt.teardown?.allOwnedExited === true ? (receipt.blockedChecks.length ? 'PARTIAL' : 'PASS') : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-planning-proof.json');
   try { writeFileSync(file, `${JSON.stringify(receipt, null, 2)}\n`); } catch (error) { console.error('receipt write failed', error.message); }
-  for (const c of checks) console.log(`  ${c.pass ? 'PASS' : 'FAIL'} ${c.id} ${c.name}`);
-  console.log(`overall ${receipt.overall}; failed: ${failed.join(', ') || 'none'}; receipt evidence/connected-planning-proof.json; owned processes exited: ${receipt.teardown?.allOwnedExited}`);
+  for (const c of checks) console.log(`  ${c.pass ? 'PASS' : c.blocked ? 'BLOCKED' : 'FAIL'} ${c.id} ${c.name}`);
+  console.log(`overall ${receipt.overall}; failed: ${failed.join(', ') || 'none'}; blocked: ${receipt.blockedChecks.join(', ') || 'none'}; receipt evidence/connected-planning-proof.json; owned processes exited: ${receipt.teardown?.allOwnedExited}`);
 }
 const deadline = setTimeout(async () => {
   log('global deadline reached');
@@ -911,4 +1245,4 @@ for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
 let runError;
 try { await main(); } catch (error) { runError = error.message; console.error('RUN ERROR:', error.message); }
 finally { clearTimeout(deadline); await teardown(); finish(runError); }
-process.exit(receipt.overall === 'PASS' ? 0 : 1);
+process.exit(['PASS', 'PARTIAL'].includes(receipt.overall) ? 0 : 1);
