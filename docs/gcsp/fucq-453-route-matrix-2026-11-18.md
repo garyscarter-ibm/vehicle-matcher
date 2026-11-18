@@ -12,17 +12,17 @@ This matrix is the plan for that retirement. It is checked against the actual bu
 
 | Legacy entry (root page and block) | Angular route in the build | Replacement Story on base | Disposition |
 | --- | --- | --- | --- |
-| `gcsp-account.html`, `gcsp-manual-setup.html`, `gcsp-manual-gallery.html`; blocks `account`, `manual-setup`, `manual-gallery`, `manual-review`, `manual-summary` | `/gcsp/account`, `/gcsp/stock`, `/gcsp/manual/review`, `/gcsp/manual/summary` | FUCQ-440, 442, 443 done | Retired (d87422fcc). `gcsp-manual-gallery.html` and its block stay: the protected component gallery links to it |
+| `gcsp-account.html`, `gcsp-manual-setup.html`, `gcsp-manual-gallery.html`; blocks `account`, `manual-setup`, `manual-gallery`, `manual-review`, `manual-summary` | `/gcsp/account`, `/gcsp/stock`, `/gcsp/manual/review`, `/gcsp/manual/summary` | FUCQ-440, 442, 443 done | Retired (d87422fcc; `gcsp-manual-gallery.html`, its controllers and the gallery link in bc566e79f). `gallery-model.js` and `fixtures.js` stay for the component gallery |
 | `gcsp-employee.html`, `gcsp-brief.html`, `gcsp-brief-live.html`; blocks `employee`, `brief` | `/gcsp/preferences` | FUCQ-441 done | Retired (d87422fcc). `employee/gcsp-employee.js` and `harness.js` stay: `gcsp-help.html`, the gallery and `docs/gcsp/density/preview.html` use them |
 | `gcsp-activity.html`, `gcsp-activity-live.html`; block `activity` | `/gcsp/activity` | FUCQ-444 done | Retired (4ce3fbc50) |
 | `gcsp-offer.html`, host alias `/gcsp/offer`; blocks `offer`, `offer-followup` | `/gcsp/offers/:offerId`, follow-up included | FUCQ-445 done | Retired (5a7c596c3). FUCQ-510 is the Java decline-reason registry: an API gap, not a frontend one |
 | `gcsp-order-progress.html`, `gcsp-order-progress-live.html`; block `order-progress` | `/gcsp/orders` | FUCQ-446 done | Retired (4ce3fbc50) |
-| `gcsp-presenter.html`; block `presenter-controls` | `/gcsp/presenter` | FUCQ-450 done | Kept: Russell's lane changed `gcsp-presenter.html` on 18 Nov (9fa2b175b). Coordinate with that lane |
+| `gcsp-presenter.html`; block `presenter-controls` | `/gcsp/presenter` | FUCQ-450 done | Retired (4f940fea8, bc566e79f): the page, `harness.js`, `console.js`, `basic-console.js`, `basic-model.js`, the happened-feed, release and suitability sections. `controls.js` stays for the component gallery and now hands off to `/gcsp/presenter` |
 | `gcsp-outbox.html`; block `presenter` | `/gcsp/presenter/outbox` | FUCQ-451 done | Retired (4ce3fbc50) |
-| `gcsp-help.html`; block `cases` (`harness.js`) | `/gcsp/help` | FUCQ-447 waiting | Keep until FUCQ-447 |
-| `gcsp-case-queue.html`; block `cases` (`queue-harness.js`) | `/gcsp/greg/cases` | FUCQ-447 waiting | Keep until FUCQ-447 |
-| `gcsp-greg.html`; blocks `greg` (demand, `plan`, `publish`, `comparison`), `greg-orders` | `/gcsp/greg` is still a placeholder state page; `/gcsp/comparison` | FUCQ-448, 449 blocked; FUCQ-452 blocked (Greg runs) | Keep until all three |
-| `gcsp-login.html`, host `/gcsp/login`; block `login` | `/gcsp/sign-in`, `/gcsp/auth/callback` | FUCQ-439 done | Keep: still the only sign-in for the kept legacy pages (help, cases, Greg). Retire with the last of them |
+| `gcsp-help.html`; block `cases` (`harness.js`) | `/gcsp/help` | FUCQ-447 done | Kept: the kept legacy login still lands employees here. Retire with the login |
+| `gcsp-case-queue.html`; block `cases` (`queue-harness.js`) | `/gcsp/greg/cases` | FUCQ-447 done | Retired (bc566e79f). `gcsp-case-queue.js` stays: `gcsp-greg.html` embeds the queue |
+| `gcsp-greg.html`; blocks `greg` (demand, `plan`, `publish`, `comparison`), `greg-orders` | `/gcsp/greg`, `/gcsp/greg/plan`, `/gcsp/comparison` | FUCQ-448, 449 done; FUCQ-452 blocked (Greg runs) | Keep until FUCQ-452 |
+| `gcsp-login.html`, host `/gcsp/login`; block `login` | `/gcsp/sign-in`, `/gcsp/auth/callback` | FUCQ-439 done | Keep: still the only sign-in for the kept legacy pages (help, Greg). Retire with the last of them |
 
 ## Kept because something still uses it
 
@@ -63,22 +63,24 @@ Commits on `dev/DEV-2026-11-13-021`:
 
 Body, fixture and stylesheet modules stay where a kept file uses them: the gallery, the `ui-ratchet.json` stylesheet caps, or the kept pages.
 
-## Coordinate with Russell's lane
+## Built on 18 November 2026, after Russell's lane agreed (MSG-2026-11-18-GC-002)
 
-These items aren't retired, because the files involved changed in the last 24 hours:
-
-- `gcsp-presenter.html` and `blocks/gcsp/presenter-controls/`.
-  - `console.js` still links `gcsp-account.html`, which `gcsp-presenter-console.test.js` asserts.
-- `blocks/vehicle-matcher/component-gallery.js` still links `gcsp-manual-gallery.html`, so that page stays.
-- `blocks/gcsp/kit/form-controls-gallery.js` has example hrefs to `gcsp-offer.html` and `gcsp-activity-live.html`.
-- `server/test/ui-ratchet.json` caps stylesheets of retired blocks, so those CSS files stay.
-- `COMPONENTS.md` still describes the retired mounts:
-  - `mountBrief`, `mountAccount`, `mountManualSetup`, `mountManualReview` and `mountManualSummary`;
-  - `mountOffer`, `mountActivity` and `mountOutbox`.
+- `4f940fea8`: `gcsp-presenter.html` and its page-only presenter-controls modules, the host presenter-page branch and
+  `SESSION_PAGES` entry, the blueprint redirect, the demo-script line and the form-controls gallery hrefs (now
+  `/gcsp/offers/gallery-1` and `/gcsp/activity`). `console.js`, and with it the PORTAL link to `gcsp-account.html`
+  and its test, are gone. `/gcsp-presenter.html` now answers 404.
+- `cad5dafed`: the hosted startup line names this host's `/gcsp/login`.
+- `bc566e79f`: `gcsp-manual-gallery.html` and the gallery link, `gcsp-case-queue.html`, `basic-model.js`, seven
+  orphaned stylesheets of retired blocks with their `ui-ratchet.json` caps (removed only), and the `COMPONENTS.md`
+  rows for retired mounts.
+- The hosted-entry journey that reset, ticked and released over the legacy origin needed the retired page's presenter
+  cookie, so it now covers the 404, Paula's sign-in and the brief only. The in-process tests still cover reset, tick
+  and offer. `createPresenterControlSession` (runtime and identity) has no production caller left; it is backend
+  code, left for a later clean-up.
 
 ## Still to do
 
-- Help, cases, Greg and the legacy login wait for FUCQ-447, 448, 449 and 452.
+- `gcsp-help.html`, `gcsp-greg.html` and the legacy login wait for FUCQ-452 (Greg runs), then retire together.
 - The hosted audit waits for FUCQ-436 and FUCQ-437, which need Gary's Render dev environment.
 - These evidence scripts under `scripts/gcsp/` still name retired pages:
   - `capture-account-prefs.mjs`
