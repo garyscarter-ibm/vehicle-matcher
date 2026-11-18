@@ -1207,10 +1207,13 @@ async function orderPlanAndProduction(greg, phase) {
     { retainedShown: factsU.text.includes('The earlier request is retained'), retryButton, submitNote: domU.submitNote, retryPosts: retryPosts.map((e) => ({ ...brief(e), request: e.request })),
       dbAfterLost: countsLost, dbAfterRetry: countsRetry, mismatches: missPU, requests: domPU.requests.map((r) => ({ heading: r.heading, stage: r.stage, ref: r.ref })), capture: pngs.submitted });
 
-  // Replan after Production answers the submitted 330e request(s) in full.
+  // Replan after Production answers the submitted plan. The synthetic provider refuses lines outside its catalogue at
+  // once (330e today); otherwise the presenter confirms them in full first.
   const apiR1 = await probe('greg', '/greg/order-plan'); const replan1 = apiR1.body?.value?.replan;
+  const submitted = prodU.body.value.requests.filter((x) => x.planId === planS.planId || /330e/.test(x.derivative));
+  const answeredByProvider = replan1?.status === 'replanned';
   const confirms = [];
-  for (const r of prodU.body.value.requests.filter((x) => /330e/.test(x.derivative))) {
+  if (!answeredByProvider) for (const r of submitted) {
     const answered = await call('presenter', '/presenter/production/responses', { requestId: r.requestId, action: 'confirm', quantity: r.quantity });
     confirms.push({ requestId: r.requestId, quantity: r.quantity, status: answered.status, outcome: answered.json?.value?.requests?.[0]?.outcome });
   }
@@ -1219,12 +1222,16 @@ async function orderPlanAndProduction(greg, phase) {
   await greg.until(`return !main.querySelector('[aria-busy="true"]') && text().includes(${JSON.stringify(wordsOf('replanned'))});`, 20000, 'replanned note shown');
   const domR = await greg.act(PLAN_DOM);
   const missR = apiR2.status === 200 ? planMismatches(apiR2.body.value, domR) : [{ what: 'api status', api: apiR2.status }];
-  rec('AC2.replan.submitted', 'Before any answer the API says unchanged-since-submission for the submitted plan; after the presenter confirms the 330e request(s) in full, Replan after Production response reads production then the plan and the API and the page say replanned for that plan, with the confirmation listed',
-    apiR1.status === 200 && replan1?.status === 'unchanged-since-submission' && replan1.submittedPlanId === planS.planId && confirms.length > 0 && confirms.every((c) => c.status === 200)
-      && replan2?.status === 'replanned' && replan2.submittedPlanId === planS.planId
-      && confirms.every((c) => (replan2.responses ?? []).some((h) => h.requestId === c.requestId && /confirmed/.test(h.state)))
-      && missR.length === 0 && domR.replanNote.includes(wordsOf(replan2.status)),
-    { before: replan1, confirms, after: replan2, replanNoteOnPage: domR.replanNote, mismatches: missR, calls: apiCalls(greg, stepRs.from).map(brief), db: dbCounts() });
+  const answerFor = (r) => (replan2?.responses ?? []).find((h) => h.requestId === r.requestId);
+  const answeredPath = answeredByProvider
+    ? replan1.submittedPlanId === planS.planId && submitted.every((r) => r.state !== 'requested' && replan1.responses?.some((h) => h.requestId === r.requestId && h.state === r.state))
+    : replan1?.status === 'unchanged-since-submission' && replan1.submittedPlanId === planS.planId && confirms.length > 0 && confirms.every((c) => c.status === 200)
+      && submitted.every((r) => /confirmed/.test(answerFor(r)?.state ?? ''));
+  rec('AC2.replan.submitted', 'Replan follows the actual Production answer to the submitted plan (the provider\'s own refusal, or the presenter\'s confirmation when it waits): Replan after Production response reads production then the plan, and the API and the page say replanned for that plan with each submitted line\'s answer listed',
+    apiR1.status === 200 && submitted.length > 0 && answeredPath && replan2?.status === 'replanned' && replan2.submittedPlanId === planS.planId
+      && submitted.every((r) => !!answerFor(r)) && missR.length === 0 && domR.replanNote.includes(wordsOf(replan2.status)),
+    { path: answeredByProvider ? 'provider answered at submission' : 'presenter confirmed', submitted: submitted.map((r) => ({ requestId: r.requestId, line: `${r.model} ${r.derivative}`, quantity: r.quantity, state: r.state, reason: r.reason ?? null })),
+      before: replan1, confirms, after: replan2, replanNoteOnPage: domR.replanNote, mismatches: missR, calls: apiCalls(greg, stepRs.from).map(brief), db: dbCounts() });
 
   // Production tracking: explicit order lines (API step) answered by the presenter's synthetic provider scripts.
   // The plan submission's lines are already on the page and in the database, so every count here is relative to this baseline.
