@@ -380,3 +380,30 @@ Both original ACs remain unchecked; missing Java review-details/version authorit
 actual Java/PostgreSQL/OIDC journeys and rendered evidence remain open. Final
 submission remains disabled including native form submission. Retain all failed
 attempts and the inherited boundary rc1; no combined strict pass or Story closure.
+
+
+## Connected-proof helper recovery — 18 November 2026
+
+The 01:50:06Z C3 attempt stopped before scenarios with `STOCK_IDS is not defined`.
+This was a proof-harness failure; it establishes no product failure or acceptance pass.
+Retained receipt: root `.claude/test-runs/fucq443/connected-0140/connected-20261118T015006Z/receipt.json`; parent cleanup audit `.claude/fucq443-first-attempt-parent-audit-0148.json`.
+
+The proof script now supplies its omitted exact-stock identities/numbers, existing demo
+contact identities, signed test-OIDC API helper, run-scoped SQL JSON/count/order readbacks
+and reversible synthetic-ordering store outage. Database order readback joins the real
+`selection_orders` and `pending_operations` records; it does not invent state. A labelled
+stale-quote negative probe complements the existing stale-terms and stale-review probes,
+matching the original Story validation. Existing scenario assertions remain intact.
+
+Scoped source checks: pinned Node `--check` passed; TypeScript single-file `checkJs`
+code-2304 unresolved-name diagnostics are empty. These are source checks only. Connected
+Java/native-PostgreSQL17/OIDC/browser replay and rendered inspection remain unrun for
+this correction pending the existing A46 → F443 test-lane handoff. No product source
+changed; matching selected Angular evidence is retained, and full suites are deferred
+to the batch. No OneDrive/CloudStorage access, runtime allocation or cleanup was made.
+
+Minnie Mouse 2 lead requested/selected `gpt-6.1-sol/high`, no fallback; own desktop title
+set successfully. Capacity allowed one reviewer, but the collaboration tool refused
+Cuthbert 3 with `agent thread limit reached`; no reviewer child started. The lead
+reviewed helper SQL/API shapes against current Java migrations/services and Angular
+manual templates. Independent review and runtime evidence remain outstanding.

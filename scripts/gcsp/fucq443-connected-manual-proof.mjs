@@ -61,6 +61,15 @@ const ENVIRONMENT_ID = `f443-connected-${RUN_TOKEN}`;
 const RUN_ID = 'run-1';
 const POLICY = 'gcsp-policy-v1';
 const PEOPLE = ['paula', 'alex', 'jordan'];
+const EMAIL = { paula: 'paula.mason', alex: 'alex.brennan', jordan: 'jordan.hughes' };
+// Stable exact-stock identities, isolated by this proof's environment/run and schema.
+const STOCK_IDS = [1, 2, 3, 4].map((n) => `00000000-0443-4000-8000-${String(n).padStart(12, '0')}`);
+const CAR = Object.fromEntries(PEOPLE.map((person, i) => [person, STOCK_IDS[i]]));
+function carNumber(id) {
+  const i = STOCK_IDS.indexOf(id);
+  if (i < 0) throw new Error(`Unknown proof car ${id}`);
+  return String(4430001 + i);
+}
 const PSQL = path.resolve(process.env.PROOF_PSQL_BIN ?? '/opt/homebrew/opt/postgresql@17/bin/psql');
 const MEDIA_ROOT = path.resolve(process.env.PROOF_MEDIA_ROOT ?? path.join(ROOT, 'assets/gcsp-vehicle-evidence'));
 const MEDIA_FILES = ['07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', 'ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp',
@@ -78,7 +87,7 @@ const receipt = { schema: 'fucq443-connected-manual-proof/1', story: 'DEV-2026-1
     'The parent supplies prebuilt production web/API; input hashes do not independently establish their source revision.',
     'The issuer is a local test OIDC provider. Real signed tokens, code/PKCE login and Java bearer verification run; the real hosted identity provider does not.',
     'Ordering is the labelled synthetic provider in the run-owned schema. Setup SQL seeds stock and renames the synthetic receipts table to simulate a provider outage; the parent owns the schema and its teardown.',
-    'Setup saves complete manual drafts through Java POST /manual/draft. Claims, review details and orders are made only by the browser, except the labelled negative API probes (terms-changed, declarations) that must write nothing.',
+    'Setup saves complete manual drafts through Java POST /manual/draft. Claims and orders are made by the browser except labelled negative API probes (stale terms/quote, declarations) and idempotency replays. One labelled second-client review-details save creates the stale-review scenario.',
     'Lost response uses CDP Fetch at the response stage: the server answers, then the browser connection is failed. No request or response body is altered.',
     'Hold timers are real (preview 120 s, order review 600 s); a slow run can expire a claim and fail a scenario honestly.',
     'The outer supervisor owns HostBudget, manifest/finalizer, aggregate output/RSS limits and final process/listener/schema/scratch audit.'] };
@@ -263,7 +272,7 @@ async function startApi() {
 }
 async function stopApi() { await api.stop(); log(`api-${apiStarts} stopped (exit ${api.exitCode ?? api.signalCode})`); }
 
-// ---------- direct HTTPS reads (server truth, GET only) ----------
+// ---------- direct HTTPS (server truth and explicitly labelled setup/negative probes) ----------
 function request(method, p, headers = {}, body = null) {
   const u = new URL(ORIGINS.api);
   return new Promise((resolve, reject) => {
@@ -275,7 +284,12 @@ function request(method, p, headers = {}, body = null) {
   });
 }
 async function serverRead(suffix, person = 'paula') {
-  return request('GET', suffix, { Authorization: `Bearer ${signJwt(accessClaims(`sub-${person}`, ['employee']), idp.keys.privateKey)}` });
+  return call(person, 'GET', suffix);
+}
+async function call(person, method, suffix, body = null) {
+  if (!PEOPLE.includes(person)) throw new Error(`Unknown proof employee ${person}`);
+  return request(method, suffix, { Authorization: `Bearer ${signJwt(accessClaims(`sub-${person}`, ['employee']), idp.keys.privateKey)}`,
+    ...(body === null ? {} : { 'Content-Type': 'application/json' }) }, body);
 }
 async function serverAccount(person = 'paula') {
   const r = await serverRead('/manual/account', person);
@@ -450,6 +464,8 @@ async function selectCar(page, id) {
   await page.until(`return document.activeElement?.hasAttribute('data-detail-heading');`, 5000, 'detail heading focus');
 }
 // ---------- fixture SQL (run-owned schema only; the parent owns the database and teardown) ----------
+const quoted = (value) => `'${String(value).replaceAll("'", "''")}'`;
+const RUN_KEY = `environment_id = ${quoted(ENVIRONMENT_ID)} AND run_id = ${quoted(RUN_ID)}`;
 let sqlCount = 0;
 async function sql(statement, flags = []) {
   const name = `fixture-${++sqlCount}`;
@@ -460,6 +476,34 @@ async function sql(statement, flags = []) {
 function sqlOut(statement) {
   return cap(PSQL, ['-X', '-v', 'ON_ERROR_STOP=1', '-A', '-t', '-q', '-h', DB[1].replace(/[\[\]]/g, ''), '-p', DB[2] ?? '5432', '-U', process.env.PROOF_DB_USER ?? 'gcsp', '-d', DB_NAME, '-c', statement],
     { env: childEnv({ PATH: process.env.PATH, HOME: process.env.HOME, PGCONNECT_TIMEOUT: '10', PGOPTIONS: `-c search_path=${SCHEMA}` }), timeout: 30000 });
+}
+function sqlJson(statement) {
+  const text = sqlOut(statement);
+  return text ? JSON.parse(text) : null;
+}
+async function dbCount(table, person) {
+  if (table !== 'selection_orders' || !PEOPLE.includes(person)) throw new Error('Unsupported proof count');
+  return Number(sqlOut(`SELECT count(*) FROM selection_orders WHERE ${RUN_KEY} AND employee_id = ${quoted(`employee-${person}`)}`));
+}
+async function dbOrders(person) {
+  if (!PEOPLE.includes(person)) throw new Error(`Unknown proof employee ${person}`);
+  return sqlJson(`SELECT coalesce(json_agg(o ORDER BY o."operationId"), '[]'::json) FROM (
+    SELECT s.operation_id AS "operationId", s.order_uuid AS "orderUuid", s.order_reference AS reference,
+      s.selection, p.state, p.attempts
+    FROM selection_orders s JOIN pending_operations p USING (environment_id, run_id, operation_id)
+    WHERE s.environment_id = ${quoted(ENVIRONMENT_ID)} AND s.run_id = ${quoted(RUN_ID)}
+      AND s.employee_id = ${quoted(`employee-${person}`)}) o`);
+}
+let providerDown = false;
+async function setProvider(down) {
+  if (providerDown === down) return;
+  // Only this run-owned schema changes. The synthetic provider then returns UNKNOWN
+  // from its real SQL error path, while durable order intent remains readable.
+  await sql(down
+    ? 'ALTER TABLE ordering_synthetic_receipts RENAME TO ordering_synthetic_receipts_proof_offline'
+    : 'ALTER TABLE ordering_synthetic_receipts_proof_offline RENAME TO ordering_synthetic_receipts');
+  providerDown = down;
+  receipt.fixture.mutations.push({ label: down ? 'synthetic ordering store unavailable' : 'synthetic ordering store restored', at: new Date().toISOString() });
 }
 async function serverState(person, { order = true } = {}) {
   const get = async (p) => { const r = await call(person, 'GET', p); return { http: r.status, body: r.json }; };
@@ -680,6 +724,9 @@ async function scenarioB(cdp, s, pages) {
   const probe = await call('alex', 'POST', POSTED_ORDER, probeBody);
   s.observations.termsChangedProbe = { http: probe.status, body: probe.json };
   s.checks.staleTermsRefusedByServer = probe.status === 409 && probe.json?.status === 'conflict' && probe.json.code === 'terms-changed';
+  const staleQuote = await call('alex', 'POST', POSTED_ORDER, orderBody(snap, all, { expectedQuoteId: `${q.quoteId}-stale`, expectedReviewDetailsVersion: 2 }));
+  s.observations.staleQuoteProbe = { http: staleQuote.status, body: staleQuote.json };
+  s.checks.staleQuoteRefusedByServer = staleQuote.status === 409 && staleQuote.json?.status === 'conflict' && staleQuote.json.code === 'quote-changed';
   s.checks.nothingWrittenByProbe = (await dbCount('selection_orders', 'alex')) === 0 && (await holdRow(hold.holdId))?.state === 'active';
   const mark = page.log.length;
   await placeOrder(page);

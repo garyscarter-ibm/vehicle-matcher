@@ -8373,7 +8373,7 @@
     {
       "assignee": "",
       "id": "FUCQ-443",
-      "observed_at": "2026-11-17T02:45:16Z",
+      "observed_at": "2026-11-18T01:56:56Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Review and intentionally submit a manual selection",
@@ -8397,10 +8397,10 @@
         },
         {
           "id": "connected-proof",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Real-claim-to-order-and-rendered-proof",
-          "observed_at": "2026-11-17T02:13:52Z",
-          "evidence": "Original actual Java/PostgreSQL/OIDC claim-to-order, stale/declaration/lost-save/lost-submit recovery and durable readback plus affected rendered proof remain outstanding. Both originalAC unchecked; no accepted or InReview claim."
+          "observed_at": "2026-11-18T01:56:56Z",
+          "evidence": "18Nov C3 stopped before scenarios on missing STOCK_IDS; helper/API/SQL restoration source checks pass (Node syntax/checkJs2304 empty). Original ACs remain open; corrected nativePG17/OIDC/browser proof waits existing lane. docs/gcsp/fucq443-manual-review-2026-11-16.md"
         }
       ]
     },
