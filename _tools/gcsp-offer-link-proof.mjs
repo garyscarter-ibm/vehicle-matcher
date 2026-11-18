@@ -9,12 +9,14 @@ import { mkdirSync, readFileSync, writeFileSync, existsSync, rmSync, rmdirSync, 
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { startRemoteDecisionServer, remoteDecisionScenarios } from './gcsp-remote-decision-scenarios.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DECISION_PROOF = process.env.PROOF_STORY === '466';
-const OWNED_SCRATCH = DECISION_PROOF ? '/private/tmp/vm-poller-20261118-hugh-466/browser' : '/private/tmp/vm-poller-20261117-hugh-465/browser';
+const REMOTE_DECISION_PROOF = process.env.PROOF_STORY === '467';
+const DECISION_PROOF = REMOTE_DECISION_PROOF || process.env.PROOF_STORY === '466';
+const OWNED_SCRATCH = REMOTE_DECISION_PROOF ? '/private/tmp/vm-poller-20261118-sulley-467/browser' : DECISION_PROOF ? '/private/tmp/vm-poller-20261118-hugh-466/browser' : '/private/tmp/vm-poller-20261117-hugh-465/browser';
 const SCRATCH = path.resolve(process.env.SCRATCH ?? OWNED_SCRATCH);
-const EVIDENCE = path.join(ROOT, `docs/gcsp/evidence/fucq${DECISION_PROOF ? '466' : '465'}/browser`);
+const EVIDENCE = path.join(ROOT, `docs/gcsp/evidence/fucq${REMOTE_DECISION_PROOF ? '467' : DECISION_PROOF ? '466' : '465'}/${REMOTE_DECISION_PROOF && process.env.PROOF_REMOTE_CASE === 'decline-refused' ? 'browser-refused' : 'browser'}`);
 const DEADLINE_MS = Number(process.env.PROOF_DEADLINE_SEC ?? 600) * 1000;
 // Adapted from scripts/gcsp/fucq435-cross-origin-proof.mjs: same real local issuer/PKCE/CDP, scoped to owned offer-link proof.
 const PG = { bin: '/opt/homebrew/opt/postgresql@17/bin', host: '127.0.0.1', port: '55465', user: 'gcsp', db: 'gcsp_test_dev' };
@@ -33,6 +35,7 @@ const startedAt = new Date().toISOString();
 const shots = [];
 const receipt = { productDefects: [], schema: 'fucq465-browser-proof/1', story: 'DEV-2026-11-13-033 / FUCQ-465', startedAt, origins: ORIGINS, localTestIssuer: `LOCAL TEST OIDC ISSUER ${ISSUER}: harness only, not the real provider and not committed configuration`, tools: {}, deviations: [], scenarios: {}, gaps: ['Actual hosted Render origins and real OIDC provider registration do not exist yet (Gary creates them); not proven here.'], failureLogs: {} };
 if (DECISION_PROOF) { receipt.schema = 'fucq466-browser-proof/1'; receipt.story = 'DEV-2026-11-13-034 / FUCQ-466'; }
+if (REMOTE_DECISION_PROOF) { receipt.schema = 'fucq467-browser-proof/1'; receipt.story = 'DEV-2026-11-13-035 / FUCQ-467'; }
 const cleanups = [];
 let finished = false;
 const log = (...a) => console.log(`[${((Date.now() - T0) / 1000).toFixed(0)}s]`, ...a);
@@ -69,7 +72,7 @@ const cap = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8'
 
 // ---------- shared Java lock and proof database ----------
 async function takeJavaLock() {
-  const run = DECISION_PROOF ? 'hugh-466' : 'hugh-465';
+  const run = REMOTE_DECISION_PROOF ? 'sulley-467' : DECISION_PROOF ? 'hugh-466' : 'hugh-465';
   if (process.env.GCSP_PROOF_SUPERVISED_LOCK !== run) throw new Error('Run with the resource supervisor that owns the Java lane');
   const owner = JSON.parse(readFileSync(path.join(JAVA_LOCK, 'owner.json'), 'utf8'));
   if (owner.run !== `${run}-browser`) throw new Error('Java lane belongs to another run');
@@ -556,7 +559,10 @@ async function main() {
   tls=makeCerts();
   await run('mvn-package','./mvnw',['-B','-q','-DskipTests','package'],{cwd:path.join(ROOT,'services/gcsp-api'),timeout:300000,env:{MAVEN_OPTS:'-Xmx512m'}});
   await createProofDb(); await startIdp(tls); await startWeb(tls,assemble.GCSP_FIXED_ROUTES);
+  const remote = REMOTE_DECISION_PROOF ? await startRemoteDecisionServer(tls, { pg, database: PG.db }) : null;
+  if (remote) cleanups.push(() => remote.close());
   const apiEnv={...baseEnv(),QUARKUS_HTTP_SSL_PORT:'8443',QUARKUS_HTTP_INSECURE_REQUESTS:'disabled',QUARKUS_HTTP_SSL_CERTIFICATE_FILES:path.join(dirs.certs,'fullchain.pem'),QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILES:path.join(dirs.certs,'leaf.key'),GCSP_ALLOWED_ORIGINS:ORIGINS.web,GCSP_IDENTITY_PROVIDER:'oidc',GCSP_OIDC_ISSUER:ISSUER,GCSP_OIDC_JWKS_URI:'https://127.0.0.1:9443/realms/gcsp-local/protocol/openid-connect/certs',GCSP_OIDC_AUDIENCE:'gcsp-api',GCSP_OIDC_AUTHORIZED_PARTY:'gcsp-web',GCSP_OIDC_REQUIRED_SCOPES:'gcsp-api',GCSP_OIDC_ACCOUNTS:JSON.stringify([{subject:'sub-employee',roles:['employee'],employeeId:'employee-paula'},{subject:'sub-alex',roles:['employee'],employeeId:'employee-alex'},{subject:'sub-jordan',roles:['employee'],employeeId:'employee-jordan'},{subject:'sub-greg',roles:['greg']},{subject:'sub-presenter',roles:['presenter']}]),GCSP_ENVIRONMENT_ID:'local-offer-link-proof',GCSP_RUN_ID:'run-1',GCSP_POLICY_VERSION:'gcsp-policy-v1+offer-journey-v1',GCSP_DATABASE_URL:DB_URL,GCSP_DATABASE_USER:PG.user,GCSP_EXPECTED_DATABASE:PG.db,GCSP_RESET_ALLOWED:'true',GCSP_ACCOUNT_PROVIDER:'repository',GCSP_SCENARIO_PROVIDER:'demo',GCSP_SUPPLY_PROVIDER:'demo',GCSP_ORDERING_PROVIDER:'synthetic',GCSP_APPROVALS_PROVIDER:'synthetic',GCSP_DOCUMENTS_PROVIDER:'synthetic',GCSP_APPOINTMENTS_PROVIDER:'synthetic',GCSP_RETURNS_PROVIDER:'synthetic',GCSP_ALLOCATION_CANDIDATES_PROVIDER:'recommendation',GCSP_VEHICLE_EVIDENCE_PROVIDER:'lookup',GCSP_VEHICLE_EVIDENCE_STORE:path.join(ROOT,'server/data/gcsp/vehicle-evidence/fleet-source.v1'),GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR:path.join(ROOT,'server/data/gcsp/vehicle-evidence'),GCSP_VEHICLE_ASSETS_ROOT:ROOT,GCSP_PUBLIC_BASE_URL:ORIGINS.web};
+  if (remote) Object.assign(apiEnv, { GCSP_BUDDY_PROVIDER: 'remote', GCSP_BUDDY_EXECUTE_URL: remote.origin + '/execute', GCSP_BUDDY_RECONCILE_URL: remote.origin + '/reconcile', GCSP_BUDDY_TIMEOUT: '2s' });
   receipt.apiComposition=Object.fromEntries(Object.entries(apiEnv).filter(([k])=>/^GCSP_(ACCOUNT|SCENARIO|SUPPLY|ORDERING|ALLOCATION|RUN_ID|POLICY)/.test(k)));
   let java;let starts=0;
   const startApi=async()=>{java=spawnLong(`api-${++starts}`,path.join(JAVA_HOME,'bin/java'),['-Xmx768m',`-Djavax.net.ssl.trustStore=${tls.trust}`,`-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,`-Djava.io.tmpdir=${dirs.tmp}`,'-jar',path.join(ROOT,'services/gcsp-api/target/quarkus-app/quarkus-run.jar')],apiEnv);for(let i=0;i<100;i++){if(java.done){receipt.failureLogs.api=tail(path.join(dirs.logs,`api-${starts}.log`));throw new Error('API exited');}try{if((await request(ORIGINS.api,'GET','/q/health/ready',{ca:tls.ca})).status===200)return;}catch{}await sleep(300);}throw new Error('API readiness timeout');};
@@ -566,10 +572,11 @@ async function main() {
   const chrome=spawnLong('chrome',CHROME,['--headless=new',`--user-data-dir=${profile}`,'--remote-debugging-port=0','--remote-allow-origins=*',`--ignore-certificate-errors-spki-list=${tls.spki}`,'--host-resolver-rules=MAP gcsp-web.example.test 127.0.0.1','--no-proxy-server','--no-first-run','--no-default-browser-check','--disable-extensions','--disable-background-networking','--window-size=1000,720','about:blank'],baseEnv());
   let wsUrl;for(let i=0;i<80&&!wsUrl;i++){if(chrome.done)throw new Error('Chrome exited');try{const[port,p]=readFileSync(path.join(profile,'DevToolsActivePort'),'utf8').trim().split('\n');wsUrl=`ws://127.0.0.1:${port}${p}`;}catch{await sleep(250);}}
   if(!wsUrl)throw new Error('Chrome endpoint unavailable');const cdp=await Cdp.connect(wsUrl);cleanups.push(()=>cdp.ws.close());
-  await browserScenarios(cdp,ctx,prepared,restartApi);
+  if (REMOTE_DECISION_PROOF) await remoteDecisionScenarios({ cdp, ctx, prepared, restartApi, remote, scenario, newPage, closePage, signInAs, pageEvidence, requireApi, direct, prepareOffer, pg, database: PG.db });
+  else await browserScenarios(cdp,ctx,prepared,restartApi);
 }
 async function teardown(){for(const fn of cleanups.splice(0).reverse()){try{await fn();}catch(e){(receipt.cleanupErrors??=[]).push(e.message);}}if(SCRATCH!==OWNED_SCRATCH)throw new Error('Unexpected scratch ownership');rmSync(SCRATCH,{recursive:true,force:true});receipt.teardown={scratch:SCRATCH,scratchAbsent:!existsSync(SCRATCH),databaseStopped:receipt.database?.stopped??null,installedEnvironmentRetained:'apps/gcsp-web/node_modules; gitignored compiled app dist and Maven target'};}
-function finish(error){if(finished)return;finished=true;receipt.endedAt=new Date().toISOString();receipt.screenshots=shots;if(error)receipt.runError=error;receipt.overall=!error&&!receipt.cleanupErrors&&(receipt.buildOnly||Object.keys(receipt.scenarios).length===(DECISION_PROOF?(process.env.PROOF_ACCEPT_ONLY==='1'?1:process.env.PROOF_OWNER_ONLY==='1'?2:7):6)&&Object.values(receipt.scenarios).every(s=>s.pass))?'PASS':'FAIL';mkdirSync(EVIDENCE,{recursive:true});writeFileSync(path.join(EVIDENCE,'offer-link-proof.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({overall:receipt.overall,scenarios:Object.fromEntries(Object.entries(receipt.scenarios).map(([k,v])=>[k,{pass:v.pass,error:v.error}])),error,teardown:receipt.teardown}));}
+function finish(error){if(finished)return;finished=true;receipt.endedAt=new Date().toISOString();receipt.screenshots=shots;if(error)receipt.runError=error;receipt.overall=!error&&!receipt.cleanupErrors&&(receipt.buildOnly||Object.keys(receipt.scenarios).length===(REMOTE_DECISION_PROOF?(process.env.PROOF_REMOTE_CASE==='decline-refused'?1:2):DECISION_PROOF?(process.env.PROOF_ACCEPT_ONLY==='1'?1:process.env.PROOF_OWNER_ONLY==='1'?2:7):6)&&Object.values(receipt.scenarios).every(s=>s.pass))?'PASS':'FAIL';mkdirSync(EVIDENCE,{recursive:true});writeFileSync(path.join(EVIDENCE,'offer-link-proof.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({overall:receipt.overall,scenarios:Object.fromEntries(Object.entries(receipt.scenarios).map(([k,v])=>[k,{pass:v.pass,error:v.error}])),error,teardown:receipt.teardown}));}
 const deadline=setTimeout(async()=>{await teardown();finish('600 second chunk deadline');process.exit(1);},DEADLINE_MS);
 for(const sig of ['SIGINT','SIGTERM'])process.on(sig,async()=>{await teardown();finish(`interrupted ${sig}`);process.exit(130);});
 let error;try{await main();}catch(e){error=e.message;console.error(e.stack);}finally{clearTimeout(deadline);await teardown();finish(error);}process.exit(receipt.overall==='PASS'?0:1);
