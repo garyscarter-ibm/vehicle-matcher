@@ -19,7 +19,7 @@ The parent's required serial covering batch `batch-next-20261118T023236Z` is run
 
 ## Executed checkpoint — 02:44 UTC
 
-The live `batch-next-20261118T023236Z-node-cases.jsonl` ledger reports the following selected literal test titles. These are case observations, not successful module exit counts or a green full command. The batch is incomplete; no final receipt or Java result exists at this checkpoint.
+The live `batch-next-20261118T023236Z-node-cases.jsonl` ledger reports the following selected literal test titles. Attribution matches each file's complete ordered source-title list to one unique contiguous reporter block under `--test-concurrency=1`. These are case observations inferred from the source signature, not successful module exit counts, measured coverage or a green full command. The batch is incomplete; no final receipt or Java result exists at this checkpoint.
 
 | Selected module | Observed passed | Observed failed | Titles not yet observed | Ledger sequences |
 | --- | ---: | ---: | ---: | --- |
@@ -33,6 +33,8 @@ The live `batch-next-20261118T023236Z-node-cases.jsonl` ledger reports the follo
 | `gcsp-recommendation-stored-subject` | 0 | 0 | 11 | Pending |
 | `gcsp-policy-service` | 0 | 0 | 21 | Pending |
 | `recommendation-compat` | 0 | 0 | 8 | Pending |
+
+Independent evidence review found that the lapsed-access-key title appears in six files. Counting every exact-title hit would count the activity-transport case at sequence 770 as well as brief transport at 1127. The complete ordered activity-transport signature occupies 768–772; the distinct six-title brief-transport signature occupies 1124–1129. Only 1127 belongs to the selected brief-transport block. All six observed module blocks are unique in the checkpoint ledger, so the selected count remains 90 passed, three failed and 48 unobserved. The sampled `candidateWorkerFiles` labels lag across these transitions and are not used for attribution. The compact JSON records this exclusion and the auxiliary source hash; the wider matched manifest includes that source.
 
 The original fuller-allowance ordering case passed at sequence 388; hard/unknown gate and anchored-band cases passed at 389–392. Sequence 400 passed actual saved recommendation and unsaved preview calls with 1200 points before 800 for equal fit. Sequence 485 passed feedback recomputation after exclusions. Sequence 1105 passed the points-aware badge case without asserting the highest preference score. These observed passes do not substitute for pending retail/shared-boundary proof or green covering batch coverage.
 

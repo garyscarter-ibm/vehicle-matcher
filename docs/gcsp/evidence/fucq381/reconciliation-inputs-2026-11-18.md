@@ -155,9 +155,9 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
   "newRuntime": false,
   "reconciliationHead": "c8de4dcfb6835ec9d1a2735530b11929430bfe81",
   "executionCheckpoint": {
-    "observedAt": "2026-11-18T02:44:00+00:00",
+    "observedAt": "2026-11-18T02:44Z",
     "ledgerSequenceLimit": 1212,
-    "selectionMethod": "Exact decoded literal test titles matched against reporter case events; not module exit counts, measured coverage or full suite totals.",
+    "selectionMethod": "Match the complete ordered literal source-title list as a unique contiguous block in the serial --test-concurrency=1 reporter ledger. File attribution is inferred from that unique source signature, not candidateWorkerFiles. Counts are case observations, not module exit counts, measured coverage or full suite totals.",
     "observedPasses": 90,
     "observedFailures": 3,
     "unobservedTitles": 48,
@@ -174,7 +174,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           390,
           391,
           392
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/employee-recommendation.test.js",
@@ -212,7 +213,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           419,
           420,
           421
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/feedback-actions.test.js",
@@ -239,7 +241,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           490,
           491,
           492
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/gcsp-brief-render.test.js",
@@ -273,7 +276,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           1116,
           1117,
           1118
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/gcsp-plain-copy.test.js",
@@ -281,7 +285,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
         "observedPasses": 0,
         "observedFailures": 0,
         "unobservedTitles": 8,
-        "sequences": []
+        "sequences": [],
+        "attribution": "No complete ordered source-title block observed by the checkpoint."
       },
       {
         "file": "server/test/employee-recommendation-api.test.js",
@@ -300,7 +305,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           369,
           370,
           371
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/gcsp-recommendation-stored-subject.test.js",
@@ -308,7 +314,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
         "observedPasses": 0,
         "observedFailures": 0,
         "unobservedTitles": 11,
-        "sequences": []
+        "sequences": [],
+        "attribution": "No complete ordered source-title block observed by the checkpoint."
       },
       {
         "file": "server/test/gcsp-policy-service.test.js",
@@ -316,7 +323,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
         "observedPasses": 0,
         "observedFailures": 0,
         "unobservedTitles": 21,
-        "sequences": []
+        "sequences": [],
+        "attribution": "No complete ordered source-title block observed by the checkpoint."
       },
       {
         "file": "server/test/gcsp-brief-transport.test.js",
@@ -331,7 +339,8 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
           1127,
           1128,
           1129
-        ]
+        ],
+        "attribution": "One unique contiguous block matching the complete ordered literal source-title list."
       },
       {
         "file": "server/test/recommendation-compat.test.js",
@@ -339,12 +348,30 @@ Prepared identity and acceptance-proof selection, with a partial executed-case c
         "observedPasses": 0,
         "observedFailures": 0,
         "unobservedTitles": 8,
-        "sequences": []
+        "sequences": [],
+        "attribution": "No complete ordered source-title block observed by the checkpoint."
       }
     ],
     "nodeCommandCompleted": false,
     "javaResultObserved": false,
-    "acceptance": "All four items remain open; green covering batch required."
+    "acceptance": "All four items remain open; green covering batch required.",
+    "duplicateTitleAttribution": {
+      "title": "a 401 with no status (lapsed access key) reads access-required; a status keeps its own result",
+      "includedSequence": 1127,
+      "includedBlock": [
+        1124,
+        1129
+      ],
+      "excludedSequence": 770,
+      "excludedBlock": [
+        768,
+        772
+      ],
+      "excludedSource": "server/test/gcsp-activity-transport.test.js",
+      "excludedSourceSha256": "46c048af0f1f10039ed94831317b2c11f4ddcd638028fcbc2246a9eccb47194d",
+      "basis": "Sequence770 is the third item in the unique ordered activity-transport source block768–772. Sequence1127 is the fourth item in the unique ordered six-title brief-transport block1124–1129. All these source files are included in the matched2551-input batch manifest.",
+      "candidateWorkerFiles": "Sampled field is stale across these blocks and is not used for attribution."
+    }
   }
 }
 ```
