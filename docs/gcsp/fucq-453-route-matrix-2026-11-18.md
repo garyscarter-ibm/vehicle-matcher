@@ -12,13 +12,13 @@ This matrix is the plan for that retirement. It is checked against the actual bu
 
 | Legacy entry (root page and block) | Angular route in the build | Replacement Story on base | Disposition |
 | --- | --- | --- | --- |
-| `gcsp-account.html`, `gcsp-manual-setup.html`, `gcsp-manual-gallery.html`; blocks `account`, `manual-setup`, `manual-gallery`, `manual-review`, `manual-summary` | `/gcsp/account`, `/gcsp/stock`, `/gcsp/manual/review`, `/gcsp/manual/summary` | FUCQ-440, 442, 443 done | Ready to retire |
-| `gcsp-employee.html`, `gcsp-brief.html`, `gcsp-brief-live.html`; blocks `employee`, `brief` | `/gcsp/preferences` | FUCQ-441 done | Ready to retire. `employee/gcsp-employee.js` stays while `gcsp-greg.html` and the gallery import it |
-| `gcsp-activity.html`, `gcsp-activity-live.html`; block `activity` | `/gcsp/activity` | FUCQ-444 done | Ready to retire |
-| `gcsp-offer.html`, host alias `/gcsp/offer`; blocks `offer`, `offer-followup` | `/gcsp/offers/:offerId`, follow-up included | FUCQ-445 done | Ready to retire. FUCQ-510 is the Java decline-reason registry: an API gap, not a frontend one |
-| `gcsp-order-progress.html`, `gcsp-order-progress-live.html`; block `order-progress` | `/gcsp/orders` | FUCQ-446 done | Ready to retire |
-| `gcsp-presenter.html`; block `presenter-controls` | `/gcsp/presenter` | FUCQ-450 done | Ready to retire |
-| `gcsp-outbox.html`; block `presenter` | `/gcsp/presenter/outbox` | FUCQ-451 done | Ready to retire. `presenter/http-adapter.js` stays while `greg-orders` imports it |
+| `gcsp-account.html`, `gcsp-manual-setup.html`, `gcsp-manual-gallery.html`; blocks `account`, `manual-setup`, `manual-gallery`, `manual-review`, `manual-summary` | `/gcsp/account`, `/gcsp/stock`, `/gcsp/manual/review`, `/gcsp/manual/summary` | FUCQ-440, 442, 443 done | Retired (d87422fcc). `gcsp-manual-gallery.html` and its block stay: the protected component gallery links to it |
+| `gcsp-employee.html`, `gcsp-brief.html`, `gcsp-brief-live.html`; blocks `employee`, `brief` | `/gcsp/preferences` | FUCQ-441 done | Retired (d87422fcc). `employee/gcsp-employee.js` and `harness.js` stay: `gcsp-help.html`, the gallery and `docs/gcsp/density/preview.html` use them |
+| `gcsp-activity.html`, `gcsp-activity-live.html`; block `activity` | `/gcsp/activity` | FUCQ-444 done | Retired (4ce3fbc50) |
+| `gcsp-offer.html`, host alias `/gcsp/offer`; blocks `offer`, `offer-followup` | `/gcsp/offers/:offerId`, follow-up included | FUCQ-445 done | Retired (5a7c596c3). FUCQ-510 is the Java decline-reason registry: an API gap, not a frontend one |
+| `gcsp-order-progress.html`, `gcsp-order-progress-live.html`; block `order-progress` | `/gcsp/orders` | FUCQ-446 done | Retired (4ce3fbc50) |
+| `gcsp-presenter.html`; block `presenter-controls` | `/gcsp/presenter` | FUCQ-450 done | Kept: Russell's lane changed `gcsp-presenter.html` on 18 Nov (9fa2b175b). Coordinate with that lane |
+| `gcsp-outbox.html`; block `presenter` | `/gcsp/presenter/outbox` | FUCQ-451 done | Retired (4ce3fbc50) |
 | `gcsp-help.html`; block `cases` (`harness.js`) | `/gcsp/help` | FUCQ-447 waiting | Keep until FUCQ-447 |
 | `gcsp-case-queue.html`; block `cases` (`queue-harness.js`) | `/gcsp/greg/cases` | FUCQ-447 waiting | Keep until FUCQ-447 |
 | `gcsp-greg.html`; blocks `greg` (demand, `plan`, `publish`, `comparison`), `greg-orders` | `/gcsp/greg` is still a placeholder state page; `/gcsp/comparison` | FUCQ-448, 449 blocked; FUCQ-452 blocked (Greg runs) | Keep until all three |
@@ -50,23 +50,38 @@ These are not entry points or page controllers, so FUCQ-453 doesn't retire them.
 Used Cars is unaffected: `blocks/vehicle-matcher/vehicle-matcher.js`, `server/index.js` retail routes, `render.yaml` and the launcher's retail path need no change.
 140 `server/test` files import one of the blocks that are ready to retire. Each is deleted or trimmed with its module.
 
-## Why the retirement isn't built yet
+## Built on 18 November 2026
 
-The story-lead brief for 18 November says to stop and ask before editing or deleting files Russell Gowers wrote
-(`git log --format=%an -- <file>`). Every route that is ready to retire depends on such files:
+The dispatcher ruled that this Story may retire files Russell co-wrote, except files his lane changed in the last 24 hours.
+Commits on `dev/DEV-2026-11-13-021`:
 
-- blocks with Russell commits: `activity` 13 of 13 files, `brief` 11 of 11, `offer` 12 of 15, `account` 5 of 10, `presenter` 3 of 8;
-  `employee`, `manual-setup` and `order-progress` 2 each; `manual-gallery`, `manual-review`, `manual-summary`, `offer-followup` and `presenter-controls` 1 each;
-- pages `gcsp-activity*.html`, `gcsp-brief*.html`, `gcsp-presenter.html`, `gcsp-login.html`;
-- `server/gcsp/host.js`, `server/gcsp/identity/index.js`, `render.gcsp.yaml`, `scripts/assemble-site.mjs`,
-  `scripts/gcsp-demo.mjs`, `blocks/vehicle-matcher/component-gallery.js`, `components.html`.
+- `ae69e6f6b`: host, identity, login landing, blueprint aliases, demo script and assembler. Employees now land on `gcsp-help.html`.
+- `d87422fcc`: account, manual, brief and employee entry.
+- `5a7c596c3`: offer and follow-up.
+- `4ce3fbc50`: activity, order progress and outbox.
+- `442dd26c1`: the manual-review proof script.
 
-Russell's lane changed `gcsp-presenter.html` and `component-gallery.js` today (`9fa2b175b`, FUCQ-387), so this
-needs coordinating as well as approving. Once approved, the work splits into two slices on this branch:
+Body, fixture and stylesheet modules stay where a kept file uses them: the gallery, the `ui-ratchet.json` stylesheet caps, or the kept pages.
 
-1. Retire the employee journey (account, manual, brief, employee entry, activity, offer, order progress), with the host,
-   identity, blueprint, demo-script and gallery-link changes and their tests.
-2. Retire presenter and outbox.
+## Coordinate with Russell's lane
 
-Help, cases, Greg and the legacy login wait for FUCQ-447, 448, 449 and 452. The hosted audit waits for FUCQ-436 and
-FUCQ-437, which need Gary's Render dev environment.
+These items aren't retired, because the files involved changed in the last 24 hours:
+
+- `gcsp-presenter.html` and `blocks/gcsp/presenter-controls/`.
+  - `console.js` still links `gcsp-account.html`, which `gcsp-presenter-console.test.js` asserts.
+- `blocks/vehicle-matcher/component-gallery.js` still links `gcsp-manual-gallery.html`, so that page stays.
+- `blocks/gcsp/kit/form-controls-gallery.js` has example hrefs to `gcsp-offer.html` and `gcsp-activity-live.html`.
+- `server/test/ui-ratchet.json` caps stylesheets of retired blocks, so those CSS files stay.
+- `COMPONENTS.md` still describes the retired mounts:
+  - `mountBrief`, `mountAccount`, `mountManualSetup`, `mountManualReview` and `mountManualSummary`;
+  - `mountOffer`, `mountActivity` and `mountOutbox`.
+
+## Still to do
+
+- Help, cases, Greg and the legacy login wait for FUCQ-447, 448, 449 and 452.
+- The hosted audit waits for FUCQ-436 and FUCQ-437, which need Gary's Render dev environment.
+- These evidence scripts under `scripts/gcsp/` still name retired pages:
+  - `capture-account-prefs.mjs`
+  - `fucq371-offer-capture.mjs`
+  - `walk-buddy-engagement.mjs`
+  - `walk-fucq371-feedback.mjs`
