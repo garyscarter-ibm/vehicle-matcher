@@ -350,7 +350,7 @@ export class BriefEditorStore {
     else this.sameIntent = undefined;
     const semantic = (v: BriefPreferencesInput) => JSON.stringify({ ...v, commandId: '' });
     const sent = retry && this.failedCommand && semantic(body) === semantic(this.failedCommand) ? this.failedCommand : body;
-    this.pending = {}; this.ratingIntent = undefined; this.saving.set(true); this.message.set('Saving your preferences.');
+    this.pending = {}; this.ratingIntent = undefined; this.saving.set(true); this.supersedePreview(); this.message.set('Saving your preferences.');
     const outcome = await this.client.savePreferences(sent, { signal: this.controller.signal, expectedContextKey: scope! }); if (!this.live(epoch, scope)) return;
     this.saving.set(false);
     if (outcome.status === 'ok' && this.matches(outcome.value, sent)) {
@@ -416,7 +416,9 @@ export class BriefEditorStore {
     this.brief.update((brief) => ({ ...brief, essentials: { ...brief.essentials, [key]: { value: copy(value), operator: definition.operator, unit: definition.unit, state: value === null ? 'needs-confirmation' : 'draft', source: 'employee' } } })); this.fullEssentialsTouched.add(key); this.edited();
   }
   setConsent(on: boolean): void { if (!this.locked() && !this.queuePending() && !this.buddyResolutionRequired()) { this.consent.set({ search: on, hold: on }); this.edited(); } }
-  private edited(): void { this.fullMessage.set('Unsaved changes. Review and save your preferences.'); this.failure.set(null); this.edit++; this.fullDirty.set(true); this.fullState.set('idle'); this.fullCommand = null; this.previewEpoch++; this.previewLoading.set(false); this.preview.set(null); }
+  private edited(): void { this.fullMessage.set('Unsaved changes. Review and save your preferences.'); this.failure.set(null); this.edit++; this.fullDirty.set(true); this.fullState.set('idle'); this.fullCommand = null; this.supersedePreview(); this.preview.set(null); }
+  // An own write moves the versions an in-flight preview was evaluated against, so its result is no longer current.
+  private supersedePreview(): void { this.previewEpoch++; this.previewLoading.set(false); }
   async requestPreview(): Promise<void> {
     if (this.locked() || this.queueBusy() || this.fullBusy() || this.buddyResolutionRequired()) return;
     const epoch = this.epoch; const scope = this.scope(); const ticket = ++this.previewEpoch; this.previewLoading.set(true);
@@ -427,7 +429,7 @@ export class BriefEditorStore {
   }
   async saveFull(retry = false): Promise<void> {
     if (this.locked() || this.queueBusy() || this.fullBusy() || this.buddyResolutionRequired()) return;
-    const epoch = this.epoch; const scope = this.scope(); this.fullBusy.set(true);
+    const epoch = this.epoch; const scope = this.scope(); this.fullBusy.set(true); this.supersedePreview();
     if (this.canonicalRecordsDirty) {
       const canonical = await this.client.readEditor({ signal: this.controller.signal, expectedContextKey: scope! }); if (!this.live(epoch, scope)) return;
       if (canonical.status !== 'ok') { this.fullBusy.set(false); this.fail(canonical); return; }

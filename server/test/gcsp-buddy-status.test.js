@@ -25,8 +25,8 @@ test('Buddy status distinguishes saved pause, missing setup, finished, withdrawn
 
 test('each outlined status is one native link with the original chevron and readable state', () => {
   for (const [state, text] of [['active', 'Buddy engaged'], ['paused', 'Buddy disengaged'], ['unset', 'Set up your buddy'], ['unavailable', 'Status unavailable']]) {
-    const link = buddyStatus({ state, href: '/gcsp-activity-live.html' });
-    assert.equal(link.tagName, 'A'); assert.equal(link.getAttribute('href'), '/gcsp-activity-live.html');
+    const link = buddyStatus({ state, href: '/gcsp/activity' });
+    assert.equal(link.tagName, 'A'); assert.equal(link.getAttribute('href'), '/gcsp/activity');
     assert.equal(link.querySelectorAll('a,button').length, 0);
     assert.equal(link.textContent, `${text.startsWith('Buddy ') ? '' : 'Buddy'}${text}›`);
     assert.equal(link.querySelector('.gcsp-buddy-chevron').getAttribute('aria-hidden'), 'true');

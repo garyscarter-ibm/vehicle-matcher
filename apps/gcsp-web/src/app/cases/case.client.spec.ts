@@ -67,6 +67,27 @@ describe('CaseClient actual Java routes, immutable intent and private request li
   });
   afterEach(() => { vi.useRealTimers(); });
 
+  it('prepares only the scoped preference proposal and confirms immutable employee intent against its audit', async () => {
+    state.set({ status: 'ready', context: context('greg') });
+    const remedy = { type: 'preference-relaxation' as const, decisionId: 'decline-1', expectedBriefVersion: 3, path: 'preferences.body.value', value: 'estate' };
+    expect(client.prepareUpdate(update({ remedy }))).toMatchObject({ input: { remedy } });
+    expect(client.prepareUpdate(update({ remedy: { ...remedy, path: 'essentials.seats.value' } }))).toMatchObject({ state: 'failed' });
+    state.set({ status: 'ready', context: context() });
+    const input = { commandId: 'confirm-preference-1', decisionId: 'decline-1', expectedBriefVersion: 3, change: { path: 'preferences.body.value', value: 'estate' } };
+    const command = client.preparePreference(input); if ('state' in command) throw new Error(command.problem);
+    input.change.value = 'saloon';
+    const response = { brief: { briefVersion: 4, confirmedBy: 'subject-paula', postDeclineChange: {
+      decisionId: 'decline-1', fromBriefVersion: 3, path: 'preferences.body.value', after: 'estate' } } };
+    fetcher.mockResolvedValueOnce(ok(response));
+    expect(await client.confirmPreference(command)).toMatchObject({ state: 'ready', value: { briefVersion: 4 } });
+    expect(fetcher.mock.calls.at(-1)![0]).toBe('https://api.example/api/gcsp/v1/brief/change-after-decline');
+    expect(JSON.parse(String(fetcher.mock.calls.at(-1)![1]?.body)).change.value).toBe('estate');
+    fetcher.mockResolvedValueOnce(ok({ brief: { ...response.brief, confirmedBy: 'other-employee' } }));
+    expect(await client.confirmPreference(command)).toMatchObject({ state: 'invalid-response', value: null, writeOutcome: 'unknown' });
+    state.set({ status: 'ready', context: context('greg') });
+    expect(await client.confirmPreference(command)).toMatchObject({ state: 'failed', problem: 'context-changed', writeOutcome: 'not-sent' });
+  });
+
   it('reads help and a proven empty employee list over bearer GETs without identity queries, cookies or invented version tags', async () => {
     fetcher.mockResolvedValueOnce(ok(help())).mockResolvedValueOnce(ok(list([])));
     expect(await client.readHelp()).toMatchObject({ state: 'ready', value: help() });

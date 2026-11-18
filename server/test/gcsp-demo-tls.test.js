@@ -7,7 +7,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { CookieJar } from 'jsdom';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
-import { createOfferHttpTransport } from '../../blocks/gcsp/offer/http-adapter.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 test('local host refuses absent unreadable and invalid TLS before opening runtime resources', async (t) => {
@@ -37,13 +36,13 @@ test('verified same-origin HTTPS serves real account and offer entry with no acc
   assert.equal(new URL(app.origin).protocol, 'https:'); assert.ok(app.server instanceof Server);
   // No global trust bypass: the ordinary client must reject this private test certificate.
   await assert.rejects(new Promise((done, reject) => {
-    const req = request(app.origin + '/gcsp-account.html', { rejectUnauthorized: true, agent: false }, (res) => {
+    const req = request(app.origin + '/gcsp-help.html', { rejectUnauthorized: true, agent: false }, (res) => {
       res.resume(); done();
     });
     req.setTimeout(5000, () => req.destroy(new Error('TLS verification wait exceeded its bound.')));
     req.on('error', reject); req.end();
   }));
-  const anonymous = await https.fetch(app.origin + '/gcsp-account.html');
+  const anonymous = await https.fetch(app.origin + '/gcsp-help.html');
   assert.equal(anonymous.status, 303); assert.equal(anonymous.headers.get('location'), '/gcsp/login');
   assert.equal(anonymous.headers.getSetCookie().length, 0);
   const signedIn = await https.fetch(app.origin + '/api/gcsp/session/login', { method: 'POST',
@@ -55,22 +54,17 @@ test('verified same-origin HTTPS serves real account and offer entry with no acc
   assert.ok(cookies.every((value) => value.startsWith('gcsp_session=') && value.includes('; Path=/;')
     && value.includes('; Secure') && value.includes('; HttpOnly')));
   const session = cookies.map((value) => value.split(';')[0]).join('; ');
-  const account = await https.fetch(app.origin + '/gcsp-account.html', { headers: { Cookie: session } });
+  const account = await https.fetch(app.origin + '/gcsp-help.html', { headers: { Cookie: session } });
   assert.equal(account.status, 200); assert.equal(account.headers.getSetCookie().length, 0);
   const context = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: app.origin } });
   assert.equal(context.status, 200); assert.equal((await context.json()).status, 'ok');
   const page = await https.fetch(app.origin + '/gcsp/offer?offerId=missing');
-  assert.equal(page.status, 200); assert.equal(page.headers.getSetCookie().length, 0);
-  assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
-  assert.ok((await page.text()).includes('/blocks/gcsp/offer/entry-harness.js'));
-  let reads = 0;
-  const adapter = createOfferHttpTransport({ location: { href: app.origin + '/gcsp/offer?offerId=missing' },
-    fetch: (url, init) => { reads += 1; return https.fetch(url, { ...init,
-      headers: { ...init.headers, Cookie: session, Origin: app.origin } }); } });
-  assert.equal((await adapter.read()).status, 'not-found'); assert.equal(reads, 1);
+  assert.equal(page.status, 404); assert.equal(page.headers.getSetCookie().length, 0);
+  const missing = await https.fetch(app.origin + '/api/gcsp/offers/missing', { headers: { Cookie: session, Origin: app.origin } });
+  assert.equal((await missing.json()).status, 'not-found');
   const foreign = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: 'https://foreign.invalid' } });
   assert.equal(foreign.status, 403);
-  const foreignHost = await https.fetch(app.origin + '/gcsp-account.html', { headers: { Host: 'foreign.invalid' } });
+  const foreignHost = await https.fetch(app.origin + '/gcsp-help.html', { headers: { Host: 'foreign.invalid' } });
   assert.equal(foreignHost.status, 403);
   const unauthenticated = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Origin: app.origin } });
   assert.equal(unauthenticated.status, 401);
@@ -105,10 +99,10 @@ test('root session cookies preserve explicit Greg login across HTML and API with
   const apiCookies = jar.getCookiesSync(`${app.origin}/api/gcsp/context`);
   assert.deepEqual(apiCookies.map((value) => [value.key, value.value, value.path]), htmlCookies.map((value) => [value.key, value.value, value.path]));
   const actingCookie = htmlCookies[0].value;
-  for (const path of ['/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html', '/gcsp-account.html']) {
+  for (const path of ['/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html']) {
     assert.ok(jar.getCookiesSync(new URL(path, app.origin).href).some((value) => value.key === 'gcsp_session' && value.value === actingCookie));
     const page = await browse(path);
-    const employeeOnly = ['/gcsp-help.html', '/gcsp-account.html'].includes(path);
+    const employeeOnly = path === '/gcsp-help.html';
     assert.equal(page.status, employeeOnly ? 303 : 200);
     if (employeeOnly) assert.equal(page.headers.get('location'), '/gcsp-greg.html');
     assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must preserve the explicitly signed-in actor');
@@ -125,7 +119,7 @@ test('root session cookies preserve explicit Greg login across HTML and API with
   for (const marker of ['1', 'earlier-process-marker']) {
     const markerOnly = new CookieJar();
     markerOnly.setCookieSync(`GCSP_LOCAL_BOOTSTRAP=${marker}; Path=/; Secure; HttpOnly; SameSite=Strict`, app.origin);
-    const deniedPage = await browse('/gcsp-account.html', {}, markerOnly);
+    const deniedPage = await browse('/gcsp-help.html', {}, markerOnly);
     assert.equal(deniedPage.status, 303); assert.equal(deniedPage.headers.get('location'), '/gcsp/login');
     assert.equal(deniedPage.headers.getSetCookie().length, 0);
     assert.equal((await browse('/api/gcsp/context', {}, markerOnly)).status, 401, 'A stale marker never authenticates a person');

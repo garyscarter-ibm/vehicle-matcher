@@ -6,6 +6,8 @@ import static gcsp.api.production.ProductionHttpSupport.command;
 import static gcsp.api.production.ProductionHttpSupport.count;
 import static gcsp.api.production.ProductionHttpSupport.submitBody;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,7 +24,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
-/** The started app with no test beans: the real plan port is bound, and unbound planner inputs are named honestly. */
+/** The started app with no test beans: the real plan port is bound and plans from the real adapters, so a stale submit is told to replan. */
 @QuarkusTest
 @TestProfile(ProductionHttpProfiles.Composition.class)
 class ProductionPlanCompositionTest {
@@ -49,14 +51,15 @@ class ProductionPlanCompositionTest {
     }
 
     @Test
-    void theDefaultCompositionBindsTheRealPlanPortAndSubmitNamesThePlannersMissingInput() throws Exception {
+    void theDefaultCompositionBindsTheRealPlanPortAndAStaleSubmitIsToldToReplanAgainstTheRealPlan() throws Exception {
         assertTrue(persistence.active(), "every production test must run: GCSP_TEST_DATABASE_URL is not set");
         assertEquals("planning", plans.mode());
         assertTrue(ClientProxy.unwrap(plans) instanceof PlanningPlanSnapshot);
         ProductionHttpSupport.tick(dataSource.get(), persistence, 60);
         String greg = ProductionHttpSupport.token(jwk, "sub-greg", "greg");
-        as(greg).body(submitBody(command(), "plan-x", "s1")).post(REQUESTS).then().statusCode(503)
-                .body("code", equalTo("planning-forecast-not-configured"));
+        as(greg).body(submitBody(command(), "plan-x", "s1")).post(REQUESTS).then().statusCode(409)
+                .body("code", equalTo("replan-needed")).body("current.planId", startsWith("order-plan-"))
+                .body("changedInputs", hasItems("plan", "stock", "forecast"));
         assertEquals(0, count(dataSource.get(), "SELECT count(*) FROM production_submissions"));
     }
 }

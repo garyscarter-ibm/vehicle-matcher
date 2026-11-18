@@ -209,8 +209,9 @@ class CaseCompositionJourneyHttpTest {
     @Test
     @Order(2)
     void aTickOutsideTheDeadlineWindowOpensNothing() throws Exception {
-        // The clock starts on today's London date; once the real date is within 14 days of 2026-12-01 this step is moot.
-        Assumptions.assumeTrue(Duration.between(clockNow(), PAULA_DEADLINE).compareTo(Duration.ofDays(14)) > 0);
+        // The profile pins the start to 17 Nov 09:00, the last day outside the 14-day window, so this never skips.
+        assertEquals(Instant.parse(CaseCompositionProfile.WALL), clockNow());
+        assertTrue(Duration.between(clockNow(), PAULA_DEADLINE).compareTo(Duration.ofDays(14)) > 0);
         assertEquals(0, tick().get("opened").asInt());
         assertEquals(0, body(get(paula, CASES), 200).get("value").get("cases").size());
     }
@@ -220,7 +221,8 @@ class CaseCompositionJourneyHttpTest {
     void aTickInsideTheWindowOpensOneSchemeTeamCasePerAtRiskEmployeeAndTheNextTickOpensNone() throws Exception {
         Instant inside = PAULA_DEADLINE.minus(Duration.ofDays(14)).plus(Duration.ofHours(1));
         long needed = Duration.between(clockNow(), inside).toSeconds();
-        if (needed > 0) advance(needed + 1);
+        assertTrue(needed > 0, "the journey must cross the window boundary itself");
+        advance(needed + 1);
         tickedAt = clockNow();
         // Paula, Alex and Sam end on 2026-12-01; Greg's operator renewal ends on 12-15, still outside the window.
         assertEquals(3, tick().get("opened").asInt());

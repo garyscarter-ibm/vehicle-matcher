@@ -153,6 +153,47 @@ describe('shared native brief editor store', () => {
     await store.requestPreview(); expect(client.preview.mock.calls[0][0]).toMatchObject({ kind: 'unsaved-draft', baseBriefVersion: 4, draftVersion: 2, brief: store.brief() });
     expect(store.preview()?.status).toBe('ok');
   });
+  describe('an older preview superseded by a successful save (FUCQ-491)', () => {
+    const fullSave = () => {
+      client.saveDraft.mockResolvedValue({ status: 'ok', value: { draftVersion: 3, baseBriefVersion: 4, brief: briefEditorFixture().initial.brief } });
+      client.confirm.mockResolvedValue({ status: 'ok', value: currentBriefFixture() });
+      const older = deferred<unknown>(); client.preview.mockReturnValueOnce(older.promise);
+      store.updatePreference('economy', { value: 88 }); const previewing = store.requestPreview(); return { older, previewing };
+    };
+    const usable = () => {
+      expect(store.failure()).toBeNull(); expect(store.locked()).toBe(false); expect(store.queueBusy()).toBe(false); expect(store.previewLoading()).toBe(false);
+      expect(store.fullState()).toBe('saved'); expect(store.briefVersion()).toBe(5); expect(store.draftVersion()).toBe(3); expect(store.fullMessage()).toBe('Your preferences were confirmed. Showing saved version 5.');
+      expect(store.brief().preferences['economy'].value).toBe(50); expect(store.preview()).toBeNull();
+    };
+    it('stays usable when the older preview returns stale-version during the final readback', async () => {
+      const { older, previewing } = fullSave(); const readback = deferred<unknown>(); client.readEditor.mockReturnValueOnce(readback.promise);
+      const saving = store.saveFull(); await tick(); expect(client.readEditor).toHaveBeenCalledTimes(2);
+      older.resolve({ status: 'stale-version' }); await previewing; expect(store.failure()).toBeNull();
+      const server = briefEditorFixture(); readback.resolve({ status: 'ok', value: { ...server, initial: { ...server.initial, briefVersion: 5, draftVersion: 3 } } }); await saving;
+      usable();
+    });
+    it('stays usable when the older preview returns stale-version after the final readback', async () => {
+      const { older, previewing } = fullSave(); await store.saveFull(); usable();
+      older.resolve({ status: 'stale-version' }); await previewing; usable();
+      store.change('economy', { value: 100 }); expect(client.savePreferences.mock.calls[0][0]).toMatchObject({ expectedBriefVersion: 5, expectedDraftVersion: 3 }); await tick();
+    });
+    it('keeps a compact autosave usable when an older preview returns stale-version afterwards', async () => {
+      const older = deferred<unknown>(); client.preview.mockReturnValueOnce(older.promise); const previewing = store.requestPreview();
+      store.change('economy', { value: 100 }); await tick(); expect(store.message()).toBe('Preferences saved automatically.');
+      older.resolve({ status: 'stale-version' }); await previewing;
+      expect(store.failure()).toBeNull(); expect(store.locked()).toBe(false); expect(store.previewLoading()).toBe(false); expect(store.draftVersion()).toBe(3);
+    });
+    it('still locks on a current preview stale-version that no save superseded', async () => {
+      client.preview.mockResolvedValue({ status: 'stale-version' }); store.updatePreference('economy', { value: 88 }); await store.requestPreview();
+      expect(store.failure()?.status).toBe('stale-version'); expect(store.locked()).toBe(true); expect(store.message()).toContain('Reload to see the latest');
+    });
+    it('still refuses a real stale write while an older preview is outstanding', async () => {
+      const { older, previewing } = fullSave(); client.saveDraft.mockResolvedValue({ status: 'stale-version' });
+      await store.saveFull(); expect(store.failure()?.status).toBe('stale-version'); expect(store.fullState()).toBe('failed'); expect(store.locked()).toBe(true);
+      older.resolve({ status: 'ok', value: { state: 'no-stock', eligibleCount: 0, decisions: [], recommendations: [], versions: {} } }); await previewing;
+      expect(store.failure()?.status).toBe('stale-version'); expect(store.locked()).toBe(true); expect(store.preview()).toBeNull(); expect(client.confirm).not.toHaveBeenCalled();
+    });
+  });
   it('uses the server minimum and does not submit an under-minimum engagement', async () => {
     await store.runBuddyCommand('engage');
     expect(client.engage).not.toHaveBeenCalled(); expect(store.buddyFailure()).toMatchObject({ code: 'engagement-minimum', remaining: 1 });

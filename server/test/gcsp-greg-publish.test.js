@@ -233,6 +233,21 @@ test('legacy policy adopts neutral weights in a new version through real project
   assert.equal(good(await f.publish.readPolicy(f.context)).weightsAdoptionRequired, false);
 });
 
+test('a second weight publish on a version that already has weights is accepted, and bad weights are refused', async (t) => {
+  const f = await fixture(t, { legacy: true });
+  good(await f.publish.publish(f.context, command('weight:body', 0)));
+  const instant = good(await f.clock.now(f.context));
+  good(await f.clock.advance(f.presenter.value.context, { commandId: 'advance-second-weight', expectedClockVersion: instant.clockVersion, bySeconds: 86400 }));
+  const later = good(await f.clock.now(f.context)).now;
+  const second = (value, id) => command('weight:fuel', value, { expectedActiveVersion: 'greg-policy-v2', commandId: id, policyVersion: `greg-policy-${id}`, effectiveFrom: later });
+  for (const bad of [-1, 0.5, Number.MAX_SAFE_INTEGER + 1]) assert.equal((await f.publish.publish(f.context, second(bad, `bad-${bad}`))).status, 'invalid', String(bad));
+  good(await f.publish.publish(f.context, second(3, 'second')));
+  const current = good(await f.policy.getPolicySnapshot({ runId: f.context.runId, asOf: later }));
+  assert.deepEqual(current.assumptions.find((row) => row.key === 'employee.recommendation.v1').value.preferenceWeights,
+    { body: 0, fuel: 3, sportiness: 1, comfort: 1, economy: 1, size: 1 });
+  assert.equal(good(await f.publish.readPolicy(f.context)).fields.find((row) => row.id === 'weight:fuel').value, 3);
+});
+
 test('legacy migration cannot add other fields, alter protected calibration or omit registered weights', async (t) => {
   const f = await fixture(t, { legacy: true });
   const previous = f.source.assumptions.find((row) => row.key === 'employee.recommendation.v1').value;

@@ -1,4 +1,4 @@
-const LANDINGS = new Set(['/gcsp-account.html', '/gcsp-greg.html']);
+const LANDINGS = new Set(['/gcsp-help.html', '/gcsp-greg.html']);
 const FAILURES = {
   invalid: 'Enter your email address and password.',
   'invalid-credentials': 'Your email address or password is incorrect. Check them and try again.',

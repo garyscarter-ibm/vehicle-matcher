@@ -49,8 +49,6 @@ test('assembly is deterministic and discovers every GCSP directory, including a 
 
 test('a future offer block and its own nested direct page are discovered without assembler edits', async (t) => {
   const root = await owned(t), sourceRoot = await sourceCopy(root);
-  // The real root offer page (bc8a941a) wins demo selection; remove it to model a block with only a nested page.
-  await rm(path.join(sourceRoot, 'gcsp-offer.html'));
   const dir = path.join(sourceRoot, 'blocks/gcsp/offer'); await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, 'preview.html'), '<!doctype html><html><head></head><body><script type="module" src="./harness.js"></script></body></html>');
   await writeFile(path.join(dir, 'harness.js'), "import './gcsp-offer.js';\n");
@@ -58,7 +56,7 @@ test('a future offer block and its own nested direct page are discovered without
   const output = path.join(root, 'site');
   const manifest = await assembleSite({ sourceRoot, output });
   assert.ok(manifest.pages.includes('blocks/gcsp/offer/preview.html'));
-  assert.deepEqual(manifest.demoPages.find((page) => page.name === 'offer'), { name: 'offer', block: 'offer', file: 'blocks/gcsp/offer/preview.html', available: true });
+  assert.deepEqual(manifest.demoPages.map((page) => page.name), ['greg']);
   await verifySite({ output, requireDemoPages: true });
   await rm(path.join(output, 'blocks/gcsp/offer/gcsp-offer.js'));
   await assert.rejects(verifySite({ output, requireDemoPages: true }), /GCSP block "offer": missing packaged file/);
@@ -67,13 +65,13 @@ test('a future offer block and its own nested direct page are discovered without
 test('every literal dynamic import, lazy employee stylesheet and CSS asset is in the dependency graph', async (t) => {
   const output = path.join(await owned(t), 'site');
   const manifest = await assembleSite({ output });
-  for (const target of ['blocks/gcsp/manual-setup/journey.js', 'blocks/gcsp/account/http-adapter.js',
-    'blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/account/gcsp-account.css', 'blocks/gcsp/manual-setup/gcsp-manual-setup.css']) {
+  for (const target of ['blocks/gcsp/manual-gallery/fixtures.js', 'blocks/gcsp/account/http-adapter.js',
+    'blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/manual-gallery/gcsp-manual-gallery.css', 'blocks/gcsp/offer/decision-drawer.css']) {
     assert.ok(manifest.dependencies.some((e) => e.to === target), target);
   }
   for (const block of manifest.blocks) for (const file of block.files) assert.ok(manifest.files.some((f) => f.path === file), file);
-  await rm(path.join(output, 'blocks/gcsp/manual-setup/journey.js'));
-  await assert.rejects(verifySite({ output }), /GCSP block "manual-setup": missing packaged file .*journey\.js/);
+  await rm(path.join(output, 'blocks/gcsp/manual-gallery/fixtures.js'));
+  await assert.rejects(verifySite({ output }), /GCSP block "manual-gallery": missing packaged file .*fixtures\.js/);
 });
 
 test('missing required import fails assembly with the block and importer named', async (t) => {

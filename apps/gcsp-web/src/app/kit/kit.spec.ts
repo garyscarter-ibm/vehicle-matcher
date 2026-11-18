@@ -14,6 +14,16 @@ describe('shared Angular kit', () => {
     expect(fixture.nativeElement.querySelector('[role="status"]').getAttribute('aria-busy')).toBe('true');
     expect(fixture.nativeElement.querySelector('h1').textContent).toBe('Loading your account');
   });
+  it('nests a status title at the supplied section level while keeping its section-title look', async () => {
+    const fixture = TestBed.createComponent(StatusScreenComponent);
+    fixture.componentRef.setInput('title', 'Sign in to continue'); fixture.componentRef.setInput('level', 2); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement;
+    expect([root.querySelectorAll('h1, h3').length, root.querySelector('h2')!.className]).toEqual([0, '']);
+    fixture.componentRef.setInput('level', 3); await fixture.whenStable();
+    expect(root.querySelectorAll('h1, h2')).toHaveLength(0);
+    expect(root.querySelector('h3.gcsp-intro-title')!.textContent).toBe('Sign in to continue');
+    expect(root.querySelector('h3')!.hasAttribute('tabindex')).toBe(false);
+  });
   it('uses native disabled controls, associated labels, descriptions and summary focus', async () => {
     const fixture = TestBed.createComponent(FieldHarness); await fixture.whenStable();
     const root: HTMLElement = fixture.nativeElement; const input = root.querySelector('input')!;

@@ -34,4 +34,14 @@ public final class OfferJourneyProfiles {
 
     /** FUCQ-519: its own app and schema, so the run-selector reads see an untouched pending offer. */
     public static class RunIdQuery extends Accept {}
+
+    /** FUCQ-510: provider demo, so a presenter reset starts a new run that must re-adopt the journey set. */
+    public static class ResetDecline extends Accept {
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            Map<String, String> c = new HashMap<>(super.getConfigOverrides());
+            c.put("gcsp.scenario.provider", "demo");
+            return c;
+        }
+    }
 }
