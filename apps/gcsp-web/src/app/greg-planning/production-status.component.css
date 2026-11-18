@@ -1,0 +1,14 @@
+:host { display: block; min-width: 0; }
+.production-page { display: grid; gap: 20px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--gcsp-divider); color: var(--gcsp-text); }
+.production-heading, .request-heading { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 12px; }
+.production-heading h2, .request-heading h3 { margin: 0; }
+.production-request, .production-empty { background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: 8px; padding: 24px; overflow-wrap: anywhere; }
+.production-notice { background: var(--gcsp-surface-muted); padding: 16px; border: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
+.production-notice h3 { margin-top: 0; }
+.production-reason { font-weight: 600; }
+details { margin-top: 16px; }
+summary { cursor: pointer; font-weight: 600; }
+li { margin: 12px 0; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: var(--gcsp-text-muted); }
+:focus-visible { outline: 3px solid var(--gcsp-focus, var(--gcsp-accent)); outline-offset: 3px; }
+@media (max-width: 640px) { .production-request, .production-empty { padding: 16px; } .request-heading { align-items: flex-start; flex-direction: column; } }

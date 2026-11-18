@@ -6319,15 +6319,38 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-448",
-      "observed_at": "2026-11-17T19:53:14Z",
+      "observed_at": "2026-11-18T17:25:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Show Greg's demand and preview/publish controls",
       "type": "Story",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-448",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "slices": [
+        {
+          "id": "frontend-core",
+          "status": "complete",
+          "title": "Bearer transport, faithful demand/policy projections and scoped store",
+          "observed_at": "2026-11-16T16:12:13.497008+00:00",
+          "evidence": "31 distinct passing checks with matching inputs: a02 projection9/store12 (wrapper failed from client fixture); a03 client10 strict pass. No combined31-run. Production/core specs unchanged at final runtime3d5a57c59. Failed attempts retained; see delivery record."
+        },
+        {
+          "id": "frontend-screens",
+          "status": "complete",
+          "title": "Demand and policy Angular screens with current-version controls",
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "0bac934cf: preview fit accepts Java score/100 unit; Greg specs 51/51 (6 files)"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Java connected preview/publication, pinned offers and affected experience development gates",
+          "observed_at": "2026-11-18T17:25:00Z",
+          "evidence": "9b3e2590b connected proof vs Java+PG17+local OIDC+Chrome: 9/9 scenarios, 82/82 checks: preview-ready DOM equals API, UI publish 200 active, offer terms pinned, 400 unknown, 409 stale publish/preview, stale UI explicit"
+        }
+      ]
     },
     {
       "assignee": "Gary Carter",

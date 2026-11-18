@@ -175,7 +175,8 @@ final class PolicyPublication {
                         "Patch an existing entry field; identifiers and effective dates are immutable."), null, null, null);
             }
             if (patch.has("value") && !validValue(patch.get("value"), row.get("value"))
-                    && !validPreferenceWeightAdoption(table, key, patch, row.get("value"))) {
+                    && !validPreferenceWeightAdoption(table, key, patch, row.get("value"))
+                    && !validPreferenceWeightChange(table, key, patch, row.get("value"))) {
                 return new Published(PolicyBodies.invalid("changes.value",
                         "Preserve the existing value type and shape, with finite nonnegative numbers."), null, null, null);
             }
@@ -310,6 +311,37 @@ final class PolicyPublication {
             String name = names.next();
             JsonNode weight = weights.get(name);
             if (weight == null || !safeInteger(weight) || weight.doubleValue() < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** A later weight publish may change only existing preferenceWeights entries, each a safe integer >= 0. */
+    static boolean validPreferenceWeightChange(String table, String key, ObjectNode patch, JsonNode previous) {
+        if (!"assumptions".equals(table) || !"employee.recommendation.v1".equals(key) || previous == null
+                || !previous.isObject() || !object(previous.get("preferenceWeights"))) {
+            return false;
+        }
+        JsonNode value = patch.get("value");
+        if (value == null || !value.isObject()) {
+            return false;
+        }
+        ObjectNode retained = ((ObjectNode) value).deepCopy();
+        retained.remove("preferenceWeights");
+        ObjectNode kept = ((ObjectNode) previous).deepCopy();
+        kept.remove("preferenceWeights");
+        JsonNode weights = value.get("preferenceWeights");
+        JsonNode before = previous.get("preferenceWeights");
+        if (!PolicyDigest.of(retained).equals(PolicyDigest.of(kept)) || !object(weights) || weights.size() != before.size()) {
+            return false;
+        }
+        Iterator<String> names = before.fieldNames();
+        while (names.hasNext()) {
+            String name = names.next();
+            JsonNode weight = weights.get(name);
+            boolean unchanged = weight != null && PolicyDigest.of(weight).equals(PolicyDigest.of(before.get(name)));
+            if (weight == null || !(unchanged || (safeInteger(weight) && weight.doubleValue() >= 0))) {
                 return false;
             }
         }
