@@ -2648,3 +2648,11 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 04:34 UTC · Gary Codex · DL-20261117-GCC-013 · Output parsing and bounded read recovery
 
 - Resume again clipped oversized combined history/directive reads; recovered exact required contracts/scalars in bounded reads before decisions. Missing glob patterns were corrected with rg file discovery. F524 attachment upload succeeded but curl progress mixed with JSON defeated whole-output parsing, then trailing text defeated substring parsing. Retained second raw response locally and decoded the first balanced JSON object; verified exactly one new Jira attachment937963 and finaldescription/nativeLowToDo readback. First staged upload was not attached; no signed command/URL retained or printed. Proposed producer improvement: separate command stdout/stderr and structured JSON transport. No omitted output supplies acceptance evidence, extra product test or approval gate.
+
+### 2026-11-18 04:35 UTC · Russell Codex · DL-20261117-GCC-009 · All isolated Node outcomes now classified
+
+- All45canonical failing modules completed once alone (690tests/120fail), cleanup independently verified. Sulley traced every row; root verified45logs/modules and83sourcefiles against immutableGitblobs.114reporterblocks reconcile to120finalfail through nested lifecycle reporting. Source-backed stale assertions, distinct dual-role lifecycle selection, copied CLI dependency/buildFilter gaps and memory/live-region uncertainties remain separate. Existing Bug matches are reused, original F483 scope stays partial, and missing native intake is explicit. Proposed improvement: preserve final counters and nested reporter relationships separately from root-cause counts; emit bounded per-module disposition facts. No unchanged tests rerun for reporting.
+
+### 2026-11-18 04:35 UTC · Russell Codex · DL-20261117-GCC-013 · Resume read clipping recovered
+
+- Combined resume skill/document reads again exceeded the output budget. Required binding passages, receipt scalars and exact source facts were recovered with producer-bounded projections before subsequent decisions; omitted text supplied no evidence. The aggregate producer-budget improvement remains proposed/unresolved. No additional product validation or approval gate was introduced.
