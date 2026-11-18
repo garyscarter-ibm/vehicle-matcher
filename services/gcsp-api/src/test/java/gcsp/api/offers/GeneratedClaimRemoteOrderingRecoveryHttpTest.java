@@ -295,6 +295,7 @@ class GeneratedClaimRemoteOrderingRecoveryHttpTest {
         ObjectNode body = JSON.createObjectNode().put("commandId", COMMAND).put("decision", "accept")
                 .put("expectedOfferVersion", offerVersion).put("expectedHoldVersion", holdVersion)
                 .put("termsDigest", termsDigest).put("expectedReturnMileage", 5400);
+        body.put("runId", "run-1").put("expectedQuoteVersion", 1);
         body.putObject("declarations").put("terms", true).put("driver", true).put("return", true);
         return body;
     }
