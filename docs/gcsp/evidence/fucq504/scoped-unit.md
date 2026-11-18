@@ -46,4 +46,4 @@ Exact tested stock inputs:
 
 The ignored raw `scoped-unit.json` remains local, SHA256 `8f33e94283a3a2b6f0c32573fd6d6f64a72db0416f57c848b2dbfdb1199b411f`. The shared impact-map entry is keyed by the aggregate tested stock-input identity. The targeted selector dry-run accepted the explicit supervisor command; no full-suite stamp is claimed.
 
-Partial checkpoint: actual rendered desktop/390px state/recovery proof and independent substantive visual review remain outstanding. No Java/OIDC/hosted/native acceptance, OneDrive/CloudStorage or foreground proof is claimed.
+Follow-up: `rendered.md` records passing actual Angular deterministic-envelope desktop/390px state/recovery proof. Independent substantive visual review remains outstanding. No Java/OIDC/hosted/native acceptance, OneDrive/CloudStorage or foreground proof is claimed.
