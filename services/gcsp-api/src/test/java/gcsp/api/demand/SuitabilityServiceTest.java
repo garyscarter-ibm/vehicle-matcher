@@ -12,8 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Clock;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +97,7 @@ class SuitabilityServiceTest {
     }
 
     private static SuitabilityService with(DemandFixture f, DemandPolicyPort policy, AllocationRecordsPort records) throws Exception {
-        return new SuitabilityService(f.pool(), policy, records, Clock.fixed(DemandFixture.NOW, ZoneOffset.UTC));
+        return new SuitabilityService(f.pool(), policy, records, f.clock);
     }
 
     /** One buddy, one released car: the shape most scenarios start from. */
@@ -491,7 +489,7 @@ class SuitabilityServiceTest {
             AtomicInteger statements = new AtomicInteger();
             SuitabilityService s = with(f, f.policy, f.records);
             SuitabilityService counted = new SuitabilityService(counting(f.pool(), statements), f.policy, f.records,
-                    Clock.fixed(DemandFixture.NOW, ZoneOffset.UTC));
+                    f.clock);
             assertNotNull(value(counted.read(DemandFixture.SCOPE, 1, 1, "all")));
             int small = statements.get();
             String[] more = new String[360];
@@ -528,5 +526,22 @@ class SuitabilityServiceTest {
                 }
             });
         });
+    }
+
+    @Test
+    void aMissingRunClockIsUnavailableAndAChangedClockIsRetriedOnce() throws Exception {
+        try (DemandFixture f = DemandFixture.create()) {
+            f.clock.current = java.util.Optional.empty();
+            assertEquals("suitability-unavailable", unavailable(f.suitability().read(DemandFixture.SCOPE, 1, 1, "all")));
+            f.clock.current = java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 1));
+            f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 1)));
+            f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 2)));
+            assertNotNull(value(f.suitability().read(DemandFixture.SCOPE, 1, 1, "all")));
+            for (int i = 0; i < 2; i++) {
+                f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 3 + 2 * i)));
+                f.clock.queued.add(java.util.Optional.of(new gcsp.api.clock.ClockReading(DemandFixture.NOW, 4 + 2 * i)));
+            }
+            assertEquals("suitability-unavailable", unavailable(f.suitability().read(DemandFixture.SCOPE, 1, 1, "all")));
+        }
     }
 }

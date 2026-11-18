@@ -62,6 +62,11 @@ public final class SyntheticAppointments implements AppointmentProvider {
                 yield at == null || proposed == null ? INVALID : record(op, new ProviderAnswer.Scheduled(op.operationId(),
                         op.orderUuid(), "accept", proposed, reference(op), at));
             }
+            case "no-show" -> {
+                Instant at = Iso.parse(p.path("noShowAt").asText(null));
+                yield at == null ? INVALID : record(op, new ProviderAnswer.NoShow(op.operationId(), op.orderUuid(),
+                        "no-show", op.slot(), reference(op), at));
+            }
             default -> {
                 Instant at = Iso.parse(p.path("completedAt").asText(null));
                 yield at == null ? INVALID : record(op, new ProviderAnswer.Completed(op.operationId(), op.orderUuid(),

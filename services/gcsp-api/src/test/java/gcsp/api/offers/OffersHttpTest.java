@@ -58,9 +58,34 @@ class OffersHttpTest {
     }
 
     private static void put(String id, String employee, String state, String hold, Instant expires, Instant created) {
+        put(id, employee, state, hold, expires, created, quote(created, expires));
+    }
+
+    private static void put(String id, String employee, String state, String hold, Instant expires, Instant created,
+            com.fasterxml.jackson.databind.JsonNode pinnedQuote) {
+        // This lightweight route fixture has an expired quote; the native-PG OfferLinkHttpTest owns eligible handoff proof.
         OffersTestPorts.OFFERS.put(id, new OfferRecord(id, employee, "buddy-hold:" + HEX_A, hold, "buddy-quote:" + HEX_A,
-                "order-1", "config-1", state, expires, 4, 2, created, "policy-1", "brief-1", created.minusSeconds(5),
-                expires, 350, "MINI Cooper", "/img/mini.jpg", "eligible"));
+                "order-1", "config-1", state, expires, 4, 2, created, "policy-1", "1", created.minusSeconds(5),
+                created.minusSeconds(1), 350, "MINI Cooper", "/img/mini.jpg", "eligible",
+                new OfferRecords.Projection(OffersTestProfile.RUN, "slot-1", "1", pinnedQuote, "1234567", null)));
+    }
+
+    private static com.fasterxml.jackson.databind.JsonNode quote(Instant created, Instant expires) {
+        var f = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance;
+        var q = f.objectNode().put("gateStatus", "eligible");
+        var snapshot = q.putObject("snapshot").put("contractVersion", "vehicle-snapshot-v1")
+                .put("identityKind", "exact-stock").put("candidateKey", "stock:order-1").put("sourceNamespace", "test")
+                .put("snapshotVersion", "1").put("observedAt", created.toString());
+        snapshot.putObject("sourceKeys").put("stockId", "order-1");
+        snapshot.putObject("display").put("name", "MINI Cooper").put("photo", "/img/mini.jpg").putArray("images");
+        snapshot.putObject("facts");
+        var t = q.putObject("terms").put("kind", "employee-scheme").put("termsVersion", "1")
+                .put("validFrom", created.toString()).put("validUntil", expires.toString());
+        t.putObject("points").put("value", 350).put("unit", "points");
+        t.putObject("allowanceInputs").putObject("allowance").put("value", 500).put("unit", "points");
+        t.putObject("provenance").put("sourceRef", "test-policy").put("observedAt", created.toString())
+                .put("version", "1").put("assurance", "synthetic-scenario");
+        return q;
     }
 
     private String token(String subject, String role) throws Exception {
@@ -102,11 +127,23 @@ class OffersHttpTest {
         get(ownerToken(), "/" + MINE).statusCode(200).body("status", equalTo("ok"))
                 .body("value.offerId", equalTo(MINE)).body("value.state", equalTo("pending"))
                 .body("value.reason", equalTo("awaiting-decision"))
-                .body("value.availableActions", hasSize(2)).body("value.quote.vehicleName", equalTo("MINI Cooper"))
+                .body("value.availableActions", hasSize(1)).body("value.quote.facts.display.name", equalTo("MINI Cooper"))
                 .body("value.offerVersion", equalTo(4)).body("value.schemaVersion", equalTo(1))
                 .body("value.holdId", org.hamcrest.Matchers.nullValue())
                 .body("value.employeeId", org.hamcrest.Matchers.nullValue())
                 .header("Cache-Control", "no-store").header("Referrer-Policy", "no-referrer");
+    }
+
+    @Test
+    void missingOrMalformedPinnedFactsDoNotFallBackToACompactOffer() throws Exception {
+        Instant now = Instant.now();
+        for (var pinnedQuote : new com.fasterxml.jackson.databind.JsonNode[] { null,
+                com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode() }) {
+            put(MINE, "E-1001", "active", "active", now.plusSeconds(3600), now.minusSeconds(10), pinnedQuote);
+            get(ownerToken(), "/" + MINE).statusCode(503).body("code", equalTo("offer-state-inconsistent"))
+                    .body("value", org.hamcrest.Matchers.nullValue()).body("retryable", equalTo(false))
+                    .header("Cache-Control", "no-store");
+        }
     }
 
     @Test
@@ -158,6 +195,8 @@ class OffersHttpTest {
     void queryParametersAreRefused() throws Exception {
         get(ownerToken(), "/" + MINE + "?token=abc").statusCode(400).body("code", equalTo("unsupported-query"));
         get(ownerToken(), "/current?employeeId=E-1002").statusCode(400).body("code", equalTo("unsupported-query"));
+        get(ownerToken(), "/" + MINE + "?runId=" + OffersTestProfile.RUN).statusCode(200).body("value.offerId", equalTo(MINE));
+        get(ownerToken(), "/" + MINE + "?runId=other").statusCode(409).body("status", equalTo("stale-run"));
     }
 
     @Test
@@ -174,7 +213,7 @@ class OffersHttpTest {
     }
 
     private static String declineBody(String reason, int offerVersion, int holdVersion) {
-        return "{\"commandId\":\"cmd-1\",\"decision\":\"decline\",\"reasonCode\":\"" + reason
+        return "{\"commandId\":\"cmd-1\",\"runId\":\"run-1\",\"expectedQuoteVersion\":1,\"decision\":\"decline\",\"reasonCode\":\"" + reason
                 + "\",\"expectedOfferVersion\":" + offerVersion + ",\"expectedHoldVersion\":" + holdVersion + "}";
     }
 
@@ -195,7 +234,7 @@ class OffersHttpTest {
         post(ownerToken(), path, "[]").statusCode(400).body("code", equalTo("invalid-offer-decision"));
         post(ownerToken(), path, "{\"commandId\":\"c\",\"decision\":\"decline\"}").statusCode(400)
                 .body("code", equalTo("invalid-offer-decision"));
-        post(ownerToken(), path, declineBody("size", 4, 2).replace("}", ",\"runId\":\"r\"}")).statusCode(400)
+        post(ownerToken(), path, declineBody("size", 4, 2).replace("}", ",\"unexpected\":true}")).statusCode(400)
                 .body("code", equalTo("invalid-offer-decision"));
         post(ownerToken(), path, "x".repeat(17000)).statusCode(400).body("code", equalTo("invalid-offer-decision"));
     }

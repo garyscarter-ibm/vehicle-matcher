@@ -18,6 +18,6 @@ public class PersistenceProfile implements QuarkusTestProfile {
                 "quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", "gcsp_app",
                 "quarkus.flyway.schemas", "gcsp_app",
                 "gcsp.environment-id", "test-app-env",
-                "gcsp.database.expected-name", "gcsp_test_dev");
+                "gcsp.database.expected-name", PersistenceDevCompositionProfile.databaseName(URL));
     }
 }

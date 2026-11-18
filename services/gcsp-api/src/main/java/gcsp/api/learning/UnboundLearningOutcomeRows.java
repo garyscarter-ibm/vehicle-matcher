@@ -4,7 +4,7 @@ import io.quarkus.arc.DefaultBean;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.sql.Connection;
 
-/** Default binding: no outcome producer is merged, so every outcome stays unknown. Any other LearningOutcomeRows bean replaces it. */
+/** Empty fallback for isolated/unbound compositions; the production PostgreSQL adapter replaces this default bean. */
 @DefaultBean
 @ApplicationScoped
 public class UnboundLearningOutcomeRows implements LearningOutcomeRows {

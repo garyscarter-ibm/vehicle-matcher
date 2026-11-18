@@ -144,9 +144,11 @@ public final class BriefService {
             initial.set("buddy", Engagement.view(r.initial(), buddy, rules, facts));
             initial.putObject("consent").put("search", flag(buddy, "searchConsent")).put("hold", flag(buddy, "holdConsent"));
             ObjectNode out = Json.obj();
-            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS)));
+            String contextVersion = AccountEditor.contextVersion(scope, facts);
+            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS), contextVersion));
             out.set("initial", initial);
-            out.putObject("versions").put("policy", scope.policyVersion()).put("facts", facts.get().factsVersion());
+            out.putObject("versions").put("policy", scope.policyVersion()).put("context", contextVersion)
+                    .put("facts", AccountEditor.factsVersion(facts)).put("clock", AccountEditor.clockVersion(facts));
             if (accepted.isPresent() && s.current() != null) {
                 ObjectNode sel = out.putObject("selection").put("state", "accepted");
                 if (accepted.get().briefVersion() == null) sel.putNull("briefVersion");
@@ -329,7 +331,19 @@ public final class BriefService {
                 || consent.get("search").booleanValue() != consent.get("hold").booleanValue())) {
             return Refusal.invalid("invalid-command", "consent", "Engage or disengage Buddy as one function.");
         }
-        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s));
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, true));
+    }
+
+    /** Node's internal confirm with no editor gate (the comparison replay): consent as given, no Account minimum. */
+    public BriefResult confirmWithoutGate(BriefScope scope, JsonNode input) {
+        Refusal bad = envelope(input, false, "consent");
+        if (bad != null) return bad;
+        JsonNode consent = input.get("consent");
+        if (consent != null && (!only(consent, "search", "hold") || !consent.path("search").isBoolean()
+                || !consent.path("hold").isBoolean())) {
+            return Refusal.invalid("invalid-command", "consent", "Explicitly choose search and hold permission independently.");
+        }
+        return command(scope, Kind.CONFIRM, input, (tx, c, s) -> confirmWork(tx, c, s, false));
     }
 
     /**
@@ -356,6 +370,33 @@ public final class BriefService {
 
     public BriefResult disengage(BriefScope scope, JsonNode input) {
         return simple(scope, Kind.DISENGAGE, input);
+    }
+
+    /** The Node /pause alias: disengage at the versions the editor read reports, after checking the caller's brief version. */
+    public BriefResult legacyPause(BriefScope scope, JsonNode input) {
+        return legacy(scope, input, false);
+    }
+
+    /** The Node /resume alias: engage, with the same version check as the pause alias. */
+    public BriefResult legacyResume(BriefScope scope, JsonNode input) {
+        return legacy(scope, input, true);
+    }
+
+    private BriefResult legacy(BriefScope scope, JsonNode input, boolean engage) {
+        JsonNode id = input == null ? null : input.get("commandId");
+        if (!only(input, "commandId", "expectedBriefVersion") || id == null || !id.isTextual() || id.asText().isBlank()
+                || !Json.revision(input.get("expectedBriefVersion"))) {
+            return Refusal.invalid("invalid-command", "command", "Supply a command ID and the expected brief version.");
+        }
+        BriefResult read = readEditor(scope);
+        if (!(read instanceof BriefResult.Ok ok)) return read;
+        JsonNode initial = ok.value().get("initial");
+        long brief = initial.get("briefVersion").longValue();
+        long expected = input.get("expectedBriefVersion").longValue();
+        if (expected != brief) return Refusal.staleVersion("brief", expected, brief);
+        ObjectNode forwarded = ((ObjectNode) input).deepCopy();
+        forwarded.put("expectedDraftVersion", initial.get("draftVersion").longValue());
+        return engage ? engage(scope, forwarded) : disengage(scope, forwarded);
     }
 
     public BriefResult pauseSearch(BriefScope scope, JsonNode input) {
@@ -559,7 +600,7 @@ public final class BriefService {
         return Refusal.conflict(code, reason, extra);
     }
 
-    private JsonNode confirmWork(Tx tx, Ctx c, State s) throws SQLException {
+    private JsonNode confirmWork(Tx tx, Ctx c, State s, boolean gated) throws SQLException {
         if (s.draft() == null && s.current() == null) throw new Refused(Refusal.notFound("brief-draft"));
         readOnlyCheck(c, s);
         Resolved r = resolve(tx.connection(), c.scope(), c.rules(), s, false);
@@ -569,7 +610,7 @@ public final class BriefService {
         JsonNode consent = c.input().get("consent");
         boolean search = consent != null && consent.get("search").booleanValue();
         boolean hold = consent != null && consent.get("hold").booleanValue();
-        if (search) {
+        if (search && gated) {
             PolicyRules.Grants grants = c.rules().engagement();
             if (!gate.ok()) throw new Refused(Engagement.refusal(gate));
             search = grants.search();

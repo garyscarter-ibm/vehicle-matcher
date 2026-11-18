@@ -32,6 +32,8 @@ const offerStates: Readonly<Record<string, string>> = Object.freeze({
   rejected: 'Declined',
   declined: 'Declined',
   expired: 'Expired',
+  superseded: 'Offer replaced',
+  released: 'Released',
 });
 
 export const offerStateLabel = (state: string): string => offerStates[state] ?? 'Status unavailable';
@@ -80,7 +82,7 @@ function needPhrase({ essential, requirement }: ActivityExclusion): string | nul
   }
 }
 
-const closedOffers = new Set(['rejected', 'declined', 'expired']);
+const closedOffers = new Set(['rejected', 'declined', 'expired', 'superseded', 'released']);
 
 export function exclusionLines(value: ActivityProjection, paused: boolean): readonly string[] {
   const check = value.lastSuccessfulCheck;

@@ -30,6 +30,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 class BriefHttpTest {
 
     private static final String BASE = "/api/gcsp/v1/brief";
+    /** Unique per JVM: the decisions table keeps rows from earlier runs of the shared database. */
+    private static final String DECLINE = "http-decline-" + Long.toHexString(System.nanoTime());
 
     @Inject
     Persistence persistence;
@@ -155,7 +157,7 @@ class BriefHttpTest {
         post("/engage", "{\"commandId\":\"x\"}").then().statusCode(400).body("code", equalTo("invalid-command"));
         post("/engage", command("with-authority", 0, 0, "\"employeeId\":\"someone-else\"")).then().statusCode(400)
                 .body("code", equalTo("invalid-command"));
-        for (String gone : new String[] {"/pause", "/resume", "/nothing"}) {
+        for (String gone : new String[] {"/nothing"}) {
             as().get(BASE + gone).then().statusCode(404).contentType(containsString("application/json"))
                     .body("code", equalTo("route-not-found"));
             post(gone, "{}").then().statusCode(404).body("code", equalTo("route-not-found"));
@@ -233,7 +235,7 @@ class BriefHttpTest {
     @Order(9)
     void changeAfterDeclineRefusesBadRequestsAndRecordsOneChangeWithTheAngularShape() throws Exception {
         int brief = version("briefVersion");
-        String body = "{\"commandId\":\"http-d0\",\"expectedBriefVersion\":" + brief + ",\"decisionId\":\"http-decline\","
+        String body = "{\"commandId\":\"http-d0\",\"expectedBriefVersion\":" + brief + ",\"decisionId\":\"" + DECLINE + "\","
                 + "\"change\":{\"path\":\"preferences.body.value\",\"value\":\"suv\"}}";
         assertTrue(PreviewShapes.declineRequest(Json.M.readTree(body)));
         post("/change-after-decline", "{}").then().statusCode(400).body("code", equalTo("invalid-command"));
@@ -245,10 +247,10 @@ class BriefHttpTest {
                 .body("resourceType", equalTo("decisions"));
         post("/change-after-decline", body.replace("http-d0", "http-d5").replace("\"expectedBriefVersion\":" + brief, "\"expectedBriefVersion\":" + (brief + 5)))
                 .then().statusCode(409).body("code", equalTo("stale-version")).body("currentVersion", equalTo(brief));
-        recordDecline("http-decline");
+        recordDecline(DECLINE);
         Response ok = post("/change-after-decline", body);
         ok.then().statusCode(200).body("status", equalTo("ok")).body("value.brief.briefVersion", equalTo(brief + 1))
-                .body("value.brief.postDeclineChange.decisionId", equalTo("http-decline"))
+                .body("value.brief.postDeclineChange.decisionId", equalTo(DECLINE))
                 .body("value.event.operation", equalTo("changed-after-decline"));
         assertTrue(PreviewShapes.currentValue(Json.M.valueToTree(ok.jsonPath().getMap("value"))));
         post("/change-after-decline", body).then().statusCode(200).body("replayed", equalTo(true));
@@ -257,5 +259,41 @@ class BriefHttpTest {
                 .body("code", equalTo("decline-change-already-recorded")).body("current.briefVersion", equalTo(brief + 1));
         as().contentType(ContentType.JSON).queryParam("x", "1").body(body).post(BASE + "/change-after-decline").then()
                 .statusCode(400).body("code", equalTo("unsupported-query"));
+    }
+
+    @Test
+    @Order(10)
+    void legacyPauseAndResumeAreTheDisengageAndEngageAliases() {
+        int brief = version("briefVersion");
+        String two = "\"changes\":{\"comfort\":{\"value\":50},\"economy\":{\"value\":50},\"size\":{\"value\":50}}";
+        post("/preferences", command("leg-p", brief, version("draftVersion"), two)).then().statusCode(200);
+        post("/engage", command("leg-e", brief, version("draftVersion"), "")).then().statusCode(200);
+        brief = version("briefVersion");
+        String ok = "{\"commandId\":\"leg-pause\",\"expectedBriefVersion\":" + brief + "}";
+        int draftBefore = version("draftVersion");
+        Response paused = post("/pause", ok);
+        paused.then().statusCode(200).body("value.operation", equalTo("disengaged")).body("value.buddy.state", equalTo("disengaged"));
+        assertEquals(brief + 1, version("briefVersion"));
+        // As in Node the alias checks the brief version first, so a late replay is stale; the receipt itself replays.
+        post("/pause", ok).then().statusCode(409).body("code", equalTo("stale-version"));
+        Response replay = post("/disengage", command("leg-pause", brief, draftBefore, ""));
+        replay.then().statusCode(200).body("replayed", equalTo(true));
+        assertEquals(paused.jsonPath().getMap("value"), replay.jsonPath().getMap("value"));
+        assertEquals(brief + 1, version("briefVersion"));
+
+        brief = version("briefVersion");
+        int draft = version("draftVersion");
+        post("/resume", "{\"commandId\":\"leg-stale\",\"expectedBriefVersion\":" + (brief + 3) + "}").then().statusCode(409)
+                .body("code", equalTo("stale-version")).body("action", equalTo("refresh")).body("currentVersion", equalTo(brief));
+        post("/resume", "{\"commandId\":\"leg-extra\",\"expectedBriefVersion\":" + brief + ",\"expectedDraftVersion\":" + draft + "}")
+                .then().statusCode(400).body("code", equalTo("invalid-command"));
+        post("/resume", "{\"commandId\":\" \",\"expectedBriefVersion\":" + brief + "}").then().statusCode(400)
+                .body("code", equalTo("invalid-command"));
+        as().contentType(ContentType.JSON).queryParam("x", "1").body(ok).post(BASE + "/pause").then().statusCode(400)
+                .body("code", equalTo("invalid-command"));
+        assertEquals(brief, version("briefVersion"));
+        post("/resume", "{\"commandId\":\"leg-resume\",\"expectedBriefVersion\":" + brief + "}").then().statusCode(200)
+                .body("value.operation", equalTo("engaged")).body("value.buddy.state", equalTo("engaged"));
+        assertEquals(brief + 1, version("briefVersion"));
     }
 }

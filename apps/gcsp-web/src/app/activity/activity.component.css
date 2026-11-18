@@ -21,6 +21,7 @@
 .activity-image-controls [aria-pressed="true"] { background: var(--gcsp-accent-soft); }
 .activity-offer-name { margin: 0 0 var(--gcsp-space-4); overflow-wrap: anywhere; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
 .activity-offer-state, .activity-offer-deadline { margin: 0 0 var(--gcsp-space-3); color: var(--gcsp-text-muted); }
+.activity-offer-details a.gcsp-button, .activity-offer-details a.gcsp-button:hover { color: var(--gcsp-on-accent); }
 .activity-checks { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2) var(--gcsp-space-6); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
 .activity-checks p, .activity-exclusions p, .activity-timeline p { margin: 0; }
 .activity-exclusions { display: grid; gap: var(--gcsp-space-3); color: var(--gcsp-text-muted); }

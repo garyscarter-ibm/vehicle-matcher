@@ -10,6 +10,9 @@ import gcsp.api.auth.Access;
 import gcsp.api.auth.BearerAuthentication;
 import gcsp.api.auth.Role;
 import gcsp.api.identity.Principal;
+import gcsp.api.learning.LearnedDemandForecast;
+import gcsp.api.learning.LearnedPlanView;
+import gcsp.api.learning.LearningSelection;
 import gcsp.api.policy.PolicyService;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
@@ -24,10 +27,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
-/**
- * Greg's order plan: read it from current demand and supply, or preview edited constraints. Neither route writes.
- * The run and actor come from the bearer only; submission is a later story.
- */
+/** Greg's read and preview from trusted demand and supply; bearer authority scopes both read-only routes. */
 @Path("/api/gcsp/v1/greg/order-plan")
 @Produces(MediaType.APPLICATION_JSON)
 @Blocking
@@ -56,6 +56,9 @@ public class GregOrderPlanResource {
     @Inject
     SubmissionHistory history;
 
+    @Inject
+    LearningSelection learning;
+
     @GET
     public Response read(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             @HeaderParam(HttpHeaders.CONTENT_LENGTH) String length, @HeaderParam("Transfer-Encoding") String encoding) {
@@ -82,7 +85,8 @@ public class GregOrderPlanResource {
     }
 
     private OrderPlanOperations operations() {
-        return new OrderPlanOperations(policy, demand, supply, clock, history);
+        return new OrderPlanOperations(policy, demand, supply, clock, history,
+                new LearnedPlanView(under -> new LearnedDemandForecast(under, learning.artifacts())));
     }
 
     private Principal greg(String authorization) {

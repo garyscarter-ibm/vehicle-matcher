@@ -1,0 +1,29 @@
+{
+  "file" : "09-preferences-stale.json",
+  "step" : "preferences-stale",
+  "method" : "POST",
+  "path" : "/brief/preferences",
+  "request" : {
+    "commandId" : "golden-stale-1",
+    "expectedBriefVersion" : 1,
+    "expectedDraftVersion" : 2,
+    "changes" : {
+      "size" : {
+        "value" : 100
+      }
+    }
+  },
+  "status" : 409,
+  "body" : {
+    "status" : "stale-version",
+    "code" : "stale-version",
+    "reason" : "The brief changed since it was read. Refresh and try again.",
+    "retryable" : false,
+    "expectedVersion" : 1,
+    "currentVersion" : 2,
+    "action" : "refresh",
+    "resource" : {
+      "table" : "briefs"
+    }
+  }
+}
