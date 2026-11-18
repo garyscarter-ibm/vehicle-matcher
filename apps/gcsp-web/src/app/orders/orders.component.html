@@ -107,7 +107,7 @@
               <p class="order-state">{{ words(r.state || 'Not planned') }}</p>
               <gcsp-fact-list [rows]="[{ label: 'Car to return', value: fact(r.currentCar, 'model') }, { label: 'Return place', value: fact(r['location'], 'label') }]" />
               @if (r.scheduled) { <p>Return booked: {{ time(r['slot'] && fact(r['slot'], 'start')) }}</p> }
-              @else if (r.proposedSlot) { <p>New time proposed: {{ slot(r.proposedSlot) }}. Not booked yet.</p> }
+              @else if (r.state === 'return-requested' && r.appointment?.state === 'change-proposed' && r.proposedSlot) { <p>New time proposed: {{ slot(r.proposedSlot) }}. Not booked yet.</p> }
               @else if (r.state === 'return-requested') { <p>Return requested. Not booked yet.</p> }
               @if (r.pending) { <p class="order-attention">Waiting for confirmation of your last update.</p> }
               @if (r.state === 'returned' || r.state === 'return-missed') { <p>{{ time(fact(r.outcome, 'at')) }}</p> }

@@ -92,6 +92,22 @@ describe('native employee order progress screen', () => {
     const current = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="relationship-title"]')!;
     expect(current.textContent).toContain('SUPPLIEDVIN'); expect(current.textContent).toContain('Returned'); expect(client.execute).not.toHaveBeenCalled();
   });
+  // FUCQ-522: Java keeps proposedSlot as history after acceptance, so a returned plan must not show it as current.
+  const returnPanel = () => (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="return-title"]')!;
+  const proposed = { slotId: 'proposed-slot', start: '2026-11-30T09:00:00Z' };
+  it('shows a completed return with its outcome and no retained proposal as current', async () => {
+    client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), state: 'returned', scheduled: false, proposedSlot: proposed, proposalId: 'old-proposal',
+      appointment: { state: 'scheduled', owner: 'none' }, outcome: { state: 'returned', at: '2026-11-30T09:30:00Z', providerReference: 'RET-REF-1' } }));
+    await render(); const panel = returnPanel().textContent ?? '';
+    expect(returnPanel().querySelector('.order-state')?.textContent).toBe('Returned'); expect(panel).toContain('Return reference: RET-REF-1');
+    expect(panel).not.toContain('New time proposed'); expect(panel).not.toContain('Not booked yet'); expect(button('Accept new return time')).toBeUndefined();
+  });
+  it('still shows an active return proposal as an unbooked proposed time', async () => {
+    client.readReturnPlan.mockResolvedValueOnce(ok({ ...plan(), state: 'return-requested', scheduled: false, proposedSlot: proposed, proposalId: 'live-proposal',
+      appointment: { state: 'change-proposed', owner: 'employee' } }));
+    await render(); const panel = returnPanel().textContent ?? '';
+    expect(panel).toContain('New time proposed:'); expect(panel).toContain('Not booked yet.'); expect(button('Accept new return time')).toBeDefined();
+  });
   it('distinguishes complete empty and exact missing order from unavailable/incomplete reads', async () => {
     client.readOrders.mockResolvedValueOnce(ok({ orders: [], nextAfter: null, failed: [], failedCount: 0, pageEvidence: [] })); await render();
     expect(text()).toContain('No orders to track'); fixture.destroy(); params.next(convertToParamMap({ orderUuid: 'absent' })); await render();
