@@ -48,8 +48,8 @@ const port = (name, fallback) => { const v = Number(process.env[name] ?? fallbac
 const PORTS = { web: port('PROOF_WEB_PORT', 7543), api: port('PROOF_API_PORT', 8543), idp: port('PROOF_IDP_PORT', 9543) };
 const DEADLINE_MS = Number(process.env.PROOF_DEADLINE_SEC ?? 600) * 1000;
 const PROOF_SCOPE = process.env.PROOF_SCOPE ?? 'all';
-if (!['all', 'recovery'].includes(PROOF_SCOPE)) refuse('PROOF_SCOPE must be all or recovery');
-const SELECTED_SCENARIOS = PROOF_SCOPE === 'recovery' ? ['f'] : ['a', 'b', 'c', 'f', 'd', 'e'];
+if (!['all', 'recovery', 'recovery-refusal'].includes(PROOF_SCOPE)) refuse('PROOF_SCOPE must be all, recovery or recovery-refusal');
+const SELECTED_SCENARIOS = PROOF_SCOPE === 'recovery-refusal' ? ['f', 'g'] : PROOF_SCOPE === 'recovery' ? ['f'] : ['a', 'b', 'c', 'f', 'd', 'e'];
 
 const ORIGINS = { web: `https://gcsp-web.localhost:${PORTS.web}`, api: `https://gcsp-api.localhost:${PORTS.api}`, idp: `https://gcsp-idp.localhost:${PORTS.idp}` };
 const ISSUER = `${ORIGINS.idp}/realms/gcsp-local`;
@@ -57,6 +57,10 @@ const API_PATH = '/api/gcsp/v1';
 const API_BASE = `${ORIGINS.api}${API_PATH}`;
 const KID = 'gcsp-local-test-1';
 const TRUST_PASS = 'proof-local-trust';
+const ORDERING_TOKEN = randomBytes(24).toString('hex');
+let orderingMode = 'synthetic';
+const orderingRequests = [];
+const orderingReplies = new Map();
 // The four existing demo-preparation employees share EnvironmentGuard.FIRST_RUN_ID.
 const SUBJECT = 'sub-paula';
 const EMPLOYEE = 'employee-paula';
@@ -89,7 +93,7 @@ const receipt = { schema: 'fucq443-connected-manual-proof/1', story: 'DEV-2026-1
   limitations: [
     'The parent supplies prebuilt production web/API; input hashes do not independently establish their source revision.',
     'The issuer is a local test OIDC provider. Real signed tokens, code/PKCE login and Java bearer verification run; the real hosted identity provider does not.',
-    'Ordering is the labelled synthetic provider in the run-owned schema. Setup SQL seeds stock and renames the synthetic receipts table to simulate a provider outage; the parent owns the schema and its teardown.',
+    'Ordering starts with the labelled synthetic provider in the run-owned schema. Recovery-refusal additionally selects the real remote adapter at process startup against a labelled owned HTTPS rejecting substitute, not a live provider. The parent owns the schema and teardown.',
     'Setup saves complete manual drafts through Java POST /manual/draft. Claims and orders are made by the browser except labelled negative API probes (stale terms/quote, declarations) and idempotency replays. One labelled second-client review-details save creates the stale-review scenario.',
     'Lost response uses CDP Fetch at the response stage: the server answers, then the browser connection is failed. No request or response body is altered.',
     'Hold timers are real (preview 120 s, order review 600 s); a slow run can expire a claim and fail a scenario honestly.',
@@ -186,6 +190,25 @@ function startIdp(tls) {
   const text = (res, code, body, type = 'text/plain') => { res.writeHead(code, { 'Content-Type': `${type}; charset=utf-8`, 'Cache-Control': 'no-store' }); res.end(body); };
   idp.server = createServer({ key: tls.key, cert: tls.cert }, async (req, res) => {
     const url = new URL(req.url, ISSUER);
+    // Labelled HTTPS ordering substitute using the existing FUCQ-481 contract; it rejects every valid execute.
+    if (url.pathname.startsWith('/proof-ordering/')) {
+      const answer = (code, value) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(value)); };
+      if (req.headers.authorization !== `Bearer ${ORDERING_TOKEN}` || orderingRequests.length >= 32) return answer(403, {});
+      let input;
+      if (req.method === 'POST' && url.pathname === '/proof-ordering/execute') {
+        const chunks = []; let size = 0;
+        for await (const chunk of req) { size += chunk.length; if (size > 65536) return answer(413, {}); chunks.push(chunk); }
+        try { input = JSON.parse(Buffer.concat(chunks).toString()); } catch { return answer(400, {}); }
+      } else if (req.method === 'GET' && url.pathname === '/proof-ordering/reconcile') input = Object.fromEntries(url.searchParams);
+      else return answer(405, {});
+      if (!['operationId', 'runId', 'orderUuid'].every((k) => typeof input[k] === 'string' && input[k])) return answer(400, {});
+      const ids = { operationId: input.operationId, runId: input.runId, orderUuid: input.orderUuid };
+      const key = canon(ids); const existing = orderingReplies.get(key);
+      const reply = existing ?? { status: req.method === 'POST' ? 'rejected' : 'not-found', ...ids, fictional: true };
+      if (req.method === 'POST') orderingReplies.set(key, reply);
+      orderingRequests.push({ method: req.method, path: url.pathname, authenticated: true, input, reply, idempotencyKey: req.headers['idempotency-key'] ?? null });
+      return answer(200, reply);
+    }
     const form = async () => { const chunks = []; for await (const ch of req) chunks.push(ch); return new URLSearchParams(Buffer.concat(chunks).toString()); };
     if (req.method === 'OPTIONS') { cors(req, res); res.writeHead(204, req.headers.origin === ORIGINS.web ? { 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,Accept', 'Access-Control-Max-Age': '600' } : {}); return res.end(); }
     if (url.pathname === `${base}/.well-known/openid-configuration`) return json(req, res, 200, meta);
@@ -256,7 +279,8 @@ function apiEnv() {
     GCSP_OIDC_AUDIENCE: 'gcsp-api', GCSP_OIDC_AUTHORIZED_PARTY: 'gcsp-web', GCSP_OIDC_REQUIRED_SCOPES: 'gcsp-api',
     GCSP_OIDC_ACCOUNTS: JSON.stringify(PEOPLE.map((person) => ({ subject: `sub-${person}`, roles: ['employee'], employeeId: `employee-${person}` }))),
     GCSP_ENVIRONMENT_ID: ENVIRONMENT_ID, GCSP_RUN_ID: RUN_ID, GCSP_POLICY_VERSION: POLICY,
-    GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_RESET_ALLOWED: 'true',
+    GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ORDERING_PROVIDER: orderingMode, GCSP_RESET_ALLOWED: 'true',
+    ...(orderingMode === 'remote' ? { GCSP_ORDERING_EXECUTE_URL: `https://127.0.0.1:${PORTS.idp}/proof-ordering/execute`, GCSP_ORDERING_RECONCILE_URL: `https://127.0.0.1:${PORTS.idp}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: ORDERING_TOKEN, GCSP_ORDERING_TIMEOUT: '5s' } : {}),
     GCSP_DATABASE_URL: DB_URL, GCSP_DATABASE_USER: process.env.PROOF_DB_USER ?? 'gcsp', GCSP_EXPECTED_DATABASE: DB_NAME };
 }
 let api = null; let apiStarts = 0;
@@ -910,6 +934,60 @@ async function scenarioF(cdp, s, pages) {
   s.observations.screenshotResumed = await page.shot('f4-restart-narrow-resumed.png');
 }
 
+// AC2 provider refusal: real remote adapter/Java/PG state, driven by a labelled HTTPS substitute rather than a forged browser response.
+async function scenarioG(cdp, s, pages) {
+  const page = pages.jordan;
+  if (!page) throw new Error('Provider-refusal proof requires the completed recovery selection');
+  const snap = await serverState('jordan', { order: false });
+  const before = await dbOrders('jordan');
+  s.checks.noPriorOrder = before.length === 0;
+  const oldProcess = api.identity;
+  await stopApi(); orderingMode = 'remote'; await startApi();
+  s.observations.startup = { provider: orderingMode, actualAdapter: 'HttpOrderingProvider', previous: oldProcess, current: api.identity,
+    executeUrl: `https://127.0.0.1:${PORTS.idp}/proof-ordering/execute`, reconcileUrl: `https://127.0.0.1:${PORTS.idp}/proof-ordering/reconcile`, tokenConfigured: true,
+    label: 'Owned rejecting HTTPS substitute for the agreed remote contract; no live provider' };
+  const reloadMark = page.log.length;
+  await freshDocument(page, 'reload', { ready: `return !!button('Continue reviewing this selection');`, readPath: '/manual/order', readOk: false, what: 'unfinished selection under the real remote ordering adapter' });
+  s.checks.startupAndReentryDidNotSubmit = page.calls(reloadMark).every((r) => r.method === 'GET') && orderingRequests.length === 0;
+  await page.act(`return press('Continue reviewing this selection');`);
+  await page.until(`return !button('Continue reviewing this selection') && declarations().length > 0 && declarations().every((d) => !d.checked && !d.disabled);`, 10000, 'explicit remote-adapter review confirmation');
+  await tickAll(page);
+  const submitMark = page.log.length;
+  await placeOrder(page);
+  const refused = await waitOutcome(page, 'Handoff failed');
+  const orderPosts = posts(page.calls(submitMark), POSTED_ORDER);
+  const server = await call('jordan', 'GET', POSTED_ORDER);
+  const orders = await dbOrders('jordan');
+  s.observations.providerRequests = orderingRequests;
+  s.observations.server = server;
+  s.observations.orders = orders;
+  s.observations.outcome = refused;
+  const executes = orderingRequests.filter((r) => r.method === 'POST');
+  const execute = executes[0]; const row = orders[0];
+  s.checks.realRemoteExecuteReturnedRejected = executes.length === 1 && execute.authenticated === true && execute.reply.status === 'rejected'
+    && execute.input.operationId === row?.operationId && execute.input.orderUuid === CAR.jordan && execute.input.runId === RUN_ID
+    && execute.idempotencyKey === execute.input.idempotencyKey && execute.reply.fictional === true;
+  s.checks.oneBrowserSubmitAndOneDurableRefusal = orderPosts.length === 1 && orderPosts[0].status === 200 && orders.length === 1 && row.state === 'refused';
+  s.checks.refusalRetainsExactSelection = row?.selection?.stock?.orderUuid === CAR.jordan && row.selection.quote?.quoteId === snap.claim.body.value.quote.quoteId
+    && same(row.selection.quote?.terms, snap.claim.body.value.quote.terms)
+    && row.selection.reviewDetails?.reviewDetailsVersion === snap.details.body.value.reviewDetailsVersion
+    && same(row.selection.reviewDetails?.details, snap.details.body.value.details);
+  s.checks.serverTruthIsHandoffFailed = server.status === 200 && server.json?.status === 'ok' && server.json.value?.status === 'refused'
+    && server.json.value.view?.state === 'handoff-failed' && server.json.value.failure?.reason === 'remote-ordering-rejected';
+  const shown = await view(page);
+  s.checks.uiShowsActualRefusalAndSupport = refused.status === 'Your order is saved, but it could not be sent to ordering. Contact scheme support.'
+    && same(refused.stages, stagesOf(server.json.value)) && shown.text.includes('remote-ordering-rejected')
+    && !/Awaiting approval|Your order has reached ordering/.test(shown.text)
+    && (await page.act(`return !!button('Contact scheme support') && !button('Place order');`));
+  s.observations.screenshotRefused = await page.shot('g1-remote-provider-handoff-failed.png');
+  const reentryMark = page.log.length;
+  await freshDocument(page, 'reload', { ready: `return $('#manual-outcome-title')?.textContent.trim() === 'Handoff failed';`, readPath: POSTED_ORDER, what: 'persisted provider refusal' });
+  s.checks.reentryReadsRefusalWithoutAnotherSubmit = page.calls(reentryMark).every((r) => r.method === 'GET')
+    && posts(page.calls(submitMark), POSTED_ORDER).length === 1 && orderingRequests.filter((r) => r.method === 'POST').length === 1
+    && (await dbOrders('jordan')).length === 1;
+  s.observations.screenshotRefusedReentry = await page.shot('g2-remote-refusal-reentry.png');
+}
+
 // AC2 lost response: the POST response is dropped after the server accepted it; the UI never claims confirmation and no resubmission happens.
 async function scenarioD(cdp, s, pages) {
   const page = pages.jordan;
@@ -1024,6 +1102,7 @@ async function main() {
     await scenario('c', 'Missing declarations: blocked in the UI, refused invalid by the server, nothing written', 'AC2', (s) => scenarioC(cdp, s, pages));
   }
   await scenario('f', 'Lost save response and ordinary Java restart: durable details, read-only recovery, explicit keyboard resume', 'AC1+AC2', (s) => scenarioF(cdp, s, pages));
+  if (PROOF_SCOPE === 'recovery-refusal' && receipt.scenarios.f.pass) await scenario('g', 'Real remote provider refusal: durable backend handoff-failed, truthful support display, no repeat submission', 'AC2', (s) => scenarioG(cdp, s, pages));
   if (PROOF_SCOPE === 'all') {
     if (pages.jordan) await scenario('d', 'Lost order response: no invented confirmation, reconcile to the server, one order, no resubmission', 'AC2', (s) => scenarioD(cdp, s, pages));
     if (pages.paula && pages.paulaOrderRequest) await scenario('e', 'Repeat entry and replay: no second order', 'AC2', (s) => scenarioE(cdp, s, pages));
@@ -1049,7 +1128,7 @@ function finish(runError) {
     AC1: { text: 'Claim, review/edit and submission retain the exact car, quoted terms, draft versions and required declarations.', scenarios: ['a', 'b', 'f'], evidence: evidence(['a', 'b', 'f']), closure: 'OPEN: parent review decides' },
     AC2: { text: 'Confirmed, pending, stale and refused submissions display actual backend state. Repeat entry/retry cannot invent confirmation or duplicate a request.', scenarios: ['a', 'b', 'c', 'd', 'e', 'f'], evidence: evidence(['a', 'b', 'c', 'd', 'e', 'f']), closure: 'OPEN: parent review decides' },
     validation: { text: 'Replay claim-to-order against actual Java/nativePG17/signed testOIDC, including stale quotes, declaration failures and lost responses; recovery requires unfinished-order confirmation.', scenarios: ['a', 'b', 'c', 'd', 'e', 'f'], evidence: evidence(['a', 'b', 'c', 'd', 'e', 'f']),
-      note: 'Handoff-failed (refused) is not provoked: the synthetic provider has no rejection path; that state is covered by Java/Angular unit tests only.' } };
+      providerRefusal: { scenario: 'g', evidence: evidence(['g']), boundary: 'Actual remote adapter against owned HTTPS substitute; live providers remain unrun.' } } };
   receipt.overall = SELECTED_SCENARIOS.every(ok) && !runError && !receipt.providerRestoreError && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-manual-proof.json');
   try { writeFileSync(file, `${JSON.stringify(receipt, null, 2)}\n`); } catch (e) { console.error('receipt write failed', e.message); }

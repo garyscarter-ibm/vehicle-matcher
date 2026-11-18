@@ -551,3 +551,17 @@ Mater 3 requested/selected `gpt-6.1-sol/high`, no fallback; own saved desktop ti
 set successfully. No descendant started while all four agent slots were occupied.
 No runtime reservation, database, scratch allocation or OneDrive/CloudStorage
 access occurred for this source checkpoint. Full suite: deferred to batch.
+
+The existing `HttpOrderingProvider` and startup binding make original provider-
+refusal evidence technically ready. A further `PROOF_SCOPE=recovery-refusal`
+selection runs F then G. G restarts the actual API with
+`GCSP_ORDERING_PROVIDER=remote`, execute/reconcile HTTPS URLs on the existing owned
+issuer server, an ephemeral configured bearer token and a five-second timeout.
+The labelled substitute rejects every valid execute through the existing exact-ID
+acknowledgement contract. It does not alter any browser API response. The selected
+checks compare the resulting Java `refused` / `handoff-failed` /
+`remote-ordering-rejected` state, one durable exact-selection row and the rendered
+support outcome, then require read-only reentry with no second browser/provider
+submit. The real external/live provider remains unrun. Pinned syntax checking and
+the existing single-file unresolved-name diagnostic check (TS2304 only) passed;
+this records source validation only. F/G runtime remains unrun at this checkpoint.
