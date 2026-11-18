@@ -2110,3 +2110,14 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Parent queue display clipped despite prior output-bound mitigation. No inventory conclusion used the omitted lines. Recovery captured the complete23037-byte queue locally before displaying selected migration rows/statistics;75waiting/48ready/27held remain a Git observation, not native Jira completeness. Root combined documentation reads also exceeded the intended display budget; the mitigation remains inconsistently applied and unresolved.
 - Proposed framework improvement remains enforcing the combined serialized bound before tool output, including command diagnostics, with complete retained output and explicit selected-field summaries. This is a reporting recovery, not new delivery scope or an acceptance gate. No OneDrive access.
+
+### 2026-11-18 00:16 UTC · Russell Codex · DL-20261118-RG-015 · Result write used launching cwd
+
+- Parent observed a19-line F465 Result addition in the shared checkout while the Story worktree had no Result change. Hugh confirmed one append command omitted its workdir, unlike the adjacent absolute-root evidence writes. The uncommitted shared edit could obstruct dispatcher pulls or leave the Story result out of its branch.
+- Applied and verified correction: move only that exact new block to the owned Story worktree, remove the identical shared addition, preserve earlier history and unrelated changes. Parent subsequently observed the shared Story diff empty and Hugh confirmed the worktree19-line addition. No product/test changes or additional approval round.
+- Proposed framework improvement: derive and assert the intended Story root before every generated Result write; make shared-root mismatch a local pre-write error. This bounded instance is resolved; framework enforcement remains proposed.
+
+### 2026-11-18 00:16 UTC · Russell Codex · DL-20261117-GCC-013 · Prefer semantic output selection
+
+- Sulley reports two more clipped Result/help displays after setting token limits below modest command output; exact required blocks were recovered before judgment. Capturing the whole command output to an owned file/string and displaying semantic selected lines avoids relying on line-count guesses. Parent used that recovery for the queue. This improves the mitigation; repeated clipping remains an unresolved framework issue.
+- F476's added pending-provenance regression initially hit a terminal-hold setup guard because it ran after acceptance; the lead moved the rolled-back read proof before the decision, then observed the expected missing-provenance failure and green correction. Retain both failed setup and actual regression in the evidence; no extra acceptance scope or covering-batch claim follows.
