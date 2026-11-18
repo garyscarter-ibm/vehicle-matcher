@@ -56,7 +56,7 @@ for (const row of cases) {
   verified.push({ case: row.case, state: parsed.state ?? parsed.status,
     orderingState: parsed.selection?.operationState ?? null, identityMatched: true });
 }
-for (const name of ['accepted', 'declined', 'pending', 'refused', 'reconciled', 'remote-pending']) {
+for (const name of ['accepted', 'declined', 'pending', 'refused', 'reconciled', 'remote-pending', 'retained-policy']) {
   assert.ok(verified.some(row => row.case === name), `missing actual response: ${name}`);
 }
 console.log(JSON.stringify({ status: 'PASS', consumer: path.relative(root, sourcePath),

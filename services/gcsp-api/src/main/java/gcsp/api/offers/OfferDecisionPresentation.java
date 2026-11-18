@@ -56,7 +56,7 @@ final class OfferDecisionPresentation {
         out.putArray("availableActions");
         out.set("operationId", decision.hasNonNull("operationId") ? decision.get("operationId") : F.nullNode());
         if ("accepted".equals(state)) {
-            ObjectNode selection = selection(c, p, facts, decision.path("operationId").asText(null));
+            JsonNode selection = selection(c, p, facts, decision.path("operationId").asText(null));
             if (selection == null) return null;
             out.set("selection", selection);
         }
@@ -67,7 +67,7 @@ final class OfferDecisionPresentation {
             String employeeId, String slotId, String orderUuid, String policyVersion) {}
 
     /** Read only the operation named by the saved decision; never submit, reconcile or infer provider success. */
-    private static ObjectNode selection(Connection c, Principal p, JsonNode facts, String operationId) throws SQLException {
+    private static JsonNode selection(Connection c, Principal p, JsonNode facts, String operationId) throws SQLException {
         if (operationId == null) return null;
         Order row = OfferDecisions.one(c, "SELECT s.selection::text, o.state, o.outcome::text, s.order_reference, "
                 + "s.employee_id, s.entitlement_slot_id, s.order_uuid, s.policy_version FROM selection_orders s "
@@ -78,8 +78,7 @@ final class OfferDecisionPresentation {
                         rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)),
                 p.environmentId(), p.runId(), operationId, p.employeeId());
         if (row == null || !row.slotId().equals(facts.path("slotId").asText())
-                || !row.orderUuid().equals(facts.path("orderUuid").asText())
-                || !row.policyVersion().equals(facts.path("policyVersion").asText())) return null;
+                || !row.orderUuid().equals(facts.path("orderUuid").asText())) return null;
         JsonNode saved = row.selection();
         JsonNode source = saved.path("source");
         JsonNode quote = saved.path("quote");
@@ -93,6 +92,11 @@ final class OfferDecisionPresentation {
         boolean refused = "refused".equals(row.state());
         if (!acknowledged && !refused && !"intent".equals(row.state()) && !"pending".equals(row.state())) return null;
         if (acknowledged && !"confirmed".equals(row.outcome().path("status").asText())) return null;
+        if (!row.policyVersion().equals(saved.path("terms").path("policyVersion").asText())) return null;
+        // The unchanged command handoff contract requires one policy for quote and ordering terms.
+        // A retained quote can validly use older policy. Keep the accepted receipt and operation id,
+        // omit that optional inline handoff, and let the current-offer read show saved ordering progress.
+        if (!row.policyVersion().equals(facts.path("policyVersion").asText())) return F.nullNode();
 
         ObjectNode out = F.objectNode().put("schemaVersion", 1).put("operationId", operationId)
                 .put("operationState", acknowledged ? "acknowledged" : refused ? "handoff-failed" : "handoff-pending")

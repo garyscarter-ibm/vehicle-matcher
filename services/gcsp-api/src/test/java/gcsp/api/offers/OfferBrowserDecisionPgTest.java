@@ -104,6 +104,34 @@ class OfferBrowserDecisionPgTest {
         emit("refused", command, answer.value());
     }
 
+    @Test
+    void retainedQuoteAndCurrentOrderingPolicyKeepATruthfulAcceptedReceipt() throws Exception {
+        clock();
+        JsonNode original = DecisionEnv.JSON.readTree(java.nio.file.Files.readString(
+                java.nio.file.Path.of("../../server/gcsp/policy/seed-v1.json")));
+        String currentVersion = DecisionEnv.POLICY + "+current-ordering";
+        JsonNode current = DecisionEnv.JSON.readTree(original.toString().replace(DecisionEnv.POLICY, currentVersion));
+        ((ObjectNode) current).put("effectiveFrom", "2026-11-13T00:00:00.000Z");
+        var policy = new gcsp.api.policy.PolicyService(run -> java.util.List.of(original, current));
+        env.decisions = env.service(policy);
+        var principal = new gcsp.api.identity.Principal("sub-" + DecisionEnv.EMPLOYEE, java.util.List.of("employee"),
+                OffersPg.ENV, "run-1", DecisionEnv.EMPLOYEE, currentVersion, java.util.List.of("account:read"));
+        String slot = env.text("SELECT slot_id FROM custody_holds");
+        var scope = new OrderingScope(OffersPg.ENV, "run-1", DecisionEnv.EMPLOYEE, slot, currentVersion);
+        var terms = (OrderingTerms.TermsOk) new OrderingTerms(policy, ctx -> env.now[0]).terms(scope, env.now[0]);
+        ObjectNode command = command().put("termsDigest", terms.value().path("termsDigest").asText());
+        OfferOutcome answer = env.decisions.decideForEmployee(principal, env.offerId, command);
+        assertEquals(200, answer.http(), "A committed retained quote decision must remain readable");
+        assertEquals("accepted", answer.value().path("state").asText());
+        assertEquals(DecisionEnv.POLICY, answer.value().path("policyVersion").asText());
+        assertTrue(answer.value().path("selection").isNull(), "Never relabel current ordering terms as the quote's policy");
+        assertEquals(currentVersion, env.text("SELECT policy_version FROM selection_orders"));
+        assertEquals("allocated", env.text("SELECT state FROM custody_holds"));
+        assertEquals(1, env.count("SELECT count(*) FROM offer_decisions"));
+        assertEquals(answer.value(), env.decisions.decideForEmployee(principal, env.offerId, command).value());
+        emit("retained-policy", command, answer.value());
+    }
+
     private void emit(String label, ObjectNode command, JsonNode receipt) {
         ObjectNode row = DecisionEnv.JSON.createObjectNode().put("case", label).put("employeeId", DecisionEnv.EMPLOYEE);
         row.set("input", command.deepCopy().put("offerId", env.offerId));
