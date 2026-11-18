@@ -57,8 +57,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 /**
  * FUCQ-478 acceptance on the started app: real RS256 tokens from the loopback JWKS, native PostgreSQL in a private schema,
  * the real planner inputs bound by FUCQ-477 and no test alternative bean. Plan inputs come only from the real brief,
- * tick and clock routes. The demo records carry no employeeFacts.driverEligible (Node parity), so the real plan orders
- * nothing; the supported request is therefore Greg's manual path, which shares the plan path's durable service.
+ * tick and clock routes. Released stock covers Paula and Alex (FUCQ-530); Sam's plug-in need is the real plan's order (FUCQ-528).
  */
 @QuarkusTest
 @TestProfile(ProductionDeployedJourneyProfile.class)
@@ -74,6 +73,7 @@ class ProductionDeployedJourneyHttpTest {
     private static final String ENV = "account-dev-env";
     private static final String RUN = "run-1";
     private static final String POLICY = "gcsp-policy-v1";
+    private static final String SALOON_330E = "g20-saloon-330e";
 
     private static String ownedSchema;
     private static JsonNode firstPlan;
@@ -84,6 +84,9 @@ class ProductionDeployedJourneyHttpTest {
     private static String lostId;
     private static String lostBody;
     private static long ordersBefore;
+    private static JsonNode samPlan;
+    private static String samSubmission;
+    private static String samRequest;
 
     @ConfigProperty(name = "gcsp.test.signing-jwk")
     String jwk;
@@ -176,11 +179,10 @@ class ProductionDeployedJourneyHttpTest {
         assertEquals("feasible", firstPlan.get("status").asText());
         assertEquals(0, firstPlan.get("orderQuantity").asInt());
         assertEquals("no-submission", read.body().at("/value/replan/status").asText());
-        // The demo records have no employeeFacts.driverEligible (Node parity), so the real plan orders nothing.
-        assertEquals(1, firstPlan.get("unmetNeeds").size());
-        for (JsonNode need : firstPlan.get("unmetNeeds")) {
-            assertTrue(contains(need.get("gates"), "driver-unconfirmed"), need.toString());
-        }
+        // Paula's driver is derived from her employee driver (FUCQ-530), so a released car covers her and nothing is ordered.
+        assertEquals(0, firstPlan.get("unmetNeeds").size(), firstPlan.get("unmetNeeds").toString());
+        assertEquals("slot-paula", firstPlan.at("/allocations/0/entitlementId").asText());
+        assertTrue(firstPlan.at("/allocations/0/sourceId").asText().startsWith("stock:"), firstPlan.get("allocations").toString());
         assertNoWrites();
 
         Resp employee = post(token("sub-paula", "employee"), PLAN_REQUESTS, planBody(cmd(), firstPlan));
@@ -308,10 +310,99 @@ class ProductionDeployedJourneyHttpTest {
         assertEquals(orders, count("SELECT count(*) FROM production_synthetic_orders"));
     }
 
-    // ---- 5: AC2, real responses update supply and the plan ----
+    // ---- 5: AC1 and AC2, Greg's real plan orders for Sam; its submission is durable, retried once and replanned ----
 
     @Test
     @Order(6)
+    void samsBriefMakesTheRealPlanOrderAndItsSubmissionIsDurableRetriedAndReplanned() throws Exception {
+        Resp before = get(greg, PLAN);
+        assertEquals(200, before.status(), before.toString());
+        JsonNode earlier = before.body().at("/value/plan").deepCopy();
+        assertEquals(0, earlier.get("orderQuantity").asInt(), "released stock covers Paula and Alex");
+        confirmBrief("sub-sam");
+
+        Resp read = get(greg, PLAN);
+        assertEquals(200, read.status(), read.toString());
+        samPlan = read.body().at("/value/plan").deepCopy();
+        assertEquals("feasible", samPlan.get("status").asText());
+        assertTrue(samPlan.get("orderQuantity").asInt() > 0, "the plan orders cars: " + samPlan.get("quantities"));
+        assertEquals("new-order", allocationSource(samPlan, "slot-sam"), samPlan.get("allocations").toString());
+        assertEquals("no-submission", read.body().at("/value/replan/status").asText());
+        Map<String, Integer> ordered = new java.util.HashMap<>();
+        for (JsonNode q : samPlan.get("quantities")) {
+            if (q.get("quantity").asInt() > 0) ordered.put(q.get("derivativeId").asText(), q.get("quantity").asInt());
+        }
+        assertEquals(Map.of(SALOON_330E, 1), ordered, "only a new 330e meets Sam's plug-in essential");
+
+        long subs = count("SELECT count(*) FROM production_submissions");
+        long requests = count("SELECT count(*) FROM production_requests");
+        long orders = count("SELECT count(*) FROM production_synthetic_orders");
+
+        // The plan Greg saw before Sam's brief is stale: refused, nothing written.
+        Resp stale = post(greg, PLAN_REQUESTS, planBody(cmd(), earlier));
+        assertEquals(409, stale.status(), stale.toString());
+        assertEquals("replan-needed", stale.body().get("code").asText());
+        assertEquals(samPlan.get("planId"), stale.body().at("/current/planId"));
+        assertEquals(subs, count("SELECT count(*) FROM production_submissions"));
+        assertEquals(requests, count("SELECT count(*) FROM production_requests"));
+
+        String command = "cmd-proddep-plan-sam";
+        Resp sent = post(greg, PLAN_REQUESTS, planBody(command, samPlan));
+        assertEquals(200, sent.status(), sent.toString());
+        JsonNode value = sent.body().get("value");
+        samSubmission = value.get("submissionId").asText();
+        assertEquals(samPlan.get("planId").asText(), value.get("planId").asText());
+        assertEquals(samPlan.get("planId").asText(), text("SELECT plan_id FROM production_submissions WHERE submission_id = ?", samSubmission));
+        assertEquals(command, text("SELECT command_id FROM production_submissions WHERE submission_id = ?", samSubmission));
+        assertEquals(1, value.get("requests").size(), value.toString());
+        JsonNode line = value.at("/requests/0");
+        samRequest = line.get("requestId").asText();
+        assertEquals(SALOON_330E, line.get("lineId").asText());
+        assertEquals("3 Series Saloon", text("SELECT model FROM production_requests WHERE request_id = ?", samRequest));
+        assertEquals("330e", text("SELECT derivative FROM production_requests WHERE request_id = ?", samRequest));
+        assertEquals(1, count("SELECT quantity FROM production_requests WHERE request_id = ?", samRequest));
+        assertEquals(samSubmission, text("SELECT submission_id FROM production_requests WHERE request_id = ?", samRequest));
+        assertEquals("synthetic-production:" + samRequest,
+                text("SELECT provider_reference FROM production_synthetic_orders WHERE operation_id = ?", samRequest));
+        // The synthetic Production builds only the four demo configurations (Node parity), so it refuses the 330e at once.
+        assertEquals("refused", line.get("state").asText(), line.toString());
+        assertEquals("unknown-production-choice", line.get("code").asText(), line.toString());
+        assertEquals("refused", text("SELECT state FROM production_requests WHERE request_id = ?", samRequest));
+        assertEquals(orders + 1, count("SELECT count(*) FROM production_synthetic_orders"));
+
+        // The same command replays the submission without a second provider order.
+        Resp again = post(greg, PLAN_REQUESTS, planBody(command, samPlan));
+        assertEquals(200, again.status(), again.toString());
+        assertTrue(again.body().at("/value/replayed").asBoolean(), again.toString());
+        assertEquals(samSubmission, again.body().at("/value/submissionId").asText());
+        assertEquals(orders + 1, count("SELECT count(*) FROM production_synthetic_orders"));
+        assertEquals(subs + 1, count("SELECT count(*) FROM production_submissions"));
+
+        // A new command for the submitted plan is refused: Production's answer already moved its supply input.
+        Resp twice = post(greg, PLAN_REQUESTS, planBody(cmd(), samPlan));
+        assertEquals(409, twice.status(), twice.toString());
+        assertEquals("replan-needed", twice.body().get("code").asText(), twice.toString());
+        assertTrue(contains(twice.body().get("changedInputs"), "supply"), twice.toString());
+        assertEquals(subs + 1, count("SELECT count(*) FROM production_submissions"));
+        assertEquals(orders + 1, count("SELECT count(*) FROM production_synthetic_orders"));
+
+        // Production's answers after the submission put Greg's next read on the replan path.
+        Resp next = get(greg, PLAN);
+        assertEquals(200, next.status(), next.toString());
+        JsonNode replan = next.body().at("/value/replan");
+        assertEquals("replanned", replan.get("status").asText(), replan.toString());
+        assertEquals(samPlan.get("planId").asText(), replan.get("submittedPlanId").asText());
+        assertEquals(next.body().at("/value/plan/planId").asText(), replan.get("currentPlanId").asText());
+        assertNotEquals(replan.get("submittedPlanId"), replan.get("currentPlanId"), "the refusal changed the plan inputs");
+        assertEquals(samRequest, replan.at("/requests/0/requestId").asText(), replan.toString());
+        assertEquals("refused", replan.at("/after/state").asText(), replan.toString());
+        assertEquals(1, next.body().at("/value/plan/orderQuantity").asInt(), "Sam's need is still open, so the new plan orders again");
+    }
+
+    // ---- 6: AC2, real responses update supply and the plan ----
+
+    @Test
+    @Order(7)
     void realResponsesBecomeConfirmedSupplyTheNextPlanReadSees() throws Exception {
         Resp before = get(greg, PLAN);
         assertEquals(200, before.status(), before.toString());
@@ -350,8 +441,13 @@ class ProductionDeployedJourneyHttpTest {
         JsonNode plan3 = after.body().at("/value/plan");
         assertNotEquals(plan2.get("planId"), plan3.get("planId"));
         assertNotEquals(plan2.at("/versions/supply"), plan3.at("/versions/supply"));
-        // Manual requests stay out of the plan-submission history by design, so the replan state does not start from them.
-        assertEquals("no-submission", after.body().at("/value/replan/status").asText());
+        // Manual requests stay out of the plan-submission history, so the replan still points at Sam's submitted plan.
+        JsonNode replan = after.body().at("/value/replan");
+        assertEquals("replanned", replan.get("status").asText(), replan.toString());
+        assertEquals(samPlan.get("planId").asText(), replan.get("submittedPlanId").asText());
+        assertEquals(plan3.get("planId").asText(), replan.get("currentPlanId").asText());
+        assertNotEquals(replan.get("submittedPlanId"), replan.get("currentPlanId"), "the confirmed supply moved the current plan");
+        assertEquals(samRequest, replan.at("/after/requestId").asText(), "manual confirmations are not the plan's answers");
         JsonNode in = inbound();
         assertEquals(2, in.size(), in.toString());
         long confirmed = 0;
@@ -379,6 +475,13 @@ class ProductionDeployedJourneyHttpTest {
     private void assertNoWrites() throws Exception {
         assertEquals(0, count("SELECT count(*) FROM production_submissions"));
         assertEquals(0, count("SELECT count(*) FROM production_requests"));
+    }
+
+    private static String allocationSource(JsonNode plan, String entitlementId) {
+        for (JsonNode a : plan.get("allocations")) {
+            if (entitlementId.equals(a.get("entitlementId").asText())) return a.get("source").asText();
+        }
+        return null;
     }
 
     private static boolean contains(JsonNode list, String text) {
