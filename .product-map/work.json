@@ -6961,7 +6961,7 @@
     {
       "assignee": "",
       "id": "FUCQ-466",
-      "observed_at": "2026-11-17T19:53:16Z",
+      "observed_at": "2026-11-18T01:43:13Z",
       "original_status": "In Review",
       "status": "In Review",
       "title": "Apply local offer decisions and follow-up",
@@ -6992,10 +6992,24 @@
         },
         {
           "id": "integration",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Integration: started-app JWT/PG journeys for AC1 and AC2, README, base merge, scoped validation",
-          "observed_at": "2026-11-17T18:17:28Z",
-          "evidence": "Lead review of bd676fc3f; scoped set 405/0/0 on PG17 incl. OfferAccept/OfferDeclineJourneyHttpTest started-app JWT journeys"
+          "observed_at": "2026-11-18T01:40:19Z",
+          "evidence": "Reopened original proof remains partial: corrected source d308ddba6 and final149 scoped green; covering batch, registered real OIDC/hosted/agreed-recipient mail and Safari remain open. No lifecycle change."
+        },
+        {
+          "id": "r3-canonical-browser",
+          "status": "complete",
+          "title": "Canonical Angular command, persisted actual receipt and retained-quote/current-policy correction; connected local decision proof",
+          "observed_at": "2026-11-18T01:40:19Z",
+          "evidence": "d308ddba6 independently reviewed; final149 nativePG scoped pass,strict Angular consumers7pass; actual native acceptance15/15 and decline/followup/restart7/7. Evidence docs/gcsp/evidence/fucq466/validation-review-2026-11-18.md."
+        },
+        {
+          "id": "r3-ordering-browser",
+          "status": "in-progress",
+          "title": "Rendered downstream ordering pending and definitive refusal after local accepted decision and allocated custody",
+          "observed_at": "2026-11-18T01:43:13Z",
+          "evidence": "Actual pending10/10 and refused10/10 at631526702,17s each; source/security reviewed exact proof hashes; all12desktop/narrowcaptures reviewed. Independent visual FAILED:P2 terminal refusal retains active-looking deadline snapshot in held F445 line32; correction/reinspection remain. Story partial; downstream-ordering-2026-11-18.md."
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
