@@ -24,6 +24,14 @@ const run = (await repository.currentRun('scenario-baseline')).value;
 const read = { runId: run.runId, asOf: instant, policyVersion: run.policyVersion };
 const seed = await loadDemoPrincipalSeed(policy, read);
 const principals = [];
+// FUCQ-528: the order planner reads employeeFacts.driverEligible, not drivers[]. Sam is in no catalogue scenario, so
+// confirming his own driver gives Greg one orderable need and leaves every scenario's outcome as it was.
+const plannerDrivers = new Set(['employee-sam']);
+const withPlannerDriver = (employeeId, record) => {
+  if (!plannerDrivers.has(employeeId)) return record;
+  const own = record.drivers.find((d) => d.kind === 'employee' && d.employeeId === employeeId);
+  return { ...record, employeeFacts: { ...record.employeeFacts, driverEligible: structuredClone(own.eligible) } };
+};
 for (const p of seed.value.principals.filter((x) => x.roles.includes('employee'))) {
   const context = (await identity.switchPrincipal(presenter, p.principalId, `switch-${p.principalId}`)).value.context;
   await seedManualDemoContext({ repository, policy, clock, identity, context });
@@ -31,7 +39,7 @@ for (const p of seed.value.principals.filter((x) => x.roles.includes('employee')
   const slots = (await repository.query(context, 'entitlement_slots', { employeeId: p.employeeId })).value;
   const attributes = ({ employeeId, entitlementSlotId, capacity, runId, version, createdAt, updatedAt, ...rest }) => rest;
   principals.push({ employeeId: p.employeeId, name: p.name, roles: p.roles, companyId: p.companyId, schemeId: p.schemeId,
-    gradeId: p.gradeId, entitlementSlotId: p.entitlementSlotId, record: employee.contract.manualContext, recordVersion: employee.version,
+    gradeId: p.gradeId, entitlementSlotId: p.entitlementSlotId, record: withPlannerDriver(p.employeeId, employee.contract.manualContext), recordVersion: employee.version,
     slots: slots.map((s) => ({ slotId: s.entitlementSlotId, capacity: s.capacity, attributes: attributes(s), version: s.version })) });
 }
 const catalogue = (await loadScenarioCatalogue({ policy, read })).value;

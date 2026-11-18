@@ -5,7 +5,7 @@
  "generatedFrom": {
   "generator": "services/gcsp-api/tools/scenario-baseline/generate.mjs",
   "policyVersion": "gcsp-policy-v1",
-  "sourceCommit": "0d6c34fd3a739735157aef1c36c8a649e0c887dd"
+  "sourceCommit": "54eeb324bde12a3c4cd459e37f2ec081931dce5d"
  },
  "capacity": 1,
  "principals": [
@@ -712,6 +712,17 @@
      "requiredBy": {
       "status": "known",
       "value": "2026-12-01T23:59:59.999Z",
+      "unit": null,
+      "provenance": {
+       "sourceRef": "fixture:manual-records-v1",
+       "version": "manual-records-v1",
+       "observedAt": "2026-11-05T09:00:00.000Z",
+       "assurance": "synthetic-scenario"
+      }
+     },
+     "driverEligible": {
+      "status": "known",
+      "value": true,
       "unit": null,
       "provenance": {
        "sourceRef": "fixture:manual-records-v1",
