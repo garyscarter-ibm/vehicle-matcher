@@ -6123,72 +6123,6 @@
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
     },
     {
-      "assignee": "Gary Carter",
-      "id": "FUCQ-437",
-      "observed_at": "2026-11-17T19:53:13Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Enter and refresh replacement frontend routes",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
-      "slices": [
-        {
-          "id": "route-state",
-          "status": "in-progress",
-          "title": "Authorized route and recovery states",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "Independent source PASS; a02 route/state 31 native passes plus a04 auth/context 8 passes at 2912d73b5. a02 outer 1/strict false from five quoted-name mappings remains. Local scenarios do not establish hosted/OIDC/email/rendered acceptance. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        },
-        {
-          "id": "static-launcher",
-          "status": "in-progress",
-          "title": "Static routes and shared launcher handoff",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "a03 launcher 52 native passes and a04 actual caller/package 1 pass at 2912d73b5. Static blueprint 1 inherited FUCQ-514 failure; later frontend assertions were not reached. Deployed URL and safe dynamic/unknown host contract remain open. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Original entry refresh OIDC email and rendered validation",
-          "observed_at": "2026-11-17T00:30:25Z",
-          "evidence": "Original 93 selected: 92 native passes, 1 inherited FUCQ-514 failure, 0 unrun; 48 exclusions. No overall PASS. Original hosted refresh, real OIDC, actual email, rendered proof and dynamic/unknown host work remain; both AC unchecked. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
-        }
-      ],
-      "branch": "dev/DEV-2026-11-13-005",
-      "workers": [
-        {
-          "name": "Sally Carrera 2",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-16T23:55:56Z",
-          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "returned; source authored/reviewed, execution unrun"
-        },
-        {
-          "name": "Sally Carrera 3",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-16T23:50:19Z",
-          "expires_at": "2026-11-16T23:55:56Z",
-          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
-          "status": "returned; source authored/reviewed, execution unrun"
-        },
-        {
-          "name": "Yakko 2",
-          "harness": "codex",
-          "role": "validator",
-          "observed_at": "2026-11-17T00:27:56Z",
-          "expires_at": "2026-11-17T00:28:24Z",
-          "source": "direct returned child result; lead native/input/teardown audits",
-          "status": "returned; four individually released attempts; 92 native passes, 1 inherited failure; original AC open"
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
-    },
-    {
       "assignee": "",
       "id": "FUCQ-438",
       "observed_at": "2026-11-17T19:53:13Z",
@@ -10412,6 +10346,108 @@
           "status": "Completed independent26image A; current bounded supervisorwitness-launcher safetyreview, no runtime/sourcewrites."
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-437",
+      "observed_at": "2026-11-18T04:57:20Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Enter and refresh replacement frontend routes",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-437",
+      "slices": [
+        {
+          "id": "route-state",
+          "status": "in-progress",
+          "title": "Authorized route and recovery states",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "evidence": "Existing31route/state+8auth/context passes; connected signed-local-OIDC direct/refresh/role/offer ownership PASS at52729e593. Hosted/provider/mail/Safari unproved. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        },
+        {
+          "id": "static-launcher",
+          "status": "in-progress",
+          "title": "Static routes and shared launcher handoff",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "evidence": "Named offer rewrite/no-store and focused static1PASS; actual packaged launcher BMW/retail context PASS. Native404 kept; useful branded unknown-entry recovery and deployed Render behavior open. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Original entry refresh OIDC email and rendered validation",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "evidence": "Connected68checks/6scenarios/13PNGs strictPASS; parent1528sourcepins/all12cleanup receipts audited.3harness failures retained; cumulative output overrun recorded/recovered losslessly. Both originalAC open; coveringbatch red. docs/gcsp/fucq437-entry-navigation-2026-11-16.md"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-13-005",
+      "workers": [
+        {
+          "name": "Sally Carrera 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Sally Carrera 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-16T23:50:19Z",
+          "expires_at": "2026-11-16T23:55:56Z",
+          "source": "direct child source-start acknowledgement to Speedy Gonzales 2",
+          "status": "returned; source authored/reviewed, execution unrun"
+        },
+        {
+          "name": "Yakko 2",
+          "harness": "codex",
+          "role": "validator",
+          "observed_at": "2026-11-17T00:27:56Z",
+          "expires_at": "2026-11-17T00:28:24Z",
+          "source": "direct returned child result; lead native/input/teardown audits",
+          "status": "returned; four individually released attempts; 92 native passes, 1 inherited failure; original AC open"
+        },
+        {
+          "name": "Pumbaa 3",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "errored HTTP422; parent carried checkpoint forward"
+        },
+        {
+          "name": "Shaggy 3",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "returned; static1PASS"
+        },
+        {
+          "name": "Emmet 2",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "errored HTTP422 after proof source delivery"
+        },
+        {
+          "name": "Parent dispatcher",
+          "harness": "codex",
+          "role": "reviewer/validator",
+          "observed_at": "2026-11-18T04:56:43Z",
+          "expires_at": "2026-11-18T04:56:43Z",
+          "source": "actual worker result/errors and parent committed/runtime/lifecycle evidence",
+          "status": "returned; coherent local increment; originalAC open"
+        }
+      ],
+      "jira_observed_at": "2026-11-18T04:50:07.991Z",
+      "native_observed_at": "2026-11-18T04:50:07.991Z"
     }
   ],
   "version": 1
