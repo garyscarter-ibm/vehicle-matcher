@@ -2735,6 +2735,10 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Mater and Sulley corrected concrete npm config duplication, allocation accounting, dependency/config locality, owned-root traversal and terminal XML omission defects before launch. Frozen runnerdfb8413a/staticreviewad76151a passed; exact covering run started05:38:05 at6793f49f with independently observed PID/start/lane/reservation. Runtime finalizer/terminal evidence remain unproved until completion. The same exact commands continue under monitored600s review windows; no new Story gate or retry-until-green. Proposed improvement: retain tested supervisor infrastructure and validate config semantics before long allocations.
 
+### 2026-11-18 05:44 UTC · Russell Codex · DL-20261117-GCC-013 · Long ledger lines clipped a read
+
+- A line-bounded batch-ledger display exceeded its token output cap because individual history lines are long. Omitted text was not used for launch or acceptance: current launch decisions use complete typed JSON witnesses, exact hashes and the live PID/lane/reservation audit. Later producers emitted compact fields. Recurrence remains unresolved; enforce serialized character bounds before printing rather than relying on line counts. No additional product validation or scope was introduced.
+
 ### 2026-11-18 05:44 UTC · Gary Codex · DL-20261117-GCC-009 · Real completion run launched and freed slot reused
 
 - F452 source/supervisor review passed after prospective contract, identity and cleanup corrections; reviewed checkpoint0ee22999f is published. Both actual builds have strict green keeper receipts and hash-verified consumption; the single unchanged12-step/3-seed hold-sweep started05:40:39UTC as comparison-job-c0230ad5-b38c-4007-8155-ad6830f04fa7. Actual signed progress reached1/12,0/3seeds; no completed result or Story acceptance is claimed. Fixed whole deadline08:59:27UTC and canonical10800-second job timeout remain. Preflight mitigation is verified through launch, not successful completion.
