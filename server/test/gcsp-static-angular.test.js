@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { PUBLIC_ENV_KEYS, validateRuntimeConfig, runtimeConfigFromEnv, contentSecurityPolicy } from '../../scripts/gcsp-runtime-config.mjs';
-import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../scripts/build-gcsp-static.mjs';
+import { assembleGcspStatic, GCSP_FIXED_ROUTES, GCSP_DYNAMIC_ROUTES } from '../../scripts/build-gcsp-static.mjs';
 
 const producer = fileURLToPath(new URL('../../scripts/gcsp-runtime-config.mjs', import.meta.url));
 const config = (id = 'isolated-dev') => ({
@@ -295,7 +295,7 @@ test('artifact: Java image packages only the active and recovery evidence as roo
     'only evidence roots receive readable, non-writable permissions before the runtime user is selected');
 });
 
-test('artifact: dev blueprint has independent builds, exact fixed routes and disjoint cache policies', async () => {
+test('artifact: dev blueprint preserves independent Java build and runtime contracts', async () => {
   const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
   const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
@@ -362,6 +362,10 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
     'gcsp.appointments.provider': 'GCSP_APPOINTMENTS_PROVIDER:none',
     'gcsp.returns.provider': 'GCSP_RETURNS_PROVIDER:none', 'gcsp.returns.policy-file': 'GCSP_RETURNS_POLICY_FILE:',
   })) assert.ok(properties.split('\n').includes(`${property}=\${${binding}}`), `${property} retains the Java source contract`);
+});
+
+test('artifact: dev static blueprint has bounded offer rewrites and disjoint cache policies', async () => {
+  const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);
@@ -370,13 +374,23 @@ test('artifact: dev blueprint has independent builds, exact fixed routes and dis
   assert.doesNotMatch(site, /gradle|mvn|docker|services\/gcsp-api/u);
   const rewrites = [...site.matchAll(/- type: rewrite\n\s+source: (\S+)\n\s+destination: (\S+)/gu)];
   assert.ok(GCSP_FIXED_ROUTES.includes('/gcsp/comparison'), 'comparison supports direct entry and refresh');
-  assert.deepEqual(rewrites.map((match) => match[1]), GCSP_FIXED_ROUTES);
-  assert.ok(rewrites.every((match) => match[2] === '/gcsp/index.html' && !/[*:]/u.test(match[1])));
-  for (const path of ['/gcsp/runtime-config.json', '/gcsp/missing.js', '/gcsp/media/missing.woff2', '/api/gcsp/v1/context', '/gcsp/offers/missing.js']) assert.ok(!GCSP_FIXED_ROUTES.includes(path));
+  assert.deepEqual(GCSP_DYNAMIC_ROUTES, ['/gcsp/offers/:offerId']);
+  assert.deepEqual(rewrites.map((match) => match[1]), [...GCSP_FIXED_ROUTES, ...GCSP_DYNAMIC_ROUTES]);
+  assert.ok(rewrites.every((match) => match[2] === '/gcsp/index.html' && !match[1].includes('*')));
+  assert.ok(GCSP_FIXED_ROUTES.every((route) => !route.includes(':')));
+  const matchesRewrite = (pathname) => rewrites.some(([, source]) => {
+    const route = source.split('/'); const candidate = pathname.split('/');
+    return route.length === candidate.length && route.every((part, index) => part.startsWith(':') ? candidate[index].length > 0 : part === candidate[index]);
+  });
+  for (const pathname of ['/gcsp/offers/offer-123', '/gcsp/offers/123e4567-e89b-12d3-a456-426614174000']) assert.equal(matchesRewrite(pathname), true, pathname);
+  for (const pathname of ['/gcsp/runtime-config.json', '/gcsp/missing.js', '/gcsp/missing.css', '/gcsp/media/missing.woff2', '/gcsp/assets/missing.svg',
+    '/api/gcsp/v1/context', '/gcsp/unknown', '/gcsp/offers/', '/gcsp/offers/offer-123/unknown']) assert.equal(matchesRewrite(pathname), false, pathname);
+  assert.equal(matchesRewrite('/gcsp/offers/missing.js'), true, 'a named offer placeholder cannot restrict ID syntax');
   const headers = [...site.matchAll(/- path: (\S+)\n\s+name: (\S+)\n\s+value: ([^\n]+)/gu)].map(([, path, name, value]) => ({ path, name, value }));
   const caches = headers.filter((header) => header.name === 'Cache-Control');
   assert.equal(new Set(caches.map((header) => header.path)).size, caches.length);
   for (const path of ['/gcsp/index.html', '/gcsp/runtime-config.json', ...GCSP_FIXED_ROUTES]) assert.equal(caches.find((header) => header.path === path)?.value, 'no-store');
+  assert.equal(caches.find((header) => header.path === '/gcsp/offers/*')?.value, 'no-store');
   for (const path of ['/gcsp/*.js', '/gcsp/*.css', '/gcsp/media/*']) assert.equal(caches.find((header) => header.path === path)?.value, 'public, max-age=31536000, immutable');
   assert.equal(caches.find((header) => header.path === '/gcsp/assets/*')?.value, 'no-cache');
   assert.ok(headers.some((header) => header.name === 'Content-Security-Policy' && header.value === '"frame-ancestors \'none\'"'));
