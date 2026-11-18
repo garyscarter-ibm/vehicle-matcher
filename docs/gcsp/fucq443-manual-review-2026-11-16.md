@@ -588,3 +588,64 @@ retry keeps the original 03:00:25 UTC deadline and will use a shared native
 `CLOCK_MONOTONIC` anchor plus an explicitly estimated conservative prefix for
 time before that anchor. That prefix assumes no backward realtime adjustment;
 it is not a measured original monotonic baseline. Earlier receipts stay unchanged.
+
+
+## Fresh F/G connected evidence — 18 November 2026
+
+The corrected proof at `c5fdf83ac4240a4e31d820cbafd14c608e0697bd`, SHA256
+`9012c7e0fc6e077c973179794c07f3dbba703129ff6a0fc9398c000fbaf8b5bc`,
+passed the selected F/G journey: **F22 + G8 = 30 named checks**, no failures.
+The real Angular → Java/native PostgreSQL17 composition used signed local test
+OIDC. A fresh API package (`-DskipTests`) and production web build supplied exact
+hash-checked artifacts; no banked A–E or selected Angular tests were rerun.
+
+F proves the lost successful review-details POST200 and automatic GET200,
+truthful uncertainty, one durable revision, read-only reconciliation and no replay.
+The actual old Java process exited and a fresh Java process used the same database
+and schema; immutable saved details/quote/hold/terms stayed exact. At375px, return
+required explicit unfinished-selection confirmation. Real Tab/Enter input reached
+and activated resume with a visible2px outline; saved details remained and fresh
+unchecked declarations blocked placement. Selected browser AX names, deployed
+CSP/no observed violations and no runtime exceptions passed. These are selected
+Chrome observations, not a full accessibility or Safari claim.
+
+G started the actual `HttpOrderingProvider` through deployment configuration,
+using an ephemeral configured bearer token and the existing owned issuer HTTPS
+server as a uniformly rejecting, labelled remote-contract substitute. One
+intentional browser submit caused one authenticated remote execute and one durable
+exact-selection refusal. Java readback and the screen agreed on `refused`,
+`handoff-failed`, `remote-ordering-rejected` and Contact scheme support. Reload
+only read that refusal; no second browser/provider submit or order appeared.
+No browser response was forged. External/live providers remain unrun.
+
+Evidence root (sharedroot-relative):
+`.claude/test-runs/fucq443/recovery-mater3-20261118/`.
+The final selected receipt is
+`connected-20261118T024352Z/receipt.json`, with
+`evidence/connected-manual-proof.json` and all six PNGs. Mater3 viewed
+`f1-save-outcome-not-confirmed`, `f2-restart-narrow-needs-confirmation`,
+`f3-restart-keyboard-focus`, `f4-restart-narrow-resumed`,
+`g1-remote-provider-handoff-failed` and `g2-remote-refusal-reentry`.
+Screens show truthful uncertainty, explicit narrow resume/focus, retained fields
+and cleared consent, then the same actual refusal/support outcome before/after
+reload. The existing FUCQ-520 missing name/photo persists; no product repair or
+visual acceptance is claimed. Original AC aggregate fields correctly say
+`not-run` for this selected F/G receipt; the banked A–E receipt is unchanged.
+
+Both attempts' six allocations are terminal. First C3 remains failed; the other
+five are strict complete. Every finalizer reports no owned live processes/groups,
+scratch or reservation, with no cleanup errors. Retry C3 finished02:44:20UTC in
+27.757s with sampled peaks330149316B disk/1891074048B RSS/2218983844B inclusive,
+below2GiB/3GiB/5GiB. The original03:00:25UTC common deadline was retained across
+both attempts: final realtime pipeline534.735649s. Native `CLOCK_MONOTONIC`
+anchor131268.868135 plus estimated pre-anchor302s prefix gives536.270880s; that
+prefix assumes no backwards realtime adjustment and is not a measured original
+common-monotonic baseline. Earlier Python3.9 cross-process clock limitation and
+failed receipts remain explicit. Ignored retained evidence24,105,974B is below
+the32MiB ownership bound. No OneDrive/CloudStorage access occurred.
+
+Both original ACs remain unchecked and Story In Progress. Safari, explicit private
+browsing and complete broader experience evidence remain unrun; FUCQ-520 remains
+separately captured/unallocated. Live BMW/provider access is unproved, and the
+covering green batch and human acceptance remain outstanding. Full suite:
+deferred to batch. Parent retains integration/Jira/closure authority.
