@@ -10440,7 +10440,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T10:38:05Z",
+      "observed_at": "2026-11-18T10:59:35Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10452,26 +10452,26 @@
           "id": "inspection",
           "status": "blocked",
           "title": "Retained and new result inspection with actual measures and assumptions",
-          "observed_at": "2026-11-18T10:38:05.411260+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#acceptance-decision--18-november-2026"
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
         },
         {
           "id": "jobs",
           "status": "complete",
           "title": "Greg commands and truthful progress and interrupted states",
-          "observed_at": "2026-11-18T10:38:05.411260+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#acceptance-decision--18-november-2026"
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
         },
         {
           "id": "integration",
           "status": "blocked",
           "title": "Connected Java roles and rendered acceptance evidence",
-          "observed_at": "2026-11-18T10:38:05.411260+00:00",
-          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#acceptance-decision--18-november-2026"
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "evidence": "docs/gcsp/fucq452-process-comparisons-2026-11-16.md#re-pinned-3-gib-attempt-refused-at-admission--18-november-2026"
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "18Nov Claude resume at e1cc5a0b8: Java comparison+wiring 121run/0fail/2optin-skip one green run on nativePG17; Angular58PASS; AC2 met locally (presenter read-only, honest unavailable/interrupted/failed, seeds/workload unchanged). AC1 blocked: no completed new result or populated experiment; only fullsize hold-sweep OOM at 2GiB heap. 3GiB variant unconsumed, supervisors pinned to base 9a92a107. Safari/private/hosted unrun. Full suite deferred to batch.",
+      "note": "18Nov Claude: auth-recovery defect reproduced and repaired at 4c9afcad6 (Angular 61/61, routes 15/15); Java focused 121/0/2 skip green. AC2 met locally. AC1 blocked: 3GiB re-pinned run at a8b8ec706 built then refused admission (needs 4.83GB, 3.79GB available); no job ran. Supervisor teardown counts own ps child as unresolved; leftovers reconciled. Safari/private/hosted unrun; full suite deferred to batch.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10585,10 +10585,10 @@
           "name": "story-lead (Claude)",
           "harness": "claude",
           "role": "story-lead",
-          "observed_at": "2026-11-18T10:38:05.411260+00:00",
-          "expires_at": "2026-11-18T10:38:05.411260+00:00",
+          "observed_at": "2026-11-18T10:59:35.712000+00:00",
+          "expires_at": "2026-11-18T10:59:35.712000+00:00",
           "source": "claude dev poller",
-          "status": "returned: focused Java/Angular green, AC2 ticked, AC1 blocked on full-size OOM; runtime cleaned"
+          "status": "returned: repair committed; 3GiB run refused at admission; leftovers reconciled; AC1 blocked"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
