@@ -9439,66 +9439,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-445",
-      "observed_at": "2026-11-17T22:51:34Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Open an offer and accept or decline",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-445",
-      "slices": [
-        {
-          "id": "typed-contract",
-          "status": "complete",
-          "title": "Typed offer and follow-up client",
-          "evidence": "Lead source-backed review at 2043c8c6; 24/24 client tests, 3 actual memory producer cases and 3/3 exact fixture matches; resource/hash audit0634. Scoped typed boundary only; original AC and integration open; docs/gcsp/fucq445-delivery-2026-11-14.md.",
-          "observed_at": "2026-11-14T06:37:02Z"
-        },
-        {
-          "id": "offer-view",
-          "status": "in-progress",
-          "title": "Current offer state and vehicle presentation",
-          "observed_at": "2026-11-14T08:59:32.476909Z",
-          "evidence": "Lead-reviewed read screen 0244f6a2; frozen duration labels corrected at f1c6b073 with 1 failed/8 passed before and final9PASS/0skip; immutable checkpoint recovered after shared mutex without rerun.25 input hashes and cleanup match. Prior33PASS/rendered captures retained historically. Unobserved AuthPort history and commands/route/live integration acceptance remain open; docs/gcsp/fucq445-delivery-2026-11-14.md."
-        },
-        {
-          "id": "decision-followup",
-          "status": "in-progress",
-          "title": "Explicit decisions and supported follow-up",
-          "observed_at": "2026-11-14T13:22:34Z",
-          "evidence": "Scoped explicit decisions/follow-up implemented;35 store tests reused with exact pins,34 final screen tests PASS/0skip; next-selector regression corrected. Source/resource audit PASS; actual Java/auth/email/PG/route/rendered acceptance open; docs/gcsp/fucq445-decision-followup-2026-11-14.md."
-        },
-        {
-          "id": "proof-review",
-          "status": "not-started",
-          "title": "Scoped proofs, rendered states and independent review"
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey",
-          "observed_at": "2026-11-14T15:33:06+00:00",
-          "evidence": "Source trace88403ac62: five offer read/reasons/decision/followup Java handlers absent; notification OfferFacts explicitly unconfigured. Existing Angular flow present; shared AuthPort history and actual Java/OIDC/PG/email/remote/rendered acceptance open. No new runtime or OneDrive access; original AC/states unchanged. docs/gcsp/fucq445-integration-blocker-2026-11-14.md"
-        }
-      ],
-      "workers": [
-        {
-          "name": "Mugsy",
-          "harness": "codex",
-          "role": "story-lead",
-          "status": "HOLD after metadata checkpoint; no runtime allocated",
-          "observed_at": "2026-11-14T15:33:06+00:00",
-          "expires_at": "2026-11-14T15:33:06+00:00",
-          "source": "Current source/producer trace; SAME gpt-6.1-sol/high, no fallback/children. docs/gcsp/fucq445-integration-blocker-2026-11-14.md"
-        }
-      ],
-      "note": "Earlier runId query rejection is repaired in current OffersResource129-141. Current OfferView12-26 still lacks runId/clockVersion and rich quote facts/revisions required by the actual Angular validators; original follow-up route gap remains recorded. Current source inspection does not prove runtime or completion.",
-      "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "native_observed_at": "2026-11-17T22:44:48.459530+00:00"
-    },
-    {
-      "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
       "observed_at": "2026-11-18T00:07:27Z",
@@ -10290,6 +10230,68 @@
           "title": "Covering batch verification"
         }
       ]
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-445",
+      "observed_at": "2026-11-18T03:17:52Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Open an offer and accept or decline",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-445",
+      "slices": [
+        {
+          "id": "typed-contract",
+          "status": "complete",
+          "title": "Typed offer and follow-up client",
+          "evidence": "Lead source-backed review at 2043c8c6; 24/24 client tests, 3 actual memory producer cases and 3/3 exact fixture matches; resource/hash audit0634. Scoped typed boundary only; original AC and integration open; docs/gcsp/fucq445-delivery-2026-11-14.md.",
+          "observed_at": "2026-11-14T06:37:02Z"
+        },
+        {
+          "id": "offer-view",
+          "status": "in-progress",
+          "title": "Current offer state and vehicle presentation",
+          "observed_at": "2026-11-18T03:09:32Z",
+          "evidence": "Current rich Java projection composes in real signed OIDC/Angular/nativePG proof: correct exact car/terms/reasons and accepted/declined/expired states, desktop/narrow captures.151 owned tests PASS. Original hosted/email/browser/account-transition acceptance remains open; delivery record18Nov."
+        },
+        {
+          "id": "decision-followup",
+          "status": "in-progress",
+          "title": "Explicit decisions and supported follow-up",
+          "observed_at": "2026-11-18T03:09:32Z",
+          "evidence": "Real signed accept/decline, declarations/reason, saved follow-up/next comparison and other employee/presenter denial PASS in three ordering variants at proof7c6969d0e. Original hosted/email/remote-full acceptance remains open; delivery record18Nov."
+        },
+        {
+          "id": "proof-review",
+          "status": "in-progress",
+          "title": "Scoped proofs, rendered states and independent review",
+          "observed_at": "2026-11-18T03:13:36Z",
+          "evidence": "151 Angular+57 OIDC HTTP/wiring tests PASS;200 connected checks across3variants and21captures independently reviewed PASS by Bugs Bunny2,no blocking/major findings. All3x1252pins/evidence hashes match. Original Safari/private/account-transition/populated-comparison/covering-batch evidence open."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Route wiring and actual Java/OIDC/email/PostgreSQL/remote journey",
+          "observed_at": "2026-11-18T03:09:32Z",
+          "evidence": "Current OffersResource/OfferPresentation/FollowupComparison/OfferFollowupResource compose exact runId reads and decisionId aliases. Three actual local OIDC/Angular/Java/nativePG variants PASS; missing-producer notes superseded. Actual delivered-email,hosted provider,remote/full transactional and batch acceptance open."
+        }
+      ],
+      "workers": [
+        {
+          "name": "Barnyard Dawg 2",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "Reviewed local proof checkpoint complete; runtime and writes released at publication yield",
+          "observed_at": "2026-11-18T03:13:36Z",
+          "expires_at": "2026-11-18T03:13:36Z",
+          "source": "Barnyard Dawg2 Sol/high; Cool Cat3 Sol/medium; Bugs Bunny2 independent reviewer Sol/high; no fallback. Three strict passes,151+57tests,200checks,21captures; original acceptance remains open."
+        }
+      ],
+      "note": "18Nov actual local connected composition PASS at proof7c6969d0e supersedes historical missing-rich-producer/query/follow-up blockers. Original AC unchecked, native In Progress unchanged; local substitute proof is not delivered-email/hosted/live integration acceptance. All owned runtime cleanup verified; docs/gcsp/fucq445-delivery-2026-11-14.md. Independent proof-only review PASS,no blocking/major findings; current-car comparison proves unavailable fallback,not populated parity.",
+      "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
+      "native_observed_at": "2026-11-17T22:44:48.459530+00:00"
     }
   ],
   "version": 1
