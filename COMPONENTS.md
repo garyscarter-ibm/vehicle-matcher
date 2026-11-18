@@ -597,8 +597,8 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | Angular primitive | Use and semantics |
 | --- | --- |
 | `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. |
-| `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2 level. Page h1 accepts arrival focus. |
-| `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. |
+| `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2/h3 level. Page h1 accepts arrival focus. Level 3 (`h3.gcsp-intro-title`) nests the title under an embedded h2 section with the same look as the h2. |
+| `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
 | `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |

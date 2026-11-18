@@ -346,3 +346,40 @@ The subsequent F451 integration supplies the outbox body; the dispatcher connect
 route. The earlier statement that outbox is a placeholder is superseded by those source changes.
 Comparison inspection and actual connected/reset-isolation/rendered acceptance remain open.
 No new runtime proof or full Story completion is claimed; native In Progress and claim remain.
+
+## Connected local result, 18 November 2026 (Claude story-lead resume)
+
+Resumed on `dev/DEV-2026-11-13-018` fast-forwarded to `gcsp-poc-dev` `b8fa0aa0c`. P20 is resolved: one
+focused run of the four presenter/auth specs passed **89/89** (client, component including P20, route
+policy, guards) with pinned Node 24.22.3. No product logic changed; the only view change groups the two
+read-only inspection links in the shared `gcsp-actions` row (they rendered touching).
+
+New `scripts/gcsp/fucq450-connected-presenter-proof.mjs` (derived from the FUCQ-451 and FUCQ-456
+harnesses) runs the built Angular bundle against the built Java jar, one owned native PostgreSQL 17
+(two databases) and a labelled local test OIDC issuer (real code/PKCE, signed JWTs verified by Java), in
+headless Chrome. Run `r2611181006424e5b`: strict PASS, 5 scenarios, 201 checks, 49 s, peak RSS 1,585 MiB.
+
+- S0 running-deployment stand-in (`gcsp-poc`, reset not allowed, own database): the page renders the
+  catalogue unavailable and no reset control; both direct reset routes refuse 403; a reset-allowed
+  composition over that database refuses to start; the database digest is unchanged throughout.
+- S1 isolated dev: Step, Next release, Advance, Tick, scenario reset (review, confirm, new run, retired run
+  retained) and stock fault set/interrupted tick/clear/deliberate same-command retry each change server
+  state, and the page readback equals signed GETs and SQL after each one. One browser POST per click, no
+  automatic replay; S4 matches the browser POST counts with the server access log.
+- S2 presenter outbox and comparison pages send only GETs and render no Greg command; Greg's own login
+  does. Employee and Greg tokens are refused 403 on all 7 presenter GETs and 5 POSTs, anonymous 401; the
+  presenter is refused 403 on an employee command and `POST /comparison/jobs`. Selector queries and
+  principal fields are refused 400 with no state change; the page has no switcher field.
+- S3 desktop 1280 and narrow 400 without overflow, isolated private context, native Space/Enter
+  activation with status focus, deployed CSP without unsafe-eval.
+- After all dev activity and the reset, the running database digest still equals its recorded value.
+
+Two earlier runs failed in S1 because the repository tranche-plan fixture window predates the demo clock,
+so the first Step already released; the harness now writes a re-dated copy into scratch. A third run
+passed before a review correction that adds a pre-command digest to S0. All receipts and screenshots are
+retained outside Git under the main checkout's `.claude/test-runs/fucq450/connected/`.
+
+Not done, and why: the hosted Render isolated dev, hosted identity provider and deployed running
+deployment are Gary's environment and end-of-build review; Safari/WebKit is unavailable to this harness.
+The existing boundary checker still stops at the inherited em dashes in `cases/case-queue.component.html`
+(outside this Story); the presenter files contain none. Full suite: deferred to batch.

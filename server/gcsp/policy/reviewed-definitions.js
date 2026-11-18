@@ -48,6 +48,12 @@ const offerJourneyDefinition = { schemaVersion: 1, definitionSetId: 'offer-journ
   definitions: [...offerDeclineReasons.definitions, ...offerFollowupQuestions.definitions] };
 const offerJourney = { ...offerJourneyDefinition, digest: inputDigest(offerJourneyDefinition) };
 if (!validateReviewedDefinitionSet(offerJourney)) throw new TypeError('The combined offer journey definition is invalid.');
+const declinedCarReentry = JSON.parse(await readFile(new URL('./reviewed/offer-declined-car-reentry-v1.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(declinedCarReentry)) throw new TypeError('The reviewed declined-car re-entry definition is invalid.');
+const successorDefinition = { schemaVersion: 1, definitionSetId: 'offer-journey-v2', revision: '1',
+  definitions: [...offerJourney.definitions, ...declinedCarReentry.definitions] };
+const offerJourneySuccessor = { ...successorDefinition, digest: inputDigest(successorDefinition) };
+if (!validateReviewedDefinitionSet(offerJourneySuccessor)) throw new TypeError('The successor offer journey definition is invalid.');
 // These deployed employee rules are reviewed in the canonical seed; do not duplicate defaults.
 const employeeSeed = JSON.parse(await readFile(new URL('./seed-v1.json', import.meta.url), 'utf8'));
 const employeeKeys = ['brief.engagement.v1', 'employee.currentCarFeedback.v1', 'identity.demo.principals', 'employee.demoProfiles.v1'];
@@ -62,5 +68,6 @@ if (!validateReviewedDefinitionSet(employeeExperience)) throw new TypeError('The
 const registry = freeze({ [presenter.definitionSetId]: presenter, [gregEditor.definitionSetId]: gregEditor,
   [learning.definitionSetId]: learning, [offerDeclineReasons.definitionSetId]: offerDeclineReasons,
   [choiceModel.definitionSetId]: choiceModel, [offerFollowupQuestions.definitionSetId]: offerFollowupQuestions,
-  [offerJourney.definitionSetId]: offerJourney, [employeeExperience.definitionSetId]: employeeExperience });
+  [offerJourney.definitionSetId]: offerJourney, [employeeExperience.definitionSetId]: employeeExperience,
+  [declinedCarReentry.definitionSetId]: declinedCarReentry, [offerJourneySuccessor.definitionSetId]: offerJourneySuccessor });
 export const getReviewedDefinitionSet = (definitionSetId) => Object.hasOwn(registry, definitionSetId) ? registry[definitionSetId] : null;

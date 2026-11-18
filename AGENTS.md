@@ -8,9 +8,17 @@ limits and report any check that cannot proceed under this restriction. Pass thi
 delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
 local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
 
-## Delivery autonomy and Claude delegation — Gary, 17 November 2026
+## Independent Claude poller — Gary, 18 November 2026
 
-Give Claude coherent delivery increments with enough work to use parallel agents or distinct working sessions
+Claude runs as an independent peer developer and poller. The previous arrangement in which Codex delegated
+delivery assignments to a retained Claude coordinator is discontinued. Coordinate through the existing inbox,
+claims, file ownership, shared resource reservations and Git workflow. Preserve each poller's current work and
+checkpoints; this direction does not transfer Story ownership or change acceptance scope. Earlier instructions
+to maintain or restart the Claude delegation queue are superseded.
+
+## Delivery autonomy — Gary, 17 November 2026
+
+Give delivery leads coherent increments with enough work to use parallel agents or distinct working sessions
 when measured capacity and file ownership permit. Let the delivery lead divide the work, run the necessary
 scoped validation and carry the increment through review. Keep that authority through handovers.
 
@@ -168,11 +176,43 @@ Run once at the end on the story branch, with one throwaway native PostgreSQL 17
 which in `validation scope`. A story whose `validate` says `npm test`, `./mvnw -B verify` or "the full suite" with no
 such reason writes `full suite: deferred to batch`.
 
-**The batch run** is `inbox.test` (`npm test` at the root), then `./mvnw -B clean verify` in `services/gcsp-api`
-against a fresh throwaway PostgreSQL 17, one after the other, never alongside another full suite. Both must pass
-for the batch to be green. Known
-order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on 2026-11-13) get a Bug and are named
-in `_dev/batches.md`, not retried until green.
+**The batch run** is shared: any collaborator's poller claims a due suite with `_tools/scaffold_git.py batch claim`,
+so exactly one machine runs it (dev-inbox step E). The suites are `inbox.suites` in `.claude/scaffolding.json`:
+`node` (`npm test`), `java` (`./mvnw -B clean verify` in `services/gcsp-api`, against a fresh throwaway PostgreSQL 17
+with `GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set) and `web` (`npm ci && npm test` in
+`apps/gcsp-web`). Each is due only on merges touching its paths, and each needs its own green line. A machine without
+JDK 21 or PostgreSQL 17 skips `java` for another poller to take. There is no browser suite yet: the first story with an
+acceptance item checked on a screen creates it (a scripted Playwright test that starts the app and signs in), and
+registers it with `set-inbox --suite web-e2e=...;kind=browser`. The `scripts/gcsp/walk-*.mjs` walk-throughs are one-off
+evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on
+2026-11-13) get a Bug and are named in `_dev/batches.md`, not retried until green.
+
+## Shared local test stack — Gary, 18 November 2026
+
+This 16 GB Mac can't afford a new PostgreSQL cluster, `npm ci` and builds on every run. Every local story run, proof
+and batch run uses the shared stack instead. State lives in `~/Library/Caches/gcsp-test-stack` (never OneDrive).
+
+- **PostgreSQL:** `python3 -B _tools/test_stack.py pg up` starts or reuses one cluster. Then
+  `eval "$(python3 -B _tools/test_stack.py pg db create --run <id> [--running] [--owner-pid <pid>])"` sets
+  `GCSP_TEST_DATABASE_URL` (and `GCSP_TEST_RUNNING_DATABASE_URL`) for a fresh database per run, and
+  `pg db drop --run <id>` removes it. A database belongs to the calling shell unless `--owner-pid` names a longer-lived
+  one; `pg gc` drops orphans. Leave the cluster running between runs; `pg down --if-idle` stops it when nothing is held.
+- **Focused Java tests:** `python3 -B _tools/test_stack.py java-test --worktree <wt> --run <id> [--running] --
+  -Dtest='gcsp.api.<package>.**'` creates and drops its own database, runs in the heavy queue, and caps Maven at 512m
+  and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
+- **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
+  place of `npm ci`; `node unlink` before removing the worktree.
+- **Builds:** `build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
+  `PROOF_WEB_BROWSER=` for the connected proofs, built once per committed tree and reused (a dirty tree builds in place,
+  uncached). Run `build gc` only between runs.
+- **One heavy run at a time:** wrap anything that starts Java, a proof, Chrome or a full suite in
+  `python3 -B _tools/test_stack.py heavy --label <id> [--ram-gib N] -- <command>`. It waits for the machine-wide slot
+  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget.
+- **Proof JVMs:** the connected proofs take their API heap from `scripts/gcsp/proof-jvm.mjs` (`PROOF_API_HEAP` raises
+  it for one run). Don't add per-script `-Xmx` flags.
+- **Connected browser checks run once per story**, at the end on the final commit, not on every attempt. Earlier
+  iterations use the focused unit and HTTP tests. Runs that need more than about 3 GiB (FUCQ-452's full-size job) go
+  overnight or to CI, not into a daytime queue.
 
 ## Concepts and mockups
 

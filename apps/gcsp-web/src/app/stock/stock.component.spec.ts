@@ -107,6 +107,26 @@ describe('released stock screen', () => {
     expect(events.some(event => !event.replace && event.snapshot?.selectedId === 'stock-8')).toBe(true);
     fixture.componentRef.setInput('navigation', { ...snapshot, scope: 'another-user' }); await fixture.whenStable(); expect(component.store.selectedId()).toBe('stock-8');
   });
+  it.each(['rendered', 'missing', 'filtered'] as const)('returns focus for a different restored exact detail: %s', async outcome => {
+    const { root, component, fixture } = await screen();
+    button(root.querySelector<HTMLElement>('[data-member-id="stock-1"]')!, 'Vehicle details').click();
+    fixture.detectChanges(); await fixture.whenStable();
+    button(root, 'Back to released cars').click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(document.activeElement?.getAttribute('data-details-id')).toBe('stock-1');
+    const selectedId = outcome === 'missing' ? 'stock-missing' : 'stock-2';
+    const snapshot = component.store.navigationSnapshot()!;
+    fixture.componentRef.setInput('navigation', { ...snapshot, selectedId,
+      controls: { ...snapshot.controls, query: outcome === 'filtered' ? 'BMW car 1' : '' } });
+    fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(component.store.selectedId()).toBe(selectedId);
+    expect(root.querySelector('[aria-label="Selected vehicle"]')?.textContent)
+      .toContain(outcome === 'missing' ? 'This car is no longer available' : 'BMW car 2');
+    button(root, 'Back to released cars').click(); fixture.detectChanges(); await fixture.whenStable();
+    const target = outcome === 'rendered' ? root.querySelector('[data-details-id="stock-2"]') : root.querySelector('#stock-query');
+    expect(target).not.toBeNull(); expect(document.activeElement).toBe(target);
+    expect(document.activeElement?.getAttribute('data-details-id')).not.toBe('stock-1');
+    expect(component.store.selectedId()).toBeNull();
+  });
   it('hides stale facts during reload and keeps missing exact selection unavailable without substitution', async () => {
     const { root, component, fixture } = await screen(); component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
     let resolve!: (value: unknown) => void; client.readStock.mockReturnValueOnce(new Promise(done => resolve = done));

@@ -30,6 +30,6 @@ export class StatePageComponent implements OnInit {
     if (this.auth.state().status === 'ready') await this.router.navigateByUrl(returnTo.replace(/^\/gcsp/, '') || '/', { onSameUrlNavigation: 'reload' });
     else if (this.auth.state().status === 'signed-out') await this.router.navigate(['/sign-in'], { queryParams: { returnTo } });
   }); }
-  async home(): Promise<void> { await this.router.navigateByUrl('/'); }
+  async home(): Promise<void> { await this.router.navigate(['/'], { queryParamsHandling: 'preserve', preserveFragment: true }); }
   private async run(action: () => Promise<unknown>): Promise<void> { if (this.working()) return; this.working.set(true); this.actionFailed.set(false); try { await action(); } catch { this.actionFailed.set(true); } finally { this.working.set(false); } }
 }

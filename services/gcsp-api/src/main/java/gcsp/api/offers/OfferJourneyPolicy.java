@@ -19,13 +19,14 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 /**
- * Startup composition: a configured policy version ending in +offer-journey-v1 is created for the run by adopting the
- * reviewed decline reasons and follow-up questions on top of the version named before the suffix (the Node startup rule).
+ * Startup composition adopts the explicitly configured reviewed journey successor for the run. Retained v1
+ * configurations preserve their historical rule; new v2 configurations also adopt reason-specific re-entry.
  */
 @ApplicationScoped
 public class OfferJourneyPolicy {
 
     static final String SUFFIX = "+" + ReviewedDefinitions.OFFER_JOURNEY_SET;
+    static final String SUCCESSOR_SUFFIX = "+" + ReviewedDefinitions.OFFER_JOURNEY_SUCCESSOR_SET;
     /** After the run clock's startup pass (LIBRARY_AFTER) and the comparison jobs (+10). */
     static final int AFTER_CLOCK = Interceptor.Priority.LIBRARY_AFTER + 20;
     private static final Logger LOG = Logger.getLogger(OfferJourneyPolicy.class);
@@ -57,12 +58,14 @@ public class OfferJourneyPolicy {
     /** Adopts when configured; a bad configuration or a failed adoption throws, which stops startup. */
     String ensure() {
         String version = policyVersion.map(String::strip).orElse("");
-        if (!version.endsWith(SUFFIX)) {
+        String set = version.endsWith(SUCCESSOR_SUFFIX) ? ReviewedDefinitions.OFFER_JOURNEY_SUCCESSOR_SET
+                : version.endsWith(SUFFIX) ? ReviewedDefinitions.OFFER_JOURNEY_SET : null;
+        if (set == null) {
             summary = "not-configured";
             LOG.info("GCSP offer journey policy: not configured; the reviewed decline reasons are not adopted");
             return summary;
         }
-        String base = version.substring(0, version.length() - SUFFIX.length());
+        String base = version.substring(0, version.length() - set.length() - 1);
         String env = environmentId.map(String::strip).orElse("");
         String run = runId.map(String::strip).orElse("");
         if (!persistence.active()) {
@@ -76,7 +79,7 @@ public class OfferJourneyPolicy {
             throw stop(version, "the run clock for " + run + " is not initialised, so there is no instant to adopt at");
         }
         PolicyAdoption.Result result = adoption.adopt(new RunContext(env, run, "offer-journey-startup"),
-                ReviewedDefinitions.OFFER_JOURNEY_SET, version, now, base);
+                set, version, now, base);
         if (!result.ok()) {
             throw stop(version, result.status() + ": " + result.detail()
                     + " Check that " + base + " is the active version of the run");

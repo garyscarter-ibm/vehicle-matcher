@@ -9,6 +9,9 @@ import net from 'node:net';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync, readdirSync, createWriteStream } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { apiJvmArgs, jvmLimitsReceipt } from './proof-jvm.mjs';
+
+const API_JVM_ARGS = apiJvmArgs({ heap: '768m' });
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const T0 = Date.now();
@@ -219,7 +222,7 @@ async function startApi() {
   apiStarts++;
   const name = `api-${apiStarts}`;
   const props = [`-Dquarkus.datasource.jdbc.additional-jdbc-properties.currentSchema=${SCHEMA}`, `-Dquarkus.flyway.schemas=${SCHEMA}`, `-Dquarkus.flyway.default-schema=${SCHEMA}`];
-  api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'), [`-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`, `-Djava.io.tmpdir=${dirs.tmp}`, ...props, '-jar', JAR], apiEnv(), PORTS.api);
+  api = spawnOwned(name, path.join(JAVA_HOME, 'bin/java'), [...API_JVM_ARGS, `-Djavax.net.ssl.trustStore=${tls.trust}`, `-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`, `-Djava.io.tmpdir=${dirs.tmp}`, ...props, '-jar', JAR], apiEnv(), PORTS.api);
   for (let i = 0; ; i++) {
     if (api.done) { receipt.failureLogs[name] = tail(api.logFile); throw new Error(`${name} exited during startup`); }
     try { const r = await request('GET', '/context'); if (r.status === 401) break; } catch { /* not up yet */ }
@@ -246,7 +249,7 @@ async function serverEditor() {
   if (r.status !== 200 || r.json?.status !== 'ok') throw new Error(`server editor read failed: ${r.status} ${r.json?.code ?? ''}`);
   const v = r.json.value; const i = v.initial;
   const prefs = Object.fromEntries(Object.entries(i.brief.preferences ?? {}).map(([k, x]) => [k, { value: x.value, importance: x.importance, valueState: x.valueState, importanceState: x.importanceState }]));
-  return { briefVersion: i.briefVersion, draftVersion: i.draftVersion, prefs, buddy: i.buddy?.state, consent: i.consent, rating: i.currentCarRating?.value ?? null, contractId: i.currentCarRating?.contractId ?? null,
+  return { briefVersion: i.briefVersion, draftVersion: i.draftVersion, prefs, buddy: i.buddy?.state, consent: i.consent, essentials: i.brief.essentials ?? {}, rating: i.currentCarRating?.value ?? null, contractId: i.currentCarRating?.contractId ?? null,
     model: v.context?.knownFacts?.currentContract?.value?.model ?? null };
 }
 
@@ -306,6 +309,31 @@ class Page {
     throw new Error(`${this.label}: timed out waiting for ${what}; page text: ${text}`);
   }
   async shot(name) { const r = await this.send('Page.captureScreenshot', { format: 'png' }); writeFileSync(path.join(dirs.evidence, name), Buffer.from(r.data, 'base64')); return name; }
+  async viewport(width, height = 900) {
+    await this.send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
+    await this.settle();
+  }
+  async key(key) {
+    const keys = { Tab: ['Tab', 9], Enter: ['Enter', 13], ' ': ['Space', 32], ArrowRight: ['ArrowRight', 39], ArrowLeft: ['ArrowLeft', 37] };
+    const [code, windowsVirtualKeyCode] = keys[key];
+    await this.send('Input.dispatchKeyEvent', { type: 'keyDown', key, code, windowsVirtualKeyCode, ...(key === 'Enter' ? { text: '\r' } : {}) });
+    await this.send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode });
+  }
+  async tabTo(selector, limit = 160) {
+    const visited = [];
+    for (let i = 0; i <= limit; i++) {
+      const found = await this.act(`const el = document.activeElement; return { found: el?.matches(${JSON.stringify(selector)}) ?? false, label: el?.getAttribute('aria-label') || el?.id || el?.textContent.trim().slice(0, 70) || el?.getAttribute('name') || el?.tagName };`);
+      if (found.found) return { tabs: i, visited, focus: await this.act('return focusEvidence();') };
+      if (i < limit) { await this.key('Tab'); visited.push(found.label); }
+    }
+    throw new Error(`${this.label}: keyboard could not reach ${selector} within ${limit} tabs; last focus: ${visited.slice(-6).join(' | ')}`);
+  }
+  async recoveryShot(name, action) {
+    await this.act(`const el = $('.gcsp-actions + p[role="status"]'); el?.scrollIntoView({ block: 'center' }); return !!el;`);
+    await this.settle();
+    const visible = await this.act(`return { status: visibility($('.gcsp-actions + p[role="status"]')), action: visibility(button(${JSON.stringify(action)})) };`);
+    return { file: await this.shot(name), visible };
+  }
 }
 // DOM helpers over the real PreferencesComponent template; selectors follow its ids, names and visible labels.
 const HELPERS = `
@@ -320,6 +348,8 @@ const saveStatus = () => $('.gcsp-actions + p[role="status"]')?.textContent.trim
 const versionNote = () => [...main.querySelectorAll('p.gcsp-note')].map((n) => n.textContent.replace(/\\s+/g, ' ').trim()).find((t) => /· Version \\d+/.test(t)) ?? null;
 const openDetails = (text) => { const s = [...main.querySelectorAll('details > summary')].find((x) => x.textContent.trim() === text); if (s && !s.parentElement.open) s.click(); return !!s?.parentElement.open; };
 const value = (s) => $(s)?.value ?? null;
+const visibility = (el) => { if (!el) return null; const r = el.getBoundingClientRect(); return { text: el.textContent.trim().slice(0, 220), visible: r.width > 0 && r.height > 0 && r.left >= 0 && r.right <= innerWidth + 1 && r.top >= 0 && r.bottom <= innerHeight, x: r.x, y: r.y, width: r.width, height: r.height }; };
+const focusEvidence = () => { const el = document.activeElement; const s = getComputedStyle(el); return { tag: el.tagName, id: el.id, name: el.getAttribute('name'), type: el.getAttribute('type'), focusVisible: el.matches(':focus-visible'), outline: s.outlineStyle, outlineWidth: s.outlineWidth, ...visibility(el) }; };
 `;
 const versionOf = (note) => { const m = /(Unsaved draft|Your saved preferences) · Version (\d+)/.exec(note ?? ''); return m ? { saved: m[1] === 'Your saved preferences', version: Number(m[2]) } : null; };
 const CONFIRMED = /^Your preferences were confirmed\. Showing saved version (\d+)\./;
@@ -383,6 +413,15 @@ async function scenario(id, title, ac, fn) {
 }
 const posts = (calls, p) => calls.filter((e) => e.method === 'POST' && e.path === p);
 const ownedCalls = (calls) => calls.length > 0 && calls.every((e) => e.auth && !e.path.includes(EMPLOYEE) && !e.request?.carriesIdentity);
+const choiceValues = (value) => (Array.isArray(value) ? value : [value]).slice().sort();
+async function waitPreferencePost(page, mark) {
+  const end = Date.now() + 30000;
+  while (Date.now() < end) {
+    if (posts(page.calls(mark), '/brief/preferences').some((e) => e.status === 200)) { await page.settle(); return; }
+    await sleep(100);
+  }
+  throw new Error(`${page.label}: no successful new compact preferences save`);
+}
 
 // AC1: rate the current car, edit preferences and Buddy, save with consent, read back, reload.
 async function scenarioA(cdp, s, pages) {
@@ -487,7 +526,8 @@ async function scenarioB(cdp, s, pages) {
     const kept = await one.act(`return { economy: value('#preference-economy'), save: button('Save your preferences')?.disabled ?? null, tryAgain: !!button('Try again'), refresh: button('Refresh and review')?.disabled ?? null };`);
     s.observations.staleScreen = kept;
     s.checks.editKeptAndSaveBlocked = kept.economy === '80' && kept.save === true && kept.tryAgain === false && kept.refresh === false;
-    s.observations.screenshotStale = await one.shot('b1-stale-reload-offered.png');
+    s.observations.screenshotStale = await one.recoveryShot('b1-stale-reload-offered.png', 'Refresh and review');
+    s.checks.staleRecoveryIsVisible = s.observations.screenshotStale.visible.status?.visible === true && s.observations.screenshotStale.visible.action?.visible === true;
     await one.act(`return press('Refresh and review');`);
     await one.until(`return !!button('Replace draft with saved preferences');`, 15000, 'replace confirmation');
     await one.act(`return press('Replace draft with saved preferences');`);
@@ -502,7 +542,8 @@ async function scenarioB(cdp, s, pages) {
     s.checks.correctionSavesAtTheNewVersion = Number(CONFIRMED.exec(fixStatus)?.[1]) === fixed.briefVersion && fixed.briefVersion === afterTwo.briefVersion + HELD_SAVE_STEP && fixed.prefs.economy?.value === 80 && fixed.prefs.comfort?.value === 30
       && posts(one.calls(fixMark), '/brief/draft')[0]?.request?.expectedBriefVersion === afterTwo.briefVersion;
     s.checks.requestsCarryOnlyTheBearer = ownedCalls(one.calls()) && ownedCalls(two.calls());
-    s.observations.screenshotCorrected = await one.shot('b2-corrected-save.png');
+    s.observations.screenshotCorrected = await one.recoveryShot('b2-corrected-save.png', 'Save your preferences');
+    s.checks.correctedOutcomeIsVisible = s.observations.screenshotCorrected.visible.status?.visible === true;
   } finally { await two.settle(); await cdp.send('Target.disposeBrowserContext', { browserContextId: two.ctxId }).catch(() => {}); }
 }
 
@@ -524,7 +565,8 @@ async function scenarioC(cdp, s, pages) {
     const kept = await one.act(`return { economy: value('#preference-economy'), tryAgain: button('Try again')?.disabled ?? null, note: versionNote() };`);
     s.observations.unsavedScreen = kept;
     s.checks.editKeptWithTryAgain = kept.economy === '20' && kept.tryAgain === false && versionOf(kept.note)?.saved === false;
-    s.observations.screenshotUnsaved = await one.shot('c1-unsaved-api-stopped.png');
+    s.observations.screenshotUnsaved = await one.recoveryShot('c1-unsaved-api-stopped.png', 'Try again');
+    s.checks.unsavedRecoveryIsVisible = s.observations.screenshotUnsaved.visible.status?.visible === true && s.observations.screenshotUnsaved.visible.action?.visible === true;
     // Authentication reads /context first; with the API stopped no editor request can be issued.
     const failedRead = await freshDocument(reader, 'reload', { readPath: '/context', readOk: false, ready: `return !$('form.brief-form') && /could not be loaded|unavailable/i.test(main.innerText);`, what: 'fresh authentication read while the API is stopped' });
     s.observations.failedContextRead = { status: failedRead.status ?? null, failed: failedRead.failed ?? null };
@@ -553,6 +595,104 @@ async function scenarioC(cdp, s, pages) {
   } finally { await reader.settle(); await cdp.send('Target.disposeBrowserContext', { browserContextId: reader.ctxId }).catch(() => {}); }
 }
 
+// Original experience obligation: rendered narrow/compact layouts and native controls operated by trusted keys.
+// DOM helpers only observe/scroll; Tab, arrows, Space and Enter below are actual Chrome input events.
+async function scenarioD(cdp, s, pages) {
+  const page = pages.one;
+  await openPreferences(page);
+  const layouts = [];
+  for (const width of [1440, 375, 320]) {
+    await page.viewport(width);
+    await page.act('window.scrollTo(0, 0); return true;');
+    layouts.push(await page.act(`return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, editor: !!$('#preference-comfort'), file: 'd1-full-${width}.png' };`));
+    await page.shot(`d1-full-${width}.png`);
+  }
+  s.observations.fullLayouts = layouts;
+  s.checks.fullResponsiveWithoutPageOverflow = layouts.every((x) => x.editor && x.scrollWidth <= x.width + 1);
+  // Comfort sits in the collapsed 'Anything else?' disclosure; open it by keyboard as an employee would.
+  s.observations.disclosureFocus = await page.tabTo('details:not(.known-facts) > summary');
+  await page.key('Enter');
+  s.checks.disclosureOpensByKeyboard = await page.act("return document.activeElement.parentElement.open === true && !!$('#preference-comfort');");
+  const before = await serverEditor();
+  s.observations.preferenceFocus = await page.tabTo('#preference-comfort');
+  const oldValue = Number(await page.act("return value('#preference-comfort');"));
+  await page.key('ArrowRight');
+  const nextValue = Number(await page.act("return value('#preference-comfort');"));
+  // The note re-renders after the input event, so wait briefly for it rather than reading it in the same task.
+  const draftNote = await page.until(`return /^Unsaved draft/.test(versionNote() ?? '');`, 5000, 'unsaved draft note').then(() => page.act('return versionNote();'), () => page.act('return versionNote();'));
+  s.observations.preferenceArrow = { oldValue, nextValue, note: draftNote };
+  s.checks.nativeArrowChangesPreference = nextValue === oldValue + 1 && versionOf(draftNote)?.saved === false;
+  s.observations.preferenceKeyboardImage = await page.shot('d2-narrow-preference-keyboard.png');
+  s.checks.preferenceHasVisibleKeyboardFocus = s.observations.preferenceFocus.focus.focusVisible && s.observations.preferenceFocus.focus.visible && parseFloat(s.observations.preferenceFocus.focus.outlineWidth) >= 2;
+  await page.key('ArrowLeft');
+  s.observations.importanceFocus = await page.tabTo('#importance-comfort');
+  const oldImportance = Number(await page.act("return value('#importance-comfort');"));
+  await page.key('ArrowRight');
+  s.checks.nativeArrowChangesImportance = Number(await page.act("return value('#importance-comfort');")) === oldImportance + 1;
+  await page.key('ArrowLeft');
+  s.observations.buddyChoiceFocus = await page.tabTo('input[name="buddy-engagement"]:checked');
+  await page.key('ArrowRight');
+  s.checks.nativeArrowChangesBuddyChoice = (await page.act("return checkedLabel('buddy-engagement');")).includes('Disengage Buddy');
+  await page.key('ArrowLeft');
+  s.observations.buddyChoiceImage = await page.shot('d3-narrow-buddy-choice-keyboard.png');
+  s.checks.buddyChoiceHasVisibleFocus = (await page.act('return focusEvidence();')).focusVisible === true;
+  // Practical need by keyboard: towbar 'Not sure yet' -> 'Yes' (two arrows up the radio group).
+  s.observations.practicalFocus = await page.tabTo('input[name="practical-equipment"]:checked');
+  await page.key('ArrowLeft'); await page.key('ArrowLeft');
+  s.checks.nativeArrowChangesPracticalNeed = (await page.act("return checkedLabel('practical-equipment');")).includes('Yes');
+  s.observations.saveFocus = await page.tabTo('button[type="submit"]');
+  await page.key('Enter');
+  const status = await waitStatus(page, `/^Your preferences were confirmed|not confirmed|changed elsewhere/.test(s)`, 'keyboard save outcome');
+  const saved = await serverEditor();
+  s.observations.keyboardSave = { status, beforeVersion: before.briefVersion, savedVersion: saved.briefVersion };
+  s.checks.keyboardSaveUsesTheServer = Number(CONFIRMED.exec(status)?.[1]) === saved.briefVersion && saved.briefVersion === before.briefVersion + HELD_SAVE_STEP && saved.prefs.comfort?.value === oldValue && saved.prefs.comfort?.importance === oldImportance
+    && JSON.stringify(saved.essentials.equipment?.value) === JSON.stringify(['towbar']) && JSON.stringify(before.essentials.equipment?.value ?? null) !== JSON.stringify(['towbar']);
+  s.observations.keyboardSave.equipment = { before: before.essentials.equipment ?? null, saved: saved.essentials.equipment ?? null };
+  s.observations.pauseFocus = await page.tabTo('gcsp-buddy-controls button:first-of-type');
+  s.checks.pauseReachableByKeyboard = s.observations.pauseFocus.focus.text === 'Pause search' && s.observations.pauseFocus.focus.focusVisible;
+  await page.key('Enter');
+  await page.until(`return $('gcsp-buddy-controls .buddy-state')?.textContent.trim() === 'Saved status: Search paused' && !!button('Resume search');`, 30000, 'keyboard pause saved');
+  s.observations.pauseStatusFocus = await page.act('return focusEvidence();');
+  s.observations.pauseImage = await page.shot('d4-narrow-buddy-paused.png');
+  s.checks.buddyStatusReceivesFocus = s.observations.pauseStatusFocus.name === null && s.observations.pauseStatusFocus.tag === 'P' && s.observations.pauseStatusFocus.visible && parseFloat(s.observations.pauseStatusFocus.outlineWidth) >= 2;
+  s.observations.resumeFocus = await page.tabTo('gcsp-buddy-controls button:first-of-type');
+  await page.key('Enter');
+  await page.until(`return $('gcsp-buddy-controls .buddy-state')?.textContent.trim() === 'Saved status: Engaged' && !!button('Pause search');`, 30000, 'keyboard resume saved');
+  s.checks.keyboardPauseAndResumeSaved = (await serverEditor()).buddy === 'engaged' && ['/brief/pause-search', '/brief/resume-search'].every((p) => posts(page.calls(), p).some((e) => e.status === 200));
+  await freshDocument(page, `${ORIGINS.web}/gcsp/account`, { ready: `return !!$('gcsp-account-preferences .category-title');`, what: 'compact account editor' });
+  s.observations.compactLayouts = [];
+  for (const width of [1440, 375, 320]) {
+    await page.viewport(width);
+    await page.act(`$('gcsp-account-preferences')?.scrollIntoView({ block: 'start' }); return true;`);
+    const layout = await page.act(`return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, category: !!$('gcsp-account-preferences .category-title'), file: 'd5-compact-${width}.png' };`);
+    s.observations.compactLayouts.push(layout); await page.shot(layout.file);
+  }
+  s.checks.compactResponsiveWithoutPageOverflow = s.observations.compactLayouts.every((x) => x.category && x.scrollWidth <= x.width + 1);
+  s.observations.categoryFocus = await page.tabTo('gcsp-account-preferences .category-title');
+  await page.key('Enter');
+  await page.until(`return $('gcsp-account-preferences .category-title')?.getAttribute('aria-expanded') === 'true';`, 10000, 'keyboard compact category disclosure');
+  s.observations.compactChoiceFocus = await page.tabTo('gcsp-account-preferences gcsp-preference-category input[type="checkbox"]');
+  const checkedBefore = await page.act('return document.activeElement.checked;');
+  const compactBefore = await serverEditor();
+  const compactMark = page.log.length;
+  await page.key(' ');
+  s.checks.compactSpaceChangesChoice = await page.act(`return document.activeElement.checked === ${JSON.stringify(!checkedBefore)};`);
+  await waitPreferencePost(page, compactMark);
+  await page.until(`return $('gcsp-account-preferences .compact-preferences > p[role="status"]')?.textContent.trim() === 'Preferences saved automatically.';`, 30000, 'compact keyboard autosave');
+  const compactSaved = await serverEditor();
+  s.observations.compactKeyboardImage = await page.shot('d6-compact-keyboard-saved.png');
+  s.checks.compactKeyboardChoiceSaved = compactSaved.briefVersion > compactBefore.briefVersion && JSON.stringify(choiceValues(compactSaved.prefs.body?.value)) !== JSON.stringify(choiceValues(compactBefore.prefs.body?.value));
+  s.checks.compactChoiceHasVisibleFocus = s.observations.compactChoiceFocus.focus.focusVisible && s.observations.compactChoiceFocus.focus.visible;
+  // Restore this ordinary input by the same keyboard action, so the remaining stale/recovery scenarios start coherently.
+  const restoreMark = page.log.length;
+  await page.key(' ');
+  await waitPreferencePost(page, restoreMark);
+  await page.until(`return $('gcsp-account-preferences .compact-preferences > p[role="status"]')?.textContent.trim() === 'Preferences saved automatically.';`, 30000, 'restored compact choice save');
+  s.checks.compactChoiceRestoredOnServer = JSON.stringify(choiceValues((await serverEditor()).prefs.body?.value)) === JSON.stringify(choiceValues(compactBefore.prefs.body?.value));
+  s.checks.requestsCarryOnlyTheBearer = ownedCalls(page.calls());
+  await page.viewport(375);
+}
+
 // ---------- main ----------
 function accessLog() {
   const rows = [];
@@ -568,7 +708,7 @@ async function main() {
     appJars: readdirSync(path.join(path.dirname(JAR), 'app')).filter((f) => f.endsWith('.jar')).map((f) => ({ file: f, sha256: sha256File(path.join(path.dirname(JAR), 'app', f)) })), webBrowser: { path: path.relative(ROOT, WEB_BROWSER), indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) } };
   receipt.composition = { identity: 'oidc (local test issuer)', subject: SUBJECT, employeeId: EMPLOYEE, account: 'repository', scenario: 'demo', ordering: 'synthetic', resetAllowed: true, environmentId: ENVIRONMENT_ID, runId: RUN_ID, policyVersion: POLICY, mirrors: 'services/gcsp-api/src/test/java/gcsp/api/brief/BriefJourneyProfiles.config()' };
   receipt.sourceRevision = { value: SOURCE_REVISION, provenance: 'PROOF_SOURCE_REVISION supplied and verified by the parent; not read from git here' };
-  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
+  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), apiJvm: jvmLimitsReceipt(API_JVM_ARGS), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
   log('certificates'); tls = makeCerts();
   log('static assembly of the prebuilt web');
   const assemble = await import(pathToFileURL(path.join(ROOT, 'scripts/build-gcsp-static.mjs')).href);
@@ -585,6 +725,7 @@ async function main() {
   const cdp = await Cdp.connect(wsUrl); receipt.cdp = cdp;
   const pages = {};
   await scenario('a', 'Edit, rate, choose Buddy, confirm with consent, read back and reload', 'AC1', (s) => scenarioA(cdp, s, pages));
+  if (pages.one) await scenario('d', 'Desktop/narrow/compact layouts and keyboard preference, save and Buddy controls', 'AC1+AC2 experience', (s) => scenarioD(cdp, s, pages));
   if (pages.one) await scenario('b', 'Two contexts at one version: stale write refused, refresh and save again', 'AC2', (s) => scenarioB(cdp, s, pages));
   if (pages.one) await scenario('c', 'API stopped: unsaved save and failed read are truthful; restart recovers', 'AC1+AC2', (s) => scenarioC(cdp, s, pages));
 }
@@ -603,9 +744,9 @@ function finish(runError) {
   if (runError) receipt.runError = runError;
   try { receipt.apiAccessLog = accessLog(); } catch { /* no log */ }
   receipt.originalAcceptance = {
-    AC1: { text: 'Employees can edit, confirm and save supported inputs and Buddy engagement; reload reflects the server saved version.', scenarios: ['a', 'c'], evidence: ok('a') && ok('c') ? 'pass' : 'fail', closure: 'OPEN: parent review decides' },
-    AC2: { text: 'Failed/stale saves preserve truthful outcomes and usable correction. The UI does not calculate authoritative eligibility or manufacture a match.', scenarios: ['a', 'b', 'c'], evidence: ok('a') && ok('b') && ok('c') ? 'pass' : 'fail', closure: 'OPEN: parent review decides' } };
-  receipt.overall = ['a', 'b', 'c'].every(ok) && !runError ? 'PASS' : 'FAIL';
+    AC1: { text: 'Employees can edit, confirm and save supported inputs and Buddy engagement; reload reflects the server saved version.', scenarios: ['a', 'c', 'd'], evidence: ok('a') && ok('c') && ok('d') ? 'pass' : 'fail', closure: 'OPEN: parent review decides' },
+    AC2: { text: 'Failed/stale saves preserve truthful outcomes and usable correction. The UI does not calculate authoritative eligibility or manufacture a match.', scenarios: ['a', 'b', 'c', 'd'], evidence: ok('a') && ok('b') && ok('c') && ok('d') ? 'pass' : 'fail', closure: 'OPEN: parent review decides' } };
+  receipt.overall = ['a', 'b', 'c', 'd'].every(ok) && !runError ? 'PASS' : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-preferences-proof.json');
   try { writeFileSync(file, `${JSON.stringify(receipt, null, 2)}\n`); } catch (e) { console.error('receipt write failed', e.message); }
   for (const k of Object.keys(sc).sort()) console.log(`  ${k}: ${sc[k].pass ? 'PASS' : 'FAIL'} ${sc[k].title}${sc[k].pass ? '' : ` [failed: ${Object.entries(sc[k].checks).filter(([, v]) => v !== true).map(([n]) => n).join(', ')}]`}`);

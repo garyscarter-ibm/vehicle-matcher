@@ -194,6 +194,30 @@ describe('native Help body, review and current case presentation', () => {
     expect(root(f).querySelector('.help-confirmation h2')).toBeNull();
     expect(client.confirmPreference).not.toHaveBeenCalled();
   });
+
+  it('nests every status title beneath the section title for default h1, embedded h2 and quiet use', async () => {
+    const outline = (f: ComponentFixture<HelpComponent>): string[] => Array.from(root(f).querySelectorAll('h1, h2, h3, h4, h5, h6'))
+      .map(h => `${h.tagName.toLowerCase()} ${h.textContent!.trim()}`);
+    const sessions: [SessionState, string][] = [[{ status: 'loading' }, 'Loading renewal help'], [{ status: 'signed-out' }, 'Sign in to continue'],
+      [{ status: 'unavailable', message: 'Down.', retryable: true }, 'Sign-in unavailable'], [{ status: 'denied', message: 'No.' }, 'You cannot open these cases']];
+    const configs: [Parameters<typeof mount>[0], string[], string][] = [[{}, ['h1 Renewal help'], 'h2'],
+      [{ headingLevel: 2 }, ['h2 Renewal help'], 'h3'], [{ quiet: true, headingLevel: 2 }, [], 'h2']];
+    for (const [inputs, section, level] of configs) {
+      state.set({ status: 'ready', context }); client.readOwnCases.mockResolvedValue(ok(list()));
+      const f = await mount(inputs);
+      client.readOwnCases.mockResolvedValueOnce({ state: 'refused', value: null, refusal: {
+        status: 'unavailable', code: 'case-unavailable', reason: 'Try again later.', retryable: true } });
+      await f.componentInstance.refresh(); f.detectChanges();
+      const notice = root(f).querySelector('gcsp-status-screen :is(h1, h2, h3)')!;
+      expect(outline(f)).toEqual([...section, `${level} ${notice.textContent!.trim()}`]);
+      for (const [session, title] of sessions) {
+        state.set(session); f.detectChanges();
+        expect(outline(f)).toEqual([...section, `${level} ${title}`]);
+        expect(root(f).querySelector('gcsp-status-screen [role]')).toBeNull();
+      }
+    }
+  });
+
   it('shows honest unknown outcome, readback before retry and the identical prepared command', async () => {
     const f = await mount(); askAndReview(f);
     client.requestHelp.mockResolvedValueOnce({ state: 'failed', value: null, problem: 'timeout', writeOutcome: 'unknown' });

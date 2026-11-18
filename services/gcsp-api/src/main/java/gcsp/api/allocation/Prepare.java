@@ -121,6 +121,9 @@ final class Prepare {
             return WorkResult.refuse("candidates-unavailable", "The recommendation engine is unavailable.");
         }
         Map<String, List<String>> declined = declined(c, x, e.employeeId());
+        DeclineReentry.Decline latestDecline = a.declineReentry() == null ? null : latestDecline(c, x, e);
+        JsonNode savedAnswer = latestDecline == null ? null : latestDecline.savedChange();
+        boolean answered = DeclineReentry.answered(a.declineReentry(), latestDecline, e.briefVersion(), e.content(), savedAnswer);
         Set<String> letLapse = "buddy-expired".equals(trigger.type()) ? letLapse(c, x, e.employeeId()) : Set.of();
         Instant due = null;
         int currentContracts = 0;
@@ -132,10 +135,16 @@ final class Prepare {
             if (car == null) continue;
             ArrayNode blockers = array(d.blockers());
             String gate = d.gateStatus();
-            if (declined.getOrDefault(d.orderUuid(), List.of()).stream()
+            if (!answered && declined.getOrDefault(d.orderUuid(), List.of()).stream()
                     .anyMatch(old -> old == null || old.equals(e.digest()))) {
                 gate = "ineligible";
                 blockers.addObject().put("code", "declined-unchanged");
+            }
+            String reasonBlocker = DeclineReentry.blocker(a.declineReentry(), latestDecline, e.briefVersion(),
+                    e.content(), savedAnswer, d.orderUuid(), d.quote());
+            if (reasonBlocker != null) {
+                gate = "ineligible";
+                blockers.addObject().put("code", reasonBlocker);
             }
             boolean contends = "eligible".equals(gate) && Buddy.flag(e.buddy(), "holdConsent")
                     && !letLapse.contains(d.orderUuid());
@@ -263,6 +272,35 @@ final class Prepare {
             out.computeIfAbsent(row[0], k -> new ArrayList<>()).add(row[1]);
         }
         return out;
+    }
+
+    /** One exact latest decision; the quote is joined only for the quantitative size comparison. */
+    private static DeclineReentry.Decline latestDecline(Connection c, RunContext x, Engaged employee) throws SQLException {
+        String sql = "SELECT o.order_uuid, d.decision_id, d.offer_id, o.brief_version, d.reason::text, "
+                + "CASE WHEN d.reason_code = 'size' THEN q.quote::text ELSE NULL END, "
+                + "previous.content::text, saved.post_decline_change::text, saved.confirmed_by, saved.confirmed_at "
+                + "FROM (SELECT d.* FROM offer_decisions d JOIN buddy_offers linked ON linked.environment_id = d.environment_id "
+                + "AND linked.run_id = d.run_id AND linked.offer_id = d.offer_id AND linked.employee_id = d.employee_id "
+                + "WHERE d.environment_id = ? AND d.run_id = ? AND d.employee_id = ? AND d.decision = 'decline' "
+                + "ORDER BY d.created_at DESC, linked.brief_version DESC, d.decided_at DESC, d.decision_id DESC LIMIT 1) d "
+                + "JOIN buddy_offers o ON o.environment_id = d.environment_id AND o.run_id = d.run_id "
+                + "AND o.offer_id = d.offer_id AND o.employee_id = d.employee_id AND o.state = 'declined' "
+                + "LEFT JOIN buddy_quotes q ON d.reason_code = 'size' AND q.environment_id = o.environment_id "
+                + "AND q.run_id = o.run_id AND q.quote_id = o.quote_id AND q.employee_id = o.employee_id "
+                + "AND q.order_uuid = o.order_uuid AND q.policy_version = o.policy_version "
+                + "AND q.quote->'versions'->>'brief' = o.brief_version::text "
+                + "LEFT JOIN LATERAL (SELECT b.* FROM briefs b WHERE b.environment_id = d.environment_id "
+                + "AND b.run_id = d.run_id AND b.employee_id = d.employee_id "
+                + "AND b.post_decline_change->>'decisionId' = d.decision_id "
+                + "AND b.post_decline_change->>'offerId' = d.offer_id "
+                + "AND to_jsonb(b.brief_version - 1) = b.post_decline_change->'fromBriefVersion' "
+                + "AND b.brief_version <= ? ORDER BY b.brief_version LIMIT 1) saved ON TRUE "
+                + "LEFT JOIN briefs previous ON previous.environment_id = d.environment_id AND previous.run_id = d.run_id "
+                + "AND previous.employee_id = d.employee_id AND previous.brief_version = saved.brief_version - 1";
+        return Sql.one(c, sql, rs -> new DeclineReentry.Decline(rs.getString(1), rs.getString(2), rs.getString(3),
+                rs.getLong(4), Sql.json(rs.getString(5)), Sql.json(rs.getString(6)), Sql.json(rs.getString(7)),
+                Sql.json(rs.getString(8)), rs.getString(9), Sql.instant(rs, 10)), x.environmentId(), x.runId(),
+                employee.employeeId(), employee.briefVersion());
     }
 
     private static Set<String> letLapse(Connection c, RunContext x, String employeeId) throws SQLException {

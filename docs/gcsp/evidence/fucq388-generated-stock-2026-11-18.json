@@ -1,0 +1,1122 @@
+{
+  "schema": "fucq388-generated-acceptance/2",
+  "observedAt": "2026-11-18",
+  "sourcePin": "f8913a5f2f769deccebe9e508fdccb693c7b6139",
+  "scope": "actual local HTTPS routes/services and certified RunStock generated main-successful-journey provider; memory repository; no PostgreSQL or browser claim",
+  "setup": "Complete comfort50 and sportiness50 through actual employee draft autosave to meet current three-category engagement minimum; explicitly confirm charging not-ready or home. No direct brief/offer/hold/stock writes.",
+  "guard": "Each fresh process requires exactly one F388_GENERATED_CASE, retains the stock factory and asserts provider.describe(reset.runId).source === generated after first release; emits persisted stockSource.",
+  "cases": [
+    {
+      "case": "blocked-ev",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-a77b7a3e26eb63a682a03a0dbf3648fa",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-ev-20261118T044911Z-72311796-receipt.json",
+      "receiptSha256": "ed36e33d1ff14ebe6efed1b6a8c25cd95bbfb1c82a6a383cd73fa528b0b9f5b8",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-ev-20261118T044911Z-72311796-observations-blocked-ev.json",
+      "observationSha256": "33c3bc2212ed0c349c0a3aafc8096255c16a6b8a2925d2372f3b550555b33bf3",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 19.514380208,
+      "peakRssBytes": 737886208,
+      "removedBytes": 2715840,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "blocked-ev",
+          "runId": "demo-a77b7a3e26eb63a682a03a0dbf3648fa",
+          "rejectedOrderUuid": "716cfd12-35cd-44ee-a7e0-2525b0ed7274",
+          "nextOrderUuid": null,
+          "rejectedFuel": "petrol",
+          "nextFuel": null,
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 0,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "charging-unavailable": 56,
+            "decline-answer-mismatch": 152,
+            "essential-unmet": 41,
+            "policy-exclude": 34
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "716cfd12-35cd-44ee-a7e0-2525b0ed7274",
+              "gateStatus": "ineligible",
+              "score": 40,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "blocked-phev",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-8a5eb4e3b1331f82ab78fc7637ae2f8b",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-phev-20261118T045055Z-6a0db27c-receipt.json",
+      "receiptSha256": "aada3ff6c0210ef94e46535424a2c233284010d34cbbb08c3e5b6aa299a40e42",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-phev-20261118T045055Z-6a0db27c-observations-blocked-phev.json",
+      "observationSha256": "afc8b12128a8869e8e9eec779b3fcc32cc7955098f75a6a2738a9899b70b1e44",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 19.406836792,
+      "peakRssBytes": 718323712,
+      "removedBytes": 2715840,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "blocked-phev",
+          "runId": "demo-8a5eb4e3b1331f82ab78fc7637ae2f8b",
+          "rejectedOrderUuid": "ee1bc8ed-a2bf-42b4-8e2f-d99b53a93d28",
+          "nextOrderUuid": null,
+          "rejectedFuel": "petrol",
+          "nextFuel": null,
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 3,
+              "fuel": "phev",
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 0,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "charging-unavailable": 61,
+            "decline-answer-mismatch": 192,
+            "essential-unmet": 41,
+            "policy-exclude": 34
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "ee1bc8ed-a2bf-42b4-8e2f-d99b53a93d28",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "unchanged",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-47dd4558408e8c3628b953376f30fdee",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-unchanged-20261118T045125Z-e2f2ce8c-receipt.json",
+      "receiptSha256": "836b80f556f4b2764f40aacb3ede23302f5e3f8d09915d323beb01be0bd5871e",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-unchanged-20261118T045125Z-e2f2ce8c-observations-unchanged.json",
+      "observationSha256": "f7ab14e60d6f1cbe2c5c3685bcdb7813958ac5518e6d0dc943042b3ea5ac51b0",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 19.178479458,
+      "peakRssBytes": 748060672,
+      "removedBytes": 2707648,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "unchanged",
+          "runId": "demo-47dd4558408e8c3628b953376f30fdee",
+          "rejectedOrderUuid": "1038e57d-e889-4576-9f57-589167a3fff3",
+          "nextOrderUuid": "ba6b3d6f-1117-40c2-b674-ee6036d4eaa6",
+          "rejectedFuel": "petrol",
+          "nextFuel": "petrol",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 87,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "charging-unavailable": 61,
+            "declined-unresolved": 1,
+            "essential-unmet": 41,
+            "policy-exclude": 32
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "1038e57d-e889-4576-9f57-589167a3fff3",
+              "gateStatus": "ineligible",
+              "score": 46,
+              "blockers": [
+                {
+                  "code": "declined-unresolved"
+                }
+              ]
+            },
+            {
+              "orderUuid": "ba6b3d6f-1117-40c2-b674-ee6036d4eaa6",
+              "gateStatus": "eligible",
+              "score": 46,
+              "blockers": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "home-ev",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-e78f6919dfbeb3a08a760f1d4423d0da",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-ev-20261118T045206Z-1a421364-receipt.json",
+      "receiptSha256": "5f7277102215f53784f9fad803104d3424a48553f0cc2488eeeda2732c1d7a2b",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-ev-20261118T045206Z-1a421364-observations-home-ev.json",
+      "observationSha256": "d8847c3415f69afdf8f88693d24bf744c78406d78c1f9398ca0b9a0aa500c1f7",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 21.933694584,
+      "peakRssBytes": 794509312,
+      "removedBytes": 2719936,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "home-ev",
+          "runId": "demo-e78f6919dfbeb3a08a760f1d4423d0da",
+          "rejectedOrderUuid": "208e8877-1e39-4ee8-8eec-eb9d6f970a58",
+          "nextOrderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+          "rejectedFuel": "petrol",
+          "nextFuel": "ev",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 30,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "decline-answer-mismatch": 148,
+            "essential-unmet": 41,
+            "policy-exclude": 33
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+              "gateStatus": "eligible",
+              "score": 53,
+              "blockers": []
+            },
+            {
+              "orderUuid": "208e8877-1e39-4ee8-8eec-eb9d6f970a58",
+              "gateStatus": "ineligible",
+              "score": 40,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "repeat-ev-to-petrol",
+          "runId": "demo-e78f6919dfbeb3a08a760f1d4423d0da",
+          "rejectedOrderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+          "nextOrderUuid": "263208ec-cadc-45f6-a35a-15bcc07cb899",
+          "rejectedFuel": "ev",
+          "nextFuel": "petrol",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "home"
+            },
+            {
+              "version": 4,
+              "fuel": "petrol",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 300,
+          "eligibleEvaluationCount": 112,
+          "blockerCounts": {
+            "allowance-exceeded": 33,
+            "decline-answer-mismatch": 110,
+            "essential-unmet": 62,
+            "policy-exclude": 49
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+              "gateStatus": "ineligible",
+              "score": 39,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            },
+            {
+              "orderUuid": "263208ec-cadc-45f6-a35a-15bcc07cb899",
+              "gateStatus": "eligible",
+              "score": 54,
+              "blockers": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "home-phev",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-d71d74a2b0a9e85fb45140b718302386",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-phev-20261118T045235Z-a07b9e9c-receipt.json",
+      "receiptSha256": "8c4de38af25eb1d4595a76bd23070a6920ff7775bc1660ce59fd91c721107a5e",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-phev-20261118T045235Z-a07b9e9c-observations-home-phev.json",
+      "observationSha256": "2074c99e3147afd8d61d7d25681c4102f576e56c3409f6a11a49efdbb32b543e",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 19.495469042,
+      "peakRssBytes": 717062144,
+      "removedBytes": 2715840,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "home-phev",
+          "runId": "demo-d71d74a2b0a9e85fb45140b718302386",
+          "rejectedOrderUuid": "7345ccd4-534e-404d-b008-83e28534895a",
+          "nextOrderUuid": "6608c1c9-395f-447b-acbf-7fa88c148ed2",
+          "rejectedFuel": "petrol",
+          "nextFuel": "phev",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "phev",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 11,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "decline-answer-mismatch": 189,
+            "essential-unmet": 41,
+            "policy-exclude": 34
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "6608c1c9-395f-447b-acbf-7fa88c148ed2",
+              "gateStatus": "eligible",
+              "score": 51,
+              "blockers": []
+            },
+            {
+              "orderUuid": "7345ccd4-534e-404d-b008-83e28534895a",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "home-diesel",
+      "result": "PASS",
+      "stockSource": {
+        "runId": "demo-eecb25ae31ff9ea77cfe31db1c08a38f",
+        "source": "generated",
+        "reason": "Stock generated for the run."
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-diesel-20261118T045312Z-f8670fbf-receipt.json",
+      "receiptSha256": "d48bbce5aec4524fa02dda2655920b4c5943c7fc7f34062682894128037e3066",
+      "observationFile": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-diesel-20261118T045312Z-f8670fbf-observations-home-diesel.json",
+      "observationSha256": "8b1b166d7cf8d8dc1c4e9bc80e5bd16cb5272e7e26c95434df25e7af75b6441a",
+      "testSha256": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+      "wallSeconds": 19.595997041,
+      "peakRssBytes": 771407872,
+      "removedBytes": 2715840,
+      "cleanup": {
+        "rootAbsent": true,
+        "ownedLinkAbsent": true,
+        "groupsAbsent": true,
+        "issues": []
+      },
+      "identityUnchanged": true,
+      "observedCoverageSourceFiles": 240,
+      "observations": [
+        {
+          "label": "home-diesel",
+          "runId": "demo-eecb25ae31ff9ea77cfe31db1c08a38f",
+          "rejectedOrderUuid": "5cf57cec-b10d-444e-a859-739d5a3fc076",
+          "nextOrderUuid": "992b29bd-058c-4b89-a8ad-6ba590e08d81",
+          "rejectedFuel": "petrol",
+          "nextFuel": "diesel",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "diesel",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleEvaluationCount": 9,
+          "blockerCounts": {
+            "allowance-exceeded": 22,
+            "decline-answer-mismatch": 191,
+            "essential-unmet": 41,
+            "policy-exclude": 34
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "5cf57cec-b10d-444e-a859-739d5a3fc076",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            },
+            {
+              "orderUuid": "992b29bd-058c-4b89-a8ad-6ba590e08d81",
+              "gateStatus": "eligible",
+              "score": 48,
+              "blockers": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "codeSha256": {
+    "_tools/gcsp-decline-reentry-generated-proof.mjs": "4d43be361aa97d83bb2388de28fc9f62a2131cae80b147d49a91ef4f44b0e465",
+    "scripts/gcsp-demo.mjs": "a36ff526ddabeece4b9127834ab58789ffab497f1b444fe14f35308e41549a4a",
+    "server/data/gcsp/vehicle-evidence/demo-fleet.v1/active.json": "e7e3979663c238135228dddd94c6bd23b8930ce52080ccca3480fcfaeb61d254",
+    "server/gcsp/allocation/decline-reentry.js": "e82ad31653c690b67a8476accd2229b47f2edc49b7052cd93010391450377f77",
+    "server/gcsp/allocation/index.js": "88543ee52092adc1ecec89c5043db415e39326f4b169f8e9e34383d6e88e6969",
+    "server/gcsp/policy/employee-experience-adoption.js": "c741b33d67df9efb6a36bc9e6572df066b714636bb72d122cfdf1c0dcb5e827b",
+    "server/gcsp/policy/index.js": "bcb722c43b687d00f571a1508ff34238189072605cd05b4e28fadcabf54f4042",
+    "server/gcsp/policy/offer-journey-adoption.js": "c81febbeaf9be38f3b8deec9c89cb41769b27ddbd8ad2c2d77d31eb9b3ae9157",
+    "server/gcsp/policy/reviewed-definitions.js": "67bdb16022dadc033c60702f8facd13b3b5adfc58b2e6ad84e0c35677e74a787",
+    "server/gcsp/policy/reviewed/offer-declined-car-reentry-v1.json": "eac0ba25406cd07cac9b9d1669fe20d9dfaefe7ab7f05bfac75fce1d8ff45866",
+    "server/gcsp/policy/seed-v1.json": "23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591",
+    "server/gcsp/stock/demo-provider.js": "367f8a2ed705b4c0495cca00ca9ac3c475443756999d346de13aa9d0103f8464",
+    "server/gcsp/stock/generated-provider.js": "fe996eb2d48751dacb804a1c3c7fff1cb68736575c9bcab7dc0bb36bf5a45958",
+    "server/gcsp/stock/run-stock-generation.js": "031a37c9b1a6156a4ad77b8e8850f578a2d3c1fe44864bde0d141eade712a19f",
+    "server/gcsp/stock/run-stock.js": "0953f8361354a36910918c9111419d2a661589e6e274125574e8361601484b4c",
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+    "server/gcsp/vehicle-evidence/stock-generator.js": "b6783208b516e8406c017a7b8d6b1a3e718667dacefcbc6d86a0aa7f575963de",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "8354e714578e3b67277be983fdf513dd3e053dc89934edae41f91f805a421bf7",
+    "server/test/helpers/gcsp-allocation.js": "f5c942c36689e551ceef06750780f4040f00f7b7288444ff9df05d0808c6d9b6",
+    "server/test/helpers/gcsp-decline-change-route.js": "9d2079250e40b87e17a6cdce465dfab66a52e23ce88c0358d297822ede4de7b7",
+    "server/test/helpers/local-https.js": "38c372cdf81afae622b7ef2e847d7b6677764b62c2549b6603103e23b4730d55"
+  },
+  "testTotals": {
+    "cases": 6,
+    "tests": 6,
+    "pass": 6,
+    "declines": 7,
+    "fail": 0,
+    "skip": 0
+  },
+  "priorBusinessObservations": [
+    {
+      "case": "blocked-ev",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-blocked-ev-5-20261118T041021Z-968e0990-receipt.json",
+      "receiptSha256": "e957a699dc375a0901a296bcbb977be89e4c70fd71b3cff90305eb0f7cdd0c9e",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 13.459235624999565,
+      "peakRssBytes": 735346688,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "blocked-ev",
+          "runId": "demo-a77b7a3e26eb63a682a03a0dbf3648fa",
+          "rejectedOrderUuid": "716cfd12-35cd-44ee-a7e0-2525b0ed7274",
+          "nextOrderUuid": null,
+          "rejectedFuel": "petrol",
+          "nextFuel": null,
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 0,
+          "blockerCounts": {
+            "decline-answer-mismatch": 152,
+            "policy-exclude": 34,
+            "allowance-exceeded": 22,
+            "charging-unavailable": 56,
+            "essential-unmet": 41
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "716cfd12-35cd-44ee-a7e0-2525b0ed7274",
+              "gateStatus": "ineligible",
+              "score": 40,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    },
+    {
+      "case": "blocked-phev",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-blocked-phev-1-20261118T041102Z-d506ae79-receipt.json",
+      "receiptSha256": "bda02001b47604227ce352c6eeb5719d66c75c5ba1dc4d1ec6b5d355af2e997f",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 13.63702825,
+      "peakRssBytes": 778780672,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "blocked-phev",
+          "runId": "demo-8a5eb4e3b1331f82ab78fc7637ae2f8b",
+          "rejectedOrderUuid": "ee1bc8ed-a2bf-42b4-8e2f-d99b53a93d28",
+          "nextOrderUuid": null,
+          "rejectedFuel": "petrol",
+          "nextFuel": null,
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 3,
+              "fuel": "phev",
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 0,
+          "blockerCounts": {
+            "decline-answer-mismatch": 192,
+            "charging-unavailable": 61,
+            "policy-exclude": 34,
+            "allowance-exceeded": 22,
+            "essential-unmet": 41
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "ee1bc8ed-a2bf-42b4-8e2f-d99b53a93d28",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    },
+    {
+      "case": "unchanged",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-unchanged-1-20261118T041116Z-75b91cf4-receipt.json",
+      "receiptSha256": "0d3408a8a7409088bbe804974088e5f8b04c1c4211fedea450f2d010725886cd",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 13.520767667,
+      "peakRssBytes": 746618880,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "unchanged",
+          "runId": "demo-47dd4558408e8c3628b953376f30fdee",
+          "rejectedOrderUuid": "1038e57d-e889-4576-9f57-589167a3fff3",
+          "nextOrderUuid": "ba6b3d6f-1117-40c2-b674-ee6036d4eaa6",
+          "rejectedFuel": "petrol",
+          "nextFuel": "petrol",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "not-ready"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 87,
+          "blockerCounts": {
+            "policy-exclude": 32,
+            "allowance-exceeded": 22,
+            "charging-unavailable": 61,
+            "essential-unmet": 41,
+            "declined-unresolved": 1
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "1038e57d-e889-4576-9f57-589167a3fff3",
+              "gateStatus": "ineligible",
+              "score": 46,
+              "blockers": [
+                {
+                  "code": "declined-unresolved"
+                }
+              ]
+            },
+            {
+              "orderUuid": "ba6b3d6f-1117-40c2-b674-ee6036d4eaa6",
+              "gateStatus": "eligible",
+              "score": 46,
+              "blockers": []
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    },
+    {
+      "case": "home-ev",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-home-ev-1-20261118T041129Z-4cb0106e-receipt.json",
+      "receiptSha256": "26f6b3bfb2eaaeaada1e0ef84747be5c0c0ba24fad647b6262bc9f07f51a7a41",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 14.990349709,
+      "peakRssBytes": 792821760,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "home-ev",
+          "runId": "demo-e78f6919dfbeb3a08a760f1d4423d0da",
+          "rejectedOrderUuid": "208e8877-1e39-4ee8-8eec-eb9d6f970a58",
+          "nextOrderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+          "rejectedFuel": "petrol",
+          "nextFuel": "ev",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 30,
+          "blockerCounts": {
+            "decline-answer-mismatch": 148,
+            "essential-unmet": 41,
+            "policy-exclude": 33,
+            "allowance-exceeded": 22
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+              "gateStatus": "eligible",
+              "score": 53,
+              "blockers": []
+            },
+            {
+              "orderUuid": "208e8877-1e39-4ee8-8eec-eb9d6f970a58",
+              "gateStatus": "ineligible",
+              "score": 40,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "repeat-ev-to-petrol",
+          "runId": "demo-e78f6919dfbeb3a08a760f1d4423d0da",
+          "rejectedOrderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+          "nextOrderUuid": "263208ec-cadc-45f6-a35a-15bcc07cb899",
+          "rejectedFuel": "ev",
+          "nextFuel": "petrol",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "ev",
+              "charging": "home"
+            },
+            {
+              "version": 4,
+              "fuel": "petrol",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 300,
+          "eligibleCount": 112,
+          "blockerCounts": {
+            "decline-answer-mismatch": 110,
+            "policy-exclude": 49,
+            "essential-unmet": 62,
+            "allowance-exceeded": 33
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "00075a98-8887-465b-bfff-fb017e946a5d",
+              "gateStatus": "ineligible",
+              "score": 39,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            },
+            {
+              "orderUuid": "263208ec-cadc-45f6-a35a-15bcc07cb899",
+              "gateStatus": "eligible",
+              "score": 54,
+              "blockers": []
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    },
+    {
+      "case": "home-phev",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-home-phev-1-20261118T041145Z-319cd818-receipt.json",
+      "receiptSha256": "56d0f771176d69faedad4d3dc9f6d9df535ac8f1d0062ab4fc08f70c45aa6e83",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 13.863725417000001,
+      "peakRssBytes": 713916416,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "home-phev",
+          "runId": "demo-d71d74a2b0a9e85fb45140b718302386",
+          "rejectedOrderUuid": "7345ccd4-534e-404d-b008-83e28534895a",
+          "nextOrderUuid": "6608c1c9-395f-447b-acbf-7fa88c148ed2",
+          "rejectedFuel": "petrol",
+          "nextFuel": "phev",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "phev",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 11,
+          "blockerCounts": {
+            "policy-exclude": 34,
+            "decline-answer-mismatch": 189,
+            "essential-unmet": 41,
+            "allowance-exceeded": 22
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "6608c1c9-395f-447b-acbf-7fa88c148ed2",
+              "gateStatus": "eligible",
+              "score": 51,
+              "blockers": []
+            },
+            {
+              "orderUuid": "7345ccd4-534e-404d-b008-83e28534895a",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    },
+    {
+      "case": "home-diesel",
+      "receipt": ".claude/poller/run-20261117-2335/resources/f388-node-generated-home-diesel-1-20261118T041159Z-982fdd1a-receipt.json",
+      "receiptSha256": "344a6314cefd735fd13cde3b8387740fa937c2f77f6cea5d463ba59efb4165cf",
+      "testSha256": "68eafd23e9fc4b6ae0df724c049d25cd74d04e6a2004f40f6e75722347e2a4ef",
+      "wallSeconds": 13.672264625,
+      "peakRssBytes": 711409664,
+      "removedBytes": 1200224,
+      "cleanupVerified": true,
+      "observations": [
+        {
+          "label": "home-diesel",
+          "runId": "demo-eecb25ae31ff9ea77cfe31db1c08a38f",
+          "rejectedOrderUuid": "5cf57cec-b10d-444e-a859-739d5a3fc076",
+          "nextOrderUuid": "992b29bd-058c-4b89-a8ad-6ba590e08d81",
+          "rejectedFuel": "petrol",
+          "nextFuel": "diesel",
+          "briefVersions": [
+            {
+              "version": 1,
+              "fuel": null,
+              "charging": "not-ready"
+            },
+            {
+              "version": 2,
+              "fuel": null,
+              "charging": "home"
+            },
+            {
+              "version": 3,
+              "fuel": "diesel",
+              "charging": "home"
+            }
+          ],
+          "candidateEvaluationCount": 200,
+          "eligibleCount": 9,
+          "blockerCounts": {
+            "decline-answer-mismatch": 191,
+            "policy-exclude": 34,
+            "allowance-exceeded": 22,
+            "essential-unmet": 41
+          },
+          "selectedEvaluations": [
+            {
+              "orderUuid": "5cf57cec-b10d-444e-a859-739d5a3fc076",
+              "gateStatus": "ineligible",
+              "score": 43,
+              "blockers": [
+                {
+                  "code": "decline-answer-mismatch",
+                  "reasonCode": "fuel",
+                  "path": "preferences.fuel.value"
+                }
+              ]
+            },
+            {
+              "orderUuid": "992b29bd-058c-4b89-a8ad-6ba590e08d81",
+              "gateStatus": "eligible",
+              "score": 48,
+              "blockers": []
+            }
+          ]
+        }
+      ],
+      "sourceCertification": "Earlier business observation only; RunStock provider.describe source was not retained. Do not certify generated source retrospectively."
+    }
+  ],
+  "freshRetainedComparison": [
+    {
+      "variant": "historical",
+      "historical": true,
+      "tick": "presenter step after first release",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-retained-historical-2-20261118T041323Z-459f88d9-receipt.json",
+      "probeSha256": "0065341000270dff6ffd6dc50d5e1f9897f0d4f2e8cb079ed4b4eac3db37a073",
+      "wallSeconds": 12.940171165999345,
+      "peakRssBytes": 719142912,
+      "cleanupVerified": true,
+      "observation": {
+        "label": "retained-exact-repeat",
+        "runId": "demo-8f96fdac6e483ae49a7623c9e3e61358",
+        "rejectedOrderUuid": "184e3625-7662-4bd2-8c67-f03f95deaf49",
+        "nextOrderUuid": "184e3625-7662-4bd2-8c67-f03f95deaf49",
+        "rejectedFuel": "petrol",
+        "nextFuel": "petrol",
+        "briefVersions": [
+          {
+            "version": 1,
+            "fuel": null,
+            "charging": "not-ready"
+          },
+          {
+            "version": 2,
+            "fuel": null,
+            "charging": "not-ready"
+          },
+          {
+            "version": 3,
+            "fuel": "ev",
+            "charging": "not-ready"
+          }
+        ],
+        "candidateEvaluationCount": 100,
+        "selectedEvaluations": [
+          {
+            "orderUuid": "184e3625-7662-4bd2-8c67-f03f95deaf49",
+            "gateStatus": "eligible",
+            "score": 40,
+            "blockers": []
+          }
+        ],
+        "blockerCounts": {
+          "charging-unavailable": 30,
+          "essential-unmet": 21,
+          "policy-exclude": 16,
+          "allowance-exceeded": 11
+        }
+      },
+      "stockSourceCertification": "RunStock requested but provider.describe was not retained; 100 candidate evaluations do not establish a 100-car generated pool."
+    },
+    {
+      "variant": "repaired",
+      "historical": false,
+      "tick": "presenter step after first release",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-retained-repaired-2-20261118T041449Z-aac91932-receipt.json",
+      "probeSha256": "0065341000270dff6ffd6dc50d5e1f9897f0d4f2e8cb079ed4b4eac3db37a073",
+      "wallSeconds": 13.145297124996432,
+      "peakRssBytes": 680001536,
+      "cleanupVerified": true,
+      "observation": {
+        "label": "retained-exact-repeat",
+        "runId": "demo-65bfe9e699cec84a8d4d89965544d5a3",
+        "rejectedOrderUuid": "67f749cc-5499-406c-949f-f15aafad5839",
+        "nextOrderUuid": null,
+        "rejectedFuel": "petrol",
+        "nextFuel": null,
+        "briefVersions": [
+          {
+            "version": 1,
+            "fuel": null,
+            "charging": "not-ready"
+          },
+          {
+            "version": 2,
+            "fuel": null,
+            "charging": "not-ready"
+          },
+          {
+            "version": 3,
+            "fuel": "ev",
+            "charging": "not-ready"
+          }
+        ],
+        "candidateEvaluationCount": 100,
+        "selectedEvaluations": [
+          {
+            "orderUuid": "67f749cc-5499-406c-949f-f15aafad5839",
+            "gateStatus": "ineligible",
+            "score": 61,
+            "blockers": [
+              {
+                "code": "decline-answer-mismatch",
+                "reasonCode": "fuel",
+                "path": "preferences.fuel.value"
+              }
+            ]
+          }
+        ],
+        "blockerCounts": {
+          "decline-answer-mismatch": 79,
+          "policy-exclude": 16,
+          "allowance-exceeded": 11,
+          "charging-unavailable": 28,
+          "essential-unmet": 21
+        }
+      },
+      "stockSourceCertification": "RunStock requested but provider.describe was not retained; 100 candidate evaluations do not establish a 100-car generated pool."
+    }
+  ],
+  "limitations": [
+    "The retained historical and repaired comparator use distinct runs/stocks with100 candidate evaluations each; exact provider metadata was not retained. They demonstrate the repeat mechanism and refusal without recreating the11November X1/2-point snapshot or an identical-stock score comparison.",
+    "candidateEvaluationCount counts decision rows in the retained evaluation, not total stock inventory; final cases contain200 or300 such rows.",
+    "Earlier six business passes lack direct provider-source certification and are preserved separately.",
+    "Initial fixture/client/idempotency failures and one capacity refusal remain local resource receipts and are excluded from product RED evidence.",
+    "No nativePG/OIDC/visual/full-batch acceptance is established by these memory-runtime results."
+  ],
+  "noOneDriveAccess": true
+}

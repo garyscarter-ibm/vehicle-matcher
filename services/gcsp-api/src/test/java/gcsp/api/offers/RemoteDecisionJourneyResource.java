@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,7 @@ public class RemoteDecisionJourneyResource implements QuarkusTestResourceLifecyc
     private RemoteOperationServer remote;
     private HttpServer control;
     private ExecutorService executor;
+    private final Map<String, ObjectNode> beforeIo = new ConcurrentHashMap<>();
 
     @Override
     public Map<String, String> start() {
@@ -39,6 +41,9 @@ public class RemoteDecisionJourneyResource implements QuarkusTestResourceLifecyc
             Map<String, String> config = new HashMap<>(sources.start());
             seedFixtureClock(config);
             remote = RemoteOperationServer.start();
+            String url = config.get("quarkus.datasource.jdbc.url");
+            String schema = config.get("quarkus.flyway.default-schema");
+            remote.beforeAnswer(request -> beforeIo.putIfAbsent(request.operationId(), sample(url, schema, request)));
             control = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
             executor = Executors.newSingleThreadExecutor();
             control.setExecutor(executor);
@@ -92,6 +97,34 @@ public class RemoteDecisionJourneyResource implements QuarkusTestResourceLifecyc
         }
     }
 
+    /** What is already committed when the stub receives a POST; a failed read is recorded, never thrown. */
+    private static ObjectNode sample(String url, String schema, RemoteOperationServer.Request request) {
+        ObjectNode out = JSON.createObjectNode();
+        try {
+            var source = OffersPg.plain(url);
+            source.setCurrentSchema(schema);
+            try (Connection c = source.getConnection()) {
+                out.put("intent", count(c, "SELECT count(*) FROM pending_operations WHERE operation_id = ?", request.operationId()));
+                out.put("receipts", count(c, "SELECT count(*) FROM command_receipts WHERE command_id LIKE 'offer-decision:%'"));
+                out.put("decisions", count(c, "SELECT count(*) FROM offer_decisions"));
+                out.put("orders", count(c, "SELECT count(*) FROM selection_orders"));
+            }
+        } catch (Exception e) {
+            out.put("error", String.valueOf(e));
+        }
+        return out;
+    }
+
+    private static long count(Connection c, String sql, String... arguments) throws java.sql.SQLException {
+        try (PreparedStatement statement = c.prepareStatement(sql)) {
+            for (int i = 0; i < arguments.length; i++) statement.setString(i + 1, arguments[i]);
+            try (var rows = statement.executeQuery()) {
+                rows.next();
+                return rows.getLong(1);
+            }
+        }
+    }
+
     private void handle(HttpExchange exchange) throws IOException {
         try (exchange) {
             if ("POST".equals(exchange.getRequestMethod()) && "/script".equals(exchange.getRequestURI().getPath())) {
@@ -109,6 +142,7 @@ public class RemoteDecisionJourneyResource implements QuarkusTestResourceLifecyc
                 ObjectNode operation = operations.withObject("/" + id.replace("~", "~0").replace("/", "~1"));
                 operation.put("posts", remote.posts(id)).put("gets", remote.gets(id)).put("effects", remote.effects(id));
                 if (request.type() != null) operation.put("type", request.type());
+                if (beforeIo.containsKey(id)) operation.set("beforeIo", beforeIo.get(id));
             }
             respond(exchange, 200, stats);
         } catch (IllegalArgumentException e) {
