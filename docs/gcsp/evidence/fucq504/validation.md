@@ -1,0 +1,22 @@
+# FUCQ-504 validation scope
+
+Original acceptance is unchanged: distinguish selected-detail temporary source failure, refusal and sign-in-required from a confirmed missing/taken car; preserve the exact selection and authoritative recovery. No supplied screenshots; intake evidence helper was ready with no missing entries. Existing F442 stock implementation is the body baseline; `docs/gcsp/screens/README.md` governs shell/palette, with existing Angular StatusScreen/Button components retained.
+
+Diagnosis: AccountClient and projectStock retain the authoritative failure. StockStore.detailState collapses it after reload clears the resource, and the selected template bypasses the already-correct general message. Planned production edits are only `stock.store.ts` and `stock.component.html`. No API, eligibility, auth, persistence, shared kit, CSS or topology change is needed.
+
+Selected proof, one worker:
+
+1. RED: run only `stock.component.spec.ts` with the added selected-detail envelope cases before production edits. This reproduces source unavailable, forbidden and both sign-in envelopes; choices-invalid is a boundary of the same projection/recovery branch.
+2. GREEN: run stock component/store/projection/presentation specs. These cover exact-ID retention/no substitution, authoritative missing/taken/stale/loading, failure-specific actions, retry to exact selected vehicle, source validation, ownership reset and existing card/navigation paths. Update the store's old assertion which codified collapsed failures. No shared contract changes or callers outside StockComponent were identified.
+3. Render the real Angular component at 1440 and 390 px with realistic long identity/copy through selected/loading/source failure/denied/sign-in/recovery/confirmed missing/taken states. Inspect keyboard actions and no stale facts/substitution. Coordinate the app/browser lane with the parent; no concurrent composition during its covering batch.
+4. Independent substantive visual/usability critique, actionable correction and reinspection before completion. Parent arranges review. Scoped proof never establishes Java/OIDC/provider/hosted acceptance.
+
+Runtime command uses existing retained Node/Angular dependencies without install, via a temporary owned node_modules link inside this worktree. Test/build/cache/TMPDIR/TMP/TEMP outputs are confined to the run-owned local root; external manifest and supervisor finalizer precede allocation. Final unit chunk: <=2 GiB scratch, <=1 GiB sampled process RSS, <=600 seconds, <=2 MiB log, >=5 GiB emergency reserve, HostBudget admission/telemetry. Preserve installed environments and peer claims. Absolutely no OneDrive/CloudStorage operations.
+
+Full suite: deferred to the parent covering batch. No Java, Node business, migration, startup producer, shared application configuration, Maven, dependency or test-support changes justify another full suite. Changed source after the pinned current batch will require a later matching batch at integration under the standing workflow.
+
+RED reproduced five expected selected-message assertion failures, with 15 existing tests passing. GREEN passed all 144 tests: component 20, store 51, projection 50, presentation 23; zero failures/skips. The existing nonfatal NG8107 optional-chain warning remains. Exact tested stock-source hashes, environment, commands and teardown receipts are retained in `scoped-unit.json`.
+
+The first 1.5 GiB request was refused before allocation; a smaller all-app typecheck attempt exceeded its 1 GiB sampled bound and was stopped/joined. A scratch-only tsconfig now selects exactly the stock specs while retaining their real transitive source imports. Its initial absolute tsconfig path was refused by Angular's workspace-root join; using a workspace-relative path corrected the harness. These are failed/refused attempts, not passes. Final RED and GREEN each took 3.45 s; GREEN sampled 914,309,120 B process RSS and 10,443,075 B scratch. Both roots and all owned borrowed-dependency/cache links were removed with verified absence and no cleanup issues; installed dependencies were preserved.
+
+Status: partial source/unit checkpoint. Rendered proof and independent substantive review remain outstanding; no UI completion or acceptance claim.

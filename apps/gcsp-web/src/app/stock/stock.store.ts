@@ -99,8 +99,14 @@ export class StockStore {
     if (!projection) return 'idle';
     return this.allCars().length && !this.cars().length ? 'empty-search' : projection.state;
   });
-  readonly detailState = computed(() => !this.selectedId() ? 'closed' : this.loading() ? 'loading' : this.selectedCar() ? 'available'
-    : this.state() === 'context-refresh' ? 'stale' : 'unavailable');
+  readonly detailState = computed(() => {
+    if (!this.selectedId()) return 'closed';
+    if (this.loading()) return 'loading';
+    if (this.selectedCar()) return 'available';
+    const state = this.state();
+    if (state === 'context-refresh') return 'stale';
+    return this.projection()?.source || state === 'car-taken' ? 'unavailable' : state;
+  });
   private controller = new AbortController();
   private epoch = 0;
   private loadPromise: Promise<void> | null = null;
