@@ -824,8 +824,8 @@ quantity?, delayUntil?, reason?}`, synthetic provider only, else 409 `production
   supply's release queue; request, confirmation, queued and released stay separate numbers on each line.
 - Each applied answer emits outbox event `production.supply-changed` (no consumer: the replan path is pull-based). Greg's `GET /greg/order-plan`
   reports `replan` from the stored submissions and responses (`ProductionSubmissionHistory`). `supply-activity` carries `supplyVersion`.
-  The plan port is the planner itself (`PlanningPlanSnapshot`), so submit answers the planner's own 503 code (`planning-forecast-not-configured`
-  or `planning-supply-not-configured`) until FUCQ-475/477 bind its inputs. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
+  The plan port is the planner itself (`PlanningPlanSnapshot`) over the bound Postgres demand/supply and run clock. On the demo data that
+  plan orders nothing (`driver-unconfirmed`), so a plan submit answers 400 `plan-has-no-order`. `live-stub` sends nothing. Config: `GCSP_PRODUCTION_PROVIDER`.
 - Under `live-stub`, or for a line with an unknown model choice, the line is closed at once (`unsupported` or `refused`),
   so `replan.status` shows `replanned` straight after the submission. A plain `requested` reply signals nothing.
 - Each request keeps the provider mode it was created with. After a restart with a different `GCSP_PRODUCTION_PROVIDER`,
