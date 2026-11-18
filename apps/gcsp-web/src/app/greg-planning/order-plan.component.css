@@ -4,7 +4,7 @@
 .planning-heading { justify-content: space-between; }
 .plan-section, .plan-limits, .plan-metrics { padding: var(--gcsp-space-5, 24px); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius, 8px); }
 .plan-section h3, .plan-notice p { margin-top: 0; }
-.plan-notice { padding: var(--gcsp-space-4, 16px); border-left: 4px solid var(--gcsp-accent); background: var(--gcsp-surface-muted); overflow-wrap: anywhere; }
+.plan-notice { padding: var(--gcsp-space-4, 16px); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface-muted); overflow-wrap: anywhere; }
 .plan-limits summary { font-weight: 600; cursor: pointer; }
 fieldset { min-width: 0; margin: 20px 0; padding: 16px 0; border: 0; border-top: 1px solid var(--gcsp-divider); }
 legend { font-weight: 600; padding: 0 8px 0 0; }

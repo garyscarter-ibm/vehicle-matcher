@@ -3,7 +3,7 @@
 .production-heading, .request-heading { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 12px; }
 .production-heading h2, .request-heading h3 { margin: 0; }
 .production-request, .production-empty { background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: 8px; padding: 24px; overflow-wrap: anywhere; }
-.production-notice { background: var(--gcsp-surface-muted); padding: 16px; border-left: 4px solid var(--gcsp-accent); overflow-wrap: anywhere; }
+.production-notice { background: var(--gcsp-surface-muted); padding: 16px; border: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
 .production-notice h3 { margin-top: 0; }
 .production-reason { font-weight: 600; }
 details { margin-top: 16px; }
