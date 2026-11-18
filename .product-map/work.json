@@ -10235,7 +10235,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-451",
-      "observed_at": "2026-11-18T04:28:39Z",
+      "observed_at": "2026-11-18T10:48:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect notifications and follow delivered offer links",
@@ -10245,24 +10245,24 @@
       "slices": [
         {
           "id": "inspection",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-18T04:23:14.365176Z",
-          "evidence": "Actual Java/nativePG17/signed-local-OIDC browser proof: recipient, capture, filters, read-only authority, native keyboard/focus, desktop/narrow/CSP PASS. Angular59/59+AOT PASS. Separate preview styling BugFUCQ-524. Safari/hosted/covering batch remain open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
+          "observed_at": "2026-11-18T10:48:00Z",
+          "evidence": "AC1 met locally at 836324f8d: one green Java run notify+offers+wiring 49 classes/286 tests on native PG17 with signed OIDC NotificationJourneyHttpTest; Angular outbox 59/59; connected browser proof on unchanged outbox code. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
         },
         {
           "id": "offer-return",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Delivered offer link sign-in and ownership return",
-          "observed_at": "2026-11-18T04:23:14.365176Z",
-          "evidence": "Captured offer exact path returns through local code/PKCE/signed JWT login to owned offer; wrong account refused. Connected041801 and supplemental042109 PASS. Actual inbox delivery and hosted provider/origin topology unproved; originalAC2 open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
+          "observed_at": "2026-11-18T10:48:00Z",
+          "evidence": "Local substitutes PASS (Brevo-stub link owner/other 403 at 836324f8d; captured link via local signed OIDC). Blocked on external: newly received real email to an agreed test recipient, hosted provider/origins, Safari."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Route, rendered Java and newly received email acceptance",
-          "observed_at": "2026-11-18T04:23:14.365176Z",
-          "evidence": "Four connected scenarios/41checks PASS; supplemental narrow viewport paints. Java composite48classes/284tests: interrupted83 native-log passes plus remaining201 strictPASS, no overlap. Full suite deferred to batch. Both originalACs open; no acceptance/Done claim. Final resource audit17runs clean."
+          "observed_at": "2026-11-18T10:48:00Z",
+          "evidence": "AC1 met, AC2 external (real mail receipt, hosted dev, Safari). Full suite deferred to batch; covering batch still required."
         }
       ],
       "branch": "dev/DEV-2026-11-13-019",
