@@ -10253,7 +10253,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-451",
-      "observed_at": "2026-11-18T04:04:44Z",
+      "observed_at": "2026-11-18T04:23:14.365176Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect notifications and follow delivered offer links",
@@ -10265,20 +10265,22 @@
           "id": "inspection",
           "status": "in-progress",
           "title": "Read-only current-run notification inspection",
-          "observed_at": "2026-11-16T22:48:58Z",
-          "evidence": "Composite scoped proof: 58 a01 passes at b39d789b90ec1890c2f7b7e8ca20058f682c0bd7 plus 1 corrected refresh-case a02 pass at 3cae265b8babb58883f65cd2f62bc4a25b9f90c1; 38 intentionally filtered, no pass replay. Source-only full/affected review PASS. Boundary rc1 on byte-identical inherited case-queue em dash. Parent input/cleanup audits passed. Original route/rendered Java/mail acceptance open. Delivery: docs/gcsp/fucq451-notification-inspection-2026-11-16.md."
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Actual Java/nativePG17/signed-local-OIDC browser proof: recipient, capture, filters, read-only authority, native keyboard/focus, desktop/narrow/CSP PASS. Angular59/59+AOT PASS. Separate preview styling BugFUCQ-524. Safari/hosted/covering batch remain open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
         },
         {
           "id": "offer-return",
-          "status": "not-started",
-          "title": "Delivered offer link sign-in and ownership return"
+          "status": "in-progress",
+          "title": "Delivered offer link sign-in and ownership return",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Captured offer exact path returns through local code/PKCE/signed JWT login to owned offer; wrong account refused. Connected041801 and supplemental042109 PASS. Actual inbox delivery and hosted provider/origin topology unproved; originalAC2 open. docs/gcsp/fucq451-notification-inspection-2026-11-16.md"
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Route, rendered Java and newly received email acceptance",
-          "observed_at": "2026-11-18T04:04:44Z",
-          "evidence": "Current route is composed. Timone 3 executing bounded local Java/nativePG17/signed-OIDC outbox proof; external newly received email remains unverified. Original AC unchanged."
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "evidence": "Four connected scenarios/41checks PASS; supplemental narrow viewport paints. Java composite48classes/284tests: interrupted83 native-log passes plus remaining201 strictPASS, no overlap. Full suite deferred to batch. Both originalACs open; no acceptance/Done claim. Final resource audit17runs clean."
         }
       ],
       "branch": "dev/DEV-2026-11-13-019",
@@ -10332,28 +10334,28 @@
           "name": "Tweety 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T04:04:44Z",
-          "expires_at": "2026-11-18T04:49:44Z",
+          "observed_at": "2026-11-18T04:25:40.978399Z",
+          "expires_at": "2026-11-18T04:25:40.978399Z",
           "source": "01a1ecd1-5c2b-7c20-beee-cad378bea403",
-          "status": "active original-scope connected inspection delivery"
+          "status": "delivery work complete; publishing reviewed coherent partial result; original acceptance open"
         },
         {
           "name": "Timone 3",
           "harness": "codex",
           "role": "proof-author",
-          "observed_at": "2026-11-18T04:04:44Z",
-          "expires_at": "2026-11-18T04:49:44Z",
+          "observed_at": "2026-11-18T04:23:14.365176Z",
+          "expires_at": "2026-11-18T04:23:14.365176Z",
           "source": "01a1ecd2-cd7a-7dc1-9fdb-f5fc0e9ccd4c",
-          "status": "active original-scope connected inspection delivery"
+          "status": "returned final proof; focused/composite/connected evidence and17-run cleanup audited"
         },
         {
           "name": "Marvin the Martian 4",
           "harness": "codex",
           "role": "reviewer",
-          "observed_at": "2026-11-18T04:04:44Z",
-          "expires_at": "2026-11-18T04:49:44Z",
+          "observed_at": "2026-11-18T04:25:40.978399Z",
+          "expires_at": "2026-11-18T04:25:40.978399Z",
           "source": "01a1ecd3-15f2-7db2-9306-bca69f23e23b",
-          "status": "active original-scope connected inspection delivery"
+          "status": "returned final source/evidence/images/metadata PASS; no blocker or major; FUCQ-524 separate"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
