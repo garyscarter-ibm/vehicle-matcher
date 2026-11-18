@@ -364,7 +364,7 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   })) assert.ok(properties.split('\n').includes(`${property}=\${${binding}}`), `${property} retains the Java source contract`);
 });
 
-test('artifact: dev static blueprint has bounded offer rewrites and disjoint cache policies', async () => {
+test('artifact: dev static blueprint recovers unknown routes while preserving resource failures and cache policies', async () => {
   const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
   const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
   assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
@@ -375,17 +375,29 @@ test('artifact: dev static blueprint has bounded offer rewrites and disjoint cac
   const rewrites = [...site.matchAll(/- type: rewrite\n\s+source: (\S+)\n\s+destination: (\S+)/gu)];
   assert.ok(GCSP_FIXED_ROUTES.includes('/gcsp/comparison'), 'comparison supports direct entry and refresh');
   assert.deepEqual(GCSP_DYNAMIC_ROUTES, ['/gcsp/offers/:offerId']);
-  assert.deepEqual(rewrites.map((match) => match[1]), [...GCSP_FIXED_ROUTES, ...GCSP_DYNAMIC_ROUTES]);
-  assert.ok(rewrites.every((match) => match[2] === '/gcsp/index.html' && !match[1].includes('*')));
+  const resourceSources = ['/gcsp/assets/*', '/gcsp/media/*', '/gcsp/api/*', '/gcsp/*.*'];
+  assert.deepEqual(rewrites.map((match) => match[1]), [...GCSP_FIXED_ROUTES, ...GCSP_DYNAMIC_ROUTES, ...resourceSources, '/gcsp/*']);
+  assert.ok(rewrites.slice(0, GCSP_FIXED_ROUTES.length + GCSP_DYNAMIC_ROUTES.length).every((match) => match[2] === '/gcsp/index.html'));
+  assert.ok(rewrites.filter((match) => resourceSources.includes(match[1])).every((match) => match[2] === '/gcsp-static-resource-not-found'));
+  assert.equal(rewrites.at(-1)[2], '/gcsp/index.html');
   assert.ok(GCSP_FIXED_ROUTES.every((route) => !route.includes(':')));
-  const matchesRewrite = (pathname) => rewrites.some(([, source]) => {
-    const route = source.split('/'); const candidate = pathname.split('/');
-    return route.length === candidate.length && route.every((part, index) => part.startsWith(':') ? candidate[index].length > 0 : part === candidate[index]);
-  });
-  for (const pathname of ['/gcsp/offers/offer-123', '/gcsp/offers/123e4567-e89b-12d3-a456-426614174000']) assert.equal(matchesRewrite(pathname), true, pathname);
-  for (const pathname of ['/gcsp/runtime-config.json', '/gcsp/missing.js', '/gcsp/missing.css', '/gcsp/media/missing.woff2', '/gcsp/assets/missing.svg',
-    '/api/gcsp/v1/context', '/gcsp/unknown', '/gcsp/offers/', '/gcsp/offers/offer-123/unknown']) assert.equal(matchesRewrite(pathname), false, pathname);
-  assert.equal(matchesRewrite('/gcsp/offers/missing.js'), true, 'a named offer placeholder cannot restrict ID syntax');
+  // Model the documented first-match wildcard/whole-segment placeholder rules.
+  // This checks our blueprint contract; a local matcher is not a Render deployment.
+  const destination = (pathname) => rewrites.find(([, source]) => {
+    const pattern = source.split('/').map((part) => part.startsWith(':') ? '[^/]+'
+      : part.split('*').map((literal) => literal.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')).join('.*')).join('/');
+    return new RegExp(`^${pattern}$`, 'u').test(pathname);
+  })?.[2];
+  for (const pathname of ['/gcsp/offers/offer-123', '/gcsp/offers/123e4567-e89b-12d3-a456-426614174000',
+    '/gcsp/unknown', '/gcsp/unknown/nested', '/gcsp/offers/', '/gcsp/offers/offer-123/unknown']) {
+    assert.equal(destination(pathname), '/gcsp/index.html', pathname);
+  }
+  for (const pathname of ['/gcsp/runtime-config.json', '/gcsp/static-manifest.json', '/gcsp/missing.js', '/gcsp/missing.css',
+    '/gcsp/missing.html', '/gcsp/media/missing.woff2', '/gcsp/assets/missing.svg', '/gcsp/assets/missing', '/gcsp/api/context']) {
+    assert.equal(destination(pathname), '/gcsp-static-resource-not-found', pathname);
+  }
+  for (const pathname of ['/api/gcsp/v1/context', '/gcsp-static-resource-not-found', '/used-cars']) assert.equal(destination(pathname), undefined, pathname);
+  assert.equal(destination('/gcsp/offers/missing.js'), '/gcsp/index.html', 'a named offer placeholder retains the existing unrestricted ID contract');
   const headers = [...site.matchAll(/- path: (\S+)\n\s+name: (\S+)\n\s+value: ([^\n]+)/gu)].map(([, path, name, value]) => ({ path, name, value }));
   const caches = headers.filter((header) => header.name === 'Cache-Control');
   assert.equal(new Set(caches.map((header) => header.path)).size, caches.length);
