@@ -727,7 +727,7 @@ async function main() {
 
   // 6. Stale in the UI: the page still shows the previous active version when another publish lands.
   await scenario('stale-in-ui', 'A later publish makes the open page stale; Preview is refused 409 and the page shows The policy changed with no preview', async (s) => {
-    // Java needs a later version's effectiveFrom after every retained one, so the presenter advances the run clock first.
+    // Java needs a later version's effectiveFrom after every retained one, so the presenter advances the run clock 10 minutes first.
     const prior = await ok('greg', '/greg/policy');
     const tick = await call('presenter', '/presenter/clock/tick', { tickId: cmd('later'), expectedClockVersion: (await ok('presenter', '/presenter/clock')).clockVersion });
     let current = await ok('greg', '/greg/policy'); let release = null;
