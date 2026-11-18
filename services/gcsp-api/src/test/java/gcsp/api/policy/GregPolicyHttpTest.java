@@ -331,6 +331,27 @@ class GregPolicyHttpTest {
     }
 
     @Test
+    void aSecondWeightChangeOnAWeightedVersionIsReadBackAndANegativeOneIs400() throws Exception {
+        CLOCK.advance();
+        JsonNode before = read();
+        int old = field(before, "weight:body").get("value").intValue();
+        Response first = post(greg, "/publish", change(uniqueName("w"), before.get("activeVersion").textValue(),
+                "greg-" + uniqueName("weight"), CLOCK.now, "weight:body", old + 1));
+        assertEquals(200, first.statusCode(), first.asString());
+        CLOCK.advance();
+        JsonNode weighted = read();
+        assertFalse(weighted.get("weightsAdoptionRequired").booleanValue());
+        String active = weighted.get("activeVersion").textValue();
+        assertInvalid(post(greg, "/publish", change(uniqueName("w"), active, "greg-" + uniqueName("neg"), CLOCK.now, "weight:fuel", -1)),
+                "invalid-editable-field", "changes");
+        Response second = post(greg, "/publish", change(uniqueName("w"), active, "greg-" + uniqueName("weight"), CLOCK.now, "weight:fuel", 4));
+        assertEquals(200, second.statusCode(), second.asString());
+        JsonNode after = read();
+        assertEquals(4, field(after, "weight:fuel").get("value").intValue());
+        assertEquals(old + 1, field(after, "weight:body").get("value").intValue());
+    }
+
+    @Test
     void aPriceChangePreviewReturnsTheNodeShapeWithBothDemandsAndWritesNothing() throws Exception {
         CLOCK.advance();
         JsonNode before = read();
