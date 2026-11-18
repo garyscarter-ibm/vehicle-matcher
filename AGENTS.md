@@ -187,6 +187,33 @@ registers it with `set-inbox --suite web-e2e=...;kind=browser`. The `scripts/gcs
 evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on
 2026-11-13) get a Bug and are named in `_dev/batches.md`, not retried until green.
 
+## Shared local test stack — Gary, 18 November 2026
+
+This 16 GB Mac can't afford a new PostgreSQL cluster, `npm ci` and builds on every run. Every local story run, proof
+and batch run uses the shared stack instead. State lives in `~/Library/Caches/gcsp-test-stack` (never OneDrive).
+
+- **PostgreSQL:** `python3 -B _tools/test_stack.py pg up` starts or reuses one cluster. Then
+  `eval "$(python3 -B _tools/test_stack.py pg db create --run <id> [--running] [--owner-pid <pid>])"` sets
+  `GCSP_TEST_DATABASE_URL` (and `GCSP_TEST_RUNNING_DATABASE_URL`) for a fresh database per run, and
+  `pg db drop --run <id>` removes it. A database belongs to the calling shell unless `--owner-pid` names a longer-lived
+  one; `pg gc` drops orphans. Leave the cluster running between runs; `pg down --if-idle` stops it when nothing is held.
+- **Focused Java tests:** `python3 -B _tools/test_stack.py java-test --worktree <wt> --run <id> [--running] --
+  -Dtest='gcsp.api.<package>.**'` creates and drops its own database, runs in the heavy queue, and caps Maven at 512m
+  and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
+- **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
+  place of `npm ci`; `node unlink` before removing the worktree.
+- **Builds:** `build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
+  `PROOF_WEB_BROWSER=` for the connected proofs, built once per committed tree and reused (a dirty tree builds in place,
+  uncached). Run `build gc` only between runs.
+- **One heavy run at a time:** wrap anything that starts Java, a proof, Chrome or a full suite in
+  `python3 -B _tools/test_stack.py heavy --label <id> [--ram-gib N] -- <command>`. It waits for the machine-wide slot
+  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget.
+- **Proof JVMs:** the connected proofs take their API heap from `scripts/gcsp/proof-jvm.mjs` (`PROOF_API_HEAP` raises
+  it for one run). Don't add per-script `-Xmx` flags.
+- **Connected browser checks run once per story**, at the end on the final commit, not on every attempt. Earlier
+  iterations use the focused unit and HTTP tests. Runs that need more than about 3 GiB (FUCQ-452's full-size job) go
+  overnight or to CI, not into a daytime queue.
+
 ## Concepts and mockups
 
 Gary's direction, 10 November 2026. When asked for a concept, mockup or design option, deliver
