@@ -2859,3 +2859,11 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 09:30 UTC · Gary Codex · DL-20261117-GCC-013 · Independent review saw the same clipping recurrence
 
 - F441's independent reviewer reported aggregate read-output clipping, recovered source and exact receipt fields through smaller reads, and completed conclusions against explicit hashes and inspected images. No extra runtime was introduced. This recurrence remains unresolved; producer-level total output budgets are still proposed.
+
+
+### 2026-11-18 09:38 UTC · Gary Codex · DL-20261117-GCC-009 · Lifecycle review and interrupted lead recovery
+
+- F452 independent re-review returned PASS after direct foreground PostgreSQL registration, inclusion of supervisor RSS and a final strict teardown gate were applied to four ignored supervisors. These are source-reviewed mitigations; the original-size 3GiB comparison remains unrun because conservative available memory did not meet its 4.5GiB RSS plus 512MiB reserve. No workload reduction, resource-admission bypass or verified prior-OOM cause is claimed.
+- F441's fresh immutable 3c04a4230 prerequisites passed API packaging and web build, then PostgreSQL initialization failed before a database/browser/proof started. Its terminal run reported no remaining processes or teardown errors, but retained scratch/reservation while the lead reconciles an inherited process-group accounting error. Cleanup is pending, not verified. Matching built prerequisites will be reused. Proposed framework improvement remains one reviewed direct-process lifecycle implementation with explicit supervisor group handling and retained cleanup receipts.
+- Both leads received IBM gateway HTTP422 credit text (Hugh cf-rays a5c5f60c8d06001f-LHR / a5c5faf4bf69f6ac-LHR; Wyldstyle a5c5fa87ec9cbd9f-LHR). The launcher continued after resuming their same identities, so project policy applies: preserve diagnostics/checkpoints and continue without inferring balance or changing models/credentials. This verifies those resumed turns only.
+- Shared peer-channel messages claude-002/003/004 were acknowledged append-only. Claude's F500 close and F503 offer-screen allocation are separate from the 14 Codex reservations; no ID/file overlap was observed. Same-login leases remain insufficient ownership evidence. No OneDrive access.
