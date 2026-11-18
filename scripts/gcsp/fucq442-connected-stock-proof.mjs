@@ -308,8 +308,24 @@ async function seedStock() {
   const cases = path.join(ROOT, 'services/gcsp-api/src/test/resources/recommendation-source/source-cases.json');
   receipt.inputs.stockFixture = { path: path.relative(ROOT, cases), sha256: sha256File(cases) };
   const base = JSON.parse(readFileSync(cases, 'utf8')).cases.find((c) => c.name === 'paula-mixed').rows[0];
-  const day = account.currentContract?.earliestCollectionDate;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(day ?? '')) throw new Error('Account has no current collection date');
+  const options = account.choices;
+  const driver = options.drivers.find((d) => d.kind === 'employee');
+  const contract = options.contractOptions.find((c) => c.driverKinds.includes(driver?.kind));
+  const rules = account.assumptions?.find((a) => Number.isSafeInteger(a.value?.minimumLeadDays)
+    && Number.isSafeInteger(a.value?.maximumLeadDays))?.value;
+  if (!driver || !contract || !rules || !/^\d{4}-\d{2}-\d{2}T/.test(account.asOf ?? '')) throw new Error('Account lacks authoritative draft setup choices, clock or lead rules');
+  const today = Date.parse(`${account.asOf.slice(0, 10)}T00:00:00Z`);
+  const window = account.currentContract;
+  let day; let location;
+  for (let lead = rules.minimumLeadDays; lead <= rules.maximumLeadDays; lead++) {
+    const offered = new Date(today + lead * 86400000).toISOString().slice(0, 10);
+    if (window?.earliestCollectionDate && offered < window.earliestCollectionDate
+      || window?.latestCollectionDate && offered > window.latestCollectionDate) continue;
+    const open = options.collectionLocations.find((l) => l.driverKinds.includes(driver.kind)
+      && l.contractOptionIds.includes(contract.contractOptionId) && !(l.closedDates ?? []).includes(offered));
+    if (open) { day = offered; location = open; break; }
+  }
+  if (!day || !location) throw new Error('Fixture has no collection date inside its authoritative lead/window/location rules');
   const rows = STOCK_IDS.map((orderUuid, i) => {
     const row = structuredClone(base);
     row.orderUuid = orderUuid; row.orderNumber = `442000${i + 1}`;
@@ -345,17 +361,15 @@ async function seedStock() {
     const attributes = { ...row }; for (const key of ['orderUuid', 'configurationId', 'state', 'available', 'held', 'allocated', 'version']) delete attributes[key];
     return `INSERT INTO stock_cars (environment_id,run_id,order_uuid,configuration_id,state,attributes,version) VALUES (${quoted(ENVIRONMENT_ID)},${quoted(RUN_ID)},${quoted(row.orderUuid)},${quoted(row.configurationId)},'released',${quoted(JSON.stringify(attributes))}::jsonb,1);`;
   }).join('\n')} CREATE TABLE proof_stock_seed AS SELECT * FROM stock_cars WHERE ${ACCOUNT_KEY}; COMMIT;`);
-  const options = account.choices;
-  const driver = options.drivers.find((d) => d.kind === 'employee');
-  const contract = options.contractOptions.find((c) => c.driverKinds.includes(driver.kind));
-  const location = options.collectionLocations.find((l) => l.driverKinds.includes(driver.kind) && l.contractOptionIds.includes(contract.contractOptionId) && !(l.closedDates ?? []).includes(day));
-  if (!location) throw new Error('Fixture has no open collection location');
   const choices = { mode: 'replacement', oldContractId: account.currentContract.contractId, slotId: options.slotId, schemeId: options.schemeId,
     driverId: driver.driverId, contractOptionId: contract.contractOptionId, requestedCollectionDate: day, collectionLocationId: location.locationId,
     brand: options.brands[0], contact: { phone: '01632 960000', email: 'paula.mason@gcsp-demo.com' }, expectedReturnMileage: 20000, specialRequirements: '' };
   const saved = await request('POST', '/manual/draft', { Authorization: `Bearer ${signJwt(accessClaims(SUBJECT, ['employee']), idp.keys.privateKey)}`, 'Content-Type': 'application/json' },
     { commandId: `f442-setup-${RUN_TOKEN}`, expectedDraftVersion: 0, expectedContextVersion: account.contextVersion, choices });
-  receipt.fixture = { stockIds: STOCK_IDS, sameConfiguration: PAIR, missingId: MISSING_ID, setupDraft: saved, mutations: [] };
+  receipt.fixture = { stockIds: STOCK_IDS, sameConfiguration: PAIR, missingId: MISSING_ID,
+    setupDate: { asOf: account.asOf, minimumLeadDays: rules.minimumLeadDays, maximumLeadDays: rules.maximumLeadDays,
+      earliest: window?.earliestCollectionDate, latest: window?.latestCollectionDate, chosen: day, locationId: location.locationId },
+    setupDraft: saved, mutations: [] };
   if (saved.status !== 200 || saved.json?.status !== 'ok') throw new Error(`Complete draft setup failed: ${JSON.stringify(saved)}`);
 }
 
