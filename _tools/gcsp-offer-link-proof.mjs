@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// FUCQ-465 local offer-link proof: HTTPS web, API and a LOCAL TEST OIDC issuer (not the real provider), driven by headless Chrome.
+// FUCQ-465 offer links / opt-in FUCQ-466 native decisions: HTTPS web, API and a LOCAL TEST OIDC issuer (not the real provider), driven by headless Chrome.
 // API runs the documented dev composition on a run-owned PostgreSQL database. Zero dependencies; scratch is removed on exit, receipt and screenshots kept.
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, createSign, generateKeyPairSync, randomBytes, createPublicKey } from 'node:crypto';
@@ -11,8 +11,10 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SCRATCH = path.resolve(process.env.SCRATCH ?? '/private/tmp/vm-poller-20261117-hugh-465/browser');
-const EVIDENCE = path.join(ROOT, 'docs/gcsp/evidence/fucq465/browser');
+const DECISION_PROOF = process.env.PROOF_STORY === '466';
+const OWNED_SCRATCH = DECISION_PROOF ? '/private/tmp/vm-poller-20261118-hugh-466/browser' : '/private/tmp/vm-poller-20261117-hugh-465/browser';
+const SCRATCH = path.resolve(process.env.SCRATCH ?? OWNED_SCRATCH);
+const EVIDENCE = path.join(ROOT, `docs/gcsp/evidence/fucq${DECISION_PROOF ? '466' : '465'}/browser`);
 const DEADLINE_MS = Number(process.env.PROOF_DEADLINE_SEC ?? 600) * 1000;
 // Adapted from scripts/gcsp/fucq435-cross-origin-proof.mjs: same real local issuer/PKCE/CDP, scoped to owned offer-link proof.
 const PG = { bin: '/opt/homebrew/opt/postgresql@17/bin', host: '127.0.0.1', port: '55465', user: 'gcsp', db: 'gcsp_test_dev' };
@@ -30,6 +32,7 @@ const dirs = { logs: path.join(SCRATCH, 'logs'), tmp: path.join(SCRATCH, 'tmp'),
 const startedAt = new Date().toISOString();
 const shots = [];
 const receipt = { productDefects: [], schema: 'fucq465-browser-proof/1', story: 'DEV-2026-11-13-033 / FUCQ-465', startedAt, origins: ORIGINS, localTestIssuer: `LOCAL TEST OIDC ISSUER ${ISSUER}: harness only, not the real provider and not committed configuration`, tools: {}, deviations: [], scenarios: {}, gaps: ['Actual hosted Render origins and real OIDC provider registration do not exist yet (Gary creates them); not proven here.'], failureLogs: {} };
+if (DECISION_PROOF) { receipt.schema = 'fucq466-browser-proof/1'; receipt.story = 'DEV-2026-11-13-034 / FUCQ-466'; }
 const cleanups = [];
 let finished = false;
 const log = (...a) => console.log(`[${((Date.now() - T0) / 1000).toFixed(0)}s]`, ...a);
@@ -66,9 +69,10 @@ const cap = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8'
 
 // ---------- shared Java lock and proof database ----------
 async function takeJavaLock() {
-  if (process.env.GCSP_PROOF_SUPERVISED_LOCK !== 'hugh-465') throw new Error('Run with the resource supervisor that owns the Java lane');
+  const run = DECISION_PROOF ? 'hugh-466' : 'hugh-465';
+  if (process.env.GCSP_PROOF_SUPERVISED_LOCK !== run) throw new Error('Run with the resource supervisor that owns the Java lane');
   const owner = JSON.parse(readFileSync(path.join(JAVA_LOCK, 'owner.json'), 'utf8'));
-  if (owner.run !== 'hugh-465-browser') throw new Error('Java lane belongs to another run');
+  if (owner.run !== `${run}-browser`) throw new Error('Java lane belongs to another run');
   receipt.javaLock = { path: JAVA_LOCK, supervised: true };
 }
 const pg = (args, bin = 'psql') => execFileSync(path.join(PG.bin, bin), ['-h', PG.host, '-p', PG.port, '-U', PG.user, ...args], { encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -210,6 +214,9 @@ class Page {
       const prev = this.byId.get(p.requestId);
       if (p.redirectResponse && prev) { prev.status = p.redirectResponse.status; prev.acao = hdr(p.redirectResponse.headers, 'access-control-allow-origin'); }
       const e = { t: Date.now(), id: p.requestId, method: p.request.method, url: p.request.url, type: p.type, auth: !!hdr(p.request.headers, 'authorization') || this.early.get(p.requestId) === true };
+      if (p.request.method === 'POST' && p.request.url.endsWith('/decision') && p.request.postData) {
+        try { e.decisionInput = JSON.parse(p.request.postData); } catch { /* not a decision body */ }
+      }
       this.log.push(e); this.byId.set(p.requestId, e);
     } else if (m.method === 'Network.requestWillBeSentExtraInfo') {
       const e = this.byId.get(p.requestId); if (hdr(p.headers, 'authorization')) { if (e) e.auth = true; else this.early.set(p.requestId, true); }
@@ -366,6 +373,48 @@ async function focusVisibility(page) {
   await page.send('Emulation.setDeviceMetricsOverride',{width:1000,height:720,deviceScaleFactor:1,mobile:false});
   return results;
 }
+async function declineScenario(cdp, ctx, restartApi) {
+  await scenario('decline-followup-restart', 'Native decline releases once, saves a supported answer and survives ordinary restart', async (s) => {
+    const next = await prepareOffer(ctx,'sub-alex','employee-alex');
+    const page = await newPage(cdp);
+    try {
+      await signInAs(page,'sub-alex',next.link);
+      await page.waitFor(`document.querySelector('[data-offer-action="decline"]')`,30000,'owned offer to decline');
+      await page.eval(`document.querySelector('[data-offer-action="decline"]').click()`);
+      await page.waitFor(`document.querySelector('input[type="radio"][value="body-style"]')`,10000,'adopted decline registry');
+      s.checks.reasonRequired = await page.eval(`document.querySelector('[data-offer-action="confirm"]').disabled`);
+      s.observations.unselected = await pageEvidence(page,'decline-unselected');
+      await page.eval(`document.querySelector('input[type="radio"][value="body-style"]').click()`);
+      s.observations.selected = await pageEvidence(page,'decline-selected');
+      await page.eval(`document.querySelector('[data-offer-action="confirm"]').click()`);
+      await page.waitFor(`${main$}.match(/Offer declined/i) && document.querySelector('.followup form')`,20000,'native decline and supported follow-up');
+      s.checks.nativeDeclineRendered = true;
+      await page.settle();
+      const native = page.log.findLast(e=>e.method==='POST'&&e.url.endsWith('/decision'));
+      s.checks.canonicalBrowserPost = native?.status===200 && native.decisionInput?.decision==='decline'
+        && native.decisionInput?.runId==='run-1' && native.decisionInput?.expectedQuoteVersion===1;
+      const current = await requireApi(ctx,'GET',`/offers/${encodeURIComponent(next.offerId)}`,next.employee);
+      s.checks.custodyReleased = current.state==='declined' && current.holdState==='released' && current.availableActions.length===0;
+      const replay = await direct(ctx,'POST',`/offers/${encodeURIComponent(next.offerId)}/decision`,next.employee,native.decisionInput);
+      s.checks.declineReplays = replay.status===200 && replay.json?.value?.decisionId===current.followup?.decisionId;
+      s.observations.declined = await pageEvidence(page,'declined-followup');
+      await page.eval(`(() => {const choices=[...document.querySelectorAll('.followup form input[type="radio"]')];const e=choices.find(e=>e.value!=='estate');if(!e)throw new Error('No supported alternative');e.click();})()`);
+      await page.waitFor(`!document.querySelector('.followup form button[type="submit"]').disabled`,5000,'confirmed changed answer');
+      await page.eval(`document.querySelector('.followup form button[type="submit"]').click()`);
+      await page.waitFor(`!document.querySelector('.followup form') && ${main$}.match(/saved|looking|waiting/i)`,15000,'saved follow-up answer');
+      const followup = await requireApi(ctx,'GET',`/offer-followup?decisionId=${encodeURIComponent(current.followup.decisionId)}`,next.employee);
+      s.checks.supportedAnswerSaved = ['waiting','change-saved'].includes(followup.state) && !!followup.savedChange;
+      s.observations.saved = await pageEvidence(page,'followup-saved');
+      await restartApi(); await page.send('Page.navigate',{url:next.link});
+      await page.waitFor(`${main$}.match(/Offer declined/i)`,30000,'declined offer after restart');
+      const persisted = await requireApi(ctx,'GET',`/offer-followup?decisionId=${encodeURIComponent(current.followup.decisionId)}`,next.employee);
+      s.checks.savedAnswerSurvivesRestart = JSON.stringify(followup)===JSON.stringify(persisted);
+      s.observations.restarted = await pageEvidence(page,'declined-restart');
+      s.observations.network = page.api();
+    } catch(e) { s.observations.failure = await pageEvidence(page,'decline-failure'); throw e; }
+    finally { await closePage(cdp,page); }
+  });
+}
 async function browserScenarios(cdp, ctx, prepared, restartApi) {
   await scenario('owner-return-restart', 'Captured new link returns through OIDC PKCE to the correct current offer and survives API restart', async (s) => {
     const page = await newPage(cdp);
@@ -376,7 +425,21 @@ async function browserScenarios(cdp, ctx, prepared, restartApi) {
       s.checks.actualVehicleVisible = (await page.main()).includes(prepared.projection.quote.facts.display.name);
       s.checks.actionsMatchAuthority = await page.eval(`!document.querySelector('[data-offer-action="accept"]').disabled && !document.querySelector('[data-offer-action="decline"]').disabled`);
       s.observations.pending = await pageEvidence(page, 'pending');
-      await restartApi();
+      if (DECISION_PROOF) {
+        const currentVersion='browser-current-ordering-v1';
+        const quotePolicy=prepared.projection.quote.policyVersion;
+        const raw=pg(['-d',PG.db,'-Atc',`SELECT d.document::text FROM gcsp_app.policy_versions v JOIN gcsp_app.policy_documents d USING(seed_digest) WHERE v.environment_id='local-offer-link-proof' AND v.run_id='run-1' AND v.policy_version='${quotePolicy}'`]);
+        const seed=JSON.parse(raw.replaceAll(quotePolicy,currentVersion));
+        seed.effectiveFrom=new Date(Date.parse(prepared.projection.serverNow)-1000).toISOString();
+        const canonical=v=>v===null||typeof v!=='object'?JSON.stringify(v):Array.isArray(v)?'['+v.map(canonical).join(',')+']':'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}';
+        const digest=createHash('sha256').update(canonical(seed)).digest('hex');
+        const sqlText=v=>"'"+v.replaceAll("'","''")+"'";
+        const sql=`BEGIN; SET LOCAL search_path=gcsp_app; INSERT INTO policy_documents(seed_digest,document) VALUES('${digest}',${sqlText(JSON.stringify(seed))}::jsonb); INSERT INTO policy_versions(environment_id,run_id,policy_version,effective_from,seed_digest,source_version,publisher,published_at,command_id) VALUES('local-offer-link-proof','run-1','${currentVersion}','${seed.effectiveFrom}','${digest}','${quotePolicy}','owned-browser-policy-fixture',now(),'browser-retained-policy-fixture'); COMMIT;`;
+        pg(['-d',PG.db,'-v','ON_ERROR_STOP=1','-c',sql]);
+        s.observations.policySplit={quotePolicy,currentPolicy:currentVersion,effectiveFrom:seed.effectiveFrom,seedDigest:digest,
+          via:'Transparent immutable successor-policy fixture in owned native PG only; copies actual reviewed adopted document with successor version/effectiveFrom and verified canonical digest. No offer, decision, selection, custody or provider outcome is inserted.'};
+        await restartApi(currentVersion);
+      } else await restartApi();
       await page.send('Page.navigate', {url: prepared.link});
       await page.waitFor(`document.querySelector('[data-offer-action="accept"]')`, 30000, 'same offer after ordinary process restart');
       s.checks.restartKeepsIdentity = (await page.main()).includes(prepared.projection.quote.facts.display.name);
@@ -398,7 +461,8 @@ async function browserScenarios(cdp, ctx, prepared, restartApi) {
       s.observations.immediateDecision = await pageEvidence(page, 'decision-response');
       const after = await direct(ctx,'GET',`/offers/${encodeURIComponent(prepared.offerId)}`,prepared.employee);
       s.observations.currentAfterDecision = {status:after.status,code:after.json?.code,state:after.json?.value?.state,availableActions:after.json?.value?.availableActions};
-      if(!(await page.main()).match(/Offer accepted/i)) {
+      if(DECISION_PROOF && !(await page.main()).match(/Offer accepted/i)) throw new Error('Native Angular decision did not render accepted; no fallback is allowed');
+      if(!DECISION_PROOF && !(await page.main()).match(/Offer accepted/i)) {
         const decision = s.observations.decisionNetwork.findLast(e=>e.method==='POST'&&e.path.endsWith('/decision'));
         if(decision?.status!==400||decision.body?.code!=='invalid-offer-decision'||after.json?.value?.state!=='pending') throw new Error('Unexpected decision failure; no setup retry permitted');
         receipt.productDefects.push({boundary:'FUCQ-466 native Angular decision command',observed:'POST400 invalid-offer-decision; no transition, verified pending GET',cause:'Angular sends runId and expectedQuoteVersion, both excluded by existing OfferDecisions.KEYS',unfixed:true});
@@ -412,10 +476,35 @@ async function browserScenarios(cdp, ctx, prepared, restartApi) {
       s.checks.acceptedShowsCurrentState = true;
       s.checks.terminalHasNoDecisionAuthority = await page.eval(`![...document.querySelectorAll('[data-offer-action]')].some(b=>['accept','decline'].includes(b.dataset.offerAction))`);
       s.observations.accepted = await pageEvidence(page, 'accepted');
+      if (DECISION_PROOF) {
+        const native = page.log.findLast(e => e.method === 'POST' && e.url.endsWith('/decision'));
+        s.checks.nativeAngularCommandSucceeded = native?.status === 200 && native?.decisionInput?.runId === 'run-1'
+          && native?.decisionInput?.expectedQuoteVersion === 1;
+        if (!s.checks.nativeAngularCommandSucceeded) throw new Error('Missing successful canonical browser POST');
+        const replay = await direct(ctx,'POST',`/offers/${encodeURIComponent(prepared.offerId)}/decision`,prepared.employee,native.decisionInput);
+        s.checks.sameCommandReplays = replay.status === 200 && replay.json?.value?.state === 'accepted';
+        s.checks.retainedPolicyReceipt = replay.json?.value?.policyVersion===prepared.projection.quote.policyVersion
+          && replay.json?.value?.selection===null && !!replay.json?.value?.operationId;
+        s.checks.currentReadShowsSavedProgress = after.status===200 && after.json?.value?.selection?.selectionState==='acknowledged'
+          && !!after.json?.value?.selection?.orderReference;
+        await page.eval(`document.querySelector('[data-offer-action="check"]').click()`);
+        await page.waitFor(`${main$}.includes('Selection received. Waiting for')`,10000,'actual saved ordering progress after check');
+        s.observations.currentProgress = await pageEvidence(page,'accepted-current-progress');
+        const conflict = await direct(ctx,'POST',`/offers/${encodeURIComponent(prepared.offerId)}/decision`,prepared.employee,{...native.decisionInput,expectedReturnMileage:45001});
+        s.checks.changedCommandRefused = conflict.status === 409 && conflict.json?.code === 'command-input-changed';
+        s.observations.replay = {status:replay.status,state:replay.json?.value?.state,operationId:replay.json?.value?.operationId,
+          changedInputStatus:conflict.status,changedInputCode:conflict.json?.code};
+        await restartApi(); await page.send('Page.navigate',{url:prepared.link});
+        await page.waitFor(`${main$}.match(/Offer accepted/i)`,30000,'accepted offer after ordinary restart');
+        s.checks.acceptedSurvivesRestart = true;
+        s.observations.acceptedAfterRestart = await pageEvidence(page,'accepted-restart');
+      }
       await page.settle(); s.observations.network = page.api();
     } catch(e) { s.observations.ownerFailure = await pageEvidence(page,'owner-result'); await page.settle(); s.observations.network = page.api(); throw e; } finally { await closePage(cdp, page); }
   });
-  if(process.env.PROOF_OWNER_ONLY==='1') {receipt.reusedRefusals='Unchanged third-attempt wrong employee/presenter/unknown/invalid and expired evidence retained separately'; return;}
+  if(DECISION_PROOF && process.env.PROOF_ACCEPT_ONLY==='1') {receipt.reusedEvidence='Scoped acceptance correction rerun; matching earlier actual native decline/follow-up/restart and authority refusal scenarios retained in browser-setup-attempts.json and Markdown summary.'; return;}
+  if (DECISION_PROOF) { await restartApi('gcsp-policy-v1+offer-journey-v1'); await declineScenario(cdp,ctx,restartApi); }
+  if(process.env.PROOF_OWNER_ONLY==='1') {receipt.reusedRefusals='Wrong employee/presenter/unknown/invalid passed in matching prior chunk; expiry remains covered by unchanged native HTTP acceptance test and F465 browser evidence. No Jordan allocation obtained in this setup.'; return;}
   for (const [id, subject, link, expected] of [
     ['wrong-employee','sub-jordan',prepared.link,403],
     ['presenter','sub-presenter',prepared.link,403],
@@ -435,11 +524,12 @@ async function browserScenarios(cdp, ctx, prepared, restartApi) {
     } finally { await closePage(cdp, page); }
   });
   await scenario('expired','A real second employee offer follows the run clock to expiry with no decision authority',async(s)=>{
-    const next=await prepareOffer(ctx,'sub-alex','employee-alex');
+    const subject=DECISION_PROOF?'sub-jordan':'sub-alex';
+    const next=await prepareOffer(ctx,subject,DECISION_PROOF?'employee-jordan':'employee-alex');
     const clock=await requireApi(ctx,'GET','/presenter/clock',next.presenter);
     await requireApi(ctx,'POST','/presenter/clock/advance',next.presenter,{commandId:uid(),expectedClockVersion:clock.clockVersion,bySeconds:8*24*60*60});
     const page=await newPage(cdp);
-    try{await signInAs(page,'sub-alex',next.link);await page.waitFor(`${main$}.match(/Offer expired/i)`,30000,'expired current offer');s.checks.actualExpiryVisible=true;s.checks.noDecisionControls=await page.eval(`!document.querySelector('[data-offer-action="accept"],[data-offer-action="decline"]')`);s.observations.screen=await pageEvidence(page,'expired');}
+    try{await signInAs(page,subject,next.link);await page.waitFor(`${main$}.match(/Offer expired/i)`,30000,'expired current offer');s.checks.actualExpiryVisible=true;s.checks.noDecisionControls=await page.eval(`!document.querySelector('[data-offer-action="accept"],[data-offer-action="decline"]')`);s.observations.screen=await pageEvidence(page,'expired');}
     finally{await closePage(cdp,page);}
   });
 }
@@ -460,7 +550,7 @@ async function main() {
     for(const name of ['ng-offers-tests','ng-build'])receipt[name]=tail(path.join(dirs.logs,`${name}.log`),18);
   }
   const assemble=await import(pathToFileURL(path.join(ROOT,'scripts/build-gcsp-static.mjs')).href);
-  await run('assemble',path.join(dirs.node,'bin/node'),['scripts/build-gcsp-static.mjs','--browser','apps/gcsp-web/dist/gcsp-web/browser','--output',dirs.static,'--environment','deployed','--revision',receipt.head],{env:{...nodeEnv,GCSP_PUBLIC_ENVIRONMENT_ID:'local-offer-link-proof',GCSP_PUBLIC_API_BASE_URL:API_BASE,GCSP_PUBLIC_OIDC_AUTHORITY:ISSUER,GCSP_PUBLIC_OIDC_CLIENT_ID:'gcsp-web',GCSP_PUBLIC_OIDC_SCOPE:'openid profile gcsp-api',GCSP_PUBLIC_OIDC_REDIRECT_URI:`${ORIGINS.web}/gcsp/auth/callback`,GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI:`${ORIGINS.web}/gcsp/`}});
+  await run('assemble',path.join(dirs.node,'bin/node'),['scripts/build-gcsp-static.mjs','--browser',process.env.PROOF_ANGULAR_BUILD ?? 'apps/gcsp-web/dist/gcsp-web/browser','--output',dirs.static,'--environment','deployed','--revision',receipt.head],{env:{...nodeEnv,GCSP_PUBLIC_ENVIRONMENT_ID:'local-offer-link-proof',GCSP_PUBLIC_API_BASE_URL:API_BASE,GCSP_PUBLIC_OIDC_AUTHORITY:ISSUER,GCSP_PUBLIC_OIDC_CLIENT_ID:'gcsp-web',GCSP_PUBLIC_OIDC_SCOPE:'openid profile gcsp-api',GCSP_PUBLIC_OIDC_REDIRECT_URI:`${ORIGINS.web}/gcsp/auth/callback`,GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI:`${ORIGINS.web}/gcsp/`}});
   if(process.env.PROOF_BUILD_ONLY==='1'){receipt.buildOnly=true;return;}
   await takeJavaLock();
   tls=makeCerts();
@@ -470,7 +560,7 @@ async function main() {
   receipt.apiComposition=Object.fromEntries(Object.entries(apiEnv).filter(([k])=>/^GCSP_(ACCOUNT|SCENARIO|SUPPLY|ORDERING|ALLOCATION|RUN_ID|POLICY)/.test(k)));
   let java;let starts=0;
   const startApi=async()=>{java=spawnLong(`api-${++starts}`,path.join(JAVA_HOME,'bin/java'),['-Xmx768m',`-Djavax.net.ssl.trustStore=${tls.trust}`,`-Djavax.net.ssl.trustStorePassword=${TRUST_PASS}`,`-Djava.io.tmpdir=${dirs.tmp}`,'-jar',path.join(ROOT,'services/gcsp-api/target/quarkus-app/quarkus-run.jar')],apiEnv);for(let i=0;i<100;i++){if(java.done){receipt.failureLogs.api=tail(path.join(dirs.logs,`api-${starts}.log`));throw new Error('API exited');}try{if((await request(ORIGINS.api,'GET','/q/health/ready',{ca:tls.ca})).status===200)return;}catch{}await sleep(300);}throw new Error('API readiness timeout');};
-  const restartApi=async()=>{killGroup(java);await Promise.race([java.exited,sleep(8000)]);if(!java.done)throw new Error('API did not stop');await startApi();receipt.ordinaryRestart={processStarts:starts,sameDatabase:true,sameRun:true};};
+  const restartApi=async(policyVersion)=>{if(policyVersion)apiEnv.GCSP_POLICY_VERSION=policyVersion;killGroup(java);await Promise.race([java.exited,sleep(8000)]);if(!java.done)throw new Error('API did not stop');await startApi();receipt.ordinaryRestart={processStarts:starts,sameDatabase:true,sameRun:true};};
   await startApi(); const ctx={tls};const prepared=await prepareOffer(ctx);
   const profile=path.join(dirs.browser,'profile');mkdirSync(profile,{recursive:true});
   const chrome=spawnLong('chrome',CHROME,['--headless=new',`--user-data-dir=${profile}`,'--remote-debugging-port=0','--remote-allow-origins=*',`--ignore-certificate-errors-spki-list=${tls.spki}`,'--host-resolver-rules=MAP gcsp-web.example.test 127.0.0.1','--no-proxy-server','--no-first-run','--no-default-browser-check','--disable-extensions','--disable-background-networking','--window-size=1000,720','about:blank'],baseEnv());
@@ -478,8 +568,8 @@ async function main() {
   if(!wsUrl)throw new Error('Chrome endpoint unavailable');const cdp=await Cdp.connect(wsUrl);cleanups.push(()=>cdp.ws.close());
   await browserScenarios(cdp,ctx,prepared,restartApi);
 }
-async function teardown(){for(const fn of cleanups.splice(0).reverse()){try{await fn();}catch(e){(receipt.cleanupErrors??=[]).push(e.message);}}if(SCRATCH!=='/private/tmp/vm-poller-20261117-hugh-465/browser')throw new Error('Unexpected scratch ownership');rmSync(SCRATCH,{recursive:true,force:true});receipt.teardown={scratch:SCRATCH,scratchAbsent:!existsSync(SCRATCH),databaseStopped:receipt.database?.stopped??null,installedEnvironmentRetained:'apps/gcsp-web/node_modules; gitignored compiled app dist and Maven target'};}
-function finish(error){if(finished)return;finished=true;receipt.endedAt=new Date().toISOString();receipt.screenshots=shots;if(error)receipt.runError=error;receipt.overall=!error&&!receipt.cleanupErrors&&(receipt.buildOnly||Object.keys(receipt.scenarios).length===6&&Object.values(receipt.scenarios).every(s=>s.pass))?'PASS':'FAIL';mkdirSync(EVIDENCE,{recursive:true});writeFileSync(path.join(EVIDENCE,'offer-link-proof.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({overall:receipt.overall,scenarios:Object.fromEntries(Object.entries(receipt.scenarios).map(([k,v])=>[k,{pass:v.pass,error:v.error}])),error,teardown:receipt.teardown}));}
+async function teardown(){for(const fn of cleanups.splice(0).reverse()){try{await fn();}catch(e){(receipt.cleanupErrors??=[]).push(e.message);}}if(SCRATCH!==OWNED_SCRATCH)throw new Error('Unexpected scratch ownership');rmSync(SCRATCH,{recursive:true,force:true});receipt.teardown={scratch:SCRATCH,scratchAbsent:!existsSync(SCRATCH),databaseStopped:receipt.database?.stopped??null,installedEnvironmentRetained:'apps/gcsp-web/node_modules; gitignored compiled app dist and Maven target'};}
+function finish(error){if(finished)return;finished=true;receipt.endedAt=new Date().toISOString();receipt.screenshots=shots;if(error)receipt.runError=error;receipt.overall=!error&&!receipt.cleanupErrors&&(receipt.buildOnly||Object.keys(receipt.scenarios).length===(DECISION_PROOF?(process.env.PROOF_ACCEPT_ONLY==='1'?1:process.env.PROOF_OWNER_ONLY==='1'?2:7):6)&&Object.values(receipt.scenarios).every(s=>s.pass))?'PASS':'FAIL';mkdirSync(EVIDENCE,{recursive:true});writeFileSync(path.join(EVIDENCE,'offer-link-proof.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({overall:receipt.overall,scenarios:Object.fromEntries(Object.entries(receipt.scenarios).map(([k,v])=>[k,{pass:v.pass,error:v.error}])),error,teardown:receipt.teardown}));}
 const deadline=setTimeout(async()=>{await teardown();finish('600 second chunk deadline');process.exit(1);},DEADLINE_MS);
 for(const sig of ['SIGINT','SIGTERM'])process.on(sig,async()=>{await teardown();finish(`interrupted ${sig}`);process.exit(130);});
 let error;try{await main();}catch(e){error=e.message;console.error(e.stack);}finally{clearTimeout(deadline);await teardown();finish(error);}process.exit(receipt.overall==='PASS'?0:1);

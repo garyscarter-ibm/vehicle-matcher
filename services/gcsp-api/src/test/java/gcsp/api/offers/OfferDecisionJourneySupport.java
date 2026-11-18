@@ -54,6 +54,8 @@ final class OfferDecisionJourneySupport {
         ObjectNode b = BuddyJourneySupport.JSON.createObjectNode();
         b.put("commandId", commandId);
         b.put("decision", decision);
+        b.put("runId", view.path("runId").asText());
+        b.put("expectedQuoteVersion", view.path("quote").path("revisions").path("quote").asLong());
         b.put("expectedOfferVersion", view.get("offerVersion").asLong());
         b.put("expectedHoldVersion", view.get("holdVersion").asLong());
         return b;

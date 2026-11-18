@@ -97,10 +97,11 @@ class LearningCaptureHttpTest {
         ObjectNode command = BuddyJourneySupport.JSON.createObjectNode().put("commandId", "learning-decline-1")
                 .put("decision", "decline").put("reasonCode", reason)
                 .put("expectedOfferVersion", view.path("offerVersion").asLong())
-                .put("expectedHoldVersion", view.path("holdVersion").asLong());
+                .put("expectedHoldVersion", view.path("holdVersion").asLong())
+                .put("runId", "run-1").put("expectedQuoteVersion", view.at("/quote/revisions/quote").asLong());
         JsonNode declined = body(post(bruno, path + "/decision", command.toString())
                 .then().statusCode(200).extract().asString()).get("value");
-        String decidedAt = declined.path("decidedAt").asText();
+        String decidedAt = declined.path("serverNow").asText();
         assertFalse(decidedAt.isBlank());
 
         String acceptedOffer = s.text("SELECT offer_id FROM buddy_offers WHERE employee_id = ?", BuddyJourneySeed.PAULA);
@@ -111,7 +112,8 @@ class LearningCaptureHttpTest {
         ObjectNode accept = BuddyJourneySupport.JSON.createObjectNode().put("commandId", "learning-accept-1")
                 .put("decision", "accept").put("termsDigest", digest).put("expectedReturnMileage", 5400)
                 .put("expectedOfferVersion", accepting.path("offerVersion").asLong())
-                .put("expectedHoldVersion", accepting.path("holdVersion").asLong());
+                .put("expectedHoldVersion", accepting.path("holdVersion").asLong())
+                .put("runId", "run-1").put("expectedQuoteVersion", accepting.at("/quote/revisions/quote").asLong());
         accept.putObject("declarations").put("terms", true).put("driver", true).put("return", true);
         JsonNode accepted = body(post(paula, acceptedPath + "/decision", accept.toString())
                 .then().statusCode(200).extract().asString()).get("value");
@@ -131,9 +133,9 @@ class LearningCaptureHttpTest {
         assertEquals(clockVersion, observed.path("timestamps").path("clockVersion").asLong());
         JsonNode selected = record(after, acceptedOffer);
         assertEquals("accepted", selected.path("outcomes").path("acceptance").path("state").asText());
-        assertEquals(accepted.path("decidedAt"), selected.path("outcomes").path("acceptance").path("at"));
+        assertEquals(accepted.path("serverNow"), selected.path("outcomes").path("acceptance").path("at"));
         assertEquals("selected", selected.path("outcomes").path("selection").path("state").asText());
-        assertEquals(accepted.path("decidedAt"), selected.path("outcomes").path("selection").path("at"));
+        assertEquals(accepted.path("serverNow"), selected.path("outcomes").path("selection").path("at"));
         assertEquals(revision, s.count("SELECT revision FROM runs WHERE run_id = ?", BuddyJourneySeed.RUN));
         assertEquals(1, s.count("SELECT count(*) FROM offer_decisions WHERE offer_id = ?", offer));
         assertEquals("forbidden", records.readRecords(authentication.authenticate("Bearer " + bruno)).status());

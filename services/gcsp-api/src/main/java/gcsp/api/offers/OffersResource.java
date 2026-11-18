@@ -82,7 +82,7 @@ public class OffersResource {
             return secure(ApiError.response(e.http(), e.status(), e.code(), e.reason(), e.retryable()));
         }
         if (!uri.getQueryParameters().isEmpty()) return render(unsupportedQuery());
-        return render(decisions.decide(p, offerId, parse(body)));
+        return render(decisions.decideForEmployee(p, offerId, parse(body)));
     }
 
     @GET
@@ -155,7 +155,9 @@ public class OffersResource {
             body.put("code", o.code());
             body.put("reason", o.reason());
             body.put("retryable", false);
-            for (String name : new String[] {"operationId", "offerId", "decisionId", "commandId"}) {
+            // Initial commands cannot know a server-generated decision id. The pending consumer binds
+            // every returned identity to its input, so expose the operation and known command coordinates.
+            for (String name : new String[] {"operationId", "offerId", "commandId"}) {
                 body.set(name, o.value().get(name));
             }
         } else {
