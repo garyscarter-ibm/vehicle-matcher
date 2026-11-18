@@ -106,6 +106,30 @@ describe('employee HelpStore intent, readback and privacy boundary', () => {
     expect(store.view().notice?.title).toBe('Preference review unavailable');
     expect(client.confirmPreference).not.toHaveBeenCalled();
   });
+  it('discards an unsubmitted preference review when refreshing a replaced proposal', async () => {
+    await ready();
+    const proposed = row({ remedy: { type: 'preference-relaxation', decisionId: 'decline-1', expectedBriefVersion: 2,
+      path: 'preferences.body.value', value: 'estate' }, relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } });
+    client.readOwnCases.mockResolvedValueOnce(ok(list([proposed]))); await store.refresh();
+    store.reviewPreference(store.view().cases[0]); expect(store.view().canConfirm).toBe(true);
+    client.readOwnCases.mockResolvedValueOnce(ok(list([row({ version: 2, remedy: null, relaxation: undefined })])));
+    await store.refresh();
+    expect(store.view()).toMatchObject({ preferenceReview: null, canConfirm: false, uncertain: false });
+    expect(await store.confirm()).toBe(false); expect(client.confirmPreference).not.toHaveBeenCalled();
+  });
+  it('preserves only the exact uncertain preference command through a failed check and reconciliation', async () => {
+    await ready();
+    client.readOwnCases.mockResolvedValue(ok(list([row({ remedy: { type: 'preference-relaxation', decisionId: 'decline-1',
+      expectedBriefVersion: 2, path: 'preferences.body.value', value: 'estate' },
+      relaxation: { currentBriefVersion: 2, before: ['hatchback'], applicable: true, confirmed: false } })])));
+    await store.refresh(); store.reviewPreference(store.view().cases[0]);
+    const command = client.preparePreference.mock.results.at(-1)!.value;
+    client.confirmPreference.mockResolvedValueOnce({ state: 'failed', problem: 'timeout', value: null, writeOutcome: 'unknown' });
+    await store.confirm(); client.readHelp.mockResolvedValueOnce(refused('unavailable')); await store.refresh();
+    expect(store.view()).toMatchObject({ uncertain: true, canRetry: false });
+    await store.refresh(); expect(store.view().canRetry).toBe(true); await store.retryRequest();
+    expect(client.confirmPreference.mock.calls[1][0]).toBe(command);
+  });
 
   it('loads guidance and a proven empty list; Ask, review and cancel never POST', async () => {
     await ready();
@@ -166,6 +190,14 @@ describe('employee HelpStore intent, readback and privacy boundary', () => {
     expect(first.input.reason).toBe(second.input.reason);
     expect(first.input.commandId).not.toBe(second.input.commandId);
     expect(client.requestHelp.mock.calls.map(call => call[0])).toEqual([first, second]);
+  });
+  it('does not announce an earlier success for a later unknown request after a failed check', async () => {
+    await ready(); review(); await store.confirm(); expect(store.view().message).toContain('was recorded');
+    review('A later renewal problem.');
+    client.requestHelp.mockResolvedValueOnce({ state: 'failed', problem: 'timeout', value: null, writeOutcome: 'unknown' });
+    await store.confirm(); client.readHelp.mockResolvedValueOnce(refused('unavailable')); await store.refresh();
+    expect(store.view()).toMatchObject({ uncertain: true, recorded: false, canRetry: false });
+    expect(store.view().message).toContain('unknown outcome'); expect(store.view().message).not.toContain('was recorded');
   });
   it('requires readback before explicit same-object retry and never infers commitment from matching history', async () => {
     await ready(); const command = review();

@@ -120,7 +120,7 @@ export class HelpStore {
 
   beginRequest(): void {
     if (!this.view().canAsk) return;
-    this.snapshot.update(s => ({ ...s, editing: true, error: '', notice: null, message: '', recordedCaseId: null }));
+    this.snapshot.update(s => ({ ...s, editing: true, error: '', notice: null, message: '', recordedCaseId: null, successMessage: '' }));
   }
   canReviewPreference(record: CaseDisplay): boolean {
     const s = this.snapshot(); const row = record.source;
@@ -142,7 +142,8 @@ export class HelpStore {
       return;
     }
     if ('state' in command) { this.applyFailure(command, this.snapshot().scope!); return; }
-    this.snapshot.update(s => ({ ...s, review: command, preferenceCaseId: record.caseId, error: '', notice: null, message: 'Review the single preference change before confirming.' }));
+    this.snapshot.update(s => ({ ...s, review: command, preferenceCaseId: record.caseId, recordedCaseId: null, successMessage: '',
+      error: '', notice: null, message: 'Review the single preference change before confirming.' }));
   }
   setReason(reason: string): void {
     if (!this.view().editing || this.view().pending) return;
@@ -223,6 +224,8 @@ export class HelpStore {
     const operation = this.start();
     const options = { signal: operation.controller.signal };
     this.snapshot.update(s => ({ ...s, phase: 'loading', help: null, cases: [], notice: null, reconciled: false,
+      review: !s.uncertain && s.review?.kind === 'confirm-preference' ? null : s.review,
+      preferenceCaseId: !s.uncertain ? null : s.preferenceCaseId,
       message: s.successMessage ? `${s.successMessage} Loading current cases.` : 'Loading renewal help.' }));
     const id = this.snapshot().recordedCaseId;
     const read = async <T>(work: () => Promise<CaseClientResult<T>>): Promise<CaseClientResult<T>> => {
