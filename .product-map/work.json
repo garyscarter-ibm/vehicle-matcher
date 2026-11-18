@@ -10384,13 +10384,13 @@
       "native_observed_at": "2026-11-18T04:50:07.991Z"
     },
     {
-      "branch": "dev/DEV-2026-11-16-034",
+      "branch": "gcsp-poc-dev",
       "id": "FUCQ-388",
-      "note": "Local delivery observation; native Jira unavailable. Bug delivery partial at3de251db2, productionf8913a5f2; Node99/99,Java377/377, guarded generated6/6 covering7declines, source/caller reviewsPASS. Actual26captures+independentA/B inspection; four inheritedF445P2 unresolved/currentUIqualityfailed, originalAC5partial. Integration admission under exact red-caller/fix-exception assessment; canonical26d73b760RED excludesbranch, no coveringgreen/acceptance.",
-      "observed_at": "2026-11-18T05:07:04Z",
+      "note": "Local integration observation; native Jira status retained, not refreshed. Partial Bug repair merged at0dd1bd714. Fresh refreshed regression31/31 PASS; prior Node99/Java377/generated6 cases retain matching inputs. UI quality FAILED and originalAC5 partial under existing F445 ownership; old26captures are historical composition evidence. Canonical batch26d73b760 remains RED, excludes this merge and supplies no acceptance. Next mandatory covering batch is being planned.",
+      "observed_at": "2026-11-18T05:23:24Z",
       "slices": [
         {
-          "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim.",
+          "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim. Refreshed repair regression31/31 PASS; partial merge0dd1bd714; independent cleanupf910d3ce.",
           "id": "policy-node",
           "status": "complete",
           "title": "Canonical reason-specific rule and Node repair"
@@ -10402,13 +10402,13 @@
           "title": "Java allocation consumer and focused parity"
         },
         {
-          "evidence": "All6guardedgeneratedcasesPASS/7declines.26actualdesktop/narrowcaptures inspected,A7400edea/B4ba31845currentqualityFAILED with four inheritedGaryF445P2; originalAC5qualitypartial, no filetakeover. Latercleanup9e40d82bPASS/current defaultregistryabsent; historicalresolvedregistryunobserved.",
+          "evidence": "All6guardedgeneratedcasesPASS/7declines.26actualdesktop/narrowcaptures inspected,A7400edea/B4ba31845currentqualityFAILED with four inheritedGaryF445P2; originalAC5qualitypartial, no filetakeover. Latercleanup9e40d82bPASS/current defaultregistryabsent; historicalresolvedregistryunobserved. Refresh matches226/228 old Angular inputs; no fresh browser/composition PASS. Four inherited F445 corrections remain open.",
           "id": "employee-proof",
           "status": "in-progress",
           "title": "Generated stock outcomes and desktop/narrow critique"
         },
         {
-          "evidence": "Canonical26d73b760RED excludesF388; no coveringgreen/nativeacceptance.",
+          "evidence": "Partial merge0dd1bd714 is uncovered. Next mandatory covering batch is being planned; not yet launched. Prior canonical26d73b760 remains RED; no native acceptance.",
           "id": "covering-batch",
           "status": "not-started",
           "title": "Covering batch verification"
@@ -10424,10 +10424,10 @@
           "name": "Mater",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T05:07:04.739916+00:00",
-          "expires_at": "2026-11-18T05:07:04.739916+00:00",
-          "source": "Observed final existing-agent reports and independent cleanup; requested/selected/runtime-confirmed gpt-6.1-sol/high, no fallback. Other batch work is separate.",
-          "status": "F388 delivery/review completed and returned; no owned F388 runtime or allocation retained."
+          "observed_at": "2026-11-18T05:23:24.209192+00:00",
+          "expires_at": "2026-11-18T05:23:24.209192+00:00",
+          "source": "Observed Sol/high report0b7705f29, fresh31/31 regression and independent recorded-resource auditf910d3ce. No fallback or retained F388 runtime.",
+          "status": "F388 refreshed validation completed and returned; subsequent batch planning is separate."
         },
         {
           "name": "Sulley",
