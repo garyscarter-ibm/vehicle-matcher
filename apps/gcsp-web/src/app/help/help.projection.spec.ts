@@ -42,6 +42,16 @@ describe('pure employee help composition', () => {
     expect(projectHelp({ scope, help, cases: ok({ cases: [] }) }).state).toBe('invalid-response');
   });
 
+  it('keeps an owned case with a Java numeric-offset later-release remedy and shows the same UK instant', () => {
+    const later = { type: 'later-release', releaseAt: '2026-12-05T10:00:00+01:00', source: 'Reviewed plan' };
+    const value = projectHelp({ scope, help, cases: cases([{ ...row, status: 'remedy-proposed', remedy: later, history: [{ at: '2026-11-14T10:00:00-05:00',
+      actorId: 'greg', actorRole: 'scheme-team', status: 'remedy-proposed', reason: 'Release reviewed', nextAction: 'Wait', dueAt: null, remedy: later }] }]) });
+    expect(value).toMatchObject({ state: 'ready', cases: [{ source: { remedy: { releaseAt: later.releaseAt } } }] });
+    expect(value.cases[0].remedy!.facts).toContainEqual({ label: 'Reviewed release', value: '5 Dec 2026, 09:00' });
+    expect(value.cases[0].history[0]).toContainEqual({ label: 'Time', value: '14 Nov 2026, 15:00' });
+    expect(projectHelp({ scope, help, cases: cases([{ ...row, remedy: { ...later, releaseAt: '2026-12-05T10:00:00+1:00' } }]) }).state).toBe('invalid-response');
+  });
+
   it('clears mismatched account/run data and rejects using employee help as Greg or presenter', () => {
     expect(projectHelp({ scope, help, cases: cases([{ ...row, employeeId: 'someone-else' }]) })).toMatchObject({ state: 'scope-mismatch', help: null, cases: [] });
     expect(projectHelp({ scope: { audience: 'scheme-team', runId: 'run-1' }, help, cases: cases() })).toMatchObject({ state: 'scope-mismatch', cases: [] });
