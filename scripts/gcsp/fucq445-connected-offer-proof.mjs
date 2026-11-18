@@ -5,7 +5,8 @@
 // PROOF_API_JAR=<prebuilt jar> PROOF_WEB_BROWSER=<prebuilt browser directory>
 // PROOF_PUBLIC_BASE_URL=https://gcsp.example.test node scripts/gcsp/fucq445-connected-offer-proof.mjs
 // Optional PROOF_ORDERING_OUTCOME=synthetic|rejected|pending; each variant owns a fresh schema.
-// No build, real mail, hosted provider, Safari, schema deletion or parent-scratch deletion occurs here.
+// Sign-on is the local test issuer (agreed PoC sign-on, Gary, 18 Nov 2026). No build, real mail, hosted provider,
+// Safari, schema deletion or parent-scratch deletion occurs here; the offer link used is the one Java generated.
 // Derived from fucq435-cross-origin-proof.mjs. Never builds; the parent supplies SCRATCH, the database, the jar and the compiled web.
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, createSign, generateKeyPairSync, randomBytes } from 'node:crypto';
@@ -101,11 +102,11 @@ const receipt = { schema: 'fucq445-connected-offer-proof/1', story: 'DEV-2026-11
   localTestIssuer: `LOCAL TEST OIDC ISSUER ${ISSUER}: harness only, not the real provider`, composition: null, inputs: null, tools: {}, processes: [], scenarios: {}, originalAcceptance: null, failureLogs: {},
   limitations: [
     'Parent supplies and pins prebuilt API/web; artifact hashes alone do not prove source provenance.',
-    'Local labelled OIDC issuer exercises real code/PKCE, signed JWTs and Java verification; hosted identity provider remains unrun.',
+    'Local labelled OIDC issuer (the agreed PoC sign-on) exercises real code/PKCE, signed JWTs and Java verification; hosted provider checks belong to FUCQ-436/437.',
     'BuddyJourneySeed-equivalent synthetic upstream source records and retained policy feed real allocation, quote, hold and decision services. Browser business responses are never forged.',
     'Synthetic or labelled owned HTTPS remote ordering substitutes establish adapter outcomes only; no live BMW service is called.',
-    'No email transport is configured. Navigating an offer URL proves deep-link login return only, never actual email delivery.',
-    'Chrome isolated contexts cover desktop/narrow/private storage. Safari and hosted acceptance remain unrun.',
+    'No email transport is configured. Navigating the Java-generated offer link proves deep-link login return only, never actual email delivery.',
+    'Chrome isolated contexts cover desktop/narrow and one account switch. Safari, private browsing and hosted acceptance belong to FUCQ-436/437.',
     'Parent owns resource reservation, 2GiB scratch/32MiB output supervision, aggregate original deadline and final schema/scratch audit.' ] };
 const owned = [];
 const CHILD_LOG_LIMIT = 1024 * 1024;
@@ -352,6 +353,13 @@ async function sql(statement) {
   await runOnce(`fixture-${++sqlCount}`, PSQL, ['-X', '-v', 'ON_ERROR_STOP=1', '-h', DB[1].replace(/[\[\]]/g, ''), '-p', DB[2] ?? '5432', '-U', process.env.PROOF_DB_USER ?? 'gcsp', '-d', DB_NAME, '-c', `SET search_path TO ${SCHEMA}; ${statement}`],
     { PATH: process.env.PATH, HOME: process.env.HOME, PGCONNECT_TIMEOUT: '10', PGPASSWORD: process.env.PROOF_DB_PASSWORD ?? '' }, 30000);
 }
+async function sqlRows(statement) {
+  const name = `fixture-${++sqlCount}`;
+  await runOnce(name, PSQL, ['-X', '-q', '-At', '-F', '\t', '-v', 'ON_ERROR_STOP=1', '-h', DB[1].replace(/[\[\]]/g, ''), '-p', DB[2] ?? '5432', '-U', process.env.PROOF_DB_USER ?? 'gcsp', '-d', DB_NAME, '-c', `SET search_path TO ${SCHEMA}; ${statement}`],
+    { PATH: process.env.PATH, HOME: process.env.HOME, PGCONNECT_TIMEOUT: '10', PGPASSWORD: process.env.PROOF_DB_PASSWORD ?? '' }, 30000);
+  await owned.at(-1).logClosed;
+  return readFileSync(path.join(dirs.logs, `${name}.log`), 'utf8').split('\n').filter(Boolean).map((l) => l.split('\t'));
+}
 const ACCOUNT_KEY = `environment_id = '${ENVIRONMENT_ID}' AND run_id = '${RUN_ID}'`;
 const quoted = (v) => `'${String(v).replace(/'/g, "''")}'`;
 const sourceFile = path.join(ROOT, 'services/gcsp-api/src/test/resources/recommendation-source/source-cases.json');
@@ -415,9 +423,11 @@ function requestSummary(b) {
   return { ...b, carriesPrincipal: /"(employeeId|environmentId|principalId|subject)"/.test(JSON.stringify(b)) };
 }
 const responseSummary = (body) => body;
+// Only the subject claim of a bearer is kept, never the token.
+const bearerSub = (h) => { const v = hdr(h ?? {}, 'authorization'); try { return JSON.parse(Buffer.from(String(v).split('.')[1], 'base64url').toString()).sub ?? null; } catch { return null; } };
 class Page {
   constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.errors = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
-  send(method, params) { return this.cdp.send(method, params, this.sid); }
+  send(method, params) { return Promise.race([this.cdp.send(method, params, this.sid), sleep(45000).then(() => { throw new Error(`${this.label}: CDP ${method} did not answer in 45s`); })]); }
   event(m) {
     const p = m.params ?? {};
     if (m.method === 'Runtime.exceptionThrown') { this.errors.push(p.exceptionDetails?.text ?? 'exception'); return; }
@@ -426,12 +436,12 @@ class Page {
     if (m.method === 'Network.requestWillBeSent') {
       if (!p.request.url.startsWith(ORIGINS.api)) return;
       const e = { id: p.requestId, method: p.request.method, path: new URL(p.request.url).pathname.replace(API_PATH, ''), query: new URL(p.request.url).search, auth: !!hdr(p.request.headers, 'authorization'),
-        doc: p.frameId === this.mainFrame ? this.docs : null, loader: p.loaderId };
+        doc: p.frameId === this.mainFrame ? this.docs : null, loader: p.loaderId, sub: bearerSub(p.request.headers) };
       if (p.request.postData) e.request = requestSummary(parse(p.request.postData));
       else if (p.request.hasPostData) this.waits.push(this.send('Network.getRequestPostData', { requestId: p.requestId }).then((r) => { e.request = requestSummary(parse(r.postData)); }).catch(() => {}));
       this.log.push(e); this.byId.set(p.requestId, e);
     } else if (m.method === 'Network.requestWillBeSentExtraInfo') {
-      const e = this.byId.get(p.requestId); if (e && hdr(p.headers, 'authorization')) e.auth = true;
+      const e = this.byId.get(p.requestId); if (e && hdr(p.headers, 'authorization')) { e.auth = true; e.sub = bearerSub(p.headers) ?? e.sub; }
     } else if (m.method === 'Network.responseReceived') {
       const e = this.byId.get(p.requestId); if (e) e.status = p.response.status;
     } else if (m.method === 'Network.loadingFailed') {
@@ -443,7 +453,7 @@ class Page {
   }
   async settle() { await sleep(300); await Promise.allSettled(this.waits.splice(0)); }
   calls(from = 0) { return this.log.slice(from).filter((e) => e.method !== 'OPTIONS'); }
-  async eval(expression) { const r = await this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.text}`); return r.result.value; }
+  async eval(expression) { const r = await Promise.race([this.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }), sleep(30000).then(() => { throw new Error(`${this.label}: page eval did not answer in 30s`); })]); if (r.exceptionDetails) throw new Error(`eval failed: ${r.exceptionDetails.text}`); return r.result.value; }
   // Runs a statement body with the DOM helpers in scope and returns its value.
   act(body) { return this.eval(`(() => { ${HELPERS}\n${body} })()`); }
   async until(body, timeout = 30000, what = body) {
@@ -455,6 +465,7 @@ class Page {
     throw new Error(`${this.label}: timed out waiting for ${what}; page text: ${text}; navigation/API diagnostics: ${JSON.stringify({ location, calls })}`);
   }
   async shot(name) {
+    await this.send('Page.bringToFront');
     const metrics = await this.send('Page.getLayoutMetrics'); const size = metrics.cssContentSize ?? metrics.contentSize;
     const r = await this.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: size.width, height: Math.min(size.height, 10000), scale: 1 } });
     writeFileSync(path.join(dirs.evidence, name), Buffer.from(r.data, 'base64')); return path.join(dirs.evidence, name);
@@ -540,7 +551,7 @@ async function tick(to) {
   if (t.state !== 'completed') throw new Error(`Clock tick did not complete: ${JSON.stringify(t)}`);
   return t;
 }
-const offers = {};
+const offers = {}; const seen = {};
 const offerPath = id => `/offers/${encodeURIComponent(id)}`;
 const offerUrl = id => `${ORIGINS.web}/gcsp/offers/${encodeURIComponent(id)}`;
 async function currentOffers(person) { return (await value(person, '/offers/current')).offers; }
@@ -553,10 +564,10 @@ async function scenario(id, title, ac, fn) {
   if (!s.pass) throw new Error(`Offer scenario ${id} failed: ${s.error ?? 'failed assertion'}`);
 }
 // Starts from the original offer URL in a fresh isolated context. No token/session injection.
-async function deepLinkLogin(page, person, id) {
-  await page.send('Page.navigate', { url: offerUrl(id) });
+async function deepLinkLogin(page, person, id, { url = offerUrl(id), from = 0 } = {}) {
+  await page.send('Page.navigate', { url });
   await page.until(`return location.origin === '${ORIGINS.web}' && !!button('Sign in');`, 30000, 'deep link sign-in guard');
-  const before = page.calls().filter(e => e.path === offerPath(id));
+  const before = page.calls(from).filter(e => e.path === offerPath(id));
   if (before.length) throw new Error('Unauthenticated offer leaked a business read before sign-in');
   await page.act(`return press('Sign in');`);
   await page.until(`return location.origin === '${ORIGINS.idp}' && !!document.querySelector('button[data-subject="sub-${person}"]');`, 30000, 'real PKCE issuer form');
@@ -579,12 +590,36 @@ async function waitPost(page, from, endpoint) {
   while (Date.now() < end) { await page.settle(); const sent = page.calls(from).filter(e => e.method === 'POST' && e.path === endpoint); if (sent.some(e => e.response !== undefined || e.failed)) return sent; await sleep(100); }
   throw new Error(`No completed browser POST ${endpoint}`);
 }
+// RFC 3986 segment, as NotificationIntent.segment encodes it.
+const javaSegment = (v) => encodeURIComponent(v).replace(/[!'()*]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
+// The link Java itself generated for the offer: rendered outbox message first, else the persisted notification intent.
+async function javaOfferLink(person, id) {
+  const want = `/gcsp/offers/${javaSegment(id)}`; const employeeId = `employee-${person}`; const out = { source: 'none', link: null, want, tried: [] };
+  try {
+    const box = await value('presenter', '/presenter/outbox');
+    const mine = box.messages.filter((m) => m.recipient?.employeeId === employeeId);
+    const hit = mine.find((m) => /gcsp\/offers\//.test(m.textBody ?? '') && (m.offerLink ?? '').endsWith(want));
+    out.tried.push({ source: 'presenter-outbox', messages: box.messages.length, forEmployee: mine.length, renderedBodies: mine.filter((m) => m.textBody).length });
+    if (hit) return { ...out, source: 'presenter-outbox', link: hit.offerLink, textBodyHasLink: hit.textBody.includes(hit.offerLink) };
+  } catch (e) { out.tried.push({ source: 'presenter-outbox', error: e.message.slice(0, 200) }); }
+  const rows = await sqlRows(`SELECT payload->>'offerId', payload->>'offerLink' FROM outbox_events WHERE ${ACCOUNT_KEY} AND event_type = 'notification.offer.v1' AND payload->>'recipientEmployeeId' = ${quoted(employeeId)} ORDER BY created_at`);
+  out.tried.push({ source: 'persisted-notification-intent', rows: rows.length });
+  const row = rows.find((r) => r[0] === id);
+  return row ? { ...out, source: 'persisted-notification-intent', link: row[1] } : out;
+}
 async function readOffer(cdp, s, pages) {
   const page = await newPage(cdp, 'offer owner'); pages.paula = page;
-  await deepLinkLogin(page, 'paula', offers.paula);
+  const java = await javaOfferLink('paula', offers.paula); s.observations.javaOfferLink = java;
+  let entry = offerUrl(offers.paula);
+  if (java.link) {
+    const absolute = /^https:/.test(java.link); const pathOnly = absolute ? new URL(java.link).pathname : java.link;
+    check(s, 'Java-generated link path is exactly the encoded owner offer', pathOnly === java.want && (!absolute || java.link === `${PUBLIC_BASE_URL.replace(/\/?$/, '/')}${java.want.slice(1)}`));
+    entry = `${ORIGINS.web}${pathOnly}`;
+  } else s.observations.javaOfferLinkNote = 'No Java-generated offer link existed in the outbox or the persisted intents; the constructed deep link was used instead.';
+  await deepLinkLogin(page, 'paula', offers.paula, { url: entry });
   await page.until(`return text().includes('Your offer') && !!$('[data-offer-action="accept"]');`, 30000, 'owned pending offer');
   const read = await openOffer(page, offers.paula, 'pending', 'reload'); const truth = await value('paula', `${offerPath(offers.paula)}?runId=${RUN_ID}`);
-  s.observations.authoritative = truth;
+  s.observations.authoritative = truth; seen.paula = { name: truth.quote?.facts?.display?.name, wording: truth.handoff?.wording, handoff: truth.handoff };
   check(s, 'exact signed Java projection reached browser', read.auth && read.query === `?runId=${RUN_ID}` && read.response?.value?.offerId === offers.paula && same(read.response.value, truth));
   check(s, 'pinned rich offer and no invented quote', truth.state === 'pending' && truth.runId === RUN_ID && truth.quote?.facts?.display?.name && truth.quote?.terms?.points?.value > 0 && truth.quote?.policyVersion === POLICY && typeof truth.clockVersion === 'string' && truth.clockVersion.length > 0);
   const dom = await snapshot(page, s, 'pending-desktop');
@@ -607,6 +642,9 @@ async function readOffer(cdp, s, pages) {
   await snapshot(page, s, 'pending-narrow');
   await page.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
 }
+// The accept command exactly as the browser sends it; versions from `o`, terms digest and declarations from `h`.
+const acceptBody = (o, h = o) => ({ commandId: command(), runId: RUN_ID, decision: 'accept', expectedOfferVersion: o.offerVersion, expectedHoldVersion: o.holdVersion, expectedQuoteVersion: o.quote.revisions.quote,
+  termsDigest: h.handoff.termsDigest, declarations: Object.fromEntries(h.handoff.declarations.map(({ id }) => [id, true])), ...(h.handoff.mode === 'replacement' ? { expectedReturnMileage: 5400 } : {}) });
 async function authority(cdp, s, pages) {
   const owner = await value('paula', `${offerPath(offers.paula)}?runId=${RUN_ID}`);
   const commandBody = { commandId: command(), runId: RUN_ID, decision: 'decline', expectedQuoteVersion: owner.quote.revisions.quote, expectedOfferVersion: owner.offerVersion, expectedHoldVersion: owner.holdVersion, reasonCode: 'body-style' };
@@ -614,8 +652,10 @@ async function authority(cdp, s, pages) {
   for (const person of ['bruno', 'presenter']) {
     const read = await call(person, `${offerPath(offers.paula)}?runId=${RUN_ID}`);
     const decision = await call(person, `${offerPath(offers.paula)}/decision`, commandBody);
-    s.observations.direct[person] = { read, decision };
-    check(s, `${person} exact read and command refused`, read.status === 403 && decision.status === 403);
+    const accept = await call(person, `${offerPath(offers.paula)}/decision`, acceptBody(owner));
+    s.observations.direct[person] = { read, decision, accept };
+    check(s, `${person} exact read and decline command refused`, read.status === 403 && decision.status === 403);
+    check(s, `${person} accept command refused`, accept.status === 403);
   }
   const other = await newPage(cdp, 'other employee'); pages.bruno = other;
   await deepLinkLogin(other, 'bruno', offers.paula);
@@ -650,6 +690,15 @@ async function acceptOffer(s, pages) {
   check(s, 'actual Java accepted receipt', posts[0].status === 200 && posts[0].response?.value?.offerId === offers.paula && posts[0].response.value.state === 'accepted');
   await openOffer(page, offers.paula, 'accepted', 'reload');
   const truth = await value('paula', offerPath(offers.paula)); s.observations.current = truth;
+  s.observations.afterAccept = {};
+  for (const person of ['bruno', 'presenter']) {
+    const decline = await call(person, `${offerPath(offers.paula)}/decision`, { commandId: command(), runId: RUN_ID, decision: 'decline', expectedQuoteVersion: truth.quote.revisions.quote, expectedOfferVersion: truth.offerVersion, expectedHoldVersion: truth.holdVersion, reasonCode: 'body-style' });
+    const accept = await call(person, `${offerPath(offers.paula)}/decision`, acceptBody(truth, seen.paula));
+    s.observations.afterAccept[person] = { decline: decline.status, accept: accept.status };
+    check(s, `${person} decline on accepted offer refused with 403`, decline.status === 403);
+    check(s, `${person} accept on accepted offer refused with 403`, accept.status === 403);
+  }
+  check(s, 'owner offer stays accepted after refusals', (await value('paula', offerPath(offers.paula))).state === 'accepted');
   dom = await snapshot(page, s, `accepted-${ORDERING_OUTCOME}-narrow`);
   check(s, 'accepted reopen has no decision controls', truth.state === 'accepted' && !dom.actions.some(a => ['accept','decline'].includes(a.action)));
   const expected = ORDERING_OUTCOME === 'rejected' ? 'handoff-failed' : 'handoff-pending';
@@ -679,7 +728,13 @@ async function declineOffer(cdp, s, pages) {
   const posts = await waitPost(page, from, `${offerPath(offers.bruno)}/decision`); s.observations.command = posts;
   check(s, 'one signed decline with actual reason', posts.length === 1 && posts[0].auth && posts[0].request?.decision === 'decline' && posts[0].request?.reasonCode === 'body-style' && posts[0].status === 200 && posts[0].response?.value?.state === 'declined');
   const decisionId = posts[0].response.value.decisionId;
-  await openOffer(page, offers.bruno, 'declined', 'reload');
+  const reopened = await openOffer(page, offers.bruno, 'declined', 'reload');
+  check(s, 'declined reopen: Java read is declined', reopened.response?.value?.state === 'declined' && (await value('bruno', offerPath(offers.bruno))).state === 'declined');
+  for (const [name, width, height] of [['declined-reopen-desktop', 1440, 1000], ['declined-reopen-narrow', 375, 812]]) {
+    await page.send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false });
+    const reopenDom = await snapshot(page, s, name);
+    check(s, `${name}: declined copy shown, no accept/decline/confirm actions`, reopenDom.text.includes('Offer declined') && !reopenDom.actions.some(a => ['accept', 'decline', 'confirm'].includes(a.action)) && await page.act(`return !button('Review & accept') && !button('Decline offer');`));
+  }
   await page.until(`return !!$('.followup input[value="saloon"]');`, 10000, 'actual follow-up question');
   const question = await value('bruno', `/offer-followup?decisionId=${encodeURIComponent(decisionId)}`); s.observations.question = question;
   check(s, 'registered source-backed question', question.state === 'question' && question.question.path === 'preferences.body.value' && question.question.currentValue === 'estate');
@@ -721,6 +776,37 @@ async function expiredOffer(s, pages) {
   const refused = await call('bruno', `${offerPath(offers.next)}/decision`, { commandId: command(), runId: RUN_ID, decision: 'decline', expectedQuoteVersion: before.quote.revisions.quote, expectedOfferVersion: before.offerVersion, expectedHoldVersion: before.holdVersion, reasonCode: 'body-style' });
   s.observations.refused = refused;
   check(s, 'expired command refused by Java', refused.status === 409);
+}
+
+// Same browser, same tab: paula signs out, bruno signs in at the issuer and opens paula's offer, then his own.
+async function switchAccount(s, pages) {
+  const page = pages.paula; const paulaName = seen.paula?.name; const wording = seen.paula?.wording;
+  check(s, 'paula offer details were rendered before the switch', !!paulaName && !!wording && (await page.eval(`document.body.textContent`)).includes(paulaName));
+  const mark = page.log.length;
+  check(s, 'Sign out is operable from the account menu', await page.eval(`(() => { const d = document.querySelector('summary.gcsp-account-summary'); const b = document.querySelector('button.gcsp-account-signout'); if (!d || !b) return false; d.click(); setTimeout(() => b.click(), 0); return true; })()`));
+  log('switch: sign-out clicked');
+  await page.until(`return location.origin === '${ORIGINS.web}' && !!button('Sign in');`, 30000, 'signed-out sign-in screen');
+  log('switch: signed out');
+  const out = await snapshot(page, s, 'switch-signed-out');
+  check(s, 'signed-out page shows no paula vehicle or terms', !out.text.includes(paulaName) && !out.text.includes(wording) && !out.actions.length);
+  // Leak watch: records any paula vehicle, terms or decision action in every later document of this tab.
+  const watch = `(() => { const name = ${JSON.stringify(paulaName)}, words = ${JSON.stringify(wording)}; const note = () => { try { sessionStorage.setItem('f445runs', String(1 + Number(sessionStorage.getItem('f445runs') ?? 0))); } catch {} const t = document.body ? document.body.textContent : ''; const hit = { name: t.includes(name), terms: t.includes(words), actions: !!document.querySelector('[data-offer-action]') }; if (hit.name || hit.terms || hit.actions) { try { sessionStorage.setItem('f445leak', JSON.stringify({ ...JSON.parse(sessionStorage.getItem('f445leak') ?? '{}'), ...Object.fromEntries(Object.entries(hit).filter(([, v]) => v)) })); } catch {} } }; addEventListener('DOMContentLoaded', () => { note(); new MutationObserver(note).observe(document, { subtree: true, childList: true, characterData: true, attributes: true }); }); })()`;
+  const { identifier } = await page.send('Page.addScriptToEvaluateOnNewDocument', { source: watch });
+  log('switch: leak watch installed'); await deepLinkLogin(page, 'bruno', offers.paula, { from: mark }); log('switch: bruno signed in');
+  await page.until(`return !!$('gcsp-status-screen') && !text().includes('Loading');`, 20000, 'switched account denial');
+  const dom = await snapshot(page, s, 'switch-bruno-denied');
+  await page.settle(); await sleep(1000); await page.settle();
+  const leak = JSON.parse(await page.eval(`sessionStorage.getItem('f445leak') ?? '{}'`)); const runs = Number(await page.eval(`sessionStorage.getItem('f445runs') ?? 0`)); s.observations.leakWatch = { leak, observerRuns: runs };
+  await page.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
+  check(s, 'bruno sees no paula vehicle, terms or decision actions', !dom.text.includes(paulaName) && !dom.text.includes(wording) && !dom.actions.length && Object.keys(leak).length === 0 && runs > 0);
+  const reads = page.calls(mark).filter(e => e.path === offerPath(offers.paula) && e.method === 'GET');
+  s.observations.switchReads = reads.map(({ path: p, auth, sub, status }) => ({ path: p, auth, sub, status }));
+  check(s, 'every paula offer read after the switch carried bruno bearer and returned 403', reads.length > 0 && reads.every(e => e.auth && e.sub === 'sub-bruno' && e.status === 403));
+  check(s, 'no request after sign-out carried paula bearer', page.calls(mark).every(e => e.sub !== 'sub-paula'));
+  const mine = await openOffer(page, offers.bruno, 'declined'); const brunoTruth = await value('bruno', offerPath(offers.bruno));
+  const own = await snapshot(page, s, 'switch-bruno-own-offer');
+  const brunoName = brunoTruth.quote?.facts?.display?.name;
+  check(s, 'bruno own offer shows bruno offer, not paula', mine.sub === 'sub-bruno' && mine.response?.value?.offerId === offers.bruno && brunoTruth.state === 'declined' && own.text.includes(brunoName) && (brunoName === paulaName || !own.text.includes(paulaName)) && !own.text.includes(wording));
 }
 
 function accessLog() {
@@ -765,7 +851,7 @@ async function main() {
   await scenario('accept', 'Explicit declarations and truthful handoff, then accepted reopen', 'AC1,AC2', s => acceptOffer(s, pages));
   await scenario('decline', 'Explicit reason, saved follow-up and actual next comparison', 'AC1,AC2', s => declineOffer(cdp, s, pages));
   await scenario('expiry', 'Original link reopens authoritative expired state', 'AC1,AC2', s => expiredOffer(s, pages));
-
+  await scenario('switch', 'Account switch in one browser never shows the previous employee offer', 'AC1,AC2', s => switchAccount(s, pages));
 }
 function teardown() {
   if (teardownPromise) return teardownPromise;
@@ -788,10 +874,12 @@ function finish(runError) {
   receipt.logBudget ??= { limitBytes: CHILD_LOG_LIMIT, writtenBytes: childLogBytes, exhausted: false };
   try { receipt.apiAccessLog = accessLog(); } catch { /* no log */ }
   receipt.orderingSubstitute = { outcome: ORDERING_OUTCOME, requests: orderingRequests };
+  const closure = 'Local test issuer is the agreed PoC sign-on (Gary, 18 Nov 2026); hosted, Safari and private-browsing checks belong to FUCQ-436/437; real email delivery is outside these ACs; the full suite is deferred to the poller batch.';
+  const all = ['read', 'authority', 'accept', 'decline', 'expiry', 'switch']; const decide = ['authority', 'accept', 'decline', 'expiry', 'switch'];
   receipt.originalAcceptance = {
-    AC1: { text: 'Correct signed-in vehicle, terms, explanations and accepted/declined/expired reopen.', scenarios: ['read', 'authority', 'accept', 'decline', 'expiry'], localEvidence: ['read', 'authority', 'accept', 'decline', 'expiry'].every(ok) ? 'pass' : 'incomplete', closure: 'OPEN: real delivered email, hosted OIDC, applicable browser/remote proof and parent review remain' },
-    AC2: { text: 'Explicit accept/decline, truthful handoff and supported follow-up; ownership enforced.', scenarios: ['authority', 'accept', 'decline', 'expiry'], localEvidence: ['authority', 'accept', 'decline', 'expiry'].every(ok) ? 'pass' : 'incomplete', closure: 'OPEN: this receipt covers only the selected ordering variant' } };
-  receipt.overall = ['read', 'authority', 'accept', 'decline', 'expiry'].every(ok) && !runError && !logLimitFailure && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
+    AC1: { text: 'Correct signed-in vehicle, terms, explanations and accepted/declined/expired reopen.', scenarios: all, localEvidence: all.every(ok) ? 'pass' : 'incomplete', closure: `${closure} Covers the selected ordering variant.` },
+    AC2: { text: 'Explicit accept/decline, truthful handoff and supported follow-up; ownership enforced.', scenarios: decide, localEvidence: decide.every(ok) ? 'pass' : 'incomplete', closure: `${closure} Covers the selected ordering variant only.` } };
+  receipt.overall = all.every(ok) && !runError && !logLimitFailure && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-offer-proof.json');
   let serialized = `${JSON.stringify(receipt, null, 2)}\n`;
   if (Buffer.byteLength(serialized) > 8 * 1024 * 1024) {

@@ -165,3 +165,14 @@ Against the frozen application artifact source `044a4ab121947b285844dd9f881261fe
 Normal refresh completed from shared `27acf5b3fc38d4e847306baea89a75a57bec4e5e` at merge `bebaa8abf`: retained the final owned row locally, aligned the map to exact shared current data, refreshed through the normal helper, then reapplied F445 through the trusted map helper. All 306 shared foreign rows at final refreshed source remain byte-identical; no manual Git merge, rewritten history or force push was used. The earlier conflict/refusal observations above remain retained.
 
 Final source/metadata audit: `.claude/test-runs/fucq445/connected-bd2/final-publication-audit.json` verifies the five-file owned diff, exact retained proof hash, all 306 final shared foreign rows, unchanged native timestamps/AC and the four-file newer stock delta. No additional runtime was run.
+
+## Acceptance proof closure — 18 November 2026 (Claude poller)
+
+Gary ruled on 18 Nov that sign-on is mocked for the PoC, hosted/Safari/private checks belong to FUCQ-436/437, real email delivery is outside these ACs and the full suite runs in the poller batch. Against those rulings the remaining gaps were closed in the proof script only (`2878ba933`, `8f381c5f4`, `7354c6745`):
+
+- the deep link is now the one Java issued (presenter outbox body), checked to be exactly `/gcsp/offers/<encoded offer id>`;
+- another employee and the presenter get 403 on accept as well as decline, both while pending and after acceptance;
+- the declined reopen asserts the Java state, the declined copy and no decision actions at desktop and narrow;
+- a new `switch` scenario signs Paula out and Bruno in on the same tab at Paula's link: denied, no Paula data in any later document, every read on Bruno's bearer, then Bruno's own offer.
+
+On `7354c6745` (base `c19a24ed8`): synthetic 94/94, rejected 95/95 and pending 95/95 checks across six scenarios; Java AC HTTP tests plus startup/wiring 57/57; Angular offers specs 160/160. Receipts and captures are local under `docs/gcsp/evidence/fucq445/`. Both acceptance criteria are met locally against the mock issuer; full suite deferred to batch.
