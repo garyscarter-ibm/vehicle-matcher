@@ -10386,8 +10386,8 @@
     {
       "branch": "gcsp-poc-dev",
       "id": "FUCQ-388",
-      "note": "Local integration observation; native Jira status retained, not refreshed. Partial Bug repair merged at0dd1bd714. Fresh refreshed regression31/31 PASS; prior Node99/Java377/generated6 cases retain matching inputs. UI quality FAILED and originalAC5 partial under existing F445 ownership; old26captures are historical composition evidence. Canonical batch26d73b760 remains RED, excludes this merge and supplies no acceptance. Next mandatory covering batch is being planned.",
-      "observed_at": "2026-11-18T05:23:24Z",
+      "note": "Local integration observation; native Jira status retained, not refreshed. Partial repair merged at0dd1bd714. Fresh31/31 regression and matching prior scoped inputs retained. UI quality FAILED/originalAC5 partial under F445 ownership. Covering batch launched05:38:05UTC at6793f49f; Node running, Java pending. No green batch or acceptance.",
+      "observed_at": "2026-11-18T05:43:07Z",
       "slices": [
         {
           "evidence": "Lead originalACResultpartial3de251db2; correctedproductionf8913/sourcePASS,Node99/99,guardedgenerated6/6+7declines/effectivegeneratedmetadata. Root21source/6receipt+observationhashaudit485d6b68; no allAC/acceptanceclaim. Refreshed repair regression31/31 PASS; partial merge0dd1bd714; independent cleanupf910d3ce.",
@@ -10408,10 +10408,11 @@
           "title": "Generated stock outcomes and desktop/narrow critique"
         },
         {
-          "evidence": "Partial merge0dd1bd714 is uncovered. Next mandatory covering batch is being planned; not yet launched. Prior canonical26d73b760 remains RED; no native acceptance.",
+          "evidence": "Actual batch-covering-20261118T0540Z-run launched05:38:05UTC at6793f49f; exact npm test running before Java clean verify. Independent staticreviewad76151a; root launch audit batch-covering-20261118-0540-launch-root-audit.json verifies hashes, pin, PID/start, owned root, lane and2GiBdisk/3GiBram reservation. Results/cleanup pending; no native acceptance.",
           "id": "covering-batch",
-          "status": "not-started",
-          "title": "Covering batch verification"
+          "status": "in-progress",
+          "title": "Covering batch verification",
+          "observed_at": "2026-11-18T05:43:07.636714+00:00"
         }
       ],
       "status": "In Progress",
