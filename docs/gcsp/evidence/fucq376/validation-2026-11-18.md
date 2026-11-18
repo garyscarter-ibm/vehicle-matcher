@@ -49,10 +49,27 @@ Primary local retained paths (all beneath `/Users/usget/Claude/vehicle-matcher`)
 
 - `.claude/poller/run-20261117-2335/f376-independent-review.md`
 - `.claude/poller/run-20261117-2335/resources/f376/`: plan, baseline/red/green probes and receipts, five-sample lookup JSONs, scoped/render logs and ownership receipts, coverage-context summaries, impact summary and final cleanup receipt.
-- `.claude/test-runs/impact/f376-c8459b9899dbd52f.json`: 56,793 B, identity `c8459b9899dbd52f6d4972c1e835357860e8c6e9582cf6f38487ade02b7f6d60`.
+- `.claude/test-runs/impact/f376-c8459b9899dbd52f.json`: identity `c8459b9899dbd52f6d4972c1e835357860e8c6e9582cf6f38487ade02b7f6d60`; original ownership/context evidence plus the explicit post-refresh variant below.
 
 ## Resources and cleanup
 
 One worker; bounded local scratch, registered supervisor finalizers, HostBudget reservation and exclusive runtime lane. Planned chunk ceilings: 2 GiB scratch, 1.5 GiB RSS, 600 s; 5 GiB emergency reserve. No database, copied corpus or cloud output. Initial dependency preflight failed before corpus execution because the worktree lacked `pg`; an owned link to the existing primary `server/node_modules` supplied the unchanged dependency. No install or product dependency change.
 
 Consolidated receipt observed **2026-11-18T02:05:52.498569+00:00**: all nine recorded process identities dead; owned `/private/tmp/vm-poller-20261118-f376`, reservation and lane absent; dependency link removed, installed dependency tree preserved. Measured finalizer removal **13,017,728 B**; maximum scratch **8,868,384 B**; maximum Node child-group RSS **545,685,504 B**. **No cleanup issues or leftovers.** Bounded local Node/V8 temporary working data was the declared compatibility exception. No OneDrive access, including cleanup checks. Retained summaries/logs are small and local; no successful verbose output tree or input copy is retained.
+
+## Post-refresh scoped variant
+
+The normal helper refreshed the Bug to tree `0b2767913b451f84677f26996ec683ecb98c6ff3` on parent base `2507d09930a903bf7cf221f08418dd58adae48da`. Fresh reassessment matched the original impact map's five production/harness and ten test hashes, both package locks, package metadata, installed pg/jsdom package metadata and all **68** immutable corpus/source files. There is no affected `server`/`public`/package tree delta from the reviewed source commit. Parent changes concern Angular Activity, documents/map/lifecycle and its isolated Activity proof script. Thus the original nine-module evidence remains applicable; this current composition check is a distinct variant, not a new 111-test run.
+
+Serial commands, one worker, Node 26.7.0 and the same flags/real lookup:
+
+```sh
+node --test --test-concurrency=1 server/test/gcsp-vehicle-evidence-readiness.test.js
+node --test --test-concurrency=1 server/test/render.test.js
+```
+
+**6/6** readiness (9.947 s supervisor) and **41/41** render (30.129 s), **47/47 total, zero failures/cancellations/skips**. The fresh default-server regression passes the 100 ms timer-gap bound; it does not print an exact successful maximum. The 36 ms measurement above remains the separately recorded earlier quiet probe. V8 worker/module contexts were captured during these required runs. Source/test code is unchanged; original independent source/security review applies. No full suite was run; parent covering batch and acceptance remain outstanding.
+
+Plan, logs, ownership records, coverage summaries and cleanup receipt are retained under the existing primary local resource directory as `postrefresh-*`. The shared impact map was extended atomically with this tree/base, selected commands, timings and explicit evidence-reuse boundary.
+
+Post-refresh cleanup receipt observed **2026-11-18T02:11:34.789235+00:00**: all four recorded supervisor/Node process identities dead; owned `/private/tmp/vm-poller-20261118-f376-postrefresh`, HostBudget reservation, owned lane and guarded worktree dependency link absent. Existing installed dependencies preserved. Removed **5,267,648 B**, peak scratch **4,116,576 B**, peak child-group RSS **571,375,616 B**; **no cleanup issues or leftovers**. Same bounded local Node/V8 exception; no copied corpus, cloud output or OneDrive access.
