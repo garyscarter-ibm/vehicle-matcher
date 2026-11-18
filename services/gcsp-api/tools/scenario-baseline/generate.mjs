@@ -24,13 +24,24 @@ const run = (await repository.currentRun('scenario-baseline')).value;
 const read = { runId: run.runId, asOf: instant, policyVersion: run.policyVersion };
 const seed = await loadDemoPrincipalSeed(policy, read);
 const principals = [];
-// FUCQ-528: the order planner reads employeeFacts.driverEligible, not drivers[]. Sam is in no catalogue scenario, so
-// confirming his own driver gives Greg one orderable need and leaves every scenario's outcome as it was.
-const plannerDrivers = new Set(['employee-sam']);
+// FUCQ-528: Greg's plan needs one need that only a new order meets. Sam, in no catalogue scenario, gets the driver fact
+// the planner reads, a plug-in essential no released car meets, and a renewal 87 days later, past the 56-day lead time.
+const ORDERABLE = 'employee-sam';
+const later = (date) => new Date(Date.parse(date) + 87 * 86400000).toISOString().slice(0, date.length);
+const laterContract = (c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k,
+  /Date$/.test(k) && k !== 'returnedDate' && typeof v === 'string' ? later(v) : v]));
 const withPlannerDriver = (employeeId, record) => {
-  if (!plannerDrivers.has(employeeId)) return record;
+  if (employeeId !== ORDERABLE) return record;
   const own = record.drivers.find((d) => d.kind === 'employee' && d.employeeId === employeeId);
-  return { ...record, employeeFacts: { ...record.employeeFacts, driverEligible: structuredClone(own.eligible) } };
+  const current = record.contracts.find((c) => c.status === 'current');
+  const fuel = { value: 'phev', operator: 'equals', unit: null, state: 'confirmed', source: own.eligible.provenance.sourceRef,
+    confirmedAt: own.eligible.provenance.observedAt };
+  const facts = record.employeeFacts;
+  return { ...record,
+    employeeFacts: { ...facts, essentials: { ...facts.essentials, fuel },
+      requiredBy: { ...facts.requiredBy, value: later(facts.requiredBy.value) }, driverEligible: structuredClone(own.eligible) },
+    contracts: record.contracts.map((c) => (c === current ? laterContract(c) : c)),
+    histories: record.histories.map((h) => ({ ...h, entries: h.entries.map((e) => (e.contractId === current.contractId ? laterContract(e) : e)) })) };
 };
 for (const p of seed.value.principals.filter((x) => x.roles.includes('employee'))) {
   const context = (await identity.switchPrincipal(presenter, p.principalId, `switch-${p.principalId}`)).value.context;

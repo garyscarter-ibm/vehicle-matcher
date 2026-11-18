@@ -5,7 +5,7 @@
  "generatedFrom": {
   "generator": "services/gcsp-api/tools/scenario-baseline/generate.mjs",
   "policyVersion": "gcsp-policy-v1",
-  "sourceCommit": "54eeb324bde12a3c4cd459e37f2ec081931dce5d"
+  "sourceCommit": "1b228debc01ecaeb9732738e26d051599ff055e6"
  },
  "capacity": 1,
  "principals": [
@@ -697,7 +697,16 @@
      }
     ],
     "employeeFacts": {
-     "essentials": {},
+     "essentials": {
+      "fuel": {
+       "value": "phev",
+       "operator": "equals",
+       "unit": null,
+       "state": "confirmed",
+       "source": "fixture:manual-records-v1",
+       "confirmedAt": "2026-11-05T09:00:00.000Z"
+      }
+     },
      "charging": {
       "status": "known",
       "value": "home",
@@ -711,7 +720,7 @@
      },
      "requiredBy": {
       "status": "known",
-      "value": "2026-12-01T23:59:59.999Z",
+      "value": "2027-02-26T23:59:59.999Z",
       "unit": null,
       "provenance": {
        "sourceRef": "fixture:manual-records-v1",
@@ -761,8 +770,8 @@
         "family"
        ]
       },
-      "actualCollectionDate": "2026-06-01",
-      "contractEndDate": "2026-12-01",
+      "actualCollectionDate": "2026-08-27",
+      "contractEndDate": "2027-02-26",
       "returnedDate": null,
       "annualMileage": 12000,
       "mileageUnit": "mi/year",
@@ -771,8 +780,8 @@
        "value": 5200,
        "unit": "mi"
       },
-      "earliestCollectionDate": "2026-11-12",
-      "latestCollectionDate": "2026-12-01",
+      "earliestCollectionDate": "2027-02-07",
+      "latestCollectionDate": "2027-02-26",
       "source": {
        "mode": "synthetic",
        "sourceRef": "fixture:manual-records-v1",
@@ -815,8 +824,8 @@
           "family"
          ]
         },
-        "actualCollectionDate": "2026-06-01",
-        "contractEndDate": "2026-12-01",
+        "actualCollectionDate": "2026-08-27",
+        "contractEndDate": "2027-02-26",
         "returnedDate": null,
         "annualMileage": 12000,
         "mileageUnit": "mi/year",
@@ -825,8 +834,8 @@
          "value": 5200,
          "unit": "mi"
         },
-        "earliestCollectionDate": "2026-11-12",
-        "latestCollectionDate": "2026-12-01",
+        "earliestCollectionDate": "2027-02-07",
+        "latestCollectionDate": "2027-02-26",
         "source": {
          "mode": "synthetic",
          "sourceRef": "fixture:manual-records-v1",
