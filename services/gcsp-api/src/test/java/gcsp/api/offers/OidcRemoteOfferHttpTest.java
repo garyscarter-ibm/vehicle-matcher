@@ -109,12 +109,18 @@ class OidcRemoteOfferHttpTest {
                 .extract().jsonPath();
 
         // The remote protocol returns its stored pending receipt even when this inline drive converts immediately.
-        String operationId = post(owner, path + "/decision", accept(termsDigest,
-                offered.getLong("value.offerVersion"), offered.getLong("value.holdVersion")))
+        ObjectNode command = accept(termsDigest, offered.getLong("value.offerVersion"), offered.getLong("value.holdVersion"));
+        String pendingJson = post(owner, path + "/decision", command)
                 .statusCode(202).body("status", equalTo("pending")).body("code", equalTo("decision-pending"))
                 .body("retryable", equalTo(false)).body("offerId", equalTo(offerId))
                 .body("commandId", equalTo(COMMAND)).body("$", not(hasKey("value")))
-                .extract().jsonPath().getString("operationId");
+                .body("$", not(hasKey("decisionId")))
+                .extract().asString();
+        String operationId = JsonPath.from(pendingJson).getString("operationId");
+        ObjectNode parserFixture = JsonNodeFactory.instance.objectNode().put("employeeId", DecisionEnv.EMPLOYEE);
+        parserFixture.set("input", command.deepCopy().put("offerId", offerId));
+        parserFixture.set("receipt", DecisionEnv.JSON.readTree(pendingJson));
+        System.out.println("F466_REMOTE_PENDING " + parserFixture);
         assertNotNull(operationId);
         assertFalse(operationId.isBlank());
         get(owner, path).statusCode(200).body("value.state", equalTo("accepted"))
@@ -207,6 +213,7 @@ class OidcRemoteOfferHttpTest {
         ObjectNode body = JsonNodeFactory.instance.objectNode();
         body.put("commandId", COMMAND).put("decision", "accept").put("expectedOfferVersion", offerVersion)
                 .put("expectedHoldVersion", holdVersion).put("termsDigest", termsDigest);
+        body.put("runId", "run-1").put("expectedQuoteVersion", 1);
         body.putObject("declarations").put("terms", true).put("driver", true);
         return body;
     }

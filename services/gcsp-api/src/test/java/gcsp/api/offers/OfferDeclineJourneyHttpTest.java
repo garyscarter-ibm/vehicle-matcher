@@ -78,8 +78,8 @@ class OfferDeclineJourneyHttpTest {
         ObjectNode body = decline("decline-1", brunoView, reason);
         JsonNode first = decide(bruno, brunoOffer, body, 200).get("value");
         assertEquals("declined", first.get("state").asText());
-        assertEquals(reason, first.get("reasonCode").asText());
-        assertEquals("waiting-for-next-offer", first.get("followUp").get("state").asText());
+        assertEquals("decline", first.get("requestedDecision").asText());
+        assertEquals("released", first.get("holdState").asText());
         assertEquals("released", s.text("SELECT state FROM custody_holds WHERE employee_id = ?", BRUNO));
         assertEquals("declined", s.text("SELECT state FROM buddy_offers WHERE offer_id = ?", brunoOffer));
         assertEquals(1, s.count("SELECT count(*) FROM offer_decisions WHERE offer_id = ? AND decision = 'decline' "
@@ -93,7 +93,7 @@ class OfferDeclineJourneyHttpTest {
         String after = written(s);
         JsonNode replay = decide(bruno, brunoOffer, body, 200).get("value");
         assertEquals(first.get("decisionId").asText(), replay.get("decisionId").asText());
-        assertEquals(first.get("decidedAt").asText(), replay.get("decidedAt").asText());
+        assertEquals(first.get("serverNow").asText(), replay.get("serverNow").asText());
         assertEquals(after, written(s));
         ObjectNode changed = decline("decline-1", brunoView, reasons.get("reasons").get(1).get("code").asText());
         assertEquals("command-input-changed", decide(bruno, brunoOffer, changed, 409).get("code").asText());
