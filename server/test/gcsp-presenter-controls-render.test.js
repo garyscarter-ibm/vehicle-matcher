@@ -225,7 +225,7 @@ test('acknowledged reset navigates to fresh actual-context workspace without ano
     readContext: async () => { contexts++; return ok({ principalId: 'employee-test', roles: ['employee'] }); },
     reset: async () => ok({ runId: 'fresh-run', presenterSession: { status: 'ok' } }) });
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
-  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   assert.doesNotMatch(f.navigation[0], /\?/); assert.equal(reads, 1); assert.equal(contexts, 2); // One read for the strip, one confirming the switch to the lead.
   assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
@@ -238,7 +238,7 @@ test('unknown reset delivery preserves original retry and navigates only after a
   assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Retry the original action/);
   f.click('Retry original action'); await settle();
   assert.equal(calls.length, 2); assert.strictEqual(calls[0], calls[1]);
-  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
 test('definitive stale-run reset retry navigates only to a freshly agreed different current run without claiming reset success', async () => {
@@ -251,7 +251,7 @@ test('definitive stale-run reset retry navigates only to a freshly agreed differ
   assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Retry the original action/);
   f.click('Retry original action'); await settle();
   assert.strictEqual(calls[0], calls[1]); assert.equal(calls[0].expectedRunId, 'run-a');
-  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   assert.match(f.host.textContent, /Action not completed/); assert.doesNotMatch(f.host.textContent, /Reset done|stale-run/);
   f.control.destroy();
 });
@@ -279,7 +279,7 @@ test('cookie issuance conflict confirms actual principal before navigation; unkn
   f.click('Retry original action'); await settle(); assert.strictEqual(calls[0], calls[1]);
   f.adapter.readContext = async () => ok({ principalId: 'greg-test', name: 'Greg test', roles: ['greg'] });
   f.click('Issue selected principal again'); await settle(); assert.notEqual(calls[0].commandId, calls[2].commandId);
-  assert.match(f.navigation[0], /gcsp-presenter.html$/); assert.doesNotMatch(f.navigation[0], /\?/); f.control.destroy();
+  assert.match(f.navigation[0], /\/gcsp\/presenter$/); assert.doesNotMatch(f.navigation[0], /\?/); f.control.destroy();
 });
 test('destroy aborts and ignores late readback', async () => {
   let finish; const f = setup({ readControls: () => new Promise((resolve) => { finish = resolve; }) });
@@ -319,7 +319,7 @@ test('acknowledged reset with session-renewal failure still navigates and preser
     reset: async () => ok({ runId: 'run-new', now: '2026-11-05T09:00:00.000Z', presenterSession: { status: 'unavailable', action: 'Use trusted bootstrap.' } }) });
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.match(f.host.textContent, /Reset done/); assert.match(f.host.textContent, /Use trusted bootstrap/);
-  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   assert.equal(reads, 1); assert.equal(contexts, 1); f.control.destroy();
 });
 test('slice 8: beat actions lead in run-sheet order, the readback is one short block and nothing says Available', async () => {
@@ -640,7 +640,7 @@ test('reset with a failed journey start state stays on the strip, names the step
   f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.equal(f.navigation.length, 0);
   assert.match(f.host.textContent, /Reset done\. The scenario start stopped at offer-seed: Offer service not composed/);
-  f.click('Continue to workspace'); assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter\.html$/);
+  f.click('Continue to workspace'); assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   f.control.destroy();
   const bare = setup({ reset: async () => ok({ runId: 'run-x', startState: { status: 'failed' } }) }); await settle();
   bare.click('Reset scenario'); bare.click('Confirm reset'); await settle();
@@ -686,7 +686,7 @@ test('confirm reset names the lead principal, switches to Paula through the adap
   assert.doesNotMatch(f.host.textContent, /—/);
   f.click('Confirm reset'); await settle();
   assert.equal(f.switches.length, 1); assert.equal(f.switches[0].principalId, 'demo-paula'); assert.ok(f.switches[0].commandId);
-  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /\/gcsp\/presenter$/);
   assert.deepEqual(JSON.parse(resetNote()), { runId: 'run-new', name: 'Paula (fictional)' }); f.control.destroy();
 });
 test('a non-presenter principal chosen in the picker before confirming is the reset target (Greg on request)', async () => {

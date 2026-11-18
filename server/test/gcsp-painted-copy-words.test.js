@@ -134,19 +134,6 @@ test('order progress paints no demo or synthetic wording in any of its states', 
 });
 
 // ---------------------------------------------------------------------------------------------
-// Manual order gallery
-const { mountManualGallery } = await import('../../blocks/gcsp/manual-gallery/gcsp-manual-gallery.js');
-const galleryFixtures = await import('../../blocks/gcsp/manual-gallery/fixtures.js');
-const until = async (done) => { for (let i = 0; i < 200 && !done(); i += 1) await new Promise((resolve) => setImmediate(resolve)); };
-
-test('manual gallery paints no demo or synthetic wording in any stock state', async () => {
-  for (const name of galleryFixtures.MANUAL_GALLERY_FIXTURES) {
-    const root = host(); const destroy = mountManualGallery(root, { adapter: galleryFixtures.createManualGalleryFixtureAdapter(name) });
-    await until(() => root.querySelector('.vm-card, [role="alert"], .vm-status')); await settle(); check(`gallery:${name}`, root, /\S/); destroy(); root.remove();
-  }
-});
-
-// ---------------------------------------------------------------------------------------------
 // Greg: demand, order plan, publish, route comparison, order requests
 const { mountGregDashboard } = await import('../../blocks/gcsp/greg/gcsp-greg.js');
 const gregFixtures = await import('../../blocks/gcsp/greg/fixtures.js');

@@ -14,12 +14,11 @@ import { createStaticVersioning, splitVersioned } from './static-version.js';
 export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html'];
+const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html'];
 const sessionPage = (path) => SESSION_PAGES.includes(path);
 const LOGIN_PATH = '/gcsp/login';
 const loginPage = (path) => [LOGIN_PATH, '/gcsp-login.html'].includes(path);
-const presenterPage = (path) => path === '/gcsp-presenter.html';
-const gregPage = (path) => ['/gcsp-greg.html', '/gcsp-case-queue.html'].includes(path);
+const gregPage = (path) => path === '/gcsp-greg.html';
 const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
   : context?.roles?.includes('employee') ? '/gcsp-help.html' : LOGIN_PATH;
 const publicPath = (path) => loginPage(path) || sessionPage(path) || path === '/gcsp-employee.css'
@@ -78,14 +77,7 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
       if (hostOk && req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204, { 'Cache-Control': 'max-age=86400' }).end(); return; }
       if (fallThrough && (!hostOk || !publicPath(path))) { api.emit('request', req, res); return; }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
-      if (presenterPage(path)) {
-        const control = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'presenter-control' });
-        if (control.status !== 'ok') {
-          const issued = await services.createPresenterControlSession();
-          if (issued.status !== 'ok') { html(res, 503, 'The service could not start.'); return; }
-          res.setHeader('Set-Cookie', issued.value.setCookie);
-        }
-      } else if (sessionPage(path) || loginPage(path)) {
+      if (sessionPage(path) || loginPage(path)) {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         const destination = session.status === 'ok' ? landing(session.value) : LOGIN_PATH;
         if (session.status === 'unavailable') { html(res, 503, 'The service is unavailable. Try again.'); return; }
@@ -141,7 +133,7 @@ export async function startHostedGcsp({ buildServer, env = process.env, port, ro
     server = createServer(createGcspFront({ root, services, api, origin, fallThrough: true }));
     await new Promise((done, reject) => { server.once('error', reject); server.listen(port, done); });
   } catch { await close(); return { status: 'unavailable' }; }
-  console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp-presenter.html`);
+  console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp/login`);
   for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { close().finally(() => process.exit(0)); });
   return { status: 'ok', value: { server, services, origin, close } };
 }

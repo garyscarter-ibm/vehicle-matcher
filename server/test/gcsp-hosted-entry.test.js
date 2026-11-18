@@ -72,9 +72,9 @@ function client(base) {
 }
 const good = (reply) => { assert.equal(reply.status, 200, reply.text.slice(0, 400)); assert.equal(reply.json?.status, 'ok', reply.text.slice(0, 400)); return reply.json.value; };
 
-test('the hosted entry serves the open demo and drives Paula to a captured offer email over one origin', { timeout: 120000 }, async (t) => {
+test('the hosted entry serves the open demo and takes a brief from Paula over one origin', { timeout: 120000 }, async (t) => {
   const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }),
-    '/gcsp-presenter.html');
+    '/gcsp/login');
   assert.match(app.output(), /GCSP hosted demo \(memory\)/);
   const browser = client(app.base);
   const get = (path, options) => browser.request(path, options);
@@ -97,60 +97,25 @@ test('the hosted entry serves the open demo and drives Paula to a captured offer
   assert.equal(css.status, 200); assert.equal(css.headers.get('cache-control'), 'private, no-cache');
   assert.equal((await get('/blocks/gcsp/shell/gcsp-shell.css', { headers: { 'If-None-Match': css.headers.get('etag') } })).status, 304);
 
-  // Presenter entry grants only its control session. It never signs in an employee.
-  const page = await get('/gcsp-presenter.html');
-  assert.equal(page.status, 200); assert.match(page.headers.get('content-type'), /^text\/html/);
-  const issued = page.headers.getSetCookie();
-  assert.ok(issued.some((line) => line.startsWith('gcsp_presenter=') && !line.includes('Max-Age=0')));
-  assert.ok(!issued.some((line) => line.startsWith('gcsp_session=') && !line.includes('Max-Age=0')));
-  const context = good(await get('/api/gcsp/context'));
-  assert.equal(context.principalId, 'demo-presenter');
+  // The legacy presenter page is retired: it answers 404 and issues no cookie.
+  const retired = await get('/gcsp-presenter.html');
+  assert.equal(retired.status, 404); assert.deepEqual(retired.headers.getSetCookie(), []);
   assert.equal((await get('/gcsp-help.html')).headers.get('location'), '/gcsp/login');
-
-  // Reset the way the UI does; the reply must renew the presenter cookies and the new run must carry on working.
-  const before = good(await get('/api/gcsp/presenter/scenarios/current'));
-  const catalogue = good(await get('/api/gcsp/presenter/scenarios'));
-  const scenario = catalogue.scenarios.find((entry) => entry.kind === 'mechanics');
-  const resetReply = await post('/api/gcsp/presenter/scenarios/reset', { commandId: 'hosted-reset', expectedRunId: before.runId,
-    expectedRunVersion: before.runVersion, scenarioId: scenario.scenarioId, scenarioVersion: scenario.scenarioVersion,
-    fixtureVersion: scenario.fixtureVersion, policyVersion: catalogue.policyVersion });
-  const reset = good(resetReply);
-  assert.notEqual(reset.runId, before.runId); assert.notEqual(reset.presenterSession?.status, 'unavailable');
-  const renewed = resetReply.headers.getSetCookie();
-  assert.ok(renewed.some((line) => line.startsWith('gcsp_presenter=')) && renewed.some((line) => line.startsWith('gcsp_session=')));
-  assert.equal((await get('/gcsp-presenter.html')).status, 200);
-  const state = good(await get('/api/gcsp/presenter/scenarios/current'));
-  assert.equal(state.runId, reset.runId);
-  const paula = good(await post('/api/gcsp/session/login', { email: 'paula.mason@gcsp-demo.com', password: 'fucq' })).context;
-  assert.equal(paula.principalId, 'demo-paula'); assert.equal(paula.runId, state.runId);
+  const signedIn = good(await post('/api/gcsp/session/login', { email: 'paula.mason@gcsp-demo.com', password: 'fucq' })).context;
+  assert.equal(signedIn.principalId, 'demo-paula');
+  assert.equal(good(await get('/api/gcsp/context')).principalId, 'demo-paula');
   assert.equal((await get('/gcsp-help.html')).status, 200);
   assert.equal((await get('/api/gcsp/presenter/controls')).status, 403);
-  assert.equal((await get('/gcsp-presenter.html')).status, 200);
-  assert.equal(good(await get('/api/gcsp/context')).principalId, 'demo-paula');
 
-  // Paula's brief, then the presenter's Next release tick allocates her a buddy offer.
+  // Paula's brief saves and confirms on the hosted origin. Release ticks are presenter-owned and covered in-process.
   good(await post('/api/gcsp/brief/draft', { commandId: 'hosted-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
     brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
   good(await post('/api/gcsp/brief/confirm', { commandId: 'hosted-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
     consent: { search: true, hold: true } }));
-  const controls = good(await get('/api/gcsp/presenter/controls'));
-  const ticked = good(await post('/api/gcsp/presenter/controls/tick', { commandId: 'hosted-release',
-    expectedClockVersion: controls.clockVersion, mode: 'next-release' }));
-  const allocation = ticked.tick.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome.value.allocations
-    .flatMap((row) => row.assignments);
-  assert.equal(allocation.length, 1, JSON.stringify(ticked.tick.outcomes.map((row) => [row.handlerId, row.outcome.status])));
-  const offerId = allocation[0].claim.offer.offerId;
-  const offer = good(await get(`/api/gcsp/offers/${encodeURIComponent(offerId)}?runId=${encodeURIComponent(state.runId)}`));
-  assert.equal(offer.offerId, offerId);
-
-  // The captured email is visible to the presenter.
-  const outbox = good(await get('/api/gcsp/presenter/outbox'));
-  assert.ok(outbox.messages.length >= 1, JSON.stringify(outbox).slice(0, 400));
-  assert.ok(JSON.stringify(outbox.messages).includes(offerId) || outbox.messages.some((message) => /offer/i.test(JSON.stringify(message))));
 });
 
 test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {
-  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp-presenter.html');
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp/login');
   const browser = client(app.base);
   assert.equal((await browser.request('/gcsp/login')).status, 200);
   good(await browser.request('/api/gcsp/session/login', { method: 'POST', json: { email: 'paula.mason@gcsp-demo.com', password: 'fucq' } }));

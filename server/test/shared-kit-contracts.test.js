@@ -337,5 +337,5 @@ test('manual gallery examples retain separate exact cards and cannot claim synth
   assert.equal(actions.length, cards.length);
   assert.ok(actions.every((action) => action.disabled));
   assert.ok([...section.querySelectorAll('.vm-score')].every((score) => score.hidden));
-  assert.ok(section.querySelector('a[href="./gcsp-manual-gallery.html?fixture=available"]'));
+  assert.equal(section.querySelector('a[href*="gcsp-manual-gallery"]'), null);
 });

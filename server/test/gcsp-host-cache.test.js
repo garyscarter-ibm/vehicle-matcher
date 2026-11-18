@@ -41,7 +41,7 @@ test('static files carry a strong content ETag and revalidate with a 304', async
 });
 
 test('pages and redirects stay no-store with no ETag', async () => {
-  const page = await get('/gcsp-presenter.html', { 'If-None-Match': '*' });
+  const page = await get('/gcsp-login.html', { 'If-None-Match': '*' });
   assert.equal(page.status, 200); assert.equal(page.headers.get('cache-control'), 'no-store'); assert.equal(page.headers.get('etag'), null);
   assert.match(page.text, /<html/i);
 
