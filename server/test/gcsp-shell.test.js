@@ -11,7 +11,6 @@ import { JSDOM } from 'jsdom';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const GCSP_DIR = join(ROOT, 'blocks/gcsp');
-const livePages = () => readdirSync(ROOT).filter((file) => /^gcsp-[a-z-]+-live\.html$/.test(file));
 let shellMod;
 let emp;
 
@@ -285,24 +284,6 @@ test('missing adapter shows the account as unavailable and Retry reloads', async
   t2();
 });
 
-test('pages that own a failed account read say it once: a quiet header and one Refresh in the body', async () => {
-  const pages = [
-    ['../../blocks/gcsp/brief/gcsp-brief.js', 'mountBrief', /Your preferences are unavailable/],
-    ['../../blocks/gcsp/offer-followup/gcsp-offer-followup.js', 'mountOfferFollowup', /Follow-up unavailable/],
-  ];
-  for (const [path, name, title] of pages) {
-    let reads = 0; const root = host();
-    const stop = (await import(path))[name](root, { brand: 'bmw', signOut: false, loadAccount: async () => { reads += 1; return { status: 'unavailable' }; } });
-    await tick();
-    assert.match(root.querySelector('main').textContent, title);
-    assert.equal(root.querySelector('.gcsp-account').textContent, ''); assert.doesNotMatch(root.textContent, /Retry|Account unavailable/);
-    const refresh = [...root.querySelectorAll('main button')];
-    assert.deepEqual(refresh.map((b) => b.textContent), ['Refresh']);
-    refresh[0].click(); await tick(); assert.equal(reads, 2);
-    stop();
-  }
-});
-
 test('a brand other than bmw renders an honest unavailable state', () => {
   const root = host();
   const reasons = [];
@@ -483,7 +464,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-activity.html'), join(ROOT, 'gcsp-order-progress.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -519,9 +500,6 @@ test('no em dash in any string literal under blocks/gcsp/, and none in the harne
       }
     });
   }
-  assert.ok(!read('gcsp-employee.html').includes('—'));
-  assert.ok(!read('gcsp-brief.html').includes('—'));
-  for (const file of livePages()) assert.ok(!read(file).includes('—'));
   assert.deepEqual(offenders, []);
 });
 
@@ -784,47 +762,10 @@ test('fixture points equal the keyed seed-v1.json entries, with key and version 
   assert.ok(data.stock.every((c) => !('vin' in c) && c.orderUuid && c.configurationId && /^\d{7}$/.test(c.orderNumber)));
 });
 
-test('harness page loads the harness module and the body stylesheet; the element never reads location', () => {
-  const html = read('gcsp-employee.html');
-  assert.match(html, /blocks\/gcsp\/employee\/harness\.js/);
-  assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
-  const harness = read('blocks/gcsp/employee/harness.js');
-  assert.match(harness, /FIXTURE_NAMES\.includes/);
-  // Page hosts only: the offer entry captures and scrubs the email-link fragment (bc8a941a); the presenter page opens Help (112fdfe2).
-  const liveHosts = ['activity/live.js', 'order-progress/live.js', 'offer/entry.js', 'offer/http-adapter.js'].map((file) => join(GCSP_DIR, file));
-  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && !liveHosts.includes(p))) {
+test('no GCSP module outside its harnesses reads location or history', () => {
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js'))) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/, rel(f));
   }
-});
-
-test('the activity live host routes the rail through the shared helper without URL-selected state', () => {
-  const host = read('blocks/gcsp/activity/live.js');
-  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../kit/presenter-actions.js',
-    '../employee/portal-navigation.js', './notification-source.js', './gcsp-activity.js',
-  ]);
-  assert.match(host, /routePortalEvents\(host\)/);
-  assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
-});
-
-test('the order progress pages load the custom element through external modules only and navigate to fixed pages', () => {
-  const live = read('gcsp-order-progress-live.html');
-  assert.match(live, /<gcsp-order-progress[^>]+data-live/);
-  assert.deepEqual([...live.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1].trim()), ['type="module" src="./blocks/gcsp/order-progress/live.js"']);
-  assert.match(live, /blocks\/gcsp\/order-progress\/gcsp-order-progress\.css/);
-  const harness = read('gcsp-order-progress.html');
-  assert.deepEqual([...harness.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1].trim()), ['type="module" src="./blocks/gcsp/order-progress/harness.js"']);
-  assert.match(harness, /id="gcsp-order-progress-preview"/);
-  const host = read('blocks/gcsp/order-progress/live.js');
-  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/session-lifecycle.js', '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
-    '../kit/presenter-actions.js', '../employee/portal-navigation.js', '../activity/activity-http.js', '../activity/notification-source.js', './gcsp-order-progress.js',
-  ]);
-  assert.match(host, /routePortalEvents\(host\)/);
-  assert.match(host, /reload: \(\) => win\.location\.reload\(\)/);
-  assert.doesNotMatch(host.replace('win.location.reload()', ''), /URLSearchParams|\blocation\b|\bhistory\./);
-  assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
-  assert.match(read('server/gcsp/host.js'), /'\/gcsp-order-progress-live\.html'/);
 });
 
 test('the single gallery shows the GCSP section with primitives and shell states', async () => {
@@ -868,7 +809,7 @@ test('the portal shell builds no presenter controls, even with a presenter cooki
   document.cookie = 'gcsp_presenter=; path=/; max-age=0';
 });
 
-const PAGES = ['account', 'brief-live', 'brief', 'activity-live', 'activity', 'order-progress-live', 'order-progress', 'help', 'offer', 'greg', 'case-queue', 'login', 'employee', 'manual-setup', 'manual-gallery'];
+const PAGES = ['help', 'greg', 'case-queue', 'login', 'manual-gallery'];
 const importsOf = (code) => [...code.matchAll(/\bimport\s*(?:[\w*{}\s,$]*?\s*from\s*)?['"]([^'"]+)['"]|\bimport\(\s*['"]([^'"]+)['"]\s*\)/g)]
   .map((m) => m[1] || m[2]).filter((spec) => spec.startsWith('.'));
 function reachable(entry) {

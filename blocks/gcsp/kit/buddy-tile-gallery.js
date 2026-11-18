@@ -13,7 +13,7 @@ export function buddyTileExamples() {
     if (name === 'unset') Object.assign(result.value, { permission: null, stateChanges: [] });
     if (name === 'inactive') Object.assign(result.value.permission, { searchConsent: false, holdConsent: false, canSearch: false, canHold: false });
     if (name === 'finished') result.value.currentOffer.state = 'accepted';
-    const tile = buddyTile({ id: `gallery-buddy-tile-${name}`, orderHref: '/gcsp-order-progress-live.html' });
+    const tile = buddyTile({ id: `gallery-buddy-tile-${name}`, orderHref: '/gcsp/orders' });
     tile.update({ phase: name === 'loading' ? 'loading' : name === 'unavailable' ? 'unavailable' : 'ready', result,
       events: activityEvents(result.value.stateChanges).reverse(),
       ...(name === 'held' ? { offerTitle: activityFixtures.offerExample.title, deadline: respondBy(result.value.currentOffer) } : {}) });

@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
-import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 
 const bytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8');
 const comparisonBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8');
@@ -39,12 +38,9 @@ test('approved102 DTO binds exact order string, pinned monthly points, shared re
   assert.equal(v.currentCar, null); assert.equal(JSON.stringify(v).includes('320i M Sport Touring'), false);
 });
 
-test('hold deadline and supplied DemoClock govern countdown, never quote validity or current time', async () => {
-  const c = createOfferController({ read: async () => toOfferPresentation(envelope()) });
-  const v = await c.refresh();
-  assert.equal(v.seconds, 7200); assert.equal(v.expiresAt, sample().expiresAt);
-  assert.notEqual(v.expiresAt, sample().quote.validUntil); assert.equal(v.canAccept, false);
-  c.destroy();
+test('the hold deadline, never quote validity, is the offer expiry', () => {
+  const v = toOfferPresentation(envelope()).value;
+  assert.equal(v.expiresAt, sample().expiresAt); assert.notEqual(v.expiresAt, sample().quote.validUntil);
 });
 
 test('provided exact details, zero/false, arrays and provenance are retained without equipment inference', () => {
