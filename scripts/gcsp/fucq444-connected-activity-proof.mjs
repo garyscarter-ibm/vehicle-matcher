@@ -576,7 +576,7 @@ async function terminalFollowup(s, pages) {
   s.checks.terminalDoesNotRegainDecisions = (await offer(pages.paulaId)).availableActions.length === 0;
   s.observations.followup = { reasonCode: reason.code, decisionId: decision.decisionId, state: followup.state, question: followup.question };
   await inspect(s, pages.one, 'd-terminal-followup');
-  await pages.one.eval(`{ const a = [...document.querySelectorAll('a')].find((a) => new URL(a.href).pathname === '/gcsp/activity'); if (!a) throw new Error('No Activity navigation link'); a.click(); }`);
+  await pages.one.eval(`history.back()`);
   await pages.one.until(ACTIVITY_READY, 15000, 'return navigation to activity'); await pages.one.settle();
   const returned = await compareCurrent(s, pages.one, 'declinedReturn');
   s.checks.returnKeepsTerminalOffer = returned.raw.currentOffer?.offerRef.offerId === pages.paulaId && returned.display?.state === 'declined';
@@ -595,7 +595,7 @@ async function expiry(s, pages) {
   s.checks.expiryPresentationUsesServerRead = state.shown.offerState === 'Expired' && !state.shown.deadline;
   const before = pages.alex.log.length;
   await pages.alex.send('Page.navigate', { url: `${ORIGINS.web}/gcsp/account` }); await pages.alex.until(`return location.pathname === '/gcsp/account' && !!$('.account-screen');`, 15000, 'account navigation');
-  await pages.alex.eval(`{ const a = [...document.querySelectorAll('a')].find((a) => new URL(a.href).pathname === '/gcsp/activity'); if (!a) throw new Error('No Activity navigation link'); a.click(); }`);
+  await pages.alex.eval(`history.back()`);
   await pages.alex.until(ACTIVITY_READY, 15000, 'return to expired activity'); await pages.alex.settle();
   await compareCurrent(s, pages.alex, 'expiredReturn', 'alex');
   s.checks.noTimerOrReturnMutation = pages.alex.calls(before).every((call) => call.method === 'GET');
