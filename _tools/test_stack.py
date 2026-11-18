@@ -226,11 +226,14 @@ class Pg:
             yield dbs
             R.atomic_json(self.db_path, {"databases": dbs})
 
-    def create_dbs(self, run_id, running=False, owner=None):
+    def create_dbs(self, run_id, running=False, owner=None, names=None):
         owner = owner or R.owner()
-        names = [db_name(run_id)]
-        if running:
-            names.append(db_name(run_id))
+        if names is None:
+            names = [db_name(run_id)] + ([db_name(run_id)] if running else [])
+        else:
+            names = list(names[:2 if running else 1])
+            for name in names:  # fixed names: only under the heavy slot, so a leftover is stale
+                self.sql('DROP DATABASE IF EXISTS "%s" WITH (FORCE)' % name)
         with self.registry() as dbs:
             # Record first, so a crash between create and record leaves a gc-able entry rather than a leak.
             for name in names:
@@ -425,15 +428,23 @@ def java_test_plan(worktree, db_env, maven_args, heap="1g", java_home=JAVA_HOME,
     return {"command": command, "cwd": str(Path(worktree) / "services/gcsp-api"), "env": env}
 
 
+# The *HttpTest profiles pin gcsp.database.expected-name, so java-test uses the README's fixed names.
+FIXED_DBS = ("gcsp_test_dev", "gcsp_test_running")
+
+
 def java_test(args, maven_args):
-    root = stack_root()
-    pg = Pg(root)
+    if not os.environ.get(HELD_ENV):  # take the slot first: fixed names are safe only one run at a time
+        command = [sys.executable, "-B", str(Path(__file__).resolve()), "java-test", "--worktree", args.worktree,
+                   "--run", args.run, "--heap", args.heap] + (["--running"] if args.running else []) \
+            + ["--"] + list(maven_args)
+        return heavy_run(command, label="java-test " + args.run, ram_gib=args.ram_gib,
+                         wait_min=args.wait_min, slots=args.slots)
+    pg = Pg(stack_root())
     pg.up()
-    created = pg.create_dbs(args.run, args.running, owner=R.owner())
+    created = pg.create_dbs(args.run, args.running, owner=R.owner(), names=FIXED_DBS)
     try:
         plan = java_test_plan(args.worktree, env_pairs(created["port"], created["names"]), maven_args, args.heap)
-        return heavy_run(plan["command"], label="java-test " + args.run, ram_gib=args.ram_gib,
-                         wait_min=args.wait_min, slots=args.slots, env=plan["env"], cwd=plan["cwd"])
+        return subprocess.call(plan["command"], env=plan["env"], cwd=plan["cwd"])
     finally:
         with contextlib.suppress(Exception):
             pg.drop_names(created["names"])

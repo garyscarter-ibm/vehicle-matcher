@@ -103,6 +103,15 @@ class FakePg(T.Pg):
 
 
 class Registry(Base):
+    def test_fixed_names_replace_a_stale_copy(self):
+        pg = FakePg(self.tmp)
+        made = pg.create_dbs("r", running=True, owner=R.owner(), names=T.FIXED_DBS)
+        self.assertEqual(made["names"], ["gcsp_test_dev", "gcsp_test_running"])
+        self.assertEqual(pg.statements, ['DROP DATABASE IF EXISTS "gcsp_test_dev" WITH (FORCE)',
+                                         'DROP DATABASE IF EXISTS "gcsp_test_running" WITH (FORCE)',
+                                         'CREATE DATABASE "gcsp_test_dev"', 'CREATE DATABASE "gcsp_test_running"'])
+        self.assertEqual(pg.create_dbs("r", owner=R.owner(), names=T.FIXED_DBS)["names"], ["gcsp_test_dev"])
+
     def test_create_records_owner_and_drop_forgets(self):
         pg = FakePg(self.tmp)
         made = pg.create_dbs("run-1", running=True, owner=R.owner())
