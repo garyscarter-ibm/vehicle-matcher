@@ -431,3 +431,71 @@ peaks disk 333,062,501 B, RSS 2,947,907,584 B, inclusive 3,278,949,989 B, within
 2 GiB/3 GiB/5 GiB bounds. Cleanup and sampler error arrays are empty, all proof
 children exited and scratch is absent. These are supervisor observations; the
 parent owns independent audit. No OneDrive access occurred.
+
+
+## Corrected connected replay — 18 November 2026
+
+Source `90086d0b93b97d750fdfb7fd0095428b43d7b221`, proof SHA256
+`f92fb037a004560113b5cf1a548a6df22197ced7abfb6c6db06c4fc808f7560e`,
+passed all five connected scenarios and every named assertion against prebuilt
+production Angular, Java21/Quarkus, a fresh owned native PostgreSQL17 database and
+real signed local test-OIDC tokens. The proof's pass labels cover this replay;
+original Story acceptance stays open for the remaining experience evidence and review.
+
+| Scenario | Observed result |
+| --- | --- |
+| A | Exact car/quote/terms/draft/review revision and declarations retained; browser double click creates one acknowledged order. |
+| B | Stale terms, quote binding and review revision refused; no order written; refresh clears consent and corrected submit creates one order with version2 details. |
+| C | Missing declarations block UI submission; missing/false/extra declarations receive invalid400 with no order; reload requires explicit unfinished-review confirmation. |
+| D | Actual202 POST and following GET responses dropped after server answers; UI stays unconfirmed, explicit read shows pending, restored synthetic store reconciles to acknowledgement with one POST. |
+| E | Reentry uses reads, same/new command same intent replay the original order, changed intent is refused, at most one order per employee. |
+
+Retained root `.claude/test-runs/fucq443/connected-0209-code-contract/` contains
+`attempt-summary.json`, immutable plans/hashes, C1 `api-20261118T020728Z`, C2
+`web-20261118T020800Z` and C3 `connected-20261118T020916Z` receipts. C3 contains
+`evidence/connected-manual-proof.json`,12 actual desktop PNG captures and proof logs.
+Prior pre-scenario helper/base failures and the exact failed error-code expectation
+remain in their original receipts. No failure was relabelled.
+
+All three final supervisors report strict true, sampled resource/deadline checks
+true, cleanup/sampler errors empty, verified process/group teardown, owned scratch
+and reservation absent. C1/C2 source checks passed; C3 tool/borrowed-Node pins passed.
+C3 finished at02:10:02.510729Z, before the retained absolute pipeline deadline
+02:23:27Z (original start01:58:27Z). No plan clock was restarted for the correction.
+The phase supervisors measured their own realtime and monotonic durations.
+
+| Phase | Elapsed seconds (max clock) | Disk peak B | Aggregate RSS peak B | Disk plus RSS peak B |
+| --- | ---: | ---: | ---: | ---: |
+| C1 API |111.166288|88,712,864|93,962,240|182,671,008|
+| C2 web |79.277453|149,338,816|237,125,632|386,460,352|
+| C3 connected |45.546592|333,254,948|2,949,791,744|3,280,846,436|
+
+Limits remain disk2GiB/RSS3GiB/inclusive5GiB, log2MiB, reserve5GiB, one actual
+worker; C1/C2 work300s and C3 work600s. Peaks are sampled, without a continuous
+containment claim. Parent independent audit remains separately owned. Neither the
+124 matching selected Angular tests nor the inherited boundary failure was rerun;
+full suite: deferred to batch.
+
+The lead inspected actual desktop `a2-review-ticked`, `a3-awaiting-approval`,
+`b1-stale-details-refused`, `c2-reload-needs-confirmation`, `d1-outcome-not-confirmed`
+and `d2-handoff-pending` PNGs. The shared shell, saved fields, terms/declarations and
+truthful stale/unconfirmed/pending/acknowledged notices are visible and readable.
+However, review screens show `Car name not supplied` and no image despite the seeded
+display values; exact ID/order number remain visible. This observation is unresolved,
+not a visual pass; parent defects intake was requested with the original a2 PNG and
+producer/consumer-shape hypothesis. No product repair was allocated or made.
+
+Remaining original evidence: narrow/Safari/explicit private-browser checks, keyboard/
+focus/CSP/accessibility proof, lost-save response and process-restart durable readback.
+The script uses isolated Chrome contexts and checks selected-detail heading focus;
+those limited observations do not replace the missing browser/keyboard review.
+`handoff-failed` provider refusal was not provoked because this labelled synthetic
+provider has no rejection path. Local synthetic ordering and the local test issuer
+do not prove unavailable live providers. Both Story ACs remain unchecked and native
+status is In Progress; no In Review/Done/acceptance/deployment claim. No OneDrive
+access, including cleanup verification, occurred.
+
+Minnie Mouse2 remained requested/selected `gpt-6.1-sol/high`, no fallback. No child
+was started after the retained agent-thread-limit refusal. Parent owns independent
+resource audit, review/integration, Jira lifecycle and the separately found display
+observation.
