@@ -323,7 +323,7 @@ class Page {
       if (found.found) return { tabs: i, visited, focus: await this.act('return focusEvidence();') };
       if (i < limit) { await this.key('Tab'); visited.push(found.label); }
     }
-    throw new Error(`${this.label}: keyboard could not reach ${selector} within ${limit} tabs`);
+    throw new Error(`${this.label}: keyboard could not reach ${selector} within ${limit} tabs; last focus: ${visited.slice(-6).join(' | ')}`);
   }
   async recoveryShot(name, action) {
     await this.act(`const el = $('.gcsp-actions + p[role="status"]'); el?.scrollIntoView({ block: 'center' }); return !!el;`);
@@ -606,6 +606,10 @@ async function scenarioD(cdp, s, pages) {
   }
   s.observations.fullLayouts = layouts;
   s.checks.fullResponsiveWithoutPageOverflow = layouts.every((x) => x.editor && x.scrollWidth <= x.width + 1);
+  // Comfort sits in the collapsed 'Anything else?' disclosure; open it by keyboard as an employee would.
+  s.observations.disclosureFocus = await page.tabTo('details:not(.known-facts) > summary');
+  await page.key('Enter');
+  s.checks.disclosureOpensByKeyboard = await page.act("return document.activeElement.parentElement.open === true && !!$('#preference-comfort');");
   const before = await serverEditor();
   s.observations.preferenceFocus = await page.tabTo('#preference-comfort');
   const oldValue = Number(await page.act("return value('#preference-comfort');"));
