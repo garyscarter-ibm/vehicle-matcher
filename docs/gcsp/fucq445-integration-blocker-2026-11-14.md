@@ -1,5 +1,7 @@
 # FUCQ-445 current integration blocker
 
+Latest assessment: the 18 November connected-composition section below supersedes the historical missing-producer and route/projection obstacles. Original acceptance remains open for the specifically unrun evidence.
+
 Observed 2026-11-14T15:33:06+00:00 at clean worker source `88403ac62aa9bb2d8fe12bc74cca62d3791e417e`, branch `dev/DEV-2026-11-13-013`, helper base `gcsp-poc-dev`. SAME Mugsy: requested/selected/effective `gpt-6.1-sol/high`, no fallback or descendants. This is a source assessment of the existing two AC, not completed acceptance. No product code changed in this checkpoint.
 
 ## Original capability and remaining gaps
@@ -58,3 +60,16 @@ Both original AC stay unchanged and unchecked. Native In Progress and the existi
 Observed 2026-11-16T12:01:24.667909+00:00 at published `2ad99f0f79be76dc72915a9e488b244a2562727a` after the F467 remote-decision merge. The exact-offer read still has two independent contract obstacles: `OffersResource.java:69` rejects the Angular runId query; successful `OfferAccess.read` returns `OfferView.toJson`, whose value omits runId and clockVersion. `apps/gcsp-web/src/app/offers/offer.validation.ts:256` requires both before accepting the projection. Its quote also requires the original revisions/facts/decision/terms/allowance structure and current-car comparison, while the current Java view emits a smaller flat quote. Removing the query alone cannot make this read compose.
 
 This is source evidence of remaining original correct-vehicle/terms/explanations/current-state work. It is not a fresh HTTP reproduction, a new acceptance gate, a severity verdict, or proof that every omitted field belongs in a particular service. Reconcile the original authoritative projection across its existing owners; do not invent absent vehicle, terms, business-clock or comparison facts and do not loosen validation merely to pass the smaller payload. Follow-up route differences remain as recorded above. F465/F466/F467 native In Review and F445 native In Progress/lease/original two unchecked criteria are preserved. No source/runtime/Jira change, new Bug, backend allocation or OneDrive access follows from this assessment. Local source-hash receipt `.claude/fucq445-projection-reassessment-20261116-1157.json`.
+
+
+## Connected composition reassessment — 18 November 2026
+
+Refreshed application source `044a4ab121947b285844dd9f881261fec44fdcff` implements and composes the original Angular contracts: exact runId reads, rich pinned offer/quote projections, decision commands and `/offer-followup?decisionId=...` with confirmation. These are no longer missing-producer, rejected-query or payload/route blockers. At proof source `7c6969d0e765da116cc377d3b5c6053502b47f8d`, actual signed local OIDC/Angular/Java/native-PostgreSQL execution passed all five original journey scenarios under synthetic acknowledgement, remote-adapter refusal and remote-adapter pending outcomes. The application source required no change.
+
+Evidence and retained initial failures: `docs/gcsp/fucq445-delivery-2026-11-14.md`, current checkpoint, and `.claude/test-runs/fucq445/connected-bd2/lead-audit.json`. Selected offers tests 151/151 and real OIDC HTTP/startup tests 57/57 pass. Each connected run has a strict passing resource/source/teardown receipt. All nine attempt roots, tokens and recorded process identities were independently absent after explicit artifact-keeper release. No OneDrive operation was performed.
+
+The remaining original acceptance work is actual delivered-email links through the agreed mail adapter/provider, hosted OIDC/topology, applicable Safari/private and original account-transition evidence, required remote/full transactional substitution and a green covering merge batch. The local issuer performs real PKCE/signature validation but is a harness issuer. The remote transport substitute does not prove unavailable live integration; notification capture or an unconfigured sender does not prove delivery. This worker did not send real mail, provision/deploy, merge or change Jira lifecycle. Both original AC remain unchanged and unchecked; existing lease/In Progress remain. No shared-auth framework rewrite is inferred from the historical unobserved-history concern; assess the supported original journey through its existing owner.
+
+The local current-car comparison is truthfully unavailable/all-unknown because current Java quotes pin no current-car facts. That rendered fallback passed; populated comparison parity remains unproven. Acceptance handoff return-car details are a distinct projection.
+
+Independent proof-only review by Bugs Bunny 2 passed with no blocking or major findings: all 200 connected assertions, 21 captures and exact source/evidence/receipt identities checked. This does not close the original remaining acceptance work above.
