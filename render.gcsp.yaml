@@ -105,9 +105,6 @@ services:
         source: /gcsp-login.html
         destination: https://gcsp-api.onrender.com/gcsp-login.html
       - type: redirect
-        source: /gcsp-presenter.html
-        destination: https://gcsp-api.onrender.com/gcsp-presenter.html
-      - type: redirect
         source: /gcsp-greg.html
         destination: https://gcsp-api.onrender.com/gcsp-greg.html
       - type: redirect

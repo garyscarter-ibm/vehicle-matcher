@@ -117,7 +117,7 @@ const BELL_CAR = { offerRef: { offerId: 'gallery-1' }, title: 'BMW i5 Touring eD
   images: [{ src: '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp', alt: 'Front three quarters', fidelity: 'representative-configuration' }] };
 const BELL_CHANGE = { eventId: 'gallery-e1', operation: 'confirmed', occurredAt: '2026-11-10T09:12:00.000Z' };
 const bellOffer = (state) => ({ offerRef: { offerId: 'gallery-1' }, state, version: 1, createdAt: '2026-11-10T09:30:00.000Z',
-  expiresAt: '2026-11-10T16:40:00.000Z', href: '/gcsp-offer.html' });
+  expiresAt: '2026-11-10T16:40:00.000Z', href: '/gcsp/offers/gallery-1' });
 
 export function notificationBellExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-notification-bell';
@@ -247,7 +247,7 @@ export function buddyStatusExample() {
   const scope = el('div', 'gcsp'); const body = el('div', 'vm');
   for (const state of ['active', 'paused', 'unset', 'finished', 'inactive', 'unavailable']) {
     const row = el('p');
-    row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
+    row.append(buddyStatus({ state, href: '/gcsp/activity' }), document.createTextNode(' '), buddyStatus({ state }));
     body.append(row);
   }
   const strip = el('div'); strip.style.display = 'grid'; strip.style.gap = '16px';

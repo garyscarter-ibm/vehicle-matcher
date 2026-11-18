@@ -108,10 +108,8 @@ test('root session cookies preserve explicit Greg login across HTML and API with
     assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must preserve the explicitly signed-in actor');
     assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
   }
-  const presenter = await browse('/gcsp-presenter.html'); assert.equal(presenter.status, 200);
-  const activePresenterCookies = presenter.headers.getSetCookie().filter((value) => !/Max-Age=0(?:;|$)/i.test(value));
-  assert.equal(activePresenterCookies.length, 1); assert.ok(activePresenterCookies[0].startsWith('gcsp_presenter='));
-  assert.ok(activePresenterCookies[0].includes('; Path=/;') && activePresenterCookies[0].includes('; Secure') && activePresenterCookies[0].includes('; HttpOnly'));
+  const presenter = await browse('/gcsp-presenter.html'); assert.equal(presenter.status, 404);
+  assert.equal(presenter.headers.getSetCookie().length, 0, 'The retired presenter page issues no cookie');
   assert.equal(jar.getCookiesSync(app.origin).find((value) => value.key === 'gcsp_session').value, actingCookie);
   assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
   const queue = await browse('/api/gcsp/scheme-team/cases'); assert.equal(queue.status, 200);
@@ -123,9 +121,8 @@ test('root session cookies preserve explicit Greg login across HTML and API with
     assert.equal(deniedPage.status, 303); assert.equal(deniedPage.headers.get('location'), '/gcsp/login');
     assert.equal(deniedPage.headers.getSetCookie().length, 0);
     assert.equal((await browse('/api/gcsp/context', {}, markerOnly)).status, 401, 'A stale marker never authenticates a person');
-    const control = await browse('/gcsp-presenter.html', {}, markerOnly); assert.equal(control.status, 200);
-    assert.ok(markerOnly.getCookiesSync(app.origin).some((value) => value.key === 'gcsp_presenter'));
-    assert.equal(markerOnly.getCookiesSync(app.origin).some((value) => value.key === 'gcsp_session'), false);
-    assert.equal((await browse('/api/gcsp/manual/account', {}, markerOnly)).status, 401, 'Presenter entry never creates an acting employee session');
+    assert.equal((await browse('/gcsp-presenter.html', {}, markerOnly)).status, 404);
+    assert.equal(markerOnly.getCookiesSync(app.origin).some((value) => ['gcsp_presenter', 'gcsp_session'].includes(value.key)), false);
+    assert.equal((await browse('/api/gcsp/manual/account', {}, markerOnly)).status, 401, 'A stale marker never creates an acting employee session');
   }
 });

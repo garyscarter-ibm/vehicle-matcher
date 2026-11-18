@@ -380,10 +380,6 @@
       "max_lines": 10
     },
     {
-      "path": "blocks/gcsp/presenter-controls/presenter-console.css",
-      "max_lines": 39
-    },
-    {
       "path": "blocks/gcsp/kit/presenter-time.css",
       "max_lines": 7
     },
@@ -392,20 +388,12 @@
       "max_lines": 13
     },
     {
-      "path": "blocks/gcsp/presenter-controls/release-section.css",
-      "max_lines": 17
-    },
-    {
       "path": "blocks/gcsp/kit/help-tip.css",
       "max_lines": 9
     },
     {
       "path": "blocks/gcsp/kit/star-rating.css",
       "max_lines": 14
-    },
-    {
-      "path": "blocks/gcsp/presenter-controls/happened-feed.css",
-      "max_lines": 17
     },
     {
       "path": "blocks/gcsp/kit/category-preferences.css",
@@ -466,10 +454,6 @@
     {
       "path": "blocks/gcsp/kit/vehicle-details.css",
       "max_lines": 19
-    },
-    {
-      "path": "blocks/gcsp/presenter-controls/suitability-section.css",
-      "max_lines": 18
     }
   ],
   "baseline": {

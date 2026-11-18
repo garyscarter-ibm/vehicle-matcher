@@ -107,7 +107,7 @@ test('login network failure stays on screen with retry feedback', async () => {
 });
 
 test('Greg reaches the server-selected page and unknown redirect targets fail closed', async () => {
-  for (const target of ['/gcsp-greg.html', 'https://elsewhere.test/', '//elsewhere.test/', '/gcsp-help.html?principal=other', '/gcsp-presenter.html']) {
+  for (const target of ['/gcsp-greg.html', 'https://elsewhere.test/', '//elsewhere.test/', '/gcsp-help.html?principal=other', '/gcsp/presenter']) {
     const destinations = [];
     const view = await login(async () => response('ok', { value: { context: { name: 'Greg' }, redirectTo: target } }), (to) => destinations.push(to));
     submit(view); await tick();

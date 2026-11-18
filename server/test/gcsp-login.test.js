@@ -137,17 +137,13 @@ test('HTTP login is gated by origin and shared access, rejects context claims, h
   assert.equal(session.status, 401);
 });
 
-test('live HTML requires the user cookie across navigation; Presenter never silently signs in an employee', async (t) => {
+test('live HTML requires the user cookie across navigation and never silently signs in an employee', async (t) => {
   const f = await setup();
   const api = buildServer({ gcspIdentity: f.identity });
   const server = createServer();
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const origin = `http://127.0.0.1:${server.address().port}`;
-  let presenterBoots = 0;
-  const services = { identity: f.identity, async createPresenterControlSession() {
-    presenterBoots += 1;
-    return f.identity.createPresenterControlSession(`presenter:${presenterBoots}`);
-  } };
+  const services = { identity: f.identity };
   server.on('request', createGcspFront({ root: REPO_ROOT, services, api, origin }));
   t.after(async () => { server.closeAllConnections(); await new Promise((done) => server.close(done)); });
   const get = (path, cookie) => fetch(origin + path, { redirect: 'manual', headers: cookie ? { cookie } : {} });
@@ -160,12 +156,6 @@ test('live HTML requires the user cookie across navigation; Presenter never sile
     assert.deepEqual(signedOut.headers.getSetCookie(), []);
   }
   assert.equal((await get('/gcsp/login')).status, 200);
-  const presenter = await get('/gcsp-presenter.html');
-  assert.equal(presenter.status, 200);
-  assert.equal(presenterBoots, 1);
-  assert.ok(presenter.headers.getSetCookie().every((c) => c.startsWith('gcsp_presenter=') || c.includes('Max-Age=0')));
-  assert.ok(presenter.headers.getSetCookie().some((c) => c.startsWith('gcsp_presenter=; Path=/api/gcsp;') && c.includes('Max-Age=0')));
-  assert.ok(presenter.headers.getSetCookie().some((c) => c.startsWith('gcsp_session=; Path=/api/gcsp;') && c.includes('Max-Age=0')));
   const login = await f.identity.signIn(credentials, 'html-login');
   const cookie = cookieOf(login);
   for (const path of ['/gcsp-help.html']) {

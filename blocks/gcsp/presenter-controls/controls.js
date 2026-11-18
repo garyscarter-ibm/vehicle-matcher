@@ -33,7 +33,7 @@ const reason = (reply) => [reply?.reason,
     .map((row) => `${typeof row.field === 'string' ? `${row.field}: ` : ''}${row.reason}`) : []),
 ].filter(Boolean).map(explain).filter(Boolean).join(': ') || (reply?.status ? PLAIN[reply.status] || 'Not completed' : '');
 const why = (reply) => reason(reply) || 'Not completed';
-const workspace = () => new URL('../../../gcsp-presenter.html', import.meta.url).href;
+const workspace = () => new URL('/gcsp/presenter', import.meta.url).href;
 const text = (value) => typeof value === 'string' && value.length > 0;
 const exactOrderId = (value) => typeof value === 'string'
   && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(value);

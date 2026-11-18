@@ -58,7 +58,6 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
   else {
     console.log(`GCSP local demo: ${app.value.origin}/gcsp/login`);
-    console.log(`Presenter workspace: ${app.value.origin}/gcsp-presenter.html`);
     console.log(mode === 'memory' ? 'Explicit memory proof: state lasts only until this process stops.' : 'PostgreSQL runtime.');
     const current = await app.value.services.repository.currentRun(environmentId);
     const chosen = current.status === 'ok' ? stock.provider?.describe?.(current.value.runId) : null;
