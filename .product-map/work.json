@@ -6217,36 +6217,40 @@
           "status": "in-progress",
           "title": "Read owned order and lifecycle facts",
           "points": 3,
-          "observed_at": "2026-11-14T17:30:28Z",
-          "evidence": "PARTIAL: native-5 116 PASS/8 files, rc0, 0 failures/skips; controller31/projection18 plus client26/actions14/component11 and adjacent16. All 136 input pins current. Java facade now binds AccountClient list/snapshot and exact lifecycle reads; pending/null/refusal retained. Browser timeout/no captures; route/connected Java/OIDC/nativePG/hosted proof open; both AC unchecked. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
+          "observed_at": "2026-11-18T02:36:13Z",
+          "evidence": "PARTIAL: Orders105PASS/6specs plus production build; real composed Java/nativePG17/local signed OIDC reads and128 lifecycle assertions pass at9ef2eda. Original accurate-state criteria remain open: terminal return stale proposal copy observed. See docs/gcsp/fucq446-delivery.md connected result; full suite deferred batch."
         },
         {
           "id": "employee-actions",
           "status": "in-progress",
           "title": "Perform supported employee lifecycle actions",
           "points": 3,
-          "observed_at": "2026-11-14T17:30:28Z",
-          "evidence": "PARTIAL: existing document acknowledgement and appointment/return request/accept wired with explicit review, provider IDs/versions, own employee authority, no duplicate/replayed writes and cancellation/context boundaries. Client26/actions14/component11 pass in native-5 116 PASS. Real Java/OIDC/nativePG/restart/concurrency and browser/hosted transitions unproven; both original AC unchecked. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
+          "observed_at": "2026-11-18T02:36:13Z",
+          "evidence": "PARTIAL: actual Angular document acknowledgement, handover request, return request/proposal acceptance, signed role/ownership refusals and reload/restart exercised in128PASS connected assertions. Original AC unchecked; terminal return copy fault separately captured, no product repair. docs/gcsp/fucq446-delivery.md."
         },
         {
           "id": "view-parity",
           "status": "in-progress",
           "title": "Preserve order progress screen and shared navigation",
           "points": 3,
-          "observed_at": "2026-11-14T17:30:29Z",
-          "evidence": "PARTIAL: native OrdersComponent uses existing kit/tokens and frozen lifecycle composition, exact imagery/fallback and supplied current-car relationship. Component11 pass within native-5 116 PASS/8 files. Development fixture build rc0; Chrome timeout with 0 checks/captures. Parent route/catalogue binding, rendered desktop/narrow/keyboard/Safari/private/CSP/accessibility and hosted acceptance open. docs/gcsp/fucq446-lifecycle-screen-2026-11-14.md."
+          "observed_at": "2026-11-18T02:36:13Z",
+          "evidence": "PARTIAL: lead and independent reviewer viewed all16 final desktop/narrow PNGs and keyboard focus. CHANGES REQUIRED: Returned panel also says historical proposal Not booked yet; html109-111 interprets retained proposedSlot as current. Seeded missing car fields are an evidence limitation; Safari/hosted/full accessibility/CSP unrun. docs/gcsp/fucq446-delivery.md."
         },
         {
           "id": "review-proof",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Review experience and original acceptance evidence",
-          "points": 2
+          "points": 2,
+          "observed_at": "2026-11-18T02:36:13Z",
+          "evidence": "IN PROGRESS: independent Sol/high review verified source1424API+650web pins,121rawXML/250exact-source reused Java checks,105Angular and17proof artifact hashes; all final receipts strict/clean. CHANGES REQUIRED for terminal proposal text; original AC/native status unchanged. docs/gcsp/fucq446-delivery.md."
         },
         {
           "id": "java-integration",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Prove composed Java lifecycle journey",
-          "points": 2
+          "points": 2,
+          "observed_at": "2026-11-18T02:36:14Z",
+          "evidence": "IN PROGRESS: production Java/nativePG17+Angular/local code-PKCE signed OIDC, four scenarios128PASS including provider-none/ownership/physical outcomes/reload/restart. Focused Java371/64classes+package PASS. Visual terminal proposal copy fault remains original accuracy work; full suite deferred covering batch. docs/gcsp/fucq446-delivery.md."
         }
       ],
       "story_points": 13,

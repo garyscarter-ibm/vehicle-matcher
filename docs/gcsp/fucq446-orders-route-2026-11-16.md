@@ -157,3 +157,29 @@ concrete browser capability/correction and an authorised composed environment ar
 ## Parent integration — 16 November 2026
 
 Parent reviewed frozen `529eb07ea8e954ca61e790efb9f7c8e4e3b68d0f` and independently verified the nine indexed evidence files, 144 tested inputs, current owned resource absence and the 36.654-second realtime ownership span. All 142 unchanged tested Angular inputs matched the integration root; the two route additions were reviewed separately. The six-path increment was published, merged at `141dda1bfd80c7aaf0fe7d2bdf77a6935c16bfed` and pushed to `gcsp-poc-dev`. No repeated runtime was needed for matching inputs. The sampled-process limitation remains explicit. Both original criteria remain unchecked, native Jira stays In Progress, and the reserved lead is held after this finite increment. Rendered and connected lifecycle acceptance remain open.
+
+
+## Connected recovery evidence — 18 November 2026
+
+At9ef2eda5dc4def98a533446a404bc174f439ab76 the composed production Angular/Java/nativePG17/
+local signed OIDC proof passed128 assertions in four scenarios; focused Orders105 and
+Java371 checks plus production builds passed. Final C1/C2/C3 strict receipts and cleanup
+passed. Full details, retained attempt failures, source hashes, all16 PNGs and limitations
+are in `docs/gcsp/fucq446-delivery.md`, Connected lifecycle result.
+
+**PARTIAL / CHANGES REQUIRED:** visual review proves the terminal Returned panel also
+renders stale proposal text `Not booked yet` from historical proposedSlot. Original
+accurate-state criteria remain unmet/unchecked; no product repair or acceptance switch
+occurred. Booked stages nextStep is preserved producer semantics and needs a bounded
+contract decision before precedence changes. Safari/hosted/real IdP/email/live BMW and
+full accessibility/CSP remain unrun; full suite deferred to covering batch.
+
+
+Dispatcher reconciliation at02:38 UTC: the terminal return rendering fault is native
+**FUCQ-522 (Medium)**, related to FUCQ-446 under FUCQ-432; both actual terminal PNGs
+are attached as937958/937959 (151257bytes each). The booked-handover stale nextStep is
+already described by **FUCQ-299** and remains existing related evidence, with no duplicate
+Bug or silent producer precedence change. FUCQ-521 is unchanged. Parent independently
+audited all five runtime allocations,1792 observed identities and nine ports: cleanup
+PASS, lane released. Overall review stays CHANGES REQUIRED; the proof/tooling source
+has a scoped pass for the128 exercised assertions and bounded validation only.
