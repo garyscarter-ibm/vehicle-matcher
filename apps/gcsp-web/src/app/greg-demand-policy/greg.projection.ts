@@ -8,7 +8,7 @@ const text = (v: unknown): string => typeof v === 'string' && !!v.trim() && v.le
 const integer = (v: unknown): number => typeof v === 'number' && Number.isSafeInteger(v) && v >= 0 ? v : bad();
 const boolean = (v: unknown): boolean => typeof v === 'boolean' ? v : bad();
 const list = <T>(v: unknown, parse: (value: unknown) => T): T[] => Array.isArray(v) && v.length <= 10000 ? v.map(parse) : bad();
-const only = (o: Obj, keys: readonly string[]): void => { if (Object.keys(o).some(k => !keys.includes(k))) bad(); };
+const keysOnly = (o: Obj, keys: readonly string[]): void => { if (Object.keys(o).some(k => !keys.includes(k))) bad(); };
 const instant = (v: unknown): string => {
   const s = text(v);
   return /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?(?:Z|[+-]\d\d:\d\d)$/.test(s) && Number.isFinite(Date.parse(s)) ? s : bad();
@@ -16,11 +16,11 @@ const instant = (v: unknown): string => {
 function versions(v: unknown): GregVersions { const o = object(v); return { brief: list(o['brief'], text), policy: list(o['policy'], text) }; }
 export function parseGregCount(v: unknown): GregCount {
   const o = object(v); const label = text(o['label']);
-  if (o['kind'] === 'exact') { only(o, ['kind', 'value', 'label']); return { kind: 'exact', value: integer(o['value']), label }; }
+  if (o['kind'] === 'exact') { keysOnly(o, ['kind', 'value', 'label']); return { kind: 'exact', value: integer(o['value']), label }; }
   if (o['kind'] !== 'band' || Object.hasOwn(o, 'value')) return bad();
   const fewer = Object.hasOwn(o, 'fewerThan'); const atLeast = Object.hasOwn(o, 'atLeast');
   if (fewer === atLeast) return bad();
-  only(o, ['kind', 'label', fewer ? 'fewerThan' : 'atLeast']);
+  keysOnly(o, ['kind', 'label', fewer ? 'fewerThan' : 'atLeast']);
   const threshold = integer(o[fewer ? 'fewerThan' : 'atLeast']);
   if (threshold < 1) return bad();
   return fewer ? { kind: 'band', label, fewerThan: threshold } : { kind: 'band', label, atLeast: threshold };
@@ -137,9 +137,9 @@ function fit(v: unknown): GregFit {
   const o = object(v); const s = object(o['meanBestScore']);
   let meanBestScore: GregFit['meanBestScore'];
   if (s['status'] === 'available' && typeof s['value'] === 'number' && Number.isFinite(s['value']) && s['value'] >= 0 && s['value'] <= 100) {
-    only(s, ['status', 'value']); meanBestScore = { status: 'available', value: s['value'] };
+    keysOnly(s, ['status', 'value']); meanBestScore = { status: 'available', value: s['value'] };
   } else if (s['status'] === 'suppressed') {
-    only(s, ['status', 'fewerThan']); const fewerThan = integer(s['fewerThan']); if (!fewerThan) return bad();
+    keysOnly(s, ['status', 'fewerThan']); const fewerThan = integer(s['fewerThan']); if (!fewerThan) return bad();
     meanBestScore = { status: 'suppressed', fewerThan };
   } else return bad();
   return { employeesWithEligibleStock: parseGregCount(o['employeesWithEligibleStock']), scoredBriefs: parseGregCount(o['scoredBriefs']), meanBestScore };

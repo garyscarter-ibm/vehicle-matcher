@@ -12,7 +12,7 @@ interface Intent { readonly captured: Captured; readonly body: string }
 export interface GregPublishCommand { readonly kind: 'publish-policy'; readonly input: GregPublishInput }
 type Failure = Extract<GregResult<never>, { state: 'failed' }>;
 const object = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v);
-const only = (o: Record<string, unknown>, allowed: readonly string[]): boolean => Object.keys(o).every(k => allowed.includes(k));
+const keysOnly = (o: Record<string, unknown>, allowed: readonly string[]): boolean => Object.keys(o).every(k => allowed.includes(k));
 const text = (v: unknown, max = 256): v is string => typeof v === 'string' && !!v.trim() && v.length <= max && !/[\u0000-\u001f\u007f]/.test(v);
 const failed = (problem: string, evidence: GregRequestEvidence = {}): Failure => ({ state: 'failed', value: null, problem, ...evidence });
 export function gregContextKey(c: ApplicationContext): string { return JSON.stringify([c.subject, c.environmentId, c.runId, c.policyVersion, [...c.roles].sort()]); }
@@ -24,7 +24,7 @@ export function validGregChanges(input: unknown): input is GregPreviewInput {
   if (!object(input) || !text(input['expectedActiveVersion']) || !Array.isArray(input['changes']) || !input['changes'].length || input['changes'].length > 100) return false;
   const seen = new Set<string>();
   return input['changes'].every((v: unknown) => {
-    if (!object(v) || !only(v, ['id', 'value']) || !text(v['id']) || !/^(?:price|weight):.+/.test(v['id'])
+    if (!object(v) || !keysOnly(v, ['id', 'value']) || !text(v['id']) || !/^(?:price|weight):.+/.test(v['id'])
       || typeof v['value'] !== 'number' || !Number.isSafeInteger(v['value']) || v['value'] < 0 || seen.has(v['id'])) return false;
     seen.add(v['id']); return true;
   });
@@ -46,12 +46,12 @@ export class GregClient {
   }
   readPolicy(options: GregRequestOptions = {}): Promise<GregResult<GregPolicy>> { return this.request('/greg/policy', parseGregPolicy, options); }
   preview(input: GregPreviewInput, options: GregRequestOptions = {}): Promise<GregResult<GregPreview>> {
-    if (!object(input) || !only(input, ['expectedActiveVersion', 'changes']) || !validGregChanges(input)) return Promise.resolve(failed('invalid-command'));
+    if (!object(input) || !keysOnly(input, ['expectedActiveVersion', 'changes']) || !validGregChanges(input)) return Promise.resolve(failed('invalid-command'));
     return this.request('/greg/policy/preview', parseGregPreview, options, { body: JSON.stringify(freezeInput(input)) });
   }
   preparePublish(input: GregPublishInput): GregPublishCommand | Failure {
     const captured = this.capture(); if ('state' in captured) return { ...captured, writeOutcome: 'not-sent' };
-    if (!object(input) || !only(input, ['commandId', 'expectedActiveVersion', 'policyVersion', 'effectiveFrom', 'changes'])
+    if (!object(input) || !keysOnly(input, ['commandId', 'expectedActiveVersion', 'policyVersion', 'effectiveFrom', 'changes'])
       || !validGregChanges(input) || !text(input.commandId) || !text(input.policyVersion) || input.policyVersion === input.expectedActiveVersion
       || !text(input.effectiveFrom) || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?(?:Z|[+-]\d\d:\d\d)$/.test(input.effectiveFrom)
       || !Number.isFinite(Date.parse(input.effectiveFrom))) return failed('invalid-command', { writeOutcome: 'not-sent' });
