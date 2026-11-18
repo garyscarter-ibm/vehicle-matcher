@@ -9375,7 +9375,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-18T01:03:04Z",
+      "observed_at": "2026-11-18T01:33:01Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Complete remote offer acceptance and decline",
@@ -9401,8 +9401,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-18T01:03:04Z",
-          "evidence": "18Nov2026 reopening original integration proof: native uncertain/decline signed-OIDC HTTP, durable replay and connected Angular remote states remain unproved; earlier203 component checks retained. F466 canonical boundary reviewed atd308; its sole writer remains Hugh until integration."
+          "observed_at": "2026-11-18T01:33:01Z",
+          "evidence": "18Nov partial: 224 unique Java/40 classes (171 remote+offers,53 wiring);14 browser checks/16 captures; independent source/security/rendered review pass. Upstream Buddy decisions only; F466 downstream gap stays open. Original AC unchecked; covering batch/hosted/provider/actual email and unmatched experience gates remain. Identities, failed attempts, cleanup: docs/gcsp/evidence/fucq467/validation-review-2026-11-18.md"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
