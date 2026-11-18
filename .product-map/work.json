@@ -9375,7 +9375,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-17T21:37:04Z",
+      "observed_at": "2026-11-18T01:33:01Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Complete remote offer acceptance and decline",
@@ -9399,10 +9399,10 @@
         },
         {
           "id": "integration",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-16T11:52:04Z",
-          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
+          "observed_at": "2026-11-18T01:33:01Z",
+          "evidence": "18Nov partial: 224 unique Java/40 classes (171 remote+offers,53 wiring);14 browser checks/16 captures; independent source/security/rendered review pass. Upstream Buddy decisions only; F466 downstream gap stays open. Original AC unchecked; covering batch/hosted/provider/actual email and unmatched experience gates remain. Identities, failed attempts, cleanup: docs/gcsp/evidence/fucq467/validation-review-2026-11-18.md"
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
