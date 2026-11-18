@@ -50,7 +50,7 @@ def stack_root(raw=None):
     raw = raw or os.environ.get("GCSP_TEST_STACK_DIR") or str(Path.home() / "Library/Caches/gcsp-test-stack")
     path = Path(raw).expanduser()
     resolved = path.resolve()
-    banned = (Path.home() / "Library/CloudStorage").resolve()
+    banned = Path.home() / "Library/CloudStorage"  # never resolve(): that would stat the banned tree
     for candidate in (path, resolved):
         text = str(candidate)
         if "onedrive" in text.lower() or "cloudstorage" in text.lower() or \
