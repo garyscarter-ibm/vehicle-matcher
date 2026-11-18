@@ -2696,3 +2696,11 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 05:09 UTC · Gary Codex · DL-20261117-GCC-013 · Await producer completion before consuming refreshes
 
 - A fresh lease helper was still running when its redirected output was read, producing an incomplete snapshot and false change candidates. No reporting bucket or ownership action used those candidates. After collecting the exact command completion, the full snapshot was reread and actual lease changes checked; future reads of this refresh are now sequenced after completion. Proposed framework improvement: write snapshots to an owned temporary file and atomically publish only a successful complete result. No product test or acceptance gate added.
+
+### 2026-11-18 05:19 UTC · Gary Codex · DL-20261117-GCC-013 · Batch evidence read recovered
+
+- A whole161-line mixed historical batch receipt again exceeded the consumer budget. Recovered the final Java disposition directly before updating current batch facts:43exact cases/32pass/10fail/1skip, with canonical batch still red. No omitted text supplied acceptance evidence and no tests were rerun. Producer-side aggregate budgeting remains unresolved; bounded new-section reads are the applied mitigation.
+
+### 2026-11-18 05:19 UTC · Gary Codex · DL-20261117-GCC-009 · Checkpoint publication guard preserved
+
+- F452lead reported an incorrect40SHA transcription on its first publish attempt; the helper refused it. Exact source readback then published011be0fe2efc23e076401a86f0f7f30366807f34 normally. This verifies the guard and corrected publication, not product delivery. The plan preserves foreign maprows/order/outerfields and original open slices; actual completed-experiment proof remains pending. Proposed improvement: pass helper-returned structured revision identities directly between commit and publish rather than manually transcribing.
