@@ -25,7 +25,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
-/** Greg's policy controls: read the active policy and publish a successor. The run and actor come from the bearer only. */
+/** Greg's policy controls: read, preview and publish. The run and actor come from the bearer only. */
 @Path("/api/gcsp/v1/greg/policy")
 @Produces(MediaType.APPLICATION_JSON)
 @Blocking
@@ -44,6 +44,9 @@ public class GregPolicyResource {
 
     @Inject
     PolicyClock clock;
+
+    @Inject
+    GregPolicyPreview previews;
 
     @GET
     public Response read(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri) {
@@ -67,8 +70,17 @@ public class GregPolicyResource {
     @Path("/preview")
     public Response preview(@HeaderParam(HttpHeaders.AUTHORIZATION) String authorization, @Context UriInfo uri,
             String body) {
-        greg(authorization);
-        return uri.getQueryParameters().isEmpty() ? PolicyResponses.previewUnavailable() : noQuery();
+        Principal principal = greg(authorization);
+        if (!uri.getQueryParameters().isEmpty()) {
+            return noQuery();
+        }
+        JsonNode input = parse(body);
+        if (input == null || !input.isObject()) {
+            return PolicyResponses.invalid("invalid-change-set", "body", "Send the change set as a JSON object.");
+        }
+        Response response = previews.preview(principal, now(principal), (ObjectNode) input);
+        Access.requireAnyRole(principal, Role.GREG);
+        return response;
     }
 
     @POST
@@ -95,7 +107,7 @@ public class GregPolicyResource {
                     "Supply a retained active version.");
         }
         GregPolicyProjection.Prepared prepared =
-                GregPolicyProjection.changesFor((ObjectNode) base.value(), PolicyTime.parse(now).getAsLong(), input);
+                GregPolicyProjection.changesFor((ObjectNode) base.value(), PolicyTime.parse(now).getAsLong(), input, true);
         if (prepared.error() != null) {
             return PolicyResponses.failure(prepared.error());
         }

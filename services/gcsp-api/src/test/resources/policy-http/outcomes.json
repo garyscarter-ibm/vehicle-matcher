@@ -70,13 +70,351 @@
       "retryable" : false
     }
   },
-  "previewUnavailable" : {
-    "http" : 422,
+  "preview" : {
+    "http" : 200,
     "body" : {
-      "status" : "unsupported",
-      "code" : "preview-unavailable",
-      "reason" : "Policy preview is not available on this service yet.",
-      "retryable" : false
+      "status" : "ok",
+      "value" : {
+        "state" : "preview-ready",
+        "preview" : true,
+        "activeVersion" : "<old>",
+        "draftVersion" : "<draft>",
+        "asOf" : "<now>",
+        "clockVersion" : 1,
+        "differences" : [ {
+          "id" : "price:price.choices-fs-uk.001",
+          "before" : 801,
+          "after" : 810,
+          "unit" : "points/month"
+        } ],
+        "active" : {
+          "demand" : {
+            "runId" : "run-1",
+            "asOf" : "2026-11-18T09:00:00.000Z",
+            "projectionVersion" : "<digest>",
+            "basis" : "expressed-saved-demand",
+            "versions" : {
+              "brief" : [ ],
+              "policy" : [ "<old>" ],
+              "revision" : 7,
+              "clock" : 1
+            },
+            "privacy" : {
+              "thresholdKey" : "greg.demand.smallCountThreshold",
+              "threshold" : 5,
+              "policyVersion" : "<old>",
+              "status" : "assumed",
+              "withheld" : false
+            },
+            "demand" : {
+              "activeBriefs" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "byModelLine" : [ ],
+              "byBody" : [ ],
+              "byFuel" : [ ],
+              "essentials" : [ ],
+              "unmet" : {
+                "total" : {
+                  "count" : {
+                    "kind" : "band",
+                    "fewerThan" : 5,
+                    "label" : "fewer than 5"
+                  },
+                  "versions" : {
+                    "brief" : [ ],
+                    "policy" : [ "<old>" ]
+                  }
+                },
+                "byGate" : [ ]
+              }
+            },
+            "holds" : {
+              "total" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "active" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "byState" : [ ],
+              "byType" : [ ]
+            },
+            "offers" : {
+              "made" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "accepted" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "declined" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "expired" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "selected" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<old>" ]
+                }
+              },
+              "declinedByReason" : [ ]
+            },
+            "stock" : {
+              "byModelLine" : [ ],
+              "source" : {
+                "status" : "not-checked"
+              }
+            }
+          },
+          "fit" : {
+            "basis" : "saved-brief-recommendation-fit",
+            "label" : "Recommendation fit, not predicted acceptance",
+            "employeesWithEligibleStock" : {
+              "kind" : "band",
+              "fewerThan" : 5,
+              "label" : "fewer than 5"
+            },
+            "scoredBriefs" : {
+              "kind" : "band",
+              "fewerThan" : 5,
+              "label" : "fewer than 5"
+            },
+            "meanBestScore" : {
+              "status" : "suppressed",
+              "fewerThan" : 5,
+              "unit" : "score/100"
+            }
+          }
+        },
+        "draft" : {
+          "demand" : {
+            "runId" : "run-1",
+            "asOf" : "2026-11-18T09:00:00.000Z",
+            "projectionVersion" : "<digest>",
+            "basis" : "expressed-saved-demand",
+            "versions" : {
+              "brief" : [ ],
+              "policy" : [ "<draft>" ],
+              "revision" : 7,
+              "clock" : 1
+            },
+            "privacy" : {
+              "thresholdKey" : "greg.demand.smallCountThreshold",
+              "threshold" : 5,
+              "policyVersion" : "<draft>",
+              "status" : "assumed",
+              "withheld" : false
+            },
+            "demand" : {
+              "activeBriefs" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "byModelLine" : [ ],
+              "byBody" : [ ],
+              "byFuel" : [ ],
+              "essentials" : [ ],
+              "unmet" : {
+                "total" : {
+                  "count" : {
+                    "kind" : "band",
+                    "fewerThan" : 5,
+                    "label" : "fewer than 5"
+                  },
+                  "versions" : {
+                    "brief" : [ ],
+                    "policy" : [ "<draft>" ]
+                  }
+                },
+                "byGate" : [ ]
+              }
+            },
+            "holds" : {
+              "total" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "active" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "byState" : [ ],
+              "byType" : [ ]
+            },
+            "offers" : {
+              "made" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "accepted" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "declined" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "expired" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "selected" : {
+                "count" : {
+                  "kind" : "band",
+                  "fewerThan" : 5,
+                  "label" : "fewer than 5"
+                },
+                "versions" : {
+                  "brief" : [ ],
+                  "policy" : [ "<draft>" ]
+                }
+              },
+              "declinedByReason" : [ ]
+            },
+            "stock" : {
+              "byModelLine" : [ ],
+              "source" : {
+                "status" : "not-checked"
+              }
+            }
+          },
+          "fit" : {
+            "basis" : "saved-brief-recommendation-fit",
+            "label" : "Recommendation fit, not predicted acceptance",
+            "employeesWithEligibleStock" : {
+              "kind" : "band",
+              "fewerThan" : 5,
+              "label" : "fewer than 5"
+            },
+            "scoredBriefs" : {
+              "kind" : "band",
+              "fewerThan" : 5,
+              "label" : "fewer than 5"
+            },
+            "meanBestScore" : {
+              "status" : "suppressed",
+              "fewerThan" : 5,
+              "unit" : "score/100"
+            }
+          }
+        },
+        "heldOffers" : {
+          "count" : null,
+          "unit" : "offers",
+          "message" : "Refresh to see active offers keeping their earlier terms."
+        }
+      }
     }
   }
 }

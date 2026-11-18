@@ -194,9 +194,9 @@ records the version in force at the clock's now and `activatedPolicyVersion(env,
   refusal until integration returns `new PolicyAccountAdapter(policyService)` from it.
 - `PolicyReleaseAdapter` is a `ReleasePolicy` over the service (one version for size, lead time and max age); supply still
   selects its file reader in `SupplySelection.select` until integration swaps it.
-- `GET /api/gcsp/v1/greg/policy` and `POST .../greg/policy/publish` (greg role only, no query parameters). Preview is `422`
-  `preview-unavailable` until Greg demand and fit exist in Java. `heldOffers.count` is `null` (no offers table yet) and
-  there is no `clockVersion`. Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
+- `GET /api/gcsp/v1/greg/policy`, `POST .../greg/policy/preview` and `POST .../greg/policy/publish` (greg role only, no
+  query parameters). Preview applies the change set to an in-memory draft (`preview-<digest>`, nothing stored) and returns
+  both versions' demand; the read has no `clockVersion`. `heldOffers.count` is `null` (no offers table yet). Failures are `{status, code, reason, retryable}` plus `reasons`, `accepted`,
   `expectedVersion`, `currentVersion`, `action` or `operationId`; `src/test/resources/policy-http/outcomes.json` records them.
 
 ## Learned demand forecast (FUCQ-476)

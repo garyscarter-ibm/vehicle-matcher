@@ -37,10 +37,14 @@ final class PolicyResponses {
         };
     }
 
-    /** The one 422 the preview route answers until Greg demand and fit exist in Java. */
-    static Response previewUnavailable() {
-        return build(422, envelope("unsupported", "preview-unavailable", "Policy preview is not available on this service yet.",
-                false));
+    /** Node's publish-source-unavailable: any unexpected failure while preparing a preview. */
+    static Response controlsUnavailable() {
+        return build(503, envelope("unavailable", "publish-source-unavailable", "The policy controls are unavailable.", true));
+    }
+
+    /** A typed body at an explicit status, for refusals another projection already shaped. */
+    static Response raw(int http, ObjectNode body) {
+        return build(http, body);
     }
 
     /** A typed failure for a request the route itself refuses (bad body, bad query). */
