@@ -1,0 +1,576 @@
+{
+  "schema": "fucq388-native-browser-evidence/1",
+  "observedAt": "2026-11-18",
+  "productionSourcePin": "f8913a5f2f769deccebe9e508fdccb693c7b6139",
+  "javaIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e",
+  "angularIdentity": "47a516eb8f82eace051b96b0aeb556d63f2f1c2a04d6eb82283a1c4effcb6fd0",
+  "composition": "Actual Angular production build, HTTPS Java API, real signed local OIDC/PKCE, own nativePostgreSQL17, seeded synthetic demo6-car release. No directSQL state mutation.",
+  "scope": "BlockedEV/notready/no-match+reload; separate fresh nativePaula saloon-to-estate genuine positive comparison/homecharging.",
+  "runs": [
+    {
+      "run": "f388-ui-20261118T043708Z-4b0827",
+      "proof": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/ui-proof.json",
+      "proofSha256": "e45ec33426869fea954430578bb17df7821c83fccc07c5cbdb6d86d1d0380e41",
+      "overall": null,
+      "completedStates": [
+        {
+          "name": "blocked-initial",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-initial-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-initial",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-initial-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-reason-required",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-reason-required-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-reason-required",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-reason-required-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-reason-selected",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-reason-selected-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-reason-selected",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-reason-selected-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-unchanged-validation",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-unchanged-validation-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-unchanged-validation",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-unchanged-validation-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-answer-selected",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-answer-selected-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-answer-selected",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-answer-selected-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-saved",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-saved-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-saved",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-saved-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-no-match",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-no-match-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-no-match",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-no-match-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "blocked-no-match-reload",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "blocked-no-match-reload-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "blocked-no-match-reload",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "blocked-no-match-reload-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        }
+      ],
+      "scenarios": {
+        "blocked": {
+          "offerId": "buddy-offer:f1b4743febaa80730060ac4621f55c3478746150e12df979b25c3b2f8f1cca54",
+          "name": "BMW 3 Series Touring 320i",
+          "charging": "not-ready",
+          "saved": {
+            "briefVersion": 2,
+            "fuel": "ev",
+            "charging": "not-ready"
+          },
+          "pass": true
+        }
+      },
+      "screenshots": [
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-initial-1280x800.png",
+          "sha256": "52837eb3a989459452cb37e57f5b607555982232e1353b20d976a839d48f5ffa",
+          "bytes": 62730
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-initial-390x844.png",
+          "sha256": "26de8a10be8994b80dd0c5fa1937d89da77cca1d98375294305a8e3a556db3fa",
+          "bytes": 41985
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-reason-required-1280x800.png",
+          "sha256": "6c3ccacb069ee2523a2b02f05e55fac7e874cf9b64806956cdd2672ade112c59",
+          "bytes": 58896
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-reason-required-390x844.png",
+          "sha256": "932257c361d2e1c30ef12550b07ccdcef8e6c67f9c0c7e77adad0eb45c6af6b8",
+          "bytes": 35979
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-reason-selected-1280x800.png",
+          "sha256": "86a95d714d21f17d4771349f4b92272ef49623ad60a7be0da3f30c814e3e1d90",
+          "bytes": 59010
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-reason-selected-390x844.png",
+          "sha256": "9b0b16c60c8b65901eceb9c0ef6537650528d16cae5a9020e555ad9f77dc0fb1",
+          "bytes": 36098
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-unchanged-validation-1280x800.png",
+          "sha256": "067543ced23f09060c0ccc7112b387e6ba9a5c7cda79e7fe4b406f5cb1636fad",
+          "bytes": 44510
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-unchanged-validation-390x844.png",
+          "sha256": "3da3e393fc6757001ba0e489fec0e10e758653f425db22202da4bdfdc692867b",
+          "bytes": 35698
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-answer-selected-1280x800.png",
+          "sha256": "93a016de5dc771ff9f971b89d796d35fd489fe006c37341d84a6454307b79829",
+          "bytes": 44307
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-answer-selected-390x844.png",
+          "sha256": "2f856d633f6b4a9113c100f73c3816d36cbde45329d33244dfd88f1dddbb89fe",
+          "bytes": 35563
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-saved-1280x800.png",
+          "sha256": "013ebefd695d7752fb8bd33c8febcb62db1f689b7a7bee5367516c370b0a556b",
+          "bytes": 33420
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-saved-390x844.png",
+          "sha256": "778069599606fdc9a6f6abf5cf0a0faaa23ce23e55d95dde5e00c6dbb1972e7e",
+          "bytes": 25298
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-no-match-1280x800.png",
+          "sha256": "953cb53bc7c78353fd02df86c774b9e79ad07c1a694a8628d5dc28fe6c341f00",
+          "bytes": 35646
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-no-match-390x844.png",
+          "sha256": "4768f6ee912ad249d957df95dac09f0dd39808a23264bd4c533ead53bc2a222f",
+          "bytes": 27954
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-no-match-reload-1280x800.png",
+          "sha256": "6464df395edaacf5326dfff5162259920c1f30ad313dfe8244a4f9b86316ac2c",
+          "bytes": 35701
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-evidence/blocked-no-match-reload-390x844.png",
+          "sha256": "a4aedaef591a383501f008bd6d41a8dd2c46fed12733ad3ca23081bbf644cf58",
+          "bytes": 27996
+        }
+      ],
+      "runtimeReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-receipt.json",
+      "runtimeReceiptSha256": "1f00a6fa09aeb4a088d6ccd7fe3aad1357a3745746d477051851a4c14ede3f3f",
+      "result": "error",
+      "resourceStop": "Resource/time emergency bound reached",
+      "elapsedSeconds": 33.16,
+      "peakScratchBytes": 165560379,
+      "peakRssBytes": 2154971136,
+      "cleanup": {
+        "scratchAbsent": true,
+        "targetAbsent": true,
+        "postgresStopped": true,
+        "cleanupIssues": [],
+        "liveGroups": [],
+        "reservationReleased": true
+      }
+    },
+    {
+      "run": "f388-ui-20261118T044336Z-357567",
+      "proof": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/ui-proof.json",
+      "proofSha256": "6c6399f8c6514edad21d1e08aa3f42a3842ee7a43d2bb2f0f2cddca4cc9eb5b1",
+      "overall": "PASS",
+      "completedStates": [
+        {
+          "name": "home-initial",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "home-initial-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "home-initial",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "home-initial-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "home-better-alternative",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "home-better-alternative-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "home-better-alternative",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "home-better-alternative-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "home-declined-car",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "home-declined-car-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "home-declined-car",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "home-declined-car-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "home-next-car",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "home-next-car-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "home-next-car",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "home-next-car-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "name": "home-requirement-comparison",
+          "viewport": {
+            "width": 1280,
+            "height": 800
+          },
+          "screenshot": "home-requirement-comparison-1280x800.png",
+          "pageWidth": 1280,
+          "scrollWidth": 1280
+        },
+        {
+          "name": "home-requirement-comparison",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screenshot": "home-requirement-comparison-390x844.png",
+          "pageWidth": 390,
+          "scrollWidth": 390
+        }
+      ],
+      "scenarios": {
+        "home": {
+          "offerId": "buddy-offer:e8057be4f8d3a2fa3abd1dbed0dfff5bc917a3e900456ea50bd4ece4cd544123",
+          "name": "BMW 3 Series Saloon 320i",
+          "charging": "home",
+          "reason": "body-style",
+          "confirmedAnswer": "estate",
+          "nativeFixtureBoundary": "Only EV i5 is canonically excluded for all seeded employee grades; guarded generated-source memory proof covers EV/PHEV positive controls. Native positive uses Paula saloon-to-estate with unchanged home charging; Jordan has no current contract/deadline and correctly cannot contend.",
+          "next": {
+            "offerId": "buddy-offer:61fa427fc4e133640dcc382e1b44ffe97b3e7fa2216e3d2b87221867def4854d",
+            "name": "BMW 3 Series Touring 320i",
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null,
+              "provenance": {
+                "sourceRef": "fixture:demo-synthetic-stock-v1",
+                "observedAt": "2026-11-05T00:00:00.000Z",
+                "version": "demo-synthetic-stock-v1",
+                "assurance": "synthetic-scenario"
+              }
+            },
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null,
+              "provenance": {
+                "sourceRef": "fixture:demo-synthetic-stock-v1",
+                "observedAt": "2026-11-05T00:00:00.000Z",
+                "version": "demo-synthetic-stock-v1",
+                "assurance": "synthetic-scenario"
+              }
+            }
+          },
+          "pass": true
+        }
+      },
+      "screenshots": [
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-initial-1280x800.png",
+          "sha256": "1320d4a3ff6e4c669671869b9d716b0818cdeacbb5e560eda1949326bc290daf",
+          "bytes": 471423
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-initial-390x844.png",
+          "sha256": "7eff92ff07393c94712f185536975f50feae355a8cd391a766eff9825deb7ceb",
+          "bytes": 58664
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-better-alternative-1280x800.png",
+          "sha256": "6b486af5a0070538cd7c3bb07fe96b355815ab957a7e1dc7178942f45a27e125",
+          "bytes": 414475
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-better-alternative-390x844.png",
+          "sha256": "beda76244213e6d074b02cb5b0414cadabba026723d418649b3e498ff619b6b9",
+          "bytes": 150490
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-declined-car-1280x800.png",
+          "sha256": "65c56727ab093be0920f6b9104056d6697593ee6f5f47603e2a178f13a3fdb16",
+          "bytes": 415581
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-declined-car-390x844.png",
+          "sha256": "5cc95e47703719eca736cd781c13f5b05fd9651633ea45d1e826ecf22bb1dfaf",
+          "bytes": 155569
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-next-car-1280x800.png",
+          "sha256": "65c56727ab093be0920f6b9104056d6697593ee6f5f47603e2a178f13a3fdb16",
+          "bytes": 415581
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-next-car-390x844.png",
+          "sha256": "9271248413126776aab53ed4450664bd1e12b5ef9e20f3d73dee8b3880d052ad",
+          "bytes": 77475
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-requirement-comparison-1280x800.png",
+          "sha256": "d91b7baff0ffcd7593e6587d882dfd8d9ccf260a86e696617e207f2a689bd99a",
+          "bytes": 84444
+        },
+        {
+          "file": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-evidence/home-requirement-comparison-390x844.png",
+          "sha256": "229cb9a53f93bef2d6149d8f710c0644533f3d7ac14534b95c504593826d51fb",
+          "bytes": 57463
+        }
+      ],
+      "runtimeReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-receipt.json",
+      "runtimeReceiptSha256": "935d51df7c798f60132000f62e6ef73362945847de0c2329f2fc37a18d34ab70",
+      "result": "passed",
+      "resourceStop": null,
+      "elapsedSeconds": 144.65,
+      "peakScratchBytes": 186311227,
+      "peakRssBytes": 2092384256,
+      "cleanup": {
+        "scratchAbsent": true,
+        "targetAbsent": true,
+        "postgresStopped": true,
+        "cleanupIssues": [],
+        "liveGroups": [],
+        "reservationReleased": true
+      }
+    }
+  ],
+  "limitations": [
+    "043708 completed16actualstates then supervisor stopped resource use at2154971136B; finalizer clean. Completedcaptures are reused, not reclassified as a fullypassingruntime.",
+    "Native defaultdemoEV i5 is excluded for seeded grades, so nativepositive uses body-style estate, preserving canonicalpolicy/allowance; guarded generatedstock proof separately covers trueEV/PHEV positivecontrols.",
+    "SourceAngular/OfferDecisions/BriefService/scorer unchanged; existing UI reviewed rather than redesigned.",
+    "No full coveringbatch/deployment/provider claim.",
+    "Relevant inherited A1/A2/A4/A5 P2 corrections remain unresolved; actual inspection does not establish a green experience-quality verdict. Very long trim strings, full keyboard/screen-reader/contrast and error-retry matrices were not newly executed."
+  ],
+  "review": {
+    "A": {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-visual-A-review.md",
+      "sha256": "7400edea527ff2e2489e141a54fdc3776bab2e542f07afb7da2846292ef3d137",
+      "method": "independent image-only assessment; initial and positive verdicts frozen before B synthesis",
+      "inspectedActualCaptures": 26,
+      "p0p1Findings": 0,
+      "relevantUnresolvedP2": [
+        "A1 saved answer disappears",
+        "A2 competing status reads",
+        "A4 narrow comparison effort/wrapping",
+        "A5 unexplained diagnostics and implementation prose"
+      ],
+      "adjacentP2": "A3 initial narrow fuel fact below decision actions; separate inherited offer-layout scope"
+    },
+    "B": {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-visual-B-review.md",
+      "sha256": "4ba3184589dea296d1ef4d84364ca6c80dd3aa5df02caffaf2db315bc655c26f",
+      "verdict": "failed",
+      "method": "source attribution, scoped detector, actual capture inspection and fresh isolated headless browser context",
+      "observedChecks": [
+        "no-match/reload truthful with EV and not-ready charging",
+        "positive body-style branch retains ready result after refresh/reload",
+        "390/1440 no horizontal page overflow",
+        "menu visible focus and visible buttons >=44px",
+        "actual next distinct Touring offer opens"
+      ],
+      "detector": {
+        "scope": "four follow-up/store files",
+        "exitCode": 0,
+        "findings": [],
+        "limitation": "deterministic rules do not override visual usability findings"
+      },
+      "newF388BusinessRegressionObserved": false,
+      "closedOnlyOwnedBrowserContext": true
+    },
+    "synthesis": {
+      "AC3": "PASS for permitted truthful no-suitable outcome; no charging inference",
+      "AC5": "technical controls and desktop/narrow inspection complete; experience-quality correction part remains partial",
+      "currentUiQuality": "failed: four relevant unresolved inherited P2 corrections",
+      "origin": "relevant Angular bytes unchanged between 7bd3f43ed3625e2b6c57b7b31f0c114d1ee8633d and production pin; inherited Gary-owned F445 presentation",
+      "ownership": "Preserve Gary F445 claim. No takeover or scope expansion. Parent owns separate Bug routing/correction dependency and acceptance.",
+      "existingBugContext": {
+        "A2": "strong historical FUCQ-188 parity/recurrence candidate; not authority to reopen Done issue",
+        "A4": "FUCQ-318 related legacy context, not exact duplicate",
+        "A1/A5": "no exact local match in bounded search",
+        "distinct": "FUCQ-496, FUCQ-500, FUCQ-503 cover different boundaries"
+      },
+      "acceptance": "No unconditional UI-quality, all-AC, Done, accepted, deployed or green covering-batch claim"
+    }
+  },
+  "noOneDriveAccess": true,
+  "angularCleanup": {
+    "borrowedDependenciesUntouched": true,
+    "lsofReturnCode": 1,
+    "matchedIdentity": [
+      16777234,
+      298383045
+    ],
+    "noOneDriveAccess": true,
+    "observedAt": "2026-11-18T04:52:02.761084+00:00",
+    "openFiles": false,
+    "ownedGroupsAbsent": true,
+    "ownerIdentityAbsent": true,
+    "removedAllocatedBytes": 11730944,
+    "root": "/private/tmp/test-stamp-shard-a517568eb7084be9952da0078705c1ab",
+    "rootAbsent": true
+  }
+}
