@@ -9,6 +9,7 @@ import net from 'node:net';
 import { mkdirSync, readFileSync, writeFileSync, renameSync, existsSync, statSync, createWriteStream, lstatSync, readlinkSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { apiJvmArgs, jvmLimitsReceipt } from './proof-jvm.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const T0 = Date.now();
@@ -107,6 +108,7 @@ const PROOF_DEADLINE_MONO_MS = DEADLINE_MS;
 const COMPLETED_JOB_TIMEOUT_MS = 10800000;
 const COMPLETED_RESULT_RESERVE_MS = 300000;
 const COMPLETED_API_JVM_ARGS = ['-Xms128m', '-Xmx3g', '-XX:MaxMetaspaceSize=256m', '-XX:ReservedCodeCacheSize=128m'];
+const API_JVM_ARGS = PROOF_MODE === 'completed-experiment' ? COMPLETED_API_JVM_ARGS : apiJvmArgs({ heap: '1g' });
 const JVM_LOG_ROTATION_BYTES = 1024 * 1024;
 const FIRST_BROWSER_STEP_WINDOW_MS = 180000;
 const HOLD_SWEEP_BASIS = 'Check the effect of a 3,600-second hold against the actual current setting; keep this as a what-if, not a policy change.';
@@ -469,7 +471,7 @@ async function expectApi(person, suffix) {
 async function startApi() {
   apiStarts++;
   const name = `api-${apiStarts}`;
-  const jvmLimits = PROOF_MODE === 'completed-experiment' ? COMPLETED_API_JVM_ARGS : [];
+  const jvmLimits = API_JVM_ARGS;
   const jvmTelemetry = PROOF_MODE === 'completed-experiment' ? [
     `-Xlog:exceptions=info:file=${path.join(dirs.logs, `${name}-exceptions.log`)}:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=1m`,
     `-Xlog:gc*=info:file=${path.join(dirs.logs, `${name}-gc.log`)}:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=1m`,
@@ -1425,7 +1427,7 @@ async function main() {
       PGCONNECT_TIMEOUT: '10', PGPASSWORD: DB_PASSWORD }) }));
   if (!/PostgreSQL\) 17\./.test(psqlVersion) || serverVersion < 170000 || serverVersion >= 180000) throw new Error('Proof requires a native PostgreSQL 17 client and server');
   receipt.inputs.database.serverVersion = serverVersion;
-  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']),
+  receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), apiJvm: jvmLimitsReceipt(API_JVM_ARGS),
     java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0],
     postgresqlClient: psqlVersion };
 
