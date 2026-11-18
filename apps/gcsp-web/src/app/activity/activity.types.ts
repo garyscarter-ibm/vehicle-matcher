@@ -1,6 +1,6 @@
 export type ActivityState = 'no-brief' | 'paused' | 'offer' | 'offer-closed' | 'searching' | 'never-searched';
 export type ActivitySourceStatus = 'not-checked' | 'evidence-unavailable' | 'unavailable' | 'delayed' | 'ok';
-export type ActivityOfferState = 'active' | 'decision-pending' | 'release-pending' | 'accepted' | 'rejected' | 'declined' | 'expired';
+export type ActivityOfferState = 'active' | 'decision-pending' | 'release-pending' | 'accepted' | 'rejected' | 'declined' | 'expired' | 'superseded' | 'released';
 export type ActivityOfferDisplayState = ActivityOfferState | 'unavailable';
 export type ActivityOperation = 'engage' | 'disengage' | 'pause-search' | 'resume-search';
 export type ActivityFailureStatus = 'authentication-required' | 'forbidden' | 'conflict' | 'stale-version' | 'stale-run'
@@ -94,6 +94,8 @@ export interface ActivityDisplayImage {
 
 export interface ActivityOfferDisplay {
   readonly offerRef: { readonly offerId: string };
+  readonly state: ActivityOfferState;
+  readonly version: number;
   readonly title: string;
   readonly images: readonly ActivityDisplayImage[];
 }
