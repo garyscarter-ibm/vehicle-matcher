@@ -1,0 +1,94 @@
+<section class="planning-page" aria-labelledby="planning-title" [attr.aria-busy]="store.planBusy()">
+  <div class="planning-heading"><gcsp-screen-intro title="Next order" />
+    @if (store.access() === 'ready') { <button gcspButton variant="ghost" type="button" [disabled]="store.planBusy() || store.submitting()" (click)="replan()">Replan with the latest inputs</button> }
+  </div>
+  <span id="planning-title" class="visually-hidden">Order planning</span>
+  @if (store.access() !== 'ready') {
+    <gcsp-status-screen [title]="store.access() === 'denied' ? 'Ordering lead access required' : store.access() === 'loading' ? 'Loading your account' : 'Sign in to plan orders'"
+      [message]="store.access() === 'denied' ? 'Use your ordering lead account to plan and request vehicles.' : 'Use your own account to continue.'" [level]="2" [busy]="store.access() === 'loading'">
+      @if (store.access() === 'signed-out') { <button gcspButton type="button" (click)="store.signIn()">Sign in</button> }
+      @if (store.access() === 'unavailable') { <button gcspButton type="button" (click)="store.recover()">Retry sign-in</button> }
+    </gcsp-status-screen>
+  } @else {
+    @if (store.planBusy()) { <p role="status">Reading the latest plan…</p> }
+    @if (store.planFailure(); as failure) {
+      <gcsp-status-screen [title]="failure.status === 'forbidden' ? 'Ordering lead access required' : failure.status === 'conflict' || failure.status === 'stale-run' ? 'Replan needed' : 'Order plan unavailable'"
+        [message]="store.failureMessage(failure)" [level]="2" announcement="alert">
+        @if (store.needsAuthentication()) { <button gcspButton type="button" (click)="store.signIn()">Sign in again</button> }
+        @else if (failure.status !== 'forbidden') { <button gcspButton type="button" [disabled]="store.planBusy()" (click)="replan()">Retry plan</button> }
+      </gcsp-status-screen>
+      @if (failure.changedInputs?.length) { <p>Changed inputs: {{ failure.changedInputs?.join(', ') }}</p> }
+      @if (failure.reasons?.length) { <ul>@for (reason of failure.reasons; track $index) { <li>{{ reason.field }}: {{ reason.reason }}</li> }</ul> }
+    }
+    @if (store.plan(); as plan) {
+      <h2 data-plan-result tabindex="-1">{{ plan.title }}</h2>
+      @if (plan.preview) { <div class="plan-notice"><strong>Preview</strong><p>{{ plan.message }}</p><button gcspButton variant="ghost" type="button" [disabled]="store.planBusy() || store.submitting()" (click)="current()">Back to current plan</button></div> }
+      @if (store.stale()) { <div class="plan-notice" role="status"><strong>Replan needed</strong><p>Inputs or limits changed. Refresh the plan or preview your edited limits before continuing.</p></div> }
+      @if (plan.unbound) { <p class="plan-notice">{{ plan.unbound }}</p> }
+      @if (plan.replan) { <p class="gcsp-note">{{ plan.replan }}</p> }
+      <details class="plan-limits"><summary>Editable limits</summary>
+        <p class="gcsp-note">Change a limit, then preview the effect. Previewing saves and orders nothing.</p>
+        @for (editor of plan.editors; track editor.key) {
+          @if (editor.kind === 'budget') {
+            <gcsp-labelled-field [controlId]="inputId(editor)" [label]="editor.label" [hint]="editor.unit">
+              <input [id]="inputId(editor)" type="number" min="0" step="1" inputmode="numeric" [attr.aria-describedby]="inputId(editor) + '-hint plan-editor-errors'"
+                [value]="store.value(editor)" [disabled]="store.submitting()" (input)="edit(editor, $event)" />
+            </gcsp-labelled-field>
+          } @else {
+            <fieldset><legend>{{ editor.label }}</legend>
+              @for (row of editor.rows; track row.id) {
+                <div class="bound-row"><p>{{ row.label }}</p>
+                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'min')" [label]="row.label + ' minimum'">
+                    <input [id]="inputId(editor, row.id, 'min')" type="number" min="0" step="1" inputmode="numeric" aria-describedby="plan-editor-errors"
+                      [value]="store.value(editor, row.id, 'min')" [disabled]="store.submitting()" (input)="edit(editor, $event, row.id, 'min')" />
+                  </gcsp-labelled-field>
+                  <gcsp-labelled-field [controlId]="inputId(editor, row.id, 'max')" [label]="row.label + ' maximum'">
+                    <input [id]="inputId(editor, row.id, 'max')" type="number" min="0" step="1" inputmode="numeric" aria-describedby="plan-editor-errors"
+                      [value]="store.value(editor, row.id, 'max')" [disabled]="store.submitting()" (input)="edit(editor, $event, row.id, 'max')" />
+                  </gcsp-labelled-field>
+                </div>
+              }
+            </fieldset>
+          }
+        } @empty { <p>No limits can be changed for this plan.</p> }
+        @if (plan.unsupportedEditors.length) { <p class="gcsp-note">Editors unavailable for: {{ plan.unsupportedEditors.join(', ') }}.</p> }
+        <div id="plan-editor-errors" aria-live="polite">@if (store.editorErrors().length) { <ul>@for (error of store.editorErrors(); track $index) { <li>{{ error }}</li> }</ul> }</div>
+        <div class="gcsp-actions"><button gcspButton type="button" [disabled]="!store.canPreview()" (click)="preview()">Preview changed limits</button>
+          <button gcspButton variant="ghost" type="button" [disabled]="!store.hasEdits() || store.submitting() || store.planBusy()" (click)="current()">Reset limits</button></div>
+      </details>
+      <div class="request-action"><button gcspButton type="button" [disabled]="!store.canSubmit()" aria-describedby="plan-submit-consequence" (click)="submit()">Request from Production</button>
+        <p id="plan-submit-consequence" class="gcsp-note">{{ store.submissionBlock() }}</p></div>
+      @if (plan.state === 'infeasible') { <section class="plan-notice" aria-labelledby="plan-conflicts"><h3 id="plan-conflicts">Limits that conflict</h3><ul>@for (conflict of plan.conflicts; track $index) { <li>{{ conflict }}</li> }</ul></section> }
+      <section class="plan-section" aria-labelledby="forecast-source"><h3 id="forecast-source">{{ plan.forecast }}</h3>
+        @if (plan.forecastNote) { <p class="gcsp-note">{{ plan.forecastNote }}</p> }
+        <details><summary>Plan inputs and versions</summary><gcsp-fact-list [rows]="plan.facts" /></details>
+        @if (plan.limitations.length) { <ul class="gcsp-note">@for (limitation of plan.limitations; track $index) { <li>{{ limitation }}</li> }</ul> }
+      </section>
+      @if (plan.comparison.length) {
+        <div class="plan-table" tabindex="0" role="region" aria-label="Differences from the current plan"><table><caption>Differences from the current plan</caption><thead><tr><th scope="col">Measure or derivative</th><th scope="col">Current</th><th scope="col">Preview</th></tr></thead><tbody>
+          @for (row of plan.comparison; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.current ?? 'Not supplied' }}</td><td>{{ row.preview ?? 'No plan' }}</td></tr> }
+        </tbody></table></div>
+      }
+      @if (plan.state !== 'infeasible' && plan.state !== 'empty') {
+        <div class="plan-table" tabindex="0" role="region" aria-label="Proposed order"><table><caption>Proposed order</caption><thead><tr><th scope="col">Model</th><th scope="col">Derivative</th><th scope="col">Quantity</th></tr></thead><tbody>
+          @for (line of plan.lines; track line.id) { <tr><th scope="row">{{ line.model }}</th><td>{{ line.derivative }}</td><td>{{ line.quantity }}</td></tr> } @empty { <tr><td colspan="3">No derivatives in this plan.</td></tr> }
+        </tbody></table></div>
+        <section class="plan-section" aria-labelledby="model-totals"><h3 id="model-totals">Order totals by model</h3><gcsp-fact-list [rows]="plan.models" /></section>
+        <div class="plan-metrics"><gcsp-fact-list [rows]="plan.metrics" /></div>
+        @if (plan.riskSources.length) { <section class="plan-section" aria-labelledby="risk-sources"><h3 id="risk-sources">Unmatched supply by source</h3><gcsp-fact-list [rows]="plan.riskSources" /></section> }
+        <section class="plan-section" aria-labelledby="unmet-needs"><h3 id="unmet-needs">Unmet needs</h3>
+          @for (need of plan.unmet; track $index) { <div><p>{{ need.label }}</p><ul>@for (reason of need.reasons; track $index) { <li>{{ reason }}</li> }</ul>
+            @if (need.constraints.length) { <p class="gcsp-note">Held back by: {{ need.constraints.join(', ') }}</p> }</div> } @empty { <p class="gcsp-note">No unmet needs at this time.</p> }
+        </section>
+        @if (plan.binding.length) { <section class="plan-section" aria-labelledby="binding-constraints"><h3 id="binding-constraints">Binding constraints</h3><ul>@for (constraint of plan.binding; track $index) { <li>{{ constraint }}</li> }</ul></section> }
+        <section class="plan-section" aria-labelledby="alternative-plans"><h3 id="alternative-plans">Alternative plans</h3>
+          @for (alternative of plan.alternatives; track $index) { <article class="alternative"><h4>{{ alternative.label }}</h4><p>{{ alternative.status === 'feasible' ? alternative.same ? 'Same as the recommendation' : 'Different from the recommendation' : 'Not possible inside these limits' }}</p>
+            <gcsp-fact-list [rows]="alternative.facts" /><ul>@for (line of alternative.lines; track line.id) { <li>{{ line.derivative }}: {{ line.quantity }}</li> }@for (conflict of alternative.conflicts; track $index) { <li>{{ conflict }}</li> }</ul></article>
+          } @empty { <p class="gcsp-note">No alternative plan is available.</p> }
+        </section>
+      }
+      @if (plan.state === 'empty') { <p class="gcsp-note">Employees need to save and confirm a brief with a renewal date before a plan can be made.</p> }
+      @if (plan.learned) { <section class="plan-section" aria-labelledby="learned-plan"><h3 id="learned-plan">Learned model</h3><p class="gcsp-note">{{ plan.learned }}</p></section> }
+    } @else if (!store.planFailure() && !store.planBusy()) { <gcsp-status-screen title="Loading order plan" [busy]="true" [level]="2" /> }
+  }
+</section>

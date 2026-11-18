@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: 'comparison', loadComponent: () => import('./comparison/comparison.component').then((m) => m.ComparisonComponent), canActivate: [sessionGuard], data: { title: 'Process comparisons', roles: ['greg', 'presenter'] } },
   { path: 'presenter', loadComponent: () => import('./presenter/presenter.component').then((m) => m.PresenterComponent), canActivate: [sessionGuard], data: { title: 'Presenter controls', roles: ['presenter'] } },
   { path: 'presenter/outbox', loadComponent: () => import('./outbox/outbox.component').then((m) => m.OutboxComponent), canActivate: [sessionGuard], data: { title: 'Outbox', roles: ['presenter'] } },
+  { path: 'greg/plan', loadComponent: () => import('./greg-planning/planning-route.component').then((m) => m.PlanningRouteComponent), canActivate: [sessionGuard], data: { title: 'Order planning and Production', roles: ['greg'] } },
   { path: 'components', loadComponent: () => import('./pages/gallery.component').then((m) => m.GalleryComponent) },
   { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } },
   { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } },
