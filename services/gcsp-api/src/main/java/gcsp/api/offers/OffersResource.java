@@ -68,7 +68,7 @@ public class OffersResource {
         }
         OfferOutcome run = runSelector(uri, p);
         if (run != null) return render(run);
-        return render(access.read(p, offerId));
+        return render(access.readForEmployee(p, offerId));
     }
 
     @POST
