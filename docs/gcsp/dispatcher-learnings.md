@@ -2656,3 +2656,11 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 04:35 UTC · Russell Codex · DL-20261117-GCC-013 · Resume read clipping recovered
 
 - Combined resume skill/document reads again exceeded the output budget. Required binding passages, receipt scalars and exact source facts were recovered with producer-bounded projections before subsequent decisions; omitted text supplied no evidence. The aggregate producer-budget improvement remains proposed/unresolved. No additional product validation or approval gate was introduced.
+
+### 2026-11-18 04:45 UTC · Russell Codex · DL-20261117-GCC-009 · Isolated Java admission conservatively refused
+
+- First brief-journey-pair admission044234 refused before allocation/runtime: frozen nodeFirstGate could not prove prior Node process/group absence. Original manifest retains exact error; no PG, childgroup, scratch or reservation was created. Fresh complete read-only snapshots044411 show all99originalidentities absent,45groupsempty,zeroPIDreuse and validparser/no stderr. The original transientwitness was not retained, so neither cause nor supervisorfix is established. Frozenrunner/plan remain unchanged; next action is one fresh admission after F388liveUIreleases, not rerunning completedtests or signalling any process. Proposed improvement: retain bounded refusal witness fields and use bounded fresh snapshot reconciliation while preserving uncertainty refusal.
+
+### 2026-11-18 04:45 UTC · Russell Codex · DL-20261117-GCC-009 · Generated-proof source guard corrected before publication
+
+- Independent relocated-tool review found factoryfallback could let no-matchcases pass on demo stock. Prior six observations retain business passes but no direct provider/source identity; decision-count totals are not stock-source counts. Lead retainedfactory, asserted describe(reset.runId).source===generated and persistedstockSource; independent source-only reviewPASS at4d43be36. Six existing one-case invocations are selected to close this evidence gap, with original377Java/99Node evidence reused and no full regression replay. Runtimeguardedresults remain pending. Proposed improvement: assert and retain effective provider/source at proof boundaries rather than infer it from plausible outcomes.
