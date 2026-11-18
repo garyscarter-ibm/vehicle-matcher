@@ -514,3 +514,40 @@ with the actual `a2-review-ticked.png` attachment937957 (205,642 bytes). The
 quote-facts-wrapper explanation remains a hypothesis for Bug triage. No product
 repair was allocated. The runtime lane is handed back to A46; no moreF443 runtime
 is planned in this increment.
+
+## Lost-save and restart proof extension — 18 November 2026
+
+Mater 3 resumed the same original 8-point Story and refreshed its clean branch
+through the normal helper to `ec240de06`. Only this existing proof and delivery
+records are allocated; product source stays unchanged. Both original ACs remain
+unchecked. The five-scenario connected pass above and matching 124 Angular checks
+remain historical evidence on their recorded inputs; this extension does not rerun
+or relabel them.
+
+The existing connected proof now has a `PROOF_SCOPE=recovery` selection for one
+new scenario F. It drops the actual successful review-details POST response and
+following automatic GET response, checks truthful uncertainty and one persisted
+new revision, then reconciles only through reads. It stops and joins the actual
+Java process, starts a fresh Java process against the same owned database/schema,
+and compares immutable saved rows and the exact car/quote/draft/terms authority.
+The observation timestamp `now` is recorded but excluded from saved-authority
+equality. Reentry must require explicit unfinished-selection confirmation, clear
+consent and issue no save or order command. The same journey records narrow 375px
+layout, actual Tab/Enter recovery, visible focus, browser accessibility names and
+deployed CSP violations. These are selected checks, not Safari or complete
+accessibility evidence. Recovery-only receipts label original unselected scenarios
+`not-run`; their overall result describes only the declared selected scope.
+
+Pinned Node syntax checking passed. The lead reviewed the delta against the actual
+Angular save/reconciliation/resume code, Java projection and immutable table
+schema. Runtime remains unrun at this source checkpoint, pending A46's actual
+cleanup and serial lane release. A read-only comparison found all 1,424 A46 C1
+input hashes identical to this refreshed branch; no artifact was copied and its
+keeper was not extended. A fresh bounded build-only fallback is being prepared.
+No product repair, provider refusal, Safari pass, full-suite pass or acceptance is
+claimed. FUCQ-520 remains separately captured and unallocated.
+
+Mater 3 requested/selected `gpt-6.1-sol/high`, no fallback; own saved desktop title
+set successfully. No descendant started while all four agent slots were occupied.
+No runtime reservation, database, scratch allocation or OneDrive/CloudStorage
+access occurred for this source checkpoint. Full suite: deferred to batch.

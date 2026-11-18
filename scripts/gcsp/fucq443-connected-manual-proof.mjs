@@ -47,6 +47,9 @@ for (const [label, file] of [['API jar (prebuilt)', JAR], ['compiled web index (
 const port = (name, fallback) => { const v = Number(process.env[name] ?? fallback); if (!Number.isInteger(v) || v < 1024 || v > 65535) refuse(`${name} must be a port number`); return v; };
 const PORTS = { web: port('PROOF_WEB_PORT', 7543), api: port('PROOF_API_PORT', 8543), idp: port('PROOF_IDP_PORT', 9543) };
 const DEADLINE_MS = Number(process.env.PROOF_DEADLINE_SEC ?? 600) * 1000;
+const PROOF_SCOPE = process.env.PROOF_SCOPE ?? 'all';
+if (!['all', 'recovery'].includes(PROOF_SCOPE)) refuse('PROOF_SCOPE must be all or recovery');
+const SELECTED_SCENARIOS = PROOF_SCOPE === 'recovery' ? ['f'] : ['a', 'b', 'c', 'f', 'd', 'e'];
 
 const ORIGINS = { web: `https://gcsp-web.localhost:${PORTS.web}`, api: `https://gcsp-api.localhost:${PORTS.api}`, idp: `https://gcsp-idp.localhost:${PORTS.idp}` };
 const ISSUER = `${ORIGINS.idp}/realms/gcsp-local`;
@@ -81,7 +84,7 @@ if (!Number.isFinite(DEADLINE_MS) || DEADLINE_MS <= 0 || DEADLINE_MS > 600000) r
 const SCHEMA = `gcsp_s_f443c_${RUN_TOKEN.replace(/-/g, '_')}`;
 const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), certs: path.join(PROOF, 'certs'), static: path.join(PROOF, 'static'), browser: path.join(PROOF, 'browser'), evidence: path.join(PROOF, 'evidence') };
 
-const receipt = { schema: 'fucq443-connected-manual-proof/1', story: 'DEV-2026-11-13-011 / FUCQ-443', startedAt: new Date().toISOString(), deadlineSeconds: DEADLINE_MS / 1000, runToken: RUN_TOKEN, origins: ORIGINS,
+const receipt = { schema: 'fucq443-connected-manual-proof/1', story: 'DEV-2026-11-13-011 / FUCQ-443', startedAt: new Date().toISOString(), deadlineSeconds: DEADLINE_MS / 1000, runToken: RUN_TOKEN, origins: ORIGINS, scope: PROOF_SCOPE, selectedScenarios: SELECTED_SCENARIOS,
   localTestIssuer: `LOCAL TEST OIDC ISSUER ${ISSUER}: harness only, not the real provider`, composition: null, inputs: null, tools: {}, processes: [], scenarios: {}, originalAcceptance: null, failureLogs: {},
   limitations: [
     'The parent supplies prebuilt production web/API; input hashes do not independently establish their source revision.',
@@ -354,10 +357,11 @@ class Page {
     writeFileSync(path.join(dirs.evidence, name), Buffer.from(r.data, 'base64')); return path.join(dirs.evidence, name);
   }
 }
-// A Page that can fail chosen /manual/order responses AFTER the server answered (CDP Fetch, response stage). Bodies are never altered.
+// Fails selected responses AFTER the server answered (CDP Fetch, response stage). Bodies are never altered.
 class FetchPage extends Page {
   constructor(...args) { super(...args); this.rules = []; this.dropped = []; }
-  async interceptOrder() { await this.send('Fetch.enable', { patterns: [{ urlPattern: `${ORIGINS.api}${API_PATH}/manual/order`, requestStage: 'Response' }] }); }
+  async intercept(suffix) { await this.send('Fetch.enable', { patterns: [{ urlPattern: `${ORIGINS.api}${API_PATH}${suffix}`, requestStage: 'Response' }] }); }
+  interceptOrder() { return this.intercept('/manual/order'); }
   drop(method, times = 1) { this.rules.push({ method, times }); }
   event(m) {
     if (m.method === 'Fetch.requestPaused') { this.paused(m.params).catch(() => {}); return; }
@@ -373,7 +377,7 @@ class FetchPage extends Page {
     rule.times--;
     let body = null;
     try { const r = await this.send('Fetch.getResponseBody', { requestId: p.requestId }); body = parse(r.base64Encoded ? Buffer.from(r.body, 'base64').toString('utf8') : r.body); } catch { /* body unavailable */ }
-    this.dropped.push({ method: p.request.method, status: p.responseStatusCode ?? null, body });
+    this.dropped.push({ method: p.request.method, path: new URL(p.request.url).pathname.replace(API_PATH, ''), status: p.responseStatusCode ?? null, body });
     await this.send('Fetch.failRequest', { requestId: p.requestId, errorReason: 'ConnectionReset' });
   }
 }
@@ -383,6 +387,7 @@ async function newPage(cdp, label) {
   const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
   const page = new FetchPage(cdp, sessionId, browserContextId, label);
   await page.send('Page.enable'); await page.send('Emulation.setFocusEmulationEnabled', { enabled: true }); await page.send('Network.enable'); await page.send('Network.setCacheDisabled', { cacheDisabled: true }); await page.send('Runtime.enable');
+  await page.send('Page.addScriptToEvaluateOnNewDocument', { source: `window.__f443CspViolations = []; addEventListener('securitypolicyviolation', (e) => { if (window.__f443CspViolations.length < 20) window.__f443CspViolations.push({ directive: e.effectiveDirective, blocked: e.blockedURI }); });` });
   await page.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   return page;
 }
@@ -806,6 +811,105 @@ async function scenarioC(cdp, s, pages) {
   s.checks.stillNoOrder = (await dbCount('selection_orders', 'jordan')) === 0;
 }
 
+// AC1/AC2 recovery: lose a completed save response, reconcile only by reads, then restart the real Java process.
+async function scenarioF(cdp, s, pages) {
+  let page = pages.jordan;
+  if (!page) {
+    page = await newPage(cdp, 'jordan-recovery'); pages.jordan = page;
+    await signIn(page, 'jordan');
+    await toReview(page, 'jordan'); await reserve(page); await startReview(page);
+    await saveDetails(page, TEXT.c);
+  }
+  const before = await serverState('jordan', { order: false });
+  const version = before.details.body.value.reviewDetailsVersion;
+  const savedText = `F443 lost-save durable recovery ${RUN_TOKEN}`;
+  await tickAll(page);
+  await page.act(`return setText('#manual-special-requirements', ${JSON.stringify(savedText)});`);
+  await page.until(`const b = button('Save review details'); return !!b && !b.disabled;`, 10000, 'edited recovery save');
+  s.checks.editClearsDeclarations = (await view(page)).declarations.every((d) => !d.checked);
+  await page.intercept('/manual/review-details'); page.drop('POST'); page.drop('GET');
+  const mark = page.log.length;
+  await page.act(`return press('Save review details');`);
+  await page.until(`return /Outcome not confirmed/.test(text());`, 30000, 'lost-save unconfirmed notice');
+  await page.settle();
+  s.observations.dropped = page.dropped;
+  const unknown = await view(page); s.observations.unknown = unknown;
+  s.checks.saveAndReadResponsesDroppedAfterServerAnswer = page.dropped.length === 2 && page.dropped.every((r) => r.path === '/manual/review-details' && r.status === 200)
+    && page.dropped.map((r) => r.method).join() === 'POST,GET' && page.dropped[0].body?.value?.reviewDetailsVersion === version + 1;
+  s.checks.lostSaveDoesNotInventSuccess = /Outcome not confirmed/.test(unknown.notice ?? '') && unknown.place === false
+    && !unknown.outcome.heading && unknown.declarations.every((d) => d.disabled || !d.checked);
+  s.observations.screenshotUnknown = await page.shot('f1-save-outcome-not-confirmed.png');
+  const durableRows = () => sqlJson(`SELECT coalesce(json_agg(d ORDER BY d.version), '[]'::json) FROM (
+    SELECT hold_id AS "holdId", review_details_version AS version, binding, details, constraints, command_id AS "commandId"
+    FROM manual_review_details WHERE ${RUN_KEY} AND employee_id = 'employee-jordan') d`);
+  const stored = durableRows(); s.observations.rowsAfterLoss = stored;
+  const actual = await waitDetailsVersion('jordan', version + 1);
+  s.checks.serverPersistedExactlyOneNewRevision = stored.length === version + 1 && stored.at(-1)?.details?.specialRequirements === savedText
+    && actual.details.specialRequirements === savedText && actual.binding.holdId === before.claim.body.value.hold.holdId;
+  const readMark = page.log.length;
+  await page.act(`return press('Check status');`);
+  await page.until(`return !button('Check status') && /Your saved review details are shown below/.test(savedStatus()) && $('#manual-special-requirements')?.value === ${JSON.stringify(savedText)};`, 30000, 'lost-save read reconciliation');
+  await page.settle();
+  const reconciled = await view(page); s.observations.reconciled = reconciled;
+  s.checks.reconciliationUsesOnlyReads = page.calls(readMark).length > 0 && page.calls(readMark).every((r) => r.method === 'GET')
+    && gets(page.calls(readMark), '/manual/review-details').length === 1;
+  s.checks.saveNeverResubmitted = posts(page.calls(mark), '/manual/review-details').length === 1 && (await dbCount('selection_orders', 'jordan')) === 0;
+  s.checks.reconciledDetailsNeedFreshConsent = reconciled.place === false && reconciled.declarations.length > 0 && reconciled.declarations.every((d) => !d.checked);
+  await page.send('Fetch.disable');
+  const oldProcess = api.identity; const restartMark = page.log.length;
+  if (!oldProcess) throw new Error('Started API has no captured process identity');
+  await stopApi();
+  s.checks.oldApiProcessExited = api.done === true && processIdentity(oldProcess.pid) === null;
+  await startApi();
+  s.observations.restart = { previous: oldProcess, current: api.identity, starts: apiStarts, schema: SCHEMA, database: DB_NAME };
+  s.checks.freshJavaProcessOnSameDatabase = api.identity?.pid !== oldProcess.pid && apiStarts === 2;
+  const after = await serverState('jordan', { order: false }); s.observations.afterRestart = after;
+  s.checks.durableRowsUnchangedByRestart = same(durableRows(), stored);
+  const authority = (value) => { const { now, ...saved } = value; return saved; };
+  s.checks.exactSavedAuthoritySurvivesRestart = after.details.http === 200 && same(authority(after.details.body.value), authority(actual))
+    && same(after.claim.body.value.quote, before.claim.body.value.quote)
+    && after.claim.body.value.hold.holdId === before.claim.body.value.hold.holdId
+    && after.claim.body.value.hold.version === before.claim.body.value.hold.version
+    && same(after.terms, before.terms);
+  await page.send('Emulation.setDeviceMetricsOverride', { width: 375, height: 812, deviceScaleFactor: 1, mobile: false });
+  await freshDocument(page, 'reload', { ready: `return !!button('Continue reviewing this selection');`, readPath: '/manual/order', readOk: false, what: 'unfinished review after real API restart' });
+  const resume = await view(page); s.observations.resume = resume;
+  s.checks.restartReentryReadsWithoutWrites = page.calls(restartMark).length > 0 && page.calls(restartMark).every((r) => r.method === 'GET');
+  s.checks.restartRequiresExplicitConfirmation = resume.place === false && resume.declarations.every((d) => d.disabled || !d.checked)
+    && (await page.act(`return press('Place order');`)) === false && (await dbCount('selection_orders', 'jordan')) === 0;
+  s.checks.narrowReviewHasNoHorizontalOverflow = await page.eval('document.documentElement.scrollWidth <= innerWidth');
+  s.observations.screenshotResume = await page.shot('f2-restart-narrow-needs-confirmation.png');
+  // Actual Tab/Enter input, without a DOM click or scripted focus, reaches the explicit recovery control.
+  let focus = null;
+  for (let i = 0; i < 60; i++) {
+    focus = await page.eval(`({ tag: document.activeElement?.tagName, label: document.activeElement?.textContent.trim(), outline: getComputedStyle(document.activeElement).outlineStyle, outlineWidth: getComputedStyle(document.activeElement).outlineWidth, shadow: getComputedStyle(document.activeElement).boxShadow })`);
+    if (focus.tag === 'BUTTON' && focus.label === 'Continue reviewing this selection') break;
+    await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+    await page.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+  }
+  s.observations.resumeKeyboardFocus = focus;
+  s.checks.keyboardReachesExplicitResume = focus?.tag === 'BUTTON' && focus.label === 'Continue reviewing this selection';
+  s.checks.resumeFocusIsVisible = s.checks.keyboardReachesExplicitResume && (focus.outline !== 'none' && focus.outlineWidth !== '0px' || focus.shadow !== 'none');
+  s.observations.screenshotKeyboardFocus = await page.shot('f3-restart-keyboard-focus.png');
+  if (!s.checks.keyboardReachesExplicitResume) throw new Error('Keyboard did not reach the explicit resume button');
+  await page.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+  await page.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+  await page.until(`return !button('Continue reviewing this selection') && declarations().length > 0 && declarations().every((d) => !d.checked && !d.disabled);`, 15000, 'keyboard-confirmed resume');
+  s.checks.explicitResumeKeepsSavedDetailsAndClearsConsent = await page.act(`return $('#manual-special-requirements')?.value === ${JSON.stringify(savedText)} && declarations().every((d) => !d.checked) && button('Place order')?.disabled === true;`);
+  s.checks.noOrderOrSaveOnResume = page.calls(restartMark).every((r) => r.method === 'GET') && (await dbCount('selection_orders', 'jordan')) === 0 && same(durableRows(), stored);
+  const tree = await page.send('Accessibility.getFullAXTree');
+  const accessible = tree.nodes.filter((n) => !n.ignored).map((n) => ({ role: n.role?.value, name: n.name?.value }));
+  s.observations.accessibleControls = accessible.filter((n) => ['textbox', 'checkbox', 'button'].includes(n.role));
+  s.checks.savedFieldsHaveAccessibleNames = ['Contact telephone (required)', 'Contact email (required)', 'Special requirements (optional)']
+    .every((label) => accessible.some((n) => n.role === 'textbox' && n.name === label));
+  s.checks.requiredDeclarationsHaveAccessibleNames = (await page.act('return declarations();')).every((d) => accessible.some((n) => n.role === 'checkbox' && n.name === d.label));
+  s.observations.csp = await page.eval(`({ policy: document.querySelector('meta[http-equiv="Content-Security-Policy"]')?.content ?? '', violations: window.__f443CspViolations ?? null })`);
+  s.checks.deployedCspHasNoObservedViolation = /script-src 'self'(?:;|$)/.test(s.observations.csp.policy)
+    && Array.isArray(s.observations.csp.violations) && s.observations.csp.violations.length === 0;
+  s.checks.noBrowserRuntimeException = page.errors.length === 0;
+  s.observations.screenshotResumed = await page.shot('f4-restart-narrow-resumed.png');
+}
+
 // AC2 lost response: the POST response is dropped after the server accepted it; the UI never claims confirmation and no resubmission happens.
 async function scenarioD(cdp, s, pages) {
   const page = pages.jordan;
@@ -914,11 +1018,16 @@ async function main() {
   if (!wsUrl) throw new Error('Chrome DevTools endpoint not found');
   const cdp = await Cdp.connect(wsUrl); receipt.cdp = cdp;
   const pages = {};
-  await scenario('a', 'Claim, edit review details, tick declarations, submit once: the order holds what the user confirmed', 'AC1+AC2', (s) => scenarioA(cdp, s, pages));
-  await scenario('b', 'Review details change on the server before submit: refused as stale, no order, correction works', 'AC2', (s) => scenarioB(cdp, s, pages));
-  await scenario('c', 'Missing declarations: blocked in the UI, refused invalid by the server, nothing written', 'AC2', (s) => scenarioC(cdp, s, pages));
-  if (pages.jordan) await scenario('d', 'Lost order response: no invented confirmation, reconcile to the server, one order, no resubmission', 'AC2', (s) => scenarioD(cdp, s, pages));
-  if (pages.paula && pages.paulaOrderRequest) await scenario('e', 'Repeat entry and replay: no second order', 'AC2', (s) => scenarioE(cdp, s, pages));
+  if (PROOF_SCOPE === 'all') {
+    await scenario('a', 'Claim, edit review details, tick declarations, submit once: the order holds what the user confirmed', 'AC1+AC2', (s) => scenarioA(cdp, s, pages));
+    await scenario('b', 'Review details change on the server before submit: refused as stale, no order, correction works', 'AC2', (s) => scenarioB(cdp, s, pages));
+    await scenario('c', 'Missing declarations: blocked in the UI, refused invalid by the server, nothing written', 'AC2', (s) => scenarioC(cdp, s, pages));
+  }
+  await scenario('f', 'Lost save response and ordinary Java restart: durable details, read-only recovery, explicit keyboard resume', 'AC1+AC2', (s) => scenarioF(cdp, s, pages));
+  if (PROOF_SCOPE === 'all') {
+    if (pages.jordan) await scenario('d', 'Lost order response: no invented confirmation, reconcile to the server, one order, no resubmission', 'AC2', (s) => scenarioD(cdp, s, pages));
+    if (pages.paula && pages.paulaOrderRequest) await scenario('e', 'Repeat entry and replay: no second order', 'AC2', (s) => scenarioE(cdp, s, pages));
+  }
 }
 async function teardown() {
   try { if (providerDown) { await setProvider(false); receipt.providerRestoredAtTeardown = true; } } catch (e) { receipt.providerRestoreError = e.message; }
@@ -932,15 +1041,16 @@ async function teardown() {
 function finish(runError) {
   if (finished) return; finished = true;
   const sc = receipt.scenarios; const ok = (k) => sc[k]?.pass === true;
+  const evidence = (ids) => ids.some((k) => sc[k] && !ok(k)) ? 'fail' : ids.every(ok) ? 'pass' : 'not-run';
   receipt.endedAt = new Date().toISOString();
   if (runError) receipt.runError = runError;
   try { receipt.apiAccessLog = accessLog(); } catch { /* no log */ }
   receipt.originalAcceptance = {
-    AC1: { text: 'Claim, review/edit and submission retain the exact car, quoted terms, draft versions and required declarations.', scenarios: ['a', 'b'], evidence: ok('a') && ok('b') ? 'pass' : 'fail', closure: 'OPEN: parent review decides' },
-    AC2: { text: 'Confirmed, pending, stale and refused submissions display actual backend state. Repeat entry/retry cannot invent confirmation or duplicate a request.', scenarios: ['a', 'b', 'c', 'd', 'e'], evidence: ['a', 'b', 'c', 'd', 'e'].every(ok) ? 'pass' : 'fail', closure: 'OPEN: parent review decides' },
-    validation: { text: 'Replay claim-to-order against actual Java/nativePG17/signed testOIDC, including stale quotes, declaration failures and lost responses; recovery requires unfinished-order confirmation.', scenarios: ['a', 'b', 'c', 'd', 'e'], evidence: ['a', 'b', 'c', 'd', 'e'].every(ok) ? 'pass' : 'fail',
+    AC1: { text: 'Claim, review/edit and submission retain the exact car, quoted terms, draft versions and required declarations.', scenarios: ['a', 'b', 'f'], evidence: evidence(['a', 'b', 'f']), closure: 'OPEN: parent review decides' },
+    AC2: { text: 'Confirmed, pending, stale and refused submissions display actual backend state. Repeat entry/retry cannot invent confirmation or duplicate a request.', scenarios: ['a', 'b', 'c', 'd', 'e', 'f'], evidence: evidence(['a', 'b', 'c', 'd', 'e', 'f']), closure: 'OPEN: parent review decides' },
+    validation: { text: 'Replay claim-to-order against actual Java/nativePG17/signed testOIDC, including stale quotes, declaration failures and lost responses; recovery requires unfinished-order confirmation.', scenarios: ['a', 'b', 'c', 'd', 'e', 'f'], evidence: evidence(['a', 'b', 'c', 'd', 'e', 'f']),
       note: 'Handoff-failed (refused) is not provoked: the synthetic provider has no rejection path; that state is covered by Java/Angular unit tests only.' } };
-  receipt.overall = ['a', 'b', 'c', 'd', 'e'].every(ok) && !runError && !receipt.providerRestoreError && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
+  receipt.overall = SELECTED_SCENARIOS.every(ok) && !runError && !receipt.providerRestoreError && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-manual-proof.json');
   try { writeFileSync(file, `${JSON.stringify(receipt, null, 2)}\n`); } catch (e) { console.error('receipt write failed', e.message); }
   for (const k of Object.keys(sc).sort()) console.log(`  ${k}: ${sc[k].pass ? 'PASS' : 'FAIL'} ${sc[k].title}${sc[k].pass ? '' : ` [failed: ${Object.entries(sc[k].checks).filter(([, v]) => v !== true).map(([n]) => n).join(', ')}]`}`);
