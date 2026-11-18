@@ -213,7 +213,7 @@ class OffersHttpTest {
     }
 
     private static String declineBody(String reason, int offerVersion, int holdVersion) {
-        return "{\"commandId\":\"cmd-1\",\"decision\":\"decline\",\"reasonCode\":\"" + reason
+        return "{\"commandId\":\"cmd-1\",\"runId\":\"run-1\",\"expectedQuoteVersion\":1,\"decision\":\"decline\",\"reasonCode\":\"" + reason
                 + "\",\"expectedOfferVersion\":" + offerVersion + ",\"expectedHoldVersion\":" + holdVersion + "}";
     }
 
@@ -234,7 +234,7 @@ class OffersHttpTest {
         post(ownerToken(), path, "[]").statusCode(400).body("code", equalTo("invalid-offer-decision"));
         post(ownerToken(), path, "{\"commandId\":\"c\",\"decision\":\"decline\"}").statusCode(400)
                 .body("code", equalTo("invalid-offer-decision"));
-        post(ownerToken(), path, declineBody("size", 4, 2).replace("}", ",\"runId\":\"r\"}")).statusCode(400)
+        post(ownerToken(), path, declineBody("size", 4, 2).replace("}", ",\"unexpected\":true}")).statusCode(400)
                 .body("code", equalTo("invalid-offer-decision"));
         post(ownerToken(), path, "x".repeat(17000)).statusCode(400).body("code", equalTo("invalid-offer-decision"));
     }

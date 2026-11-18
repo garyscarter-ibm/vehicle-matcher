@@ -162,7 +162,7 @@ class AuthRouteTableHttpTest {
 
     /** The offer decision checks its body before the role, so it gets a well-formed decline; the rest take {}. */
     private static final String DECLINE = "{\"commandId\":\"cmd-1\",\"decision\":\"decline\",\"reasonCode\":\"size\","
-            + "\"expectedOfferVersion\":4,\"expectedHoldVersion\":2}";
+            + "\"runId\":\"run-1\",\"expectedQuoteVersion\":1,\"expectedOfferVersion\":4,\"expectedHoldVersion\":2}";
 
     private static Response hit(String token, String route) {
         String[] parts = route.split(" ", 2);

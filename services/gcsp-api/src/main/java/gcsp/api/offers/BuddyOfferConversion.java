@@ -32,7 +32,12 @@ final class BuddyOfferConversion implements SelectionConversionPort {
 
     /** What this one accept was asked for. */
     record Ask(Principal principal, String offerId, String commandId, String digest, long expectedOfferVersion,
-            Long expectedReturnMileage) {}
+            Long expectedReturnMileage, boolean browserCommand) {
+        Ask(Principal principal, String offerId, String commandId, String digest, long expectedOfferVersion,
+                Long expectedReturnMileage) {
+            this(principal, offerId, commandId, digest, expectedOfferVersion, expectedReturnMileage, false);
+        }
+    }
 
     private static final JsonNodeFactory F = JsonNodeFactory.instance;
     private static final Pattern PHONE = Pattern.compile("^\\+?[0-9 ()-]{7,30}$");
@@ -300,6 +305,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         String env = scope.environmentId();
         String run = scope.runId();
         String nowText = PolicyClock.iso(now);
+        ObjectNode browserFacts = OfferDecisionPresentation.capture(tx, l, now, ask.browserCommand());
         ObjectNode patch = F.objectNode().put("allocatedAt", nowText);
         tx.cas("UPDATE custody_holds SET state = 'allocated', attributes = attributes || ?, version = version + 1, "
                 + "updated_at = now() WHERE environment_id = ? AND run_id = ? AND hold_id = ? AND version = ? "
@@ -324,6 +330,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         value.put("decidedAt", nowText);
         value.putArray("availableActions");
         value.put("operationId", q.operationId());
+        OfferDecisionPresentation.retain(value, browserFacts);
         ObjectNode versions = F.objectNode();
         versions.put("offer", l.offer().version());
         versions.put("hold", l.hold().version());

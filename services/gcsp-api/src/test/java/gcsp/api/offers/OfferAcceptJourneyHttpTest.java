@@ -109,7 +109,7 @@ class OfferAcceptJourneyHttpTest {
         JsonNode replay = decide(paula, paulaOffer, body, 200).get("value");
         assertEquals("accepted", replay.get("state").asText());
         assertEquals(first.get("decisionId").asText(), replay.get("decisionId").asText());
-        assertEquals(first.get("decidedAt").asText(), replay.get("decidedAt").asText());
+        assertEquals(first.get("serverNow").asText(), replay.get("serverNow").asText());
         assertEquals(after, written(s));
         ObjectNode changed = body.deepCopy();
         changed.putObject("declarations").put("terms", true).put("driver", true).put("return", false);
