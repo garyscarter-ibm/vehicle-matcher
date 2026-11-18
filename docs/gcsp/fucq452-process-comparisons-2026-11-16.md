@@ -336,3 +336,20 @@ AC1 therefore stays unmet. A real attempt needs two things outside this Story:
 - **Supervisor fix.** A reviewed fix so the teardown audit excludes the supervisors' own `ps` children.
 
 Lowering the heap, the RSS grant or the workload is not allowed. If a run is admitted and runs out of memory again at 3 GiB, that is a fix for the Java comparison/allocation owners.
+
+## Supervisor teardown fix — 18 November 2026
+
+The coordinator merged the branch into `gcsp-poc-dev` at `a43062ac5` and allocated the teardown fix plus one admitted 3 GiB attempt.
+
+**Fix.** All four supervisors shared one `process_snapshot()`. It ran `/bin/ps` through `subprocess.run`, so the `ps` child appeared in its own output as a descendant of the supervisor. Since the 09:3x self-RSS revision, the supervisor counts itself as owned, so that child became an owned active process. Every final audit therefore reported "absence is unresolved" and preserved scratch and reservations.
+
+The fixed copies in `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-1130/` start `ps` with `Popen` and drop exactly that PID when its parent is the supervisor. They also kill and reap `ps` on timeout. Nothing else changed: 14 diff lines per file, with identical logic, limits, pins and teardown. The `0918` directory stays as the consumed record.
+
+These supervisors are ignored local run files, like every earlier F452 supervisor, so this record carries the change rather than the repository.
+
+**Focused check.** `.claude/test-runs/fucq452/hugh2/check-snapshot-self.py` loads each file's `process_snapshot` from its AST and runs it beside a real `sleep` child. It returned `pass: true`:
+
+- all four old copies report their own `ps` child, which reproduces the fault;
+- all four fixed copies omit it and still report the real child.
+
+All four files parse.
