@@ -1,6 +1,6 @@
 # Actual Angular decision consumer replay
 
-The unchanged strict Angular consumer accepted seven captured Java outcomes and rejected wrong completed-receipt identities and private extra fields. This is a contract replay, not a browser journey. The retained-policy case preserves historical quote policy and accepted operation identity with a null optional inline handoff.
+The unchanged strict Angular consumer accepted seven captured Java outcomes from the final 149-test corrected-identity run and rejected wrong completed-receipt identities and private extra fields. This is a contract replay, not a browser journey. The retained-policy case preserves historical quote policy and accepted operation identity with a null optional inline handoff.
 
 ```json
 {
@@ -21,6 +21,18 @@ The unchanged strict Angular consumer accepted seven captured Java outcomes and 
       "identityMatched": true
     },
     {
+      "case": "remote-pending",
+      "state": "pending",
+      "orderingState": null,
+      "identityMatched": true
+    },
+    {
+      "case": "retained-policy",
+      "state": "accepted",
+      "orderingState": null,
+      "identityMatched": true
+    },
+    {
       "case": "pending",
       "state": "accepted",
       "orderingState": "handoff-pending",
@@ -37,19 +49,9 @@ The unchanged strict Angular consumer accepted seven captured Java outcomes and 
       "state": "accepted",
       "orderingState": "handoff-failed",
       "identityMatched": true
-    },
-    {
-      "case": "remote-pending",
-      "state": "pending",
-      "orderingState": null,
-      "identityMatched": true
-    },
-    {
-      "case": "retained-policy",
-      "state": "accepted",
-      "orderingState": null,
-      "identityMatched": true
     }
-  ]
+  ],
+  "sourceLog": "final-offers-learning.log",
+  "productionHead": "d308ddba6448cfb93afd54a12f8be33826b53679"
 }
 ```
