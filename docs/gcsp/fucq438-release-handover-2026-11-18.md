@@ -85,6 +85,8 @@ All in `render.gcsp.yaml` at `1d57ed5ca` (FUCQ-453 is editing that file in paral
 6. **Restart:** manually restart both services from the Dashboard. Repeat the checks from step 4.
 7. **Hosted review** (Gary's end-of-build item): real OIDC sign-in and sign-out, exact-origin CORS, a delivered
    offer email and its return, and Safari with private browsing.
+   In Safari private browsing also check FUCQ-437's entry rules: a fresh emailed offer link, an unknown `/gcsp/x`
+   (branded Page not found), and a missing `/gcsp/assets/x.js` (still 404, not the app page).
 8. **Final switch:** merge `gcsp-poc-dev` into `gcsp-poc`. The Java and Angular entries track `gcsp-poc-dev` today,
    so the cutover needs one blueprint decision, taken with the retirement work (FUCQ-453 and E3.S29):
    - either repoint those two entries to `branch: gcsp-poc`;
