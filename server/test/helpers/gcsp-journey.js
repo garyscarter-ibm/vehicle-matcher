@@ -172,7 +172,7 @@ export function stepper(t, blocked = () => false) {
 }
 
 /** Walks Paula's path once on a fresh reset and returns every identifier it saw. Each step asserts its state. */
-export async function walkPaulasPath(t, f, label = 'run', { beforeAccept } = {}) {
+export async function walkPaulasPath(t, f, label = 'run', { beforeAccept, saveBrief: saveJourneyBrief = saveBrief } = {}) {
   const seen = { label, first: {}, second: {}, alex: {}, outline: {} };
   const step = stepper(t);
 
@@ -191,8 +191,8 @@ export async function walkPaulasPath(t, f, label = 'run', { beforeAccept } = {})
   await step('brief: Paula and Alex each save and confirm an estate brief with hold consent', async () => {
     // Both briefs fit the same two estates in window one, so they compete and each still gets one car.
     seen.sessions = { paula: await actAs(f, label, 'paula'), alex: await actAs(f, label, 'alex') };
-    const paula = await saveBrief(f, label, 'paula', seen.sessions.paula, 'estate');
-    const alex = await saveBrief(f, label, 'alex', seen.sessions.alex, 'estate');
+    const paula = await saveJourneyBrief(f, label, 'paula', seen.sessions.paula, 'estate');
+    const alex = await saveJourneyBrief(f, label, 'alex', seen.sessions.alex, 'estate');
     assert.equal(paula.brief.briefVersion, 1); assert.equal(alex.brief.briefVersion, 1);
     const briefs = await rows(f, 'briefs');
     assert.deepEqual(briefs.map((row) => [row.status, row.briefVersion]), [['confirmed', 1], ['confirmed', 1]]);

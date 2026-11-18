@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { actAs, assumption, confirmed, jar, launch, offerPath, openLink, readOffer, resetRun, rows, saveBrief, stepper, tickTo, walkPaulasPath } from './helpers/gcsp-journey.js';
+import { actAs, assumption, confirmed, jar, launch, offerPath, openLink, readOffer, resetRun, rows, stepper, tickTo, walkPaulasPath } from './helpers/gcsp-journey.js';
 import { good, setupManualRuntime, selectManualOrder } from './helpers/gcsp-manual-order.js';
 import { EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
 import { CURRENT_CAR_EVENTS, readCurrentCar } from '../gcsp/lifecycle/current-car/index.js';
@@ -92,7 +92,7 @@ async function expectDocumentsOpened(f, r) {
 test('FUCQ-124 happy path, buddy route: approvals, handover, documents and a separate return plan, with the current car unchanged', async (t) => {
   const f = await launch(t, { environmentId: 'lifecycle-e2e' });
   const before = {};
-  const seen = await walkPaulasPath(t, f, 'e2e', { beforeAccept: async (walk) => { before.inputs = await allocationInputs(f, walk); } });
+  const seen = await walkPaulasPath(t, f, 'e2e', { saveBrief: saveLifecycleBrief, beforeAccept: async (walk) => { before.inputs = await allocationInputs(f, walk); } });
   const step = stepper(t, () => !seen.operationId);
   const order = seen.second.orderUuid; const session = seen.sessions.paula;
   const { get, post, progress, handover, returnPlan, documents, clockNow } = reads(f, order, session);
@@ -686,7 +686,7 @@ test('FUCQ-171 missed return: the keyed delay decides when it is missed, the old
 test('FUCQ-171 buddy lifecycle: from the confirmed plan to a completed handover, a separate confirmed return and the current car at each point', async (t) => {
   const f = await launch(t, { environmentId: 'lifecycle-e2e-171', edit: returnOutcome('returned') });
   const before = {};
-  const seen = await walkPaulasPath(t, f, 'e2e171', { beforeAccept: async (walk) => { before.inputs = await allocationInputs(f, walk); } });
+  const seen = await walkPaulasPath(t, f, 'e2e171', { saveBrief: saveLifecycleBrief, beforeAccept: async (walk) => { before.inputs = await allocationInputs(f, walk); } });
   const step = stepper(t, () => !seen.operationId);
   const order = seen.second.orderUuid; const session = seen.sessions.paula; const r = { ...reads(f, order, session), order, session }; const slotId = 'slot-paula';
   const outcomes = await assumption(f, 'lifecycle.appointments.outcomes.v1'); const outcomePolicy = await assumption(f, 'lifecycle.return.outcome.v1');
@@ -752,19 +752,28 @@ test('FUCQ-171 buddy lifecycle: from the confirmed plan to a completed handover,
   });
 });
 
-/** Paula's brief as the editor saves it with the charging essential confirmed (the shared helper omits it), over the brief routes. */
-async function saveConfirmedBrief(f, label, session, body) {
-  const brief = { schemaVersion: 1, preferences: { body: confirmed(body) }, essentials: { seats: { value: 5, operator: 'gte', unit: 'count', state: 'confirmed', source: 'employee' },
-    charging: { value: 'home', operator: 'equals', unit: null, state: 'confirmed', source: 'employee' } } };
-  good((await f.api('/api/gcsp/brief/draft', { session, body: { commandId: `${label}-paula-draft`, expectedBriefVersion: 0, expectedDraftVersion: 0, brief } })).json, 'save draft');
-  return good((await f.api('/api/gcsp/brief/confirm', { session, body: { commandId: `${label}-paula-confirm`, expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } })).json, 'confirm brief');
+/** Explicit employee choices meet the canonical category minimum; essentials do not count toward engagement. */
+async function saveLifecycleBrief(f, label, name, session, body, { charging = false } = {}) {
+  const rule = await assumption(f, 'brief.accountPreferences.v1');
+  const categories = rule.order.filter((key) => rule.categories[key].kind === 'stops').slice(0, rule.minimumCategories - 1);
+  assert.equal(categories.length + 1, rule.minimumCategories, 'the lifecycle fixture supplies the canonical category minimum');
+  const preferences = { body: confirmed(body), ...Object.fromEntries(categories.map((key) => [key, confirmed(rule.categories[key].openDefault, rule.importance.medium)])) };
+  const brief = { schemaVersion: 1, preferences, essentials: { seats: { value: 5, operator: 'gte', unit: 'count', state: 'confirmed', source: 'employee' },
+    ...(charging ? { charging: { value: 'home', operator: 'equals', unit: null, state: 'confirmed', source: 'employee' } } : {}) } };
+  const draft = await f.api('/api/gcsp/brief/draft', { session, body: { commandId: `${label}-${name}-draft`, expectedBriefVersion: 0, expectedDraftVersion: 0, brief } });
+  assert.equal(draft.status, 200, JSON.stringify(draft.json));
+  const editor = good((await f.api('/api/gcsp/brief/editor', { session })).json, 'brief editor');
+  assert.deepEqual([editor.initial.buddy.considered, editor.initial.buddy.remaining], [rule.minimumCategories, 0]);
+  const approved = await f.api('/api/gcsp/brief/confirm', { session, body: { commandId: `${label}-${name}-confirm`, expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } });
+  assert.equal(approved.status, 200, JSON.stringify(approved.json));
+  return good(approved.json, 'confirm brief');
 }
 
 /** Paula's real first offer, declined for its body style over the offer routes: a confirmed brief (version 1) and one decline decision, with no follow-up change yet. */
 async function declinedFirstOffer(t, f, label, charging = true) {
   await resetRun(f, label);
   const paula = await actAs(f, label, 'paula'); const alex = await actAs(f, label, 'alex');
-  await (charging ? saveConfirmedBrief(f, label, paula, 'estate') : saveBrief(f, label, 'paula', paula, 'estate')); await saveBrief(f, label, 'alex', alex, 'estate');
+  await saveLifecycleBrief(f, label, 'paula', paula, 'estate', { charging }); await saveLifecycleBrief(f, label, 'alex', alex, 'estate');
   await tickTo(f, label, { mode: 'next-release' });
   const offer = (await rows(f, 'offers')).find((row) => row.employeeId === 'employee-paula' && row.state === 'active'); assert.ok(offer, 'Paula holds a pending offer');
   const job = (await rows(f, 'notification_outbox')).find((row) => row.offerId === offer.offerId);
