@@ -99,6 +99,7 @@ describe('native employee activity client', () => {
     for (const [sourceState, activityState, displayState] of [
       ['active', 'offer', 'active'], ['decision-pending', 'offer', 'decision-pending'], ['release-pending', 'offer', 'release-pending'],
       ['accepted', 'offer-closed', 'accepted'], ['expired', 'offer-closed', 'expired'], ['declined', 'offer-closed', 'declined'],
+      ['superseded', 'offer-closed', 'superseded'], ['released', 'offer-closed', 'released'],
     ] as const) {
       const row = offer(sourceState); fetcher.mockResolvedValueOnce(ok(projection({ state: activityState as ActivityState, currentOffer: row, offers: [row] })));
       const result = await client.readActivity(); expect(result.status).toBe('ok');
@@ -225,12 +226,27 @@ describe('native employee activity client', () => {
     const offerId = 'offer/id &x'; const runId = context.runId;
     fetcher.mockResolvedValueOnce(ok(sourceOffer(offerId, runId)));
     expect(await client.readOfferDisplay({ offerId, runId })).toEqual({ status: 'ok', value: {
-      offerRef: { offerId }, title: 'BMW i4 M50', images: [{ src: '/assets/gcsp-vehicle-evidence/car.webp', alt: 'BMW i4 M50',
+      offerRef: { offerId }, state: 'expired', version: 12, title: 'BMW i4 M50', images: [{ src: '/assets/gcsp-vehicle-evidence/car.webp', alt: 'BMW i4 M50',
         caption: 'Front three-quarter view', fidelity: 'confirmed-listing', sourceRef: 'listing-19', viewpoint: 'front-three-quarter', label: 'Front' }],
     } });
     expect(fetcher.mock.calls[0][0]).toBe(`${config.apiBaseUrl}/offers/offer%2Fid%20%26x?runId=run%2Factive`);
     expect(fetcher.mock.calls[0][1]).toEqual(expect.objectContaining({ method: 'GET', credentials: 'omit', cache: 'no-store', redirect: 'error',
       headers: { Accept: 'application/json', Authorization: 'Bearer access-token' } }));
+  });
+
+  it('retains backend expiry and terminal presentation instead of deriving state from browser time', async () => {
+    for (const [state, offerState, expected] of [
+      ['expired', 'active', 'expired'], ['superseded', 'superseded', 'superseded'], ['released', 'released', 'released'],
+      ['pending', 'active', 'active'], ['pending', 'decision-pending', 'decision-pending'],
+      ['pending', 'release-pending', 'release-pending'],
+    ] as const) {
+      fetcher.mockResolvedValueOnce(ok(sourceOffer('offer-current', context.runId, { state, offerState })));
+      expect(await client.readOfferDisplay({ offerId: 'offer-current', runId: context.runId }))
+        .toMatchObject({ status: 'ok', value: { state: expected, version: 12 } });
+    }
+    fetcher.mockResolvedValueOnce(ok(sourceOffer('offer-current', context.runId, { state: 'pending', offerState: 'unknown' })));
+    expect(await client.readOfferDisplay({ offerId: 'offer-current', runId: context.runId }))
+      .toMatchObject({ status: 'unavailable', code: 'activity-offer-display-invalid' });
   });
 
   it('refuses an offer from another identity or run and a missing display without changing activity state', async () => {
