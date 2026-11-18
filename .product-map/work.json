@@ -10292,6 +10292,51 @@
       "note": "18Nov actual local connected composition PASS at proof7c6969d0e supersedes historical missing-rich-producer/query/follow-up blockers. Original AC unchecked, native In Progress unchanged; local substitute proof is not delivered-email/hosted/live integration acceptance. All owned runtime cleanup verified; docs/gcsp/fucq445-delivery-2026-11-14.md. Independent proof-only review PASS,no blocking/major findings; current-car comparison proves unavailable fallback,not populated parity.",
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00"
+    },
+    {
+      "id": "FUCQ-388",
+      "type": "Bug",
+      "title": "Paula can receive the same declined car after a saved fuel change",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-388",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-16-034",
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Mater",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T03:32:42.157058+00:00",
+          "expires_at": "2026-11-18T04:02:42.157058+00:00",
+          "source": "Codex /root/mater; run01a1ebdc-f57d-7813-b7d0-16318126fabe",
+          "status": "Sol/high ownership/rule plan observed; implementation assigned after claim"
+        }
+      ],
+      "note": "Local claim7bd3f43ed and writer coordinationMSG-2026-11-18-001; native Jira lifecycle unavailable. Original5AC; additive canonical reason-specific reentry, Node/Java consumer parity; OfferDecisions and Angular read-only. Runtime serial with active batch/F505.",
+      "slices": [
+        {
+          "id": "policy-node",
+          "title": "Canonical reason-specific rule and Node repair",
+          "status": "in-progress",
+          "evidence": "Valid intake/source cause; named ownership announced; parent-owned allocator/policy transfer authorised. Fresh reproduction pending."
+        },
+        {
+          "id": "java-parity",
+          "title": "Java allocation consumer and focused parity",
+          "status": "not-started"
+        },
+        {
+          "id": "employee-proof",
+          "title": "Generated stock outcomes and desktop/narrow critique",
+          "status": "not-started"
+        },
+        {
+          "id": "covering-batch",
+          "title": "Covering batch verification",
+          "status": "not-started"
+        }
+      ],
+      "observed_at": "2026-11-18T03:32:42Z"
     }
   ],
   "version": 1
