@@ -27,4 +27,22 @@ public final class RemoteDecisionJourneyProfiles {
     public static class Decline extends Accept {}
 
     public static class RejectedDecline extends Accept {}
+
+    /** The two employees plus a presenter, so a started app can tick and move the run clock. */
+    public static class WithPresenter extends Accept {
+        @Override
+        public Map<String, String> getConfigOverrides() {
+            Map<String, String> config = super.getConfigOverrides();
+            String accounts = config.get("gcsp.oidc.accounts");
+            config.put("gcsp.oidc.accounts", accounts.substring(0, accounts.length() - 1)
+                    + ",{\"subject\":\"sub-presenter\",\"roles\":[\"presenter\"]}]");
+            return config;
+        }
+    }
+
+    /** A transport timeout on an accept, then reconciliation through the registered tick. */
+    public static class Timeout extends WithPresenter {}
+
+    /** Stale run and expiry while a decline is pending, each in its own started app. */
+    public static class Expiry extends WithPresenter {}
 }

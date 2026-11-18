@@ -61,6 +61,19 @@ abstract class RemoteDecisionJourneySupport {
         assertEquals(1, count("SELECT count(*) FROM pending_operations WHERE operation_type = 'buddy-claim' AND state = 'acknowledged'"));
     }
 
+    BuddyJourneySupport clock() {
+        return new BuddyJourneySupport(dataSource, signingJwk);
+    }
+
+    String presenter() throws Exception {
+        return clock().token("sub-presenter", "presenter");
+    }
+
+    /** The committed-state counts the stub saw when this operation's POST first arrived. */
+    JsonNode beforeIo(String operation) throws Exception {
+        return stats(operation).path("beforeIo");
+    }
+
     JsonNode view() throws Exception {
         return get(API + "/offers/" + offerId).get("value");
     }
@@ -102,6 +115,10 @@ abstract class RemoteDecisionJourneySupport {
 
     JsonNode stats(String operation) throws Exception {
         return control("/stats", null).path("operations").path(operation);
+    }
+
+    JsonNode control() throws Exception {
+        return control("/stats", null);
     }
 
     private JsonNode control(String path, JsonNode body) throws Exception {
