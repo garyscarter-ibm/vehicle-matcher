@@ -71,6 +71,15 @@ final class PolicyBodies {
         return result("stale-version", current, f);
     }
 
+    /** Node preview's stale-version: the versions and the refresh hint, without the publish outcome's accepted flag. */
+    static PolicyResult previewStale(String expected, String current) {
+        ObjectNode f = fields();
+        f.put("currentVersion", current);
+        f.put("expectedVersion", expected);
+        f.put("action", "refresh");
+        return result("stale-version", current, f);
+    }
+
     static PolicyResult conflict(String code, String reason, boolean retryable) {
         ObjectNode f = fields();
         f.put("code", code);

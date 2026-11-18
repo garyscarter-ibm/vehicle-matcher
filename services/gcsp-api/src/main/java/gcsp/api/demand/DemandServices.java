@@ -1,5 +1,6 @@
 package gcsp.api.demand;
 
+import gcsp.api.allocation.EligibleCandidates;
 import gcsp.api.clock.ClockReading;
 import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Persistence;
@@ -41,6 +42,16 @@ public class DemandServices {
         if (!persistence.active()) return Optional.empty();
         if (demand == null) demand = new DemandService(dataSource.get(), policy, evaluation, offers, runClock());
         return Optional.of(demand);
+    }
+
+    /** A demand service over the same stores and clock with the given policy and calculation; the policy preview's draft. */
+    public Optional<DemandService> demandWith(DemandPolicyPort draftPolicy, EligibleCandidates draftCandidates) {
+        if (!persistence.active()) return Optional.empty();
+        RecommendationUnmetEvaluation draftEvaluation = new RecommendationUnmetEvaluation();
+        draftEvaluation.candidates = draftCandidates;
+        draftEvaluation.persistence = persistence;
+        draftEvaluation.dataSource = dataSource;
+        return Optional.of(new DemandService(dataSource.get(), draftPolicy, draftEvaluation, offers, runClock()));
     }
 
     public synchronized Optional<SuitabilityService> suitability() {
