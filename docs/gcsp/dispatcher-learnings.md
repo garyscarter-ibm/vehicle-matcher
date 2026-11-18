@@ -2226,6 +2226,8 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - 2026-11-18 01:12 UTC · Gary Codex · DL-20261117-GCC-013 recurrence: combined resume document/runtime dumps clipped despite earlier mitigation. Recovered with selected fields and bounded suffixes before judgment; no omitted content treated as read. Aggregate enforcement remains unresolved; proposed improvement remains semantic field selection before serialization rather than truncating whole nested histories.
 
+- 2026-11-18 01:12 UTC · Gary Codex · DL-20261117-GCC-009 follow-up: corrected Activity input closure produced61passing Angular tests across3files; source checkpoint747c2df58 is pushed and production build is executing. Lead found artifact-consumed markers would release the continuous API supervisor before connected proof; deferred those markers through connected cleanup so its final local monotonic measurement can actually cover the pipeline. Final composed receipts and independent cleanup remain pending. Manual proof is still absent despite earlier redirection; the existing coordinator received a concrete source/checkpoint follow-up with useful disjoint delegation still authorised. Liveness does not resolve this delivery delay. No original-AC completion,overrun or sustained utilisation resolution claimed.
+
 
 ### 2026-11-18 01:15 UTC · Russell Codex · DL-20261117-RG-014 · Final focused receipt integrated as partial
 
