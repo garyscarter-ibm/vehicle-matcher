@@ -82,7 +82,6 @@ export class StockComponent {
   private readonly document = inject(DOCUMENT);
   private restored: unknown = undefined;
   private lastNavigation = '';
-  private detailOrigin: string | null = null;
 
   constructor() {
     const window = this.document.defaultView;
@@ -137,11 +136,11 @@ export class StockComponent {
     const car = this.store.allCars().find(car => car.id === event.memberId);
     if (!car) return;
     if (event.action === 'review') { if (car.reviewAvailable && !this.reviewUnavailableReason()) this.review.emit(car.review); return; }
-    this.detailOrigin = car.id; this.store.openDetail(car.id); this.publish();
+    this.store.openDetail(car.id); this.publish();
     this.focus(() => this.host.nativeElement.querySelector<HTMLElement>('[data-detail-heading]'));
   }
   closeDetail(): void {
-    const id = this.detailOrigin ?? this.store.selectedId();
+    const id = this.store.selectedId();
     this.store.closeDetail(); this.publish();
     this.focus(() => Array.from(this.host.nativeElement.querySelectorAll<HTMLElement>('[data-details-id]')).find(node => node.dataset['detailsId'] === id)
       ?? this.host.nativeElement.querySelector<HTMLElement>('#stock-query'));

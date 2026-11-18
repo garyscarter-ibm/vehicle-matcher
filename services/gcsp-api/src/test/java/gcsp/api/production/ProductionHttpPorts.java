@@ -45,7 +45,7 @@ public final class ProductionHttpPorts {
         }
 
         @Override
-        public Reading current(RunContext ctx) {
+        public Reading current(RunContext ctx, gcsp.api.identity.Principal principal) {
             return reading;
         }
     }

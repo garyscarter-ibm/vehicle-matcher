@@ -29,7 +29,7 @@ public final class BriefDefaults {
         }
     }
 
-    /** No Java offers exist yet, so there is nothing to list and nothing accepted. */
+    /** The no-database fallback: PostgresBriefOffers replaces it when persistence is active, so nothing is listed here. */
     @DefaultBean
     @ApplicationScoped
     public static class NoOffers implements BriefOfferPort {

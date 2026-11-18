@@ -49,7 +49,47 @@
   "inbox": {
     "test": "npm test",
     "merge": "auto",
-    "owner": "Russell"
+    "owner": "Russell",
+    "story_tests": "AGENTS.md#story-test-set",
+    "batch_merges": 5,
+    "suites": [
+      {
+        "name": "node",
+        "command": "npm test",
+        "cwd": ".",
+        "ttl_minutes": 30,
+        "kind": "unit",
+        "paths": [
+          "server/**",
+          "blocks/**",
+          "scripts/**",
+          "fixtures/**",
+          "package.json"
+        ]
+      },
+      {
+        "name": "java",
+        "command": "./mvnw -B clean verify",
+        "cwd": "services/gcsp-api",
+        "ttl_minutes": 120,
+        "kind": "api",
+        "paths": [
+          "services/**"
+        ],
+        "needs": "JDK 21 and PostgreSQL 17 (initdb, pg_ctl) for a throwaway cluster"
+      },
+      {
+        "name": "web",
+        "command": "npm ci && npm test",
+        "cwd": "apps/gcsp-web",
+        "ttl_minutes": 30,
+        "kind": "unit",
+        "paths": [
+          "apps/gcsp-web/**"
+        ],
+        "needs": "npm registry access for npm ci"
+      }
+    ]
   },
   "base_branch": "gcsp-poc-dev",
   "team": {

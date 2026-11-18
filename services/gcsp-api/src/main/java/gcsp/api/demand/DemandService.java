@@ -18,10 +18,10 @@ import gcsp.api.demand.UnmetEvaluationPort.CarCandidate;
 import gcsp.api.demand.UnmetEvaluationPort.CarDecision;
 import gcsp.api.demand.UnmetEvaluationPort.Evaluation;
 import gcsp.api.demand.UnmetEvaluationPort.Gate;
+import gcsp.api.clock.ClockReading;
 import gcsp.api.persistence.Canonical;
 import java.sql.Connection;
 import java.text.Collator;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -56,10 +56,10 @@ public final class DemandService {
     private final DemandPolicyPort policy;
     private final UnmetEvaluationPort unmet;
     private final OfferRecordsPort offers;
-    private final Clock clock;
+    private final DemandClock clock;
 
     public DemandService(DataSource dataSource, DemandPolicyPort policy, UnmetEvaluationPort unmet, OfferRecordsPort offers,
-            Clock clock) {
+            DemandClock clock) {
         this.dataSource = dataSource;
         this.policy = policy;
         this.unmet = unmet;
@@ -71,9 +71,32 @@ public final class DemandService {
     private record Snapshot(long revision, List<Brief> briefs, Map<String, Employee> owners, List<Hold> holds, List<Car> cars,
             ObjectNode source, OfferRecords offers, Map<String, JsonNode> priorBriefs) {}
 
+    /** A demand read with the recommendation-fit summary of the same snapshot; fit is null unless demand is Ok. */
+    public record Fitted(DemandResult demand, ObjectNode fit) {}
+
+    /** What the unmet pass saw: employees with a suitable car, each one's best score, and the privacy threshold. */
+    private static final class FitTally {
+        int eligible;
+        final List<Double> best = new ArrayList<>();
+        int threshold;
+    }
+
     /** No role check here: the HTTP layer requires Greg before calling. */
     public DemandResult read(DemandScope scope) {
-        Instant asOf = clock.instant();
+        return read(scope, null);
+    }
+
+    /** The demand projection and Node's evaluateFit summary (policy preview), over one snapshot and one evaluation. */
+    public Fitted readWithFit(DemandScope scope) {
+        FitTally tally = new FitTally();
+        DemandResult demand = read(scope, tally);
+        return new Fitted(demand, demand instanceof DemandResult.Ok ? FitSummary.render(tally.eligible, tally.best, tally.threshold) : null);
+    }
+
+    private DemandResult read(DemandScope scope, FitTally tally) {
+        ClockReading time = clock.now(scope).orElse(null);
+        if (time == null) return DemandResult.Refusal.unavailable("clock-unavailable");
+        Instant asOf = time.now();
         DemandPolicy rules;
         int threshold;
         List<String> reasonCodes;
@@ -81,6 +104,7 @@ public final class DemandService {
             rules = policy.read(scope.policyVersion(), asOf).orElse(null);
             reasonCodes = rules == null ? null : validate(rules, scope.policyVersion());
             threshold = reasonCodes == null ? 0 : rules.threshold().asInt();
+            if (tally != null) tally.threshold = threshold;
         } catch (RuntimeException e) {
             return DemandResult.Refusal.unavailable("privacy-policy-unavailable");
         }
@@ -89,7 +113,10 @@ public final class DemandService {
             Snapshot snap = snapshot(scope);
             if (snap == null) return DemandResult.Refusal.staleRun();
             if (snap.offers() == null) return DemandResult.Refusal.unavailable("source-invalid");
-            return project(scope, rules, threshold, new HashSet<>(reasonCodes), asOf, snap);
+            ClockReading end = clock.now(scope).orElse(null);
+            if (end == null) return DemandResult.Refusal.unavailable("clock-unavailable");
+            if (end.clockVersion() != time.clockVersion()) return DemandResult.Refusal.changed();
+            return project(scope, rules, threshold, new HashSet<>(reasonCodes), asOf, time.clockVersion(), snap, tally);
         } catch (Unavailable e) {
             return DemandResult.Refusal.unavailable(e.code);
         } catch (Exception e) {
@@ -280,7 +307,7 @@ public final class DemandService {
     }
 
     private DemandResult project(DemandScope scope, DemandPolicy rules, int n, Set<String> reasonCodes, Instant asOf,
-            Snapshot s) {
+            long clockVersion, Snapshot s, FitTally tally) {
         Counts k = new Counts(n, scope.policyVersion());
         List<Brief> briefs = s.briefs();
         Map<String, Brief> byEmployee = new HashMap<>();
@@ -327,7 +354,7 @@ public final class DemandService {
         // Unmet demand.
         Map<String, Bucket> gateBuckets = new HashMap<>();
         Bucket unmetTotal = new Bucket();
-        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, s, byEmployee, reasonCodes).entrySet()) {
+        for (Map.Entry<Brief, List<String>> u : unmet(scope, asOf, clockVersion, s, byEmployee, reasonCodes, tally).entrySet()) {
             List<Ver> v = List.of(new Ver(u.getKey().version(), u.getKey().policyVersion()));
             unmetTotal.hit(v);
             for (String gate : u.getValue()) gateBuckets.computeIfAbsent(gate, x -> new Bucket()).hit(v);
@@ -447,6 +474,7 @@ public final class DemandService {
         ArrayNode vp = versions.putArray("policy");
         k.topPolicy.forEach(vp::add);
         versions.put("revision", s.revision());
+        versions.put("clock", clockVersion);
         ObjectNode demand = Demand.obj();
         demand.set("activeBriefs", k.count(activeBriefs));
         demand.set("byModelLine", k.list(byModelLine, true));
@@ -480,7 +508,8 @@ public final class DemandService {
         stockNode.set("source", s.source());
 
         ObjectNode identity = Demand.obj();
-        identity.put("runId", scope.runId()).put("revision", s.revision()).put("policyVersion", rules.policyVersion());
+        identity.put("runId", scope.runId()).put("revision", s.revision()).put("clock", clockVersion)
+                .put("policyVersion", rules.policyVersion());
         identity.set("threshold", rules.threshold());
         identity.put("thresholdStatus", rules.thresholdStatus());
         identity.set("declineReasons", rules.declineReasons());
@@ -605,8 +634,8 @@ public final class DemandService {
     // ---- unmet demand ----
 
     /** The gates of every brief with no eligible car, in brief order. */
-    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, Snapshot s, Map<String, Brief> byEmployee,
-            Set<String> reasonCodes) {
+    private Map<Brief, List<String>> unmet(DemandScope scope, Instant asOf, long clockVersion, Snapshot s, Map<String, Brief> byEmployee,
+            Set<String> reasonCodes, FitTally tally) {
         Map<Brief, List<String>> out = new LinkedHashMap<>();
         for (Brief b : s.briefs()) {
             Employee e = s.owners().get(b.employeeId());
@@ -646,7 +675,7 @@ public final class DemandService {
         if (candidates.isEmpty()) return out;
         Evaluation evaluation;
         try {
-            evaluation = unmet.evaluate(scope, candidates, asOf);
+            evaluation = unmet.evaluate(scope, candidates, asOf, clockVersion);
         } catch (RuntimeException ex) {
             throw new Unavailable("evaluation-unavailable");
         }
@@ -658,6 +687,7 @@ public final class DemandService {
             if (!wellFormed(decisions, expected.get(b.employeeId()))) throw new Unavailable("evaluation-unavailable");
             Set<String> gates = new TreeSet<>();
             boolean eligible = false;
+            Double best = null;
             for (CarDecision d : decisions) {
                 List<Gate> blockers = new ArrayList<>(d.blockers() == null ? List.of() : d.blockers());
                 String status = d.gateStatus();
@@ -665,11 +695,16 @@ public final class DemandService {
                     status = "ineligible";
                     blockers.add(new Gate("declined-unchanged", null));
                 }
-                if ("eligible".equals(status)) eligible = true;
+                if ("eligible".equals(status)) {
+                    eligible = true;
+                    if (d.score() != null && Double.isFinite(d.score()) && (best == null || d.score() > best)) best = d.score();
+                }
                 for (Gate g : blockers) gates.add(gate(g));
                 if (d.unknowns() != null) d.unknowns().forEach(g -> gates.add(gate(g)));
             }
             if (!eligible) out.put(b, new ArrayList<>(gates));
+            if (tally != null && eligible) tally.eligible++;
+            if (tally != null && best != null) tally.best.add(best);
         }
         return out;
     }

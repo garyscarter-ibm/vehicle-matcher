@@ -427,3 +427,66 @@ hashes and the observation time. No HTTP/browser reproduction, severity decision
 repair or acceptance is claimed. Reconcile the producer/consumer version contract
 with the Java owner before connected checks; do not invent versions or weaken
 validation. Separate Medium FUCQ-491 remains unclaimed, unfixed and nonblocking.
+
+## Java-produced component and full-save parity — 17 November 2026, 20:59 UTC
+
+The new `preferences.java-parity.spec.ts` consumes the real Java-generated brief
+envelopes through `BriefEditorStore` and `PreferencesComponent`. The parent
+independently reviewed the one-file source and ran its selected Angular test:
+**6 passed, 0 failed, 0 skipped**. The cases cover draft/consent-confirm requests
+(exact equality except generated command IDs), adoption of saved server readback,
+known facts and Buddy rendering, full save through screen controls, stale-save
+refresh correction and unavailable save/read presentation. Unrecorded preview
+requests receive 404; preview content is not asserted. Stale-write assertions
+explicitly allow the store's documented importance normalization.
+
+Source returned at `b5c5c7ba2`; compilation initially failed at five NodeList
+spreads under the existing TypeScript libraries. The parent replaced them with
+`Array.from` in `ecabfa08e44f` and the selected six cases passed. A separate
+parent-runner typo aborted an earlier attempt before resources/tests; both failed
+attempts remain retained. No product, support or configuration change was needed.
+The passing source SHA-256 is `62233b130814770b0ba2936a9927fccf144fe015e0d2a9f697c826fe86caf14e`.
+Parent auditing checked 55 source/config/fixture pins and 23,009 dependency/Node
+pins, and verified all owned processes, scratch and reservations were absent.
+The run took 32.97 seconds; resource peaks were sampled, not continuous bounds.
+
+This adds consumer proof over actual producer bodies to the earlier producer and
+client/store evidence. It supersedes the older contract-obstacle observation for
+these pinned responses; it does not prove the running composition. Both original
+acceptance criteria remain open for the connected Angular/Java/OIDC/native
+PostgreSQL journey. The retained helper successor has begun source for that
+finite proof. The covering merge batch is still outstanding. No OneDrive or
+CloudStorage access occurred.
+
+## Connected browser evidence — 17 November 2026, 23:01 UTC
+
+Claude's corrected connected proof completed at 22:57:10 UTC with a strict pass; independent review passed all 39 checks. Production source inputs match shared revision `22b656aef89851782f2887b46252b1141a8d7012`; the proof is the reviewed `79d197213a73f5ffee642a7d64564f3be0036784` version (SHA-256 `d47ef7b8eca6874a30a4ff58860905fcc55d760ff149672bd7cc71432de434fb`). Evidence is retained in `.claude/test-runs/fucq441/connected40-2128/connected-20261117T225638Z/`, including its receipt, proof JSON and screenshots.
+
+The real Java/Angular/native PostgreSQL 17 composition proved server-saved choices, importance, account rating and Buddy consent followed by reload; stale HTTP 409 without an accepted write, preserved edits and corrected save; truthful stopped-API failure, unchanged persisted data after restart and successful retry. Server versions progressed 1→3→5→7 under the existing held-consent contract. Preview displayed the actual server zero count. These provide connected evidence for both original items; their existing required focused Java checks and covering green batch are still outstanding, so both remain open.
+
+Independent audit matched 1,400 API, 515 web and 327 connected-export source pins, 2,853 Maven and 23,031 web borrowed-input pins/identities, all 151 API and 36 web artifacts through manifests/consumption records, and all 13 retained evidence/log hashes. At 22:59:12 UTC the recorded processes/groups, exact scratch paths and reservations were absent; successful keepers were consumed and finalizers reported no listeners or cleanup errors. The successful pipeline including its failed web attempt took 198.171 seconds (836.328 seconds from the first corrected API build), below 1,500 seconds. The connected run's sampled disk/RSS/inclusive peaks were 240,466,053 / 2,363,506,688 / 2,603,156,517 bytes, within its grants.
+
+The intervening `web-20261117T225439Z` sampled keeper-grant breach remains an incomplete, failed attempt. Historical API and failed-web runner files changed later, so those runner hashes cannot be replayed from current files. Cleaned artifact bytes are corroborated by earlier independent byte verification and matching handoff manifests. Measurements are sampled, without continuous containment or a shared pipeline-timer claim. Desktop screenshots do not show below-fold stale/failure banners; their text is proved by retained DOM/network evidence, not a complete visual review. The unavailable scenario stops the API and does not prove a running-server 503 response. No hosted dev deployment was exercised.
+
+
+## Focused Java evidence — 17 November 2026, 23:17 UTC
+
+Claude completed the required focused Java checks on the real signed-OIDC/native PostgreSQL 17 composition: `BriefJourneyPhase1HttpTest` 13/13 and `BriefJourneyPhase2HttpTest` 1/1, then the exact ten startup/wiring classes 53/53. Both completed with zero failures, errors or skips and strict passing receipts. Journey receipt: `.claude/test-runs/fucq441/connected40-2128/focused-java-journey-20261117T231210Z/receipt.json`; wiring receipt: the adjacent `focused-java-wiring-20261117T231450Z/receipt.json`. The observed elapsed times were 34.44 and 38.18 seconds; sampled inclusive peaks were approximately 1.535 and 1.879 GB. The revisions differ from the connected build inputs only in documentation/map paths.
+
+The first wiring attempt remains failed: its Surefire fork exhausted the 256 MiB metaspace ceiling after 37 reported passes, leaving five classes unreported. The causal retry used 768 MiB metaspace inside the unchanged overall resource grant and passed all 53 tests. An intervening attempt refused before allocation because documentation moved shared HEAD; its command list is empty. Neither attempt is counted as a pass or silently discarded.
+
+Independent Pugh review completed at 23:17:05 UTC without launching tests. It matched the 1,402-file source-listing fingerprints against the recorded Git revisions, five executable hashes, helper inputs and borrowed Maven metadata before/after/current. It verified exact scratch/reservations and recorded supervisor/postmaster identities/groups absent for all three executed runs. Finalizers reported PostgreSQL stop success, no owned processes/listeners and no cleanup errors. Limitations: modified historical journey/first-wiring runners cannot be replayed against their old hashes; Maven fingerprints describe metadata rather than content; cleaned exports do not retain individual file byte hashes; full lifetime child identities were not retained. Other child/listener cleanup is supported by finalizer evidence, not a complete independent lifetime replay.
+
+Claude returned at 23:16:30 UTC, releasing the serial runtime lane to the existing account increment. Road Runner scoped required tests; Mater delivered the focused supervisor used by the lead. Claude model/effort remain self-reported Opus 5.5/high, independently unverified; the returned child result identifies Haiku/Sonnet roles without a complete independently verified model/effort pair. Pugh requested/selected Sol/high, no fallback. The earlier connected 39/39 and these 67 focused checks are retained evidence; both original acceptance items and native In Progress remain open until the covering green merge batch and final review. Full suite: deferred to that serial batch. No hosted deployment or OneDrive access.
+
+## Resumed connected evidence — 18 November 2026, 10:28 UTC
+
+Claude story-lead resumed after Codex stopped. The recovered WIP (84a98a541, 131 lines in the proof script only) added scenario d: 1440/375/320 full and compact layouts, trusted Chrome keyboard input for the disclosure, preference, importance, Buddy choice, save, pause/resume and compact category, plus visibility checks on the stale and unavailable recovery banners. It was coherent with the open experience gaps and was kept. Review and runs corrected three faults in it: comfort sits in the collapsed "Anything else?" disclosure (now opened by keyboard), the unsaved-draft note re-renders after the input event (now awaited), and Buddy commands post to `/brief/pause-search` and `/brief/resume-search` (the check matched `/buddy/`). A keyboard practical-need edit (towbar "Not sure yet" to "Yes", saved and read back as `["towbar"]`) was added for AC1's supported inputs. `gcsp-poc-dev` was merged in first; the branch's earlier proof commits were already there under other SHAs, so the add/add conflict resolved to the branch copy.
+
+Final connected run `.claude/test-runs/fucq441/connected47-20261118T102650Z/` at 294e8f831: `git archive` of that commit, offline Maven package, production Angular build, owned PG17 17.12, the harness's local signed test OIDC issuer and headless Chrome. Result: 60/60 checks (a 18, b 13, c 11, d 18), overall PASS. All 18 screenshots were inspected, including narrow stale (`b1`), corrected (`b2`) and API-stopped (`c1`) banners now in view. That closes the earlier "desktop screenshots do not show below-fold banners" gap. Earlier attempts in sibling `connected47-*` folders failed for harness reasons (locale, npm PATH, missing pom resource paths) and on the scenario-d faults above, and are retained.
+
+Focused checks at 12c2fc0ba (since then only the proof script has changed): `./mvnw -B -o test -Dtest='gcsp.api.brief.**'` 127/127, including BriefJourneyPhase1HttpTest 13 and Phase2 1 under OIDC on native PG17 (`focused48-20261118T102323Z`). The ten startup/wiring classes passed 53/53 in `focused48-20261118T102013Z`; that run's single brief error was a harness archive that left out `server/gcsp/offers`. Angular `ng test --include src/app/preferences` passed 74/74 across 6 files. Full suite: deferred to batch.
+
+Resources: scratch roots `/private/tmp/claude-501/fucq441-<ts>`, each with a manifest outside it. Peaks were 384 MiB disk / 2.05 GiB RSS (connected) and 926 MiB / 1.73 GiB (focused). Every finalizer removed its scratch and found no leftover owned processes. Each connected run took about 70 s and each focused run about 2.5 min. The final connected run overlapped about one minute with a FUCQ-448 proof stack that another lead started at 10:25 UTC (separate ports, schemas and cluster). OneDrive was never accessed.
+
+Remaining limitations: OIDC is the local test issuer, not a registered provider. Unavailable means a stopped API, not a running-server 503. Hosted dev, Safari/private browsing and assistive-technology checks were not run. Medium FUCQ-491 (preview/save race), FUCQ-487 and FUCQ-488 remain separate and unfixed.

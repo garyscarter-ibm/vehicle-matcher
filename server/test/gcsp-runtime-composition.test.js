@@ -2,7 +2,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
-import { JSDOM } from 'jsdom';
 import { expandStockPayload } from '../../blocks/gcsp/account/stock-payload.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
@@ -181,47 +180,4 @@ test('C1 real mechanics reset rejects stale employee and refuses missing fresh r
   assert.equal(f.profile.calls.at(-1).runId, f.employee.runId);
   assert.equal((await f.repository.read(f.employee, ref(f.employee, 'stock', { orderUuid: car.orderUuid }))).status, 'not-found');
   assert.deepEqual(f.registrations, expectedRegistrations);
-});
-
-test('host account setup Back and resume retain real saved choices and unchanged current car', async (t) => {
-  const f = await setup(t); const dom = new JSDOM('<!doctype html><body></body>', { url: origin, pretendToBeVisual: true });
-  const keys = ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements'];
-  const previous = new Map(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
-  for (const key of keys) Object.defineProperty(globalThis, key, { value: key === 'window' ? dom.window : dom.window[key], configurable: true });
-  let destroy; const pending = new Set();
-  const tracked = (operation) => (...args) => {
-    const value = Promise.resolve().then(() => operation(...args)); pending.add(value);
-    value.then(() => pending.delete(value), () => pending.delete(value)); return value;
-  };
-  const root = document.createElement('div'); document.body.append(root);
-  f.dispose = async () => {
-    destroy?.(); await Promise.allSettled([...pending]); root.remove(); dom.window.close();
-    for (const key of keys) { if (previous.get(key)) Object.defineProperty(globalThis, key, previous.get(key)); else delete globalThis[key]; }
-  };
-  const before = structuredClone(good(await f.manualRead.readAccount(f.employee)).currentContract);
-  const read = (path) => tracked(async () => (await request(f, `/api/gcsp/manual/${path}`)).json);
-  const adapter = { readAccount: read('account'), readDraft: read('draft'), browseStock: read('stock'),
-    saveDraft: tracked(async (body) => (await request(f, '/api/gcsp/manual/draft', { body })).json),
-    startJourney: tracked(async ({ account, action, draft, commandId }) => (await request(f, '/api/gcsp/manual/draft', {
-      body: { commandId, expectedContextVersion: account.value.contextVersion, expectedDraftVersion: draft.value?.draftVersion ?? 0,
-        choices: { mode: action.action === 'replace' ? 'replacement' : 'new', oldContractId: action.oldContractId, slotId: action.slotId, schemeId: action.schemeId } },
-    })).json) };
-  const { mountManualJourney } = await import('../../blocks/gcsp/manual-setup/journey.js');
-  let sequence = 0; destroy = mountManualJourney(root, { adapter,
-    galleryAdapter: { ...adapter, readClaim: read('claim') }, commandId: () => `host:${++sequence}` });
-  const waitFor = async (check) => { for (let i = 0; i < 200; i++) { if (check()) return; await new Promise((done) => setImmediate(done)); } assert.ok(check(), 'Expected host DOM state.'); };
-  const click = (label) => { const button = [...root.querySelectorAll('button')].find((entry) => entry.textContent === label); assert.ok(button); button.click(); };
-  await waitFor(() => root.querySelector('h1')?.textContent === 'Your cars'); click('Choose a replacement');
-  await waitFor(() => root.querySelector('h1')?.textContent === 'Your order choices');
-  for (const [name, value] of Object.entries({ driverId: `driver:${f.employee.employeeId}`, contractOptionId: 'six-month-8000',
-    requestedCollectionDate: '2026-11-20', collectionLocationId: 'demo-collection-centre', expectedReturnMileage: '6700' })) {
-    const node = root.querySelector(`[name="${name}"]`); assert.ok(node); node.value = value;
-    node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
-  }
-  click('Back to account'); await waitFor(() => root.querySelector('h1')?.textContent === 'Your cars');
-  assert.equal(root.querySelectorAll('main').length, 1);
-  assert.deepEqual(good(await f.manualRead.readAccount(f.employee)).currentContract, before);
-  click('Carry on'); await waitFor(() => root.querySelector('h1')?.textContent === 'Your order choices');
-  assert.equal(root.querySelector('[name="requestedCollectionDate"]').value, '2026-11-20');
-  assert.equal(good(await f.manualRead.readDraft(f.employee)).choices.driverId, `driver:${f.employee.employeeId}`);
 });

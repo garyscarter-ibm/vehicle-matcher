@@ -118,6 +118,64 @@ class AccountPreferencesTest {
 
     // ---- editor read ----
 
+    private static JsonNode sortedKeys(JsonNode n) {
+        ArrayNode keys = Json.arr();
+        n.fieldNames().forEachRemaining(keys::add);
+        List<String> sorted = new java.util.ArrayList<>();
+        keys.forEach(k -> sorted.add(k.asText()));
+        java.util.Collections.sort(sorted);
+        ArrayNode out = Json.arr();
+        sorted.forEach(out::add);
+        return out;
+    }
+
+    private BriefAccountPort.Known known(String accountContext, String clock, String providerFacts, String mileage) {
+        return new BriefAccountPort.Known(j("{\"employeeId\":\"emp-1\"}"), j("{\"contractId\":\"" + CAR + "\",\"model\":\"Model X\"}"),
+                j("[{\"name\":\"Pat\"}]"), j("{\"clock\":\"" + clock + "\"}"), accountContext, clock,
+                j("{\"essentials\":{},\"annualMileage\":{\"value\":" + mileage + ",\"unit\":\"miles\"}}"), providerFacts);
+    }
+
+    private void withKnown(String accountContext, String clock, String providerFacts, String mileage) {
+        f.account.facts = java.util.Optional.of(new BriefAccountPort.AccountFacts(
+                new BriefAccountPort.CurrentContract(CAR, "Model X"), "facts-1", known(accountContext, clock, providerFacts, mileage)));
+    }
+
+    @Test
+    void theEditorReadMeetsTheAngularRulesAndVersionsMoveWithTheAccountAndProviderFacts() throws Exception {
+        withKnown("acct-1", "clock-7", "prov-1", "8000");
+        JsonNode e = editor();
+        JsonNode ctx = e.get("context");
+        JsonNode facts = ctx.get("knownFacts");
+        assertEquals(j("[\"account\",\"annualMileage\",\"currentContract\",\"drivers\"]"), sortedKeys(facts));
+        for (String key : List.of("account", "currentContract", "drivers", "annualMileage")) {
+            assertTrue(facts.get(key).has("value"), key);
+            assertFalse(facts.get(key).get("editable").booleanValue(), key);
+            assertFalse(ctx.get("permissions").get(key).get("editable").booleanValue(), key);
+        }
+        assertEquals("manual-account", facts.get("drivers").get("source").asText());
+        assertEquals("clock-7", facts.get("drivers").get("sourceVersion").get("clock").asText());
+        assertEquals("Model X", facts.get("currentContract").get("value").get("model").asText());
+        assertEquals("employee-provider", facts.get("annualMileage").get("source").asText());
+        assertEquals("prov-1", facts.get("annualMileage").get("sourceVersion").asText());
+        assertEquals(8000, facts.get("annualMileage").get("value").get("value").intValue());
+        JsonNode v = e.get("versions");
+        assertEquals("gcsp-policy-v1", v.get("policy").asText());
+        assertEquals("prov-1", v.get("facts").asText());
+        assertEquals("clock-7", v.get("clock").asText());
+        assertEquals(ctx.get("contextVersion").asText(), v.get("context").asText());
+        assertEquals(ctx.get("contextVersion").asText(), editor().get("context").get("contextVersion").asText());
+
+        String base = ctx.get("contextVersion").asText();
+        withKnown("acct-2", "clock-7", "prov-1", "8000");
+        String accountChanged = editor().get("context").get("contextVersion").asText();
+        withKnown("acct-1", "clock-7", "prov-2", "8000");
+        String providerChanged = editor().get("context").get("contextVersion").asText();
+        assertEquals(3, new java.util.HashSet<>(List.of(base, accountChanged, providerChanged)).size());
+        withKnown("acct-1", "clock-8", "prov-1", "9000");
+        assertEquals(base, editor().get("context").get("contextVersion").asText());
+        assertEquals("clock-8", editor().get("versions").get("clock").asText());
+    }
+
     @Test
     void theEditorReadCarriesTheContextTheInitialViewsVersionsAndProvenance() throws Exception {
         JsonNode e = editor();
@@ -148,7 +206,12 @@ class AccountPreferencesTest {
         assertEquals("disengaged", in.get("buddy").get("state").asText());
         assertEquals(j("{\"value\":null,\"contractId\":\"" + CAR + "\"}"), in.get("currentCarRating"));
         assertEquals(j("{\"available\":true,\"on\":false,\"contractId\":\"" + CAR + "\"}"), in.get("sameAgain"));
-        assertEquals(j("{\"policy\":\"gcsp-policy-v1\",\"facts\":\"facts-1\"}"), e.get("versions"));
+        JsonNode versions = e.get("versions");
+        assertEquals(j("[\"clock\",\"context\",\"facts\",\"policy\"]"), sortedKeys(versions));
+        assertEquals("gcsp-policy-v1", versions.get("policy").asText());
+        assertEquals("facts-1", versions.get("facts").asText());
+        assertEquals("system", versions.get("clock").asText());
+        assertEquals(ctx.get("contextVersion").asText(), versions.get("context").asText());
         assertTrue(e.get("selection").isNull());
         assertEquals("unconfirmed-policy-defaults", e.get("provenance").get("initial").asText());
         assertTrue(e.get("provenance").get("approvedBriefVersion").isNull());

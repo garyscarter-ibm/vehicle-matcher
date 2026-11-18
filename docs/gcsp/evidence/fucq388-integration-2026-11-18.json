@@ -1,0 +1,341 @@
+{
+  "agents": {
+    "fallback": null,
+    "lead": "Mater",
+    "newDescendants": 0,
+    "requestedEffort": "high",
+    "requestedModel": "gpt-6.1-sol",
+    "runtimeConfirmed": true
+  },
+  "cleanup": {
+    "actualFilesystemAndHostChecks": {
+      "groups": {
+        "67927": false
+      },
+      "hostReservationAbsent": true,
+      "manifestState": "removed",
+      "ownedDependencyLinkAbsent": true,
+      "scratchAbsent": true
+    },
+    "borrowedDependenciesUntouched": true,
+    "cleanupIssues": [],
+    "localCompatibilityException": "Bounded temporary dependency link and owned local scratch under explicit no-OneDrive restriction; no retained generated runtime tree.",
+    "noOneDriveAccess": true,
+    "observedAt": "2026-11-18T05:17:45.917576+00:00",
+    "removedAllocatedBytes": 610400,
+    "scratchManifest": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388/ownership/483d224e2cbe43b0948eea5ac192958b.json",
+    "scratchManifestSha256": "8c439f630999968e38c85867a3f9d07d82056155ca29793bbc0563544237592f"
+  },
+  "completedAt": "2026-11-18T05:17:45.917378+00:00",
+  "identityChecks": {
+    "angularHistoricalBuild": {
+      "inputCount": 228,
+      "matched": 226,
+      "mismatches": [
+        {
+          "currentSha256": "e30c3b1b16826bd4d7d78cd2080bd7810e403dd2d8d3e9dbb7717dabfe167ce3",
+          "expectedSha256": "2b4a24cfb88f8a66a0dd258307614704c1838a9ddccc0636e69b8737458b48ad",
+          "path": "apps/gcsp-web/src/app/stock/stock.component.spec.ts"
+        },
+        {
+          "currentSha256": "7ac6c8312a352f1949dd3c71a009c7c8db7e302c8a76222e36a2ee138b82d57d",
+          "expectedSha256": "e30e6e29bc142230093765a6145995834bc9749c8f3a54dac15e2c28c4104cab",
+          "path": "apps/gcsp-web/src/app/stock/stock.component.ts"
+        }
+      ],
+      "priorResult": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-angular-20261118T041530Z-8370b2.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-angular/ownership/a517568eb7084be9952da0078705c1ab.json",
+        "peak_rss": 1212334080,
+        "peak_scratch": 11769216,
+        "rc": 0,
+        "wall": 4.2819611669983715
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-angular-20261118T041530Z-8370b2-receipt.json",
+      "receiptSha256": "a4b91838f230a47d263849c1221c127fe4d95a5ddded28255179118c870112c2",
+      "reportedIdentity": "47a516eb8f82eace051b96b0aeb556d63f2f1c2a04d6eb82283a1c4effcb6fd0"
+    },
+    "generated": {
+      "inputCount": 21,
+      "matched": 21,
+      "mismatches": [],
+      "priorResult": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 1,
+        "skipped": 0,
+        "tests": 1
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-ev-20261118T044911Z-72311796-receipt.json",
+      "receiptSha256": "ed36e33d1ff14ebe6efed1b6a8c25cd95bbfb1c82a6a383cd73fa528b0b9f5b8",
+      "reportedIdentity": null
+    },
+    "generatedSixCaseReceipts": [
+      {
+        "case": "blocked-ev",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-ev-20261118T044911Z-72311796-receipt.json",
+        "receiptSha256": "ed36e33d1ff14ebe6efed1b6a8c25cd95bbfb1c82a6a383cd73fa528b0b9f5b8"
+      },
+      {
+        "case": "blocked-phev",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-blocked-phev-20261118T045055Z-6a0db27c-receipt.json",
+        "receiptSha256": "aada3ff6c0210ef94e46535424a2c233284010d34cbbb08c3e5b6aa299a40e42"
+      },
+      {
+        "case": "home-diesel",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-diesel-20261118T045312Z-f8670fbf-receipt.json",
+        "receiptSha256": "d48bbce5aec4524fa02dda2655920b4c5943c7fc7f34062682894128037e3066"
+      },
+      {
+        "case": "home-ev",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-ev-20261118T045206Z-1a421364-receipt.json",
+        "receiptSha256": "5f7277102215f53784f9fad803104d3424a48553f0cc2488eeeda2732c1d7a2b"
+      },
+      {
+        "case": "home-phev",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-home-phev-20261118T045235Z-a07b9e9c-receipt.json",
+        "receiptSha256": "8c4de38af25eb1d4595a76bd23070a6920ff7775bc1660ce59fd91c721107a5e"
+      },
+      {
+        "case": "unchanged",
+        "inputCount": 21,
+        "matched": 21,
+        "mismatches": [],
+        "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-generated-final-unchanged-20261118T045125Z-e2f2ce8c-receipt.json",
+        "receiptSha256": "836b80f556f4b2764f40aacb3ede23302f5e3f8d09915d323beb01be0bd5871e"
+      }
+    ],
+    "javaAllocationPolicy": {
+      "inputCount": 1210,
+      "matched": 1210,
+      "mismatches": [],
+      "priorResult": "passed",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-final-allocation-policy-20261118T042114Z-721dd9-receipt.json",
+      "receiptSha256": "2e054e53d1f32e4eef34db59a2fe1149669d429fd4dbdc24668ae042fa8a64b9",
+      "reportedIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e"
+    },
+    "javaOffers": {
+      "inputCount": 1210,
+      "matched": 1210,
+      "mismatches": [],
+      "priorResult": "passed",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-final-offers-admitted-20261118T042427Z-950ffd-receipt.json",
+      "receiptSha256": "3312b5c40a576bb91c7c837d582a6d62cf74e4ac81646ba1dbdef703d35cdee9",
+      "reportedIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e"
+    },
+    "javaStartupWiring": {
+      "inputCount": 1210,
+      "matched": 1210,
+      "mismatches": [],
+      "priorResult": "passed",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-final-startup-wiring-20261118T042711Z-32a99b-receipt.json",
+      "receiptSha256": "51dcefef20d26bd58c5c211349bb539cb02eef49ed99d4e6251ae44ff1542043",
+      "reportedIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e"
+    },
+    "nativeBlockedJava": {
+      "inputCount": 1210,
+      "matched": 1210,
+      "mismatches": [],
+      "priorResult": "error",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T043708Z-4b0827-receipt.json",
+      "receiptSha256": "1f00a6fa09aeb4a088d6ccd7fe3aad1357a3745746d477051851a4c14ede3f3f",
+      "reportedIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e"
+    },
+    "nativePositiveJava": {
+      "inputCount": 1210,
+      "matched": 1210,
+      "mismatches": [],
+      "priorResult": "passed",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-ui-20261118T044336Z-357567-receipt.json",
+      "receiptSha256": "935d51df7c798f60132000f62e6ef73362945847de0c2329f2fc37a18d34ab70",
+      "reportedIdentity": "7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e"
+    },
+    "node99": {
+      "inputCount": 15,
+      "matched": 15,
+      "mismatches": [],
+      "priorResult": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 99,
+        "skipped": 0,
+        "tests": 99
+      },
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-review-final-20261118T040650Z-42a08e5d-receipt.json",
+      "receiptSha256": "f627fc888cda5cacb578c714cfcefe5b8be446acad6ee26cbfcae70cf650c1b6",
+      "reportedIdentity": null
+    }
+  },
+  "limitations": [
+    "UI quality remains failed; original AC5 partial.",
+    "All five original acceptance texts and unchecked status retained.",
+    "No refreshed native composition, full suite, external-provider, hosted deployment, native acceptance or covering-green claim.",
+    "Parent owns shared Git integration/merge, claims, Jira and batch; this validation does not merge."
+  ],
+  "noOneDriveAccess": true,
+  "observedAt": "2026-11-18T05:16:22.812801+00:00",
+  "parentDocumentationMovement": {
+    "basis": "Parent reports docs-only checkpoint after this refresh; not incorporated in testedHead. A later normal docs-only refresh may reuse matching source/test/config identities; this does not claim that refresh happened.",
+    "paths": [
+      "_dev/batches.md",
+      "docs/gcsp/evidence/batch-2026-11-18-0232.md"
+    ],
+    "reportedCommit": "e45e4cac7"
+  },
+  "pins": {
+    "incorporatedSharedBase": "e8ec1979d",
+    "priorResult": "3de251db2c9d37ab146768806e008b5ba73d91af",
+    "production": "f8913a5f2f769deccebe9e508fdccb693c7b6139",
+    "proof": "050df1ec9e32df46a01896df78b4f4ebcb2741b5",
+    "refreshedHead": "6946ebb50ae2e64271bbddb0fe2e16b17655e5c3"
+  },
+  "refreshDelta": {
+    "interpretation": "25 net paths since Result checkpoint. Application/boundary changes are stock selected-detail focus and Angular static offer-route rewrite/no-store/build route checks; connected proof scripts/docs/maps do not change F388 backend or selected tests.",
+    "netPathCount": 25,
+    "paths": [
+      "M\t.product-map/components.json",
+      "M\t.product-map/work.json",
+      "M\t_dev/batches.md",
+      "A\t_dev/cowork-inbox/MSG-2026-11-18-002.md",
+      "A\t_dev/done/2026-11/DEV-2026-11-16-023.md",
+      "M\t_dev/in-progress/DEV-2026-11-13-005.md",
+      "M\t_dev/in-progress/DEV-2026-11-13-019.md",
+      "M\t_dev/in-progress/DEV-2026-11-13-020.md",
+      "D\t_dev/in-progress/DEV-2026-11-16-023.md",
+      "M\tapps/gcsp-web/src/app/stock/stock.component.spec.ts",
+      "M\tapps/gcsp-web/src/app/stock/stock.component.ts",
+      "M\tdocs/gcsp/dispatcher-learnings.md",
+      "A\tdocs/gcsp/evidence/batch-2026-11-18-0232.md",
+      "A\tdocs/gcsp/evidence/fucq505/rendered.md",
+      "A\tdocs/gcsp/evidence/fucq505/scoped-unit.md",
+      "A\tdocs/gcsp/evidence/fucq505/validation.md",
+      "M\tdocs/gcsp/fucq437-entry-navigation-2026-11-16.md",
+      "M\tdocs/gcsp/fucq451-notification-inspection-2026-11-16.md",
+      "M\tdocs/gcsp/fucq452-process-comparisons-2026-11-16.md",
+      "M\trender.gcsp.yaml",
+      "M\tscripts/build-gcsp-static.mjs",
+      "A\tscripts/gcsp/fucq437-connected-entry-proof.mjs",
+      "A\tscripts/gcsp/fucq451-connected-outbox-proof.mjs",
+      "A\tscripts/gcsp/fucq452-connected-comparison-proof.mjs",
+      "M\tserver/test/gcsp-static-angular.test.js"
+    ]
+  },
+  "regressionResult": {
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-decline-reentry.test.js"
+    ],
+    "elapsedSeconds": 6.254910416,
+    "impact": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/f388-node-green-integration-decline-reentry-20261118T051628Z-ce097bee.json",
+    "impactSha256": "ab5f4b5a69105e768e45e0ce89725d79d42935a7b0277035b75e392f856f31c1",
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-integration-decline-reentry-20261118T051628Z-ce097bee.log",
+    "logSha256": "b912c7aeb395b134be98ea296b3ce478b685f9577a0f737a45ea83768b8b9b78",
+    "observedFunctionContextSourceFiles": 61,
+    "omittedCoverageFiles": [],
+    "peakRssBytes": 304529408,
+    "peakScratchBytes": 610400,
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-green-integration-decline-reentry-20261118T051628Z-ce097bee-receipt.json",
+    "receiptSha256": "3ba496463ee9f33e3cc7f4e79282097e007c190dfcf223aa2a11ebd333313f6f",
+    "scoped": true,
+    "sourceIdentityUnchanged": true,
+    "testedHead": "6946ebb50ae2e64271bbddb0fe2e16b17655e5c3",
+    "totals": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 31,
+      "skipped": 0,
+      "tests": 31
+    }
+  },
+  "resourcePlan": {
+    "borrowedDependencies": "Temporary owned server/node_modules link only; preserve installed shared dependency bytes.",
+    "emergencyFreeGiB": 5,
+    "expectedRamMiB": 512,
+    "externalManifest": "Supervisor Scratch creates manifest under shared local resources before entering scratch and registers atexit finalizer.",
+    "hardSeconds": 600,
+    "hostBudgetDirectory": "/Users/usget/.cache/agent-scaffolding/test-resources",
+    "noOneDriveAccess": true,
+    "scratchMiBLimit": 256,
+    "scratchRootPattern": "/private/tmp/test-stamp-shard-*",
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-chunk.py",
+    "supervisorSha256": "8cd3e4d23e190cd2afb56fa904212b1e5dda8da4f6f895d1f825a59dbf9dfd39",
+    "teardown": "Stop/join owned group, verify groups dead, delete owned scratch and exact temporary dependency link, release HostBudget reservation, verify absence.",
+    "tmpPropagation": "_tools/test_resources.py run_process calls scratch.env; Scratch.env sets TMPDIR/TMP/TEMP to owned root.",
+    "workers": 1
+  },
+  "reuseDecision": {
+    "boundary": "F505 stock focus source/spec and F437 static route/header/build/assertions are refreshed boundaries; no F388 backend/test contract overlap. No refreshed Angular/static build or browser acceptance pass.",
+    "generated": "Reuse6/6 explicit generated cases, seven declines. All21 inputs in each of6 final receipts match.",
+    "java": "Reuse377 passing tests in61classes: all1210 inputs match in each of3 receipts, exact identity7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e.",
+    "native": "Native Java inputs match1210/1210; retain recorded HTTP/native Java observations. Angular source/spec changed so old26screenshots and Angular build are only evidence of their recorded historical composition.",
+    "node": "Reuse99 affected-graph passes with15/15 source/test inputs matching, plus fresh31/31 repair regression after refresh. These31 are a rerun subset, not130 distinct tests.",
+    "status": "UI quality failed, AC5partial, canonical covering batch red/open; parent owns batch and acceptance."
+  },
+  "schema": "fucq388-refreshed-integration/1",
+  "selection": {
+    "affectedCallersAndBoundaries": [
+      "actual allocation/evaluator/PolicyService/memory repositories",
+      "immutable linked decline answer and exact rejected quote",
+      "latest actual decline ordering",
+      "canonical offer-journey/employee-experience adoption",
+      "charging/eligibility/affordability/holds/isolation/provenance"
+    ],
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-decline-reentry.test.js"
+    ],
+    "excluded": {
+      "fullSuite": "Deferred to covering batch; no F388 full-suite trigger. No acceptance or green-batch claim.",
+      "generated6": "21 proof/source inputs checked; six explicit generated-source cases remain matching evidence",
+      "java377": "1210 retained input hashes checked per chunk; no mismatches permits scoped evidence reuse",
+      "nativeBrowser": "Java input identity can be reused for historical observations. Angular stock source/spec changed; existing 26 captures prove only their recorded old composition. No refreshed native/browser/composition pass.",
+      "node99": "15 retained source/test inputs checked; fresh selected module plus prior unchanged affected graph",
+      "staticAngular": "Changed offer-route/static module belongs to F437 refresh, outside F388 repair contract. No old static assembly claim; covering batch remains dispatcher-owned."
+    },
+    "modules": [
+      "server/test/gcsp-decline-reentry.test.js"
+    ],
+    "ownedChangedPaths": [
+      "server/gcsp/allocation/decline-reentry.js",
+      "server/gcsp/allocation/index.js",
+      "server/gcsp/policy/offer-journey-adoption.js",
+      "server/gcsp/policy/employee-experience-adoption.js",
+      "server/gcsp/policy/reviewed-definitions.js",
+      "server/gcsp/policy/reviewed/offer-declined-car-reentry-v1.json",
+      "services/gcsp-api/src/main/java/gcsp/api/allocation",
+      "services/gcsp-api/src/main/java/gcsp/api/policy",
+      "services/gcsp-api/src/main/java/gcsp/api/offers"
+    ],
+    "reason": "D2 Bug refresh requires the relevant repair regression after refresh. This reruns exact confirmed-answer/latest-decline/adoption/charging candidate regression against refreshed HEAD; no F388 production/test input changed. Reuse matching scoped earlier evidence rather than rerun native runtimes or full suites.",
+    "regression": "Exact declined car cannot re-enter on an unrelated or stale saved answer; known chosen fuel/body and immutable original answer must govern all candidates; ordinary unanswered decline and charging boundaries remain.",
+    "supervisor": [
+      "/usr/bin/python3",
+      "-B",
+      "/Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f388-node-chunk.py",
+      "green-integration-decline-reentry",
+      "server/test/gcsp-decline-reentry.test.js"
+    ]
+  },
+  "state": "scoped-pass-with-partial-acceptance"
+}

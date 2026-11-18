@@ -5,7 +5,7 @@ This note covers the startup component `OrderingProviderBindings`, its connectio
 There are two stages:
 
 1. **Component (assignment 19).** Authored from `00f600dcd` (API tree matches integration `461049f73`) and committed as `0f9a547b7`. The parent ran `-Dtest=OrderingProviderBindingsTest`: **8 passed, 0 failures, errors or skips**. It was independently reviewed (PASS) and integrated as `f0f3cff25`.
-2. **Connection (assignment 20).** Authored from `0f9a547b7`. The Russell lane released `OrderingSelection.java`, `OrderingServiceHolder.java` and the ordering keys of `application.properties` to F481 at 10:40 UTC (`dispatcher-learnings.md` at `c9bd31efa`). **The stage 2 edits and both stage 2 tests below are authored and not compiled or run.** The stage 1 pass applies only to `0f9a547b7`.
+2. **Connection (assignment 20).** Authored from `0f9a547b7`. The Russell lane released `OrderingSelection.java`, `OrderingServiceHolder.java` and the ordering keys of `application.properties` to F481 at 10:40 UTC (`dispatcher-learnings.md` at `c9bd31efa`). **Parent validation of frozen stage 2 source `2f93f830b0e` passed all 11 selected methods; details below.** The stage 1 pass applies only to `0f9a547b7`.
 
 With stage 2, `gcsp.ordering.provider=remote` is selectable at application startup.
 
@@ -86,19 +86,33 @@ With `none` or `synthetic` the URL keys are not read for validation, so the comp
 
 This is startup-boundary evidence only. It has no database, no JWT and no claim-to-order or order-status journey.
 
-### Proposed finite run, parent-owned
+### Selected finite validation, parent-owned
 
-Two chunks, with no PostgreSQL and no network beyond owned loopback stubs. Both need the module's JDK 21 tooling, not host `javac` 11.
+The parent selected all 11 methods in one finite fork/profile, with no PostgreSQL and no network beyond owned loopback stubs. The run used the module's JDK 21 tooling, not host `javac` 11.
 
 1. `-Dtest=OrderingProviderBindingsTest` plus `OrderingSelectionTest`: plain JUnit, 10 methods.
 2. `-Dtest=RemoteOrderingStartupTest`: one Quarkus boot, 1 method.
 
 Expect seconds to well under a minute, and well under 256 MiB of scratch. The only owned resources are the in-process `HttpServer`s and clients, all stopped in `finally`, `close` or the resource's `stop`.
 
-**Least-certain assertion.** In `RemoteOrderingStartupTest`, "no ordering request at startup" is read from the stub's own `/stats` counter, and the token check depends on the adapter sending `Authorization: Bearer <token>` on reconcile. Both follow from the source but have not been executed.
+**Least-certain assertion.** In `RemoteOrderingStartupTest`, "no ordering request at startup" is read from the stub's own `/stats` counter, and the token check depends on the adapter sending `Authorization: Bearer <token>` on reconcile. Both were covered by the subsequent passing parent run.
 
 ## Still open
 
-- **Both original acceptance criteria stay open.** Remote ordering is now selectable at startup (stage 2, unrun). No connected claim, signed-in decision and order/status journey through the remote substitute has been shown.
+- **Both original acceptance criteria stay open.** Remote ordering is now selectable at startup (stage 2, validated below). No connected claim, signed-in decision and order/status journey through the remote substitute has been shown.
 - The full journey still needs the account policy binding: `AccountSelection` supplies the refusing policy port, which the Russell F458 lead owns. The hosted dev environment is absent, per Gary.
 - The F477 M1 / FUCQ-515 hold continues, and Bugs 513-516 remain capture-only.
+
+## Historical component validation (stage 1)
+
+At frozen source `0f9a547b739e7776d4497b3b0e0c663ae97e8619`, all eight named `OrderingProviderBindingsTest` methods passed with zero failures, errors or skips in 16.1 seconds. The offline Maven run used JDK 21, one test fork, no PostgreSQL and one in-process loopback listener. This covers the authored client termination and synthetic refusing-datasource assertions. Independent Imhotep 2 source review found no blocking or major issue. Parent verified source/tool pins matched, all 39 recorded child identities and four process groups were absent, owned scratch was removed and the host reservation was released. Peak observed RSS was 622,411,776 bytes and scratch 49,251,488 bytes.
+
+This is scoped component evidence. At that stage the selector and holder remained unconnected, so remote application startup and both original acceptance criteria remain open. The source/test code is identical to the frozen checkpoint; this note adds the parent result and ownership update.
+
+## Parent connection validation (stage 2), 17 November 2026
+
+At frozen source `2f93f830b0e5f5d06d4596f59a9003bad4d53d5d`, the parent ran eight binding methods, two unchanged selector methods and the one real Quarkus startup method together. **11 passed, zero failures, errors or skips**, native exit 0 in 19.4 seconds. The selected started test used the actual CDI selector/bindings/holder and owned loopback substitute, with persistence disabled. It verifies zero startup ordering requests and a bearer-authenticated reconciliation through the selected port. It does not execute the Holder service against PostgreSQL.
+
+Independent Imhotep 2 source review found no blocking or major issue (requested/selected `gpt-6.1-sol` / high, no fallback, descendants or reviewer runtime). The parent matched frozen source/tool pins and independently observed all 42 recorded child identities plus supervisor, four groups, owned scratch and reservation absent. Peak RSS was 824,868,864 bytes; scratch 49,558,944 bytes. Retained receipts: `.claude/fucq481-ordering-startup-parent-audit-1053.json`, `.claude/results/fucq481-ordering-startup-review-28.json` and `.claude/test-runs/receipts/fucq481/ordering-startup-1053/20261117T105704-fucq481-ordering-startup-1053-unit.json`.
+
+All five source/test/config files match the tested freeze byte for byte. Only this note adds factual validation and retained stage 1 history. The worker reports `claude-opus-5-5` / high in the existing successor session; effective settings are independently unverified. Both original criteria, connected database/JWT ordering and full order-status journey remain open. No OneDrive access occurred.

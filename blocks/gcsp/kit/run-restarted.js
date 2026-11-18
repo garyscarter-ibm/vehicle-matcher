@@ -28,7 +28,7 @@ export function runRestartedNotice({ reload = defaultReload } = {}) {
 }
 
 /** For the offer link, where a reload would not restore the session: one link back to the account. */
-export function accessLapsedScreen({ next = '/gcsp-account.html' } = {}) {
+export function accessLapsedScreen({ next = '/gcsp/login' } = {}) {
   return statusScreen({ title: ACCESS_LAPSED_TITLE, message: ACCESS_LAPSED_MESSAGE, role: 'alert',
     actions: [button({ label: 'Open your account', href: next })] });
 }

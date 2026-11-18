@@ -19,14 +19,18 @@ final class HrExportFixture {
     /** One export holding one person per golden (a golden with no manual context contributes nobody). */
     static ObjectNode export(List<GoldenFixture> goldens) {
         GoldenFixture first = goldens.get(0);
-        ObjectNode root = GoldenFixture.JSON.createObjectNode().put("schema", HrSnapshotRecords.SCHEMA);
-        root.putObject("extract").put("environment", first.scope.environmentId()).put("run", first.scope.runId())
-                .put("generatedAt", first.now);
-        ArrayNode people = root.putArray("people");
+        List<ObjectNode> people = new ArrayList<>();
         for (GoldenFixture g : goldens) {
-            if (g.input.get("manualContext").isNull()) continue;
-            people.add(person(g));
+            if (!g.input.get("manualContext").isNull()) people.add(person(g));
         }
+        return export(first.scope.environmentId(), first.scope.runId(), first.now, people);
+    }
+
+    static ObjectNode export(String environment, String run, String generatedAt, List<ObjectNode> people) {
+        ObjectNode root = GoldenFixture.JSON.createObjectNode().put("schema", HrSnapshotRecords.SCHEMA);
+        root.putObject("extract").put("environment", environment).put("run", run).put("generatedAt", generatedAt);
+        ArrayNode list = root.putArray("people");
+        people.forEach(list::add);
         return root;
     }
 
@@ -35,16 +39,22 @@ final class HrExportFixture {
         Files.write(file, GoldenFixture.JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(export));
     }
 
-    private static ObjectNode person(GoldenFixture g) {
-        JsonNode m = g.input.get("manualContext");
+    static ObjectNode person(GoldenFixture g) {
+        return person(g.scope.employeeId(), g.scope.companyId(), g.scope.schemeId(), g.scope.gradeId(),
+                g.scope.entitlementSlotId(), g.input.get("manualContext"), g.input.get("slots"), g.input.get("employeeVersion"));
+    }
+
+    /** slots are flat entitlement slots (slot id key entitlementSlotId, the record's extra keys alongside). */
+    static ObjectNode person(String employeeId, String company, String scheme, String grade, String entitlementSlot,
+            JsonNode m, JsonNode slots, JsonNode recordVersion) {
         JsonNode acc = m.get("account");
         ObjectNode p = GoldenFixture.JSON.createObjectNode();
-        p.put("personnelNumber", g.scope.employeeId());
+        p.put("personnelNumber", employeeId);
         p.set("employeeRef", acc.get("employeeId"));
         p.set("displayName", acc.get("name"));
         p.set("staffNumber", acc.get("employeeNumber"));
-        p.putObject("membership").put("company", g.scope.companyId()).put("scheme", g.scope.schemeId())
-                .put("grade", g.scope.gradeId()).put("entitlementSlot", g.scope.entitlementSlotId());
+        p.putObject("membership").put("company", company).put("scheme", scheme)
+                .put("grade", grade).put("entitlementSlot", entitlementSlot);
         p.set("recordSet", m.get("recordSetId"));
         p.set("provenance", provenance(m.get("source")));
         p.set("home", acc.get("address"));
@@ -86,7 +96,7 @@ final class HrExportFixture {
         ArrayNode none = p.putArray("schemesWithoutHistory");
         empty.forEach(none::add);
         ArrayNode entitlements = p.putArray("entitlements");
-        for (JsonNode s : g.input.get("slots")) {
+        for (JsonNode s : slots) {
             ObjectNode e = entitlements.addObject();
             e.set("slot", s.get("entitlementSlotId"));
             e.set("capacity", s.get("capacity"));
@@ -98,7 +108,7 @@ final class HrExportFixture {
             e.set("createdAt", s.get("createdAt"));
             e.set("updatedAt", s.get("updatedAt"));
         }
-        p.set("recordVersion", g.input.get("employeeVersion"));
+        p.set("recordVersion", recordVersion);
         return p;
     }
 

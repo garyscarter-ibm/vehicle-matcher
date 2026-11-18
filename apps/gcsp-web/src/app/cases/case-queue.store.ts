@@ -1,14 +1,14 @@
 import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { CaseClient, CaseClientResult, CaseCommandRemedy, UpdateCaseCommand } from './case.client';
-import { carOptionNames, caseStatusLabel, caseTime, projectCase } from './case.projection';
-import { CaseDisplay, CaseOptions, CaseScope, CaseStatus } from './case.types';
+import { carOptionNames, caseStatusLabel, caseTime, preferenceLabel, projectCase } from './case.projection';
+import { CaseDisplay, CaseOptions, CasePreferenceOption, CaseScope, CaseStatus } from './case.types';
 
 type Session = Extract<SessionState, { status: 'ready' }>;
 interface Scope { session: Session; key: string; resource: Extract<CaseScope, { audience: 'scheme-team' }> }
-export interface QueueDraft { status: string; reason: string; nextAction: string; dueAt: string; remedyKey: string; decision: string; until: string }
-interface Choice { key: string; label: string; remedy: CaseCommandRemedy | 'manual-decision' | 'contract-extension' }
-const emptyDraft = (): QueueDraft => ({ status: '', reason: '', nextAction: '', dueAt: '', remedyKey: '', decision: '', until: '' });
+export interface QueueDraft { status: string; reason: string; nextAction: string; dueAt: string; remedyKey: string; preferenceValue: string; decision: string; until: string }
+interface Choice { key: string; label: string; remedy: CaseCommandRemedy | CasePreferenceOption | 'manual-decision' | 'contract-extension' }
+const emptyDraft = (): QueueDraft => ({ status: '', reason: '', nextAction: '', dueAt: '', remedyKey: '', preferenceValue: '', decision: '', until: '' });
 interface State {
   scope: Scope | null; phase: 'loading' | 'ready' | 'empty' | 'unavailable' | 'denied' | 'auth-required';
   rows: readonly CaseDisplay[]; selected: string | null; options: CaseOptions | null;
@@ -68,9 +68,15 @@ export class CaseQueueStore {
       if (item.type === 'later-release' && nonempty(item['releaseAt']) && nonempty(item['source'])) choices.push({ key: `later:${i}`,
         label: `Later release: ${caseTime(item['releaseAt'], 'scheme-team')}`, remedy: { type: 'later-release', releaseAt: item['releaseAt'], source: item['source'] } });
     });
+    if (o.preferenceRelaxations.available) o.preferenceRelaxations.items.forEach((item, i) => choices.push({ key: `preference:${i}`,
+      label: `Preference change: ${preferenceLabel(item.path)}`, remedy: item }));
     if (o.manualDecision.available) choices.push({ key: 'manual', label: 'Manual decision', remedy: 'manual-decision' });
     if (o.contractExtension.available) choices.push({ key: 'extension', label: 'Contract extension', remedy: 'contract-extension' });
     return choices;
+  });
+  readonly selectedPreference = computed(() => {
+    const choice = this.choices().find(v => v.key === this.view().draft.remedyKey)?.remedy;
+    return typeof choice === 'object' && choice.type === 'preference-relaxation' && 'valueType' in choice ? choice as CasePreferenceOption : null;
   });
 
   constructor() {
@@ -100,7 +106,7 @@ export class CaseQueueStore {
   }
   edit(field: keyof QueueDraft, value: string): void {
     const s = this.view(); if (s.pending || s.review || s.detailPhase !== 'ready') return;
-    this.snapshot.update(v => ({ ...v, draft: { ...v.draft, [field]: value, ...(field === 'remedyKey' ? { decision: '', until: '' } : {}) }, errors: {} }));
+    this.snapshot.update(v => ({ ...v, draft: { ...v.draft, [field]: value, ...(field === 'remedyKey' ? { decision: '', until: '', preferenceValue: '' } : {}) }, errors: {} }));
   }
   review(): boolean {
     const s = this.view(); const scope = this.currentScope();
@@ -121,7 +127,15 @@ export class CaseQueueStore {
       const end = s.options.options.contractExtension.contractEndDate;
       if (!/^\d{4}-\d\d-\d\d$/.test(d.until) || !end || d.until <= end || d.until <= s.options.asOf.slice(0, 10) || !Number.isFinite(Date.parse(d.until)) || new Date(d.until).toISOString().slice(0, 10) !== d.until) errors.until = 'Choose a future date after the actual contract end.';
       remedy = { type: 'contract-extension', until: d.until };
-    } else if (choice) remedy = choice.remedy;
+    } else if (typeof choice?.remedy === 'object' && choice.remedy.type === 'preference-relaxation' && 'valueType' in choice.remedy) {
+      const option = choice.remedy as CasePreferenceOption;
+      const value = option.valueType === 'enum' ? /^\d+$/.test(d.preferenceValue) ? option.values?.[Number(d.preferenceValue)] : undefined : Number(d.preferenceValue);
+      const held = Array.isArray(option.before) ? option.before.includes(value) : option.before === value;
+      if (!d.preferenceValue || value === undefined || held || option.valueType === 'slider'
+        && (typeof value !== 'number' || !Number.isInteger(value) || value < option.minimum! || value > option.maximum!)) {
+        errors.preferenceValue = 'Choose a different preference value supplied by the server.';
+      } else remedy = { type: 'preference-relaxation', decisionId: option.decisionId, expectedBriefVersion: option.expectedBriefVersion, path: option.path, value };
+    } else if (choice) remedy = choice.remedy as CaseCommandRemedy;
     if (!remedy && !s.options.case.remedy && ['remedy-proposed', 'resolved'].includes(d.status)) errors.remedyKey = 'Choose a permitted remedy before proposing or resolving this case.';
     if (Object.keys(errors).length) { this.snapshot.update(v => ({ ...v, errors })); return false; }
     try {

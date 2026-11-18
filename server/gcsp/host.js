@@ -14,16 +14,15 @@ import { createStaticVersioning, splitVersioned } from './static-version.js';
 export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const SESSION_PAGES = ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-order-progress-live.html', '/gcsp-account.html',
-  '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html', '/gcsp-outbox.html'];
+const SESSION_PAGES = ['/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html'];
 const sessionPage = (path) => SESSION_PAGES.includes(path);
 const LOGIN_PATH = '/gcsp/login';
 const loginPage = (path) => [LOGIN_PATH, '/gcsp-login.html'].includes(path);
-const presenterPage = (path) => ['/gcsp-presenter.html', '/gcsp-outbox.html'].includes(path);
+const presenterPage = (path) => path === '/gcsp-presenter.html';
 const gregPage = (path) => ['/gcsp-greg.html', '/gcsp-case-queue.html'].includes(path);
 const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
-  : context?.roles?.includes('employee') ? '/gcsp-account.html' : LOGIN_PATH;
-const publicPath = (path) => loginPage(path) || sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css'].includes(path)
+  : context?.roles?.includes('employee') ? '/gcsp-help.html' : LOGIN_PATH;
+const publicPath = (path) => loginPage(path) || sessionPage(path) || path === '/gcsp-employee.css'
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // The launcher's composition, shared. Callers pass only the defaults that differ.
@@ -96,7 +95,7 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
           redirect(res, destination); return;
         }
       }
-      const assetPath = path === '/gcsp/offer' ? '/gcsp-offer.html' : loginPage(path) ? '/gcsp-login.html' : path;
+      const assetPath = loginPage(path) ? '/gcsp-login.html' : path;
       const file = resolve(root, `.${assetPath}`);
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
       if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== assetPath

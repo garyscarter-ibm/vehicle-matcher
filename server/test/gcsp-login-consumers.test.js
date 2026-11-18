@@ -5,7 +5,6 @@ import { JSDOM } from 'jsdom';
 import { createAccountHttpAdapter as createShellAccountAdapter } from '../../blocks/gcsp/shell/account-runtime.js';
 import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
 import { createGregHttpAdapter } from '../../blocks/gcsp/greg/http-adapter.js';
-import { ACCOUNT_SNAPSHOT } from '../../blocks/gcsp/account/fixtures.js';
 
 let dom;
 let employee;
@@ -25,9 +24,8 @@ after(() => dom.window.close());
 const tick = () => new Promise((done) => setTimeout(done, 0));
 const response = (value, status = 200) => ({ status, ok: status < 400, json: async () => value });
 const liveAccount = () => {
-  const result = structuredClone(ACCOUNT_SNAPSHOT);
-  result.value.account.name = 'Ada Longworth'; result.value.account.contact.email = 'ada.longworth@gcsp-demo.com';
-  return result;
+  return { status: 'ok', value: { state: 'ready', account: { employeeId: 'employee-ada', name: 'Ada Longworth', roles: ['employee'], gradeId: 'G7',
+    contact: { phone: '01632 960000', email: 'ada.longworth@gcsp-demo.com' } }, drivers: [], contracts: [], slots: [], actions: [] } };
 };
 const host = () => { const root = document.createElement('div'); document.body.append(root); return root; };
 
@@ -57,14 +55,6 @@ test('named employee custom element fixtures never offer live sign-out', async (
   await new Promise((done) => setTimeout(done, 500));
   assert.ok(element.querySelector('.gcsp-account-name'));
   assert.equal(element.querySelector('.gcsp-account-signout'), null); element.remove();
-});
-
-test('live account screen carries the durable profile email into its menu', async () => {
-  const { mountAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
-  const root = host();
-  const stop = mountAccount(root, { adapter: { readAccount: async () => liveAccount(), readDraft: async () => ({ status: 'not-found' }) } });
-  await tick(); await tick();
-  assert.equal(root.querySelector('.gcsp-account-email')?.textContent, 'ada.longworth@gcsp-demo.com'); stop();
 });
 
 test('Greg HTTP identity loader reads the current session context with no fixed person', async () => {

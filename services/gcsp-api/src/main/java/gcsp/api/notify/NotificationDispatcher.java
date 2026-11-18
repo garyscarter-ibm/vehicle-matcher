@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import javax.sql.DataSource;
 import org.jboss.logging.Logger;
 
@@ -53,12 +54,18 @@ public final class NotificationDispatcher {
     private final DeliveryRules rules;
     private final OfferFacts facts;
     private final MailTransport transport;
-    private final InstantSource clock;
+    private final Function<RunContext, Instant> clock;
     private final String environmentId;
     private final Optional<URI> base;
 
     public NotificationDispatcher(DataSource dataSource, DeliveryRules rules, OfferFacts facts, MailTransport transport,
             InstantSource clock, String environmentId, Optional<String> publicBaseUrl) {
+        this(dataSource, rules, facts, transport, ctx -> clock.instant(), environmentId, publicBaseUrl);
+    }
+
+    /** The clock gives each run's now; null means no trustworthy now, and the drain is unavailable. */
+    public NotificationDispatcher(DataSource dataSource, DeliveryRules rules, OfferFacts facts, MailTransport transport,
+            Function<RunContext, Instant> clock, String environmentId, Optional<String> publicBaseUrl) {
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
         this.rules = rules;
@@ -85,11 +92,12 @@ public final class NotificationDispatcher {
         try {
             Optional<String> runId = activeRun();
             if (runId.isEmpty()) return new DispatchResult.Unavailable();
-            Instant now = clock.instant();
+            RunContext ctx = new RunContext(environmentId, runId.get(), ACTOR);
+            Instant now = clock.apply(ctx);
+            if (now == null) return new DispatchResult.Unavailable();
             if (!(rules.read(runId.get(), now) instanceof DeliveryRules.Rules r) || !r.valid()) {
                 return new DispatchResult.Unavailable();
             }
-            RunContext ctx = new RunContext(environmentId, runId.get(), ACTOR);
             int[] counts = new int[3];
             for (Candidate candidate : due(ctx, now)) {
                 Flow flow = attempt(ctx, r, now, candidate, counts);

@@ -8,6 +8,9 @@ import { ComparisonClient } from './comparison.client';
 import { COMPARISON_EXPERIMENTS, ComparisonCatalogue, ComparisonDifference, ComparisonExperimentId, ComparisonFailure, ComparisonJob, ComparisonResponse, ComparisonStartInput, ComparisonStartResponse, ComparisonStats } from './comparison.types';
 
 type Phase = 'loading' | 'ready' | ComparisonFailure['status'];
+// Survives the sign-in redirect after expiry; same tab, same account and run only.
+const PROGRESS_KEY = 'gcsp:comparison:saved-progress';
+interface SavedProgress { readonly owner: string; readonly selectedId: ComparisonExperimentId; readonly value: string; readonly basis: string; readonly command: ComparisonStartInput | null }
 const LABELS: Record<ComparisonExperimentId, string> = { 'process-only': 'Process only', 'order-mix': 'Order mix', points: 'Points allowance', 'hold-sweep': 'Hold duration' };
 const MEASURES: Record<string, string> = { acceptableCoverage: 'Covered before renewal', carsNeverAllocated: 'Cars never allocated', heldNotTakenCarDays: 'Car time held but not taken', declinedOffers: 'Offers declined', expiredOffers: 'Offers expired', failedClaims: 'Holds that expired untaken', retries: 'Retries after a lost claim', meanAcceptedFit: 'Calculated fit of accepted cars' };
 const VERDICTS: Record<string, string> = { 'buddy-better': 'Buddy route better', 'current-better': "Today's release route better", 'variant-better': 'Tried value better', 'baseline-better': "Today's value better", 'no-clear-difference': 'No clear difference', 'insufficient-seeds': 'Too few seeds to compare' };
@@ -63,9 +66,9 @@ export class ComparisonComponent implements OnDestroy {
         this.cancel(); this.snapshot.set(s); this.catalogue.set(null); this.currentJob.set(null); this.reruns.set(false); this.phase.set('loading'); this.commandBusy.set(false);
         if (s.status === 'ready') {
           const next = `${s.context.environmentId}|${s.context.runId}|${s.context.subject}|${[...s.context.roles].sort().join(',')}`;
-          if (this.owner !== next) { this.clearDraft(); this.selectedId.set('process-only'); this.owner = next; }
+          if (this.owner !== next) { this.clearDraft(); this.selectedId.set('process-only'); this.owner = next; this.restoreProgress(next); }
           if (s.context.roles.some(r => r === 'greg' || r === 'presenter')) void this.load();
-        } else if (s.status === 'signed-out' || s.status === 'denied') { this.owner = ''; this.clearDraft(); }
+        } else if (s.status === 'signed-out' || s.status === 'denied') { this.keepProgress(s.status === 'signed-out' && this.auth.recovery() !== null); this.owner = ''; this.clearDraft(); }
       });
     });
     document.addEventListener('visibilitychange', this.visibilityChanged);
@@ -136,6 +139,18 @@ export class ComparisonComponent implements OnDestroy {
     else { this.commandError.set(response.reason); this.fieldErrors.set(response.reasons ?? []); this.uncertain.set(response.writeOutcome === 'unknown'); if (!this.uncertain()) this.pendingCommand = null; if (response.jobId) { this.currentJob.set(null); void this.inspectBusy(response.jobId); } if (['authentication-required', 'forbidden', 'stale-run', 'account-changed'].includes(response.status)) this.acceptJobFailure(response); }
   }
   private async inspectBusy(jobId: string): Promise<void> { const mine = this.generation; const s = this.auth.state(); const request = this.controller(); const response = await this.safe(() => this.client.readJob({ signal: request.signal, jobId })); this.requests.delete(request); if (!this.valid(mine, s, request)) return; if (response.status === 'ok' && response.value.job?.jobId === jobId) { this.currentJob.set(response.value.job); this.reruns.set(response.value.reruns); this.schedulePoll(); } else this.jobError.set('The running comparison could not be read. Refresh to check it.'); }
+  private keepProgress(expired: boolean): void {
+    const saved: SavedProgress = { owner: this.owner, selectedId: this.selectedId(), value: this.valueDraft(), basis: this.basisDraft(), command: this.pendingCommand };
+    try { if (expired && this.owner) sessionStorage.setItem(PROGRESS_KEY, JSON.stringify(saved)); else sessionStorage.removeItem(PROGRESS_KEY); } catch { /* Storage refused: progress stays in memory only. */ }
+  }
+  private restoreProgress(owner: string): void {
+    let saved: SavedProgress | null = null;
+    try { const raw = sessionStorage.getItem(PROGRESS_KEY); sessionStorage.removeItem(PROGRESS_KEY); saved = raw ? JSON.parse(raw) as SavedProgress : null; } catch { saved = null; }
+    if (!saved || saved.owner !== owner || !COMPARISON_EXPERIMENTS.includes(saved.selectedId)) return;
+    this.selectedId.set(saved.selectedId); this.valueDraft.set(String(saved.value ?? '')); this.basisDraft.set(String(saved.basis ?? ''));
+    // A restored command is only ever resent by the explicit retry control.
+    if (saved.command) { this.pendingCommand = saved.command; this.uncertain.set(true); }
+  }
   private clearDraft(): void { this.valueDraft.set(''); this.basisDraft.set(''); this.pendingCommand = null; this.uncertain.set(false); this.commandError.set(''); this.fieldErrors.set([]); }
   private stopTimer(): void { if (this.timer !== null) clearTimeout(this.timer); this.timer = null; }
   private cancel(): void { this.generation++; this.stopTimer(); for (const request of this.requests) request.abort(); this.requests.clear(); }

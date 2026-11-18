@@ -94,6 +94,39 @@ final class PgFixture implements AutoCloseable {
         }
     }
 
+    /** MD5 over every base table in the fixture's schema, read from information_schema, rows ordered by text. */
+    String allTablesDigest() throws SQLException {
+        return allTablesDigest(pool(), schema);
+    }
+
+    /** The same all-table digest for any schema, such as the one a started app owns. */
+    static String allTablesDigest(PGSimpleDataSource ds, String schema) throws SQLException {
+        StringBuilder all = new StringBuilder();
+        try (Connection c = ds.getConnection()) {
+            java.util.List<String> tables = new java.util.ArrayList<>();
+            try (PreparedStatement ps = c.prepareStatement("SELECT table_name FROM information_schema.tables "
+                    + "WHERE table_schema = ? AND table_type = 'BASE TABLE' ORDER BY 1")) {
+                ps.setString(1, schema);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) tables.add(rs.getString(1));
+                }
+            }
+            for (String t : tables) {
+                try (var rs = c.createStatement().executeQuery("SELECT coalesce(string_agg(x::text, '|' ORDER BY x::text), '') FROM \""
+                        + schema + "\".\"" + t + "\" x")) {
+                    rs.next();
+                    all.append(t).append('=').append(rs.getString(1)).append('\n');
+                }
+            }
+        }
+        try {
+            return java.util.HexFormat.of().formatHex(
+                    java.security.MessageDigest.getInstance("MD5").digest(all.toString().getBytes()));
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     String text(String sql, Object... params) throws SQLException {
         try (Connection c = pool().getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) ps.setObject(i + 1, params[i]);

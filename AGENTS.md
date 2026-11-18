@@ -8,6 +8,25 @@ limits and report any check that cannot proceed under this restriction. Pass thi
 delegated worker and future dispatcher pass. Do not access OneDrive to verify cleanup; use previously retained
 local evidence with its observation time. Only a later explicit human instruction may lift this restriction.
 
+## Independent Claude poller — Gary, 18 November 2026
+
+Claude runs as an independent peer developer and poller. The previous arrangement in which Codex delegated
+delivery assignments to a retained Claude coordinator is discontinued. Coordinate through the existing inbox,
+claims, file ownership, shared resource reservations and Git workflow. Preserve each poller's current work and
+checkpoints; this direction does not transfer Story ownership or change acceptance scope. Earlier instructions
+to maintain or restart the Claude delegation queue are superseded.
+
+## Delivery autonomy — Gary, 17 November 2026
+
+Give delivery leads coherent increments with enough work to use parallel agents or distinct working sessions
+when measured capacity and file ownership permit. Let the delivery lead divide the work, run the necessary
+scoped validation and carry the increment through review. Keep that authority through handovers.
+
+Do not add single-file, source-only, no-child, fixed-session or repeated parent-approval limits without an
+explicit human instruction or a concrete scope, ownership, technical or resource reason. An earlier dispatcher
+restriction is not authority for continuing it. Remove an unjustified limit rather than repeatedly asking a
+collaborator to lift it. Existing Story acceptance, specific holds, access restrictions and resource rules apply.
+
 ## Shared dispatcher learnings
 
 Gary's direction, 14 November 2026: both pollers maintain `docs/gcsp/dispatcher-learnings.md` so observed
@@ -126,6 +145,75 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   in each contributing clone, and IBM Pages serves the committed static files from main.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
+
+## Story test set
+
+Ruled 2026-11-17 (Russell): a story runs a focused set; the full suites run once per batch of merges, in the poller's
+batch run (dev-inbox step E), not per story. The intent is less machine time per story, not a lower bar for done: a
+story is not ready for acceptance until a green batch run covers its merge. This replaces any story-lead's own
+"agreed integration checkpoint". Every agent applies it, and every story-lead brief carries it.
+
+Run once at the end on the story branch, with one throwaway native PostgreSQL 17 you own (never a Render database),
+`GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set as in `services/gcsp-api/README.md`:
+
+1. **The story's own packages**, Java: `./mvnw -B test -Dtest='gcsp.api.<package>.**'` in `services/gcsp-api`, one
+   pattern per package, comma-separated in one run. Node: `node --test --test-concurrency=1 server/test/<file>.test.js`
+   for each module it owns. Angular (`apps/gcsp-web`): that app's own test command for the changed feature folder.
+2. **Every other package it edited**, the same way.
+3. **Callers of a changed contract:** for a changed port, record, HTTP shape, migration or shared fixture, the
+   packages that use it (`grep -rl` the type or route under `services/gcsp-api/src` and `apps/gcsp-web/src`), and the
+   Node parity tests in `services/gcsp-api/src/test/parity` that replay it.
+4. **One end-to-end test per acceptance item**, on the real composition: the `@QuarkusTest` `*HttpTest` in that
+   package started under an OIDC profile (`OidcTestProfile`, `JwksServerResource`: real signed test tokens sent as
+   `Authorization: Bearer`) against the native PostgreSQL above. A `*NoDatabase*`, `*NoProvider*` or `*LiveStub*`
+   test proves the refusal path only; it does not meet an item. A missing end-to-end test is written in the story.
+5. **Startup and wiring:** `DefaultProfileTest`, `OidcContextTest`, `OidcIdentityTest`, `IdentitySelectionTest`,
+   `persistence.PersistenceWiringTest`, `persistence.NotConfiguredReadinessTest`, `claims.ClaimWiringTest`,
+   `notify.NotificationDrainWiringTest`, `appointments.AppointmentsWiringTest`, `ordering.RemoteOrderingStartupTest`.
+
+**The full suite on a story** only for a Flyway migration, a new startup thread or CDI producer, shared
+`application.properties`, `pom.xml` or the Maven wrapper, or the test profiles and support classes themselves. Name
+which in `validation scope`. A story whose `validate` says `npm test`, `./mvnw -B verify` or "the full suite" with no
+such reason writes `full suite: deferred to batch`.
+
+**The batch run** is shared: any collaborator's poller claims a due suite with `_tools/scaffold_git.py batch claim`,
+so exactly one machine runs it (dev-inbox step E). The suites are `inbox.suites` in `.claude/scaffolding.json`:
+`node` (`npm test`), `java` (`./mvnw -B clean verify` in `services/gcsp-api`, against a fresh throwaway PostgreSQL 17
+with `GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set) and `web` (`npm ci && npm test` in
+`apps/gcsp-web`). Each is due only on merges touching its paths, and each needs its own green line. A machine without
+JDK 21 or PostgreSQL 17 skips `java` for another poller to take. There is no browser suite yet: the first story with an
+acceptance item checked on a screen creates it (a scripted Playwright test that starts the app and signs in), and
+registers it with `set-inbox --suite web-e2e=...;kind=browser`. The `scripts/gcsp/walk-*.mjs` walk-throughs are one-off
+evidence, not that suite. Known order-dependent failures (`PresenterClockHttpTest`, `AppointmentServiceTest` on
+2026-11-13) get a Bug and are named in `_dev/batches.md`, not retried until green.
+
+## Shared local test stack — Gary, 18 November 2026
+
+This 16 GB Mac can't afford a new PostgreSQL cluster, `npm ci` and builds on every run. Every local story run, proof
+and batch run uses the shared stack instead. State lives in `~/Library/Caches/gcsp-test-stack` (never OneDrive).
+
+- **PostgreSQL:** `python3 -B _tools/test_stack.py pg up` starts or reuses one cluster. Then
+  `eval "$(python3 -B _tools/test_stack.py pg db create --run <id> [--running] [--owner-pid <pid>])"` sets
+  `GCSP_TEST_DATABASE_URL` (and `GCSP_TEST_RUNNING_DATABASE_URL`) for a fresh database per run, and
+  `pg db drop --run <id>` removes it. A database belongs to the calling shell unless `--owner-pid` names a longer-lived
+  one; `pg gc` drops orphans. Leave the cluster running between runs; `pg down --if-idle` stops it when nothing is held.
+- **Focused Java tests:** `python3 -B _tools/test_stack.py java-test --worktree <wt> --run <id> [--running] --
+  -Dtest='gcsp.api.<package>.**'` takes the heavy slot, then creates and drops `gcsp_test_dev` (and
+  `gcsp_test_running`), the names the `*HttpTest` profiles pin, and caps Maven at 512m
+  and the test JVM at 1g (`--heap` to raise it). Don't cap metaspace: 384m and 1g caps fail.
+- **Node:** `python3 -B _tools/test_stack_build.py node link --app <wt>/apps/gcsp-web` links one install per lockfile in
+  place of `npm ci`; `node unlink` before removing the worktree.
+- **Builds:** `build api --worktree <wt>` and `build web --worktree <wt>` print `PROOF_API_JAR=` and
+  `PROOF_WEB_BROWSER=` for the connected proofs, built once per committed tree and reused (a dirty tree builds in place,
+  uncached). Run `build gc` only between runs.
+- **One heavy run at a time:** wrap anything that starts Java, a proof, Chrome or a full suite in
+  `python3 -B _tools/test_stack.py heavy --label <id> [--ram-gib N] -- <command>`. It waits for the machine-wide slot
+  (exit 75 after `--wait-min`, default 30) and reserves RAM in the shared host budget.
+- **Proof JVMs:** the connected proofs take their API heap from `scripts/gcsp/proof-jvm.mjs` (`PROOF_API_HEAP` raises
+  it for one run). Don't add per-script `-Xmx` flags.
+- **Connected browser checks run once per story**, at the end on the final commit, not on every attempt. Earlier
+  iterations use the focused unit and HTTP tests. Runs that need more than about 3 GiB (FUCQ-452's full-size job) go
+  overnight or to CI, not into a daytime queue.
 
 ## Concepts and mockups
 

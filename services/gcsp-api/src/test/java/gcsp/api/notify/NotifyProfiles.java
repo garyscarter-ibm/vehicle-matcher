@@ -28,7 +28,7 @@ final class NotifyProfiles {
             config.put("quarkus.datasource.jdbc.additional-jdbc-properties.currentSchema", "gcsp_app");
             config.put("quarkus.flyway.schemas", "gcsp_app");
             config.put("gcsp.environment-id", "test-app-env");
-            config.put("gcsp.database.expected-name", "gcsp_test_dev");
+            config.put("gcsp.database.expected-name", NotificationJourneyProfile.databaseName(url));
         }
         return config;
     }

@@ -13,7 +13,7 @@ const api = { emit: (_e, _req, res) => { res.writeHead(418).end('api'); } };
 let server; let origin; let root;
 before(async () => {
   root = await mkdtemp(join(tmpdir(), 'gcsp-v-'));
-  for (const p of ['blocks', 'assets/brand-logos', 'gcsp-presenter.html', 'gcsp-offer.html', 'gcsp-employee.css']) await cp(join(REPO_ROOT, p), join(root, p), { recursive: true });
+  for (const p of ['blocks', 'assets/brand-logos', 'gcsp-presenter.html', 'gcsp-greg.html', 'gcsp-employee.css']) await cp(join(REPO_ROOT, p), join(root, p), { recursive: true });
   server = createServer(); await new Promise((done) => server.listen(0, '127.0.0.1', done));
   origin = `http://127.0.0.1:${server.address().port}`;
   server.on('request', createGcspFront({ root, services, api, origin, fallThrough: true }));
@@ -23,11 +23,11 @@ const get = async (path, headers = {}) => { const r = await fetch(origin + path,
 const versionOf = (html) => /\/_v\/([A-Za-z0-9_-]+)\//.exec(html)?.[1];
 
 test('pages reference static files under the version and preload their whole graph', async () => {
-  const page = await get('/gcsp/offer');
+  const page = await get('/gcsp-greg.html');
   assert.equal(page.status, 200); assert.equal(page.headers.get('cache-control'), 'no-store');
   const v = versionOf(page.text); assert.ok(v);
   assert.doesNotMatch(page.text, /(src|href)="\.?\/(blocks|assets)\//);
-  assert.match(page.text, new RegExp(`<script type="module" src="/_v/${v}/blocks/gcsp/offer/entry-harness.js">`));
+  assert.match(page.text, new RegExp(`<script type="module" src="/_v/${v}/blocks/gcsp/greg/harness.js">`));
   const preloads = [...page.text.matchAll(/rel="modulepreload" href="([^"]+)"/g)].map((m) => m[1]);
   assert.ok(preloads.length > 40, `${preloads.length} modulepreloads`);
   assert.ok(preloads.includes(`/_v/${v}/blocks/vehicle-matcher/ui.js`));

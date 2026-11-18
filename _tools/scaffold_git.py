@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.5.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.6.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -44,6 +44,9 @@ Subcommands
                            line each; read-only. P (e.g. story/) limits it to leases under refs/leases/P
   pen take|renew|release|status|sync
                            the pen: one data writer's Mac at a time writes the protected paths (see "The pen")
+  batch claim|renew|release|status
+                           the batch-run lease: one poller on any machine runs each full test suite for a base commit
+                           (see "Batch runs")
   guard                    offline: exit 0 when this machine may write the protected paths, else exit 2 with the reason
                            (see "Protected paths and the merge check")
 
@@ -92,7 +95,8 @@ Extension: <project>/_tools/scaffold_ext.py, optional
 
 One command at a time per checkout
 ----------------------------------
-pull, refresh, merge, claim, claim-release, commit, drop-branch, worktree and the pen's take, renew, release and sync each hold a
+pull, refresh, merge, claim, claim-release, commit, drop-branch, worktree, the pen's take, renew, release and sync and batch
+claim, renew and release each hold a
 mutex for their whole run: fcntl.flock on `scaffold-git.mutex` in the shared checkout's git common dir (so every worktree
 of the repository shares it; the name does not end `.lock`, so no sweep touches it). A command that finds it held retries
 for up to 30 seconds, then exits 2 "another scaffold_git.py command is running in <root>". It is re-entrant within one
@@ -206,6 +210,40 @@ push an arbitrary ref.
                decided from <remote>/<base> after a fetch (list-tree), never from the local working tree, which may be
                stale; if the fetch fails it refuses (3) rather than guess
 
+Batch runs
+----------
+Several dev pollers, on any machines, may each finish a story and want the project's full test suite run; one should run it
+and the others reuse its result. The batch-run lease is the lock: refs/leases/batch/<suite> on the remote, where <suite>
+names the suite (letters, digits, `.`, `_`, `-`). It is per suite, not per base commit: two pollers that pulled at different
+moments compute different base commits, so a lease per base would still let both run. It is the same parentless empty-tree
+commit as the pen and a story claim, whose message is JSON {"login","host","client","base","suite","taken","expires"}, written
+only by compare-and-swap pushes. `base` is the full commit id the holder runs the suite against: recorded and shown, never
+part of the ref. The lease expires: a holder that died stops blocking everyone once its TTL has passed. It is never
+restricted to the team owner or to data writers: any member, or a single-player clone with a remote, may hold one. `login`
+is the member's login in team mode, else git's user.email (or `local`). A lease is ours when login and client both match,
+as for the pen.
+  batch claim --base SHA --suite NAME --ttl SECONDS
+               create the lease (create-only push). Held by someone else and unexpired (for any base): refused (2) with
+               `TAKEN batch <suite> @<base8> by <login> on <host> until <expires>` (<base8> is the holder's base). Expired
+               (or its message is not readable): replaced by a compare-and-swap against its commit, and the answer ends
+               `(TAKEN OVER expired lease of <login>)`. Already ours: renewed, with the new base. Done: `CLAIMED batch
+               <suite> @<base8> until <expires>` (exit 0). Losing the race to another live holder is exit 2; a push git
+               reports as failed that nevertheless landed is done. SHA must be a full lowercase hex commit id that exists
+               in this clone (else 2); SECONDS is 60 to 86400.
+  batch renew  --suite NAME --ttl SECONDS [--base SHA]
+               extend our own lease from now (compare-and-swap against its commit), keeping its base unless --base gives a
+               new one: `RENEWED batch ...`. 2 when the lease is not ours or gone (`the batch lease is no longer ours
+               (...)`), 3 when git failed.
+  batch release --suite NAME [--base SHA]
+               delete our own lease; 0 also when it is already gone; 2 when it is someone else's (expired or not). --base is
+               accepted and checked for form, nothing more.
+  batch status [--suite NAME]
+               read-only; one line per batch lease, tab-separated: suite, base, login, host, expires, `live` or `expired`;
+               `none` when there are none.
+Without a remote (no remote of that name is configured), claim, renew and release exit 0 with `BATCH lease not used: no
+remote` and write nothing, and status prints `none`: one clone cannot race itself. Library: batch_claim, batch_renew,
+batch_release, batch_status (root, suite, ... , now=None) returning (rc, message), and batch_ref(suite).
+
 Why this file exists
 --------------------
 Some mounts (OneDrive, Box) refuse unlink ("Operation not permitted") but permit rename. git tolerates a failed
@@ -234,7 +272,7 @@ Exit codes
   0  done, or nothing to do (a claim whose push is pending is 0, and says so)
   2  refused: lock held, no repo-local identity, size guard tripped, wrong branch or checkout, bad settings or arguments,
      a bad team block, no team member on this machine, a story TAKEN by someone else, a lease ref outside refs/leases/, the pen held by
-     someone else, a merge that touches protected paths without a data writer's claim (or without the pen, with several writers),
+     someone else, a batch lease held by someone else or no longer ours, a bad batch --base, --suite or --ttl, a merge that touches protected paths without a data writer's claim (or without the pen, with several writers),
      a merge that changes the team block without the owner's claim, a merge already in progress, another scaffold_git.py
      command holding the checkout's mutex for 30 seconds, an argument starting with `-`, a refusal from pre_merge_checks
   3  git itself failed (including a lease push lost for a reason other than another member's lease; claim-release when
@@ -243,7 +281,7 @@ Cleanup may return non-zero after removing a remote ref or local resource; its m
 Retry drop-branch by ID. Other refused writes leave uncommitted work visible for a human.
 
 Stdlib only. No network except fetch, push, pull, refresh's team ownership check, drop-branch and the lease commands (claim, claim-release, leases,
-pen); guard never touches the network.
+pen, batch); guard never touches the network.
 Session-agnostic: the project root is derived from this file's
 location (<root>/_tools/scaffold_git.py) unless --root is given.
 """
@@ -302,6 +340,10 @@ PEN_SKEW_SECS = 300                 # the guard treats the pen as expired this l
 LOCAL_FILES = (".claude/member.json", ".claude/pen.json", ".claude/pen.json.released", ".claude/pen-wanted.json",
                ".claude/jira-sync.json")      # per-machine files; never committed
 CLONE_NOTE = " (another clone of the same member)"
+BATCH_ROOT = LEASE_ROOT + "batch/"    # refs/leases/batch/<suite>
+BATCH_TTL_MIN, BATCH_TTL_MAX = 60, 86400
+BATCH_UNUSED = "BATCH lease not used: no remote"
+HEX_SHA = re.compile(r"[0-9a-f]{40}|[0-9a-f]{64}")
 
 
 class SettingsError(Exception):
@@ -2364,6 +2406,208 @@ def pen_sync(root, now=None):
     return 0, "pen idle: not held, not wanted (%s)" % _pen_describe(h, now)
 
 
+# ---------------------------------------------------------------- batch runs
+
+def _batch_base_error(base):
+    return None if isinstance(base, str) and HEX_SHA.fullmatch(base) else (
+        "--base must be a full lowercase commit id (40 or 64 hex digits), not %r" % (base,))
+
+
+def batch_ref(suite):
+    """refs/leases/batch/<suite>; raises ValueError for a suite that is not a usable lease path part."""
+    if not isinstance(suite, str) or not LEASE_PART.match(suite) or len(suite) > 64 or ".." in suite \
+            or suite.endswith(".lock"):
+        raise ValueError("--suite %r is not usable: letters, digits and . _ - only, starting with a letter or digit, "
+                         "64 characters at most" % (suite,))
+    return BATCH_ROOT + suite
+
+
+def _batch_login(root):
+    """(login, None), or (None, message): the team member's login in team mode, else git's user.email, else `local`."""
+    if team_block(root):
+        login = member_login(root)
+        return (login, None) if login else (None, "this machine has no team member set (dev_mail.py team --me <login>)")
+    rc, out, _ = git(root, ["--no-optional-locks", "config", "user.email"])
+    return (out.strip() if rc == 0 and out.strip() else "local"), None
+
+
+def _batch_has_remote(root):
+    rc, _, _ = git(root, ["--no-optional-locks", "remote", "get-url", remote_name(root)])
+    return rc == 0
+
+
+def _batch_setup(root, suite, base=None, ttl=None, need_base=False):
+    """(ctx, None) for a batch command that goes ahead, else (None, (rc, message)): 2 for a bad --base, --suite or
+    --ttl (or a bad record), 0 BATCH lease not used when there is no remote. A base is checked for form when given, and
+    must be a commit of this clone when need_base. ctx: ref, base, suite, login."""
+    try:
+        ref = batch_ref(suite)
+    except ValueError as e:
+        return None, (2, str(e))
+    if base is not None or need_base:
+        bad = _batch_base_error(base)
+        if bad:
+            return None, (2, bad)
+    if ttl is not None and (isinstance(ttl, bool) or not isinstance(ttl, int)
+                            or not BATCH_TTL_MIN <= ttl <= BATCH_TTL_MAX):
+        return None, (2, "--ttl must be a whole number of seconds from %d to %d, not %r" % (BATCH_TTL_MIN, BATCH_TTL_MAX, ttl))
+    if need_base:
+        rc, out, _ = git(root, ["--no-optional-locks", "rev-parse", "--verify", "--quiet", base + "^{commit}"])
+        if rc != 0 or out.strip() != base:
+            return None, (2, "--base %s is not a commit in this clone; fetch it first" % base[:12])
+    try:
+        login, bad = _batch_login(root)
+        if bad:
+            return None, (2, bad)
+        if not _batch_has_remote(root):
+            return None, (0, BATCH_UNUSED)
+    except SettingsError as e:
+        return None, (2, str(e))
+    return {"ref": ref, "base": base, "suite": suite, "login": login}, None
+
+
+def _batch_label(suite, base):
+    return "batch %s @%s" % (suite, base[:8]) if isinstance(base, str) and base else "batch %s" % suite
+
+
+def _batch_describe(h, now):
+    return "%s on %s until %s%s" % (h["login"], h.get("host", "?"), h["expires"], "" if h["exp"] > now else " (expired)")
+
+
+def _batch_taken(ctx, h):
+    return "TAKEN %s by %s on %s until %s" % (_batch_label(ctx["suite"], h.get("base")), h["login"], h.get("host", "?"),
+                                              h["expires"])
+
+
+def _batch_not_ours(h, now):
+    return "the batch lease is no longer ours (%s)" % (_batch_describe(h, now) if h else "none")
+
+
+def _batch_lease_commit(root, ctx, taken, now, ttl):
+    rec = {"login": ctx["login"], "host": socket.gethostname(), "client": client_id(root), "base": ctx["base"],
+           "suite": ctx["suite"], "taken": iso(taken), "expires": iso(now + ttl)}
+    rc, msg, sha = lease_commit(root, rec)
+    return (rc, msg, None) if rc != 0 else (0, "", dict(rec, sha=sha))
+
+
+@_serialised
+def batch_claim(root, base, suite, ttl, now=None):
+    """Claim the batch-run lease of `suite` for ttl seconds, recording `base` (the commit the suite runs against): create
+    it, replace it when expired, or renew it when already ours. Returns (rc, message): 0 CLAIMED, 2 refused (TAKEN by a
+    live holder, whatever its base; bad arguments), 3 git failed."""
+    ctx, early = _batch_setup(root, suite, base, ttl, need_base=True)
+    if early:
+        return early
+    now, login, ref = _now(now), ctx["login"], ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    note = ""
+    if h and not lease_ours(root, h, login):
+        if h["exp"] > now:
+            return 2, _batch_taken(ctx, h)
+        note = " (TAKEN OVER expired lease of %s)" % h["login"]
+    taken = (parse_iso(h.get("taken")) or now) if h and not note else now
+    rc, msg, new = _batch_lease_commit(root, ctx, taken, now, ttl)
+    if rc != 0:
+        return rc, msg
+    rc, msg = lease_push(root, ref, new["sha"], h["sha"] if h else "")
+    if rc != 0:
+        rc2, _, h2 = pen_read(root, ref)
+        if rc2 == 0 and h2 and h2["sha"] == new["sha"]:
+            pass                                                # git said failed, but our lease is on the remote
+        elif rc2 == 0 and h2 and not lease_ours(root, h2, login) and h2["exp"] > now:
+            return 2, _batch_taken(ctx, h2)
+        else:
+            return 3, "git push of the batch lease failed: %s" % msg
+    return 0, "CLAIMED %s until %s%s" % (_batch_label(suite, base), new["expires"], note)
+
+
+def _batch_lost(root, ctx, now, msg, sha=None):
+    """A renew or release whose compare-and-swap push failed. Returns (rc, message, landed): landed True when the
+    remote already shows what the push meant to write (the lease commit `sha`, or no lease at all when sha is None);
+    else rc 2 when the lease is no longer ours, 3 when git failed."""
+    rc, _, h = pen_read(root, ctx["ref"])
+    if rc == 0 and (h["sha"] if h else None) == sha:
+        return 0, "", True
+    if rc == 0 and not lease_ours(root, h, ctx["login"]):
+        return 2, _batch_not_ours(h, now), False
+    return 3, "git push of the batch lease failed: %s" % msg, False
+
+
+@_serialised
+def batch_renew(root, suite, ttl, base=None, now=None):
+    """Extend our own batch lease of `suite` to ttl seconds from now, keeping its base unless `base` names a new one.
+    Returns (rc, message): 0 RENEWED, 2 refused (not ours, gone, bad arguments), 3 git failed."""
+    ctx, early = _batch_setup(root, suite, base, ttl, need_base=base is not None)
+    if early:
+        return early
+    now, login, ref = _now(now), ctx["login"], ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    if not lease_ours(root, h, login):
+        return 2, _batch_not_ours(h, now)
+    ctx["base"] = base or h.get("base")
+    rc, msg, new = _batch_lease_commit(root, ctx, parse_iso(h.get("taken")) or now, now, ttl)
+    if rc != 0:
+        return rc, msg
+    rc, msg = lease_push(root, ref, new["sha"], h["sha"])
+    if rc != 0:
+        rc, msg, landed = _batch_lost(root, ctx, now, msg, new["sha"])
+        if not landed:
+            return rc, msg
+    return 0, "RENEWED %s until %s" % (_batch_label(suite, ctx["base"]), new["expires"])
+
+
+@_serialised
+def batch_release(root, suite, base=None, now=None):
+    """Delete our own batch lease of `suite`. Returns (rc, message): 0 released (also when it is already gone), 2 refused
+    (someone else's, bad arguments), 3 git failed."""
+    ctx, early = _batch_setup(root, suite, base)
+    if early:
+        return early
+    now, login, ref = _now(now), ctx["login"], ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    if not h:
+        return 0, "RELEASED %s: no lease" % _batch_label(suite, None)
+    if not lease_ours(root, h, login):
+        return 2, "the batch lease is not ours (%s); nothing to release" % _batch_describe(h, now)
+    rc, msg = lease_push(root, ref, None, h["sha"])
+    if rc != 0:
+        rc, msg, landed = _batch_lost(root, ctx, now, msg, None)
+        if not landed:
+            return rc, msg
+    return 0, "RELEASED %s" % _batch_label(suite, h.get("base"))
+
+
+def batch_status(root, suite=None, now=None):
+    """Read-only. Returns (rc, message): 0 with one tab-separated line per batch lease (suite, base, login, host,
+    expires, live|expired), or `none`; 2 for a bad --suite; 3 git failed. A project with no remote has none."""
+    if suite is not None and not (isinstance(suite, str) and LEASE_PART.match(suite)):
+        return 2, "--suite %r is not usable" % (suite,)
+    try:
+        if not _batch_has_remote(root):
+            return 0, "none"
+    except SettingsError as e:
+        return 2, str(e)
+    now = _now(now)
+    rc, msg, found = lease_list(root, "batch/")
+    if rc != 0:
+        return rc, msg
+    lines = []
+    for h in found:
+        name = h["ref"][len(BATCH_ROOT):]
+        if "/" in name or (suite and name != suite):
+            continue
+        exp = parse_iso(h.get("expires")) or 0
+        lines.append("\t".join([name] + [str(h.get(k) or "-") for k in ("base", "login", "host", "expires")]
+                               + ["live" if exp > now else "expired"]))
+    return 0, "\n".join(lines) or "none"
+
+
 # ---------------------------------------------------------------- the merge check
 
 def _base_story_text(root, base, story_id):
@@ -2721,9 +2965,38 @@ def _pen_commands(sub):
     gd.set_defaults(func=cmd_guard)
 
 
+def cmd_batch(args):
+    root = project_root(args.root)
+    if args.batch_cmd == "claim":
+        return _report(batch_claim(root, args.base, args.suite, args.ttl))
+    if args.batch_cmd == "renew":
+        return _report(batch_renew(root, args.suite, args.ttl, args.base))
+    if args.batch_cmd == "release":
+        return _report(batch_release(root, args.suite, args.base))
+    return _report(batch_status(root, args.suite))
+
+
+def _batch_commands(sub):
+    bt = sub.add_parser("batch", help="the batch-run lease: one poller at a time runs a full test suite "
+                                      "(claim, renew, release, status)")
+    bsub = bt.add_subparsers(dest="batch_cmd", required=True)
+    for name, text in (("claim", "take (or renew, or take over when expired) the suite's lease"),
+                       ("renew", "extend our own lease"),
+                       ("release", "delete our own lease"),
+                       ("status", "list the batch leases (read-only)")):
+        p = bsub.add_parser(name, help=text)
+        p.add_argument("--suite", required=name != "status", metavar="NAME")
+        if name != "status":
+            p.add_argument("--base", required=name == "claim", metavar="SHA",
+                           help="the full commit id the suite runs against (recorded, not part of the lease's name)")
+        if name in ("claim", "renew"):
+            p.add_argument("--ttl", required=True, type=int, metavar="SECONDS", help="60 to 86400")
+    bt.set_defaults(func=cmd_batch)
+
+
 # Each registrar adds its subparsers to `sub`. Later groups of commands (claims and leases, the pen) append theirs
 # here instead of editing build_parser.
-COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands]
+COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands, _batch_commands]
 
 
 def build_parser():

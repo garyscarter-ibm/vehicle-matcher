@@ -1,6 +1,6 @@
 # FUCQ-481 owner order and status over HTTP: 17 November 2026
 
-This extends one existing test. After a generated claim and the owner's accepted offer, the owner now reads their order and status through the real `GET /api/gcsp/v1/manual/order`. It was authored from `3a8078831`; the account and ordering source it relies on was read at ROOT `01965530a`. **It has not been compiled or run.** It changes no screen and no production source.
+This extends one existing test. After a generated claim and the owner's accepted offer, the owner now reads their order and status through the real `GET /api/gcsp/v1/manual/order`. It was authored from `3a8078831`; the account and ordering source it relies on was read at ROOT `01965530a`. **The parent ran the exact method: 1 passed, zero failures, errors or skips.** It changes no screen and no production source.
 
 ## Path and method
 
@@ -35,3 +35,11 @@ The profile does not set `gcsp.account.fixed-now`, so the account projection use
 - **Not proved:** a registered real OIDC issuer or browser login; real mail; the hosted environment; any BMW service; shaped inputs varied across all ports; FUCQ-516 later-clock recovery.
 - **Holds:** F477 M1 / FUCQ-515 stays held; Bugs 513-516 remain capture-only.
 - **Not complete:** neither original acceptance criterion.
+
+## Parent validation — 2026-11-17T12:29:13.413261+00:00
+
+The exact Java source from worker `209bf4f7aabcb6cf84621c5830edeb9e6de42087` passed in immutable current-root context `661185fca372e9a979610572954d468aa97eee50`, which includes the integrated selected-account adapter and F458 bindings. The single native PostgreSQL16 / Quarkus / JWKS / loopback-remote method passed in 26.0 seconds. The real owner bearer `GET /manual/order` returned the acknowledged order with persisted hold/quote/provider lineage and awaiting-approval state; repeated reads retained one remote execute. This uses signed fixture JWTs and a fixture policy instant, not a registered provider browser login or later-clock recovery.
+
+The parent audit `.claude/fucq481-owner-http25-parent-audit-1213-ordering.json` independently verified 77 recorded child identities plus the supervisor, 20 process groups, owned scratch and the reservation absent, with source/tool pins unchanged. Peak RSS was 958,087,168 bytes and scratch 103,432,224 bytes. No profile or production source changed. Both original criteria, real OIDC/mail/hosted/BMW, all-port variation and FUCQ-516 remain open.
+
+Independent Doug the Dog 3 review33 passed with no findings (requested/selected `gpt-6.1-sol` / high, no fallback, descendants or reviewer runtime; title confirmed). Review covered the exact tested Java; this parent validation section replaces the source-only UNRUN headline.

@@ -52,9 +52,10 @@ public class StockReleaseHandler implements TickHandler {
         return map(supply.release().deliver(request.scope(), event));
     }
 
-    /** The presenter's synthetic stock fault applies only to the synthetic tranche-plan; a real provider is untouched. */
+    /** The presenter's synthetic stock fault applies to the synthetic providers (tranche-plan, demo); a real one is untouched. */
     private HandlerOutcome fault(TickRequest request) {
-        if (!SupplySelection.TRANCHE_PLAN.equals(selection.provider().mode())) return null;
+        String mode = selection.provider().mode();
+        if (!SupplySelection.TRANCHE_PLAN.equals(mode) && !SupplySelection.DEMO.equals(mode)) return null;
         return switch (faults.stockMode(request.scope())) {
             case "unavailable" -> new HandlerOutcome.Failed("unavailable", "synthetic-stock-unavailable", true);
             case "stale" -> new HandlerOutcome.Failed("unavailable", "stock-source-stale", true);

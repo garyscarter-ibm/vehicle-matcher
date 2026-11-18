@@ -1,6 +1,6 @@
 # FUCQ-481 composed input variation: 17 November 2026
 
-One new test, aimed at the second original acceptance criterion. The test changes the employee and stock source rows, and shows that the selected candidates' computed eligibility changes. It then restores both rows and runs the retained generated journey through the owner's order and status read. It was authored from `8a3d00762`, reading ROOT `887b2bad6`. **It has not been compiled or run.** It changes no production source, no existing test and no screen.
+One new test, aimed at the second original acceptance criterion. The test changes the employee and stock source rows, and shows that the selected candidates' computed eligibility changes. It then restores both rows and runs the retained generated journey through the owner's order and status read. It was authored from `8a3d00762`, reading ROOT `887b2bad6`. The worker returned uncompiled source at 13:00:29 UTC; the parent subsequently compiled and ran the exact method successfully. It changes no production source, no existing test and no screen.
 
 ## Paths
 
@@ -40,10 +40,16 @@ One new test, aimed at the second original acceptance criterion. The test change
 
 `-Dtest=GeneratedClaimInputVariationHttpTest`: one method, one Quarkus boot, native PostgreSQL (`GCSP_TEST_DATABASE_URL`), JWKS and the two loopback stubs. It should run on the latest ROOT composition.
 
+At 13:04 UTC the parent ran the one named method from immutable validation commit `9ae454b7164ed82684b03f72243b9e2417075208`, tree `e9792378f9e78119796df5f6f0fe4722e18c5e37`: current root `b9041a040` plus the worker's exact three files from `df44a34f568bebbb05a634140de9cf24271ee087`. Result: **1 test passed, zero failures, errors or skips**, native exit 0, 26.4 seconds. This confirms the employee denial, stock denial, full canonical evaluation restoration and durable quote comparison before the retained owner HTTP journey.
+
+Independent source review 35 (Hiccup 2, requested and selected `gpt-6.1-sol` / `high`, no fallback or descendants) passed without blocking or major findings. Parent cleanup audit at 13:06:55 UTC independently found all 76 owned process identities, the supervisor, 19 process groups, scratch and reservation absent; source and tool pins were unchanged. Peak measured process RSS was 958,676,992 bytes and scratch 103,514,816 bytes. Local receipts are `.claude/results/fucq481-input-variation-review-35.json`, `.claude/test-runs/receipts/fucq481/input27-1259/20261117T130400-fucq481-input27-1259-ordering.json` and `.claude/fucq481-input27-parent-audit-1259-ordering.json`.
+
+This run used the retained isolated PostgreSQL 16 setup. The newly published `AGENTS.md` Story test set requires PostgreSQL 17 and a covering green batch for Story acceptance; this single method is bounded increment evidence and does not satisfy that complete set or batch. Root advanced to `80e340829` with instructions/settings only, leaving the tested API source unchanged. Neither original acceptance criterion is complete.
+
 ## Least-certain points
 
 - **Request assembly.** The test reads the same rows `Prepare` reads, but does not call `Prepare` itself. Under `recommendation`, `Prepare` still makes its own direct SQL read of the account record; the selected adapter then ignores that record.
-- **Quote equality after the claim.** `Claim` copies the contender's quote and only adds `gateStatus` and `decision`. The compared keys should therefore be byte-equal after the JSON round trip. If a key such as `terms` is rewritten at claim time, the parent's run will show which one.
+- **Quote equality after the claim.** `Claim` copies the contender's quote and only adds `gateStatus` and `decision`. The parent's passing run confirmed equality of the compared keys after the JSON round trip for this fixture.
 - **Clocks.** The fixture policy instant and same-instant allocation are kept unchanged. The account projection's system clock (unpinned `gcsp.account.fixed-now`) is not touched. FUCQ-516 is not addressed.
 
 ## Still open

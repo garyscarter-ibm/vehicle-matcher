@@ -67,20 +67,6 @@ function checkText(view, text) {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Account (Your cars)
-const { mountAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
-const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-const { accountFixture, FIXTURE_NAMES: ACCOUNT_NAMES } = await import('../../blocks/gcsp/account/fixtures.js');
-
-test('Your cars paints no demo or synthetic wording in any account state', async () => {
-  for (const name of ACCOUNT_NAMES) {
-    const root = host();
-    const destroy = mountAccount(root, { adapter: { readAccount: async () => accountFixture(name), readDraft: async () => ({ status: 'not-found' }),
-      startJourney: async () => ({ status: 'unavailable' }) } });
-    await settle(); check(`account:${name}`, root, /\S/); destroy(); root.remove();
-  }
-});
-
 // Real service data for Paula: names, sites and scheme labels come from the seed, not from a fixture.
 const [{ createMemoryRepository, createMemoryStore }, { createPolicyService }, { createDemoRuntime }, manualContext, { seedManualDemoContext }] = await Promise.all([
   import('../gcsp/repository/index.js'), import('../gcsp/policy/index.js'), import('../gcsp/clock/index.js'),
@@ -100,27 +86,6 @@ async function paulaService(principal = 'demo-paula') {
   return f;
 }
 
-test('Your cars paints no demo or synthetic wording from the seeded service, for each principal', async () => {
-  for (const principal of ['demo-paula', 'demo-sam']) {
-    const f = await paulaService(principal); const account = await f.service.readAccount(f.context);
-    const root = host();
-    const destroy = mountAccount(root, { adapter: { readAccount: async () => account, readDraft: async () => ({ status: 'not-found' }),
-      startJourney: async () => ({ status: 'unavailable' }) } });
-    await settle(); check(`account:service:${principal}`, root, /Paula Mason|Sam Patel/); destroy(); root.remove();
-  }
-});
-
-test('Your cars and order progress paint no demo or run wording when the page is stale or access has lapsed', async () => {
-  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
-    const root = host();
-    const destroy = mountAccount(root, { adapter: { readAccount: async () => ({ status }), readDraft: async () => ({ status }), startJourney: async () => ({ status }) } });
-    await settle(); check(`account:${status}`, root, /\S/); destroy(); root.remove();
-    const orders = host();
-    const adapter = new Proxy({ loadAccount: READY_ACCOUNT_FOR_ORDERS }, { get: (target, key) => (key in target || key === 'subscribeClock' ? target[key] : async () => ({ status })) });
-    const stop = mountOrderProgress(orders, { adapter }); await settle(); await tick(50); check(`order progress:${status}`, orders, /\S/); stop(); orders.remove();
-  }
-});
-
 // ---------------------------------------------------------------------------------------------
 // Run-restarted, access and stale-page screens from the kit
 const kit = await import('../../blocks/gcsp/kit/run-restarted.js');
@@ -131,52 +96,13 @@ test('the restarted, access-needed and stale-page screens paint no demo or run w
 });
 
 // ---------------------------------------------------------------------------------------------
-// Brief
-const { mountBriefBody } = await import('../../blocks/gcsp/brief/brief-view.js');
-const briefFixture = JSON.parse(readFileSync(new URL('../../docs/gcsp/evidence/fucq94/representative-snapshot.json', import.meta.url), 'utf8'));
+// Help and the case queue
 const { createGcspRuntime } = await import('../gcsp/runtime.js');
-// The editor comes from the real service, so Paula's names are the seeded ones. Only the preview cards are recorded.
-async function liveEditor() {
-  const runtime = (await createGcspRuntime({ mode: 'memory', environmentId: 'painted-copy-brief', policyAsOf: INSTANT, commandId: 'bootstrap-brief',
-    sessionNow: () => INSTANT })).value;
-  const session = await runtime.createLocalSession(); const editor = await runtime.editor.readEditor(session.value.context);
-  assert.equal(editor.status, 'ok'); await runtime.close(); return editor.value;
-}
-test('the brief paints no demo or synthetic wording in editing, accepted and unavailable states', async () => {
-  const editor = await liveEditor();
-  const transport = { preview: async () => briefFixture.preview, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) };
-  const states = { editor: { editor, transport }, 'editor, preview unavailable': { editor, transport: { ...transport, preview: async () => ({ status: 'unavailable' }) } },
-    accepted: { editor: { ...structuredClone(editor), selection: { state: 'accepted', briefVersion: 1 } }, transport: {} },
-    unavailable: {}, restarted: { loadEditor: async () => ({ status: 'stale-run' }) } };
-  for (const [name, options] of Object.entries(states)) {
-    const root = host(); const destroy = mountBriefBody(root, options); await tick(400); check(`brief:${name}`, root, name === 'editor' ? /Comfort/ : /\S/); destroy(); root.remove();
-  }
-});
-
-// ---------------------------------------------------------------------------------------------
-// Buddy activity
-const { mountActivity } = await import('../../blocks/gcsp/activity/gcsp-activity.js');
-const { activityFixtures } = await import('../../blocks/gcsp/activity/activity-fixtures.js');
 const { mountHelpBody } = await import('../../blocks/gcsp/cases/gcsp-help.js');
 const { mountCaseQueue } = await import('../../blocks/gcsp/cases/gcsp-case-queue.js');
 const casesFixtures = await import('../../blocks/gcsp/cases/fixtures.js');
 const queueFixtures = await import('../../blocks/gcsp/cases/queue-fixtures.js');
 const stripTags = (html) => html.replace(/<(style|script|title)[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
-const READY_ACCOUNT_FOR_ORDERS = async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' });
-const READY_ACCOUNT = async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' });
-
-test('buddy activity paints no demo or synthetic wording in any search, offer or error state', async () => {
-  const snapshots = { ...activityFixtures.snapshots };
-  const accepted = structuredClone(snapshots['offer-declined']); accepted.value.currentOffer.state = 'accepted'; snapshots['offer-accepted'] = accepted;
-  const adapterFor = (read) => ({ loadAccount: READY_ACCOUNT, readActivity: read, readOfferDisplay: async () => activityFixtures.offerExample });
-  const cases = Object.entries(snapshots).map(([name, snapshot]) => [name, adapterFor(async () => structuredClone(snapshot))]);
-  cases.push(['stale-run', adapterFor(async () => ({ status: 'stale-run' }))], ['unknown-session', adapterFor(async () => ({ status: 'unknown-session' }))],
-    ['access-required', adapterFor(async () => ({ status: 'access-required' }))], ['failed read', adapterFor(async () => { throw new Error('x'); })],
-    ['account unavailable', { loadAccount: async () => ({ status: 'unavailable' }), readActivity: async () => ({ status: 'unavailable' }) }]);
-  for (const [name, adapter] of cases) {
-    const root = host(); const destroy = mountActivity(root, { adapter }); await settle(); await tick(20); check(`activity:${name}`, root, /Your buddy|Session ended|Restarted|unavailable/i); destroy(); root.remove();
-  }
-});
 
 // ---------------------------------------------------------------------------------------------
 // Help and renewal cases
@@ -208,63 +134,9 @@ test('order progress paints no demo or synthetic wording in any of its states', 
 });
 
 // ---------------------------------------------------------------------------------------------
-// Offer, decline and second offer
-const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
-const offerFixtures = await import('../../blocks/gcsp/offer/fixtures.js');
-const { createFollowupView } = await import('../../blocks/gcsp/offer-followup/followup-view.js');
-const reviewed = (file) => JSON.parse(readFileSync(new URL(`../gcsp/policy/reviewed/${file}`, import.meta.url), 'utf8')).definitions[0].value;
-const declineRegistry = { ...reviewed('offer-decline-reasons-v1.json'), key: 'offer.declineReasons.v1', policyVersion: seed.policyVersion };
-const followupQuestions = reviewed('offer-followup-questions-v1.json').questions;
-
-test('the offer paints no demo or synthetic wording in any state, including decline and its reasons', async () => {
-  const account = { status: 'ready', name: 'Paula Mason', scheme: 'Choices' };
-  for (const name of offerFixtures.FIXTURE_NAMES) {
-    const root = host();
-    const read = name === 'loading' ? () => new Promise(() => {}) : async () => (name === 'error' ? { status: 'unavailable' } : offerFixtures.offerFixture(name));
-    const destroy = mountOffer(root, { read, account }); await settle(); check(`offer:${name}`, root, name === 'pending' ? /Review & accept/ : /\S/); destroy(); root.remove();
-  }
-  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
-    const root = host(); const destroy = mountOffer(root, { read: async () => ({ status }), account }); await settle();
-    check(`offer:${status}`, root); destroy(); root.remove();
-  }
-  // Decline: open the reason picker, then confirm and read the declined offer.
-  let shown = 'handoff-replacement';
-  const root = host();
-  const destroy = mountOffer(root, { account, read: async () => offerFixtures.offerFixture(shown),
-    decide: async ({ kind }) => { if (kind === 'decline') shown = 'declined'; return { status: 'ok' }; },
-    readReasons: async () => ({ status: 'ok', value: declineRegistry }) });
-  await settle(); root.querySelector('[data-offer-action="decline"]').click(); await settle(); check('offer:decline reasons', root, /Confirm decline/);
-  const reason = root.querySelector('[data-offer-reason]'); assert.ok(reason); reason.click();
-  assert.equal(reason.getAttribute('aria-checked'), 'true');
-  root.querySelector('[data-offer-action="decline-confirm"]').click(); await settle(); check('offer:declined after decline', root, /Offer declined/); destroy(); root.remove();
-});
-
-test('the second offer question and its outcomes paint no demo or synthetic wording', () => {
-  const mount = () => { const root = host(); return { root, view: createFollowupView(root, { activityHref: '/gcsp-activity.html' }) }; };
-  for (const q of followupQuestions) {
-    for (const adding of [false, true]) {
-      const { root, view } = mount();
-      const control = q.control.kind === 'options' ? { ...q.control } : q.control.kind === 'slider' ? { ...q.control, minimum: 0, maximum: 100 } : { ...q.control, maximumItems: 3, maximumItemLength: 20 };
-      const value = q.control.kind === 'options' ? q.control.options[0].value : q.control.kind === 'slider' ? 50 : [];
-      view.update({ state: 'question', busy: false, canConfirm: true, error: '', savedChange: null, value,
-        question: { ...q, questionVersion: 'q1', currentValue: adding ? null : value, control } });
-      check(`second offer question:${q.reasonCode}${adding ? ' (adding)' : ''}`, root); view.destroy(); root.remove();
-    }
-  }
-  for (const state of ['idle', 'loading', 'change-saved', 'waiting', 'no-match', 'unavailable', 'forbidden', 'stale-run', 'access-lapsed', 'confirmation-uncertain']) {
-    const { root, view } = mount();
-    view.update({ state, busy: false, canConfirm: false, error: '', savedChange: { briefVersion: 2 }, evaluation: { carsChecked: 3 }, question: null, value: null });
-    check(`second offer state:${state}`, root); view.destroy(); root.remove();
-  }
-});
-
-// ---------------------------------------------------------------------------------------------
-// Manual order: setup, gallery, review and summary
+// Manual order gallery
 const { mountManualGallery } = await import('../../blocks/gcsp/manual-gallery/gcsp-manual-gallery.js');
 const galleryFixtures = await import('../../blocks/gcsp/manual-gallery/fixtures.js');
-const { mountManualSetup } = await import('../../blocks/gcsp/manual-setup/gcsp-manual-setup.js');
-const { mountManualReviewBody } = await import('../../blocks/gcsp/manual-review/gcsp-manual-review.js');
-const { mountManualSummaryBody } = await import('../../blocks/gcsp/manual-summary/gcsp-manual-summary.js');
 const until = async (done) => { for (let i = 0; i < 200 && !done(); i += 1) await new Promise((resolve) => setImmediate(resolve)); };
 
 test('manual gallery paints no demo or synthetic wording in any stock state', async () => {
@@ -272,77 +144,6 @@ test('manual gallery paints no demo or synthetic wording in any stock state', as
     const root = host(); const destroy = mountManualGallery(root, { adapter: galleryFixtures.createManualGalleryFixtureAdapter(name) });
     await until(() => root.querySelector('.vm-card, [role="alert"], .vm-status')); await settle(); check(`gallery:${name}`, root, /\S/); destroy(); root.remove();
   }
-});
-
-test('manual setup paints no demo or synthetic wording, including the saved intent and a failed save', async () => {
-  const f = await paulaService(); const account = () => f.service.readAccount(f.context);
-  const adapters = { ready: { readAccount: account, readDraft: async () => ({ status: 'not-found' }), saveDraft: async () => ({ status: 'unavailable' }), browseStock: async () => ({ status: 'unavailable' }),
-    startJourney: async () => ({ status: 'unavailable' }) },
-  restarted: { readAccount: async () => ({ status: 'stale-run' }), readDraft: async () => ({ status: 'stale-run' }) } };
-  for (const [name, adapter] of Object.entries(adapters)) {
-    const root = host(); const destroy = mountManualSetup(root, { adapter }); await until(() => root.querySelector('h1')); await settle();
-    check(`setup:${name}`, root, /\S/);
-    if (name === 'ready') { root.querySelector('button[type="submit"], .vm-btn-primary')?.click(); await settle(); check('setup:ready, submitted empty', root); }
-    destroy(); root.remove();
-  }
-});
-
-// Doubles for the review and summary readbacks, built from the seeded account and the seeded terms wording.
-const later = (seconds) => new Date(Date.parse(INSTANT) + seconds * 1000).toISOString();
-const okay = (value) => ({ status: 'ok', value: structuredClone(value) });
-async function orderDoubles(mode, phase = 'order-review') {
-  const f = await paulaService(); const account = (await f.service.readAccount(f.context)).value;
-  const rules = assumption('manual.context.v1'); const timing = { preview: assumption('hold.cart.durationSeconds'), review: assumption('hold.cart.orderReview.durationSeconds') };
-  const terms = { ...assumption('ordering.terms.v1'), termsDigest: 'digest-1', approvalStages: assumption('ordering.approvalStages.v1') };
-  const hold = { runId: 'run', employeeId: account.account.employeeId, entitlementSlotId: 'slot-paula', holdId: 'hold', quoteId: 'quote', orderUuid: 'stock',
-    type: 'cart', state: 'active', phase, version: 2, policyVersion: seed.policyVersion, expiresAt: later(timing.review) };
-  const quote = { runId: 'run', employeeId: account.account.employeeId, entitlementSlotId: 'slot-paula', quoteId: 'quote', orderUuid: 'stock', configurationId: 'configuration',
-    version: 1, policyVersion: seed.policyVersion, draftVersion: 1, validUntil: later(timing.review * 2), eligibility: { timing },
-    facts: { identityKind: 'exact-stock', sourceKeys: { stockId: 'stock' }, display: { name: 'BMW 320i M Sport Touring' }, facts: { model: { status: 'known', value: 'BMW 320i' } } },
-    terms: { kind: 'employee-scheme', points: { value: 1100, unit: 'points' }, allowanceInputs: { allowance: { value: 1300, unit: 'points' } } } };
-  const site = account.choices.collectionLocations[0]; const old = mode === 'new' ? null : account.currentContract;
-  const model = { binding: { runId: 'run', employeeId: account.account.employeeId, entitlementSlotId: 'slot-paula', holdId: 'hold', quoteId: 'quote', expectedHoldVersion: 2, expectedDraftVersion: 1 },
-    reviewDetailsVersion: 3, stockVersion: 7, hold, quote, orderNumber: '9000001', now: INSTANT, clockVersion: '1', mode,
-    details: { contact: account.account.contact, expectedReturnMileage: old ? 6700 : null, specialRequirements: 'Child seat' },
-    constraints: { maximumSpecialRequirements: rules.maximumSpecialRequirements, maximumReturnMileage: rules.maximumReturnMileage, mileageUnit: 'mi',
-      textLengthUnit: 'UTF-16 code units', provenance: seed.assumptions.find((row) => row.key === 'manual.context.v1') },
-    currentContract: old, oldContractId: old ? 'old-contract' : null, requestedCollection: { date: '2026-11-20', locationId: site.locationId },
-    contract: { months: 6, annualMileage: 8000, mileageUnit: 'mi/year' }, frozen: false, editable: true, canContinue: true };
-  const claim = () => ({ state: 'quoted', hold, quote, now: INSTANT, clockVersion: '1', pendingOperation: null });
-  const stages = terms.approvalStages; const driver = account.drivers[1];
-  const submitted = (selectionState) => ({ operationId: 'selection:abc', operationState: 'acknowledged', selectionReceived: true, orderReference: 'GCSP-000001',
-    selection: { orderReference: 'GCSP-000001', stock: { orderNumber: '9000001' }, quote, terms, employee: account.account, driver,
-      draft: { choices: { mode, requestedCollectionDate: '2026-11-20', collectionLocationId: site.locationId }, contract: model.contract },
-      oldContract: old, vehicleSlot: { entitlementSlotId: 'slot-paula' }, reviewDetails: { details: model.details } },
-    progress: { selectionState, approved: false, current: selectionState === 'acknowledged' ? stages[0] : 'selection received',
-      stages: [{ name: 'selection received', state: { acknowledged: 'complete', 'handoff-pending': 'pending', 'handoff-failed': 'failed' }[selectionState] },
-        ...stages.map((name, i) => ({ name, state: i === 0 && selectionState === 'acknowledged' ? 'waiting' : 'not-started' }))] },
-    order: selectionState === 'acknowledged' ? { orderNumber: '9000001', orderStatus: stages[0] } : null, failure: null, view: {} });
-  const adapter = { readClaim: async () => okay(claim()), readReviewDetails: async () => okay(model),
-    saveReviewDetails: async () => okay(model), beginReview: async () => okay(claim()), release: async () => okay(claim()),
-    readAccount: async () => okay(account), readDraft: async () => okay({ draftVersion: 1, choices: { mode, driverId: driver.driverId, collectionLocationId: site.locationId } }),
-    readTerms: async () => okay(terms), readOrder: async () => ({ status: 'not-found' }), submitOrder: async () => okay(submitted('acknowledged')) };
-  return { adapter, submitted };
-}
-test('order review and the order summary paint no demo or synthetic wording for a replacement or a new order', async () => {
-  for (const mode of ['replacement', 'new']) {
-    const reviewing = await orderDoubles(mode, 'preview'); const { adapter, submitted } = await orderDoubles(mode);
-    const review = host(); const stopReview = mountManualReviewBody(review, { adapter: reviewing.adapter, commandId: () => 'c-1' });
-    await until(() => review.querySelector('[name="contact.phone"]')); check(`review:${mode}`, review, /Contact phone/);
-    review.querySelector('input[name="contact.phone"]').value = ''; review.querySelector('input[name="contact.phone"]').dispatchEvent(new window.Event('input', { bubbles: true }));
-    [...review.querySelectorAll('button')].find((b) => b.textContent === 'Continue to order review')?.click(); await settle(); check(`review:${mode}, invalid`, review);
-    stopReview(); review.remove();
-    for (const [name, order] of [['before submit', null], ['acknowledged', submitted('acknowledged')], ['handoff pending', submitted('handoff-pending')], ['handoff failed', submitted('handoff-failed')]]) {
-      const summary = host();
-      const stop = mountManualSummaryBody(summary, { adapter: { ...adapter, readOrder: async () => (order ? okay(order) : { status: 'not-found' }) }, commandId: () => 'c-2' });
-      await until(() => summary.querySelector('h1, h2')); await settle(); check(`summary:${mode}, ${name}`, summary, order ? /GCSP-000001|Order/ : /Submit order/);
-      if (!order) { summary.querySelectorAll('input[type="checkbox"]').forEach((box) => { box.checked = true; box.dispatchEvent(new window.Event('change', { bubbles: true })); });
-        [...summary.querySelectorAll('button')].find((b) => b.textContent === 'Submit order')?.click(); await settle(); check(`summary:${mode}, after submit`, summary); }
-      stop(); summary.remove();
-    }
-  }
-  const stale = host(); const stop = mountManualReviewBody(stale, { adapter: { readClaim: async () => ({ status: 'stale-run' }), readReviewDetails: async () => ({ status: 'stale-run' }) } });
-  await settle(); check('review:restarted', stale); stop(); stale.remove();
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -464,40 +265,9 @@ test('order requests and production controls paint no demo or synthetic wording'
 });
 
 // ---------------------------------------------------------------------------------------------
-// Paula's live pages, mounted with their default adapters over the real server
-const { mountManualJourney } = await import('../../blocks/gcsp/manual-setup/journey.js');
-const { createOrderProgressHttpAdapter } = await import('../../blocks/gcsp/order-progress/order-progress-http.js');
-const { createActivityHttpAdapter } = await import('../../blocks/gcsp/activity/activity-http.js');
-const { createCaseHttpAdapter } = await import('../../blocks/gcsp/cases/http-adapter.js');
-const { createOfferHttpAdapter } = await import('../../blocks/gcsp/offer/http-adapter.js');
-const { mountBrief } = await import('../../blocks/gcsp/brief/gcsp-brief.js');
-const { createBriefTransport } = await import('../../blocks/gcsp/brief/brief-transport.js');
-const { createAccountHttpAdapter: createShellAccountAdapter } = await import('../../blocks/gcsp/shell/account-runtime.js');
-
-test('Paula\'s live pages paint no demo or synthetic wording over the real server', async () => {
-  const live = await liveServer('demo-paula'); const originalFetch = globalThis.fetch; globalThis.fetch = live.fetchImpl;
-  try {
-    const help = createCaseHttpAdapter({ fetchImpl: live.fetchImpl });
-    const pages = {
-      'Your cars (journey home)': [(root) => mountManualJourney(root, { orderAdapter: createOrderProgressHttpAdapter({ fetch: live.fetchImpl }), helpAdapter: help }), /Your cars|Choices/],
-      'Buddy activity': [(root) => mountActivity(root, { adapter: createActivityHttpAdapter({ fetch: live.fetchImpl, loadAccount: createShellAccountAdapter({ fetch: live.fetchImpl }).loadAccount }),
-        helpAdapter: help }), /Your buddy/],
-      'Order progress': [(root) => mountOrderProgress(root, { adapter: createOrderProgressHttpAdapter({ fetch: live.fetchImpl, loadAccount: createShellAccountAdapter({ fetch: live.fetchImpl }).loadAccount }),
-        helpAdapter: help }), /Order progress/],
-      Brief: [(root) => mountBrief(root, { ...createShellAccountAdapter({ fetch: live.fetchImpl }), transport: createBriefTransport({ fetch: live.fetchImpl }) }), /What matters to you/],
-      Offer: [(root) => mountOffer(root, { ...createOfferHttpAdapter({ fetch: live.fetchImpl }), account: { status: 'ready', name: 'Paula Mason', scheme: 'Choices' } }), /offer/i],
-    };
-    for (const [name, [mountPage, expected]] of Object.entries(pages)) {
-      const root = host(); const destroy = mountPage(root); await settle(); await tick(300); await settle(); openAll(root);
-      check(`live Paula:${name}`, root, expected); destroy?.(); root.remove();
-    }
-  } finally { globalThis.fetch = originalFetch; await live.close(); }
-});
-
-// ---------------------------------------------------------------------------------------------
 // Presenter strip and the captured email viewer
 const { mountPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
-const { mountOutbox } = await import('../../blocks/gcsp/presenter/gcsp-outbox.js');
+const { messageList } = await import('../../blocks/gcsp/presenter/message-list.js');
 const outboxFixtures = await import('../../blocks/gcsp/presenter/fixtures.js');
 const { createScenarioService } = await import('../gcsp/scenarios/index.js');
 const { createPresenterControlsService } = await import('../gcsp/presenter-controls/index.js');
@@ -520,16 +290,16 @@ test('the presenter strip paints no demo or synthetic wording, with its principa
   }
 });
 
-test('the captured email viewer paints no demo or synthetic wording, including the open message', async () => {
-  for (const name of outboxFixtures.FIXTURE_NAMES) {
-    const root = host(); const destroy = mountOutbox(root, { loadMessages: outboxFixtures.fixtureAdapter(name).loadMessages }); await settle();
-    check(`outbox:${name}`, root, /Captured emails|Presenter/);
-    const row = root.querySelector('.gcsp-mail-row');
-    for (let i = 0; row && i < 4; i += 1) {
-      const rows = root.querySelectorAll('.gcsp-mail-row'); rows[i]?.click(); rows[i]?.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); await settle();
+test('the captured email list paints no demo or synthetic wording, including the open message', async () => {
+  for (const name of ['messages', 'retrying', 'failed']) {
+    const { messages } = await outboxFixtures.fixtureAdapter(name).loadMessages();
+    const root = host(); const handle = messageList({ messages }); root.append(handle.root);
+    check(`outbox:${name}`, root, /Captured|Retrying|Failed/);
+    for (let i = 0; i < Math.min(4, messages.length); i += 1) {
+      handle.select(messages[i].jobId);
       check(`outbox:${name}, message ${i + 1}`, root); const frame = root.querySelector('iframe'); if (frame?.srcdoc) checkText(`outbox:${name}, message ${i + 1} body`, stripTags(frame.srcdoc));
     }
-    destroy(); root.remove();
+    handle.destroy(); root.remove();
   }
 });
 
@@ -541,7 +311,7 @@ const { renderCaseMessage } = await import('../gcsp/cases/notification.js');
 test('the offer and renewal case emails paint no demo or synthetic wording', () => {
   const paula = principals.find((p) => p.principalId === 'demo-paula');
   const employee = { employeeId: paula.employeeId, name: paula.name };
-  const now = '2026-11-05T09:00:00.000Z'; const link = '/gcsp-offer.html?offer=o-1';
+  const now = '2026-11-05T09:00:00.000Z'; const link = '/gcsp/offer?offer=o-1';
   const quote = { facts: { display: { name: 'BMW 320i Touring' } }, terms: { points: { value: 1100, unit: 'points' } } };
   const offers = [renderOfferMessage({ offer: { expiresAt: '2026-11-05T11:00:00.000Z', state: 'active' }, quote, employee, offerLink: link, now }),
     renderOfferMessage({ offer: { expiresAt: '2026-11-05T11:00:00.000Z', state: 'expired' }, quote, employee, offerLink: link, now }),

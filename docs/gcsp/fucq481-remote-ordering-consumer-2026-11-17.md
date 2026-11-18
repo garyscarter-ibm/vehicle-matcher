@@ -1,6 +1,6 @@
 # FUCQ-481 remote ordering into the durable consumer: 17 November 2026
 
-This note covers one component test. It links the real `HttpOrderingProvider` to the existing durable `OrderingService` on native PostgreSQL, across a lost acknowledgement and a service restart. It was authored from `45d1c1afc05858c6f2d123d1958dd86ed625214a`, whose API tree matches integration `234856497`. **The test has not been compiled or run.** It changes no screen and no production source.
+This note covers one component test. It links the real `HttpOrderingProvider` to the existing durable `OrderingService` on native PostgreSQL, across a lost acknowledgement and a service restart. It was authored from `45d1c1afc05858c6f2d123d1958dd86ed625214a`, whose API tree matches integration `234856497`. **Parent validation compiled and ran the exact method at frozen source `00f600dcd7ff695e1f370d1a6092d037806bea1b`: one passed, zero failures, errors or skips.** It changes no screen and no production source.
 
 The semantic authority is [the ordering contract](manual-order-contract.md#durable-state-and-external-shaped-protocol): reconcile before every send, execute only after an authoritative not-found, and keep unknown outcomes pending while the allocation stays occupied. [The standalone adapter note](fucq481-remote-ordering-adapter-2026-11-17.md) covers the wire mapping. This test reuses that mapping rather than repeating its 13 transport cases.
 
@@ -46,13 +46,19 @@ The test uses no sleeps and no timing thresholds. The 2-second client timeout is
 
 Both run on success and on failure.
 
-## Running it (proposed, not run)
+## Validation observed by the parent
 
-The test needs `GCSP_TEST_DATABASE_URL`; without it, `OrderingFixture` skips the test. The proposal is one plain-JUnit chunk on retained tooling: one worker, owned PG16 and the existing supervisor pattern. The selection is:
+The author ran no compilation or runtime. The parent subsequently ran exactly:
 
-`-Dtest=RemoteOrderingConsumerPgTest#lostAcknowledgementReconcilesSamePersistedSelectionWithoutSecondExecute`
+`RemoteOrderingConsumerPgTest#lostAcknowledgementReconcilesSamePersistedSelectionWithoutSecondExecute`
 
-It needs no Quarkus boot. The expected peak is under the existing per-chunk grant, and earlier ordering PG chunks measured about 1 GB RSS. Scratch is one schema, dropped by the fixture.
+The finite offline Maven/JDK21 run used one fork, owned native PostgreSQL16 and a private loopback HTTP substitute. **One test passed, zero failures/errors/skips**, exit0 in20.8seconds. No Quarkus startup or browser run was selected. Peak RSS was702,611,456bytes and scratch101,989,024bytes, within the retained chunk limits.
+
+The parent independently matched the exact selected method, unchanged source/tool pins, all64 recorded process identities and seven groups absent, owned scratch removed and host reservation registry empty after release. The retained local receipts are `.claude/test-runs/receipts/fucq481/ordering-consumer-1021/20261117T102805-fucq481-ordering-consumer-1021-unit.json` and `.claude/fucq481-ordering-consumer-parent-audit-1026.json`. No OneDrive access occurred.
+
+Imhotep2 independently reviewed frozen source with no blocking or major finding; reviewer runtime was UNRUN. Requested and selected reviewer settings were `gpt-6.1-sol` / `high`, no fallback or descendants. The author reported `claude-opus-5-5` / high through the existing successor watcher, no descendants; effective settings remain independently unverified. This note's validation prose is the only change from the reviewed two-file source; the Java SHA256 remains `3ee2050b710dcd2d586d5b70787dd8c1f4bcac97446b31657a4cebacc41e2226`.
+
+This verifies the service/client recovery component on the same PostgreSQL schema. It does not prove an independently restarted operating-system process or either original Story criterion.
 
 ## What it does not prove (original AC remain open)
 

@@ -147,7 +147,10 @@ export class OidcAuthService extends AuthPort implements OnDestroy {
   private applyContext(result: ContextResult, user: User | null): void {
     if (result.status === 'ok') {
       if (!user || result.value.subject !== user.profile.sub) { this.user = null; this.session.set({ status: 'denied', message: 'Your account could not be verified.' }); return; }
-      this.session.set({ status: 'ready', context: result.value });
+      const profile = user.profile; const claim = (value: unknown) => (typeof value === 'string' && value.trim() ? value.trim() : undefined);
+      // The API context wins; the id-token name and email only fill what it omits.
+      const displayName = result.value.displayName ?? claim(profile.name); const email = result.value.email ?? claim(profile.email);
+      this.session.set({ status: 'ready', context: { ...result.value, ...(displayName ? { displayName } : {}), ...(email ? { email } : {}) } });
     } else if (result.status === 'denied') this.session.set({ status: 'denied', message: 'Your account does not have access to this page.' });
     else if (result.status === 'unauthenticated') this.session.set({ status: 'signed-out' }); else this.unavailable('We could not load your account. Please try again.');
   }

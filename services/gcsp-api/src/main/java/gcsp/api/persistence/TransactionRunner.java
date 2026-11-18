@@ -51,15 +51,20 @@ public final class TransactionRunner {
             Tx tx = new Tx(c, ctx, cmd.commandId());
             WorkResult wr = work.run(tx);
             if (wr instanceof WorkResult.Refuse refuse) {
+                Receipt raced = readReceipt(c, ctx, cmd.commandId());
                 c.rollback();
+                if (raced != null) return answer(raced, digest);
                 return new Outcome.Refused(refuse.code(), refuse.message());
             }
             JsonNode result = ((WorkResult.Ok) wr).result();
             if (result == null) result = JSON.nullNode();
 
             if (!tx.changed()) {
+                // A concurrent copy of this command may have committed meanwhile: its receipt is the honest answer.
+                Receipt raced = readReceipt(c, ctx, cmd.commandId());
                 long revision = currentRevision(c, ctx);
                 c.rollback();
+                if (raced != null) return answer(raced, digest);
                 return new Outcome.Committed(result, revision, false, false);
             }
 

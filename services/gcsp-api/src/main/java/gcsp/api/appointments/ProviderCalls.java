@@ -79,6 +79,10 @@ final class ProviderCalls implements AutoCloseable {
                 Slot proposed = Slot.fromJson(op.payload().get("proposedSlot"));
                 return answer instanceof ProviderAnswer.Scheduled && proposed != null
                         && d.slot().slotId().equals(proposed.slotId());
+            case "no-show":
+                Instant missedAt = Iso.parse(op.payload().path("noShowAt").asText(null));
+                return answer instanceof ProviderAnswer.NoShow && missedAt != null && missedAt.equals(d.at())
+                        && d.slot().slotId().equals(want.slotId());
             default:
                 Instant completedAt = Iso.parse(op.payload().path("completedAt").asText(null));
                 return answer instanceof ProviderAnswer.Completed && completedAt != null && completedAt.equals(d.at())

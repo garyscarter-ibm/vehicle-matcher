@@ -124,8 +124,8 @@ public class LearningRecordService {
         return new ArrayList<>(codes);
     }
 
-    private LearningRecordResult snapshot(DataSource source, Principal principal, LearningClock.Reading time, JsonNode registry,
-            List<String> codes) throws SQLException, JsonProcessingException {
+    private LearningRecordResult snapshot(DataSource source, Principal principal, LearningClock.Reading preliminaryTime,
+            JsonNode preliminaryRegistry, List<String> preliminaryCodes) throws SQLException, JsonProcessingException {
         String env = principal.environmentId();
         String runId = principal.runId();
         try (Connection c = source.getConnection()) {
@@ -136,6 +136,13 @@ public class LearningRecordService {
                 if (!runActive(c, env, runId)) {
                     return LearningRecordResult.failure("conflict", "stale-run", "The run is retired or does not exist.", false);
                 }
+                LearningClock.Reading time = clock.now(c, new RunContext(env, runId, "learning:" + principal.subject()));
+                if (!validClock(time)) return LearningRecordResult.unavailable("clock-invalid");
+                JsonNode registry = time.equals(preliminaryTime) ? preliminaryRegistry
+                        : declineRegistry(runId, time.now(), principal.policyVersion());
+                List<String> codes = time.equals(preliminaryTime) ? preliminaryCodes
+                        : registry == null ? null : declineCodes(registry);
+                if (codes == null) return LearningRecordResult.unavailable("decline-reasons-unavailable");
                 ObjectNode rows = JSON.objectNode();
                 ArrayNode briefs = readBriefs(c, env, runId);
                 rows.set("briefs", briefs);

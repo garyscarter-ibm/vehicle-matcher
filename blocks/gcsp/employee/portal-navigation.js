@@ -23,9 +23,9 @@ export function navigationForAccount(navigation, account) {
   return navigation === PORTAL_NAVIGATION && ordering ? ORDERING_NAVIGATION : navigation;
 }
 
-// The live employee pages the rail and the offer can lead to, keyed like the navigation items they belong to.
-export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp-account.html', brief: '/gcsp-account.html#gcsp-account-preferences', activity: '/gcsp-activity-live.html',
-  'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html', ordering: '/gcsp-greg.html' });
+// Angular now serves the employee pages, so their legacy keys route to sign-in; help and ordering keep their pages.
+export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp/login', brief: '/gcsp/login', activity: '/gcsp/login',
+  'order-progress': '/gcsp/login', help: '/gcsp-help.html', ordering: '/gcsp-greg.html' });
 
 // Preferences live on Your cars; retain the brief key for existing setup and review shortcuts.
 export const ACCOUNT_MENU = Object.freeze([Object.freeze({ key: 'help', label: 'Renewal help' })]);

@@ -113,3 +113,261 @@ At source `9645b887c533978d79e2a9ed8de83ad2f287f99b` / tree `e293b4ae10b2da9868f
 Heap384MiB under the unchanged1280MiB aggregateRSS grant produced sampled peaks432545280Bdisk/1241284608BRSS/1673829888Binclusive over36.761seconds. Receipt `.claude/test-runs/fucq452/receipts/a05/receipt.json` SHA`dbb383ca95047b3a695ecba19097193d467e49a247d0090529352502e4cedeb2`; report SHA`1e299f004937b1a4a05e7c3a4087061493bc6557af7eb59f8c374d716536f9dd`. Parent audit `.claude/fucq452-a05-parent-audit-2324.json` matched185sourcepins and independently verified84historicalidentities/group7847/tokenprocesses/exactlocalroots/reservation absent. Leadfinalaudit SHA`1ebdbe6ccc0bb3796769f097c1b567d77752118d2655e3768c8e019f64a32ecc` corroborates. Retainedoutput1,081,344B<2MiB; cleanup/samplererrors empty. Borrowedbefore/afterpinsmatch; parentdidnotindependentlyrehashdependencies or provecontinuouscontainment. NoOneDrive access.
 
 This establishes the narrow constructor assertion recovery. a04's12reportpasses remain diagnostic because nativeexit is absent and RSS exceeded its grant; they do not combine with a05 into a compliant13-casePASS. Existing28client/30component matching passes remain separate composite58 evidence. CurrentwholeboundaryPASS is unproved. Guarded comparison routing, Greg navigation, safe sign-in return and presenter inspection source are now integrated; original actualsuccessfulJava replay/newresult, connected Java/OIDC/PostgreSQL roles/jobs/results and rendered desktop/narrow/Safari/private/keyboard/focus/visual acceptance remainopen. Both originalACs stayunchecked/nativeInProgress/claimpreserved. All F452workers returned; no active runtime or further test release.
+
+
+## Resume — 18 November 2026
+
+Scrappy Doo 3 resumed the existing owned lease and clean topic at `586cae0728b7fcfc455ab8b1ead442720811efee`. The normal Git helper refreshed it without conflict to shared base `7bd3f43ed3625e2b6c57b7b31f0c114d1ee8633d`. Earlier source-only authority and missing-producer statements above are historical observations. Current authority includes original-scope implementation, focused validation, independent review and topic publication; merging and deployment stay with the dispatcher.
+
+Current technical readiness is concrete: `DatabaseComparisonReplay` is the main `@DefaultBean @ApplicationScoped` implementation, composing `RouteReplay` over native database scratch schemas with the active run's policy. `UnavailableComparisonReplay` now exists only in tests. The unchanged four Java comparison endpoints and Angular route/safe-return integration are present. The retained identity remains `process-comparison-94c7760154fa5a05d5d6dc9b7c768fa0`, digest `d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027`.
+
+FUCQ-507 records a real Greg HTTP job at `8d989318b` completing the unchanged three seeds, 1,000 employees, 850 cars and nine releases in 4,118 seconds, with six per-seed record digests equal to Node. FUCQ-480 at `645ce2b42` separately records 58 packaged-app lifecycle checks and parity-size experiment equivalence. These remain evidence at their stated source/variant; changes since those sources must be assessed before reuse. No fresh full-size success is inferred here.
+
+The existing `inspection`, `jobs` and `integration` slice IDs are preserved. A single new original-scope proof file is allocated: `scripts/gcsp/fucq452-connected-comparison-proof.mjs`. Cuthbert 4 (mechanic, requested/selected `gpt-6-luna`/`high`, no fallback; saved title verified, thread `01a1ecbb-ec60-73a2-9211-08db70888049`) prepares it concurrently while the lead checks contracts and owns the runtime. The proof uses actual Java reads, normal full-size start, real progress and owned-runtime restart/interruption, with Greg commands and presenter inspection; it does not insert successful result/job rows or reduce the workload.
+
+Finite runtime plan and receipts are local under `.claude/test-runs/fucq452/connected-sd3/`. Reused installed supervisors own manifests, local scratch, one heavy phase, aggregate disk/RSS/output sampling, borrowed/source audits, exact process/port/scratch/reservation cleanup and a fresh 1,500-second pipeline deadline. Selection: 58 focused Angular comparison cases, production web build, Java package, `gcsp.api.comparison.**` plus the named Story startup/wiring set on owned native PostgreSQL 17, and the new connected browser proof. Full suite: deferred to batch. No shared product contract is edited, so unrelated package/caller suites are excluded; the actual app boundary remains separately reported. No OneDrive or CloudStorage access. Both original acceptance items remain unchecked pending the resulting evidence.
+
+
+## Connected partial Result — 18 November 2026
+
+The current connected comparison proof is published at `b6293525cef97aec064b9aff08dd6b1a0770d0d7`. Only the named proof script and this Story's records were changed on resume; the seven comparison product files and Java source were unchanged. API and web artifacts are explicitly built from `7bd3f43ed3625e2b6c57b7b31f0c114d1ee8633d`; their build-path equivalence with the proof revision is hash checked. This is comparison evidence at that pin, not current whole-application evidence after unrelated shared-branch changes.
+
+Focused validation used the owned native PostgreSQL 17 databases and the named startup/wiring selection from the Story test set. Angular client 28/28 and component 30/30 passed; the production Angular build and Java `package -DskipTests` passed. Existing unrelated Angular optional-chain warnings remain in the build log. Java first ran 121 tests: 116 passed, three errored because the isolated export omitted Node reference fixtures, two full-size opt-in tests skipped, and no assertions failed. The first three-method fixture retry passed two and errored on the additionally required Buddy outcomes fixture; the final one-method Buddy fixture retry passed. Exact testcase-key reconciliation yields **119 distinct passes and two gated skips**, not one green 121-test aggregate. Both failed attempts are preserved. No production/test source was changed to recover these export omissions. Local `java-composite.json` records the exact identities, provenance and receipt hashes; SHA-256 `75e2ec89ee1313d4be9099934f6f76c40b631670e58329fdd081aa7ac6d444ae`. Full suite: deferred to batch; the dispatcher reports the current covering batch red, so this is not acceptance-ready.
+
+The reused connected supervisor preserved its original 03:40:12 UTC start and 1,500-second pipeline deadline. Two real failed browser-proof attempts stopped before scenarios: `connected-20261118T035038Z` selected unsupported `none` stock/Buddy providers; `connected-20261118T035212Z` omitted the employee ID required by the employee negative-probe account. Their strict results remain false. Narrow proof-only corrections select the supported local ports and complete the negative-probe mapping. Independent source review also corrected issuer subject namespaces, the actual transport error text and the actual presenter refusal code before execution. No comparison result or successful job row was inserted, and no seed or workload size was reduced.
+
+The final `connected-20261118T035403Z` ran once at `b6293525c` and passed **39 checks in four scenarios**, with six JPEG captures (zero PNG):
+
+- Actual retained API data matched the DOM: pinned identity/digest, eleven measures, eleven assumptions, policy/provenance, and all three actual empty experiment catalogue entries.
+- Fresh isolated browser contexts completed real local code/PKCE OIDC login and safe return. Angular sent signed bearer requests. Presenter could inspect but had no command section; direct no-token/employee/presenter-write probes returned the expected 401/403 refusals.
+- An explicitly labelled CDP transport abort rendered the client's actual unavailable message and deliberate refresh controls, without painting a stored result as newly loaded.
+- Greg started a normal `process-only` job through the DOM with the unchanged three seeds/six steps, reached one actual replay step, and saw the same live job/progress. Owned API stop/restart preserved the durable interrupted job at one of six steps with no result. A deliberate second DOM start used a new job identity, was confirmed running, and survived another owned stop/restart as an interrupted job with no result.
+
+Local retained evidence root: `.claude/test-runs/fucq452/connected-sd3/connected-20261118T035403Z/`. Supervisor `receipt.json` SHA-256 is `0ea7383d558e8df0bcfbcd524de0d3c225b0c24cbd086a989549b8b1a4553cd6`; `evidence/connected-comparison-proof.json` is `ee41b1be9891ef930b7adf08ca4b45239198f018626fd8477b44a2f093589170`. Final native/outer exits are zero, state complete and strict result true. The failed receipts remain `8de429fd1be957c8a3fa2f9d738419258b3914e8df09cc1e17e5471dd99938d6` and `501d3382fa14202c4b5c6627fbe97e65bd749642ab5df416826a3bf00b4f5f10`.
+
+Lead and independent reviewer personally viewed all six rendered captures: desktop 1440px, narrow 390px, Greg running, presenter read-only, unavailable and rerun-interrupted. No clipping/overflow was observed in these captures; the DOM overflow checks passed. Keyboard reached a visible button with a solid 2px outline. These are Chromium observations: isolated CDP contexts approximate private sessions; Safari/WebKit, actual private-browser behaviour, hosted deployment, screen-reader checks and a dedicated CSP enforcement check were unrun. No browser runtime exception occurred in the exercised scenarios. The full lower-page assumptions data is checked in the actual DOM; viewport captures alone do not show every row.
+
+Final proof sampled peaks were 295,758,629 bytes disk, 2,838,642,688 bytes RSS and 3,113,367,461 bytes inclusive, inside the unchanged 2/3/5 GiB limits. Total final phase was 54.393 seconds; whole pipeline 885.135 seconds, inside the original deadline. These are sampled peaks, not continuous containment. Exact process/start identities, four owned groups/ports, scratch and reservation were absent after finalization; tools and borrowed Node pins were unchanged and cleanup errors empty. Both original artifact keepers were explicitly consumed and finalized complete/strict true with scratch/reservation absent: API receipt `6e65156b642295d9ed588227b1ac54b6066cdfa523c2f73d0f4ec331c99da881`; web receipt `5a7d643a2bd44974d6301e8065b570f3c645a728dc1598f74238f9119822871e`. All three connected PG cleanups left the same 30 foreign/preexisting SysV segment identities unchanged and no extra segment; no IPC mutation was needed. Earlier Java cleanup removed only its separately receipt-bound own orphan segment and preserved that same baseline. Local `final-resource-summary.json` and `ipc-java-cleanup.json` retain the observations. No OneDrive/CloudStorage read, write, check or cleanup occurred.
+
+Both original ACs stay unchecked and the `inspection`, `jobs` and `integration` slices stay in progress. This proof supplies actual retained/role/command/progress/interruption evidence, but produces no completed new result. Historical F507 full-size completion is still at its stated source: the comparison package is unchanged, but allocation/brief/claims/offers/persistence/policy dependencies changed afterward. It is not exact-current full-size success or new-result rendering proof. Remaining original work includes assessing/completing that new-result closure, applicable browser/hosted experience evidence and a green covering batch. No extra hour-long replay or reduced-workload substitute was run.
+
+Scrappy Doo 3 owns the final receipt. Cuthbert 4 requested/selected `gpt-6-luna`/`high` (mechanic, no fallback) authored only the allocated proof and returned. Sam Sheepdog 3 requested/selected `gpt-6.1-sol`/`high` (reviewer, no fallback), title verified in thread `01a1ecc4-646d-71d3-85a0-c5a4607e9a1d`, independently read the source, failed/final receipts and all captures. Their final review is recorded below. All work remained within the original Story allocation; publication was through the normal guarded helper. Merging/deployment stay with the dispatcher.
+
+
+Sam Sheepdog 3 returned **PASS — no blocking or major issues found** for proof commit `b6293525c`, after actual source/receipt/image review. A separate minor Bug candidate is a source-only diagnosis, not a reproduced product failure or new repair allocation: `ComparisonComponent` clears drafts/pending uncertain command on signed-out/destruction, while real interactive OIDC expiry changes to signed-out and navigates away. Existing recovery tests cover loading-to-ready with the component surviving. Next triage check is actual expiry/failed silent renewal/same-account return with an edited draft and uncertain command, preserving explicit retry and clearing on logout/account/run change. Parent dispatcher receives the exact diagnosis for normal defects capture; no auth repair was performed. The current proof establishes fresh sign-in/safe return, not that recovery path. Populated newly completed experiment results also remain part of the original new-result evidence gap; empty catalogue states alone do not establish them.
+
+
+## Full-workload completion increment — 18 November 2026
+
+Hugh 2 resumed the existing owned Story at product source `9a92a107386a7728e6859d01cfa853080036fba6`, tree `565b359ca550f1f8693f37925ddae39842b5747f`. Both original ACs and the stable `inspection`, `jobs` and `integration` slice IDs remain unchanged. The previous 39-check connected proof is reused for its matching retained/role/progress/interruption scope. No current successful result is inferred from it. Petunia Pig 2's read-only source inventory found the 117-file Java comparison/import closure unchanged from `b6293525c`; nine files in that closure differ from historical F507 source `8d989318b`, so F507's 4,118-second success supplies timing context, not current result evidence.
+
+The selected remaining increment is **one actual hold-sweep job**, with the canonical 7,200-second baseline and one supported 3,600-second trial, started through Angular's command form. Its unchanged three seeds, 1,000 employees, 850 cars, nine releases and 90-day horizon produce twelve real route steps (two arms × three seeds × two routes). No seeds, workload, successful job/result rows or test replay are supplied. A completed experiment would supply a new actual result and populated experiment-arm data in the same run. Other experiment shapes are not claimed from this one selection. The existing lifecycle proof mode stays available; a completion-only mode skips its already completed four scenarios.
+
+Historical timing extrapolates to approximately 8,236 seconds for two arms, with a broad 100–200-minute range rather than a performance promise. The canonical job timeout remains 10,800 seconds; a slower run may therefore fail honestly before finishing. The new proof work deadline is 11,400 seconds, within one fresh 12,000-second pipeline deadline covering required artifact builds and finalization. Neither clock is silently reset after failure. Progress checkpoints retain actual durable job identity/counts. After initial DOM start/progress, the first browser context is closed while fresh signed API reads observe the job; fresh Greg/presenter logins inspect the completed result. This avoids claiming continuous browser observation or changing the issuer's existing token lifetime.
+
+Previous build artifacts were properly removed at 03:55 UTC; surviving hashes do not make them reusable files. Only the current Java package and production Angular bundle are rebuilt, sequentially, using the existing owned supervisors. Matching prior focused tests are reused; full suite remains deferred to the covering batch. The proof uses actual default `DatabaseComparisonReplay`, owned native PostgreSQL 17 and local signed OIDC. No Java/shared auth/route/kit source is allocated for repair. A concrete producer failure remains original unmet work and is reported to its owner.
+
+The local plan/runner/receipts are under `.claude/test-runs/fucq452/hugh2/`, with a 32 MiB aggregate retained-output cap. The indivisible twelve-step job is bounded by 2 GiB scratch/output, 4 GiB aggregate owned RSS and 6 GiB inclusive sampled allocation, a 2 GiB JVM heap (plus bounded metaspace/code cache), and 5 GiB free-disk emergency reserve. The previous short proof already sampled 2.84 GB RSS near its 3 GiB cap; its full-workload peak is unknown. Fresh canonical reservation capacity governs admission. The supervisor retains manifests, exact process/start/group/token discovery, borrowed/source pins, atomic progress, joined cleanup, ports/scratch/reservation absence and receipt-bound native IPC audits. These are sampled limits, not continuous containment. OneDrive and CloudStorage remain entirely untouched.
+
+Hugh 2 requested/selected `gpt-6.1-sol`/`high`; Petunia Pig 2 (runner) and Heihei 3 (mechanic) requested/selected `gpt-6-luna`/`high`, all no fallback. All three desktop titles are verified. Worker observations expire and remain distinct from claims/status. This paragraph records a plan and current assessment; no new full-workload runtime or successful result has been observed yet.
+
+
+## Completion-proof source checkpoint — 18 November 2026
+
+- The existing proof now has an explicit `completed-experiment` mode for the single canonical twelve-step hold-sweep plan above. Default lifecycle scenario execution stays separate and the previous 39 checks are reused. No build, browser, database or full-workload run has started at this checkpoint.
+- Heihei 3 requested/selected Luna/high, no fallback, returned the allocated proof change with `node --check` and `git diff --check` passing. Parent review corrected absent generator-assumption assertions, job/result identity separation, unexported-source provenance reads and hidden running-job identity inspection. Final changed source has whitespace validation; a final exported syntax check remains in the owned pipeline.
+- Pluto 3 requested/selected Sol/high, no fallback, title and gateway verified, independently reviewed source SHA-256 `d1a7223deb95572a8a6bebf584fa49c89cdbf770069784baa5661e11f355c358`: **PASS — no blocking or major issues found**. A major closed-disclosure assertion issue was corrected and re-reviewed before this conclusion. The minor timing qualification is retained: 2,400 seconds is the first-step polling window from job start, plus finite request/DOM/disposal overhead; it is not an exact forty-minute browser-context lifetime. No continuous-browser or token-renewal claim is made.
+- Result workload evidence will use actual per-route 1,000-employee/850-car totals, manifest seeds and exact pinned retained input hashes. The nine releases and ninety-day horizon are source/pinned-input provenance; these generator fields are not exposed as result assumptions. Both original ACs and all stable slices remain open. Resource-supervisor review, current artifact rebuilds and the one actual completion attempt remain pending. No OneDrive/CloudStorage access.
+
+
+## Completion attempt started — 18 November 2026
+
+The single authorized full-size hold-sweep attempt is running at proof/source checkpoint `0ee22999f73f1ad00c173cd17c306ec8368f0214` (tree `34f44454e41b460436cdcccf3e615b283e7f5ffa`). The create-once pipeline clock began at 05:39:27.085611 UTC, with an unchanged whole-pipeline deadline of 08:59:27.085597 UTC. Current production API and Angular builds both passed; their hash-verified artifacts were consumed, then both keeper final receipts returned complete/strict true with owned processes/groups/listeners, scratch and reservations absent, unchanged source/borrowed pins, and no cleanup or sampler error. The final exported proof passed `node --check` before PostgreSQL/browser startup. These builds are not new acceptance evidence.
+
+The real Greg DOM command started `comparison-job-c0230ad5-b38c-4007-8155-ad6830f04fa7` at approximately 05:40:39.670 UTC. Signed Java reads observed 0/12 then 1/12 steps, 0/3 seeds and no result. This is actual progress only: completion, result readback, populated experiment rendering and final runtime cleanup remain unverified while the job is active. No workload reduction, inserted success, timeout extension or retry occurred. The 10,800-second backend timeout remains unchanged.
+
+Local live/final evidence is under `.claude/test-runs/fucq452/hugh2/runtime/`; the launch receipt records the fixed clock and owned runtime paths. Hugh 2 personally checked both final keeper receipts at 05:41 UTC. Pluto 3 independently reviewed the exact proof and all four supervisor hashes before launch and returned **PASS — no blocking or major issues found**. All three stable slices and both original ACs remain open, with the earlier browser/hosted limitations and red covering batch unchanged.
+
+
+## Failed full-workload attempt — 18 November 2026
+
+The one authorized completion attempt failed; no retry, clock reset, seeded success or reduced workload followed. Actual job `comparison-job-c0230ad5-b38c-4007-8155-ad6830f04fa7` started at 05:40:39.689 UTC and finished **failed** at 05:45:03.727 UTC with **1/12 steps, 0/3 seeds, no result** and the honest API reason `The comparison could not be completed.` The signed poll observed that terminal state at 05:45:10.124 UTC. API log line 163 records `GCSP comparison job ended early (OutOfMemoryError)`. This is a failed actual full-size attempt, not successful new-result or populated-experiment proof.
+
+The exact JVM arguments were `-Xms128m -Xmx2g -XX:MaxMetaspaceSize=256m -XX:ReservedCodeCacheSize=128m`. The production `ComparisonJobs.execute` catch at lines 371–376 logs only `t.getClass().getSimpleName()` before storing its generic failure reason. The retained bounded API output has no OOM detail message, allocation site or stack trace. Therefore heap-envelope exhaustion is a plausible hypothesis, but heap versus nonheap region and the responsible allocation remain **unresolved**. The Java process stayed alive, served the terminal read and then stopped through the owned finalizer. This run does not establish a product defect or a production capacity requirement; no speculative Bug or Java repair was added.
+
+Five exercised checks passed: empty isolated hold-sweep result/job, fresh Greg code/PKCE sign-in and safe return, signed bearer browser reads, the one real DOM command with the expected 3-seed/12-step plan, and the first actual step displayed for the exact job in Greg's DOM. The running JPEG shows 1/12, 0/3 and no result, with no browser runtime exception in that observed context; Hugh 2 personally inspected it. The initial context was successfully disposed and fresh signed API reads continued. The scenario then failed `noException` because Java returned the terminal failed job. Result identity/digest, both completed experiment arms and measures/assumptions, restart persistence, final desktop/narrow/focus/overflow captures and fresh presenter inspection of that new result were **unrun**. The retained receipt's generic mode-coverage AC closure wording describes intended coverage; it does not override this failed scenario, its `incomplete` AC evidence or these unrun checks. Retained evidence bytes are unchanged.
+
+The connected supervisor exited 1 with state `failed`, proof `FAIL` and strict result false. The launcher finished at 05:45:16.650337 UTC as `incomplete`/strict false, child exits API 0, web 0 and connected 1. The create-once clock hash stayed unchanged; whole elapsed was 349.567 seconds against the original 12,000-second ceiling. The supervisor's resource and deadline checks passed: sampled peaks were 960,196,453 bytes disk, 3,299,950,592 bytes owned RSS and 4,260,147,045 bytes inclusive, against the 2/4/6 GiB grants; Java alone peaked at 2,440,675,328 bytes RSS. There were 131 samples, minimum free space 165,301,932,032 bytes, and no sampler or cleanup error. Sampled observations do not prove continuous or kernel-enforced containment.
+
+The connected receipt records 168 owned process identities, all owned processes/groups/listeners stopped, native PostgreSQL stop exit 0, tools/borrowed Node pins unchanged, and own scratch/reservation absent. All 30 baseline immutable IPC identities were preserved; the one attributed owned segment was already absent after PostgreSQL stopped, so no `ipcrm` branch ran. Both artifact keepers had finalized complete/strict true immediately after verified consumption. Hugh 2 independently rechecked at 05:47:45 UTC: all three exact own reservation tokens and scratch roots absent, no matching recorded PID/start identity alive, and connection refused on the four owned ports. Local retained output was 11,272,183 bytes, below 32 MiB. No OneDrive/CloudStorage access or check occurred.
+
+Retained local evidence under `.claude/test-runs/fucq452/hugh2/runtime/`:
+
+- `launch-receipt.json`: `34352e4c4a3fea72a279d7755c4d7e6d1040e5dd028f25ec859260648fd79cd7`.
+- `api-20261118T053927Z/receipt.json`: `0f1d4913b37f246bb493a1e072381f18e895c4617ed374df509d658ebb912bb0`; `web-20261118T053951Z/receipt.json`: `b2615eefecbe8a755c21c41b6f43c00b275173f6e56d64805677adfb615a6864`.
+- `connected-20261118T054025Z/receipt.json`: `512df8395661552683c717493df581fb72874458fa918a9697d7e05a02902596`.
+- `connected-20261118T054025Z/evidence/connected-comparison-proof.json`: `e8cd9e025be6e1ca9fbde39590c3d511b7e994d39d11c17c923a0d4365e3f067`.
+- `connected-20261118T054025Z/evidence/completed-hold-sweep-progress.json`: `96f14b99bdd13a4e25c785e0a5e5f424a7ad0550dbb11fe24b243a4309960a9f`; running JPEG: `4108f489f7106eacf694626fdae959ee1538a021e0d3573f24069108b488a7d1` (51,577 bytes).
+- `connected-20261118T054025Z/proof-logs/api-1.log`: `494cc6b61ef711dd89844628c98f5aef69f70d82e95e65210bb8acd143824dda`; `c3-proof.log`: `18e784f8e27ef36ee086f3cf2474474bdaa0c1fe48af1211c174f24d8eed9f0f`.
+
+Existing matching 39-check lifecycle/retained-role proof, focused Angular 58 passes and source-qualified Java 119 distinct passes plus two gated skips remain reused within their prior bounds; failed aggregates remain failed. Full suite: deferred to batch; the covering batch remains red. Both original ACs, the original completed-new-result criterion and all three stable slices remain open/in progress. Safari/WebKit, actual private browser, hosted, screen-reader and dedicated CSP evidence remain unrun. Further diagnosis or a changed resource experiment is separate remaining work, with no new acceptance gate or repair allocation created by this report.
+
+Pluto 3 independently reviewed the final receipts, exact retained hashes and the actual running JPEG, and returned **PASS — no blocking or major issues in the honest FAILED-result evidence and cleanup audit**. This is not a passing workload. At 05:48:43 UTC the reviewer personally confirmed all three owned scratch roots and canonical reservation tokens absent, and reconciled all 30 immutable foreign IPC identities unchanged. The unexercised `ipcrm` removal path, sampled-containment limit, failed mode-scope wording caveat and all unrun result/presenter checks remain explicit. Petunia Pig 2 and Pluto 3 returned; no owned runtime remains. Hugh 2, Heihei 3, Petunia Pig 2 and Pluto 3 used their previously recorded requested/selected model-effort pairs without fallback.
+
+## Bounded diagnostic preparation — 18 November 2026
+
+Hugh 2 resumed the same claim from `bffc1b08ccd7fcad12f781e988ad400fd7b9391d`. The initial OOM message, memory region, allocation and cause remain unknown. Read-only tracing found a specific pressure hypothesis: `allocation/Prepare.run` retains per-employee decision JSON and eligible contender quotes until the complete plan is ready, and `write` then batches the serialized contender bindings before execution. That structure is not an observed allocation-site diagnosis, leak, product-defect finding or measured explanation for the previous failure.
+
+The installed pinned JDK 21 source explicitly excludes OOM from JFR's `JavaErrorThrow` event (`ErrorThrownEvent` and `ThrowableTracer`), so that event alone cannot supply the missing detail. One separate local telemetry smoke checked a tiny caught heap OOM; it is not a reduced comparison workload or acceptance substitute. With the application's class-only catch reproduced in that fixture, rotating `exceptions=info` logging retained `Java heap space`, the VM allocation source and the throwing interpreter method/BCI; `gc*=info` output was also present. It passed five capability checks in 1.500 seconds, sampled 115,343,360 bytes RSS and 106,496 bytes scratch, sent no signals, and finalized its child/group/scratch/reservation absent. Local receipt `.claude/test-runs/fucq452/hugh2/telemetry-smoke-0911/receipt.json` SHA-256 is `c36c6ac1bb5e31ed1994c88cd6c89fcf164c5d61ed8eabeb0a6d8cea58fc65f3`; Java binary SHA-256 is `a82e007d581ec33f18875b69bd3b64f2fe9444ecb2fb35f9baae3e16320ab6c0`. This verifies that telemetry capability in this small interpreted fixture, not capture at every compiled OOM site or a product memory diagnosis.
+
+One diagnostic variant is being prepared for the unchanged original full workload: real Greg DOM hold-sweep, 7,200-second baseline versus one 3,600-second trial, comparison-a/b/c, 1,000 employees, 850 cars, nine releases, ninety days and twelve steps. Historical FUCQ-507 records an actual full three-seed process-only success in 4,118 seconds at `-Xmx3g` and an earlier 1,536 MiB OOM with a 1.2–1.5 GB full-GC live set. The current `Prepare`, `BuddyCandidates` and `StoredSubjectEvaluator` blobs match that source, but nine files in the wider 117-file closure differ. That is evidence for one explicit 3 GiB variant, not current completion evidence or a diagnosis of the initial OOM. The selected JVM telemetry is `-Xlog:exceptions=info` plus `-Xlog:gc*=info`, each writing 1 MiB active plus one 1 MiB rotated file under owned proof logs. Their nominal combined four-file ceiling is 4 MiB; JVM record boundaries can overshoot it, and the existing aggregate limits remain binding. The approved heap variant is 3 GiB; metaspace remains 256 MiB, code cache 128 MiB and backend timeout 10,800 seconds. The initial real DOM start/progress chunk uses a three-minute first-step observation window plus bounded request/DOM/cleanup overhead; its Chrome main child is joined and private group positively audited absent before signed API polling. Detached descendants remain in the outer identity/resource audit. After success, the ordinary API restart proves persistence and releases the large heap before fresh Chrome and fresh Greg/presenter result checks. No original result/role assertion is removed. No heap dump, forced JVM crash, product code repair or seeded result is allocated.
+
+The four local supervisors are prepared separately under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/`; prior evidence bytes and the expired prior clock remain untouched. The new plan keeps sequential current-source API/web builds, a create-only 12,000-second whole clock, 11,400-second proof and 120-second cleanup allowance, one owned native PostgreSQL 17, 2 GiB proof scratch/4.5 GiB sampled RSS/6.5 GiB inclusive limits, two-second samples, a separate 6 MiB proof-log retention cap (including nominal 4 MiB JVM telemetry and existing 1 MiB child stdout), and the same 32 MiB aggregate Hugh 2 retained-output cap. Every explicit supervisor/proof signal path must record positive PID/start/PGID ownership and a persisted pre-signal intent plus observed result. The compatible ownership logic is being adapted from independently reviewed F437 attempt07 (`e4c48b0662357fe1a84cb084f930632630dee12cf0bf05f62f62a3b25f45c046`): positive actual-parent membership, baseline exclusion and direct-child registration; absent-parent equality grants no ownership. This is bounded lifecycle evidence, not a general framework-safety claim.
+
+No comparison runtime has started at this checkpoint. The dispatcher authorised this single variant after exact committed proof/supervisor review and fresh shared-lane/resource admission; those conditions remain before launch; the 6.5 GiB inclusive envelope is not inferred admissible from physical RAM or an earlier observation. The previous focused and connected passes remain reused; no unchanged focused suite or full suite is selected. Full suite: deferred to the still-red covering batch. Both original ACs, the new-result criterion and all three stable slices remain open. Browser/hosted limitations are unchanged. The 4.5 GiB RSS bound is an extrapolation from prior measured Java RSS plus the heap increment and non-Java footprint, with margin; it is not a measured current peak or kernel containment. Tweety requested/selected `gpt-6-luna/high`, no fallback, prepares only the four allocated ignored supervisors; Hugh 2 owns proof/doc changes. No OneDrive/CloudStorage access occurred.
+
+
+## Diagnostic source review and admission hold — 18 November 2026
+
+Preparation checkpoint `e7f2abcf3d11be7d5d8764d0cb5bbe347f6c7f2e` was published. Exact proof SHA-256 `f7eb4223c4f78058a0f3095ca6d3efd7fb9ce889b7aa14f63548bc2e20ee5cff` passed pinned `node --check` and whitespace validation. Rapunzel requested/selected `gpt-6.1-sol/high`, no fallback, title and gateway verified, independently returned **PASS — no blocking or major issues found** after reviewing that proof and all four revised supervisors. The reviewed local plan SHA-256 was `569e2c829c8482082684f22bc8913dbdc4793d70fa894859cb8109f73c500cf5`.
+
+Review found and corrected three concrete issues before execution. A daemonized PostgreSQL could reparent before the two-second sampler observed it; the new supervisor instead directly launches and registers foreground PostgreSQL, checks readiness with pinned `psql` within sixty seconds, and requires its exact retained PID/start/PGID before journaled immediate stop. PostgreSQL output drains under the shared locked 2 MiB subprocess-output cap and the drain thread must join before cleanup. The launcher now requires its positive process/group teardown audit and no teardown errors before strict success. All four collectors now include their positively observed supervisor self in RSS accounting while excluding other baseline identities. Four AST parses and exact revised hash checks passed. These are applied, statically reviewed mitigations; no current service lifecycle or signal path has been runtime-verified.
+
+At 09:32:47 UTC the canonical reservation registry was empty, but the canonical helper's conservative available memory was 3,587,948,544 bytes, below the 5,368,709,120 bytes needed for the approved 4.5 GiB proof RSS plus its 512 MiB RAM reserve. Broader host/capacity indicators use a different measure and do not override this admission rule. No atomic admission was attempted and no pipeline clock, scratch, database, browser, comparison runtime or reservation was created. The single authorised variant remains unconsumed and waits for fresh peer/lane/host observation and conservative atomic admission; the smaller independently owned F441 allocation may admit first. No workload or limit was reduced.
+
+The shared Claude claims channel was re-read: FUCQ-500 is closed and FUCQ-503 / DEV-2026-11-16-021 owns only its offer-screen focus files and own records, disjoint from this allocation. Shared-login identity supplies no authority over that peer claim. A reported gateway 422 credit-text response (`cf-ray a5c5f60c8d06001f-LHR`) is retained as a diagnostic only; available launcher calls continued without credential or model changes, and no balance conclusion was drawn.
+
+The local checkpoint, immutable reviewed plan, supervisor hashes and subsequent source-pin equivalence audit are retained under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/`; current status/result records use suffix `0902`. Original OOM message/region/allocation/cause remain unknown. Both original ACs, new-result evidence and the three stable slices remain open. Reused checks retain their earlier qualified scope; no unchanged focused/full suite ran. Full suite: deferred to the still-red covering batch. No OneDrive/CloudStorage access occurred.
+
+## Acceptance decision — 18 November 2026
+
+A Claude story-lead resumed the same claim for the Claude dev poller after the Codex poller stopped. The topic was refreshed from local `gcsp-poc-dev` `e66cf7008` by merge `e1cc5a0b8`. Only `.product-map/work.json` conflicted: the base copy was kept because its FUCQ-452 row was the newer observation of the same facts. The merge brought shared changes to `allocation/Prepare.java`, `Assumptions.java` and the new `DeclineReentry.java`. The seven comparison product files are unchanged.
+
+Focused validation ran once at `e1cc5a0b8` on one owned native PostgreSQL 17.12, with `GCSP_TEST_DATABASE_URL` and `GCSP_TEST_RUNNING_DATABASE_URL` set:
+
+- **Java:** `./mvnw -B test -Dtest='gcsp.api.comparison.**,DefaultProfileTest,OidcContextTest,OidcIdentityTest,IdentitySelectionTest,PersistenceWiringTest,NotConfiguredReadinessTest,ClaimWiringTest,NotificationDrainWiringTest,AppointmentsWiringTest,RemoteOrderingStartupTest'` under JDK 21.
+  - Result: **Tests run 121, Failures 0, Errors 0, Skipped 2**, BUILD SUCCESS in 1:36.
+  - The two skips are the opt-in `ComparisonJobFullSizeTest` and `RouteReplayFullSizeTest`.
+  - This one green aggregate supersedes the earlier assembled 119+2. The three earlier export errors do not recur when the tests run in place, with the Node fixtures present.
+  - Two earlier invocations ran no tests: one was offline under the default JDK 11 and could not resolve dependencies; the other was refused by the JDK 11 enforcer.
+- **Angular:** client 28 and component 30, **58/58 passed**.
+- **`check:boundaries`:** fails only on the known base `case-queue.component.html` em dash.
+
+A full suite is deferred to the batch, because no migration, startup, CDI producer, shared properties, pom or test-support file was changed.
+
+**AC2 is met locally.**
+
+- The connected `connected-20261118T035403Z` proof shows:
+  - presenter read-only behaviour, checked in both the DOM and the API (403 on POST, no command section);
+  - an honest unavailable state;
+  - durable interrupted jobs with no stored result;
+  - unchanged three seeds and the full workload.
+
+  Its receipt and proof SHA-256 values were re-verified as `0ea7383d…` and `ee41b1be…`.
+- The failed full-size job reported Java's honest reason, "The comparison could not be completed.", and stored no result.
+- The component spec renders the exact failed and interrupted reasons, and copy makes no promise of improvement.
+- Java `ComparisonHttpTest` (7), `ComparisonJobHttpTest` (8) and `ComparisonNativeTest` (5) passed in the run above.
+
+**AC1 is not met.**
+
+- These parts are proven: retained result identity, measures, assumptions, policy and provenance as actual data, plus Greg's start, rerun, progress and interrupted states.
+- These parts are not: no completed new result and no populated experiment has ever been rendered. The only full-size completion attempt, a hold-sweep at a 2 GiB heap, failed with `OutOfMemoryError` at 1/12 steps.
+- The prepared 3 GiB diagnostic variant under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/` is unconsumed. Its reviewed `launch.py` hard-codes build base `9a92a107` and refuses any build-path change from it. The refresh changed `Prepare.java`, so running it at the current head needs updated pins and a re-review. Running it at the old `b22801518` would mean undoing the refresh.
+- Either way, it needs about 2 to 3.3 hours of the machine's single heavy-runtime lane. That scheduling is for the dispatcher. A memory fix to the shared Java producer would belong to its owners.
+
+Not done, with reasons:
+
+- Safari/WebKit and actual private browsing: no WebKit runner is in the local toolchain, and Chromium isolated contexts only approximate private sessions.
+- Hosted deployment: Gary's isolated Render dev environment.
+- Real identity provider: only local signed test OIDC.
+- Screen-reader and dedicated CSP enforcement checks.
+
+Resources: scratch under `/private/tmp/claude-501/fucq452-20261118T103122Z` with its manifest, a cloned `node_modules` and `services/gcsp-api/target` were all removed and verified absent. PostgreSQL was stopped, its port is closed and its shared-memory segment was released. The retained summary is `.claude/test-runs/fucq452/claude-resume-1031/summary.json`. OneDrive was not accessed.
+
+Separate Bug candidate, source-only and unreproduced:
+
+- In `apps/gcsp-web/src/app/comparison/comparison.component.ts`, the auth effect at line 68 clears the draft, the pending command and the uncertain flag on `signed-out`, and `ngOnDestroy` clears them again.
+- Real OIDC expiry with a failed silent renewal goes to `signed-out` and navigates to sign-in. An edited hold-sweep or points value and any uncertain command would therefore be lost on return, against the shared "sign in and return with saved progress" contract.
+- Specs cover only same-account recovery while the component survives.
+
+## Auth-recovery repair and full-size re-pin — 18 November 2026
+
+The coordinator allocated two items to this Story: the auth-recovery candidate and one 3 GiB full-size run.
+
+**Auth recovery is reproduced and repaired at `4c9afcad6`.**
+
+- **Reproduction.** Two new component cases failed on the unchanged source: expiry lost the hold-sweep draft (`expected 'process-only' to be 'hold-sweep'`) and the uncertain command (`Start is unconfirmed` missing). Each case drives `signed-out` with the auth service's expiry notice, then recreates the screen as the sign-in redirect does, then returns with the same account.
+- **Cause.** The auth effect cleared the draft and the pending command on every `signed-out`. The OIDC redirect also discards in-memory state, so even without the clear there was nothing to return to.
+- **Impact.** Greg lost an edited experiment and any unconfirmed start after a real expiry, against the shared "return to the authorized page with saved progress" contract. No command was ever resent automatically.
+- **Repair.** On `signed-out` with an expiry notice only, the screen saves the selection, drafts and pending command in this tab's `sessionStorage`. On the next ready state for the exact same subject, environment, run and roles it restores them once, as an unconfirmed command that only the explicit retry control resends. Explicit sign-out, denial, and a different account or run discard the saved copy. The auth service already uses this tab's session storage, so this adds no new component or connection.
+- **Tests.** Angular comparison 61/61 (28 client, 33 component); auth route policy and guards 15/15.
+
+**Full-size re-pin, reviewed by the lead.** The shared delta since `9a92a107` is the declined-car re-entry rule:
+
+- `Assumptions` records it when the pinned policy carries it.
+- `Prepare` adds one latest-decline lookup per engaged employee, only when the rule is present.
+- The lookup returns one small row per employee and grows no retained per-run collection. It is not a plausible cause of, or cure for, the earlier out-of-memory failure.
+
+The four ignored supervisors keep their reviewed logic, limits, ownership and teardown. Only the recorded build base and the plan's source/tree/proof pins move to the refreshed source that includes this repair. The proof blob is unchanged at SHA-256 `f7eb4223…`. Progress checkpoints are written under the Hugh 2 run directory, outside scratch. The twelve-step job itself is indivisible: an OS kill leaves its progress record, not a resumable job.
+
+If the 3 GiB attempt runs out of memory again, it stops there. That would be a memory fix for the Java comparison/allocation owners, not another retry.
+
+## Re-pinned 3 GiB attempt refused at admission — 18 November 2026
+
+The heavy-runtime lane was waited out: FUCQ-451 and another session's Java test shard finished, then there were two quiet minutes with an empty reservation registry. At 10:56 UTC the capacity check reported 8.8 GB free and `can_start=3`.
+
+The re-pinned pipeline then started once at `a8b8ec706`.
+
+- **Builds and checks.** The production API and Angular builds passed (rc 0) and their artifacts were hash-verified and consumed. The exported proof passed `node --check`.
+- **Refusal.** The connected supervisor then refused its 4.5 GiB proof grant with `CapacityError('chunk needs 4831838208 bytes RAM; available 3790274560')`. That measure is the helper's own: free plus inactive plus purgeable pages.
+- **What did not run.** No PostgreSQL, browser, Java service or comparison job started, and no job, result or progress exists. The launcher exited `incomplete` after 68 seconds.
+- **Clock.** The one-time pipeline clock for this run directory is consumed; it was not reset.
+
+The run also exposed a runtime fault in the revised supervisors.
+
+- **Symptom.** All three supervisors reported `owned process or process-group absence is unresolved`, so they preserved their scratch roots and two host reservations.
+- **Cause.** The only "unresolved" process was each supervisor's own `/bin/ps` sampling child, observed during its final audit. The owned groups were absent (`groups_after` false). This comes from the 09:3x change to include each supervisor's own RSS.
+- **Cleanup.** After confirming the owners were dead, no open files and no group members, all three roots were removed through the project's `test_resources.reconcile` on their ownership manifests. Both dead-owner reservations were released through `HostBudget.release`. Scratch and registry are verified empty; no IPC or port was created.
+- **Retained.** About 11 MiB of receipts under `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-0918/`, with the pre-repin supervisor copies in `pre-repin/`.
+
+AC1 therefore stays unmet. A real attempt needs two things outside this Story:
+
+- **Memory.** At least 4,831,838,208 bytes of conservative available RAM. On this 16 GB machine with the desktop apps resident, the helper measured 3.59 to 3.79 GB at both observations today.
+- **Supervisor fix.** A reviewed fix so the teardown audit excludes the supervisors' own `ps` children.
+
+Lowering the heap, the RSS grant or the workload is not allowed. If a run is admitted and runs out of memory again at 3 GiB, that is a fix for the Java comparison/allocation owners.
+
+## Supervisor teardown fix — 18 November 2026
+
+The coordinator merged the branch into `gcsp-poc-dev` at `a43062ac5` and allocated the teardown fix plus one admitted 3 GiB attempt.
+
+**Fix.** All four supervisors shared one `process_snapshot()`. It ran `/bin/ps` through `subprocess.run`, so the `ps` child appeared in its own output as a descendant of the supervisor. Since the 09:3x self-RSS revision, the supervisor counts itself as owned, so that child became an owned active process. Every final audit therefore reported "absence is unresolved" and preserved scratch and reservations.
+
+The fixed copies in `.claude/test-runs/fucq452/hugh2/runtime-diagnostic-1130/` start `ps` with `Popen` and drop exactly that PID when its parent is the supervisor. They also kill and reap `ps` on timeout. Nothing else changed: 14 diff lines per file, with identical logic, limits, pins and teardown. The `0918` directory stays as the consumed record.
+
+These supervisors are ignored local run files, like every earlier F452 supervisor, so this record carries the change rather than the repository.
+
+**Focused check.** `.claude/test-runs/fucq452/hugh2/check-snapshot-self.py` loads each file's `process_snapshot` from its AST and runs it beside a real `sleep` child. It returned `pass: true`:
+
+- all four old copies report their own `ps` child, which reproduces the fault;
+- all four fixed copies omit it and still report the real child.
+
+All four files parse.
+
+**Runtime check of the teardown fix.** The fix is verified on the next three pipelines. The API, web and connected supervisors all finalized with `process_teardown_verified` true, `cleanup_errors` empty, and reservation and scratch absent. The host registry and `/private/tmp/test-stamp-shard-*` were verified empty afterwards.
+
+## 3 GiB admission window — 18 November 2026
+
+This is the last local attempt, under the coordinator's 40-minute window. The run must be admitted at the helper's 4,831,838,208-byte proof grant. That grant is checked after the API and web builds, about 60 to 80 seconds after launch.
+
+| Pipeline | Pre-launch helper measure | Outcome |
+|---|---|---|
+| `1130`, launched 11:13:50Z | 4,882,399,232 B | The builds stopped on the Hugh 2 32 MiB retained-output root cap, which earlier receipts had filled. No proof ran. Byte-identical inventories were then deduplicated or gzipped, with their SHA-256 values listed in `hugh2/compressed-retained.sha256`. |
+| `1117`, launched 11:25:53Z | 6,386,647,040 B | The builds passed. The grant was refused at 4,399,333,376 B available. |
+| `1137`, launched 11:37:08Z, with a 1 GiB launch margin | 6,021,054,464 B | The builds passed. The grant was refused at **4,741,726,208 B** available, against a **4,831,838,208 B** minimum. |
+
+Other readings: 11:03:49Z 4,238,917,632 B and 11:15:52Z 4,756,242,432 B (no launch).
+
+No PostgreSQL, browser, Java service or comparison job started, and no job, result or progress exists. No process was closed to make room. Each run directory's pipeline clock was created once and never reset.
+
+The window closed at 11:44Z, so the attempt stops here. AC1 still needs one admitted full-size run. That means sustained conservative available RAM of at least 4,831,838,208 B at grant time; on this 16 GB machine the measure moved between 4.2 and 6.4 GB within minutes. A larger machine would also do.

@@ -16,7 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HexFormat;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import javax.sql.DataSource;
 
 /** The presenter's scenario controls over the demo preparation: catalogue, current scenario and run reset. */
@@ -30,6 +33,7 @@ public final class ScenarioService {
     private final RunClock clock;
     private final DemoPreparation preparation;
     private final DemoPreparationFile file;
+    private final List<Consumer<RunContext>> afterReset = new CopyOnWriteArrayList<>();
 
     public ScenarioService(DataSource dataSource, RunReset reset, RunClock clock, DemoPreparation preparation,
             DemoPreparationFile file) {
@@ -38,6 +42,11 @@ public final class ScenarioService {
         this.clock = clock;
         this.preparation = preparation;
         this.file = file;
+    }
+
+    /** Runs after each reset that prepared its new run, so per-run startup composition re-applies (Node's afterReset). */
+    public void onReset(Consumer<RunContext> listener) {
+        afterReset.add(listener);
     }
 
     /** The versions a reset command must carry, as the presenter last saw them. */
@@ -135,6 +144,16 @@ public final class ScenarioService {
             ObjectNode detail = F.objectNode().put("runId", activated);
             return ClockResult.unavailable("scenario-preparation-incomplete",
                     "The run was reset but its preparation did not finish. Send the same reset again to finish it.", true, detail);
+        }
+        if (!historical) {
+            RunContext next = new RunContext(scope.environmentId(), activated, DemoPreparation.ACTOR);
+            for (Consumer<RunContext> listener : afterReset) {
+                try {
+                    listener.accept(next);
+                } catch (RuntimeException e) {
+                    // Best effort, as Node: the reset itself has committed and stays truthful.
+                }
+            }
         }
         ObjectNode value = F.objectNode().put("retiredRunId", retired).put("activatedRunId", activated)
                 .put("replayed", committed.replayed());

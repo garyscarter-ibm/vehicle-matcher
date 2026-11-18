@@ -1,0 +1,81 @@
+{
+  "schemaVersion" : 1,
+  "story" : "FUCQ-441",
+  "basePath" : "/api/gcsp/v1",
+  "producer" : "gcsp.api.brief.BriefJavaGoldenTest via BriefService and BriefResource.respond",
+  "scope" : {
+    "environmentId" : "test-env",
+    "runId" : "run-1",
+    "employeeId" : "emp-1",
+    "principalId" : "principal-1",
+    "policyVersion" : "gcsp-policy-v1"
+  },
+  "clock" : "2026-11-13T10:00:00Z",
+  "steps" : [ {
+    "file" : "01-editor-initial.json",
+    "step" : "editor-initial",
+    "method" : "GET",
+    "path" : "/brief/editor",
+    "status" : 200
+  }, {
+    "file" : "02-preferences-save.json",
+    "step" : "preferences-save",
+    "method" : "POST",
+    "path" : "/brief/preferences",
+    "status" : 200
+  }, {
+    "file" : "03-editor-after-save.json",
+    "step" : "editor-after-save",
+    "method" : "GET",
+    "path" : "/brief/editor",
+    "status" : 200
+  }, {
+    "file" : "04-draft-save.json",
+    "step" : "draft-save",
+    "method" : "POST",
+    "path" : "/brief/draft",
+    "status" : 200
+  }, {
+    "file" : "05-confirm-with-consent.json",
+    "step" : "confirm-with-consent",
+    "method" : "POST",
+    "path" : "/brief/confirm",
+    "status" : 200
+  }, {
+    "file" : "06-editor-confirmed.json",
+    "step" : "editor-confirmed",
+    "method" : "GET",
+    "path" : "/brief/editor",
+    "status" : 200
+  }, {
+    "file" : "07-pause-search.json",
+    "step" : "pause-search",
+    "method" : "POST",
+    "path" : "/brief/pause-search",
+    "status" : 200
+  }, {
+    "file" : "08-editor-paused.json",
+    "step" : "editor-paused",
+    "method" : "GET",
+    "path" : "/brief/editor",
+    "status" : 200
+  }, {
+    "file" : "09-preferences-stale.json",
+    "step" : "preferences-stale",
+    "method" : "POST",
+    "path" : "/brief/preferences",
+    "status" : 409
+  }, {
+    "file" : "10-editor-unavailable.json",
+    "step" : "editor-unavailable",
+    "method" : "GET",
+    "path" : "/brief/editor",
+    "status" : 503
+  }, {
+    "file" : "11-preferences-unavailable.json",
+    "step" : "preferences-unavailable",
+    "method" : "POST",
+    "path" : "/brief/preferences",
+    "status" : 503
+  } ]
+}

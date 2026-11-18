@@ -1,3 +1,4 @@
+import { createLoadCheckpoint } from './load-checkpoint.js';
 import { createHash } from 'node:crypto';
 import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
 import { open } from 'node:fs/promises';
@@ -84,6 +85,7 @@ export async function indexJsonl(path, { maxBytes = JSONL_MAX_BYTES, maxRowBytes
   if (![maxBytes, maxRowBytes, maxRows, chunkBytes].every((value) => Number.isSafeInteger(value) && value > 0)
     || chunkBytes > 1024 * 1024) throw new TypeError('Supply positive bounded JSONL limits.');
   const file = await open(path, 'r'); const name = nameOf(path);
+  const checkpoint = createLoadCheckpoint();
   try {
     const initial = await file.stat({ bigint: true });
     if (!initial.isFile() || initial.size > BigInt(maxBytes)) fail('artifact-size', 'Artifact exceeds the bounded streaming file limit.', where(path, 'size'));
@@ -107,6 +109,7 @@ export async function indexJsonl(path, { maxBytes = JSONL_MAX_BYTES, maxRowBytes
           length: line.length, digest: sha(line) });
         if (onRow) await onRow(row, entry);
         entries.push(entry); byKey.set(entry.key, entry); consumed += line.length; start = end + 1;
+        await checkpoint();
       }
       pending = Buffer.from(bytes.subarray(start));
       if (pending.length > maxRowBytes) fail('artifact-row-size', 'JSONL record exceeds its bounded row limit.', where(path, 'row-size', { record: entries.length + 1, offset: consumed }));

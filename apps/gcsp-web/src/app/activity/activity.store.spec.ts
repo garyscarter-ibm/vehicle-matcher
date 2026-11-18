@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApplicationContext, AuthPort, SessionState } from '../auth/auth.port';
 import { ActivityClient } from './activity.client';
 import { ActivityStore } from './activity.store';
-import { ActivityFailure, ActivityOffer, ActivityProjection, ActivityResult } from './activity.types';
+import { ActivityFailure, ActivityOffer, ActivityOfferDisplay, ActivityOfferState, ActivityProjection, ActivityResult } from './activity.types';
 
 const employee: ApplicationContext & { readonly employeeId: string } = { subject: 'subject-one', roles: ['employee'], environmentId: 'env-one', runId: 'run-one',
   employeeId: 'employee-one', policyVersion: 'policy-one', capabilities: ['activity:read'] };
@@ -178,6 +178,100 @@ describe('component-scoped activity store', () => {
     expect(client.readControlVersions).toHaveBeenCalledOnce();
   });
 
+  describe('actual backend disengaged projection (FUCQ-495)', () => {
+    // Mirrors server/gcsp/brief/index.js disengaged(): both consents revoked and not paused.
+    const revoked = { searchConsent: false, holdConsent: false, paused: false, permissionVersion: 9, canSearch: false, canHold: false };
+    const disengaged = (patch: Partial<ActivityProjection> = {}) => projection({ state: 'paused', permission: revoked, ...patch });
+
+    it('offers only Engage Buddy and ignores a stale disengage click', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      expect(store.view().showControls).toBe(true);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.updateBuddy('disengage');
+      expect(client.readControlVersions).not.toHaveBeenCalled();
+      expect(client.command).not.toHaveBeenCalled();
+    });
+
+    it('keeps the terminal accepted-offer guard when disengaged', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ currentOffer: offer('accepted'), state: 'offer-closed' })));
+      await store.refresh();
+      await ready();
+      expect(store.view().showControls).toBe(false);
+      expect(store.view().controlOperation).toBeNull();
+      await store.updateBuddy('engage');
+      expect(client.command).not.toHaveBeenCalled();
+    });
+
+    it('confirms an uncertain disengage from readback without a retry and then offers Engage', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      expect(store.view().retryAvailable).toBe(true);
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      expect(store.view().phase).toBe('ready');
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+
+    it('does not offer a retry or controls when the readback shows an accepted offer', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ currentOffer: offer('accepted'), state: 'offer-closed' })));
+      await store.refresh();
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().showControls).toBe(false);
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+
+    it('keeps a pending engage retryable while readback still shows disengaged', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
+      await store.updateBuddy('engage');
+      const input = client.command.mock.calls[0][1];
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      expect(store.view().phase).toBe('recovery');
+      expect(store.view().showControls).toBe(false);
+      await store.retryUpdate();
+      expect(client.command.mock.calls[1][0]).toBe('engage');
+      expect(client.command.mock.calls[1][1]).toBe(input);
+    });
+
+    it('shows denial without controls or retry when an engage is forbidden', async () => {
+      client.readActivity.mockResolvedValueOnce(ok(disengaged()));
+      await store.refresh();
+      await ready();
+      client.command.mockResolvedValueOnce(failure('forbidden'));
+      await store.updateBuddy('engage');
+      expect(store.view().phase).toBe('denied');
+      expect(store.view().showControls).toBe(false);
+      expect(store.view().retryAvailable).toBe(false);
+    });
+
+    it('drops an uncertain disengage when the scope changes, even if the new scope reads disengaged', async () => {
+      await ready();
+      client.command.mockResolvedValueOnce({ status: 'uncertain', code: 'diagnostic-detail' });
+      await store.updateBuddy('disengage');
+      client.readActivity.mockResolvedValueOnce(ok(disengaged({ runId: 'run-two', employeeId: 'employee-two' })));
+      state.set({ status: 'ready', context: { ...employee, runId: 'run-two', employeeId: 'employee-two' } });
+      TestBed.flushEffects();
+      await vi.waitFor(() => expect(store.view().projection?.employeeId).toBe('employee-two'));
+      expect(store.view().retryAvailable).toBe(false);
+      expect(store.view().controlOperation).toBe('engage');
+      await store.retryUpdate();
+      expect(client.command).toHaveBeenCalledOnce();
+    });
+  });
+
   it('clears retained commands on sign-out and only signs in after a deliberate action', async () => {
     await ready();
     client.command.mockResolvedValueOnce({ status: 'pending', code: 'diagnostic-detail' });
@@ -201,6 +295,80 @@ describe('component-scoped activity store', () => {
     expect(store.view().showControls).toBe(false);
     expect(store.view().controlOperation).toBeNull();
     expect(store.view().retryAvailable).toBe(false);
+  });
+
+  it('uses the backend offer read to show expiry before the stored activity row changes', async () => {
+    await ready();
+    const row = offer();
+    client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer', currentOffer: row, offers: [row] })));
+    client.readOfferDisplay.mockResolvedValueOnce({ status: 'ok', value: {
+      offerRef: row.offerRef, state: 'expired', version: row.version, title: 'BMW X3', images: [],
+    } });
+    await store.refresh();
+    expect(store.view().projection).toMatchObject({ state: 'offer-closed', asOf: '2026-11-14T08:00:00.000Z',
+      currentOffer: { state: 'expired', displayState: 'expired', version: 4 }, offers: [{ state: 'expired' }] });
+    expect(client.command).not.toHaveBeenCalled();
+  });
+
+  it('suppresses Buddy controls when the newer owned offer read confirms acceptance', async () => {
+    await ready();
+    const row = offer();
+    client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer', currentOffer: row, offers: [row] })));
+    client.readOfferDisplay.mockResolvedValueOnce({ status: 'ok', value: {
+      offerRef: row.offerRef, state: 'accepted', version: row.version + 1, title: 'BMW X3', images: [],
+    } });
+    await store.refresh();
+    expect(store.view().projection?.currentOffer).toMatchObject({ state: 'accepted', version: 5 });
+    expect(store.view().showControls).toBe(false);
+    expect(store.view().retryAvailable).toBe(false);
+    expect(client.command).not.toHaveBeenCalled();
+  });
+
+  it.each(['accepted', 'declined', 'expired', 'superseded', 'released'] as const)(
+    'does not revive a terminal %s activity offer from an open display read', async (state) => {
+      await ready();
+      const row = offer(state);
+      client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer-closed', currentOffer: row, offers: [row] })));
+      client.readOfferDisplay.mockResolvedValueOnce({ status: 'ok', value: {
+        offerRef: row.offerRef, state: 'active', version: row.version + 1, title: 'BMW X3', images: [],
+      } });
+      await store.refresh();
+      expect(store.view().projection?.state).toBe('offer-closed');
+      expect(store.view().projection?.currentOffer?.state).toBe(state);
+      expect(client.command).not.toHaveBeenCalled();
+    });
+
+  it('ignores a display state with an older version or a different offer reference', async () => {
+    await ready();
+    const row = offer();
+    for (const patch of [{ version: row.version - 1 }, { offerRef: { offerId: 'other-offer' } }]) {
+      client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer', currentOffer: row, offers: [row] })));
+      client.readOfferDisplay.mockResolvedValueOnce({ status: 'ok', value: {
+        offerRef: row.offerRef, state: 'expired', version: row.version, title: 'BMW X3', images: [], ...patch,
+      } });
+      await store.refresh();
+      expect(store.view().projection?.currentOffer).toMatchObject({ state: 'active', version: 4 });
+    }
+    expect(client.command).not.toHaveBeenCalled();
+  });
+
+  it('ignores a late offer display after the authenticated run changes', async () => {
+    await ready();
+    const row = offer();
+    const display = deferred<ActivityResult<ActivityOfferDisplay>>();
+    client.readActivity.mockResolvedValueOnce(ok(projection({ state: 'offer', currentOffer: row, offers: [row] })))
+      .mockResolvedValueOnce(ok(projection({ runId: 'run-two', currentOffer: null })));
+    client.readOfferDisplay.mockReturnValueOnce(display.promise);
+    const refresh = store.refresh();
+    await vi.waitFor(() => expect(client.readOfferDisplay).toHaveBeenCalledOnce());
+    state.set({ status: 'ready', context: { ...employee, runId: 'run-two' } });
+    TestBed.flushEffects();
+    await ready();
+    display.resolve({ status: 'ok', value: { offerRef: row.offerRef, state: 'accepted' as ActivityOfferState,
+      version: 5, title: 'BMW X3', images: [] } });
+    await refresh;
+    expect(store.view().projection).toMatchObject({ runId: 'run-two', currentOffer: null });
+    expect(store.view().showControls).toBe(true);
   });
 
   it.each([

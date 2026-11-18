@@ -1,8 +1,8 @@
 # FUCQ-481 generated claim to selected remote ordering: 17 November 2026
 
-This note covers one composition test. It follows a generated canonical claim, accepted by its owner through a real RS256 JWT, into the application's own selected remote ordering. It was authored from `2f93f830b`, whose API tree matches integration `3e0235593`. **The test has not been compiled or run.** It changes no screen and no production source or configuration.
+This note covers one composition test. It follows a generated canonical claim, accepted by its owner through a real RS256 JWT, into the application's own selected remote ordering. It was authored from `2f93f830b`, whose API tree matches integration `3e0235593`. **The parent ran the frozen test successfully: 1 passed, zero failures, errors or skips.** It changes no screen and no production source or configuration.
 
-It proves only this authored partial boundary, and only once the parent runs it. It is not the full HTTP order and status journey, it does not vary shaped inputs across every port, and it involves no hosted, BMW, real OIDC registration or mail service. Neither original acceptance criterion is complete.
+It proves this partial boundary at the fixed fixture instant. It is not the full HTTP order and status journey, it does not vary shaped inputs across every port, and it involves no hosted, BMW, real OIDC registration or mail service. Neither original acceptance criterion is complete.
 
 ## Files
 
@@ -41,7 +41,7 @@ No `OrderingService`, `OrderingProviderBindings`, `HttpOrderingProvider` or `Acc
 
 That the owner's accept leaves the ordering handoff settleable by `service.reconcile` at the fixture instant. The decision flow calls `submitTrusted`, which drives the provider itself, through the same Holder service. So the explicit reconcile may be the first drive or a replay; the test accepts either and still requires one execute in total.
 
-A further risk is that the policy's first approval stage, or the terms clock under `FixturePolicyClock`, refuses at drive time. That would show up as a concrete pending or unavailable outcome, not a fabricated pass.
+The selected native run resolved these assertions successfully at the fixture instant; later-clock behaviour remains unproved.
 
 ## Hashes
 
@@ -51,3 +51,11 @@ At commit time the parent should pin the hashes of the four files from the resul
 
 - Both original acceptance criteria. The full order and status HTTP journey still needs the account policy binding, which the Russell F458 lead owns. The hosted dev environment is absent, per Gary.
 - The F477 M1 / FUCQ-515 hold continues; FUCQ-516 later-clock recovery is not repaired. Bugs 513-516 remain capture-only.
+
+## Parent validation, 17 November 2026
+
+Frozen source `20d71cb9f7fec1f5043cf541cf5b53c5feba4c8a`, tree `70f9f78ee0ac3729e0c5493777039f6ba4c7d6c6`: exactly the one named method passed with zero failures, errors or skips in 27.0 seconds. It used actual Quarkus startup, native PostgreSQL16, owner RS256 JWT/JWKS, selected remote Buddy and the production cached Holder service with selected remote ordering. The durable acknowledgement, provider reference, source lineage and single execute survived a reconciliation replay. This does not execute a clock tick or the account-dependent full order/status HTTP route.
+
+Independent Imhotep 2 source review passed (requested/selected `gpt-6.1-sol` / high, no fallback, descendants or reviewer runtime). Parent independently matched the frozen source/tool pins and observed all 77 recorded child identities plus supervisor, 19 groups, owned scratch and host reservation absent. Peak RSS was 951,418,880 bytes and scratch 103,247,328 bytes. Retained receipts: `.claude/results/fucq481-generated-ordering-review-29.json`, `.claude/fucq481-generated-ordering-parent-audit-1111.json` and `.claude/test-runs/receipts/fucq481/generated-ordering-1111/20261117T111309-fucq481-generated-ordering-1111-unit.json`.
+
+The three Java files match the tested freeze byte for byte; this note adds parent validation. The author reports `claude-opus-5-5` / high in the existing watcher; effective settings remain independently unverified. Both original criteria remain open. No OneDrive access occurred.

@@ -44,6 +44,11 @@ public class PolicyActivation {
     }
 
     public PolicyResult activate(RunContext context) {
+        return activate(context, null);
+    }
+
+    /** A non-null fixedAsOf is the instant for every read; null reads the clock per attempt. */
+    public PolicyResult activate(RunContext context, String fixedAsOf) {
         if (!database.active()) {
             return unavailable();
         }
@@ -53,7 +58,7 @@ public class PolicyActivation {
                 if (!"active".equals(status)) {
                     return stale();
                 }
-                String asOf = PolicyClock.iso(clock.now(context));
+                String asOf = fixedAsOf != null ? fixedAsOf : PolicyClock.iso(clock.now(context));
                 PolicyResult active = policy.getActiveVersion(new PolicyRead(context.runId(), asOf, null));
                 if (!active.ok()) {
                     return active;
@@ -73,7 +78,7 @@ public class PolicyActivation {
                     }
                 }
                 Stored finalStored = stored(context);
-                String asOfAfter = PolicyClock.iso(clock.now(context));
+                String asOfAfter = fixedAsOf != null ? fixedAsOf : PolicyClock.iso(clock.now(context));
                 PolicyResult again = policy.getActiveVersion(new PolicyRead(context.runId(), asOfAfter, null));
                 if (!again.ok()) {
                     return again;
