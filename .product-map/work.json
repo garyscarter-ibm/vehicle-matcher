@@ -9375,7 +9375,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-467",
-      "observed_at": "2026-11-17T21:37:04Z",
+      "observed_at": "2026-11-18T01:03:04Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Complete remote offer acceptance and decline",
@@ -9399,10 +9399,10 @@
         },
         {
           "id": "integration",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Integration: tick/startup reconciliation handler, README, base merge, scoped validation and result",
-          "observed_at": "2026-11-16T11:52:04Z",
-          "evidence": "Lead: README remote decisions section, base da53e8f4d merged at f4423775b (no Java drift), offers+allocation+ordering 203/0 and clock 50/50 on native PG 17 :55467; PresenterClockHttpTest readiness failure identical on base (pre-existing)"
+          "observed_at": "2026-11-18T01:03:04Z",
+          "evidence": "18Nov2026 reopening original integration proof: native uncertain/decline signed-OIDC HTTP, durable replay and connected Angular remote states remain unproved; earlier203 component checks retained. F466 canonical boundary reviewed atd308; its sole writer remains Hugh until integration."
         }
       ],
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
