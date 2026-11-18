@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import gcsp.api.claims.ClaimClock;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
@@ -21,7 +22,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -47,10 +50,12 @@ public final class PostgresPlanningSupply implements PlanningSupply {
 
     private final DataSource source;
     private final PlanningClock clock;
+    private final ClaimClock claimClock;
 
-    PostgresPlanningSupply(DataSource source, PlanningClock clock) {
+    PostgresPlanningSupply(DataSource source, PlanningClock clock, ClaimClock claimClock) {
         this.source = source;
         this.clock = clock;
+        this.claimClock = claimClock;
     }
 
     /** Binds the adapter only when persistence is active; otherwise the unconfigured default stays the bean. */
@@ -66,10 +71,13 @@ public final class PostgresPlanningSupply implements PlanningSupply {
         @Inject
         PlanningClock clock;
 
+        @Inject
+        ClaimClock claimClock;
+
         @Produces
         @ApplicationScoped
         PlanningSupply planningSupply() {
-            return persistence.active() ? new PostgresPlanningSupply(dataSource.get(), clock)
+            return persistence.active() ? new PostgresPlanningSupply(dataSource.get(), clock, claimClock)
                     : new PlanningDefaults.UnconfiguredSupply();
         }
     }
@@ -77,7 +85,7 @@ public final class PostgresPlanningSupply implements PlanningSupply {
     @Override
     public ObjectNode readSupply(PlanningRead read, PolicyService policy) {
         DataSource ds = source;
-        if (ds == null || clock == null || policy == null) {
+        if (ds == null || clock == null || claimClock == null || policy == null) {
             return Outcomes.unavailable("planning-supply-not-configured");
         }
         if (read == null || read.context() == null || !Js.text(F.textNode(read.runId())) || JsTime.parse(read.asOf()) == null
@@ -89,6 +97,11 @@ public final class PostgresPlanningSupply implements PlanningSupply {
             if (!PolicyClock.iso(start.now()).equals(read.asOf())) {
                 return Outcomes.unavailable("planning-supply-read-mismatch");
             }
+            // Cart holds are stamped by the claim clock, so they are judged by it; it is not part of the conflict check.
+            Instant claimNow = claimClock.now(read.context());
+            if (claimNow == null) {
+                return Outcomes.unavailable("planning-supply-unavailable");
+            }
             ObjectNode rows = load(ds, read.context());
             if (rows == null) {
                 return Outcomes.unavailable("planning-supply-read-mismatch");
@@ -99,7 +112,8 @@ public final class PostgresPlanningSupply implements PlanningSupply {
                 return choices;
             }
             JsonNode catalog = choices.get("value");
-            ObjectNode out = resolve(read.runId(), read.asOf(), catalog.path("version").textValue(), catalog.get("derivatives"), rows);
+            ObjectNode out = resolve(read.runId(), read.asOf(), catalog.path("version").textValue(), catalog.get("derivatives"), rows,
+                    claimNow.truncatedTo(ChronoUnit.MILLIS));
             if (!Outcomes.isOk(out)) {
                 return out;
             }
@@ -187,11 +201,12 @@ public final class PostgresPlanningSupply implements PlanningSupply {
                     r.set("attributes", json(rs.getString(5)));
                 });
         ArrayNode holds = rows.putArray("holds");
-        query(c, "SELECT hold_id, order_uuid, slot_id, state, expires_at, version FROM custody_holds "
+        query(c, "SELECT hold_id, order_uuid, slot_id, state, expires_at, version, hold_type FROM custody_holds "
                 + "WHERE environment_id = ? AND run_id = ? ORDER BY hold_id", ctx, rs -> {
                     ObjectNode h = holds.addObject();
                     h.put("holdId", rs.getString(1)).put("orderUuid", rs.getString(2)).put("entitlementSlotId", rs.getString(3))
                             .put("state", rs.getString(4)).put("expiresAt", iso(rs, 5)).put("version", rs.getLong(6));
+                    putText(h, "holdType", rs.getString(7));
                 });
         Map<String, ArrayNode> history = new HashMap<>();
         query(c, "SELECT request_id, seq, state, at, details::text FROM production_responses "
@@ -284,16 +299,21 @@ public final class PostgresPlanningSupply implements PlanningSupply {
         return a != null && b != null && a.isTextual() && a.equals(b);
     }
 
-    static ObjectNode resolve(String runId, String asOf, String catalogVersion, JsonNode catalog, JsonNode rows) {
+    /** cartNow is the claim clock's instant: cart holds are stamped by it, buddy offers by the run clock (asOf). */
+    static ObjectNode resolve(String runId, String asOf, String catalogVersion, JsonNode catalog, JsonNode rows, Instant cartNow) {
         try {
-            return resolveUnchecked(runId, asOf, catalogVersion, catalog, rows);
+            return resolveUnchecked(runId, asOf, catalogVersion, catalog, rows, cartNow);
         } catch (RuntimeException e) {
             return Outcomes.unavailable("planning-supply-input-invalid");
         }
     }
 
-    private static ObjectNode resolveUnchecked(String runId, String asOf, String catalogVersion, JsonNode catalog, JsonNode rows) {
+    private static ObjectNode resolveUnchecked(String runId, String asOf, String catalogVersion, JsonNode catalog, JsonNode rows,
+            Instant cartNow) {
         Long now = JsTime.parse(asOf);
+        if (cartNow == null) {
+            return Outcomes.unavailable("planning-supply-input-invalid");
+        }
         if (runId == null || runId.isEmpty() || now == null || catalogVersion == null || catalogVersion.isEmpty()
                 || !Js.array(catalog) || catalog.isEmpty()) {
             return Outcomes.unavailable("planning-supply-input-invalid");
@@ -355,7 +375,11 @@ public final class PostgresPlanningSupply implements PlanningSupply {
             if (held) {
                 JsonNode hold = occupying.get(0);
                 Long expires = instant(hold.get("expiresAt"));
-                if (occupying.size() != 1 || !text(hold.get("entitlementSlotId")) || expires == null || expires <= now) {
+                // Each hold is judged by the time authority that stamped it; any other hold type stays unresolved.
+                String type = hold.path("holdType").textValue();
+                Long judgedAt = "cart".equals(type) ? Long.valueOf(cartNow.toEpochMilli()) : "buddy-offer".equals(type) ? now : null;
+                if (occupying.size() != 1 || !text(hold.get("entitlementSlotId")) || expires == null || judgedAt == null
+                        || expires <= judgedAt) {
                     return Outcomes.unavailable("planning-held-stock-unresolved");
                 }
             }

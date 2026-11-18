@@ -91,7 +91,12 @@ class PostgresPlanningSupplyTest {
     }
 
     private PostgresPlanningSupply adapter(Supplier<String> version) {
-        return new PostgresPlanningSupply(ds, context -> new PlanningClock.Observation(Instant.parse(AS_OF), version.get()));
+        return new PostgresPlanningSupply(ds, context -> new PlanningClock.Observation(Instant.parse(AS_OF), version.get()),
+                context -> Instant.parse(AS_OF));
+    }
+
+    private PostgresPlanningSupply adapter(String runNow, Instant claimNow) {
+        return new PostgresPlanningSupply(ds, context -> new PlanningClock.Observation(Instant.parse(runNow), "v1"), context -> claimNow);
     }
 
     private ObjectNode read(PostgresPlanningSupply adapter) {
@@ -289,7 +294,7 @@ class PostgresPlanningSupplyTest {
         releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-08T00:00:00.000Z");
         receipt("tr-1", null, "2026-11-08T00:00:00.000Z", "car-a");
         PostgresPlanningSupply onRunClock = new PostgresPlanningSupply(ds,
-                context -> new PlanningClock.Observation(Instant.parse(runNow), "7"));
+                context -> new PlanningClock.Observation(Instant.parse(runNow), "7"), context -> Instant.parse(runNow));
 
         ObjectNode out = readAt(onRunClock, runNow);
 
@@ -305,7 +310,8 @@ class PostgresPlanningSupplyTest {
     void anAsOfThatIsNotTheClockNowIsAMismatchNotAPlan() throws Exception {
         releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
         PostgresPlanningSupply later = new PostgresPlanningSupply(ds,
-                context -> new PlanningClock.Observation(Instant.parse("2026-11-06T01:00:00.000Z"), "v1"));
+                context -> new PlanningClock.Observation(Instant.parse("2026-11-06T01:00:00.000Z"), "v1"),
+                context -> Instant.parse(AS_OF));
 
         ObjectNode out = readAt(later, AS_OF);
 
@@ -318,7 +324,8 @@ class PostgresPlanningSupplyTest {
         releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
         AtomicInteger calls = new AtomicInteger();
         PostgresPlanningSupply moving = new PostgresPlanningSupply(ds, context -> new PlanningClock.Observation(
-                Instant.parse(calls.incrementAndGet() == 1 ? AS_OF : "2026-11-06T00:00:01.000Z"), "v1"));
+                Instant.parse(calls.incrementAndGet() == 1 ? AS_OF : "2026-11-06T00:00:01.000Z"), "v1"),
+                context -> Instant.parse(AS_OF));
 
         ObjectNode out = readAt(moving, AS_OF);
 
@@ -331,12 +338,100 @@ class PostgresPlanningSupplyTest {
         releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
         PostgresPlanningSupply none = new PostgresPlanningSupply(ds, context -> {
             throw new IllegalStateException("The active run has no readable run clock.");
-        });
+        }, context -> Instant.parse(AS_OF));
 
         ObjectNode out = readAt(none, AS_OF);
 
         assertEquals("unavailable", out.get("status").textValue());
         assertEquals("planning-supply-unavailable", out.get("code").textValue());
+    }
+
+    // ---- FUCQ-515: each hold is judged by the clock that stamped it ----
+
+    private static final Instant CLAIM_NOW = Instant.parse("2026-11-06T00:00:00Z");
+    private static final Instant CART_EXPIRES = CLAIM_NOW.plusSeconds(15 * 60);
+
+    /** One car held for slot-1, written like ManualClaims (cart) or allocation Claim (buddy-offer). */
+    private void heldCar(String holdType, Instant expiresAt) throws SQLException {
+        releasedCar("car-a", TOURING_CONFIG, "tr-1", null, "2026-11-03T00:00:00.000Z");
+        receipt("tr-1", null, "2026-11-03T00:00:00.000Z", "car-a");
+        update("INSERT INTO employees (environment_id, run_id, employee_id) VALUES (?, ?, 'emp-1')", ENV, RUN);
+        update("INSERT INTO entitlement_slots (environment_id, run_id, slot_id, employee_id, capacity) VALUES (?, ?, 'slot-1', 'emp-1', 1)", ENV, RUN);
+        update("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, slot_unit, hold_type, "
+                + "state, expires_at) VALUES (?, ?, 'hold-1', 'car-a', 'emp-1', 'slot-1', 1, ?, 'active', ?)", ENV, RUN, holdType,
+                expiresAt);
+    }
+
+    private void assertHeld(ObjectNode out) {
+        assertEquals("ok", out.get("status").textValue(), out.toString());
+        assertEquals("slot-1", out.get("value").get("stock").get(0).get("heldForEntitlementSlotId").textValue());
+    }
+
+    @Test
+    void aFreshCartHoldIsHeldWhenTheRunClockIsTwoDaysAheadOfTheClaimClock() throws Exception {
+        heldCar("cart", CART_EXPIRES);
+        String runNow = "2026-11-08T00:00:00.000Z";
+
+        assertHeld(readAt(adapter(runNow, CLAIM_NOW), runNow));
+    }
+
+    @Test
+    void aFreshCartHoldIsHeldWhenTheRunClockEqualsTheClaimClock() throws Exception {
+        heldCar("cart", CART_EXPIRES);
+
+        assertHeld(read(adapter(AS_OF, CLAIM_NOW)));
+    }
+
+    @Test
+    void aFreshCartHoldIsHeldWhenTheRunClockIsBehindTheClaimClock() throws Exception {
+        heldCar("cart", CART_EXPIRES);
+        String runNow = "2026-11-04T00:00:00.000Z";
+
+        assertHeld(readAt(adapter(runNow, CLAIM_NOW), runNow));
+    }
+
+    @Test
+    void aCartHoldPastItsExpiryByTheClaimClockIsUnresolvedWhateverTheRunClockSays() throws Exception {
+        heldCar("cart", CART_EXPIRES);
+        Instant lapsed = CART_EXPIRES;
+        for (String runNow : new String[] {"2026-11-04T00:00:00.000Z", AS_OF, "2026-11-08T00:00:00.000Z"}) {
+            ObjectNode out = readAt(adapter(runNow, lapsed), runNow);
+            assertEquals("unavailable", out.get("status").textValue(), out.toString());
+            assertEquals("planning-held-stock-unresolved", out.get("code").textValue());
+        }
+    }
+
+    @Test
+    void aBuddyOfferHoldExpiredByTheRunClockStaysUnresolved() throws Exception {
+        heldCar("buddy-offer", Instant.parse("2026-11-05T12:00:00Z"));
+
+        ObjectNode out = read(adapter(AS_OF, Instant.parse("2026-11-05T00:00:00Z")));
+
+        assertEquals("unavailable", out.get("status").textValue(), out.toString());
+        assertEquals("planning-held-stock-unresolved", out.get("code").textValue());
+    }
+
+    @Test
+    void aBuddyOfferHoldIsJudgedByTheRunClockNotTheClaimClock() throws Exception {
+        heldCar("buddy-offer", Instant.parse("2026-11-06T12:00:00Z"));
+
+        assertHeld(read(adapter(AS_OF, Instant.parse("2026-11-20T00:00:00Z"))));
+    }
+
+    @Test
+    void aClaimClockThatThrowsOrAnswersNothingIsUnavailableNeverAWallTimeFallback() throws Exception {
+        heldCar("cart", CART_EXPIRES);
+        PlanningClock run = context -> new PlanningClock.Observation(Instant.parse(AS_OF), "v1");
+
+        ObjectNode thrown = read(new PostgresPlanningSupply(ds, run, context -> {
+            throw new IllegalStateException("no claim clock");
+        }));
+        ObjectNode none = read(new PostgresPlanningSupply(ds, run, context -> null));
+
+        for (ObjectNode out : new ObjectNode[] {thrown, none}) {
+            assertEquals("unavailable", out.get("status").textValue(), out.toString());
+            assertEquals("planning-supply-unavailable", out.get("code").textValue());
+        }
     }
 
     private static String kinds(JsonNode responses) {

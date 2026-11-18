@@ -21,5 +21,12 @@ The read is one selected read that only returns the active run's clock, so envir
 - Node compares `time.value.runId` with the context run; Java's reader is keyed by the context's run, so that is implicit.
 - The instant is compared at millisecond precision, because `asOf` is the policy ISO text.
 
+## FUCQ-515
+`PostgresPlanningSupply` judges each occupying hold's expiry against the clock that stamped it, so an advanced run clock no longer makes a fresh cart hold look expired.
+- Cart hold (`hold_type='cart'`): expired when `expires_at <= ClaimClock.now`, observed once per read and truncated to milliseconds like `ManualClaims`. Claims stay on wall time (`PolicyClaimClock`), which ordering also compares.
+- Buddy-offer hold: expired when `expires_at <= asOf` (the run clock), unchanged. Any other or missing `hold_type`, a missing expiry or slot, or more than one occupying hold stays `planning-held-stock-unresolved`.
+- A claim clock that throws or answers nothing is `planning-supply-unavailable`, never a fallback. The claim instant is not part of the double-read conflict check.
+- Existing wall-stamped cart holds need no migration: they are judged by their own wall-time authority.
+
 ## Unrun
-Source only. Nothing has been compiled, tested, run against PostgreSQL, run through the CDI container or run in the browser. `RunPlanningClockTest` needs no database; the four new `PostgresPlanningSupplyTest` cases need `GCSP_TEST_DATABASE_URL`. The persistence-on CDI producer branch is not exercised by any test.
+Compiled and run on native PostgreSQL in FUCQ-477 slice A (planning package plus `ProductionPlanCompositionTest`). Not run in the browser. `RunPlanningClockTest` needs no database; `PostgresPlanningSupplyTest` needs `GCSP_TEST_DATABASE_URL`.
