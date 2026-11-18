@@ -8252,7 +8252,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-477",
-      "observed_at": "2026-11-17T19:53:20Z",
+      "observed_at": "2026-11-18T16:34:00Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Calculate Greg's constrained next-order plan",
@@ -8282,11 +8282,32 @@
           "evidence": "630c22eb3: GET /api/gcsp/v1/greg/order-plan and POST /preview; 52 Node service cases 0 diffs; preview no-write test; lead rerun 23/23"
         },
         {
+          "id": "s4",
+          "status": "complete",
+          "title": "PostgreSQL demand/supply and run clock bound in the started app (F477 WIP reviewed and run)",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
+          "id": "s5",
+          "status": "complete",
+          "title": "FUCQ-515 cart-hold expiry on the claims time authority",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
+          "id": "s6",
+          "status": "complete",
+          "title": "Started-app AC journey over RS256/JWKS and native PostgreSQL",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives"
+        },
+        {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Original demand and supply integration",
-          "observed_at": "2026-11-17T04:11:39.197356+00:00",
-          "evidence": "Independent Terms/Evaluator/Renewal integrateda93dd42c5 (53passes); independent Cohort/Snapshot helpers integrated251d89b22 (30matching passes). Parent executed52demand methods total, including22held adapter cases. Original connected demand/supply acceptance and M1/F515 remain unresolved; slice is incomplete.",
+          "observed_at": "2026-11-18T16:34:00Z",
+          "evidence": "scoped 414/0/0 at 25aa9873c (planning 170, learning 33, claims 157, wiring/startup, FUCQ-478 journey+composition); lead review of d1eda89b1/123327f69; GregOrderPlanJourneyHttpTest 7/7 no alternatives",
           "prior_complete_evidence": "full gcsp-api verify 969/0/0 on native PG at 271fba3d9; base merged e6b09a7a2, planning 24/24"
         }
       ],
