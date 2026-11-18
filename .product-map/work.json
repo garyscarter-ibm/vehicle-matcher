@@ -9214,7 +9214,7 @@
       "assignee": "Gary Carter",
       "branch": "dev/DEV-2026-11-13-009",
       "id": "FUCQ-441",
-      "observed_at": "2026-11-18T09:21:38Z",
+      "observed_at": "2026-11-18T09:30:09Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -9432,9 +9432,21 @@
           "source": "/root/taz_2",
           "harness": "codex",
           "role": "reviewer",
-          "observed_at": "2026-11-18T09:21:10.201039+00:00",
-          "expires_at": "2026-11-18T09:36:10.201039+00:00",
-          "status": "actual start ACK; read-only independent final source/evidence review",
+          "observed_at": "2026-11-18T09:30:08.459774+00:00",
+          "expires_at": "2026-11-18T09:30:08.459774+00:00",
+          "status": "returned independent source/identity/visual-evidence review PASS; original gaps retained, no tests/runtime",
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": null
+        },
+        {
+          "name": "Wyldstyle 2",
+          "source": "/root/wyldstyle_2",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-18T09:27:15.491775+00:00",
+          "expires_at": "2026-11-18T09:45:08.459774+00:00",
+          "status": "actual ACK; source/preparation for original narrow/keyboard/recovery proof; no heavy runtime",
           "requested": "gpt-6.1-sol/high",
           "selected": "gpt-6.1-sol/high",
           "fallback": null
@@ -9442,7 +9454,7 @@
       ],
       "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
       "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "Existing connected39/39, focused Java journey14/14 and wiring53/53 PASS at recorded source identities; proof corrections integrated719ff9743/79d197213. Prior covering batch A43 NOTGREEN: root npm timed out1380s after about98of344files; Java phase unrun. OriginalAC1/AC2 remain open. Retired Claude delegation is superseded by independent peer poller mode. Actual Taz2 read-only independent final source/evidence review resumed this pass; no new claim/runtime or broader acceptance gate."
+      "note": "Independent Taz2 final source/evidence review PASS, no new blocker/major. Retained connected39/Java14+53 evidence matches pinned22b656aef/79d197213, not current wholeHEAD (15broader export inputs changed). All9evidence hashes matched and8captures viewed; missing affected narrow/compact/preference-Buddy keyboard and below-fold recovery images remain original work. Wyldstyle2 actual ACK09:27:15: preparing finite extension of existing proof on fresh current export, own script/docs/Story only; no heavy runtime. NativeInProgress/originalAC open; covering batch NOTGREEN (Node1380s/~98of344files; Java unrun). Claude independent peer claims excluded through shared channel."
     },
     {
       "assignee": "Gary Carter",
@@ -10073,7 +10085,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-452",
-      "observed_at": "2026-11-18T09:21:39Z",
+      "observed_at": "2026-11-18T09:30:09Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Inspect and run supported process comparisons",
@@ -10104,7 +10116,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-13-020",
-      "note": "Prior original-size2GiB-heap attempt at0ee22999f failed1of12steps/0of3seeds/noresult; OutOfMemoryError region/allocation remains unresolved. Honest failed-result checkpoint bffc1b08c retained and all owned runtime cleaned. Hugh2 actively investigated retained evidence/source; tiny synthetic telemetry smoke PASS shows bounded JVM logging captures caughtOOM detail, not productAC. Recovered F507 record documents historical3GiB success and1536MiB OOM; three matching allocator blobs do not establish whole-current-source equivalence. Preparing one evidence-backed original-size3GiB+telemetry plan/review with fresh admission; no comparison runtime/new result. OriginalAC/all3slices remain open; covering batch red.",
+      "note": "Prior original-size2GiB-heap attempt at0ee22999f failed1of12steps/0of3seeds/noresult; OutOfMemoryError region/allocation remains unresolved. Honest failed-result checkpoint bffc1b08c retained and all owned runtime cleaned. Hugh2 actively investigated retained evidence/source; tiny synthetic telemetry smoke PASS shows bounded JVM logging captures caughtOOM detail, not productAC. Recovered F507 record documents historical3GiB success and1536MiB OOM; three matching allocator blobs do not establish whole-current-source equivalence. Published proof-plan checkpoint e7f2abcf3; independent reviewer found daemonizedPG registration gap before launch. Adapting ignored supervisor to direct foreground PostgreSQL with exact positive ownership, re-review pending. Fresh conservative memory admission below4.5GiB+reserve; no comparison runtime/new result. Actual source/lifecycle correction/review continues; no unsafe retry or admission bypass. OriginalAC/all3slices remain open; covering batch red.",
       "workers": [
         {
           "name": "Foghorn Leghorn 2",
@@ -10182,10 +10194,10 @@
           "name": "Hugh 2",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-18T09:21:10.201039+00:00",
-          "expires_at": "2026-11-18T09:36:10.201039+00:00",
+          "observed_at": "2026-11-18T09:30:08.459774+00:00",
+          "expires_at": "2026-11-18T09:45:08.459774+00:00",
           "source": "/root/hugh_2",
-          "status": "actual source/telemetry investigation; preparing reviewed evidence-backed3GiB original-workload plan, no comparison runtime"
+          "status": "actual source/lifecycle correction and independent review; current proof checkpoint e7f2abcf3; no comparison runtime, admission shortfall recorded"
         },
         {
           "name": "Petunia Pig 2",
@@ -10332,7 +10344,7 @@
     {
       "assignee": "Gary Carter",
       "id": "FUCQ-437",
-      "observed_at": "2026-11-18T09:21:38Z",
+      "observed_at": "2026-11-18T09:30:08Z",
       "original_status": "In Progress",
       "status": "In Progress",
       "title": "Enter and refresh replacement frontend routes",
@@ -10460,7 +10472,7 @@
       ],
       "jira_observed_at": "2026-11-18T05:40:29.435Z",
       "native_observed_at": "2026-11-18T05:40:29.435Z",
-      "note": "Published reviewed partial increment d34de1971: branded unknown direct-entry/refresh/home recovery preserves MINI query+fragment; missing resources retain404. Static1/state17/production build and desktop+narrow3scenarios/7viewedPNGs PASS, independent Mulan5 PASS; prior connected68 reused. Both originalAC and all existing slice completion remain open: hosted Render wildcard/caching, provider/actual email return, Safari/private and green covering batch. Corrected attempt07 natural-exit cleanup independently verified; attempt01 signal targets/outcomes remain unverified. Dispatcher integrating normal shared branch; no Story acceptance/closure."
+      "note": "Published reviewed partial increment d34de1971: branded unknown direct-entry/refresh/home recovery preserves MINI query+fragment; missing resources retain404. Static1/state17/production build and desktop+narrow3scenarios/7viewedPNGs PASS, independent Mulan5 PASS; prior connected68 reused. Both originalAC and all existing slice completion remain open: hosted Render wildcard/caching, provider/actual email return, Safari/private and green covering batch. Corrected attempt07 natural-exit cleanup independently verified; attempt01 signal targets/outcomes remain unverified. Normal shared merge c8433daff is pushed; increment complete and held with no current worker/runtime. No Story acceptance/closure."
     },
     {
       "branch": "gcsp-poc-dev",
