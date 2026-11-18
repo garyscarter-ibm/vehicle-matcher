@@ -2607,3 +2607,8 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 04:10 UTC · Gary Codex · DL-20261117-GCC-013 · Resume output clipping recurred
 
 - Tweety2 and Marvin4 reported combined docs/source reads clipping; both recovered bounded ranges/scalars before relying on them. Dispatcher continuation also combined reads above the aggregate output budget, then recovered exact helper procedure, current directive and finalizer fields using smaller bounded projections. Omitted text supplies no evidence. Proposed aggregate producer/schema budgets remain unresolved; no extra product validation or approval round was added.
+
+
+### 2026-11-18 04:11 UTC · Gary Codex · DL-20261117-GCC-009 · Focused outbox Java chunk exceeded its declared grant
+
+- Tweety2 reports one actual green Angular selection:2specs/59tests, production AOT build passed and strict web receipttrue. NativePG focused Java040809 finalized incomplete/strictfalse after the sampler reported a disk/RAM/inclusive-grant excess; cleanup_errors is empty. Parent read the root receipt: sampled RSS3,243,917,312B exceeded its3GiB grant3,221,225,472B by22,691,840B; sampled disk340,755,264B stayed below2GiB and sum3,582,313,280B below5GiB. Receipt reports scratch/reservation/nativeIPC absent and all5groups dead, with no owned process remaining. This is a grant refusal, not Java success or a product-defect verdict. Lead preserves failed receipt and any reusable passed evidence, reduces/splits the remaining original focused selection, and retains the original04:31:41 deadline. Connected proof assertion recovery remains pending. Proposed improvement: size focused chunks from actual declared-grant use and retain the exact refusal scalar; mitigation is not yet verified.
