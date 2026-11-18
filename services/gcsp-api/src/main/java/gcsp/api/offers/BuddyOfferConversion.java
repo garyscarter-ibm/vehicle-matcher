@@ -120,13 +120,13 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         }
     }
 
-    private static boolean validContact(JsonNode c) {
+    static boolean validContact(JsonNode c) {
         if (!c.isObject() || c.size() != 2 || !c.path("phone").isTextual() || !c.path("email").isTextual()) return false;
         return PHONE.matcher(c.get("phone").textValue()).matches() && c.get("email").textValue().length() <= 254
                 && EMAIL.matcher(c.get("email").textValue()).matches();
     }
 
-    private static JsonNode employeeDriver(JsonNode drivers, String employeeId) {
+    static JsonNode employeeDriver(JsonNode drivers, String employeeId) {
         for (JsonNode d : drivers) {
             if ("employee".equals(d.path("kind").asText()) && employeeId.equals(d.path("employeeId").asText(null))) return d;
         }
@@ -145,7 +145,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         }
     }
 
-    private static boolean driverOk(JsonNode d, String today) {
+    static boolean driverOk(JsonNode d, String today) {
         if (d == null || !text(d.get("name")) || !d.path("eligible").path("value").isBoolean()
                 || !d.path("eligible").path("value").booleanValue()) {
             return false;
@@ -160,7 +160,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
                 && !from.isAfter(t) && !until.isBefore(t);
     }
 
-    private static JsonNode currentContract(JsonNode contracts, String slotId) {
+    static JsonNode currentContract(JsonNode contracts, String slotId) {
         for (JsonNode c : contracts) {
             if ("current".equals(c.path("status").asText()) && slotId.equals(c.path("slotId").asText(null))
                     && (c.path("returnedDate").isMissingNode() || c.path("returnedDate").isNull())) {
@@ -170,7 +170,7 @@ final class BuddyOfferConversion implements SelectionConversionPort {
         return null;
     }
 
-    private static boolean returnOk(JsonNode c) {
+    static boolean returnOk(JsonNode c) {
         JsonNode odo = c.path("currentOdometer");
         return text(c.get("model")) && date(c.get("contractEndDate")) != null && odo.path("value").isNumber()
                 && odo.path("value").doubleValue() >= 0 && text(odo.get("unit"));
