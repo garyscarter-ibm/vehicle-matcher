@@ -2792,3 +2792,7 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 07:16 UTC · Russell Codex · DL-20261118-RG-023 · Commit helper passes the message verbatim
 
 - Root's post-push inspection found evidence commit eea2cc237 lacks the required Codex coauthor trailer. Setting scaffold_git.ATTRIBUTION affects helper merge messages, but commit_paths passes the supplied message unchanged; root had incorrectly assumed the override also applied to commit. Evidence content and pushed branch remain intact. This follow-up records the attribution omission; no published history was rewritten. Subsequent helper commit messages must explicitly include the blank line and Co-Authored-By trailer, then verify the actual message. Proposed framework improvement: harness-aware attribution on commit or a preflight check; no helper source change is claimed.
+
+### 2026-11-18 08:17 UTC · Russell Codex · DL-20261117-GCC-013 · Resume output clipping recurred
+
+- A combined resumed skill/checkpoint read and an unfiltered queue projection clipped. The exact latest directive/checkpoint, typed queue counts and tool availability were recovered in bounded reads before new work allocation; no omitted output supplied pickup or acceptance evidence. Subsequent projections cap producer output. The underlying general output-bound issue remains unresolved; no additional test or approval gate was added.
