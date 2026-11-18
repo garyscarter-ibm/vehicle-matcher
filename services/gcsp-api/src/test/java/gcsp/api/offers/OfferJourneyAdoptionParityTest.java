@@ -12,6 +12,7 @@ import gcsp.api.clock.RunClock;
 import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Outcome;
 import gcsp.api.persistence.Persistence;
+import gcsp.api.persistence.RunContext;
 import gcsp.api.persistence.RunReset;
 import gcsp.api.persistence.TransactionRunner;
 import gcsp.api.policy.PolicyActivation;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -83,6 +83,7 @@ class OfferJourneyAdoptionParityTest {
                 }
             };
             startup.adoption = adoption;
+            startup.policy = service;
             startup.clock = new RunClockHolder() {
                 @Override
                 public synchronized RunClock clock() {
@@ -189,26 +190,29 @@ class OfferJourneyAdoptionParityTest {
     }
 
     @Test
-    @Disabled("FUCQ-510 parity gap: Java refuses a same-instant v2 upgrade (no 1 ms clock advance, successor must be "
-            + "dated later than v1); Russell to decide")
     void sameInstantUpgrade() throws Exception {
         assertEquals("adopted", stack.ensure(V1));
         String retained = text(HEADERS);
+        Instant before = stack.now("run-1");
         assertEquals("adopted", stack.ensure(V1_V2));
+        assertEquals(before.plusMillis(1), stack.now("run-1"), "the run clock moves 1 ms, as Node");
+        assertEquals("present", stack.ensure(V1_V2));
+        assertEquals(before.plusMillis(1), stack.now("run-1"), "a repeat start does not move the clock again");
         assertEquals(V1_V2, stack.active("run-1"));
         assertReviewedKeys("run-1", V1_V2, "offer-journey-v2");
         assertTrue(text(HEADERS).startsWith(retained + ";"), "v1 rows unchanged");
     }
 
+    // ScenarioService.reset calls afterReset; OfferResetDeclineHttpTest proves that wiring through the started app.
     @Test
-    @Disabled("FUCQ-510 parity gap: nothing re-adopts after a reset, so the new run stays on the base version; "
-            + "Russell to decide")
     void reAdoptionAfterReset() throws Exception {
         assertEquals("adopted", stack.ensure(V2));
         Outcome reset = new RunReset(pg.pool(), text("SELECT current_database()"), ENV).reset(ENV, "presenter",
                 "reset-1", "run-1", "run-2");
         assertTrue(reset instanceof Outcome.Committed, reset.toString());
         assertTrue(stack.clock.initialize(ENV, "run-2").ok());
+        assertEquals(BASE, stack.active("run-2"), "a reset starts on the base version");
+        stack.startup.afterReset(new RunContext(ENV, "run-2", "system:scenario"));
         assertEquals(V2, stack.active("run-2"));
         assertReviewedKeys("run-2", V2, "offer-journey-v2");
     }
