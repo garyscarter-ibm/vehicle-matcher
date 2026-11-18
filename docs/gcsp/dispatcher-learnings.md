@@ -2734,3 +2734,7 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-18 05:43 UTC · Russell Codex · DL-20261117-GCC-009 · Reviewed covering runner launched
 
 - Mater and Sulley corrected concrete npm config duplication, allocation accounting, dependency/config locality, owned-root traversal and terminal XML omission defects before launch. Frozen runnerdfb8413a/staticreviewad76151a passed; exact covering run started05:38:05 at6793f49f with independently observed PID/start/lane/reservation. Runtime finalizer/terminal evidence remain unproved until completion. The same exact commands continue under monitored600s review windows; no new Story gate or retry-until-green. Proposed improvement: retain tested supervisor infrastructure and validate config semantics before long allocations.
+
+### 2026-11-18 05:44 UTC · Russell Codex · DL-20261117-GCC-013 · Long ledger lines clipped a read
+
+- A line-bounded batch-ledger display exceeded its token output cap because individual history lines are long. Omitted text was not used for launch or acceptance: current launch decisions use complete typed JSON witnesses, exact hashes and the live PID/lane/reservation audit. Later producers emitted compact fields. Recurrence remains unresolved; enforce serialized character bounds before printing rather than relying on line counts. No additional product validation or scope was introduced.
