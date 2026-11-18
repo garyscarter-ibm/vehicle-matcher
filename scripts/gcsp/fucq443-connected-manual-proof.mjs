@@ -726,7 +726,7 @@ async function scenarioB(cdp, s, pages) {
   s.checks.staleTermsRefusedByServer = probe.status === 409 && probe.json?.status === 'conflict' && probe.json.code === 'terms-changed';
   const staleQuote = await call('alex', 'POST', POSTED_ORDER, orderBody(snap, all, { expectedQuoteId: `${q.quoteId}-stale`, expectedReviewDetailsVersion: 2 }));
   s.observations.staleQuoteProbe = { http: staleQuote.status, body: staleQuote.json };
-  s.checks.staleQuoteRefusedByServer = staleQuote.status === 409 && staleQuote.json?.status === 'conflict' && staleQuote.json.code === 'quote-changed';
+  s.checks.staleQuoteRefusedByServer = staleQuote.status === 409 && staleQuote.json?.status === 'conflict' && staleQuote.json.code === 'quote-binding-changed';
   s.checks.nothingWrittenByProbe = (await dbCount('selection_orders', 'alex')) === 0 && (await holdRow(hold.holdId))?.state === 'active';
   const mark = page.log.length;
   await placeOrder(page);

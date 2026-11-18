@@ -407,3 +407,27 @@ set successfully. Capacity allowed one reviewer, but the collaboration tool refu
 Cuthbert 3 with `agent thread limit reached`; no reviewer child started. The lead
 reviewed helper SQL/API shapes against current Java migrations/services and Angular
 manual templates. Independent review and runtime evidence remain outstanding.
+
+
+## Connected replay after base refresh — 18 November 2026
+
+The retained base first returned `/manual/account` 503 `manual-source-unavailable`
+before scenarios. Refresh `af8415a9ff39be93522f153681ff6ac4f9aa5bc4` includes the
+existing integrated account-policy binding; the next actual replay reached account,
+saved drafts and all five scenarios. This verifies that specific 503 mitigation.
+
+The 02:05:03Z C3 replay passed A, C, D and E. B failed only
+`staleQuoteRefusedByServer`: the real 409 conflict code was
+`quote-binding-changed`, while the new proof expected `quote-changed`. Existing
+`OrderingJourneyHttpTest:258` and `ManualReviewDetails:311` establish the exact
+existing contract; the assertion now requires `quote-binding-changed`. No product
+change or weakened HTTP/status check is involved. The failed receipt is preserved at
+root `.claude/test-runs/fucq443/connected-0203-refresh/connected-20261118T020503Z/receipt.json`
+with full observations/screens in `evidence/connected-manual-proof.json`. Its
+originalAcceptance/overall remain failed. A fresh corrected replay is pending.
+
+C1/C2 strict receipts passed. C3 work finished in 45.103 seconds with sampled
+peaks disk 333,062,501 B, RSS 2,947,907,584 B, inclusive 3,278,949,989 B, within
+2 GiB/3 GiB/5 GiB bounds. Cleanup and sampler error arrays are empty, all proof
+children exited and scratch is absent. These are supervisor observations; the
+parent owns independent audit. No OneDrive access occurred.
