@@ -568,6 +568,11 @@ async function capture(page, s, name) {
   // The stages panel always names its readiness stage; only the documents panel presents the current readiness fact.
   s.checks[`${name}: readiness presented`] = t.document ? readinessText.includes(t.document.readiness.ready ? 'Ready for handover' : 'Not ready for handover')
     : readinessText.includes('Documents and checks open once your order is sent to ordering.');
+  // FUCQ-522: Java retains proposedSlot as history, so proposal copy must follow only a live change-proposed state.
+  const returnText = dom.panels.find(p => p.title === 'Returning your previous car')?.text ?? '';
+  const liveProposal = t.plan.state === 'return-requested' && t.plan.appointment?.state === 'change-proposed';
+  s.checks[`${name}: return proposal copy matches live state`] = returnText.includes('New time proposed') === liveProposal
+    && (!['returned', 'return-scheduled'].includes(t.plan.state) || !returnText.includes('Not booked yet'));
   s.checks[`${name}: no browser exception`] = page.errors.length === 0;
   return t;
 }
