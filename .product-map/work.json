@@ -7485,6 +7485,48 @@
     },
     {
       "assignee": "Russell Gowers",
+      "id": "FUCQ-476",
+      "observed_at": "2026-11-17T19:53:17Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Consume learned artifacts and capture new learning records",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
+      "slices": [
+        {
+          "id": "s1-inference",
+          "status": "complete",
+          "title": "Java artifact verification, active model reference and learned demand forecast with Node parity bounds",
+          "observed_at": "2026-11-14T09:29:50Z",
+          "evidence": "ad949c0eb lead-reviewed; 12 learning tests incl 187 Node parity cases (92 forecast), max diff 5.55e-17 within 1e-12/1e-9 bounds, outcomes exact; Node regeneration identical; verify 858 tests 0 fail"
+        },
+        {
+          "id": "s2-records",
+          "status": "complete",
+          "title": "Java learning-record envelope and observed projection over Node-shaped rows with Node parity",
+          "observed_at": "2026-11-14T09:58:24Z",
+          "evidence": "472a1be43 lead-reviewed; 16 learning tests; 56 projection + 48 failure + 4 random + 132 validator Node cases replay exactly incl projectionVersion; Node regeneration identical"
+        },
+        {
+          "id": "s2b-source",
+          "status": "complete",
+          "title": "Java PostgreSQL record source, Greg-only service port and native PostgreSQL proof",
+          "observed_at": "2026-11-14T10:25:43Z",
+          "evidence": "9e97b7aca lead-reviewed; 29 learning tests on native PG17 0 fail; real BriefService producer record, 37 bound-port cases equal projection, stale-run/forbidden/read-only; 2000 briefs 4 statements ~0.4 s"
+        },
+        {
+          "id": "s3-integration",
+          "status": "in-progress",
+          "title": "Merge base, full Java verify, README, Render delta and result",
+          "observed_at": "2026-11-14T10:25:43Z"
+        }
+      ],
+      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
+      "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Russell Gowers",
       "id": "FUCQ-478",
       "observed_at": "2026-11-17T19:53:17Z",
       "original_status": "In Progress",
@@ -10068,76 +10110,6 @@
       ],
       "note": "Built local originalAC evidence independently reviewed and integrated/pushed3e8223147; archived local delivery, not accepted. Covering green batch pending. Native In Progress preserved at00:12:04Z; no current Account worker/runtime.",
       "native_observed_at": "2026-11-18T00:12:04.756Z"
-    },
-    {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-476",
-      "observed_at": "2026-11-18T00:27:43Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Consume learned artifacts and capture new learning records",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-476",
-      "slices": [
-        {
-          "id": "s1-inference",
-          "status": "complete",
-          "title": "Java artifact verification, active model reference and learned demand forecast with Node parity bounds",
-          "observed_at": "2026-11-14T09:29:50Z",
-          "evidence": "ad949c0eb lead-reviewed; 12 learning tests incl 187 Node parity cases (92 forecast), max diff 5.55e-17 within 1e-12/1e-9 bounds, outcomes exact; Node regeneration identical; verify 858 tests 0 fail"
-        },
-        {
-          "id": "s2-records",
-          "status": "complete",
-          "title": "Java learning-record envelope and observed projection over Node-shaped rows with Node parity",
-          "observed_at": "2026-11-14T09:58:24Z",
-          "evidence": "472a1be43 lead-reviewed; 16 learning tests; 56 projection + 48 failure + 4 random + 132 validator Node cases replay exactly incl projectionVersion; Node regeneration identical"
-        },
-        {
-          "id": "s2b-source",
-          "status": "complete",
-          "title": "Java PostgreSQL record source, Greg-only service port and native PostgreSQL proof",
-          "observed_at": "2026-11-14T10:25:43Z",
-          "evidence": "9e97b7aca lead-reviewed; 29 learning tests on native PG17 0 fail; real BriefService producer record, 37 bound-port cases equal projection, stale-run/forbidden/read-only; 2000 briefs 4 statements ~0.4 s"
-        },
-        {
-          "id": "s2c-producers",
-          "status": "complete",
-          "title": "Actual persisted producer rows and same-snapshot run-clock provenance",
-          "observed_at": "2026-11-18T00:15:19.375157Z",
-          "evidence": "Lead-reviewed signed OIDC/nativePG actual presenter offers, employee decline/accept, injected production learning readback; same-snapshot clock and5set reads;203scoped green +33final learning delta green; validation-2026-11-18.md. Pending intent mapping separately synthetic/rollback, no live provider claim."
-        },
-        {
-          "id": "s3-integration",
-          "status": "in-progress",
-          "title": "Existing learned-view hookup, scoped composed acceptance and durable result",
-          "observed_at": "2026-11-18T00:15:19.375157Z",
-          "evidence": "Java learned-view hookup and10planner/13input-parity cases green; actual learned-success HTTP/rendered evidence remains open FUCQ-476 pending held FUCQ-477/M1/FUCQ-515 live PlanningDemand/Supply/Clock bindings; full suite deferred covering batch."
-        }
-      ],
-      "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "native_observed_at": "2026-11-17T19:44:46.270860+00:00",
-      "workers": [
-        {
-          "name": "Sulley",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-18T00:00:09.840904+00:00",
-          "expires_at": "2026-11-18T00:15:19.375157Z",
-          "source": "/root/sulley, requested/selected gpt-6.1-sol/high",
-          "status": "running"
-        },
-        {
-          "name": "Goopy Geer",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-18T00:00:09.840904+00:00",
-          "expires_at": "2026-11-18T00:15:19.375157Z",
-          "source": "/root/sulley/goopy_geer, requested/selected gpt-6.1-sol/high, explicit user override",
-          "status": "running"
-        }
-      ]
     }
   ],
   "version": 1
