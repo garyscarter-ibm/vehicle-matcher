@@ -9421,99 +9421,6 @@
     },
     {
       "assignee": "Gary Carter",
-      "id": "FUCQ-444",
-      "observed_at": "2026-11-17T22:51:34Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Show Buddy activity and search outcomes",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
-      "branch": "dev/DEV-2026-11-13-012",
-      "workers": [
-        {
-          "name": "Rocky",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-14T09:13:53Z",
-          "expires_at": "2026-11-14T09:13:53Z",
-          "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
-          "status": "route checkpoint lead-reviewed; inactive awaiting parent publication and integration audit"
-        },
-        {
-          "name": "Doug the Dog",
-          "harness": "codex",
-          "role": "mechanic client slice",
-          "observed_at": "2026-11-14T05:14:42.372226+00:00",
-          "expires_at": "2026-11-14T05:32:15.556431+00:00",
-          "source": "collaboration agent /root/doug_the_dog",
-          "status": "client slice complete; inactive"
-        },
-        {
-          "name": "Sally Carrera",
-          "harness": "codex",
-          "role": "mechanic view slice",
-          "observed_at": "2026-11-14T05:35:00.600741+00:00",
-          "expires_at": "2026-11-14T06:14:03.067095+00:00",
-          "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
-          "status": "view slice complete; inactive"
-        },
-        {
-          "name": "Mushu",
-          "harness": "codex",
-          "role": "implementer supported-follow-up correction",
-          "observed_at": "2026-11-14T06:08:53Z",
-          "expires_at": "2026-11-14T06:14:03.067095+00:00",
-          "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
-          "status": "correction reviewed; inactive"
-        },
-        {
-          "name": "Spike",
-          "harness": "codex",
-          "role": "runner production Activity route proof",
-          "observed_at": "2026-11-14T09:13:53Z",
-          "expires_at": "2026-11-14T09:13:53Z",
-          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; same requested/selected/effective gpt-6-luna/high; attempt-2-summary.json",
-          "status": "single route attempt2 complete 17/17; inactive"
-        }
-      ],
-      "slices": [
-        {
-          "id": "client",
-          "status": "complete",
-          "title": "Scoped native activity and command client",
-          "observed_at": "2026-11-14T05:32:16Z",
-          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
-        },
-        {
-          "id": "view",
-          "status": "complete",
-          "title": "Server-projected Angular Buddy activity and controls",
-          "observed_at": "2026-11-14T06:14:03Z",
-          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
-        },
-        {
-          "id": "proof",
-          "status": "complete",
-          "title": "Selected state and desktop/narrow browser review",
-          "observed_at": "2026-11-14T09:14:30Z",
-          "evidence": "Lead and independent Wakko source/all10capture review passed; attempt8 59/59, prior client19/store-component29 retained. Route attempt2 adds17/17 + bothAOT builds +2captures. docs/gcsp/fucq444-delivery.md. F487/F495 independent open/unfixed; connected integration remains open."
-        },
-        {
-          "id": "integration",
-          "status": "in-progress",
-          "title": "Connected route Java OIDC PostgreSQL acceptance",
-          "observed_at": "2026-11-14T09:13:53Z",
-          "evidence": "Parent-allocated lazy employee Activity route locally proved: both production AOT/static builds +17/17 route checks,2captures; lead-final-review.json 7b37b729. Java/OIDC/nativePG/restart/concurrency/hosted/Safari/private/accessibility and both originalAC remain open; awaiting parent route publication/audit."
-        }
-      ],
-      "tracker_observed_at": "2026-11-14T05:11:48Z",
-      "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
-      "note": "Earlier runId query rejection is repaired in current OffersResource129-141. Concrete remaining original composition obstacle: ActivityClient.offerDisplay174-190 requires schemaVersion/runId/clockVersion and rich quote facts/revisions absent from current OfferView12-26. Source inspection only; original AC remains open."
-    },
-    {
-      "assignee": "Gary Carter",
       "id": "FUCQ-445",
       "observed_at": "2026-11-17T22:51:34Z",
       "original_status": "In Progress",
@@ -10162,6 +10069,126 @@
       "note": "Both fixed original AC have independent passing development evidence at fcac2338c3: focused152, exact Java123/22+wiring53/10reuse, real connected48checks/11captures stricttrue. All runtime finalized; parent release audit PASS. Five slices complete, native In Progress preserved; acceptance waits for green covering batch. No new Bug gate; F403 permits crop. docs/gcsp/fucq442-delivery.md",
       "jira_observed_at": "2026-11-17T19:44:46.270860+00:00",
       "native_observed_at": "2026-11-17T19:44:46.270860+00:00"
+    },
+    {
+      "assignee": "Gary Carter",
+      "id": "FUCQ-444",
+      "observed_at": "2026-11-18T00:54:19Z",
+      "original_status": "In Progress",
+      "status": "In Progress",
+      "title": "Show Buddy activity and search outcomes",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-444",
+      "branch": "dev/DEV-2026-11-13-012",
+      "workers": [
+        {
+          "name": "Rocky",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "expires_at": "2026-11-14T09:13:53Z",
+          "source": "linked chat 01a1d877-1599-7882-95ec-b3b9083b2e79",
+          "status": "route checkpoint lead-reviewed; inactive awaiting parent publication and integration audit"
+        },
+        {
+          "name": "Doug the Dog",
+          "harness": "codex",
+          "role": "mechanic client slice",
+          "observed_at": "2026-11-14T05:14:42.372226+00:00",
+          "expires_at": "2026-11-14T05:32:15.556431+00:00",
+          "source": "collaboration agent /root/doug_the_dog",
+          "status": "client slice complete; inactive"
+        },
+        {
+          "name": "Sally Carrera",
+          "harness": "codex",
+          "role": "mechanic view slice",
+          "observed_at": "2026-11-14T05:35:00.600741+00:00",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d88c-97bb-75c2-945c-69822d9750cb; actual Luna/high/title verified",
+          "status": "view slice complete; inactive"
+        },
+        {
+          "name": "Mushu",
+          "harness": "codex",
+          "role": "implementer supported-follow-up correction",
+          "observed_at": "2026-11-14T06:08:53Z",
+          "expires_at": "2026-11-14T06:14:03.067095+00:00",
+          "source": "linked chat 01a1d8ac-4cd0-7231-9986-8b9262a153f6; requested/selected/effective Sol/medium and title verified",
+          "status": "correction reviewed; inactive"
+        },
+        {
+          "name": "Spike",
+          "harness": "codex",
+          "role": "runner production Activity route proof",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "expires_at": "2026-11-14T09:13:53Z",
+          "source": "linked chat 01a1d8b2-36a8-72e3-9f7a-de598efe10f6; same requested/selected/effective gpt-6-luna/high; attempt-2-summary.json",
+          "status": "single route attempt2 complete 17/17; inactive"
+        },
+        {
+          "name": "Sam Sheepdog 2",
+          "role": "story-lead connected completion",
+          "harness": "codex",
+          "observed_at": "2026-11-18T00:54:13.247202+00:00",
+          "expires_at": "2026-11-18T01:04:13.247202+00:00",
+          "source": "linked chat 01a1ebc8-732c-7ac1-950a-ac494d8edd40",
+          "status": "source review and finite pipeline preparation active"
+        },
+        {
+          "name": "Road Runner 3",
+          "role": "implementer Activity current-state consumer",
+          "harness": "codex",
+          "observed_at": "2026-11-18T00:54:13.247202+00:00",
+          "expires_at": "2026-11-18T00:54:13.247202+00:00",
+          "source": "linked chat 01a1ec1f-9aee-70e1-89e1-beb54e11686c; saved title independently read",
+          "status": "source complete; inactive; runtime validation held"
+        },
+        {
+          "name": "Foghorn Leghorn 4",
+          "role": "implementer actual connected Activity proof",
+          "harness": "codex",
+          "observed_at": "2026-11-18T00:54:13.247202+00:00",
+          "expires_at": "2026-11-18T01:04:13.247202+00:00",
+          "source": "linked chat 01a1ec1f-ed20-7f11-8dd8-b15e4452c0f9; saved title independently read",
+          "status": "proof source authoring active; no runtime"
+        }
+      ],
+      "slices": [
+        {
+          "id": "client",
+          "status": "complete",
+          "title": "Scoped native activity and command client",
+          "observed_at": "2026-11-14T05:32:16Z",
+          "evidence": "Lead source/caller/2AC delivery review passed after initial-null-version correction; 19/19 selected client checks, lead-client receipt; docs/gcsp/fucq444-delivery.md. Connected integration remains pending."
+        },
+        {
+          "id": "view",
+          "status": "complete",
+          "title": "Server-projected Angular Buddy activity and controls",
+          "observed_at": "2026-11-14T06:14:03Z",
+          "evidence": "Lead reviewed source/callers/original2AC delivery boundary at 91f29b0; 29/29 affected store/component specs, source registry parity and boundaries passed; lead-correction-resource-audit.json confirms all33 inputs/resources; docs/gcsp/fucq444-delivery.md. Browser and actual integration remain open."
+        },
+        {
+          "id": "proof",
+          "status": "complete",
+          "title": "Selected state and desktop/narrow browser review",
+          "observed_at": "2026-11-14T09:14:30Z",
+          "evidence": "Lead and independent Wakko source/all10capture review passed; attempt8 59/59, prior client19/store-component29 retained. Route attempt2 adds17/17 + bothAOT builds +2captures. docs/gcsp/fucq444-delivery.md. F487/F495 independent open/unfixed; connected integration remains open."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Connected route Java OIDC PostgreSQL acceptance",
+          "observed_at": "2026-11-14T09:13:53Z",
+          "evidence": "Parent-allocated lazy employee Activity route locally proved: both production AOT/static builds +17/17 route checks,2captures; lead-final-review.json 7b37b729. Java/OIDC/nativePG/restart/concurrency/hosted/Safari/private/accessibility and both originalAC remain open; awaiting parent route publication/audit."
+        }
+      ],
+      "tracker_observed_at": "2026-11-14T05:11:48Z",
+      "jira_observed_at": "2026-11-17T22:44:48.459530+00:00",
+      "native_observed_at": "2026-11-17T22:44:48.459530+00:00",
+      "note": "Current rich offer HTTP producer verified at ed6af65a; old internal-OfferView missing-producer diagnosis is stale. Original connected AC remains open. Consumer backend-expiry correction source-reviewed; actual Java/OIDC/nativePG proof preparation active, runtime held for A43→A44→F444 release."
     }
   ],
   "version": 1

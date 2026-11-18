@@ -2,6 +2,17 @@
 
 Native acceptance remains the two original criteria in `_dev/in-progress/DEV-2026-11-13-012.md`. This is a delivery checkpoint, not acceptance.
 
+## Connected completion resumed — 18 November 2026
+
+Sam Sheepdog 2 resumed the existing owned Story at refreshed `ed6af65a595e5f52b5df81323be1de306ed1b1d5`, keeping both original acceptance criteria and the fifteen allocated paths. Earlier missing-producer reporting inspected internal `OfferView`; the current HTTP read is `OffersResource.offer` → `OfferAccess.readForEmployee` → `OfferPresentation.of` → `FollowupComparison.offer` and supplies the rich pinned presentation. That obstacle is no longer current; connected acceptance is still unproved.
+
+Road Runner 3 prepared the bounded Activity correction: keep validated backend offer presentation state/version, reconcile an equal/newer matching offer without reviving a terminal Activity row, and display the current Java terminal states. The backend offer projection can report expiry before the stored Activity row changes; browser time remains nonauthoritative. Client/store/component regressions cover expiry, acceptance, stale references/versions/runs and terminal non-revival. Foghorn Leghorn 4 is authoring the real Java/OIDC/native-PostgreSQL proof. Both requested/selected `gpt-6.1-sol/high` under the explicit night instruction, without fallback; saved desktop titles independently read. Sam retains review, runtime supervision, documentation and publication.
+
+Current runtime policy supersedes every historical allocation instruction below: no OneDrive or CloudStorage access of any kind. Only bounded local `/private/tmp` scratch and `.claude/test-runs/fucq444/` receipts are permitted. The named lane remains A43 covering batch → A44 F443 → F444; no test, build, browser, server or PostgreSQL runtime has started in this resumption. Actual runtime requires its concrete release and atomic admission rejecting foreign live reservations. The owned pipeline is one actual worker, serial checks/builds, disk 2 GiB, RSS 3 GiB, inclusive 5 GiB, logs 2 MiB, free reserve 5 GiB, C1/C2 at most 300 seconds each, C3/focused chunk at most 600 seconds and total pipeline 1,500 seconds including failed work and cleanup. Resource observations are sampled, not kernel containment.
+
+Validation scope: the three Activity Angular specs; current Java `gcsp.api.activity` plus the directly consumed offer read/clock tests and required named startup/wiring checks, using an owned native PostgreSQL 17 and signed test OIDC. The connected proof covers original searching, no-match, unavailable, live offer, expiry, supported follow-up and reload/return behavior against the actual API. No Java/shared configuration changes are allocated. Full suite: deferred to batch. Earlier local fixture results below remain historical scoped evidence and do not substitute for this connected run.
+
+
 - Lead Rocky, they/them; requested/selected/effective gpt-6.1-sol/high, no fallback. Own rollout turn_context verified; title tool returned Rocky and thread 01a1d877-1599-7882-95ec-b3b9083b2e79.
 - Launch worker/base: ab30c693182398574e30021ad1789f47bcc5cd2e, clean `dev/DEV-2026-11-13-012`; worker scaffold helper resolves `gcsp-poc-dev`. Gateway PASS IBM. Parent owns actual native adoption, lease and publication.
 - Frozen visual/capability source: e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38; body `gcsp-activity-live.html`, `blocks/gcsp/activity/*`; shell `docs/gcsp/screens/README.md`; `COMPONENTS.md` and experience-quality contract apply.
@@ -18,7 +29,7 @@ Reuse Angular screen intro, status screen and button directive; compose existing
 
 Start with only `npm --prefix apps/gcsp-web test -- --include=src/app/activity/activity.client.spec.ts`, then component/store specs. Single worker, pinned Node 24.22.3/npm 11.19.1/Angular 21.2.26. Prove malformed/denied/stale/pending/search/no-match/live/expired/terminal, request account/run isolation and explicit command retry. Narrow 375x812 and desktop 1440x1000 rendered review, keyboard/focus/reduced motion/CSP and relevant accessibility. Broad suite/build requires concrete impact reason.
 
-Run manifest: root `.claude/test-runs/fucq444/manifest.json`. Each check registers finalizer before allocation, owns exact link inode/target and scratch, joins children and verifies deletion. Initial one worker, <=2 GiB scratch, <=10 minutes/chunk, 5 GiB reserve, adaptive near 30 GiB. Outputs >256 MiB go directly to `/Users/garycarter/Library/CloudStorage/OneDrive-IBM/_agent-output/vehicle-matcher/fucq444`. Preserve borrowed dependencies/runtime/cache.
+Run manifest: root `.claude/test-runs/fucq444/manifest.json`. Each check registers finalizer before allocation, owns exact link inode/target and scratch, joins children and verifies deletion. Initial one worker, <=2 GiB scratch, <=10 minutes/chunk, 5 GiB reserve, adaptive near 30 GiB. That historical cloud-output instruction is superseded by the explicit 14 November OneDrive restriction. Use the current bounded local envelope above and preserve borrowed dependencies/runtime/cache.
 
 ## Outstanding acceptance
 
