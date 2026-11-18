@@ -1,6 +1,6 @@
 # F505 scoped unit validation
 
-Status: true RED reproduced; fixed-source GREEN147/147 across four feature specs passed. Route-caller chunk remains pending actual resource admission, so the planned scoped set is incomplete and no acceptance claim follows.
+Status: the complete selected set passed: 161/161 across five specs (147 feature tests plus 14 route-caller tests), zero failures or skips. True RED reproduced the three new focus regressions. This is scoped Angular evidence; the parent owns the matching covering batch and native acceptance.
 
 Existing retained dependencies /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-13-033/apps/gcsp-web/node_modules were borrowed only after exact package/lock byte comparison; device16777234/inode297002276 preserved. Actual Node24.19.0 (project engine24.22.3), Angular core21.2.26, CLI/build21.2.30, Vitest4.0.18. No install or shared environment change. Package SHA256 db4427099ecdc0197ed991efb68cf22631b02087ba42a09eb0dbdd976568e540; lock fb9ba0a4b7c8f0f4bcb33ccbbd8059a2d57593325f7aff085d0248917fbfa5a3.
 
@@ -36,3 +36,20 @@ GREEN feature chunk passed147/147: component23, store51, projection50, presentat
 - `f505-unit-route-admission1-refused.json` SHA256 `f5093d52fb0856289d80fbbc190cde8492235c144d42bf2c05035e45c2673307`
 
 Selector plan: repository `python3 -B _tools/test_stamp.py --targeted 54f55680f --reason <focus regression/feature/caller coverage> --command <scoped supervisor green> --dry-run` selected the explicit command without full fallback. Actual owned supervisor evidence above is scoped; no full or generic targeted pass stamp is claimed.
+
+
+Final route-caller chunk completed on 18 November 2026 at production checkpoint `9505bf9c0ed39134151f0e03eaa003a87eb40d4c`:
+
+```sh
+python3 -B /Users/usget/Claude/vehicle-matcher/.claude/poller/run-20261117-2335/resources/f505-unit-supervise.py route
+```
+
+The supervisor invoked Angular `test --watch=false` with the owned selected-only tsconfig and only `--include=src/app/stock/stock-route.component.spec.ts`. All 14 route/history tests passed, zero failures/skips. The actual routes and transitive production imports built; existing nonfatal NG8107 warnings appeared in OutboxComponent and StockComponent. Token `f505-unit-route-80137`: 4.51s, 1,069,187,072B sampled group RSS, 9,409,955B scratch under the admitted 1GiB RAM/512MiB scratch cap. Its finalizer stopped/joined the child, removed the root and owned dependency/cache links, and released the reservation with `cleanupIssues: []`.
+
+At 03:39:09 UTC, a separate final audit verified all 13 stock source/spec hashes still matched the route manifest; root, links, exact process identity/group and reservation were absent; the borrowed dependency device/inode was unchanged. This closes the planned caller item without rerunning matching feature/render evidence. Total successful unit scratch removed: 29,258,889B across true RED, feature GREEN and route (failed attempts are retained separately above). Combined final unit and rendered scratch removed: 45,798,312B; concise logs/manifests and the 22 review PNGs are retained, with no disposable runtime/cache/build/profile leftovers.
+
+| Final local evidence file | SHA256 |
+| --- | --- |
+| `f505-unit-route-ownership.json` | `0a40d6b2904d0a4acd3d04ebda5601e1c5651b99a3f0292ceb2152647585151c` |
+| `f505-unit-route.log` | `bcdb7d6da275066e82e177b89c571b686e2c60ec810945024e01d373ca5a78dc` |
+| `f505-route-final-audit.json` | `c09cd679c73e086c2bc2ff438abc517f427a4c58776a2555861a7932b66d8961` |
