@@ -1,56 +1,59 @@
-# FUCQ-388 validation checkpoint — 18 November 2026
+# FUCQ-388 scoped validation — 18 November 2026
 
-This checkpoint publishes the additive canonical rule and matching Node/Java allocation implementation for review. The original five acceptance items remain authoritative in `_dev/in-progress/DEV-2026-11-16-034.md`. It is not a completed Story, a covering green batch, a deployment or acceptance evidence for the pending composition and visual work.
+Production implementation is pinned at `f8913a5f2f769deccebe9e508fdccb693c7b6139`. The original five acceptance items in `_dev/in-progress/DEV-2026-11-16-034.md` remain authoritative. This is scoped evidence. The core repair and scoped technical checks pass; original AC5 remains partial because the required experience review found four unresolved inherited P2 corrections. The covering poller batch is RED; no acceptance, Done, deployment or covering-green claim is made.
 
-## Observed scoped checks
+## Rule and original acceptance
 
-Node: **64/64 passed**, one worker, in 29.069 seconds:
+The additive canonical `offer.declinedCar.reentry.v1`, adopted by reviewed `offer-journey-v2`, resolves the latest actual decline against its immutable linked original answer. The current employee-confirmed semantic answer must still equal the saved answer and differ from the declined quote's brief. Known body/fuel must match scalar or list values, essential equipment uses the existing met-evidence semantics, and size must strictly improve distance from the exact rejected quote. There is no new score floor. Without a valid answer, only the latest exact rejected car remains excluded; ordinary soft alternatives remain available. Existing eligibility, affordability, charging, holds, run isolation, scoring and immutable policy/quote provenance remain in force. Fuel choice never supplies charging access. Historical seed/v1 bytes are preserved.
 
-```
-node --test --test-concurrency=1 server/test/gcsp-decline-reentry.test.js server/test/gcsp-allocation.test.js server/test/gcsp-allocation-decline-index.test.js server/test/gcsp-offer-journey-adoption.test.js
-```
+1. **Retained repeat:** a fresh historical-policy HTTPS memory run reoffered exact petrol car `184e3625-7662-4bd2-8c67-f03f95deaf49` after confirmed EV, with brief versions 1 → 2 → 3, charging `not-ready`, eligible score 40 and no blockers. The repaired-policy comparator had no next offer and rejected exact car `67f749cc-5499-406c-949f-f15aafad5839` with `decline-answer-mismatch` at score 61. These are different runs and stocks; they demonstrate the retained mechanism and repaired refusal, not an identical-stock score comparison or recreation of the 11 November X1/2-point snapshot. Detailed identities and receipts are in `fucq388-generated-stock-2026-11-18.json`.
+2. **Canonical repair:** independent source review PASS covers the published production pin above. Four findings on the earlier `82453d85d645c0c8b9e6ca2e8de2d26d079e3c5b` were corrected: original immutable answer lookup survives pause/resume; latest decline uses actual created time and linked brief before stable IDs; same-instant successor publication advances the clock exactly 1 ms without a stock tick; an old employee-experience refresh completes successor adoption on its first successful restart. The earlier failed review is retained as failed history.
+3. **Charging conflict:** actual Angular/Java/native PostgreSQL 17/signed OIDC confirms EV saves while charging stays `not-ready`, no active offer or hold remains, and “Nothing suitable yet” persists after browser reload. No low-fit combustion answer is substituted. The native HTTP regression also pauses/resumes search after the immutable answer and proves the same refusal/provenance/custody outcome.
+4. **Preserved boundaries:** the selected allocation/offers/policy packages and affected Node graph cover eligibility, affordability, charging, holds, isolation, canonical policy, historical fallback and ordinary unanswered-decline alternatives. The scorer, BriefService, OfferDecisions, public allocation contract and Angular sources are unchanged.
+5. **Controls and screens — partial:** the six explicit generated-source cases and seven declines pass. Desktop/narrow inspection is complete, but the experience-quality correction requirement remains unresolved at A1/A2/A4/A5; inherited origin establishes ownership and does not make the current journey pass. Native positive composition already confirms Paula's saloon → estate answer produces a distinct BMW 3 Series Touring 320i at 1,100 points within her 1,300 allowance, with confirmed home charging unchanged. This uses the valid native six-car fixture: its only EV, an i5, is canonically excluded for every seeded employee grade. True EV/PHEV positives belong to the separate generated-stock proof; no grade, allowance or canonical policy was overridden to force the native screen.
 
-These cover the owned allocator, canonical adoption and historical exclusion boundary. Before the repair, the meaningful exact-car regression observed both the rejected diesel and another combustion candidate as eligible after a linked confirmed EV answer; the expected outcome was ineligible for both. A subsequent malformed saved-confirmation regression also failed before the helper guard was added. Tests cover known fuel/body, equipment evidence, strict size improvement, missing/unchanged/unlinked/stale/inferred answers, repeat declines, charging gates, historical policy absence and policy refusal. Their small immutable repository fixtures do not establish the generated-stock or actual HTTP journey acceptance items.
+## Scoped checks
 
-Java: **14/14 passed**, pure compilation/unit checks, in 11.8 seconds:
+**Node: 99/99 PASS**, one worker, 49.415 seconds:
 
-```
-./mvnw -B test -Dtest=gcsp.api.allocation.DeclineReentryTest,gcsp.api.policy.ReviewedDefinitionsTest,gcsp.api.offers.OfferJourneyPolicyTest -DargLine=-Xmx768m
-```
-
-This covers the reason resolver, immutable old/successor definition relationship and adoption selection. It also compiled the new test-local OIDC `DeclineReentryHttpTest`; that HTTP test has not yet run. No Java RED run is claimed. No application, listener or PostgreSQL was launched by this pure check.
-
-The additive `offer-journey-v2` retains the old definition bytes and seed. Node opt-in startup selects v2. Java supports explicitly configured v1 and v2; new Java runs require `GCSP_POLICY_VERSION=gcsp-policy-v1+offer-journey-v2`. Explicit historical versions preserve their behavior.
-
-## Remaining original scope
-
-Run the focused Java packages, affected callers/parity and required startup/wiring checks against an owned native PostgreSQL 17 once the shared composition lane is available. Exercise the real signed-token HTTP follow-up and the generated diesel/EV/PHEV controls, recording exact identities, brief versions, blockers and scores. Inspect the actual affected employee states at desktop and narrow widths, obtain independent substantive visual critique, address findings and reinspect. Obtain independent code review and a later covering green batch. Full suites are deferred to the poller's batch; this change introduces no migration, shared test profile, startup thread, CDI producer, Maven or shared application configuration change.
-
-## Local resource receipt
-
-Node receipt: `.claude/poller/run-20261117-2335/resources/f388-node-green-3-20261118T034913Z-e03ffb60-receipt.json` in the shared checkout. Peak child RSS 357,269,504 bytes; owned scratch 3,174,592 bytes removed. Owned process group, scratch and temporary dependency link were verified absent; reservation released. Compact impact evidence: `.claude/test-runs/impact/f388-node-green-3-20261118T034913Z-e03ffb60.json`.
-
-Java receipt: `.claude/poller/run-20261117-2335/resources/f388-pure-unit-smaller-20261118T034738Z-17003d-receipt.json` in the shared checkout. Peak child RSS 791,642,112 bytes; owned scratch 31,277,792 bytes removed. Owned groups, target link and scratch were verified absent; reservation released. Java source/test identity: `bf90c10fc22e1607350afb58802d027f6c6c333b947fe34d1f01641f495c0e0c`; compact impact evidence is keyed by that identity under `.claude/test-runs/impact/`.
-
-Both used bounded local test working data and finalizers. No OneDrive or CloudStorage access occurred. Retained local receipts and bounded logs are diagnostic evidence, not source inputs or completion gates.
-
-## Independent review corrections
-
-Sulley's independent source review of published `82453d85d645c0c8b9e6ca2e8de2d26d079e3c5b` failed four concrete findings. That failed verdict remains part of the evidence; the corrections below are awaiting a review of their own published pin.
-
-1. Resolve the original immutable saved answer through the latest scoped decision and offer, then check the current confirmed semantic value. A later brief head that omits `postDeclineChange`, including pause/resume, no longer discards a valid answer.
-2. Choose the latest decline by actual creation time, then linked offer brief version, with stable IDs only as the final tie. Java's frozen simulated decision timestamp and Node's equal-millisecond timestamps cannot silently prefer an older answered decline in the covered repeat.
-3. Advance the retained run clock by exactly one millisecond when the successor would otherwise collide with the active policy's publication instant. This publishes no stock tick and preserves retained versions.
-4. Complete offer-journey successor adoption after an old employee-experience refresh, so the first successful restart has the canonical rule.
-
-The new Node regressions first observed the lifecycle/order failures (31 tests, 29 pass, 2 expected failures) and retained-adoption failures (17 tests, 15 pass, 2 expected failures). After correction those chunks passed 31/31 and 17/17. A preceding syntax-error run was a harness failure and is excluded from meaningful RED evidence. The test-local Java HTTP fixture now respects consent-held draft autosave and exercises the actual pause-search/resume-search envelope; it has compiled but still awaits its native PostgreSQL/OIDC execution.
-
-Corrected pure Java check: **14/14 passed**, 10.42 seconds, with the same three selected test classes above. Receipt: `.claude/poller/run-20261117-2335/resources/f388-pure-review-fixed-20261118T040623Z-393404-receipt.json`. Code/test identity `7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e`; peak RSS 726,335,488 bytes; 31,236,768 bytes of scratch removed. Owned groups, scratch and target link are verified absent and the reservation was released. This supersedes the earlier Java identity for the corrected source without reclassifying that older observation.
-
-Corrected focused Node graph: **99/99 passed**, 49.415 seconds, one worker:
-
-```
+```sh
 node --test --test-concurrency=1 server/test/gcsp-decline-reentry.test.js server/test/gcsp-allocation.test.js server/test/gcsp-allocation-decline-index.test.js server/test/gcsp-offer-journey-adoption.test.js server/test/gcsp-employee-experience-adoption.test.js server/test/gcsp-second-offer.test.js server/test/gcsp-scenario-decline-change.test.js
 ```
 
-This graph adds the actual runtime adoption caller and second-offer/decline-change boundaries to the owned allocator checks; the full Node suite remains deferred to the covering batch. Receipt: `.claude/poller/run-20261117-2335/resources/f388-node-green-review-final-20261118T040650Z-42a08e5d-receipt.json`; compact measured module/function contexts are retained alongside earlier impact records. Peak child RSS 422,690,816 bytes; 6,676,768 bytes of scratch removed. Code/input identity was unchanged, owned groups, scratch and temporary dependency link were verified absent, and the reservation was released. No OneDrive or CloudStorage access occurred.
+Receipt: `.claude/poller/run-20261117-2335/resources/f388-node-green-review-final-20261118T040650Z-42a08e5d-receipt.json` in the shared checkout. Meaningful pre-repair failures cover the lifecycle/order and retained-adoption regressions; a preceding syntax error is excluded from product RED evidence. Bounded V8 per-module/function contexts for 239 files are retained under `.claude/test-runs/impact/` with reviewed fixture/configuration/subprocess boundaries.
+
+**Java: 377/377 PASS in 61 classes**, zero failures/errors/skips, against fresh owned native PostgreSQL 17. All three chunks share exact source/test identity `7f468c415ceb5e581e71d0e778d7cd9e7dff351dbc31f3a6903aa76991029c7e`:
+
+| Selected packages/classes | Classes | Tests | Seconds | Receipt suffix under shared resources |
+| --- | ---: | ---: | ---: | --- |
+| `gcsp.api.allocation.**,gcsp.api.policy.**` | 22 | 171 | 68.08 | `f388-final-allocation-policy-20261118T042114Z-721dd9-receipt.json` |
+| `gcsp.api.offers.**` | 29 | 153 | 148.85 | `f388-final-offers-admitted-20261118T042427Z-950ffd-receipt.json` |
+| Required startup/wiring list | 10 | 53 | 26.09 | `f388-final-startup-wiring-20261118T042711Z-32a99b-receipt.json` |
+
+The mandatory list is `DefaultProfileTest,OidcContextTest,OidcIdentityTest,IdentitySelectionTest,persistence.PersistenceWiringTest,persistence.NotConfiguredReadinessTest,claims.ClaimWiringTest,notify.NotificationDrainWiringTest,appointments.AppointmentsWiringTest,ordering.RemoteOrderingStartupTest`, with `gcsp.api` prefixes. Commands use the Story's package-scoped `./mvnw -B test -Dtest=...`, both documented test database URLs, Maven heap 256 MiB and test heap 512 MiB. `PolicyParityTest`, `PolicyPublicationParityTest` and `OfferDecisionParityTest` are included in their packages. The real `DeclineReentryHttpTest` passed both independently and inside the final offers package; it is not counted twice in 377.
+
+`Assumptions` and `DeclineReentry` are package-private allocation internals. `ReviewedDefinitions` external callers are policy adoption and `OfferJourneyPolicy`, covered by the complete owned packages. Independent caller review found no changed public AllocationService/result/comparison shape and no additional comparison test requirement. Exact selected class names, command selections, counts, hashes and boundary rationale are retained in shared `resources/f388-final-scope-summary.json`; root independently checked the input hashes, results and cleanup. Full suites are deferred to the poller's covering batch: there is no migration, new CDI producer/startup thread, shared application properties, pom/wrapper or shared profile/support change in this Story.
+
+## Generated-source and browser evidence
+
+The explicit `_tools/gcsp-decline-reentry-generated-proof.mjs` requires exactly one `F388_GENERATED_CASE` per process. It retains the RunStock factory, asserts `provider.describe(reset.runId).source === 'generated'` after the first release, and records that choice. Its six cases are `blocked-ev`, `blocked-phev`, `unchanged`, `home-ev` (including repeat EV → petrol), `home-phev` and `home-diesel`. The earlier six business passes did not directly persist the factory choice; they remain observations and are not retrospectively certified as generated-source proof. The final six guarded runs pass, with seven declines including EV → petrol, stable tool/source identity and verified cleanup. The compact generated evidence retains each source choice, run/brief/car identity, candidate evaluation count, selected eligibility/blocker/score rows and receipt hash. Evaluation counts are not stock counts. No 99-case Node or 377-case Java replay was required for this proof-only guard.
+
+`fucq388-native-browser-2026-11-18.json` retains identities and SHA-256 hashes for 26 actual desktop 1280×800/narrow 390×844 captures: initial offer, reason required/selected, unchanged-answer guidance, selected EV, saved change, no-match, reload, and separate valid native positive cards/comparison. The blocked run completed its 16 states before a resource stop during a later setup; those completed matching captures are reused without calling the whole run green. The positive-only native runtime PASS completed in 144.65 seconds including its bounded review window. Independent B used a fresh owned headless context at 390/1440, verified reload/refresh, no horizontal page overflow, keyboard focus and opening the actual next Touring offer; final written A/B classification is complete. The current visual-quality verdict is **failed**, with four relevant unresolved inherited P2s: saved answer disappears (A1/B1), competing status reads (A2/B2), narrow comparison effort/wrapping (A4/B3), and unexplained diagnostics/implementation prose (A5/B4). AC3's permitted truthful no-match outcome passes; AC5's inspection is complete and its quality correction part remains partial. No product UI source has been edited.
+
+## Experience correction dependency
+
+Independent A report `resources/f388-visual-A-review.md` SHA-256 `7400edea527ff2e2489e141a54fdc3776bab2e542f07afb7da2846292ef3d137` froze its image-only judgment before B synthesis. B report `resources/f388-visual-B-review.md` SHA-256 `4ba3184589dea296d1ef4d84364ca6c80dd3aa5df02caffaf2db315bc655c26f` adds source attribution, scoped detector `[]`, all 26 actual captures and live read/reload/navigation evidence. No P0/P1 or F388 business regression was observed in those states. A3 (narrow initial fuel fact below decisions) is separate adjacent inherited offer-layout scope.
+
+The relevant Angular bytes equal the base `7bd3f43ed3625e2b6c57b7b31f0c114d1ee8633d` and production pin. A1/A2/A4/A5 originate in Gary-owned F445 presentation; its claim remains intact. A2 has a strong historical FUCQ-188 parity/recurrence candidate; FUCQ-318 is related comparison context rather than an exact A4 duplicate. A1/A5 have no exact match in the bounded local search; FUCQ-496/FUCQ-500/FUCQ-503 are distinct boundaries. Parent owns Bug routing and the correction dependency. This result neither takes over Gary's files nor adds a redesign to F388. It delivers the validated canonical repair while plainly retaining the original AC5 quality gap. No unconditional UI-quality, all-AC or acceptance pass is claimed.
+
+Very long trim strings, complete keyboard/radio/focus-trap and screen-reader paths, contrast computation and server error/retry matrices were not newly exercised. These limits and the unresolved current corrections are retained in the compact native/browser evidence.
+
+## Review and resource record
+
+Independent source report: shared `.claude/poller/run-20261117-2335/f388-independent-source-review.md`, SHA-256 `848e3404f5e8491095df653aaa04992b9cc503669cd643f833d1b449f4c17636`. Caller report: shared `resources/f388-comparison-caller-review.md`, SHA-256 `e3dd457a3725cd42df568de92956cb746124cd8c7c4972e6e81cd6611c4b4494`. Source/policy and caller PASS do not substitute for browser critique or a covering batch.
+
+Checks used one owned worker per launcher, machine-wide HostBudget admission, bounded local scratch, owned throwaway native PostgreSQL 17, isolated headless Chrome and external manifests/finalizers. No Render, protected PG or OneDrive/CloudStorage access occurred. The final offers chunk used a measured/admitted 2.5 GiB RAM envelope; its 2,426,028,032-byte peak stayed within that reservation. Initial combined/offer attempts stopped at the smaller RAM boundary with no completed test cases and remain resource stops. One conservative cleanup race was reconciled using exact process/group/root identities and no open files before removing its owned allocation.
+
+UI harness failures are retained separately: an invalid localhost public URL; explicit/closed dialog locators; a nonexistent second next-release cue; a RAM boundary; an EV fixture with valid policy exclusion; and Jordan's absent current contract/renewal deadline. Fixes were limited to proof configuration, selectors, bounded resource admission and valid fixture inputs. None is described as a product failure or production repair. Final UI runtime scratch, target link, owned groups and PostgreSQL are absent, with reservations released. The retained Angular input was checked against its exact device/inode with owner/group absence and no open files, then removed: 11,730,944 allocated bytes, root absence verified. Source/output hashes remain in the concise receipt and borrowed installed dependencies remain untouched. `resources/f388-angular-final-cleanup.json` records the final cleanup. No disposable Angular build root remains.
+
+Agents: Mater requested/selected `gpt-6.1-sol/high`; Sulley independent source/caller/proof/B review and Hugh isolated image-only A are root-coordinated Sol/high roles. No fallback or new descendant spawn occurred in this increment. Runtime-confirmed model/effort is distinguished from requested selections in the root roster.
