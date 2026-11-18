@@ -563,6 +563,7 @@ async function terminalFollowup(s, pages) {
   const reason = reasons.reasons?.find((r) => r.code === 'body-style') ?? reasons.reasons?.[0];
   if (!reason?.code) throw new Error('Actual decision reason registry is empty');
   const decision = await apiValue('POST', `/offers/${encodeURIComponent(pages.paulaId)}/decision`, { commandId: commandId('decline'), decision: 'decline',
+    runId: current.runId, expectedQuoteVersion: current.quote.revisions.quote,
     expectedOfferVersion: current.offerVersion, expectedHoldVersion: current.holdVersion, reasonCode: reason.code });
   s.checks.supportedDeclineIsTerminal = decision.state === 'declined' && !!decision.decisionId;
   const followup = await apiValue('GET', `/offer-followup?decisionId=${encodeURIComponent(decision.decisionId)}`);
