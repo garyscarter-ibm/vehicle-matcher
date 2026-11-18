@@ -4,22 +4,22 @@
     [attr.aria-live]="announce() ? null : 'polite'" [attr.aria-atomic]="announce() ? null : 'true'">{{ view().message }}</p>
 
   @if (view().notice; as failure) {
-    <gcsp-status-screen [title]="failure.title" [message]="failure.text" [level]="2" [announcement]="null">
+    <gcsp-status-screen [title]="failure.title" [message]="failure.text" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" variant="ghost" [disabled]="view().pending" (click)="refresh()">Refresh cases</button>
       @if (view().phase === 'auth-required') { <button gcspButton type="button" (click)="store.signIn()">Sign in</button> }
     </gcsp-status-screen>
   } @else if (view().phase === 'loading' || view().phase === 'auth-loading') {
-    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="2" [announcement]="null" />
+    <gcsp-status-screen title="Loading renewal help" [busy]="true" [level]="childLevel()" [announcement]="null" />
   } @else if (view().phase === 'signed-out') {
-    <gcsp-status-screen title="Sign in to continue" [level]="2" [announcement]="null">
+    <gcsp-status-screen title="Sign in to continue" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" (click)="store.signIn()">Sign in</button>
     </gcsp-status-screen>
   } @else if (view().phase === 'auth-unavailable') {
-    <gcsp-status-screen title="Sign-in unavailable" [level]="2" [announcement]="null">
+    <gcsp-status-screen title="Sign-in unavailable" [level]="childLevel()" [announcement]="null">
       <button gcspButton type="button" (click)="store.retryAuthentication()">Try again</button>
     </gcsp-status-screen>
   } @else if (view().phase === 'access-denied') {
-    <gcsp-status-screen title="You cannot open these cases" [level]="2" [announcement]="null" />
+    <gcsp-status-screen title="You cannot open these cases" [level]="childLevel()" [announcement]="null" />
   }
 
   @if (view().help || view().editing || view().reviewReason) {
