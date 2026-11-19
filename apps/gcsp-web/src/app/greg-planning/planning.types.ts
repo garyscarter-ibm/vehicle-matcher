@@ -47,6 +47,13 @@ export interface PlanAlternative {
   readonly label: string; readonly status: string; readonly same: boolean;
   readonly lines: readonly PlanningLine[]; readonly facts: readonly PlanningFact[]; readonly conflicts: readonly string[];
 }
+export interface LearnedModelView {
+  readonly modelFacts: readonly PlanningFact[];
+  readonly classes: readonly { readonly label: string; readonly expected: string; readonly low: string; readonly high: string }[];
+  readonly evaluation: readonly PlanningFact[]; readonly limitations: readonly string[];
+  readonly differences: { readonly comparable: boolean; readonly note: string | null;
+    readonly rows: readonly { readonly label: string; readonly baseline: string; readonly learned: string; readonly difference: string }[] };
+}
 export interface PlanView {
   readonly planId: string; readonly versions: Readonly<Record<string, string>>; readonly preview: boolean;
   readonly state: 'feasible' | 'infeasible' | 'empty'; readonly title: string; readonly message: string;
@@ -55,7 +62,7 @@ export interface PlanView {
   readonly conflicts: readonly string[]; readonly binding: readonly string[]; readonly limitations: readonly string[];
   readonly unmet: readonly { readonly label: string; readonly reasons: readonly string[]; readonly constraints: readonly string[] }[];
   readonly alternatives: readonly PlanAlternative[]; readonly editors: readonly ConstraintEditor[];
-  readonly unsupportedEditors: readonly string[]; readonly learned: string | null; readonly replan: string | null;
+  readonly unsupportedEditors: readonly string[]; readonly learned: string | null; readonly learnedModel: LearnedModelView | null; readonly replan: string | null;
   readonly unbound: string | null; readonly riskSources: readonly PlanningFact[];
   readonly comparison: readonly { readonly label: string; readonly current: string | number | null; readonly preview: string | number | null }[];
   readonly canSubmit: boolean;

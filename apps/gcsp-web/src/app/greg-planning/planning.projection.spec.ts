@@ -76,6 +76,53 @@ describe('planning display projection', () => {
     if (result.status !== 'ok') throw new Error('unreadable fixture');
     expect(result.value.state).toBe('empty'); expect(result.value.learned).toContain('unavailable'); expect(result.value.canSubmit).toBe(false);
   });
+  describe('learned model answer', () => {
+    const metric = (logLoss: number, brier: number) => ({ logLoss, brier });
+    const available = () => ({ status: 'available', label: 'Learned model', recommended: false, submittable: false,
+      plan: { ...plan(), orderQuantity: 3 },
+      forecast: { version: 'forecast-9', model: { artifactId: 'sha256:2ce1109d', featureVersion: 'features-2', modelVersion: 'model-4', activationPolicyVersion: 'gcsp-policy-v1+learned-model-v1' },
+        data: { dataHash: 'abc', datasetKind: 'synthetic', generatorVersion: 'g1', trainingPolicyVersion: 't1' }, settings: {},
+        aggregate: [{ vehicleClass: 'saloon', period: '2026-12', employees: 2, expected: 0.81, low: 0.1, high: 1.6 },
+          { vehicleClass: 'estate', period: '2026-12', employees: 1, expected: 1, low: 1, high: 1 }],
+        evaluation: { label: 'Held-out check', partitionCounts: {}, overall: { learned: metric(0.52, 0.18), expressedDemand: metric(0.61, 0.22), deterministicFit: metric(0.58, 0.2) },
+          thin: { cohorts: [], vehicleClasses: ['estate'] } },
+        modelExpectsWait: 1, limitations: ['Synthetic-trained; not validated on BMW employee choices.'] },
+      differences: { comparable: true, coverage: { baseline: 1, learned: 2, delta: 1 }, orderQuantity: { baseline: 2, learned: 3, delta: 1 },
+        spendMinor: { baseline: 8345678, learned: 9000000, delta: 654322 }, unmetNeeds: { baseline: 1, learned: 0, delta: -1 },
+        derivatives: [{ derivativeId: 'd1', baseline: 2, learned: 3, delta: 1, changed: true }, { derivativeId: 'd2', baseline: 0, learned: 0, delta: 0, changed: false }] } });
+    const project = (learned: unknown) => { const r = projectPlan(ok({ ...value(), learned })); if (r.status !== 'ok') throw new Error('unreadable fixture'); return r.value; };
+    it('projects an available answer into model facts, class rows, evaluation, limitations and differences', () => {
+      const v = project(available()); const m = v.learnedModel!;
+      expect(v.learned).toBeNull(); expect(m).not.toBeNull();
+      expect(m.modelFacts[0]).toEqual({ label: 'Model reference', value: 'sha256:2ce1109d' });
+      expect(m.modelFacts.map(f => f.label)).toEqual(['Model reference', 'Model version', 'Feature version', 'Activated under policy version', 'Training data', 'Forecast version']);
+      expect(m.classes).toEqual([{ label: 'Saloon, 2026-12', expected: '0.8', low: '0.1', high: '1.6' }, { label: 'Estate, 2026-12', expected: '1.0', low: '1.0', high: '1.0' }]);
+      expect(m.evaluation.map(f => f.label)).toContain('Held-out check'); expect(m.evaluation.some(f => String(f.value).includes('0.52'))).toBe(true);
+      expect(m.evaluation.some(f => String(f.value).includes('Estate'))).toBe(true);
+      expect(m.limitations).toEqual(['Synthetic-trained; not validated on BMW employee choices.']);
+      expect(m.differences.comparable).toBe(true);
+      expect(m.differences.rows.map(r => r.label)).toEqual(['Acceptable coverage', 'Vehicles ordered', 'Spend (minor units)', 'Unmet needs', '3 Series 320i']);
+      expect(m.differences.rows[4]).toEqual({ label: '3 Series 320i', baseline: '2', learned: '3', difference: '+1' });
+      expect(v.planId).toBe('order-plan-1'); expect(v.canSubmit).toBe(true);
+    });
+    it('says the plans cannot be compared and lists no rows when not comparable', () => {
+      const a = available(); a.differences = { comparable: false } as never;
+      const m = project(a).learnedModel!; expect(m.differences.comparable).toBe(false); expect(m.differences.rows).toEqual([]); expect(m.differences.note).toContain('cannot be compared');
+    });
+    it('keeps the fallback line unchanged for fallback answers', () => {
+      const v = project({ status: 'fallback', label: 'Learned model', reason: 'no-active-model', limitation: 'No learned model is active.' });
+      expect(v.learned).toBe('No learned model is active.'); expect(v.learnedModel).toBeNull();
+      expect(project({ status: 'fallback', reason: 'no-active-model' }).learned).toBe('no-active-model');
+    });
+    it('gives one honest note, never figures, when an available answer is incomplete', () => {
+      const noModel = available(); delete (noModel.forecast.model as Record<string, unknown>)['artifactId'];
+      const badRow = available(); badRow.forecast.aggregate[0] = { ...badRow.forecast.aggregate[0], low: 2 };
+      const nan = available(); nan.forecast.aggregate[1] = { ...nan.forecast.aggregate[1], expected: null as never };
+      for (const a of [noModel, badRow, nan, { status: 'available' }]) {
+        const v = project(a); expect(v.learnedModel).toBeNull(); expect(v.learned).toBe("The learned model's answer was incomplete, so only the baseline plan is shown.");
+      }
+    });
+  });
   it('keeps requested, confirmed, queued, released and outstanding separate', () => {
     const result = projectProduction(ok(production())); if (result.status !== 'ok') throw new Error('unreadable fixture');
     expect(result.value.requests[0].facts.slice(0, 5).map(f => f.value)).toEqual([8, 5, 4, 2, 3]);

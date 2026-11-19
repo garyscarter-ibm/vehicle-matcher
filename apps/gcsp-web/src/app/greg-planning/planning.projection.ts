@@ -1,4 +1,4 @@
-import { ConstraintEditor, PlanAlternative, PlanDto, PlanningFact, PlanningLine, PlanningRecord, PlanningResult,
+import { ConstraintEditor, LearnedModelView, PlanAlternative, PlanDto, PlanningFact, PlanningLine, PlanningRecord, PlanningResult,
   PlanValueDto, PlanView, ProductionRequestView, ProductionSubmissionDto, ProductionValueDto, ProductionView } from './planning.types';
 
 export const record = (v: unknown): v is PlanningRecord => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -56,6 +56,41 @@ function nameOf(p: PlanningRecord, kind: 'model' | 'derivative', id: unknown): s
   const match = rows(p[kind === 'model' ? 'models' : 'derivatives']).find(r => r[`${kind}Id`] === id);
   return match ? (kind === 'model' ? String(match['model']) : [match['model'], match['derivative']].filter(text).join(' ')) : String(id);
 }
+const one = (v: number): string => v.toFixed(1);
+const count = (v: unknown): string => typeof v === 'number' && Number.isFinite(v) ? Number.isInteger(v) ? String(v) : one(v) : 'Not supplied';
+const signed = (v: unknown): string => typeof v === 'number' && Number.isFinite(v) ? `${v > 0 ? '+' : ''}${count(v)}` : 'Not supplied';
+const number = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+const INCOMPLETE_LEARNED = "The learned model's answer was incomplete, so only the baseline plan is shown.";
+const LEARNED_MEASURES: readonly (readonly [string, string])[] = [['Acceptable coverage', 'coverage'], ['Vehicles ordered', 'orderQuantity'],
+  ['Spend (minor units)', 'spendMinor'], ['Unmet needs', 'unmetNeeds']];
+function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelView | null {
+  const forecast = field(answer, 'forecast'); const model = field(forecast, 'model'); const aggregate = forecast['aggregate'];
+  const diff = field(answer, 'differences'); const evaluation = field(forecast, 'evaluation');
+  if (!text(model['artifactId']) || !Array.isArray(aggregate) || typeof diff['comparable'] !== 'boolean'
+    || !aggregate.every(r => record(r) && text(r['vehicleClass']) && text(r['period']) && number(r['expected']) && number(r['low']) && number(r['high'])
+      && r['low'] <= r['expected'] && r['expected'] <= r['high'])) return null;
+  const overall = field(evaluation, 'overall'); const thin = strings(field(evaluation, 'thin')['vehicleClasses']);
+  const score = (label: string, key: string): PlanningFact[] => {
+    const m = field(overall, key);
+    return number(m['logLoss']) && number(m['brier']) ? [{ label, value: `Log loss ${m['logLoss'].toFixed(4)}, Brier ${m['brier'].toFixed(4)}` }] : [];
+  };
+  const pair = (r: PlanningRecord) => ({ baseline: count(r['baseline']), learned: count(r['learned']), difference: signed(r['delta']) });
+  const comparable = diff['comparable'];
+  return {
+    modelFacts: [['Model reference', model['artifactId']], ['Model version', model['modelVersion']], ['Feature version', model['featureVersion']],
+      ['Activated under policy version', model['activationPolicyVersion']], ['Training data', field(forecast, 'data')['datasetKind']], ['Forecast version', forecast['version']]]
+      .map(([label, value]) => ({ label: label as string, value: shown(value) })).filter(f => f.value !== null),
+    classes: (aggregate as PlanningRecord[]).map(r => ({ label: `${words(r['vehicleClass'] as string)}, ${r['period']}`, expected: one(r['expected'] as number),
+      low: one(r['low'] as number), high: one(r['high'] as number) })),
+    evaluation: [...text(evaluation['label']) ? [{ label: evaluation['label'], value: 'Lower scores are better.' }] : [],
+      ...score('Learned model', 'learned'), ...score('Expressed demand', 'expressedDemand'), ...score('Deterministic fit', 'deterministicFit'),
+      ...thin.length ? [{ label: 'Thin evidence for vehicle classes', value: thin.map(words).join(', ') }] : []],
+    limitations: strings(forecast['limitations']),
+    differences: { comparable, note: comparable ? null : 'The learned and baseline plans cannot be compared, because one of them has no feasible order.',
+      rows: !comparable ? [] : [...LEARNED_MEASURES.map(([label, key]) => ({ label, ...pair(field(diff, key)) })),
+        ...rows(diff['derivatives']).filter(d => d['changed'] === true).map(d => ({ label: nameOf(p, 'derivative', d['derivativeId']), ...pair(d) }))] },
+  };
+}
 function lines(v: unknown, presentation: PlanningRecord): PlanningLine[] {
   return rows(v).map(q => ({ id: String(q['derivativeId']), model: nameOf(presentation, 'model', q['modelId']),
     derivative: nameOf(presentation, 'derivative', q['derivativeId']), quantity: q['quantity'] as number }));
@@ -97,6 +132,9 @@ export function projectPlan(input: unknown): PlanningResult<PlanView> {
   const feasible = plan.status === 'feasible'; const coverage = field(plan, 'expectedAcceptableCoverage');
   const empty = feasible && coverage['total'] === 0; const order = shown(plan['orderQuantity']);
   const edit = editors(plan, p); const replan = field(value, 'replan'); const learned = field(value, 'learned');
+  const learnedView = learned['status'] === 'available' ? learnedModel(learned, p) : null;
+  const learnedNote = learned['status'] === 'available' ? learnedView ? null : INCOMPLETE_LEARNED
+    : text(learned['limitation']) ? learned['limitation'] : text(learned['reason']) ? learned['reason'] : null;
   const forecast = shown(p['forecastBasis']); const risk = field(plan, 'unallocatedStockRisk'); const unbound = field(plan, 'unboundStock');
   const active = value.activePlan;
   const comparedIds = active ? [...new Set([...active.quantities, ...plan.quantities].map(q => q.derivativeId))] : [];
@@ -122,7 +160,7 @@ export function projectPlan(input: unknown): PlanningResult<PlanView> {
     metrics: metrics(plan), conflicts: constraints(plan['conflicts']), binding: constraints(plan['bindingConstraints']), limitations: strings(plan['limitations']),
     unmet: rows(plan['unmetNeeds']).map(n => ({ label: `Renewal ${shown(n['renewalAt']) ?? 'date not supplied'}`, reasons: strings(n['gates']).map(words), constraints: strings(n['constraintIds']) })),
     alternatives: rows(plan['alternatives']).map(a => alternative(a, p)), editors: edit.editors, unsupportedEditors: edit.unsupported,
-    learned: text(learned['limitation']) ? learned['limitation'] : text(learned['reason']) ? learned['reason'] : null,
+    learned: learnedNote, learnedModel: learnedView,
     replan: text(replan['status']) ? words(replan['status']) : null,
     unbound: whole(unbound['count']) && unbound['count'] > 0 ? `${unbound['count']} cars left out of this plan${strings(unbound['models']).length ? ': ' + strings(unbound['models']).join(', ') : ''}.` : null,
     riskSources: rows(risk['bySource']).map(r => ({ label: String(r['sourceId']), value: shown(r['quantity']) })), comparison,

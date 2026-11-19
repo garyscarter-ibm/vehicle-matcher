@@ -3,13 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { OrderPlanComponent } from './order-plan.component';
 import { PlanningStore } from './planning.store';
-import { PlanningFailure, PlanView } from './planning.types';
+import { LearnedModelView, PlanningFailure, PlanView } from './planning.types';
 
 function view(): PlanView { return { planId: 'order-plan-1', versions: { policy: 'p1' }, preview: false, state: 'feasible', title: 'Order 2 vehicles', message: 'Nothing is ordered until Production confirms.',
   forecast: 'Expressed demand (deterministic baseline)', forecastNote: 'Built from saved demand. It is not a prediction.', facts: [{ label: 'Policy version', value: 'p1' }],
   lines: [{ id: 'd1', model: '3 Series', derivative: '320i', quantity: 2 }], models: [{ label: '3 Series', value: 2 }], metrics: [{ label: 'Acceptable coverage before renewal', value: '2 of 3' }],
   conflicts: [], binding: [], limitations: [], unmet: [], alternatives: [], editors: [{ key: 'orderPlan.budgetMinor', label: 'Order budget', kind: 'budget', unit: 'GBP minor units', value: 7000000, rows: [] }],
-  unsupportedEditors: [], learned: 'Learned forecast unavailable.', replan: null, unbound: null, riskSources: [], comparison: [], canSubmit: true }; }
+  unsupportedEditors: [], learned: 'Learned forecast unavailable.', learnedModel: null, replan: null, unbound: null, riskSources: [], comparison: [], canSubmit: true }; }
+
+function learnedModel(): LearnedModelView { return { modelFacts: [{ label: 'Model reference', value: 'sha256:2ce1109d' }], classes: [{ label: 'Saloon, 2026-12', expected: '0.8', low: '0.1', high: '1.6' }],
+  evaluation: [{ label: 'Held-out check', value: 'Learned 0.52' }], limitations: ['Synthetic-trained; not validated on BMW employee choices.'],
+  differences: { comparable: true, note: null, rows: [{ label: 'Vehicles ordered', baseline: '2', learned: '3', difference: '+1' }] } }; }
 
 describe('order plan screen', () => {
   const plan = signal<PlanView | null>(view()); const access = signal('ready'); const stale = signal(false); const failure = signal<PlanningFailure | null>(null);
@@ -58,5 +62,23 @@ describe('order plan screen', () => {
   it('focuses the newly rendered plan result after an intentional preview', async () => {
     const pending = fixture.componentInstance.preview(); await pending; fixture.detectChanges(); await fixture.whenStable();
     expect(document.activeElement).toBe((fixture.nativeElement as HTMLElement).querySelector('[data-plan-result]'));
+  });
+  it('renders the learned model section as advisory tables when a model is active', () => {
+    plan.set({ ...view(), learned: null, learnedModel: learnedModel() }); fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement; const section = root.querySelector('section[aria-labelledby="learned-plan"]')!;
+    expect(section.querySelector('h3')?.textContent).toBe('Learned model');
+    const text = section.textContent ?? '';
+    for (const part of ['sha256:2ce1109d', 'Held-out check', 'Synthetic-trained; not validated on BMW employee choices.', 'Advisory only', 'Request from Production uses the baseline plan above']) expect(text).toContain(part);
+    const tables = Array.from(section.querySelectorAll('table'));
+    expect(tables.map(t => t.querySelector('caption')?.textContent)).toEqual(['Expected demand by vehicle class', 'Baseline compared with learned model']);
+    expect(Array.from(tables[0].querySelectorAll('th[scope="col"]')).map(c => c.textContent)).toEqual(['Vehicle class and period', 'Expected', 'Low', 'High']);
+    expect(Array.from(tables[1].querySelectorAll('td')).map(c => c.textContent)).toEqual(['2', '3', '+1']);
+    expect(section.querySelectorAll('.plan-table[tabindex="0"][role="region"]').length).toBe(2);
+  });
+  it('shows only the one-line note for a fallback and nothing extra when the plans cannot be compared', () => {
+    const root = fixture.nativeElement as HTMLElement; const section = root.querySelector('section[aria-labelledby="learned-plan"]')!;
+    expect(section.textContent).toContain('Learned forecast unavailable.'); expect(section.querySelector('table')).toBeNull();
+    const m = learnedModel(); plan.set({ ...view(), learned: null, learnedModel: { ...m, differences: { comparable: false, note: 'The learned and baseline plans cannot be compared.', rows: [] } } }); fixture.detectChanges();
+    const after = root.querySelector('section[aria-labelledby="learned-plan"]')!; expect(after.textContent).toContain('cannot be compared'); expect(after.querySelectorAll('table').length).toBe(1);
   });
 });
