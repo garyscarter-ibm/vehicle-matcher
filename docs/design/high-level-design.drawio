@@ -19,8 +19,8 @@
         <mxCell id="angular" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Static Angular 21 frontend&lt;/b&gt;&lt;br&gt;Screens · router · presentation state&lt;br&gt;/gcsp/ · shared tokens / components&lt;br&gt;Public API + OIDC deployment config&lt;br&gt;One built artifact across environments" vertex="1">
           <mxGeometry height="230" width="510" x="410" y="180" as="geometry" />
         </mxCell>
-        <UserObject label="&lt;b&gt;Identity provider&lt;/b&gt;&lt;br&gt;Real test OAuth 2.0 / OIDC login&lt;br&gt;JWT access tokens&lt;br&gt;BMW activation when access is available" feature="demo-sign-in" id="oidc">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+        <UserObject label="&lt;b&gt;Identity provider&lt;/b&gt;&lt;br&gt;Real test OAuth 2.0 / OIDC login&lt;br&gt;JWT access tokens&lt;br&gt;BMW activation when access is available" feature="demo-sign-in" status="in-progress" id="oidc">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
             <mxGeometry height="170" width="420" x="1070" y="180" as="geometry" />
           </mxCell>
         </UserObject>
@@ -63,13 +63,13 @@
         <mxCell id="a8" edge="1" parent="1" source="ports" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="sources" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <UserObject label="Demo sign-in issuer / Java API module · dev only, off by default / Fictional people, no passwords / Same OIDC code + PKCE flow and JWT checks" type="service" status="proposed" feature="demo-sign-in" id="demo-idp">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="Demo sign-in issuer / Java API module · dev only, off by default / Fictional people, no passwords / Same OIDC code + PKCE flow and JWT checks" type="service" status="in-progress" feature="demo-sign-in" id="demo-idp">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1">
             <mxGeometry height="70" width="260" x="1550" y="180" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="OIDC flow (dev)" status="proposed" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-1">
-          <mxCell edge="1" parent="1" source="angular" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="demo-idp">
+        <UserObject label="OIDC flow (dev)" status="in-progress" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-1">
+          <mxCell edge="1" parent="1" source="angular" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#82b366;" target="demo-idp">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
                 <mxPoint x="665" y="164" />
@@ -78,8 +78,8 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="JWKS · signed JWT" status="proposed" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-2">
-          <mxCell edge="1" parent="1" source="demo-idp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="api">
+        <UserObject label="JWKS · signed JWT" status="in-progress" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-2">
+          <mxCell edge="1" parent="1" source="demo-idp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#82b366;" target="api">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
                 <mxPoint x="1680" y="568" />
