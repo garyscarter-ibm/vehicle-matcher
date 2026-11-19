@@ -7,6 +7,8 @@ gcsp-root, gcsp-screen-intro, gcsp-status-screen, gcsp-labelled-field { display:
 .gcsp .gcsp-nav-btn[aria-current="page"] { border-left-color: var(--gcsp-selected-bar); background: var(--gcsp-selected); color: var(--gcsp-link); }
 .gcsp-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: var(--gcsp-space-2) var(--gcsp-space-4); border: 1px solid var(--gcsp-accent); border-radius: var(--gcsp-radius); background: var(--gcsp-accent); color: var(--gcsp-on-accent); font: var(--gcsp-font-button-weight) var(--gcsp-font-size-regular)/var(--gcsp-font-line-regular) var(--gcsp-font); text-decoration: none; cursor: pointer; }
 .gcsp-button:hover { background: var(--gcsp-accent-strong); }
+/* Primary link-buttons must outrank `.gcsp a` / `.gcsp a:hover`, which would paint link teal on the accent fill. */
+.gcsp a.gcsp-button:not(.gcsp-button-ghost), .gcsp a.gcsp-button:not(.gcsp-button-ghost):hover { color: var(--gcsp-on-accent); }
 .gcsp .gcsp-button-ghost { background: var(--gcsp-surface); color: var(--gcsp-link); }
 .gcsp .gcsp-button-ghost:hover { background: var(--gcsp-ghost-hover); }
 .gcsp-button:disabled { background: var(--gcsp-disabled-surface); border-color: var(--gcsp-divider); color: var(--gcsp-text-muted); cursor: not-allowed; }
