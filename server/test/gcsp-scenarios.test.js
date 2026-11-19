@@ -5,7 +5,6 @@ import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createScenarioService } from '../gcsp/scenarios/index.js';
 import { prepareScenarioFixture, unavailableScenario } from '../gcsp/fixtures/scenarios/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
-
 async function setup({ policy = createPolicyService() } = {}) {
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store }); await repository.open();
@@ -125,42 +124,6 @@ test('prepared fixture identity is trusted and immutable; fabricated functions a
   assert.throws(() => { prepared.value.policyVersion = 'forged'; }, TypeError);
   assert.equal((await f.clock.reset(f.presenter, base, prepared.value)).status, 'ok');
   assert.equal((await f.clock.reset(f.presenter, base)).status, 'conflict');
-});
-
-test('HTTP named controls use presenter cookie, exact Origin, no-store and85 cookie rollover/replay', async () => {
-  const { buildServer } = await import('../index.js');
-  const { once } = await import('node:events');
-  const f = await setup();
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock,
-    gcspScenarios: f.scenarios, gcspAllowedOrigins: ['https://scenario.test'] });
-  try {
-    await server.gcspStartup; server.listen(0, '127.0.0.1'); await once(server, 'listening');
-    const cookie = f.session.value.setCookie.map((c) => c.split(';')[0]).join('; ');
-    const request = async (path, body, credential = cookie, origin = 'https://scenario.test') => {
-      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/presenter/scenarios${path}`, {
-        method: body ? 'POST' : 'GET', headers: { ...(origin ? { Origin: origin } : {}), cookie: credential,
-          ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}),
-      });
-      return { response, outcome: await response.json() };
-    };
-    const catalogue = await request(''); assert.equal(catalogue.response.status, 200); assert.equal(catalogue.response.headers.get('cache-control'), 'no-store');
-    const state = (await request('/current')).outcome.value;
-    const input = command(state, support(catalogue.outcome.value), 'http');
-    const before = snapshot(f);
-    assert.equal((await request('/reset', input, cookie, null)).response.status, 403);
-    assert.equal((await request('/reset', { ...input, principalId: 'demo-presenter' })).response.status, 400);
-    const employeeSession = await f.identity.switchPrincipal(f.presenter, 'demo-paula', 'employee-only');
-    const employeeCookies = employeeSession.value.setCookie.split(';')[0];
-    const employeeBefore = snapshot(f);
-    assert.equal((await request('', undefined, employeeCookies)).response.status, 403); assert.equal(snapshot(f), employeeBefore);
-    const reset = await request('/reset', input); assert.equal(reset.response.status, 200, JSON.stringify(reset.outcome));
-    assert.ok(reset.response.headers.getSetCookie().length); assert.notEqual(snapshot(f), before);
-    const fresh = reset.response.headers.getSetCookie().map((c) => c.split(';')[0]).join('; ');
-    assert.equal((await request('/current', undefined, fresh)).outcome.value.runId, reset.outcome.value.runId);
-    assert.equal((await request('/current')).outcome.status, 'stale-run');
-    const replay = await request('/reset', input); assert.deepEqual(replay.outcome, reset.outcome);
-    assert.equal((await request('/reset', { ...input, commandId: 'changed' })).outcome.status, 'stale-run');
-  } finally { await new Promise((resolve) => server.close(resolve)); }
 });
 
 test('presentation fixture agrees with computed catalogue/refusal/reset/current response contracts', async () => {

@@ -220,40 +220,6 @@ test('panel, adapter and gallery have no inline handlers, HTML injection, eval o
   }
 });
 
-test('actual delivered memory runtime and registered HTTP routes drive the browser adapter through preview and publish', async (t) => {
-  const { createGcspRuntime } = await import('../gcsp/runtime.js');
-  const { startHttpServer } = await import('./helpers/employee-recommendation-http.js');
-  const now = '2026-11-05T09:00:00.000Z';
-  // Greg's demand read needs the reviewed decline registry; seed it rather than adopt, so publish at `now` stays valid.
-  const { PolicyService, MemoryPolicyProvider } = await import('../gcsp/policy/index.js');
-  const { getReviewedDefinitionSet } = await import('../gcsp/policy/reviewed-definitions.js');
-  const source = JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
-  const reasons = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
-  source.assumptions.push({ ...source.assumptions[0], key: reasons.key, value: reasons.value, unit: reasons.unit, status: reasons.status, basis: reasons.basis });
-  const runtimeResult = await createGcspRuntime({ mode: 'memory', environmentId: 'publish-panel-http', policyAsOf: now,
-    commandId: 'panel-bootstrap', sessionNow: () => now, policy: new PolicyService({ provider: new MemoryPolicyProvider({ seedProvider: { async loadVersions() { return [source]; } } }) }) });
-  assert.equal(runtimeResult.status, 'ok'); const runtime = runtimeResult.value;
-  t.after(() => runtime.close());
-  const session = await runtime.createLocalSession(); assert.equal(session.status, 'ok');
-  const http = await startHttpServer(runtime.dependencies); t.after(() => http.close());
-  const switched = await http.request('/api/gcsp/session/switch', { session, body: { principalId: 'demo-greg', commandId: 'panel-greg' } });
-  assert.equal(switched.status, 200); const greg = { value: { setCookie: switched.headers.get('set-cookie') } };
-  const requests = [];
-  const adapter = transport.createGregPublishHttpAdapter({ async fetchImpl(path, options) {
-    requests.push(path); const response = await http.request(path, { session: greg, method: options.method,
-      ...(options.body ? { body: JSON.parse(options.body) } : {}) });
-    return { status: response.status, json: async () => response.json };
-  } });
-  const projection = await adapter.readPolicy(); assert.equal(projection.status, 'ready', JSON.stringify(projection));
-  const field = projection.value.fields.find((f) => f.kind === 'weight');
-  const input = { expectedActiveVersion: projection.value.activeVersion, changes: [{ id: field.id, value: field.value + 1 }] };
-  const projected = await adapter.preview(input); assert.equal(projected.status, 'ready', JSON.stringify(projected));
-  const result = await adapter.publish({ ...input, commandId: 'actual-panel-command', policyVersion: 'actual-panel-v2', effectiveFrom: projected.value.asOf });
-  assert.equal(result.status, 'ready', JSON.stringify(result)); assert.equal(result.value.activation.status, 'active');
-  assert.equal((await adapter.readPolicy()).value.activeVersion, 'actual-panel-v2');
-  assert.deepEqual(requests.slice(0, 3), ['/api/gcsp/greg/policy', '/api/gcsp/greg/policy/preview', '/api/gcsp/greg/policy/publish']);
-});
-
 test('shared single sliders use projected bounds and synchronize exact edits without replacing either input', async () => {
   const policy = gallery.galleryPolicy({ ranges: true }); const { root, calls } = await setup({}, policy);
   const exact = root.querySelector('input[type=number]'); const slider = root.querySelector('input[type=range]');
@@ -283,7 +249,6 @@ test('canonical projected slider-range changes update all controls while missing
   const fallback = await setup(); assert.equal(fallback.root.querySelector('input[type=range]'), null);
   assert.doesNotMatch(fallback.root.textContent, /Use exact values/); assert.equal(fallback.root.querySelectorAll('input[type=number]').length, 7);
 });
-
 
 test('a refusal after an uncertain publication retains the unchanged command for recovery', async () => {
   const commands = []; let attempt = 0;

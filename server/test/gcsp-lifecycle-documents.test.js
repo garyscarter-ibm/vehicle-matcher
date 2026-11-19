@@ -3,22 +3,17 @@ import assert from 'node:assert/strict';
 import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result, TABLES } from '../gcsp/repository/index.js';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleDocumentService, DOCUMENTS_HANDLER_ID, observeStage } from '../gcsp/lifecycle/documents/index.js';
-import { createDocumentRoutes } from '../gcsp/lifecycle/documents/http.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 import { createSyntheticDocumentStatus, createLiveDocumentStatusStub } from '../gcsp/adapters/synthetic-ordering-documents.js';
-
 const patch = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-documents-policy-patch.json', import.meta.url), 'utf8'));
-const shapes = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-documents-outcomes.json', import.meta.url), 'utf8'));
 const ORDER = '7d1c0b6e-2f4a-4c1e-9b7a-1a2b3c4d5e6f';
 const HOUR = 3600; const DAY = 86400;
 
@@ -403,35 +398,4 @@ test('the live-shaped stub reports writes as unsupported and never progresses an
   assert.equal(order.providerMode, 'live');
   assert.ok(order.items.filter((i) => i.owner !== 'employee').every((i) => i.status === 'not-started' && i.lastProviderOutcome === 'unsupported'));
   assert.equal((await f.service.readReadiness(f.paula, { orderUuid: ORDER })).value.ready, false);
-});
-
-test('/api/gcsp document routes use the server-owned context and ignore browser identity or run IDs', async (t) => {
-  const f = await setup(t); f.order(); await f.tick();
-  const handler = createGcspHandler({ identity: f.identity, routes: createDocumentRoutes(f.service), allowedOrigins: ['https://documents.test'] });
-  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  const call = async (path, { body, session = f.paulaSession, query = '' } = {}) => {
-    const req = Readable.from(body ? [Buffer.from(JSON.stringify(body))] : []);
-    Object.assign(req, { method: body ? 'POST' : 'GET', headers: { origin: 'https://documents.test', cookie: cookie(session) } });
-    let sent; const res = { setHeader() {} };
-    await handler({ req, res, pathname: `/api/gcsp${path}`, searchParams: new URLSearchParams(query), sendJson: (r, code, value) => { sent = { code, value }; } });
-    return sent;
-  };
-  const listed = await call('/documents', { query: 'employeeId=employee-alex&runId=other' });
-  assert.equal(listed.code, 200); assert.equal(listed.value.value.orders[0].employeeId, 'employee-paula');
-  assert.equal((await call('/documents', { session: f.alexSession })).value.value.orders.length, 0);
-  const done = await call('/documents/tasks/complete', { body: { commandId: 'http-ack', orderUuid: ORDER, itemId: 'agreement-acknowledgement',
-    acknowledgement: 'synthetic', employeeId: 'employee-alex', runId: 'other', roles: ['presenter'] } });
-  assert.equal(done.code, 200, JSON.stringify(done));
-  assert.equal(done.value.value.order.tasks[0].acknowledgement.actorId, 'demo-paula');
-  const refused = await call('/documents/tasks/complete', { session: f.alexSession, body: { commandId: 'x', orderUuid: ORDER, itemId: 'agreement-acknowledgement', acknowledgement: 'synthetic' } });
-  assert.equal(refused.code, 403);
-  assert.equal((await call('/documents/readiness', { query: `orderUuid=${ORDER}` })).value.value.blocking.includes('licence-check'), true);
-  assert.equal((await call('/documents', { query: 'other=1' })).code, 400);
-  // Recorded response shapes for the later order progress screen (no screen in this story).
-  const [order] = listed.value.value.orders;
-  assert.deepEqual(Object.keys(order).sort(), [...shapes.orderKeys].sort());
-  for (const entry of order.items) assert.deepEqual(Object.keys(entry).filter((k) => !Object.hasOwn(shapes.optionalItemKeys, k)).sort(), [...shapes.itemKeys].sort());
-  assert.ok(Object.hasOwn(order.items[0], 'action'));
-  assert.deepEqual(Object.keys(order.tasks[0]).sort(), [...shapes.taskKeys].sort());
-  assert.deepEqual(Object.keys(order.readiness).sort(), [...shapes.readinessKeys].sort());
 });

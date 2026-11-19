@@ -2,14 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { readFile } from 'node:fs/promises';
-import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { ManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { stock, fact } from './helpers/employee-recommendation.js';
-
 const instant = '2026-11-05T09:00:00.000Z';
 const command = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(value) });
 async function setup({ policy = createPolicyService(), seed = true } = {}) {
@@ -514,43 +512,6 @@ test('local source changes between preparation and transaction return a safe sta
   assert.equal((await f.service.readDraft(f.context)).status, 'not-found');
 });
 
-const cookie = (session) => [session.value.setCookie].flat().map((v) => v.split(';')[0]).join('; ');
-async function withHttp(f, work, service = f.service) {
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspManual: service, gcspAllowedOrigins: ['https://manual.test'] });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const request = async (path, { body, session = f.acting, origin = 'https://manual.test' } = {}) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/manual${path}`, {
-      method: body ? 'POST' : 'GET', headers: { Origin: origin, cookie: cookie(session), ...(body ? { 'Content-Type': 'application/json' } : {}) },
-      ...(body ? { body: JSON.stringify(body) } : {}) });
-    return { status: response.status, json: await response.json(), cache: response.headers.get('Cache-Control') };
-  };
-  try { await work(request); } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
-}
-
-test('manual HTTP rejects caller authority and hostile origins; another employee and stale sessions cannot read the draft', async () => {
-  const f = await setup();
-  await withHttp(f, async (request) => {
-    const account = await request('/account'); assert.equal(account.status, 200); assert.equal(account.cache, 'no-store');
-    for (const path of ['/account?employeeId=other', '/account?schemeId=pcs-ukfs-bmw']) assert.equal((await request(path)).status, 400);
-    const input = { commandId: 'http-draft', expectedDraftVersion: 0, expectedContextVersion: account.json.value.contextVersion, choices: choices(f) };
-    for (const field of ['employeeId', 'principalId', 'gradeId', 'schemeId', 'roles', 'policy', 'runId']) {
-      assert.equal((await request('/draft', { body: { ...input, [field]: 'other' } })).status, 400, field);
-    }
-    assert.equal((await request('/draft', { body: input })).status, 200);
-    assert.equal((await request('/draft', { body: { ...input, commandId: 'stale' } })).status, 409);
-    assert.equal((await request('/account', { origin: 'https://hostile.test' })).status, 403);
-    assert.equal((await request('/account', { session: f.presenter })).status, 403);
-    const other = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-alex', 'alex');
-    // FUCQ-319: an absent draft reads as 200 not-found; another employee still gets nothing of Paula's.
-    const otherDraft = await request('/draft', { session: other });
-    assert.equal(otherDraft.status, 200); assert.equal(otherDraft.json.status, 'not-found'); assert.equal(otherDraft.json.value, undefined);
-    const state = (await f.clock.readState(f.presenter.value.context)).value;
-    await f.clock.reset(f.presenter.value.context, { commandId: 'reset', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
-      scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
-    assert.equal((await request('/draft')).json.status, 'stale-run');
-  });
-});
-
 test('equivalent synthetic and real-shaped read adapters use the same application and presentation contract', async () => {
   const f = await setup(); const expected = JSON.parse(await readFile(new URL('./fixtures/gcsp/manual-presentation.json', import.meta.url), 'utf8'));
   const original = (await f.ports.employeeContract.read(f.context)).value;
@@ -624,19 +585,4 @@ test('FUCQ-372: discardDraft refuses while the employee holds a cart car and lea
   assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
   const holds = (await f.repository.query(f.context, 'holds')).value;
   assert.equal(holds.length, holdsBefore.length + 1); assert.equal(holds[0].state, 'active');
-});
-
-test('FUCQ-372: the discard route is employee-only, strict, and ends the draft', async () => {
-  const f = await setup();
-  await withHttp(f, async (request) => {
-    const account = await request('/account');
-    const input = { commandId: 'http-d1', expectedDraftVersion: 0, expectedContextVersion: account.json.value.contextVersion, choices: choices(f) };
-    assert.equal((await request('/draft', { body: input })).status, 200);
-    assert.equal((await request('/draft/discard', { session: f.presenter, body: { commandId: 'x', expectedDraftVersion: 1 } })).status, 403);
-    assert.equal((await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 1, employeeId: 'other' } })).status, 400);
-    assert.equal((await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 0 } })).status, 409);
-    const gone = await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 1 } });
-    assert.equal(gone.status, 200); assert.equal(gone.json.value.discarded, true);
-    assert.equal((await request('/draft')).json.status, 'not-found');
-  });
 });

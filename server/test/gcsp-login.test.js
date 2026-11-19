@@ -1,13 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { once } from 'node:events';
-import { createServer } from 'node:http';
 import { DemoIdentityAdapter } from '../gcsp/identity/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
-import { buildServer } from '../index.js';
-import { createGcspFront, gcspRuntimeOptions, REPO_ROOT } from '../gcsp/host.js';
-
 const scope = { runId: 'login-run', environmentId: 'login-test', principalId: 'bootstrap', roles: [] };
 const instant = '2026-11-10T12:00:00.000Z';
 const cookieOf = (reply) => [reply.value.setCookie].flat().filter((c) => !c.includes('Max-Age=0')).map((c) => c.split(';')[0]).join('; ');
@@ -111,59 +106,4 @@ test('sign-out revokes server authority including issued in-process contexts and
   assert.equal((await reconstructed.resolveSession({ authorized: true, cookie })).status, 'unknown-session');
   assert.equal((await reconstructed.resolveSession({ authorized: true, cookie: cookieOf(other) })).value.employeeId, 'employee-alex');
   assert.equal((await reconstructed.signOut({ cookie })).status, 'ok');
-});
-
-test('HTTP login is gated by origin and shared access, rejects context claims, hides cookies and revokes logout', async (t) => {
-  const f = await setup();
-  const server = buildServer({ gcspIdentity: f.identity, gcspAllowedOrigins: ['https://login.test'] });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  t.after(async () => { server.closeAllConnections(); await new Promise((done) => server.close(done)); });
-  const post = (path, body, headers = {}) => fetch(`http://127.0.0.1:${server.address().port}${path}`, {
-    method: 'POST', headers: { Origin: 'https://login.test', 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body),
-  });
-  assert.equal((await post('/api/gcsp/session/login', credentials, { Origin: 'https://evil.test' })).status, 403);
-  assert.equal((await post('/api/gcsp/session/login', { ...credentials, employeeId: 'employee-alex' })).status, 400);
-  assert.equal((await post('/api/gcsp/session/login', { ...credentials, password: 'wrong' })).status, 401);
-  const login = await post('/api/gcsp/session/login', credentials);
-  assert.equal(login.status, 200);
-  assert.equal(login.headers.get('cache-control'), 'no-store');
-  const body = await login.json();
-  assert.equal(body.value.context.employeeId, 'employee-paula');
-  assert.ok(!JSON.stringify(body).match(/setCookie|sessionIdHash|fucq/));
-  const cookie = login.headers.getSetCookie().filter((c) => !c.includes('Max-Age=0')).map((c) => c.split(';')[0]).join('; ');
-  assert.equal((await post('/api/gcsp/session/logout', { employeeId: 'employee-alex' }, { cookie })).status, 400);
-  assert.equal((await post('/api/gcsp/session/logout', {}, { cookie })).status, 200);
-  const session = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/context`, { headers: { cookie } });
-  assert.equal(session.status, 401);
-});
-
-test('the page front serves no pages, and the session cookie still resolves through the API', async (t) => {
-  const f = await setup();
-  const api = buildServer({ gcspIdentity: f.identity });
-  const server = createServer();
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const origin = `http://127.0.0.1:${server.address().port}`;
-  const services = { identity: f.identity };
-  server.on('request', createGcspFront({ root: REPO_ROOT, services, api, origin }));
-  t.after(async () => { server.closeAllConnections(); await new Promise((done) => server.close(done)); });
-  const get = (path, cookie) => fetch(origin + path, { redirect: 'manual', headers: cookie ? { cookie } : {} });
-  const login = await f.identity.signIn(credentials, 'html-login');
-  const cookie = cookieOf(login);
-  for (const path of ['/', '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-login.html', '/gcsp/login']) {
-    for (const sent of [undefined, cookie]) {
-      const page = await get(path, sent);
-      assert.equal(page.status, 404, path);
-      assert.equal(page.headers.get('location'), null, path);
-    }
-  }
-  assert.equal((await get('/api/gcsp/context', cookie)).status, 200);
-  assert.equal((await get('/api/gcsp/context')).status, 401);
-  const greg = await f.identity.signIn({ email: 'greg.lawson@gcsp-demo.com', password: 'fucq' }, 'greg-html-login');
-  assert.equal(greg.status, 'ok');
-  assert.equal((await get('/api/gcsp/context', cookieOf(greg))).status, 200);
-  assert.equal((await f.identity.requireRole(greg.value.context, 'presenter')).status, 'forbidden');
-  await f.identity.signOut({ cookie: cookieOf(greg) });
-  await f.identity.signOut({ cookie });
-  assert.equal((await get('/api/gcsp/context', cookie)).status, 401);
-  assert.equal(gcspRuntimeOptions({ env: {} }).mode, 'postgres');
 });

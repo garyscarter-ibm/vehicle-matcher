@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createPolicyService } from '../gcsp/policy/index.js';
-import { writeCorpusCandidate, validateCorpusDirectory } from '../gcsp/vehicle-evidence/corpus-publisher.js';
+import { writeCorpusCandidate } from '../gcsp/vehicle-evidence/corpus-publisher.js';
 import { createSyntheticRegistry } from '../gcsp/vehicle-evidence/synthetic-registry.js';
 import { createVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/vehicle-lookup.js';
 import { createConfiguredVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
@@ -37,7 +37,7 @@ test('retained four facts publish separately while original configuration and as
  const cold=createSyntheticRegistry({root:store,...options});assert.equal((await cold.load()).status,'ok');const source=cold.getConfiguration(f.row.configurationId);assert.equal(source.record.catalogue.facts.seats.state,'unknown');assert.equal(source.technicalSupplement.facts.seats.value,5);
  const lookup=createVehicleEvidenceLookup({registry:cold});const dto=await lookup.resolve({kind:'configuration',id:f.row.configurationId});assert.deepEqual(Object.fromEntries(Object.keys(entry.facts).map(k=>[k,dto.technical[k]])),entry.facts);assert.equal(dto.technical.bodyLength.state,'unknown');assert.equal(dto.source.productionDate,null);assert.equal(dto.completeness.measurements,'partial');
  const consumed=await createConfiguredVehicleDetails({lookup}).resolve({kind:'configuration',id:f.row.configurationId});assert.equal(consumed.status,dto.status);assert.deepEqual(consumed.vehicle.technical,dto.technical);
- const report=await verifyActiveFleet({root:store,requiredDistinct:1,http:true,offline:true,endpoint:'http://127.0.0.1:0',sampleSize:1,...options});assert.equal(report.status,'verified-active',JSON.stringify(report));assert.equal(report.audit.errors,0);assert.equal(report.http.requests,1);assert.equal(report.http.errors,0);assert.equal(report.egress.externalCalls,0);assert.equal(report.egress.sourceCalls,0);
+ const report=await verifyActiveFleet({root:store,requiredDistinct:1,offline:true,...options});assert.equal(report.status,'verified-active',JSON.stringify(report));assert.equal(report.audit.errors,0);assert.equal(report.egress.externalCalls,0);
  const next=join(f.scratch,'next');made=await writeCorpusCandidate(next,{metadata:{...f.metadata,version:'3'},configurations:[],retainedCorpusDirectory:after},options);assert.equal(made.status,'ok',JSON.stringify(made));assert.deepEqual(made.manifest.technicalSupplements,[entry]);
  const current=JSON.parse(await readFile(join(store,'active.json'))).selected.manifestDigest;const currentManifest=join(store,'versions',current,'manifest.json');const changed=JSON.parse(await readFile(currentManifest));changed.technicalSupplements[0].facts.seats.value=6;await writeFile(currentManifest,JSON.stringify(changed)+'\n');
  const recovered=createSyntheticRegistry({root:store,...options});const recovery=await recovered.load();assert.equal(recovery.recovered,true);assert.equal(recovered.getConfiguration(f.row.configurationId).technicalSupplement,undefined);assert.equal(recovered.getConfiguration(f.row.configurationId).record.catalogue.facts.seats.state,'unknown');

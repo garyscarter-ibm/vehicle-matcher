@@ -4,14 +4,11 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import net from 'node:net';
-import http from 'node:http';
 import https from 'node:https';
-import { buildServer } from '../index.js';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createSyntheticRegistry } from '../gcsp/vehicle-evidence/synthetic-registry.js';
 import { writeCorpusCandidate } from '../gcsp/vehicle-evidence/corpus-publisher.js';
 import { sourceBackedInput, options } from './helpers/vin-corpus-fixture.js';
-
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'local-corpus-policy-'));
   t.after(() => rm(root, { recursive: true, force: true }));
@@ -45,23 +42,6 @@ test('default immutable local lookup ignores host database selection and retains
   assert.equal(result.status, 'complete', JSON.stringify(result));
   assert.equal(result.resolved.configurationId, f.configurationId);
   assert.equal(attempts(), 0);
-});
-
-test('actual server default corpus HTTP path stays offline with a host database setting', async (t) => {
-  const f = await fixture(t); const attempts = blockExternal(t);
-  const server = buildServer({ gcspVehicleEvidence: { root: f.store } });
-  t.after(() => new Promise((resolve) => { server.closeAllConnections(); server.close(resolve); }));
-  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-  const result = await new Promise((resolve, reject) => {
-    const request = http.get({ hostname: '127.0.0.1', port: server.address().port,
-      path: `/api/gcsp/vehicle-evidence/configurations/${encodeURIComponent(f.configurationId)}` }, (response) => {
-      let body = ''; response.setEncoding('utf8'); response.on('data', (part) => { body += part; });
-      response.on('end', () => resolve({ code: response.statusCode, body: JSON.parse(body) }));
-    });
-    request.on('error', reject); request.setTimeout(2000, () => request.destroy(new Error('Local HTTP timeout')));
-  });
-  assert.equal(result.code, 200, JSON.stringify(result)); assert.equal(result.body.status, 'complete');
-  assert.equal(result.body.resolved.configurationId, f.configurationId); assert.equal(attempts(), 0);
 });
 
 test('explicit injected policy remains authoritative and an unavailable signature policy refuses the corpus', async (t) => {

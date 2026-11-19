@@ -8,14 +8,8 @@ import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { NotificationDispatcher } from '../gcsp/notify/index.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 const implementation = await import('../gcsp/cases/index.js').catch(() => ({}));
-const routes = await import('../gcsp/cases/http.js').catch(() => ({}));
-test('RenewalCaseService provides the owned repository-backed service and routes', () => {
-  assert.equal(typeof implementation.RenewalCaseService, 'function');
-  assert.equal(typeof routes.createCaseRoutes, 'function');
-});
 const caseTest = (name, work) => test(name, { skip: !implementation.RenewalCaseService, timeout: 5000 }, work);
 const cmd = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 async function setup(t, { policy = createPolicyService(), failQueue = false } = {}) {
@@ -260,36 +254,6 @@ caseTest('alternative car uses current eligibility, points, essentials and avail
   c = (await update(f, petrol.value.case, 'in-progress', { commandId: 'review-plugin' })).value.case;
   const plugIn = stock(772, { fuel: fact('phev') }); await seedCar(plugIn);
   assert.equal((await update(f, c, 'remedy-proposed', { commandId: 'unresolved-charging', remedy: { type: 'alternative-car', orderUuid: plugIn.orderUuid } })).status, 'unavailable');
-});
-
-caseTest('actual HTTP composition ignores identity overrides and refuses cross-employee, scheme-role and stale-run access', async (t) => {
-  const f = await setup(t); const { buildServer } = await import('../index.js');
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspCases: f.service, gcspAllowedOrigins: ['https://case.test'] });
-  assert.equal((await server.gcspStartup).status, 'ok'); server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  t.after(async () => { server.closeAllConnections(); await new Promise((resolve) => server.close(resolve)); });
-  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  const call = async (path, { body, session = f.paula } = {}) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp${path}`, { method: body ? 'POST' : 'GET',
-      headers: { Origin: 'https://case.test', Cookie: cookie(session), ...(body ? { 'Content-Type': 'application/json' } : {}) },
-      ...(body ? { body: JSON.stringify(body) } : {}) });
-    return { status: response.status, value: await response.json(), cache: response.headers.get('cache-control') };
-  };
-  const state = structuredClone(f.store.state); assert.equal((await call('/help')).status, 200); assert.deepEqual(f.store.state,state);
-  const opened = await call('/cases', { body: { commandId: 'http-help', reason: 'Please review my renewal.', employeeId: f.alex.value.context.employeeId,
-    runId: 'another-run', roles: ['presenter'], principalId: 'demo-greg' } });
-  assert.equal(opened.status,200,JSON.stringify(opened)); assert.equal(opened.cache,'no-store');
-  assert.equal(opened.value.value.case.employeeId,f.context.employeeId); assert.equal(opened.value.value.case.runId,f.context.runId);
-  const id=opened.value.value.case.caseId;
-  assert.equal((await call('/cases?caseId='+id+'&employeeId=other&runId=other')).status,200);
-  assert.equal((await call('/cases?caseId='+id,{session:f.alex})).status,403);
-  assert.equal((await call('/scheme-team/cases')).status,403);
-  assert.equal((await call('/scheme-team/cases',{session:f.greg})).value.value.cases.length,1);
-  assert.equal((await call('/scheme-team/cases/update',{body:{commandId:'forged',caseId:id,status:'resolved',roles:['greg']}})).status,403);
-  const prior=(await f.clock.readState(f.presenter.value.context)).value;
-  assert.equal((await f.clock.reset(f.presenter.value.context,{commandId:'reset-http',expectedRunId:prior.runId,expectedRunVersion:prior.runVersion,
-    scenarioVersion:prior.versions.scenario,fixtureVersion:prior.versions.fixture})).status,'ok');
-  assert.equal((await call('/cases?caseId='+id)).status,409);
-  assert.equal((await request(f,'old-command')).status,'stale-run');
 });
 
 caseTest('case notification retries reuse the committed job and historical jobs are stale on reset', async (t) => {

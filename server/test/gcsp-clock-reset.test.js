@@ -4,7 +4,6 @@ import { readFile } from 'node:fs/promises';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
-
 const command = (commandId, value = commandId) => ({ commandId, inputDigest: inputDigest(value) });
 const scope = (runId) => ({ runId, environmentId: 'clock-test', principalId: 'trusted-bootstrap', roles: [] });
 
@@ -108,7 +107,6 @@ test('reset restores versioned employees/time and new allocator identifiers whil
   assert.equal((await f.clock.now(f.employee)).status, 'stale-run');
   assert.equal((await f.clock.readState(f.presenter)).status, 'stale-run');
 });
-
 
 test('concurrent/stale resets have one winner and never partly retire or seed runs', async () => {
   const f = await setup();
@@ -315,83 +313,6 @@ test('actual old offer IDs, decision commands and outbox jobs cannot act on a re
   assert.equal(inputDigest(Object.fromEntries(Object.entries(f.store.state.tables).map(([table, rows]) => [table, rows.filter((row) => row.runId === fresh.runId)]))), snapshot);
 });
 
-// The HTTP boundary must renew only a successful reset's presenter credential and still refuse
-// every other use of historical sessions. These checks exercise real server composition.
-test('backend startup and guarded presenter HTTP expose time, replay and reset cookie rollover', async () => {
-  const { buildServer } = await import('../index.js');
-  const { once } = await import('node:events');
-  const f = await setup(); let recoveries = 0;
-  await register(f, [['recover', 'pending-reconciliation', async () => { recoveries++; return ok({ recovered: true }); }]]);
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspAllowedOrigins: ['https://clock.test'] });
-  try {
-    const startup = await server.gcspStartup;
-    assert.equal(startup.status, 'ok');
-    assert.equal(recoveries, 1);
-    server.listen(0, '127.0.0.1'); await once(server, 'listening');
-    const cookies = f.session.value.setCookie.map((value) => value.split(';')[0]).join('; ');
-    const request = async (path, body, cookie = cookies) => {
-      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/presenter/${path}`, {
-        method: body ? 'POST' : 'GET', headers: { Origin: 'https://clock.test', cookie, ...(body ? { 'Content-Type': 'application/json' } : {}) },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-      });
-      return { status: response.status, body: await response.json(), cookies: response.headers.getSetCookie(), cache: response.headers.get('cache-control') };
-    };
-    const state = await request('clock');
-    assert.equal(state.status, 200); assert.equal(state.cache, 'no-store');
-    const step = await request('clock/advance', { commandId: 'http-step', expectedClockVersion: '1', bySeconds: 60 });
-    assert.equal(step.body.value.now, '2026-11-05T09:01:00.000Z');
-    const ticking = await request('clock/tick', tickCommand('http-event', '2'));
-    assert.equal(ticking.body.status, 'ok');
-    assert.deepEqual((await request('clock/tick', tickCommand('http-event', '2'))).body, ticking.body);
-    assert.equal((await request('clock/advance', { commandId: 'spoof', expectedClockVersion: '2', bySeconds: 1, roles: ['presenter'] })).status, 400);
-    const employeeCookie = (await f.identity.switchPrincipal(f.presenter, 'demo-paula', 'http-employee')).value.setCookie.split(';')[0];
-    assert.equal((await request('clock/advance', { commandId: 'employee', expectedClockVersion: '2', bySeconds: 60 }, employeeCookie)).status, 403);
-    const stateBeforeReset = (await request('clock')).body.value;
-    const resetInput = resetCommand(stateBeforeReset, 'http-reset');
-    const reset = await request('clock/reset', resetInput);
-    assert.equal(reset.body.status, 'ok');
-    assert.equal(reset.cookies.length, 2);
-    assert.ok(reset.cookies.every((value) => value.includes('HttpOnly') && value.includes('Secure')));
-    assert.ok(!JSON.stringify(reset.body).includes('gcsp_session='));
-    const renewed = reset.cookies.map((value) => value.split(';')[0]).join('; ');
-    assert.equal((await request('clock', undefined, renewed)).body.value.runId, reset.body.value.runId);
-    assert.equal((await request('clock')).status, 409);
-    assert.deepEqual((await request('clock/reset', resetInput)).body, reset.body);
-    assert.equal((await request('clock/reset', { ...resetInput, commandId: 'never-performed' })).status, 409);
-    assert.equal((await request('clock/advance', { commandId: 'after-reset', expectedClockVersion: '1', bySeconds: 1 })).status, 409);
-    assert.equal(recoveries, 2); // one startup and one explicit event, with HTTP replay doing no work
-  } finally { server.closeAllConnections(); if (server.listening) await new Promise((done) => server.close(done)); }
-});
-
-test('composed employee consumer gets persisted run time and security sessions ignore accelerated domain time', async () => {
-  const { buildServer } = await import('../index.js');
-  const { once } = await import('node:events');
-  const { brief } = await import('./helpers/employee-recommendation.js');
-  const f = await setup();
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspAllowedOrigins: ['https://clock.test'],
-    gcspRecommendations: { policy: f.policy, time: { now() { throw Error('Competing clock must never supply domain time'); } },
-      provider: { async resolve(context) { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId,
-        factsVersion: 'clock-fixture-v1', stockVersion: 'empty-v1', stock: [], employeeFacts: { essentials: {} } }); } } } });
-  try {
-    await server.gcspStartup;
-    server.listen(0, '127.0.0.1'); await once(server, 'listening');
-    const employee = await f.identity.switchPrincipal(f.presenter, 'demo-paula', 'clock-employee');
-    const recommend = async () => {
-      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/recommendations`, { method: 'POST',
-        headers: { Origin: 'https://clock.test', cookie: employee.value.setCookie.split(';')[0], 'Content-Type': 'application/json' }, body: JSON.stringify(brief()) });
-      return response.json();
-    };
-    const before = await recommend();
-    assert.equal(before.value.evaluatedAt, '2026-11-05T09:00:00.000Z');
-    assert.equal(before.value.versions.clock, '1');
-    assert.equal((await f.clock.advance(f.presenter, { commandId: 'long-demo-step', expectedClockVersion: '1', bySeconds: 86400 })).status, 'ok');
-    const after = await recommend();
-    assert.equal(after.value.evaluatedAt, '2026-11-06T09:00:00.000Z');
-    assert.equal(after.value.versions.clock, '2');
-    assert.equal((await f.identity.requireRole(f.presenter, 'presenter')).status, 'ok');
-  } finally { server.closeAllConnections(); if (server.listening) await new Promise((done) => server.close(done)); }
-});
-
 test('identifier exhaustion during reset leaves the current run and complete state untouched', async () => {
   const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
   const scenario = seed.assumptions.find((row) => row.key === 'clock.scenario.v1').value;
@@ -414,7 +335,6 @@ test('computed backend presentation fixtures retain clock/tick/reset/stale respo
   assert.deepEqual(await f.clock.reset(f.presenter, resetCommand(state, 'fixture-reset')), fixture.reset);
   assert.deepEqual(await f.clock.readState(f.presenter), fixture.stale);
 });
-
 
 test('handler services can use their own repository boundary without nesting a clock transaction', { timeout: 2000 }, async () => {
   const f = await setup();

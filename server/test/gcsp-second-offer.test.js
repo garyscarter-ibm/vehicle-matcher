@@ -6,12 +6,10 @@ import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createBriefService } from '../gcsp/brief/index.js';
 import { createOfferFollowupService } from '../gcsp/offers/followup.js';
-import { createOfferFollowupRoutes } from '../gcsp/offers/followup-http.js';
 import { buildFollowupComparison } from '../gcsp/offers/followup-comparison.js';
 import { createBuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact as stockFact } from './helpers/employee-recommendation.js';
-
 // These labelled policy values and persisted decline rows are scoped inputs, not a106/103 producer proof.
 const bundle = JSON.parse(await readFile(new URL('../gcsp/offers/followup-policy-definitions.json', import.meta.url), 'utf8'));
 const reasonRows = [
@@ -531,20 +529,4 @@ test('a release tick that finds a fitting car yields the second offer through th
   assert.deepEqual(response.value.savedChange, saved.value);
   assert.equal(response.value.comparison.next.offer.offerId, allocated.value.offer.offerId);
   assert.equal(response.value.comparison.next.offer.quote.briefVersion, 2);
-});
-
-test('HTTP descriptors require employee context, exact selector and delegated strict confirmation', async (t) => {
-  const f = await setup(t); const [read, confirm] = createOfferFollowupRoutes(f.service);
-  assert.deepEqual([read, confirm].map(({ method, path, role }) => ({ method, path, role })), [
-    { method: 'GET', path: '/api/gcsp/offer-followup', role: 'employee' },
-    { method: 'POST', path: '/api/gcsp/offer-followup/confirm', role: 'employee' },
-  ]);
-  for (const query of ['', 'decisionId=decline&decisionId=decline', 'decisionId=decline&employeeId=other']) {
-    assert.equal((await read.handle({ context: f.context, searchParams: new URLSearchParams(query) })).status, 'invalid');
-  }
-  assert.equal((await read.handle({ context: f.context, searchParams: new URLSearchParams('decisionId=decline') })).value.state, 'question');
-  const input = await answer(f);
-  assert.equal((await confirm.handle({ context: f.context, body: { ...input, path: 'preferences.fuel.value' } })).status, 'invalid');
-  assert.equal((await confirm.handle({ context: f.context, body: input, searchParams: new URLSearchParams('decisionId=decline') })).status, 'invalid');
-  assert.equal((await confirm.handle({ context: f.context, body: input })).value.state, 'change-saved');
 });

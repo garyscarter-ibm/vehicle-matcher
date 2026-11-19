@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -9,8 +8,6 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { ManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { createLifecycleAppointmentService } from '../gcsp/lifecycle/appointments/index.js';
 import { createLifecycleReturnPlanService } from '../gcsp/lifecycle/return-plan/index.js';
-import { createReturnPlanRoutes } from '../gcsp/lifecycle/return-plan/http.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createSyntheticAppointments, APPOINTMENT_CONSUMER } from '../gcsp/adapters/synthetic-appointments.js';
@@ -22,7 +19,6 @@ import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/inde
 import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
 import { createRealProducer, acknowledgedSelection } from './helpers/gcsp-lifecycle-approval.js';
-
 const shapes = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-return-plan-outcomes.json', import.meta.url), 'utf8'));
 const SEED = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
 const seedRow = (key) => SEED.assumptions.find((a) => a.key === key);
@@ -340,59 +336,6 @@ test('the current car is unchanged through selection, approvals, handover and re
   assert.deepEqual(after.current.map((c) => [c.contractId, c.slotId, c.status, c.returnedDate]), [[f.contract.contractId, f.contract.slotId, 'current', null]]);
   assert.equal(after.slotContractId, f.before.slotContractId);
   assert.equal((await f.plan()).currentCar.status, 'current', 'the read model still shows it as her current car');
-});
-
-// A route caller bound to the real shared handler; sessions come from setup, never from the request.
-const http = (f) => {
-  const handler = createGcspHandler({ identity: f.identity, routes: createReturnPlanRoutes(f.returns), allowedOrigins: ['https://return.test'] });
-  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  return async (path, { body, session = f.sessions.paula, query = '' } = {}) => {
-    const req = Readable.from(body ? [Buffer.from(JSON.stringify(body))] : []);
-    Object.assign(req, { method: body ? 'POST' : 'GET', headers: { origin: 'https://return.test', cookie: cookie(session) } });
-    let sent; const res = { setHeader() {} };
-    await handler({ req, res, pathname: `/api/gcsp${path}`, searchParams: new URLSearchParams(query), sendJson: (r, code, value) => { sent = { code, value }; } });
-    return sent;
-  };
-};
-
-test('/api/gcsp return-plan routes act as the server-owned employee, refuse others and ignore browser identity', async (t) => {
-  const f = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.scenario.v1').proposeChange = true; }) }); await f.approve();
-  const call = http(f); const q = `orderUuid=${f.orderUuid}`;
-  // The handover proposes a change under this scenario; Paula accepts it first.
-  const slot = (await f.handoverView()).offeredSlots[0];
-  assert.equal((await f.handover.request(f.paula, { orderUuid: f.orderUuid, slotId: slot.slotId })).status, 'ok');
-  await f.advance(DELAY); await f.tick();
-  const proposal = await f.handoverView(); assert.equal(proposal.state, 'change-proposed');
-  assert.equal((await f.handover.acceptChange(f.paula, { orderUuid: f.orderUuid, proposalId: proposal.proposalId })).status, 'ok');
-
-  const early = await call('/return-plan', { query: `${q}&employeeId=employee-alex&runId=other` });
-  assert.deepEqual([early.code, early.value.value.employeeId, early.value.value.runId, early.value.value.state], [200, 'employee-paula', f.paula.runId, 'not-planned'], 'forged query identity is stripped');
-  const open = early.value.value; const same = open.offeredSlots['same-visit'][0];
-  const asked = await call('/return-plan/request', { body: { orderUuid: f.orderUuid, choice: 'same-visit', slotId: same.slotId, employeeId: 'employee-alex', runId: 'other', roles: ['presenter'] } });
-  assert.equal(asked.code, 200, JSON.stringify(asked));
-  assert.deepEqual([asked.value.value.state, asked.value.value.scheduled, asked.value.value.employeeId, asked.value.value.runId], ['return-requested', false, 'employee-paula', f.paula.runId]);
-  assert.deepEqual((await call('/return-plan/request', { body: { orderUuid: f.orderUuid, choice: 'same-visit', slotId: same.slotId } })).value, asked.value, 'repeat returns the same plan');
-  assert.equal((await call('/return-plan/request', { body: { orderUuid: f.orderUuid, choice: 'separate', slotId: same.slotId } })).code, 409);
-  assert.equal((await call('/return-plan/request', { body: { orderUuid: f.orderUuid, choice: 'same-visit' } })).code, 400);
-
-  for (const who of ['alex']) {
-    assert.equal((await call('/return-plan', { session: f.sessions[who], query: q })).code, 403);
-    assert.equal((await call('/return-plan/request', { session: f.sessions[who], body: { orderUuid: f.orderUuid, choice: 'same-visit', slotId: same.slotId } })).code, 403);
-    assert.equal((await call('/return-plan/accept', { session: f.sessions[who], body: { orderUuid: f.orderUuid, proposalId: 'x' } })).code, 403);
-  }
-  for (const who of ['greg', 'presenter']) assert.equal((await call('/return-plan', { session: f.sessions[who], query: q })).code, 200, who);
-  assert.equal((await call('/return-plan/request', { session: f.sessions.greg, body: { orderUuid: f.orderUuid, choice: 'same-visit', slotId: same.slotId } })).code, 403);
-  assert.equal((await call('/return-plan', { query: 'other=1' })).code, 400);
-
-  await f.advance(DELAY); await f.tick();
-  const proposed = (await call('/return-plan', { query: q })).value.value;
-  assert.deepEqual([proposed.state, proposed.scheduled, proposed.appointment.state], ['return-requested', false, 'change-proposed'], 'a proposed change is still only a request');
-  assert.deepEqual([proposed.owner, proposed.nextStep], [OWNERSHIP.states['change-proposed'].owner, OWNERSHIP.states['change-proposed'].nextStep]);
-  const accepted = await call('/return-plan/accept', { body: { orderUuid: f.orderUuid, proposalId: proposed.proposalId, employeeId: 'employee-alex' } });
-  assert.equal(accepted.code, 200, JSON.stringify(accepted));
-  assert.deepEqual([accepted.value.value.state, accepted.value.value.scheduled, accepted.value.value.slot, accepted.value.value.employeeId],
-    ['return-scheduled', true, proposed.proposedSlot, 'employee-paula']);
-  await f.sameCar('return accepted');
 });
 
 // Recorded response shapes for the later return screen (FUCQ-120); no screen in this story.

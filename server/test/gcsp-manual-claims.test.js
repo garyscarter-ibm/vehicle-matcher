@@ -5,7 +5,6 @@ import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
-import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { createPolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -14,7 +13,6 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createManualClaimsService } from '../gcsp/manual-claims/index.js';
 import { createSyntheticManualStockAdapter } from '../gcsp/adapters/manual-stock.js';
 import { stock, fact } from './helpers/employee-recommendation.js';
-
 const instant = '2026-11-05T09:00:00.000Z';
 const cmd = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(value) });
 const ref = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
@@ -331,33 +329,6 @@ test('clock ticks reconcile manual expiry with no employee browser and reset ref
   assert.equal((await f.service.readClaim(f.context)).status, 'stale-run');
   assert.equal((await f.service.release(f.context, { commandId: 'old', holdId: held.value.hold.holdId,
     expectedHoldVersion: 1, expectedDraftVersion: 1, reason: 'cancel' })).status, 'stale-run');
-});
-
-test('HTTP composes expiry before startup and exposes truthful scoped claim/quote/pending outcomes', async () => {
-  const adapter = remoteAdapter(); const f = await setup({ adapter });
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspManual: f.manual,
-    gcspManualClaims: f.service, gcspAllowedOrigins: ['https://manual.test'] });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const request = async (path, body, session = f.acting, origin = 'https://manual.test') => {
-    const r = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/manual${path}`, {
-      method: body ? 'POST' : 'GET', headers: { Origin: origin, cookie: [session.setCookie].flat().map((v) => v.split(';')[0]).join('; '),
-        ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
-    return { status: r.status, value: await r.json(), cache: r.headers.get('Cache-Control') };
-  };
-  try {
-    assert.equal((await server.gcspStartup).status, 'ok');
-    const input = await selection(f);
-    const pending = await request('/claim', input); assert.equal(pending.status, 202); assert.equal(pending.cache, 'no-store');
-    assert.equal((await request('/claim')).value.value.hold.state, 'claim-pending');
-    assert.equal((await request('/quote')).status, 202);
-    assert.equal((await request('/claim?employeeId=other')).status, 400);
-    assert.equal((await request('/claim', { ...input, employeeId: 'other' })).status, 400);
-    assert.equal((await request('/claim', input, f.acting, 'https://hostile.test')).status, 403);
-    adapter.set('confirmed'); assert.equal((await request('/claim')).status, 200);
-    const other = (await f.identity.switchPrincipal(f.presenter.context, 'demo-alex', 'alex')).value;
-    assert.equal((await request('/quote', null, other)).status, 404);
-    assert.equal((await request('/claim/allocate', await action(f))).status, 404);
-  } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
 });
 
 test('transaction failure rolls back quote/claim/hold/stock and intent before any remote effect', async () => {

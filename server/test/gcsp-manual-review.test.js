@@ -5,8 +5,6 @@ import { inputDigest, ok, result } from '../gcsp/repository/core.js';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { ManualReviewDetailsService } from '../gcsp/manual-review/index.js';
-import { createManualReviewDetailsRoutes } from '../gcsp/manual-review/http.js';
-
 const command = (id, payload = {}) => ({ commandId: id, inputDigest: inputDigest(payload) });
 const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...key } });
 const detail = (patch = {}) => ({ contact: { phone: '01632 960001', email: 'chooser@example.invalid' },
@@ -226,16 +224,6 @@ test('freeze and save refuse pending selection, allocation and deadline without 
   assert.equal((await freeze(f)).code, 'review-details-locked');
   const expired = await setup(); await save(expired); await advance(expired); assert.equal((await freeze(expired)).code, 'claim-expired');
 });
-test('route factory is additive, rejects query selectors and does not couple release to validation', async () => {
-  const f = await setup(); const routes = createManualReviewDetailsRoutes(f.service);
-  assert.deepEqual(routes.map((r) => [r.method, r.path, r.role]), [['GET', '/api/gcsp/manual/review-details', 'employee'], ['POST', '/api/gcsp/manual/review-details', 'employee']]);
-  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams('employee=fake') })).status, 'invalid');
-  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams() })).status, 'ok');
-  assert.equal((await routes[1].handle({ context: f.context, body: input(f, { details: detail({ contact: {} }) }), searchParams: new URLSearchParams() })).status, 'invalid');
-  assert.equal((await createManualReviewDetailsRoutes()[0].handle({ searchParams: new URLSearchParams() })).status, 'unavailable');
-});
-
-
 test('clock advance during policy preparation fences a save without partial receipts', async () => {
   const f = await setup(); let moved = false;
   const changing = service(f, { policy: { async getAssumption(key, readContext) {

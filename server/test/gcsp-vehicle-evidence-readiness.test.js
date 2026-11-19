@@ -1,14 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { performance } from 'node:perf_hooks';
-import { once } from 'node:events';
-import { buildServer } from '../index.js';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
-import { startTestServer, get } from './helpers.js';
-
 const reference = fileURLToPath(new URL('../data/gcsp/vehicle-evidence/lookup-reference.v1/', import.meta.url));
 
 test('local readiness waits for a validated corpus and returns detached state', async () => {
@@ -56,65 +51,4 @@ test('a validated retained fallback is ready even when the selected pointer fail
   assert.equal(lookup.readiness().status, 'ready');
   assert.equal(lookup.readiness().recovered, true);
   assert.equal(lookup.readiness().manifestDigest, previous.manifestDigest);
-});
-
-test('platform corpus readiness gates deployment while liveness stays usable', async () => {
-  let state = { status: 'loading', elapsedMs: 12, manifestDigest: null, recovered: false };
-  const lookup = { readiness: () => structuredClone(state), resolve: async () => assert.fail('health must not resolve a vehicle') };
-  const server = await startTestServer({ gcspVehicleEvidence: { lookup } });
-  try {
-    const live = await get(server.base, '/health');
-    assert.equal(live.status, 200); assert.deepEqual(live.json, { ok: true });
-    const pending = await get(server.base, '/health/vehicle-evidence');
-    assert.equal(pending.status, 503); assert.deepEqual(pending.json, { ok: false, vehicleEvidence: state });
-    state = { status: 'ready', elapsedMs: 40, manifestDigest: 'a'.repeat(64), recovered: false };
-    const ready = await get(server.base, '/health/vehicle-evidence');
-    assert.equal(ready.status, 200); assert.deepEqual(ready.json, { ok: true, vehicleEvidence: state });
-    state = { status: 'unavailable', elapsedMs: 50, manifestDigest: null, recovered: false, code: 'corpus-absent' };
-    const failed = await get(server.base, '/health/vehicle-evidence');
-    assert.equal(failed.status, 503); assert.deepEqual(failed.json, { ok: false, vehicleEvidence: state });
-  } finally {
-    await server.close();
-  }
-});
-
-test('an injected lookup without readiness cannot report a ready deployment', async () => {
-  const server = await startTestServer({ gcspVehicleEvidence: { lookup: { resolve: async () => assert.fail('health must not resolve') } } });
-  try {
-    const response = await get(server.base, '/health/vehicle-evidence');
-    assert.equal(response.status, 503);
-    assert.equal(response.json.vehicleEvidence.code, 'readiness-unavailable');
-  } finally { await server.close(); }
-});
-
-// This must use default buildServer composition and the retained real corpus:
-// a small fixture or injected lookup does not reproduce the startup CPU loops.
-test('default server keeps timers and health responsive while the real corpus becomes ready', { timeout: 30000 }, async () => {
-  const started = performance.now(); let previous = started; let maxGap = 0; let loadingResponses = 0;
-  const timer = setInterval(() => {
-    const now = performance.now(); maxGap = Math.max(maxGap, now - previous); previous = now;
-  }, 5);
-  const server = buildServer(); server.listen(0, '127.0.0.1');
-  try {
-    await once(server, 'listening');
-    const base = `http://127.0.0.1:${server.address().port}`;
-    let state;
-    do {
-      const response = await fetch(`${base}/health/vehicle-evidence`);
-      state = (await response.json()).vehicleEvidence;
-      if (state.status === 'loading') {
-        loadingResponses += 1;
-        assert.equal(response.status, 503);
-        assert.deepEqual(await (await fetch(`${base}/health`)).json(), { ok: true });
-        await new Promise((resolve) => setTimeout(resolve, 5));
-      } else assert.equal(response.status, 200);
-    } while (state.status === 'loading' && performance.now() - started < 25000);
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    assert.equal(state.status, 'ready');
-    assert.ok(loadingResponses > 0, 'the real background load was observed');
-    assert.ok(maxGap <= 100, `5ms timer maximum gap was ${Math.round(maxGap)}ms`);
-  } finally {
-    clearInterval(timer);
-    await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
-  }
 });

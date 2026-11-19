@@ -6,7 +6,6 @@ import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
-import { createCaseRoutes } from '../gcsp/cases/http.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 const command = (id) => ({ commandId: id, inputDigest: inputDigest(id) });
@@ -86,17 +85,6 @@ async function occupy(f, candidate, table, state) {
   });
   assert.equal(inserted.status, 'ok', JSON.stringify(inserted));
 }
-test('options require trusted Greg/presenter and current run; route allows only caseId', async (t) => {
-  const f = await setup(t);
-  assert.equal((await f.service.readOptions(f.context, { caseId: f.c.caseId })).status, 'forbidden');
-  assert.equal((await f.service.readOptions({ ...f.greg, runId: 'foreign' }, { caseId: f.c.caseId })).status, 'forbidden');
-  assert.equal((await f.service.readOptions(f.presenter, { caseId: f.c.caseId })).status, 'ok');
-  assert.equal((await f.service.readOptions(f.greg, {})).status, 'invalid');
-  const route = createCaseRoutes(f.service).find((r) => r.path.endsWith('/cases/options'));
-  assert.equal(route.method, 'GET');
-  assert.equal((await route.handle({ context: f.greg, searchParams: new URLSearchParams({ caseId: f.c.caseId, employeeId: 'foreign' }) })).code, 'unsupported-query');
-  assert.equal((await route.handle({ context: f.greg, searchParams: new URLSearchParams({ caseId: f.c.caseId }) })).status, 'ok');
-});
 test('read options is side-effect free, evaluates exact cars and excludes unsuitable, unavailable and held cars', async (t) => {
   const f = await setup(t);
   const suitable = await car(f, 880);

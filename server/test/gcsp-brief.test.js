@@ -1,13 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { once } from 'node:events';
-import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { preference, essential, stock, providerValue } from './helpers/employee-recommendation.js';
-
 const implementation = await import('../gcsp/brief/index.js').catch(() => ({}));
 test('BriefService exposes a repository-backed lifecycle', () => assert.equal(typeof implementation.BriefService, 'function'));
 const lifecycle = (name, fn) => test(name, { skip: !implementation.BriefService }, fn);
@@ -292,54 +289,6 @@ lifecycle('service refuses forged employee contexts and stale run sessions', asy
     scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
   assert.equal((await f.service.readCurrent(f.context)).status, 'stale-run');
   assert.equal((await changeState(f, 'pause', 1)).status, 'stale-run');
-});
-
-const cookie = (session) => [session.value.setCookie].flat().map((v) => v.split(';')[0]).join('; ');
-async function withHttp(f, work) {
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.service, gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } }, gcspAllowedOrigins: ['https://brief.test'] });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const request = async (path, { body, session = f.acting, origin = 'https://brief.test' } = {}) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/brief${path}`, {
-      method: body ? 'POST' : 'GET', headers: { Origin: origin, cookie: cookie(session), ...(body ? { 'Content-Type': 'application/json' } : {}) },
-      ...(body ? { body: JSON.stringify(body) } : {}),
-    });
-    return { status: response.status, json: await response.json(), cache: response.headers.get('Cache-Control') };
-  };
-  try { await work(request); } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
-}
-
-lifecycle('HTTP writes fail closed without an editor; reads use trusted employee context', async () => {
-  const f = await setup(); await save(f); await confirm(f);
-  await withHttp(f, async (request) => {
-    for (const [operation, body] of [['draft', { commandId: 'http-draft', expectedDraftVersion: 1, expectedBriefVersion: 1, brief: data() }],
-      ['confirm', { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 1, consent: { search: true, hold: true } }],
-      ['pause', { commandId: 'pause-http', expectedBriefVersion: 1 }], ['resume', { commandId: 'resume-http', expectedBriefVersion: 1 }]]) {
-      assert.equal((await request(`/${operation}`, { body })).status, 503, 'public writes require the editor gate');
-    }
-    const current = await request(''); assert.equal(current.status, 200); assert.equal(current.cache, 'no-store');
-    assert.equal(current.json.value.brief.employeeId, f.context.employeeId);
-    assert.equal((await request('/draft')).json.value.draftVersion, 1);
-    assert.equal((await request('?employeeId=other&runId=other')).json.value.brief.employeeId, f.context.employeeId);
-    assert.equal((await request('/history')).json.value.versions.length, 1);
-    assert.equal((await request('', { session: f.presenter })).status, 403);
-    assert.equal((await request('', { origin: 'https://hostile.test' })).status, 403);
-  });
-});
-
-lifecycle('HTTP current/draft/history never disclose another employee and old sessions refuse after reset', async () => {
-  const f = await setup(); await save(f); await confirm(f);
-  const otherPrincipal = (await f.policy.getAssumption('identity.demo.principals', { runId: f.context.runId,
-    asOf: (await f.clock.now(f.context)).value.now })).value.value.find((p) => p.roles.includes('employee') && p.employeeId !== f.context.employeeId);
-  const other = await f.identity.switchPrincipal(f.presenter.value.context, otherPrincipal.principalId, 'other');
-  await withHttp(f, async (request) => {
-    assert.equal((await request('', { session: other })).status, 404);
-    assert.equal((await request('/history', { session: other })).json.value.versions.length, 0);
-    const state = (await f.clock.readState(f.presenter.value.context)).value;
-    await f.clock.reset(f.presenter.value.context, { commandId: 'http-reset', expectedRunId: state.runId,
-      expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
-    assert.equal((await request('')).status, 409);
-    assert.equal((await request('/confirm', { body: { commandId: 'old-run', expectedDraftVersion: 1, expectedBriefVersion: 1 } })).json.status, 'stale-run');
-  });
 });
 
 lifecycle('retained brief, conflict and validation fixtures match the real presentation contract', async () => {
