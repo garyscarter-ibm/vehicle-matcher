@@ -104,6 +104,14 @@ class DemoIdpHttpTest {
                 .formParam("subject", "demo-paula").post(ISSUER_PATH + "/authorize").then().statusCode(302);
     }
 
+    @Test
+    void personFormPostedOverHttpsBehindATlsProxyIsNotRefusedByCors() {
+        String txn = txnOf(authorizePage(authorizeParams("y".repeat(43))));
+        given().redirects().follow(false).header("Host", "gcsp.example").header("X-Forwarded-Proto", "https")
+                .header("Origin", "https://gcsp.example").formParam("txn", txn).formParam("subject", "demo-paula")
+                .post(ISSUER_PATH + "/authorize").then().statusCode(302);
+    }
+
     /** Chooses a person and returns the callback code. */
     private static String chooseCode(String subject, String challenge) {
         String txn = txnOf(authorizePage(authorizeParams(challenge)));
