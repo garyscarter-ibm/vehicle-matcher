@@ -106,7 +106,12 @@ const KID = 'gcsp-local-test-1';
 const TRUST_PASS = 'proof-local-trust';
 const ENVIRONMENT_ID = `fucq449-connected-${RUN_TOKEN}`;
 const RUN_ID = 'run-1';
-const POLICY_VERSION = 'gcsp-policy-v1';
+const LEARNED_FLAG = process.env.PROOF_LEARNED_MODEL ?? '';
+if (LEARNED_FLAG !== '' && LEARNED_FLAG !== '1') refuse('PROOF_LEARNED_MODEL must be unset or 1');
+const LEARNED = LEARNED_FLAG === '1';
+const LEARNED_MODEL_ID = 'sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d';
+// Learned mode activates the retained model, which Java pins to the +learned-model-v1 policy version.
+const POLICY_VERSION = LEARNED ? 'gcsp-policy-v1+learned-model-v1' : 'gcsp-policy-v1';
 const SUBJECTS = { greg: ['greg'], presenter: ['presenter'], employee: ['employee'], paula: ['employee'], alex: ['employee'], sam: ['employee'] };
 const EMPLOYEE_IDS = { employee: 'employee-probe', paula: 'employee-paula', alex: 'employee-alex', sam: 'employee-sam' };
 const API_JVM_ARGS = apiJvmArgs();
@@ -347,6 +352,7 @@ function apiEnv() {
     GCSP_OIDC_ACCOUNTS: JSON.stringify(Object.entries(SUBJECTS).map(([name, roles]) => ({ subject: `sub-${name}`, roles,
       ...(roles.includes('employee') ? { employeeId: EMPLOYEE_IDS[name] } : {}) }))),
     GCSP_ENVIRONMENT_ID: ENVIRONMENT_ID, GCSP_RUN_ID: RUN_ID, GCSP_POLICY_VERSION: POLICY_VERSION,
+    ...(LEARNED ? { GCSP_LEARNING_ACTIVE_MODEL: LEARNED_MODEL_ID } : {}),
     GCSP_DATABASE_URL: DB_URL, GCSP_DATABASE_USER: DB_USER, GCSP_DATABASE_PASSWORD: DB_PASSWORD, GCSP_EXPECTED_DATABASE: DB_NAME,
     GCSP_RESET_ALLOWED: SCENARIO_PROVIDER === 'demo' ? 'true' : 'false', GCSP_PUBLIC_BASE_URL: PUBLIC_BASE_URL, 
     GCSP_CODE_REVISION: SOURCE_REVISION,
@@ -772,15 +778,26 @@ async function clickAndWait(page, label, expected) {
   await page.settle();
   return { from, seen };
 }
-async function confirmBrief(person) {
+async function confirmBrief(person, bootAnswer = false) {
   const editor = (await call(person, '/brief/editor')).json?.value?.initial;
   const contract = editor?.currentCarRating?.contractId;
   const saved = await call(person, '/brief/preferences', { commandId: newCmd(), expectedBriefVersion: editor.briefVersion, expectedDraftVersion: editor.draftVersion,
     changes: { comfort: { value: 50 }, body: { value: ['estate'] }, sportiness: { value: 50 } }, sameAgain: { contractId: contract, on: true } });
   if (saved.status !== 200) return { person, step: 'preferences', status: saved.status, body: saved.json };
+  let draftVersion = saved.json.value.draftVersion; let draft = null;
+  if (bootAnswer) {
+    // The retained model does not cover hatchbacks, so the employee answers "at least 430 litres".
+    const current = (await call(person, '/brief/editor')).json?.value?.initial?.brief;
+    if (!current?.essentials?.boot) return { person, step: 'boot-editor', status: 0 };
+    const brief = { ...current, essentials: { ...current.essentials, boot: { ...current.essentials.boot, value: 430, state: 'draft', source: 'employee' } } };
+    const saved2 = await call(person, '/brief/draft', { commandId: newCmd(), expectedBriefVersion: editor.briefVersion, expectedDraftVersion: draftVersion, brief });
+    draft = { status: saved2.status, draftVersion: saved2.json?.value?.draftVersion ?? null };
+    if (saved2.status !== 200) return { person, step: 'draft', status: saved2.status, draft, body: saved2.json };
+    draftVersion = saved2.json.value.draftVersion;
+  }
   const confirmed = await call(person, '/brief/confirm', { commandId: newCmd(), expectedBriefVersion: editor.briefVersion,
-    expectedDraftVersion: saved.json.value.draftVersion, consent: { search: true, hold: true } });
-  return { person, step: 'confirm', status: confirmed.status, briefVersion: confirmed.json?.value?.brief?.briefVersion ?? null };
+    expectedDraftVersion: draftVersion, consent: { search: true, hold: true } });
+  return { person, step: 'confirm', status: confirmed.status, briefVersion: confirmed.json?.value?.brief?.briefVersion ?? null, ...(bootAnswer ? { bootAnswer: 430, draft } : {}) };
 }
 const blocked = (id, name, observed) => { checks.push({ id, name, pass: false, blocked: true, observed }); log(`BLOCKED ${id} ${name}`); };
 
@@ -792,6 +809,7 @@ async function main() {
     database: { source: DB_SOURCE, host: DB_HOST, port: DB_PORT, name: DB_NAME }, schema: SCHEMA, ports: PORTS,
     jar: { path: path.relative(ROOT, JAR), sha256: sha256File(JAR) },
     webBrowser: { indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) }, sourceRevision: SOURCE_REVISION,
+    learnedModel: LEARNED ? { mode: 'learned', modelId: LEARNED_MODEL_ID, policyVersion: POLICY_VERSION } : { mode: 'off', policyVersion: POLICY_VERSION },
     scenarioProvider: SCENARIO_PROVIDER, supplyProvider: SUPPLY_PROVIDER, apiJvm: jvmLimitsReceipt(API_JVM_ARGS), productionProvider: 'synthetic (labelled local substitute; no real Production system)',
   };
   const psqlVersion = cap(PSQL, ['--version']);
@@ -1012,6 +1030,75 @@ async function main() {
   receipt.phase = phase;
 }
 
+// ---------- FUCQ-531 learned model section (PROOF_LEARNED_MODEL=1 only) ----------
+const LEARNED_DOM = `
+const sec = main.querySelector('section[aria-labelledby="learned-plan"]');
+const cells = (el) => [...el.children].map((c) => c.textContent.replace(/\\s+/g, ' ').trim());
+const table = (label) => { const t = sec?.querySelector('.plan-table[role="region"][aria-label="' + label + '"]'); return t ? { tabindex: t.getAttribute('tabindex'), rows: [...t.querySelectorAll('tbody tr')].map(cells) } : null; };
+const dls = sec ? [...sec.querySelectorAll('dl.gcsp-facts')] : [];
+const facts = (dl) => dl ? [...dl.querySelectorAll('.gcsp-fact')].map((f) => [f.querySelector('dt').textContent.trim(), f.querySelector('dd').textContent.trim()]) : [];
+return { present: !!sec, heading: sec?.querySelector('h3')?.textContent.trim() ?? null, text: sec ? sec.textContent.replace(/\\s+/g, ' ').trim() : '',
+  notice: sec?.querySelector('p.plan-notice')?.textContent.trim() ?? null, modelFacts: facts(dls[0]), evaluationFacts: facts(dls[1]),
+  classes: table('Expected demand by vehicle class'), differences: table('Baseline compared with learned model'),
+  limitations: sec ? [...sec.querySelectorAll('ul.gcsp-note > li')].map((li) => li.textContent.replace(/\\s+/g, ' ').trim()) : [] };`;
+const ADVISORY = 'Advisory only. These learned figures are not the submitted plan';
+const LEARNED_LIMIT = 'Synthetic-trained; not validated on BMW employee choices.';
+const oneDp = (n) => Number(n).toFixed(1);
+const LEARNED_REGION = 'Expected demand by vehicle class';
+async function learnedChecks(greg, api1, pngs) {
+  const learned = api1.body?.value?.learned;
+  const aggregate = Array.isArray(learned?.forecast?.aggregate) ? learned.forecast.aggregate : [];
+  const limits = learned?.forecast?.limitations;
+  const apiOk = api1.status === 200 && learned?.status === 'available' && learned.label === 'Learned model' && learned.recommended === false && learned.submittable === false
+    && learned.forecast?.model?.artifactId === LEARNED_MODEL_ID && learned.forecast.model.activationPolicyVersion === POLICY_VERSION
+    && aggregate.length > 0 && aggregate.every((r) => r.low <= r.expected && r.expected <= r.high)
+    && Array.isArray(limits) && limits.includes(LEARNED_LIMIT) && learned.differences?.comparable === true;
+  rec('L1.api', 'Direct GET /greg/order-plan as Greg answers a learned model that is available, labelled Learned model, not recommended and not submittable, with the retained model id and policy version, ordered low/expected/high rows, the synthetic-training limitation and a comparable baseline',
+    apiOk, apiOk ? { artifactId: learned.forecast.model.artifactId, policyVersion: learned.forecast.model.activationPolicyVersion, aggregateRows: aggregate.length, differences: learned.differences.comparable }
+      : { status: api1.status, learned: { status: learned?.status, reason: learned?.reason, limitation: learned?.limitation, keys: Object.keys(learned ?? {}), label: learned?.label,
+        recommended: learned?.recommended, submittable: learned?.submittable, model: learned?.forecast?.model, aggregateRows: aggregate.length,
+        limitations: Array.isArray(limits) ? limits.slice(0, 6) : limits, comparable: learned?.differences?.comparable } });
+  if (!apiOk) {
+    for (const id of ['L1.dom', 'L1.keyboard', 'L1.capture']) blocked(id, 'Not run: L1.api did not show an available learned model', { after: 'L1.api' });
+    return;
+  }
+
+  const dom = await greg.act(LEARNED_DOM);
+  const bad = [];
+  const eq = (what, api, shown) => { if (!same(api, shown)) bad.push({ what, api, dom: shown }); };
+  eq('section heading', 'Learned model', dom.heading);
+  if (!dom.text.includes(LEARNED_MODEL_ID)) bad.push({ what: 'artifact id in section', api: LEARNED_MODEL_ID, dom: dom.text.slice(0, 200) });
+  if (!(dom.notice ?? '').startsWith(ADVISORY)) bad.push({ what: 'advisory sentence', api: ADVISORY, dom: dom.notice });
+  eq('class table rows', aggregate.map((r) => [`${wordsOf(r.vehicleClass)}, ${r.period}`, oneDp(r.expected), oneDp(r.low), oneDp(r.high)]), dom.classes?.rows ?? null);
+  eq('class table row count', aggregate.length, dom.classes?.rows?.length ?? null);
+  eq('limitations list', limits, dom.limitations);
+  if (!(dom.evaluationFacts.length > 0)) bad.push({ what: 'evaluation facts', api: 'non-empty', dom: dom.evaluationFacts });
+  if (!(dom.differences && dom.differences.rows.length >= 4)) bad.push({ what: 'differences table', api: 'at least 4 measure rows', dom: dom.differences });
+  rec('L1.dom', 'The page shows the learned section the API reports: heading, model id and advisory sentence, one class row per forecast entry with expected, low and high to one decimal, the limitations list, evaluation facts and the baseline comparison table',
+    bad.length === 0, { mismatches: bad, heading: dom.heading, notice: dom.notice, modelFacts: dom.modelFacts, evaluationFacts: dom.evaluationFacts, classes: dom.classes, differences: dom.differences, limitations: dom.limitations });
+
+  await viewport(greg, 1280, 900); await sleep(300);
+  await greg.send('Page.bringToFront');
+  const focusedHeading = await greg.eval("(() => { const h = document.querySelector('h2[data-plan-result]'); if (!h) return false; h.focus(); return document.activeElement === h; })()");
+  if (!focusedHeading) await greg.eval("(() => { document.activeElement?.blur(); window.scrollTo(0, 0); })()");
+  const stops = []; let found = null;
+  for (let i = 0; i < 80 && !found; i++) {
+    await key(greg, 'Tab'); await sleep(80);
+    const stop = await greg.eval(FOCUS); stops.push(stop);
+    if (stop && stop.name === LEARNED_REGION && stop.tag === 'div') found = stop;
+  }
+  rec('L1.keyboard', 'At 1280x900, with real Tab key events and no mouse, focus reaches the "Expected demand by vehicle class" table region and it shows a visible focus indicator',
+    !!found && outlineVisible(found) && found.inMain === true,
+    { startedFromHeading: focusedHeading, tabPresses: stops.length, reached: found, lastStops: stops.slice(-4).map((x) => x && { tag: x.tag, name: x.name }) });
+  if (!found) { blocked('L1.capture', 'Not run: focus did not reach the learned table region', { after: 'L1.keyboard' }); return; }
+
+  await greg.eval("document.activeElement?.scrollIntoView({ block: 'center' })"); await sleep(250);
+  const held = await greg.eval(FOCUS);
+  pngs.learned = await png(greg, 'ac1-learned-available-1280x900.png', false);
+  rec('L1.capture', 'The learned section with the focused table region is captured at 1280x900 as a PNG',
+    pngs.learned.bytes > 5000 && held?.name === LEARNED_REGION, { capture: pngs.learned, focusHeld: held });
+}
+
 async function orderPlanAndProduction(greg, phase) {
   await viewport(greg, 1280, 900); await sleep(400);
   const pngs = {};
@@ -1019,7 +1106,7 @@ async function orderPlanAndProduction(greg, phase) {
   // ----- AC1.setup: inputs through the real writers (API steps, not Greg UI) -----
   const clock = await probe('presenter', '/presenter/clock');
   const tick = await call('presenter', '/presenter/controls/tick', { commandId: newCmd(), expectedClockVersion: clock.body?.value?.clockVersion, mode: 'next-release' });
-  const paula = await confirmBrief('paula');
+  const paula = await confirmBrief('paula', LEARNED);
   const setup = { tickStatus: tick.status, tickState: tick.json?.value?.tick?.state, released: Number(sql("SELECT count(*) FROM stock_cars WHERE state = 'released'")),
     releases: Number(sql('SELECT count(*) FROM stock_releases')), paula, paulaBriefs: Number(sql("SELECT count(*) FROM briefs WHERE employee_id = 'employee-paula' AND brief_version = 1")), db: dbCounts() };
   rec('AC1.setup', 'Supply is the demo provider released by one presenter tick (API) and demand is Paula\'s own brief saved and confirmed through the brief routes (API)',
@@ -1047,6 +1134,8 @@ async function orderPlanAndProduction(greg, phase) {
   rec('AC1.feasible.net', 'The browser read GET /greg/order-plan with a Bearer token, got 200 and the same plan id as the direct read, and sent no POST',
     step1.seen['GET /greg/order-plan'].every((e) => e.auth === true && e.status === 200) && browserPlan1?.response?.value?.plan?.planId === plan1?.planId
       && apiCalls(greg, step1.from).every((e) => e.method === 'GET'), { calls: apiCalls(greg, step1.from).map(brief), browserPlanId: browserPlan1?.response?.value?.plan?.planId });
+
+  if (LEARNED) await learnedChecks(greg, api1, pngs);
 
   // ----- AC1.edit: an edited constraint through the UI controls is a preview and nothing else -----
   const prov = (plan1.policyProvenance ?? []).find((x) => x.key === 'orderPlan.derivativeBounds')?.value ?? [];
@@ -1121,7 +1210,7 @@ async function orderPlanAndProduction(greg, phase) {
       && dom4.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))).every((i) => i.value === String(i.label?.endsWith('minimum') ? original.min : original.max)),
     { title: dom4.title, inputs: dom4.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))), calls: apiCalls(greg, step4.from).map(brief) });
 
-  const alex = await confirmBrief('alex');
+  const alex = await confirmBrief('alex', LEARNED);
   const fresh = await probe('greg', '/greg/order-plan'); const plan5 = fresh.body?.value?.plan;
   const stale = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan1.planId, versions: plan1.versions });
   const counts5 = dbCounts();
@@ -1322,7 +1411,7 @@ function finish(runError) {
   receipt.pngBytes = pngBytes;
   receipt.checks = checks;
   const required = ['S1', 'S2.dom', 'S2.net', 'S3.dom', 'S4.presenter.dom', 'S4.employee.dom', 'S4.api', 'S5.overflow', 'S6', 'S7',
-    'AC1.setup', 'AC1.feasible.dom', 'AC1.edit.dom', 'AC1.edit.active', 'AC1.infeasible.dom', 'AC1.stale.api', 'AC1.stale.dom', 'AC2.submit', 'AC2.retry', 'AC2.replan.submitted', 'AC2.track.dom', 'AC2.track.replan', 'AC.posts'];
+    'AC1.setup', 'AC1.feasible.dom', 'AC1.edit.dom', 'AC1.edit.active', 'AC1.infeasible.dom', 'AC1.stale.api', 'AC1.stale.dom', 'AC2.submit', 'AC2.retry', 'AC2.replan.submitted', 'AC2.track.dom', 'AC2.track.replan', 'AC.posts', ...(LEARNED ? ['L1.api', 'L1.dom', 'L1.keyboard', 'L1.capture'] : [])];
   const failed = checks.filter((c) => !c.pass && !c.blocked).map((c) => c.id);
   receipt.failedChecks = failed; receipt.blockedChecks = checks.filter((c) => c.blocked).map((c) => c.id);
   receipt.overall = required.every((id) => checks.find((c) => c.id === id)?.pass === true) && failed.length === 0 && !runError
