@@ -12,5 +12,5 @@ Rendered AC1 evidence for FUCQ-531, and for FUCQ-476 (learned=available on the p
   - The page shows the learned section the API reports: the heading, the model id and the advisory sentence, plus one class row per forecast entry with expected, low and high.
   - At 1280x900, with real Tab key events and no mouse, focus reaches the "Expected demand by vehicle class" table region, with a visible focus indicator.
   - The learned section with the focused table region is captured as a PNG.
-- **Screenshot:** `ac1-learned-available-1280x900.png` (175,599 bytes, sha256 `47c3562beef82406bf5faddded561024452dbbbbf6f2c996a4312bf0107c079c`).
-- **Not committed:** the full receipt `connected-planning-proof.json` and the other screenshots. They are kept git-ignored at `.claude/test-runs/fucq531/connected-20261119T094840Z-c531a2/` on Gary's Mac.
+- **Screenshot:** `ac1-learned-available-1280x900.png` (175,599 bytes, sha256 `47c3562beef82406bf5faddded561024452dbbbbf6f2c996a4312bf0107c079c`). Not committed, because the repo's `.gitignore` excludes evidence images.
+- **Where the files are:** the screenshot, the full receipt `connected-planning-proof.json` and the other screenshots are kept git-ignored at `.claude/test-runs/fucq531/connected-20261119T094840Z-c531a2/` on Gary's Mac.
