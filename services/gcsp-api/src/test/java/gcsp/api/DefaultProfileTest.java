@@ -22,6 +22,13 @@ class DefaultProfileTest {
     }
 
     @Test
+    void demoSignInIssuerIsOffByDefault() {
+        given().when().get("/demo-idp/.well-known/openid-configuration").then().statusCode(404);
+        given().when().get("/demo-idp/authorize").then().statusCode(404);
+        given().when().get("/demo-idp/jwks").then().statusCode(404);
+    }
+
+    @Test
     void livenessIsUp() {
         given().when().get("/q/health/live").then().statusCode(200).body("status", equalTo("UP"));
     }
