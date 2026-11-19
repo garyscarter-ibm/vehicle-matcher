@@ -4721,19 +4721,22 @@
     },
     {
       "id": "FUCQ-381",
-      "observed_at": "2026-11-19T10:04:33Z",
+      "observed_at": "2026-11-19T11:02:17Z",
       "original_status": "In Review",
       "slices": [
         {
           "id": "java-ranking-proof",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Started-app Java proof of the four ranking ACs",
-          "observed_at": "2026-11-19T10:04:33Z"
+          "observed_at": "2026-11-19T11:02:17Z",
+          "evidence": "Result in _dev/in-progress/DEV-2026-11-16-049.md; AllowanceRankingHttpTest 6/6 and RankingTest 6/6 on started app, real JWT and PG"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Story integration on merged gcsp-poc-dev base"
+          "status": "complete",
+          "title": "Story integration on merged gcsp-poc-dev base",
+          "observed_at": "2026-11-19T11:02:17Z",
+          "evidence": "Merged origin/gcsp-poc-dev bdeb27710; scoped set 103/0/0/0 at e3eef94bd; full suite deferred to batch"
         }
       ],
       "status": "In Review",
