@@ -1,9 +1,14 @@
 import { randomUUID } from 'node:crypto';
 import { Worker } from 'node:worker_threads';
 import { inputDigest, ok, result } from '../repository/core.js';
-import { requireGregOrPresenter } from './http.js';
 import { refusalFor } from './requests.js';
 import { COMPARISON_RESULTS_RUN, comparisonResultsScope, ensureResultsRun, storeComparisonResult } from './results.js';
+
+// Ok for Greg or the presenter; any other role gets the presenter check's refusal.
+async function requireGregOrPresenter(identity, context) {
+  const greg = await identity.requireRole(context, 'greg');
+  return greg.status === 'ok' ? greg : identity.requireRole(context, 'presenter');
+}
 
 export const JOBS_KEY = 'comparison.jobs.v1';
 const TABLE = 'comparison_jobs';
