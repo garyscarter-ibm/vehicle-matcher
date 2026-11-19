@@ -230,10 +230,11 @@ public class DemoIdpResource {
         return issuer.people().stream().filter(p -> p.principalId().equals(principalId)).findFirst();
     }
 
+    /** same-origin, not no-referrer: no-referrer makes Chrome post the person form with Origin: null, which CORS refuses. */
     private Response page(int status, String html) {
         return Response.status(status).type("text/html;charset=UTF-8").entity(html)
                 .header("Content-Security-Policy", DemoPages.csp(issuer.settings()))
-                .header("X-Content-Type-Options", "nosniff").header("Referrer-Policy", "no-referrer")
+                .header("X-Content-Type-Options", "nosniff").header("Referrer-Policy", "same-origin")
                 .header("Cache-Control", "no-store").build();
     }
 

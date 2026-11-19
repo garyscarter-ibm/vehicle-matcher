@@ -95,6 +95,15 @@ class DemoIdpHttpTest {
         return out;
     }
 
+    @Test
+    void personFormPostedFromTheIssuerOriginIsNotRefusedByCors() {
+        String issuer = given().get(ISSUER_PATH + "/.well-known/openid-configuration").path("issuer");
+        String origin = issuer.substring(0, issuer.length() - ISSUER_PATH.length());
+        String txn = txnOf(authorizePage(authorizeParams("x".repeat(43))));
+        given().redirects().follow(false).header("Origin", origin).formParam("txn", txn)
+                .formParam("subject", "demo-paula").post(ISSUER_PATH + "/authorize").then().statusCode(302);
+    }
+
     /** Chooses a person and returns the callback code. */
     private static String chooseCode(String subject, String challenge) {
         String txn = txnOf(authorizePage(authorizeParams(challenge)));
@@ -163,7 +172,7 @@ class DemoIdpHttpTest {
     void signInPageIsLabelledListsEveryoneAndIsLockedDown() {
         Response page = authorizePage(authorizeParams(VERIFIER_CHALLENGE));
         page.then().statusCode(200).contentType(containsString("text/html"))
-                .header("X-Content-Type-Options", "nosniff").header("Referrer-Policy", "no-referrer")
+                .header("X-Content-Type-Options", "nosniff").header("Referrer-Policy", "same-origin")
                 .header("Cache-Control", "no-store");
         String csp = page.header("Content-Security-Policy");
         assertTrue(csp.contains("default-src 'none'") && csp.contains("style-src 'self'")
