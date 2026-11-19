@@ -323,8 +323,10 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   }
   assert.match(java, /- key: GCSP_RESET_ALLOWED\n\s+value: "true"/u);
   assert.match(java, /- key: GCSP_DATABASE_POOL_SIZE\n\s+value: "10"/u);
-  for (const key of ['GCSP_SUPPLY_PROVIDER', 'GCSP_ACCOUNT_PROVIDER', 'GCSP_DOCUMENTS_PROVIDER', 'GCSP_APPROVALS_PROVIDER', 'GCSP_VEHICLE_EVIDENCE_PROVIDER', 'GCSP_APPOINTMENTS_PROVIDER', 'GCSP_RETURNS_PROVIDER']) {
-    assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: none`, 'u'), `${key} keeps its existing unavailable default`);
+  const demoValues = { GCSP_SUPPLY_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_DOCUMENTS_PROVIDER: 'synthetic', GCSP_APPROVALS_PROVIDER: 'synthetic',
+    GCSP_VEHICLE_EVIDENCE_PROVIDER: 'lookup', GCSP_APPOINTMENTS_PROVIDER: 'synthetic', GCSP_RETURNS_PROVIDER: 'synthetic' };
+  for (const [key, want] of Object.entries(demoValues)) {
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+value: ${want}\\b`, 'u'), `${key} carries the FUCQ-482 demo composition`);
   }
   for (const key of ['GCSP_SUPPLY_TRANCHE_PLAN_FILE', 'GCSP_SUPPLY_POLICY_FILE', 'GCSP_ACCOUNT_HR_SNAPSHOT_PATH', 'GCSP_APPROVALS_POLICY_FILE', 'GCSP_VEHICLE_EVIDENCE_ALTERNATE_FILE', 'GCSP_RETURNS_POLICY_FILE']) {
     assert.doesNotMatch(java, new RegExp(`^      - key: ${key}$`, 'mu'), `${key} is not a required deployment input`);
@@ -332,13 +334,11 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   }
   const proposedMailKeys = [...proposed.matchAll(/^      # - key: (GCSP_(?:MAIL_[A-Z_]+|PUBLIC_BASE_URL|BREVO_API_KEY))$/gmu)].map((match) => match[1]);
   assert.deepEqual(proposedMailKeys, ['GCSP_MAIL_TRANSPORT', 'GCSP_PUBLIC_BASE_URL', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY']);
-  for (const key of [...proposedMailKeys, 'GCSP_NOTIFY_DRAIN_INTERVAL']) {
-    assert.ok(!javaKeys.includes(key), `${key} remains an unselected option`);
+  // FUCQ-482: hosted dev sends real test email, so the mail keys are deployment-supplied, never committed.
+  for (const key of proposedMailKeys) {
+    assert.match(java, new RegExp(`^      - key: ${key}\\n\\s+sync: false`, 'mu'), `${key} is deployment-supplied`);
   }
-  assert.match(java, /^      # - key: GCSP_MAIL_TRANSPORT\n      #   value: brevo$/mu);
-  for (const key of proposedMailKeys.filter((key) => key !== 'GCSP_MAIL_TRANSPORT')) {
-    assert.match(java, new RegExp(`^      # - key: ${key}\\n      #   sync: false$`, 'mu'), `${key} has no committed value`);
-  }
+  assert.ok(!javaKeys.includes('GCSP_NOTIFY_DRAIN_INTERVAL'), 'GCSP_NOTIFY_DRAIN_INTERVAL remains an unselected option');
   assert.match(java, /Angular HTTPS base serving \/gcsp\/offers\/:offerId, not the API host/u);
   assert.match(java, /^      # - key: GCSP_NOTIFY_DRAIN_INTERVAL\n      #   value: 5s$/mu);
   const properties = await readFile(new URL('../../services/gcsp-api/src/main/resources/application.properties', import.meta.url), 'utf8');

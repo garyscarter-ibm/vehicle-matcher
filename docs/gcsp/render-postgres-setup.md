@@ -1,5 +1,7 @@
 # GCSP on Render: end-to-end setup
 
+**Retired 19 November 2026 (FUCQ-482).** The Node `gcsp-api` service and `gcsp-db` database are no longer in `render.gcsp.yaml`. The Java API uses its own database, and the cutover steps are in [docs/gcsp/fucq482-cutover-2026-11-19.md](fucq482-cutover-2026-11-19.md).
+
 ## Target Render environment — agreed 13 November 2026
 
 Use this guide's remaining commands only for the **legacy Node environment**. The target keeps one `render.gcsp.yaml` blueprint with independently built static Angular 21 and Java 21/Quarkus 3.x API services and a dedicated PostgreSQL database. Gary creates the dev environment from **`gcsp-poc-dev`**; its service/database names and actual connection identity must be distinct from running `gcsp-poc`. Do not apply legacy names blindly or reset a shared database. Exact target build/start commands, filters and migrations belong to FUCQ-436/438/454/456 and must match their actual artifacts.
