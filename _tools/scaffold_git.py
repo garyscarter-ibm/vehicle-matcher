@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.7.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.8.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -50,6 +50,9 @@ Subcommands
   thread claim|release|status
                            the thread lease: one poller at a time works a dev_mail thread addressed to `any`
                            (see "Thread leases")
+  poller claim|release|status NAME
+                           the poller lease: a poller's name is held by one poller at a time (see "Poller names")
+  --poller NAME            (before the subcommand) act as the poller NAME: sets $SCAFFOLD_POLLER for this process
   guard                    offline: exit 0 when this machine may write the protected paths, else exit 2 with the reason
                            (see "Protected paths and the merge check")
 
@@ -150,7 +153,7 @@ Clients
 -------
 Two Macs may share one member login. Each clone has an id, `git config scaffold.clientId` in the shared checkout's
 config (client_id(root); made as uuid4().hex[:12] and written there the first time), and every lease (pen and story)
-carries it as "client". A lease is ours when the login and the client both match; a lease with our login and another
+carries it as "client". A lease is ours when the login and the client both match (and, see "Poller names", the poller is compatible); a lease with our login and another
 client is refused ("TAKEN by <login> on <host> (another clone of the same member)" for a claim, held-by-other for the
 pen). A lease with no "client" (written by an older tool such as the corpus's corpus_git.py) is ours when the login and
 the host (socket.gethostname()) match, and another clone otherwise. The guard also checks the mirror's "client" against
@@ -274,6 +277,41 @@ thread_holder(root, tid, now=None) returning (rc, message, holder), holder None 
 login, host, expires, client, `live` (expires is in the future) and `ours` (lease_ours); read-only. thread_ref(tid).
 The per-machine file .claude/mail-read.json (written by dev_mail.py) is in LOCAL_FILES: never committed.
 
+Poller names
+------------
+One member login can run several pollers (Claude and Codex, two clones, two sessions in one checkout). A poller names
+itself: `--poller NAME` before the subcommand, or $SCAFFOLD_POLLER=NAME (the flag wins and sets the variable for the
+process, so dev_mail.py, which loads this file as a module, sees it too). A name is a lowercase letter then 1 to 15
+lowercase letters or digits (`^[a-z][a-z0-9]{1,15}$`); an unset or empty one means no name (poller_name() is None); any
+other value is refused, exit 2. Every lease this tool writes then carries "poller": NAME (lease_commit stamps it), and a
+lease is ours when login and client match and the poller is compatible: the lease has no "poller" (older tools, or a call
+without a name), or the caller has no name, or the two are equal. So an unnamed caller, or a lease written before 1.8.0,
+keeps the old rule, and two named pollers of one login in one clone tell each other's leases apart. A story claim also
+writes `claimed_poller: NAME` after `claimed_by:` in the story (`claimed_by:` stays the login: permissions are per
+person); an unnamed claim removes a stale `claimed_poller:` line. Thread ids may carry the name: `MSG-YYYY-MM-DD[-AB]-name-NNN`.
+The poller lease is the name's uniqueness check: refs/leases/poller/<login>-<name> (the login with anything outside
+letters, digits and . _ - turned into _, as a single-player login is an email address), a parentless empty-tree commit
+like the thread lease, whose message is JSON {"login","host","client","harness","poller","taken","expires"}. harness is
+$SCAFFOLDING_HARNESS (lower case, letters, digits . _ -), else `claude` when CLAUDECODE=1, else `codex` when any variable
+starts with CODEX_, else `unknown`.
+  poller claim NAME [--ttl SECONDS]
+               no lease, or an expired one (anyone's): take it, `CLAIMED poller <login>-<name> until <expires>` (with
+               ` (TAKEN OVER expired lease of <login>)` when it was someone else's). A live lease of the same login, clone
+               and harness: renewed, `taken` kept, `RESUMED poller <login>-<name> until <expires>`. Any other live lease:
+               refused (2), `TAKEN poller <login>-<name> by <host> (<harness>) until <expires>: pick another name`.
+               SECONDS is 60 to 604800 (POLLER_TTL_MIN, POLLER_TTL_MAX); default 43200 (12 hours: longer than any gap
+               between a live poller's passes, so a running poller never loses its name; expiry only frees the name for
+               another poller of that login and never refuses work). Team mode needs a member login. Git failed: 3.
+  poller release NAME
+               delete our own lease (login and clone match): `RELEASED poller <login>-<name>` (also when it is already
+               gone, `: no lease`); 2 when it is someone else's; 3 when git failed.
+  poller status NAME
+               read-only; one tab-separated line: ref name, login, host, harness, expires, `live` or `expired`; `none`.
+Without a remote: claim and release exit 0 with `POLLER <name> (no remote: no lease)`, status prints `none`. Library:
+poller_name(), poller_claim(root, name, ttl=43200, now=None), poller_release(root, name, now=None), poller_status(root,
+name) returning (rc, message); poller_ref(login, name). `leases` adds a fifth column, the poller, whenever any listed
+lease has one.
+
 Why this file exists
 --------------------
 Some mounts (OneDrive, Box) refuse unlink ("Operation not permitted") but permit rename. git tolerates a failed
@@ -376,12 +414,32 @@ BATCH_UNUSED = "BATCH lease not used: no remote"
 THREAD_ROOT = LEASE_ROOT + "thread/"  # refs/leases/thread/<id>
 THREAD_TTL_MIN, THREAD_TTL_MAX = 60, 86400
 THREAD_UNUSED = "THREAD lease not used: no remote"
-THREAD_ID = re.compile(r"^MSG-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}$")
+THREAD_ID = re.compile(r"^MSG-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?(?:-[a-z][a-z0-9]{1,15})?-\d{3}$")
+POLLER_NAME = re.compile(r"^[a-z][a-z0-9]{1,15}$")     # lowercase keeps a name apart from a member prefix (2 to 4 capitals) in ids
+POLLER_ENV = "SCAFFOLD_POLLER"
+POLLER_ROOT = LEASE_ROOT + "poller/"  # refs/leases/poller/<login>-<name>
+# 12 hours by default: longer than any gap between a live poller's passes, so a running poller never loses its name. Expiry
+# only frees the name for another poller of the same login; it never refuses or drops work. The bounds are sanity checks
+# on --ttl (a minute to a week), not limits on what a poller may do.
+POLLER_TTL_DEFAULT, POLLER_TTL_MIN, POLLER_TTL_MAX = 43200, 60, 7 * 86400
+POLLER_UNUSED = "no remote: no lease"
 HEX_SHA = re.compile(r"[0-9a-f]{40}|[0-9a-f]{64}")
 
 
 class SettingsError(Exception):
-    """A malformed value in the record's base_branch, remote or team block."""
+    """A malformed value in the record's base_branch, remote or team block, or in $SCAFFOLD_POLLER."""
+
+
+def poller_name():
+    """This process's poller name: $SCAFFOLD_POLLER (the --poller flag sets it), or None when unset or empty. Raises
+    SettingsError for a value that is not a lowercase letter then 1 to 15 lowercase letters or digits."""
+    raw = os.environ.get(POLLER_ENV, "").strip()
+    if not raw:
+        return None
+    if not POLLER_NAME.match(raw):
+        raise SettingsError("%s %r is not a poller name: a lowercase letter, then 1 to 15 lowercase letters or digits "
+                            "(e.g. imhotep)" % (POLLER_ENV, raw))
+    return raw
 
 
 def project_root(override=None):
@@ -853,15 +911,27 @@ def client_id(root):
     return cid
 
 
-def lease_ours(root, holder, login):
-    """Whether a lease (its JSON plus "sha") is this clone's: the same login and the same client. A lease with no
-    `client` field (written by an older tool) is ours when the login and the host (socket.gethostname()) match."""
+def _same_clone(root, holder, login):
+    """The same login and the same client. A lease with no `client` field (written by an older tool) is ours when the
+    login and the host (socket.gethostname()) match."""
     if not holder or not login or holder.get("login") != login:
         return False
     client = holder.get("client")
     if isinstance(client, str) and client:
         return client == client_id(root)
     return holder.get("host") == socket.gethostname()
+
+
+def lease_ours(root, holder, login):
+    """Whether a lease (its JSON plus "sha") is this poller's: the same login and the same client (see _same_clone), and a
+    compatible poller: the lease has no `poller` (written by an older tool, or by a call with no name), or this process has
+    no poller name (poller_name() is None), or the two are equal. Forgiving by design: an unnamed caller, or a lease written
+    before 1.8.0, keeps the old rule, while two named pollers of one login in one clone are told apart. Raises
+    SettingsError for a bad $SCAFFOLD_POLLER."""
+    if not _same_clone(root, holder, login):
+        return False
+    theirs, mine = holder.get("poller"), poller_name()
+    return not theirs or mine is None or theirs == mine
 
 
 def _same_member(holder, login):
@@ -1757,7 +1827,11 @@ def lease_read(root, ref):
 
 
 def lease_commit(root, rec):
-    """A parentless commit of the empty tree whose message is the lease's JSON. Returns (rc, message, sha)."""
+    """A parentless commit of the empty tree whose message is the lease's JSON, with "poller" added when this process
+    has a poller name and the record names none. Returns (rc, message, sha). SettingsError for a bad $SCAFFOLD_POLLER."""
+    name = poller_name()
+    if name and "poller" not in rec:
+        rec = dict(rec, poller=name)
     rc, tree, e = git(root, ["mktree"], input="")                          # the empty tree
     if rc != 0:
         return 3, "git mktree failed: %s" % _git_error(e or tree), None
@@ -1834,8 +1908,13 @@ def _field(text, key):
 
 def _claimed_text(text, points, login):
     """The story's text with `story_points:` (only when absent) and, in team mode, `claimed_by: <login>` added after its
-    `requested:` line (else `id:`). A `claimed_by:` the story already carries (a re-queued story) is replaced, never kept."""
+    `requested:` line (else `id:`). A `claimed_by:` the story already carries (a re-queued story) is replaced, never kept.
+    With a poller name set, `claimed_poller: <name>` follows `claimed_by:` (or `requested:`/`id:` when there is no login);
+    a `claimed_poller:` a re-queued story carries is always dropped first, so an unnamed claim leaves no stale one."""
+    name = poller_name()
     lines = text.split("\n")
+    header = next((i for i, l in enumerate(lines) if l.startswith("## Result")), len(lines))
+    lines = [l for i, l in enumerate(lines) if not (i < header and re.match(r"claimed_poller:", l))]
     header = next((i for i, l in enumerate(lines) if l.startswith("## Result")), len(lines))
     add = [] if _field(text, "story_points") is not None else ["story_points: %d" % points]
     harness = re.sub(r"[^a-z0-9._-]", "", os.environ.get("SCAFFOLDING_HARNESS", "").strip().lower())[:64]
@@ -1846,12 +1925,20 @@ def _claimed_text(text, points, login):
             add.append("agent: %s" % harness)
         else:
             lines[old] = "agent: %s" % harness
+    in_place = False
     if login:
         old = next((i for i, l in enumerate(lines[:header]) if re.match(r"claimed_by:", l)), None)
         if old is None:
             add.append("claimed_by: %s" % login)
         else:
             lines[old] = "claimed_by: %s" % login
+            in_place = True
+    if name:
+        if in_place:
+            lines.insert(next(i for i, l in enumerate(lines[:header]) if re.match(r"claimed_by:", l)) + 1,
+                         "claimed_poller: %s" % name)
+        else:
+            add.append("claimed_poller: %s" % name)               # after claimed_by: in the added block
     if add:
         at = next((i for i, l in enumerate(lines) if l.startswith("requested:")),
                   next((i for i, l in enumerate(lines) if l.startswith("id:")), -1))
@@ -2647,7 +2734,7 @@ def batch_status(root, suite=None, now=None):
 def thread_ref(tid):
     """refs/leases/thread/<id>; raises ValueError for an id that is not a dev_mail thread id."""
     if not isinstance(tid, str) or not THREAD_ID.match(tid):
-        raise ValueError("--id %r is not a thread id (MSG-YYYY-MM-DD-NNN or MSG-YYYY-MM-DD-AB-NNN)" % (tid,))
+        raise ValueError("--id %r is not a thread id (MSG-YYYY-MM-DD[-AB][-name]-NNN)" % (tid,))
     return THREAD_ROOT + tid
 
 
@@ -2811,6 +2898,152 @@ def thread_status(root, tid=None, now=None):
         lines.append("\t".join([name] + [str(h.get(k) or "-") for k in ("login", "host", "expires")]
                                + ["live" if exp > now else "expired"]))
     return 0, "\n".join(lines) or "none"
+
+
+# ---------------------------------------------------------------- poller leases
+
+def poller_ref(login, name):
+    """refs/leases/poller/<login>-<name>; raises ValueError for a name that is not a poller name. A login that is not a
+    usable lease path part (a single-player email address) has its other characters turned into `_`."""
+    if not isinstance(name, str) or not POLLER_NAME.match(name):
+        raise ValueError("poller name %r is not usable: a lowercase letter, then 1 to 15 lowercase letters or digits "
+                         "(e.g. imhotep)" % (name,))
+    part = re.sub(r"\.{2,}", "_", re.sub(r"[^A-Za-z0-9._-]", "_", str(login or "")))
+    if not part or not part[0].isalnum():
+        part = "u" + part
+    return "%s%s-%s" % (POLLER_ROOT, part, name)
+
+
+def _harness():
+    """Which agent harness this process runs under: $SCAFFOLDING_HARNESS (as a story claim writes `agent:`), else `claude`
+    when CLAUDECODE=1, else `codex` when any variable starts with CODEX_, else `unknown`."""
+    h = re.sub(r"[^a-z0-9._-]", "", os.environ.get("SCAFFOLDING_HARNESS", "").strip().lower())[:64]
+    h = {"claude": "claude-code"}.get(h, h)
+    if h:
+        return h
+    if os.environ.get("CLAUDECODE") == "1":
+        return "claude"
+    if any(k.startswith("CODEX_") for k in os.environ):
+        return "codex"
+    return "unknown"
+
+
+def _poller_setup(root, name, ttl=None):
+    """(ctx, None) for a poller command that goes ahead, else (None, (rc, message)): 2 for a bad name, --ttl or record,
+    0 `POLLER <name> (no remote: no lease)` when there is no remote. ctx: ref, name, login, label."""
+    try:
+        login, bad = _batch_login(root)
+        if bad:
+            return None, (2, bad)
+        ref = poller_ref(login, name)
+        if ttl is not None and (isinstance(ttl, bool) or not isinstance(ttl, int)
+                                or not POLLER_TTL_MIN <= ttl <= POLLER_TTL_MAX):
+            return None, (2, "--ttl must be a whole number of seconds from %d to %d, not %r"
+                          % (POLLER_TTL_MIN, POLLER_TTL_MAX, ttl))
+        if not _batch_has_remote(root):
+            return None, (0, "POLLER %s (%s)" % (name, POLLER_UNUSED))
+    except ValueError as e:
+        return None, (2, str(e))
+    except SettingsError as e:
+        return None, (2, str(e))
+    return {"ref": ref, "name": name, "login": login, "label": "%s-%s" % (login, name)}, None
+
+
+def _poller_taken(ctx, h):
+    return "TAKEN poller %s by %s (%s) until %s: pick another name" % (
+        ctx["label"], h.get("host", "?"), h.get("harness", "?"), h.get("expires", "?"))
+
+
+def _poller_lease_commit(root, ctx, taken, now, ttl):
+    rec = {"login": ctx["login"], "host": socket.gethostname(), "client": client_id(root), "harness": _harness(),
+           "poller": ctx["name"], "taken": iso(taken), "expires": iso(now + ttl)}
+    rc, msg, sha = lease_commit(root, rec)
+    return (rc, msg, None) if rc != 0 else (0, "", dict(rec, sha=sha))
+
+
+def _poller_resumable(root, h, ctx):
+    """A lease of the same login, clone and harness: this poller's own name coming back."""
+    return _same_clone(root, h, ctx["login"]) and h.get("harness") == _harness()
+
+
+@_serialised
+def poller_claim(root, name, ttl=POLLER_TTL_DEFAULT, now=None):
+    """Take the name `name` for this login: refs/leases/poller/<login>-<name>, for ttl seconds. No lease, or an expired
+    one (anyone's): create or take over, `CLAIMED poller <login>-<name> until <expires>` (+ ` (TAKEN OVER expired lease of
+    <login>)` when it was someone else's). A live lease of the same login, clone and harness is renewed, keeping `taken`:
+    `RESUMED poller ...`. Any other live lease is refused: (2, `TAKEN poller ... : pick another name`). Returns (rc,
+    message): 0 done (also `POLLER <name> (no remote: no lease)`), 2 refused, 3 git failed."""
+    ctx, early = _poller_setup(root, name, ttl)
+    if early:
+        return early
+    now, ref = _now(now), ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    note, resumed = "", False
+    if h and h["exp"] > now:
+        if not _poller_resumable(root, h, ctx):
+            return 2, _poller_taken(ctx, h)
+        resumed = True
+    elif h and not _same_clone(root, h, ctx["login"]):
+        note = " (TAKEN OVER expired lease of %s)" % h["login"]
+    taken = (parse_iso(h.get("taken")) or now) if resumed else now
+    rc, msg, new = _poller_lease_commit(root, ctx, taken, now, ttl)
+    if rc != 0:
+        return rc, msg
+    rc, msg = lease_push(root, ref, new["sha"], h["sha"] if h else "")
+    if rc != 0:
+        rc2, _, h2 = pen_read(root, ref)
+        if rc2 == 0 and h2 and h2["sha"] == new["sha"]:
+            pass                                                # git said failed, but our lease is on the remote
+        elif rc2 == 0 and h2 and h2["exp"] > now and not _poller_resumable(root, h2, ctx):
+            return 2, _poller_taken(ctx, h2)
+        else:
+            return 3, "git push of the poller lease failed: %s" % msg
+    return 0, "%s poller %s until %s%s" % ("RESUMED" if resumed else "CLAIMED", ctx["label"], new["expires"], note)
+
+
+@_serialised
+def poller_release(root, name, now=None):
+    """Delete our own lease of the name `name` (same login and clone). Returns (rc, message): 0 released (also when it is
+    already gone), 2 refused (someone else's, bad name), 3 git failed."""
+    ctx, early = _poller_setup(root, name)
+    if early:
+        return early
+    now, ref = _now(now), ctx["ref"]
+    rc, msg, h = pen_read(root, ref)
+    if rc != 0:
+        return rc, msg
+    if not h:
+        return 0, "RELEASED poller %s: no lease" % ctx["label"]
+    if not _same_clone(root, h, ctx["login"]):
+        return 2, "the poller lease is not ours (%s); nothing to release" % _batch_describe(h, now)
+    rc, msg = lease_push(root, ref, None, h["sha"])
+    if rc != 0:
+        rc2, _, h2 = pen_read(root, ref)
+        if rc2 == 0 and not h2:
+            pass                                                # git said failed, but the lease is gone
+        elif rc2 == 0 and not _same_clone(root, h2, ctx["login"]):
+            return 2, "the poller lease is no longer ours (%s)" % _batch_describe(h2, now)
+        else:
+            return 3, "git push of the poller lease failed: %s" % msg
+    return 0, "RELEASED poller %s" % ctx["label"]
+
+
+def poller_status(root, name, now=None):
+    """Read-only. Returns (rc, message): 0 with one tab-separated line (<login>-<name>, login, host, harness, expires,
+    live|expired) or `none`; 2 for a bad name; 3 git failed. A project with no remote has none."""
+    ctx, early = _poller_setup(root, name)
+    if early:
+        return (0, "none") if early[0] == 0 else early
+    now = _now(now)
+    rc, msg, h = pen_read(root, ctx["ref"])
+    if rc != 0:
+        return rc, msg
+    if not h:
+        return 0, "none"
+    return 0, "\t".join([ctx["label"]] + [str(h.get(k) or "-") for k in ("login", "host", "harness", "expires")]
+                        + ["live" if h["exp"] > now else "expired"])
 
 
 # ---------------------------------------------------------------- the merge check
@@ -3070,8 +3303,10 @@ def cmd_leases(args):
     if rc != 0:
         print("ERR %s" % msg, file=sys.stderr)
         return rc
+    named = any(h.get("poller") for h in found)               # a fifth column, the poller, once any lease has one
     for h in found:
-        print("\t".join([h["ref"][len(LEASE_ROOT):]] + [str(h.get(k) or "-") for k in ("login", "host", "taken")]))
+        print("\t".join([h["ref"][len(LEASE_ROOT):]] + [str(h.get(k) or "-") for k in ("login", "host", "taken")
+                                                         ] + ([str(h.get("poller") or "-")] if named else [])))
     return 0
 
 
@@ -3222,15 +3457,43 @@ def _thread_commands(sub):
     th.set_defaults(func=cmd_thread)
 
 
+def cmd_poller(args):
+    root = project_root(args.root)
+    if args.poller_cmd == "claim":
+        return _report(poller_claim(root, args.name, args.ttl))
+    if args.poller_cmd == "release":
+        return _report(poller_release(root, args.name))
+    return _report(poller_status(root, args.name))
+
+
+def _poller_commands(sub):
+    pl = sub.add_parser("poller", help="the poller lease: a poller's name is held by one poller at a time "
+                                       "(claim, release, status)")
+    psub = pl.add_subparsers(dest="poller_cmd", required=True)
+    for name, text in (("claim", "take (or resume, or take over when expired) the name's lease"),
+                       ("release", "delete our own lease"),
+                       ("status", "show the name's lease (read-only)")):
+        p = psub.add_parser(name, help=text)
+        p.add_argument("name", metavar="NAME", help="a lowercase letter, then 1 to 15 lowercase letters or digits")
+        if name == "claim":
+            p.add_argument("--ttl", type=int, default=POLLER_TTL_DEFAULT, metavar="SECONDS",
+                           help="%d to %d (default %d)" % (POLLER_TTL_MIN, POLLER_TTL_MAX, POLLER_TTL_DEFAULT))
+    pl.set_defaults(func=cmd_poller)
+
+
 # Each registrar adds its subparsers to `sub`. Later groups of commands (claims and leases, the pen) append theirs
 # here instead of editing build_parser.
-COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands, _batch_commands, _thread_commands]
+COMMAND_GROUPS = [_core_commands, _lease_commands, _pen_commands, _batch_commands, _thread_commands,
+                  _poller_commands]
 
 
 def build_parser():
     ap = argparse.ArgumentParser(description="Mount-safe git operations for a scaffolded project's dev inbox.")
     ap.add_argument("--root", help="project root (default: derived from this file's location)")
     ap.add_argument("--version", action="version", version="scaffold_git.py " + VERSION)
+    ap.add_argument("--poller", metavar="NAME",
+                    help="act as this poller (a lowercase letter, then 1 to 15 lowercase letters or digits); sets "
+                         "$%s for this process and wins over it" % POLLER_ENV)
     sub = ap.add_subparsers(dest="cmd", required=True)
     for group in COMMAND_GROUPS:
         group(sub)
@@ -3240,6 +3503,12 @@ def build_parser():
 def main(argv=None):
     args = build_parser().parse_args(argv)
     try:
+        if args.poller is not None:                            # the flag wins over an existing $SCAFFOLD_POLLER
+            if args.poller and not POLLER_NAME.match(args.poller):
+                raise SettingsError("--poller %r is not a poller name: a lowercase letter, then 1 to 15 lowercase "
+                                    "letters or digits (e.g. imhotep)" % args.poller)
+            os.environ[POLLER_ENV] = args.poller
+        poller_name()                                          # a bad $SCAFFOLD_POLLER is refused whatever the command
         sweep_locks(project_root(args.root))                  # a bad "sweep_locks" is refused whatever the command
         return args.func(args)
     except SettingsError as e:

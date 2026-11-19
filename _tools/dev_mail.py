@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.12.0"
+VERSION = "1.13.0"
 """dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
 guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
@@ -44,8 +44,7 @@ loop the other by choice or by mistake. The limits (change a number there to cha
   stale_after_days                      `list` flags a thread older than this, so a poller that isn't running shows
   ack_alert_hours (optional, 24)        an unacknowledged thread older than this is an ALERT in its opener's `inbox`
   thread_lease_minutes (optional, 240)  how long `ack` holds the thread lease on an `any` thread
-  max_chats_per_day (optional, 3)       chat messages per member per day (`chat`)
-  (max_open_threads is gone: a config that still has it loads, and the key is ignored.)
+  (max_open_threads and max_chats_per_day are gone: a config that still has them loads, and the keys are ignored.)
 Structural rules (not numbers): only a person starts a chain; one open question per story; an addressee's reply is an
 answer and never a question after its one counter-question; a thread has one status that moves forward; a refusal is final, not retried (the
 caller records it under "for <owner>" in the story's result block; the owner is `inbox.owner` in .claude/scaffolding.json).
@@ -62,7 +61,7 @@ a prefix is "" for at most one member (the owner, who keeps unprefixed ids) or 2
 Macs may change the model (the old string `data_writer` still reads as a one-item list; an empty list means nobody); with two or more they
 take turns holding the pen (scaffold_git.py pen; `team` prints its state, read through the project's git tool). `owner` defaults to the empty-prefix member, else the first member listed, and alone may
 `team --grant-writer LOGIN` / `--revoke-writer LOGIN`, which rewrite `data_writers` in scaffolding.json (commit and push it after). The git-ignored .claude/member.json ({"login": ...}) says which
-member this machine is (`team --me LOGIN` writes it). Ids then carry the minter's prefix (DEV-<date>-GC-<nnn>, MSG-<date>-GC-<nnn>),
+member this machine is (`team --me LOGIN` writes it). Ids then carry the minter's prefix (DEV-<date>-GC-<nnn>, MSG-<date>-GC-<nnn>; a poller's name follows it, see Poller names),
 numbered among that prefix's ids only, so two machines never mint the same id. A story or thread belongs to the member whose prefix its
 id carries (unprefixed: the owner); `list --for code` shows only your own threads (`from` your login) and `inbox` what is waiting on you; `check-story` wants the owner member's name on the
 `requested:` line. The story queue is shared (Russell, 2026-10-28): `queue` shows every member's waiting stories, and a claim takes a
@@ -86,6 +85,21 @@ read; no story is rewritten.
 A story that names a backlog item in `requested:` (or as `priority_reason: from B-<nnn>`) must carry that item as its `epic:`, or the
 check refuses it. `epics` reads which stories belong to which backlog item (story_epic) and keeps each item's status in step.
 
+Poller names (1.13.0; Russell, 2026-11-19; docs/design/2026-11-19-poller-names.md). A member login is a person, and a person can run
+several pollers (Claude and Codex, two sessions). A poller picks a short name (a lowercase letter, then 1 to 15 lowercase letters or
+digits) and gives it as the top-level `--poller NAME` (before the subcommand) or as $SCAFFOLD_POLLER; the flag wins and is exported, so
+the git tool sees it too. `poller start NAME` takes the name's lease through the git tool (poller_claim, in team mode or with a remote):
+CLAIMED, RESUMED (the same login, clone and harness coming back) or TAKEN (exit 2: pick another name); `poller stop NAME` releases it,
+`poller status NAME` reads it. `inbox` renews the lease once per call and never fails on it. A poller is `<login>-<name>`: the ACTOR.
+  Ids carry the name after the member prefix: MSG-<date>[-<PFX>][-<name>]-<nnn>, DEV-... the same (MSG-2026-11-19-imhotep-001, DEV-2026-11-19-GC-chad-002),
+  numbered among ids with that exact prefix and name only. Old ids parse; the owner of an id comes from its capital prefix and the name is ignored.
+  The ACTOR (`<login>-<name>`, else the login) is what a turn's `from:`, an `acks:` entry, the `lease:` line, a chat's `from:` and file name,
+  chat read marks (.claude/mail-read.json) and the mail commit message record. The LOGIN (the person) stays what every permission check
+  uses (who is the addressee, the opener, who threw a thread back) and what the thread header's `from:`/`to:`/`tried_by:` hold, so either
+  poller of one login may answer, close or throw back a thread. An `all` note closes when every addressee login has acked through any of
+  its pollers (an ack key `X` or `X-<name>` counts as X; the longest member login matches first, since logins may hold hyphens).
+  Without a name everything works as in 1.12; in team mode `inbox` and every write print `NOTE no poller name: ...` on stderr, once.
+
 Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
   limits                                          print the limits
   budget --story ID                               what ID may still open
@@ -97,7 +111,7 @@ Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
         Cowork (to cowork, or in single-player any) plus anything addressed to this member; `NOTHING` when none
   show THREAD
   chat [--to LOGIN|all] (--body T | --body-file F|-)   banter for the other pollers, one file in _dev/chat/<yyyy-mm>/, committed and
-        pushed; at most max_chats_per_day per member per day; never an instruction. `chat --read` prints unread chat (to you or
+        pushed; never an instruction. `chat --read` prints unread chat (to you or
         all, from others) and marks it read in the git-ignored .claude/mail-read.json; `inbox` lists it as `CHAT <name> ...`
   open --kind question|job|note --story ID|none [--to LOGIN|any|all|cowork] [--topic business|technical] --subject S
         (--body T | --body-file F|-) [--reply-format R] [--after-merge]   (default: --to any --topic technical)
@@ -122,6 +136,7 @@ Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
   team [--me LOGIN]                               team mode: print the members and who owns each in-progress story (`mode single` when
         off); --me writes .claude/member.json to say which member this machine is and keeps it out of git
         (the git tool's ensure_ignored, else a line in .git/info/exclude)
+  poller start|stop|status NAME                   take, release or read the poller lease of NAME (see Poller names); TAKEN exits 2
   version                                         print the version of this tool
 
 waits_on (backlog header): `; `-separated entries, each `action:<id>` (a model action object), `MSG-...` (a thread), `DEV-...` (a
@@ -147,8 +162,10 @@ LIMIT_MIN = {
     "max_body_chars": 1, "max_jobs_per_story": 0, "max_chain_depth": 0, "max_stories_spawned_per_thread": 0,
     "max_posts_per_day": 1, "stale_after_days": 1,
 }
-OPTIONAL_LIMITS = {"ack_alert_hours": (24, 1), "thread_lease_minutes": (240, 1), "max_chats_per_day": (3, 0)}   # key: (default, minimum)
-IGNORED_KEYS = ("max_open_threads",)    # gone in 1.12.0: a config that still has it loads, and the key is dropped
+OPTIONAL_LIMITS = {"ack_alert_hours": (24, 1), "thread_lease_minutes": (240, 1)}   # key: (default, minimum)
+# Gone, and dropped when a config still has them: max_open_threads in 1.12.0, max_chats_per_day in 1.12.1. Neither was
+# chosen by the owner, and both refused work (ruled 2026-11-18 and 2026-11-19).
+IGNORED_KEYS = ("max_open_threads", "max_chats_per_day")
 STORY_FIELDS = ["title", "kind", "design_impact", "requested", "goal", "acceptance", "files_or_areas", "decided",
                 "out_of_scope", "validate"]
 HEAD_ORDER = ["id", "kind", "to", "from", "topic", "story", "chain", "depth", "status", "opened", "needs", "counter_questions_used",
@@ -159,7 +176,7 @@ TOPICS = ("technical", "business")
 ROLES = {"addressee": "addressee", "cowork": "addressee", "opener": "opener", "code": "opener"}   # --as, with the old names as aliases
 STATUS_NAMES = {"awaiting-cowork": "awaiting-reply", "awaiting-code": "awaiting-opener"}          # read as; every write uses the right-hand names
 THREAD_UNUSED = "THREAD lease not used"    # the start of the git tool's answer when the project has no remote (no thread leases)
-STORY_RE = re.compile(r"^DEV-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}$")
+STORY_RE = re.compile(r"^DEV-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?(?:-[a-z][a-z0-9]{1,15})?-\d{3}$")
 PRIORITY_FROM = "2026-10-27"   # stories with ids dated before this carry no priority/size/depends_on rules
 FIELDS_FROM = "2026-10-27"     # from this day a story keeps epic, priority, priority_reason, depends_on and title to one form each;
                                # ids dated earlier keep the older forms (combined `priority: P3, default`, depends_on with text, no epic)
@@ -167,10 +184,12 @@ SIZES = ("XS", "S", "M", "L", "XL")
 SIZE_BANDS = {"XS": (1, 2), "S": (3, 3), "M": (5, 5), "L": (8, 8), "XL": (13, None)}   # story points each size means
 AGE_DAYS = 7                   # a waiting story rises one priority level per 7 full days, never above P1
 DEFAULT_PRIORITY, DEFAULT_SIZE = 3, "M"   # what the queue reads for a story with no (valid) line
-ID = r"DEV-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}"       # STORY_RE is this anchored; use ID inside other patterns (the optional part is a team member's prefix)
+ID = r"DEV-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?(?:-[a-z][a-z0-9]{1,15})?-\d{3}"   # STORY_RE is this anchored; use ID inside other patterns (the optional parts are a team member's prefix and a poller name)
 CLOSED_REJECTED_RE = re.compile(r"^\d{4}-\d{2}-\d{2}\s*[,;:]?\s*rejected\b", re.I)   # the dev board's rule for a rejected story
-THREAD_RE = re.compile(r"^MSG-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?-\d{3}$")
-ID_PREFIX_RE = re.compile(r"^(?:DEV|MSG)-\d{4}-\d{2}-\d{2}-(?:([A-Z]{2,4})-)?\d{3}$")
+THREAD_RE = re.compile(r"^MSG-\d{4}-\d{2}-\d{2}(?:-[A-Z]{2,4})?(?:-[a-z][a-z0-9]{1,15})?-\d{3}$")
+ID_PREFIX_RE = re.compile(r"^(?:DEV|MSG)-\d{4}-\d{2}-\d{2}-(?:([A-Z]{2,4})-)?(?:[a-z][a-z0-9]{1,15}-)?\d{3}$")   # the poller name is ignored: the owner comes from the capital prefix
+POLLER_NAME = re.compile(r"^[a-z][a-z0-9]{1,15}$")     # same rule as scaffold_git.py: lowercase keeps a name apart from a member prefix
+POLLER_ENV = "SCAFFOLD_POLLER"
 
 
 class MailError(Exception):
@@ -187,6 +206,18 @@ class ModeRefused(Refused):
 
 class TeamRefused(Refused):
     """A team-config change this machine may not make: refused (exit 2), but not a limit, so no "record it for the owner" line."""
+
+
+def poller_name():
+    """This process's poller name: $SCAFFOLD_POLLER (the --poller flag sets it), or None when unset or empty. Mirrors
+    scaffold_git.poller_name (this tool must work without that file); a bad value is a MailError."""
+    raw = os.environ.get(POLLER_ENV, "").strip()
+    if not raw:
+        return None
+    if not POLLER_NAME.match(raw):
+        raise MailError(f"{POLLER_ENV} {raw!r} is not a poller name: a lowercase letter, then 1 to 15 lowercase letters or digits "
+                        "(e.g. imhotep)")
+    return raw
 
 
 def default_root():
@@ -384,6 +415,7 @@ def story_jira_key(fields):
     return m.group(1) if m else None
 
 
+NO_NAME_NOTE = "NOTE no poller name: ids and leases use the login only (run poller start <name>)"
 NO_MEMBER = "this machine has no team member set: run dev_mail.py team --me <login>"
 
 
@@ -557,7 +589,7 @@ def story_fields(text):
 
 
 def story_day(sid):
-    m = re.match(r"DEV-(\d{4})-(\d{2})-(\d{2})(?:-[A-Z]{2,4})?-\d{3}$", sid or "")
+    m = re.match(r"DEV-(\d{4})-(\d{2})-(\d{2})(?:-[A-Z]{2,4})?(?:-[a-z][a-z0-9]{1,15})?-\d{3}$", sid or "")
     try:
         return datetime.date(*map(int, m.groups())) if m else None
     except ValueError:
@@ -1243,6 +1275,7 @@ class Mail:
         self.team = load_team(root)
         self.me = whoami(root, self.team)
         self.jira = jira_project(root)       # the Jira project key in Jira mode, else None
+        self.poller = poller_name()          # this poller's name ($SCAFFOLD_POLLER), or None; a bad value stops here
 
     # --- team mode -----------------------------------------------------------------------------------------
     def _need_me(self):
@@ -1250,12 +1283,14 @@ class Mail:
             raise MailError(NO_MEMBER)
 
     def _id_tag(self):
-        """'' in single-player or for the empty-prefix member, else 'GC-': what goes between the date and the number."""
-        if not self.team:
-            return ""
-        self._need_me()
-        pfx = self.team["members"][self.me]["prefix"]
-        return pfx + "-" if pfx else ""
+        """What goes between the date and the number: the member's prefix ('GC-', none for the empty-prefix member or in
+        single-player) then the poller's name ('imhotep-'), so `GC-imhotep-`, `imhotep-`, `GC-` or ''."""
+        tag = ""
+        if self.team:
+            self._need_me()
+            pfx = self.team["members"][self.me]["prefix"]
+            tag = pfx + "-" if pfx else ""
+        return tag + (self.poller + "-" if self.poller else "")
 
     def _mine(self, xid):
         return not self.team or owner_of(xid, self.team) == self.me
@@ -1389,7 +1424,7 @@ class Mail:
 
     def _next_id(self, prefix, names):
         day, tag = self.today.isoformat(), self._id_tag()
-        used = [int(m.group(1)) for n in names for m in [re.match(rf"{prefix}-{day}-{tag}(\d{{3}})", n)] if m]
+        used = [int(m.group(1)) for n in names for m in [re.match(rf"{prefix}-{day}-{re.escape(tag)}(\d{{3}})", n)] if m]
         return max(used, default=0) + 1
 
     def next_story_id(self):
@@ -1413,6 +1448,28 @@ class Mail:
             self._need_me()
             return self.me
         return self.owner or "local"
+
+    def _actor(self):
+        """Who acts: `<login>-<name>` when this process has a poller name, else the login. It is what a turn's `from:`, an
+        `acks:` entry, the `lease:` line, chat and the mail commit message record; every permission check uses the login."""
+        login = self._login()
+        return f"{login}-{self.poller}" if self.poller else login
+
+    def _ack_login(self, key):
+        """The member login an `acks:`/`lease:` key stands for: the key itself, or the key without its `-<name>`. The longest
+        login that matches wins, because a login may hold hyphens (garyscarter-ibm, garyscarter-ibm-chad)."""
+        logins = sorted(self.team["members"] if self.team else [self._login()], key=len, reverse=True)
+        return next((l for l in logins if key == l or key.startswith(l + "-")), key)
+
+    def _acked(self, hn):
+        """The member logins that have acked, through any of their pollers."""
+        return {self._ack_login(k) for k in hn["acks"]}
+
+    def _no_name_note(self):
+        """In team mode, one NOTE per command when this process has no poller name."""
+        if self.team and not self.poller and "no poller name" not in self._warned:
+            self._warned.add("no poller name")
+            self.notes.append(NO_NAME_NOTE)
 
     def _norm(self, h):
         """A thread's header as it reads now: to, from, topic, status, acks {login: time}, tried_by [login]. A thread written
@@ -1452,7 +1509,57 @@ class Mail:
             raise TeamRefused(f"{tid} was opened by {hn['from']}, not {login}: only the opener may do this")
 
     def _turn_from(self, role, login):
-        return login if self.team else ("cowork" if role == "addressee" else "code")
+        return self._actor() if self.team else ("cowork" if role == "addressee" else "code")
+
+    # --- the poller name and its lease -----------------------------------------------------------------------
+    def _poller_wanted(self):
+        """The poller lease is used in team mode or when the project has a remote."""
+        return bool(self.team) or self._has_remote()
+
+    def poller_cmd(self, action, name):
+        """`poller start|stop|status NAME`: set the name for this process, then claim, release or read the poller lease through
+        the git tool (team mode, or a project with a remote). Returns the line to print. TAKEN is a TeamRefused (exit 2): the
+        poller picks another name. A git tool without poller_claim leaves a NOTE and succeeds."""
+        if not isinstance(name, str) or not POLLER_NAME.match(name):
+            raise MailError(f"{name!r} is not a poller name: a lowercase letter, then 1 to 15 lowercase letters or digits (e.g. imhotep)")
+        if self.team:
+            self._need_me()
+        os.environ[POLLER_ENV] = name
+        self.poller = name
+        label = self._actor()
+        if not self._poller_wanted():
+            return f"POLLER {name} (no remote: no lease)"
+        fn = {"start": "poller_claim", "stop": "poller_release", "status": "poller_status"}[action]
+        mod = self._tool_with(fn, "poller lease not used")
+        if mod is None:
+            return f"POLLER {label} (no lease)"
+        try:
+            rc, msg = getattr(mod, fn)(self.root, name)
+        except Exception as e:
+            raise MailError(f"poller {action} {name}: {e}")
+        if rc == 2:
+            raise TeamRefused(msg)
+        if rc != 0:
+            raise MailError(msg)
+        return msg
+
+    def poller_renew(self):
+        """`inbox`: renew this poller's lease once per call (never fails the inbox: a problem is a NOTE), or, in team mode with
+        no poller name, say once that ids and leases use the login only."""
+        if not self.poller:
+            self._no_name_note()
+            return
+        if not self._poller_wanted():
+            return
+        mod = self._tool_with("poller_claim", "poller lease not used")
+        if mod is None:
+            return
+        try:
+            rc, msg = mod.poller_claim(self.root, self.poller)
+        except Exception as e:
+            rc, msg = 3, str(e)
+        if rc != 0:
+            self.notes.append(f"NOTE poller lease not renewed: {msg}")
 
     # --- git: the thread lease and the commit-and-push of every write --------------------------------------
     def _git(self):
@@ -1549,7 +1656,7 @@ class Mail:
                 r = os.path.relpath(p, self.root).replace(os.sep, "/")
                 if r not in rels:
                     rels.append(r)
-            rc, msg = mod.commit_paths(self.root, f"mail: {verb} {tid} ({self._login()})", rels)
+            rc, msg = mod.commit_paths(self.root, f"mail: {verb} {tid} ({self._actor()})", rels)
             if rc != 0:
                 self.notes.append(f"NOTE not pushed: {msg}")
                 return
@@ -1575,6 +1682,7 @@ class Mail:
         if after_merge and no_story:
             raise MailError("--after-merge needs a story")
         login = self._login()
+        self._no_name_note()
         if to == "all" and kind != "note":
             raise MailError("only a note may go to all: a question or a job goes to one poller (--to any or a login)")
         if self.team:
@@ -1650,10 +1758,10 @@ class Mail:
         if self.team and hn["to"] == "any":
             expires = self._claim(tid)
             if expires:
-                h["lease"] = f"{login} until {expires}"
+                h["lease"] = f"{self._actor()} until {expires}"
                 changed = True
-        if login not in hn["acks"]:
-            hn["acks"][login] = self._now()
+        if login not in self._acked(hn):
+            hn["acks"][self._actor()] = self._now()
             self._put_acks(h, hn["acks"])
             changed = True
         return changed
@@ -1665,6 +1773,7 @@ class Mail:
         h, turns, path = self.load(tid)
         hn = self._norm(h)
         login = self._login()
+        self._no_name_note()
         if hn["status"] != "awaiting-reply":
             raise MailError(f"{tid} is {hn['status']}: nothing to acknowledge")
         self._need_addressee(tid, hn, login)
@@ -1672,7 +1781,7 @@ class Mail:
         paths = [path]
         if h["kind"] == "note":
             if hn["to"] == "all":
-                if self.team and set(self._addressees(hn)) <= set(hn["acks"]):
+                if self.team and set(self._addressees(hn)) <= self._acked(hn):
                     paths.append(self._close_file(h, turns, path))
                     self._sync("ack", tid, paths)
                     return "closed", None
@@ -1693,6 +1802,7 @@ class Mail:
         hn = self._norm(h)
         status, kind, c = hn["status"], h["kind"], self.cfg
         login = self._login()
+        self._no_name_note()
         if status == "closed" or status == "answered":
             raise MailError(f"{tid} is {status}: nothing to reply to")
         turn = {"from": self._turn_from(role, login), "type": typ, "at": self._now()}
@@ -1709,7 +1819,7 @@ class Mail:
                 if holder_known and holder and holder["live"] and not holder["ours"] and holder["login"] != login:
                     raise TeamRefused(f"{tid} is TAKEN: the lease is {holder['login']}'s until {holder['expires']}")
                 h["tried_by"] = ", ".join(hn["tried_by"] + [login])
-                hn["acks"].pop(login, None)
+                hn["acks"] = {k: v for k, v in hn["acks"].items() if self._ack_login(k) != login}
                 h.pop("acks", None)
                 self._put_acks(h, hn["acks"])
                 h.pop("lease", None)
@@ -1750,7 +1860,7 @@ class Mail:
         turn["body"] = _clean(body)
         _replace(path, render_thread(h, turns + [turn]))
         if h["status"] == "awaiting-reply" and kind == "note" and hn["to"] == "all" and self.team \
-                and set(self._addressees(hn)) <= set(self._norm(h)["acks"]):
+                and set(self._addressees(hn)) <= self._acked(self._norm(h)):
             _, t2, p2 = self.load(tid)
             paths.append(self._close_file(h, t2, p2))
         self._sync("reply", tid, paths)
@@ -1766,10 +1876,10 @@ class Mail:
             live = known and holder and holder["live"]
             if live and not (holder["ours"] or holder["login"] == login):
                 raise TeamRefused(f"{tid} is TAKEN: the lease is {holder['login']}'s until {holder['expires']}")
-            if login not in hn["acks"] or (known and not live):
+            if login not in self._acked(hn) or (known and not live):
                 self._take(tid, h, hn, login)
-        elif login not in hn["acks"]:
-            hn["acks"][login] = self._now()
+        elif login not in self._acked(hn):
+            hn["acks"][self._actor()] = self._now()
             self._put_acks(h, hn["acks"])
 
     # --- the opener files a thread --------------------------------------------------------------------------
@@ -1779,6 +1889,7 @@ class Mail:
         if hn["status"] == "closed":
             raise MailError(f"{tid} is already closed")
         self._need_opener(tid, hn, self._login())
+        self._no_name_note()
         if hn["status"] != "answered" and not withdraw:
             raise MailError(f"{tid} is {hn['status']}: close only an answered thread (--withdraw drops one still waiting)")
         new = self._close_file(h, turns, path, withdraw)
@@ -2164,9 +2275,10 @@ class Mail:
         return bool(glob.glob(os.path.join(self.dev, "done", "*", sid + ".md")))
 
     def _lease_blocks(self, tid, login):
-        """On an `any` thread: a live lease held by someone else hides it from `login` (and an unreadable lease does not)."""
+        """On an `any` thread: a live lease that is not this poller's hides it (and an unreadable lease does not). That includes
+        another poller or clone of the same login: it is working the thread, and this one's ack would be TAKEN."""
         known, holder = self._holder(tid)
-        return bool(known and holder and holder["live"] and not holder["ours"] and holder["login"] != login)
+        return bool(known and holder and holder["live"] and not holder["ours"])
 
     def _waiting_on_me(self, h, hn):
         """The inbox's REPLY rule: this thread waits on this member's poller."""
@@ -2180,7 +2292,7 @@ class Mail:
         if hn["to"] == me:
             return True
         if hn["to"] == "all":
-            return me in self._addressees(hn) and me not in hn["acks"]
+            return me in self._addressees(hn) and me not in self._acked(hn)
         if hn["to"] == "any":
             return me in self._addressees(hn) and me not in hn["tried_by"] and not self._lease_blocks(h["id"], me)
         return False
@@ -2202,23 +2314,19 @@ class Mail:
 
     def chat(self, to, body):
         """`chat --to LOGIN|all`: one message in its own file under _dev/chat/<yyyy-mm>/, committed and pushed. Returns its name."""
-        login = self._login()
+        login, actor = self._login(), self._actor()
+        self._no_name_note()
         if self.team and to != "all" and to not in self.team["members"]:
             raise MailError(f"--to {to!r}: not a team member (members: {', '.join(self.team['members'])}; or all)")
         self._check_body(body, "max_counter_question_chars")
         day = self.today.isoformat()
-        sent = sum(1 for p in self._chat_files() for m in [self.CHAT_RE.match(os.path.basename(p))]
-                   if m and m.group(1) == day and m.group(3) == login)
-        if sent >= self.cfg["max_chats_per_day"]:
-            raise TeamRefused(f"{login} has sent {sent} chats today (max_chats_per_day {self.cfg['max_chats_per_day']}); "
-                              "save it for tomorrow")
         now = self._now_dt()
         folder = os.path.join(self.dev, "chat", now.strftime("%Y-%m"))
         os.makedirs(folder, exist_ok=True)
         while True:
-            name = f"CHAT-{day}T{now.strftime('%H%M')}-{login}-{os.urandom(2).hex()}.md"
+            name = f"CHAT-{day}T{now.strftime('%H%M')}-{actor}-{os.urandom(2).hex()}.md"
             path = os.path.join(folder, name)
-            text = f"from: {login}\nto: {to}\nat: {self._now()}\n\n{_clean(body)}\n"
+            text = f"from: {actor}\nto: {to}\nat: {self._now()}\n\n{_clean(body)}\n"
             if _publish(path, text):
                 self._sync("chat", name[:-3], [path])
                 return name[:-3]
@@ -2227,7 +2335,7 @@ class Mail:
         return os.path.join(self.root, ".claude", "mail-read.json")
 
     def _chat_marks(self):
-        """{login: the last chat name read}, from .claude/mail-read.json (per machine, keyed by member)."""
+        """{actor: the last chat name read}, from .claude/mail-read.json (per machine, keyed by `<login>-<name>`, or the login with no name)."""
         try:
             with open(self._chat_read_path(), encoding="utf-8") as f:
                 marks = json.load(f).get("chat_read_until", {})
@@ -2236,18 +2344,18 @@ class Mail:
             return {}
 
     def _chat_seen(self):
-        return self._chat_marks().get(self._login(), "")
+        return self._chat_marks().get(self._actor(), "")
 
     def chats_unread(self):
         """[(name, header, body)] for chat to this member or all, from someone else, newer than the last `chat --read`."""
-        me, seen, out = self._login(), self._chat_seen(), []
+        me, actor, seen, out = self._login(), self._actor(), self._chat_seen(), []
         for p in self._chat_files():
             name = os.path.basename(p)[:-3]
             if name <= seen:
                 continue
             hd, _, body = _read(p).partition("\n\n")
             h = dict(l.split(": ", 1) for l in hd.splitlines() if ": " in l)
-            if h.get("from") == me or h.get("to") not in ("all", me):
+            if h.get("from") == actor or h.get("to") not in ("all", me):
                 continue
             out.append((name, h, body.strip()))
         return out
@@ -2258,7 +2366,7 @@ class Mail:
         names = [os.path.basename(p)[:-3] for p in self._chat_files()]
         if names:
             os.makedirs(os.path.dirname(self._chat_read_path()), exist_ok=True)
-            marks = dict(self._chat_marks(), **{self._login(): max(names)})
+            marks = dict(self._chat_marks(), **{self._actor(): max(names)})
             _replace(self._chat_read_path(), json.dumps({"chat_read_until": marks}, sort_keys=True) + "\n")
             keep_ignored(self.root)
         return [f"{h.get('from')} to {h.get('to')} at {h.get('at')}: {body}" for _, h, body in msgs]
@@ -2287,7 +2395,7 @@ class Mail:
                 if hn["to"] == "any" and who and set(who) <= set(hn["tried_by"]):
                     out["ALERT"].append(f"ALERT {tid} nobody could do it ({', '.join(hn['tried_by'])} threw it back) | {h['subject']}")
                     continue
-                silent = [w for w in who if w not in hn["acks"]] if hn["to"] != "any" else (who if not hn["acks"] else [])
+                silent = [w for w in who if w not in self._acked(hn)] if hn["to"] != "any" else (who if not hn["acks"] else [])
                 age = (self._now_dt() - self._opened_at(h, turns)).total_seconds() / 3600
                 if silent and age >= hours:
                     names = "any poller" if hn["to"] == "any" else ", ".join(silent)
@@ -2336,6 +2444,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="Two-way dev mailbox between Cowork and Claude Code, with loop limits.")
     ap.add_argument("--root", "--corpus", dest="root", default=default_root(),
                     help="the project folder (default: found from this file's location)")
+    ap.add_argument("--poller", metavar="NAME",
+                    help="this poller's name (a lowercase letter, then 1 to 15 lowercase letters or digits); sets $SCAFFOLD_POLLER, which wins over the environment")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("limits")
     sub.add_parser("version")
@@ -2360,6 +2470,7 @@ def main(argv=None):
     p = sub.add_parser("spawn-story"); p.add_argument("--thread", required=True); p.add_argument("--file", required=True)
     p = sub.add_parser("check-story"); p.add_argument("story")
     p = sub.add_parser("epics"); p.add_argument("--id"); p.add_argument("--sync", action="store_true"); p.add_argument("--json", action="store_true")
+    p = sub.add_parser("poller"); p.add_argument("action", choices=["start", "stop", "status"]); p.add_argument("name")
     p = sub.add_parser("team"); p.add_argument("--me")
     p.add_argument("--grant-writer", metavar="LOGIN"); p.add_argument("--revoke-writer", metavar="LOGIN")
     a = ap.parse_args(argv)
@@ -2368,6 +2479,10 @@ def main(argv=None):
         return 0
     m = None
     try:
+        if a.poller is not None:
+            if not POLLER_NAME.match(a.poller):
+                raise MailError(f"--poller {a.poller!r} is not a poller name: a lowercase letter, then 1 to 15 lowercase letters or digits (e.g. imhotep)")
+            os.environ[POLLER_ENV] = a.poller
         m = Mail(a.root)
         if a.cmd == "limits":
             print(json.dumps(m.cfg, indent=2))
@@ -2385,6 +2500,7 @@ def main(argv=None):
             print(f"OPENED {tid} (awaiting-reply, to {a.to})")
         elif a.cmd == "inbox":
             lines = m.inbox()
+            m.poller_renew()
             print("\n".join(lines) if lines else "NOTHING")
         elif a.cmd == "chat":
             if a.read:
@@ -2414,6 +2530,8 @@ def main(argv=None):
             else:
                 lines = format_epics(items)
                 print("\n".join(lines) if lines else "NOTHING")
+        elif a.cmd == "poller":
+            print(m.poller_cmd(a.action, a.name))
         elif a.cmd == "team":
             if a.grant_writer or a.revoke_writer:
                 if a.me or (a.grant_writer and a.revoke_writer):
