@@ -132,6 +132,7 @@ const receipt = {
     'No access tokens, database credentials, OIDC codes or private keys are written to receipts.',
   ],
 };
+if (LEARNED) receipt.limitations.push('Learned mode (PROOF_LEARNED_MODEL=1): Paula and Alex answer the boot question with at least 430 litres because the retained model does not cover hatchbacks. That leaves Alex no acceptable car, so AC1.stale expects coverage 1 of 2 with one unmet need instead of 2 of 2; the API and page must still agree.');
 const owned = [];
 const CHILD_LOG_LIMIT = 1024 * 1024;
 const LOG_LIMIT_MARKER = Buffer.from('\nPROOF FAILURE: shared 1MiB child log budget exhausted; remaining child output discarded.\n');
@@ -1211,11 +1212,13 @@ async function orderPlanAndProduction(greg, phase) {
     { title: dom4.title, inputs: dom4.inputs.filter((i) => i.id.includes(encodeURIComponent(TOURING))), calls: apiCalls(greg, step4.from).map(brief) });
 
   const alex = await confirmBrief('alex', LEARNED);
+  // Learned mode: Alex's 430 litre answer leaves no acceptable car, so one need stays unmet.
+  const STALE = LEARNED ? { covered: 1, unmet: 1 } : { covered: 2, unmet: 0 };
   const fresh = await probe('greg', '/greg/order-plan'); const plan5 = fresh.body?.value?.plan;
   const stale = await call('greg', '/greg/production/requests', { commandId: newCmd(), planId: plan1.planId, versions: plan1.versions });
   const counts5 = dbCounts();
   rec('AC1.stale.api', 'After Alex confirms a second brief, submitting the earlier plan answers 409 replan-needed with the new current plan and the changed inputs, and writes nothing',
-    alex.status === 200 && fresh.status === 200 && plan5.planId !== plan1.planId && plan5.expectedAcceptableCoverage.total === 2 && plan5.expectedAcceptableCoverage.covered === 2 && plan5.unmetNeeds.length === 0
+    alex.status === 200 && fresh.status === 200 && plan5.planId !== plan1.planId && plan5.expectedAcceptableCoverage.total === 2 && plan5.expectedAcceptableCoverage.covered === STALE.covered && plan5.unmetNeeds.length === STALE.unmet
       && stale.status === 409 && stale.json?.code === 'replan-needed' && stale.json?.current?.planId === plan5.planId
       && ['plan', 'forecast'].every((k) => (stale.json?.changedInputs ?? []).includes(k)) && counts5.production_submissions === 0 && counts5.production_requests === 0,
     { alex, newPlanId: plan5?.planId, oldPlanId: plan1.planId, coverage: plan5?.expectedAcceptableCoverage, unmet: plan5?.unmetNeeds?.length, staleSubmit: { status: stale.status, code: stale.json?.code, changedInputs: stale.json?.changedInputs, currentPlanId: stale.json?.current?.planId }, db: counts5 });
@@ -1225,8 +1228,8 @@ async function orderPlanAndProduction(greg, phase) {
   const dom5 = await greg.act(PLAN_DOM);
   const miss5 = planMismatches(fresh.body.value, dom5);
   pngs.stale = await png(greg, 'ac1-after-second-brief-1280x900.png', true);
-  rec('AC1.stale.dom', 'Before refresh the page still shows the earlier plan (it cannot submit an order-less plan); the refresh path shows the new plan, coverage 2 of 2 and no unmet needs, equal to the API',
-    domBefore.planFacts['Plan reference'] === plan1.planId && domBefore.submit.disabled === true && miss5.length === 0 && dom5.metrics['Acceptable coverage before renewal'] === '2 of 2' && dom5.unmet.length === 0
+  rec('AC1.stale.dom', `Before refresh the page still shows the earlier plan (it cannot submit an order-less plan); the refresh path shows the new plan, coverage ${STALE.covered} of 2 and ${STALE.unmet} unmet needs, equal to the API`,
+    domBefore.planFacts['Plan reference'] === plan1.planId && domBefore.submit.disabled === true && miss5.length === 0 && dom5.metrics['Acceptable coverage before renewal'] === `${STALE.covered} of 2` && dom5.unmet.length === STALE.unmet
       && dom5.planFacts['Plan reference'] === plan5.planId && !dom5.staleNotice,
     { pageBeforeRefresh: { planReference: domBefore.planFacts['Plan reference'], submit: domBefore.submit }, mismatches: miss5, metrics: dom5.metrics, unmet: dom5.unmet, planReference: dom5.planFacts['Plan reference'], capture: pngs.stale });
 

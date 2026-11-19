@@ -101,7 +101,8 @@ describe('planning display projection', () => {
       expect(m.evaluation.some(f => String(f.value).includes('Estate'))).toBe(true);
       expect(m.limitations).toEqual(['Synthetic-trained; not validated on BMW employee choices.']);
       expect(m.differences.comparable).toBe(true);
-      expect(m.differences.rows.map(r => r.label)).toEqual(['Acceptable coverage', 'Vehicles ordered', 'Spend (minor units)', 'Unmet needs', '3 Series 320i']);
+      expect(m.differences.rows.map(r => r.label)).toEqual(['Acceptable coverage', 'Vehicles ordered', 'Spend', 'Unmet needs', '3 Series 320i']);
+      expect(m.differences.rows[2]).toEqual({ label: 'Spend', baseline: '£83,457', learned: '£90,000', difference: '+£6,543' });
       expect(m.differences.rows[4]).toEqual({ label: '3 Series 320i', baseline: '2', learned: '3', difference: '+1' });
       expect(v.planId).toBe('order-plan-1'); expect(v.canSubmit).toBe(true);
     });

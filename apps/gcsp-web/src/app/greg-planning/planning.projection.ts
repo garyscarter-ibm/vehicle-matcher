@@ -59,10 +59,13 @@ function nameOf(p: PlanningRecord, kind: 'model' | 'derivative', id: unknown): s
 const one = (v: number): string => v.toFixed(1);
 const count = (v: unknown): string => typeof v === 'number' && Number.isFinite(v) ? Number.isInteger(v) ? String(v) : one(v) : 'Not supplied';
 const signed = (v: unknown): string => typeof v === 'number' && Number.isFinite(v) ? `${v > 0 ? '+' : ''}${count(v)}` : 'Not supplied';
+// Learned spend arrives in pence; the page shows whole pounds.
+const pounds = (v: unknown, sign = false): string => typeof v === 'number' && Number.isFinite(v)
+  ? `${sign && v > 0 ? '+' : v < 0 ? '-' : ''}£${Math.round(Math.abs(v) / 100).toLocaleString('en-GB')}` : 'Not supplied';
 const number = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const INCOMPLETE_LEARNED = "The learned model's answer was incomplete, so only the baseline plan is shown.";
 const LEARNED_MEASURES: readonly (readonly [string, string])[] = [['Acceptable coverage', 'coverage'], ['Vehicles ordered', 'orderQuantity'],
-  ['Spend (minor units)', 'spendMinor'], ['Unmet needs', 'unmetNeeds']];
+  ['Spend', 'spendMinor'], ['Unmet needs', 'unmetNeeds']];
 function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelView | null {
   const forecast = field(answer, 'forecast'); const model = field(forecast, 'model'); const aggregate = forecast['aggregate'];
   const diff = field(answer, 'differences'); const evaluation = field(forecast, 'evaluation');
@@ -75,6 +78,7 @@ function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelVi
     return number(m['logLoss']) && number(m['brier']) ? [{ label, value: `Log loss ${m['logLoss'].toFixed(4)}, Brier ${m['brier'].toFixed(4)}` }] : [];
   };
   const pair = (r: PlanningRecord) => ({ baseline: count(r['baseline']), learned: count(r['learned']), difference: signed(r['delta']) });
+  const money = (r: PlanningRecord) => ({ baseline: pounds(r['baseline']), learned: pounds(r['learned']), difference: pounds(r['delta'], true) });
   const comparable = diff['comparable'];
   return {
     modelFacts: [['Model reference', model['artifactId']], ['Model version', model['modelVersion']], ['Feature version', model['featureVersion']],
@@ -87,7 +91,7 @@ function learnedModel(answer: PlanningRecord, p: PlanningRecord): LearnedModelVi
       ...thin.length ? [{ label: 'Thin evidence for vehicle classes', value: thin.map(words).join(', ') }] : []],
     limitations: strings(forecast['limitations']),
     differences: { comparable, note: comparable ? null : 'The learned and baseline plans cannot be compared, because one of them has no feasible order.',
-      rows: !comparable ? [] : [...LEARNED_MEASURES.map(([label, key]) => ({ label, ...pair(field(diff, key)) })),
+      rows: !comparable ? [] : [...LEARNED_MEASURES.map(([label, key]) => ({ label, ...(key === 'spendMinor' ? money(field(diff, key)) : pair(field(diff, key))) })),
         ...rows(diff['derivatives']).filter(d => d['changed'] === true).map(d => ({ label: nameOf(p, 'derivative', d['derivativeId']), ...pair(d) }))] },
   };
 }
