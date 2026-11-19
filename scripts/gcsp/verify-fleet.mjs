@@ -5,12 +5,9 @@ import { isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { performance } from 'node:perf_hooks';
-import { once } from 'node:events';
-import { request as httpRequest } from 'node:http';
 import { createSyntheticRegistry } from '../../server/gcsp/vehicle-evidence/synthetic-registry.js';
 import { createVehicleEvidenceLookup } from '../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
 import { createConfiguredVehicleDetails } from '../../server/gcsp/vehicle-evidence/application-vehicle-details.js';
-import { vehicleEvidenceHttpStatus } from '../../server/gcsp/vehicle-evidence/vehicle-details-contract.js';
 import { installFleetOfflineGuard } from './fleet-offline-guard.mjs';
 import { validateCorpusDirectory, readCorpusFile, contentChecksum } from '../../server/gcsp/vehicle-evidence/corpus-publisher.js';
 import { createPolicyService } from '../../server/gcsp/policy/index.js';
@@ -102,13 +99,6 @@ export async function verifyStagedFleet({ artifacts, requiredDistinct = 10000, p
 export const verifyFleet = verifyStagedFleet;
 
 const activeFailure = (code, message) => ({ ...invalid({ code, message }), status: 'invalid-active' });
-function localEndpoint(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'http:' && ['127.0.0.1', '[::1]'].includes(url.hostname)
-      && !url.username && !url.password && !url.search && !url.hash && url.pathname === '/' ? url : null;
-  } catch { return null; }
-}
 function latency(values) {
   const sorted = [...values].sort((a, b) => a - b); const nth = (fraction) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * fraction))] ?? null;
   return { count: sorted.length, min: sorted[0] ?? null, p50: nth(0.5), p95: nth(0.95), p99: nth(0.99), max: sorted.at(-1) ?? null };
@@ -146,35 +136,16 @@ function matchesRetained(result, record, images, manifestDigest, supplement) {
     && result.presentation?.sourceLabel === (source.sourceKind === 'dated-snapshot' ? 'Dated catalogue snapshot' : 'North American structural reference')
     && result.routing?.mode === 'offline' && result.routing.liveEligible === false;
 }
-function localHttpRead(endpoint, request) {
-  const collection = { configuration: 'configurations', vin: 'vins', stock: 'stock' }[request.kind];
-  const url = new URL(`/api/gcsp/vehicle-evidence/${collection}/${encodeURIComponent(request.id)}`, endpoint);
-  return new Promise((resolve, reject) => {
-    const req = httpRequest(url, (response) => {
-      let content = ''; let size = 0;
-      response.setEncoding('utf8'); response.on('data', (part) => {
-        size += Buffer.byteLength(part); if (size > 2 * 1024 * 1024) req.destroy(new Error('Local response exceeds audit bound.')); else content += part;
-      });
-      response.on('error', reject); response.on('end', () => {
-        try { resolve({ status: response.statusCode, body: JSON.parse(content) }); } catch { reject(new Error('Invalid local HTTP response.')); }
-      });
-    });
-    req.setTimeout(5000, () => req.destroy(new Error('Local HTTP audit deadline.'))); req.on('error', reject); req.end();
-  });
-}
-
 /** Reads the actual published store; all publication/recovery mutations belong to separate owned regression fixtures. */
-export async function verifyActiveFleet({ root, requiredDistinct = 10000, http = false, endpoint, offline = false,
-  concurrency = 1, sampleSize = 128, repository, context, stockReferences = [], ...options } = {}) {
+export async function verifyActiveFleet({ root, requiredDistinct = 10000, offline = false,
+  concurrency = 1, repository, context, stockReferences = [], ...options } = {}) {
   if (typeof root !== 'string' || !isAbsolute(root)) return activeFailure('explicit-store-required', 'Supply an absolute published corpus store.');
-  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 8 || !Number.isInteger(sampleSize) || sampleSize < 1 || sampleSize > 1024
-    || !Array.isArray(stockReferences) || stockReferences.length > 100000 || new Set(stockReferences).size !== stockReferences.length || !stockReferences.every((id) => typeof id === 'string' && id.length <= 128)) {
-    return activeFailure('invalid-audit-bounds', 'Use 1–8 workers, 1–1024 HTTP samples and explicit bounded stock order references.');
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 8 ||
+    !Array.isArray(stockReferences) || stockReferences.length > 100000 || new Set(stockReferences).size !== stockReferences.length || !stockReferences.every((id) => typeof id === 'string' && id.length <= 128)) {
+    return activeFailure('invalid-audit-bounds', 'Use 1–8 workers and explicit bounded stock order references.');
   }
   if (offline !== true) return activeFailure('offline-required', 'Active audit requires explicit offline instrumentation.');
-  const bind = http ? localEndpoint(endpoint) : null;
-  if (http && !bind) return activeFailure('loopback-endpoint-required', 'Supply an explicit numeric loopback HTTP bind endpoint, for example http://127.0.0.1:0.');
-  let guard; let server; let result; let sourceCalls = 0;
+  let guard; let result;
   try {
     guard = installFleetOfflineGuard(); const control = guard.control();
     const registry = createSyntheticRegistry({ root, ...options }); const loaded = await registry.load(); const active = registry.status().active;
@@ -209,52 +180,22 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
       latencies.push(performance.now() - start);
     });
     const elapsedMs = performance.now() - started;
-    let httpReport = null;
-    if (http) {
-      const { buildServer } = await import('../../server/index.js');
-      const denied = () => { sourceCalls++; throw new Error('Source capability is unavailable during offline audit.'); };
-      server = buildServer({ fetchRetailerStock: denied, fetchNearbyStock: denied, enrichColours: denied,
-        fetchDealerDirectory: denied, geocodePostcode: denied,
-        gcspVehicleEvidence: { lookup, resolveContext: async () => context ? { status: 'ok', value: context } : { status: 'source-unavailable' } } });
-      server.listen(Number(bind.port || 80), bind.hostname.replace(/^\[|\]$/g, '')); await once(server, 'listening');
-      const actualEndpoint = `http://${bind.hostname}:${server.address().port}`;
-      const total = Math.min(sampleSize, requests.length); const samples = Array.from({ length: total }, (_, index) => requests[Math.floor(index * requests.length / total)]);
-      const httpLatencies = []; let httpErrors = 0; const httpStart = performance.now();
-      await boundedWorkers(samples, concurrency, async (request) => {
-        const start = performance.now();
-        try {
-          const direct = await lookup.resolve(request, { context }); const response = await localHttpRead(actualEndpoint, request);
-          if (response.status !== vehicleEvidenceHttpStatus(direct) || !isDeepStrictEqual(response.body, direct)) httpErrors++;
-        } catch { httpErrors++; }
-        httpLatencies.push(performance.now() - start);
-      });
-      const httpElapsedMs = performance.now() - httpStart;
-      httpReport = { endpoint: actualEndpoint, scope: samples.length === requests.length ? 'all-records' : 'deterministic-even-sample',
-        requests: samples.length, totalRecords: requests.length, concurrency, errors: httpErrors, elapsedMs: httpElapsedMs,
-        throughputPerSecond: samples.length / (httpElapsedMs / 1000), latencyMs: latency(httpLatencies), serverClosed: false };
-    }
-    const passed = errors === 0 && (!httpReport || httpReport.errors === 0) && guard.calls.length === 0 && sourceCalls === 0;
+    const passed = errors === 0 && guard.calls.length === 0;
     result = { ...staged, status: !passed ? 'invalid-active' : staged.targetMet ? 'verified-active' : 'shortfall',
       targetMet: passed && staged.targetMet, storyAcceptance: 'not-established',
-      reason: passed ? staged.reason : { code: 'active-reconciliation-failed', message: 'Actual loaded records, consuming port, HTTP parity or offline boundaries failed.' },
+      reason: passed ? staged.reason : { code: 'active-reconciliation-failed', message: 'Actual loaded records, consuming port or offline boundaries failed.' },
       activeStore: root, activation: { loaderStatus: loaded.status, recovered: loaded.recovered === true },
       audit: { scope: 'all-records', records: { configurations: rows.configurations.length, vinMappings: rows.vins.length, stockReferences: stockReferences.length },
         checked: requests.length, errors, elapsedMs, concurrency, throughputPerSecond: requests.length / (elapsedMs / 1000), latencyMs: latency(latencies),
         environment: { node: process.version, platform: process.platform, arch: process.arch }, stockScope: stockReferences.length ? 'explicit-repository-fixture-or-supplied-references' : 'not-supplied' },
-      http: httpReport, egress: { scope: 'this-audit-process', externalCalls: guard.calls.length, sourceCalls, control },
+      egress: { scope: 'this-audit-process', externalCalls: guard.calls.length, control },
       acceptanceLimits: ['Actual full-target source corpus and declared coverage remain required for story acceptance.',
         'Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.',
         'Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store.'] };
     return result;
   } catch { return { ...activeFailure('active-audit-unavailable', 'Restore compatible local inputs and retry the bounded offline audit.'),
-    egress: guard ? { scope: 'this-audit-process', externalCalls: guard.calls.length, sourceCalls } : null }; }
-  finally {
-    if (server) {
-      server.closeAllConnections(); await new Promise((done) => server.close(done));
-      if (result?.http) result.http.serverClosed = true;
-    }
-    guard?.restore();
-  }
+    egress: guard ? { scope: 'this-audit-process', externalCalls: guard.calls.length } : null }; }
+  finally { guard?.restore(); }
 }
 
 /** Staged validation and explicit offline active audits share the same corpus port and canonical policy. */
@@ -272,8 +213,8 @@ export async function verifyFleetCli(argv = process.argv.slice(2), write = (valu
     }
   }
   const fail = (code, message) => { write(JSON.stringify(invalid({ code, message })) + '\n'); return 2; };
-  const values = new Map(); const valued = new Set(['--config', '--artifacts', '--store', '--endpoint', '--require-distinct', '--run-id', '--as-of', '--concurrency', '--sample-size']);
-  const flags = new Set(['--staged', '--active', '--http', '--offline']);
+  const values = new Map(); const valued = new Set(['--config', '--artifacts', '--store', '--require-distinct', '--run-id', '--as-of', '--concurrency']);
+  const flags = new Set(['--staged', '--active', '--offline']);
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     if (values.has(flag) || (!flags.has(flag) && !valued.has(flag))) return fail('unsupported-arguments', 'Use one explicit staged or active verification mode with supported bounded options.');
@@ -292,7 +233,7 @@ export async function verifyFleetCli(argv = process.argv.slice(2), write = (valu
     policyRead: { runId: values.get('--run-id') || 'fleet-verification', asOf: values.get('--as-of') || new Date().toISOString() } };
   let report;
   if (values.has('--staged')) {
-    if (['--store', '--endpoint', '--http', '--offline', '--concurrency', '--sample-size'].some((flag) => values.has(flag))) return fail('unsupported-arguments', 'Active audit options cannot be used for staged verification.');
+    if (['--store', '--offline', '--concurrency'].some((flag) => values.has(flag))) return fail('unsupported-arguments', 'Active audit options cannot be used for staged verification.');
     const artifacts = values.get('--artifacts') || plan?.destinations?.staged?.path;
     if (!artifacts) return fail('staged-destination-required', 'The plan has no selected staged corpus destination; supply --artifacts with an absolute directory.');
     report = await verifyStagedFleet({ artifacts, ...options });
@@ -300,8 +241,8 @@ export async function verifyFleetCli(argv = process.argv.slice(2), write = (valu
     if (values.has('--artifacts')) return fail('unsupported-arguments', 'Active verification reads a published --store, not staged --artifacts.');
     const root = values.get('--store') || plan?.destinations?.active?.path;
     if (!root) return fail('active-store-required', 'Supply the explicit absolute active --store or selected plan destination.');
-    report = await verifyActiveFleet({ root, ...options, http: values.has('--http'), offline: values.has('--offline'),
-      endpoint: values.get('--endpoint'), concurrency: integer('--concurrency', 1), sampleSize: integer('--sample-size', 128) });
+    report = await verifyActiveFleet({ root, ...options, offline: values.has('--offline'),
+      concurrency: integer('--concurrency', 1) });
   }
   write(JSON.stringify(report) + '\n'); return ['verified-staged', 'verified-active'].includes(report.status) ? 0 : 1;
 }
