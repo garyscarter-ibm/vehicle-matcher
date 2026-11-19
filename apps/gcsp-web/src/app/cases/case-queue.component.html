@@ -37,9 +37,9 @@
         @if (view().options; as options) {
           <section class="case-step"><h3>Current options</h3>
             <p class="gcsp-note">Checked {{ time(options.asOf) }} · Policy {{ options.policyVersion }}. Feasibility is checked again when you confirm.</p>
-            @if (!options.options.alternativeCars.available) { <p>Alternative car — Not available: {{ options.options.alternativeCars.reason || 'No suitable car was supplied.' }}</p> }
-            @if (!options.options.laterRelease.available) { <p>Later release — Not available: {{ options.options.laterRelease.reason || 'No reviewed release was supplied.' }}</p> }
-            @if (!options.options.contractExtension.available) { <p>Contract extension — Not available: {{ options.options.contractExtension.reason || 'An extension is not permitted.' }}</p> }
+            @if (!options.options.alternativeCars.available) { <p>Alternative car not available: {{ options.options.alternativeCars.reason || 'No suitable car was supplied.' }}</p> }
+            @if (!options.options.laterRelease.available) { <p>Later release not available: {{ options.options.laterRelease.reason || 'No reviewed release was supplied.' }}</p> }
+            @if (!options.options.contractExtension.available) { <p>Contract extension not available: {{ options.options.contractExtension.reason || 'An extension is not permitted.' }}</p> }
             @if (!options.options.preferenceRelaxations.available) { <p>Preference changes: {{ options.options.preferenceRelaxations.reason || 'No preference change is currently available.' }}</p> }
             @if (needsConfirmation().length) { <p>These cars need confirmation and cannot be chosen:</p><ul>@for (car of needsConfirmation(); track $index) { <li>{{ car }}</li> }</ul> }
           </section>
