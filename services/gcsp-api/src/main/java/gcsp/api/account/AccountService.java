@@ -318,8 +318,8 @@ public final class AccountService {
         JsonNode closed = Js.get(location, "closedDates");
         if (Js.nullish(closed)) return false;
         if (closed.isArray()) return Js.includes(closed, date);
-        if (closed.isTextual()) return closed.textValue().contains(date);
-        throw new IllegalStateException("closedDates has no includes");
+        // FUCQ-489: only an array counts; a string or other shape is an invalid source, never a substring match.
+        throw new IllegalStateException("closedDates is not an array");
     }
 
     /** Valid collection dates from minimumLeadDays up to maxLead (default maximumLeadDays). */
