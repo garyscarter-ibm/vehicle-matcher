@@ -1,77 +1,10 @@
-# Render Blueprint for the GCSP demo environment, built from the gcsp-poc branch (HLD review Q1, Q2).
+# Render Blueprint for the GCSP demo: Java API plus Angular site, and the gcsp-site demo picker (HLD review Q1, Q2).
 # Apply it as its own Blueprint with Blueprint Path render.gcsp.yaml; render.yaml stays the retail service's.
-# Step-by-step: docs/gcsp/render-postgres-setup.md. Secrets are never committed here (sync: false).
+# Cutover and setup: docs/gcsp/fucq482-cutover-2026-11-19.md. Secrets are never committed here (sync: false).
 
-databases:
-  - name: gcsp-db
-    plan: free             # expires 30 days after creation; one active free database per workspace (else 0.1c-256mb)
-    region: frankfurt
-    databaseName: gcsp
-    user: gcsp
-    ipAllowList:           # the pollers on Gary's and Russell's Macs connect from outside Render
-      - source: 0.0.0.0/0
-        description: everywhere
+# The Java API's database is created in the dashboard (no tier selected) and supplied through sync: false keys; the retired Node gcsp-db is never reused.
 
 services:
-  - type: web
-    name: gcsp-api
-    runtime: node
-    plan: standard         # 2 GB: the hosted runtime peaks near 500 MB at start (FUCQ-190); a Blueprint sync applies this
-    region: frankfurt
-    branch: gcsp-poc
-    # Restore the code-pinned corpus at build time; runtime lookup stays offline.
-    buildCommand: >-
-      cd server && GCSP_FLEET_BUILD_EXPLICIT=1 npm install &&
-      node scripts/fleet-artifacts.mjs restore
-      --release 3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30
-      --store "$PWD/data/gcsp/vehicle-evidence/fleet-source.v1"
-      --cache "$PWD/data/gcsp/vehicle-evidence/fleet-artifacts.v1" --network download
-    startCommand: cd server && npm start
-    healthCheckPath: /health/vehicle-evidence
-    autoDeployTrigger: commit
-    buildFilter:           # API code, its pinned artifacts, and the GCSP pages it serves (GCSP_RUNTIME=1)
-      paths:
-        - server/**
-        - scripts/gcsp/**
-        - render.gcsp.yaml
-        - gcsp-*.html
-        - gcsp-*.css
-        - blocks/**
-        - assets/**
-      ignoredPaths:
-        - server/test/**
-        - server/**/*.md
-    envVars:
-      - key: NODE_VERSION
-        value: "20"
-      - key: GCSP_DATABASE_URL     # internal address; the backend applies its own migrations
-        fromDatabase:
-          name: gcsp-db
-          property: connectionString
-      - key: GCSP_OFFLINE          # no live retailer warmers at boot; retail fetches on first request
-        value: "1"
-      - key: GCSP_ALLOWED_ORIGINS  # must equal gcsp-site's address exactly; change here if Render adds a suffix
-        value: https://gcsp-site.onrender.com
-      # FUCQ-180: the full GCSP runtime and its pages on this one origin (server/gcsp/host.js).
-      - key: GCSP_RUNTIME
-        value: "1"
-      - key: GCSP_REPOSITORY_MODE  # account, preferences, sessions and active run survive restarts
-        value: postgres
-      - key: GCSP_COMPARISON_RESULT_FILE  # stored route comparison loaded at boot (FUCQ-288); relative to server/
-        value: data/gcsp/comparison/process-only.json
-      - key: GCSP_PUBLIC_ORIGIN    # this service's own address, exactly; change here if Render adds a suffix
-        value: https://gcsp-api.onrender.com
-      - key: GCSP_PUBLIC_BASE_URL  # base for emailed offer links; the pages are served by this service
-        value: https://gcsp-api.onrender.com
-      - key: GCSP_MAIL_TRANSPORT   # brevo for real email; unset keeps mail captured in the outbox only
-        sync: false
-      - key: GCSP_MAIL_FROM
-        sync: false
-      - key: GCSP_MAIL_FROM_NAME
-        sync: false
-      - key: GCSP_BREVO_API_KEY
-        sync: false
-
   - type: web
     name: gcsp-site
     runtime: static
@@ -85,7 +18,7 @@ services:
         - gcsp-employee.css
         - blocks/**
         - assets/**
-    # Copies only what a browser needs (about 3 MB, not the fixtures) and points both pages at gcsp-api.
+    # Copies only what a browser needs (about 3 MB, not the fixtures) and points both pages at bmw-matcher-api.
     buildCommand: >-
       test -n "$GCSP_API_URL" &&
       mkdir -p _site &&
@@ -97,10 +30,10 @@ services:
       grep -q "$GCSP_API_URL" _site/block.html
     staticPublishPath: _site
     envVars:
-      - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
-        value: https://gcsp-api.onrender.com
+      - key: GCSP_API_URL          # Used Cars API (bmw-matcher-api, render.yaml) for the demo picker; no GCSP API
+        value: https://bmw-matcher-api.onrender.com
 
-  # Independent migration checkpoint; the existing gcsp-poc services above stay supported.
+  # GCSP API: Java 21 / Quarkus. No Node GCSP runtime remains in this blueprint.
   - type: web
     name: gcsp-java-api
     runtime: docker
@@ -162,7 +95,7 @@ services:
         value: -XX:MaxRAMPercentage=75
       # FUCQ-456 / FUCQ-434 comment 3629372: isolated Java dev persistence.
       # Supply JDBC jdbc:postgresql://host:5432/db from its own database details;
-      # never reuse gcsp-db above. Flyway owns the gcsp_app schema.
+      # never reuse the retired Node gcsp-db. Flyway owns the gcsp_app schema.
       - key: GCSP_DATABASE_URL
         sync: false
       - key: GCSP_DATABASE_USER
@@ -177,9 +110,13 @@ services:
         value: "true"          # this dev service only; fixed at the database's first claim
       - key: GCSP_DATABASE_POOL_SIZE
         value: "10"            # application's default maximum connections
-      # Optional Java adapters retain their existing unavailable defaults.
+      # Demo composition (FUCQ-482): every adapter is labelled synthetic or demo; none is a BMW system.
+      - key: GCSP_REQUIRED_PROVIDERS   # readiness stays DOWN while any of these is none
+        value: identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns,production,evidence
+      - key: GCSP_SCENARIO_PROVIDER
+        value: demo            # fictional people; needs a database claimed with GCSP_RESET_ALLOWED=true
       - key: GCSP_SUPPLY_PROVIDER
-        value: none            # none | tranche-plan
+        value: demo            # none | tranche-plan | demo
       # tranche-plan requires a deployment-supplied plan; this image ships neither file.
       # Empty supply policy keeps releases pending as policy-unavailable.
       # - key: GCSP_SUPPLY_TRANCHE_PLAN_FILE
@@ -187,18 +124,20 @@ services:
       # - key: GCSP_SUPPLY_POLICY_FILE
       #   sync: false
       - key: GCSP_ACCOUNT_PROVIDER
-        value: none            # none | hr-snapshot | repository
+        value: repository      # none | hr-snapshot | repository
       # hr-snapshot requires a deployment-supplied export; repository needs the isolated DB above.
       # - key: GCSP_ACCOUNT_HR_SNAPSHOT_PATH
       #   sync: false
+      - key: GCSP_ALLOCATION_CANDIDATES_PROVIDER
+        value: recommendation  # none refuses every Buddy allocation
       - key: GCSP_DOCUMENTS_PROVIDER
-        value: none            # synthetic enables fictional demo evidence
+        value: synthetic       # fictional; live remains unsupported
       # FUCQ-468: fictional ordering for this isolated dev API; approvals reads its store.
       - key: GCSP_ORDERING_PROVIDER
         value: synthetic       # requires the dedicated dev PostgreSQL database above
-      # Keep none until image startup, readiness and retained-image checks pass.
+      # Hosted retained-image check is Gary's end-of-build review item.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
-        value: none            # lookup | alternate-offline; no alternate file is shipped
+        value: lookup          # lookup | alternate-offline; no alternate file is shipped
       - key: GCSP_VEHICLE_EVIDENCE_STORE
         value: /app/data/vehicle-evidence/fleet-source.v1
       - key: GCSP_VEHICLE_EVIDENCE_REFERENCE_DIR
@@ -210,32 +149,36 @@ services:
       - key: GCSP_VEHICLE_IMAGES_PUBLIC
         value: "false"         # retained images still require a bearer
       - key: GCSP_APPOINTMENTS_PROVIDER
-        value: none            # synthetic is fictional; live remains unsupported
+        value: synthetic       # fictional; live remains unsupported
       - key: GCSP_RETURNS_PROVIDER
-        value: none            # synthetic is fictional; live-stub remains unsupported
+        value: synthetic       # fictional; live-stub remains unsupported
       # Optional retained return policy; unset is unavailable, with no canonical fallback.
       # - key: GCSP_RETURNS_POLICY_FILE
       #   sync: false
       # Mail stays captured when unset; brevo requires every mail setting below.
-      # - key: GCSP_MAIL_TRANSPORT
-      #   value: brevo
+      - key: GCSP_MAIL_TRANSPORT
+        sync: false
       # Use the Angular HTTPS base serving /gcsp/offers/:offerId, not the API host.
-      # - key: GCSP_PUBLIC_BASE_URL
-      #   sync: false
-      # - key: GCSP_MAIL_FROM
-      #   sync: false
-      # - key: GCSP_MAIL_FROM_NAME
-      #   sync: false
-      # - key: GCSP_BREVO_API_KEY
-      #   sync: false
+      - key: GCSP_PUBLIC_BASE_URL
+        sync: false
+      - key: GCSP_MAIL_FROM
+        sync: false
+      - key: GCSP_MAIL_FROM_NAME
+        sync: false
+      - key: GCSP_BREVO_API_KEY
+        sync: false
       # Optional notification drain interval: 1s to 10m; unset defaults to 5s.
       # - key: GCSP_NOTIFY_DRAIN_INTERVAL
       #   value: 5s
       - key: GCSP_APPROVALS_PROVIDER
-        value: none            # none | synthetic | live-stub
+        value: synthetic       # fictional; none | synthetic | live-stub
       # Optional file override; unset keeps the canonical PolicyService.
       # - key: GCSP_APPROVALS_POLICY_FILE
       #   sync: false
+      - key: GCSP_PRODUCTION_PROVIDER
+        value: synthetic       # fictional; live-stub refuses
+      - key: GCSP_CODE_REVISION
+        sync: false            # the deployed commit, recorded in comparison manifests
 
   - type: web
     name: gcsp-angular-dev

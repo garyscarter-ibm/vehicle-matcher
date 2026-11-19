@@ -17,24 +17,36 @@ test('gcsp-site build filter covers exactly what its build copies', () => {
   assert.deepEqual([...filtered].sort(), [...copied].sort());
 });
 
-test('gcsp-api waits for vehicle corpus readiness before deployment selection', () => {
-  const api = yaml.slice(yaml.indexOf('name: gcsp-api'), yaml.indexOf('name: gcsp-site'));
-  assert.match(api, /^    healthCheckPath: \/health\/vehicle-evidence$/m);
+// FUCQ-482: the Node GCSP runtime and its database are retired; the Java API is the only GCSP API.
+test('no Node GCSP runtime or legacy database remains in the GCSP blueprint', () => {
+  assert.doesNotMatch(yaml, /    name: gcsp-api\n/);
+  assert.doesNotMatch(yaml, /runtime: node/);
+  assert.doesNotMatch(yaml, /GCSP_RUNTIME/);
+  assert.doesNotMatch(yaml, /^databases:/m);
+  assert.doesNotMatch(yaml, /name: gcsp-db/);
+  assert.doesNotMatch(yaml, /npm start/);
 });
 
-// FUCQ-180: the hosted runtime is opted in.
-test('gcsp-api runs the GCSP runtime and declares its settings without committing secrets', () => {
-  const api = yaml.slice(yaml.indexOf('name: gcsp-api'), yaml.indexOf('name: gcsp-site'));
-  const value = (key) => api.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: "?([^"\\n]+)"?`))?.[1];
-  assert.equal(value('GCSP_RUNTIME'), '1');
-  assert.equal(value('GCSP_REPOSITORY_MODE'), 'postgres');
-  assert.equal(value('GCSP_PUBLIC_ORIGIN'), value('GCSP_PUBLIC_BASE_URL'));
-  for (const key of ['GCSP_MAIL_TRANSPORT', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY']) {
-    assert.match(api, new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+sync: false`), key);
+// FUCQ-482: the demo picker reads the Used Cars API, not the retired GCSP API.
+test('gcsp-site sends the demo picker to the Used Cars API', () => {
+  assert.match(site, /- key: GCSP_API_URL\b[^\n]*\n\s+value: https:\/\/bmw-matcher-api\.onrender\.com/);
+  assert.doesNotMatch(site, /gcsp-api\.onrender\.com/);
+});
+
+// FUCQ-482: readiness stays DOWN while any required provider is none, so each one is configured.
+test('every required Java provider is configured, not left at none', () => {
+  const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
+  const value = (key) => java.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: ([^\\s#]+)`))?.[1];
+  assert.equal(value('GCSP_REQUIRED_PROVIDERS'), 'identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns,production,evidence');
+  const configured = { GCSP_SCENARIO_PROVIDER: 'demo', GCSP_SUPPLY_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
+    GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_APPROVALS_PROVIDER: 'synthetic', GCSP_DOCUMENTS_PROVIDER: 'synthetic', GCSP_APPOINTMENTS_PROVIDER: 'synthetic',
+    GCSP_PRODUCTION_PROVIDER: 'synthetic', GCSP_RETURNS_PROVIDER: 'synthetic', GCSP_VEHICLE_EVIDENCE_PROVIDER: 'lookup' };
+  for (const [key, want] of Object.entries(configured)) assert.equal(value(key), want, key);
+  assert.match(java, /- key: GCSP_IDENTITY_PROVIDER\n\s+sync: false/);
+  for (const key of ['GCSP_MAIL_TRANSPORT', 'GCSP_PUBLIC_BASE_URL', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY', 'GCSP_CODE_REVISION']) {
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`), key);
   }
-  assert.ok(!api.includes('DEMO_ACCESS_KEY'));
-  assert.ok(!api.includes('GCSP_MAIL_RECIPIENTS'));
-  for (const path of ['gcsp-*.html', 'blocks/**', 'assets/**']) assert.ok(api.includes(`- ${path}\n`), path);
+  assert.doesNotMatch(java, /- key: GCSP_BREVO_[A-Z_]+[^\n]*\n\s+value:/);
 });
 
 test('gcsp-site declares no redirects to retired gcsp-api pages', () => {

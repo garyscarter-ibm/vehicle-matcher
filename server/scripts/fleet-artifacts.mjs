@@ -7,13 +7,7 @@ try {
     flags.set(args[i], args[i + 1]);
   }
   if (!flags.has('--release') || !flags.has('--store')) throw new TypeError('Invalid arguments');
-  // Existing dashboard commands can retain an older release than the Blueprint.
-  let releaseId = flags.get('--release');
-  if (command === 'restore' && flags.get('--network') === 'download') {
-    step = 'resolve-release';
-    const { resolveFleetBuildRelease } = await import('./prepare-fleet-build.mjs');
-    releaseId = await resolveFleetBuildRelease() ?? releaseId;
-  }
+  const releaseId = flags.get('--release');
   step = command;
   const result = command === 'pack' && flags.has('--output')
     ? await packFleetRelease({ releaseId, store: flags.get('--store'), output: flags.get('--output') })
