@@ -8,6 +8,10 @@ import { spawnSync } from 'node:child_process';
 import { PUBLIC_ENV_KEYS, validateRuntimeConfig, runtimeConfigFromEnv, contentSecurityPolicy } from '../../scripts/gcsp-runtime-config.mjs';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES, GCSP_DYNAMIC_ROUTES } from '../../scripts/build-gcsp-static.mjs';
 
+// FUCQ-533: one Blueprint per environment; each file asserts its own names and branch.
+const BLUEPRINTS = [{ file: 'render.gcsp-buddy.yaml', prefix: 'gcsp-buddy', branch: 'gcsp-poc' },
+  { file: 'render.gcsp-buddy-dev.yaml', prefix: 'gcsp-buddy-dev', branch: 'gcsp-poc-dev' }];
+const readBlueprint = (file) => readFile(new URL(`../../${file}`, import.meta.url), 'utf8');
 const producer = fileURLToPath(new URL('../../scripts/gcsp-runtime-config.mjs', import.meta.url));
 const config = (id = 'isolated-dev') => ({
   schemaVersion: 1, environmentId: id, apiBaseUrl: `https://${id}-api.example/api/gcsp/v1`,
@@ -295,11 +299,13 @@ test('artifact: Java image packages only the active and recovery evidence as roo
     'only evidence roots receive readable, non-writable permissions before the runtime user is selected');
 });
 
-test('artifact: dev blueprint preserves independent Java build and runtime contracts', async () => {
-  const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
+for (const { file, prefix, branch } of BLUEPRINTS) test(`artifact: ${file} preserves independent Java build and runtime contracts`, async () => {
+  const yaml = await readBlueprint(file);
   const proposed = await readFile(new URL('../../services/gcsp-api/render-service.proposed.yaml', import.meta.url), 'utf8');
-  const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
-  assert.ok(java.startsWith(proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    buildFilter:'))), 'supplied Java build/runtime foundation is preserved');
+  const java = yaml.slice(yaml.indexOf(`  - type: web\n    name: ${prefix}-api\n`), yaml.indexOf(`  - type: web\n    name: ${prefix}-web\n`));
+  const foundation = proposed.slice(proposed.indexOf('  - type: web'), proposed.indexOf('    buildFilter:'))
+    .replaceAll('gcsp-buddy-dev', prefix).replaceAll('gcsp-poc-dev', branch);
+  assert.ok(java.startsWith(foundation), 'supplied Java build/runtime foundation is preserved');
   assert.match(java, /^    dockerContext: \.\s*(?:#.*)?$/mu);
   const dockerfile = await readFile(new URL('../../services/gcsp-api/Dockerfile', import.meta.url), 'utf8');
   const contextInputs = [...dockerfile.matchAll(/^COPY (?:--chown=\S+ )?((?:services|server|assets|docs)\/\S+(?: \S+)*) \S+$/gmu)]
@@ -316,8 +322,9 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   for (const key of ['GCSP_IDENTITY_PROVIDER', ...proposedIdentityKeys]) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} remains deployment-supplied`);
   }
-  assert.match(java, /branch: gcsp-poc-dev/u);
-  assert.doesNotMatch(java, /^\s+plan:|fromDatabase:|name: gcsp-db\b|apps\/gcsp-web|gcsp:compile/mu);
+  assert.match(java, new RegExp(`^    branch: ${branch}$`, 'mu'));
+  assert.match(java, /^    plan: starter\b/mu);
+  assert.doesNotMatch(java, /fromDatabase:|name: gcsp-db\b|apps\/gcsp-web|gcsp:compile/mu);
   for (const key of ['GCSP_DATABASE_URL', 'GCSP_DATABASE_USER', 'GCSP_DATABASE_PASSWORD', 'GCSP_EXPECTED_DATABASE', 'GCSP_ENVIRONMENT_ID']) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} must be supplied for the isolated Java database`);
   }
@@ -364,10 +371,10 @@ test('artifact: dev blueprint preserves independent Java build and runtime contr
   })) assert.ok(properties.split('\n').includes(`${property}=\${${binding}}`), `${property} retains the Java source contract`);
 });
 
-test('artifact: dev static blueprint recovers unknown routes while preserving resource failures and cache policies', async () => {
-  const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
-  const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
-  assert.match(site, /branch: gcsp-poc-dev/u); assert.match(site, /value: "24\.22\.3"/u);
+for (const { file, prefix, branch } of BLUEPRINTS) test(`artifact: ${file} static site recovers unknown routes while preserving resource failures and cache policies`, async () => {
+  const yaml = await readBlueprint(file);
+  const site = yaml.slice(yaml.indexOf(`  - type: web\n    name: ${prefix}-web\n`));
+  assert.match(site, new RegExp(`^    branch: ${branch}$`, 'mu')); assert.doesNotMatch(site, /^\s+plan:/mu); assert.match(site, /value: "24\.22\.3"/u);
   assert.match(site, /npm install --global npm@11\.19\.1/u);
   assert.match(site, /- key: SKIP_INSTALL_DEPS\n\s+value: "true"/u);
   assert.match(site, /npm run gcsp:compile/u); assert.match(site, /npm run gcsp:assemble/u);
@@ -408,18 +415,18 @@ test('artifact: dev static blueprint recovers unknown routes while preserving re
   assert.ok(headers.some((header) => header.name === 'Content-Security-Policy' && header.value === '"frame-ancestors \'none\'"'));
   assert.ok(headers.some((header) => header.name === 'Referrer-Policy' && header.value === 'no-referrer'));
   for (const key of Object.values(PUBLIC_ENV_KEYS)) assert.match(site, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'));
-  for (const input of ['apps/gcsp-web/**', 'blocks/gcsp/shell/**', 'designs/**', 'scripts/build-gcsp-static.mjs', 'scripts/assemble-site.mjs', 'scripts/gcsp-runtime-config.mjs', '_config/gcsp-runtime-config.schema.json', 'package.json', 'package-lock.json', 'render.gcsp.yaml']) assert.ok(site.includes(`- ${input}\n`), input);
+  for (const input of ['apps/gcsp-web/**', 'blocks/gcsp/shell/**', 'designs/**', 'scripts/build-gcsp-static.mjs', 'scripts/assemble-site.mjs', 'scripts/gcsp-runtime-config.mjs', '_config/gcsp-runtime-config.schema.json', 'package.json', 'package-lock.json', file]) assert.ok(site.includes(`- ${input}\n`), input);
   const pkg = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
   assert.match(pkg.scripts['gcsp:compile'], /npm --prefix apps\/gcsp-web run build/u);
   assert.equal(pkg.scripts['gcsp:assemble'], 'node scripts/build-gcsp-static.mjs');
 });
 
-test('artifact: Angular routes, static rewrites and security headers agree with the identity flow', async () => {
+for (const { file, prefix } of BLUEPRINTS) test(`artifact: ${file} Angular routes, static rewrites and security headers agree with the identity flow`, async () => {
   const routes = await readFile(new URL('../../apps/gcsp-web/src/app/routes.ts', import.meta.url), 'utf8');
   const angular = [...routes.matchAll(/(?:path: |feature\()'([^']*)'/gu)].map((match) => match[1]).filter((path) => path !== '**');
   assert.deepEqual(angular.map((path) => `/gcsp/${path}`).sort(), [...GCSP_FIXED_ROUTES, ...GCSP_DYNAMIC_ROUTES].sort());
-  const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
-  const site = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
+  const yaml = await readBlueprint(file);
+  const site = yaml.slice(yaml.indexOf(`  - type: web\n    name: ${prefix}-web\n`));
   const headers = [...site.matchAll(/- path: (\S+)\n\s+name: (\S+)\n\s+value: ([^\n]+)/gu)].map(([, path, name, value]) => ({ path, name, value }));
   assert.ok(headers.every((header) => header.path === '/gcsp' || header.path.startsWith('/gcsp/')));
   // One /gcsp/* rule per security header covers every route, asset and the OIDC callback.

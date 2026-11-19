@@ -863,5 +863,6 @@ Any query parameter is 400 `unsupported-query`. 503 codes: `persistence-not-conf
 
 ## Render
 
-Gary's dev environment does not exist yet. The proposed service block for `render.gcsp.yaml` is in
-[`render-service.proposed.yaml`](render-service.proposed.yaml); GC is the single writer for the blueprint.
+Gary's dev environment does not exist yet. The proposed service block for the two Blueprints, `render.gcsp-buddy-dev.yaml`
+(`gcsp-buddy-dev-api`) and `render.gcsp-buddy.yaml` (`gcsp-buddy-api`), is in
+[`render-service.proposed.yaml`](render-service.proposed.yaml); GC is the single writer for both.

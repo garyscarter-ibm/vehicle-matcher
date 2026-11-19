@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// FUCQ-482 local fresh-state cutover rehearsal: the Java API on native PostgreSQL in the render.gcsp.yaml demo composition,
+// FUCQ-482 local fresh-state cutover rehearsal: the Java API on native PostgreSQL in the gcsp-buddy Blueprints' demo composition,
 // the Angular site and a LOCAL TEST OIDC issuer. Proves retained-input startup, ordinary restart, the authorised reset and one journey.
 // Usage: SCRATCH=/private/tmp/<owned> PROOF_RUN_TOKEN=<unique> PROOF_SOURCE_REVISION=<40hex> PROOF_API_JAR=<quarkus-run.jar>
 // PROOF_WEB_BROWSER=<browser dir> GCSP_TEST_DATABASE_URL=<owned db> [PROOF_DB_USER=gcsp] [PROOF_COMPACT_RECEIPT=<abs path>] node scripts/gcsp/fucq482-cutover-rehearsal.mjs
@@ -284,7 +284,7 @@ async function servedMain() {
   return { indexStatus: index.status, name, jsStatus: js?.status ?? null, sha256: js ? createHash('sha256').update(js.body).digest('hex') : null };
 }
 
-// ---------- Java API: exactly the gcsp-java-api demo composition of render.gcsp.yaml ----------
+// ---------- Java API: exactly the gcsp-buddy(-dev)-api demo composition of the gcsp-buddy Blueprints ----------
 const apiHost = (portNumber) => ({ host: '127.0.0.1', port: portNumber, servername: 'gcsp-api.localhost' });
 function apiEnv(over = {}, apiPort = PORTS.api) {
   return { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp, JAVA_HOME, LANG: 'en_GB.UTF-8',
@@ -787,7 +787,7 @@ async function main() {
   receipt.builds = { api: { jar: JAR, jarSha256: sha256File(JAR), appJars: appJarsOf(JAR) }, sourceRevision: SOURCE_REVISION, web: WEB };
   receipt.retainedFilesBefore = retainedFileHashes();
   const env = apiEnv();
-  receipt.composition = { note: 'exactly the gcsp-java-api demo composition of render.gcsp.yaml; local values for the sync:false keys',
+  receipt.composition = { note: 'exactly the gcsp-buddy(-dev)-api demo composition of render.gcsp-buddy(-dev).yaml; local values for the sync:false keys',
     env: Object.fromEntries(Object.entries(env).filter(([k]) => /^GCSP_/.test(k)).map(([k, v]) => [k, k === 'GCSP_DATABASE_PASSWORD' ? (v ? '<set>' : '<empty>') : k === 'GCSP_DATABASE_URL' ? DB_URL : k === 'GCSP_OIDC_ACCOUNTS' ? JSON.parse(v) : v])),
     notSet: { GCSP_MAIL_TRANSPORT: 'unset: mail stays captured', GCSP_LEARNING_ACTIVE_MODEL: 'unset and no +learned-model-v1: the learned model is off', GCSP_COMPARISON_RERUNS: 'unset: comparison reruns off', GCSP_NOTIFY_DRAIN_INTERVAL: 'unset (default 5s)' },
     jvm: jvmLimitsReceipt(API_JVM_ARGS), database: { host: DB_HOST, port: DB_PORT, name: DB_NAME, user: DB_USER, schema: 'gcsp_app (Flyway)' }, ports: PORTS, environmentId: ENVIRONMENT_ID, runId: RUN_ID, policyVersion: POLICY };

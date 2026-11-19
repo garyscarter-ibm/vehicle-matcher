@@ -1,10 +1,10 @@
-# PROPOSED for render.gcsp.yaml (GC is its single writer; this file is not read by Render).
-# Add under `services:` in the dev blueprint. Render has no native Java runtime, so it builds
+# PROPOSED for render.gcsp-buddy-dev.yaml and its twin render.gcsp-buddy.yaml (GC is their single writer; this file
+# is not read by Render). Add under `services:` in both, with the twin's names and branch. Render has no native Java runtime, so it builds
 # the Dockerfile; buildCommand/startCommand do not apply to runtime: docker.
   - type: web
-    name: gcsp-java-api
+    name: gcsp-buddy-dev-api
     runtime: docker
-    # plan: deliberately unset; no tier is selected. Measured idle RSS is about 115 MB.
+    plan: starter          # Gary's choice: Starter, 0.5 CPU / 512 MB (plan ID 0.5c-512mb). Idle RSS is about 115 MB.
     region: frankfurt
     branch: gcsp-poc-dev
     dockerfilePath: ./services/gcsp-api/Dockerfile

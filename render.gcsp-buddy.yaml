@@ -1,12 +1,14 @@
-# Render Blueprint for the GCSP demo: Java API plus Angular site, and the gcsp-site demo picker (HLD review Q1, Q2).
-# Apply it as its own Blueprint with Blueprint Path render.gcsp.yaml; render.yaml stays the retail service's.
+# Render Blueprint for GCSP Buddy, one per environment: Java API, Angular site and the demo picker (HLD review Q1, Q2).
+# Blueprint Path render.gcsp-buddy.yaml, branch gcsp-poc. Its twin for the other environment differs only in
+# service names, the hostnames derived from them and branch (render-gcsp-buddy-drift.test.js).
 # Cutover and setup: docs/gcsp/fucq482-cutover-2026-11-19.md. Secrets are never committed here (sync: false).
 
-# The Java API's database is created in the dashboard (no tier selected) and supplied through sync: false keys; the retired Node gcsp-db is never reused.
+# Each environment's PostgreSQL (Basic-256mb) is created in the dashboard and supplied through sync: false keys:
+# GCSP_DATABASE_URL must be JDBC form and Render does not interpolate a fromDatabase value. Never the retired gcsp-db.
 
 services:
   - type: web
-    name: gcsp-site
+    name: gcsp-buddy-site
     runtime: static
     branch: gcsp-poc
     autoDeployTrigger: commit
@@ -35,11 +37,11 @@ services:
 
   # GCSP API: Java 21 / Quarkus. No Node GCSP runtime remains in this blueprint.
   - type: web
-    name: gcsp-java-api
+    name: gcsp-buddy-api
     runtime: docker
-    # plan: deliberately unset; no tier is selected. Measured idle RSS is about 115 MB.
+    plan: starter          # Gary's choice: Starter, 0.5 CPU / 512 MB (plan ID 0.5c-512mb). Idle RSS is about 115 MB.
     region: frankfurt
-    branch: gcsp-poc-dev
+    branch: gcsp-poc
     dockerfilePath: ./services/gcsp-api/Dockerfile
     dockerContext: .          # repo root: the build reads retained policy data from server/gcsp
     healthCheckPath: /q/health/ready
@@ -68,7 +70,7 @@ services:
       - key: GCSP_IDENTITY_PROVIDER
         sync: false            # none until registered; oidc requires the settings below
       - key: GCSP_ALLOWED_ORIGINS
-        sync: false            # exact static-site origin(s), comma separated (FUCQ-435)
+        sync: false            # exact Angular origin(s), comma separated (FUCQ-435): https://gcsp-buddy-web.onrender.com
       # FUCQ-455 / FUCQ-434 comment 3629378: deployment-only identity configuration.
       # Keycloak is selected but unhosted/unregistered; no real subjects are committed.
       - key: GCSP_OIDC_ISSUER
@@ -93,7 +95,7 @@ services:
         value: 10s
       - key: JAVA_OPTS
         value: -XX:MaxRAMPercentage=75
-      # FUCQ-456 / FUCQ-434 comment 3629372: isolated Java dev persistence.
+      # FUCQ-456 / FUCQ-434 comment 3629372: this environment's own isolated Java persistence.
       # Supply JDBC jdbc:postgresql://host:5432/db from its own database details;
       # never reuse the retired Node gcsp-db. Flyway owns the gcsp_app schema.
       - key: GCSP_DATABASE_URL
@@ -107,7 +109,7 @@ services:
       - key: GCSP_ENVIRONMENT_ID
         sync: false            # shared identity/persistence context; same as public environmentId
       - key: GCSP_RESET_ALLOWED
-        value: "true"          # this dev service only; fixed at the database's first claim
+        value: "true"          # presenter resets; fixed at the database's first claim
       - key: GCSP_DATABASE_POOL_SIZE
         value: "10"            # application's default maximum connections
       # Demo composition (FUCQ-482): every adapter is labelled synthetic or demo; none is a BMW system.
@@ -132,9 +134,9 @@ services:
         value: recommendation  # none refuses every Buddy allocation
       - key: GCSP_DOCUMENTS_PROVIDER
         value: synthetic       # fictional; live remains unsupported
-      # FUCQ-468: fictional ordering for this isolated dev API; approvals reads its store.
+      # FUCQ-468: fictional ordering for this isolated API; approvals reads its store.
       - key: GCSP_ORDERING_PROVIDER
-        value: synthetic       # requires the dedicated dev PostgreSQL database above
+        value: synthetic       # requires this environment's dedicated PostgreSQL database above
       # Hosted retained-image check is Gary's end-of-build review item.
       - key: GCSP_VEHICLE_EVIDENCE_PROVIDER
         value: lookup          # lookup | alternate-offline; no alternate file is shipped
@@ -181,9 +183,9 @@ services:
         sync: false            # the deployed commit, recorded in comparison manifests
 
   - type: web
-    name: gcsp-angular-dev
+    name: gcsp-buddy-web
     runtime: static
-    branch: gcsp-poc-dev
+    branch: gcsp-poc
     autoDeployTrigger: commit
     buildCommand: >-
       npm install --global npm@11.19.1 &&
@@ -204,7 +206,7 @@ services:
         - _config/gcsp-runtime-config.schema.json
         - package.json
         - package-lock.json
-        - render.gcsp.yaml
+        - render.gcsp-buddy.yaml
       ignoredPaths:
         - apps/gcsp-web/**/*.spec.ts
         - apps/gcsp-web/**/*.md
@@ -402,7 +404,7 @@ services:
       - key: GCSP_PUBLIC_ENVIRONMENT_ID
         sync: false
       - key: GCSP_PUBLIC_API_BASE_URL
-        sync: false
+        sync: false            # https://gcsp-buddy-api.onrender.com
       - key: GCSP_PUBLIC_OIDC_AUTHORITY
         sync: false
       - key: GCSP_PUBLIC_OIDC_CLIENT_ID
