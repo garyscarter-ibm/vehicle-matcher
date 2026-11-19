@@ -366,9 +366,9 @@ const closeServer = (s) => (s ? new Promise((r) => { s.closeAllConnections?.(); 
 // ---------- Java API (the real jar, repository accounts, native PG, synthetic ordering) ----------
 let tls;
 // Java demo issuer token lifetimes in seconds; changing them restarts the API (see policy()).
-let demoPolicy = { accessSec: 3600, refreshSec: 43200 };
+let demoPolicy = { accessSec: 3600, refreshSec: 43200, refreshTokens: true };
 const demoIdpEnv = () => ({ GCSP_DEMO_IDP_ENABLED: 'true', GCSP_DEMO_IDP_REDIRECT_URIS: `${ORIGINS.web}/gcsp/auth/callback`, GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: POST_LOGOUT,
-  GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: `${demoPolicy.accessSec}s`, GCSP_DEMO_IDP_REFRESH_TOKEN_LIFETIME: `${demoPolicy.refreshSec}s` });
+  GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: `${demoPolicy.accessSec}s`, GCSP_DEMO_IDP_REFRESH_TOKEN_LIFETIME: `${demoPolicy.refreshSec}s`, GCSP_DEMO_IDP_REFRESH_TOKENS: String(demoPolicy.refreshTokens) });
 function apiEnv() {
   return { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp, JAVA_HOME, LANG: 'en_GB.UTF-8',
     QUARKUS_HTTP_SSL_PORT: String(PORTS.api), QUARKUS_HTTP_INSECURE_REQUESTS: 'disabled', QUARKUS_HTTP_SSL_CERTIFICATE_FILES: path.join(dirs.certs, 'fullchain.pem'), QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILES: path.join(dirs.certs, 'leaf.key'),
@@ -401,9 +401,10 @@ async function stopApi() { await api.stop(); log(`api-${apiStarts} stopped (exit
 async function policy(change) {
   if (!JAVA_DEMO) { setPolicy(change); return; }
   const short = change.lifetimeSec <= SHORT_LIFETIME;
-  const next = { accessSec: change.lifetimeSec, refreshSec: change.refresh ? (short ? 90 : 43200) : (short ? 5 : 43200) };
-  const entry = { at: new Date().toISOString(), asked: { ...change }, accessTokenLifetime: `${next.accessSec}s`, refreshTokenLifetime: `${next.refreshSec}s`, restarted: false };
-  if (next.accessSec !== demoPolicy.accessSec || next.refreshSec !== demoPolicy.refreshSec) {
+  // A short token with refresh off issues no refresh token at all, as the mock does (ac2b).
+  const next = { accessSec: change.lifetimeSec, refreshSec: change.refresh && short ? 90 : 43200, refreshTokens: change.refresh || !short };
+  const entry = { at: new Date().toISOString(), asked: { ...change }, accessTokenLifetime: `${next.accessSec}s`, refreshTokenLifetime: `${next.refreshSec}s`, refreshTokens: next.refreshTokens, restarted: false };
+  if (next.accessSec !== demoPolicy.accessSec || next.refreshSec !== demoPolicy.refreshSec || next.refreshTokens !== demoPolicy.refreshTokens) {
     entry.kidBefore = await jwksKid(); await stopApi(); demoPolicy = next; await startApi(); entry.kidAfter = await jwksKid();
     entry.restarted = true; entry.kidKept = entry.kidBefore === entry.kidAfter;
   }
@@ -1037,8 +1038,7 @@ async function scenarioExpiry(cdp, s) {
     await page.settle();
     const grant = issuerLog(page).filter((r) => r.path === 'token' && r.grantType === 'authorization_code').at(-1);
     const stored = JAVA_DEMO ? await page.storedUser() : null;
-    if (JAVA_DEMO) check(s, 'issuer issued a short-lived access token and a refresh token that lapses sooner than it (renewal cannot succeed)', grant?.lifetimeSec === SHORT_LIFETIME && grant.refreshIssued === true && demoPolicy.refreshSec < SHORT_LIFETIME);
-    else check(s, 'issuer issued a short-lived token with no refresh token', grant?.lifetimeSec === SHORT_LIFETIME && grant.refreshIssued === false);
+    check(s, 'issuer issued a short-lived token with no refresh token', grant?.lifetimeSec === SHORT_LIFETIME && grant.refreshIssued === false);
     await waitFor(page, `return location.pathname === '/gcsp/manual/summary' && !!button('Continue reviewing this selection');`, 'summary asks to confirm resume', 30000);
     await page.act(`return press('Continue reviewing this selection');`);
     await waitFor(page, `return declarations().length > 0 && declarations().every((d) => !d.disabled);`, 'declarations editable');
@@ -1050,9 +1050,9 @@ async function scenarioExpiry(cdp, s) {
     const signed = await snap(page, s, 'signed-out-at-expiry');
     check(s, 'the app reached sign-in only after the token expired', Date.now() >= grant.expiresAt);
     if (JAVA_DEMO) {
-      const attempts = issuerLog(page, issuerAfterTick).filter((r) => r.path === 'token' && r.grantType === 'refresh_token'); const late = await directRefresh(stored?.refresh);
-      s.observations.refusedRenewal = { browserRefreshAttempts: attempts.map((r) => ({ status: r.status, error: r.error })), directRefresh: late };
-      check(s, 'any renewal the browser tried was refused by the issuer, and a direct refresh with that token is refused too', attempts.every((r) => r.status === 400 && r.error === 'invalid_grant') && late.status === 400 && late.error === 'invalid_grant');
+      const attempts = issuerLog(page, issuerAfterTick).filter((r) => r.path === 'token' && r.grantType === 'refresh_token'); const late = await directRefresh(stored?.refresh ?? 'none-issued');
+      s.observations.refusedRenewal = { storedRefreshToken: !!stored?.refresh, browserRefreshAttempts: attempts.map((r) => ({ status: r.status, error: r.error })), directRefresh: late };
+      check(s, 'the browser held no refresh token and tried no renewal, and the issuer refuses a refresh grant', !stored?.refresh && attempts.length === 0 && late.status === 400 && !late.rotatedTokenIssued);
     }
     check(s, 'sign-in carries returnTo=/gcsp/manual/summary', decodeURIComponent(await page.eval('location.search')).includes('returnTo=/gcsp/manual/summary'));
     check(s, 'expiry notice shown and no order content on the sign-in page', /session expired/i.test(signed.notice ?? '') && !signed.text.includes('Place order'));

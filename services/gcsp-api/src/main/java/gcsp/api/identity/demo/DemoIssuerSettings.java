@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  */
 public record DemoIssuerSettings(String issuer, String jwksUri, String audience, String clientId, String scope,
         String roleClaim, Set<String> redirectUris, Set<String> postLogoutRedirectUris, Duration accessTokenLifetime,
-        Duration refreshTokenLifetime) {
+        Duration refreshTokenLifetime, boolean refreshTokens) {
 
     public static final String ISSUER_PATH = "/demo-idp";
     static final String ENABLED = "gcsp.demo-idp.enabled";
@@ -77,8 +77,13 @@ public record DemoIssuerSettings(String issuer, String jwksUri, String audience,
         String roleClaim = Optional.of(get(lookup, "gcsp.oidc.role-claim")).filter(s -> !s.isEmpty())
                 .orElse("realm_access.roles");
         checkPeople(lookup, people.get());
+        String refreshSwitch = get(lookup, "gcsp.demo-idp.refresh-tokens");
+        if (!refreshSwitch.isEmpty() && !refreshSwitch.equalsIgnoreCase("true") && !refreshSwitch.equalsIgnoreCase("false")) {
+            throw new IllegalStateException("gcsp.demo-idp.refresh-tokens must be true or false");
+        }
+        boolean refreshTokens = !refreshSwitch.equalsIgnoreCase("false");
         return Optional.of(new DemoIssuerSettings(issuer, jwksUri, audience, clientId, scope(lookup), roleClaim,
-                redirects, logoutRedirects, access, refresh));
+                redirects, logoutRedirects, access, refresh, refreshTokens));
     }
 
     /** openid and profile plus every scope the API requires, so granted tokens always satisfy the validator. */

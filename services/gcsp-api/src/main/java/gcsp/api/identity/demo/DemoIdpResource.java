@@ -56,7 +56,8 @@ public class DemoIdpResource {
         doc.put("jwks_uri", s.endpoint("/jwks"));
         doc.put("end_session_endpoint", s.endpoint("/end-session"));
         doc.put("response_types_supported", List.of("code"));
-        doc.put("grant_types_supported", List.of("authorization_code", "refresh_token"));
+        doc.put("grant_types_supported", s.refreshTokens() ? List.of("authorization_code", "refresh_token")
+                : List.of("authorization_code"));
         doc.put("code_challenge_methods_supported", List.of("S256"));
         doc.put("token_endpoint_auth_methods_supported", List.of("none"));
         doc.put("subject_types_supported", List.of("public"));
@@ -146,7 +147,7 @@ public class DemoIdpResource {
         if ("authorization_code".equals(grantType)) {
             return fromCode(code, redirectUri, verifier);
         }
-        if ("refresh_token".equals(grantType)) {
+        if ("refresh_token".equals(grantType) && issuer.settings().refreshTokens()) {
             return fromRefresh(refreshToken);
         }
         return tokenError("unsupported_grant_type");
@@ -180,7 +181,7 @@ public class DemoIdpResource {
         }
         Optional<DemoPerson> person = person(c.subject());
         if (person.isEmpty()) return tokenError("invalid_grant");
-        String refresh = issuer.sessions().issueRefreshToken(c.sessionId());
+        String refresh = issuer.settings().refreshTokens() ? issuer.sessions().issueRefreshToken(c.sessionId()) : null;
         return tokens(person.get(), c.sessionId(), c.authTime(), c.nonce(), refresh);
     }
 
@@ -203,7 +204,7 @@ public class DemoIdpResource {
         body.put("expires_in", t.accessTokenExpiresInSeconds());
         body.put("scope", issuer.settings().scope());
         body.put("id_token", t.idToken(person.principalId(), person.name(), sessionId, authTime, nonce));
-        body.put("refresh_token", refreshToken);
+        if (refreshToken != null) body.put("refresh_token", refreshToken);
         return Response.ok(body).header("Cache-Control", "no-store").header("Pragma", "no-cache").build();
     }
 

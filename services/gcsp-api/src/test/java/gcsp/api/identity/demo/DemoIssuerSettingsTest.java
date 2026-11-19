@@ -49,7 +49,15 @@ class DemoIssuerSettingsTest {
         assertEquals("realm_access.roles", s.roleClaim());
         assertEquals(Duration.ofMinutes(10), s.accessTokenLifetime());
         assertEquals(Duration.ofHours(12), s.refreshTokenLifetime());
+        assertTrue(s.refreshTokens(), "refresh tokens are on by default");
         assertEquals(DemoSupport.ISSUER + "/token", s.endpoint("/token"));
+    }
+
+    @Test
+    void refreshTokensCanBeSwitchedOffButNotMistyped() {
+        assertFalse(build(with("gcsp.demo-idp.refresh-tokens", "false"), LaunchMode.NORMAL, true).orElseThrow().refreshTokens());
+        assertTrue(build(with("gcsp.demo-idp.refresh-tokens", "true"), LaunchMode.NORMAL, true).orElseThrow().refreshTokens());
+        refuses("gcsp.demo-idp.refresh-tokens", "off", "gcsp.demo-idp.refresh-tokens");
     }
 
     @Test
