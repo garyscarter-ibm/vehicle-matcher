@@ -680,11 +680,11 @@ function issuerRow(e) {
 const issuerMark = (page) => (JAVA_DEMO ? page.idpLog.length : idp.requests.length);
 const issuerLog = (page, from = 0) => (JAVA_DEMO ? page.idpLog.slice(from).filter((e) => e.method !== 'OPTIONS').map(issuerRow).filter(Boolean) : idp.requests.slice(from));
 const sameSet = (a, b) => same([...(a ?? [])].sort(), [...(b ?? [])].sort());
-// API access-log rows for the Java demo issuer, polled because the child log is written asynchronously.
+// API access-log rows for the Java demo issuer (query string dropped), polled because the child log is written asynchronously.
 function demoAccessRows() {
   const rows = [];
   for (const p of receipt.processes.filter((x) => x.name.startsWith('api-'))) {
-    for (const l of tail(path.join(dirs.logs, `${p.name}.log`), 100000).split('\n')) { const m = /ACCESSLOG (\S+) (\S+) (\d+)/.exec(l); if (m && m[2].startsWith(`${IDP_PATH}/`)) rows.push(`${m[1]} ${m[2].slice(IDP_PATH.length)} ${m[3]}`); }
+    for (const l of tail(path.join(dirs.logs, `${p.name}.log`), 100000).split('\n')) { const m = /ACCESSLOG (\S+) (\S+) (\d+)/.exec(l); const route = m?.[2].split('?')[0]; if (route?.startsWith(`${IDP_PATH}/`)) rows.push(`${m[1]} ${route.slice(IDP_PATH.length)} ${m[3]}`); }
   }
   return rows;
 }
