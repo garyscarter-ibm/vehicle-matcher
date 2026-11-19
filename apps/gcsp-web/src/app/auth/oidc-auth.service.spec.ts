@@ -72,6 +72,32 @@ describe('real OIDC authentication adapter', () => {
   it('returns to sign-in after expiry without renewal support and retains safe progress guidance', async () => {
     await service.initialize(); Object.assign(stored!, { expired: true, refresh_token: undefined }); expect(await service.getAccessToken()).toBeNull(); expect(manager.signinSilent).not.toHaveBeenCalled(); expect(service.state().status).toBe('signed-out'); expect(routerNavigate).toHaveBeenCalledWith(['/sign-in'], { queryParams: { returnTo: '/gcsp/account' } }); expect(service.recovery()?.requiresConfirmation).toBe(true);
   });
+  it('asks to sign in again when the issuer refuses a lapsed refresh token at expiry', async () => {
+    await service.initialize(); const expire = manager.events.addAccessTokenExpired.mock.calls[0][0]; Object.assign(stored!, { expired: true }); let mounted = true;
+    manager.signinSilent.mockImplementation(async () => { mounted = service.state().status === 'ready'; throw Object.assign(new Error('invalid_grant'), { error: 'invalid_grant' }); });
+    // The shell unmounts a guarded page outside 'ready', and its leave guard then throws on the way to sign-in.
+    routerNavigate.mockImplementation(async () => { if (!mounted) throw new TypeError("Cannot read properties of null (reading 'canLeave')"); return true; });
+    expire(); await vi.waitFor(() => expect(routerNavigate).toHaveBeenCalled()); await settle();
+    expect(manager.signinSilent).toHaveBeenCalledOnce(); expect(mounted).toBe(true); expect(service.state().status).toBe('signed-out'); expect(stored).toBeNull();
+    expect(service.recovery()?.message).toBe('Your session expired. Sign in to continue with your saved progress.'); expect(routerNavigate).toHaveBeenCalledWith(['/sign-in'], { queryParams: { returnTo: '/gcsp/account' } });
+  });
+  it('renews at expiry while the page stays mounted, then asks to review saved progress', async () => {
+    await service.initialize(); const expire = manager.events.addAccessTokenExpired.mock.calls[0][0]; Object.assign(stored!, { expired: true }); let mounted = false;
+    manager.signinSilent.mockImplementation(async () => { mounted = service.state().status === 'ready'; stored = user(); return stored; });
+    expire(); await vi.waitFor(() => expect(service.recovery()?.message).toContain('signed in again'));
+    expect(mounted).toBe(true); expect(service.state().status).toBe('ready'); expect(await service.getAccessToken()).toBe('alice-access'); expect(routerNavigate).not.toHaveBeenCalled();
+  });
+  it('keeps a refused renewal signed out with the expiry notice when the sign-in navigation fails', async () => {
+    await service.initialize(); const expire = manager.events.addAccessTokenExpired.mock.calls[0][0]; Object.assign(stored!, { expired: true });
+    manager.signinSilent.mockRejectedValue(Object.assign(new Error('invalid_grant'), { error: 'invalid_grant' })); routerNavigate.mockRejectedValue(new Error('navigation failed'));
+    expire(); await vi.waitFor(() => expect(routerNavigate).toHaveBeenCalled()); await settle();
+    expect(service.state().status).toBe('signed-out'); expect(stored).toBeNull(); expect(service.recovery()?.message).toContain('Your session expired');
+  });
+  it('still reports sign-in as unavailable when settings or the stored session cannot be read', async () => {
+    const message = 'Sign-in is not available. Check that browser session storage is allowed, then try again.';
+    load.mockRejectedValueOnce(new Error('settings')); await service.initialize(); expect(service.state()).toMatchObject({ status: 'unavailable', message });
+    manager.getUser.mockRejectedValueOnce(new Error('storage')); await service.retry(); expect(service.state()).toMatchObject({ status: 'unavailable', message }); expect(routerNavigate).not.toHaveBeenCalled();
+  });
   it('does not apply previous-account recovery guidance to a different signed-in account', async () => {
     await service.initialize(); Object.assign(stored!, { expired: true, refresh_token: undefined }); await service.getAccessToken(); await service.signIn('/gcsp/orders'); const state = manager.signinRedirect.mock.calls[0][0].state; expect(state.subject).toBe('alice');
     manager.signinRedirectCallback.mockImplementation(async () => { stored = user('bob', { state }); return stored; }); expect(await service.completeSignIn()).toBe('/gcsp/orders'); expect(service.state()).toMatchObject({ status: 'ready', context: { subject: 'bob' } }); expect(service.recovery()).toBeNull();

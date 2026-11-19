@@ -158,6 +158,8 @@ export class OidcAuthService extends AuthPort implements OnDestroy {
     if (this.signedOut || this.state().status !== 'ready') return;
     const generation = this.generation; this.expiredSubject = this.user?.profile.sub;
     this.notice.set({ message: 'Your session expired. Sign in to continue with your saved progress.', requiresConfirmation: true });
+    // Renew while still 'ready': the shell unmounts a guarded page while loading, and its leave guard then breaks sign-in.
+    if (!(await this.renewUser(generation))) { await this.requireSignIn(generation); return; }
     this.initialized = false; await this.initialize();
     if (generation === this.generation && this.state().status === 'ready') this.notice.set({ message: recoveryMessage, requiresConfirmation: true });
   }
@@ -166,7 +168,8 @@ export class OidcAuthService extends AuthPort implements OnDestroy {
     this.expiredSubject ??= this.user?.profile.sub; const target = this.currentReturn(); this.user = null; this.session.set({ status: 'signed-out' });
     this.notice.set({ message: 'Your session expired. Sign in to continue with your saved progress.', requiresConfirmation: true });
     try { await this.sdk(generation, async () => { await this.manager?.removeUser(); }); } catch { /* Visible account data has already been removed. */ }
-    if (generation === this.generation) await this.router.navigate(['/sign-in'], { queryParams: { returnTo: target } });
+    // A failed navigation is not a storage failure: the shell still offers its sign-in action.
+    if (generation === this.generation) { try { await this.router.navigate(['/sign-in'], { queryParams: { returnTo: target } }); } catch { /* Stay signed out. */ } }
   }
   private currentReturn(): string { return safeReturnTo(this.browser.location.pathname + this.browser.location.search + this.browser.location.hash); }
   private unavailable(message: string): void { this.session.set({ status: 'unavailable', message, retryable: true }); }
