@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url)));
-const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
+const yaml = await readFile(new URL('../../render.gcsp-buddy.yaml', import.meta.url), 'utf8');
 const previousRelease = '0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a';
 const gcspRender = { RENDER: 'true', RENDER_SERVICE_ID: 'srv-dbm9cim1egvs73bo6g5g' };
 
@@ -16,7 +16,7 @@ async function runArtifactCommand(t, { env = {}, config = yaml, command = 'resto
   t.after(() => rm(root, { recursive: true, force: true }));
   for (const directory of ['server/scripts', 'server/gcsp/vehicle-evidence']) await mkdir(join(root, directory), { recursive: true });
   await writeFile(join(root, 'server/package.json'), '{"type":"module"}');
-  await writeFile(join(root, 'render.gcsp.yaml'), config);
+  await writeFile(join(root, 'render.gcsp-buddy.yaml'), config);
   // Offline and pack fixtures retain their existing standalone CLI dependency surface.
   const paths = ['scripts/fleet-artifacts.mjs', 'gcsp/vehicle-evidence/fleet-release.js', 'gcsp/vehicle-evidence/fleet-releases.json'];
   for (const path of paths) {

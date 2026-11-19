@@ -49,6 +49,7 @@ outbox link, not a delivered email; Chrome only (Safari unrun).
 ## 2. Final build and configuration evidence (acceptance item 2)
 
 All in `render.gcsp.yaml` at `1d57ed5ca` (FUCQ-453 is editing that file in parallel; nothing here changes it):
+(As recorded at that commit. FUCQ-533 later split the file into the two `gcsp-buddy` Blueprints in section 3.)
 
 - **`gcsp-java-api`**: Docker (`services/gcsp-api/Dockerfile`, repo-root context), branch `gcsp-poc-dev`, health
   check `/q/health/ready`, no plan selected. Identity, database, origin and environment settings are all
@@ -70,17 +71,22 @@ All in `render.gcsp.yaml` at `1d57ed5ca` (FUCQ-453 is editing that file in paral
 
 ## 3. Gary's merge and Render verification steps (unrun until Gary does them)
 
-1. **Create the isolated dev environment** from `gcsp-poc-dev`: apply `render.gcsp.yaml` and give `gcsp-java-api`
-   its own new PostgreSQL database. Fill the `sync: false` keys: database, `GCSP_EXPECTED_DATABASE`,
+Two Blueprints, one per environment (FUCQ-533; `docs/gcsp/fucq482-cutover-2026-11-19.md`, sections 2 and 6):
+`render.gcsp-buddy-dev.yaml` (branch `gcsp-poc-dev`; `gcsp-buddy-dev-api`, `gcsp-buddy-dev-web`, `gcsp-buddy-dev-site`)
+and `render.gcsp-buddy.yaml` (branch `gcsp-poc`; `gcsp-buddy-api`, `gcsp-buddy-web`, `gcsp-buddy-site`). Each API is
+`plan: starter`; each database is Basic-256mb, created in the dashboard.
+
+1. **Create the isolated dev environment** in a new Render workspace: create the `gcsp-buddy-dev` Blueprint instance
+   from `render.gcsp-buddy-dev.yaml` and give `gcsp-buddy-dev-api` its own new PostgreSQL database. Fill the `sync: false` keys: database, `GCSP_EXPECTED_DATABASE`,
    `GCSP_ENVIRONMENT_ID`, OIDC, `GCSP_ALLOWED_ORIGINS` = the Angular origin. Fill the Angular `GCSP_PUBLIC_*` keys
    with matching values (`docs/gcsp/fucq-436-static-artifact-2026-11-13.md`, identity table).
 2. **First start:** `/q/health/ready` is 200. `GET <api>/api/gcsp/v1/context` without a token is 401.
    `/gcsp/runtime-config.json` names the API and issuer. `/gcsp/` shows Sign in.
 3. **Create state:** sign in as a test employee, save a preference, and allocate an offer so that a new offer link
    is issued. Note the link.
-4. **Frontend-only release:** push a commit touching only `apps/gcsp-web`. Only `gcsp-angular-dev` redeploys. Reload
+4. **Frontend-only release:** push a commit touching only `apps/gcsp-web`. Only `gcsp-buddy-dev-web` redeploys. Reload
    while signed in, then open the link: the offer and the saved preference are unchanged.
-5. **API-only release:** push a commit touching only `services/gcsp-api`. Only `gcsp-java-api` redeploys. Repeat
+5. **API-only release:** push a commit touching only `services/gcsp-api`. Only `gcsp-buddy-dev-api` redeploys. Repeat
    the checks from step 4.
 6. **Restart:** manually restart both services from the Dashboard. Repeat the checks from step 4.
 7. **Hosted review** (Gary's end-of-build item): real OIDC sign-in and sign-out, exact-origin CORS, a delivered
@@ -93,12 +99,12 @@ All in `render.gcsp.yaml` at `1d57ed5ca` (FUCQ-453 is editing that file in paral
    shows no CSP errors after sign-in.
    On Greg's policy screen (FUCQ-448), check that a stale preview or publish reads clearly: it shows a status line
    with the buttons disabled, not a full "The policy changed" screen.
-8. **Final switch:** merge `gcsp-poc-dev` into `gcsp-poc`. The Java and Angular entries track `gcsp-poc-dev` today,
-   so the cutover needs one blueprint decision, taken with the retirement work (FUCQ-453 and E3.S29):
-   - either repoint those two entries to `branch: gcsp-poc`;
-   - or add production-named copies on `gcsp-poc` with their own database.
-   The first option is fewest steps. Downtime and immediate replacement are acceptable, with no old-deployment
-   retention and no rollback rehearsal. Then repeat steps 2 and 3 on the replacement. Legacy operational state may
+8. **Final switch:** merge `gcsp-poc-dev` into `gcsp-poc`; no file changes with it, because each Blueprint names its
+   own branch. In the current workspace, create the `gcsp-buddy` Blueprint instance from `render.gcsp-buddy.yaml`
+   with a new, empty database (Basic-256mb, `GCSP_RESET_ALLOWED=true`). Then delete the old Blueprint, the Node
+   `gcsp-api` service, `gcsp-db` and the old `gcsp-site` by hand (removing a resource from a file does not delete
+   it); `bmw-matcher-api` stays. Downtime and immediate replacement are acceptable, with no old-deployment
+   retention and no rollback rehearsal. Then repeat steps 2 and 3 on `gcsp-buddy`. Legacy operational state may
    reset at the switch; retained source, policy, model and baseline artifacts must still be served.
 
 Development stays isolated until step 8: nothing here touches the running `gcsp-poc` services or `gcsp-db`.

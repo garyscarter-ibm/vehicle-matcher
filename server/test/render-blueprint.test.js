@@ -2,23 +2,27 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const yaml = await readFile(new URL('../../render.gcsp.yaml', import.meta.url), 'utf8');
-const service = (name) => yaml.match(new RegExp(`  - type: web\\n    name: ${name}\\n[\\s\\S]*?(?=\\n  - type: web|$)`))?.[0];
-const site = service('gcsp-site');
+// FUCQ-533: one Blueprint per environment; every check runs on both files.
+const blueprints = await Promise.all([['render.gcsp-buddy.yaml', 'gcsp-buddy'], ['render.gcsp-buddy-dev.yaml', 'gcsp-buddy-dev']]
+  .map(async ([file, prefix]) => ({ file, prefix, yaml: await readFile(new URL(`../../${file}`, import.meta.url), 'utf8') })));
+const service = (yaml, name) => yaml.match(new RegExp(`  - type: web\\n    name: ${name}\\n[\\s\\S]*?(?=\\n  - type: web|$)`))?.[0];
+const each = (title, check) => {
+  for (const { file, prefix, yaml } of blueprints) test(`${file}: ${title}`, () => check({ yaml, prefix, site: service(yaml, `${prefix}-site`) }));
+};
 
 // A file the site build copies but the filter omits would ship stale until some other change redeployed.
-test('gcsp-site build filter covers exactly what its build copies', () => {
+each('site build filter covers exactly what its build copies', ({ site }) => {
   const cp = site.match(/cp -R ([^\n]+(?:\n\s+[^\n&]+)*?) _site\//);
-  assert.ok(cp, 'cp -R ... _site/ line not found in gcsp-site buildCommand');
+  assert.ok(cp, 'cp -R ... _site/ line not found in the site buildCommand');
   const copied = cp[1].split(/\s+/).filter(Boolean).map((p) => (p.includes('.') ? p : `${p}/**`));
   const block = site.match(/buildFilter:[^\n]*\n\s+paths:\n((?:\s+- [^\n]+\n)+)/);
-  assert.ok(block, 'gcsp-site buildFilter.paths not found');
+  assert.ok(block, 'site buildFilter.paths not found');
   const filtered = [...block[1].matchAll(/- (\S+)/g)].map((m) => m[1]);
   assert.deepEqual([...filtered].sort(), [...copied].sort());
 });
 
 // FUCQ-482: the Node GCSP runtime and its database are retired; the Java API is the only GCSP API.
-test('no Node GCSP runtime or legacy database remains in the GCSP blueprint', () => {
+each('no Node GCSP runtime or legacy database remains in the GCSP blueprint', ({ yaml }) => {
   assert.doesNotMatch(yaml, /    name: gcsp-api\n/);
   assert.doesNotMatch(yaml, /runtime: node/);
   assert.doesNotMatch(yaml, /GCSP_RUNTIME/);
@@ -28,14 +32,14 @@ test('no Node GCSP runtime or legacy database remains in the GCSP blueprint', ()
 });
 
 // FUCQ-482: the demo picker reads the Used Cars API, not the retired GCSP API.
-test('gcsp-site sends the demo picker to the Used Cars API', () => {
+each('site sends the demo picker to the Used Cars API', ({ site }) => {
   assert.match(site, /- key: GCSP_API_URL\b[^\n]*\n\s+value: https:\/\/bmw-matcher-api\.onrender\.com/);
   assert.doesNotMatch(site, /gcsp-api\.onrender\.com/);
 });
 
 // FUCQ-482: readiness stays DOWN while any required provider is none, so each one is configured.
-test('every required Java provider is configured, not left at none', () => {
-  const java = yaml.slice(yaml.indexOf('  - type: web\n    name: gcsp-java-api\n'), yaml.indexOf('  - type: web\n    name: gcsp-angular-dev\n'));
+each('every required Java provider is configured, not left at none', ({ yaml, prefix }) => {
+  const java = service(yaml, `${prefix}-api`);
   const value = (key) => java.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: ([^\\s#]+)`))?.[1];
   assert.equal(value('GCSP_REQUIRED_PROVIDERS'), 'identity,persistence,account,scenario,supply,allocation-candidates,ordering,approvals,documents,appointments,returns,production,evidence');
   const configured = { GCSP_SCENARIO_PROVIDER: 'demo', GCSP_SUPPLY_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
@@ -49,7 +53,7 @@ test('every required Java provider is configured, not left at none', () => {
   assert.doesNotMatch(java, /- key: GCSP_BREVO_[A-Z_]+[^\n]*\n\s+value:/);
 });
 
-test('gcsp-site declares no redirects to retired gcsp-api pages', () => {
+each('site declares no redirects to retired gcsp-api pages', ({ site }) => {
   assert.doesNotMatch(site, /^    routes:/m);
   assert.doesNotMatch(site, /gcsp(?:-(?:login|greg|help)\.html|\/login)/);
 });
