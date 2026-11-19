@@ -36,12 +36,13 @@ public class DemoGrants {
     private final Map<String, Txn> txns = new ConcurrentHashMap<>();
     private final Map<String, Code> codes = new ConcurrentHashMap<>();
 
-    /** Holds a transaction and returns its random id, or empty when too many are waiting. */
+    /** Holds a transaction and returns its random id; at the cap the oldest waiting one is dropped, so floods can't lock sign-in. */
     public Optional<String> openTxn(String redirectUri, String challenge, String state, String nonce) {
         Instant now = clock.instant();
         txns.values().removeIf(t -> t.expires().isBefore(now));
-        if (txns.size() >= MAX_PENDING) {
-            return Optional.empty();
+        while (txns.size() >= MAX_PENDING) {
+            txns.entrySet().stream().min(java.util.Map.Entry.comparingByValue(
+                    java.util.Comparator.comparing(Txn::expires))).ifPresent(e -> txns.remove(e.getKey(), e.getValue()));
         }
         String id = random(24);
         txns.put(id, new Txn(redirectUri, challenge, state, nonce, now.plus(TXN_LIFETIME)));

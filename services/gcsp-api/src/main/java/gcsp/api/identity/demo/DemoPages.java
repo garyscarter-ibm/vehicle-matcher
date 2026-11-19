@@ -40,7 +40,7 @@ final class DemoPages {
     static String roleWords(List<String> roles) {
         boolean employee = roles.contains("employee");
         if (roles.contains("greg")) {
-            return "Greg, ordering lead" + (employee ? ", which is also an employee" : "");
+            return employee ? "Ordering lead and employee" : "Ordering lead";
         }
         if (roles.contains("presenter")) {
             return "Presenter";

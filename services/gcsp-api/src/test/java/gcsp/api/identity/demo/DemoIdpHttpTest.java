@@ -182,7 +182,7 @@ class DemoIdpHttpTest {
             last = at;
             assertTrue(html.contains(p.name()));
         }
-        assertTrue(html.contains("Greg, ordering lead, which is also an employee"));
+        assertTrue(html.contains("Ordering lead and employee"));
         assertTrue(html.contains(">Presenter<"));
         assertTrue(html.contains("action=\"http://localhost:"));
         given().get(ISSUER_PATH + "/demo-idp.css").then().statusCode(200).contentType(containsString("text/css"))
