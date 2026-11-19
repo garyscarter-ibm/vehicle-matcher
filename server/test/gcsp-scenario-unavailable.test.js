@@ -128,13 +128,3 @@ test('the synthetic stock fault is run-scoped and never alters an operational pr
   assert.equal(stale.value.observedAt, '2026-11-05T08:29:00.000Z');
   assert.equal(faults.read('run-b').mode, 'none');
 });
-
-test("Greg's view model reads an unavailable or stale stock source as unavailable, not as no stock", async () => {
-  const { toDashboardView } = await import('../../blocks/gcsp/greg/demand-view.js');
-  const { fixtureProjection } = await import('../../blocks/gcsp/greg/fixtures.js');
-  const base = fixtureProjection('no-stock');
-  const view = (source) => toDashboardView({ ...base, stock: { ...base.stock, source } }).stock;
-  assert.deepEqual(view({ status: 'ok' }), { rows: [], sourceUnavailable: false, sourceStale: false });
-  assert.deepEqual(view({ status: 'unavailable' }), { rows: [], sourceUnavailable: true, sourceStale: false });
-  assert.deepEqual(view({ status: 'unavailable', reason: 'stale' }), { rows: [], sourceUnavailable: true, sourceStale: true });
-});

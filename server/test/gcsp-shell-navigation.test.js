@@ -7,7 +7,7 @@ const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https
 for (const name of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'Event', 'customElements', 'DOMException']) {
   Object.defineProperty(globalThis, name, { value: name === 'window' ? dom.window : dom.window[name], configurable: true, writable: true });
 }
-let portal; let emp; let pages;
+let portal; let emp;
 const stops = [];
 const account = { status: 'ready', name: 'Paula (synthetic)', context: 'Synthetic' };
 const loadAccount = async () => account;
@@ -19,31 +19,16 @@ const KEYS = ['cars', 'order-progress'];
 before(async () => {
   portal = await import('../../blocks/gcsp/employee/portal-navigation.js');
   emp = await import('../../blocks/gcsp/employee/gcsp-employee.js');
-  pages = {
-    help: await import('../../blocks/gcsp/cases/gcsp-help.js'),
-    cases: await import('../../blocks/gcsp/cases/fixtures.js'),
-  };
 });
 after(() => { stops.splice(0).forEach((stop) => stop()); dom.window.close(); });
 beforeEach(() => { stops.splice(0).forEach((stop) => stop()); document.body.replaceChildren(); });
 
 const fakeLocation = () => { const assigned = []; return { assigned, assign: (to) => assigned.push(to) }; };
-// A live host element, wired the way each live.js wires it: its navigate event is routed by the shared helper.
-function element(tag, define, adapter, extra = {}) {
-  define(dom.window.customElements);
-  const host = document.createElement(tag); const location = fakeLocation();
-  for (const [key, value] of Object.entries(extra)) host[key] = value;
-  host.adapter = adapter; portal.routePortalEvents(host, location);
-  document.body.append(host); stops.push(() => host.remove());
-  return { root: host, location };
-}
 const PAGES = {
   'Your cars (mountEmployee default)': { active: 'cars', crumb: 'Your cars', mount() {
     const root = place(); const location = fakeLocation();
     stops.push(emp.mountEmployee(root, { loadAccount, location })); return { root, location };
   } },
-  help: { active: null, crumb: 'Renewal help', mount: () => element('gcsp-help', pages.help.defineGcspHelp, pages.cases.fixtureAdapter('request'),
-    { accountAdapter: pages.cases.fixtureAccountAdapter }) },
 };
 const buttons = (root) => [...root.querySelectorAll('nav[aria-label="Portal"] button[data-key]')];
 

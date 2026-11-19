@@ -65,8 +65,7 @@ test('a future offer block and its own nested direct page are discovered without
 test('every literal dynamic import, lazy employee stylesheet and CSS asset is in the dependency graph', async (t) => {
   const output = path.join(await owned(t), 'site');
   const manifest = await assembleSite({ output });
-  for (const target of ['blocks/gcsp/manual-gallery/fixtures.js', 'blocks/gcsp/account/http-adapter.js',
-    'blocks/gcsp/shell/gcsp-shell.css']) {
+  for (const target of ['blocks/gcsp/manual-gallery/fixtures.js', 'blocks/gcsp/shell/gcsp-shell.css']) {
     assert.ok(manifest.dependencies.some((e) => e.to === target), target);
   }
   for (const block of manifest.blocks) for (const file of block.files) assert.ok(manifest.files.some((f) => f.path === file), file);

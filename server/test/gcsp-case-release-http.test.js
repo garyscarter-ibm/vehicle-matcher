@@ -7,7 +7,6 @@ import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createCompositionTestProfile } from './helpers/runtime-composition-profile.js';
-import { createCaseHttpAdapter } from '../../blocks/gcsp/cases/http-adapter.js';
 
 const origin = 'https://case-composition.test';
 // Never print contexts, sessions, outbox links or complete envelopes on failure.
@@ -29,14 +28,17 @@ async function http(f, path, { body, session = f.employeeCookie } = {}) {
   f.requests.push({ path: path.split('?')[0], method: req.method, httpStatus: response.status, status: json?.status });
   return { httpStatus: response.status, json };
 }
+// Case routes called directly over the registered handler; the server's JSON envelope is the result.
 function caseAdapter(f, session) {
-  return createCaseHttpAdapter({ base: origin, async fetchImpl(url, options) {
-    options.signal?.throwIfAborted();
-    const { httpStatus, json } = await http(f, new URL(url).pathname + new URL(url).search,
-      { session, ...(options.body === undefined ? {} : { body: JSON.parse(options.body) }) });
-    // Only the real registered handler supplies the status and response bytes.
-    return { ok: httpStatus >= 200 && httpStatus < 300, async json() { return json; } };
-  } });
+  const call = async (path, body) => (await http(f, `/api/gcsp/${path}`, { session, ...(body === undefined ? {} : { body }) })).json;
+  return {
+    listCases: () => call('scheme-team/cases'),
+    readOptions: ({ caseId }) => call(`scheme-team/cases/options?${new URLSearchParams({ caseId })}`),
+    updateCase: ({ commandId, caseId, expectedVersion, status, reason, nextAction, dueAt, remedy }) => call('scheme-team/cases/update',
+      { commandId, caseId, expectedVersion, status, reason, nextAction, dueAt, ...(remedy !== undefined ? { remedy } : {}) }),
+    readCases: () => call('cases'),
+    requestHelp: ({ commandId, reason }) => call('cases', { commandId, reason }),
+  };
 }
 async function setup(t, { hold = false } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });

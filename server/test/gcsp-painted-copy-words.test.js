@@ -95,30 +95,8 @@ test('the restarted, access-needed and stale-page screens paint no demo or run w
   }
 });
 
-// ---------------------------------------------------------------------------------------------
-// Help and the case queue
 const { createGcspRuntime } = await import('../gcsp/runtime.js');
-const { mountHelpBody } = await import('../../blocks/gcsp/cases/gcsp-help.js');
-const { mountCaseQueue } = await import('../../blocks/gcsp/cases/gcsp-case-queue.js');
-const casesFixtures = await import('../../blocks/gcsp/cases/fixtures.js');
-const queueFixtures = await import('../../blocks/gcsp/cases/queue-fixtures.js');
 const stripTags = (html) => html.replace(/<(style|script|title)[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
-
-// ---------------------------------------------------------------------------------------------
-// Help and renewal cases
-test('help and the case queue paint no demo or synthetic wording in any case or error state', async () => {
-  for (const name of casesFixtures.FIXTURE_NAMES) {
-    const root = host(); const destroy = mountHelpBody(root, { adapter: casesFixtures.fixtureAdapter(name) }); await settle();
-    check(`help:${name}`, root); destroy(); root.remove();
-  }
-  const queueCase = queueFixtures.queueCaseFixtures()[0];
-  for (const name of queueFixtures.QUEUE_FIXTURE_NAMES) {
-    const root = host(); const destroy = mountCaseQueue(root, { adapter: queueFixtures.queueFixtureAdapter(name) }); await settle();
-    root.querySelector('[data-case-id], .gcsp-case-row button')?.click(); await settle();
-    check(`case queue:${name}`, root); destroy(); root.remove();
-  }
-  assert.ok(queueCase);
-});
 
 // ---------------------------------------------------------------------------------------------
 // Order progress
@@ -134,9 +112,7 @@ test('order progress paints no demo or synthetic wording in any of its states', 
 });
 
 // ---------------------------------------------------------------------------------------------
-// Greg: demand, order plan, publish, route comparison, order requests
-const { mountGregDashboard } = await import('../../blocks/gcsp/greg/gcsp-greg.js');
-const gregFixtures = await import('../../blocks/gcsp/greg/fixtures.js');
+// Greg: order plan, publish, route comparison
 const planFixtures = await import('../../blocks/gcsp/greg/plan/fixtures.js');
 const { mountGregOrderPlan } = await import('../../blocks/gcsp/greg/plan/panel.js');
 const { driveToState } = await import('../../blocks/gcsp/greg/plan/gallery.js');
@@ -145,12 +121,10 @@ const { galleryPolicy, galleryPreview } = await import('../../blocks/gcsp/greg/p
 const { mountGregComparison } = await import('../../blocks/gcsp/greg/comparison/panel.js');
 const comparisonFixtures = await import('../../blocks/gcsp/greg/comparison/fixtures.js');
 const { outcomeToState } = await import('../../blocks/gcsp/greg/comparison/http-adapter.js');
-const { mountGregOrders } = await import('../../blocks/gcsp/greg-orders/greg-orders.js');
-// The real server in process: Greg's dashboard, plan, policy and comparison read what a presenter would see.
+// The real server in process: Greg's policy publication reads what a presenter would see.
 const { Readable } = await import('node:stream');
 const { buildServer } = await import('../index.js');
-const { createGregHttpAdapter } = await import('../../blocks/gcsp/greg/http-adapter.js');
-const { createGregOrdersHttpAdapter } = await import('../../blocks/gcsp/greg-orders/http-adapter.js');
+const { createGregPublishHttpAdapter } = await import('../../blocks/gcsp/greg/publish/http-adapter.js');
 const ORIGIN = 'https://painted.test';
 const cookieOf = (values) => [values].flat().map((entry) => entry.split(';')[0]).join('; ');
 async function liveServer(principal) {
@@ -175,28 +149,6 @@ const openAll = (root) => root.querySelectorAll('details').forEach((node) => { n
 const stored = JSON.parse(readFileSync(new URL('./fixtures/gcsp-comparison-process-result.json', import.meta.url), 'utf8')).storedResult;
 const click = (root, label) => [...root.querySelectorAll('button')].find((node) => node.textContent === label || node.textContent.startsWith(label))?.click();
 
-test('Greg dashboard paints no demo or synthetic wording from the real server or in any demand state', async () => {
-  const live = await liveServer('demo-greg');
-  try {
-    const greg = createGregHttpAdapter({ fetchImpl: live.fetchImpl });
-    const root = host();
-    const destroy = mountGregDashboard(root, { loadDemand: greg.loadDemand, orderPlanAdapter: greg.orderPlan, comparisonAdapter: greg.comparison, publishAdapter: greg.publish });
-    await settle(); await tick(100); openAll(root); check('Greg dashboard:real server', root, /Demand and supply/); destroy(); root.remove();
-    const orders = host(); const stop = mountGregOrders(orders, { adapter: createGregOrdersHttpAdapter({ fetchImpl: live.fetchImpl }), productionControls: true });
-    await settle(); await tick(50); openAll(orders); check('Greg order requests:real server', orders, /Order requests/); stop(); orders.remove();
-  } finally { await live.close(); }
-  for (const name of gregFixtures.FIXTURE_NAMES) {
-    const root = host();
-    const destroy = mountGregDashboard(root, { loadDemand: gregFixtures.fixtureAdapter(name).loadDemand, orderPlanAdapter: planFixtures.planFixtureAdapter('ready'),
-      comparisonAdapter: comparisonFixtures.comparisonFixtureAdapter('no-clear-difference') });
-    await settle(); await tick(20); openAll(root); check(`Greg dashboard:${name}`, root, /Demand and supply/); destroy(); root.remove();
-  }
-  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
-    const root = host(); const destroy = mountGregDashboard(root, { loadDemand: async () => ({ status }) }); await settle();
-    check(`Greg dashboard:${status}`, root); destroy(); root.remove();
-  }
-});
-
 test('the order plan paints no demo or synthetic wording in any plan state', async () => {
   for (const name of planFixtures.FIXTURE_NAMES) {
     const root = host(); root.className = 'gcsp';
@@ -208,7 +160,7 @@ test('the order plan paints no demo or synthetic wording in any plan state', asy
 test('publish policy paints no demo or synthetic wording as a draft, a preview or a published result', async () => {
   const live = await liveServer('demo-greg');
   try {
-    const adapter = createGregHttpAdapter({ fetchImpl: live.fetchImpl }).publish;
+    const adapter = createGregPublishHttpAdapter({ fetchImpl: live.fetchImpl });
     const root = host(); const destroy = mountGregPublish(root, { adapter, commandId: () => 'publish-command' }); await settle();
     check('publish:draft', root, /Version reference/); openAll(root); check('publish:draft, expanded', root);
     const input = root.querySelector('.gcsp-publish input[type="number"]'); input.value = String(Number(input.value) + 10);
@@ -229,25 +181,6 @@ test('the route comparison paints no demo or synthetic wording, with assumptions
     check(`comparison:${name}`, root, /\S/);
     for (const option of root.querySelectorAll('.gcsp-comparison-picker [data-value]')) { option.click(); await settle(); openAll(root); check(`comparison:${name}, ${option.dataset.value}`, root); }
     destroy(); root.remove();
-  }
-});
-
-test('order requests and production controls paint no demo or synthetic wording', async () => {
-  const ok = (value) => ({ status: 'ok', value });
-  const tracking = (stage) => ({ runId: 'run-a', asOf: INSTANT, versions: { policy: 'policy-a', stock: 'stock-a' },
-    adapter: { status: 'ready', choices: [{ model: '3 Series', derivative: '320i Touring' }] },
-    requests: stage ? [{ requestId: 'request-a', version: 2, model: '3 Series', derivative: '320i Touring', quantity: 3, stage,
-      confirmedQuantity: 1, outstandingQuantity: 2, releasedQuantity: stage === 'released' ? 3 : 0,
-      supplies: [{ supplyId: 'supply-a', quantity: 1, expectedAt: '2027-01-01T09:00:00.000Z', queued: true }],
-      delay: stage === 'delayed' ? { until: '2027-02-01T00:00:00.000Z', reason: 'Supplier delay' } : null,
-      latestReleasedAt: stage === 'released' ? '2027-01-01T09:00:00.000Z' : null }] : [] });
-  for (const stage of [null, 'requested', 'partly-confirmed', 'delayed', 'released']) {
-    const root = host(); const destroy = mountGregOrders(root, { adapter: { loadTracking: async () => ok(tracking(stage)) }, productionControls: true }); await settle();
-    openAll(root); check(`orders:${stage ?? 'empty'}, production controls`, root); destroy(); root.remove();
-  }
-  for (const out of [{ status: 'forbidden' }, { status: 'unavailable' }, { status: 'stale-run' }, ok({ ...tracking(null), adapter: { status: 'unavailable' } })]) {
-    const root = host(); const destroy = mountGregOrders(root, { adapter: { loadTracking: async () => out }, productionControls: true }); await settle();
-    check(`orders:${out.status}${out.value ? ' adapter unavailable' : ''}`, root); destroy(); root.remove();
   }
 });
 

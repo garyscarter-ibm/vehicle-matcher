@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
-let panel; let fixtures; let adapterMod; let view; let element; let dash; let stored;
+let panel; let fixtures; let adapterMod; let view; let stored;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 4; i += 1) await tick(); };
 before(async () => {
@@ -16,8 +16,6 @@ before(async () => {
   fixtures = await import('../../blocks/gcsp/greg/comparison/fixtures.js');
   adapterMod = await import('../../blocks/gcsp/greg/comparison/http-adapter.js');
   view = await import('../../blocks/gcsp/greg/comparison/comparison-view.js');
-  element = await import('../../blocks/gcsp/greg/comparison/element.js');
-  dash = await import('../../blocks/gcsp/greg/gcsp-greg.js');
   stored = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-process-result.json', import.meta.url), 'utf8')).storedResult;
 });
 beforeEach(() => document.body.replaceChildren());
@@ -57,8 +55,6 @@ test('the HTTP adapter reads the latest route with credentials and maps network 
   assert.equal(seen.url, 'https://x.test/api/gcsp/comparison/process/latest'); assert.equal(seen.init.credentials, 'include'); assert.equal(seen.init.method, 'GET');
   const down = adapterMod.createComparisonHttpAdapter({ fetchImpl: async () => { throw new Error('offline'); } });
   assert.deepEqual(await down.load({}), { status: 'unavailable' });
-  const { createGregHttpAdapter } = await import('../../blocks/gcsp/greg/http-adapter.js');
-  assert.equal(typeof createGregHttpAdapter({ fetchImpl }).comparison.load, 'function');
 });
 
 test('toComparisonView gives one formatted row per stored difference and throws on malformed input', () => {
@@ -209,34 +205,6 @@ test('every fixture state has no em dashes, inline handlers or scripts', async (
     assert.ok(!html.includes('—'), `${name} has an em dash`); assert.ok(!/\son[a-z]+\s*=/i.test(html), `${name} has an inline handler`); assert.ok(!/<script/i.test(html), `${name} has a script`);
     assert.ok(!text(root).includes('—'));
   }
-});
-
-test('the custom element mounts from a fixture or an adapter and tears down', async () => {
-  assert.equal(element.defineGcspGregComparison(window.customElements), element.defineGcspGregComparison(window.customElements));
-  const node = document.createElement('gcsp-greg-comparison'); node.setAttribute('fixture', 'buddy-better'); document.body.append(node); await settle();
-  assert.ok(node.classList.contains('gcsp')); assert.equal(node.querySelector('.gcsp-comparison').dataset.state, 'ready');
-  const bad = document.createElement('gcsp-greg-comparison'); bad.setAttribute('fixture', 'nope'); document.body.append(bad); await settle();
-  assert.equal(bad.querySelector('.gcsp-comparison').dataset.state, 'unavailable');
-  const direct = document.createElement('gcsp-greg-comparison'); direct.adapter = fixtures.comparisonFixtureAdapter('empty'); document.body.append(direct); await settle();
-  assert.equal(direct.querySelector('.gcsp-comparison').dataset.state, 'empty'); direct.remove(); assert.equal(direct.children.length, 0);
-});
-
-test('the dashboard mounts the comparison into its route-comparison region, and leaves the reserved note without an adapter', async () => {
-  const { adapter, calls } = spy('buddy-better'); const root = host();
-  const demand = (await import('../../blocks/gcsp/greg/fixtures.js')).fixtureAdapter('populated');
-  const teardown = dash.mountGregDashboard(root, { loadDemand: demand.loadDemand, comparisonAdapter: adapter }); await settle();
-  const region = teardown.regions.routeComparison;
-  assert.equal(region.getAttribute('aria-label'), 'Route comparison'); assert.equal(region.hasAttribute('aria-labelledby'), false);
-  assert.ok(region.querySelector('.gcsp-comparison')); assert.equal(region.textContent.includes('not built'), false);
-  assert.equal(typeof teardown.comparison.refresh, 'function'); assert.equal(calls.load, 1);
-  assert.match(teardown.regions.prediction.textContent, /Not available yet/);
-  teardown(); assert.equal(root.children.length, 0);
-  const bare = host(); const plain = dash.mountGregDashboard(bare, { loadDemand: demand.loadDemand }); await settle();
-  assert.equal(plain.comparison, null); assert.match(plain.regions.routeComparison.textContent, /Not available yet/); plain();
-  dash.defineGcspGregDashboard(window.customElements); const node = document.createElement('gcsp-greg-dashboard');
-  node.adapter = { comparison: fixtures.comparisonFixtureAdapter('today-better'), loadDemand: demand.loadDemand };
-  document.body.append(node); await settle();
-  assert.ok(node.regions.routeComparison.querySelector('.gcsp-comparison-measure')); node.remove();
 });
 
 const headline = (root) => root.querySelector('.gcsp-comparison-headline');

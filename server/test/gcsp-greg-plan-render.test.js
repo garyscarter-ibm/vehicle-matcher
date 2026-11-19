@@ -3,7 +3,7 @@ import { test, before, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 
-let panel; let fixtures; let adapterMod; let gallery; let element; let dash;
+let panel; let fixtures; let adapterMod; let gallery;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 4; i += 1) await tick(); };
 before(async () => {
@@ -15,8 +15,6 @@ before(async () => {
   fixtures = await import('../../blocks/gcsp/greg/plan/fixtures.js');
   adapterMod = await import('../../blocks/gcsp/greg/plan/http-adapter.js');
   gallery = await import('../../blocks/gcsp/greg/plan/gallery.js');
-  element = await import('../../blocks/gcsp/greg/plan/element.js');
-  dash = await import('../../blocks/gcsp/greg/gcsp-greg.js');
 });
 beforeEach(() => document.body.replaceChildren());
 
@@ -282,52 +280,13 @@ test('every state has no em dashes, inline handlers or scripts, and sends no fig
   }
 });
 
-test('driveToState reaches the driven states for the gallery and harness', async () => {
+test('driveToState reaches the driven states for the gallery', async () => {
   for (const name of ['preview', 'infeasible', 'stale']) {
     const root = host(); panel.mountGregOrderPlan(root, { adapter: fixtures.planFixtureAdapter(name) }); gallery.driveToState(root, name); await tick(150);
     assert.equal(state(root), name);
   }
   const example = gallery.gregOrderPlanExample(); document.body.append(example); await tick(200);
   assert.deepEqual([...example.querySelectorAll('.gcsp-plan')].map((p) => p.dataset.state), ['ready', 'preview', 'ready', 'ready', 'infeasible', 'stale']);
-  assert.equal(example.querySelectorAll('a[href*="plan="]').length, 12);
-});
-
-test('the custom element mounts from a fixture, takes an adapter, emits submit and tears down', async () => {
-  assert.equal(element.defineGcspGregOrderPlan(window.customElements), element.defineGcspGregOrderPlan(window.customElements));
-  const node = document.createElement('gcsp-greg-order-plan'); node.setAttribute('fixture', 'ready'); document.body.append(node); await settle();
-  assert.ok(node.classList.contains('gcsp')); assert.equal(node.querySelector('.gcsp-plan').dataset.state, 'ready');
-  const seen = []; document.body.addEventListener('gcsp:order-plan-submitted', (e) => seen.push(e.detail.submissionId));
-  node.querySelector('button.vm-btn-primary').click(); await settle(); assert.deepEqual(seen, ['submission-fixture0001']);
-  const bad = document.createElement('gcsp-greg-order-plan'); bad.setAttribute('fixture', 'nope'); document.body.append(bad); await settle();
-  assert.equal(bad.querySelector('.gcsp-plan').dataset.state, 'unavailable');
-  const direct = document.createElement('gcsp-greg-order-plan'); direct.adapter = fixtures.planFixtureAdapter('no-demand'); document.body.append(direct); await settle();
-  assert.equal(direct.querySelector('.gcsp-plan').dataset.state, 'no-demand'); direct.remove(); assert.equal(direct.children.length, 0);
-});
-
-test('the dashboard mounts the plan into its prediction region, refreshes it on publication and tears it down', async () => {
-  const { adapter, calls } = spy('ready'); const root = host(); let submitted = 0;
-  const demand = (await import('../../blocks/gcsp/greg/fixtures.js')).fixtureAdapter('populated');
-  const teardown = dash.mountGregDashboard(root, { loadDemand: demand.loadDemand, orderPlanAdapter: adapter, onOrderPlanSubmitted: () => { submitted += 1; } }); await settle();
-  const region = teardown.regions.prediction;
-  assert.equal(region.getAttribute('aria-label'), 'Next order plan'); assert.equal(region.hasAttribute('aria-labelledby'), false);
-  assert.ok(region.querySelector('.gcsp-plan')); assert.equal(region.querySelector('.gcsp-note')?.textContent.includes('not built'), false);
-  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'prediction', 'orderTracking', 'routeComparison', 'caseQueue']);
-  assert.equal(typeof teardown.orderPlan.refresh, 'function'); assert.equal(calls.read, 1);
-  root.dispatchEvent(new window.CustomEvent('gcsp:policy-published', { bubbles: true })); await settle(); assert.equal(calls.read, 2);
-  requestButton(region).click(); await settle(); assert.equal(submitted, 1);
-  teardown(); assert.equal(root.children.length, 0);
-  const bare = host(); const plain = dash.mountGregDashboard(bare, { loadDemand: demand.loadDemand }); await settle();
-  assert.equal(plain.orderPlan, null); assert.match(plain.regions.prediction.textContent, /Not available yet/); plain();
-});
-
-test('the Greg HTTP adapter exposes the order plan adapter the dashboard element passes through', async () => {
-  const { createGregHttpAdapter } = await import('../../blocks/gcsp/greg/http-adapter.js');
-  const adapter = createGregHttpAdapter({ fetchImpl: async () => { throw new Error('offline'); } });
-  assert.deepEqual(Object.keys(adapter.orderPlan).sort(), ['previewPlan', 'readPlan', 'submitPlan']);
-  dash.defineGcspGregDashboard(window.customElements); const node = document.createElement('gcsp-greg-dashboard');
-  node.adapter = { orderPlan: fixtures.planFixtureAdapter('ready'), loadDemand: (await import('../../blocks/gcsp/greg/fixtures.js')).fixtureAdapter('populated').loadDemand };
-  document.body.append(node); await settle();
-  assert.ok(node.regions.prediction.querySelector('.gcsp-plan')); node.remove();
 });
 
 test('a lapsed access key shows the compact restart notice with Reload and no Retry, on first load and over a loaded plan', async () => {

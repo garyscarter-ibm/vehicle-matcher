@@ -18,7 +18,6 @@ import { createSyntheticReturnOutcomes, createLiveReturnOutcomesStub, RETURN_OUT
 import { RETURN_EXCEPTION_CONSUMER, RETURN_OUTCOME_STATE } from '../gcsp/lifecycle/return-plan/outcomes.js';
 import { applyCurrentCarEvent, recordCurrentCarEvent, readCurrentCar, CURRENT_CAR_EVENTS } from '../gcsp/lifecycle/current-car/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
-import { triggerLabel } from '../../blocks/gcsp/cases/case-content.js';
 import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/index.js';
 import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
@@ -534,7 +533,6 @@ test('FUCQ-259: a missed return opens a case keyed and labelled as a missed retu
   for (const c of [greg, own]) {
     assert.deepEqual([c.trigger.type, c.trigger.eventType, c.trigger.label, c.reason, c.history.at(-1).reason],
       ['lifecycle-exception', 'return-missed', copy.label, copy.reason, copy.reason]);
-    assert.equal(triggerLabel(c.trigger), 'Missed return of current car');
   }
 });
 
