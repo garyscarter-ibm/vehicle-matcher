@@ -222,6 +222,9 @@ services:
     # Existing app routes precede resource exclusions and unknown-page recovery.
     # Render placeholders match one segment, including asset-looking offer IDs.
     routes:
+      - type: redirect     # the bare host has no page; the app lives under /gcsp/
+        source: /
+        destination: /gcsp/
       - type: redirect
         source: /gcsp
         destination: /gcsp/
