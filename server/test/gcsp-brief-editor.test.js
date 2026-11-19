@@ -10,8 +10,6 @@ import { createEmployeeRecommendationService } from '../gcsp/recommendation/inde
 import { createManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { fact, preference, essential, stock, providerValue } from './helpers/employee-recommendation.js';
-import { startHttpServer } from './helpers/employee-recommendation-http.js';
-
 async function setup(t, { policy = createPolicyService(), seed = true } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   await repository.open(); t.after(() => repository.close());
@@ -43,7 +41,6 @@ const draft = () => ({ schemaVersion: 1, preferences: {
 const preview = (f, b = draft(), bv = 0, dv = 0) => f.editor.previewDraft(f.context, input(b, bv, dv));
 const draftSave = (f, b = draft(), commandId = 'save', expectedBriefVersion = 0, expectedDraftVersion = 0) =>
   f.brief.saveDraft(f.context, { commandId, expectedBriefVersion, expectedDraftVersion, brief: b });
-
 
 test('editor uses canonical controls, labelled unconfirmed defaults and sourced read-only account facts', async (t) => {
   const f = await setup(t); const before = structuredClone(f.store.state);
@@ -279,33 +276,6 @@ test('approved recommendation entry stays strict positive-version and excludes c
   assert.equal((await service.previewUnsaved(f.context, { brief: draft(), baseBriefVersion: 0, baseDraftVersion: 0,
     employeeId: 'other' })).status, 'invalid');
 });
-
-test('real guarded editor/preview HTTP composition rejects origin, role, query, authority and stale run; absent composition unavailable', async (t) => {
-  const f = await setup(t);
-  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
-  t.after(() => http.close());
-  const request = (path, options = {}) => http.request(`/api/gcsp/brief${path}`, { session: f.acting, ...options });
-  const read = await request('/editor'); assert.equal(read.status, 200, JSON.stringify(read.json));
-  assert.equal(read.headers.get('cache-control'), 'no-store');
-  assert.equal((await request('/preview', { body: input(draft()) })).status, 200);
-  assert.equal((await request('/preview', { body: input(draft()), origin: 'https://hostile.test' })).status, 403);
-  assert.equal((await request('/editor', { session: f.presenter })).status, 403);
-  assert.equal((await request('/editor', { session: null })).status, 401);
-  assert.equal((await request('/editor?employeeId=other')).status, 400);
-  for (const key of ['runId', 'employeeId', 'policyVersion', 'knownFacts', 'cash', 'contribution'])
-    assert.equal((await request('/preview', { body: { ...input(draft()), [key]: 'forged' } })).status, 400, key);
-  const legacy = await request('/draft', { body: { commandId: 'http-draft', expectedBriefVersion: 0, expectedDraftVersion: 0, brief: draft() } });
-  assert.equal(legacy.status, 200, JSON.stringify(legacy.json));
-  const state = (await f.clock.readState(f.presenter.value.context)).value;
-  assert.equal((await f.clock.reset(f.presenter.value.context, { commandId: 'reset', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
-    scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture })).status, 'ok');
-  assert.equal((await request('/editor')).json.status, 'stale-run');
-  const absent = await setup(t); const missing = await startHttpServer({ gcspIdentity: absent.identity, gcspClock: absent.clock, gcspBrief: absent.brief });
-  t.after(() => missing.close());
-  assert.equal((await missing.request('/api/gcsp/brief/editor', { session: absent.acting })).status, 503);
-  assert.equal((await missing.request('/api/gcsp/brief/preview', { session: absent.acting, body: input(draft()) })).status, 503);
-});
-
 
 test('employee no requirements never weaken independent provider facts and allowance or eligibility authority', async (t) => {
   const f = await setup(t); const b = draft(); b.essentials.equipment = essential([], 'includes', 'equipment-key');

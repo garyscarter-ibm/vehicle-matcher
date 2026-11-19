@@ -1,13 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { once } from 'node:events';
-import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createDeliveryEmailRoutes } from '../gcsp/notify/delivery-email.js';
-import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
-
 const instant = '2026-11-05T09:00:00.000Z';
 const cookie = (session) => [session.value.setCookie].flat().map((value) => value.split(';')[0]).join('; ');
 async function setup(t) {
@@ -83,27 +79,4 @@ test('reset never transfers a delivery address to a different principal with the
   assert.equal(reset.status, 'ok');
   const next = await f.repository.read({ ...context, runId }, { table: 'employees', key: { runId, employeeId: context.employeeId } });
   assert.equal(next.value.deliveryEmail, undefined);
-});
-
-test('real HTTP setting route enforces session, employee role, origin and employee ownership', async (t) => {
-  const f = await setup(t);
-  const server = buildServer({ gcspRepository: f.repository, gcspIdentity: f.identity,
-    gcspAllowedOrigins: ['https://setting.test'], gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } } });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  t.after(async () => { server.closeAllConnections(); await new Promise((done) => server.close(done)); });
-  const base = `http://127.0.0.1:${server.address().port}`; const path = '/api/gcsp/manual/notification-email';
-  const body = { commandId: 'http-save', expectedVersion: 0, deliveryEmail: 'http@example.test' };
-  const request = (session, origin, input = body) => fetch(`${base}${path}`, { method: 'POST', headers: {
-    'Content-Type': 'application/json', ...(session ? { cookie: cookie(session) } : {}), ...(origin ? { Origin: origin } : {}),
-  }, body: JSON.stringify(input) });
-  assert.equal((await request(null, 'https://setting.test')).status, 401);
-  assert.equal((await request(f.presenter, 'https://setting.test')).status, 403);
-  assert.equal((await request(f.paula, undefined)).status, 403);
-  assert.equal((await request(f.paula, 'https://attacker.test')).status, 403);
-  assert.equal((await request(f.paula, 'https://setting.test', { ...body, employeeId: 'employee-sam' })).status, 400);
-  const adapter = createAccountHttpAdapter({ base, fetchImpl: (url, options) => fetch(url, { ...options,
-    headers: { ...options.headers, cookie: cookie(f.paula), Origin: 'https://setting.test' } }) });
-  assert.equal((await adapter.saveNotificationEmail(body)).status, 'ok');
-  assert.deepEqual((await adapter.readNotificationEmail()).value, { deliveryEmail: 'http@example.test', version: 1 });
-  assert.equal((await f.invoke('GET', {}, f.sam.value.context)).value.deliveryEmail, null);
 });

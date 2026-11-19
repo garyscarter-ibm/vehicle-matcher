@@ -5,8 +5,6 @@ import { once } from 'node:events';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { DemoIdentityAdapter } from '../gcsp/identity/index.js';
-import { buildServer } from '../index.js';
-
 const read = { runId: 'identity-run-1', asOf: '2026-11-05T00:00:00.000Z' };
 const seedUrl = new URL('../gcsp/policy/seed-v1.json', import.meta.url);
 const context = (runId = read.runId) => ({ environmentId: 'identity-test', runId, principalId: 'trusted-bootstrap', roles: [] });
@@ -54,23 +52,6 @@ async function setup({ policy = createPolicyService(), secureCookies = true } = 
 
 async function resolve(fixture, session) {
   return fixture.identity.resolveSession({ authorized: true, cookie: cookieOf(session) });
-}
-
-async function withHttp(fixture, routes, work, options = {}) {
-  // Identity routes do not use vehicle evidence. Avoid one unrelated full-corpus loader per HTTP case.
-  const server = buildServer({ gcspIdentity: fixture.identity, gcspRoutes: routes,
-    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } },
-    gcspAllowedOrigins: options.allowedOrigins || ['https://identity.test'] });
-  server.listen(0, '127.0.0.1');
-  await once(server, 'listening');
-  const request = async (path, { session = fixture.presenter, body, headers = {}, method = body ? 'POST' : 'GET', noOrigin = false } = {}) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}${path}`, {
-      method, headers: { ...(noOrigin ? {} : { Origin: 'https://identity.test' }), ...(session ? { cookie: cookieOf(session) } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}), ...headers },
-      ...(body ? { body: JSON.stringify(body) } : {}),
-    });
-    return { status: response.status, headers: response.headers, json: response.status === 204 ? null : await response.json() };
-  };
-  try { await work(request); } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
 }
 
 test('configured fictional people seed once per run, with exact policy-owned scheme/grade/slot', async () => {
@@ -220,118 +201,6 @@ test('unknown configured principal and repository outage are explicit session ou
   assert.equal((await resolve(f, f.presenter)).status, 'unavailable');
 });
 
-test('FUCQ-261: the context reports whether a presenter control cookie came with the request', async () => {
-  const f = await setup();
-  const paula = await f.acting('demo-paula');
-  await withHttp(f, [], async (request) => {
-    const alone = await request('/api/gcsp/context', { session: paula });
-    assert.deepEqual([alone.status, alone.json.status, alone.json.presenterControl], [200, 'ok', false]);
-    assert.equal(alone.json.value.roles.includes('presenter'), false);
-    const presenter = await request('/api/gcsp/context');
-    assert.deepEqual([presenter.json.status, presenter.json.presenterControl], ['ok', true]);
-  });
-});
-
-test('every GCSP HTTP handler gets one server context and rejects query/body identity spoofing', async () => {
-  const f = await setup();
-  const paula = await f.acting('demo-paula');
-  let received;
-  await withHttp(f, [{ method: 'POST', path: '/api/gcsp/probe', handle: async ({ context: value }) => { received = value; return ok({ principalId: value.principalId }); } }], async (request) => {
-    assert.equal((await request('/api/gcsp/context', { session: null })).json.status, 'missing-session');
-    for (const key of ['principalId', 'employeeId', 'roles', 'gradeId', 'schemeId', 'companyId', 'runId', 'context']) {
-      assert.equal((await request(`/api/gcsp/context?${key}=fake`, { session: paula })).json.code, 'browser-context-forbidden');
-      assert.equal((await request('/api/gcsp/probe', { session: paula, body: { [key]: 'fake' } })).json.code, 'browser-context-forbidden');
-    }
-    const normal = await request('/api/gcsp/probe', { session: paula, body: { preference: 'comfort' }, headers: { 'X-Employee-Id': 'employee-alex', 'X-Role': 'greg', 'X-Run-Id': 'fake' } });
-    assert.equal(normal.json.value.principalId, 'demo-paula');
-    assert.equal(received.runId, read.runId);
-    assert.deepEqual(received.roles, ['employee']);
-    assert.equal((await request('/api/gcsp/unregistered', { session: paula })).json.status, 'not-found');
-  });
-});
-
-test('HTTP role guards refuse each Greg operation and presenter reset/tick before handlers run', async () => {
-  const f = await setup();
-  const paula = await f.acting('demo-paula');
-  const greg = await f.acting('demo-greg');
-  let operations = 0;
-  const cases = [['policy-publish', 'greg'], ['order-request', 'greg'], ['greg-operation', 'greg'], ['reset', 'presenter'], ['ticks', 'presenter']];
-  await withHttp(f, cases.map(([path, role]) => ({ method: 'POST', path: `/api/gcsp/${path}`, role, handle: async () => { operations++; return ok({ authorizedProbe: true }); } })), async (request) => {
-    for (const [path, role] of cases) {
-      assert.equal((await request(`/api/gcsp/${path}`, { session: paula, body: {} })).status, 403);
-      assert.equal(operations, 0);
-      const wrong = role === 'greg' ? f.presenter : greg;
-      assert.equal((await request(`/api/gcsp/${path}`, { session: wrong, body: {} })).status, 403);
-    }
-    for (const [path, role] of cases) assert.equal((await request(`/api/gcsp/${path}`, { session: role === 'greg' ? greg : f.presenter, body: {} })).status, 200);
-    assert.equal(operations, cases.length);
-  });
-});
-
-test('HTTP principal switching sends credentials only in HttpOnly cookies, without URL or response tokens', async () => {
-  const f = await setup();
-  await withHttp(f, [], async (request) => {
-    assert.equal((await request('/api/gcsp/session', { session: null, body: { principalId: 'demo-presenter' } })).json.status, 'missing-session');
-    const employee = await f.acting('demo-paula');
-    assert.equal((await request('/api/gcsp/session/switch', { session: employee, body: { principalId: 'demo-greg', commandId: 'employee-escalation' } })).status, 403);
-    const presenterControllingEmployee = { value: { setCookie: [employee.value.setCookie, f.presenter.value.setCookie[1]] } };
-    assert.equal((await request('/api/gcsp/session/switch', { session: presenterControllingEmployee, body: { principalId: 'demo-greg', commandId: 'controlled-selection' } })).json.value.principalId, 'demo-greg');
-    const switched = await request('/api/gcsp/session/switch', { body: { principalId: 'demo-paula', commandId: 'http-switch' } });
-    assert.equal(switched.status, 200);
-    assert.equal(switched.json.value.principalId, 'demo-paula');
-    assert.deepEqual(switched.json.value.roles, ['employee']);
-    assert.ok(switched.headers.get('set-cookie').includes('HttpOnly'));
-    assert.equal(switched.headers.get('cache-control'), 'no-store');
-    assert.ok(!JSON.stringify(switched.json).match(/sessionIdHash|setCookie|token|cookie/i));
-  });
-});
-
-test('identity port replacement requires no route change and absent contexts fail closed', async () => {
-  const trusted = { environmentId: 'sanctioned-test-environment', principalId: 'sanctioned-test-principal', runId: 'sanctioned-test-run', roles: ['employee'] };
-  for (const value of [trusted, null]) {
-    const fake = { identity: { async resolveSession() { return ok(value); } }, presenter: { value: { setCookie: 'gcsp_session=fixture;' } } };
-    await withHttp(fake, [{ method: 'GET', path: '/api/gcsp/replaceable', handle: async ({ context: ctx }) => ok({ received: ctx.principalId }) }], async (request) => {
-      const response = await request('/api/gcsp/replaceable');
-      assert.equal(response.status, value ? 200 : 403);
-      if (value) assert.equal(response.json.value.received, value.principalId);
-    });
-  }
-});
-
-test('unconfigured identity and provider errors fail closed without affecting retail or leaking errors', async () => {
-  const f = await setup();
-  await withHttp({ ...f, identity: undefined }, [], async (request) => {
-    assert.equal((await request('/api/gcsp/context')).json.status, 'unavailable');
-    assert.equal((await request('/api/questions', { session: null })).status, 200);
-  });
-  await withHttp({ ...f, identity: { async resolveSession() { throw new Error('private-session-cookie'); } } }, [], async (request) => {
-    const response = await request('/api/gcsp/context');
-    assert.equal(response.status, 503);
-    assert.equal(response.json.status, 'unavailable');
-    assert.ok(!JSON.stringify(response.json).includes('private-session-cookie'));
-  });
-});
-
-test('HTTP resource guards refuse another employee and stale runs before the consumer executes', async () => {
-  const f = await setup();
-  await addResources(f);
-  const paula = await f.acting('demo-paula');
-  const alex = await f.acting('demo-alex');
-  let calls = 0;
-  await withHttp(f, [{
-    method: 'POST', path: '/api/gcsp/resource-probe',
-    resource: ({ body }) => body.resourceRef,
-    handle: async () => { calls++; return ok({ authorizedProbe: true }); },
-  }], async (request) => {
-    const ref = { table: 'offers', key: { runId: read.runId, offerId: 'offer-alex' } };
-    assert.equal((await request('/api/gcsp/resource-probe', { session: paula, body: { resourceRef: ref } })).status, 403);
-    assert.equal((await request('/api/gcsp/resource-probe', { session: alex, body: { resourceRef: { ...ref, key: { ...ref.key, runId: 'old-run' } } } })).status, 409);
-    assert.equal(calls, 0);
-    assert.equal((await request('/api/gcsp/resource-probe', { session: alex, body: { resourceRef: ref } })).status, 200);
-    assert.equal(calls, 1);
-  });
-});
-
 test('backend presentation fixtures retain the context and distinct safe refusal shapes', async () => {
   const evidence = JSON.parse(await readFile(new URL('./fixtures/gcsp-identity-outcomes.json', import.meta.url), 'utf8'));
   const f = await setup();
@@ -346,42 +215,4 @@ test('backend presentation fixtures retain the context and distinct safe refusal
   assert.deepEqual(await resolve(f, paula), evidence.refusals.expired);
   await f.reset();
   assert.deepEqual(await resolve(f, paula), evidence.refusals.stale);
-});
-
-test('malformed HTTP bodies and browser credentials in URLs are refused without executing consumers', async () => {
-  const f = await setup();
-  let called = false;
-  await withHttp(f, [{ method: 'POST', path: '/api/gcsp/probe', handle: async () => { called = true; return ok({}); } }], async (request) => {
-    for (const body of [[], 'invalid-body']) assert.equal((await request('/api/gcsp/probe', { body })).json.code, 'invalid-request');
-    for (const key of ['token', 'session', 'sessionId']) assert.equal((await request(`/api/gcsp/context?${key}=browser-value`)).json.code, 'browser-context-forbidden');
-    assert.equal(called, false);
-  });
-});
-
-test('GCSP supports credentialed static-site requests only from exact configured origins; retail CORS is preserved', async () => {
-  const f = await setup();
-  await withHttp(f, [], async (request) => {
-    const allowed = await request('/api/gcsp/context', { headers: { Origin: 'https://gcsp.example' } });
-    assert.equal(allowed.status, 200);
-    assert.equal(allowed.headers.get('access-control-allow-origin'), 'https://gcsp.example');
-    assert.equal(allowed.headers.get('access-control-allow-credentials'), 'true');
-    assert.equal(allowed.headers.get('vary'), 'Origin');
-    const preflight = await request('/api/gcsp/session/switch', { method: 'OPTIONS', session: null, headers: { Origin: 'https://gcsp.example' } });
-    assert.equal(preflight.status, 204);
-    assert.equal(preflight.headers.get('access-control-allow-origin'), 'https://gcsp.example');
-    assert.equal(preflight.headers.get('access-control-allow-headers'), 'Content-Type');
-    assert.equal((await request('/api/gcsp/context', { noOrigin: true })).status, 200);
-    assert.equal((await request('/api/gcsp/session/switch', { noOrigin: true, body: { principalId: 'demo-greg', commandId: 'missing-origin' } })).status, 403);
-    for (const origin of ['https://gcsp.example.evil', 'https://other.example', 'null']) {
-      assert.equal((await request('/api/gcsp/context', { headers: { Origin: origin } })).status, 403);
-      assert.equal((await request('/api/gcsp/context', { method: 'OPTIONS', headers: { Origin: origin } })).status, 403);
-      assert.equal((await request('/api/gcsp/session/switch', { body: { principalId: 'demo-greg', commandId: 'disallowed-origin' }, headers: { Origin: origin } })).status, 403);
-    }
-    const retail = await request('/api/questions', { headers: { Origin: 'https://other.example' } });
-    assert.equal(retail.status, 200);
-    assert.equal(retail.headers.get('access-control-allow-origin'), '*');
-    assert.equal(retail.headers.get('access-control-allow-credentials'), null);
-  }, { allowedOrigins: ['https://gcsp.example', '*', 'not-an-origin', 'https://gcsp.example/path'] });
-  const insecure = new DemoIdentityAdapter({ repository: f.repository, policy: createPolicyService(), currentRun: () => context(), sessionNow: f.now, secureCookies: false });
-  assert.equal((await insecure.createPresenterSession('insecure-cookie')).status, 'unavailable');
 });

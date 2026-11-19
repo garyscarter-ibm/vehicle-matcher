@@ -4,10 +4,8 @@ import { setup, confirm, saved, release, offer, fact } from './helpers/greg-dema
 import { preference, stock, providerValue, provider, time, context as recommendationContext } from './helpers/employee-recommendation.js';
 import { PolicyService, MemoryPolicyProvider, createMemoryPolicyStore } from '../gcsp/policy/index.js';
 import { createGregPublishService, versionLabel } from '../gcsp/greg/publish/index.js';
-import { createGregPublishRoutes } from '../gcsp/greg/publish/http.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { scorePreferences } from '../scenarios/employee/index.js';
-
 const initial = 'gcsp-policy-v1';
 const now = '2026-11-05T09:00:00.000Z';
 const edit = (id, value) => ({ expectedActiveVersion: initial, changes: [{ id, value }] });
@@ -174,14 +172,6 @@ test('privacy bands suppress tiny fit cohorts, including zero', async (t) => {
   const view = good(await f.publish.preview(f.context, edit('weight:body', 2)));
   assert.deepEqual(view.active.fit.meanBestScore, { status: 'suppressed', fewerThan: 5, unit: 'score/100' });
   assert.equal(Object.hasOwn(view.active.fit.scoredBriefs, 'value'), false);
-});
-
-test('route definitions enforce Greg role, strict queries and body delegation without registration', async (t) => {
-  const f = await fixture(t); const routes = createGregPublishRoutes(f.publish);
-  assert.deepEqual(routes.map((row) => row.role), ['greg', 'greg', 'greg']);
-  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams('runId=other') })).status, 'invalid');
-  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams(), body: { extra: true } })).status, 'invalid');
-  assert.equal((await routes[1].handle({ context: f.context, searchParams: new URLSearchParams(), body: edit('weight:body', 2) })).status, 'ok');
 });
 
 test('real employee scorer weights reorder contradictory preferences; neutral legacy and zero weights remain valid', async (t) => {

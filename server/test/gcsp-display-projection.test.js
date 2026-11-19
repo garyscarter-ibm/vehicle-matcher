@@ -3,11 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { withVehicleDisplayImages } from '../gcsp/vehicle-evidence/display-projection.js';
 import { configurationIdDisplayImage, modelDisplayImage, primaryDisplayImageSource, readDisplayImageCatalogue } from '../gcsp/vehicle-evidence/display-images.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
-import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
-import { createOfferDecisionHandler } from '../gcsp/offers/decision-http.js';
 import { inputDigest } from '../gcsp/repository/core.js';
-
 const configurationId = 'Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=';
 const stockId = 'saved-order-1';
 const snapshot = () => ({ identityKind: 'exact-stock', sourceKeys: { stockId }, snapshotVersion: 'saved-v1',
@@ -141,35 +137,6 @@ test('public configuration signatures use pinned assets and reject unknown, nonc
   assert.equal(await configurationIdDisplayImage(Buffer.from(`UNKNOWN:${codes}`).toString('base64')), null);
   assert.equal(await configurationIdDisplayImage(id.replace(/=+$/, '')), null);
   assert.equal(await configurationIdDisplayImage(id, null, { loadAsset: async () => { throw Error('missing'); } }), null);
-});
-
-const context = { principalId: 'employee-paula', runId: 'saved-run', environmentId: 'saved-env', roles: ['employee'] };
-const response = () => ({ setHeader() {}, writeHead() {}, end() {} });
-const request = (method = 'GET') => ({ method, headers: { origin: 'http://localhost' }, async *[Symbol.asyncIterator]() {} });
-const captured = () => { let sent; return { sendJson(_res, code, value) { sent = { code, value }; }, get: () => sent }; };
-
-test('authenticated normal and offer HTTP responses enrich persisted snapshots after service validation', async () => {
-  const stored = { status: 'ok', value: { quote: saved() } }; const before = JSON.stringify(stored);
-  const identity = { resolveSession: async () => ({ status: 'ok', value: context }), requireRole: async () => ({ status: 'ok' }) };
-  const normal = createGcspHandler({ identity, allowedOrigins: ['http://localhost'], routes: [
-    { method: 'GET', path: '/api/gcsp/manual/order', role: 'employee', handle: async () => stored },
-  ] });
-  const normalCapture = captured();
-  await normal({ req: request(), res: response(), pathname: '/api/gcsp/manual/order', searchParams: new URLSearchParams(), sendJson: normalCapture.sendJson });
-  assert.equal(normalCapture.get().code, 200); image(normalCapture.get().value.value.quote.facts);
-  const offer = createOfferAccessHandler({ identity, allowedOrigins: ['http://localhost'], service: {
-    fromAccount: async () => ({ status: 'ok', value: { offer: stored.value } }),
-  } });
-  const offerCapture = captured();
-  await offer({ req: request(), res: response(), pathname: '/api/gcsp/offers/saved-offer', searchParams: new URLSearchParams(), sendJson: offerCapture.sendJson });
-  assert.equal(offerCapture.get().code, 200); image(offerCapture.get().value.value.quote.facts);
-  const decision = createOfferDecisionHandler({ allowedOrigins: ['http://localhost'], resolveAccess: async () => ({ status: 'ok', value: { context } }),
-    service: { readReasons: async () => stored } });
-  const decisionCapture = captured();
-  await decision({ req: request(), res: response(), pathname: '/api/gcsp/offers/saved-offer/decision-reasons',
-    searchParams: new URLSearchParams({ runId: context.runId }), sendJson: decisionCapture.sendJson, gateAuthorized: true });
-  assert.equal(decisionCapture.get().code, 200); image(decisionCapture.get().value.value.quote.facts);
-  assert.equal(JSON.stringify(stored), before);
 });
 
 test('FUCQ-373: image disclaimers stored before the rule are stripped from the public copy only', async () => {

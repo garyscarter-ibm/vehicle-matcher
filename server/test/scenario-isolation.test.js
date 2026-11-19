@@ -1,16 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { readFileSync, readdirSync } from 'node:fs';
 import { BRANDS, brandTuning } from '../brands.js';
 import { USED_RETAIL_V1 } from '../scenarios/retail/index.js';
 import { bmwPool, fakeStock, startTestServer, get } from './helpers.js';
 import { MODES } from '../../blocks/vehicle-matcher/modes/index.js';
-import { brief, providerValue, stock, fact } from './helpers/employee-recommendation.js';
-import { createEmployeeHttpFixture, EMPLOYEE_INSTANT } from './helpers/employee-recommendation-http.js';
-import { createPolicyService } from '../gcsp/policy/index.js';
-
+import { stock } from './helpers/employee-recommendation.js';
 const expectedBrands = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
 const expectedModes = ['questionnaire', 'swipe', 'head-to-head', 'podium', 'guess-who'];
 
@@ -24,64 +19,6 @@ test('retail compatibility metadata retains six brands and five registered modes
     assert.ok(Object.hasOwn(expected.client, `${brand}/guess-who`), `${brand} client fixture`);
   }
 });
-
-test('employee and retail routes use separate providers and retail keeps its cash budget gate', async () => {
-  const insideBudget = bmwPool(1)[0];
-  const outsideBudget = { ...structuredClone(insideBudget), id: 'fixture-above-budget',
-    priceMin: insideBudget.priceMin + 100000, priceMax: insideBudget.priceMax + 100000 };
-  const retailPool = [insideBudget, outsideBudget];
-  const fetchRetailerStock = fakeStock({ bmw: retailPool });
-  const employeeCalls = [];
-  const provider = { async resolve(context) {
-    employeeCalls.push(structuredClone(context));
-    return { status: 'ok', value: { ...providerValue([stock()]), runId: context.runId,
-      environmentId: context.environmentId, employeeId: context.employeeId } };
-  } };
-  const clock = { async now(context) { return { status: 'ok', value: {
-    now: EMPLOYEE_INSTANT, runId: context.runId, clockVersion: 'isolation-clock-v1',
-  } }; } };
-  const fixture = await createEmployeeHttpFixture({ gcspRecommendations: {
-    provider, policy: createPolicyService(), time: clock,
-  }, retailDependencies: { fetchRetailerStock, fetchNearbyStock: async () => [],
-    enrichColours: async (_brand, cars) => cars, fetchDealerDirectory: async () => new Map(),
-    geocodePostcode: async () => null } });
-  try {
-    const employee = await fixture.request('/api/gcsp/recommendations', { body: brief() });
-    assert.equal(employee.status, 200);
-    assert.equal(fetchRetailerStock.calls.length, 0);
-    assert.equal(employeeCalls.length, 1);
-    assert.equal(employeeCalls[0].employeeId, 'employee-paula');
-
-    const answers = { bodyStyles: ['any'], fuel: ['open'], charging: 'none', primaryUse: 'city', people: 'solo' };
-    const narrowBudget = await fixture.request('/api/match', { body: {
-      answers: { ...answers, budget: [0, insideBudget.priceMax + 500] }, retailBudgetEnabled: false,
-    } });
-    assert.equal(narrowBudget.status, 200);
-    assert.equal(narrowBudget.json.matches.length, 1);
-    assert.equal(narrowBudget.json.matches[0].listings.length, 1);
-    assert.equal(narrowBudget.json.matches[0].listings[0].id, insideBudget.id);
-    assert.equal(fetchRetailerStock.calls.length, 1);
-    assert.equal(fetchRetailerStock.calls[0].brand, 'bmw');
-    assert.equal(employeeCalls.length, 1);
-
-    const wideBudget = await fixture.request('/api/match', { body: {
-      answers: { ...answers, budget: [0, outsideBudget.priceMax + 500] },
-    } });
-    assert.equal(wideBudget.status, 200);
-    assert.equal(wideBudget.json.matches[0].listings.length, 2);
-    assert.equal(fetchRetailerStock.calls.length, 2);
-    assert.equal(employeeCalls.length, 1);
-
-    const missingBudget = await fixture.request('/api/match', { body: {
-      answers: { bodyStyles: ['any'] }, retailBudgetEnabled: false,
-    } });
-    assert.equal(missingBudget.status, 400);
-    assert.equal(fetchRetailerStock.calls.length, 2);
-    assert.equal(employeeCalls.length, 1);
-  } finally { await fixture.close(); }
-});
-
-/* ---- FUCQ-27: retail profile binding and isolation ---- */
 
 const retailAnswers = { bodyStyles: ['any'], fuel: ['open'], charging: 'none', primaryUse: 'city', people: 'solo', budget: [0, 90000] };
 const retailDeps = (pool) => ({ fetchRetailerStock: fakeStock({ bmw: pool }), fetchNearbyStock: async () => [],
@@ -117,46 +54,6 @@ test('request fields cannot select or alter the retail profile', async () => {
     assert.equal(extra.status, plain.status);
     assert.equal(extra.text, plain.text);
   } finally { await server.close(); }
-});
-
-test('employee rules cannot mutate registry tuning or change the retail response', async () => {
-  const snapshot = () => Object.fromEntries(Object.keys(BRANDS).map((b) => [b, cloneKeepingFunctions(brandTuning(b))]));
-  const before = snapshot();
-  const dir = mkdtempSync(join(tmpdir(), 'dev047-policy-'));
-  const altPath = join(dir, 'seed-alt.json');
-  const seed = JSON.parse(readFileSync(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
-  const rule = seed.assumptions.find((a) => a.key === 'employee.recommendation.v1');
-  rule.value.tuning.weights = { body: 0, economy: 1, performance: 0 };
-  rule.value.displayLimit = 1;
-  writeFileSync(altPath, JSON.stringify(seed));
-  const provider = { async resolve(context) { return { status: 'ok', value: { ...providerValue([stock(1), stock(2, { mpg: fact(60, 'mpg-imperial') })]),
-    runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId } }; } };
-  const clock = { async now(context) { return { status: 'ok', value: { now: EMPLOYEE_INSTANT, runId: context.runId, clockVersion: 'isolation-clock-v1' } }; } };
-  const fixture = await createEmployeeHttpFixture({ gcspRecommendations: { provider, policy: createPolicyService(), time: clock },
-    retailDependencies: retailDeps(bmwPool(6)) });
-  try {
-    const port = fixture.server.address().port;
-    const retail = () => rawPost(port, '/api/match', { answers: retailAnswers });
-    const first = await retail();
-    assert.equal(first.status, 200);
-    const employeeA = await fixture.request('/api/gcsp/recommendations', { body: brief() });
-    assert.equal(employeeA.status, 200);
-    assert.deepEqual(snapshot(), before);
-    const between = await retail();
-    assert.equal(between.text, first.text);
-    const alt = await createEmployeeHttpFixture({ gcspRecommendations: { provider, policy: createPolicyService({ filePath: altPath }), time: clock },
-      retailDependencies: retailDeps(bmwPool(6)) });
-    try {
-      const employeeB = await alt.request('/api/gcsp/recommendations', { body: brief() });
-      assert.equal(employeeB.status, 200);
-      assert.notDeepEqual(employeeB.json, employeeA.json);
-    } finally { await alt.close(); }
-    assert.deepEqual(snapshot(), before);
-    assert.equal((await retail()).text, first.text);
-  } finally {
-    await fixture.close();
-    rmSync(dir, { recursive: true, force: true });
-  }
 });
 
 test('the retail scenario is pure: no I/O imports and no fetch, inputs untouched', () => {

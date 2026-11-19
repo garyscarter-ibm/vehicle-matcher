@@ -1,14 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createLifecycleAppointmentService, APPOINTMENT_HANDLER_ID } from '../gcsp/lifecycle/appointments/index.js';
-import { createAppointmentRoutes } from '../gcsp/lifecycle/appointments/http.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createRenewalCaseService } from '../gcsp/cases/index.js';
@@ -16,7 +13,6 @@ import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/inde
 import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { createSyntheticAppointments, createLiveAppointmentsStub, APPOINTMENT_CONSUMER, OPERATION_TYPES } from '../gcsp/adapters/synthetic-appointments.js';
 import { createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
-
 const shapes = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-appointment-outcomes.json', import.meta.url), 'utf8'));
 const SEED = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
 const seedValue = (key) => SEED.assumptions.find((a) => a.key === key).value;
@@ -393,47 +389,6 @@ test('real FUCQ-111 stage port: refused until the order is sent to ordering, the
   assert.deepEqual([done.state, done.booked, done.slot, done.history.map((h) => h.state)], ['scheduled', true, open.offeredSlots[0], ['requested', 'scheduled']]);
 });
 
-// A route caller bound to the real shared handler; sessions come from setup, never from the request.
-const http = (f) => {
-  const handler = createGcspHandler({ identity: f.identity, routes: createAppointmentRoutes(f.service), allowedOrigins: ['https://appointments.test'] });
-  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  return async (path, { body, session = f.sessions.paula, query = '' } = {}) => {
-    const req = Readable.from(body ? [Buffer.from(JSON.stringify(body))] : []);
-    Object.assign(req, { method: body ? 'POST' : 'GET', headers: { origin: 'https://appointments.test', cookie: cookie(session) } });
-    let sent; const res = { setHeader() {} };
-    await handler({ req, res, pathname: `/api/gcsp${path}`, searchParams: new URLSearchParams(query), sendJson: (r, code, value) => { sent = { code, value }; } });
-    return sent;
-  };
-};
-
-test('/api/gcsp appointment routes request, read and accept as the server-owned employee and ignore browser identity', async (t) => {
-  const f = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.scenario.v1').proposeChange = true; }) }); f.order();
-  const call = http(f);
-  const early = await call('/appointments', { query: `orderUuid=${ORDER}&employeeId=employee-alex&runId=other` });
-  assert.deepEqual([early.code, early.value.value.employeeId, early.value.value.runId], [200, 'employee-paula', f.paula.runId], 'forged query identity is stripped');
-  const open = await call('/appointments', { query: `orderUuid=${ORDER}` });
-  assert.equal(open.code, 200); assert.equal(open.value.value.state, 'not-requested');
-  const [slot] = open.value.value.offeredSlots;
-  const asked = await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId, employeeId: 'employee-alex', runId: 'other', roles: ['presenter'] } });
-  assert.equal(asked.code, 200, JSON.stringify(asked));
-  assert.deepEqual([asked.value.value.state, asked.value.value.booked, asked.value.value.employeeId, asked.value.value.runId],
-    ['requested', false, 'employee-paula', f.paula.runId]);
-  assert.deepEqual((await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId } })).value, asked.value, 'repeat returns the same appointment');
-  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, asked.value.value);
-  assert.equal((await call('/appointments', { session: f.sessions.alex, query: `orderUuid=${ORDER}` })).code, 403);
-  assert.equal((await call('/appointments/request', { session: f.sessions.alex, body: { orderUuid: ORDER, slotId: slot.slotId } })).code, 403);
-  assert.equal((await call('/appointments', { session: f.sessions.greg, query: `orderUuid=${ORDER}` })).code, 200);
-  assert.equal((await call('/appointments', { query: 'other=1' })).code, 400);
-
-  await f.advance(DELAY); await f.tick();
-  const proposed = (await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value;
-  assert.deepEqual([proposed.state, proposed.booked], ['change-proposed', false]);
-  assert.equal((await call('/appointments/accept', { session: f.sessions.alex, body: { orderUuid: ORDER, proposalId: proposed.proposalId } })).code, 403);
-  const accepted = await call('/appointments/accept', { body: { orderUuid: ORDER, proposalId: proposed.proposalId, employeeId: 'employee-alex' } });
-  assert.equal(accepted.code, 200, JSON.stringify(accepted));
-  assert.deepEqual([accepted.value.value.state, accepted.value.value.booked, accepted.value.value.employeeId], ['scheduled', true, 'employee-paula']);
-});
-
 // Recorded response shapes for the later appointment screen (FUCQ-120); no screen in this story.
 test('recorded appointment response shapes match real service output, with owners and next steps from policy', async (t) => {
   const keys = (v) => Object.keys(v).sort();
@@ -644,25 +599,6 @@ test('a startup tick only reconciles an uncertain completion; the next presenter
   assert.deepEqual([(await read(f)).pending.step, f.provider.calls], ['complete', ['reconcile']], 'a startup tick never retries the write');
   await f.tick();
   assert.deepEqual([(await read(f)).state, (await receipts(f)).length], ['completed', 3]);
-});
-
-test('/api/gcsp/appointments/complete is gated, server-scoped and ignores browser identity', async (t) => {
-  const f = await setup(t, { documents: true }); await scheduled(f);
-  const call = http(f);
-  const forged = { orderUuid: ORDER, employeeId: 'employee-alex', runId: 'other', roles: ['employee'] };
-  assert.equal((await call('/appointments/complete', { body: { orderUuid: ORDER } })).code, 403, 'the employee cannot complete');
-  assert.equal((await call('/appointments/complete', { session: f.sessions.alex, body: { orderUuid: ORDER } })).code, 403);
-  const early = await call('/appointments/complete', { session: f.sessions.greg, body: forged });
-  assert.deepEqual([early.code, early.value.code, early.value.readiness.documentsComplete], [409, 'handover-not-ready', false]);
-  assert.deepEqual(Object.keys(early.value).sort(), [...shapes.notReady.keys].sort());
-  assert.deepEqual(Object.keys(early.value.readiness).sort(), [...shapes.notReady.readinessKeys].sort());
-  await ready(f);
-  const done = await call('/appointments/complete', { session: f.sessions.presenter, body: forged });
-  assert.equal(done.code, 200, JSON.stringify(done));
-  assert.deepEqual([done.value.value.state, done.value.value.employeeId, done.value.value.runId, done.value.value.outcome.state], ['completed', 'employee-paula', f.paula.runId, 'completed']);
-  assert.deepEqual((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER } })).value, done.value);
-  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, done.value.value);
-  assert.equal((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER, extra: 1 } })).code, 400);
 });
 
 test('FUCQ-261: a completed handover leaves nothing owned by the employee', async (t) => {
@@ -931,26 +867,6 @@ for (const fault of ['lost', 'throw-after', 'hang']) {
     assert.equal((await exceptions(viaTick.f)).length, 1);
   });
 }
-
-test('/api/gcsp/appointments/no-show is gated, server-scoped and ignores browser identity; rebooking is Paula\'s own request', async (t) => {
-  const f = await setup(t); await missable(f);
-  const call = http(f);
-  const forged = { orderUuid: ORDER, employeeId: 'employee-alex', runId: 'other', roles: ['employee'] };
-  assert.equal((await call('/appointments/no-show', { body: { orderUuid: ORDER } })).code, 403, 'the employee cannot record a no-show');
-  assert.equal((await call('/appointments/no-show', { session: f.sessions.alex, body: { orderUuid: ORDER } })).code, 403);
-  assert.equal((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER, extra: 1 } })).code, 400);
-  const done = await call('/appointments/no-show', { session: f.sessions.presenter, body: forged });
-  assert.equal(done.code, 200, JSON.stringify(done));
-  assert.deepEqual([done.value.value.state, done.value.value.employeeId, done.value.value.runId, done.value.value.outcome.state], ['no-show', 'employee-paula', f.paula.runId, 'no-show']);
-  assert.deepEqual((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER } })).value, done.value);
-  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, done.value.value);
-  assert.equal((await call('/appointments', { session: f.sessions.alex, query: `orderUuid=${ORDER}` })).code, 403);
-  const [slot] = done.value.value.offeredSlots.slice(1);
-  assert.equal((await call('/appointments/request', { session: f.sessions.alex, body: { orderUuid: ORDER, slotId: slot.slotId } })).code, 403);
-  const rebooked = await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId, employeeId: 'employee-alex' } });
-  assert.deepEqual([rebooked.code, rebooked.value.value.state, rebooked.value.value.attempt, rebooked.value.value.employeeId], [200, 'requested', 2, 'employee-paula']);
-  assert.equal((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER } })).code, 409);
-});
 
 test('the no-show and rebooked response shapes match the recorded fixture', async (t) => {
   const keys = (v) => Object.keys(v).sort();

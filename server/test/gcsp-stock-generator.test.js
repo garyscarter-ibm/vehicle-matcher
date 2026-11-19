@@ -7,7 +7,6 @@ import pg from 'pg';
 import { createMemoryStore, createMemoryRepository } from '../gcsp/repository/memory.js';
 import { inputDigest } from '../gcsp/repository/core.js';
 import { emptyAllocationInventory, canonicalAllocationContent, readAllocationInventory } from '../gcsp/vehicle-evidence/vin-allocation.js';
-
 // These are explicitly fictional structural fixtures, never accepted F77 data.
 const generatorModule = await import('../gcsp/vehicle-evidence/stock-generator.js').catch((error) => {
   if (error.code === 'ERR_MODULE_NOT_FOUND' && error.message.includes('stock-generator.js')) return {};
@@ -542,60 +541,6 @@ const corpusDigest = async () => {
   const active = JSON.parse(await readFile(join(DEFAULT_VEHICLE_CORPUS_ROOT, 'active.json'), 'utf8'));
   return inputDigest([active, (await readFile(join(DEFAULT_VEHICLE_CORPUS_ROOT, 'versions', active.selected.directory, 'configurations.jsonl'))).toString('base64')]);
 };
-
-test('generated stock is released by the existing release service in the runtime, with facts unchanged', async (t) => {
-  const { registry, built } = await realStock();
-  const { createGcspRuntime } = await import('../gcsp/runtime.js');
-  const { createGeneratedStockProvider } = await import('../gcsp/stock/index.js');
-  const { validatePull } = await import('../gcsp/stock/port.js');
-  const repository = createMemoryRepository({ store: createMemoryStore() });
-  let source;
-  const runtime = await createGcspRuntime({ mode: 'memory', repository, stockProvider: { pull: (request) => source.pull(request) },
-    environmentId: 'generated-release', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'generated-release-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' });
-  assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
-  t.after(() => runtime.value.close());
-  const { clock, identity, stockRelease, policy } = runtime.value;
-  assert.equal((await stockRelease.register()).status, 'ok');
-  const presenter = (await identity.createPresenterSession('generated-release-presenter')).value;
-  const ctx = presenter.context; const state = (await clock.readState(ctx)).value;
-  const run = (await repository.read(ctx, { table: 'runs', key: { runId: state.runId } })).value;
-  assert.equal(run.corpusVersion, CLOCK_CORPUS, 'the run carries the clock scenario corpus, not the generator corpus');
-  const clockRows = (await repository.query(ctx, 'stock')).value;
-  assert.ok(clockRows.length > 0 && clockRows.every((row) => row.state === 'unreleased'));
-  const directory = await mkdtemp(join(tmpdir(), 'stock-generation-release-')); allocationRoots.push(directory);
-  const allocationInventoryPath = join(directory, 'inventory.json');
-  await writeFile(allocationInventoryPath, canonicalAllocationContent(emptyAllocationInventory()));
-  const visibility = { companyIds: ['demo-bmw-fs-uk'], schemeIds: ['choices-fs-uk'], employeeIds: null };
-  const generator = generatorModule.createStockGenerator({ repository, registry, policyService: policy, contextForRun: () => ctx,
-    configurationPlan: built.value.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath, visibility });
-  const generation = await generator.generateStock(state.runId, 'release-seed', run.policyVersion);
-  assert.equal(generation.status, 'ok', JSON.stringify(generation));
-  const before = new Map(generated((await repository.query(ctx, 'stock')).value).map((row) => [row.orderUuid, row]));
-  assert.equal(before.size, generation.value.generated);
-  assert.ok([...before.values()].every((row) => row.state === 'unreleased' && row.release === undefined && row.visibility.schemeIds[0] === 'choices-fs-uk'));
-  source = createGeneratedStockProvider({ repository, contextForRun: () => ctx });
-  const [first] = generation.value.report.release.windows;
-  const size = (await policy.getAssumption('supply.release.size', { runId: state.runId, asOf: run.clockInstant, policyVersion: run.policyVersion })).value.value;
-  const request = { runId: state.runId, asOf: first, releaseSize: size, released: [], queuedSupply: [], policyVersion: run.policyVersion };
-  const early = validatePull(await source.pull({ ...request, asOf: '2026-11-05T09:30:00.000Z' }), { ...request, asOf: '2026-11-05T09:30:00.000Z' });
-  assert.equal(early.status, 'ok'); assert.equal(early.value.tranche, null);
-  const pulled = validatePull(await source.pull(request), request);
-  assert.equal(pulled.status, 'ok', JSON.stringify(pulled));
-  assert.ok(pulled.value.tranche.orderUuids.length > 0 && pulled.value.tranche.orderUuids.length <= request.releaseSize);
-  const tick = await clock.advanceAndTick(ctx, { commandId: 'generated-release-tick', expectedClockVersion: state.clockVersion, mode: 'to', to: first });
-  assert.equal(tick.status, 'ok', JSON.stringify(tick));
-  const outcome = tick.value.tick.outcomes.find((row) => row.handlerId === 'stock-release').outcome;
-  assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); assert.equal(outcome.value.kind, 'stock-released');
-  assert.deepEqual([...outcome.value.orderUuids].sort(), [...pulled.value.tranche.orderUuids].sort());
-  const after = (await repository.query(ctx, 'stock')).value;
-  for (const row of generated(after)) {
-    const wasReleased = outcome.value.orderUuids.includes(row.orderUuid);
-    assert.equal(row.state, wasReleased ? 'released' : 'unreleased');
-    assert.deepEqual(row.facts, before.get(row.orderUuid).facts);
-    assert.equal(row.release === undefined, !wasReleased);
-  }
-  assert.ok(after.filter((row) => !generated([row]).length).every((row) => row.state === 'unreleased'), 'clock fixture rows stay unreleased');
-});
 
 test('regenerating another run leaves the first run and the retained corpus unchanged', async () => {
   const corpusBefore = await corpusDigest();

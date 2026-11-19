@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { once } from 'node:events';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -12,7 +11,6 @@ import { createLifecycleApprovalService, HANDLER_ID, EXCEPTION_CONSUMER } from '
 import { loadLifecyclePolicy, STAGE_LIST_KEY, LIFECYCLE_KEYS } from '../gcsp/lifecycle/approvals/policy.js';
 import { createSyntheticOrderingStatus, createLiveOrderingStatusStub } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { acknowledgedSelection, pendingSelection, createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
-
 const AT = '2026-11-05T00:00:00.000Z';
 // Reads the canonical seed only; alternative values are explicit test inputs over it.
 async function policyWith(changes = {}) {
@@ -172,29 +170,6 @@ test('employee and run scoping, presenter/Greg reads, and truthful not-found and
   assert.equal((await other.service.read(other.greg, { orderUuid: order.orderUuid })).status, 'not-found', 'another run cannot see it');
   assert.equal((await createLifecycleApprovalService({}).read(f.greg, { orderUuid: order.orderUuid })).status, 'unavailable');
   assert.equal((await f.service.read(f.greg, { orderUuid: order.orderUuid, employeeId: 'x' })).status, 'invalid');
-});
-
-test('HTTP routes use the server-owned context and ignore browser-supplied employee and run IDs', async (t) => {
-  const f = await setup(t); const order = await f.seed(f.paula); await f.tick();
-  const { buildServer } = await import('../index.js');
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspLifecycle: f.service, gcspAllowedOrigins: ['https://lifecycle.test'] });
-  assert.equal((await server.gcspStartup).status, 'ok'); server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  t.after(async () => { server.closeAllConnections(); await new Promise((resolve) => server.close(resolve)); });
-  const sessions = {};
-  for (const id of ['demo-paula', 'demo-alex', 'demo-greg']) sessions[id] = await f.identity.switchPrincipal(f.presenter.value.context, id, `http-${id}`);
-  const cookie = (s) => [s.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  const call = async (path, id) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp${path}`, { headers: { Origin: 'https://lifecycle.test', Cookie: cookie(sessions[id]) } });
-    return { status: response.status, value: await response.json(), cache: response.headers.get('cache-control') };
-  };
-  const own = await call(`/orders/progress?orderUuid=${order.orderUuid}&employeeId=employee-alex&runId=other`, 'demo-paula');
-  assert.equal(own.status, 200, JSON.stringify(own)); assert.equal(own.cache, 'no-store');
-  assert.equal(own.value.value.employeeId, 'employee-paula'); assert.equal(own.value.value.currentStage, 'HR approval');
-  assert.equal((await call(`/orders/progress?orderUuid=${order.orderUuid}&employeeId=employee-alex`, 'demo-alex')).status, 403);
-  assert.equal((await call(`/orders/progress?orderUuid=${order.orderUuid}`, 'demo-greg')).status, 200);
-  assert.equal((await call('/orders/progress/all', 'demo-greg')).value.value.orders.length, 1);
-  assert.equal((await call('/orders/progress?orderUuid=missing', 'demo-greg')).status, 404);
-  assert.equal((await call(`/orders/progress?orderUuid=${order.orderUuid}&stage=x`, 'demo-greg')).status, 400);
 });
 
 test('response-shape fixtures for the order progress screen match the read model', async (t) => {

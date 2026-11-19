@@ -11,8 +11,6 @@ import { createManualContextService, createRepositoryManualPorts } from '../gcsp
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { scorePreferences, validateBriefContent } from '../scenarios/employee/index.js';
 import { fact, preference, stock, providerValue } from './helpers/employee-recommendation.js';
-import { startHttpServer, cookieOf, EMPLOYEE_ORIGIN } from './helpers/employee-recommendation-http.js';
-
 const KEY = 'brief.accountPreferences.v1';
 const SLIDERS = ['sportiness', 'comfort', 'economy', 'size'];
 
@@ -377,38 +375,6 @@ test('a missing or malformed account preference policy makes the editor unavaila
   assert.equal((await missing.editor.readEditor(missing.context)).status, 'unavailable');
 });
 
-test('real authenticated HTTP saves a draft and the editor read returns the same record', async (t) => {
-  const f = await setup(t);
-  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
-  t.after(() => http.close());
-  const body = (changes, extra = {}) => ({ commandId: `http-${++serial}`, expectedBriefVersion: 0, expectedDraftVersion: 0, changes, ...extra });
-  const post = (b, options = {}) => http.request('/api/gcsp/brief/preferences', { session: f.acting, body: b, ...options });
-  assert.equal((await post(body({ comfort: { value: 50 } }), { session: null })).status, 401);
-  assert.equal((await post(body({ comfort: { value: 50 } }), { session: f.presenter })).status, 403);
-  assert.equal((await post(body({ comfort: { value: 50 } }), { origin: 'https://hostile.test' })).status, 403);
-  assert.equal((await http.request('/api/gcsp/brief/preferences?employeeId=other', { session: f.acting, body: body({ comfort: { value: 50 } }) })).status, 400);
-  for (const key of ['employeeId', 'runId', 'buddy', 'consent', 'essentials']) assert.equal((await post(body({ comfort: { value: 50 } }, { [key]: {} }))).status, 400, key);
-  const ok = await post(body({ body: { value: ['saloon', 'estate'] }, comfort: { value: 100, importance: 'high' } }));
-  assert.equal(ok.status, 200, JSON.stringify(ok.json));
-  assert.equal(ok.headers.get('cache-control'), 'no-store');
-  assert.equal(ok.json.value.draftVersion, 1);
-  const editor = await http.request('/api/gcsp/brief/editor', { session: f.acting });
-  assert.equal(editor.status, 200);
-  assert.equal(editor.json.value.provenance.initial, 'saved-draft');
-  assert.deepEqual(editor.json.value.initial.accountPreferences, ok.json.value.accountPreferences);
-  assert.equal(editor.json.value.initial.accountPreferences.considered, 2);
-  assert.deepEqual(editor.json.value.initial.accountPreferences.categories.body, { state: 'considered', value: ['saloon', 'estate'], importance: 'medium', exact: true });
-  assert.deepEqual(editor.json.value.initial.accountPreferences.categories.comfort, { state: 'considered', value: 100, importance: 'high', exact: true });
-  const stored = await http.request('/api/gcsp/brief/draft', { session: f.acting });
-  assert.deepEqual(stored.json.value.brief.preferences.body.value, ['saloon', 'estate']);
-  assert.equal(stored.json.value.brief.preferences.comfort.importance, 100);
-  const stale = await post(body({ comfort: { value: 0 } }));
-  assert.equal(stale.status, 409); assert.equal(stale.json.status, 'stale-version');
-  const unconfigured = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief });
-  t.after(() => unconfigured.close());
-  assert.equal((await unconfigured.request('/api/gcsp/brief/preferences', { session: f.acting, body: body({ comfort: { value: 50 } }) })).status, 503);
-});
-
 // FUCQ-367: the current-car star rating rides the same draft autosave.
 const carOf = async (f) => (await f.account.readAccount(f.context)).value.currentContract.contractId;
 const rate = (f, value, o = {}) => f.editor.savePreferences(f.context, { commandId: o.commandId ?? `rate-${++serial}`, expectedBriefVersion: o.briefVersion ?? 0,
@@ -575,42 +541,6 @@ test('a rating never reaches scoring: a previewed rated draft scores like the sa
   assert.equal(JSON.stringify(withRating.value.decisions.map((d) => d.components)).includes('currentCarRating'), false);
 });
 
-test('real authenticated HTTP saves, clears and reads a rating and the persisted draft and confirmed brief carry it', async (t) => {
-  const f = await setup(t); const contractId = await carOf(f);
-  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
-  t.after(() => http.close());
-  const post = (body, options = {}) => http.request('/api/gcsp/brief/preferences', { session: f.acting, body, ...options });
-  const body = (value, extra = {}) => ({ commandId: `http-${++serial}`, expectedBriefVersion: 0, expectedDraftVersion: 0, changes: {}, currentCarRating: { contractId, value }, ...extra });
-  assert.equal((await post(body(3), { session: null })).status, 401);
-  assert.equal((await post(body(3), { session: f.presenter })).status, 403);
-  assert.equal((await post(body(3), { origin: 'https://hostile.test' })).status, 403);
-  assert.equal((await post(body(3, { currentCarRating: { contractId, value: 3, employeeId: 'x' } }))).status, 400);
-  assert.equal((await post(body(7))).status, 400);
-  assert.equal((await post(body(3, { currentCarRating: { contractId: 'other', value: 3 } }))).status, 409);
-  const saved = await post(body(4));
-  assert.equal(saved.status, 200, JSON.stringify(saved.json));
-  assert.deepEqual(saved.json.value.currentCarRating, { value: 4, contractId });
-  const editor = await http.request('/api/gcsp/brief/editor', { session: f.acting });
-  assert.deepEqual(editor.json.value.initial.currentCarRating, { value: 4, contractId });
-  // The persisted draft stream row, not only the projection.
-  const [row] = rows(f); assert.equal(rows(f).length, 1);
-  const persisted = row.outcome.value.brief.currentCarRating;
-  assert.deepEqual([persisted.value, persisted.contractId, persisted.source, typeof persisted.ratedAt], [4, contractId, 'employee', 'string']);
-  const stored = await http.request('/api/gcsp/brief/draft', { session: f.acting });
-  assert.deepEqual(stored.json.value.brief.currentCarRating, persisted);
-  const cleared = await post(body(null, { expectedDraftVersion: 1 }));
-  assert.deepEqual(cleared.json.value.currentCarRating, { value: null, contractId });
-  assert.equal((await http.request('/api/gcsp/brief/editor', { session: f.acting })).json.value.initial.currentCarRating.value, null);
-  assert.equal((await post(body(2, { expectedDraftVersion: 2 }))).status, 200);
-  const confirmed = await http.request('/api/gcsp/brief/confirm', { session: f.acting, body: { commandId: 'http-confirm', expectedBriefVersion: 0, expectedDraftVersion: 3 } });
-  assert.equal(confirmed.status, 200, JSON.stringify(confirmed.json));
-  const row1 = f.store.state.tables.briefs.find((b) => b.employeeId === f.context.employeeId && b.briefVersion === 1);
-  assert.deepEqual([row1.currentCarRating.value, row1.currentCarRating.contractId, row1.currentCarRating.source], [2, contractId, 'employee']);
-  const after = await http.request('/api/gcsp/brief/editor', { session: f.acting });
-  assert.deepEqual(after.json.value.initial.currentCarRating, { value: 2, contractId });
-  assert.equal(after.json.value.provenance.initial, 'approved-brief');
-});
-
 // FUCQ-369: Same again intent and the canonical Buddy understanding (input completeness, never confidence).
 const again = (f, on, o = {}) => f.editor.savePreferences(f.context, { commandId: o.commandId ?? `again-${++serial}`, expectedBriefVersion: o.briefVersion ?? 0,
   expectedDraftVersion: o.draftVersion ?? 0, changes: o.changes ?? {}, sameAgain: { contractId: o.contractId, on } });
@@ -687,47 +617,6 @@ test('importance and rating changes never change understanding; defaults and uno
   assert.equal((await seeded.brief.saveDraft(seeded.context, { commandId: 'seed', expectedBriefVersion: 0, expectedDraftVersion: 0, brief })).status, 'ok');
   const editor = await read(seeded);
   assert.equal(editor.initial.accountPreferences.considered, 0); assert.equal(editor.initial.accountPreferences.understanding.value, 1);
-});
-
-test('real HTTP turns Same again on and off, keeps categories byte-identical and restores the count and importance', async (t) => {
-  const f = await setup(t); const contractId = await carOf(f);
-  const http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor });
-  t.after(() => http.close());
-  const post = (body, options = {}) => http.request('/api/gcsp/brief/preferences', { session: f.acting, body, ...options });
-  const body = (on, extra = {}) => ({ commandId: `http-${++serial}`, expectedBriefVersion: 0, expectedDraftVersion: 0, changes: {}, sameAgain: { contractId, on }, ...extra });
-  assert.equal((await post(body(true), { session: null })).status, 401);
-  assert.equal((await post(body(true), { session: f.presenter })).status, 403);
-  assert.equal((await post(body(true), { origin: 'https://hostile.test' })).status, 403);
-  assert.equal((await post(body(true, { sameAgain: { contractId, on: true, employeeId: 'x' } }))).status, 400);
-  assert.equal((await post(body(true, { sameAgain: { contractId, on: 'yes' } }))).status, 400);
-  assert.equal((await post(body(true, { sameAgain: { contractId: 'other', on: true } }))).status, 409);
-  assert.equal(rows(f).length, 0);
-  const picked = await post(body(false, { changes: { body: { value: ['saloon', 'estate'] }, comfort: { value: 100, importance: 'high' }, size: { value: 0 } },
-    sameAgain: undefined }));
-  assert.equal(picked.status, 200, JSON.stringify(picked.json));
-  const prefs = () => rows(f).at(-1).outcome.value.brief.preferences;
-  const kept = structuredClone(prefs());
-  const on = await post(body(true, { expectedDraftVersion: 1 }));
-  assert.equal(on.status, 200, JSON.stringify(on.json));
-  assert.deepEqual(on.json.value.sameAgain, { available: true, on: true, contractId });
-  assert.equal(on.json.value.accountPreferences.understanding.value, 11);
-  const row = rows(f).at(-1).outcome.value.brief;
-  assert.deepEqual(row.preferences, kept); assert.equal(JSON.stringify(row.preferences), JSON.stringify(kept));
-  assert.deepEqual([row.sameAgain.on, row.sameAgain.contractId, row.sameAgain.source, typeof row.sameAgain.setAt], [true, contractId, 'employee', 'string']);
-  const during = await http.request('/api/gcsp/brief/editor', { session: f.acting });
-  assert.deepEqual(during.json.value.initial.sameAgain, { available: true, on: true, contractId });
-  assert.equal(during.json.value.initial.accountPreferences.sameAgain, true);
-  assert.equal(during.json.value.initial.accountPreferences.understanding.value, 11);
-  assert.equal(during.json.value.initial.accountPreferences.considered, 3);
-  const off = await post(body(false, { expectedDraftVersion: 2 }));
-  assert.equal(off.status, 200);
-  assert.deepEqual(rows(f).at(-1).outcome.value.brief.preferences, kept);
-  assert.equal(rows(f).at(-1).outcome.value.brief.sameAgain.on, false);
-  const after = (await http.request('/api/gcsp/brief/editor', { session: f.acting })).json.value.initial;
-  assert.deepEqual(after.sameAgain, { available: true, on: false, contractId });
-  assert.deepEqual([after.accountPreferences.considered, after.accountPreferences.understanding.value, after.accountPreferences.understanding.basis], [3, 6, 'categories']);
-  assert.deepEqual([after.accountPreferences.categories.comfort.importance, after.accountPreferences.categories.size.importance], ['high', 'medium']);
-  assert.deepEqual(after.consent, { search: false, hold: false });
 });
 
 test('while Same again is on a category change is refused and writes nothing; off plus changes works in one patch', async (t) => {

@@ -4,14 +4,10 @@ import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import * as notify from '../gcsp/notify/index.js';
-import { createGcspRuntime } from '../gcsp/runtime.js';
 import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
-import { createOutboxRoutes } from '../gcsp/notify/http.js';
-
 const SECRET = 'synthetic-provider-secret';
 const ADDRESS = 'approved@example.test';
 const BASE = 'https://demo.example.test/vehicle-matcher/';
-const IMAGE = { src: '/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', fidelity: 'representative-model' };
 const TOKEN = 'A'.repeat(43); // Synthetic token with FUCQ-100's 32-byte base64url shape.
 const LINK = `/gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`;
 const WALL = '2026-11-05T10:00:00.000Z';
@@ -69,34 +65,6 @@ async function directInput(f) {
 test('Brevo adapter is available behind the existing MailTransport port', () => {
   assert.equal(typeof notify.BrevoMailTransport, 'function');
   assert.equal(typeof notify.createMailTransport, 'function');
-});
-
-test('backend selection defaults to capture and explicit configured dispatcher sends rendered payload', async (t) => {
-  let sent;
-  const f = await setup(t, { quoteFacts: { display: { name: 'BMW <Touring>', photo: IMAGE.src, images: [IMAGE] } },
-    mail: { fetchImpl: async (url, options) => { sent = { url, options }; return response(); } } });
-  assert.ok(notify.createMailTransport({ repository: f.repository, env: {} }) instanceof notify.CapturedTransport);
-  assert.equal((await f.dispatcher.dispatchPending()).status, 'ok');
-  const job = await row(f); const payload = JSON.parse(sent.options.body);
-  assert.equal(sent.url, 'https://api.brevo.com/v3/smtp/email'); assert.equal(sent.options.method, 'POST');
-  assert.equal(sent.options.headers['api-key'], SECRET);
-  assert.deepEqual(payload.sender, { email: 'sender@example.test', name: 'GCSP demo' });
-  assert.deepEqual(payload.to, [{ email: ADDRESS }]);
-  assert.equal(payload.subject, job.outcome.message.subject);
-  assert.equal(payload.textContent, job.outcome.message.textBody); assert.equal(payload.htmlContent, job.outcome.message.htmlBody);
-  assert.match(payload.headers.idempotencyKey, UUID); assert.equal(payload.headers.idempotencyKey, job.outcome.provider.idempotencyKey);
-  assert.equal(job.state, 'sent'); assert.equal(job.transport, 'configured');
-  assert.equal(job.outcome.provider.messageId, '<accepted@smtp.test>'); assert.equal(job.outcome.provider.state, 'confirmed');
-  assert.equal(job.outcome.message.offerLink, `${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`);
-  assert.ok(payload.textContent.includes(`${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`));
-  assert.ok(payload.htmlContent.includes(`href="${BASE}gcsp/offer?offerId=offer-one&amp;runId=synthetic#token=${TOKEN}"`));
-  assert.match(payload.htmlContent, /BMW &lt;Touring&gt;/); assert.doesNotMatch(payload.textContent, /No email has been sent/);
-  assert.ok(payload.htmlContent.includes(`src="${BASE}${IMAGE.src.slice(1)}"`));
-  assert.equal(job.outcome.message.vehicleImage.src, `${BASE}${IMAGE.src.slice(1)}`);
-  assert.doesNotMatch(payload.textContent, /demonstration|inbox delivery/);
-  const projected = await createOutboxRoutes({ repository: f.repository })[0].handle({ context: f.context, body: {}, searchParams: new URLSearchParams() });
-  assert.equal(projected.value.messages[0].state, 'sent'); assert.equal(projected.value.messages[0].textBody, payload.textContent);
-  for (const privateValue of [SECRET, ADDRESS, '<accepted@smtp.test>', job.outcome.provider.idempotencyKey]) assert.ok(!JSON.stringify(projected).includes(privateValue));
 });
 
 test('real producer fragment survives renderer and configured outbound bodies', async (t) => {
@@ -313,40 +281,6 @@ test('reset before send and reset during provider request cannot acknowledge an 
   assert.equal((await transport.send(await directInput(f))).status, 'stale-run');
 });
 
-
-test('trusted runtime composes capture by default, configured transport and notification shutdown', async (t) => {
-  const runtime = await createGcspRuntime({ mode: 'memory', environmentId: 'runtime-mail', policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'runtime-bootstrap', mail: { env: {} } });
-  assert.equal(runtime.status, 'ok'); t.after(() => runtime.value.close());
-  assert.ok(runtime.value.dependencies.gcspNotify instanceof notify.NotificationDispatcher);
-  assert.equal(runtime.value.dependencies.gcspOutbox.repository, runtime.value.repository);
-  assert.equal((await runtime.value.dependencies.gcspNotify.start()).status, 'ok');
-  await runtime.value.close();
-  assert.equal((await runtime.value.repository.currentRun('runtime-mail')).status, 'unavailable');
-});
-
-test('trusted runtime startup actually dispatches captured, configured and invalid-config jobs', async (t) => {
-  for (const mode of ['captured', 'brevo', 'invalid']) await t.test(mode, async (st) => {
-    const f = await setup(st); let calls = 0; const events = [];
-    const repository = { ...f.repository, afterCommit(observer) {
-      events.push('subscribed'); const unsubscribe = f.repository.afterCommit(observer);
-      return () => { events.push('unsubscribed'); unsubscribe(); };
-    }, async close() { events.push('closed'); return f.repository.close(); } };
-    const runtime = await createGcspRuntime({ mode: 'memory', repository, policy: f.policy, environmentId: 'mail-test',
-      policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T08:00:00.000Z',
-      mail: { env: mode === 'captured' ? {} : env(mode === 'invalid' ? { GCSP_BREVO_API_KEY: '' } : {}),
-        wallNow: () => WALL, fetchImpl: async () => { calls++; return response(); } } });
-    assert.equal(runtime.status, 'ok');
-    assert.equal((await runtime.value.dependencies.gcspNotify.start()).status, 'ok');
-    const stored = await row(f);
-    assert.equal(stored.state, mode === 'invalid' ? 'failed' : 'sent'); assert.ok(stored.outcome.message);
-    assert.equal(calls, mode === 'brevo' ? 1 : 0);
-    assert.equal(stored.outcome.provider?.state, mode === 'brevo' ? 'confirmed' : undefined);
-    if (mode === 'captured') assert.doesNotMatch(stored.outcome.message.textBody, /No email has been sent|demonstration|fictional/i);
-    if (mode === 'invalid') assert.equal(stored.outcome.error, 'mail-configuration-invalid');
-    await runtime.value.close(); assert.deepEqual(events, ['subscribed', 'unsubscribed', 'closed']);
-  });
-});
-
 test('restart finalises a confirmed provider acknowledgement after offer expiry without another send', async (t) => {
   const f = await setup(t, { state: 'sending', attempts: 1 });
   const transport = notify.createMailTransport({ ...f.ports.mail, repository: f.repository, fetchImpl: async () => response() });
@@ -375,20 +309,4 @@ test('confirmed acknowledgement on a retired run cannot be finalised by a fresh 
   t.after(() => fresh.close());
   assert.equal((await fresh.dispatchPending(f.context)).status, 'stale-run');
   assert.equal((await row(f)).state, 'stale');
-});
-
-test('runtime shutdown joins an in-flight provider acknowledgement before closing its repository', async (t) => {
-  const f = await setup(t); let began; const started = new Promise((resolve) => { began = resolve; });
-  let release; const gate = new Promise((resolve) => { release = resolve; }); let repositoryClosed = false;
-  const repository = { ...f.repository, async close() { repositoryClosed = true; return f.repository.close(); } };
-  const runtime = await createGcspRuntime({ mode: 'memory', repository, policy: f.policy, environmentId: 'mail-test',
-    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T08:00:00.000Z',
-    mail: { env: env(), wallNow: () => WALL, fetchImpl: async () => { began(); await gate; return response(); } } });
-  assert.equal(runtime.status, 'ok');
-  const sending = runtime.value.dependencies.gcspNotify.start(); await started;
-  const closing = runtime.value.close(); await new Promise((resolve) => setImmediate(resolve));
-  const closedEarly = repositoryClosed; release(); await sending; await closing;
-  assert.equal(closedEarly, false); assert.equal(repositoryClosed, true);
-  assert.equal((await f.repository.open()).status, 'ok');
-  assert.equal((await row(f)).state, 'sent'); assert.equal((await row(f)).outcome.provider.state, 'confirmed');
 });

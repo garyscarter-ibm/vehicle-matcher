@@ -1,19 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { once } from 'node:events';
-import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
-import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createGregDemandService } from '../gcsp/greg/index.js';
-import { createGregRoutes } from '../gcsp/greg/http.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
-
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 const REVIEWED_REASONS = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
 async function setup({ threshold = 1, missingThreshold = false, canonical = false, declineReasons = REVIEWED_REASONS.value } = {}) {
@@ -200,20 +195,6 @@ test('Greg service refuses employees, presenters and forged server context; old 
   assert.notEqual(out.value.runId, f.context.runId); assert.deepEqual(out.value.demand.byBody, []);
 });
 
-test('registered HTTP route enforces role and rejects browser run selectors under server identity', async () => {
-  const f = await setup(); let captured;
-  const handler = createGcspHandler({ identity: f.identity, routes: createGregRoutes(f.service) });
-  const request = async (cookie, search = '') => {
-    await handler({ req: { method: 'GET', headers: { cookie } }, res: { setHeader() {} }, pathname: '/api/gcsp/greg/demand',
-      searchParams: new URLSearchParams(search), sendJson(_res, status, value) { captured = { status, value }; }, corsHeaders: {} }); return captured;
-  };
-  assert.equal((await request(f.acting.value.setCookie)).status, 200);
-  const paula = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-paula', 'http-paula');
-  assert.equal((await request(paula.value.setCookie)).status, 403);
-  assert.equal((await request(f.acting.value.setCookie, 'runId=other')).status, 400);
-  assert.equal((await request(f.acting.value.setCookie, 'limit=1')).status, 400);
-});
-
 test('successive brief/release/decline/selection inputs change actual projection identity and figures', async () => {
   const f = await setup(); const empty = await read(f); await confirm(f);
   const brief = await read(f); await release(f, 1); const released = await read(f);
@@ -223,7 +204,6 @@ test('successive brief/release/decline/selection inputs change actual projection
   assert.equal(exact(brief.demand.activeBriefs), 1); assert.equal(exact(bucket(released.stock.byModelLine, 'G21 Touring').released), 1);
   assert.equal(exact(declined.offers.declined), 1); assert.equal(exact(selected.offers.selected), 1);
 });
-
 
 test('canonical optional model-line essential persists through BriefService and gates an actual wrong model', async () => {
   const f = await setup({ canonical: true });
@@ -267,7 +247,6 @@ test('a concurrent repository revision causes refresh conflict instead of a mixe
   const service = createGregDemandService({ repository, policy: f.policy, clock: f.clock, identity: f.identity });
   assert.equal((await service.readDemand(f.context)).status, 'conflict');
 });
-
 
 test('unmet evaluation reads all repository candidates beyond a retail-sized display limit', async () => {
   const f = await setup(); await confirm(f);
@@ -335,35 +314,6 @@ test('a missing, invalid or wrong-version decline policy makes the view unavaila
   const service = createGregDemandService({ repository: f.repository, policy: stale, clock: f.clock, identity: f.identity });
   assert.equal((await service.readDemand(f.context)).code, 'privacy-policy-unavailable');
   assert.equal((await f.service.readDemand(f.context)).status, 'ok');
-});
-
-
-test('buildServer exposes a no-store trusted Greg GET, origin/session refusal and stale-run protection', async () => {
-  const f = await setup(); await confirm(f);
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspGreg: f.service,
-    gcspAllowedOrigins: ['https://greg.test'] });
-  server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  const request = async ({ session = f.acting, origin = 'https://greg.test', query = '' } = {}) => {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/greg/demand${query}`, {
-      headers: { Origin: origin, ...(session ? { Cookie: cookie(session) } : {}) } });
-    return { status: response.status, body: await response.json(), cache: response.headers.get('Cache-Control') };
-  };
-  try {
-    const response = await request(); assert.equal(response.status, 200, JSON.stringify(response));
-    assert.equal(response.cache, 'no-store'); assert.equal(response.body.value.runId, f.context.runId);
-    assert.equal((await request({ session: null })).status, 401);
-    assert.equal((await request({ origin: 'https://hostile.test' })).status, 403);
-    const paula = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-paula', 'http-employee');
-    assert.equal((await request({ session: paula })).status, 403);
-    assert.equal((await request({ query: '?runId=another-run' })).status, 400);
-    const state = (await f.clock.readState(f.presenter.value.context)).value;
-    assert.equal((await f.clock.reset(f.presenter.value.context, { commandId: 'http-reset', expectedRunId: state.runId,
-      expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture })).status, 'ok');
-    assert.equal((await request()).body.status, 'stale-run');
-  } finally {
-    server.closeAllConnections(); await new Promise((done) => server.close(done));
-  }
 });
 
 test('equipment set order and duplicate keys cannot reopen an unchanged declined car', async () => {

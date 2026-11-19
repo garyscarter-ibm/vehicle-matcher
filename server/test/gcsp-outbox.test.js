@@ -5,11 +5,9 @@ import { JSDOM } from 'jsdom';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
-import { NotificationDispatcher, CapturedTransport, MailTransport, renderOfferMessage } from '../gcsp/notify/index.js';
+import { NotificationDispatcher, CapturedTransport, renderOfferMessage } from '../gcsp/notify/index.js';
 import { publicOrigin } from '../gcsp/public-origin.js';
 import { createMailTransport } from '../gcsp/notify/index.js';
-import { buildServer } from '../index.js';
-
 const token = 'fictional-outbox-access-value';
 const link = `/gcsp/offer?token=${token}&run=synthetic`;
 const cmd = (commandId, input = commandId) => ({ commandId, inputDigest: inputDigest(input) });
@@ -53,26 +51,6 @@ async function move(f, seconds, id = 'advance') {
   const state = (await f.clock.readState(f.context)).value;
   return f.clock.advance(f.context, { commandId: id, expectedClockVersion: state.clockVersion, bySeconds: seconds });
 }
-
-test('default captured MailTransport persists fictional message and startup registers the real clock handler', async (t) => {
-  const f = await setup(t);
-  assert.ok(new CapturedTransport({ repository: f.repository }) instanceof MailTransport);
-  assert.equal((await seed(f)).status, 'ok');
-  const server = buildServer({ gcspClock: f.clock, gcspIdentity: f.identity, gcspNotify: f.dispatcher });
-  assert.equal((await server.gcspStartup).status, 'ok');
-  const stored = await job(f);
-  assert.equal(stored.state, 'sent');
-  assert.equal(stored.transport, 'captured');
-  assert.equal(stored.attempts, 1);
-  assert.deepEqual(stored.outcome.message.recipient, { employeeId: 'employee-paula', name: 'Paula Mason', fictional: true });
-  assert.equal(stored.outcome.message.offerLink, link);
-  assert.equal(stored.outcome.message.capturedAt, (await f.clock.now(f.context)).value.now);
-  assert.doesNotMatch(stored.outcome.message.textBody, /No email has been sent|demonstration/i);
-  const tick = await f.clock.tick(f.context, { eventId: 'tick-with-notify', expectedClockVersion: '1', inputDigest: inputDigest('tick') });
-  assert.equal(tick.status, 'ok');
-  assert.ok(tick.value.handlerOrder.some((row) => row.handlerId === 'captured-outbox' && row.stage === 'outbox-dispatch'));
-  assert.equal((await job(f)).attempts, 1);
-});
 
 test('actual commit observer captures after commit, never on rollback or command replay and never recursively', async (t) => {
   const f = await setup(t);

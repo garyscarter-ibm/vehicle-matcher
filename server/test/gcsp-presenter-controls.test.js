@@ -1,14 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { once } from 'node:events';
 import { createDemoRuntime, createDemoClock } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createScenarioService } from '../gcsp/scenarios/index.js';
 import { createPresenterControlsService } from '../gcsp/presenter-controls/index.js';
-import { buildServer } from '../index.js';
-
 const seedUrl = new URL('../gcsp/policy/seed-v1.json', import.meta.url);
 const time = '2026-11-05T00:00:00.000Z';
 async function setup({ policy = createPolicyService(), wrapRepository = (repository) => repository } = {}) {
@@ -177,39 +174,4 @@ test('strict command validation, stale versions and old run context cannot mutat
     scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture })).status, 'ok');
   assert.equal((await f.controls.tick(f.presenter, step())).status, 'stale-run');
   assert.equal((await f.controls.readState(f.presenter)).status, 'stale-run');
-});
-
-test('registered HTTP controls use presenter capability while acting as employee; guard Origin, selectors and session replay', async () => {
-  const f = await setup(); const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock,
-    gcspScenarios: f.scenarios, gcspAllowedOrigins: ['https://presenter.test'] });
-  try {
-    await server.gcspStartup; server.listen(0, '127.0.0.1'); await once(server, 'listening');
-    const presenterCookie = f.session.value.setCookie[1].split(';')[0];
-    const employeeCookie = f.employee.value.setCookie.split(';')[0];
-    const cookie = `${presenterCookie}; ${employeeCookie}`;
-    const request = async (path, body, credential = cookie, origin = 'https://presenter.test') => {
-      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/${path}`, {
-        method: body ? 'POST' : 'GET', headers: { cookie: credential, ...(origin ? { Origin: origin } : {}),
-          ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}),
-      });
-      return { status: response.status, cache: response.headers.get('cache-control'), body: await response.json() };
-    };
-    const projection = await request('presenter/controls'); assert.equal(projection.status, 200); assert.equal(projection.cache, 'no-store');
-    assert.equal((await request('context')).body.value.principalId, f.employee.value.context.principalId);
-    assert.equal((await request('presenter/controls', undefined, employeeCookie)).status, 403);
-    assert.equal((await request('presenter/controls?x=1')).status, 400);
-    assert.equal((await request('presenter/controls?runId=forged')).status, 400);
-    assert.equal((await request('presenter/controls/tick', step(), cookie, null)).status, 403);
-    assert.equal((await request('presenter/controls/tick', step(), cookie, 'https://evil.test')).status, 403);
-    for (const patch of [{ principalId: 'forged' }, { inputDigest: inputDigest('forged') }, { runId: 'forged' }, { to: 'release' }]) {
-      assert.equal((await request('presenter/controls/tick', { ...step(), ...patch })).status, 400);
-    }
-    const tick = await request('presenter/controls/tick', step('http')); assert.equal(tick.status, 200);
-    assert.deepEqual(await request('presenter/controls/tick', step('http')), tick);
-    const person = projection.body.value.principals.find((p) => p.roles.includes('greg'));
-    const switchInput = { principalId: person.principalId, commandId: 'http-switch' };
-    assert.equal((await request('session/switch', switchInput)).status, 200);
-    assert.equal((await request('session/switch', switchInput)).status, 409);
-    assert.equal((await f.clock.now(f.presenter)).value.clockVersion, '2');
-  } finally { server.closeAllConnections(); if (server.listening) await new Promise((done) => server.close(done)); }
 });

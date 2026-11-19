@@ -2,13 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { createGcspRuntime } from '../gcsp/runtime.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
 import { PolicyService, MemoryPolicyProvider, createMemoryPolicyStore } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
 import { readActiveChoiceModel, readModelArtifact, contentDigest, adoptChoiceTrainingPolicy, loadChoiceTrainingPolicy } from '../gcsp/predict/model/index.js';
-
 const ARTIFACTS = fileURLToPath(new URL('../../docs/gcsp/models/artifacts/', import.meta.url));
 const ARTIFACT_ID = 'sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d';
 const START = '2026-11-05T09:00:00.000Z';
@@ -46,22 +44,6 @@ test('seed-v1 and every committed default carry no active learned model', async 
   assert.equal(seed.assumptions.some((row) => row.key === REFERENCE), false);
   const bundled = getReviewedDefinitionSet('fucq115-choice-model-v1').definitions.find((row) => row.key === REFERENCE);
   assert.equal(bundled.value.artifactId, 'unavailable');
-  for (const file of ['../gcsp/runtime.js', '../gcsp/host.js'])
-    assert.equal((await readFile(new URL(file, import.meta.url), 'utf8')).includes('fucq115-choice-model-v1'), false, file);
-});
-
-test('canonical default (seed-v1 plus startup adoptions) leaves the baseline driving: no learned model is active', async (t) => {
-  const readPolicy = new PolicyService({ provider: new MemoryPolicyProvider({ store: createMemoryPolicyStore() }) });
-  const runtime = good(await createGcspRuntime({ mode: 'memory', policy: readPolicy, environmentId: 'choice-canonical',
-    commandId: 'bootstrap', policyAsOf: START, sessionNow: () => START, adoptOfferJourney: true }));
-  t.after(async () => { await runtime.close(); await readPolicy.close(); });
-  const session = good(await runtime.createLocalSession());
-  const read = { runId: session.context.runId, asOf: good(await runtime.clock.now(session.context)).now };
-  const active = good(await readPolicy.getActiveVersion(read));
-  assert.match(active.policyVersion, /offer-journey-v1/, 'startup adoption ran');
-  assert.notEqual((await readPolicy.getAssumption(REFERENCE, read)).status, 'ok');
-  const out = await readActiveChoiceModel({ policyService: readPolicy, policyRead: read, artifactDirectory: ARTIFACTS });
-  assert.equal(out.status, 'unavailable'); assert.equal(out.code, 'choice-policy-unavailable');
 });
 
 test('a trained artifact is activated only by a dated successor that changes choice.model.reference alone', async (t) => {

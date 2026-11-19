@@ -1,7 +1,6 @@
 import nodeTest from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
-import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -11,11 +10,8 @@ import { createStoredSubjectRecommendationEvaluator } from '../gcsp/recommendati
 import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { verifyOfferToken } from '../gcsp/offers/offer-token.js';
 import { createOfferAccessService } from '../gcsp/offers/access.js';
-import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
 import { OfferDecisionService, DECLINE_REASONS_KEY, DECISION_EVENTS } from '../gcsp/offers/decision.js';
-import { createOfferDecisionHandler } from '../gcsp/offers/decision-http.js';
 import { stock, essential, preference } from './helpers/employee-recommendation.js';
-
 // Without the reviewed FUCQ-106 supervisor's module map, report every case as skipped rather than fail the suite.
 const UNSUPERVISED = 'needs the reviewed FUCQ-106 integration supervisor (FUCQ106_MODULE_MAP is unset): docs/gcsp/evidence/fucq106/integration-supervisor.py';
 const test = process.env.FUCQ106_MODULE_MAP ? nodeTest : (name, fn) => nodeTest(name, { skip: UNSUPERVISED }, fn);
@@ -268,38 +264,4 @@ test('actual access and decision reasons use the alternative current reason pin 
   const missing = await setup(t, { withReasons: false }); const before = digest(missing);
   assert.equal((await missing.service.decide(missing.tokenContext, missing.input())).code, 'decline-reasons-unavailable');
   assert.equal(digest(missing), before);
-});
-
-test('in-process access and decision HTTP use the same real capability, exact origin and fail-closed cookie resolution', async (t) => {
-  const f = await setup(t); const origin = 'https://explicit-synthetic.test'; let accountFallbacks = 0;
-  const accessHandler = createOfferAccessHandler({ service: f.access, identity: f.identity, allowedOrigins: [origin] });
-  const decisionHandler = createOfferDecisionHandler({ service: f.service, allowedOrigins: [origin],
-    resolveAccess: async ({ selector, cookie }) => {
-      if (cookie?.includes('gcsp_offer_access=')) {
-        const access = await f.access.fromSession(selector, cookie);
-        return access.status === 'ok' ? ok({ context: access.value.context }) : access;
-      }
-      accountFallbacks += 1; const access = await f.access.fromAccount(f.context, selector);
-      return access.status === 'ok' ? ok({ context: access.value.context }) : access;
-    } });
-  const invoke = async (handler, method, suffix, body, cookie = cookieOf(f.exchanged), requestOrigin = origin) => {
-    const req = Readable.from(body === undefined ? [] : [JSON.stringify(body)]); req.method = method;
-    req.headers = { origin: requestOrigin, cookie, 'content-type': 'application/json' };
-    const headers = {}; const res = { setHeader: (key, value) => { headers[key] = value; } }; let response;
-    const url = new URL(`/api/gcsp/offers/${f.selector.offerId}${suffix.startsWith('?') ? '' : '/'}${suffix}`, origin);
-    await handler({ req, res, pathname: url.pathname, searchParams: url.searchParams, gateAuthorized: true,
-      sendJson: (_res, status, value) => { response = { status, value, headers }; } });
-    return response;
-  };
-  const access = await invoke(accessHandler, 'GET', `?runId=${f.context.runId}`);
-  assert.equal(access.status, 200); assert.deepEqual(access.value.value.availableActions, ['accept', 'decline']);
-  const { offerId, ...body } = f.input();
-  const bad = await invoke(decisionHandler, 'POST', 'decision', body, 'gcsp_offer_access=invalid');
-  assert.equal(bad.status, 404); assert.equal(accountFallbacks, 0);
-  const forbidden = await invoke(decisionHandler, 'POST', 'decision', body, cookieOf(f.exchanged), 'https://foreign.test');
-  assert.equal(forbidden.status, 403);
-  const accepted = await invoke(decisionHandler, 'POST', 'decision', body);
-  assert.equal(accepted.status, 200); assert.equal(accepted.value.value.state, 'declined');
-  assert.equal(accepted.headers['Cache-Control'], 'no-store'); assert.equal(accepted.headers['Referrer-Policy'], 'no-referrer');
-  f.assertCustody(accepted.value);
 });

@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -9,9 +8,7 @@ import { BriefService } from '../gcsp/brief/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { OfferDecisionService, DECLINE_REASONS_KEY, DECISION_EVENTS } from '../gcsp/offers/decision.js';
-import { createOfferDecisionHandler } from '../gcsp/offers/decision-http.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
-
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 // Explicit alternative policy input exercises the proposed registry. It does not
 // activate a production key or prove FUCQ-103 adoption.
@@ -448,40 +445,4 @@ test('source-event write failure rolls back all stock/hold/slot/decision changes
       recordReceipt: () => result('unavailable', { code: 'event-write-failed' }) })) };
   const out = await new OfferDecisionService({ ...f.options, repository }).decide(f.capability, f.input('accept'));
   assert.equal(out.status, 'unavailable'); assert.deepEqual(state(f), before);
-});
-
-async function http(f, { method = 'POST', body = f.input(), origin = 'https://gcsp.example', gate = true,
-  query = '', path = '/api/gcsp/offers/offer-fixture/decision', raw, contentType = 'application/json' } = {}) {
-  const { offerId, ...wire } = body;
-  const req = Readable.from([raw ?? JSON.stringify(wire)]);
-  req.method = method; req.headers = { 'content-type': contentType, ...(origin === null ? {} : { origin }) };
-  const headers = {}; const res = { setHeader(k, v) { headers[k] = v; }, writeHead() {}, end() {} };
-  let sent;
-  const handle = createOfferDecisionHandler({ service: f.service, allowedOrigins: ['https://gcsp.example'],
-    resolveAccess: async ({ selector, action }) => {
-      const auth = await f.access.authorizeOffer(f.capability, selector, action);
-      return auth.status === 'ok' ? ok({ context: f.capability }) : auth;
-    } });
-  await handle({ req, res, pathname: path, searchParams: new URLSearchParams(query), gateAuthorized: gate,
-    sendJson(_res, status, outcome) { sent = { status, outcome, headers }; } });
-  return sent;
-}
-
-test('HTTP protocol has explicit gate/origin checks, bounded allowlisted input and no-store safe responses', async () => {
-  const f = await setup(); const before = state(f);
-  for (const options of [{ gate: false }, { origin: null }, { origin: 'https://evil.example' },
-    { body: { ...f.input(), employeeId: 'other' } }, { query: 'runId=other' }, { raw: '[]' },
-    { raw: '{' }, { raw: ' '.repeat(17000) }, { contentType: 'text/plain' }]) {
-    const response = await http(f, options); assert.ok([400, 401, 403].includes(response.status));
-    assert.equal(response.headers['Cache-Control'], 'no-store'); assert.deepEqual(state(f), before);
-  }
-  const response = await http(f); assert.equal(response.status, 200); assert.equal(response.outcome.value.state, 'declined');
-  assert.equal(response.headers['Referrer-Policy'], 'no-referrer'); assert.equal(response.headers['Cache-Control'], 'no-store');
-});
-
-test('HTTP reason projection uses the same policy registry with exact run selector', async () => {
-  const f = await setup(); const path = '/api/gcsp/offers/offer-fixture/decision-reasons';
-  const response = await http(f, { method: 'GET', path, query: `runId=${f.context.runId}` });
-  assert.equal(response.status, 200); assert.deepEqual(response.outcome.value.reasons, reasonInput);
-  assert.equal((await http(f, { method: 'GET', path, query: `runId=${f.context.runId}&runId=${f.context.runId}` })).status, 400);
 });

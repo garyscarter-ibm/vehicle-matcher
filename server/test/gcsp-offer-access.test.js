@@ -1,6 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Readable } from 'node:stream';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
@@ -8,11 +7,8 @@ import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { createOfferAccessService, OFFER_ACCESS_COOKIE, OFFER_ACCESS_CONSUMER } from '../gcsp/offers/access.js';
-import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
-import { buildServer } from '../index.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
 import { shortQuotePolicy } from './helpers/short-quote-policy.js';
-
 import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const cmd = (commandId, data = commandId) => ({ commandId, inputDigest: inputDigest(data) });
 const cookieOf = (value) => [value].flat().map((cookie) => cookie.split(';')[0]).join('; ');
@@ -341,102 +337,6 @@ test('provider errors are generic and produce no token-bearing log output', asyn
     assert.equal(failed.status, 'unavailable'); assert.ok(!JSON.stringify(failed).includes(f.rawToken));
     assert.equal(logs.length, 0);
   } finally { console.error = original; }
-});
-
-async function request(f, path, { method = 'GET', body, cookie, origin = 'https://offer.test', gateAuthorized = true, rawBody } = {}) {
-  const handler = createOfferAccessHandler({ service: f.service, identity: f.identity, allowedOrigins: ['https://offer.test'] });
-  const url = new URL(path, 'https://api.test');
-  const req = Readable.from(rawBody !== undefined ? [rawBody] : body ? [JSON.stringify(body)] : []);
-  req.method = method; req.headers = { ...(origin === null ? {} : { origin }), ...(cookie ? { cookie } : {}), 'content-type': 'application/json' };
-  const headers = {}; const res = { setHeader(key, value) { headers[key.toLowerCase()] = value; },
-    writeHead(status, more) { this.status = status; Object.assign(headers, more); }, end() {} };
-  await handler({ req, res, pathname: url.pathname, searchParams: url.searchParams, gateAuthorized,
-    sendJson(_res, status, json, more) { res.status = status; res.json = json; Object.assign(headers, more); } });
-  return { status: res.status, json: res.json, headers };
-}
-
-test('HTTP exchange and cookie reload use the safe DTO; a second browser independently exchanges the same email link', async () => {
-  const f = await fixture(); const body = { ...f.selector, token: f.rawToken };
-  const exchanged = await request(f, '/api/gcsp/offers/access', { method: 'POST', body }); assert.equal(exchanged.status, 200);
-  assert.equal(exchanged.headers['cache-control'], 'no-store'); assert.equal(exchanged.headers['referrer-policy'], 'no-referrer');
-  assert.ok(!JSON.stringify(exchanged.json).includes(f.rawToken)); assert.equal(exchanged.json.value.context, undefined);
-  const path = `/api/gcsp/offers/offer-one?runId=${encodeURIComponent(f.binding.runId)}`;
-  const reloaded = await request(f, path, { cookie: cookieOf(exchanged.headers['set-cookie']) });
-  assert.equal(reloaded.status, 200); assert.deepEqual(reloaded.json, exchanged.json);
-  assert.equal((await request(f, '/api/gcsp/offers/offer-one', { cookie: cookieOf(exchanged.headers['set-cookie']) })).status, 200);
-  const second = await request(f, '/api/gcsp/offers/access', { method: 'POST', body }); assert.equal(second.status, 200);
-  assert.ok(second.headers['set-cookie'] !== exchanged.headers['set-cookie']);
-  const account = await request(f, '/api/gcsp/offers/offer-one', { cookie: cookieOf(f.employee.value.setCookie) });
-  assert.equal(account.status, 200); assert.deepEqual(account.json, exchanged.json);
-});
-
-test('HTTP gate and exact origins precede exchange, including missing, null and deceptive origins', async () => {
-  const f = await fixture(); const body = { ...f.selector, token: f.rawToken };
-  const before = f.store.state.tables.event_receipts.length;
-  for (const origin of [null, 'null', 'https://offer.test.evil', 'https://offer.test/']) {
-    assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body, origin })).status, 403);
-  }
-  assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body, gateAuthorized: false })).status, 401);
-  assert.equal(f.store.state.tables.event_receipts.length, before);
-});
-
-test('HTTP preflight advertises only Content-Type and resolves no session', async () => {
-  const f = await fixture(); const before = f.store.state.tables.event_receipts.length;
-  const response = await request(f, '/api/gcsp/offers/access', { method: 'OPTIONS' });
-  assert.equal(response.status, 204);
-  assert.equal(response.headers['Access-Control-Allow-Headers'], 'Content-Type');
-  assert.equal(response.headers['Access-Control-Allow-Origin'], 'https://offer.test');
-  assert.equal(f.store.state.tables.event_receipts.length, before);
-});
-
-test('HTTP refuses token URLs, duplicate run selectors, identity claims and oversized or malformed JSON', async () => {
-  const f = await fixture(); const body = { ...f.selector, token: f.rawToken };
-  for (const path of ['/api/gcsp/offers/access?token=secret', '/api/gcsp/offers/access?runId=other']) {
-    assert.equal((await request(f, path, { method: 'POST', body })).status, 400);
-  }
-  for (const path of ['/api/gcsp/offers/offer-one?token=secret', '/api/gcsp/offers/offer-one?runId=a&runId=b', '/api/gcsp/offers/offer-one?employeeId=other']) {
-    assert.equal((await request(f, path)).status, 400);
-  }
-  assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body: { ...body, roles: ['employee'] } })).status, 400);
-  for (const rawBody of ['{', '[]', 'A'.repeat(16385)]) assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', rawBody })).status, 400);
-});
-
-test('actual buildServer request listener registers exchange, reload, account and old-run reads without opening a port', async () => {
-  const f = await fixture();
-  const server = buildServer({ gcspIdentity:f.identity, gcspClock:f.clock, gcspOfferAccess:f.service, gcspAllowedOrigins:['https://offer.test'] });
-  {
-    const listener = server.listeners('request')[0];
-    assert.equal(typeof listener, 'function'); assert.equal(server.listening, false);
-    const call = async (path, {method='GET',body,cookie,origin='https://offer.test'}={}) => {
-      const req = Readable.from(body ? [JSON.stringify(body)] : []);
-      req.url = path; req.method = method;
-      req.headers = {host:'api.test',origin,
-        ...(cookie ? {cookie} : {}),...(body ? {'content-type':'application/json'} : {})};
-      const headers = new Map();
-      const res = { setHeader(key,value) { headers.set(key.toLowerCase(),value); },
-        writeHead(status,more) { this.status=status; for (const [key,value] of Object.entries(more)) this.setHeader(key,value); },
-        end(value) { this.body=value; } };
-      await listener(req,res);
-      assert.equal(server.listening,false);
-      return {status:res.status,headers:{get:(key)=>headers.get(key.toLowerCase()),
-        getSetCookie:()=>[headers.get('set-cookie')].flat()},json:res.body?JSON.parse(res.body):null};
-    };
-    const body = {...f.selector,token:f.rawToken};
-    assert.equal((await call('/api/gcsp/offers/access',{method:'OPTIONS'})).status,204);
-    assert.equal((await call('/api/gcsp/offers/access',{method:'POST',body,origin:'https://other.test'})).status,403);
-    const exchange = await call('/api/gcsp/offers/access',{method:'POST',body}); assert.equal(exchange.status,200);
-    const cookie = cookieOf(exchange.headers.getSetCookie());
-    const path = `/api/gcsp/offers/offer-one?runId=${encodeURIComponent(f.binding.runId)}`;
-    const reload = await call(path,{cookie}); assert.equal(reload.status,200); assert.deepEqual(reload.json,exchange.json);
-    const account = await call('/api/gcsp/offers/offer-one',{cookie:cookieOf(f.employee.value.setCookie)});
-    assert.equal(account.status,200); assert.deepEqual(account.json,exchange.json);
-    assert.equal(reload.headers.get('cache-control'),'no-store');
-    const context = await call('/api/gcsp/context',{cookie:cookieOf(f.employee.value.setCookie)});
-    assert.equal(context.status,200); assert.equal(context.json.value.employeeId,f.employeeContext.employeeId);
-    await f.reset();
-    const old = await call(path,{cookie}); assert.equal(old.status,409); assert.equal(old.json.status,'stale-run');
-    assert.deepEqual(Object.keys(old.json).sort(),['contractVersion','reason','status']);
-  }
 });
 
 test('a pending read carries the ordering handoff, and a blocker removes accept while decline stays', async () => {

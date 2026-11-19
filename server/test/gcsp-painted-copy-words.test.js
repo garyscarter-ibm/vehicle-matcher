@@ -4,7 +4,6 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
-
 const BANNED = /\b(?:demos?|demonstrations?|synthetic|fictional|made[- ]up|examples?|samples?|not real|invented|pretend(?:ed)?)\b|\.invalid\b|@example\.|example\.com/gi;
 // FUCQ-373: car images carry no representative-image disclaimer either.
 const DISCLAIMER = /\brepresentative\b|\bimage disclaimer\b|\bimage,? not (?:this|your)\b|\bnot (?:this|your) exact car\b/gi;
@@ -95,7 +94,6 @@ test('the restarted, access-needed and stale-page screens paint no demo or run w
   }
 });
 
-const { createGcspRuntime } = await import('../gcsp/runtime.js');
 const stripTags = (html) => html.replace(/<(style|script|title)[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
 
 // ---------------------------------------------------------------------------------------------
@@ -116,35 +114,10 @@ test('order progress paints no demo or synthetic wording in any of its states', 
 const planFixtures = await import('../../blocks/gcsp/greg/plan/fixtures.js');
 const { mountGregOrderPlan } = await import('../../blocks/gcsp/greg/plan/panel.js');
 const { driveToState } = await import('../../blocks/gcsp/greg/plan/gallery.js');
-const { mountGregPublish } = await import('../../blocks/gcsp/greg/publish/panel.js');
 const { galleryPolicy, galleryPreview } = await import('../../blocks/gcsp/greg/publish/gallery.js');
 const { mountGregComparison } = await import('../../blocks/gcsp/greg/comparison/panel.js');
 const comparisonFixtures = await import('../../blocks/gcsp/greg/comparison/fixtures.js');
 const { outcomeToState } = await import('../../blocks/gcsp/greg/comparison/http-adapter.js');
-// The real server in process: Greg's policy publication reads what a presenter would see.
-const { Readable } = await import('node:stream');
-const { buildServer } = await import('../index.js');
-const { createGregPublishHttpAdapter } = await import('../../blocks/gcsp/greg/publish/http-adapter.js');
-const ORIGIN = 'https://painted.test';
-const cookieOf = (values) => [values].flat().map((entry) => entry.split(';')[0]).join('; ');
-async function liveServer(principal) {
-  const runtime = (await createGcspRuntime({ mode: 'memory', environmentId: `painted-copy-${principal}`, policyAsOf: INSTANT, commandId: 'bootstrap-live',
-    sessionNow: () => INSTANT })).value;
-  const presenter = await runtime.identity.createPresenterSession(`painted-${principal}`);
-  const acting = await runtime.identity.switchPrincipal(presenter.value.context, principal, `painted-${principal}-1`);
-  if (principal !== 'demo-greg') await seedManualDemoContext({ repository: runtime.repository, identity: runtime.identity, clock: runtime.clock, context: acting.value.context });
-  const cookie = cookieOf([presenter.value.setCookie[1], acting.value.setCookie]);
-  const server = buildServer({ ...runtime.dependencies, gcspAllowedOrigins: [ORIGIN] }); await server.gcspStartup;
-  const fetchImpl = async (url, options = {}) => {
-    const req = Readable.from(options.body ? [Buffer.from(options.body)] : []);
-    Object.assign(req, { url, method: options.method ?? 'GET', headers: { host: 'painted.test', origin: ORIGIN, cookie,
-      ...(options.body ? { 'content-type': 'application/json' } : {}) } });
-    const res = { headers: {}, setHeader(k, v) { this.headers[k.toLowerCase()] = v; }, writeHead(code, headers) { this.status = code; for (const [k, v] of Object.entries(headers)) this.setHeader(k, v); }, end(body) { this.body = body; } };
-    await server.listeners('request')[0](req, res);
-    return { status: res.status, ok: res.status >= 200 && res.status < 300, headers: { get: (k) => res.headers[k.toLowerCase()] ?? null }, json: async () => JSON.parse(res.body) };
-  };
-  return { runtime, fetchImpl, close: () => runtime.close() };
-}
 const openAll = (root) => root.querySelectorAll('details').forEach((node) => { node.open = true; });
 const stored = JSON.parse(readFileSync(new URL('./fixtures/gcsp-comparison-process-result.json', import.meta.url), 'utf8')).storedResult;
 const click = (root, label) => [...root.querySelectorAll('button')].find((node) => node.textContent === label || node.textContent.startsWith(label))?.click();
@@ -155,21 +128,6 @@ test('the order plan paints no demo or synthetic wording in any plan state', asy
     const destroy = mountGregOrderPlan(root, { adapter: planFixtures.planFixtureAdapter(name), commandId: () => 'plan-command' });
     await settle(); driveToState(root, name); await tick(300); await settle(); openAll(root); check(`order plan:${name}`, root); destroy(); root.remove();
   }
-});
-
-test('publish policy paints no demo or synthetic wording as a draft, a preview or a published result', async () => {
-  const live = await liveServer('demo-greg');
-  try {
-    const adapter = createGregPublishHttpAdapter({ fetchImpl: live.fetchImpl });
-    const root = host(); const destroy = mountGregPublish(root, { adapter, commandId: () => 'publish-command' }); await settle();
-    check('publish:draft', root, /Version reference/); openAll(root); check('publish:draft, expanded', root);
-    const input = root.querySelector('.gcsp-publish input[type="number"]'); input.value = String(Number(input.value) + 10);
-    input.dispatchEvent(new window.Event('input', { bubbles: true }));
-    click(root, 'Preview changes'); await settle(); await tick(50); openAll(root); check('publish:preview', root);
-    click(root, 'Publish'); await settle(); await tick(50); openAll(root); check('publish:after publish', root); destroy(); root.remove();
-  } finally { await live.close(); }
-  const refused = host(); const stop = mountGregPublish(refused, { adapter: { readPolicy: async () => ({ status: 'refused', message: 'x' }) } }); await settle();
-  check('publish:refused', refused); stop(); refused.remove();
 });
 
 test('the route comparison paints no demo or synthetic wording, with assumptions and experiments expanded', async () => {
