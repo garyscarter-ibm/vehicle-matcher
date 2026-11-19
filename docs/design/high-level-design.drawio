@@ -1,66 +1,97 @@
-<mxfile host="app.diagrams.net" pages="15" modified="2026-11-13" agent="GCSP agreed design alignment">
+<mxfile host="app.diagrams.net" agent="GCSP agreed design alignment" pages="15">
   <diagram id="IEwdkRteCB6ta1rAXDrL" name="00 GCSP architecture">
-    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1540" pageHeight="1080" math="0" shadow="0">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1540" pageHeight="1080" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" value="GCSP · agreed Angular / Java architecture" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=26;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="1460" height="45" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=26;" value="GCSP · agreed Angular / Java architecture" vertex="1">
+          <mxGeometry height="45" width="1460" x="40" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="13 November 2026 · Target responsibilities, not build status. Frozen baseline e44ed08a… · GCSP only; Used Cars preserved." style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=15;" vertex="1" parent="1">
-          <mxGeometry x="40" y="72" width="1460" height="62" as="geometry" />
+        <mxCell id="subtitle" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=15;" value="13 November 2026 · Target responsibilities, not build status. Frozen baseline e44ed08a… · GCSP only; Used Cars preserved." vertex="1">
+          <mxGeometry height="62" width="1460" x="40" y="72" as="geometry" />
         </mxCell>
-        <mxCell id="people" value="&lt;b&gt;Employees + Greg&lt;/b&gt;&lt;br&gt;Each uses their own OIDC login&lt;br&gt;Own authorized business actions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="170" width="290" height="120" as="geometry" />
+        <mxCell id="people" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Employees + Greg&lt;/b&gt;&lt;br&gt;Each uses their own OIDC login&lt;br&gt;Own authorized business actions" vertex="1">
+          <mxGeometry height="120" width="290" x="40" y="170" as="geometry" />
         </mxCell>
-        <mxCell id="presenter" value="&lt;b&gt;Presenter login&lt;/b&gt;&lt;br&gt;Scenario / clock / release / reset&lt;br&gt;Faults / retry + allowed inspection&lt;br&gt;No employee or Greg commands" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="330" width="290" height="140" as="geometry" />
+        <mxCell id="presenter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Presenter login&lt;/b&gt;&lt;br&gt;Scenario / clock / release / reset&lt;br&gt;Faults / retry + allowed inspection&lt;br&gt;No employee or Greg commands" vertex="1">
+          <mxGeometry height="140" width="290" x="40" y="330" as="geometry" />
         </mxCell>
-        <mxCell id="angular" value="&lt;b&gt;Static Angular 21 frontend&lt;/b&gt;&lt;br&gt;Screens · router · presentation state&lt;br&gt;/gcsp/ · shared tokens / components&lt;br&gt;Public API + OIDC deployment config&lt;br&gt;One built artifact across environments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="410" y="180" width="510" height="230" as="geometry" />
+        <mxCell id="angular" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Static Angular 21 frontend&lt;/b&gt;&lt;br&gt;Screens · router · presentation state&lt;br&gt;/gcsp/ · shared tokens / components&lt;br&gt;Public API + OIDC deployment config&lt;br&gt;One built artifact across environments" vertex="1">
+          <mxGeometry height="230" width="510" x="410" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="oidc" value="&lt;b&gt;Identity provider&lt;/b&gt;&lt;br&gt;Real test OAuth 2.0 / OIDC login&lt;br&gt;JWT access tokens&lt;br&gt;BMW activation when access is available" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="1070" y="180" width="420" height="170" as="geometry" />
+        <UserObject label="&lt;b&gt;Identity provider&lt;/b&gt;&lt;br&gt;Real test OAuth 2.0 / OIDC login&lt;br&gt;JWT access tokens&lt;br&gt;BMW activation when access is available" feature="demo-sign-in" id="oidc">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+            <mxGeometry height="170" width="420" x="1070" y="180" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="api" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Java 21 / Quarkus 3.x API&lt;/b&gt;&lt;br&gt;/api/gcsp/v1 · validate JWT + role / ownership&lt;br&gt;Domain calculations · policy · jobs · inference&lt;br&gt;Receipts · exclusivity · pending / reconciliation" vertex="1">
+          <mxGeometry height="155" width="690" x="410" y="490" as="geometry" />
         </mxCell>
-        <mxCell id="api" value="&lt;b&gt;Java 21 / Quarkus 3.x API&lt;/b&gt;&lt;br&gt;/api/gcsp/v1 · validate JWT + role / ownership&lt;br&gt;Domain calculations · policy · jobs · inference&lt;br&gt;Receipts · exclusivity · pending / reconciliation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="410" y="490" width="690" height="155" as="geometry" />
+        <mxCell id="sql" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3eafa;strokeColor=#8662a1;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Dedicated dev PostgreSQL&lt;/b&gt;&lt;br&gt;Authoritative application state&lt;br&gt;Explicit scoped reads / writes&lt;br&gt;Atomic state + receipt + outbox&lt;br&gt;Versions / uniqueness / restart recovery" vertex="1">
+          <mxGeometry height="175" width="420" x="40" y="740" as="geometry" />
         </mxCell>
-        <mxCell id="sql" value="&lt;b&gt;Dedicated dev PostgreSQL&lt;/b&gt;&lt;br&gt;Authoritative application state&lt;br&gt;Explicit scoped reads / writes&lt;br&gt;Atomic state + receipt + outbox&lt;br&gt;Versions / uniqueness / restart recovery" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3eafa;strokeColor=#8662a1;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="740" width="420" height="175" as="geometry" />
+        <mxCell id="ports" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Dedicated backend adapters&lt;/b&gt;&lt;br&gt;Startup / deployment selection&lt;br&gt;Mapping / transport / source auth&lt;br&gt;Explicit capabilities + truthful failure&lt;br&gt;No silent synthetic-success fallback" vertex="1">
+          <mxGeometry height="175" width="420" x="550" y="740" as="geometry" />
         </mxCell>
-        <mxCell id="ports" value="&lt;b&gt;Dedicated backend adapters&lt;/b&gt;&lt;br&gt;Startup / deployment selection&lt;br&gt;Mapping / transport / source auth&lt;br&gt;Explicit capabilities + truthful failure&lt;br&gt;No silent synthetic-success fallback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="550" y="740" width="420" height="175" as="geometry" />
+        <mxCell id="sources" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;External providers + artifacts&lt;/b&gt;&lt;br&gt;Account · stock · vehicle facts · policy&lt;br&gt;Claims / orders / lifecycle / Production&lt;br&gt;Configured mail · retained model/corpus&lt;br&gt;Local first, then remote substitute proof" vertex="1">
+          <mxGeometry height="175" width="420" x="1070" y="740" as="geometry" />
         </mxCell>
-        <mxCell id="sources" value="&lt;b&gt;External providers + artifacts&lt;/b&gt;&lt;br&gt;Account · stock · vehicle facts · policy&lt;br&gt;Claims / orders / lifecycle / Production&lt;br&gt;Configured mail · retained model/corpus&lt;br&gt;Local first, then remote substitute proof" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="1070" y="740" width="420" height="175" as="geometry" />
+        <mxCell id="retail" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef2f5;strokeColor=#657786;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=16;" value="&lt;b&gt;Preserved Used Cars lane&lt;/b&gt; · Existing frontend + Node API + supported shared consumers. No Java → Node business execution for GCSP.&lt;br&gt;Offline JS preparation/training may remain. One Render blueprint builds/releases Angular and API independently; Gary reviews hosted dev, then merges to gcsp-poc." vertex="1">
+          <mxGeometry height="90" width="1450" x="40" y="965" as="geometry" />
         </mxCell>
-        <mxCell id="retail" value="&lt;b&gt;Preserved Used Cars lane&lt;/b&gt; · Existing frontend + Node API + supported shared consumers. No Java → Node business execution for GCSP.&lt;br&gt;Offline JS preparation/training may remain. One Render blueprint builds/releases Angular and API independently; Gary reviews hosted dev, then merges to gcsp-poc." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef2f5;strokeColor=#657786;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="40" y="965" width="1450" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="a1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="people" target="angular">
+        <mxCell id="a1" edge="1" parent="1" source="people" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="angular" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="presenter" target="angular">
+        <mxCell id="a2" edge="1" parent="1" source="presenter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="angular" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a3" value="OIDC browser flow" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="angular" target="oidc">
+        <mxCell id="a3" edge="1" parent="1" source="angular" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="oidc" value="OIDC browser flow">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a4" value="Authorization: Bearer JWT" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.35;entryY=0;" edge="1" parent="1" source="angular" target="api">
+        <mxCell id="a4" edge="1" parent="1" source="angular" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.35;entryY=0;" target="api" value="Authorization: Bearer JWT">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a5" value="Issuer / signature / audience / lifetime" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=1;entryY=0.3;" edge="1" parent="1" source="oidc" target="api">
+        <mxCell id="a5" edge="1" parent="1" source="oidc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=1;entryY=0.3;" target="api" value="Issuer / signature / audience / lifetime">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a6" value="Transactional state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="api" target="sql">
+        <mxCell id="a6" edge="1" parent="1" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" target="sql" value="Transactional state">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a7" value="Ports" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="api" target="ports">
+        <mxCell id="a7" edge="1" parent="1" source="api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="ports" value="Ports">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="a8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ports" target="sources">
+        <mxCell id="a8" edge="1" parent="1" source="ports" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="sources" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <UserObject label="Demo sign-in issuer / Java API module · dev only, off by default / Fictional people, no passwords / Same OIDC code + PKCE flow and JWT checks" type="service" status="proposed" feature="demo-sign-in" id="demo-idp">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1550" y="180" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="OIDC flow (dev)" status="proposed" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-1">
+          <mxCell edge="1" parent="1" source="angular" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="demo-idp">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="665" y="164" />
+                <mxPoint x="1680" y="164" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="JWKS · signed JWT" status="proposed" feature="demo-sign-in" id="pBQBWq7T6f-19P_23mLo-2">
+          <mxCell edge="1" parent="1" source="demo-idp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1680" y="568" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="pBQBWq7T6f-19P_23mLo-3">
+          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
+            <mxGeometry height="120" width="230" x="1890" y="20" as="geometry" />
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
@@ -1400,55 +1431,66 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG7szUqNwnCKSjVtDKqx" name="05 Deployment and future integration">
-    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1540" pageHeight="1080" math="0" shadow="0">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1540" pageHeight="1080" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" value="Render deployment · portable frontend and API artifacts" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=26;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="1460" height="45" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=26;" value="Render deployment · portable frontend and API artifacts" vertex="1">
+          <mxGeometry height="45" width="1460" x="40" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="GCSP target · one repository / one blueprint · existing Render hostnames preferred · no Cloudflare or selected paid tier/domain." style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=15;" vertex="1" parent="1">
-          <mxGeometry x="40" y="72" width="1460" height="62" as="geometry" />
+        <mxCell id="subtitle" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=15;" value="GCSP target · one repository / one blueprint · existing Render hostnames preferred · no Cloudflare or selected paid tier/domain." vertex="1">
+          <mxGeometry height="62" width="1460" x="40" y="72" as="geometry" />
         </mxCell>
-        <mxCell id="branch" value="&lt;b&gt;gcsp-poc-dev&lt;/b&gt;&lt;br&gt;Gary creates isolated dev environment&lt;br&gt;Separate PostgreSQL connection + reset scope" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#808080;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="170" width="430" height="145" as="geometry" />
+        <UserObject label="Two environments, two Blueprints / gcsp-buddy-dev: new workspace, render.gcsp-buddy-dev.yaml, always gcsp-poc-dev / gcsp-buddy: current workspace, render.gcsp-buddy.yaml, always gcsp-poc / Each with its own PostgreSQL (Basic-256mb)" status="in-progress" feature="render-two-blueprints" id="branch">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+            <mxGeometry height="145" width="430" x="40" y="170" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Two Render Blueprint files / Identical apart from names + branch (drift test) / API plan starter / Independent static / API build filters" status="in-progress" feature="render-two-blueprints" id="build">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+            <mxGeometry height="145" width="900" x="590" y="170" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="static" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Static Angular 21&lt;/b&gt;&lt;br&gt;/gcsp/ router + direct-entry fallback&lt;br&gt;Deploy public API / OIDC settings separately&lt;br&gt;Compiled bundle hashes unchanged" vertex="1">
+          <mxGeometry height="175" width="630" x="40" y="440" as="geometry" />
         </mxCell>
-        <mxCell id="build" value="&lt;b&gt;One Render blueprint&lt;/b&gt;&lt;br&gt;Independent static / API build + release filters&lt;br&gt;Pin compatible Angular / Java / Quarkus tools" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#808080;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="590" y="170" width="900" height="145" as="geometry" />
+        <mxCell id="java" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Java 21 / Quarkus 3.x API&lt;/b&gt;&lt;br&gt;/api/gcsp/v1 JSON errors distinct from SPA&lt;br&gt;Backend-only credentials / provider composition&lt;br&gt;JWT validation + exact-origin CORS" vertex="1">
+          <mxGeometry height="175" width="630" x="860" y="440" as="geometry" />
         </mxCell>
-        <mxCell id="static" value="&lt;b&gt;Static Angular 21&lt;/b&gt;&lt;br&gt;/gcsp/ router + direct-entry fallback&lt;br&gt;Deploy public API / OIDC settings separately&lt;br&gt;Compiled bundle hashes unchanged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e5f3f1;strokeColor=#167d8d;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="440" width="630" height="175" as="geometry" />
+        <mxCell id="db" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3eafa;strokeColor=#8662a1;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Dedicated dev PostgreSQL + retained artifacts&lt;/b&gt;&lt;br&gt;Actual connection identity / reset isolation proof&lt;br&gt;New state, receipts, pending work and links survive restart&lt;br&gt;Keep corpus / reference / models / agreed baselines" vertex="1">
+          <mxGeometry height="165" width="630" x="860" y="730" as="geometry" />
         </mxCell>
-        <mxCell id="java" value="&lt;b&gt;Java 21 / Quarkus 3.x API&lt;/b&gt;&lt;br&gt;/api/gcsp/v1 JSON errors distinct from SPA&lt;br&gt;Backend-only credentials / provider composition&lt;br&gt;JWT validation + exact-origin CORS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8effc;strokeColor=#3366a6;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="860" y="440" width="630" height="175" as="geometry" />
+        <mxCell id="proof" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Hosted acceptance&lt;/b&gt;&lt;br&gt;Real test OIDC callbacks / logout / account separation&lt;br&gt;Actual test email → sign-in → employee-owned offer&lt;br&gt;Safari/private + desktop/narrow + current workloads" vertex="1">
+          <mxGeometry height="165" width="630" x="40" y="730" as="geometry" />
         </mxCell>
-        <mxCell id="db" value="&lt;b&gt;Dedicated dev PostgreSQL + retained artifacts&lt;/b&gt;&lt;br&gt;Actual connection identity / reset isolation proof&lt;br&gt;New state, receipts, pending work and links survive restart&lt;br&gt;Keep corpus / reference / models / agreed baselines" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3eafa;strokeColor=#8662a1;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="860" y="730" width="630" height="165" as="geometry" />
-        </mxCell>
-        <mxCell id="proof" value="&lt;b&gt;Hosted acceptance&lt;/b&gt;&lt;br&gt;Real test OIDC callbacks / logout / account separation&lt;br&gt;Actual test email → sign-in → employee-owned offer&lt;br&gt;Safari/private + desktop/narrow + current workloads" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="40" y="730" width="630" height="165" as="geometry" />
-        </mxCell>
-        <mxCell id="switch" value="&lt;b&gt;Gary’s final switch&lt;/b&gt; · Review full hosted dev build, then merge into gcsp-poc → replacement Render build.&lt;br&gt;Legacy operational state may reset. Downtime + immediate old retirement accepted; no retained-deployment rollback rehearsal.&lt;br&gt;Transaction rollback/recovery still required. BMW standards and actual adapter access follow when supplied." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#808080;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry x="40" y="950" width="1450" height="105" as="geometry" />
-        </mxCell>
-        <mxCell id="d1" value="Source" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="branch" target="build">
+        <UserObject label="Gary&#39;s final switch · merge gcsp-poc-dev into gcsp-poc, create the gcsp-buddy Blueprint with a new empty database, then delete the old Blueprint, Node gcsp-api, gcsp-db and old gcsp-site. bmw-matcher-api stays." status="in-progress" feature="render-two-blueprints" id="switch">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=17;" vertex="1">
+            <mxGeometry height="105" width="1450" x="40" y="950" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="d1" edge="1" parent="1" source="branch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="build" value="Source">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d2" value="Static artifact" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.2;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="build" target="static">
+        <mxCell id="d2" edge="1" parent="1" source="build" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.2;exitY=1;entryX=0.5;entryY=0;" target="static" value="Static artifact">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d3" value="API artifact" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.7;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="build" target="java">
+        <mxCell id="d3" edge="1" parent="1" source="build" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.7;exitY=1;entryX=0.5;entryY=0;" target="java" value="API artifact">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d4" value="Bearer JWT / HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="static" target="java">
+        <mxCell id="d4" edge="1" parent="1" source="static" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="java" value="Bearer JWT / HTTPS">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d5" value="Authoritative state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="java" target="db">
+        <mxCell id="d5" edge="1" parent="1" source="java" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="db" value="Authoritative state">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d6" value="Validate on real origins" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="static" target="proof">
+        <mxCell id="d6" edge="1" parent="1" source="static" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#526777;fontColor=#263e50;fontSize=14;labelBackgroundColor=#ffffff;" target="proof" value="Validate on real origins">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="9oom7F_wZhjrpj1Nppv8-1">
+          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
+            <mxGeometry height="120" width="230" x="1580" y="20" as="geometry" />
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
@@ -2034,7 +2076,7 @@
             <mxGeometry height="70" width="260" x="75.71" y="781" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="FutureOrderRequest&lt;br&gt;Greg's intentional submission&lt;br&gt;supply stages: see 07" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-request">
+        <UserObject label="FutureOrderRequest&lt;br&gt;Greg&#39;s intentional submission&lt;br&gt;supply stages: see 07" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-request">
           <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="972.5" y="34" as="geometry" />
           </mxCell>
@@ -2361,7 +2403,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="bmw-context-20261111" name="10 BMW system context">
-    <mxGraphModel dx="2160" dy="1420" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1420" math="0" shadow="0" background="#FFFFFF">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1420" math="0" shadow="0" background="#FFFFFF">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2524,7 +2566,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="bmw-data-20261111" name="11 BMW data adapters">
-    <mxGraphModel dx="2160" dy="1420" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1460" math="0" shadow="0" background="#FFFFFF">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1460" math="0" shadow="0" background="#FFFFFF">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2622,7 +2664,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="bmw-actions-20261111" name="12 BMW action adapters">
-    <mxGraphModel dx="2160" dy="1420" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1460" math="0" shadow="0" background="#FFFFFF">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1460" math="0" shadow="0" background="#FFFFFF">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
