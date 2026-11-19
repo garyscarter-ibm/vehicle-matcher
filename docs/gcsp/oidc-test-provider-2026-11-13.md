@@ -4,6 +4,29 @@ Record for the Java API's `oidc` identity provider (`services/gcsp-api`, `gcsp.a
 Angular shell's login (FUCQ-439). It states what the API validates, what the browser must send, and what still has
 to be registered. Nothing here is a deployed registration, and nothing here proves BMW compatibility (Q08, Q33).
 
+## Demo sign-in issuer (FUCQ-532)
+
+Hosted dev and demo sign-in uses an issuer built into the Java API instead of Keycloak. It signs in the demo scenario's
+fictional people (employees, Greg and the presenter) with no passwords and is labelled "Demo sign-in. Fictional people only."
+
+- **Endpoints**, all under the API origin: `/demo-idp/.well-known/openid-configuration`, `/demo-idp/jwks`,
+  `/demo-idp/authorize`, `/demo-idp/token` (authorization code with PKCE S256, and refresh) and `/demo-idp/end-session`.
+- **Switch:** `GCSP_DEMO_IDP_ENABLED=true`. Off by default. It starts only with `GCSP_IDENTITY_PROVIDER=oidc`,
+  `GCSP_SCENARIO_PROVIDER=demo` and a database; anything else refuses to start with a message naming the key.
+  `GCSP_OIDC_ISSUER` must be `https://<api host>/demo-idp`, `GCSP_OIDC_JWKS_URI` must be `<issuer>/jwks`, the redirect lists
+  (`GCSP_DEMO_IDP_REDIRECT_URIS`, `GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS`) are exact https URLs, and every person in the
+  demo directory needs a `GCSP_OIDC_ACCOUNTS` entry with the same roles (and employee id, for employees).
+- **Same checks:** the API validates its tokens through `OidcIdentity` exactly as for any provider, with no bypass.
+- **Signing key and sessions:** one RS256 key plus sign-in sessions and refresh tokens, stored by Flyway migration
+  `V532_1__demo_idp.sql`. They survive restarts and run resets, so neither signs anyone out. Sign-out ends the session.
+- **Lifetimes:** access token 10 minutes (`GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME`, at most 24h), refresh 12 hours
+  (`GCSP_DEMO_IDP_REFRESH_TOKEN_LIFETIME`). Both Blueprints leave the defaults.
+- **Blueprints:** `render.gcsp-buddy.yaml` and `render.gcsp-buddy-dev.yaml` commit all of these values and the Angular
+  `GCSP_PUBLIC_OIDC_*` values; `DemoBlueprintCompositionTest` proves the committed settings start the issuer and leave readiness UP.
+- **Swapping to a real provider:** set `GCSP_DEMO_IDP_ENABLED=false` (or remove it), then set the issuer, JWKS address,
+  audience, authorised party, scopes, role claim and account mapping to the provider's, and the web
+  `GCSP_PUBLIC_OIDC_*` values to match. No code change. The registration steps below then apply.
+
 ## Selected test provider
 
 **Keycloak, self-hosted, one realm for the isolated dev environment.** Reasons:

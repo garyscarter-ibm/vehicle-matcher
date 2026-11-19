@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // FUCQ-439 connected proof: built Angular shell (login, role landing, direct entry, refresh, denied/unavailable, renewal, recovery, sign-out)
-// against a LOCAL MOCK OIDC ISSUER, the started Java API and native PG17. Derived from fucq447/fucq443. Never builds; the parent supplies inputs.
+// against a LOCAL MOCK OIDC ISSUER (default) or, with PROOF_IDP=java-demo, the Java API's own demo sign-in issuer (FUCQ-532), the started Java API and native PG17.
+// Derived from fucq447/fucq443. Never builds; the parent supplies inputs.
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { createHash, createSign, createVerify, generateKeyPairSync, randomBytes } from 'node:crypto';
 import { createServer } from 'node:https';
@@ -61,10 +62,15 @@ for (const [label, file] of [['API jar (prebuilt)', JAR], ['compiled web index (
   if (/CloudStorage|OneDrive/i.test(file)) refuse(`${label} points into a forbidden synced folder`);
   if (!existsSync(file)) refuse(`${label} not found at ${file}`);
 }
+const IDP_MODE = process.env.PROOF_IDP ?? '';
+if (IDP_MODE !== '' && IDP_MODE !== 'java-demo') refuse('PROOF_IDP must be unset (local mock issuer) or java-demo (the Java API demo sign-in issuer, FUCQ-532)');
+const JAVA_DEMO = IDP_MODE === 'java-demo';
 const port = (name, fallback) => { const v = Number(process.env[name] ?? fallback); if (!Number.isInteger(v) || v < 1024 || v > 65535) refuse(`${name} must be a port number`); return v; };
 const PORTS = { web: port('PROOF_WEB_PORT', 7439), api: port('PROOF_API_PORT', 8439), idp: port('PROOF_IDP_PORT', 9439) };
 if (new Set(Object.values(PORTS)).size !== 3) refuse('Proof ports must be distinct');
-const DEADLINE_MS = Math.min(Number(process.env.PROOF_DEADLINE_SEC ?? 600) * 1000, process.env.PROOF_ABSOLUTE_DEADLINE_MS ? Number(process.env.PROOF_ABSOLUTE_DEADLINE_MS) - T0 : Infinity);
+// The Java demo issuer mode restarts the API to change token lifetimes, so it gets a longer budget.
+const DEADLINE_CAP_MS = JAVA_DEMO ? 1500000 : 600000;
+const DEADLINE_MS = Math.min(Number(process.env.PROOF_DEADLINE_SEC ?? (JAVA_DEMO ? 1200 : 600)) * 1000, process.env.PROOF_ABSOLUTE_DEADLINE_MS ? Number(process.env.PROOF_ABSOLUTE_DEADLINE_MS) - T0 : Infinity);
 const PUBLIC_BASE_URL = process.env.PROOF_PUBLIC_BASE_URL ?? '';
 let publicBase;
 try { publicBase = new URL(PUBLIC_BASE_URL); } catch { refuse('PROOF_PUBLIC_BASE_URL must be a valid public https URL'); }
@@ -77,7 +83,11 @@ if (!/^https:\/\//.test(PUBLIC_BASE_URL) || /[\s\u0000-\u001f\u007f\\]/.test(PUB
 
 
 const ORIGINS = { web: `https://gcsp-web.localhost:${PORTS.web}`, api: `https://gcsp-api.localhost:${PORTS.api}`, idp: `https://gcsp-idp.localhost:${PORTS.idp}` };
-const ISSUER = `${ORIGINS.idp}/realms/gcsp-local`;
+// Java demo mode: the issuer is the API's own /demo-idp on the API origin (Java resolves *.localhost on this Mac, checked).
+const ISSUER = JAVA_DEMO ? `${ORIGINS.api}/demo-idp` : `${ORIGINS.idp}/realms/gcsp-local`;
+const ISSUER_ORIGIN = JAVA_DEMO ? ORIGINS.api : ORIGINS.idp;
+const onIssuer = (url) => url.startsWith(JAVA_DEMO ? `${ISSUER}/` : ORIGINS.idp);
+const ISSUER_LABEL = JAVA_DEMO ? 'JAVA DEMO SIGN-IN ISSUER (FUCQ-532)' : 'LOCAL MOCK OIDC ISSUER';
 const API_PATH = '/api/gcsp/v1';
 const API_BASE = `${ORIGINS.api}${API_PATH}`;
 const KID = 'gcsp-local-test-1';
@@ -101,13 +111,24 @@ const MEDIA_FILES = ['07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1d
 for (const file of [PSQL, MEDIA_ROOT, JAR, WEB_BROWSER, JAVA_HOME, CHROME]) if (/CloudStorage|OneDrive/i.test(file)) refuse('An input path points into a forbidden synced folder');
 if (!existsSync(PSQL)) refuse('PROOF_PSQL_BIN must name the parent-pinned native PostgreSQL 17 psql');
 for (const name of MEDIA_FILES) if (!existsSync(path.join(MEDIA_ROOT, name))) refuse(`Missing parent-pinned actual media ${name}`);
-if (!Number.isFinite(DEADLINE_MS) || DEADLINE_MS <= 45000 || DEADLINE_MS > 600000) refuse('PROOF_DEADLINE_SEC and remaining absolute deadline must be in (45, 600] including cleanup reserve');
+if (!Number.isFinite(DEADLINE_MS) || DEADLINE_MS <= 45000 || DEADLINE_MS > DEADLINE_CAP_MS) refuse(`PROOF_DEADLINE_SEC and remaining absolute deadline must be in (45, ${DEADLINE_CAP_MS / 1000}] including cleanup reserve`);
 const SCHEMA = `gcsp_s_f439c_${RUN_TOKEN.replace(/-/g, '_')}`;
 const dirs = { logs: path.join(PROOF, 'logs'), tmp: path.join(PROOF, 'tmp'), certs: path.join(PROOF, 'certs'), static: path.join(PROOF, 'static'), browser: path.join(PROOF, 'browser'), evidence: path.join(PROOF, 'evidence') };
 
-const receipt = { schema: 'fucq439-connected-shell-proof/1', story: 'DEV-2026-11-13-007 / FUCQ-439', startedAt: new Date().toISOString(), deadlineSeconds: DEADLINE_MS / 1000, cleanupReserveSeconds: 45, runToken: RUN_TOKEN, origins: ORIGINS,
-  localTestIssuer: `LOCAL MOCK OIDC ISSUER ${ISSUER}: sign-on is mocked for this PoC (decision 2026-11-18); no real provider is used`, composition: null, inputs: null, tools: {}, processes: [], scenarios: {}, originalAcceptance: null, failureLogs: {}, issuerPolicyLog: [],
-  limitations: [
+const receipt = { schema: 'fucq439-connected-shell-proof/1', story: JAVA_DEMO ? 'DEV-2026-11-13-007 / FUCQ-439 on DEV-2026-11-19-GC-002 / FUCQ-532' : 'DEV-2026-11-13-007 / FUCQ-439', startedAt: new Date().toISOString(), deadlineSeconds: DEADLINE_MS / 1000, cleanupReserveSeconds: 45, runToken: RUN_TOKEN, origins: ORIGINS,
+  idpMode: JAVA_DEMO ? 'java-demo' : 'local-mock',
+  localTestIssuer: JAVA_DEMO ? `${ISSUER_LABEL} ${ISSUER}: the demo sign-in issuer served by the started Java API (fictional people only); sign-on is mocked for this PoC (decision 2026-11-18); no real provider is used`
+    : `LOCAL MOCK OIDC ISSUER ${ISSUER}: sign-on is mocked for this PoC (decision 2026-11-18); no real provider is used`, composition: null, inputs: null, tools: {}, processes: [], scenarios: {}, originalAcceptance: null, failureLogs: {}, issuerPolicyLog: [],
+  limitations: JAVA_DEMO ? [
+    'The parent supplies prebuilt production web/API; input hashes do not independently establish their source revision.',
+    'Every sign-on item is proved against the Java demo sign-in issuer on a local API (code/PKCE, refresh rotation, end-session). The hosted Render deployment and a real provider are not exercised.',
+    'Token lifetimes are API settings changed by restarting the API between scenarios, so expiry is real (short lifetime). The issuer has no per-request log here: evidence is the browser network (CDP), the API access log, the issuer tables and direct HTTPS calls.',
+    'The Java demo issuer sets no provider cookie and keeps its sessions in the database, so provider-cookie behaviour is recorded as observed, not as a sign-out mechanism.',
+    'Expiry without renewal is a refresh token that lapses before the access token does; the Java issuer always issues a refresh token.',
+    'Only the upstream account, stock and one saved draft are seeded through Java and the run-owned schema; the unfinished order is made through the Angular controls. API setup calls use tokens from direct HTTPS demo sign-ins.',
+    'Greg is greg+employee in the demo directory, so his landing, rail and denied route come from the directory roles, not from the mock proof Greg.',
+    'Chrome only, desktop viewport 1280x800; Safari and hosted deployment remain unrun.',
+    'The outer supervisor owns HostBudget, manifest/finalizer, aggregate output/RSS limits and final process/listener/schema/scratch audit.'] : [
     'The parent supplies prebuilt production web/API; input hashes do not independently establish their source revision.',
     'Every sign-on item is proved against a local mock issuer (code/PKCE, refresh grant, provider session cookie, end-session). The real hosted provider is not exercised.',
     'Access-token lifetime and refresh-token issue are issuer policy changed between scenarios, so expiry is real (short lifetime) rather than simulated in the browser.',
@@ -203,7 +224,14 @@ function makeCerts() {
 }
 
 // ---------- LOCAL MOCK OIDC issuer: code/PKCE, refresh grant, provider session cookie, end-session, request log ----------
-const SUBJECT_ROLES = { 'sub-paula': ['employee'], 'sub-greg': ['greg'], 'sub-presenter': ['presenter'] };
+// Java demo mode takes the six people from the packaged directory the issuer itself lists; the mock keeps its three.
+const DIRECTORY_FILE = path.join(ROOT, 'services/gcsp-api/src/main/resources/gcsp/scenario/demo-preparation-v1.json');
+const DIRECTORY = JAVA_DEMO ? JSON.parse(readFileSync(DIRECTORY_FILE, 'utf8')).catalogue.directory : [];
+const subjectOf = (person) => `${JAVA_DEMO ? 'demo' : 'sub'}-${person}`;
+const SUBJECT_ROLES = JAVA_DEMO ? Object.fromEntries(DIRECTORY.map((d) => [d.principalId, d.roles])) : { 'sub-paula': ['employee'], 'sub-greg': ['greg'], 'sub-presenter': ['presenter'] };
+// Same account mapping the Blueprints commit: employee ids only for employees, none for the presenter.
+const demoAccounts = () => DIRECTORY.map((d) => ({ subject: d.principalId, roles: d.roles, ...(d.roles.includes('employee') ? { employeeId: d.employeeId } : {}) }));
+const PICKER_COUNT = JAVA_DEMO ? DIRECTORY.length : 3;
 // The presenter has no name claim on purpose, to prove the header fallback.
 const PROFILES = { 'sub-paula': { name: 'Paula Mason', email: 'paula.mason@gcsp-demo.com' }, 'sub-greg': { name: 'Greg Lawson', email: 'greg.lawson@gcsp-demo.com' } };
 const SESSION_COOKIE = 'gcsp_idp_sid';
@@ -229,7 +257,6 @@ function accessClaims(sub, roles, lifetimeSec = 3600) {
   return { iss: ISSUER, aud: ['gcsp-api'], azp: 'gcsp-web', scope: 'openid profile gcsp-api', sub, realm_access: { roles }, iat: now, exp: now + lifetimeSec, jti: randomBytes(8).toString('hex') };
 }
 const cookieSid = (req) => /(?:^|;\s*)gcsp_idp_sid=([0-9a-f]+)/.exec(req.headers.cookie ?? '')?.[1] ?? null;
-const lastIdp = (from, filter) => idp.requests.slice(from).filter(filter);
 function startIdp(tls) {
   idp.keys = newKeys();
   const base = '/realms/gcsp-local'; const oidc = `${base}/protocol/openid-connect`;
@@ -338,13 +365,18 @@ const closeServer = (s) => (s ? new Promise((r) => { s.closeAllConnections?.(); 
 
 // ---------- Java API (the real jar, repository accounts, native PG, synthetic ordering) ----------
 let tls;
+// Java demo issuer token lifetimes in seconds; changing them restarts the API (see policy()).
+let demoPolicy = { accessSec: 3600, refreshSec: 43200, refreshTokens: true };
+const demoIdpEnv = () => ({ GCSP_DEMO_IDP_ENABLED: 'true', GCSP_DEMO_IDP_REDIRECT_URIS: `${ORIGINS.web}/gcsp/auth/callback`, GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: POST_LOGOUT,
+  GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: `${demoPolicy.accessSec}s`, GCSP_DEMO_IDP_REFRESH_TOKEN_LIFETIME: `${demoPolicy.refreshSec}s`, GCSP_DEMO_IDP_REFRESH_TOKENS: String(demoPolicy.refreshTokens) });
 function apiEnv() {
   return { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp, JAVA_HOME, LANG: 'en_GB.UTF-8',
     QUARKUS_HTTP_SSL_PORT: String(PORTS.api), QUARKUS_HTTP_INSECURE_REQUESTS: 'disabled', QUARKUS_HTTP_SSL_CERTIFICATE_FILES: path.join(dirs.certs, 'fullchain.pem'), QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILES: path.join(dirs.certs, 'leaf.key'),
     QUARKUS_HTTP_ACCESS_LOG_ENABLED: 'true', QUARKUS_HTTP_ACCESS_LOG_PATTERN: 'ACCESSLOG %m %U %s',
-    GCSP_ALLOWED_ORIGINS: ORIGINS.web, GCSP_IDENTITY_PROVIDER: 'oidc', GCSP_OIDC_ISSUER: ISSUER, GCSP_OIDC_JWKS_URI: `https://127.0.0.1:${PORTS.idp}/realms/gcsp-local/protocol/openid-connect/certs`,
+    GCSP_ALLOWED_ORIGINS: ORIGINS.web, GCSP_IDENTITY_PROVIDER: 'oidc', GCSP_OIDC_ISSUER: ISSUER, GCSP_OIDC_JWKS_URI: JAVA_DEMO ? `${ISSUER}/jwks` : `https://127.0.0.1:${PORTS.idp}/realms/gcsp-local/protocol/openid-connect/certs`,
     GCSP_OIDC_AUDIENCE: 'gcsp-api', GCSP_OIDC_AUTHORIZED_PARTY: 'gcsp-web', GCSP_OIDC_REQUIRED_SCOPES: 'gcsp-api',
-    GCSP_OIDC_ACCOUNTS: JSON.stringify([...PEOPLE.map((person) => ({ subject: `sub-${person}`, roles: ['employee'], employeeId: `employee-${person}` })), ...Object.entries(CONTROL_ROLES).map(([person, roles]) => ({ subject: `sub-${person}`, roles }))]),
+    GCSP_OIDC_ACCOUNTS: JSON.stringify(JAVA_DEMO ? demoAccounts() : [...PEOPLE.map((person) => ({ subject: `sub-${person}`, roles: ['employee'], employeeId: `employee-${person}` })), ...Object.entries(CONTROL_ROLES).map(([person, roles]) => ({ subject: `sub-${person}`, roles }))]),
+    ...(JAVA_DEMO ? demoIdpEnv() : {}),
     GCSP_ENVIRONMENT_ID: ENVIRONMENT_ID, GCSP_RUN_ID: RUN_ID, GCSP_POLICY_VERSION: POLICY,
     GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_RESET_ALLOWED: 'true',
     GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: PUBLIC_BASE_URL,
@@ -365,21 +397,75 @@ async function startApi() {
   log(`${name} ready on ${ORIGINS.api}`);
 }
 async function stopApi() { await api.stop(); log(`api-${apiStarts} stopped (exit ${api.exitCode ?? api.signalCode})`); }
-function request(method, p, headers = {}, body = null) {
+// Mock: sets the mock issuer's policy. Java demo: maps it to token lifetimes and restarts the API only when they change, checking the signing key id survives.
+async function policy(change) {
+  if (!JAVA_DEMO) { setPolicy(change); return; }
+  const short = change.lifetimeSec <= SHORT_LIFETIME;
+  // A short token with refresh off issues no refresh token at all, as the mock does (ac2b).
+  const next = { accessSec: change.lifetimeSec, refreshSec: change.refresh && short ? 90 : 43200, refreshTokens: change.refresh || !short };
+  const entry = { at: new Date().toISOString(), asked: { ...change }, accessTokenLifetime: `${next.accessSec}s`, refreshTokenLifetime: `${next.refreshSec}s`, refreshTokens: next.refreshTokens, restarted: false };
+  if (next.accessSec !== demoPolicy.accessSec || next.refreshSec !== demoPolicy.refreshSec || next.refreshTokens !== demoPolicy.refreshTokens) {
+    entry.kidBefore = await jwksKid(); await stopApi(); demoPolicy = next; await startApi(); entry.kidAfter = await jwksKid();
+    entry.restarted = true; entry.kidKept = entry.kidBefore === entry.kidAfter;
+  }
+  receipt.issuerPolicyLog.push(entry);
+}
+// The mock's policy is restored after each scenario; the Java demo issuer is changed lazily by the next scenario's first policy() call.
+const resetPolicy = () => { if (!JAVA_DEMO) setPolicy({ lifetimeSec: 3600, refresh: true }); };
+// One HTTPS call to the API origin by loopback address, with the proof CA and the API host name.
+function rawRequest(method, pathname, headers = {}, rawBody = null) {
   const u = new URL(ORIGINS.api);
   return new Promise((resolve, reject) => {
-    const req = https.request({ host: '127.0.0.1', port: Number(u.port), path: `${API_PATH}${p}`, method, servername: u.hostname, headers: { Host: u.host, Accept: 'application/json', ...headers }, ca: tls.ca, timeout: 15000 }, (res) => {
+    const req = https.request({ host: '127.0.0.1', port: Number(u.port), path: pathname, method, servername: u.hostname, headers: { Host: u.host, ...headers }, ca: tls.ca, timeout: 15000 }, (res) => {
       const chunks = []; let size = 0; res.on('data', (c) => { size += c.length; if (size > 2 * 1024 * 1024) return req.destroy(new Error('API response exceeded 2MiB')); chunks.push(c); });
-      res.on('end', () => { let json = null; try { json = JSON.parse(Buffer.concat(chunks).toString()); } catch { /* not json */ } resolve({ status: res.statusCode, json }); });
+      res.on('end', () => { const text = Buffer.concat(chunks).toString(); let json = null; try { json = JSON.parse(text); } catch { /* not json */ } resolve({ status: res.statusCode, json, text, headers: res.headers }); });
     });
-    req.on('timeout', () => req.destroy(new Error('request timeout'))); req.on('error', reject); req.end(body === null ? undefined : JSON.stringify(body));
+    req.on('timeout', () => req.destroy(new Error('request timeout'))); req.on('error', reject); req.end(rawBody === null ? undefined : rawBody);
   });
+}
+const request = (method, p, headers = {}, body = null) => rawRequest(method, `${API_PATH}${p}`, { Accept: 'application/json', ...headers }, body === null ? null : JSON.stringify(body));
+
+// ---------- Java demo issuer: direct HTTPS calls (never the browser) ----------
+const sha12 = (value) => createHash('sha256').update(String(value)).digest('hex').slice(0, 12);
+const jwtPart = (token, index) => { try { return JSON.parse(Buffer.from(String(token).split('.')[index], 'base64url').toString()); } catch { return null; } };
+const IDP_PATH = '/demo-idp';
+const formBody = (fields) => new URLSearchParams(fields).toString();
+const FORM = { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' };
+async function jwksKid() {
+  const r = await rawRequest('GET', `${IDP_PATH}/jwks`, { Accept: 'application/json' });
+  const kids = (r.json?.keys ?? []).map((k) => k.kid);
+  if (r.status !== 200 || kids.length !== 1) throw new Error(`demo JWKS read failed: ${r.status} ${kids.length} keys`);
+  return kids[0];
+}
+// A refresh grant made straight at the issuer; only the status and the error code are kept.
+async function directRefresh(refreshToken) {
+  const r = await rawRequest('POST', `${IDP_PATH}/token`, FORM, formBody({ grant_type: 'refresh_token', client_id: 'gcsp-web', refresh_token: refreshToken }));
+  return { status: r.status, error: r.json?.error ?? null, rotatedTokenIssued: !!r.json?.refresh_token };
+}
+// A complete code+PKCE sign-in over HTTPS for API setup calls: authorize page, person chosen, code exchanged.
+const demoTokens = new Map();
+async function demoSignInDirect(person) {
+  const verifier = randomBytes(32).toString('base64url'); const state = randomBytes(8).toString('hex'); const redirect = `${ORIGINS.web}/gcsp/auth/callback`;
+  const page = await rawRequest('GET', `${IDP_PATH}/authorize?${formBody({ client_id: 'gcsp-web', redirect_uri: redirect, response_type: 'code', scope: 'openid profile gcsp-api', state, code_challenge: sha256b64u(verifier), code_challenge_method: 'S256' })}`, { Accept: 'text/html' });
+  const txn = /name="txn" value="([^"]+)"/.exec(page.text)?.[1];
+  if (page.status !== 200 || !txn) throw new Error(`demo authorize page for ${person}: ${page.status}`);
+  const chosen = await rawRequest('POST', `${IDP_PATH}/authorize`, { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'text/html' }, formBody({ txn, subject: subjectOf(person) }));
+  const target = chosen.headers.location ? new URL(chosen.headers.location) : null;
+  if (chosen.status !== 302 || target?.searchParams.get('state') !== state || !target.searchParams.get('code')) throw new Error(`demo sign-in for ${person}: ${chosen.status}`);
+  const t = await rawRequest('POST', `${IDP_PATH}/token`, FORM, formBody({ grant_type: 'authorization_code', client_id: 'gcsp-web', code: target.searchParams.get('code'), redirect_uri: redirect, code_verifier: verifier }));
+  if (t.status !== 200 || !t.json?.access_token) throw new Error(`demo token exchange for ${person}: ${t.status}`);
+  return { token: t.json.access_token, exp: jwtPart(t.json.access_token, 1)?.exp * 1000 };
+}
+async function demoAccessToken(person) {
+  const held = demoTokens.get(person);
+  if (held && held.exp - Date.now() > 120000) return held.token;
+  const fresh = await demoSignInDirect(person); demoTokens.set(person, fresh); return fresh.token;
 }
 
 // ---------- labelled API setup (signed, long-lived tokens) and server readback ----------
 async function call(person, method, suffix, body = null) {
-  const roles = SUBJECT_ROLES[`sub-${person}`];
-  return request(method, suffix, { Authorization: `Bearer ${signJwt(accessClaims(`sub-${person}`, roles), idp.keys.privateKey)}`, ...(body === null ? {} : { 'Content-Type': 'application/json' }) }, body);
+  const token = JAVA_DEMO ? await demoAccessToken(person) : signJwt(accessClaims(subjectOf(person), SUBJECT_ROLES[subjectOf(person)]), idp.keys.privateKey);
+  return request(method, suffix, { Authorization: `Bearer ${token}`, ...(body === null ? {} : { 'Content-Type': 'application/json' }) }, body);
 }
 async function serverAccount(person = 'paula') {
   const r = await call(person, 'GET', '/manual/account');
@@ -474,11 +560,27 @@ class Cdp {
   send(method, params = {}, sessionId) { const id = ++this.id; return new Promise((res, rej) => { this.pending.set(id, { res, rej }); this.ws.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) })); }); }
 }
 const hdr = (h = {}, name) => Object.entries(h).find(([k]) => k.toLowerCase() === name)?.[1];
+// Redirect targets keep only the origin, the path and which query keys were present, never the code or state values.
+const redirectSummary = (value) => { try { const u = new URL(value); return { origin: u.origin, path: u.pathname, queryKeys: [...u.searchParams.keys()] }; } catch { return null; } };
+const formSummary = (body) => { const f = new URLSearchParams(body ?? ''); return { grantType: f.get('grant_type'), clientId: f.get('client_id'), subject: f.get('subject'), codeSent: !!f.get('code'), verifierSent: !!f.get('code_verifier'), refreshSha: f.get('refresh_token') ? sha12(f.get('refresh_token')) : null }; };
+function hintSummary(hint) {
+  const c = jwtPart(hint, 1); if (!c) return { present: !!hint, decoded: false };
+  const out = { present: true, decoded: true, sub: c.sub ?? null, aud: c.aud ?? null, sidSha: c.sid ? sha12(c.sid) : null };
+  if (/^[0-9a-f]+$/.test(c.sid ?? '')) Object.defineProperty(out, '_sid', { value: c.sid, enumerable: false });
+  return out;
+}
+function tokenSummary(body) {
+  if (!body || typeof body !== 'object') return null;
+  if (body.error) return { error: body.error };
+  const access = jwtPart(body.access_token, 1); const head = jwtPart(body.access_token, 0); const idt = jwtPart(body.id_token, 1);
+  return { expiresIn: body.expires_in, tokenType: body.token_type, accessExp: access?.exp ?? null, sub: access?.sub ?? null, kid: head?.kid ?? null, accessSha: body.access_token ? sha12(body.access_token) : null,
+    refreshSha: body.refresh_token ? sha12(body.refresh_token) : null, idTokenSub: idt?.sub ?? null, idTokenName: idt?.name ?? null, scope: body.scope ?? null };
+}
 const parse = (s) => { try { return JSON.parse(s); } catch { return null; } };
 function requestSummary(b) { return b && typeof b === 'object' ? { ...b, carriesIdentity: /\"(employeeId|environmentId|principalId|subject)\"/.test(JSON.stringify(b)) } : null; }
 const responseSummary = (body) => body;
 class Page {
-  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.errors = []; this.csp = []; this.urls = []; cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
+  constructor(cdp, sessionId, ctxId, label) { this.cdp = cdp; this.sid = sessionId; this.ctxId = ctxId; this.label = label; this.log = []; this.byId = new Map(); this.waits = []; this.mainFrame = null; this.mainLoader = null; this.docs = 0; this.errors = []; this.csp = []; this.urls = []; this.idpLog = []; this.idpById = new Map(); this.redirected = new Map(); this.early = new Map(); cdp.listeners.push((m) => m.sessionId === sessionId && this.event(m)); }
   send(method, params) { return this.cdp.send(method, params, this.sid); }
   event(m) {
     const p = m.params ?? {};
@@ -487,6 +589,7 @@ class Page {
     // A new main-frame document bumps docs; API calls are tagged with the document generation that issued them.
     if (m.method === 'Page.frameNavigated' && !p.frame.parentId) { this.mainFrame = p.frame.id; this.mainLoader = p.frame.loaderId; this.docs++; this.urls.push(p.frame.url); return; }
     if (m.method === 'Page.navigatedWithinDocument' && p.frameId === this.mainFrame) { this.urls.push(p.url); return; }
+    if (JAVA_DEMO && this.idpEvent(m.method, p)) return;
     if (m.method === 'Network.requestWillBeSent') {
       if (!p.request.url.startsWith(ORIGINS.api)) return;
       const e = { id: p.requestId, at: Date.now(), method: p.request.method, path: new URL(p.request.url).pathname.replace(API_PATH, ''), query: new URL(p.request.url).search, auth: !!hdr(p.request.headers, 'authorization'), ...bearer(hdr(p.request.headers, 'authorization')),
@@ -505,6 +608,46 @@ class Page {
       if (e && e.method !== 'OPTIONS') this.waits.push(this.send('Network.getResponseBody', { requestId: p.requestId }).then((r) => { e.response = responseSummary(parse(r.base64Encoded ? Buffer.from(r.body, 'base64').toString('utf8') : r.body)); }).catch(() => {}));
     }
   }
+  // The Java demo issuer's requests as the browser made them (CDP). Tokens, codes and state are never stored, only hashes and decoded non-secret claims.
+  idpEvent(method, p) {
+    const id = p.requestId;
+    if (method === 'Network.requestWillBeSentExtraInfo') {
+      const e = this.idpById.get(id);
+      if (e) { e.cookieSent = !!hdr(p.headers, 'cookie'); return true; }
+      if (this.early.size < 500) this.early.set(id, { cookieSent: !!hdr(p.headers, 'cookie') });
+      return false;
+    }
+    if (method === 'Network.requestWillBeSent') {
+      const prev = this.idpById.get(id);
+      if (p.redirectResponse && prev) {
+        prev.status = p.redirectResponse.status; prev.location = redirectSummary(hdr(p.redirectResponse.headers, 'location')); this.idpById.delete(id); this.redirected.set(id, prev);
+        if (!p.request.url.startsWith(`${ISSUER}/`)) return true;
+      }
+      if (!p.request.url.startsWith(`${ISSUER}/`)) return false;
+      const u = new URL(p.request.url);
+      const e = { id, at: Date.now(), method: p.request.method, path: u.pathname.slice(IDP_PATH.length), type: p.type, prompt: u.searchParams.get('prompt'), clientId: u.searchParams.get('client_id'), challengeMethod: u.searchParams.get('code_challenge_method'),
+        responseType: u.searchParams.get('response_type'), scope: u.searchParams.get('scope'), hasState: !!u.searchParams.get('state'), redirectUri: u.searchParams.get('redirect_uri'), postLogout: u.searchParams.get('post_logout_redirect_uri'), ...(this.early.get(id) ?? {}) };
+      this.early.delete(id);
+      if (e.path === '/end-session') e.hint = hintSummary(u.searchParams.get('id_token_hint'));
+      if (p.request.postData) e.form = formSummary(p.request.postData);
+      else if (p.request.hasPostData) this.waits.push(this.send('Network.getRequestPostData', { requestId: id }).then((r) => { e.form = formSummary(r.postData); }).catch(() => {}));
+      this.idpLog.push(e); this.idpById.set(id, e); return true;
+    }
+    if (method === 'Network.responseReceivedExtraInfo' && p.statusCode >= 300 && p.statusCode < 400 && this.redirected.has(id)) { this.redirected.get(id).setCookie = !!hdr(p.headers, 'set-cookie'); return true; }
+    const e = this.idpById.get(id);
+    if (!e) return false;
+    if (method === 'Network.responseReceivedExtraInfo') e.setCookie = !!hdr(p.headers, 'set-cookie');
+    else if (method === 'Network.responseReceived') e.status = p.response.status;
+    else if (method === 'Network.loadingFailed') e.failed = p.errorText;
+    else if (method === 'Network.loadingFinished' && e.path === '/token' && e.method === 'POST') {
+      this.waits.push(this.send('Network.getResponseBody', { requestId: id }).then((r) => { e.response = tokenSummary(parse(r.base64Encoded ? Buffer.from(r.body, 'base64').toString('utf8') : r.body)); }).catch(() => {}));
+    }
+    return true;
+  }
+  // The refresh and id tokens the app holds for the signed-in user (sessionStorage), for direct issuer calls; never written to the receipt.
+  storedUser() {
+    return this.eval(`(() => { for (const k of Object.keys(sessionStorage)) if (k.startsWith('gcsp:oidc:user:')) { try { const u = JSON.parse(sessionStorage.getItem(k)); return { refresh: u.refresh_token ?? null, idToken: u.id_token ?? null }; } catch { /* next */ } } return null; })()`);
+  }
   async close() { try { await this.cdp.send('Target.disposeBrowserContext', { browserContextId: this.ctxId }); } catch { /* already closed */ } }
   async settle() { await sleep(300); await Promise.allSettled(this.waits.splice(0)); }
   calls(from = 0) { return this.log.slice(from).filter((e) => e.method !== 'OPTIONS'); }
@@ -522,6 +665,34 @@ class Page {
     const r = await this.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: size.width, height: Math.min(size.height, 10000), scale: 1 } });
     writeFileSync(path.join(dirs.evidence, name), Buffer.from(r.data, 'base64')); return path.join(dirs.evidence, name);
   }
+}
+// ---------- issuer view: the mock's own request log, or the Java demo issuer as the browser saw it, in one row shape ----------
+function issuerRow(e) {
+  const base = { at: e.at, status: e.status, failed: e.failed };
+  if (e.path === '/authorize') return { ...base, path: 'auth', method: e.method, prompt: e.prompt, cookie: e.cookieSent, setCookie: e.setCookie, subject: e.form?.subject ?? null, clientId: e.clientId, challengeMethod: e.challengeMethod, responseType: e.responseType, scope: e.scope, hasState: e.hasState, redirectUri: e.redirectUri, location: e.location ?? null };
+  if (e.path === '/token') {
+    const r = e.response ?? {}; const f = e.form ?? {};
+    return { ...base, path: 'token', method: 'POST', grantType: f.grantType, subject: r.sub ?? null, lifetimeSec: r.expiresIn, expiresAt: r.accessExp ? r.accessExp * 1000 : undefined, refreshIssued: !!r.refreshSha, rotated: f.grantType === 'refresh_token' && !!r.refreshSha && r.refreshSha !== f.refreshSha,
+      refreshSha: r.refreshSha ?? null, sentRefreshSha: f.refreshSha, accessSha: r.accessSha ?? null, kid: r.kid ?? null, error: r.error ?? null };
+  }
+  if (e.path === '/end-session') return { ...base, path: 'logout', method: 'GET', cookie: e.cookieSent, setCookie: e.setCookie, hintPresent: e.hint?.present === true, hintSubject: e.hint?.sub ?? null, hintSidSha: e.hint?.sidSha ?? null, redirectUri: e.postLogout, location: e.location ?? null };
+  return null;
+}
+const issuerMark = (page) => (JAVA_DEMO ? page.idpLog.length : idp.requests.length);
+const issuerLog = (page, from = 0) => (JAVA_DEMO ? page.idpLog.slice(from).filter((e) => e.method !== 'OPTIONS').map(issuerRow).filter(Boolean) : idp.requests.slice(from));
+const sameSet = (a, b) => same([...(a ?? [])].sort(), [...(b ?? [])].sort());
+// API access-log rows for the Java demo issuer (query string dropped), polled because the child log is written asynchronously.
+function demoAccessRows() {
+  const rows = [];
+  for (const p of receipt.processes.filter((x) => x.name.startsWith('api-'))) {
+    for (const l of tail(path.join(dirs.logs, `${p.name}.log`), 100000).split('\n')) { const m = /ACCESSLOG (\S+) (\S+) (\d+)/.exec(l); const route = m?.[2].split('?')[0]; if (route?.startsWith(`${IDP_PATH}/`)) rows.push(`${m[1]} ${route.slice(IDP_PATH.length)} ${m[3]}`); }
+  }
+  return rows;
+}
+async function accessSince(mark, want, timeout = 6000) {
+  const end = Date.now() + timeout; let rows = [];
+  do { rows = demoAccessRows().slice(mark); if (want(rows)) break; await sleep(250); } while (Date.now() < end);
+  return rows;
 }
 // DOM helpers over the real StockComponent, ManualRoute, review-details and summary templates.
 const HELPERS = `
@@ -658,18 +829,18 @@ async function scenario(id, title, ac, fn) {
 const webPaths = (urls) => urls.filter((u) => u.startsWith(ORIGINS.web)).map((u) => { const x = new URL(u); return x.pathname === '/gcsp/auth/callback' ? x.pathname : x.pathname + x.search; });
 // Signs in through the real Angular sign-in page and the mock issuer's account picker.
 async function login(page, person, { from = null } = {}) {
-  const mark = idp.requests.length;
+  const mark = issuerMark(page); const accessMark = JAVA_DEMO ? demoAccessRows().length : 0;
   if (from) await page.send('Page.navigate', { url: WEB(from) });
   await page.until(`return location.origin === '${ORIGINS.web}' && location.pathname === '/gcsp/sign-in' && !!button('Sign in');`, 30000, 'Angular sign-in page');
   const signInUrl = await page.eval('location.pathname + location.search');
   await page.act(`return press('Sign in');`);
-  await page.until(`return location.origin === '${ORIGINS.idp}' && !!document.querySelector('button[data-subject="sub-${person}"]');`, 30000, 'mock issuer account picker');
+  await page.until(`return location.origin === '${ISSUER_ORIGIN}' && !!document.querySelector('button[data-subject="${subjectOf(person)}"]');`, 30000, `${ISSUER_LABEL} account picker`);
   const picker = await page.eval(`[...document.querySelectorAll('button[data-subject]')].map((b) => b.dataset.subject)`);
-  const authRequest = lastIdp(mark, (r) => r.path === 'auth' && r.method === 'GET').at(-1) ?? null;
+  const authRequest = issuerLog(page, mark).filter((r) => r.path === 'auth' && r.method === 'GET').at(-1) ?? null;
   const callbackFrom = page.urls.length;
-  await page.eval(`document.querySelector('button[data-subject="sub-${person}"]').click()`);
+  await page.eval(`document.querySelector('button[data-subject="${subjectOf(person)}"]').click()`);
   await page.until(`return location.origin === '${ORIGINS.web}' && !['/gcsp/auth/callback', '/gcsp/sign-in'].includes(location.pathname) && !!accountName() && !main.querySelector('[aria-busy="true"]');`, 30000, `${person} signed-in page`);
-  return { mark, signInUrl, picker, authRequest, callbackFrom };
+  return { mark, accessMark, signInUrl, picker, authRequest, callbackFrom };
 }
 async function snap(page, s, name) {
   await page.settle();
@@ -680,7 +851,16 @@ async function snap(page, s, name) {
 const waitFor = (page, body, what, timeout = 20000) => page.until(body, timeout, what);
 const contextCalls = (calls) => calls.filter((e) => e.path === '/context');
 
-const LANDING = { paula: { path: '/gcsp/account', rail: ['Your cars', 'Order progress'], name: 'Paula Mason', avatar: 'PM' }, greg: { path: '/gcsp/greg', rail: ['Employee car ordering', 'Process comparisons'], name: 'Greg Lawson', avatar: 'GL' }, presenter: { path: '/gcsp/presenter', rail: ['Presenter controls'], name: 'Account', avatar: '?' } };
+const DEST = { cars: ['/gcsp/account', 'Your cars'], orders: ['/gcsp/orders', 'Order progress'], greg: ['/gcsp/greg', 'Employee car ordering'], comparison: ['/gcsp/comparison', 'Process comparisons'], presenter: ['/gcsp/presenter', 'Presenter controls'] };
+// Java demo: landing, rail, name and avatar derived from the directory's roles and name with the app's route policy (auth/route-policy.ts), not hard-coded.
+function demoLanding(person) {
+  const d = DIRECTORY.find((x) => x.principalId === subjectOf(person)); if (!d) throw new Error(`${person} is not in the demo directory`);
+  const keys = d.roles.includes('presenter') ? ['presenter'] : [...(d.roles.includes('employee') ? ['cars', 'orders'] : []), ...(d.roles.includes('greg') ? ['greg', 'comparison'] : [])];
+  const words = d.name.replace(/\(.*?\)/g, ' ').split(/[\s-]+/).filter(Boolean);
+  return { path: DEST[keys[0]][0], rail: keys.map((k) => DEST[k][1]), name: d.name, avatar: (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase() };
+}
+const LANDING = JAVA_DEMO ? Object.fromEntries(['paula', 'greg', 'presenter'].map((p) => [p, demoLanding(p)]))
+  : { paula: { path: '/gcsp/account', rail: ['Your cars', 'Order progress'], name: 'Paula Mason', avatar: 'PM' }, greg: { path: '/gcsp/greg', rail: ['Employee car ordering', 'Process comparisons'], name: 'Greg Lawson', avatar: 'GL' }, presenter: { path: '/gcsp/presenter', rail: ['Presenter controls'], name: 'Account', avatar: '?' } };
 
 // AC1: login and role landing for each role, bearer on every API call.
 async function scenarioLanding(cdp, s) {
@@ -692,15 +872,27 @@ async function scenarioLanding(cdp, s) {
       const dom = await snap(page, s, `${person}-landing`);
       const calls = page.calls(); const ctx = contextCalls(calls);
       s.observations[`${person}-detail`] = { signInUrl: r.signInUrl, authRequest: r.authRequest, picker: r.picker, contextRoles: ctx.at(-1)?.response?.value?.roles ?? null, contextHasDisplayName: ctx.at(-1)?.response?.value?.displayName !== undefined, apiCalls: calls.map((e) => `${e.method} ${e.path} ${e.status ?? e.failed} ${e.scheme ?? 'no-auth'}`) };
-      check(s, `${person}: Angular sign-in page then issuer, prompt=login`, r.signInUrl.startsWith('/gcsp/sign-in') && r.authRequest?.prompt === 'login' && r.picker.length === 3);
+      check(s, `${person}: Angular sign-in page then issuer, prompt=login`, r.signInUrl.startsWith('/gcsp/sign-in') && r.authRequest?.prompt === 'login' && r.picker.length === PICKER_COUNT);
       check(s, `${person}: lands on ${LANDING[person].path}`, dom.path === LANDING[person].path);
       check(s, `${person}: rail items are exactly the role's`, same(dom.rail, LANDING[person].rail));
       check(s, `${person}: header shows ${LANDING[person].name} with avatar ${LANDING[person].avatar}`, dom.account === LANDING[person].name && dom.avatar === LANDING[person].avatar);
-      check(s, `${person}: context API call authorised and answered`, ctx.length >= 1 && ctx.every((e) => e.status === 200) && same(ctx.at(-1).response?.value?.roles, SUBJECT_ROLES[`sub-${person}`]));
+      check(s, `${person}: context API call authorised and answered`, ctx.length >= 1 && ctx.every((e) => e.status === 200) && sameSet(ctx.at(-1).response?.value?.roles, SUBJECT_ROLES[subjectOf(person)]));
       check(s, `${person}: every API request carried Authorization Bearer`, calls.length > 0 && calls.every((e) => e.scheme === 'Bearer'));
       check(s, `${person}: no runtime exception`, page.errors.length === 0);
+      if (JAVA_DEMO) await demoSignInChecks(s, page, person, r);
     } finally { await page.close(); }
   }
+}
+// Java demo issuer: the sign-in as the browser and the API access log saw it (there is no issuer-side request log to read).
+async function demoSignInChecks(s, page, person, r) {
+  const rows = issuerLog(page, r.mark); const post = rows.find((x) => x.path === 'auth' && x.method === 'POST'); const token = rows.find((x) => x.path === 'token' && x.grantType === 'authorization_code');
+  const access = await accessSince(r.accessMark, (x) => x.includes('POST /token 200'));
+  s.observations[`${person}-issuer`] = { authRequest: r.authRequest && { ...r.authRequest, redirectUri: r.authRequest.redirectUri }, post, token, accessLog: access };
+  check(s, `${person}: browser asked the demo issuer for code+PKCE S256 as gcsp-web, with state`, r.authRequest?.clientId === 'gcsp-web' && r.authRequest.challengeMethod === 'S256' && r.authRequest.responseType === 'code' && r.authRequest.hasState === true && /\bopenid\b/.test(r.authRequest.scope ?? ''));
+  check(s, `${person}: the page offered ${subjectOf(person)} and the browser chose it`, r.picker.includes(subjectOf(person)) && post?.subject === subjectOf(person));
+  check(s, `${person}: issuer redirected to the callback with a code and state`, post?.status === 302 && post.location?.origin === ORIGINS.web && post.location.path === '/gcsp/auth/callback' && ['code', 'state'].every((k) => post.location.queryKeys.includes(k)));
+  check(s, `${person}: the code was exchanged for tokens for ${subjectOf(person)} with a refresh token`, token?.status === 200 && token.subject === subjectOf(person) && token.refreshIssued === true && token.kid !== null);
+  check(s, `${person}: API access log shows authorize 200, choose 302 and token 200`, ['GET /authorize 200', 'POST /authorize 302', 'POST /token 200'].every((l) => access.includes(l)));
 }
 
 // AC1: a deep route survives sign-in and is not replaced by the role landing.
@@ -730,22 +922,22 @@ async function scenarioRefresh(cdp, s) {
     check(s, 'rail link opens the route inside the app', await page.act(`const a = [...document.querySelectorAll('.gcsp-nav-btn')].find((x) => x.textContent.trim() === 'Order progress'); if (!a) return false; a.click(); return true;`));
     await waitFor(page, `return location.pathname === '/gcsp/orders' && !!heading();`, 'orders route');
     const before = await snap(page, s, 'before-reload');
-    const mark = idp.requests.length;
+    const mark = issuerMark(page); const urlMark = page.urls.length;
     const read = await freshDocument(page, 'reload', { ready: `return location.pathname === '/gcsp/orders' && !!heading() && !!accountName();`, readPath: '/context', what: 'reloaded orders route' });
     const after = await snap(page, s, 'after-reload');
-    const issuer = idp.requests.slice(mark).filter((r) => r.path === 'auth');
+    const issuer = issuerLog(page, mark).filter((r) => r.path === 'auth');
     s.observations.reload = { contextRead: { status: read.status, scheme: read.scheme }, issuerAuthRequestsSinceReload: issuer.length };
     check(s, 'same route after reload', before.path === '/gcsp/orders' && after.path === before.path);
     check(s, 'same heading after reload', !!before.heading && after.heading === before.heading);
     check(s, 'still signed in, no sign-in screen', !!after.account && !(await page.act(`return !!button('Sign in');`)));
     check(s, 'reload read the context with the stored bearer', read.status === 200 && read.scheme === 'Bearer');
-    check(s, 'issuer saw no new /auth request', issuer.length === 0);
+    check(s, 'issuer saw no new /auth request', issuer.length === 0 && page.urls.slice(urlMark).every((u) => !onIssuer(u)));
   } finally { await page.close(); }
 }
 
 // AC1: roles outside a route's policy get the denied state and no private body.
 async function scenarioDenied(cdp, s) {
-  for (const [person, route, privateTitle] of [['paula', '/gcsp/presenter', 'Presenter controls'], ['presenter', '/gcsp/account', 'Your cars'], ['greg', '/gcsp/orders', 'Order progress']]) {
+  for (const [person, route, privateTitle] of [['paula', '/gcsp/presenter', 'Presenter controls'], ['presenter', '/gcsp/account', 'Your cars'], JAVA_DEMO ? ['greg', '/gcsp/presenter', 'Presenter controls'] : ['greg', '/gcsp/orders', 'Order progress']]) {
     const page = await newPage(cdp, `${person} denied`);
     try {
       await login(page, person, { from: '/gcsp/' });
@@ -770,6 +962,7 @@ async function scenarioUnavailable(cdp, s) {
     await login(page, 'paula', { from: '/gcsp/' });
     await waitFor(page, `return location.pathname === '/gcsp/account' && !!heading();`, 'account landing');
     const accountHeading = await page.act(`return heading();`);
+    const kidBefore = JAVA_DEMO ? await jwksKid() : null;
     await stopApi();
     const mark = page.log.length;
     await page.send('Page.navigate', { url: WEB('/gcsp/account') });
@@ -779,6 +972,7 @@ async function scenarioUnavailable(cdp, s) {
     check(s, 'the context read failed at the transport, not invented', page.calls(mark).some((e) => e.path === '/context' && !!e.failed));
     check(s, 'no private account body while unavailable', !down.text.includes(accountHeading) || accountHeading === 'Account unavailable');
     await startApi();
+    if (JAVA_DEMO) { const kidAfter = await jwksKid(); s.observations.signingKey = { kidBefore, kidAfter }; check(s, 'the issuer signing key (kid) is the same after the API restart', !!kidBefore && kidAfter === kidBefore); }
     check(s, 'retry control is actionable', await page.act(`return press('Try again');`));
     await waitFor(page, `return location.pathname === '/gcsp/account' && heading() === ${JSON.stringify(accountHeading)} && !!accountName();`, 'account page after retry', 30000);
     const up = await snap(page, s, 'recovered');
@@ -789,37 +983,47 @@ async function scenarioUnavailable(cdp, s) {
 
 // AC2: an expired access token is renewed with the refresh token, without a new sign-in.
 async function scenarioRenewal(cdp, s) {
-  setPolicy({ lifetimeSec: SHORT_LIFETIME, refresh: true });
+  await policy({ lifetimeSec: SHORT_LIFETIME, refresh: true });
   const page = await newPage(cdp, 'paula renewal');
   try {
     await login(page, 'paula', { from: '/gcsp/' });
     await waitFor(page, `return location.pathname === '/gcsp/account' && !!heading();`, 'account landing');
     await snap(page, s, 'signed-in');
-    const grant = idp.requests.filter((r) => r.path === 'token' && r.grantType === 'authorization_code').at(-1);
+    await page.settle();
+    const grant = issuerLog(page).filter((r) => r.path === 'token' && r.grantType === 'authorization_code').at(-1);
     check(s, 'issuer issued a short-lived token and a refresh token', grant?.lifetimeSec === SHORT_LIFETIME && grant.refreshIssued === true);
     const firstToken = page.calls().at(-1)?.token;
-    const mark = idp.requests.length; const logMark = page.log.length; const urlMark = page.urls.length;
+    const stored = JAVA_DEMO ? await page.storedUser() : null; const accessMark = JAVA_DEMO ? demoAccessRows().length : 0;
+    const mark = issuerMark(page); const logMark = page.log.length; const urlMark = page.urls.length;
     await sleep(Math.max(0, grant.expiresAt + 3000 - Date.now()));
     check(s, 'access token is past its expiry before the next navigation', Date.now() > grant.expiresAt);
     check(s, 'navigates inside the app after expiry', await page.act(`const a = [...document.querySelectorAll('.gcsp-nav-btn')].find((x) => x.textContent.trim() === 'Order progress'); if (!a) return false; a.click(); return true;`));
     await waitFor(page, `return location.pathname === '/gcsp/orders' && !!heading() && !!accountName();`, 'orders after renewal', 30000);
     const dom = await snap(page, s, 'after-renewal');
-    const issuer = idp.requests.slice(mark);
+    const issuer = issuerLog(page, mark);
     const refreshes = issuer.filter((r) => r.path === 'token' && r.grantType === 'refresh_token');
     const calls = page.calls(logMark); const later = calls.filter((e) => e.at >= (refreshes[0]?.at ?? Infinity));
     s.observations.detail = { refreshes: refreshes.map((r) => ({ status: r.status, rotated: r.rotated, lifetimeSec: r.lifetimeSec })), issuerAuthRequests: issuer.filter((r) => r.path === 'auth').length, pageUrlsSinceExpiry: webPaths(page.urls.slice(urlMark)), apiCalls: calls.map((e) => `${e.method} ${e.path} ${e.status ?? e.failed} ${e.token === firstToken ? 'old-token' : 'new-token'}`), noticeAfterRenewal: dom.notice };
-    check(s, 'issuer saw a refresh_token grant that succeeded', refreshes.length >= 1 && refreshes.every((r) => r.status === 200 && r.subject === 'sub-paula'));
-    check(s, 'no new authorization navigation', issuer.filter((r) => r.path === 'auth').length === 0 && page.urls.slice(urlMark).every((u) => !u.startsWith(ORIGINS.idp) && !u.includes('/gcsp/sign-in')));
+    check(s, 'issuer saw a refresh_token grant that succeeded', refreshes.length >= 1 && refreshes.every((r) => r.status === 200 && r.subject === subjectOf('paula')));
+    check(s, 'no new authorization navigation', issuer.filter((r) => r.path === 'auth').length === 0 && page.urls.slice(urlMark).every((u) => !onIssuer(u) && !u.includes('/gcsp/sign-in')));
     check(s, 'still signed in on the target page', dom.path === '/gcsp/orders' && !!dom.account && !(await page.act(`return !!button('Sign in');`)));
     check(s, 'API calls after renewal used the new access token', later.length > 0 && later.every((e) => e.scheme === 'Bearer' && e.token !== firstToken && e.status !== 401));
     check(s, 'the expired access token was not sent after expiry', calls.every((e) => !(e.token === firstToken && e.at > grant.expiresAt)));
-  } finally { setPolicy({ lifetimeSec: 3600, refresh: true }); await page.close(); }
+    if (JAVA_DEMO) {
+      const access = await accessSince(accessMark, (x) => x.includes('POST /token 200'));
+      const reuse = await directRefresh(stored?.refresh); s.observations.refreshReuse = reuse; s.observations.accessLog = access;
+      check(s, 'the refresh grant rotated the token: the browser sent the one it was issued and received a different one', refreshes.length >= 1 && refreshes[0].sentRefreshSha === grant.refreshSha && refreshes.every((r) => r.rotated === true));
+      check(s, 'renewed tokens are signed with the same key id as the first ones', refreshes.length >= 1 && refreshes.every((r) => !!r.kid && r.kid === grant.kid));
+      check(s, 'the refresh token already spent by the browser is refused when sent again (single use)', reuse.status === 400 && reuse.error === 'invalid_grant');
+      check(s, 'API access log shows a token 200 and no authorize request after the expiry', access.includes('POST /token 200') && !access.some((l) => l.startsWith('GET /authorize')));
+    }
+  } finally { resetPolicy(); await page.close(); }
 }
 
 const SAVED_TEXT = 'F439 saved review note';
 // AC2: expiry with no refresh token restores the page and saved progress after sign-in, with no automatic order.
 async function scenarioExpiry(cdp, s) {
-  setPolicy({ lifetimeSec: 3600, refresh: false });
+  await policy({ lifetimeSec: 3600, refresh: false });
   const setup = await newPage(cdp, 'paula unfinished order');
   try {
     await login(setup, 'paula', { from: '/gcsp/' });
@@ -827,11 +1031,13 @@ async function scenarioExpiry(cdp, s) {
     s.observations.setup = { path: await setup.eval('location.pathname'), note: 'claim reserved and review details saved through the Angular controls; order not placed' };
   } finally { await setup.close(); }
   check(s, 'no order exists before the session ends', dbOrderCount('paula') === 0);
-  setPolicy({ lifetimeSec: SHORT_LIFETIME, refresh: false });
+  await policy({ lifetimeSec: SHORT_LIFETIME, refresh: false });
   const page = await newPage(cdp, 'paula expiry');
   try {
     await login(page, 'paula', { from: '/gcsp/manual/summary' });
-    const grant = idp.requests.filter((r) => r.path === 'token' && r.grantType === 'authorization_code').at(-1);
+    await page.settle();
+    const grant = issuerLog(page).filter((r) => r.path === 'token' && r.grantType === 'authorization_code').at(-1);
+    const stored = JAVA_DEMO ? await page.storedUser() : null;
     check(s, 'issuer issued a short-lived token with no refresh token', grant?.lifetimeSec === SHORT_LIFETIME && grant.refreshIssued === false);
     await waitFor(page, `return location.pathname === '/gcsp/manual/summary' && !!button('Continue reviewing this selection');`, 'summary asks to confirm resume', 30000);
     await page.act(`return press('Continue reviewing this selection');`);
@@ -839,14 +1045,19 @@ async function scenarioExpiry(cdp, s) {
     await tickAll(page);
     const ticked = await snap(page, s, 'ticked-before-expiry');
     check(s, 'declarations ticked and Place order available before expiry', Date.now() < grant.expiresAt && await page.act(`return declarations().every((d) => d.checked) && button('Place order')?.disabled === false;`));
-    const afterTick = page.log.length;
+    const afterTick = page.log.length; const issuerAfterTick = issuerMark(page);
     await waitFor(page, `return location.pathname === '/gcsp/sign-in';`, 'sign-in after the token expires', 70000);
     const signed = await snap(page, s, 'signed-out-at-expiry');
     check(s, 'the app reached sign-in only after the token expired', Date.now() >= grant.expiresAt);
+    if (JAVA_DEMO) {
+      const attempts = issuerLog(page, issuerAfterTick).filter((r) => r.path === 'token' && r.grantType === 'refresh_token'); const late = await directRefresh(stored?.refresh ?? 'none-issued');
+      s.observations.refusedRenewal = { storedRefreshToken: !!stored?.refresh, browserRefreshAttempts: attempts.map((r) => ({ status: r.status, error: r.error })), directRefresh: late };
+      check(s, 'the browser held no refresh token and tried no renewal, and the issuer refuses a refresh grant', !stored?.refresh && attempts.length === 0 && late.status === 400 && !late.rotatedTokenIssued);
+    }
     check(s, 'sign-in carries returnTo=/gcsp/manual/summary', decodeURIComponent(await page.eval('location.search')).includes('returnTo=/gcsp/manual/summary'));
     check(s, 'expiry notice shown and no order content on the sign-in page', /session expired/i.test(signed.notice ?? '') && !signed.text.includes('Place order'));
     check(s, 'no order was submitted by the expiry', page.calls(afterTick).every((e) => !(e.method === 'POST' && e.path === '/manual/order')) && dbOrderCount('paula') === 0);
-    setPolicy({ lifetimeSec: 3600, refresh: false });
+    await policy({ lifetimeSec: 3600, refresh: false });
     const recoveryMark = page.log.length;
     const r = await login(page, 'paula');
     await waitFor(page, `return location.pathname === '/gcsp/manual/summary' && !!button('Continue reviewing this selection');`, 'summary after sign-in with resume confirmation', 30000);
@@ -870,30 +1081,47 @@ async function scenarioExpiry(cdp, s) {
     await snap(page, s, 'order-placed');
     check(s, 'explicit placing sent exactly one order POST', orderPosts.length === 1 && orderPosts[0].status === 200 && orderPosts[0].scheme === 'Bearer');
     check(s, 'exactly one order exists after the explicit action', orders.length === 1 && orders[0].orderUuid === CAR.paula);
-  } finally { setPolicy({ lifetimeSec: 3600, refresh: true }); await page.close(); }
+  } finally { resetPolicy(); await page.close(); }
 }
 
 // AC2: sign-out clears app auth and ends the provider session, so a different account can sign in.
 async function scenarioSignOut(cdp, s) {
-  setPolicy({ lifetimeSec: 3600, refresh: true });
+  await policy({ lifetimeSec: 3600, refresh: true });
   const page = await newPage(cdp, 'paula sign-out');
   try {
     await login(page, 'paula', { from: '/gcsp/' });
     await waitFor(page, `return location.pathname === '/gcsp/account' && !!heading();`, 'account landing');
     const paulaTokens = new Set(page.calls().map((e) => e.token));
-    const sessionsBefore = idp.sessions.size;
+    // Java demo: the issuer's sessions live in its tables, so the sign-out evidence is read there for the id token's own session.
+    const stored = JAVA_DEMO ? await page.storedUser() : null; const sid = JAVA_DEMO ? jwtPart(stored?.idToken, 1)?.sid : null;
+    if (JAVA_DEMO && !/^[0-9a-f]{32}$/.test(sid ?? '')) throw new Error('no demo session id in the stored id token');
+    const liveSessions = () => Number(sqlOut(`SELECT count(*) FROM demo_idp_sessions WHERE ended_at IS NULL`));
+    const sessionLive = (id) => sqlOut(`SELECT count(*) FROM demo_idp_sessions WHERE session_id = ${quoted(id)} AND ended_at IS NULL`) === '1';
+    const openTokens = (id) => Number(sqlOut(`SELECT count(*) FROM demo_idp_refresh_tokens WHERE session_id = ${quoted(id)} AND used_at IS NULL`));
+    const sessionsBefore = JAVA_DEMO ? liveSessions() : idp.sessions.size;
     check(s, 'before sign-out the header shows Paula Mason', (await page.act('return accountName();')) === 'Paula Mason');
-    check(s, 'before sign-out: app holds a user and the provider holds a session', (await page.act('return oidcUsers();')) === 1 && sessionsBefore >= 1);
+    check(s, 'before sign-out: app holds a user and the provider holds a session', (await page.act('return oidcUsers();')) === 1 && (JAVA_DEMO ? sessionLive(sid) && openTokens(sid) >= 1 : sessionsBefore >= 1));
     await snap(page, s, 'signed-in');
-    const mark = idp.requests.length; const logMark = page.log.length;
+    const mark = issuerMark(page); const logMark = page.log.length; const accessMark = JAVA_DEMO ? demoAccessRows().length : 0;
     check(s, 'Sign out is operable from the account menu', await page.eval(`(() => { const d = document.querySelector('summary.gcsp-account-summary'); const b = document.querySelector('button.gcsp-account-signout'); if (!d || !b) return false; d.click(); b.click(); return true; })()`));
     await waitFor(page, `return location.origin === '${ORIGINS.web}' && !!button('Sign in');`, 'signed-out sign-in screen', 30000);
     const out = await snap(page, s, 'signed-out');
-    const logout = idp.requests.slice(mark).find((r) => r.path === 'logout');
+    const logout = issuerLog(page, mark).find((r) => r.path === 'logout');
     s.observations.logout = logout ?? null;
-    check(s, 'issuer recorded an end-session request with a valid id_token_hint for paula', logout?.hintValid === true && logout.hintSubject === 'sub-paula');
-    check(s, 'post_logout_redirect_uri equals the configured value', logout?.redirectOk === true && logout.redirectUri === POST_LOGOUT);
-    check(s, 'provider session deleted and cookie expired', logout?.sessionDeleted === true && logout.cookieExpired === true && !idp.sessions.has(logout.hintSid) && idp.sessions.size === sessionsBefore - 1);
+    if (JAVA_DEMO) {
+      const refused = await directRefresh(stored.refresh); const access = await accessSince(accessMark, (x) => x.includes('GET /end-session 302'));
+      s.observations.afterSignOut = { oldRefreshToken: refused, sessionLive: sessionLive(sid), openRefreshTokens: openTokens(sid), liveSessionsBefore: sessionsBefore, liveSessionsAfter: liveSessions(), accessLog: access };
+      check(s, 'browser sent an end-session request with an id_token_hint for paula and the issuer accepted it', logout?.hintPresent === true && logout.hintSubject === subjectOf('paula') && logout.hintSidSha === sha12(sid) && logout.status === 302);
+      check(s, 'post_logout_redirect_uri equals the configured value and the issuer redirected there', logout?.redirectUri === POST_LOGOUT && `${logout.location?.origin}${logout.location?.path}` === POST_LOGOUT);
+      check(s, 'issuer ended the session and spent its refresh tokens (issuer tables)', !sessionLive(sid) && openTokens(sid) === 0 && liveSessions() === sessionsBefore - 1);
+      check(s, 'the refresh token held before sign-out is refused by the issuer afterwards', refused.status === 400 && refused.error === 'invalid_grant');
+      check(s, 'no provider cookie in either direction (the demo issuer keeps its session in its tables)', logout?.cookie === false && logout.setCookie === false);
+      check(s, 'API access log recorded GET /demo-idp/end-session 302', access.includes('GET /end-session 302'));
+    } else {
+      check(s, 'issuer recorded an end-session request with a valid id_token_hint for paula', logout?.hintValid === true && logout.hintSubject === 'sub-paula');
+      check(s, 'post_logout_redirect_uri equals the configured value', logout?.redirectOk === true && logout.redirectUri === POST_LOGOUT);
+      check(s, 'provider session deleted and cookie expired', logout?.sessionDeleted === true && logout.cookieExpired === true && !idp.sessions.has(logout.hintSid) && idp.sessions.size === sessionsBefore - 1);
+    }
     check(s, 'no gcsp:oidc:user: key in sessionStorage', out.oidcUsers === 0);
     check(s, 'no authorised API call after sign-out', page.calls(logMark).every((e) => !e.auth));
     await page.send('Page.navigate', { url: WEB('/gcsp/account') });
@@ -901,22 +1129,65 @@ async function scenarioSignOut(cdp, s) {
     const gated = await snap(page, s, 'account-gated');
     check(s, '/gcsp/account now goes to sign-in without private content', gated.path.startsWith('/gcsp/sign-in') && !gated.account && !gated.text.includes('Your cars'));
     const second = await login(page, 'greg', { from: '/gcsp/' });
-    await waitFor(page, `return location.pathname === '/gcsp/greg' && !!heading();`, 'greg landing');
+    await waitFor(page, `return location.pathname === ${JSON.stringify(LANDING.greg.path)} && !!heading();`, 'greg landing');
     const dom = await snap(page, s, 'greg-after-paula');
     const body = await page.eval(`document.documentElement.innerText + ' ' + JSON.stringify(Object.entries(sessionStorage))`);
     const calls = page.calls(logMark); const ctx = contextCalls(calls);
     s.observations.second = { authRequest: second.authRequest, picker: second.picker, contextSubject: ctx.at(-1)?.response?.value?.subject ?? null };
-    check(s, 'the next /auth request asked for the account picker (prompt=login) with no provider session', second.authRequest?.prompt === 'login' && second.authRequest.cookie === false && second.picker.includes('sub-paula') && second.picker.includes('sub-greg'));
-    check(s, 'header shows Greg Lawson and never Paula Mason after the account change', dom.account === 'Greg Lawson' && dom.avatar === 'GL' && !body.includes('Paula Mason'));
-    check(s, 'a different account (greg) lands on /gcsp/greg', dom.path === '/gcsp/greg' && same(dom.rail, LANDING.greg.rail) && ctx.at(-1)?.response?.value?.subject === 'sub-greg');
+    check(s, 'the next /auth request asked for the account picker (prompt=login) with no provider session', second.authRequest?.prompt === 'login' && second.authRequest.cookie === false && second.picker.includes(subjectOf('paula')) && second.picker.includes(subjectOf('greg')));
+    check(s, 'header shows Greg Lawson and never Paula Mason after the account change', dom.account === LANDING.greg.name && dom.avatar === LANDING.greg.avatar && !body.includes('Paula Mason'));
+    check(s, 'a different account (greg) lands on /gcsp/greg', dom.path === LANDING.greg.path && same(dom.rail, LANDING.greg.rail) && ctx.at(-1)?.response?.value?.subject === subjectOf('greg'));
     check(s, 'no paula name or data in the DOM or session storage', !/paula/i.test(body) && !body.includes(CAR.paula));
     check(s, 'greg calls never used paula tokens', calls.filter((e) => e.token).every((e) => !paulaTokens.has(e.token)));
+    if (JAVA_DEMO) {
+      const gregSid = jwtPart((await page.storedUser())?.idToken, 1)?.sid;
+      check(s, 'greg signed in on a new issuer session, not paula\'s', /^[0-9a-f]{32}$/.test(gregSid ?? '') && gregSid !== sid && sessionLive(gregSid) && !sessionLive(sid));
+    }
+  } finally { await page.close(); }
+}
+
+// FUCQ-532 (Java demo issuer): the demo sign-in page works from the keyboard alone, with a visible focus ring, then Enter signs in.
+async function scenarioKeyboard(cdp, s) {
+  const subject = subjectOf('paula');
+  const page = await newPage(cdp, 'paula keyboard sign-in');
+  const key = async (name, code, text) => {
+    const base = { key: name, code: name, windowsVirtualKeyCode: code, nativeVirtualKeyCode: code };
+    await page.send('Input.dispatchKeyEvent', { type: 'keyDown', ...base, ...(text ? { text } : {}) }); await page.send('Input.dispatchKeyEvent', { type: 'keyUp', ...base });
+  };
+  try {
+    const mark = issuerMark(page);
+    await page.send('Page.navigate', { url: WEB('/gcsp/') });
+    await page.until(`return location.origin === '${ORIGINS.web}' && location.pathname === '/gcsp/sign-in' && !!button('Sign in');`, 30000, 'Angular sign-in page');
+    await page.act(`return press('Sign in');`);
+    await page.until(`return location.origin === '${ISSUER_ORIGIN}' && !!document.querySelector('button[data-subject="${subject}"]');`, 30000, 'demo sign-in page');
+    const title = await page.eval('document.title'); const startedOnBody = await page.eval('document.activeElement === document.body');
+    const stops = [];
+    for (let i = 0; i < 12; i++) {
+      await key('Tab', 9);
+      stops.push(await page.eval(`(() => { const a = document.activeElement; const cs = a ? getComputedStyle(a) : null; return { subject: a?.dataset?.subject ?? null, tag: a?.tagName ?? null, focusVisible: a?.matches(':focus-visible') ?? false, outlineWidth: cs?.outlineWidth ?? null, outlineStyle: cs?.outlineStyle ?? null, outlineOffset: cs?.outlineOffset ?? null }; })()`));
+      if (stops.at(-1).subject === subject) break;
+    }
+    const focus = stops.at(-1);
+    const isTarget = await page.eval(`document.activeElement === document.querySelector('button[data-subject="${subject}"]')`);
+    const screenshot = path.basename(await page.shot(`${s.id}-focus-paula.png`));
+    s.observations.keyboard = { title, startedOnBody, tabPresses: stops.length, stops, focus, screenshot };
+    check(s, 'the demo sign-in page is titled "Demo sign-in. Fictional people only."', title === 'Demo sign-in. Fictional people only.');
+    check(s, 'Tab alone (no pointer) reached the Paula button', startedOnBody === true && isTarget && focus.subject === subject && stops.length <= 12);
+    check(s, 'document.activeElement is that button', isTarget && focus.tag === 'BUTTON');
+    check(s, 'the focused button shows a visible outline: computed outline-width at least 3px, outline-style not none, :focus-visible', parseFloat(focus.outlineWidth) >= 3 && focus.outlineStyle !== 'none' && focus.focusVisible === true);
+    await key('Enter', 13, '\r');
+    await page.until(`return location.origin === '${ORIGINS.web}' && location.pathname === ${JSON.stringify(LANDING.paula.path)} && !!accountName() && !main.querySelector('[aria-busy="true"]');`, 30000, 'Paula signed in with Enter');
+    const dom = await snap(page, s, 'after-enter'); const rows = issuerLog(page, mark);
+    const post = rows.find((r) => r.path === 'auth' && r.method === 'POST'); const token = rows.find((r) => r.path === 'token' && r.grantType === 'authorization_code');
+    check(s, 'Enter on the focused button signed Paula in (browser posted her subject, issuer redirected, tokens issued)', post?.subject === subject && post.status === 302 && token?.status === 200 && token.subject === subject);
+    check(s, 'Paula landed on her page with her name in the header', dom.path === LANDING.paula.path && dom.account === LANDING.paula.name);
   } finally { await page.close(); }
 }
 
 // ---------- main ----------
 const SCENARIOS = [
   ['ac1a', 'Login and role landing for employee, Greg and presenter', 'AC1', scenarioLanding],
+  ...(JAVA_DEMO ? [['ac1f', 'Keyboard sign-in on the demo sign-in page (Tab to a person, visible focus, Enter)', 'AC1', scenarioKeyboard]] : []),
   ['ac1b', 'Direct entry to a deep route survives sign-in', 'AC1', scenarioDirectEntry],
   ['ac1c', 'Refresh keeps route and session, no new issuer request', 'AC1', scenarioRefresh],
   ['ac1d', 'Denied states show no private body', 'AC1', scenarioDenied],
@@ -933,11 +1204,13 @@ function accessLog() {
 }
 async function main() {
   for (const d of Object.values(dirs)) mkdirSync(d, { recursive: true });
-  for (const [k, p] of Object.entries(PORTS)) if (!(await portFree(p))) throw new Error(`port ${p} (${k}) is in use; choose PROOF_${k.toUpperCase()}_PORT`);
+  for (const [k, p] of Object.entries(PORTS)) if (!(JAVA_DEMO && k === 'idp') && !(await portFree(p))) throw new Error(`port ${p} (${k}) is in use; choose PROOF_${k.toUpperCase()}_PORT`);
   receipt.parentReservation = process.env.TEST_RESOURCE_PARENT_RESERVATION ?? null;
   receipt.inputs = { scratch: PROOF, publicMailBaseUrl: PUBLIC_BASE_URL, database: { source: DB_SOURCE, host: DB[1], port: DB[2] ?? '5432', name: DB_NAME, schema: SCHEMA }, ports: PORTS, shortLifetimeSec: SHORT_LIFETIME, jar: { path: path.relative(ROOT, JAR), sha256: sha256File(JAR) },
     appJars: readdirSync(path.join(path.dirname(JAR), 'app')).filter((f) => f.endsWith('.jar')).map((f) => ({ file: f, sha256: sha256File(path.join(path.dirname(JAR), 'app', f)) })), psql: { path: PSQL, sha256: sha256File(PSQL) }, media: MEDIA_FILES.map((name) => ({ name, sha256: sha256File(path.join(MEDIA_ROOT, name)) })), webBrowser: { path: path.relative(ROOT, WEB_BROWSER), indexSha256: sha256File(path.join(WEB_BROWSER, 'index.html')) } };
-  receipt.composition = { identity: 'oidc (local mock issuer)', subjects: Object.entries(SUBJECT_ROLES).map(([subject, roles]) => ({ subject, roles })), account: 'repository', scenario: 'demo', ordering: 'synthetic', resetAllowed: true, environmentId: ENVIRONMENT_ID, runId: RUN_ID, policyVersion: POLICY, apiJvm: jvmLimitsReceipt(API_JVM_ARGS) };
+  if (JAVA_DEMO) receipt.inputs.demoDirectory = { path: path.relative(ROOT, DIRECTORY_FILE), sha256: sha256File(DIRECTORY_FILE), people: DIRECTORY.map((d) => ({ subject: d.principalId, name: d.name, roles: d.roles })), landing: LANDING };
+  receipt.composition = { identity: JAVA_DEMO ? 'oidc (built-in demo issuer)' : 'oidc (local mock issuer)', subjects: Object.entries(SUBJECT_ROLES).map(([subject, roles]) => ({ subject, roles })), account: 'repository', scenario: 'demo', ordering: 'synthetic', resetAllowed: true, environmentId: ENVIRONMENT_ID, runId: RUN_ID, policyVersion: POLICY, apiJvm: jvmLimitsReceipt(API_JVM_ARGS),
+    ...(JAVA_DEMO ? { demoIssuer: { issuer: ISSUER, jwksUri: `${ISSUER}/jwks`, accessTokenLifetime: `${demoPolicy.accessSec}s`, refreshTokenLifetime: `${demoPolicy.refreshSec}s`, accounts: demoAccounts().map((a) => ({ subject: a.subject, roles: a.roles, hasEmployeeId: !!a.employeeId })), hostnameOption: 'issuer on https://gcsp-api.localhost (API origin); Java resolves it natively, no hosts-file override' } } : {}) };
   receipt.sourceRevision = { value: SOURCE_REVISION, provenance: 'PROOF_SOURCE_REVISION supplied and verified by the parent; not read from git here' };
   receipt.tools = { harnessNode: process.version, openssl: cap('openssl', ['version']), chrome: cap(CHROME, ['--version']), java: (spawnSync(path.join(JAVA_HOME, 'bin/java'), ['-version'], { encoding: 'utf8', env: childEnv(process.env) }).stderr ?? '').split('\n')[0] };
   receipt.tools.psql = cap(PSQL, ['--version']);
@@ -952,8 +1225,9 @@ async function main() {
       GCSP_PUBLIC_OIDC_SCOPE: 'openid profile gcsp-api', GCSP_PUBLIC_OIDC_REDIRECT_URI: `${ORIGINS.web}/gcsp/auth/callback`, GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI: POST_LOGOUT });
   const manifest = path.join(dirs.static, 'gcsp/static-manifest.json');
   receipt.inputs.compiledAssembly = { sha256: sha256File(manifest), manifest: JSON.parse(readFileSync(manifest, 'utf8')) };
-  log('mock issuer and web'); await startIdp(tls); await startWeb(tls, assemble.GCSP_FIXED_ROUTES);
+  log(`${ISSUER_LABEL.toLowerCase()} and web`); if (!JAVA_DEMO) await startIdp(tls); await startWeb(tls, assemble.GCSP_FIXED_ROUTES);
   log('API (repository accounts, native PG, synthetic ordering)'); await startApi();
+  if (JAVA_DEMO) { const kid = await jwksKid(); receipt.demoIssuer = { kidAtStart: kid }; receipt.issuerPolicyLog.push({ at: new Date().toISOString(), initial: true, accessTokenLifetime: `${demoPolicy.accessSec}s`, refreshTokenLifetime: `${demoPolicy.refreshSec}s`, restarted: false, kidAtStart: kid }); }
   log('seed released stock and one saved draft for the employee'); await seedAll();
   const profile = path.join(dirs.browser, 'profile'); mkdirSync(profile, { recursive: true });
   const chrome = spawnOwned('chrome', CHROME, ['--headless=new', `--user-data-dir=${profile}`, '--remote-debugging-port=0', '--remote-allow-origins=*', `--ignore-certificate-errors-spki-list=${tls.spki}`, '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-background-networking', '--window-size=1280,900', 'about:blank'], { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: dirs.tmp });
@@ -962,7 +1236,7 @@ async function main() {
   if (!wsUrl) throw new Error('Chrome DevTools endpoint not found');
   const cdp = await Cdp.connect(wsUrl); receipt.cdp = cdp;
   for (const [id, title, ac, fn] of SCENARIOS) await scenario(id, title, ac, (s) => fn(cdp, s));
-  receipt.issuerRequests = idp.requests.filter((r) => r.path !== 'certs').map(({ seq, at, ...rest }) => ({ seq, at: new Date(at).toISOString(), ...rest }));
+  if (!JAVA_DEMO) receipt.issuerRequests = idp.requests.filter((r) => r.path !== 'certs').map(({ seq, at, ...rest }) => ({ seq, at: new Date(at).toISOString(), ...rest }));
 }
 function teardown() {
   if (teardownPromise) return teardownPromise;
@@ -986,10 +1260,12 @@ function finish(runError) {
   if (runError) receipt.runError = runError;
   receipt.logBudget ??= { limitBytes: CHILD_LOG_LIMIT, writtenBytes: childLogBytes, exhausted: false };
   try { receipt.apiAccessLog = accessLog(); } catch { /* no log */ }
+  if (JAVA_DEMO) { try { receipt.issuerAccessLog = demoAccessRows().slice(-200); } catch { /* no log */ } }
   const ids = SCENARIOS.map(([id]) => id);
   receipt.originalAcceptance = {
-    AC1: { text: 'Angular owns shell/navigation and handles login, role landing, direct entry, refresh and unavailable/denied states with the baseline visual design.', scenarios: ['ac1a', 'ac1b', 'ac1c', 'ac1d', 'ac1e'], evidence: evidence(['ac1a', 'ac1b', 'ac1c', 'ac1d', 'ac1e']), boundary: 'Local mock issuer; Chrome desktop 1280x800; baseline visual design is evidenced by the captures, not a pixel comparison.', closure: 'OPEN: parent review and batch acceptance decide' },
-    AC2: { text: 'Renew authentication where supported; otherwise restore the authorised page and saved progress after sign-in without automatic order submission. Sign-out clears app authentication and ends the provider session where supported, permitting a different account next time.', scenarios: ['ac2a', 'ac2b', 'ac2c'], evidence: evidence(['ac2a', 'ac2b', 'ac2c']), boundary: 'Local mock issuer only (decision 2026-11-18); no real provider.', closure: 'OPEN: parent review and batch acceptance decide' } };
+    AC1: { text: 'Angular owns shell/navigation and handles login, role landing, direct entry, refresh and unavailable/denied states with the baseline visual design.', scenarios: ['ac1a', 'ac1b', 'ac1c', 'ac1d', 'ac1e'], evidence: evidence(['ac1a', 'ac1b', 'ac1c', 'ac1d', 'ac1e']), boundary: `${JAVA_DEMO ? 'Java demo issuer on a local API' : 'Local mock issuer'}; Chrome desktop 1280x800; baseline visual design is evidenced by the captures, not a pixel comparison.`, closure: 'OPEN: parent review and batch acceptance decide' },
+    AC2: { text: 'Renew authentication where supported; otherwise restore the authorised page and saved progress after sign-in without automatic order submission. Sign-out clears app authentication and ends the provider session where supported, permitting a different account next time.', scenarios: ['ac2a', 'ac2b', 'ac2c'], evidence: evidence(['ac2a', 'ac2b', 'ac2c']), boundary: JAVA_DEMO ? 'Java demo issuer on a local API only (decision 2026-11-18); no real provider.' : 'Local mock issuer only (decision 2026-11-18); no real provider.', closure: 'OPEN: parent review and batch acceptance decide' },
+    ...(JAVA_DEMO ? { FUCQ532: { text: 'The connected shell proof signs in through the Java demo sign-in issuer served by the started API: sign-in for employee, Greg and presenter, renewal, expiry, sign-out then a second person, and the keyboard check on the demo sign-in page.', scenarios: ['ac1a', 'ac1f', 'ac2a', 'ac2b', 'ac2c'], evidence: evidence(['ac1a', 'ac1f', 'ac2a', 'ac2b', 'ac2c']), boundary: 'Local API with the built-in demo issuer; Chrome desktop 1280x800; the hosted Render deployment is not exercised.', closure: 'OPEN: parent review decides' } } : {}) };
   receipt.overall = ids.every(ok) && !runError && !logLimitFailure && receipt.teardown?.allOwnedExited ? 'PASS' : 'FAIL';
   const file = path.join(dirs.evidence, 'connected-shell-proof.json');
   let serialized = `${JSON.stringify(receipt, null, 2)}\n`;

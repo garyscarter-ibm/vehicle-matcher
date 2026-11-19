@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { runtimeConfigFromEnv } from '../../scripts/gcsp-runtime-config.mjs';
 
 // FUCQ-533: one Blueprint per environment; every check runs on both files.
 const blueprints = await Promise.all([['render.gcsp-buddy.yaml', 'gcsp-buddy'], ['render.gcsp-buddy-dev.yaml', 'gcsp-buddy-dev']]
@@ -46,7 +47,6 @@ each('every required Java provider is configured, not left at none', ({ yaml, pr
     GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_APPROVALS_PROVIDER: 'synthetic', GCSP_DOCUMENTS_PROVIDER: 'synthetic', GCSP_APPOINTMENTS_PROVIDER: 'synthetic',
     GCSP_PRODUCTION_PROVIDER: 'synthetic', GCSP_RETURNS_PROVIDER: 'synthetic', GCSP_VEHICLE_EVIDENCE_PROVIDER: 'lookup' };
   for (const [key, want] of Object.entries(configured)) assert.equal(value(key), want, key);
-  assert.match(java, /- key: GCSP_IDENTITY_PROVIDER\n\s+sync: false/);
   for (const key of ['GCSP_MAIL_TRANSPORT', 'GCSP_PUBLIC_BASE_URL', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY', 'GCSP_CODE_REVISION']) {
     assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`), key);
   }
@@ -56,4 +56,47 @@ each('every required Java provider is configured, not left at none', ({ yaml, pr
 each('site declares no redirects to retired gcsp-api pages', ({ site }) => {
   assert.doesNotMatch(site, /^    routes:/m);
   assert.doesNotMatch(site, /gcsp(?:-(?:login|greg|help)\.html|\/login)/);
+});
+
+// FUCQ-532: hosted sign-in uses the built-in demo issuer, so every identity value is committed and readiness can be UP.
+const envValue = (yaml, key) => yaml.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: ([^\\n]+)`, 'm'))?.[1].replace(/\s+#.*$/, '').replace(/^(['"])(.*)\1$/, '$2');
+
+each('API commits the demo issuer identity values and the web service matches them', ({ yaml, prefix }) => {
+  const api = service(yaml, `${prefix}-api`);
+  const web = service(yaml, `${prefix}-web`);
+  const host = `https://${prefix}-api.onrender.com`;
+  const origin = `https://${prefix}-web.onrender.com`;
+  const want = { GCSP_IDENTITY_PROVIDER: 'oidc', GCSP_DEMO_IDP_ENABLED: 'true', GCSP_OIDC_ISSUER: `${host}/demo-idp`, GCSP_OIDC_JWKS_URI: `${host}/demo-idp/jwks`,
+    GCSP_OIDC_AUDIENCE: 'gcsp-api', GCSP_OIDC_AUTHORIZED_PARTY: 'gcsp-web', GCSP_OIDC_REQUIRED_SCOPES: 'gcsp-api', GCSP_OIDC_ROLE_CLAIM: 'realm_access.roles',
+    GCSP_ALLOWED_ORIGINS: origin, GCSP_DEMO_IDP_REDIRECT_URIS: `${origin}/gcsp/auth/callback`, GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: `${origin}/gcsp/` };
+  for (const [key, value] of Object.entries(want)) assert.equal(envValue(api, key), value, key);
+  assert.equal(envValue(api, 'GCSP_OIDC_JWKS_URI'), `${envValue(api, 'GCSP_OIDC_ISSUER')}/jwks`);
+  assert.equal(envValue(web, 'GCSP_PUBLIC_OIDC_AUTHORITY'), envValue(api, 'GCSP_OIDC_ISSUER'));
+  assert.equal(envValue(web, 'GCSP_PUBLIC_OIDC_CLIENT_ID'), envValue(api, 'GCSP_OIDC_AUTHORIZED_PARTY'));
+  assert.equal(envValue(web, 'GCSP_PUBLIC_OIDC_REDIRECT_URI'), envValue(api, 'GCSP_DEMO_IDP_REDIRECT_URIS'));
+  assert.equal(envValue(web, 'GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI'), envValue(api, 'GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS'));
+  assert.ok(envValue(web, 'GCSP_PUBLIC_OIDC_SCOPE').split(' ').includes(envValue(api, 'GCSP_OIDC_REQUIRED_SCOPES')));
+  assert.equal(envValue(web, 'GCSP_PUBLIC_API_BASE_URL'), `${host}/api/gcsp/v1`);
+  for (const key of ['GCSP_ENVIRONMENT_ID', 'GCSP_RUN_ID', 'GCSP_POLICY_VERSION']) assert.match(api, new RegExp(`- key: ${key}\\n\\s+sync: false`), `${key} stays deployment-supplied`);
+  assert.match(web, /- key: GCSP_PUBLIC_ENVIRONMENT_ID\n\s+sync: false/);
+});
+
+each('API accounts cover every demo person with matching roles and employee ids', ({ yaml, prefix }) => {
+  const accounts = JSON.parse(envValue(service(yaml, `${prefix}-api`), 'GCSP_OIDC_ACCOUNTS'));
+  assert.deepEqual(accounts.map((a) => a.subject), ['demo-paula', 'demo-alex', 'demo-sam', 'demo-jordan', 'demo-greg', 'demo-presenter']);
+  assert.deepEqual(accounts.find((a) => a.subject === 'demo-greg'), { subject: 'demo-greg', roles: ['greg', 'employee'], employeeId: 'operator-greg' });
+  assert.deepEqual(accounts.find((a) => a.subject === 'demo-presenter'), { subject: 'demo-presenter', roles: ['presenter'] });
+});
+
+// gcsp:assemble refuses a blank or invalid GCSP_PUBLIC_* value, so the committed ones must pass it.
+each('web public values pass the deployed runtime configuration check', ({ yaml, prefix }) => {
+  const web = service(yaml, `${prefix}-web`);
+  const env = { GCSP_PUBLIC_ENVIRONMENT_ID: 'placeholder-environment' };
+  for (const key of ['GCSP_PUBLIC_API_BASE_URL', 'GCSP_PUBLIC_OIDC_AUTHORITY', 'GCSP_PUBLIC_OIDC_CLIENT_ID', 'GCSP_PUBLIC_OIDC_SCOPE',
+    'GCSP_PUBLIC_OIDC_REDIRECT_URI', 'GCSP_PUBLIC_OIDC_POST_LOGOUT_REDIRECT_URI']) {
+    env[key] = envValue(web, key);
+    assert.ok(env[key], `${key} is committed`);
+  }
+  const config = runtimeConfigFromEnv(env, { environment: 'deployed' });
+  assert.equal(config.oidc.authority, `https://${prefix}-api.onrender.com/demo-idp`);
 });

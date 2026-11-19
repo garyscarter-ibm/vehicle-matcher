@@ -78,8 +78,10 @@ and `render.gcsp-buddy.yaml` (branch `gcsp-poc`; `gcsp-buddy-api`, `gcsp-buddy-w
 
 1. **Create the isolated dev environment** in a new Render workspace: create the `gcsp-buddy-dev` Blueprint instance
    from `render.gcsp-buddy-dev.yaml` and give `gcsp-buddy-dev-api` its own new PostgreSQL database. Fill the `sync: false` keys: database, `GCSP_EXPECTED_DATABASE`,
-   `GCSP_ENVIRONMENT_ID`, OIDC, `GCSP_ALLOWED_ORIGINS` = the Angular origin. Fill the Angular `GCSP_PUBLIC_*` keys
-   with matching values (`docs/gcsp/fucq-436-static-artifact-2026-11-13.md`, identity table).
+   `GCSP_ENVIRONMENT_ID`, `GCSP_RUN_ID`, `GCSP_POLICY_VERSION` and the mail keys; also `GCSP_PUBLIC_ENVIRONMENT_ID` on the web service (same value as `GCSP_ENVIRONMENT_ID`).
+   Sign-in needs nothing else: since FUCQ-532 both Blueprints commit the demo issuer's identity values, the Angular `GCSP_PUBLIC_*` values and `GCSP_ALLOWED_ORIGINS`.
+   Hosted sign-in is the built-in demo issuer (`/demo-idp` on the API): fictional people only, off by default in every other composition.
+   A real provider later is a configuration change only (`docs/gcsp/oidc-test-provider-2026-11-13.md`).
 2. **First start:** `/q/health/ready` is 200. `GET <api>/api/gcsp/v1/context` without a token is 401.
    `/gcsp/runtime-config.json` names the API and issuer. `/gcsp/` shows Sign in.
 3. **Create state:** sign in as a test employee, save a preference, and allocate an offer so that a new offer link
@@ -89,7 +91,7 @@ and `render.gcsp-buddy.yaml` (branch `gcsp-poc`; `gcsp-buddy-api`, `gcsp-buddy-w
 5. **API-only release:** push a commit touching only `services/gcsp-api`. Only `gcsp-buddy-dev-api` redeploys. Repeat
    the checks from step 4.
 6. **Restart:** manually restart both services from the Dashboard. Repeat the checks from step 4.
-7. **Hosted review** (Gary's end-of-build item): real OIDC sign-in and sign-out, exact-origin CORS, a delivered
+7. **Hosted review** (Gary's end-of-build item): demo-issuer sign-in and sign-out (a real provider is not part of this build), exact-origin CORS, a delivered
    offer email and its return, and Safari with private browsing.
    In Safari private browsing also check FUCQ-437's entry rules: a fresh emailed offer link, an unknown `/gcsp/x`
    (branded Page not found), and a missing `/gcsp/assets/x.js` (still 404, not the app page).

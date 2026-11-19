@@ -41,7 +41,8 @@ public final class OidcIdentity implements IdentityPort {
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final int JWKS_TIMEOUT_MS = 2000;
 
-    record Account(String subject, Set<Role> roles, String employeeId) {}
+    /** One deployment-mapped account; public so the demo issuer can check its people against the same mapping. */
+    public record Account(String subject, Set<Role> roles, String employeeId) {}
 
     private final String authorizedParty;
     private final List<String> requiredScopes;
@@ -278,7 +279,7 @@ public final class OidcIdentity implements IdentityPort {
         throw new IllegalStateException(at + " has an unknown role");
     }
 
-    static Map<String, Account> parseAccounts(String json) {
+    public static Map<String, Account> parseAccounts(String json) {
         final String key = "gcsp.oidc.accounts";
         JsonNode root;
         try {

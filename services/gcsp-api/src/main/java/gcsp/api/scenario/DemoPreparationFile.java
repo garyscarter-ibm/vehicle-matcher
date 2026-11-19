@@ -98,6 +98,13 @@ public final class DemoPreparationFile {
         return scenarios().stream().filter(s -> s.get("scenarioId").textValue().equals(scenarioId)).findFirst();
     }
 
+    /** Every display person (principalId, employeeId, name, roles) in the catalogue directory. */
+    public List<JsonNode> directory() {
+        List<JsonNode> out = new ArrayList<>();
+        root.get("catalogue").get("directory").forEach(out::add);
+        return out;
+    }
+
     /** The display person (employeeId, name, roles) for a catalogue principal id. */
     public Optional<JsonNode> person(String principalId) {
         for (JsonNode d : root.get("catalogue").get("directory")) {

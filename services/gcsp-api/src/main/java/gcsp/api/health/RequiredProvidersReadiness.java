@@ -55,7 +55,7 @@ public class RequiredProvidersReadiness implements HealthCheck {
                 required);
     }
 
-    static HealthCheckResponse evaluate(Function<String, String> lookup, boolean persistenceActive,
+    public static HealthCheckResponse evaluate(Function<String, String> lookup, boolean persistenceActive,
             List<String> required) {
         List<String> unconfigured = new ArrayList<>();
         for (String key : required) {
@@ -78,7 +78,7 @@ public class RequiredProvidersReadiness implements HealthCheck {
         }
     }
 
-    static List<String> parse(String value) {
+    public static List<String> parse(String value) {
         List<String> out = new ArrayList<>();
         if (value == null) return out;
         for (String key : value.split("[,\\s]+")) {
