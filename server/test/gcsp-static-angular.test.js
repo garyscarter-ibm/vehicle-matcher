@@ -319,8 +319,10 @@ for (const { file, prefix, branch } of BLUEPRINTS) test(`artifact: ${file} prese
   assert.equal(new Set(javaKeys).size, javaKeys.length, 'identity and persistence share one environment setting');
   const proposedIdentityKeys = [...proposed.matchAll(/^      # - key: (GCSP_(?:OIDC_[A-Z_]+|ENVIRONMENT_ID|RUN_ID|POLICY_VERSION))$/gmu)].map((match) => match[1]);
   assert.equal(proposedIdentityKeys.length, 10, 'inspect a changed authoritative identity contract before updating the blueprint');
+  // FUCQ-532: the demo issuer commits the identity values; only the three environment-context keys stay deployment-supplied.
   for (const key of ['GCSP_IDENTITY_PROVIDER', ...proposedIdentityKeys]) {
-    assert.match(java, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'), `${key} remains deployment-supplied`);
+    const context = ['GCSP_ENVIRONMENT_ID', 'GCSP_RUN_ID', 'GCSP_POLICY_VERSION'].includes(key);
+    assert.match(java, new RegExp(`- key: ${key}\\n\\s+${context ? 'sync: false' : 'value: \\S'}`, 'u'), `${key} ${context ? 'remains deployment-supplied' : 'is committed for the demo issuer'}`);
   }
   assert.match(java, new RegExp(`^    branch: ${branch}$`, 'mu'));
   assert.match(java, /^    plan: starter\b/mu);
@@ -414,7 +416,8 @@ for (const { file, prefix, branch } of BLUEPRINTS) test(`artifact: ${file} stati
   assert.equal(caches.find((header) => header.path === '/gcsp/assets/*')?.value, 'no-cache');
   assert.ok(headers.some((header) => header.name === 'Content-Security-Policy' && header.value === '"frame-ancestors \'none\'"'));
   assert.ok(headers.some((header) => header.name === 'Referrer-Policy' && header.value === 'no-referrer'));
-  for (const key of Object.values(PUBLIC_ENV_KEYS)) assert.match(site, new RegExp(`- key: ${key}\\n\\s+sync: false`, 'u'));
+  // FUCQ-532: the demo issuer commits the public sign-in values; only the environment id is deployment-supplied.
+  for (const key of Object.values(PUBLIC_ENV_KEYS)) assert.match(site, new RegExp(`- key: ${key}\\n\\s+${key === PUBLIC_ENV_KEYS.environmentId ? 'sync: false' : 'value: \\S'}`, 'u'));
   for (const input of ['apps/gcsp-web/**', 'blocks/gcsp/shell/**', 'designs/**', 'scripts/build-gcsp-static.mjs', 'scripts/assemble-site.mjs', 'scripts/gcsp-runtime-config.mjs', '_config/gcsp-runtime-config.schema.json', 'package.json', 'package-lock.json', file]) assert.ok(site.includes(`- ${input}\n`), input);
   const pkg = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
   assert.match(pkg.scripts['gcsp:compile'], /npm --prefix apps\/gcsp-web run build/u);
