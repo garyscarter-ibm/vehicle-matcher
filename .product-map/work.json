@@ -4721,13 +4721,25 @@
     },
     {
       "id": "FUCQ-381",
-      "observed_at": "2026-11-11T11:39:01Z",
+      "observed_at": "2026-11-19T10:04:33Z",
       "original_status": "In Review",
-      "slices": [],
+      "slices": [
+        {
+          "id": "java-ranking-proof",
+          "status": "in-progress",
+          "title": "Started-app Java proof of the four ranking ACs",
+          "observed_at": "2026-11-19T10:04:33Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Story integration on merged gcsp-poc-dev base"
+        }
+      ],
       "status": "In Review",
       "title": "Prefer full points allowance for similarly suitable employee recommendations",
       "type": "Bug",
-      "unsliced": true,
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-381"
     },
     {
