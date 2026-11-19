@@ -2,7 +2,7 @@ import { test, before, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
-let panel; let transport; let gallery; let element; let dashboard; let fixtures; let demandTransport;
+let panel; let transport; let gallery;
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 const deferred = () => { let resolve; const promise = new Promise((r) => { resolve = r; }); return { promise, resolve }; };
 before(async () => {
@@ -11,10 +11,6 @@ before(async () => {
   panel = await import('../../blocks/gcsp/greg/publish/panel.js');
   transport = await import('../../blocks/gcsp/greg/publish/http-adapter.js');
   gallery = await import('../../blocks/gcsp/greg/publish/gallery.js');
-  element = await import('../../blocks/gcsp/greg/publish/element.js');
-  dashboard = await import('../../blocks/gcsp/greg/gcsp-greg.js');
-  fixtures = await import('../../blocks/gcsp/greg/fixtures.js');
-  demandTransport = await import('../../blocks/gcsp/greg/http-adapter.js');
 });
 beforeEach(() => document.body.replaceChildren());
 const host = () => { const node = document.createElement('div'); document.body.append(node); return node; };
@@ -197,15 +193,6 @@ test('a stale preview response and a response after teardown cannot overwrite ne
   next.resolve({ status: 'ready', value: policy }); await tick(); assert.equal(other.root.children.length, 0); teardown();
 });
 
-test('standalone custom element disconnect/reconnect aborts the old mount and supports two independent embeddings', async () => {
-  element.defineGcspGregPublish(); const pending = deferred(); let calls = 0;
-  const adapter = { async readPolicy() { calls += 1; return calls === 1 ? pending.promise : { status: 'ready', value: gallery.galleryPolicy() }; } };
-  const node = document.createElement('gcsp-greg-publish'); node.adapter = adapter; document.body.append(node); node.remove(); document.body.append(node); await tick();
-  pending.resolve({ status: 'refused' }); await tick(); assert.equal(state(node), 'draft'); assert.equal(calls, 2);
-  const second = document.createElement('gcsp-greg-publish'); second.adapter = adapter; document.body.append(second); await tick();
-  const ids = [...document.querySelectorAll('input')].map((n) => n.id); assert.equal(new Set(ids).size, ids.length);
-});
-
 test('HTTP adapter uses actual bounded routes, cookies, no-store and exact bodies without identity selectors', async () => {
   const requests = []; const policy = gallery.galleryPolicy(); const input = { expectedActiveVersion: policy.activeVersion, changes: [{ id: policy.fields[0].id, value: 1200 }] };
   const publishedInput = { ...input, commandId: 'command', policyVersion: 'next', effectiveFrom: policy.asOf };
@@ -226,35 +213,8 @@ test('HTTP failure mapping preserves meaningful rejection/refusal and treats mal
   const adapter = transport.createGregPublishHttpAdapter({ fetchImpl: async () => { throw Error('offline'); } }); assert.equal((await adapter.publish({})).status, 'unavailable');
 });
 
-test('actual Greg HTTP host composition mounts policy, preserves caseQueue and refreshes demand without remounting the panel', async () => {
-  const demand = await fixtures.fixtureAdapter('populated').loadDemand(); const policy = gallery.galleryPolicy(); let demands = 0;
-  const adapter = demandTransport.createGregHttpAdapter({ async fetchImpl(url, options) {
-    if (url.endsWith('/demand')) demands += 1;
-    const input = options.body ? JSON.parse(options.body) : null;
-    return { status: 200, async json() { return { status: 'ok', value: url.endsWith('/demand') ? demand.projection
-      : url.endsWith('/policy') ? policy : url.endsWith('/preview') ? gallery.galleryPreview(input) : published(input) }; } };
-  } });
-  dashboard.defineGcspGregDashboard(); const node = document.createElement('gcsp-greg-dashboard'); node.adapter = adapter;
-  const caseQueue = document.createElement('div'); caseQueue.textContent = 'Existing case queue';
-  node.addEventListener('gcsp:ready', () => node.regions.caseQueue.replaceChildren(caseQueue)); document.body.append(node); await tick();
-  const panelRoot = node.querySelector('.gcsp-publish'); const points = panelRoot.querySelector('input');
-  assert.ok(panelRoot); await preview(node); action(node, 'Publish this preview').click(); await tick(); await tick();
-  assert.equal(demands, 2); assert.equal(node.querySelector('.gcsp-publish'), panelRoot); assert.equal(panelRoot.querySelector('input'), points);
-  assert.equal(node.regions.caseQueue.firstChild, caseQueue);
-  node.adapter = adapter; await tick(); assert.equal(node.regions.caseQueue.firstChild, caseQueue);
-  const programmatic = host(); const destroy = dashboard.mountGregDashboard(programmatic, { ...adapter }); await tick();
-  assert.ok(programmatic.querySelector('.gcsp-publish'), 'presenter workspace adapter spread composes policy'); destroy();
-});
-
-test('named demand fixtures do not silently call live policy', async () => {
-  dashboard.defineGcspGregDashboard(); const old = globalThis.fetch; let calls = 0;
-  globalThis.fetch = async (url) => { if (/greg\/policy/.test(url)) calls += 1; throw Error('offline presenter controls'); };
-  try { const node = document.createElement('gcsp-greg-dashboard'); node.setAttribute('fixture', 'populated'); document.body.append(node); await tick();
-    assert.equal(node.querySelector('.gcsp-publish'), null); assert.equal(calls, 0); node.remove(); } finally { globalThis.fetch = old; }
-});
-
-test('panel and registration have no inline handlers, HTML injection, eval or external endpoints', () => {
-  for (const file of ['panel.js', 'element.js', 'http-adapter.js', 'register.js', 'gallery.js']) {
+test('panel, adapter and gallery have no inline handlers, HTML injection, eval or external endpoints', () => {
+  for (const file of ['panel.js', 'http-adapter.js', 'gallery.js']) {
     const source = readFileSync(new URL(`../../blocks/gcsp/greg/publish/${file}`, import.meta.url), 'utf8');
     assert.doesNotMatch(source, /innerHTML|outerHTML|insertAdjacentHTML|\beval\s*\(|new Function|setAttribute\(['"]on|https?:\/\//);
   }

@@ -13,16 +13,16 @@ This matrix is the plan for that retirement. It is checked against the actual bu
 | Legacy entry (root page and block) | Angular route in the build | Replacement Story on base | Disposition |
 | --- | --- | --- | --- |
 | `gcsp-account.html`, `gcsp-manual-setup.html`, `gcsp-manual-gallery.html`; blocks `account`, `manual-setup`, `manual-gallery`, `manual-review`, `manual-summary` | `/gcsp/account`, `/gcsp/stock`, `/gcsp/manual/review`, `/gcsp/manual/summary` | FUCQ-440, 442, 443 done | Retired (d87422fcc; `gcsp-manual-gallery.html`, its controllers and the gallery link in bc566e79f). `gallery-model.js` and `fixtures.js` stay for the component gallery |
-| `gcsp-employee.html`, `gcsp-brief.html`, `gcsp-brief-live.html`; blocks `employee`, `brief` | `/gcsp/preferences` | FUCQ-441 done | Retired (d87422fcc). `employee/gcsp-employee.js` and `harness.js` stay: `gcsp-help.html`, the gallery and `docs/gcsp/density/preview.html` use them |
+| `gcsp-employee.html`, `gcsp-brief.html`, `gcsp-brief-live.html`; blocks `employee`, `brief` | `/gcsp/preferences` | FUCQ-441 done | Retired (d87422fcc). `employee/gcsp-employee.js` stays for the gallery; `harness.js` for `docs/gcsp/density/preview.html` |
 | `gcsp-activity.html`, `gcsp-activity-live.html`; block `activity` | `/gcsp/activity` | FUCQ-444 done | Retired (4ce3fbc50) |
 | `gcsp-offer.html`, host alias `/gcsp/offer`; blocks `offer`, `offer-followup` | `/gcsp/offers/:offerId`, follow-up included | FUCQ-445 done | Retired (5a7c596c3). FUCQ-510 is the Java decline-reason registry: an API gap, not a frontend one |
 | `gcsp-order-progress.html`, `gcsp-order-progress-live.html`; block `order-progress` | `/gcsp/orders` | FUCQ-446 done | Retired (4ce3fbc50) |
 | `gcsp-presenter.html`; block `presenter-controls` | `/gcsp/presenter` | FUCQ-450 done | Retired (4f940fea8, bc566e79f): the page, `harness.js`, `console.js`, `basic-console.js`, `basic-model.js`, the happened-feed, release and suitability sections. `controls.js` stays for the component gallery and now hands off to `/gcsp/presenter` |
 | `gcsp-outbox.html`; block `presenter` | `/gcsp/presenter/outbox` | FUCQ-451 done | Retired (4ce3fbc50) |
-| `gcsp-help.html`; block `cases` (`harness.js`) | `/gcsp/help` | FUCQ-447 done | Kept: the kept legacy login still lands employees here. Retire with the login |
-| `gcsp-case-queue.html`; block `cases` (`queue-harness.js`) | `/gcsp/greg/cases` | FUCQ-447 done | Retired (bc566e79f). `gcsp-case-queue.js` stays: `gcsp-greg.html` embeds the queue |
-| `gcsp-greg.html`; blocks `greg` (demand, `plan`, `publish`, `comparison`), `greg-orders` | `/gcsp/greg`, `/gcsp/greg/plan`, `/gcsp/comparison` | FUCQ-448, 449 done; FUCQ-452 blocked (Greg runs) | Keep until FUCQ-452 |
-| `gcsp-login.html`, host `/gcsp/login`; block `login` | `/gcsp/sign-in`, `/gcsp/auth/callback` | FUCQ-439 done | Keep: still the only sign-in for the kept legacy pages (help, Greg). Retire with the last of them |
+| `gcsp-help.html`; block `cases` (`harness.js`) | `/gcsp/help` | FUCQ-447 done | Retired (b53fce9d6 page and harness, 3600bca22 the `cases` block) |
+| `gcsp-case-queue.html`; block `cases` (`queue-harness.js`) | `/gcsp/greg/cases` | FUCQ-447 done | Retired (bc566e79f page, 3600bca22 `gcsp-case-queue.js`) |
+| `gcsp-greg.html`; blocks `greg` (demand, `plan`, `publish`, `comparison`), `greg-orders` | `/gcsp/greg`, `/gcsp/greg/plan`, `/gcsp/comparison` | FUCQ-448, 449, 452 done | Retired (b53fce9d6 page and harness, 3600bca22 `gcsp-greg.js`, demand view, `greg-orders`, the custom-element wrappers). The plan, publish and comparison views stay for the component gallery |
+| `gcsp-login.html`, host `/gcsp/login`; block `login` | `/gcsp/sign-in`, `/gcsp/auth/callback` | FUCQ-439 done | Retired (b53fce9d6 page, host `/gcsp/login`, blueprint redirects; 3600bca22 view, controller, CSS). `login/http-adapter.js` stays: the shared shell's sign-out uses it |
 
 ## Kept because something still uses it
 
@@ -33,19 +33,21 @@ These are not entry points or page controllers, so FUCQ-453 doesn't retire them.
 - Body and fixture modules imported by the shared component gallery (`blocks/vehicle-matcher/component-gallery.js`, `components.html`):
   `activity/activity-body.js`, `activity-offer.js`, `activity-fixtures.js`, `activity-copy.js`; `order-progress/order-progress-body.js`, `fixtures.js`;
   `manual-gallery/gallery-model.js`, `fixtures.js`; `offer/fixtures.js`; `presenter/message-list.js`, `fixtures.js`;
-  `presenter-controls/controls.js`; `employee/gcsp-employee.js`. Retiring them means changing the gallery, which is a separate decision.
+  `presenter-controls/controls.js`; `employee/gcsp-employee.js`; `greg/plan/`, `greg/publish/`, `greg/comparison/` views, fixtures and `greg/demand-copy.js`.
+  Retiring them means changing the gallery, which is a separate decision.
 
 ## Handoffs and aliases (AC2)
 
 | Place | Now | Change for the retired pages |
 | --- | --- | --- |
 | `blocks/demo-launcher/employee-entry.js`, `entry-context.js` | Employees go to the Angular `/gcsp/` | None needed |
-| `render.gcsp.yaml`, `gcsp-site` | Copies `gcsp-employee.html`/`.css` and redirects 13 legacy paths to `gcsp-api` | Remove the copy and the redirects for retired pages |
-| `server/gcsp/host.js` | `SESSION_PAGES`, `presenterPage`, `landing` and `publicPath` list the legacy pages | Drop the retired pages. Employee landing moves off `gcsp-account.html` |
-| `server/gcsp/identity/index.js` | Login `redirectTo` is `gcsp-account.html` for employees | Same change as `landing` |
-| `scripts/gcsp-demo.mjs` | Prints the `gcsp-account.html` and `gcsp-presenter.html` addresses | Print the replacement routes |
+| `render.gcsp.yaml`, `gcsp-site` | Copied `gcsp-employee.html`/`.css` and redirected 13 legacy paths to `gcsp-api` | Done: no redirects left; it copies only `gcsp-employee.css` for the gallery |
+| `server/gcsp/host.js` | `SESSION_PAGES`, `presenterPage`, `landing` and `publicPath` listed the legacy pages | Done: the host serves only `/blocks/`, `/assets/` and `gcsp-employee.css`; `GET /` answers 404 |
+| `server/gcsp/identity/index.js` | Login `redirectTo` was a legacy page | Done: employee `/gcsp/account`, otherwise Greg `/gcsp/greg`, as Angular's `landingFor` |
+| `scripts/gcsp-demo.mjs` | Printed legacy page addresses | Done: prints the API origin |
 | `blocks/vehicle-matcher/component-gallery.js` | Links to `./gcsp-manual-gallery.html?fixture=available` | Remove the link |
-| `scripts/assemble-site.mjs` | `demoPages` expects `gcsp-offer.html` and `gcsp-outbox.html` | Drop those rows |
+| `scripts/assemble-site.mjs` | `demoPages` expected legacy direct pages | Done: none required |
+| `blocks/gcsp/employee/portal-navigation.js`, `shell/portal-shell.js` | Rail keys and sign-out went to `/gcsp/login` or legacy pages | Done: Angular routes and `/gcsp/sign-in` |
 
 Used Cars is unaffected: `blocks/vehicle-matcher/vehicle-matcher.js`, `server/index.js` retail routes, `render.yaml` and the launcher's retail path need no change.
 140 `server/test` files import one of the blocks that are ready to retire. Each is deleted or trimmed with its module.
@@ -78,10 +80,24 @@ Body, fixture and stylesheet modules stay where a kept file uses them: the galle
   and offer. `createPresenterControlSession` (runtime and identity) has no production caller left; it is backend
   code, left for a later clean-up.
 
+## Built on 19 November 2026, after FUCQ-447, 448, 449 and 452 merged
+
+Parity checked on base 09945ec67 by route (`apps/gcsp-web/src/app/routes.ts`: `help`, `greg`, `greg/cases`,
+`greg/plan`, `comparison`, `sign-in`, `auth/callback`) and by an import scan from every kept root (gallery, retail
+pages, launcher, server and build scripts).
+
+- `b53fce9d6`: `gcsp-help.html`, `gcsp-greg.html`, `gcsp-login.html` and their harnesses; the host's page gates and
+  `/gcsp/login`; the four `gcsp-site` redirects; the identity `redirectTo`; the portal rail and sign-out routes.
+- `3600bca22`: 32 page-only modules under `blocks/gcsp/{cases,greg,greg-orders,login}`, five ratchet caps (removed
+  only), the retired `COMPONENTS.md` rows and the gallery links to the Greg harness.
+- No legacy GCSP root page is left. Used Cars (`index.html`, `block.html`, retail API) is unchanged.
+
 ## Still to do
 
-- `gcsp-help.html`, `gcsp-greg.html` and the legacy login wait for FUCQ-452 (Greg runs), then retire together.
-- The hosted audit waits for FUCQ-436 and FUCQ-437, which need Gary's Render dev environment.
+- The hosted audit is Gary's end-of-build review (FUCQ-436/437, step 7 of `docs/gcsp/fucq438-release-handover-2026-11-18.md`).
+- Backend clean-up outside this Story: the Node password login and session API (`identity/`), `createPresenterControlSession`
+  and the host's static serving have no browser page left; `blocks/gcsp/account/*` and `shell/account-runtime.js` are
+  reached only by tests.
 - These evidence scripts under `scripts/gcsp/` still name retired pages:
   - `capture-account-prefs.mjs`
   - `fucq371-offer-capture.mjs`

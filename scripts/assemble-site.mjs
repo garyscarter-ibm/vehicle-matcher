@@ -167,9 +167,8 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
   for (const edge of edges) {
     if (!files.includes(edge.to)) throw new Error(`${label(edge.from)}: missing required ${edge.to}, referenced by ${edge.from}`);
   }
-  const demoPages = [
-    { name: 'greg', block: 'greg', file: 'gcsp-greg.html' },
-  ].map((page) => ({ ...page, available: files.includes(page.file) }));
+  // Angular owns every GCSP page now (FUCQ-453), so no legacy direct page is required.
+  const demoPages = [];
   const manifest = { version: 1, revision, environment, apiUrl: api, employeeEnabled: employeeEnabled === true,
     employeeFrontendUrl: frontend, employeeAvailable: employeeEnabled === true && frontend !== null,
     blocks: discovered.blocks, pages: files.filter((file) => file.endsWith('.html')), demoPages, requiredAssets,

@@ -185,18 +185,8 @@ test('editable one-preference choices use actual unused decline and policy regis
   assert.equal(projected.status, 'remedy-proposed');
   assert.equal(projected.remedy.confirmationState, 'employee-confirmation-required');
   assert.deepEqual(f.store.state, snapshot);
-  const { JSDOM } = await import('jsdom');
-  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
-  const dom = new JSDOM('<!doctype html><html><body></body></html>'); const previous = globalThis.document;
-  globalThis.document = dom.window.document;
-  try {
-    const rendered = renderCaseContent(projected, { onReviewRelaxation() { assert.fail('Confirmed change cannot be repeated.'); } });
-    assert.match(rendered.textContent, /You confirmed this preference change/);
-    assert.doesNotMatch(rendered.textContent, /no longer matches/);
-    assert.equal(rendered.querySelector('button'), null);
-  } finally { globalThis.document = previous; dom.window.close(); }
-
 });
+
 test('repository and recommendation source failures stay unavailable instead of an empty feasible list', async (t) => {
   const f = await setup(t);
   const service = new RenewalCaseService({ ...f.configuration, repository: { ...f.repository,

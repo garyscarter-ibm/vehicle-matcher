@@ -3,7 +3,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { planOutcome, createOrderPlanHttpAdapter, PLAN_MESSAGES } from '../../blocks/gcsp/greg/plan/http-adapter.js';
-import { createGregHttpAdapter } from '../../blocks/gcsp/greg/http-adapter.js';
 import { toPlanView, toChanges, staleView, trivialMinimum, requestedLimitText, PlanViewError } from '../../blocks/gcsp/greg/plan/plan-view.js';
 import { gateText } from '../../blocks/gcsp/greg/plan/plan-copy.js';
 import { FIXTURE_NAMES, FIXTURE_VALUES, planFixtureAdapter } from '../../blocks/gcsp/greg/plan/fixtures.js';
@@ -55,7 +54,6 @@ test('the HTTP adapter sends the documented requests and maps network failures',
   const controller = new AbortController(); controller.abort();
   await assert.rejects(createOrderPlanHttpAdapter({ fetchImpl: async () => { throw new Error('aborted'); } }).previewPlan({ changes, signal: controller.signal }));
   assert.equal((await createOrderPlanHttpAdapter({ fetchImpl: async () => ({ status: 200, json: async () => { throw new Error('bad json'); } }) }).readPlan()).status, 'unavailable');
-  assert.deepEqual(Object.keys(createGregHttpAdapter({ fetchImpl: reply(200, {}) }).orderPlan).sort(), ['previewPlan', 'readPlan', 'submitPlan']);
 });
 
 test('toPlanView leads with the action, then the quantities, coverage, risk, reasons, constraints and an alternative', () => {

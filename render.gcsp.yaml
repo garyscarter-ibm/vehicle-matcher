@@ -96,20 +96,6 @@ services:
       grep -q "$GCSP_API_URL" _site/blocks/demo-launcher/boot.js &&
       grep -q "$GCSP_API_URL" _site/block.html
     staticPublishPath: _site
-    # The live GCSP pages run on gcsp-api's origin with its session cookies; keep in step with server/gcsp/host.js.
-    routes:
-      - type: redirect
-        source: /gcsp/login
-        destination: https://gcsp-api.onrender.com/gcsp/login
-      - type: redirect
-        source: /gcsp-login.html
-        destination: https://gcsp-api.onrender.com/gcsp-login.html
-      - type: redirect
-        source: /gcsp-greg.html
-        destination: https://gcsp-api.onrender.com/gcsp-greg.html
-      - type: redirect
-        source: /gcsp-help.html
-        destination: https://gcsp-api.onrender.com/gcsp-help.html
     envVars:
       - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com

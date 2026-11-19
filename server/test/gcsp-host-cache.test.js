@@ -1,4 +1,4 @@
-// Static GCSP files revalidate by content hash; pages and redirects stay uncached.
+// Static GCSP files revalidate by content hash; nothing else on the host carries an ETag.
 import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
@@ -40,16 +40,12 @@ test('static files carry a strong content ETag and revalidate with a 304', async
   assert.notEqual(script.headers.get('etag'), etag);
 });
 
-test('pages and redirects stay no-store with no ETag', async () => {
-  const page = await get('/gcsp-login.html', { 'If-None-Match': '*' });
-  assert.equal(page.status, 200); assert.equal(page.headers.get('cache-control'), 'no-store'); assert.equal(page.headers.get('etag'), null);
-  assert.match(page.text, /<html/i);
-
-  const login = await get('/gcsp/login');
-  assert.equal(login.status, 200); assert.equal(login.headers.get('cache-control'), 'no-store'); assert.equal(login.headers.get('etag'), null);
+test('retired pages and the bare host carry no ETag, and API paths pass through untouched', async () => {
+  const retired = await get('/gcsp-login.html', { 'If-None-Match': '*' });
+  assert.equal(retired.status, 418); assert.equal(retired.headers.get('etag'), null);
 
   const root = await get('/');
-  assert.equal(root.status, 303); assert.equal(root.headers.get('cache-control'), 'no-store'); assert.equal(root.headers.get('etag'), null);
+  assert.equal(root.status, 404); assert.equal(root.headers.get('etag'), null);
 
   const context = await get('/api/gcsp/context');
   assert.equal(context.status, 418); assert.equal(context.headers.get('etag'), null);

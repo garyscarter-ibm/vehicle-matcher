@@ -1,7 +1,7 @@
-// Synthetic states for the component gallery and the fixture harness. Never selected by the live dashboard.
+// Synthetic states for the component gallery. Never selected by the live screen.
 import { el, screenIntro } from '../../../vehicle-matcher/ui.js';
 import { mountGregComparison } from './panel.js';
-import { comparisonFixtureAdapter, experimentFixtureAdapter, EXPERIMENT_FIXTURE_NAMES } from './fixtures.js';
+import { comparisonFixtureAdapter, experimentFixtureAdapter } from './fixtures.js';
 
 // Pick an experiment once the panel has drawn its picker (a few short tries).
 function choose(host, id, tries = 20) {
@@ -33,10 +33,5 @@ export function gregComparisonExample() {
     mountGregComparison(host, { adapter: name === 'job-fails' ? primed(name) : experimentFixtureAdapter(name) });
     if (pick) choose(host, pick);
   }
-  const links = el('p', 'gcsp-note', 'Every state on the dashboard harness: ');
-  for (const name of ['loading', 'buddy-better', 'no-clear-difference', 'today-better', 'old-policy', 'empty', 'unavailable', 'refused', ...EXPERIMENT_FIXTURE_NAMES]) {
-    const link = el('a', '', name); link.href = `./gcsp-greg.html?fixture=populated&comparison=${name}`; links.append(link, ' ');
-  }
-  section.append(links);
   return section;
 }

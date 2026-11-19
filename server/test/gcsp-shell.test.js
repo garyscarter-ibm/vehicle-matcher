@@ -464,7 +464,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-greg.html'), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -809,32 +809,6 @@ test('the portal shell builds no presenter controls, even with a presenter cooki
   document.cookie = 'gcsp_presenter=; path=/; max-age=0';
 });
 
-const PAGES = ['help', 'greg', 'login'];
-const importsOf = (code) => [...code.matchAll(/\bimport\s*(?:[\w*{}\s,$]*?\s*from\s*)?['"]([^'"]+)['"]|\bimport\(\s*['"]([^'"]+)['"]\s*\)/g)]
-  .map((m) => m[1] || m[2]).filter((spec) => spec.startsWith('.'));
-function reachable(entry) {
-  const seen = new Set(); const queue = [entry];
-  while (queue.length) {
-    const file = queue.pop();
-    if (seen.has(file)) continue;
-    seen.add(file);
-    const code = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1');
-    for (const spec of importsOf(code)) queue.push(join(file, '..', spec));
-  }
-  return [...seen];
-}
-
-test('no Paula or Greg page reaches presenter-controls code through its imports', () => {
-  for (const name of PAGES) {
-    const page = `gcsp-${name}.html`;
-    const src = read(page).match(/<script[^>]*type="module"[^>]*src="([^"]+)"/)?.[1];
-    assert.ok(src, page);
-    const files = reachable(join(ROOT, src.replace(/^\.?\//, '')));
-    assert.ok(files.length > 1, page);
-    assert.deepEqual(files.filter((file) => file.startsWith(join(GCSP_DIR, 'presenter-controls'))).map(rel), [], page);
-  }
-});
-
 test('the shell stylesheet never reaches presenter-controls.css', () => {
   const css = (file, seen = new Set()) => {
     if (seen.has(file)) return seen;
@@ -884,7 +858,7 @@ test('the employee shell menu omits preferences and routes help, and accountMenu
   const links = [...root.querySelectorAll('.gcsp-account-link')];
   links.forEach((node) => node.click());
   assert.deepEqual(links.map((node) => node.textContent), ['Renewal help']);
-  assert.deepEqual(assigned, ['/gcsp-help.html']);
+  assert.deepEqual(assigned, ['/gcsp/help']);
   stop();
   const plain = host();
   const stopPlain = emp.mountEmployee(plain, { location, accountMenu: false, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();

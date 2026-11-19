@@ -1,4 +1,4 @@
-// Synthetic states for the component gallery and the fixture harness. Never selected by the live dashboard.
+// Synthetic states for the component gallery. Never selected by the live screen.
 import { el, screenIntro } from '../../../vehicle-matcher/ui.js';
 import { mountGregOrderPlan } from './panel.js';
 import { planFixtureAdapter } from './fixtures.js';
@@ -33,10 +33,5 @@ export function gregOrderPlanExample() {
     mountGregOrderPlan(host, { adapter: planFixtureAdapter(name), commandId: () => `gallery-${name}` });
     driveToState(host, name);
   }
-  const links = el('p', 'gcsp-note', 'Every state on the dashboard harness: ');
-  for (const name of ['loading', 'ready', 'no-demand', 'preview', 'infeasible', 'stale', 'submitted', 'replanned', 'unavailable', 'refused', 'learned', 'learned-coverage']) {
-    const link = el('a', '', name); link.href = `./gcsp-greg.html?fixture=populated&plan=${name}`; links.append(link, ' ');
-  }
-  section.append(links);
   return section;
 }

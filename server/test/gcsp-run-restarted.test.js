@@ -41,5 +41,5 @@ test('accessLapsedScreen is an alert whose one action links to sign-in by defaul
   const screen = kit.accessLapsedScreen(); assert.equal(screen.getAttribute('role'), 'alert');
   assert.match(screen.textContent, new RegExp(kit.ACCESS_LAPSED_TITLE)); assert.equal(screen.querySelectorAll('button').length, 0);
   assert.equal(screen.querySelector('a').getAttribute('href'), '/gcsp/login');
-  assert.equal(kit.accessLapsedScreen({ next: '/gcsp-greg.html' }).querySelector('a').getAttribute('href'), '/gcsp-greg.html');
+  assert.equal(kit.accessLapsedScreen({ next: '/gcsp/greg' }).querySelector('a').getAttribute('href'), '/gcsp/greg');
 });

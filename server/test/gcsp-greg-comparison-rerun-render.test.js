@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
-let panel; let fixtures; let adapterMod; let element; let rerun; let words; let HOLD;
+let panel; let fixtures; let adapterMod; let rerun; let words; let HOLD;
 const tick = (ms = 0) => new Promise((resolve) => setTimeout(resolve, ms));
 const settle = async () => { for (let i = 0; i < 6; i += 1) await tick(); };
 const until = async (test, limit = 200) => { for (let i = 0; i < limit && !test(); i += 1) await tick(); assert.ok(test(), 'condition not met'); };
@@ -17,7 +17,6 @@ before(async () => {
   panel = await import(`${base}panel.js`);
   fixtures = await import(`${base}fixtures.js`);
   adapterMod = await import(`${base}http-adapter.js`);
-  element = await import(`${base}element.js`);
   rerun = await import(`${base}rerun-form.js`);
   words = await import(`${base}experiment-copy.js`);
   HOLD = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-experiment-result.json', import.meta.url), 'utf8')).storedResult;
@@ -396,16 +395,10 @@ test('every experiment state, before and after a run, has no em dash, inline han
   }
 });
 
-test('the element takes an experiment fixture name, and the harness and gallery know every name', async () => {
-  element.defineGcspGregComparison(window.customElements);
-  const node = document.createElement('gcsp-greg-comparison'); node.setAttribute('fixture', 'experiments-ready'); document.body.append(node); await settle();
-  assert.equal(node.querySelector('.gcsp-comparison').dataset.state, 'ready'); assert.ok(node.querySelector('.gcsp-comparison-picker')); node.remove();
-  const old = document.createElement('gcsp-greg-comparison'); old.setAttribute('fixture', 'buddy-better'); document.body.append(old); await settle();
-  assert.equal(old.querySelector('.gcsp-comparison-picker'), null); old.remove();
-  const source = (file) => readFile(new URL(file, import.meta.url), 'utf8');
-  assert.match(await source('../../blocks/gcsp/greg/harness.js'), /EXPERIMENT_FIXTURE_NAMES\.includes\(comparison\)/);
-  const gallery = await source('../../blocks/gcsp/greg/comparison/gallery.js');
-  assert.match(gallery, /\.\.\.EXPERIMENT_FIXTURE_NAMES/);
+test('an experiment fixture name gives the picker, and the gallery knows every name', async () => {
+  const root = host(); teardowns.push(panel.mountGregComparison(root, { adapter: fixtures.experimentFixtureAdapter('experiments-ready') })); await settle();
+  assert.equal(root.querySelector('.gcsp-comparison').dataset.state, 'ready'); assert.ok(root.querySelector('.gcsp-comparison-picker'));
+  const gallery = await readFile(new URL('../../blocks/gcsp/greg/comparison/gallery.js', import.meta.url), 'utf8');
   for (const name of ['experiments-ready', 'experiments-empty', 'experiments-old-policy', 'job-running', 'job-fails']) assert.ok(gallery.includes(`'${name}'`), name);
 });
 

@@ -24,7 +24,7 @@ async function startHost() {
   let output = '';
   await new Promise((done, fail) => {
     const timer = setTimeout(() => fail(new Error(`host not ready: ${output.slice(-300)}`)), 90000);
-    for (const s of [child.stdout, child.stderr]) s.on('data', (d) => { output += d; if (output.includes('GCSP hosted demo')) { clearTimeout(timer); done(); } });
+    for (const s of [child.stdout, child.stderr]) s.on('data', (d) => { output += d; if (output.includes('GCSP hosted API')) { clearTimeout(timer); done(); } });
     child.once('exit', (code) => { clearTimeout(timer); fail(new Error(`host exited ${code}: ${output.slice(-300)}`)); });
   });
   const stop = async () => { try { process.kill(-child.pid, 'SIGKILL'); } catch {} };
