@@ -11,7 +11,7 @@
     "build": "ng build",
     "start": "ng serve",
     "test": "ng test --watch=false",
-    "check:boundaries": "node tools/check-boundaries.mjs"
+    "check:boundaries": "node --test tools/inline-events.test.mjs && node tools/check-boundaries.mjs"
   },
   "dependencies": {
     "@angular/common": "21.2.26",
