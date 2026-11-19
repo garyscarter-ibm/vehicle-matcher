@@ -2887,3 +2887,15 @@ Several broad source/policy displays and an initial queue display again truncate
 - Action (applied mitigation, Gary "Yes, move it"): the poller now runs from the shared checkout `/Users/garycarter/Code/GitHub/vehicle-matcher` on `gcsp-poc-dev` (branch never switched). Hand-over in that old worktree's `poller-handover/`.
 - Observed outcome: at 19:4x the new poller wrote and deleted a probe file in the GC-006 worktree with its own Write tool, and a runner subagent edited it with Edit; both succeeded. The FUCQ-528 story-lead started from this checkout. Verified for these two cases; not yet for implementers started by a story-lead.
 - Proposed framework improvement: dispatchers start in the shared checkout, never an isolated worktree, and probe a story-worktree write before their first brief.
+
+## 2026-11-19, Claude poller: `drop-branch` deletes git-ignored evidence kept inside the worktree (FUCQ-532)
+
+- **Issue:** the FUCQ-532 lead kept its proof receipts and screenshot under `<worktree>/.claude/test-runs/fucq532/`, which is git-ignored. When the dispatcher closed the story, `scaffold_git.py drop-branch` removed the worktree, and the evidence went with it. The Result block still named that path.
+- **Resolution:** kept the two proof logs that survived in the lead's scratch as `<root>/.claude/test-runs/fucq532/run-1148-proof.log` and `run-1156-proof.log`, and noted the loss in the done file.
+- **Learning:** briefs now tell leads to write git-ignored evidence under the REPO ROOT's `.claude/test-runs/<story>/`, not the worktree's (first used in FUCQ-534's brief). Before C close, the dispatcher checks the evidence path is outside the worktree.
+
+## 2026-11-19, Claude poller: a mock that skips refresh tokens hides the real expiry path (FUCQ-532, FUCQ-534)
+
+- **Issue:** the connected shell proof's mock issuer issues no refresh token in its expiry case. The Angular app's handling of a refused refresh token (`invalid_grant`) was therefore never exercised. Against the real demo issuer it showed "Sign-in is not available".
+- **Resolution:** FUCQ-532 matched the mock (`GCSP_DEMO_IDP_REFRESH_TOKENS=false` for that proof case only), and FUCQ-534 fixes the app and removes the workaround.
+- **Learning:** when a proof swaps a mock for a real adapter, check that each scenario still exercises the same protocol path, and file a Bug for any gap the swap exposes rather than hiding it.
