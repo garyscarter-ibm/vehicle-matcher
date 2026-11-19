@@ -1441,13 +1441,13 @@
         <mxCell id="subtitle" parent="1" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontColor=#172a3a;fontSize=15;" value="GCSP target · one repository / one blueprint · existing Render hostnames preferred · no Cloudflare or selected paid tier/domain." vertex="1">
           <mxGeometry height="62" width="1460" x="40" y="72" as="geometry" />
         </mxCell>
-        <UserObject label="Two environments, two Blueprints / gcsp-buddy-dev: new workspace, render.gcsp-buddy-dev.yaml, always gcsp-poc-dev / gcsp-buddy: current workspace, render.gcsp-buddy.yaml, always gcsp-poc / Each with its own PostgreSQL (Basic-256mb)" status="in-progress" feature="render-two-blueprints" id="branch">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+        <UserObject label="Two environments, two Blueprints / gcsp-buddy-dev: new workspace, render.gcsp-buddy-dev.yaml, always gcsp-poc-dev / gcsp-buddy: current workspace, render.gcsp-buddy.yaml, always gcsp-poc / Each with its own PostgreSQL (Basic-256mb)" status="built" feature="render-two-blueprints" id="branch">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
             <mxGeometry height="145" width="430" x="40" y="170" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Two Render Blueprint files / Identical apart from names + branch (drift test) / API plan starter / Independent static / API build filters" status="in-progress" feature="render-two-blueprints" id="build">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
+        <UserObject label="Two Render Blueprint files / Identical apart from names + branch (drift test) / API plan starter / Independent static / API build filters" status="built" feature="render-two-blueprints" id="build">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=middle;spacing=16;fontSize=18;" vertex="1">
             <mxGeometry height="145" width="900" x="590" y="170" as="geometry" />
           </mxCell>
         </UserObject>
@@ -1463,8 +1463,8 @@
         <mxCell id="proof" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3d6;strokeColor=#ad7915;fontColor=#172a3a;align=left;verticalAlign=middle;spacing=16;fontSize=18;" value="&lt;b&gt;Hosted acceptance&lt;/b&gt;&lt;br&gt;Real test OIDC callbacks / logout / account separation&lt;br&gt;Actual test email → sign-in → employee-owned offer&lt;br&gt;Safari/private + desktop/narrow + current workloads" vertex="1">
           <mxGeometry height="165" width="630" x="40" y="730" as="geometry" />
         </mxCell>
-        <UserObject label="Gary&#39;s final switch · merge gcsp-poc-dev into gcsp-poc, create the gcsp-buddy Blueprint with a new empty database, then delete the old Blueprint, Node gcsp-api, gcsp-db and old gcsp-site. bmw-matcher-api stays." status="in-progress" feature="render-two-blueprints" id="switch">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=middle;spacing=16;fontSize=17;" vertex="1">
+        <UserObject label="Gary&#39;s final switch · merge gcsp-poc-dev into gcsp-poc, create the gcsp-buddy Blueprint with a new empty database, then delete the old Blueprint, Node gcsp-api, gcsp-db and old gcsp-site. bmw-matcher-api stays." status="built" feature="render-two-blueprints" id="switch">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=middle;spacing=16;fontSize=17;" vertex="1">
             <mxGeometry height="105" width="1450" x="40" y="950" as="geometry" />
           </mxCell>
         </UserObject>
