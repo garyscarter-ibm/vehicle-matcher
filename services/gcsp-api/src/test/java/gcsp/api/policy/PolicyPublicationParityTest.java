@@ -48,6 +48,24 @@ class PolicyPublicationParityTest {
     }
 
     @Test
+    void commandIdIsLimitedToTheReceiptColumn() throws IOException {
+        // FUCQ-490: command_receipts.command_id holds 1 to 200 characters, so validation refuses longer ones.
+        JsonNode valid = cases().get("validate").get(0);
+        assertEquals("valid", valid.get("name").textValue());
+        for (int length : new int[] {200, 201, 256}) {
+            ObjectNode input = ((ObjectNode) valid.get("input")).deepCopy().put("commandId", "c".repeat(length));
+            PolicyResult actual = PolicyPublication.validateChangeSet(input);
+            if (length == 200) {
+                assertNull(actual, "200");
+            } else {
+                assertNotNull(actual, String.valueOf(length));
+                assertEquals("invalid", actual.status());
+                assertEquals("changeSet", actual.body().get("reasons").get(0).get("field").textValue());
+            }
+        }
+    }
+
+    @Test
     void preparePublicationMatchesNodeOutcomesAndSuccessors() throws IOException {
         JsonNode root = cases();
         String defaultNow = root.get("now").textValue();
