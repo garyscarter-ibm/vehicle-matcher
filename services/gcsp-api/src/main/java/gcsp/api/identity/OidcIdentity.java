@@ -6,6 +6,7 @@ import gcsp.api.auth.Role;
 import io.quarkus.runtime.LaunchMode;
 import java.io.IOException;
 import java.net.URI;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.EnumSet;
@@ -14,18 +15,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 import org.eclipse.microprofile.config.Config;
 import org.jboss.logging.Logger;
 import org.jose4j.http.Get;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jwk.HttpsJwks;
+import org.jose4j.jwk.JsonWebKey;
+import org.jose4j.jwk.VerificationJwkSelector;
+import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.ErrorCodes;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.keys.resolvers.HttpsJwksVerificationKeyResolver;
+import org.jose4j.jwx.JsonWebStructure;
+import org.jose4j.lang.JoseException;
 import org.jose4j.lang.UnresolvableKeyException;
 
 /**
@@ -40,6 +48,8 @@ public final class OidcIdentity implements IdentityPort {
     private static final Set<String> ALGORITHM_SET = Set.of(ALGORITHMS);
     private static final ObjectMapper JSON = new ObjectMapper();
     private static final int JWKS_TIMEOUT_MS = 2000;
+    private static final long REFETCH_WINDOW_NANOS = TimeUnit.SECONDS.toNanos(30);
+    private static final VerificationJwkSelector SELECTOR = new VerificationJwkSelector();
 
     /** One deployment-mapped account; public so the demo issuer can check its people against the same mapping. */
     public record Account(String subject, Set<Role> roles, String employeeId) {}
@@ -52,8 +62,11 @@ public final class OidcIdentity implements IdentityPort {
     private final String runId;
     private final String policyVersion;
     private final JwtConsumer consumer;
+    private final HttpsJwks jwks;
+    private final LongSupplier clock;
+    private final AtomicLong lastRefetch;
 
-    private OidcIdentity(Function<String, Optional<String>> cfg, LaunchMode mode) {
+    private OidcIdentity(Function<String, Optional<String>> cfg, LaunchMode mode, LongSupplier clock) {
         String issuer = required(cfg, "gcsp.oidc.issuer");
         String jwksUri = required(cfg, "gcsp.oidc.jwks-uri");
         String audience = required(cfg, "gcsp.oidc.audience");
@@ -72,10 +85,12 @@ public final class OidcIdentity implements IdentityPort {
         Get get = new Get();
         get.setConnectTimeout(JWKS_TIMEOUT_MS);
         get.setReadTimeout(JWKS_TIMEOUT_MS);
-        HttpsJwks jwks = new HttpsJwks(jwksUri);
+        this.jwks = new HttpsJwks(jwksUri);
         jwks.setSimpleHttpGet(get);
+        this.clock = clock;
+        this.lastRefetch = new AtomicLong(clock.getAsLong() - REFETCH_WINDOW_NANOS);
         this.consumer = new JwtConsumerBuilder()
-                .setVerificationKeyResolver(new HttpsJwksVerificationKeyResolver(jwks))
+                .setVerificationKeyResolver(this::resolveKey)
                 .setJwsAlgorithmConstraints(AlgorithmConstraints.ConstraintType.PERMIT, ALGORITHMS)
                 .setRequireExpirationTime()
                 .setRequireSubject()
@@ -94,7 +109,12 @@ public final class OidcIdentity implements IdentityPort {
 
     /** Same as {@link #fromConfig} over any key lookup, so refusals are unit-testable without Quarkus. */
     public static OidcIdentity fromLookup(Function<String, Optional<String>> lookup, LaunchMode mode) {
-        return new OidcIdentity(lookup, mode);
+        return fromLookup(lookup, mode, System::nanoTime);
+    }
+
+    /** Test seam: the nanosecond clock that times the unknown-kid refetch window. */
+    static OidcIdentity fromLookup(Function<String, Optional<String>> lookup, LaunchMode mode, LongSupplier clock) {
+        return new OidcIdentity(lookup, mode, clock);
     }
 
     @Override
@@ -151,6 +171,34 @@ public final class OidcIdentity implements IdentityPort {
         return null;
     }
 
+    /** Cached keys first. An unknown kid refetches at most once per window; a failed refetch keeps the cache. */
+    private Key resolveKey(JsonWebSignature jws, List<JsonWebStructure> nesting) throws UnresolvableKeyException {
+        JsonWebKey match;
+        try {
+            match = SELECTOR.select(jws, jwks.getJsonWebKeys());
+            if (match == null && claimRefetch()) {
+                try {
+                    jwks.refresh();
+                } catch (IOException | JoseException e) {
+                    LOG.debugf("JWKS refetch for an unknown kid failed, keeping cached keys: %s", e);
+                }
+                match = SELECTOR.select(jws, jwks.getJsonWebKeys());
+            }
+        } catch (IOException | JoseException e) {
+            throw new UnresolvableKeyException("JWKS keys unavailable", e);
+        }
+        if (match == null) {
+            throw new UnresolvableKeyException("no JWKS key matches the token header");
+        }
+        return match.getKey();
+    }
+
+    private boolean claimRefetch() {
+        long now = clock.getAsLong();
+        long last = lastRefetch.get();
+        return now - last >= REFETCH_WINDOW_NANOS && lastRefetch.compareAndSet(last, now);
+    }
+
     private static IdentityResult map(InvalidJwtException e) {
         if (causedBy(e, IOException.class)) {
             return new IdentityResult.Unavailable("identity-keys-unavailable", true);
@@ -195,7 +243,7 @@ public final class OidcIdentity implements IdentityPort {
         }
         if (!requiredScopes.isEmpty()) {
             Object scope = claims.getClaimValue("scope");
-            Set<String> granted = scope instanceof String s ? Set.of(s.trim().split("\\s+")) : Set.of();
+            Set<String> granted = scope instanceof String s ? Set.copyOf(List.of(s.trim().split("\\s+"))) : Set.of();
             if (!granted.containsAll(requiredScopes)) {
                 return new IdentityResult.Unmapped("scope-missing");
             }
