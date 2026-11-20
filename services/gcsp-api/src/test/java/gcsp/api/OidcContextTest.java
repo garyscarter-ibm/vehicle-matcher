@@ -229,6 +229,20 @@ class OidcContextTest {
     }
 
     @Test
+    void repeatedScopeValueIsAuthorised() throws Exception {
+        JwtClaims c = claims("sub-employee-a", "employee");
+        c.setClaim("scope", "openid gcsp-api gcsp-api");
+        call(sign(c)).statusCode(200).body("value.subject", equalTo("sub-employee-a"));
+    }
+
+    @Test
+    void repeatedScopeWithoutTheRequiredOneIsRefused() throws Exception {
+        JwtClaims c = claims("sub-employee-a", "employee");
+        c.setClaim("scope", "openid openid");
+        refused403(sign(c), "scope-missing");
+    }
+
+    @Test
     void missingRoleClaim() throws Exception {
         JwtClaims c = claims("sub-employee-a", "employee");
         c.unsetClaim("realm_access");
