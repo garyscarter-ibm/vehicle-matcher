@@ -8,8 +8,26 @@ screenshots miss features such as notifications.
 branch `gcsp-poc`) has no GCSP code change against it in `blocks/gcsp`, root pages or `server/gcsp`, so the freeze
 is what is live. Angular: `apps/gcsp-web` at `feab052d7` (`gcsp-poc-dev`). Sources were compared screen by screen
 for every GCSP screen, and the high-severity findings were spot-checked by hand. The account page was also compared
-in a browser on 19 November (session "Hosted version not working"). Other rendered differences are inferred from
-templates and CSS. A side-by-side screenshot pass is step 2 of the fix.
+in a browser on 19 November (session "Hosted version not working"). On 20 November the account, bell, offer and
+presenter screens were compared rendered (see "Rendered comparison" below). Other rendered differences are inferred
+from templates and CSS. A full screenshot-pair pass is step 2 of the fix.
+
+## Rendered comparison, 20 November 2026
+
+Node: `e44ed08a9` run locally in live mode (`GCSP_RUNTIME=1`, memory repository), scenario "Main successful
+journey", after one release, signed in as Paula. Angular: hosted dev (`gcsp-buddy-dev-web.onrender.com`), signed in
+as Paula, then as Presenter, with its state left as found. Captures are 1280px wide, in
+[evidence/angular-port-review-2026-11-20](evidence/angular-port-review-2026-11-20/).
+
+| Screen | Node | Angular |
+|---|---|---|
+| Your cars | [node-01-account](evidence/angular-port-review-2026-11-20/node-01-account.jpg): studio photo, 23px title, rating pill on the photo, bell with a red 1, icon preference tiles, Buddy tile with "A car is held for you" beside them | [angular-01-account](evidence/angular-port-review-2026-11-20/angular-01-account.jpg), [angular-01b](evidence/angular-port-review-2026-11-20/angular-01b-account-preferences.jpg): no bell, false "Some offer or order details could not be read" banner with a full-width Retry, "No image available", small title, bordered text boxes for preferences, native radios, a text "Buddy" block with four buttons |
+| Bell | [node-02-bell-open](evidence/angular-port-review-2026-11-20/node-02-bell-open.png): "Your buddy found a car", thumbnail, respond-by time, View your offer | none |
+| Offer | [node-03-offer](evidence/angular-port-review-2026-11-20/node-03-offer.jpg): Back to Your cars, swatches, "300 fewer than your current car", "Held until 13:30 · 2h 00m left to decide", big-number Benefits and Tradeoffs | not captured: getting Paula an offer needs a reset of the shared dev run |
+| Presenter | [node-00](evidence/angular-port-review-2026-11-20/node-00-presenter-basic.jpg), [node-04](evidence/angular-port-review-2026-11-20/node-04-presenter-after-release.jpg): "100 cars released", Release Monday's cars, Start again, Open the portal, day bar, car grid, release and allocation tiles | [angular-04-presenter](evidence/angular-port-review-2026-11-20/angular-04-presenter.jpg): Run, Clock version, Scenario version, Fixture version and a raw `2026-11-19T09:30:00.000Z`; Next release disabled with "No future release cue is configured" |
+
+All the high-severity findings that could be checked on screen are confirmed. One finding is new: the hosted
+presenter can't release cars in its current scenario, so the demo's core beat can't be run there without a reset.
 
 ## 1. Why it happened
 
