@@ -125,6 +125,24 @@ class ManualDraftRulesTest {
     }
 
     @Test
+    void closedDatesMustBeAnArrayOfDates() {
+        ObjectNode location = F.objectNode();
+        location.putArray("closedDates").add("2026-11-14");
+        assertTrue(AccountService.closedOn(location, "2026-11-14"));
+        assertFalse(AccountService.closedOn(location, "2026-11-15"));
+        // FUCQ-489: a string, or any other non-array, is an invalid source, never a substring match.
+        for (Consumer<ObjectNode> shape : java.util.List.<Consumer<ObjectNode>>of(
+                l -> l.put("closedDates", "2026-11-142026-11-15"), l -> l.put("closedDates", 20261114),
+                l -> l.putObject("closedDates").put("2026-11-14", true))) {
+            GoldenFixture fx = new GoldenFixture("paula");
+            shape.accept((ObjectNode) fx.rulesPayload().get("locations").get(0));
+            Prepared p = fx.service().prepare(fx.scope);
+            assertNotNull(p.error, fx.rulesPayload().get("locations").get(0).toString());
+            assertEquals("invalid-source", p.error.refusal().get("source").asText());
+        }
+    }
+
+    @Test
     void licenceFactsAreConfirmedAndValidAtCollection() {
         GoldenFixture unconfirmed = new GoldenFixture("paula");
         ((ObjectNode) unconfirmed.manual().withArray("drivers").get(0).get("licence")).remove("validUntil");
