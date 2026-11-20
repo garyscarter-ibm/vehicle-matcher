@@ -171,10 +171,10 @@ Step 1 is done. All 14 are To Do Bugs under FUCQ-432. Each relates to the Story 
 | FUCQ-560 | Medium | FUCQ-452 | Comparison: raw JSON, range bars, experiment picker |
 | FUCQ-561 | High | FUCQ-450 | Presenter: internals on screen, basic console and Node panels |
 
-Two items are held until Gary or Russell rules on them:
+Gary ruled on the two open flow questions on 20 November 2026: "Restore both in Angular".
 
-- FUCQ-553 AC4: reserving from the gallery.
-- FUCQ-559 AC3: production confirm and delay, and Retry release queue.
+- FUCQ-553 AC4: employees reserve from the gallery again, as in Node. FUCQ-554 drops the second reserve step.
+- FUCQ-559 AC3: production confirm and delay, and Retry release queue, come back. Java routes are added if missing.
 
 ## 4. Why the local Node screenshots miss notifications
 
