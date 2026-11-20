@@ -36,13 +36,18 @@ final class PolicyPublication {
         return node != null && node.isTextual() && PolicyTime.text(node.textValue()) && node.textValue().length() <= 256;
     }
 
+    /** FUCQ-490: the receipt column holds 1 to 200 characters (V1__persistence_foundation.sql). */
+    private static boolean commandId(JsonNode node) {
+        return text(node) && node.textValue().length() <= 200;
+    }
+
     private static boolean object(JsonNode node) {
         return node != null && node.isObject();
     }
 
     /** Null when the change set is well formed, else the invalid outcome. */
     static PolicyResult validateChangeSet(JsonNode input) {
-        if (!object(input) || anyKeyOutside(input, CHANGE_SET_KEYS) || !text(input.get("commandId"))
+        if (!object(input) || anyKeyOutside(input, CHANGE_SET_KEYS) || !commandId(input.get("commandId"))
                 || !text(input.get("expectedActiveVersion")) || !text(input.get("policyVersion"))
                 || !validInstant(input.get("effectiveFrom")) || !input.has("changes") || !input.get("changes").isArray() || input.get("changes").size() == 0
                 || input.get("changes").size() > 100) {
