@@ -150,6 +150,32 @@ impersonation, acting principal or comparison start; comparison start is Greg's.
    Greg. Fix the content defects in the same pass: raw ids, the false error banner, hosted car images.
 6. **Sign off each screen against its pair** before retiring anything else.
 
+### Bugs raised, 20 November 2026
+
+Step 1 is done. All 14 are To Do Bugs under FUCQ-432. Each relates to the Story that built the screen.
+
+| Bug | Priority | Story | Gap |
+|---|---|---|---|
+| FUCQ-548 | High | FUCQ-439 | No notification bell in the shell |
+| FUCQ-549 | High | FUCQ-439 | Navigation can't reach Activity, Next order or Renewal cases |
+| FUCQ-550 | High | FUCQ-444 | No live refresh when the presenter acts |
+| FUCQ-551 | High | FUCQ-440 | Your cars: Buddy tile, car styling, false error banner, car photo |
+| FUCQ-552 | High | FUCQ-441 | Preferences: icon tiles and option chips replaced by plain boxes |
+| FUCQ-553 | Medium | FUCQ-442 | Stock and order choices: notices, card styling, employee and driver facts |
+| FUCQ-554 | High | FUCQ-443 | Manual review and summary: internal IDs, countdown, read-back cards |
+| FUCQ-555 | High | FUCQ-445 | Offer: exits, countdown, points saving, decision highlights |
+| FUCQ-556 | Medium | FUCQ-446 | Order progress: stage tracker, task checklist, slot picker |
+| FUCQ-557 | Medium | FUCQ-447 | Case queue: Sort control, gate labels |
+| FUCQ-558 | Medium | FUCQ-448 | Greg demand: metric tiles and dashboard layout |
+| FUCQ-559 | High | FUCQ-449 | Greg planning: request-cars form, plan-limit slider, highlights |
+| FUCQ-560 | Medium | FUCQ-452 | Comparison: raw JSON, range bars, experiment picker |
+| FUCQ-561 | High | FUCQ-450 | Presenter: internals on screen, basic console and Node panels |
+
+Two items are held until Gary or Russell rules on them:
+
+- FUCQ-553 AC4: reserving from the gallery.
+- FUCQ-559 AC3: production confirm and delay, and Retry release queue.
+
 ## 4. Why the local Node screenshots miss notifications
 
 - **Fixture mode never draws the bell.** The 19 November comparison opened `gcsp-account.html?fixture=ready` on
