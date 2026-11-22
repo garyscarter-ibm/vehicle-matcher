@@ -16,22 +16,22 @@
 - Frozen live Node reference is e44ed08a9; preserve its worktree. Use the existing Node classes/CSS and the 1.6fr/320px account pair geometry,23px vehicle title and source wording.
 - No OneDrive access, foreground browser/focus changes or real email. No new connected composition before dispatcher allocation; F562/F564 backend scope remains unanswered.
 - Preserve F548 global CSS/bell, F549 navigation, F550 refresh and F552 preferences at supported integration. Do not copy, cherry-pick or manually stack their unmerged source.
-- Excluded: preferences/category/mode/understanding-meter/BriefEditorStore; shell/routes/auth/backend; angular.json; F550 service/activity/offers/orders/outbox. Source+catalogue entries share a commit. F552 preference ports remain reserved.
+- Excluded: preferences/category/mode/understanding-meter/account-preferences/editor/BriefEditorStore; shell/routes/auth/backend; angular.json styles/build/deploy settings; F550 service/activity/offers/orders/outbox. Source+catalogue entries share a commit. F552 preference ports remain reserved.
 - Below High defects are independent linked backlog Bugs; Critical/High requires active triage or explicit human deferral. Original AC failure is never silently reclassified as an optional addition.
 
 ## Refreshed diagnosis and interfaces
 
 On claimed base0f5959bc9, `previewFailed` already excludes not-found for offers/orders (earlier fix fa4996cd53). Preserve it and exercise absence versus genuine read failure before any banner change. The current hero uses local current-car/car-copy classes and a below-facts native rating; Buddy composition is absent; history is hand-built despite an existing shared table.
 
-`AccountComponent.image(contract)` currently accepts HTTPS or root-relative media and returns it unchanged. The known frozen Paula asset exists in the repository but not Angular src/assets. Read-only probes on22November: web origin404 text/plain, Java API origin404 application/json, frozen Node host200 image/webp. Runtime config points Angular to gcsp-buddy-dev-api.onrender.com. These probes identify deployment absence for the known asset, not the currently authenticated hosted account payload. Do not hardcode the Node host or assume an API origin resolver fixes it. The lead must request a narrow asset packaging/serving allocation before that edit.
+`AccountComponent.image(contract)` currently accepts HTTPS or root-relative media and returns it unchanged. The known frozen Paula asset exists in the repository but not Angular src/assets. Read-only probes on22November: web origin404 text/plain, Java API origin404 application/json, frozen Node host200 image/webp. Runtime config points Angular to gcsp-buddy-dev-api.onrender.com. These probes identify deployment absence for the known asset, not the currently authenticated hosted account payload. Do not hardcode the Node host or assume an API origin resolver fixes it. The dispatcher approved only the angular.json assets mapping on22November: glob `*.webp`, input `../../assets/gcsp-vehicle-evidence` (relative to apps/gcsp-web), output `assets/gcsp-vehicle-evidence`. The existing source set is921WebP files,87,265,982bytes; no image copy/generated asset is needed. Preserve styles and all other settings; no deployment-file edits.
 
-Existing Angular ports to inspect/reuse: `kit/data-table.component.*`, `kit/vehicle-details.component.*`, `kit/star-rating.component.ts`, `kit/side-drawer.component.*`; `account/current-car-rating.component.*`; existing BriefClient/ActivityClient read and command contracts. Exact Node account-buddy.js/buddy-tile.js composition is the authority for event ordering, state lamp/copy and held offer, and its existing source helpers are the authority for pause/resume and drawer contents. No invented timestamps or derived outcomes.
+Existing Angular ports to inspect/reuse: `kit/data-table.component.*`, `kit/vehicle-details.component.*`, `kit/star-rating.component.ts`, `kit/side-drawer.component.*`; `preferences/current-car-rating.component.ts` and its focused spec; existing BriefClient/ActivityClient read and command contracts. Exact Node account-buddy.js/buddy-tile.js composition is the authority for event ordering, state lamp/copy and held offer, and its existing source helpers are the authority for pause/resume and drawer contents. No invented timestamps or derived outcomes.
 
 ## Durable slice plan
 
 ### 1. current-car — source styling and rating (5 points)
 
-**Files:** account.component.ts/html/css and focused account specs; account/current-car-rating.component.*; kit/star-rating.component.ts and source-named supporting scoped CSS/spec only after inventory. Extend existing vehicle-details only when its public contract can preserve other consumers. Matching narrow COMPONENTS.md entry and existing gallery state in the same source commit.
+**Files:** account.component.ts/html/css and focused account specs; preferences/current-car-rating.component.ts and its focused spec; kit/star-rating.component.ts and source-named supporting scoped CSS/spec only after inventory. Extend existing vehicle-details only when its public contract can preserve other consumers. Matching narrow COMPONENTS.md entry and existing gallery state in the same source commit.
 
 **Interfaces:** Retain ContractView identity/media/facts and existing rating save/read ownership. Reuse current `gcsp-current-car-rating` contract or an additive presentation input; do not change BriefEditorStore. Node source: kit/vehicle-details.css, kit/star-rating.js/help-tip, employee/representative-body.js74–75 and account current-car composition.
 
@@ -53,13 +53,13 @@ Existing Angular ports to inspect/reuse: `kit/data-table.component.*`, `kit/vehi
 
 ### 3. account-history-media — table, failure regression and image deployment (3 points)
 
-**Files:** account.component.ts/html/css/spec, existing data-table component/spec only if a source-supported extension is necessary. Image packaging/serving file is deliberately unallocated until the lead reports the observed404/404/200 to the dispatcher; no angular.json/server edit may begin before precise allocation.
+**Files:** account.component.ts/html/css/spec, existing data-table component/spec only if a source-supported extension is necessary. The dispatcher has allocated only the angular.json assets array for glob `*.webp`, input `../../assets/gcsp-vehicle-evidence`, output `assets/gcsp-vehicle-evidence` (921existing files;87,265,982bytes). Preserve styles/build/deploy settings and F548 global CSS; no deployment/server source edit is allocated.
 
 **Interfaces:** Existing ContractView histories and `openRecord(contract,event)` retain record identity/focus/print; shared table columns/rows carry Current car tags and named record actions. Keep source404 semantics and genuine failure retry behavior. Asset proof must resolve the authenticated current contract's actual src and verify200 on hosted dev after supported deployment.
 
 - [ ] Add red tests that history uses shared gcsp-data-table with Current car tag/named actions and that order not-found stays silent while unavailable/forbidden read failures show the real failure note.
 - [ ] Replace the hand-built history table by the existing shared table's supported row/cell/action interface. Preserve no-history, history-only scheme and placed-order states.
-- [ ] After explicit file allocation, implement the narrow verified image delivery fix; test exact src containment and hosted asset identity. Do not label the known frozen asset probe as current-account acceptance.
+- [ ] Use the approved exact assets mapping to implement the narrow image delivery fix; test exact src containment and hosted asset identity. Do not label the known frozen asset probe as current-account acceptance.
 - [ ] Run focused account/table/image checks; review source and commit/push its coherent chunk. If the hosted path is unavailable, retain the precise unproved criterion.
 
 ### 4. integration-validation — supported sibling integration and focused build (0 points)
@@ -89,3 +89,15 @@ Impact file: `/Users/usget/Claude/vehicle-matcher/.Codex/test-runs/impact/fucq55
 ## Plan self-review
 
 AC1→slice2+5; AC2→slice1+5; AC3→slice3+5; AC4→slice3+5; AC5→slice3+5; AC6→slice5. All implementation tasks carry an independently reviewable test/source/catalogue checkpoint. Integration, live proof and handoff are explicit; none is counted complete. Source interfaces above are retained rather than invented ahead of inventory.
+
+## Allocation and execution amendment, 22 November 2026
+
+The dispatcher additionally allocated the account-specific `preferences/current-car-rating.component.ts` and focused spec, the single rating-clear test in `preferences/preferences.component.spec.ts`, and one canonical `kit/help-tip.directive.ts` port. Canonical help seam: `[gcspHelpTip]` text, `helpTipId`, `helpTipPlacement` (`below-start`/`above-end`), `helpTipDismissOnActivate`, `helpTipTriggers`; F552 reuses it only at supported integration. All other F552 production/test deltas stay frozen.
+
+F548 `src/styles/node-gcsp.css` already contains the original star-rating/help-tip, buddy-status/tile, activity-timeline and activity-offer sheets. Reuse those global original classes/CSS at integration; F551 creates no duplicate source sheets. Minimal Angular host adaptation is distinct and must be named. The dispatcher approved the ONE canonical `kit/activity-timeline.component.ts` port with focused spec/catalogue/gallery now because original551already needs it; later556must reuse it. ActivityStore owns scoped reads and BriefEditorStore.runBuddyCommand owns guarded pauseSearch/resumeSearch; no store/client changes.
+
+The originally approved external asset input failed in the installed Angular builder before compilation: `The ../../assets/gcsp-vehicle-evidence asset path must be within the workspace root.` Useful failure is retained in `fucq551/beaky-red-star-correct-cli.log`. That uncommitted entry was removed to unblock tests; no successful asset config is claimed. Installed normalize-asset-patterns.js/resolve-assets.js require a lexically contained input and support followSymlinks. A narrowly scoped tracked source link and contained input was requested from the dispatcher; no link was created pending allocation. Hosted200 remains unproved.
+
+Only the narrow ratchet JSON allocation is approved: new component stylesheet caps at actual source size if needed, and lowering account hand-built debt after table adoption. Existing caps/baselines never rise; no ratchet source/framework change. Record actual keys/counts with the eventual source checkpoint.
+
+The dispatcher approved the contained asset seam after the failed direct input: tracked `apps/gcsp-web/src/vehicle-evidence -> ../../../assets/gcsp-vehicle-evidence`, assets `{ glob: '*.webp', input: 'src/vehicle-evidence', output: 'assets/gcsp-vehicle-evidence', followSymlinks: true }`. Canonical realpath must equal this checkout's existing corpus. A supervised installed-Angular resolver check proves921destinations/87,265,982sourcebytes before final build output verification; no generated source copy. Also allocated pure `kit/activity-offer.component.ts` with focused spec/catalogue/gallery, using existing approvedActivityImages/activity.copy and F548 CSS; no activity source/store/client edits.
