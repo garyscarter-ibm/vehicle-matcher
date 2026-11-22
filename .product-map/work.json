@@ -10743,8 +10743,8 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-22T22:17:09.286047+00:00",
-          "expires_at": "2026-11-23T01:17:09.286047+00:00",
-          "source": "dispatcher delegation; actual Sol/xhigh verified"
+          "expires_at": "2026-11-22T22:47:41.776250+00:00",
+          "source": "Source frozen c8728d4ae; scoped 230 tests,126 ratchet,4 boundary,build and targeted checks passed; all5AC incomplete. Final fucq550/lead-resource-audit.json."
         },
         {
           "id": "01a20556-00f0-7873-bc3d-4d8f563d82c0",
@@ -10756,7 +10756,7 @@
           "source": "Native source worker completed; lead review/230tests passed, no active claim inferred."
         }
       ],
-      "observed_at": "2026-11-22T22:43:30Z",
+      "observed_at": "2026-11-22T22:47:41Z",
       "slices": [
         {
           "id": "outbox-chip-source",
@@ -10770,7 +10770,7 @@
           "status": "complete",
           "title": "Shared visibility restore and polling with order announcement",
           "observed_at": "2026-11-22T22:43:30Z",
-          "evidence": "Lead reviewed shared lifecycle/timer, five route-owned guarded readers, draft/response/review ownership and source order changeKey; corrected auth-boundary announcement regression; final230tests across7specs passed, retained fucq550/lead-native-final-callers-receipt.json. Source boundary only, no fullAC completion."
+          "evidence": "Lead reviewed shared lifecycle/timer, five route-owned guarded readers, draft/response/review ownership and source order changeKey; corrected auth-boundary announcement regression; final230tests across7specs passed, retained fucq550/lead-native-final-callers-receipt.json. Source boundary only, no fullAC completion. Final production/targeted/cleanup receipts: /Users/usget/Claude/vehicle-matcher/.claude/test-runs/angular-gap-20261122/fucq550/lead-resource-audit.json; targeted code key909708dc470a8942b1990997d93de03dea7465f114fff3c35b26c4ec3bdb47c3. All5AC remain incomplete."
         },
         {
           "id": "presenter-integration",
