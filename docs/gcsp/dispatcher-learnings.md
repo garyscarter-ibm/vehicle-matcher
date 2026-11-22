@@ -2899,3 +2899,13 @@ Several broad source/policy displays and an initial queue display again truncate
 - **Issue:** the connected shell proof's mock issuer issues no refresh token in its expiry case. The Angular app's handling of a refused refresh token (`invalid_grant`) was therefore never exercised. Against the real demo issuer it showed "Sign-in is not available".
 - **Resolution:** FUCQ-532 matched the mock (`GCSP_DEMO_IDP_REFRESH_TOKENS=false` for that proof case only), and FUCQ-534 fixes the app and removes the workaround.
 - **Learning:** when a proof swaps a mock for a real adapter, check that each scenario still exercises the same protocol path, and file a Bug for any gap the swap exposes rather than hiding it.
+
+
+### 2026-11-22 20:32 UTC · usget-vesper · Angular gap intake
+
+- Authenticated Jira read verified all fourteen FUCQ-548–561 Bugs, their FUCQ-432 parent and originating Story links. The review-linked capture directory is absent locally and all fourteen native attachment lists are empty; no original screenshot inspection is claimed. The first lead will reproduce the live before-fix state before implementation and retain fresh Node/Angular pairs.
+- FUCQ-548 initially failed check-story because its native description lacked the required ui component plan. Added only the existing portalShell/notificationBell plan to the native Bug, read it back and re-imported; check-story now passes. Preserve native descriptions as the source rather than patching only local mirrors. Apply this check at later pickups.
+
+### 2026-11-22 20:32 UTC · usget-vesper · DL-20261117-GCC-013 · Unbounded map projection
+
+- The generic product_map.py snapshot projected all historical branches and emitted an oversized response (the command tool reported 9,942,595 bytes omitted). No completion or freshness claim relies on it. Use the authored per-story plan/slice records and bounded output projections for this run; a producer-level bounded snapshot remains a proposed framework improvement. No extra validation run was added.

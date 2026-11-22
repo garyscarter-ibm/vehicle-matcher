@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.13.0"
+VERSION = "1.16.0"
 """dev_mail.py: the dev mailbox between Cowork and Claude Code, and between the pollers of a team, for this project, and the
 guard that stops it looping (the rules for Cowork are in the managed `dev-inbox` skill).
 
@@ -123,9 +123,13 @@ Commands (exit 0 done, 1 error, 2 refused by a limit or by who may do it):
   close THREAD [--withdraw]                       the opener's alone: file an answered thread; --withdraw drops one still waiting
   spawn-story --thread THREAD --file DRAFT.md     (Cowork) write a stamped story into _dev/code-inbox/
   check-story ID                                  verify a story before building it (Code, at claim): its lineage (who asked),
-        a ui story's `ui:` line (when the components piece or inbox.require_ui is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning
+        a ui story's `ui:` line (when the components piece or inbox.require_ui is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning,
+        and so is a parity criterion with no screen, state, scenario or viewport (1.14.0)
   queue [--stats]                                 the waiting stories in claim order, then `held` lines and ALERT lines; `NOTHING`
         when none is ready; --stats adds the counts and how well sizes matched story points
+        a migration's retirement story (retires: <id>) is held until parity sign-off covers every screen (1.15.0)
+        a migration's screen-port story (ports_screen: <id>, <screen>) other than the first screen is held until that first
+        screen's early parity review is signed off (1.16.0)
   epics [--id B-nnn|KEY] [--sync] [--json]        per backlog item: its stories (done, open, rejected), the things it waits on (its
         `waits_on` header) and what its status should be (`ok`, `set In Progress`, `set In Review`, `awaiting review`, `waiting on <entries>`); --sync
         writes status, status_changed and status_note (and drops waits_on once the item goes In Review) in backlog/; without it
@@ -1038,8 +1042,47 @@ def field_problems(fields, sid, owner=None, spawned=False, backlog_priority=None
     return out
 
 
+# Parity criteria (1.14.0; SCAF-40, Russell 2026-11-20; plugin/skills/backlog/references/migration-parity.md, "Parity
+# definition"). A criterion that claims parity with another implementation names the screen, states, scenario and viewport
+# its screenshot pair is taken in. check-story warns, never refuses: API, data and JSON parity are out of scope.
+PARITY_CLAIM = re.compile(r"\bparity\b|same as the old (?:version|implementation|screen|app)|"
+                          r"preserv\w* (?:the )?(?:current |existing )?visual design", re.I)
+NOT_UI_PARITY = re.compile(r"\b(?:api|data|json|schema|backend|database)\s+parity\b", re.I)
+PARITY_PARTS = (("screen", re.compile(r"\bscreens?\b", re.I)), ("state", re.compile(r"\bstates?\b", re.I)),
+                ("scenario", re.compile(r"\bscenarios?\b", re.I)),
+                ("viewport", re.compile(r"\bviewports?\b|\b\d{3,4}x\d{3,4}\b", re.I)))
+
+
+def acceptance_items(value):
+    """The items of an `acceptance` value: each `- ...`, `* ...` or `1. ...` line, with its continuation lines joined."""
+    items, cur = [], None
+    for line in (value or "").split("\n"):
+        if re.match(r"^\s*(?:[-*]|\d+[.)])\s+", line):
+            if cur is not None:
+                items.append(cur)
+            cur = line.strip()
+        elif line.strip():
+            cur = line.strip() if cur is None else cur + " " + line.strip()
+    if cur is not None:
+        items.append(cur)
+    return items
+
+
+def parity_warnings(fields):
+    out = []
+    for n, item in enumerate(acceptance_items(fields.get("acceptance")), 1):
+        if not PARITY_CLAIM.search(NOT_UI_PARITY.sub("", item)):
+            continue
+        missing = [name for name, rx in PARITY_PARTS if not rx.search(item)]
+        if missing:
+            out.append(f"acceptance item {n} claims parity but names no {', '.join(missing)}: a parity criterion names "
+                       "the screen, states, scenario and viewport (backlog skill, references/migration-parity.md)")
+    return out
+
+
 def field_warnings(fields):
-    return ["size XL: cut it into smaller stories before posting (13+ points)"] if parse_size(fields.get("size"))[0] == "XL" else []
+    size = ["size XL: cut it into smaller stories before posting (13+ points)"] if parse_size(fields.get("size"))[0] == "XL" else []
+    return size + parity_warnings(fields)
 
 
 def _problems(s, owner, backlog_priority, has_backlog=None, jira=None, migrated=None):
@@ -1067,10 +1110,114 @@ def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None,
     return sorted(out)
 
 
-def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None):
+# ---------------------------------------------------------------- migration retirement holds (1.15.0; SCAF-43)
+
+def load_migrations(root):
+    """The `migrations` block of <root>/.claude/scaffolding.json as {id: record}; {} when the file, the block or the JSON is missing or bad."""
+    try:
+        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    m = data.get("migrations") if isinstance(data, dict) else None
+    return m if isinstance(m, dict) else {}
+
+
+def _real_date(v):
+    """Whether v is an ISO date string that datetime.date.fromisoformat accepts: a real calendar day."""
+    try:
+        datetime.date.fromisoformat(v)
+    except (ValueError, TypeError):
+        return False
+    return True
+
+
+def _signed_off(v):
+    """Whether a screen of the migration record is signed off: its `signed_off` has a non-empty `by` and `source` and a real
+    `date`. The rule scaffold_git.py's migration guard uses, copied rather than imported; anything else is no sign-off."""
+    so = v.get("signed_off") if isinstance(v, dict) else None
+    if not isinstance(so, dict):
+        return False
+    by, source = so.get("by"), so.get("source")
+    return (isinstance(by, str) and bool(by.strip()) and isinstance(source, str) and bool(source.strip())
+            and _real_date(so.get("date")))
+
+
+def retirement_hold(fields, sid, migrations):
+    """Why a retirement story waits, or None when it may go. A story with `retires: <migration id>` in its header waits until
+    every screen of that migration is signed off, or a recorded retirement decision names the story in its `stories`
+    (references/migration-parity.md: the old implementation stays runnable until then). A story with no `retires` line is never held."""
+    if "retires" not in fields or not fields["retires"].strip():
+        return None
+    mid = fields["retires"].strip()
+    m = migrations.get(mid)
+    if not isinstance(m, dict):
+        return (f"retirement: {mid} is not a migration in .claude/scaffolding.json; this story waits until it is recorded "
+                "and parity is signed off")
+    decisions = m.get("retirement_decisions")
+    for d in (decisions if isinstance(decisions, list) else []):
+        if (isinstance(d, dict) and all(isinstance(d.get(k), str) and d[k] for k in ("by", "reason", "source"))
+                and _real_date(d.get("date")) and isinstance(d.get("stories"), list) and sid in d["stories"]):
+            return None
+    screens = m.get("screens")
+    if not isinstance(screens, dict) or not screens:
+        return f"retirement: no screens are recorded in migrations.{mid}.screens, so parity can't be signed off yet"
+    unsigned = sorted(n for n, v in screens.items() if not _signed_off(v))
+    if not unsigned:
+        return None
+    return (f"retirement: parity for migration {mid} is not signed off; waiting for " + ", ".join(unsigned)
+            + " (references/migration-parity.md: the old implementation stays runnable until every screen is signed off "
+            "or a human records a retirement decision)")
+
+
+# ---------------------------------------------------------------- migration first-screen review holds (1.16.0; SCAF-44)
+
+def _human_decision(d, keys=("by", "reason", "source", "phase")):
+    """Whether d is a recorded human decision: every key a non-empty string and a real `date`."""
+    return (isinstance(d, dict) and all(isinstance(d.get(k), str) and d[k].strip() for k in keys)
+            and _real_date(d.get("date")))
+
+
+def early_review_hold(fields, sid, migrations):
+    """Why a screen-port story waits for its migration's early parity review, or None when it may go. A story with
+    `ports_screen: <migration id>, <screen>` in its header ports one screen. The screen named in
+    migrations.<id>.early_review.screen goes first; every other screen-port story waits until that screen is signed off
+    (the same `screens.<screen>.signed_off` signal retirement_hold reads), or a human decision recorded in
+    early_review.decision (by, date, reason, source and phase) lifts the hold for that epic. A migration with one recorded
+    screen holds nothing, and a story with no `ports_screen` line is never held (references/migration-parity.md,
+    "First-screen review")."""
+    if "ports_screen" not in fields or not fields["ports_screen"].strip():
+        return None
+    mid, _, screen = (part.strip() for part in fields["ports_screen"].partition(","))
+    m = migrations.get(mid)
+    if not isinstance(m, dict):
+        return (f"early parity review: {mid} is not a migration in .claude/scaffolding.json; this screen-port story waits "
+                "until it is recorded and its first screen is reviewed")
+    er = m.get("early_review") if isinstance(m.get("early_review"), dict) else {}
+    first = er.get("screen").strip() if isinstance(er.get("screen"), str) else ""
+    screens = m.get("screens") if isinstance(m.get("screens"), dict) else {}
+    if not screen:
+        return (f"early parity review: ports_screen names no screen; write `ports_screen: {mid}, <screen>` with the "
+                "inventory's screen name")
+    if screen == first or (len(screens) == 1 and screen in screens) or _human_decision(er.get("decision")):
+        return None
+    if not first:
+        return (f"early parity review: no first screen is chosen in migrations.{mid}.early_review.screen; the epic "
+                "chooses the screen that is ported and reviewed first")
+    if _signed_off(screens.get(first)):
+        return None
+    thread = er.get("thread").strip() if isinstance(er.get("thread"), str) and er["thread"].strip() else "(not requested yet)"
+    return (f"early parity review {thread}: the first screen, {first}, of migration {mid} is not signed off yet "
+            "(references/migration-parity.md, \"First-screen review\": the other screens are ported after a human has "
+            "reviewed the first)")
+
+
+def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, jira=None, migrated=None, migrations=None):
     """stories: [{"id", "where": "code-inbox"|"in-progress"|"done"|"staged", "fields": dict, "rejected": bool,
                   "status": str|None}]  # status: the Result block's `- status:` word, if known (built|partial|blocked|failed|waiting)
-    Duplicates are resolved by the caller. Returns {"order": [ready ids in claim order], "held": [(id, why)],
+    Duplicates are resolved by the caller. `migrations` is load_migrations' {id: record}: a story with a `retires:` line is held
+    by retirement_hold until its migration's parity is signed off, and one with a `ports_screen:` line by early_review_hold
+    until its migration's first screen is signed off. Returns {"order": [ready ids in claim order], "held": [(id, why)],
     "info": {id: {priority, priority_now, size, expedite, deps, waits_for, blocks, state, why, age_days, problems}},
     "alerts": [str]}."""
     state, info, deps = {}, {}, {}
@@ -1117,6 +1264,9 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
     first = exp[0] if exp else None
     held, alerts, cycles = {}, [], set()
     fixes, seconds = [], []
+    stories_by_id = {s["id"]: s.get("fields") or {} for s in stories}
+    retire = {sid: retirement_hold(stories_by_id[sid], sid, migrations or {}) for sid in waiting}
+    early = {sid: early_review_hold(stories_by_id[sid], sid, migrations or {}) for sid in waiting}
     for sid in waiting:
         if info[sid]["problems"]:
             held[sid] = "fix: " + "; ".join(info[sid]["problems"])
@@ -1128,6 +1278,10 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
             ring = sorted({z for z in closure[sid] if sid in closure[z]} | {sid})
             held[sid] = "dependency cycle through " + ", ".join(ring)
             cycles.add(tuple(ring))
+        elif retire[sid]:
+            held[sid] = retire[sid]
+        elif early[sid]:
+            held[sid] = early[sid]
         elif info[sid]["waits_for"]:
             held[sid] = ""
     words = {"claimed": "in progress", "staged": "staged", "rejected": "rejected", "paused": "paused"}
@@ -2209,7 +2363,7 @@ class Mail:
         every story for dependencies and blocks either way."""
         stories = self.queue_stories()
         result = rank(stories, self.today, self.owner, self.backlog_priority, self.has_backlog, self.jira,
-                      load_migrated(self.root, self.jira))
+                      load_migrated(self.root, self.jira), migrations=load_migrations(self.root))
         if not self.team:
             return stories, result
         self._need_me()
