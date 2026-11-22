@@ -10728,29 +10728,26 @@
       ]
     },
     {
-      "id": "FUCQ-552",
-      "title": "Angular preferences category tiles, mode, completeness and editor parity",
-      "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
       "assignee": "Russell Gowers",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
       "branch": "dev/DEV-2026-11-22-vesper-027",
-      "unsliced": false,
-      "evidence": "Parent verified native claim metadata; original scope preserved. Plan in docs/superpowers/plans/2026-11-22-fucq552-preferences-parity.md",
-      "observed_at": "2026-11-22T22:39:47Z",
+      "evidence": "Source-only checkpoint 1134d1ea8; independent 76/76 caller specs, 124/124 ratchet, targeted boundaries and clean production build passed. Result in _dev/in-progress/DEV-2026-11-22-vesper-027.md. All seven original ACs unticked; In Progress/unmerged.",
+      "id": "FUCQ-552",
+      "observed_at": "2026-11-22T22:58:56Z",
+      "original_status": "In Progress",
       "slices": [
         {
+          "evidence": "Source-only delivery at 1134d1ea8: source category icons/states/bin/stopped controls plus independent 76/76 callers and lead review. AC1 remains unticked pending F548 CSS and rendered integration.",
           "id": "category-port",
-          "status": "in-progress",
-          "title": "Source category icons, importance, bin and stopped controls (AC1)",
-          "observed_at": "2026-11-22T22:39:47Z",
-          "evidence": "Independent source allocation accepted; existing category/store interfaces verified; no connected acceptance claimed."
+          "observed_at": "2026-11-22T22:58:56Z",
+          "status": "complete",
+          "title": "Source category icons, importance, bin and stopped controls (AC1)"
         },
         {
           "id": "mode-meter-port",
-          "status": "not-started",
-          "title": "Source mode choice, help and completeness meter (AC2/3)"
+          "status": "complete",
+          "title": "Source mode choice, help and completeness meter (AC2/3)",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "evidence": "Source-only delivery at 1134d1ea8: mode/help and segmented completeness ports with focused regressions/lead review. AC2/3 remain unticked; integrate F548 CSS and migrate mode help to F551 canonical shared helpTip."
         },
         {
           "id": "editor-controls",
@@ -10769,13 +10766,42 @@
         },
         {
           "id": "source-validation",
-          "status": "not-started",
-          "title": "Lead review, focused regressions, ratchet, boundaries and build"
+          "status": "complete",
+          "title": "Lead review, focused regressions, ratchet, boundaries and build",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "evidence": "Source-only 1134d1ea8: lead 76/76, ratchet124/124, targeted CSP/token/controller/AOT+built HTML checks, clean production build; 14 roots/recorded groups absent. Build descendant peak RSS unknown. See Result/lead receipts."
         },
         {
           "id": "connected-parity",
-          "status": "not-started",
-          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)"
+          "status": "blocked",
+          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "evidence": "Original F552 all-AC integration/parity pending: F548/F549/F551 authorized integration, remaining editor/cards/order link work and unresolved F562/F564 human routing. No connected stack/captures/human review; all seven original ACs unticked."
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular preferences category tiles, mode, completeness and editor parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
+      "workers": [
+        {
+          "expires_at": "2026-11-22T22:58:56Z",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T22:58:56Z",
+          "role": "story-lead",
+          "source": "Lead final source Result/cleanup handoff; no running source worker claimed",
+          "status": "source checkpoint complete; partial handoff"
+        },
+        {
+          "expires_at": "2026-11-22T22:48:32Z",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-22T22:48:32Z",
+          "role": "implementer",
+          "source": "Implementer final resource-audit.json; source committed by lead; no descendants",
+          "status": "completed source allocation"
         }
       ]
     }
