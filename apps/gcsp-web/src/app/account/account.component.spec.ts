@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { BriefClient } from '../preferences/brief.client';
+import { briefEditorFixture } from '../preferences/brief.fixtures';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot, savedDraft } from './account.test-data';
@@ -43,17 +44,52 @@ describe('native employee account screen', () => {
   it('retains populated current car, identity, drivers, supplied labels and scheme history in approved order', async () => {
     const component = await mount();
     expect(root().querySelector('h1')?.textContent).toBe('Your cars');
-    expect(root().querySelector('.current-car h2')?.textContent).toBe('BMW 3 Series Touring 320i');
+    expect(root().querySelector('.gcsp-feature .gcsp-vehicle-title')?.textContent).toBe('BMW 3 Series Touring 320i');
     expect(text()).toContain('1,100 / 1,300'); expect(text()).toContain('Contract ends in 26 days');
     expect(text()).toContain('Paula Mason'); expect(text()).toContain('Casey Ward'); expect(text()).toContain('WARD9900000CW9XX'); expect(text()).toContain('Car licence valid until 1 January 2030');
     expect(text()).toContain('E749057'); expect(text()).toContain('27 Ashdown Road, Bracknell, RG12 9ZZ'); expect(text()).toContain('BMW Choices');
     expect(text()).not.toContain('demo-bmw-fs-uk'); expect(text()).not.toContain('choices-fs-uk'); expect(text()).not.toContain('Synthetic monthly');
     expect(root().querySelector<HTMLAnchorElement>('.account-preferences a')?.getAttribute('href')).toBe('/preferences');
     const classes = Array.from(root().querySelector('.account-screen')!.children).map((node) => node.className);
-    expect(classes.indexOf('current-car')).toBeLessThan(classes.indexOf('account-summary account-preferences'));
+    expect(classes.findIndex((name) => name === 'gcsp-feature')).toBeLessThan(classes.indexOf('account-summary account-preferences'));
     expect(classes.indexOf('account-summary account-preferences')).toBeLessThan(classes.indexOf('account-history'));
     expect(classes.indexOf('account-history')).toBeLessThan(classes.indexOf('account-details'));
     expect(component.projection()).toEqual(account);
+  });
+  it('ports source current-car media, two-column fact roles, title, fuel copy and countdown clock', async () => {
+    const base = briefEditorFixture(); const editor = { ...base, initial: { ...base.initial, currentCarRating: { contractId: account.contracts![0].contractId, value: 4 } } };
+    TestBed.inject(BriefClient).readEditor = vi.fn().mockResolvedValue({ status: 'ok', value: editor });
+    await mount();
+    const hero = root().querySelector('.gcsp-feature')!;
+    expect(hero.querySelector('.gcsp-feature-copy.gcsp-vehicle-copy .gcsp-vehicle-heading .gcsp-vehicle-title')?.textContent).toBe('BMW 3 Series Touring 320i');
+    expect(hero.querySelector('.gcsp-account-spec')?.textContent).toBe('M Sport Touring · Petrol');
+    expect(hero.querySelectorAll('.vm-facts.gcsp-account-car-facts > .vm-fact')).toHaveLength(3);
+    expect(hero.querySelector('.gcsp-countdown .gcsp-icon path')).not.toBeNull();
+    expect(hero.querySelector('button.vm-btn.vm-btn-ghost')?.textContent).toBe('View car record');
+    expect(hero.querySelector('button.vm-btn.vm-btn-primary')?.textContent).toBe('Choose a replacement');
+    const pill = hero.querySelector('.gcsp-feature-media .vm-card-media.gcsp-media.gcsp-media-whole .gcsp-star-rating-pill');
+    expect(pill).not.toBeNull(); expect(pill?.querySelector('input')?.getAttribute('aria-describedby')).toContain('-help');
+    expect(hero.querySelector('.gcsp-feature-copy gcsp-current-car-rating')).toBeNull();
+  });
+  it.each([[0, 'ends today'], [1, 'ends in 1 day'], [-1, 'ended 1 day ago'], [-3, 'ended 3 days ago']] as const)('uses source countdown wording for %i remaining days', async (daysRemaining, phrase) => {
+    const component = await mount(); const car = component.model()!.currentContracts[0];
+    expect(component.countdown({ ...car, daysRemaining })).toBe(`Contract ${phrase} · 1 December 2026`);
+    expect(component.countdown({ ...car, daysRemaining: null })).toBe('Contract end: Not supplied');
+  });
+  it('resolves packaged evidence photos under the actual GCSP base while preserving other accepted image URLs', async () => {
+    const existing = document.querySelector('base'); const previous = existing?.getAttribute('href');
+    const base = existing ?? document.createElement('base'); base.setAttribute('href', '/gcsp/'); if (!existing) document.head.append(base);
+    try {
+      const component = await mount(); const image = root().querySelector<HTMLImageElement>('.gcsp-feature img')!;
+      expect(image.getAttribute('src')).toBe('assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp');
+      expect(new URL(image.src).pathname).toBe('/gcsp/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp');
+      const car = component.model()!.currentContracts[0];
+      for (const src of ['https://images.example.test/car.webp', '/images/car.webp', '/assets/gcsp-vehicle-evidence/other.webp']) {
+        expect(component.image({ ...car, media: { src } })).toBe(src);
+      }
+      image.dispatchEvent(new Event('error')); await settle(); expect(root().querySelector('.gcsp-feature img')).toBeNull();
+      expect(root().querySelector('.gcsp-feature .vm-card-soon')?.textContent).toBe('No image available for your car');
+    } finally { if (!existing) base.remove(); else if (previous === null) base.removeAttribute('href'); else base.setAttribute('href', previous!); }
   });
   it('keeps zero/unknown terms distinct, omits unsupplied identity and recovers a broken image without inventing media', async () => {
     const car = { ...account.contracts![0], terms: { kind: 'points-monthly', value: 0, allowance: 0 }, registration: null, months: 0 };
@@ -77,7 +113,7 @@ describe('native employee account screen', () => {
   it('uses confirmed current-car relationships after handover and keeps delivered VIN separate', async () => {
     account = { ...account, currentCarRelationships: [{ currentCar: { kind: 'order', orderUuid: 'exact-stock', vin: 'DELIVEREDVIN' }, oldCar: { contractId: account.contracts![0].contractId, status: 'returned' }, newCar: { collectedAt: '2026-11-07T13:00:00.000Z' } }] };
     client.readAccount.mockResolvedValue({ status: 'ok', value: account }); await mount();
-    expect(root().querySelector('.current-car:not(.delivered-car)')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
+    expect(root().querySelector('.gcsp-feature')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
   });
   it('shows the newest pending owned offer link without inventing a manual-order gate', async () => {
     client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });

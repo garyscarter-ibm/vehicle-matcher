@@ -523,10 +523,27 @@ presenters. Category inputs are the server definition, considered/unset state, o
 disabled flags. Outputs express value/importance changes, open, request removal, remove and keep.
 Multi choices use checkboxes; stops and medium/high importance use separate radio groups. Unset
 categories read Not important. Removal requires an explicit Remove preference action with a Keep
-preference alternative. Stars use a named native radio group for 1–5 and a Clear rating button.
-Tab, Space and the native radio arrow keys operate these controls; focus outlines remain visible.
+preference alternative. Stars port Node `starRating` with its source classes, `RATING_WORDS`, selected-star clearing,
+arrow/Home/End selection and Enter/Space activation (including the synthetic-click guard).
+`overlay`, `pill`, `help`, `labels`, `status` and `retryable` are additive presenter inputs;
+`rated` and `retried` leave saving with the caller. Pending/saved/failed announcements and
+the source Try again row retain their semantics; focus outlines remain visible.
 Disabled states retain readable answers. Gallery: **Preference categories and current-car rating**,
 including high importance, removal, unset/disabled, selected stars and an unconfirmed-save message.
+
+Canonical Angular `HelpTipDirective` (`kit/help-tip.directive.ts`) ports Node `helpTip` on
+`[gcspHelpTip]` hosts. Inputs: text, `helpTipId`, `helpTipTriggers` (native selector),
+`helpTipPlacement` (`below-start`/`above-end`), `helpTipDismissOnActivate`; lifecycle
+methods are `show`, `hide`, `dismiss`. Its exported typed `helpTip()` retains source
+hover/focus, touch exclusion, Escape/outside dismissal, held dismissal and cleanup.
+Star/help styling reuses the frozen Node sheets in FUCQ-548's global stylesheet at supported
+integration; no duplicate component sheets. Gallery: **Preference categories and current-car rating**.
+
+Your cars current-car composition ports `currentCar`: `gcsp-feature` media/copy,
+`gcsp-vehicle-title` type role, `gcsp-account-car-facts` two-column roles,
+`gcsp-countdown` with the source clock, and `starRating` in the photo.
+`gcsp-current-car-rating` adds only `overlay`/`pill` inputs and keeps `BriefEditorStore` authority.
+Rating announcements follow its own queued intent and canonical save outcome; unrelated category errors retain preference recovery.
 
 `gcsp-account-preferences` and `gcsp-current-car-rating` compose those presenters with the shared
 root `BriefEditorStore`. Account inputs are `carDescription`, and `contractId` for rating. Rating

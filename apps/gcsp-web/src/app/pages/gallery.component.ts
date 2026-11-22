@@ -20,7 +20,8 @@ import { VehicleCardComponent } from '../kit/vehicle-card.component';
   <section class="gcsp-panel"><h2>Preference categories and current-car rating</h2><p class="gcsp-note">Native choices, independent importance, removal confirmation and disabled states.</p>
     <gcsp-preference-category id="gallery-preference" [definition]="category" [state]="{ state: 'considered', value: ['estate'], importance: 'high', exact: true }" [open]="true" [removing]="removing()" (removeRequested)="removing.set(true)" (kept)="removing.set(false)" (removed)="removing.set(false)" />
     <gcsp-preference-category id="gallery-preference-disabled" [definition]="category" [disabled]="true" />
-    <gcsp-star-rating id="gallery-stars" [value]="rating()" (rated)="rating.set($event)" />
+    <gcsp-star-rating id="gallery-stars" help="How highly do you rate your current car?" [pill]="true" [value]="rating()" (rated)="rating.set($event)" />
+    <gcsp-star-rating id="gallery-stars-failed" help="How highly do you rate your current car?" [pill]="true" [value]="4" status="failed" [retryable]="true" />
     <gcsp-star-rating id="gallery-stars-disabled" label="Rating unavailable while saving" [value]="3" [disabled]="true" />
     <p role="status">Your changes are not confirmed as saved. Try again or reload.</p>
   </section>

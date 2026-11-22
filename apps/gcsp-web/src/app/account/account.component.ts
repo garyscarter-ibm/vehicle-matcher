@@ -330,17 +330,23 @@ export class AccountComponent implements OnDestroy {
   image(contract: ContractView): string | null {
     if (this.failedImages().has(contract.contractId)) return null;
     const src = contract.media?.['src'] ?? contract.media?.['photo'];
-    return typeof src === 'string' && (/^\/(?!\/)/.test(src) || /^https:\/\//.test(src)) ? src : null;
+    if (typeof src !== 'string') return null;
+    if (/^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/.test(src)) return src.slice(1);
+    return /^\/(?!\/)/.test(src) || /^https:\/\//.test(src) ? src : null;
   }
   imageFailed(contract: ContractView): void { this.failedImages.update((current) => new Set([...current, contract.contractId])); }
   vehicleSpec(contract: ContractView): string {
     const configuration = this.shown(contract.vehicle?.['configuration']); const end = contract.model?.trim().split(/\s+/).at(-1);
     const trim = configuration?.startsWith(`${end} `) ? configuration.slice((end?.length ?? 0) + 1) : configuration;
-    return [trim, this.shown(contract.vehicle?.['fuel'])].filter(Boolean).join(' · ');
+    const fuel = ({ petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' } as Record<string, string>)[String(contract.vehicle?.['fuel'])];
+    return [trim, fuel].filter(Boolean).join(' · ');
   }
+  carDescription(contract: ContractView): string { return [this.carName(contract), this.vehicleSpec(contract)].filter(Boolean).join(' '); }
   countdown(contract: ContractView): string {
     if (contract.daysRemaining === null) return 'Contract end: Not supplied';
-    return contract.daysRemaining < 0 ? `Contract ended ${this.date(contract.contractEndDate)}` : `Contract ends in ${contract.daysRemaining} days · ${this.date(contract.contractEndDate)}`;
+    const days = contract.daysRemaining; const plural = (value: number) => `${value} day${value === 1 ? '' : 's'}`;
+    const phrase = days === 0 ? 'ends today' : days > 0 ? `ends in ${plural(days)}` : `ended ${plural(-days)} ago`;
+    return `Contract ${phrase} · ${this.date(contract.contractEndDate)}`;
   }
   driverLines(driver: AccountDriver): readonly string[] {
     const licence = driver.licence ?? {}; const categories = Array.isArray(licence['categories']) ? licence['categories'] : [];
