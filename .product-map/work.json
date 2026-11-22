@@ -10734,32 +10734,57 @@
       "status": "In Progress",
       "branch": "dev/DEV-2026-11-22-vesper-023",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-548",
-      "observed_at": "2026-11-22T20:34:53Z",
+      "observed_at": "2026-11-22T21:02:13Z",
       "workers": [
         {
           "name": "Petunia Pig",
           "role": "story-lead",
-          "observed_at": "2026-11-22T20:34:37.300083Z",
-          "expires_at": "2026-11-23T23:59:59Z"
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:01:54.930642Z",
+          "expires_at": "2026-11-23T23:59:59Z",
+          "source": "requested/selected gpt-6.1-sol/xhigh; no fallback",
+          "status": "working"
+        },
+        {
+          "name": "Wyldstyle",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:01:54.930642Z",
+          "expires_at": "2026-11-23T23:59:59Z",
+          "source": "requested/selected gpt-6.1-sol/high; no fallback",
+          "status": "working"
+        },
+        {
+          "name": "Bertie",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:01:54.930642Z",
+          "expires_at": "2026-11-23T23:59:59Z",
+          "source": "requested/selected gpt-6.1-sol/high; no fallback",
+          "status": "working"
         }
       ],
       "slices": [
         {
           "id": "styles",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Global source styles and collision proof (5 points)",
-          "observed_at": "2026-11-22T20:34:53Z",
-          "evidence": "Claim 1f40b2bb1; source diagnosis checked; before-fix live captures and source CSS assembly next."
+          "observed_at": "2026-11-22T21:02:13Z",
+          "evidence": "33698df1a4b9c62a2da6e1309aab456c86049475 published;133 focused style/ratchet cases,13 shell tests,AOT build; source/merged live comparison and corrected Angular desktop/narrow probe reviewed. Receipt retained fucq548/slice1/slice-summary.json and lead/shell-css-final-receipt.json. Human final bell parity pending."
         },
         {
           "id": "bell",
-          "status": "not-started",
-          "title": "Native notification bell and refresh source (5 points)"
+          "status": "in-progress",
+          "title": "Native notification bell and refresh source (5 points)",
+          "observed_at": "2026-11-22T21:02:13Z",
+          "evidence": "Wyldstyle implements exact native notification bell/source and focused caller tests against globally loaded source CSS."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Connected browser suite, screenshot pairs and critique (3 points)"
+          "status": "in-progress",
+          "title": "Connected browser suite, screenshot pairs and critique (3 points)",
+          "observed_at": "2026-11-22T21:02:13Z",
+          "evidence": "Bertie implements persistent Node-test/Playwright suite with real Java/OIDC/shared PG; exact immutable Main input replay, FUCQ-562 named-reset refusal explicitly retained. Final connected run awaits product commit."
         }
       ],
       "unsliced": false
