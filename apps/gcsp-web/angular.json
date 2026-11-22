@@ -30,7 +30,7 @@
               }
             ],
             "styles": [
-              "../../blocks/gcsp/shell/gcsp-shell.css",
+              "src/styles/node-gcsp.css",
               "src/styles.css"
             ]
           },

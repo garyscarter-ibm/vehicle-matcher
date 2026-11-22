@@ -585,3 +585,54 @@ headers with the existing semantic tokens; the shared case table's employee Open
 does not apply. This routed composition adds no shared primitive or gallery API.
 Connected Chromium evidence against Java, local OIDC and PostgreSQL 17 is in the FUCQ-448
 Result; publication through this screen waits on Java policy preview.
+
+## Port status
+
+Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global stylesheet and inventory are in [styles.md](docs/migration/FUCQ-432/styles.md). Existing native Angular equivalents above remain catalogued; they are marked ported here only after preserving the source DOM/classes/state classes. Utility/gallery modules remain explicit source modules, with no invented root class.
+
+| Source component | Root class | Target | Status | Classes kept |
+| --- | --- | --- | --- | --- |
+| `action-menu` (`blocks/gcsp/kit/action-menu.js`) | `.gcsp-action-menu` | | not yet | pending |
+| `activity-timeline` (`blocks/gcsp/kit/activity-timeline.js`) | `.gcsp-activity-timeline` | | not yet | pending |
+| `arrival-focus` (`blocks/gcsp/kit/arrival-focus.js`) | none (utility) | | not yet | pending |
+| `buddy-status` (`blocks/gcsp/kit/buddy-status.js`) | `.gcsp-buddy-status` | | not yet | pending |
+| `buddy-tile-gallery` (`blocks/gcsp/kit/buddy-tile-gallery.js`) | `.vm-gallery-section` | | not yet | pending |
+| `buddy-tile` (`blocks/gcsp/kit/buddy-tile.js`) | `.gcsp-buddy-tile` | | not yet | pending |
+| `category-preferences` (`blocks/gcsp/kit/category-preferences.js`) | `.gcsp-prefs` | | not yet | pending |
+| `count-bars` (`blocks/gcsp/kit/count-bars.js`) | `.gcsp-count-bars` | | not yet | pending |
+| `data-table` (`blocks/gcsp/kit/data-table.js`) | `.gcsp-table-wrap` | | not yet | pending |
+| `finish-shades-data` (`blocks/gcsp/kit/finish-shades-data.js`) | none (utility) | | not yet | pending |
+| `finish-shades` (`blocks/gcsp/kit/finish-shades.js`) | none (utility) | | not yet | pending |
+| `focus-key` (`blocks/gcsp/kit/focus-key.js`) | none (utility) | | not yet | pending |
+| `form-controls-gallery` (`blocks/gcsp/kit/form-controls-gallery.js`) | none (gallery composition) | | not yet | pending |
+| `form-controls` (`blocks/gcsp/kit/form-controls.js`) | `.gcsp-field` | | not yet | pending |
+| `friendly-time` (`blocks/gcsp/kit/friendly-time.js`) | none (utility) | | not yet | pending |
+| `help-tip` (`blocks/gcsp/kit/help-tip.js`) | `.gcsp-help-tip` | | not yet | pending |
+| `loading-skeleton` (`blocks/gcsp/kit/loading-skeleton.js`) | `.gcsp-skeleton` | | not yet | pending |
+| `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
+| `media-gallery` (`blocks/gcsp/kit/media-gallery.js`) | `.gcsp-media-gallery` | | not yet | pending |
+| `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | | not yet | pending |
+| `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | | not yet | pending |
+| `order-identity` (`blocks/gcsp/kit/order-identity.js`) | none (utility) | | not yet | pending |
+| `plain-copy` (`blocks/gcsp/kit/plain-copy.js`) | none (utility) | | not yet | pending |
+| `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | | not yet | pending |
+| `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
+| `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
+| `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
+| `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | | not yet | pending |
+| `run-restarted` (`blocks/gcsp/kit/run-restarted.js`) | `.gcsp-run-restarted` | | not yet | pending |
+| `show-more` (`blocks/gcsp/kit/show-more.js`) | `.gcsp-show-more` | | not yet | pending |
+| `side-drawer` (`blocks/gcsp/kit/side-drawer.js`) | `.gcsp-side-drawer` | | not yet | pending |
+| `slot-picker` (`blocks/gcsp/kit/slot-picker.js`) | `.gcsp-slot-picker` | | not yet | pending |
+| `stage-list` (`blocks/gcsp/kit/stage-list.js`) | `.gcsp-stage-list` | | not yet | pending |
+| `stage-tracker` (`blocks/gcsp/kit/stage-tracker.js`) | `.gcsp-stage-tracker` | | not yet | pending |
+| `star-rating` (`blocks/gcsp/kit/star-rating.js`) | `.gcsp-star-rating` | | not yet | pending |
+| `tabs` (`blocks/gcsp/kit/tabs.js`) | `.gcsp-tabs` | | not yet | pending |
+| `task-list` (`blocks/gcsp/kit/task-list.js`) | `.gcsp-task-list` | | not yet | pending |
+| `understanding-meter` (`blocks/gcsp/kit/understanding-meter.js`) | `.gcsp-understanding` | | not yet | pending |
+| `vehicle-decision` (`blocks/gcsp/kit/vehicle-decision.js`) | `.gcsp-vehicle-decision` | | not yet | pending |
+| `vehicle-details` (`blocks/gcsp/kit/vehicle-details.js`) | `.gcsp-vehicle-details-control` | | not yet | pending |
+| `vehicle-image-assets` (`blocks/gcsp/kit/vehicle-image-assets.js`) | none (utility) | | not yet | pending |
+| `view-status` (`blocks/gcsp/kit/view-status.js`) | `.gcsp-vh` | | not yet | pending |
+
+The port ratchet compares the frozen source stylesheet snapshot with the global Angular assembly, checks this table against Angular kit files, and scans Angular `.ts`/`.html` files for direct copies of source kit pieces. New ports lower the component count; source selectors stay complete. Run `node server/test/ui-ratchet.test.js --debt` to see remaining work.
