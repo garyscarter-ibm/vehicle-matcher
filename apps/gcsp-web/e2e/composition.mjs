@@ -20,6 +20,12 @@ const sha = (value) => createHash('sha256').update(value).digest('hex');
 const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
 const canonical = (value) => JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
   ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) : item);
+const sanitizeReadback = (value) => {
+  if (Array.isArray(value)) return value.map(sanitizeReadback);
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) =>
+    [key, /authorization|cookie|token|password|secret|api[-_]?key/i.test(key) ? '[redacted]' : sanitizeReadback(item)]));
+  return value;
+};
 
 function local(value) {
   assert.ok(path.isAbsolute(value), 'Composition paths must be absolute');
@@ -212,6 +218,7 @@ export async function startComposition() {
       GCSP_ENVIRONMENT_ID: envId, GCSP_RUN_ID: bootstrapRunId, GCSP_POLICY_VERSION: input.clock.policyVersion,
       GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_RESET_ALLOWED: 'true',
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
+      GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
     };
     api = start('api-bootstrap', path.join(javaHome, 'bin/java'), apiArgs, apiEnv);
@@ -314,6 +321,17 @@ export async function startComposition() {
         call(employeePage, 'GET', '/brief'), call(employeePage, 'GET', '/manual/account'),
         call(employeePage, 'GET', '/context'), call(presenterPage, 'GET', '/presenter/controls'),
       ]);
+      // Persist actual boundary responses before any status/equality assertion can stop setup.
+      // These fictional-data bodies exclude headers and session storage; credential-named fields are redacted.
+      const readbacks = { capturedAt: new Date().toISOString(),
+        sanitization: 'Response bodies only; credential-named fields redacted recursively; no headers or session storage.',
+        responses: Object.fromEntries([
+          ['/brief', read], ['/manual/account', accountRead], ['/context', contextRead], ['/presenter/controls', clockRead],
+        ].map(([endpoint, response]) => [endpoint, { method: 'GET', status: response.status, body: sanitizeReadback(response.body) }])) };
+      const readbacksFile = path.join(output, 'initial-readbacks.json');
+      const readbacksJson = JSON.stringify(readbacks, null, 2);
+      writeFileSync(readbacksFile, readbacksJson, { mode: 0o600 });
+      receipt.initialReadbacks = { path: readbacksFile, sha256: sha(readbacksJson), capturedAt: readbacks.capturedAt };
       for (const response of [read, accountRead, contextRead, clockRead]) assert.equal(response.status, 200);
       const expected = input.initialBrief.brief;
       const actual = read.body.value.brief;

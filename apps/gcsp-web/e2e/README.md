@@ -43,8 +43,14 @@ retired. The fresh replay run receives its captured initial clock/account/brief 
 remains valid on later dates without moving a clock backwards or disabling database guards. The exact reviewed
 policy is `gcsp-policy-v1+offer-journey-v1`; existing Java startup adopts it. Actual signed context, account,
 brief/consent and clock responses are compared to captured inputs, mapping only environment/run identifiers.
+Before comparison, `initial-readbacks.json` retains the actual `/context`, `/manual/account`, `/brief` and
+`/presenter/controls` response bodies, recursively redacting credential-named fields and excluding headers/session storage.
+Account `asOf` and `versions.clock` remain mandatory equality checks. The packaged Java account clock currently
+uses system time; `gcsp.account.fixed-now` is test-mode-only, so this boundary remains unresolved for the captured run clock.
 Public editor validation is unchanged. Stock enters the existing tranche-plan provider; public presenter actions
-create release/allocation/holds/offers/counts. The test asserts these derived tables are empty before those actions.
+create release/allocation/holds/offers/counts. The composition explicitly enables the canonical `recommendation`
+candidates provider, which registers allocation and expiry; Buddy holds use the existing local-synthetic default.
+The test asserts these derived tables are empty before those actions.
 The known initial `GET /brief` predecessor projection difference (`0` versus frozen `null`, FUCQ-563) is retained separately:
 the database must still store `NULL`, current brief version/content/consent stay exact, and only this lineage metadata
 field is excluded from semantic equality. Recorded source references show allocation/offer/bell derivation does not
