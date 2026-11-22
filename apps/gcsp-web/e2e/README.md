@@ -57,7 +57,9 @@ For a frozen Node comparison, also supply `GCSP_NODE_REFERENCE` pointing at the 
 source hashes. If that checkout has no linked dependencies, `GCSP_E2E_PG_MODULE` may point to `pg/lib/index.js` in
 an existing reviewed local install; it resolves the unused PostgreSQL import of the memory runtime without editing
 the frozen tree. The real Node runtime replays its Main loader, then releases the identical captured stock through
-its existing synthetic-provider seam and actual clock/allocation services. Actual held UUID, deadline, visible
+its existing synthetic-provider seam and actual clock/allocation services. The replay run identity is derived
+from the frozen initializer/reset command algorithm and asserted against its real result;
+Java uses that same fresh run ID because it participates in both engines' car lottery. Actual held UUID, deadline,
 car title and thumbnail must match Java before the second 1280px screenshot is retained. Read-only queries also
 compare the actual active Buddy hold rows (car, employee, entitlement slot, type, state and normalized deadline),
 recording their distinct IDs/versions. Initial input comparisons

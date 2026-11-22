@@ -8,6 +8,15 @@ import { pathToFileURL } from 'node:url';
 
 const sha = (value) => createHash('sha256').update(value).digest('hex');
 const good = (out, name) => { assert.equal(out?.status, 'ok', `${name}: ${out?.code ?? out?.status}`); return out.value; };
+const replayEnvironment = 'f548-node-replay';
+const bootstrapCommandId = 'f548-node-replay';
+const resetCommandId = 'f548-node-main';
+const initialRunId = `demo-${sha(JSON.stringify([replayEnvironment, bootstrapCommandId])).slice(0, 32)}`;
+const wrappedResetCommandId = `scenario:${sha(JSON.stringify(resetCommandId))}`;
+// Frozen clock.initialize/reset hash primitive strings/arrays with inputDigest (canonical JSON SHA-256).
+// Keep this current-run identity equal in both real engines: it participates in the car lottery.
+export const NODE_REPLAY_IDENTITY = Object.freeze({ environmentId: replayEnvironment, bootstrapCommandId, resetCommandId,
+  initialRunId, runId: `demo-${sha(JSON.stringify([replayEnvironment, initialRunId, wrappedResetCommandId])).slice(0, 32)}` });
 
 // Optional engineering parity capture. The frozen checkout is read-only; all state stays in memory.
 export async function captureNodeReplay({ browser, input, plan, cert, key, output, expected }) {
@@ -52,8 +61,8 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     'Run/environment IDs and slot creation/update wall timestamps differ; semantic source/brief/clock values are asserted.',
   ] };
   try {
-    runtime = good(await createGcspRuntime({ mode: 'memory', repository, environmentId: 'f548-node-replay',
-      commandId: 'f548-node-replay', policyAsOf: input.clock.now, wallNow: () => new Date(input.clock.now),
+    runtime = good(await createGcspRuntime({ mode: 'memory', repository, environmentId: NODE_REPLAY_IDENTITY.environmentId,
+      commandId: NODE_REPLAY_IDENTITY.bootstrapCommandId, policyAsOf: input.clock.now, wallNow: () => new Date(input.clock.now),
       stockProvider, production: createDemoUpstream().production, adoptOfferJourney: true,
       offerLandingUrl: 'https://gcsp-proof.example.test/gcsp-offer.html',
       mail: { env: { GCSP_PUBLIC_ORIGIN: 'http://127.0.0.1:7548' } } }), 'Node runtime');
@@ -69,11 +78,16 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     const catalogue = good(await runtime.scenarios.readCatalogue(control), 'Node catalogue');
     const selected = catalogue.scenarios.find((item) => item.scenarioId === input.scenario.scenarioId);
     const state = good(await runtime.scenarios.readState(control), 'Node initial state');
-    const reset = good(await runtime.scenarios.reset(control, { commandId: 'f548-node-main', expectedRunId: state.runId,
+    assert.equal(state.runId, NODE_REPLAY_IDENTITY.initialRunId, 'Actual frozen bootstrap identity follows its unchanged clock initializer');
+    const reset = good(await runtime.scenarios.reset(control, { commandId: NODE_REPLAY_IDENTITY.resetCommandId, expectedRunId: state.runId,
       expectedRunVersion: state.runVersion, scenarioId: selected.scenarioId, scenarioVersion: selected.scenarioVersion,
       fixtureVersion: selected.fixtureVersion, policyVersion: selected.policyVersion }), 'Node Main reset');
     assert.equal(reset.startState.status, 'ok');
     control = good(await runtime.identity.createPresenterSession('f548-node-current-presenter'), 'Node current presenter').context;
+    assert.equal(control.runId, NODE_REPLAY_IDENTITY.runId, 'Actual frozen reset identity follows its unchanged scenario/clock services');
+    assert.equal(control.runId, expected.runId, 'Actual Node and Java run IDs agree before their real car lotteries');
+    receipt.replayIdentity = { ...NODE_REPLAY_IDENTITY, javaRunId: expected.runId,
+      reason: 'Run ID is an input of both unchanged car lottery functions; only the environment identifier differs.' };
     const employee = good(await runtime.identity.resolveEmployeeContext(control, 'employee-paula'), 'Node Paula');
     const brief = good(await runtime.brief.readCurrent(employee), 'Node initial brief').brief;
     for (const name of ['schemaVersion', 'preferences', 'essentials', 'knownFacts', 'buddy', 'policyVersion']) {

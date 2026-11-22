@@ -10,7 +10,7 @@ import { chromium, webkit } from 'playwright-core';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../../scripts/build-gcsp-static.mjs';
 import { runtimeConfigFromEnv } from '../../../scripts/gcsp-runtime-config.mjs';
 import { apiJvmArgs } from '../../../scripts/gcsp/proof-jvm.mjs';
-import { captureNodeReplay } from './node-replay.mjs';
+import { captureNodeReplay, NODE_REPLAY_IDENTITY } from './node-replay.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -60,7 +60,7 @@ export async function startComposition() {
   for (const dir of Object.values(dirs)) mkdirSync(dir, { recursive: true });
   const envId = 'e2e-' + randomUUID().slice(0, 12);
   const bootstrapRunId = 'run-1';
-  const runId = 'frozen-main-replay';
+  const runId = NODE_REPLAY_IDENTITY.runId;
   const ports = { web: Number(process.env.PROOF_WEB_PORT ?? 7548), api: Number(process.env.PROOF_API_PORT ?? 8548) };
   assert.ok(Object.values(ports).every((port) => Number.isInteger(port) && port > 1023 && port < 65536) && ports.web !== ports.api);
   const origins = { web: `https://gcsp-web.localhost:${ports.web}`, api: `https://gcsp-api.localhost:${ports.api}` };
@@ -262,7 +262,7 @@ export async function startComposition() {
           ${literal(JSON.stringify(content))}::jsonb,${literal(JSON.stringify(initial.buddy))}::jsonb,${literal(sha(canonical(content)))},
           ${literal(initial.policyVersion)},${literal(initial.confirmedBy)},${literal(initial.confirmedAt)}::timestamptz,'frozen-main-initial-input');
         COMMIT;`);
-      receipt.initialFixture = { bootstrapRunId, replayRunId: runId, identifierMapping: { environment: envId,
+      receipt.initialFixture = { bootstrapRunId, replayRunId: runId, replayIdentity: NODE_REPLAY_IDENTITY, identifierMapping: { environment: envId,
         fromRun: input.reference.runId, toRun: runId }, source: 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
       api = start('api', path.join(javaHome, 'bin/java'), apiArgs, { ...apiEnv, GCSP_RUN_ID: runId });
       await waitForApi();
@@ -391,7 +391,8 @@ export async function startComposition() {
       return semantic;
     }
     async function compareFrozenNode(expected) {
-      receipt.nodeReplay = await captureNodeReplay({ browser, input, plan, cert: cert('leaf.pem'), key: cert('leaf.key'), output, expected });
+      receipt.nodeReplay = await captureNodeReplay({ browser, input, plan, cert: cert('leaf.pem'), key: cert('leaf.key'), output,
+        expected: { ...expected, runId } });
       return receipt.nodeReplay;
     }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, readActualHold, screenshot, compareFrozenNode, close };
