@@ -631,3 +631,24 @@ with explicit media/details slots, not a live offer. Compatible source FactList,
 MediaGallery, VehicleDetails, SideDrawer/Tabs and generic exact-card composition remain
 separate named integration obligations. Focused tests cover the source display
 contracts; every original FUCQ-555 acceptance criterion remains open.
+
+### Angular source facts and tabs (FUCQ-555)
+
+Extend the existing canonical components instead of creating offer-local facts or
+tabs. Both reuse FUCQ-548's original global source styles. This source checkpoint
+does not establish stylesheet integration, rendered behavior or live acceptance;
+reconcile with the complete Port status inventory during supported integration.
+
+| Source presenter | Angular target and public contract |
+|---|---|
+| `factList` | Existing `FactListComponent` / `gcsp-fact-list` keeps `rows: readonly FactRow[]` and `hideMissing`. Add `presentation: 'default' \| 'source'` (default `default`) and source-only `className` for options such as `vm-facts-pair gcsp-vehicle-overview`. The source variant keeps `.vm-facts`, `.vm-fact`, `.vm-fact-label` and `.vm-fact-value`; zero, false and supplied whitespace remain supplied, and null/undefined/empty values use the supplied missing label or Not supplied without a unit. Hidden missing rows use the exact `.vm-facts-wrap` plus one `.gcsp-note.vm-facts-more` summary; all missing gives only the summary, while no missing/empty input keeps the unwrapped definition list. Default callers retain their `gcsp-facts` presentation. Existing local label/value rules are scoped to that default so they cannot override source facts; only the source host uses `display: contents`. Use the source variant for canonical offer overview/specification and identity rows instead of hand-built definition lists. |
+| `tabs` | Existing `TabsComponent` / `gcsp-tabs` keeps required accessible `label`, readonly `items: { id, label, content: TemplateRef }[]`, optional `initialSelectedId` and `selectionChange`. Source root/list/tab/panel classes include `.gcsp-tab-list`; associated unique IDs, retained panels/hidden state, selected roving tab stop, arrows/Home/End automatic activation and focus remain. A valid selection survives equivalent readback; a removed selection falls back to the initial/first valid ID under the existing Angular contract. Local copied presentation rules are removed; only `display: contents` host adaptation remains. Use this same port for car details and Greg instead of local tab markup. |
+
+Actual existing callers are retained: Tabs serves VehicleDetails and GregRoute;
+FactList serves help, stock, orders, Greg planning/production/demand/policy,
+presenter, manual review/summary, cases, VehicleCard and the gallery. Gallery:
+**Source facts and tabs** shows paired/overview rows, zero/missing facts, mixed and
+all-hidden summaries and accessible tab panels. **Selection and order stages** now
+uses the source variant for exact identity rows. Media, complete details, drawer,
+generic-card and offer composition remain separate named obligations; no such
+presenter is claimed source-equivalent by this extension.

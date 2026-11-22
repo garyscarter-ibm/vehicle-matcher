@@ -2,15 +2,62 @@ import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { FactListComponent, FactRow } from './fact-list.component';
 
-async function render(rows: readonly FactRow[], hideMissing = '') {
+async function render(rows: readonly FactRow[], hideMissing = '', source = false, className = '') {
   const fixture = TestBed.createComponent(FactListComponent);
   fixture.componentRef.setInput('rows', rows);
   fixture.componentRef.setInput('hideMissing', hideMissing);
+  if (source) { fixture.componentRef.setInput('presentation', 'source'); fixture.componentRef.setInput('className', className); }
   await fixture.whenStable();
   return fixture;
 }
 
 describe('FactListComponent', () => {
+  it('renders supplied source pair and overview facts with the canonical row and value classes', async () => {
+    const rows = Object.freeze([Object.freeze({ label: 'Boot', value: 490, unit: 'litres' }),
+      Object.freeze({ label: 'Zero', value: 0 }), Object.freeze({ label: 'Flag', value: false }), Object.freeze({ label: 'Source', value: ' ' })]);
+    const fixture = await render(rows, '', true, 'vm-facts-pair gcsp-vehicle-overview');
+    const root: HTMLElement = fixture.nativeElement;
+    const list = root.querySelector('dl.vm-facts.vm-facts-pair.gcsp-vehicle-overview')!;
+    expect(list).not.toBeNull();
+    expect(list.querySelectorAll('.vm-fact')).toHaveLength(4);
+    expect(Array.from(list.querySelectorAll('.vm-fact-label'), node => node.textContent)).toEqual(['Boot', 'Zero', 'Flag', 'Source']);
+    expect(Array.from(list.querySelectorAll('.vm-fact-value'), node => node.textContent)).toEqual(['490 litres', '0', 'false', ' ']);
+    expect(root.querySelector('.vm-facts-wrap, .vm-facts-more, .gcsp-facts')).toBeNull();
+    expect(rows[0].value).toBe(490);
+  });
+
+  it('keeps source missing labels separate from supplied units', async () => {
+    const fixture = await render([{ label: 'Points', value: null, unit: 'points', missingLabel: 'Monthly points not supplied' },
+      { label: 'Fuel', value: '', missingLabel: '' }, { label: 'CO2', value: undefined, unit: 'g/km' }], '', true);
+    expect(Array.from(fixture.nativeElement.querySelectorAll('.vm-fact-value.is-missing'), (node: Element) => node.textContent))
+      .toEqual(['Monthly points not supplied', 'Not supplied', 'Not supplied']);
+  });
+
+  it.each([
+    { rows: [{ label: 'Known', value: 0 }, { label: 'Missing', value: null }], wrapped: true, list: true, labels: ['Known'], summary: 'Other facts not supplied' },
+    { rows: [{ label: 'Missing', value: null }], wrapped: true, list: false, labels: [], summary: 'Other facts not supplied' },
+    { rows: [{ label: 'Known', value: false }], wrapped: false, list: true, labels: ['Known'], summary: undefined },
+    { rows: [], wrapped: false, list: true, labels: [], summary: undefined },
+  ])('uses the source hidden-missing wrapper only when facts were omitted: %j', async ({ rows, wrapped, list, labels, summary }) => {
+    const fixture = await render(rows, 'Other facts not supplied', true, 'vm-facts-pair');
+    const root: HTMLElement = fixture.nativeElement;
+    expect(Boolean(root.querySelector('.vm-facts-wrap'))).toBe(wrapped);
+    expect(Boolean(root.querySelector('dl.vm-facts.vm-facts-pair'))).toBe(list);
+    expect(Array.from(root.querySelectorAll('.vm-fact-label'), node => node.textContent)).toEqual(labels);
+    expect(root.querySelector('.gcsp-note.vm-facts-more')?.textContent).toBe(summary);
+    expect(root.querySelectorAll('.vm-facts-more')).toHaveLength(summary ? 1 : 0);
+    if (wrapped && list) expect(root.querySelector('.vm-facts-wrap > dl + .vm-facts-more')).not.toBeNull();
+  });
+
+  it('retains the default presentation when switching back from the explicit source variant', async () => {
+    const fixture = await render([{ label: 'Known', value: 0 }, { label: 'Missing', value: null }], 'Other facts not supplied', true, 'vm-facts-pair');
+    fixture.componentRef.setInput('presentation', 'default'); await fixture.whenStable();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('.gcsp-facts > .gcsp-fact dt')?.textContent).toBe('Known');
+    expect(root.querySelector('.gcsp-facts-more')?.textContent).toBe('Other facts not supplied');
+    expect(root.querySelector('.vm-facts, .vm-facts-wrap, .vm-facts-more')).toBeNull();
+  });
+
   it('renders semantic definition pairs with source-formatted strings and units', async () => {
     const fixture = await render([{ label: 'Collection', value: '14 November 2026' }, { label: 'Points', value: 1234.5, unit: 'points a month' }]);
     const root: HTMLElement = fixture.nativeElement;

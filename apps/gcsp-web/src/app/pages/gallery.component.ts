@@ -16,7 +16,8 @@ import { orderIdentityRows } from '../kit/order-identity';
 import { FinishLabelComponent } from '../kit/finish-label.component';
 import { DecisionHighlightsComponent } from '../kit/decision-highlights.component';
 import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent], styleUrl: './gallery.component.css', template: `
+import { TabsComponent } from '../kit/tabs.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -51,7 +52,7 @@ import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
   </section>
   <section class="gcsp-panel"><h2>Selection and order stages</h2>
     <gcsp-stage-list heading="Your selection" [level]="3" [stages]="selectionStages" />
-    <gcsp-fact-list [rows]="orderIdentity" />
+    <gcsp-fact-list [rows]="orderIdentity" presentation="source" />
     <gcsp-stage-list heading="Selection not sent" [level]="3" [stages]="[{ name: 'Sending to ordering', state: 'pending' }, { name: 'Ordering response', state: 'failed' }]" />
     <gcsp-stage-tracker heading="Order progress" [level]="3" [stages]="orderStages" />
     <gcsp-stage-tracker heading="Ordering not updated" [level]="3" [stages]="[{ label: 'Driver approval', state: 'declined', note: 'The driver record needs review.' }, { label: 'Ordering', state: 'blocked', owner: 'Scheme team', next: 'Check the ordering response' }]" />
@@ -80,8 +81,19 @@ import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
       <div decisionDetails><p class="gcsp-note">Complete supplied facts, decision and equipment slot</p></div>
     </gcsp-vehicle-decision>
   </section>
+  <section class="gcsp-panel"><h2>Source facts and tabs</h2>
+    <p class="gcsp-note">Canonical source classes with supplied facts. Default fact-list consumers keep their existing presentation.</p>
+    <gcsp-fact-list presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="sourceOverview" />
+    <gcsp-fact-list presentation="source" className="vm-facts-pair" [rows]="[{label: 'Paint', value: 'Portimao Blue metallic'}, {label: 'Unconfirmed fact', value: null}]" hideMissing="More details not supplied" />
+    <gcsp-fact-list presentation="source" [rows]="[{label: 'Unconfirmed fact', value: null}]" hideMissing="More details not supplied" />
+    <ng-template #sourceFactPanel><gcsp-fact-list presentation="source" [rows]="sourceOverview" /></ng-template>
+    <ng-template #sourceEquipmentPanel><p class="gcsp-note">All supplied selected equipment stays in this panel.</p></ng-template>
+    <gcsp-tabs label="Source vehicle details" [items]="[{ id: 'specification', label: 'Specification', content: sourceFactPanel }, { id: 'equipment', label: 'Selected equipment', content: sourceEquipmentPanel }]" />
+  </section>
 ` })
 export class GalleryComponent {
+  readonly sourceOverview = [{ label: 'Body style', value: 'SUV' }, { label: 'Boot', value: 490, unit: 'litres' },
+    { label: 'Extra payment', value: 0 }, { label: 'Unconfirmed fact', value: null }];
   readonly decisionFinishes = [{ label: 'Paint', value: 'Portimao Blue metallic' }, { label: 'Upholstery', value: 'Black with blue stitching Vernasca leather' }];
   readonly decisionBenefits = [
     { number: 300, title: 'fewer points', detail: 'Every month, compared with your current car' },
