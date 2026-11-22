@@ -45,7 +45,7 @@ policy is `gcsp-policy-v1+offer-journey-v1`; existing Java startup adopts it. Ac
 brief/consent and clock responses are compared to captured inputs, mapping only environment/run identifiers.
 Public editor validation is unchanged. Stock enters the existing tranche-plan provider; public presenter actions
 create release/allocation/holds/offers/counts. The test asserts these derived tables are empty before those actions.
-The known initial `GET /brief` predecessor projection difference (`0` versus frozen `null`) is retained separately:
+The known initial `GET /brief` predecessor projection difference (`0` versus frozen `null`, FUCQ-563) is retained separately:
 the database must still store `NULL`, current brief version/content/consent stay exact, and only this lineage metadata
 field is excluded from semantic equality. Recorded source references show allocation/offer/bell derivation does not
 use the malformed public field; activity event-history validation reads the correct nullable database value directly.
@@ -58,7 +58,9 @@ source hashes. If that checkout has no linked dependencies, `GCSP_E2E_PG_MODULE`
 an existing reviewed local install; it resolves the unused PostgreSQL import of the memory runtime without editing
 the frozen tree. The real Node runtime replays its Main loader, then releases the identical captured stock through
 its existing synthetic-provider seam and actual clock/allocation services. Actual held UUID, deadline, visible
-car title and thumbnail must match Java before the second 1280px screenshot is retained. Initial input comparisons
+car title and thumbnail must match Java before the second 1280px screenshot is retained. Read-only queries also
+compare the actual active Buddy hold rows (car, employee, entitlement slot, type, state and normalized deadline),
+recording their distinct IDs/versions. Initial input comparisons
 and the run/environment and slot wall-timestamp differences are recorded. Omitting the reference records this
 comparison as unrun; it cannot establish parity acceptance.
 

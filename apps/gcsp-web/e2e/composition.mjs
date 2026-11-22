@@ -324,7 +324,7 @@ export async function startComposition() {
       assert.ok(actual.previousBriefVersion === null || actual.previousBriefVersion === 0,
         'Only the observed first-version null/0 read discrepancy is outside this bell comparison');
       receipt.predecessorRead = { frozen: expected.previousBriefVersion, publicJava: actual.previousBriefVersion,
-        storedPredecessorIsNull, difference: expected.previousBriefVersion !== actual.previousBriefVersion,
+        storedPredecessorIsNull, difference: expected.previousBriefVersion !== actual.previousBriefVersion, bug: 'FUCQ-563',
         scope: 'Only previousBriefVersion is excluded from semantic input equality; the stored value/source is unchanged.',
         derivationEvidence: [
           'Java allocation/Prepare.java:237-242 selects current brief_version/content/buddy/semantic_digest; Claim.java:130-141 checks current version and consent.',
@@ -376,11 +376,25 @@ export async function startComposition() {
       receipt.screenshots.push({ name, path: destination, viewport: page.viewportSize() });
       return destination;
     }
+    function readActualHold(offer) {
+      assert.ok(offer.holdId);
+      const actual = JSON.parse(sql(`SELECT json_build_object('environmentId',environment_id,'runId',run_id,'holdId',hold_id,
+        'orderUuid',order_uuid,'employeeId',employee_id,'entitlementSlotId',slot_id,'type',hold_type,'state',state,
+        'expiresAt',expires_at,'version',version) FROM custody_holds WHERE environment_id=${literal(envId)}
+        AND run_id=${literal(runId)} AND hold_id=${literal(offer.holdId)};`).split('\n').at(-1));
+      const semantic = Object.fromEntries(['orderUuid', 'employeeId', 'entitlementSlotId', 'type', 'state'].map((key) => [key, actual[key]]));
+      semantic.expiresAt = new Date(actual.expiresAt).toISOString();
+      assert.deepEqual(semantic, { orderUuid: offer.orderUuid, employeeId: input.initialBrief.brief.employeeId,
+        entitlementSlotId: input.initialBrief.brief.entitlementSlotId, type: 'buddy-offer', state: 'active',
+        expiresAt: new Date(offer.expiresAt).toISOString() }, 'The real offer has its matching active owned Buddy hold');
+      receipt.actualHold = { row: actual, semantic };
+      return semantic;
+    }
     async function compareFrozenNode(expected) {
       receipt.nodeReplay = await captureNodeReplay({ browser, input, plan, cert: cert('leaf.pem'), key: cert('leaf.key'), output, expected });
       return receipt.nodeReplay;
     }
-    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, screenshot, compareFrozenNode, close };
+    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, readActualHold, screenshot, compareFrozenNode, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };
     await close();

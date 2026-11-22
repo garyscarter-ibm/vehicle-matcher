@@ -93,6 +93,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     const sourceCars = suite.plan.windows.flatMap((window) => window.stock);
     assert.ok(sourceCars.some((car) => car.orderUuid === offer.orderUuid), 'The held car comes from the exact retained Node input');
     suite.receipt.offer = { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, state: offer.state, expiresAt: offer.expiresAt };
+    const actualHold = suite.readActualHold(offer);
     await suite.screenshot(employee, 'new-offer-note-1280');
     await bell(employee).click();
     await panel(employee).getByRole('heading', { name: 'Notifications', exact: true }).waitFor();
@@ -111,7 +112,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await suite.screenshot(employee, 'active-open-1280');
     suite.receipt.activePanel = { car: await panel(employee).locator('.gcsp-bell-copy p').nth(1).innerText(),
       detail: await panel(employee).locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src') };
-    await suite.compareFrozenNode({ ...suite.receipt.offer, panel: suite.receipt.activePanel });
+    await suite.compareFrozenNode({ ...suite.receipt.offer, hold: actualHold, panel: suite.receipt.activePanel });
     await employee.keyboard.press('Escape');
     await delay(6500);
     assert.equal(await employee.locator('.gcsp-bell-note').isVisible(), false);

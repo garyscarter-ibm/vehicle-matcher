@@ -106,6 +106,13 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     assert.equal(offer?.state, 'active', 'Node real services create an active offer');
     assert.equal(offer.orderUuid, expected.orderUuid, 'The same exact car is held by actual Node and Java services');
     assert.equal(offer.expiresAt, expected.expiresAt, 'The actual Node and Java offer deadlines agree');
+    const actualHold = good(await repository.read(control, { table: 'holds', key: { runId: control.runId, holdId: offer.holdId } }), 'Node actual held row');
+    const holdSemantic = Object.fromEntries(['orderUuid', 'employeeId', 'entitlementSlotId', 'type', 'state'].map((key) => [key, actualHold[key]]));
+    holdSemantic.expiresAt = new Date(actualHold.expiresAt).toISOString();
+    assert.deepEqual(holdSemantic, expected.hold, 'Actual Node and Java hold rows have identical common semantics');
+    receipt.actualHold = { row: Object.fromEntries(['runId', 'holdId', 'version', 'orderUuid', 'employeeId', 'entitlementSlotId',
+      'type', 'state', 'expiresAt'].map((key) => [key, actualHold[key]])), semantic: holdSemantic,
+      identifierMapping: 'Each actual offer supplies its actual holdId; IDs/versions are recorded, not equated or seeded.' };
     context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 800 },
       reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'Europe/London' });
     const issued = good(await runtime.identity.switchPrincipal(control, 'demo-paula', 'f548-node-browser-paula'), 'Node Paula session');
