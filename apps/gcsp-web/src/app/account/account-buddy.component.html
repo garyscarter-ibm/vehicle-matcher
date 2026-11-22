@@ -1,0 +1,31 @@
+@if (view().phase === 'restarted') {
+  <gcsp-status-screen title="Restarted" message="This page was restarted. Reload to continue." [level]="2" announcement="alert"><button gcspButton class="vm-btn vm-btn-primary" type="button" (click)="activity.refresh()">Reload</button></gcsp-status-screen>
+} @else {
+  <gcsp-buddy-tile id="gcsp-account-buddy-status" [phase]="phase()" [result]="result()" [pending]="pending()" [events]="events()" [offerTitle]="view().offerDisplay?.title ?? null" [deadline]="deadline()"
+    [canPause]="canPause()" [canResume]="canResume()" [canRetry]="true" [canHistory]="view().phase === 'ready'" [canOffer]="view().phase === 'ready'" orderHref="/gcsp/orders"
+    (paused)="run('pauseSearch')" (resumed)="run('resumeSearch')" (retried)="activity.refresh()" (historyRequested)="open('history', $event)" (offerRequested)="open('offer', $event)" />
+  @if (brief.buddyFailure() || (phase() === 'ready' && (projection()?.permission?.searchConsent || paused()) && brief.buddyBlockedReason() && !brief.buddyBusy())) {
+    <p class="gcsp-note">{{ recoveryMessage() }}</p><div class="gcsp-actions">
+      @if (brief.buddyCanRetry()) { <button gcspButton class="vm-btn vm-btn-primary" type="button" [disabled]="pending()" (click)="retryCommand()">Retry the same request</button> }
+      <button gcspButton class="vm-btn vm-btn-ghost" variant="ghost" type="button" [disabled]="pending()" (click)="reloadBuddy()">Reload Buddy status</button>
+    </div>
+  }
+  <p class="gcsp-vh" role="status" aria-atomic="true">{{ brief.buddyMessage() || view().message }}</p>
+}
+<gcsp-side-drawer [title]="drawerKind() === 'offer' ? 'Your held offer' : 'Buddy history'" context="Your buddy" (closed)="closed()">
+  <div #drawerContent class="gcsp-buddy-drawer-content">
+    @if (drawerKind()) {
+      @if (projection(); as value) {
+        @if (drawerKind() === 'history') {
+          <gcsp-activity-timeline [events]="events()" [level]="3" heading="Activity history" />
+          @if (value.stateChangesEvidence.status === 'incomplete') { <p class="gcsp-note">Some activity could not be verified.</p> }
+          <h3 class="gcsp-h3">Search status</h3>
+          @for (line of searchStatus(); track $index) { <p class="gcsp-note">{{ line }}</p> }
+          @for (line of exclusions(); track $index) { <p>{{ line }}</p> }
+          @if (paused()) { <p>New searches and holds have stopped. Any held offer stays open until its deadline.</p> }
+        } @else if (value.currentOffer) { <gcsp-activity-offer [offer]="value.currentOffer" [display]="view().offerDisplay" [level]="3" /> }
+        @else { <p class="gcsp-note">There is no current offer.</p> }
+      } @else { <p class="gcsp-note">Activity unavailable. Close and try again.</p> }
+    }
+  </div>
+</gcsp-side-drawer>

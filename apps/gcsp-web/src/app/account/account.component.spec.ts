@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { BriefClient } from '../preferences/brief.client';
 import { briefEditorFixture } from '../preferences/brief.fixtures';
+import { ActivityClient } from '../activity/activity.client';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot, savedDraft } from './account.test-data';
@@ -29,7 +30,7 @@ describe('native employee account screen', () => {
       readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'saved@example.test', version: 4 } }),
       saveNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'canonical@example.test', version: 5 } }),
       startJourney: vi.fn().mockResolvedValue({ status: 'ok', value: savedDraft() }), discardDraft: vi.fn().mockResolvedValue({ status: 'ok', value: { discarded: true, draftVersion: 4 } }) };
-    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: AuthPort, useValue: auth }, { provide: AccountClient, useValue: client },
+    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: AuthPort, useValue: auth }, { provide: AccountClient, useValue: client }, { provide: ActivityClient, useValue: { readActivity: vi.fn().mockResolvedValue({ status: 'unavailable' }) } },
       { provide: BriefClient, useValue: { readEditor: vi.fn().mockResolvedValue({ status: 'unavailable' }) } }] });
     Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: function(this: HTMLDialogElement) { this.setAttribute('open', ''); } });
     Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: function(this: HTMLDialogElement) { this.removeAttribute('open'); } });
@@ -38,7 +39,7 @@ describe('native employee account screen', () => {
   const mount = async () => { fixture = TestBed.createComponent(AccountComponent); document.body.append(fixture.nativeElement); fixture.detectChanges(); await settle(); return fixture.componentInstance; };
   const root = (): HTMLElement => fixture.nativeElement;
   const text = () => root().textContent ?? '';
-  const button = (label: string): HTMLButtonElement => Array.from(root().querySelectorAll('button')).find((item) => item.textContent?.trim() === label)!;
+  const button = (label: string): HTMLButtonElement => Array.from(root().querySelectorAll('button')).find((item) => item.textContent?.trim() === label && item.closest('dialog')?.open !== false)!;
   const settle = async () => { await new Promise<void>((resolve) => setTimeout(resolve, 0)); await fixture.whenStable(); fixture.detectChanges(); };
 
   it('retains populated current car, identity, drivers, supplied labels and scheme history in approved order', async () => {
@@ -51,8 +52,8 @@ describe('native employee account screen', () => {
     expect(text()).not.toContain('demo-bmw-fs-uk'); expect(text()).not.toContain('choices-fs-uk'); expect(text()).not.toContain('Synthetic monthly');
     expect(root().querySelector<HTMLAnchorElement>('.account-preferences a')?.getAttribute('href')).toBe('/preferences');
     const classes = Array.from(root().querySelector('.account-screen')!.children).map((node) => node.className);
-    expect(classes.findIndex((name) => name === 'gcsp-feature')).toBeLessThan(classes.indexOf('account-summary account-preferences'));
-    expect(classes.indexOf('account-summary account-preferences')).toBeLessThan(classes.indexOf('account-history'));
+    expect(classes.findIndex((name) => name === 'gcsp-feature')).toBeLessThan(classes.indexOf('gcsp-account-buddy-preferences'));
+    expect(classes.indexOf('gcsp-account-buddy-preferences')).toBeLessThan(classes.indexOf('account-history'));
     expect(classes.indexOf('account-history')).toBeLessThan(classes.indexOf('account-details'));
     expect(component.projection()).toEqual(account);
   });
@@ -115,10 +116,19 @@ describe('native employee account screen', () => {
     client.readAccount.mockResolvedValue({ status: 'ok', value: account }); await mount();
     expect(root().querySelector('.gcsp-feature')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
   });
-  it('shows the newest pending owned offer link without inventing a manual-order gate', async () => {
+  it('lets the Buddy region own a pending offer while preserving the existing authoritative guard', async () => {
     client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });
-    await mount(); expect(text()).toContain('You have a car offer to decide on before choosing another car.');
-    expect(root().querySelector('a[href="/offers/owned-offer"]')?.textContent).toBe('View your offer'); expect(button('Choose a replacement').disabled).toBe(false);
+    const component = await mount(); expect(component.pendingOffer()?.offerId).toBe('owned-offer');
+    expect(root().querySelector('.offer-preview')).toBeNull(); expect(button('Choose a replacement')).toBeUndefined(); expect(component.canStart()).toBe(true);
+    expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Try again')).toBeDefined();
+  });
+  it('hides Buddy during authoritative journey choices and restores the source current-car action while keeping offer identity', async () => {
+    client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });
+    client.readDraft.mockResolvedValue({ status: 'ok', value: savedDraft() }); const component = await mount();
+    expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Choose a replacement')).toBeUndefined();
+    button('Carry on').click(); await settle(); expect(component.pendingIntent()).toEqual(savedDraft().choices);
+    expect(root().querySelector('gcsp-account-buddy')).toBeNull(); expect(button('Choose a replacement')).toBeDefined(); expect(root().querySelector('.offer-preview')).toBeNull(); expect(component.pendingOffer()?.offerId).toBe('owned-offer');
+    await component.refresh(); await settle(); expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Choose a replacement')).toBeUndefined();
   });
   it('shows preview loading without blocking the working account or treating pending reads as empty', async () => {
     const offers = deferred<AccountResult<import('./account.preview').AccountOffers>>(); const orders = deferred<AccountOrdersReadResult>();
@@ -245,7 +255,7 @@ describe('native employee account screen', () => {
     await mount(); expect(root().querySelectorAll('table')).toHaveLength(1); expect(root().querySelectorAll('.placed-order')).toHaveLength(1);
     expect(text()).toContain('Current step: Awaiting handover.'); expect(root().querySelector('a[href="/orders"]')?.textContent).toBe('Track your order');
     root().querySelector<HTMLButtonElement>('.placed-order button')!.click(); await settle();
-    const drawer = root().querySelector('dialog')!.textContent!; expect(drawer).toContain('BMW i4'); expect(drawer).toContain('REF-123'); expect(drawer).toContain('CAR-456'); expect(drawer).toContain('Ordered'); expect(drawer).not.toContain('exact-stock');
+    const drawer = root().querySelector('.record-drawer')!.textContent!; expect(drawer).toContain('BMW i4'); expect(drawer).toContain('REF-123'); expect(drawer).toContain('CAR-456'); expect(drawer).toContain('Ordered'); expect(drawer).not.toContain('exact-stock');
   });
   it('lets an allocated order supersede a same-slot saved journey and no-car notice while returned-car evidence stays explicit', async () => {
     const slot = account.slots![0].entitlementSlotId;
@@ -345,13 +355,13 @@ describe('native employee account screen', () => {
   });
   it('opens complete labelled history records, traps keyboard focus, restores the exact opener and prints only that selected record', async () => {
     await mount(); const opener = root().querySelector<HTMLButtonElement>('tbody tr:last-child button')!; opener.focus(); opener.click(); await settle();
-    const drawer = root().querySelector<HTMLDialogElement>('dialog')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
+    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
     button('Close').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Print record'));
     button('Print record').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Close'));
     const originalAppend = document.body.append.bind(document.body); let printed: HTMLIFrameElement | null = null; const print = vi.fn();
     vi.spyOn(document.body, 'append').mockImplementation((...nodes: (Node | string)[]) => { originalAppend(...nodes); const frame = nodes.find((node) => node instanceof HTMLIFrameElement) as HTMLIFrameElement | undefined; if (frame) { printed = frame; frame.contentWindow!.print = print; } });
     button('Print record').click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
-    drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('dialog')).toBeNull(); expect(document.activeElement).toBe(opener);
+    drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('.record-drawer')).toBeNull(); expect(document.activeElement).toBe(opener);
   });
   it('immediately hides private facts on account change, aborts pending commands and ignores late old-account responses', async () => {
     const pending = deferred<AccountResult<ManualDraft>>(); client.startJourney.mockReturnValue(pending.promise); const component = await mount(); button('Choose a replacement').click(); await settle();

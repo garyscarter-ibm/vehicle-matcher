@@ -562,6 +562,43 @@ uncertain requests available for an explicit same-command retry, and provides a 
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
 
+### Angular canonical Buddy ports (FUCQ-551)
+
+`kit/activity-timeline.component.ts` is the single Angular `gcsp-activity-timeline` port.
+Inputs are `events` (label/time/detail plus optional action `TemplateRef`), `heading`, `emptyText`,
+`level`, `collapseRepeats`, `formatTime` and `note`. It preserves supplied order, collapses only
+adjacent equal time/label/detail when requested and exports `demoTime` as the existing
+`activity.copy.formatActivityTime` alias. Missing or invalid times stay explicit.
+
+`kit/buddy-status.component.ts` exports `buddyState`, `buddyEngaged` and the pure
+`gcsp-buddy-status` presenter (`state`, optional `href`, `prominent`, `id`, `label`; `activated`).
+`kit/buddy-tile.component.ts` composes it with that timeline using the frozen source classes.
+Tile inputs are `phase`, `result`, `pending`, `events`, `offerTitle`, `deadline`, `orderHref`,
+`id` and `canPause/Resume/Retry/History/Offer`; outputs are `paused`, `resumed`, `retried`,
+`historyRequested` and `offerRequested` (the drawer opener). All eight source outcomes remain
+distinct; focused removed controls recover to their matching control or heading without stealing
+retained focus. These presenters own no requests, commands or consent.
+
+`kit/activity-offer.component.ts` is the pure `gcsp-activity-offer` port (`offer`, `display`,
+`level`). It reuses approved raw image evidence before the shared `vehicleImageUrl` helper
+normalizes exact repository WebP paths to the Angular base. It retains supplied captions,
+source missing/broken-image fallback and Image N selection. It does not substitute MediaGallery.
+
+`account/account-buddy.component.ts` owns the scoped ActivityStore lifecycle, composes the ports
+with the existing SideDrawer, and reuses the root BriefEditorStore for guarded pauseSearch,
+resumeSearch, same-command retry and status reload. Activity is refreshed after actual tile commands and settled canonical root-editor Buddy/version
+changes, including adjacent engagement. History uses authoritative check/offer-creation times, exclusion and partial-evidence
+copy. Scope changes, restarted state and teardown clear private drawer data and abort reads.
+The account uses the original `gcsp-account-buddy-preferences` grid and direct Buddy host class;
+the authoritative `pendingOffer()` suppresses the old preview and current-car replacement action
+while Buddy is present. Journey choices omit Buddy and retain the source current-car action.
+The optional `buddyControls` input on AccountPreferences and BuddyControls defaults to false.
+Account passes true so the tile owns active/paused/disabled actions; inactive engagement and
+failure recovery remain reachable. No editor/store/client behavior or source CSS is duplicated.
+Gallery: **GCSP Buddy status**, **GCSP Buddy tile** (eight outcomes), and **GCSP activity timeline
+and offer**. Selected synthetic tests establish source/component contracts only; rendered source
+CSS, connected state, hosted assets and human parity review remain separate acceptance work.
+
 ### Angular manual review and summary (FUCQ-443)
 
 `ManualRouteComponent` composes the existing screen intro, status, vehicle media, facts,

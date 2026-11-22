@@ -1,3 +1,4 @@
+import { vehicleImageUrl } from '../kit/vehicle-image-url';
 import { ChangeDetectorRef, Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthPort } from '../auth/auth.port';
@@ -11,6 +12,7 @@ import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
 import { AccountOffers, AccountOrdersReadResult, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
 import { AccountClient } from './account.client';
+import { AccountBuddyComponent } from './account-buddy.component';
 import { AccountChoicesComponent } from './account-choices.component';
 import { contractTerms, journeyIntent, toAccountView } from './account.projection';
 import { AccountAction, AccountDriver, AccountFailure, AccountProjection, AccountResult, ContractView, EvidenceRecord, JourneyIntent,
@@ -37,7 +39,7 @@ const states: Record<string, Notice> = {
 @Component({
   selector: 'gcsp-account',
   imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent,
-    AccountChoicesComponent, AccountPreferencesComponent, CurrentCarRatingComponent],
+    AccountChoicesComponent, AccountPreferencesComponent, CurrentCarRatingComponent, AccountBuddyComponent],
   templateUrl: './account.component.html', styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnDestroy {
@@ -330,9 +332,7 @@ export class AccountComponent implements OnDestroy {
   image(contract: ContractView): string | null {
     if (this.failedImages().has(contract.contractId)) return null;
     const src = contract.media?.['src'] ?? contract.media?.['photo'];
-    if (typeof src !== 'string') return null;
-    if (/^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/.test(src)) return src.slice(1);
-    return /^\/(?!\/)/.test(src) || /^https:\/\//.test(src) ? src : null;
+    return vehicleImageUrl(src);
   }
   imageFailed(contract: ContractView): void { this.failedImages.update((current) => new Set([...current, contract.contractId])); }
   vehicleSpec(contract: ContractView): string {

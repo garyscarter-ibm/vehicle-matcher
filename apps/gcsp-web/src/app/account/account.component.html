@@ -55,9 +55,6 @@
           </gcsp-status-screen>
         }
         @if (previewRetry()) { <button gcspButton variant="ghost" type="button" [disabled]="previewLoading()" (click)="reloadPreviews()">{{ previewFailed() || ordersIncomplete() || handoffState() === 'unavailable' ? 'Retry offers and orders' : 'Check for updates' }}</button> }
-        @if (pendingOffer(); as offer) {
-          <section class="account-summary offer-preview" aria-label="Your car offer"><p>You have a car offer to decide on before choosing another car.</p><a gcspButton [routerLink]="['/offers', offer.offerId]">View your offer</a></section>
-        }
       </div>
       @if (!pendingIntent() && newestOrder(); as order) {
         <section class="account-summary order-preview" aria-label="Your new car">
@@ -93,7 +90,7 @@
             @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}@if (date(identity.allowanceOverrideEndDate); as end) {, ends {{ end }}}</p> }
             <div class="gcsp-actions">
               <button gcspButton class="vm-btn vm-btn-ghost" variant="ghost" type="button" (click)="openRecord(car, $event)">View car record</button>
-              @if (car.action; as action) { <button gcspButton class="vm-btn vm-btn-primary" type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> }
+              @if (pendingIntent() || !pendingOffer()) { @if (car.action; as action) { <button gcspButton class="vm-btn vm-btn-primary" type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> } }
             </div>
             @if (!car.action && !stateNotice()) { <p class="gcsp-note">Replacement is not available for this car.</p> }
           </div>
@@ -116,10 +113,13 @@
         @if (shown(identity.allowanceOverride); as override) { <p class="gcsp-note">Allowance override: {{ override }}</p> }
       }
       @for (action of account.actions; track $index) { @if (action.action === 'order') { <button gcspButton type="button" [disabled]="!canStart()" (click)="start(action)">{{ actionLabel(action) }}</button> } }
-      <section class="account-summary account-preferences" aria-label="Your preferences">
-        <gcsp-account-preferences [carDescription]="preferenceCarDescription()" />
-        <a gcspButton variant="ghost" routerLink="/preferences">Edit your preferences</a>
-      </section>
+      <div class="gcsp-account-buddy-preferences">
+        <section class="account-preferences" aria-label="Your preferences">
+          <gcsp-account-preferences [carDescription]="preferenceCarDescription()" [buddyControls]="true" />
+          <a gcspButton variant="ghost" routerLink="/preferences">Edit your preferences</a>
+        </section>
+        @if (!pendingIntent()) { <gcsp-account-buddy /> }
+      </div>
       <section class="account-history" aria-labelledby="history-title">
         <h2 id="history-title">Order history</h2>
         @if (account.historyState === 'no-history' && !placedRecord()) { <p class="gcsp-note">No order history.</p> }

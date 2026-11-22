@@ -10,6 +10,9 @@ import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { briefEditorFixture } from '../preferences/brief.fixtures';
 import { BriefEditor } from '../preferences/brief.types';
 import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
+import { ActivityClient } from '../activity/activity.client';
+import { AccountBuddyComponent } from './account-buddy.component';
+import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot } from './account.test-data';
@@ -57,7 +60,7 @@ describe('Account composition with the published preference store and HTTP contr
     });
     TestBed.configureTestingModule({ providers: [provideRouter([]),
       { provide: AuthPort, useValue: { state, getAccessToken: vi.fn().mockResolvedValue('employee-token'), signIn: vi.fn(), retry: vi.fn() } },
-      { provide: RuntimeConfigService, useValue: { load: vi.fn().mockResolvedValue(config) } }, { provide: PORTAL_FETCH, useValue: fetcher },
+      { provide: RuntimeConfigService, useValue: { load: vi.fn().mockResolvedValue(config) } }, { provide: PORTAL_FETCH, useValue: fetcher }, { provide: ActivityClient, useValue: { readActivity: vi.fn().mockResolvedValue({ status: 'unavailable' }) } },
       { provide: AccountClient, useValue: { readAccount, readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
         readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }),
         readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { version: 1, deliveryEmail: null } }) } },
@@ -70,6 +73,9 @@ describe('Account composition with the published preference store and HTTP contr
     const store = TestBed.inject(BriefEditorStore);
     expect(fixture.debugElement.query(By.directive(AccountPreferencesComponent)).injector.get(BriefEditorStore)).toBe(store);
     expect(fixture.debugElement.query(By.directive(CurrentCarRatingComponent)).injector.get(BriefEditorStore)).toBe(store);
+    expect(fixture.debugElement.query(By.directive(AccountBuddyComponent)).injector.get(BriefEditorStore)).toBe(store);
+    expect(fixture.debugElement.query(By.directive(BuddyControlsComponent)).componentInstance.buddyControls()).toBe(true);
+    expect(button('Engage Buddy')).toBeDefined();
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(root().querySelector('.gcsp-star-rating legend')?.textContent).toContain('BMW 3 Series Touring 320i');
     rate(5); await settle();
