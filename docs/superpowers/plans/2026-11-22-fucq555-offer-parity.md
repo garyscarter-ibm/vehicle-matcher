@@ -1,0 +1,136 @@
+# FUCQ-555 Offer Parity Implementation Plan
+
+> **For agentic workers:** Use `superpowers:subagent-driven-development` when an actual worker slot is available, otherwise `superpowers:executing-plans` for the authorized independent work. Execute one bounded source chunk at a time, with lead specification/code review and a published checkpoint. The parent retains shared-writer/integration coordination. No additional human design approval gate is introduced.
+
+**Goal:** Restore all eight original offer/decision/follow-up parity criteria against frozen Node `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`, with one canonical stage-list/stage-tracker pair shared with FUCQ-556.
+
+**Architecture:** Port missing source presentation primitives into Angular once, preserving source DOM/classes, labels and supplied state. Keep all authoritative `OfferProjection`, `OfferStore`, `OfferInteractionStore` and command/client contracts. Compose the offer only after the named existing-file overlap review, and integrate F548/F549/F550/F551 through the dispatcher rather than copying or manually stacking their branches.
+
+**Tech Stack:** Angular 21, TypeScript, existing Vitest/Angular tests, pinned Node `24.22.3` / npm `11.19.1`, shared local test stack.
+
+**Spec:** `_dev/in-progress/DEV-2026-11-22-vesper-028.md` (eight unchanged ACs); frozen live Node at `/Users/usget/.codex/worktrees/gcsp-gap-poller/vehicle-matcher` (immutable); `docs/gcsp/mockups/offer-details-2026-11-12/` Option B as implemented at the freeze; `COMPONENTS.md`; `docs/gcsp/angular-port-gap-review-2026-11-20.md` section 3; `docs/gcsp/build-rules.md`; `docs/gcsp/experience-quality.md`; `docs/gcsp/dev-poller-current-run.md`.
+
+## Global constraints
+
+- Full Bug remains 21 points; five coherent implementation chunks are 3 + 5 + 5 + 5 + 3 points, each at most eight. This is internal sequencing, not an AC revision or scope split. Validation/connected/human-parity gates remain explicit slices.
+- All eight ACs stay unticked until the real composition and their required evidence support them. Source/component/JSON proof does not establish same-offer parity or acceptance. Technical completion goes In Review; only a collaborator accepts the actual pair, never automatic Done.
+- Immutable Node reference is read-only. Every mutation/test uses `/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-22-vesper-028`, branch `dev/DEV-2026-11-22-vesper-028`, initial base `622facd0a88f413d8056a43ceb32d49c17cabac2`.
+- No API/auth/backend/store/client/type or persistence repair is allocated. Do not infer business state, change run/version equality, advance/reset the clock locally, or manufacture derived outcomes. Java decline registry FUCQ-510 and live refresh are out of scope.
+- Canonical countdown comes from `model.now` / `OfferProjection.serverNow` and `expiresAt` authoritative readback. Preserve source ceil-seconds/ceil-minutes wording and authoritative zero reread/disabled action behavior; no `Date.now` countdown or extra polling service.
+- F548 owns assembled `node-gcsp.css`, global source CSS, presenter signals and bell. Do not duplicate sheets or edit `angular.json`. F549 navigation, F550 refresh and F552 preferences are frozen; preserve them at supported integration.
+- F551 owns account/rating/help, the ONE activity-timeline/activity-offer ports, asset-only configuration and currently data-table, COMPONENTS/gallery/ratchet. No edits to those paths until a named release. F555 owns canonical finishLabel/finish-shades. Independently compared base `activity/activity.copy.ts:formatActivityTime(value: string): string` with frozen Node `demoTime`: both use the same en-GB day/short-month/year/hour/minute and Europe/London formatter. StageTracker imports that ONE existing implementation as `demoTime`; F551 timeline will re-export it. No duplicate formatter, shim or unpublished import.
+- New or extended source ports need matching COMPONENTS entries/gallery examples in the SAME source commit. Obtain the named window before those edits. Reconcile with F548's complete Port status table later; do not recreate it. No ratchet baseline may rise.
+- No OneDrive access, foreground app/tab/focus changes, real email or new connected Java/browser/database composition. F562 reset-503 / F564 account-clock routing remains unanswered; the parent owns the prerequisite decision and final pair.
+- Use `scaffold_git` named paths, `SCAFFOLDING_HARNESS=codex`, `SCAFFOLD_POLLER=vesper`, `--poller vesper` on dev-mail, Codex commit trailer and ordinary unforced explicit Story-ref push with independent remote SHA verification. No merge/close/lifecycle writes.
+- Resources: retained evidence root `/Users/usget/Claude/vehicle-matcher/.claude/test-runs/angular-gap-20261122/fucq555`; manifest/finalizer before disposable allocations, owned TMPDIR/TMP/TEMP, one test worker initially, <=2 GiB RAM/scratch and <=600 seconds per chunk. Use shared dependency link, not npm ci. Reserve host RAM once and use the shared heavy slot for builds/Java/browser. Capture heavy child group/descendant telemetry where available; otherwise record the measurement limit without a rerun just for telemetry. Clean and verify owned groups/paths after each chunk. Full suites stay deferred to dispatcher batches under the 19 November hold.
+
+## Current diagnosis and ownership inventory
+
+The reporter's 20 November source/environment observation remains historical. On current base `622facd0a`, `offer-view-model.ts` already preserves exact vehicle facts, order identity, confirmed comparison facts, server-time remaining and grounded 300-fewer/30-litres-less differences. No upstream data loss or backend fault is demonstrated for those presentation gaps. `offer-screen.component.html` still uses local `.offer-*` card/highlight/table/stage markup, static `at last check`, no saving line beneath points and no swatches. The decision drawer still omits source Documents jumps and error-summary composition; follow-up omits the saved-change Activity exit.
+
+Source Node `offer-controller.js` derives remaining seconds from server readback; its view displays ceil minutes and announces under-five/deadline outcomes. Its source `stageList` is used for a refused selection, with order-reference and car-order-number rows; the accepted outcome deliberately remains a short identity confirmation, not a new tracker. Only points cost and boot capacity have a general comparison winning direction; ties, unknowns and preference-dependent facts remain neutral.
+
+Existing Angular kit names are not proof of source parity. `VehicleDetailsComponent` has the Option B entry/modal/tabs behavior but differs in root/content/fact markup and empty-equipment punctuation. `MediaGalleryComponent` has feature/thumb/dialog behavior but lacks the source `presentation: 'picker'` / `fit: 'contain'` public variants and source hierarchy. `OptionListComponent` is a controlled keyboard radiogroup but uses `.gcsp-options/.gcsp-option` instead of source `.vm-options/.vm-option` and lacks `rows`. `ErrorSummaryComponent` has default fixed heading identity/title and needs a compatible source title/id/focus seam for the decision drawer. These are inspected integration obligations; do not build second local replacements or silently claim them source-equivalent. Request exact existing-file ownership before changing them.
+
+F549 `64271c5ef` changes navigation infrastructure/preferences, not `offers/*`; consume its destinations through supported integration. F550 `c8728d4ae` changes `offer-screen.component.ts/.spec.ts` with its single LiveRefreshService subscription and guarded `autoRefresh`; preserve it when those files integrate. F551 dataTable will provide the source comparison/missing/winner presentation; do not edit that port concurrently.
+
+Initial allocated new paths are `kit/stage-list.component.ts/.spec.ts`, `kit/order-identity.ts/.spec.ts`, `kit/finish-label.component.ts/.spec.ts`, `kit/finish-shades.ts` plus its one frozen data projection, `kit/vehicle-decision.component.ts/.spec.ts`, and `kit/decision-highlights.component.ts/.spec.ts`, all beneath `apps/gcsp-web/src/app/`. StageTracker is also allocated initially using the verified existing canonical formatter seam. Offers and existing shared kit edits below require the named review/release first.
+
+Evidence helper returned `ready: [], missing: []`; `evidence: []` has no supplied captures. Check the cited `docs/gcsp/evidence/angular-port-review-2026-11-20/node-03-offer.jpg` path and view any actual supplied image if it appears. No absent capture, live reproduction or human pair review is claimed.
+
+## Chunk 1 — canonical stage presentations and identity (3 points, AC6 and shared F556 requirement)
+
+**Create initially:** `apps/gcsp-web/src/app/kit/stage-list.component.ts`, `.spec.ts`; `kit/order-identity.ts`, `.spec.ts`.
+**Create in the initial allocation using the existing canonical formatter:** `kit/stage-tracker.component.ts`, `.spec.ts`.
+**Shared commit requirements:** bounded COMPONENTS/gallery entries in the named window; no new CSS.
+
+**Interfaces:**
+
+```ts
+export interface StageListItem { readonly name: string; readonly state: string }
+// gcsp-stage-list: heading='Progress', stages: readonly StageListItem[]=[],
+// level=2, labels=STAGE_LABELS; all inputs, no commands or inferred stage transitions.
+export interface StageTrackerItem {
+  readonly label: string; readonly state: string; readonly at?: string;
+  readonly owner?: string; readonly next?: string; readonly note?: string;
+}
+// gcsp-stage-tracker: heading='Progress', stages: readonly StageTrackerItem[]=[], level=2.
+export function orderReferenceOf(value: unknown): string | null;
+export function orderIdentityRows(reference: unknown, carOrderNumber: string | null | undefined):
+  readonly { readonly label: string; readonly value: string | null }[];
+```
+
+- [ ] Read complete frozen `stage-list.js/.css`, `stage-tracker.js/.css`, `order-identity.js` and activity-timeline's canonical `demoTime`. Verify no Angular canonical stage port exists.
+- [ ] Add failing regressions for source stage order, all five list-state labels and Unknown, unique heading association/heading level; exact valid reference then Car order number rows, with malformed reference omitted and missing number retained.
+- [ ] Port `.gcsp-stage-list`, `.gcsp-stage-heading`, `.gcsp-stage-items`, `.gcsp-stage-item.is-*`, `.gcsp-stage-name/.gcsp-stage-state`; no list-state inference or local styles. Preserve source reference regex `/^[A-Za-z0-9-]{1,32}$/` without trimming/derivation.
+- [ ] Run the narrow list/identity tests, inspect source class/state parity, record red/green and publish with catalogue/gallery in the same source commit when released.
+- [ ] Import `{ formatActivityTime as demoTime }` from `../activity/activity.copy` and add StageTracker regressions for ordered labels, done/current/upcoming/declined/blocked, unknown-state upcoming presentation, `aria-current=step` only for current/blocked, valid time `datetime`, omitted invalid time and supplied owner/Next/note text. Port source markup and import the canonical formatter; test F556's declared consumer data before its reuse. No second tracker is permitted in F556.
+
+## Chunk 2 — canonical finishes, decision shell and highlights (5 points, AC3/4/5 presentation)
+
+**Create:** `kit/finish-label.component.ts/.spec.ts`, `kit/finish-shades.ts`, `kit/finish-shades-data.ts`, `kit/vehicle-decision.component.ts/.spec.ts`, `kit/decision-highlights.component.ts/.spec.ts` under the Angular app.
+**Source:** complete frozen `vehicle-decision.js/.css`, `vehicle-summary.css`, `focused-decision.css`, `finish-shades.js`, generated finish data and source SWATCH_HEX/NEUTRAL_SWATCH; inspect the match-card nodes it composes.
+
+**Interfaces:**
+
+```ts
+export interface FinishLabelData { readonly label: string; readonly value?: string | null; readonly shade?: unknown }
+// gcsp-finish-label: label, value, shade, labelled=false; decorative swatch only.
+export function finishShade(finish: FinishLabelData): string | null;
+export interface DecisionHighlight { readonly number?: string | number; readonly title: string; readonly detail?: string }
+// gcsp-decision-highlights: benefits/tradeoffs readonly lists, layout default or 'list'.
+// gcsp-vehicle-decision: supplied name/kicker/finishes, numeric nullable points/allowance,
+// contribution/pointsDifference text, focused/default layout; content slots for deadline,
+// actions, note, media and complete details. It emits no business commands and fetches nothing.
+```
+
+- [ ] Add meaningful failing tests: exact known-name mapping, Unicode/whitespace normalization, explicit supported shade overriding a name, explicit unsupported shade staying neutral, generic/ambiguous/unknown finish staying neutral, decorative aria-hidden swatch and unchanged full label/value.
+- [ ] Port the ONE shared frozen finish mapping/palette exactly, with its source provenance. No keyword, stitching or per-view colour inference; no policy/data changes. Port labelled/unlabelled source finish DOM/classes and unknown hatch class.
+- [ ] Add failing highlight tests for Benefits/Tradeoffs headings, number emphasis including zero, detail, both exact empty states and list/default class variants. Port source `.gcsp-decision-highlights`, `.gcsp-highlight-*` structure without local CSS or truncation.
+- [ ] Add decision-shell tests for source root/layout/heading/finish/cost/saving classes, summary/actions before media/details in reading order, projected deadline/actions/note/media/all details retained, numeric zero/missing preservation and no source input mutation. Port source structure once. Do not label existing MediaGallery/VehicleDetails content source-equivalent before their inspected differences are reconciled.
+- [ ] Run only new port specs plus actual changed public consumers/gallery compilation, review the complete diff and publish the coherent source/catalogue/gallery checkpoint. No full AC is ticked from these tests.
+
+## Chunk 3 — offer screen presentation and countdown (5 points, AC1–6)
+
+**Requested later writers:** `offers/offer-screen.component.ts/.html/.spec.ts`, `offers/offer-view-model.ts/.spec.ts`; any necessary existing `kit/media-gallery.component.*`, `kit/vehicle-details.component.*` source variants only after exact caller/ownership approval. Existing public inputs stay compatible. No stores/client/types or new service.
+
+- [ ] Recheck F549/F550/F548/F551 supported integration status and obtain exact writer releases before edits. Preserve F550's subscription/auto-refresh guards and every existing offer identity/version/action check.
+- [ ] Add regression cases for source state-specific exits using existing guarded `/account`, `/orders`, `/activity`, `/help` destinations. Pending Back, accepted Track/Back, expired Activity/Back and refused support/Back are state-specific; accepted order status is never inferred.
+- [ ] Add VM/screen regressions using the existing supplied fixture with moved `serverNow` and unchanged authoritative offer state: source ceil seconds/minutes, London Held-until HH:MM plus weekday date, under-five and deadline exact announcements, same-key repeat silence, no input/drawer/media remount on clock-only updates. A desktop system-time change must not alter the duration. Preserve the zero authoritative reread instead of locally declaring expiry.
+- [ ] Compose canonical vehicle decision/finish/highlight ports. Show the grounded points-saving line under points only when a supported points comparison establishes the source winner. Split existing measured number/title/detail for source big-number emphasis without inventing priorities; keep grounded supplied reasons/tradeoffs and source exclusion of generic passed-check duplication. Empty groups retain exact source wording.
+- [ ] Consume F551's source dataTable compare variant: current car before offer, supplied name/configuration detail, missing cells, equal columns and winner cells only for agreed points/boot direction; ties/unknown/mismatched units stay neutral. No concurrent table implementation or CSS copy.
+- [ ] Compose canonical stageList and orderIdentityRows for the refused selection state; preserve accepted short identity confirmation. Reconcile existing media/details DOM/state source variants through compatible extension, not new local modals/gallery. Run the selected own and affected caller tests after each bounded edit; record actual failures and publish source/catalogue changes together.
+
+## Chunk 4 — decision drawer and saved follow-up exit (5 points, AC7)
+
+**Requested later writers:** `offers/offer-decision.component.ts/.html/.spec.ts` (add focused spec if absent), `offers/offer-followup.component.ts/.html/.spec.ts` (add focused spec if absent), existing `kit/option-list.component.*`, `kit/error-summary.component.ts` and relevant `kit/kit.spec.ts`; source `kit/checkbox-field.component.ts/.spec.ts` only if the inventory still has no canonical port. No OfferInteractionStore/decline-registry/API change.
+
+- [ ] Read complete frozen decision-drawer and relevant full follow-up view before implementation; trace current store fields/actions and their guards. Record the existing ErrorSummary callers (manual/preferences/cases/Greg/account/gallery), OptionList caller (stock), and media/details consumers before compatible changes.
+- [ ] Extend existing OptionList compatibly with the source `rows` variant and source class/state structure, retaining default caller behavior/keyboard selection/focus. Port checkboxField once with controlled checked/disabled/describedBy and source `.gcsp-check` order; do not hand-build separate declaration rows in the offer.
+- [ ] Extend ErrorSummary with compatible configurable unique id/title and source focus behavior; retain existing errors/controlId contract/default caller behavior. Offer uses source title `Check before continuing`, linked actual controls and only actual existing store/mileage/reason errors.
+- [ ] Add failing tests for Documents section: Read scheme terms reveals/focuses terms; driver/licence jump focuses its heading; replacement-only old-contract/mileage jump focuses that record; no fake document downloads. Compose source section/row/footer classes while preserving all current contact/driver/return facts, declarations, pending command lock, validation and focus return.
+- [ ] Add saved-follow-up Activity-link tests from actual `savedChange` plus `change-saved`/`waiting`/`no-match` state. Unknown/unsaved/failed state must not be promoted to a saved outcome. Keep command retry/idempotency/version behavior and follow-up inputs unchanged.
+- [ ] Run offer decision/follow-up/interaction plus changed shared-kit callers; review source/behavioral diff and publish a coherent checkpoint with required shared catalogue/gallery entries. No new Java decline registry or refresh service work.
+
+## Chunk 5 — supported sibling integration (3 points, full original scope)
+
+- [ ] Obtain the dispatcher's supported integration of F548 global source CSS, F549 navigation, F550 guarded refresh, F551 source dataTable/activity ports, with the canonical F555 stage ports reused by F556. Preserve those source checkpoints and reconcile the canonical Port status inventory; do not copy/cherry-pick/manual-stack frozen branches.
+- [ ] Reconcile necessary media/details/controls source variants against complete frozen modules and actual current callers; any concrete backend/API mismatch is reported with producer/reader evidence for parent routing, not repaired or hidden here.
+- [ ] Confirm one stageList/stageTracker and one finish/highlight/decision presentation path for F555/F556. Inspect and document all source state/label/unknown/missing/identity cases, exact canonical styles and public data/command contracts.
+- [ ] Run the proportionate final source set once on the settled source commit. Commit/push and independently verify branch identity/remote SHA; source integration remains distinct from real acceptance.
+
+## Required validation and acceptance gates
+
+**Source gate:** start with each changed port spec, then own offer screen/view-model/decision/follow-up/store/client/route tests and every actual edited shared-kit caller. Explicit command selection uses `npx -y -p node@24.22.3 -p npm@11.19.1 npm test -- --include=src/app/kit/stage-list.component.spec.ts --include=src/app/kit/stage-tracker.component.spec.ts --include=src/app/kit/order-identity.spec.ts` for the stage chunk; the decision chunk uses `--include=src/app/kit/finish-label.component.spec.ts --include=src/app/kit/vehicle-decision.component.spec.ts --include=src/app/kit/decision-highlights.component.spec.ts` with the same pinned npm test prefix from the app, with one worker and owned scratch. Run UI ratchet (no raised baseline), Angular CSP/token/controller/pinned-AOT and built production HTML boundaries, then one clean production build through shared heavy/build helpers. Use `test_stamp.py --targeted 622facd0a88f413d8056a43ceb32d49c17cabac2 --reason "FUCQ-555 bounded stage/finish/decision presentation and actual edited offer/shared-kit callers; scoped source checks, real connected/parity still pending"` with an explicit scoped command. Update `.Codex/test-runs/impact/fucq555.json` atomically with file/function-to-test ownership, fixtures/subprocess edges, source/base/input/environment/variant/timings and unknown observed paths. Full suites are deferred to batch. No test rerun solely for documentation/telemetry or a full-suite claim from scoped checks.
+
+**Connected gate (held now):** after parent routing of F562/F564 and supported source integration, add/use persistent scripted browser cases on the actual local Angular/Java/OIDC composition for exits, moved DemoClock/countdown/announcements, saving, finishes/highlights/comparison, refused stages/order identity, drawer jumps/error rows and saved follow-up Activity. Preserve exact run/version/offer/scenario alignment, active form/focus behavior, desktop/narrow usability and relevant real keyboard/Safari/private checks. No current composition is authorized. Missing behavior/evidence stays explicitly unrun; fixture tests are not substituted.
+
+**Parity gate (AC8):** parent coordinates live frozen Node (never fixture pages) and local Angular/Java/OIDC, the same actual offer/scenario/clock/state at 1280px, attachments and human `matches`/`intended change` ledger review. No normalized equality, inserted saved state or canned matching outcome. Retain every real failed/skipped/unrun check and any separate defect. No interim taste/layout approval gate is added.
+
+**Handoff/cleanup gate:** independently inspect implementer diff/tests; all scratch roots/groups/reservations/links finalized and absence verified; retain concise receipts/useful failures and report build-child telemetry limits truthfully. Result names each original unticked AC and remaining Story work, actual agents requested/selected/effective model+effort, inspected/missing captures, exact commits and remaining connected/parity batch. Keep claim/branch/worktree and report partial if any original item remains.
+
+## Stable product-map slices and self-review
+
+Declare these stable slices before source work: `stage-list-source`, `stage-tracker-source`, `decision-presenters`, `offer-composition`, `decision-followup`, `sibling-integration`, `source-validation`, `connected-behavior`, `reviewed-parity`. Initial stage/decision source work can progress independently; required sibling integration/connected/parity remain blocked by the named dependencies/holds. The map never transitions Jira or infers workers from commits.
+
+Coverage: AC1 → chunk 3 + connected/parity; AC2 → chunk 3 + source/connected/parity; AC3 → chunks 2/3 + connected/parity; AC4 → chunks 2/3 + connected/parity; AC5 → chunks 2/3 + F551 table integration + connected/parity; AC6 → chunks 1/3 + connected/parity; AC7 → chunk 4 + connected/parity; AC8 → parity gate. Shared StageTracker requirement is explicit in chunks 1/5 and its stable slice. No AC is removed or expanded. Initial new pure presentation paths remain within the existing Angular component topology; no store/service/provider/connection is added, removed or rewired, so no architecture/data-design change is proposed. Existing-kit/offer writers wait for exact ownership review, not another product-design decision.

@@ -10726,6 +10726,91 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-028",
+      "evidence": "Native claim verified by parent at21points; original eight ACs preserved/unticked. Full plan docs/superpowers/plans/2026-11-22-fucq555-offer-parity.md; current source diagnosis uses frozen Node e44ed08a9 and base622facd0a.",
+      "id": "FUCQ-555",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Initial new source allocation accepted; existing stage authority/identity contracts verified; no connected acceptance claimed.",
+          "id": "stage-list-source",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "in-progress",
+          "title": "Canonical source stage list and exact order-identity rows (AC6)"
+        },
+        {
+          "evidence": "Existing formatActivityTime independently matches frozen demoTime; direct alias import avoids duplicate/unpublished formatter.",
+          "id": "stage-tracker-source",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "not-started",
+          "title": "ONE canonical stage tracker reused by F556"
+        },
+        {
+          "id": "decision-presenters",
+          "status": "not-started",
+          "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
+        },
+        {
+          "evidence": "Exact offers/existing-kit writer review and supported sibling integration required before edits.",
+          "id": "offer-composition",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "not-started",
+          "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
+        },
+        {
+          "evidence": "Exact offer/shared-control writer review required; no store/client/API repair allocated.",
+          "id": "decision-followup",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "not-started",
+          "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
+        },
+        {
+          "evidence": "Frozen sibling branches remain unmerged; preserve CSS/navigation/refresh/dataTable/activity ports; no manual stacking/copying.",
+          "id": "sibling-integration",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "F548/F549/F550/F551 integration and shared source reuse"
+        },
+        {
+          "id": "source-validation",
+          "status": "not-started",
+          "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
+        },
+        {
+          "evidence": "No connected stack authorized; parent F562 reset503/F564 clock routing unanswered; exact actual run/offer/state must align.",
+          "id": "connected-behavior",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
+        },
+        {
+          "evidence": "No captures/pair/human ledger review yet; parent coordinates actual live Node/local Java-OIDC composition.",
+          "id": "reviewed-parity",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular offer decision support, exits, countdown and drawer parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-555",
+      "workers": [
+        {
+          "expires_at": "2026-11-22T23:46:00Z",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "role": "story-lead",
+          "source": "Parent sequential F555 allocation; verified existing lead thread01a20537 Sol/xhigh; no implementer activated",
+          "status": "diagnosis and full source/integration plan"
+        }
+      ],
+      "observed_at": "2026-11-22T23:16:01Z"
     }
   ],
   "version": 1
