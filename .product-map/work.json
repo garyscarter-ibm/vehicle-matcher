@@ -10740,8 +10740,10 @@
       "slices": [
         {
           "id": "current-car",
-          "status": "not-started",
-          "title": "Current car source styling and rating (5 points)"
+          "status": "in-progress",
+          "title": "Current car source styling and rating (5 points)",
+          "observed_at": "2026-11-22T23:06:10Z",
+          "evidence": "Beaky current-car/starRating/helpTip implementation underway; selected source tests include expected red regressions and caller selector updates; no lead delivery acceptance yet."
         },
         {
           "id": "buddy",
@@ -10750,8 +10752,10 @@
         },
         {
           "id": "account-history-media",
-          "status": "not-started",
-          "title": "Shared history, failure regression and hosted image (3 points)"
+          "status": "in-progress",
+          "title": "Shared history, failure regression and hosted image (3 points)",
+          "observed_at": "2026-11-22T23:06:10Z",
+          "evidence": "Image packaging source09a60769e reviewed: supervised installed-Angular resolver921paths/87265982B/canonicaltarget passed. Base-relative account image regression red reproduced; history/build/assembled/hosted proof remain uncompleted."
         },
         {
           "id": "integration-validation",
@@ -10769,7 +10773,27 @@
           "title": "Lead review, fixed AC evidence and cleanup"
         }
       ],
-      "observed_at": "2026-11-22T22:55:40Z"
+      "observed_at": "2026-11-22T23:06:10Z",
+      "workers": [
+        {
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-22T23:06:09.725177+00:00",
+          "expires_at": "2026-11-22T23:26:09.725177+00:00",
+          "source": "Active lead reviewed source diagnosis, plan and approved asset mapping; last direct working observation. Sol/xhigh verified by dispatcher. All6AC incomplete."
+        },
+        {
+          "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
+          "name": "Beaky Buzzard",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-22T23:06:09.725177+00:00",
+          "expires_at": "2026-11-22T23:26:09.725177+00:00",
+          "source": "Current-car canonical starRating/helpTip source in progress; direct working update received, title/effective Sol/high independently verified by dispatcher. No completion inferred from tests."
+        }
+      ]
     }
   ],
   "version": 1
