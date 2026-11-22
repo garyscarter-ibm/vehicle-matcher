@@ -10726,6 +10726,50 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-551",
+      "title": "Angular Your cars lost the Buddy tile and car styling, shows a false error...",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-551",
+      "branch": "dev/DEV-2026-11-22-vesper-026",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "current-car",
+          "status": "not-started",
+          "title": "Current car source styling and rating (5 points)"
+        },
+        {
+          "id": "buddy",
+          "status": "not-started",
+          "title": "Account Buddy composition (5 points)"
+        },
+        {
+          "id": "account-history-media",
+          "status": "not-started",
+          "title": "Shared history, failure regression and hosted image (3 points)"
+        },
+        {
+          "id": "integration-validation",
+          "status": "not-started",
+          "title": "Supported sibling integration and focused validation"
+        },
+        {
+          "id": "connected-parity",
+          "status": "not-started",
+          "title": "Actual live same-state Node Angular parity"
+        },
+        {
+          "id": "review-handoff",
+          "status": "not-started",
+          "title": "Lead review, fixed AC evidence and cleanup"
+        }
+      ],
+      "observed_at": "2026-11-22T22:55:40Z"
     }
   ],
   "version": 1
