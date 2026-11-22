@@ -10734,34 +10734,34 @@
       "status": "In Progress",
       "branch": "dev/DEV-2026-11-22-vesper-023",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-548",
-      "observed_at": "2026-11-22T21:02:13Z",
+      "observed_at": "2026-11-22T21:37:57Z",
       "workers": [
         {
           "name": "Petunia Pig",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-22T21:01:54.930642Z",
-          "expires_at": "2026-11-23T23:59:59Z",
-          "source": "requested/selected gpt-6.1-sol/xhigh; no fallback",
-          "status": "working"
+          "observed_at": "2026-11-22T21:37:57.528368+00:00",
+          "expires_at": "2026-11-22T21:37:57.528368+00:00",
+          "source": "requested/selected gpt-6.1-sol/xhigh; no fallback; component/harness checkpoint delivered; worker claim expired, connected parity blocked on separate production prerequisite",
+          "status": "blocked"
         },
         {
           "name": "Wyldstyle",
           "role": "implementer",
           "harness": "codex",
-          "observed_at": "2026-11-22T21:01:54.930642Z",
-          "expires_at": "2026-11-23T23:59:59Z",
-          "source": "requested/selected gpt-6.1-sol/high; no fallback",
-          "status": "working"
+          "observed_at": "2026-11-22T21:37:57.528368+00:00",
+          "expires_at": "2026-11-22T21:37:57.528368+00:00",
+          "source": "requested/selected gpt-6.1-sol/high; no fallback; component/harness checkpoint delivered; worker claim expired, connected parity blocked on separate production prerequisite",
+          "status": "complete"
         },
         {
           "name": "Bertie",
           "role": "implementer",
           "harness": "codex",
-          "observed_at": "2026-11-22T21:01:54.930642Z",
-          "expires_at": "2026-11-23T23:59:59Z",
-          "source": "requested/selected gpt-6.1-sol/high; no fallback",
-          "status": "working"
+          "observed_at": "2026-11-22T21:37:57.528368+00:00",
+          "expires_at": "2026-11-22T21:37:57.528368+00:00",
+          "source": "requested/selected gpt-6.1-sol/high; no fallback; component/harness checkpoint delivered; worker claim expired, connected parity blocked on separate production prerequisite",
+          "status": "blocked"
         }
       ],
       "slices": [
@@ -10774,17 +10774,17 @@
         },
         {
           "id": "bell",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Native notification bell and refresh source (5 points)",
-          "observed_at": "2026-11-22T21:02:13Z",
-          "evidence": "Wyldstyle implements exact native notification bell/source and focused caller tests against globally loaded source CSS."
+          "observed_at": "2026-11-22T21:34:17Z",
+          "evidence": "Native component/source delivery boundary independently reviewed at d6b6b5d9f. All 25 reviewed path hashes remain exact. Passed: 172 unique Angular checks, 134 style/ratchet checks, seven boundary cases and AOT build; lead repeated 15 bell and 12 tooling checks. Connected active-offer acceptance remains in the blocked integration slice; no human acceptance."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Connected browser suite, screenshot pairs and critique (3 points)",
-          "observed_at": "2026-11-22T21:02:13Z",
-          "evidence": "Bertie implements persistent Node-test/Playwright suite with real Java/OIDC/shared PG; exact immutable Main input replay, FUCQ-562 named-reset refusal explicitly retained. Final connected run awaits product commit."
+          "observed_at": "2026-11-22T21:34:17Z",
+          "evidence": "Second real Java/OIDC/PG attempt ff3a01fdd passed sign-in, empty/header/Escape and 29,989 ms polling/lifecycle handler reads, then failed mandatory account-clock equality: wall/system versus scenario 09:00/version 1. No active/expired/count/note/narrow/pair evidence. Static-only harness correction ead8bd6bb enables recommendation candidates and retains sanitized initial readbacks; five checks passed. Parent prohibits a third connected run pending production scope decision; FUCQ-562 decision remains open. Final resource audit: 71 roots and 112 process groups absent."
         }
       ],
       "unsliced": false
