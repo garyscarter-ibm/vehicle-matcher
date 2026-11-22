@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
+import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { BriefClient } from '../preferences/brief.client';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
@@ -329,4 +330,73 @@ describe('native employee account screen', () => {
     const wait = deferred<AccountResult<AccountProjection>>(); client.readAccount.mockReturnValue(wait.promise); await mount(); const requestSignal = client.readAccount.mock.calls[0][0].signal as AbortSignal;
     fixture.destroy(); expect(requestSignal.aborted).toBe(true); wait.resolve({ status: 'ok', value: account }); await Promise.resolve(); expect(fixture.componentInstance.projection()).toBeNull();
   });
+  it('rereads the idle account on a native visibility trigger without submitting a command', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await mount(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.readDraft).toHaveBeenCalledTimes(2);
+    expect(client.startJourney).not.toHaveBeenCalled(); expect(client.saveNotificationEmail).not.toHaveBeenCalled();
+  });
+
+  it('keeps exact unsaved email input through a skipped trigger and resumes after the edit is resolved', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); component.emailInput.set('  unsaved@example.test  ');
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(component.emailInput()).toBe('  unsaved@example.test  ');
+    component.emailInput.set('saved@example.test'); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.saveNotificationEmail).not.toHaveBeenCalled();
+  });
+  it('preserves busy reads, journey review and open or pending preference edits until an eligible trigger', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); const brief = TestBed.inject(BriefEditorStore);
+    const guards = [component.loading, component.busy, component.emailBusy, component.previewLoading, component.confirmingDiscard,
+      component.journeyLocked, brief.loading, brief.saving, brief.queueNeedsReview, brief.fullDirty, brief.fullBusy, brief.previewLoading, brief.buddyRefreshing];
+    for (const guard of guards) {
+      guard.set(true); document.dispatchEvent(new Event('visibilitychange')); await settle();
+      expect(client.readAccount).toHaveBeenCalledOnce(); expect(guard()).toBe(true); guard.set(false);
+    }
+    brief.openCategory.set('body'); brief.pendingRemoval.set('body');
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(brief.openCategory()).toBe('body'); expect(brief.pendingRemoval()).toBe('body'); expect(client.readAccount).toHaveBeenCalledOnce();
+    brief.openCategory.set(null); brief.pendingRemoval.set(null);
+    const intent = savedDraft().choices; component.pendingIntent.set(intent);
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(component.pendingIntent()).toBe(intent); expect(client.readAccount).toHaveBeenCalledOnce();
+    component.pendingIntent.set(null); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.startJourney).not.toHaveBeenCalled(); expect(client.discardDraft).not.toHaveBeenCalled();
+  });
+  it('keeps an uncertain email command and its exact input until explicit reconciliation, with no replay', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); component.emailInput.set('new@example.test');
+    const pending = deferred<AccountResult<import('./account.types').NotificationEmail>>(); client.saveNotificationEmail.mockReturnValueOnce(pending.promise);
+    const save = component.saveEmail(new Event('submit', { cancelable: true }));
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledOnce();
+    pending.resolve({ status: 'uncertain' }); await save;
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(component.emailInput()).toBe('new@example.test'); expect(component.emailMessage()).toContain('not confirmed');
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(client.saveNotificationEmail).toHaveBeenCalledOnce();
+    await component.reloadEmail(); document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
+  });
+  it('does not read the old account after sign-out or component destruction', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await mount(); auth.state.set({ status: 'signed-out' }); fixture.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledOnce();
+    fixture.destroy(); document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readAccount).toHaveBeenCalledOnce();
+  });
+
+  it('does not grant stale-draft review authority during an automatic read, while explicit Refresh still can', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); client.startJourney.mockResolvedValue({ status: 'stale-version' });
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    await component.start(account.actions![0]); expect(client.startJourney.mock.calls[0][0].reviewedContextVersion).toBeNull();
+    await component.refresh(); await settle(); await component.start(account.actions![0]);
+    expect(client.startJourney.mock.calls[1][0].reviewedContextVersion).toBe(account.contextVersion);
+  });
+
+  it.each([false, true])('preserves an explicit review only for the same account context (changed=%s)', async (changed) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); await component.refresh(); await settle();
+    client.readAccount.mockResolvedValueOnce({ status: 'ok', value: { ...account, contextVersion: changed ? 'new-context-version' : account.contextVersion } });
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); await component.start(account.actions![0]);
+    expect(client.startJourney.mock.calls[0][0].reviewedContextVersion).toBe(changed ? null : account.contextVersion);
+  });
+
 });

@@ -1,6 +1,7 @@
 import { Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { safeReturnTo } from '../auth/route-policy';
 import type { EvidenceRecord } from '../account/account.types';
@@ -35,6 +36,9 @@ export class OrdersComponent implements OnDestroy {
   readonly action = signal<OrdersActionState>({ review: null, busy: false, result: null });
   readonly failedImage = signal<string | null>(null);
   private opener: HTMLElement | null = null;
+  private disposed = false;
+  private refreshEpoch = 0;
+  readonly refreshMessage = signal('');
   private readonly controller = new OrdersController(this.client, () => this.client.context(), (state) => this.state.set(state));
   private readonly commands = new OrdersActions(this.client, () => this.controller.state, () => this.client.context(), (state) => this.action.set(state));
   readonly model = computed(() => this.contextKey() && this.state()?.context
@@ -73,15 +77,35 @@ export class OrdersComponent implements OnDestroy {
     if (rel.newCar) rows.push({ label: 'New car status', value: this.words(this.shown(rel.newCar['status'])) });
     return rows;
   });
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => this.autoRefresh());
+
   constructor() {
     effect(() => {
       const context = this.contextKey(); const order = this.params().get('orderUuid') ?? undefined;
-      untracked(() => { this.commands.contextChanged(); this.controller.contextChanged(); this.failedImage.set(null); if (context) void this.controller.load(order); });
+      untracked(() => { this.refreshEpoch++; this.refreshMessage.set(''); this.commands.contextChanged(); this.controller.contextChanged(); this.failedImage.set(null); if (context) void this.controller.load(order); });
     });
   }
   refresh(): void {
     if (this.action().busy) return;
-    this.commands.refreshing(); void this.controller.refresh();
+    this.refreshEpoch++; this.refreshMessage.set(''); this.commands.refreshing(); void this.controller.refresh();
+  }
+  private progressKey(state: OrdersControllerState): string | null {
+    const progress = state.projection;
+    if (state.phase !== 'settled' || !progress?.selection.order
+      || progress.stages.state !== 'ok'
+      || [progress.stages, progress.documents, progress.appointment, progress.returnPlan].some((part) => ['stale-run', 'identity-mismatch', 'authentication-required', 'unauthenticated', 'account-changed'].includes(part.state))) return null;
+    return JSON.stringify([progress.stages, progress.documents, progress.appointment, progress.returnPlan],
+      (key, value) => key === 'asOf' ? undefined : value);
+  }
+  private async autoRefresh(): Promise<void> {
+    const state = this.controller.state; const context = this.contextKey(); const requested = this.params().get('orderUuid');
+    if (this.disposed || !context || state.phase !== 'settled' || this.action().busy || this.action().review) return;
+    const before = this.progressKey(state); const epoch = ++this.refreshEpoch;
+    this.refreshMessage.set('');
+    await this.controller.refresh();
+    if (this.disposed || epoch !== this.refreshEpoch || context !== this.contextKey() || requested !== this.params().get('orderUuid')) return;
+    const after = this.progressKey(this.controller.state);
+    if (after !== null && after !== before) this.refreshMessage.set('Order progress updated.');
   }
   selectOrder(event: Event): void {
     if (this.action().busy) return;
@@ -100,6 +124,7 @@ export class OrdersComponent implements OnDestroy {
     if (this.opener?.isConnected) queueMicrotask(() => this.opener?.focus()); else this.focusSection();
   }
   async confirm(): Promise<void> {
+    this.refreshEpoch++; this.refreshMessage.set('');
     await this.commands.confirm();
     if (this.action().result) await this.controller.refresh();
     this.focusSection();
@@ -107,7 +132,7 @@ export class OrdersComponent implements OnDestroy {
   private focusSection(): void { queueMicrotask(() => this.host.nativeElement.querySelector<HTMLElement>('.order-notice, .order-actions-heading')?.focus()); }
   signIn(): void { this.commands.contextChanged(); this.controller.contextChanged(); void this.auth.signIn(safeReturnTo('/gcsp' + this.router.url)); }
   imageFailed(): void { this.failedImage.set(this.model()?.selection.order?.orderUuid ?? null); }
-  ngOnDestroy(): void { this.commands.dispose(); this.controller.dispose(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.disposed = true; this.refreshEpoch++; this.commands.dispose(); this.controller.dispose(); }
   shown(value: unknown): string { return typeof value === 'string' || typeof value === 'number' ? String(value) : ''; }
   words(value: string): string { return value.replace(/[-_]/g, ' ').replace(/^./, (letter) => letter.toUpperCase()); }
   owner(value: string | null | undefined): string { return value === 'employee' ? 'You' : this.words(value ?? '') || 'Not supplied'; }

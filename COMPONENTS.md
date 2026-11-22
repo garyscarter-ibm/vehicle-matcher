@@ -613,3 +613,14 @@ from the pending rendered parity review.
 
 When FUCQ-548 is integrated, reconcile its canonical messageList/status port row
 with this subcomposition and preserve every other row in that complete inventory.
+
+### Angular native live refresh (FUCQ-550 source slice)
+
+`LiveRefreshService` owns one shared 30-second poll while visible, visibility and
+persisted-page restore listeners, with no initial read and teardown after the last
+consumer. Account, Activity, offer, order progress and outbox owners call their existing
+reads only when local edits, reviews and responses are safe to preserve. Automatic
+account reads retain only a previously reviewed exact context; they do not grant review
+authority. Order progress reuses its existing feedback region for changed ready producer
+sections, omitting only `asOf` from the comparison. Lifecycle tests are synthetic source
+evidence; presenter integration, connected behavior and rendered parity remain pending.

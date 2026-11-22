@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { OfferClient } from './offer.client';
+import { OfferInteractionStore } from './offer-interaction.store';
 import { OfferScreenComponent } from './offer-screen.component';
 import { offerScreenEmployee, offerScreenFixture } from './offer-screen.fixture';
 import { OfferFailure, OfferProjection, OfferRequestOptions, OfferResult } from './offer.types';
@@ -220,6 +221,65 @@ describe('native offer read screen', () => {
       expect(focus).not.toHaveBeenCalled();
     });
   });
+  it('rereads the open idle offer on a native visibility trigger without deciding', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(2); expect(reads[1].id).toBe('offer-1');
+    expect(client['decide']).not.toHaveBeenCalled(); expect(client['confirmFollowup']).not.toHaveBeenCalled();
+  });
+  it('preserves exact mileage/declarations and selected decline reasons, then refreshes after review closes', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(actionableOffer());
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore);
+    interactions.review('accept'); interactions.setMileage('006100'); interactions.tick('terms', true); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(1); expect(interactions.state().mileage).toBe('006100'); expect(interactions.state().declarations).toEqual({ terms: true });
+    interactions.closeReview(); interactions.review('decline'); await settle(); interactions.selectReason('body');
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().reasons.selected).toBe('body');
+    interactions.closeReview(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('does not replace an in-flight offer read, and reads again on a later eligible restore', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1);
+    await load(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await settle(); expect(reads).toHaveLength(2);
+  });
+  it('keeps decision sending and unconfirmed outcomes owned until an explicit current-offer read', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    let complete!: (value: OfferFailure) => void; client['decide'].mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore);
+    interactions.review('decline'); await settle(); interactions.selectReason('body'); const decision = interactions.submitDecision();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().decision).toBe('sending');
+    complete({ status: 'pending' }); await decision; document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(1); expect(interactions.state().decision).toMatchObject({ status: 'pending' }); expect(client['decide']).toHaveBeenCalledOnce();
+    fixture.componentInstance.refresh(); await settle(); await load(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(3); expect(client['decide']).toHaveBeenCalledOnce();
+  });
+  it('preserves a followup answer during editing, saving and uncertain confirmation, then resumes after reconciliation', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const declined = { ...offerScreenFixture('declined'), followup: { decisionId: 'decision-1' } }; await load(declined);
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore); await settle(); interactions.chooseAnswer('suv');
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().followup.answer).toBe('suv');
+    let complete!: (value: OfferFailure) => void; client['confirmFollowup'].mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    const confirm = interactions.confirmFollowup(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(interactions.state().followup.phase).toBe('saving'); expect(interactions.state().followup.answer).toBe('suv'); expect(reads).toHaveLength(1);
+    complete({ status: 'pending' }); await confirm; const uncertain = interactions.state().followup;
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(interactions.state().followup).toBe(uncertain); expect(reads).toHaveLength(1);
+    client['readFollowup'].mockResolvedValueOnce({ status: 'ok', value: savedFollowup() }); await interactions.refreshFollowup();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(2); expect(client['confirmFollowup']).toHaveBeenCalledOnce();
+  });
+
+  it('does not refresh a signed-out offer or a destroyed offer owner', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(); auth.set({ status: 'signed-out' }); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1);
+    fixture.destroy(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await Promise.resolve(); expect(reads).toHaveLength(1);
+  });
+
 });
 
 describe('native offer read screen through the real offer client', () => {
@@ -261,4 +321,6 @@ describe('native offer read screen through the real offer client', () => {
     expect(handleError).not.toHaveBeenCalled();
     fixture.destroy();
   });
+
+
 });

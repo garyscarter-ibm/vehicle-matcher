@@ -1,4 +1,5 @@
 import { Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked } from '@angular/core';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
@@ -93,6 +94,8 @@ export class OutboxComponent implements OnDestroy {
     unavailable: 'The captured emails could not be loaded. Try again in a moment.', loading: '', ready: '',
   })[this.view()]);
 
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => this.canRefresh() ? this.load() : undefined);
+
   constructor() {
     effect(() => {
       const session = this.auth.state();
@@ -142,7 +145,7 @@ export class OutboxComponent implements OnDestroy {
   private clearSensitive(): void {
     this.rows.set([]); this.selectedId.set(null); this.clearFilters(); this.retryable.set(false); this.phase.set('loading');
   }
-  ngOnDestroy(): void { this.destroyed = true; this.cancelRead(); this.clearSensitive(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.destroyed = true; this.cancelRead(); this.clearSensitive(); }
   recipient(message: OutboxMessage): string { return message.recipient.name || message.recipient.employeeId; }
   subject(message: OutboxMessage): string { return message.subject || 'Email not created yet'; }
   words(value: string): string { return value.replace(/[-_]/g, ' ').replace(/^./, (s) => s.toUpperCase()); }

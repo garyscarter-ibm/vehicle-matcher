@@ -10752,11 +10752,11 @@
           "harness": "codex",
           "role": "implementer",
           "observed_at": "2026-11-22T22:20:19.798049+00:00",
-          "expires_at": "2026-11-23T00:20:19.798049+00:00",
-          "source": "AC4 source slice; actual turn_context Sol/high verified"
+          "expires_at": "2026-11-22T22:43:30.842757+00:00",
+          "source": "Native source worker completed; lead review/230tests passed, no active claim inferred."
         }
       ],
-      "observed_at": "2026-11-22T22:24:49Z",
+      "observed_at": "2026-11-22T22:43:30Z",
       "slices": [
         {
           "id": "outbox-chip-source",
@@ -10767,23 +10767,31 @@
         },
         {
           "id": "native-refresh",
-          "status": "not-started",
-          "title": "Shared visibility restore and polling with order announcement"
+          "status": "complete",
+          "title": "Shared visibility restore and polling with order announcement",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "Lead reviewed shared lifecycle/timer, five route-owned guarded readers, draft/response/review ownership and source order changeKey; corrected auth-boundary announcement regression; final230tests across7specs passed, retained fucq550/lead-native-final-callers-receipt.json. Source boundary only, no fullAC completion."
         },
         {
           "id": "presenter-integration",
-          "status": "not-started",
-          "title": "Shared presenter signal integration"
+          "status": "blocked",
+          "title": "Shared presenter signal integration",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "F548 owns unmerged subscribePresenterActions(Document) and successful presenter publication/globalCSS; integration withheld. No copy or no-op hook added."
         },
         {
           "id": "connected-validation",
-          "status": "not-started",
-          "title": "Real composition refresh validation"
+          "status": "blocked",
+          "title": "Real composition refresh validation",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "No new connected run authorised; pending F562/F564 prerequisite scope decision and F548/549 integration. Native trigger tests are synthetic source handling only; no actual hidden/BFCache/two-tab proof."
         },
         {
           "id": "parity-review",
-          "status": "not-started",
-          "title": "Same-state 1280px evidence and human review"
+          "status": "blocked",
+          "title": "Same-state 1280px evidence and human review",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "Same-state1280px live Node/Java Angular release pair, attachment, human ledger review remain absent; no human matches/intended-change acceptance."
         }
       ],
       "unsliced": false

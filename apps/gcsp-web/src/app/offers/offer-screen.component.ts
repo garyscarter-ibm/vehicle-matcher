@@ -1,4 +1,5 @@
 import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, input, OnDestroy, output, untracked } from '@angular/core';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
@@ -31,6 +32,8 @@ export class OfferScreenComponent implements OnDestroy {
   readonly view = computed(() => { const offer = this.interactions.offer(); return offer ? offerViewModel(offer) : null; });
   readonly failure = computed(() => { const state = this.state(); return state.status === 'failed' ? offerFailureView(state.failure) : null; });
 
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => this.autoRefresh());
+
   constructor() {
     effect(() => { const id = this.offerId(); untracked(() => { if (id.trim()) this.store.open(id); else this.store.clear(); }); });
     effect(() => {
@@ -42,6 +45,16 @@ export class OfferScreenComponent implements OnDestroy {
   }
 
   refresh(): void { this.store.refresh(); }
+  private autoRefresh(): void {
+    const state = this.state(); const interaction = this.interactions.state();
+    if (this.destroyRef.destroyed || state.status === 'idle' || state.status === 'loading'
+      || state.status === 'failed' && !state.failure.retryable || interaction.review || interaction.mileage
+      || interaction.reasons.selected || interaction.reasons.phase === 'loading' || Object.keys(interaction.declarations).length
+      || interaction.decision === 'sending' || interaction.decision && interaction.decision.status !== 'ok'
+      || ['loading', 'saving', 'uncertain', 'failed'].includes(interaction.followup.phase)
+      || interaction.followup.value?.state === 'question') return;
+    this.store.refresh();
+  }
   openNextOffer(id: string): void {
     this.store.open(id); this.offerOpened.emit(id);
     this.pendingFocus = this.state().status === 'loading' ? { offerId: id, scope: this.scope() } : null;
@@ -68,5 +81,5 @@ export class OfferScreenComponent implements OnDestroy {
       if (heading) { heading.tabIndex = -1; heading.focus(); }
     }, { injector: this.injector });
   }
-  ngOnDestroy(): void { this.pendingFocus = null; this.store.clear(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.pendingFocus = null; this.store.clear(); }
 }

@@ -27,7 +27,7 @@ describe('presenter captured email inspection', () => {
       { provide: AuthPort, useValue: { state: authState } }, { provide: OutboxClient, useValue: { read } },
     ] }).compileComponents();
   });
-  afterEach(() => { fixture?.destroy(); fixture = undefined; TestBed.resetTestingModule(); });
+  afterEach(() => { fixture?.destroy(); fixture = undefined; TestBed.resetTestingModule(); vi.restoreAllMocks(); });
   const root = () => fixture!.nativeElement as HTMLElement;
   const text = () => root().textContent ?? '';
   const button = (label: string) => Array.from(root().querySelectorAll('button')).find((node) => node.textContent?.trim() === label)!;
@@ -216,4 +216,25 @@ describe('presenter captured email inspection', () => {
     const signal = read.mock.calls[0][0]!.signal!; fixture.destroy(); fixture = undefined; expect(signal.aborted).toBe(true);
     pending.resolve(ok()); await Promise.resolve(); expect(component.messages()).toEqual([]); expect(component.selected()).toBeNull();
   });
+  it('rereads an idle presenter outbox on native visibility without selecting or focusing a row', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(read).toHaveBeenCalledTimes(2); expect(focus).not.toHaveBeenCalled();
+  });
+
+  it('does not overlap an outbox read, and resumes on a later eligible native trigger', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const pending = deferred<OutboxResult>(); read.mockReturnValueOnce(pending.promise);
+    fixture = TestBed.createComponent(OutboxComponent); fixture.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+    pending.resolve(ok()); await settled(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await settled(); expect(read).toHaveBeenCalledTimes(2);
+  });
+  it('does not reread on native signals after sign-out or owner teardown', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); authState.set({ status: 'signed-out' }); fixture!.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+    fixture!.destroy(); fixture = undefined; document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+  });
+
 });

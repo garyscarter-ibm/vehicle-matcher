@@ -25,6 +25,7 @@
         </div>
       </section>
       <div class="order-feedback" aria-live="polite">
+        @if (refreshMessage()) { <p>{{ refreshMessage() }}</p> }
         @if (busy()) { <p role="status">{{ action().busy ? 'Updating your order…' : 'Reading the latest provider status…' }}</p> }
         @if (notice()) { <p class="order-notice" tabindex="-1">{{ notice() }}</p> }
       </div>
