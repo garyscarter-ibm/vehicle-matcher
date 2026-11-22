@@ -13,7 +13,10 @@ import { FactListComponent } from '../kit/fact-list.component';
 import { StageListComponent } from '../kit/stage-list.component';
 import { StageTrackerComponent } from '../kit/stage-tracker.component';
 import { orderIdentityRows } from '../kit/order-identity';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent], styleUrl: './gallery.component.css', template: `
+import { FinishLabelComponent } from '../kit/finish-label.component';
+import { DecisionHighlightsComponent } from '../kit/decision-highlights.component';
+import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -53,8 +56,39 @@ import { orderIdentityRows } from '../kit/order-identity';
     <gcsp-stage-tracker heading="Order progress" [level]="3" [stages]="orderStages" />
     <gcsp-stage-tracker heading="Ordering not updated" [level]="3" [stages]="[{ label: 'Driver approval', state: 'declined', note: 'The driver record needs review.' }, { label: 'Ordering', state: 'blocked', owner: 'Scheme team', next: 'Check the ordering response' }]" />
   </section>
+  <section class="gcsp-panel"><h2>Vehicle finishes and decision highlights</h2>
+    <p class="gcsp-note">Source presenters with invented copy. Swatches are decorative colour families; unconfirmed colours stay neutral.</p>
+    <div class="gcsp-finishes">
+      <gcsp-finish-label label="Paint" value="Portimao Blue metallic" [labelled]="true" />
+      <gcsp-finish-label label="Upholstery" value="Black with blue stitching Vernasca leather" [labelled]="true" />
+      <gcsp-finish-label label="Upholstery" value="Coral red/black Veganza" [labelled]="true" />
+      <gcsp-finish-label label="Paint" value="Alpine White" shade="unsupported" [labelled]="true" />
+      <gcsp-finish-label label="Paint" />
+    </div>
+    <gcsp-decision-highlights [benefits]="decisionBenefits" [tradeoffs]="decisionTradeoffs" />
+    <gcsp-decision-highlights [benefits]="decisionBenefits" [tradeoffs]="decisionTradeoffs" layout="list" />
+    <gcsp-decision-highlights layout="list" />
+  </section>
+  <section class="gcsp-panel"><h2>Focused decision layout shell</h2>
+    <p class="gcsp-note">The source summary and reading-order slots only. Media, complete car details and live offer integration are pending.</p>
+    <gcsp-vehicle-decision name="BMW iX1" kicker="Your buddy found a car for you" layout="focused"
+      [finishes]="decisionFinishes" [points]="1100" [allowance]="1300" pointsDifference="300 fewer than your current car">
+      <div decisionDeadline class="gcsp-decision-deadline"><div><strong>Held until 14:30</strong><p class="gcsp-decision-date">Sunday 22 November 2026</p></div><div class="gcsp-decision-clock"><p class="gcsp-countdown">1h 20m</p><p class="gcsp-decision-date">Static gallery example</p></div></div>
+      <div decisionActions class="gcsp-offer-actions"><button gcspButton type="button" disabled>Review &amp; accept</button><button gcspButton type="button" variant="ghost" disabled>Decline offer</button></div>
+      <p decisionNote class="gcsp-note">Gallery actions are not connected.</p>
+      <div decisionMedia><p class="gcsp-note">Supplied media slot</p></div>
+      <div decisionDetails><p class="gcsp-note">Complete supplied facts, decision and equipment slot</p></div>
+    </gcsp-vehicle-decision>
+  </section>
 ` })
 export class GalleryComponent {
+  readonly decisionFinishes = [{ label: 'Paint', value: 'Portimao Blue metallic' }, { label: 'Upholstery', value: 'Black with blue stitching Vernasca leather' }];
+  readonly decisionBenefits = [
+    { number: 300, title: 'fewer points', detail: 'Every month, compared with your current car' },
+    { number: 0, title: 'extra payment', detail: 'A supplied zero stays visible' },
+    { title: 'A third supplied benefit' }, { title: 'A fourth supplied benefit' }, { title: 'A fifth supplied benefit' },
+  ];
+  readonly decisionTradeoffs = [{ number: 30, title: 'litres less', detail: 'Boot space compared with your current car' }];
   readonly orderIdentity = orderIdentityRows('GCSP-000123', '0123456');
   readonly selectionStages = [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' }, { name: 'sent to ordering', state: 'not-started' }];
   readonly orderStages = [

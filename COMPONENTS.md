@@ -609,3 +609,25 @@ separate from its refused-selection stage list. Gallery: **Selection and order s
 shows complete/waiting/not-started/pending/failed selection states, exact order identity,
 dated current/upcoming order stages, declined/blocked owner/next states. Focused tests
 cover source wording/order, heading association, missing/unknown values and London time.
+
+### Angular finishes and decision presenters (FUCQ-555)
+
+These source presenters reuse FUCQ-548's global styles without copying CSS. Their
+hosts use `display: contents`. They fetch nothing, emit no business commands and
+infer no eligibility, comparison winner, clock or saving. This source checkpoint
+does not establish stylesheet integration, offer composition, rendered parity or
+acceptance; reconcile with FUCQ-548's complete Port status inventory at integration.
+
+| Source presenter | Angular target and public contract |
+|---|---|
+| `finishLabel` / `finishShade` | `FinishLabelComponent` / `gcsp-finish-label`: required `label`, optional `value`, `shade` and `labelled` (false). Source `.gcsp-finish`, decorative `aria-hidden` swatch, unknown hatching class and full readable label/value remain. `kit/finish-shades.ts` owns the ONE shared palette, neutral and exact-name resolver; `finish-shades-data.ts` preserves the frozen generated projection, its source keys and digest. NFKC/whitespace/case normalization and Paint/Colour/Upholstery/Interior aliases remain. An explicit unsupported shade stays neutral; unknown, generic and ambiguous names do not imply a colour. Reuse this presenter and mapping instead of per-view swatches or parsing colour/stitching words. |
+| `decisionHighlights` | `DecisionHighlightsComponent` / `gcsp-decision-highlights`: readonly `benefits`/`tradeoffs` entries `{ number?: string \| number, title, detail? }`, `layout: 'default' \| 'list'`. Source Benefits/Tradeoffs groups, number emphasis including zero, all supplied entries/details and exact empty states remain. The caller supplies grounded comparisons; the presenter selects no priorities or winners. Use instead of local highlight grids/lists. |
+| `vehicleDecisionCard` decision layout shell | `VehicleDecisionComponent` / `gcsp-vehicle-decision`: supplied `name`, `kicker`, `finishes`, nullable numeric `points`/`allowance`, optional supplied `contribution`/`pointsDifference` text and `layout: 'default' \| 'focused'`. Keeps source decision root, summary/head/terms/finishes/details classes, focused labels, finite/zero/missing cost treatment and summary/actions before media in reading order. Content slots are `[decisionDeadline]`, `[decisionActions]`, `[decisionNote]`, `[decisionMedia]`, `[decisionOverview]`, `[decisionDetails]`. Reuse the shell instead of building a local offer layout. Generic exact-card behavior and actual media/facts/decision/equipment presenters are not implemented or claimed by this shell; the caller must retain every supplied detail through the canonical shared presenters at integration. |
+
+Gallery: **Vehicle finishes and decision highlights** shows known, mixed, unsupported
+and missing finishes; five uncapped benefits, zero emphasis, default/list layouts and
+empty groups. **Focused decision layout shell** shows static summary/deadline/actions
+with explicit media/details slots, not a live offer. Compatible source FactList,
+MediaGallery, VehicleDetails, SideDrawer/Tabs and generic exact-card composition remain
+separate named integration obligations. Focused tests cover the source display
+contracts; every original FUCQ-555 acceptance criterion remains open.
