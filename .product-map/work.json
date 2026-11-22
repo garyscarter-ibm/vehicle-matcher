@@ -10726,6 +10726,43 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-548",
+      "title": "Restore employee notification bell",
+      "type": "Bug",
+      "status": "In Progress",
+      "branch": "dev/DEV-2026-11-22-vesper-023",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-548",
+      "observed_at": "2026-11-22T20:34:53Z",
+      "workers": [
+        {
+          "name": "Petunia Pig",
+          "role": "story-lead",
+          "observed_at": "2026-11-22T20:34:37.300083Z",
+          "expires_at": "2026-11-23T23:59:59Z"
+        }
+      ],
+      "slices": [
+        {
+          "id": "styles",
+          "status": "in-progress",
+          "title": "Global source styles and collision proof (5 points)",
+          "observed_at": "2026-11-22T20:34:53Z",
+          "evidence": "Claim 1f40b2bb1; source diagnosis checked; before-fix live captures and source CSS assembly next."
+        },
+        {
+          "id": "bell",
+          "status": "not-started",
+          "title": "Native notification bell and refresh source (5 points)"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected browser suite, screenshot pairs and critique (3 points)"
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1
