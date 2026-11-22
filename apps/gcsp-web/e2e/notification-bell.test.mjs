@@ -13,6 +13,8 @@ const activityRequests = (suite, label = 'employee') => suite.receipt.requests.f
 const bell = (page) => page.getByRole('button', { name: /^Notifications,/ });
 const panel = (page) => page.locator('.gcsp-bell-panel');
 const isOpen = (page) => bell(page).getAttribute('aria-expanded');
+const waitOpen = (page, open) => until(async () => await isOpen(page) === String(open),
+  `The actual bell disclosure must render ${open ? 'open' : 'closed'}`);
 
 test('FUCQ-548: employee bell follows actual Java offers on the started signed-in composition', { timeout: 480000 }, async (t) => {
   const suite = await startComposition();
@@ -33,7 +35,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await panel(employee).getByText('No notifications yet.', { exact: true }).waitFor();
     await suite.screenshot(employee, 'empty-1280');
     await employee.keyboard.press('Escape');
-    assert.equal(await isOpen(employee), 'false');
+    await waitOpen(employee, false);
     assert.equal(await bell(employee).evaluate((node) => document.activeElement === node), true);
     assert.equal(await employee.locator('.gcsp-bell-note').isVisible(), false, 'First read has no new-offer note');
     suite.receipt.checks.empty = true;
@@ -120,22 +122,25 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     suite.receipt.checks.realOfferAndOneOffNote = true;
   });
 
-  await t.test('AC1/5: keyboard, account disclosure, outside close, narrow layout and offer navigation preserve count', async () => {
+  await t.test('AC1/5: keyboard, account disclosure, outside close, narrow layout and offer navigation preserve count', async (caseContext) => {
+    if (!offer) { caseContext.skip('Offer setup failed; keyboard/narrow/count behavior remains unrun'); return; }
     await employee.getByLabel('Account details', { exact: true }).click();
-    assert.equal(await employee.locator('.gcsp-account-details').getAttribute('open'), '');
+    await until(async () => await employee.locator('.gcsp-account-details').getAttribute('open') === '', 'The account disclosure opens');
     await bell(employee).focus(); await employee.keyboard.press('Enter');
-    assert.equal(await isOpen(employee), 'true');
-    assert.equal(await employee.locator('.gcsp-account-details').getAttribute('open'), null, 'Opening the bell closes the account disclosure');
+    await waitOpen(employee, true);
+    await until(async () => await employee.locator('.gcsp-account-details').getAttribute('open') === null, 'Opening the bell closes the account disclosure');
     await employee.keyboard.press('Escape');
+    await waitOpen(employee, false);
     assert.equal(await bell(employee).evaluate((node) => document.activeElement === node), true);
     await bell(employee).click();
     const outside = employee.getByRole('heading', { level: 1 }).first();
     await outside.focus(); await outside.click();
-    assert.equal(await isOpen(employee), 'false', 'Outside click closes the panel');
+    await waitOpen(employee, false);
     assert.equal(await outside.evaluate((node) => document.activeElement === node), true, 'Outside close preserves deliberate outside focus');
     assert.equal(await bell(employee).getAttribute('aria-label'), 'Notifications, 1 car offer waiting');
     await employee.setViewportSize({ width: 375, height: 812 });
     await bell(employee).click();
+    await waitOpen(employee, true);
     const box = await panel(employee).boundingBox();
     assert.ok(box && box.x >= 0 && box.x + box.width <= 376, 'The narrow panel fits the viewport');
     assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The header adds no narrow horizontal overflow');
@@ -143,7 +148,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).click();
     await employee.waitForURL((url) => url.pathname.includes('/gcsp/offers/'));
     await bell(employee).waitFor();
-    assert.equal(await bell(employee).getAttribute('aria-label'), 'Notifications, 1 car offer waiting', 'Opening the actual offer does not clear the count');
+    await until(async () => await bell(employee).getAttribute('aria-label') === 'Notifications, 1 car offer waiting', 'Opening the actual offer does not clear the count');
     await suite.screenshot(employee, 'offer-count-preserved-375');
     await employee.setViewportSize({ width: 1280, height: 800 });
     await employee.goto(`${suite.origins.web}/gcsp/account`);
@@ -185,7 +190,8 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     suite.receipt.checks.refreshTriggers = true;
   });
 
-  await t.test('AC2/5: actual expiry yields an expired-offer row and clears the waiting count', async () => {
+  await t.test('AC2/5: actual expiry yields an expired-offer row and clears the waiting count', async (caseContext) => {
+    if (!offer) { caseContext.skip('Offer setup failed; actual expiry remains unrun'); return; }
     const clock = await suite.call(presenter, 'GET', '/presenter/clock');
     assert.equal(clock.status, 200);
     const seconds = Math.ceil((Date.parse(offer.expiresAt) - Date.parse(clock.body.value.now)) / 1000) + 60;

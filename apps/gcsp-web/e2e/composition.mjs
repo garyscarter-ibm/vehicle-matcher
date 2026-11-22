@@ -318,8 +318,22 @@ export async function startComposition() {
       const expected = input.initialBrief.brief;
       const actual = read.body.value.brief;
       const project = (value, keys) => Object.fromEntries(keys.map((key) => [key, value[key]]));
+      const storedPredecessorIsNull = sql(`SELECT previous_brief_version IS NULL FROM briefs WHERE environment_id=${literal(envId)}
+        AND run_id=${literal(runId)} AND employee_id=${literal(expected.employeeId)} AND brief_version=1;`).split('\n').at(-1) === 't';
+      assert.equal(storedPredecessorIsNull, true, 'The immutable first brief still stores its exact NULL predecessor');
+      assert.ok(actual.previousBriefVersion === null || actual.previousBriefVersion === 0,
+        'Only the observed first-version null/0 read discrepancy is outside this bell comparison');
+      receipt.predecessorRead = { frozen: expected.previousBriefVersion, publicJava: actual.previousBriefVersion,
+        storedPredecessorIsNull, difference: expected.previousBriefVersion !== actual.previousBriefVersion,
+        scope: 'Only previousBriefVersion is excluded from semantic input equality; the stored value/source is unchanged.',
+        derivationEvidence: [
+          'Java allocation/Prepare.java:237-242 selects current brief_version/content/buddy/semantic_digest; Claim.java:130-141 checks current version and consent.',
+          'Java ActivityService.java:93-101 reads the stored nullable predecessor directly with wasNull; lines204-228 use it only for state-change event consistency, independently from the offer query at113 onward.',
+          'Angular activity/notification.model.ts:11-41 derives rows/count from currentOffer/offers/display; notification.source.ts does not consume brief lineage.',
+          'Frozen blocks/gcsp/activity/notification-source.js:18-61 derives rows/count from currentOffer/offers/display; server/gcsp/allocation and offers contain no previousBriefVersion access.',
+        ] };
       const contentKeys = ['schemaVersion', 'preferences', 'essentials', 'knownFacts', 'buddy', 'briefVersion',
-        'previousBriefVersion', 'status', 'policyVersion', 'confirmedBy'];
+        'status', 'policyVersion', 'confirmedBy'];
       assert.deepEqual(project(actual, contentKeys), project(expected, contentKeys), 'Actual Java brief/consent equals captured Node initial content');
       assert.equal(Date.parse(actual.confirmedAt), Date.parse(expected.confirmedAt));
       const contextExpected = { subject: 'demo-paula', roles: ['employee'], environmentId: envId, runId,

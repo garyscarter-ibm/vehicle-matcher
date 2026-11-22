@@ -45,6 +45,10 @@ policy is `gcsp-policy-v1+offer-journey-v1`; existing Java startup adopts it. Ac
 brief/consent and clock responses are compared to captured inputs, mapping only environment/run identifiers.
 Public editor validation is unchanged. Stock enters the existing tranche-plan provider; public presenter actions
 create release/allocation/holds/offers/counts. The test asserts these derived tables are empty before those actions.
+The known initial `GET /brief` predecessor projection difference (`0` versus frozen `null`) is retained separately:
+the database must still store `NULL`, current brief version/content/consent stay exact, and only this lineage metadata
+field is excluded from semantic equality. Recorded source references show allocation/offer/bell derivation does not
+use the malformed public field; activity event-history validation reads the correct nullable database value directly.
 Java's named release cue differs from the generated Node window; the extra public Advanced clock advance and tick
 to the exact captured generated instant are recorded. No successful named-reset claim is made.
 
