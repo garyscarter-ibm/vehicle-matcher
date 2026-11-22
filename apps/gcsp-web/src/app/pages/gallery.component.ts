@@ -9,8 +9,15 @@ import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { DataTableComponent } from '../kit/data-table.component';
 import { VehicleCardComponent } from '../kit/vehicle-card.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent], styleUrl: './gallery.component.css', template: `
+import { NotificationBellComponent } from '../kit/notification-bell.component';
+import { NotificationModel } from '../kit/notification-bell.types';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, NotificationBellComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
+  <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
+    @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
+      <div gcspNotificationBell [model]="example.model" [previewOpen]="example.open" [pinned]="true" [noteMs]="2147483647"></div>
+    </div> }
+  </div></section>
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
   <gcsp-labelled-field controlId="gallery-email" label="Email address" hint="Your notification address." error="Enter an email address."><input id="gallery-email" type="email" aria-describedby="gallery-email-hint gallery-email-error" aria-invalid="true" /></gcsp-labelled-field></section>
@@ -44,6 +51,19 @@ import { VehicleCardComponent } from '../kit/vehicle-card.component';
   </section>
 ` })
 export class GalleryComponent {
+  private readonly waitingBell: NotificationModel = { status: 'ok', waiting: 1, note: null, rows: [{ key: 'offer:gallery', kind: 'offer', waiting: true,
+    title: 'Your buddy found a car', car: 'BMW i5 Touring eDrive40, Sophisto Grey', detail: 'Reserved for you. Respond by 14:00.', image: { src: '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp' },
+    action: { label: 'View your offer', href: '/gcsp/offers/gallery', variant: 'button' } }] };
+  readonly bells: readonly { label: string; open: boolean; model: NotificationModel }[] = [
+    { label: 'None waiting', open: false, model: { status: 'ok', waiting: 0, rows: [], note: null } },
+    { label: 'Waiting', open: false, model: this.waitingBell },
+    { label: 'New offer note', open: false, model: { ...this.waitingBell, note: { id: 'gallery-note', title: 'Your buddy found a car', text: 'BMW i5 Touring. Respond by 14:00.' } } },
+    { label: 'Open current offer', open: true, model: this.waitingBell },
+    { label: 'Open empty', open: true, model: { status: 'ok', waiting: 0, rows: [], note: null } },
+    { label: 'Open expired offer', open: true, model: { status: 'ok', waiting: 0, note: null, rows: [{ key: 'offer:expired-gallery', kind: 'offer', title: 'Your offer expired.',
+      action: { label: 'View expired offer', href: '/gcsp/offers/expired-gallery', variant: 'link' } }] } },
+    { label: 'Open unavailable', open: true, model: { status: 'unavailable', waiting: 0, rows: [], note: null } },
+  ];
   readonly cardOpened = signal('');
   readonly tableOpened = signal('');
   readonly tableColumns = [{ key: 'employee', label: 'Employee' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }];

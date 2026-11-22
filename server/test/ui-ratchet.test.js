@@ -323,7 +323,7 @@ function portRows(catalogue) {
     const c = cells(lines[j]);
     if (c.every((x) => !x)) continue;
     const at = (name) => c[cols.indexOf(name.toLowerCase())] ?? "";
-    rows.push({ component: at("Source component"), root: at("Root class"), status: at("Status") });
+    rows.push({ component: at("Source component"), root: at("Root class"), target: at("Target"), status: at("Status") });
   }
   return rows;
 }
@@ -349,11 +349,17 @@ function portReport() {
       if (!target.has(rewrites.get(`${sheet}\n${sel}`) ?? sel)) missing.push(`${sheet}: ${sel}`);
     }
   }
-  const kit = filesUnder(p.kit, () => true).map(readText);
+  const kitFiles = filesUnder(p.kit, () => true);
+  const kit = kitFiles.map(readText);
   const unported = [];
   for (const row of portRows(p.catalogue ?? "COMPONENTS.md")) {
     const status = row.status.replace(/`/g, "").trim();
     if (/^ported$/i.test(status)) {
+      if (/^none \((?:utility|gallery composition)\)$/i.test(row.root.replace(/`/g, "").trim())) {
+        const targetFile = row.target.replace(/`/g, "").trim();
+        if (!targetFile || !kitFiles.includes(targetFile)) unported.push(`${row.component}: rootless port must name an exact target file in the configured kit`);
+        continue;
+      }
       const cls = row.root.replace(/`/g, "").trim().replace(/^\./, "").split(".")[0];
       if (!cls) unported.push(`${row.component}: marked ported, but it names no root class`);
       else if (!kit.some((text) => new RegExp(`(?<![\\w-])${cls.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\w-])`).test(text)))

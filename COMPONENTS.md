@@ -512,9 +512,27 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
 | `gcsp-vehicle-card` | Released-car presenter with required exact `memberId`/`name`, optional line/order number, provided images/fallback, nullable points/allowance/contribution, supplied eligibility, `reviewDisabled`/`disabledReason` and `FactRow[]`. Emits `{ memberId, action: 'review' \| 'details' }`; no fetch, policy or claim. Native collapsed Car facts retains missing/zero/false. Disabled review reasons have unique accessible IDs. Gallery: Released vehicle card, with unavailable review and explicit details feedback. |
 | `gcsp-media-gallery` | Provided ordered `{ src, alt?, caption? }[]`, name and placeholder; default feature/thumbnails/dialog with keyboard navigation and focus return. Optional `compact` defaults false; stock cards use a 180px cover/fallback with no thumbnail/caption/enlarge controls. Switching compact closes the viewer and resets selection; no generated imagery or source lookup. |
+| `div[gcspNotificationBell]` | Native port of frozen `notificationBell`: source `.gcsp-bell*` DOM/classes, badge, note, current/expired rows and primary offer action. Input `model: NotificationModel`; outputs `opened` and `navigate(href)`. `open()`/`close(restoreFocus)` coordinate account disclosure. Escape/outside click, focus return and six-second note teardown match the source. Gallery-only `previewOpen`/`pinned` show retained states. |
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
 
 App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
+
+### Angular notification source (FUCQ-548)
+
+The employee shell connects to root-scoped `NotificationSource` in `activity/notification.source.ts`.
+It reuses authenticated `ActivityClient.readActivity` and `readOfferDisplay` envelopes, derives only
+the current active/expired offer and expired history, deduplicates and caps six rows. The thumbnail
+uses the existing approved source/fidelity registry; the source London-time formatter supplies HH:MM.
+Opening the disclosure or following an offer preserves the active-offer count.
+
+Connect, successful presenter commands, visibility return, persisted pageshow and visible 30-second
+polls refresh one coalesced read. Disconnect aborts reads and removes listeners/timers; remount retains
+the last successful model without replaying its one-off note. Subject, environment, run, employee and
+sign-out changes clear transient state and abort the old scope. A later failed read preserves the last
+success; before success the panel is unavailable. Successful presenter mutations publish only a timestamp
+and random nonce through `gcsp:presenter-action` DOM/storage lanes; storage refusal preserves command success.
+The gallery covers none/waiting/new-note/open-current/open-empty/open-expired/open-unavailable. Focused
+specs establish these local behaviors; connected Java/OIDC/PostgreSQL and human 1280 parity review remain separate gates.
 
 ### Angular preferences and rating (FUCQ-441)
 
@@ -612,10 +630,10 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
 | `media-gallery` (`blocks/gcsp/kit/media-gallery.js`) | `.gcsp-media-gallery` | | not yet | pending |
 | `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | | not yet | pending |
-| `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | | not yet | pending |
+| `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | `apps/gcsp-web/src/app/kit/notification-bell.component.ts` | ported | yes |
 | `order-identity` (`blocks/gcsp/kit/order-identity.js`) | none (utility) | | not yet | pending |
 | `plain-copy` (`blocks/gcsp/kit/plain-copy.js`) | none (utility) | | not yet | pending |
-| `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | | not yet | pending |
+| `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | `apps/gcsp-web/src/app/kit/presenter-actions.ts` | ported | yes |
 | `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
 | `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
 | `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
@@ -635,4 +653,4 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `vehicle-image-assets` (`blocks/gcsp/kit/vehicle-image-assets.js`) | none (utility) | | not yet | pending |
 | `view-status` (`blocks/gcsp/kit/view-status.js`) | `.gcsp-vh` | | not yet | pending |
 
-The port ratchet compares the frozen source stylesheet snapshot with the global Angular assembly, checks this table against Angular kit files, and scans Angular `.ts`/`.html` files for direct copies of source kit pieces. New ports lower the component count; source selectors stay complete. Run `node server/test/ui-ratchet.test.js --debt` to see remaining work.
+The port ratchet compares the frozen source stylesheet snapshot with the global Angular assembly, checks this table against Angular kit files, and scans Angular `.ts`/`.html` files for direct copies of source kit pieces. Explicit rootless utility/gallery rows require an exact existing Target file inside the configured kit. New ports lower the component count; source selectors stay complete. Run `node server/test/ui-ratchet.test.js --debt` to see remaining work.

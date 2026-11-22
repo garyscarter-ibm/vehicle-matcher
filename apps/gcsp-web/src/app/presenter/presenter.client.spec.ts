@@ -50,6 +50,21 @@ describe('PresenterClient Java routes, pinned commands and private lifecycle', (
   });
   afterEach(() => vi.useRealTimers());
 
+  it('publishes a minimal refresh signal only after a validated successful mutation', async () => {
+    const events = vi.fn(); document.addEventListener('gcsp:presenter-action', events);
+    const write = vi.spyOn(Storage.prototype, 'setItem');
+    try {
+      fetcher.mockResolvedValueOnce(ok(clock())); await client.readClock(); expect(events).not.toHaveBeenCalled();
+      fetcher.mockResolvedValueOnce(ok(advance())); await client.submit(prepare()); expect(events).toHaveBeenCalledOnce();
+      expect(write).toHaveBeenCalledWith('gcsp:presenter-action', expect.any(String));
+      fetcher.mockResolvedValueOnce(json({ status: 'unavailable', code: 'no-provider', reason: 'Unavailable', retryable: true }, 503));
+      await client.submit(prepare()); expect(events).toHaveBeenCalledOnce();
+      fetcher.mockResolvedValueOnce(ok({ runId: 'wrong' })); await client.submit(prepare()); expect(events).toHaveBeenCalledOnce();
+      write.mockImplementation(() => { throw new Error('private storage'); });
+      fetcher.mockResolvedValueOnce(ok(advance())); expect((await client.submit(prepare())).state).toBe('ready'); expect(events).toHaveBeenCalledTimes(2);
+    } finally { document.removeEventListener('gcsp:presenter-action', events); write.mockRestore(); }
+  });
+
   it('P01 reads only actual presenter GET routes without account selectors or cookies', async () => {
     const controls = { ...clock(), controls: { policyVersion: 'policy-1', step: { value: 60, unit: 'seconds' },
       namedTimes: { release: at }, nextRelease: { status: 'unavailable', reason: 'No future release' } } };

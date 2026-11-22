@@ -66,3 +66,15 @@ test('port ratchet rejects a lost state selector and a false ported component', 
   const missingRoot = fixture(dir => writeFileSync(join(dir, 'kit/component.ts'), 'export const root = "unrelated";'));
   assert.notEqual(missingRoot.status, 0); assert.match(missingRoot.output, /root class .source-component is in none of the kit files/);
 });
+
+test('rootless utility and gallery ports require exact existing target files inside the configured kit', () => {
+  const setRow = (dir, target, rootLabel = 'none (utility)') => writeFileSync(join(dir, 'COMPONENTS.md'),
+    `## Port status\n\n| Source component | Root class | Target | Status | Classes kept |\n| --- | --- | --- | --- | --- |\n| utility | ${rootLabel} | \`${target}\` | ported | yes |\n`);
+  assert.equal(fixture(dir => setRow(dir, 'kit/component.ts')).status, 0);
+  assert.equal(fixture(dir => setRow(dir, 'kit/component.ts', 'none (gallery composition)')).status, 0);
+  for (const target of ['', 'kit/missing.ts', 'kit/', './kit/component.ts', 'kit/../COMPONENTS.md', '../kit/component.ts', 'outside.ts']) {
+    const run = fixture(dir => { writeFileSync(join(dir, 'outside.ts'), 'export const utility = true;'); setRow(dir, target); });
+    assert.notEqual(run.status, 0, `${target}: false rootless port accepted`);
+    assert.match(run.output, /rootless port.*exact target file.*configured kit/);
+  }
+});
