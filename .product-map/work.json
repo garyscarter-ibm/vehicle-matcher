@@ -10756,48 +10756,52 @@
           "id": "account-history-media",
           "status": "in-progress",
           "title": "Shared history, failure regression and hosted image (3 points)",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
-          "evidence": "Image packaging09a60769e/9f668374f retained; installed Angular resolver921 paths/87265982B passed. Original shared DataTable/history source slice resumed with Beaky Sol/high; minimal explicit CaseQueue rowAction seam approved. Build/assembled/actual hosted image proof remains pending."
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open."
         },
         {
           "id": "integration-validation",
           "status": "blocked",
           "title": "Supported sibling integration and focused validation",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
-          "evidence": "Sibling global CSS/navigation/refresh/preferences remain separate unmerged sources. Root coordinates supported integration; no copying/manual stacking. Own source build/targeted proof planned after history. Shared SideDrawer/Tabs/FactList markup differences retain visual integration gap; APIs preserved."
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "Own source76607f189 clean production build and explicit targeted built boundary passed; code_key6fe81454, tree61d1da70. Supported F548/549/550/552/555 sibling/global/shared-presenter integration remains dispatcher work. No copying/manual stacking or rendered acceptance claimed."
         },
         {
           "id": "connected-parity",
           "status": "blocked",
           "title": "Actual live same-state Node Angular parity",
-          "observed_at": "2026-11-22T23:20:18Z",
-          "evidence": "No new connected composition authorised; existing F562Mainreset/F564accountclock scope question unanswered. Exact-state live1280pair, actualassembled/hostedimage200, persistent browser proof and humanreview absent; do not weakenstate/clock equality."
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "No connected runtime/browser/deploy work performed. F562reset503/F564clock decisions remain unanswered; no equality weakened. Actual hosted src200, real same-state1280Node/Angular pair, attachments, independent visual critique and human-signed ledger remain absent. All6original ACs stay open."
         },
         {
           "id": "review-handoff",
-          "status": "not-started",
-          "title": "Lead review, fixed AC evidence and cleanup"
+          "status": "complete",
+          "title": "Lead review, fixed AC evidence and cleanup",
+          "evidence": "Partial Result/plan1f5b0bbe5 published after lead source/caller review, verified receipts, pinned build/asset proof and targeted boundary.71/71owned roots/groups/reservations absent; own dist/dependency link removed, shared caches preserved, heavy slot released. Source handoff only; all6ACs unticked and Jira In Progress unchanged.",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00"
         }
       ],
-      "observed_at": "2026-11-22T23:37:38Z",
+      "observed_at": "2026-11-22T23:54:50Z",
       "workers": [
         {
           "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
           "name": "Chester",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
-          "expires_at": "2026-11-22T23:57:17.621716+00:00",
-          "source": "Observed running via collaboration.list_agents; Buddy793b9f51f lead-reviewed with scoped source evidence; all6 original ACs remain open. Lead completing original history/media and final source validation."
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "expires_at": "2026-11-22T23:59:50.278295+00:00",
+          "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
+          "status": "active"
         },
         {
           "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
           "name": "Beaky Buzzard",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-22T23:37:17.621716+00:00",
-          "expires_at": "2026-11-22T23:57:17.621716+00:00",
-          "source": "Observed running via collaboration.list_agents after authorized original history/DataTable follow-up; same independently verified Sol/high allocation, no fallback/descendants. Buddy source boundary reviewed; now original3point source slice."
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "expires_at": "2026-11-22T23:54:50.278295+00:00",
+          "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
+          "status": "stopped"
         }
       ]
     }
