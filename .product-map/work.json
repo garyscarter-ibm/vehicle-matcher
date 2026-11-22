@@ -10740,15 +10740,17 @@
       "slices": [
         {
           "id": "current-car",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Current car source styling and rating (5 points)",
-          "observed_at": "2026-11-22T23:06:10Z",
-          "evidence": "Beaky current-car/starRating/helpTip implementation underway; selected source tests include expected red regressions and caller selector updates; no lead delivery acceptance yet."
+          "observed_at": "2026-11-22T23:20:17Z",
+          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending."
         },
         {
           "id": "buddy",
-          "status": "not-started",
-          "title": "Account Buddy composition (5 points)"
+          "status": "in-progress",
+          "title": "Account Buddy composition (5 points)",
+          "observed_at": "2026-11-22T23:20:18Z",
+          "evidence": "Same verified Beaky Sol/high resumed for original5point Buddy source slice; canonical timeline/status/tile/offer ports and ActivityStore-read/BriefEditorStore-command composition allocated, no duplicateCSS/store/client changes."
         },
         {
           "id": "account-history-media",
@@ -10759,13 +10761,17 @@
         },
         {
           "id": "integration-validation",
-          "status": "not-started",
-          "title": "Supported sibling integration and focused validation"
+          "status": "blocked",
+          "title": "Supported sibling integration and focused validation",
+          "observed_at": "2026-11-22T23:20:18Z",
+          "evidence": "Required F548globalCSS, F549navigation,F550refresh,F552preferences remain frozen/unmerged; dispatcher coordinates supportedintegration, no copying/manualstacking. Ownbranch productionbuild/targeted proof remain planned after source slices."
         },
         {
           "id": "connected-parity",
-          "status": "not-started",
-          "title": "Actual live same-state Node Angular parity"
+          "status": "blocked",
+          "title": "Actual live same-state Node Angular parity",
+          "observed_at": "2026-11-22T23:20:18Z",
+          "evidence": "No new connected composition authorised; existing F562Mainreset/F564accountclock scope question unanswered. Exact-state live1280pair, actualassembled/hostedimage200, persistent browser proof and humanreview absent; do not weakenstate/clock equality."
         },
         {
           "id": "review-handoff",
@@ -10773,25 +10779,25 @@
           "title": "Lead review, fixed AC evidence and cleanup"
         }
       ],
-      "observed_at": "2026-11-22T23:06:10Z",
+      "observed_at": "2026-11-22T23:20:18Z",
       "workers": [
         {
           "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
           "name": "Chester",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-22T23:06:09.725177+00:00",
-          "expires_at": "2026-11-22T23:26:09.725177+00:00",
-          "source": "Active lead reviewed source diagnosis, plan and approved asset mapping; last direct working observation. Sol/xhigh verified by dispatcher. All6AC incomplete."
+          "observed_at": "2026-11-22T23:20:17.519804+00:00",
+          "expires_at": "2026-11-22T23:40:17.519804+00:00",
+          "source": "Active story lead; source9f668374f lead-reviewed and89selectedtests passed; original6AC incomplete."
         },
         {
           "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
           "name": "Beaky Buzzard",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-22T23:06:09.725177+00:00",
-          "expires_at": "2026-11-22T23:26:09.725177+00:00",
-          "source": "Current-car canonical starRating/helpTip source in progress; direct working update received, title/effective Sol/high independently verified by dispatcher. No completion inferred from tests."
+          "observed_at": "2026-11-22T23:20:17.519804+00:00",
+          "expires_at": "2026-11-22T23:40:17.519804+00:00",
+          "source": "Observed running via collaboration.list_agents after authorised Buddy-slice followup; effective Sol/high/title independently verified; prior current-car source lead-reviewed, now Buddy implementation."
         }
       ]
     }
