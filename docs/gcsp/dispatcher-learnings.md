@@ -2909,3 +2909,9 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-22 20:32 UTC · usget-vesper · DL-20261117-GCC-013 · Unbounded map projection
 
 - The generic product_map.py snapshot projected all historical branches and emitted an oversized response (the command tool reported 9,942,595 bytes omitted). No completion or freshness claim relies on it. Use the authored per-story plan/slice records and bounded output projections for this run; a producer-level bounded snapshot remains a proposed framework improvement. No extra validation run was added.
+
+
+### 2026-11-22 20:39 UTC · usget-vesper · Branch publication and reconciliation observations
+
+- Petunia Pig correctly distinguished the FUCQ-548 planning commit eaecbc88e on its story branch from scaffold_git.py push reporting only the configured base ref. The helper push subcommand targets base by design; its output does not prove story-branch publication. Existing human checkpoint-push authority permits a guarded, non-force explicit story-ref push through the scaffold_git Git wrapper, with the remote tip read back. No helper change or extra approval gate was added.
+- Full open-Bug reconciliation fetched all 248 rows with attachments present, then imported with zero failures. FUCQ-76 and FUCQ-399 are Rejected in a non-Done status category, so the open-Bug query includes them and the importer intentionally skips them. Because reconciliation marking also requires no skipped rows, the helper keeps requesting a complete reconciliation query. This is a bounded tooling inefficiency, not an Angular repair blocker; no marker was hand-edited or guard bypassed.
