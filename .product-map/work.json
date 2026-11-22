@@ -10726,6 +10726,49 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-549",
+      "title": "Angular navigation cannot reach Activity, Greg Next order or Renewal cases",
+      "type": "Bug",
+      "status": "In Progress",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-22-vesper-024",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-549",
+      "workers": [
+        {
+          "name": "Mr Potato Head",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:46:40.248217+00:00",
+          "expires_at": "2026-11-23T00:46:40.248217+00:00",
+          "status": "source/unit navigation build"
+        }
+      ],
+      "observed_at": "2026-11-22T21:46:40Z",
+      "slices": [
+        {
+          "id": "shared-navigation",
+          "status": "in-progress",
+          "title": "Shared-role-navigation-landing-and-breadcrumbs",
+          "observed_at": "2026-11-22T21:46:40Z"
+        },
+        {
+          "id": "employee-entry",
+          "status": "not-started",
+          "title": "Existing-employee-Activity-entry-wiring"
+        },
+        {
+          "id": "validation",
+          "status": "not-started",
+          "title": "Focused-unit-boundary-build-and-lead-review"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real-connected-click-through-and-1280px-pairs"
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1
