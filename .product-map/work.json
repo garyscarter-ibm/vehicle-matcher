@@ -10740,32 +10740,46 @@
           "name": "Mr Potato Head",
           "harness": "codex",
           "observed_at": "2026-11-22T21:46:40.248217+00:00",
-          "expires_at": "2026-11-23T00:46:40.248217+00:00",
-          "status": "source/unit navigation build"
+          "expires_at": "2026-11-22T22:05:23.777457+00:00",
+          "status": "source/component validation finished; required integration remains pending"
+        },
+        {
+          "name": "Sam Sheepdog",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:47:11Z",
+          "expires_at": "2026-11-22T22:05:23.777457+00:00",
+          "status": "published source64271c5ef; stopped"
         }
       ],
-      "observed_at": "2026-11-22T21:46:40Z",
+      "observed_at": "2026-11-22T22:05:54Z",
       "slices": [
         {
           "id": "shared-navigation",
-          "status": "in-progress",
-          "title": "Shared-role-navigation-landing-and-breadcrumbs",
-          "observed_at": "2026-11-22T21:46:40Z"
+          "status": "complete",
+          "title": "Shared navigation, landing and breadcrumbs",
+          "observed_at": "2026-11-22T22:05:23Z",
+          "evidence": "Component/source boundary reviewed at64271c5ef;183 pinned source/caller tests,124 ratchet checks,4 inline/boundary checks and production build passed. Actual integration remains separate/incomplete; lead-review.md and story Result."
         },
         {
           "id": "employee-entry",
-          "status": "not-started",
-          "title": "Existing-employee-Activity-entry-wiring"
+          "status": "complete",
+          "title": "Preferences Activity link",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "Allocated preferences Activity action source/state test reviewed at64271c5ef. F548 bell/F551 Buddy surfaces and actual click-through remain in integration slice; no original AC ticked."
         },
         {
           "id": "validation",
-          "status": "not-started",
-          "title": "Focused-unit-boundary-build-and-lead-review"
+          "status": "complete",
+          "title": "Focused checks, build and review",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "lead-review.md, lead-pinned-source-callers/ratchet/targeted-boundaries/production-build receipts pass; source hashes unchanged.21 Scratch roots absent,21 groups stopped. Scoped source validation only."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Real-connected-click-through-and-1280px-pairs"
+          "status": "blocked",
+          "title": "Connected navigation and screenshot pairs",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "F548 CSS/bell/browser harness unmerged; F551 Buddy surface missing; F562/F564 prerequisite authorization unanswered. Persistent navigation cases, actual signed click-through,1280px pairs/attachments and human review unrun."
         }
       ],
       "unsliced": false
