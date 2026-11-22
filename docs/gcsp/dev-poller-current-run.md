@@ -27,3 +27,9 @@ Startup observations:
 
 
 Node reference worktree: /Users/usget/.codex/worktrees/gcsp-gap-poller/vehicle-matcher, clean at the full e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38 SHA. Preserve it through the run. Petunia Pig (child 01a204f1-577f-74f1-b8e4-86737530c995) is the first lead; requested/selected Sol xhigh is confirmed in its turn_context. Subsequent pickups must check native ui metadata; FUCQ-548 was repaired natively and re-imported, now check-story passes.
+
+## Prerequisite finding and pending routing, 22 November 2026
+
+FUCQ-562 (High, parent433, originating Story479, related561) records the real Java named-journey reset failure: Main returns503 scenario-not-available-yet, because ScenarioCatalogue unconditionally marks non-mechanics capabilities missing. Its native record and sanitized response docs/gcsp/evidence/fucq562/initial-reset-response.json are retained. Russell has been asked whether562 should join this run as a prerequisite; until answered, do not silently add backend implementation to the14-Bug scope or call it deferred/accepted. Continue independent authorised UI work.
+
+For exact-state UI proof, the parent approved loading only immutable frozen Main initial brief/consent/account/policy fixture inputs into an owned testDB via existing fixture/schema helpers, and the exact frozen stock through the existing tranche-plan provider. Actual Java services must produce release/allocation/holds/offers/notifications, then real OIDC/browser reads prove the state. Never insert derived outcomes, add preference categories, weaken editor engagement rules or claim named reset works. Preserve and compare input/clock/state identities; if equivalence cannot be shown, record incomplete parity. This is proof setup, not a production repair or AC waiver.
