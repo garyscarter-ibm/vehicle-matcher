@@ -10726,6 +10726,58 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-552",
+      "title": "Angular preferences category tiles, mode, completeness and editor parity",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-552",
+      "branch": "dev/DEV-2026-11-22-vesper-027",
+      "unsliced": false,
+      "evidence": "Parent verified native claim metadata; original scope preserved. Plan in docs/superpowers/plans/2026-11-22-fucq552-preferences-parity.md",
+      "observed_at": "2026-11-22T22:39:47Z",
+      "slices": [
+        {
+          "id": "category-port",
+          "status": "in-progress",
+          "title": "Source category icons, importance, bin and stopped controls (AC1)",
+          "observed_at": "2026-11-22T22:39:47Z",
+          "evidence": "Independent source allocation accepted; existing category/store interfaces verified; no connected acceptance claimed."
+        },
+        {
+          "id": "mode-meter-port",
+          "status": "not-started",
+          "title": "Source mode choice, help and completeness meter (AC2/3)"
+        },
+        {
+          "id": "editor-controls",
+          "status": "not-started",
+          "title": "Source editor chips and labelled axes (AC4)"
+        },
+        {
+          "id": "preview-cards",
+          "status": "not-started",
+          "title": "Source decision-card preview composition (AC5)"
+        },
+        {
+          "id": "navigation-integration",
+          "status": "not-started",
+          "title": "Reuse F549 and accepted-order links (AC6)"
+        },
+        {
+          "id": "source-validation",
+          "status": "not-started",
+          "title": "Lead review, focused regressions, ratchet, boundaries and build"
+        },
+        {
+          "id": "connected-parity",
+          "status": "not-started",
+          "title": "Integrated real OIDC/state browser cases and reviewed 1280 pairs (all ACs/AC7)"
+        }
+      ]
     }
   ],
   "version": 1
