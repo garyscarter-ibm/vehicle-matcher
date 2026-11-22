@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { PreferenceCategoryComponent } from '../kit/preference-category.component';
 import { StarRatingComponent } from '../kit/star-rating.component';
+import { GregNavigationComponent } from '../kit/greg-navigation.component';
+import { TabsComponent } from '../kit/tabs.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -9,7 +11,7 @@ import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { DataTableComponent } from '../kit/data-table.component';
 import { VehicleCardComponent } from '../kit/vehicle-card.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [TabsComponent, GregNavigationComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -32,6 +34,14 @@ import { VehicleCardComponent } from '../kit/vehicle-card.component';
     <gcsp-data-table caption="Example renewal cases" [columns]="tableColumns" [rows]="tableRows" (opened)="tableOpened.set('Opened example case for Paula')" />
     <p role="status">{{ tableOpened() }}</p>
     <gcsp-data-table caption="Unavailable case actions" [columns]="tableColumns" [rows]="tableRows" [disabled]="true" />
+  </section>
+  <section class="gcsp-panel"><h2>GCSP tabs</h2>
+    <gcsp-tabs label="Car details" [items]="[{ id: 'specification', label: 'Specification', content: specification }, { id: 'equipment', label: 'Selected equipment', content: equipment }]" />
+    <ng-template #specification>Supplied specification</ng-template><ng-template #equipment>Supplied selected equipment</ng-template>
+  </section>
+  <section class="gcsp-panel"><h2>Greg dashboard navigation</h2>
+    <gcsp-greg-navigation page="dashboard" [panels]="{ dashboard: gregDemand, policy: gregPolicy }" />
+    <ng-template #gregDemand>Saved demand and released supply</ng-template><ng-template #gregPolicy>Current policy draft</ng-template>
   </section>
   <section class="gcsp-panel"><h2>Released vehicle card</h2>
     <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"

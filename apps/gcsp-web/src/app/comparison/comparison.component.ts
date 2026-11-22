@@ -1,3 +1,5 @@
+import { NgTemplateOutlet } from '@angular/common';
+import { GregNavigationComponent } from '../kit/greg-navigation.component';
 import { Component, computed, effect, inject, OnDestroy, signal, untracked } from '@angular/core';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
@@ -14,7 +16,7 @@ interface SavedProgress { readonly owner: string; readonly selectedId: Compariso
 const LABELS: Record<ComparisonExperimentId, string> = { 'process-only': 'Process only', 'order-mix': 'Order mix', points: 'Points allowance', 'hold-sweep': 'Hold duration' };
 const MEASURES: Record<string, string> = { acceptableCoverage: 'Covered before renewal', carsNeverAllocated: 'Cars never allocated', heldNotTakenCarDays: 'Car time held but not taken', declinedOffers: 'Offers declined', expiredOffers: 'Offers expired', failedClaims: 'Holds that expired untaken', retries: 'Retries after a lost claim', meanAcceptedFit: 'Calculated fit of accepted cars' };
 const VERDICTS: Record<string, string> = { 'buddy-better': 'Buddy route better', 'current-better': "Today's release route better", 'variant-better': 'Tried value better', 'baseline-better': "Today's value better", 'no-clear-difference': 'No clear difference', 'insufficient-seeds': 'Too few seeds to compare' };
-@Component({ selector: 'gcsp-comparison', imports: [ButtonDirective, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent], templateUrl: './comparison.component.html', styleUrl: './comparison.component.css' })
+@Component({ selector: 'gcsp-comparison', imports: [NgTemplateOutlet, GregNavigationComponent, ButtonDirective, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent], templateUrl: './comparison.component.html', styleUrl: './comparison.component.css' })
 export class ComparisonComponent implements OnDestroy {
   private readonly auth = inject(AuthPort);
   private readonly client = inject(ComparisonClient);

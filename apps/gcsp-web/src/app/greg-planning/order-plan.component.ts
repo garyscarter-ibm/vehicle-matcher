@@ -1,4 +1,4 @@
-import { afterNextRender, Component, ElementRef, inject, Injector, output } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, Injector, input, output } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
 import { FactListComponent } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
@@ -13,6 +13,7 @@ import { ConstraintEditor } from './planning.types';
   templateUrl: './order-plan.component.html', styleUrl: './order-plan.component.css',
 })
 export class OrderPlanComponent {
+  readonly headingLevel = input<1 | 2>(1);
   readonly store = inject(PlanningStore);
   readonly requested = output<void>();
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);

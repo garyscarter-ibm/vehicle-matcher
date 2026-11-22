@@ -1,5 +1,5 @@
 <div class="gcsp-tabs">
-  <div class="gcsp-tabs-list" role="tablist" [attr.aria-label]="label()">
+  <div class="gcsp-tab-list" role="tablist" [attr.aria-label]="label()">
     @for (item of items(); track item.id; let index = $index) {
       <button class="gcsp-tab" type="button" role="tab" [id]="idPrefix + '-tab-' + index" [attr.aria-controls]="idPrefix + '-panel-' + index" [attr.aria-selected]="selectedId() === item.id" [attr.tabindex]="selectedId() === item.id ? 0 : -1" (click)="select(item.id)" (keydown)="onKeydown($event, index)">{{ item.label }}</button>
     }

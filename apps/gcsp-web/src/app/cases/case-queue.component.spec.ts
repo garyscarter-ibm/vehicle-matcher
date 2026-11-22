@@ -54,6 +54,7 @@ describe('actual Greg route, native controls and case focus', () => {
 
   it('mounts the exact lazy route, Greg metadata and server-owned queue without changing Help or offer destinations', async () => {
     await enter(); expect(TestBed.inject(Router).url).toBe('/greg/cases');
+    expect(root().querySelectorAll('[role=tab]')).toHaveLength(6); expect(root().querySelector('[role=tab][aria-selected=true]')?.textContent).toBe('Renewal cases');
     expect(harness.routeDebugElement!.injector.get(ActivatedRoute).snapshot.data).toEqual({ title: 'Employee cases', roles: ['greg'] });
     expect(root().querySelectorAll('h1')).toHaveLength(1); expect(text()).toContain('Renewal cases'); expect(text()).toContain('Greg'); expect(text()).toContain('2026-12-01'); expect(text()).toContain('UTC');
     expect(root().querySelector('img')).toBeNull(); expect(routes.find(r => r.path === 'help')?.data).toEqual({ title: 'Renewal help', roles: ['employee'] });

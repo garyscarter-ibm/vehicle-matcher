@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, inject, viewChild } from '@angular/core';
+import { GregNavigationComponent } from '../kit/greg-navigation.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { DataTableComponent, DataTableColumn, DataTableRow } from '../kit/data-table.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
@@ -12,7 +13,7 @@ import { CaseQueueStore, QueueDraft } from './case-queue.store';
 let serial = 0;
 @Component({
   selector: 'gcsp-case-queue',
-  imports: [ButtonDirective, DataTableComponent, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [GregNavigationComponent, ButtonDirective, DataTableComponent, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
   providers: [CaseQueueStore], templateUrl: './case-queue.component.html', styleUrl: './case-queue.component.css',
 })
 export class CaseQueueComponent implements OnDestroy {

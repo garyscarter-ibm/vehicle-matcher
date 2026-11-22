@@ -45,20 +45,26 @@ describe('Greg route integration and lifetime', () => {
   });
   afterEach(() => { harness?.fixture.destroy(); TestBed.resetTestingModule(); vi.restoreAllMocks(); });
 
+  it('offers all six source-order dashboard tabs and selects Policy from a direct fragment', async () => {
+    await harness.navigateByUrl('/greg#policy', GregRouteComponent); await settle();
+    expect(Array.from(root().querySelectorAll('[role=tab]'), tab => tab.textContent)).toEqual(['Next order', 'Demand and supply', 'Policy', 'Order requests', 'Route comparison', 'Renewal cases']);
+    expect(root().querySelector('[role=tab][aria-selected=true]')?.textContent).toBe('Policy');
+    expect(root().querySelector('h1')?.textContent).toBe('Policy');
+  });
   it('opens the guarded lazy route with one store and one pair of reads for both mounted panels', async () => {
     const route = await open(); const demandScreen = harness.routeDebugElement!.query(By.directive(GregDemandComponent)).componentInstance as GregDemandComponent;
     const policyScreen = harness.routeDebugElement!.query(By.directive(GregPolicyComponent)).componentInstance as GregPolicyComponent;
     expect(demandScreen.store).toBe(route.store); expect(policyScreen.store).toBe(route.store); expect(client.loadDemand).toHaveBeenCalledOnce(); expect(client.readPolicy).toHaveBeenCalledOnce();
-    expect(root().querySelector('h1')!.textContent).toBe('Employee car ordering'); expect(root().querySelectorAll('[role=tabpanel]')).toHaveLength(2);
+    expect(root().querySelector('h1')!.textContent).toBe('Demand and supply'); expect(root().querySelectorAll('[role=tabpanel]')).toHaveLength(6);
     expect(root().querySelector('[role=tab][aria-selected=true]')!.textContent).toBe('Demand and supply'); expect(client.publish).not.toHaveBeenCalled();
   });
   it('keeps draft controls and values on keyboard tab changes without reloading or publishing', async () => {
-    const route = await open(); const tabs = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]'));
+    const route = await open(); const tabs = Array.from(root().querySelectorAll<HTMLButtonElement>('[role=tab]')).filter(tab => ['Demand and supply', 'Policy'].includes(tab.textContent!));
     tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); await settle(); expect(tabs[1].getAttribute('aria-selected')).toBe('true');
     const control = root().querySelector<HTMLInputElement>('input[type=number]')!;
     control.value = '9'; control.dispatchEvent(new Event('input', { bubbles: true })); await settle(); expect(route.store.view().fields[0].draft).toBe('9');
-    tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true })); await settle(); expect(tabs[0].getAttribute('aria-selected')).toBe('true');
-    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true })); await settle();
+    tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true })); await settle(); expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); await settle();
     expect(root().querySelector('input[type=number]')).toBe(control); expect(control.value).toBe('9'); expect(client.loadDemand).toHaveBeenCalledOnce(); expect(client.readPolicy).toHaveBeenCalledOnce(); expect(client.publish).not.toHaveBeenCalled();
   });
   it.each([['employee'], ['presenter'], ['greg', 'presenter']] satisfies Role[][])('denies %j before private reads', async (...roles) => {
