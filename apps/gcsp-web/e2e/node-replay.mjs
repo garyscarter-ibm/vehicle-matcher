@@ -115,6 +115,11 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     receipt.initialDerivedCounts = initialDerivedCounts;
     const tick = good(await runtime.clock.advanceAndTick(control, { commandId: 'f548-node-release',
       expectedClockVersion: initialClock.clockVersion, mode: 'to', to: input.clock.nextRelease.at }), 'Node actual release/allocation');
+    assert.equal(tick.advance.now, expected.clock.now, 'Actual Node and Java final clock instants agree');
+    receipt.finalClockComparison = { node: { now: tick.advance.now, clockVersion: tick.advance.clockVersion,
+      actions: [{ action: 'advanceAndTick to captured generated window', to: input.clock.nextRelease.at }] },
+      java: expected.clock, versionEqualityRequired: false,
+      reason: 'Java uses the recorded extra public preparation actions; versions count those real transitions independently.' };
     const activity = good(await runtime.activity.readActivity(employee), 'Node actual activity');
     const offer = activity.currentOffer;
     assert.equal(offer?.state, 'active', 'Node real services create an active offer');

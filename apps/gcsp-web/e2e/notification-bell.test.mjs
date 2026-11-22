@@ -61,6 +61,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     let clock = await suite.call(presenter, 'GET', '/presenter/controls');
     assert.equal(clock.status, 200);
     const target = suite.input.clock.nextRelease.at;
+    const clockActions = [{ action: 'Next release', observedNow: clock.body.value.now, clockVersion: clock.body.value.clockVersion }];
     if (Date.parse(clock.body.value.now) < Date.parse(target)) {
       const stepSeconds = clock.body.value.controls.step.value;
       const seconds = (Date.parse(target) - Date.parse(clock.body.value.now)) / 1000 - stepSeconds;
@@ -77,11 +78,13 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
       await presenter.getByRole('button', { name: /^Step \d+ seconds$/ }).click();
       await until(() => activityRequests(suite).length > before, 'The real tick refresh reaches employee activity', 8000);
       clock = await suite.call(presenter, 'GET', '/presenter/controls');
+      clockActions.push({ action: 'Advanced clock advance', seconds }, { action: 'Step and tick', seconds: stepSeconds });
       suite.receipt.releaseSetupDifference = { namedCue: suite.input.clock.namedTimes.release, actualGeneratedTarget: target,
         extraPublicAdvanceSeconds: seconds, tickStepSeconds: stepSeconds,
         reason: 'Java Next release uses namedTimes.release; frozen generated Node uses its actual planned windows.' };
     }
     assert.equal(clock.body.value.now, target, 'Release/allocation uses the exact frozen generated instant');
+    suite.receipt.actualReleaseClock = { now: clock.body.value.now, clockVersion: clock.body.value.clockVersion, actions: clockActions };
     await until(async () => await bell(employee).getAttribute('aria-label') === 'Notifications, 1 car offer waiting', 'Real allocation must yield one waiting offer', 12000);
     assert.ok(activityRequests(suite).at(-1).at - actionAt < 8000, 'Presenter notification refresh happens before the next 30s poll');
     await employee.locator('.gcsp-bell-note').getByText('Your buddy found a car', { exact: true }).waitFor({ state: 'visible' });
@@ -112,7 +115,8 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await suite.screenshot(employee, 'active-open-1280');
     suite.receipt.activePanel = { car: await panel(employee).locator('.gcsp-bell-copy p').nth(1).innerText(),
       detail: await panel(employee).locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src') };
-    await suite.compareFrozenNode({ ...suite.receipt.offer, hold: actualHold, panel: suite.receipt.activePanel });
+    await suite.compareFrozenNode({ ...suite.receipt.offer, hold: actualHold, panel: suite.receipt.activePanel,
+      clock: suite.receipt.actualReleaseClock });
     await employee.keyboard.press('Escape');
     await delay(6500);
     assert.equal(await employee.locator('.gcsp-bell-note').isVisible(), false);
