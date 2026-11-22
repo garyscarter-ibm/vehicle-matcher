@@ -70,6 +70,7 @@ describe('actual Greg route, native controls and case focus', () => {
   });
   it('focuses selected heading, shows facts/history/feasibility and returns Close focus to its named Open', async () => {
     await open(); expect(document.activeElement).toBe(root().querySelector('[data-case-heading]'));
+    const table = root().querySelector('gcsp-data-table')!; expect(table.querySelector('.gcsp-table-wrap.is-stack')).not.toBeNull(); expect(table.querySelector('button')?.getAttribute('aria-label')).toBe('Open case for Paula'); expect(table.querySelectorAll('thead th')).toHaveLength(8);
     expect(text()).toContain('Paula · 12345678'); expect(text()).toContain('Dated case history'); expect(text()).toContain('Please help');
     expect(text()).toContain('No suitable stock'); expect(text()).toContain('Preference confirmation unavailable'); expect(text()).toContain('Boot space');
     const status = root().querySelector<HTMLSelectElement>(`#${page.control('status')}`)!;

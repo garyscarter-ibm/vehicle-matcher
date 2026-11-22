@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, computed, inject, viewChild } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
-import { DataTableComponent, DataTableColumn, DataTableRow } from '../kit/data-table.component';
+import { DataTableComponent, DataTableColumn, DataTableRow, DataTableRowAction } from '../kit/data-table.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { FactListComponent } from '../kit/fact-list.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
@@ -28,6 +28,7 @@ export class CaseQueueComponent implements OnDestroy {
     { key: 'trigger', label: 'Opened from' }, { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' },
     { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Due (UTC)' },
   ];
+  readonly rowAction: DataTableRowAction = { header: 'Action', label: 'Open', name: row => `Open case for ${row.label}` };
   readonly rows = computed<readonly DataTableRow[]>(() => this.view().rows.map(row => ({ id: row.caseId, label: row.employee || row.reference,
     cells: { employee: `${row.employee} · ${row.reference}`, deadline: row.source.renewalDeadline || 'Needs confirmation',
       trigger: row.facts.find(f => f.label === 'Opened from')?.value || 'Not supplied', reason: row.source.reason,

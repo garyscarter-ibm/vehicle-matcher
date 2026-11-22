@@ -7,7 +7,7 @@ import { StatusScreenComponent } from '../kit/status-screen.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
-import { DataTableComponent } from '../kit/data-table.component';
+import { DataTableComponent, DataTableColumn, DataTableRow, DataTableRowAction } from '../kit/data-table.component';
 import { BuddyStatusComponent } from '../kit/buddy-status.component';
 import { BuddyTileComponent } from '../kit/buddy-tile.component';
 import { ActivityTimelineComponent } from '../kit/activity-timeline.component';
@@ -52,9 +52,12 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
     <gcsp-activity-offer [offer]="heldOffer" [display]="heldDisplay" [level]="3" />
   </section>
   <section class="gcsp-panel"><h2>Case queue table</h2>
-    <gcsp-data-table caption="Example renewal cases" [columns]="tableColumns" [rows]="tableRows" (opened)="tableOpened.set('Opened example case for Paula')" />
+    <gcsp-data-table caption="Example renewal cases" [rowAction]="tableRowAction" [stack]="true" [columns]="tableColumns" [rows]="tableRows" (opened)="tableOpened.set('Opened example case for Paula')" />
     <p role="status">{{ tableOpened() }}</p>
-    <gcsp-data-table caption="Unavailable case actions" [columns]="tableColumns" [rows]="tableRows" [disabled]="true" />
+    <gcsp-data-table caption="Unavailable case actions" [rowAction]="tableRowAction" [stack]="true" [columns]="tableColumns" [rows]="tableRows" [disabled]="true" />
+  </section>
+  <section class="gcsp-panel"><h2>Canonical comparison table</h2><p class="gcsp-note">Source comparison keeps columns at narrow widths. Numeric values, missing evidence, privacy bands and the supplied winner stay distinct. No row actions are configured.</p>
+    <gcsp-data-table caption="Example car comparison" [columns]="compareColumns" [rows]="compareRows" [compare]="true" [equalColumns]="true" [captionHidden]="true" />
   </section>
   <section class="gcsp-panel"><h2>Released vehicle card</h2>
     <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"
@@ -83,6 +86,13 @@ export class GalleryComponent {
   ];
   readonly cardOpened = signal('');
   readonly tableOpened = signal('');
+  readonly tableRowAction: DataTableRowAction = { header: 'Action', label: 'Open', name: row => `Open case for ${row.label}` };
+  readonly compareColumns: readonly DataTableColumn[] = [{ key: 'metric', label: 'Measure' }, { key: 'first', label: 'Car one', numeric: true, detail: 'Current configuration' }, { key: 'second', label: 'Car two', numeric: true, detail: 'Alternative configuration' }];
+  readonly compareRows: readonly DataTableRow[] = [
+    { id: 'gallery-points', label: 'Points', cells: { metric: 'Points per month', first: 1200, second: { label: '1,100', winner: true } } },
+    { id: 'gallery-band', label: 'Privacy band', cells: { metric: 'Matching employees', first: { label: 'Fewer than five', isBand: true, fewerThan: 5 }, second: { label: 'Not recorded', missing: true } } },
+    { id: 'gallery-status', label: 'Status', cells: { metric: 'Status', first: { label: 'Current car', emphasis: true, tone: 'success' }, second: null } },
+  ];
   readonly tableColumns = [{ key: 'employee', label: 'Employee' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }];
   readonly tableRows = [{ id: 'gallery-paula', label: 'Paula', cells: { employee: 'Paula', status: 'Open', owner: 'Scheme team' } }];
   readonly removing = signal(false); readonly rating = signal<number | null>(4);

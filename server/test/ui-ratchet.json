@@ -406,6 +406,10 @@
     {
       "path": "apps/gcsp-web/src/app/kit/star-rating.component.css",
       "max_lines": 2
+    },
+    {
+      "path": "apps/gcsp-web/src/app/kit/data-table.component.css",
+      "max_lines": 2
     }
   ],
   "baseline": {

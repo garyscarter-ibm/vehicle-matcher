@@ -120,18 +120,12 @@
         </section>
         @if (!pendingIntent()) { <gcsp-account-buddy /> }
       </div>
-      <section class="account-history" aria-labelledby="history-title">
-        <h2 id="history-title">Order history</h2>
-        @if (account.historyState === 'no-history' && !placedRecord()) { <p class="gcsp-note">No order history.</p> }
+      <section class="account-history gcsp-account-history" aria-labelledby="history-title">
+        <h2 id="history-title" class="gcsp-h2">Order history</h2>
+        @if (!historyRows().length) { <p class="gcsp-note">No order history.</p> }
         @else {
-          <table><caption class="visually-hidden">Order history</caption><thead><tr><th scope="col">Car</th><th scope="col">Scheme</th><th scope="col">Collected</th><th scope="col">Ended</th><th scope="col">Status</th><th scope="col">Record</th></tr></thead>
-            <tbody>@if (placedRecord(); as car) {
-              <tr class="placed-order"><th scope="row" data-label="Car">{{ carName(car) }}</th><td data-label="Scheme">{{ schemeName(car.schemeId) || 'Not supplied' }}</td><td data-label="Collected">Not supplied</td><td data-label="Ended">Not supplied</td><td data-label="Status">{{ status(car.status) || 'Not supplied' }}</td><td data-label="Record"><button gcspButton variant="ghost" type="button" [attr.aria-label]="'View record for ' + carName(car)" (click)="openRecord(car, $event)">View record</button></td></tr>
-            } @for (history of account.histories; track history.schemeId) { @for (car of history.entries; track car.contractId) {
-              <tr><th scope="row" data-label="Car">{{ carName(car) }}</th><td data-label="Scheme">{{ historyScheme(history.schemeId) }}</td><td data-label="Collected">{{ date(car.actualCollectionDate) || 'Not supplied' }}</td><td data-label="Ended">{{ date(car.returnedDate || car.contractEndDate) || 'Not supplied' }}</td><td data-label="Status">{{ status(car.status) || 'Not supplied' }}</td><td data-label="Record"><button gcspButton variant="ghost" type="button" [attr.aria-label]="'View record for ' + carName(car) + ', ' + historyScheme(history.schemeId)" (click)="openRecord(car, $event)">View record</button></td></tr>
-            } }</tbody>
-          </table>
-          @for (history of account.histories; track history.schemeId) { @if (history.count && history['orderingSupported'] === false) { <p class="gcsp-note">{{ historyScheme(history.schemeId) }} shows history only; you cannot order through it here. {{ history.count }} {{ history.count === 1 ? 'record' : 'records' }}.</p> } }
+          <gcsp-data-table caption="Order history" [columns]="historyColumns" [rows]="historyRows()" [stack]="true" [rowAction]="historyRowAction" />
+          @if (historyOnlyNote(); as note) { <p class="gcsp-synthetic">{{ note }}</p> }
         }
       </section>
       <section class="account-details" aria-labelledby="details-title"><h2 id="details-title">Your details</h2>

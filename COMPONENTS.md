@@ -509,7 +509,7 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
-| `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
+| `gcsp-data-table` | Canonical source table with explicit row envelopes, numeric/detail columns, primitive/value-object cells, privacy bands, missing/emphasized/success/winner values, opt-in stack and compare layouts, captionHidden/equalColumns and optional rowAction (none by default). Preserves opened ID and safe `focusRow(id)`. Gallery: Case queue table and Canonical comparison table. |
 | `gcsp-vehicle-card` | Released-car presenter with required exact `memberId`/`name`, optional line/order number, provided images/fallback, nullable points/allowance/contribution, supplied eligibility, `reviewDisabled`/`disabledReason` and `FactRow[]`. Emits `{ memberId, action: 'review' \| 'details' }`; no fetch, policy or claim. Native collapsed Car facts retains missing/zero/false. Disabled review reasons have unique accessible IDs. Gallery: Released vehicle card, with unavailable review and explicit details feedback. |
 | `gcsp-media-gallery` | Provided ordered `{ src, alt?, caption? }[]`, name and placeholder; default feature/thumbnails/dialog with keyboard navigation and focus return. Optional `compact` defaults false; stock cards use a 180px cover/fallback with no thumbnail/caption/enlarge controls. Switching compact closes the viewer and resets selection; no generated imagery or source lookup. |
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
@@ -561,6 +561,40 @@ search and Disengage actions. It reports paused search separately from withdrawn
 uncertain requests available for an explicit same-command retry, and provides a status reload. Its
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
+
+### Angular canonical history/DataTable contract (FUCQ-551)
+
+`kit/data-table.component.ts` uses one explicit Angular row envelope:
+`DataTableRow { id: string, label: string, cells: Record<columnKey, DataTableValue> }`.
+Rows may carry owner metadata, such as Account's exact contract association; the kit reads only
+that envelope and never infers row shape. `DataTableColumn` adds `numeric?` and `detail?` to
+`key/label`. Cells accept string/number/boolean/null/undefined or source value objects with
+`label`, `isBand`, `fewerThan`, `missing`, `emphasis`, `tone` and `winner`.
+Zero stays zero; numbers use en-GB grouping; missing labels read Not supplied; finite band
+thresholds are visual while the supplied band label is spoken. Emphasis wraps the filled value
+in strong, with optional success tone; only non-header cells can be winners.
+
+Inputs mirror the source options: `caption`, `columns`, `rows`, `id`, `emptyText` (Nothing to
+show), `stack`, `compare`, `captionHidden`, `equalColumns` and optional `rowAction`.
+Default layout does not stack and has no action. Compare suppresses stack at every width.
+The compatible `disabled` input gates all actions and `emptyLabel` remains an optional empty
+copy alias. `rowAction { header='Action', label='Open', name?, onSelect?, disabled? }` uses
+functions of `(rowEnvelope, index)`; disabled accepts a boolean or predicate. The same supplied
+name labels the button and its focus key. Selecting invokes the optional callback and emits
+`opened: string` with the unchanged row id. `focusRow(id)` uses safe array lookup and skips
+disabled controls. CaseQueue explicitly binds Open/name/stack/empty state; its store, commands,
+opened identity and close-focus behavior remain unchanged.
+
+Account history composes one stacked shared table across schemes, preserves Current car as
+`{ label: 'Current car', emphasis: true, tone: 'success' }`, source Ends/Returned dates,
+placed-order rows and named View record actions. The account owns the exact contract and
+opener association; the existing record drawer, focus trap, print and authority remain in place.
+No-history and populated history-only schemes retain separate source outcomes. The pre-existing
+not-found exclusion is unchanged; tests distinguish absent order reads from unavailable/forbidden
+failures and explicit recovery. Generic local table CSS is removed; F548 owns source table and
+comparison CSS. The Angular DataTable stylesheet contains only the one-line host adaptation,
+ratchet-capped at 2 counted lines (one rule plus its final newline). Existing caps stay unchanged.
+Rendered/global-style and connected acceptance remain open.
 
 ### Angular canonical Buddy ports (FUCQ-551)
 
