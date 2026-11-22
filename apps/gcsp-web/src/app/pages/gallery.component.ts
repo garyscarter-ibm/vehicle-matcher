@@ -9,7 +9,11 @@ import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { DataTableComponent } from '../kit/data-table.component';
 import { VehicleCardComponent } from '../kit/vehicle-card.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent], styleUrl: './gallery.component.css', template: `
+import { FactListComponent } from '../kit/fact-list.component';
+import { StageListComponent } from '../kit/stage-list.component';
+import { StageTrackerComponent } from '../kit/stage-tracker.component';
+import { orderIdentityRows } from '../kit/order-identity';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -42,8 +46,22 @@ import { VehicleCardComponent } from '../kit/vehicle-card.component';
       (action)="cardOpened.set('Vehicle details selected for the example car')" />
     <p role="status">{{ cardOpened() }}</p>
   </section>
+  <section class="gcsp-panel"><h2>Selection and order stages</h2>
+    <gcsp-stage-list heading="Your selection" [level]="3" [stages]="selectionStages" />
+    <gcsp-fact-list [rows]="orderIdentity" />
+    <gcsp-stage-list heading="Selection not sent" [level]="3" [stages]="[{ name: 'Sending to ordering', state: 'pending' }, { name: 'Ordering response', state: 'failed' }]" />
+    <gcsp-stage-tracker heading="Order progress" [level]="3" [stages]="orderStages" />
+    <gcsp-stage-tracker heading="Ordering not updated" [level]="3" [stages]="[{ label: 'Driver approval', state: 'declined', note: 'The driver record needs review.' }, { label: 'Ordering', state: 'blocked', owner: 'Scheme team', next: 'Check the ordering response' }]" />
+  </section>
 ` })
 export class GalleryComponent {
+  readonly orderIdentity = orderIdentityRows('GCSP-000123', '0123456');
+  readonly selectionStages = [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' }, { name: 'sent to ordering', state: 'not-started' }];
+  readonly orderStages = [
+    { label: 'Selection received', state: 'done', at: '2026-11-22T12:30:00.000Z' },
+    { label: 'HR approval', state: 'current', owner: 'HR team', next: 'Review the request' },
+    { label: 'Sent to ordering', state: 'upcoming' },
+  ];
   readonly cardOpened = signal('');
   readonly tableOpened = signal('');
   readonly tableColumns = [{ key: 'employee', label: 'Employee' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }];

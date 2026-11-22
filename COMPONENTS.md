@@ -585,3 +585,27 @@ headers with the existing semantic tokens; the shared case table's employee Open
 does not apply. This routed composition adds no shared primitive or gallery API.
 Connected Chromium evidence against Java, local OIDC and PostgreSQL 17 is in the FUCQ-448
 Result; publication through this screen waits on Java policy preview.
+
+### Angular selection and order stages (FUCQ-555, shared with FUCQ-556)
+
+These are the canonical Angular ports of frozen Node
+`e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38` `kit/stage-list.js`,
+`kit/stage-tracker.js` and `kit/order-identity.js`. Consumers reuse them instead of
+building local stage lists, timelines or reference labels. They preserve source DOM,
+classes and state classes and consume FUCQ-548's canonical global CSS; this source
+checkpoint does not establish stylesheet integration, rendered parity or acceptance.
+Reconcile their rows with FUCQ-548's complete Port status inventory at integration.
+
+| Source presenter | Angular target and public contract |
+|---|---|
+| `stageList` | `StageListComponent` / `gcsp-stage-list` in `apps/gcsp-web/src/app/kit/stage-list.component.ts`: inputs `heading` (Progress), `stages: readonly { name, state }[]`, `level` (1–6, default 2), and optional `labels`. Supplied names/order/state classes remain; complete/waiting/not-started/pending/failed read Done/Waiting/Not started/Sending/Not accepted, unknown labels read Unknown. Unique heading association; no stage inference or commands. |
+| `stageTracker` | `StageTrackerComponent` / `gcsp-stage-tracker`: inputs `heading` (Progress), `stages: readonly { label, state, at?, owner?, next?, note? }[]`, `level` (1–6, default 2). Source done/current/upcoming/declined/blocked wording remains; current and blocked carry `aria-current="step"`. Unknown state uses the source upcoming presentation. Valid instants retain `datetime` and the ONE existing `activity/activity.copy.ts:formatActivityTime`, imported as `demoTime`; invalid/absent time is omitted. Supplied owner/Next/note remain; no business state or clock is advanced. |
+| `orderIdentityRows` / `orderReferenceOf` | Pure helpers in `kit/order-identity.ts`. A supplied reference matching `/^[A-Za-z0-9-]{1,32}$/` is retained exactly, otherwise omitted. Rows are Order reference when supplied, then Car order number including explicit missing value; neither identity is derived from the other. |
+
+Both presenter hosts use `display: contents` to preserve source geometry. No source
+stylesheet or formatter is copied. FUCQ-555's offer integration and FUCQ-556's order
+screen must use these same ports; the offer's accepted short confirmation remains
+separate from its refused-selection stage list. Gallery: **Selection and order stages**
+shows complete/waiting/not-started/pending/failed selection states, exact order identity,
+dated current/upcoming order stages, declined/blocked owner/next states. Focused tests
+cover source wording/order, heading association, missing/unknown values and London time.
