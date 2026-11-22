@@ -119,6 +119,26 @@ describe('presenter captured email inspection', () => {
     expect(rows()[0].textContent).toContain(label); expect(text()).toContain('Delivery is not yet confirmed.');
     expect(text()).toContain('Email content is not available.'); expect(root().querySelector('iframe')).toBeNull();
   });
+  it.each([
+    ['sent', 'captured', 'Captured, not sent', 'ok'],
+    ['sent', 'configured', 'Accepted by email provider', 'ok'],
+    ['sent', null, 'Delivery status unknown', 'wait'],
+    ['pending', 'configured', 'Preparing', 'wait'],
+    ['sending', 'configured', 'Sending', 'wait'],
+    ['retrying', 'configured', 'Retrying', 'warn'],
+    ['failed', 'configured', 'Failed', 'bad'],
+    ['provider-awaiting-proof', 'configured', 'Delivery status unknown', 'wait'],
+  ] as const)('renders the %s/%s row status as the source chip with honest %s copy', async (state, transport, label, tone) => {
+    read.mockResolvedValueOnce(ok([message({ state, transport })])); await render();
+    const chip = rows()[0].querySelector('.gcsp-mail-status')!;
+    expect(chip.parentElement).toBe(rows()[0]);
+    expect(chip.tagName).toBe('SPAN');
+    expect(chip.className).toBe(`gcsp-mail-status is-${tone}`);
+    expect(chip.querySelector(':scope > span')?.textContent).toBe(label);
+    expect(chip.querySelector(':scope > svg.gcsp-icon')?.getAttribute('aria-hidden')).toBe('true');
+    expect(chip.querySelector('svg')?.getAttribute('focusable')).toBe('false');
+    expect(read).toHaveBeenCalledOnce();
+  });
   it('shows retries, fixed error copy, attempt count and next UK demo-clock time', async () => {
     read.mockResolvedValueOnce(ok([message({ state: 'retrying', attempts: 3, error: 'provider-timeout', nextAttemptAt: '2026-07-05T09:30:00Z' })])); await render();
     expect(text()).toContain('3 attempts.'); expect(text()).toContain('The email provider timed out. Acceptance is not confirmed.');

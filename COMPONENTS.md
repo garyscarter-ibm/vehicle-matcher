@@ -507,6 +507,7 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. |
 | `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2/h3 level. Page h1 accepts arrival focus. Level 3 (`h3.gcsp-intro-title`) nests the title under an embedded h2 section with the same look as the h2. |
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
+| `span[gcspMailStatusChip]` | Required `label`, supplied `state` and optional `transport`. Ports the frozen `messageList` status span, decorative `svgIcon` paths and `is-ok`/`is-warn`/`is-bad`/`is-wait` classes. Sent captured/configured use the check; retrying uses refresh, failed uses cross, and pending/sending/unknown use the clock. Sent with an unknown transport stays neutral wait. Copy remains caller-owned; use instead of building an outbox status span. Gallery: Outbox delivery status. |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
 | `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
@@ -585,3 +586,30 @@ headers with the existing semantic tokens; the shared case table's employee Open
 does not apply. This routed composition adds no shared primitive or gallery API.
 Connected Chromium evidence against Java, local OIDC and PostgreSQL 17 is in the FUCQ-448
 Result; publication through this screen waits on Java policy preview.
+
+### Angular outbox status chip (FUCQ-550 source slice)
+
+`MailStatusChipComponent` ports only `blocks/gcsp/presenter/message-list.js:9–13`, the paths
+from `outbox-copy.js:2–5` and `svgIcon` attributes at frozen reference `e44ed08a9`. The
+six status rules from `gcsp-presenter.css:21–26` retain their selectors, declarations
+and classes in `kit/mail-status-chip.component.css`. `ViewEncapsulation.None` keeps the
+original `.gcsp` ancestor scope; the component uses the source span as its host,
+without an added wrapper. The outbox retains its existing truthful labels,
+including Preparing and the provider-acceptance distinction. Other messageList layout
+remains outside this component. The UI ratchet covers hand-built status spans in Angular
+consumers and caps the six ported rules. Source/unit work does not establish rendered
+parity or complete FUCQ-550 acceptance.
+
+### FUCQ-550 bounded status-chip port record
+
+This bounded checklist records FUCQ-550's status-chip slice only; it does not inventory
+or declare completion of the remaining migration kit. Ported source markup is distinct
+from the pending rendered parity review.
+
+| Source component | Root class | Target | Status | Classes kept |
+| --- | --- | --- | --- | --- |
+| messageList (whole composition) | `.gcsp-mail` | Outbox screen has only the status-chip subcomposition port below | not yet | status chip only; full composition not assessed here |
+| messageList.statusChip (subcomposition only) | `.gcsp-mail-status` | `MailStatusChipComponent` (`apps/gcsp-web/src/app/kit/mail-status-chip.component.ts`) | ported | yes: source span host, SVG/label children and all four tone classes |
+
+When FUCQ-548 is integrated, reconcile its canonical messageList/status port row
+with this subcomposition and preserve every other row in that complete inventory.

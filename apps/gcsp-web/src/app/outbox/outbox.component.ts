@@ -2,6 +2,7 @@ import { Component, computed, effect, ElementRef, inject, OnDestroy, signal, unt
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
+import { MailStatusChipComponent } from '../kit/mail-status-chip.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { OutboxClient, OutboxMessage, OutboxResult } from './outbox.client';
@@ -32,7 +33,7 @@ const ERROR_COPY: Readonly<Record<string, string>> = {
 
 @Component({
   selector: 'gcsp-outbox',
-  imports: [ButtonDirective, LabelledFieldComponent, ScreenIntroComponent, StatusScreenComponent],
+  imports: [ButtonDirective, LabelledFieldComponent, MailStatusChipComponent, ScreenIntroComponent, StatusScreenComponent],
   templateUrl: './outbox.component.html', styleUrl: './outbox.component.css',
 })
 export class OutboxComponent implements OnDestroy {

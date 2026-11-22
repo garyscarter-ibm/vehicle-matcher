@@ -9,9 +9,8 @@ select { width: 100%; min-height: 44px; padding: var(--gcsp-space-2) var(--gcsp-
 .gcsp-mail-row { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-1); width: 100%; min-height: 44px; padding: var(--gcsp-space-3) var(--gcsp-space-4); text-align: left; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); cursor: pointer; overflow-wrap: anywhere; }
 .gcsp-mail-row:hover { background: var(--gcsp-surface-muted); }
 .gcsp-mail-row[aria-current="true"] { background: var(--gcsp-selected); border: 2px solid var(--gcsp-accent); }
-.gcsp-mail-to, .gcsp-mail-status { font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-mail-to { font-weight: var(--gcsp-font-strong-weight); }
 .gcsp-mail-meta, .gcsp-mail-hint { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
-.gcsp-mail-status.is-failed { color: var(--gcsp-danger); }
 .gcsp-mail-detail { display: flex; flex-direction: column; gap: var(--gcsp-space-4); min-width: 0; padding: var(--gcsp-space-4); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp-mail-heading { margin: 0; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); overflow-wrap: anywhere; }
 .gcsp-mail-heading:focus, .gcsp-mail-row:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }

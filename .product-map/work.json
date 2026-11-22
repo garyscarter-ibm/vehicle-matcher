@@ -10745,16 +10745,25 @@
           "observed_at": "2026-11-22T22:17:09.286047+00:00",
           "expires_at": "2026-11-23T01:17:09.286047+00:00",
           "source": "dispatcher delegation; actual Sol/xhigh verified"
+        },
+        {
+          "id": "01a20556-00f0-7873-bc3d-4d8f563d82c0",
+          "name": "Barney McGrew",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-22T22:20:19.798049+00:00",
+          "expires_at": "2026-11-23T00:20:19.798049+00:00",
+          "source": "AC4 source slice; actual turn_context Sol/high verified"
         }
       ],
-      "observed_at": "2026-11-22T22:17:09Z",
+      "observed_at": "2026-11-22T22:24:49Z",
       "slices": [
         {
           "id": "outbox-chip-source",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Outbox chip source parity",
-          "observed_at": "2026-11-22T22:17:09Z",
-          "evidence": "Lead diagnosis and component plan recorded; independent source slice begins."
+          "observed_at": "2026-11-22T22:24:49Z",
+          "evidence": "Lead reviewed exact source span/SVG/classes/CSS, caller and gallery/ratchet diff; lead-chip-review passed61tests; worker126ratchet/4boundary checks, retained fucq550/barney-chip-summary.json. Source slice only; fullAC4/pairs pending."
         },
         {
           "id": "native-refresh",
