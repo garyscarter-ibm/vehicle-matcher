@@ -10726,6 +10726,58 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-550",
+      "title": "Angular employee live refresh and outbox status parity",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-025",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-550",
+      "workers": [
+        {
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-22T22:17:09.286047+00:00",
+          "expires_at": "2026-11-23T01:17:09.286047+00:00",
+          "source": "dispatcher delegation; actual Sol/xhigh verified"
+        }
+      ],
+      "observed_at": "2026-11-22T22:17:09Z",
+      "slices": [
+        {
+          "id": "outbox-chip-source",
+          "status": "in-progress",
+          "title": "Outbox chip source parity",
+          "observed_at": "2026-11-22T22:17:09Z",
+          "evidence": "Lead diagnosis and component plan recorded; independent source slice begins."
+        },
+        {
+          "id": "native-refresh",
+          "status": "not-started",
+          "title": "Shared visibility restore and polling with order announcement"
+        },
+        {
+          "id": "presenter-integration",
+          "status": "not-started",
+          "title": "Shared presenter signal integration"
+        },
+        {
+          "id": "connected-validation",
+          "status": "not-started",
+          "title": "Real composition refresh validation"
+        },
+        {
+          "id": "parity-review",
+          "status": "not-started",
+          "title": "Same-state 1280px evidence and human review"
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1
