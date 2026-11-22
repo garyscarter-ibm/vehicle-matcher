@@ -24,7 +24,7 @@ describe('native preference controls', () => {
     rating.componentRef.setInput('contractId', 'different-contract'); await preferences.whenStable(); await rating.whenStable();
     expect(client.readEditor).toHaveBeenCalledTimes(1); expect(rating.nativeElement.querySelector('input')).toBeNull();
     rating.componentRef.setInput('contractId', 'contract-1'); await rating.whenStable(); expect(rating.nativeElement.querySelectorAll('input[type=radio]').length).toBe(5);
-    expect(preferences.nativeElement.textContent).toContain('input completeness'); expect(preferences.nativeElement.querySelector('article')).toBeNull();
+    expect(preferences.nativeElement.querySelector('[data-kind="input-completeness"]')).toBeTruthy(); expect(preferences.nativeElement.querySelector('article')).toBeNull();
     expect(preferences.nativeElement.querySelector('gcsp-buddy-controls')).toBeTruthy();
   });
   it('disables compact native inputs during saved-status refresh while retaining visible choices', async () => {
@@ -34,14 +34,14 @@ describe('native preference controls', () => {
     let resolve!: (value: unknown) => void; client.readEditor.mockReturnValueOnce(new Promise((done) => { resolve = done; }));
     const refreshing = store.reloadBuddyStatus(); await preferences.whenStable(); await rating.whenStable();
     const root = preferences.nativeElement as HTMLElement; const stars = rating.nativeElement as HTMLElement;
-    expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(true);
-    root.querySelectorAll<HTMLFieldSetElement>('gcsp-preference-category fieldset').forEach((fieldset) => expect(fieldset.disabled).toBe(true));
-    root.querySelectorAll<HTMLButtonElement>('.category-title, .removal button:first-of-type').forEach((button) => expect(button.disabled).toBe(true));
+    expect(root.querySelector<HTMLFieldSetElement>('.gcsp-prefs-mode-choices')!.disabled).toBe(true);
+    const categoryControls = root.querySelectorAll<HTMLButtonElement>('gcsp-preference-category button'); expect(categoryControls.length).toBeGreaterThan(0); categoryControls.forEach(control => expect(control.disabled).toBe(true));
+    root.querySelectorAll<HTMLButtonElement>('.gcsp-prefs-open, .gcsp-prefs-removal button').forEach((button) => expect(button.disabled).toBe(true));
     expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(true);
-    expect(root.textContent).toContain('Medium · Medium importance'); expect(root.textContent).toContain('Remove this preference?');
-    expect(root.querySelector<HTMLInputElement>('.preference-mode input')!.checked).toBe(true);
+    expect(root.textContent).toContain('Medium'); expect(root.textContent).toContain('Remove your economy preference?');
+    expect(root.querySelector<HTMLInputElement>('.gcsp-prefs-mode-choices input')!.checked).toBe(true);
     resolve({ status: 'ok', value: briefEditorFixture() }); await refreshing; await preferences.whenStable(); await rating.whenStable();
-    expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(false);
+    expect(root.querySelector<HTMLFieldSetElement>('.gcsp-prefs-mode-choices')!.disabled).toBe(false);
     expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(false);
     expect(client.savePreferences).not.toHaveBeenCalled();
   });
@@ -52,13 +52,13 @@ describe('native preference controls', () => {
     expect(root.querySelectorAll('input[name=practical-seats]').length).toBe(3); expect(root.textContent).toContain('Not sure yet');
     expect(root.querySelector('gcsp-error-summary')).toBeTruthy();
   });
-  it('uses native multi/stops and separate importance, with explicit removal/cancel intents', async () => {
+  it('uses source option buttons and an importance switch, with explicit removal/cancel intents', async () => {
     const fixture = TestBed.createComponent(PreferenceCategoryComponent); const definition = briefEditorFixture().context.accountPreferences.categories['body'];
     fixture.componentRef.setInput('id', 'category-body'); fixture.componentRef.setInput('definition', definition); fixture.componentRef.setInput('state', { state: 'considered', value: ['estate'], importance: 'high', exact: true }); fixture.componentRef.setInput('open', true); await fixture.whenStable();
-    const root = fixture.nativeElement as HTMLElement; expect(root.querySelectorAll('input[type=checkbox]').length).toBe(2); expect(root.querySelectorAll('input[type=radio]').length).toBe(2);
+    const root = fixture.nativeElement as HTMLElement; expect(root.querySelectorAll('button[role=checkbox]').length).toBe(2); expect(root.querySelectorAll('input[role=switch]').length).toBe(1);
     const removed = vi.fn(); const kept = vi.fn(); fixture.componentInstance.removed.subscribe(removed); fixture.componentInstance.kept.subscribe(kept);
     fixture.componentRef.setInput('removing', true); await fixture.whenStable();
-    const controls = root.querySelectorAll<HTMLButtonElement>('.removal button'); controls[1].click(); expect(kept).toHaveBeenCalledOnce(); expect(removed).not.toHaveBeenCalled(); controls[0].click(); expect(removed).toHaveBeenCalledOnce();
+    const controls = root.querySelectorAll<HTMLButtonElement>('.gcsp-prefs-removal button'); controls[0].click(); expect(kept).toHaveBeenCalledOnce(); expect(removed).not.toHaveBeenCalled(); controls[1].click(); expect(removed).toHaveBeenCalledOnce();
   });
   it('gives every star a native accessible name and a clear action', async () => {
     const fixture = TestBed.createComponent(StarRatingComponent); fixture.componentRef.setInput('id', 'rating-example'); fixture.componentRef.setInput('value', 4); await fixture.whenStable();
@@ -119,7 +119,7 @@ describe('native preference controls', () => {
     readback({ status: 'ok', value: { ...server, initial: { ...server.initial, briefVersion: 5, draftVersion: 3 } } }); await saving; await full.whenStable(); await compact.whenStable();
     const root = full.nativeElement as HTMLElement; const compactRoot = compact.nativeElement as HTMLElement; const submit = root.querySelector<HTMLButtonElement>('button[type=submit]')!;
     expect(store.failure()).toBeNull(); expect(submit.disabled).toBe(false); expect(submit.tabIndex).toBe(0);
-    expect(root.querySelector<HTMLFieldSetElement>('fieldset.full-preference')!.disabled).toBe(false); expect(compactRoot.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(false);
+    expect(root.querySelector<HTMLFieldSetElement>('fieldset.full-preference')!.disabled).toBe(false); expect(compactRoot.querySelector<HTMLFieldSetElement>('.gcsp-prefs-mode-choices')!.disabled).toBe(false);
     expect(root.textContent).toContain('Showing saved version 5.'); expect(root.textContent).not.toContain('changed elsewhere'); expect(compactRoot.textContent).not.toContain('changed elsewhere');
     Reflect.deleteProperty(client, 'preview');
   });

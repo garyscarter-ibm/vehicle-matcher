@@ -78,12 +78,12 @@ describe('Account composition with the published preference store and HTTP contr
     expect(init?.headers).toEqual({ Accept: 'application/json', Authorization: 'Bearer employee-token', 'Content-Type': 'application/json' });
     expect(command).toEqual({ commandId: expect.any(String), expectedBriefVersion: 4, expectedDraftVersion: 2, changes: {}, currentCarRating: { contractId: account.currentContract!.contractId, value: 5 } });
     expect(store.rating()?.value).toBe(5); expect(store.draftVersion()).toBe(3);
-    root().querySelectorAll<HTMLInputElement>('.preference-mode input')[1].click(); await settle();
+    root().querySelectorAll<HTMLInputElement>('.gcsp-prefs-mode-choices input')[1].click(); await settle();
     expect(JSON.parse(String(posts()[1][1]?.body))).toMatchObject({ expectedBriefVersion: 4, expectedDraftVersion: 3, sameAgain: { contractId: account.currentContract!.contractId, on: true } });
-    expect(root().textContent).toContain('More like BMW 3 Series Touring 320i');
+    expect(root().textContent).toContain('More like your BMW 3 Series Touring 320i');
     fixture.destroy(); fixture = TestBed.createComponent(AccountComponent); fixture.detectChanges(); await settle();
     expect(TestBed.inject(BriefEditorStore)).toBe(store);
-    expect(root().querySelectorAll<HTMLInputElement>('.preference-mode input')[1].checked).toBe(true);
+    expect(root().querySelectorAll<HTMLInputElement>('.gcsp-prefs-mode-choices input')[1].checked).toBe(true);
     expect(fetcher.mock.calls.filter(([, request]) => request?.method === 'GET')).toHaveLength(1);
   });
 
@@ -108,7 +108,7 @@ describe('Account composition with the published preference store and HTTP contr
     const incomplete = structuredClone(editor) as unknown as Record<string, Record<string, unknown>>;
     delete incomplete['context']['contextVersion']; delete incomplete['versions']['context']; delete incomplete['versions']['clock'];
     fetcher.mockResolvedValueOnce(json({ status: 'ok', value: incomplete }));
-    await mount(); expect(root().querySelector('.star-rating')).toBeNull(); expect(root().querySelector('.preference-mode')).toBeNull();
+    await mount(); expect(root().querySelector('.star-rating')).toBeNull(); expect(root().querySelector('.gcsp-prefs-mode-choices')).toBeNull();
     expect(root().textContent).toContain('Your preferences could not be loaded. Try again.');
     expect(root().querySelector('.current-car h2')?.textContent).toContain('BMW 3 Series Touring'); expect(posts()).toHaveLength(0);
     button('Try again').click(); await settle(); expect(root().querySelector('.star-rating')).not.toBeNull();

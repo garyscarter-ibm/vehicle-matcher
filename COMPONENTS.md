@@ -518,26 +518,40 @@ App-local gallery: `/gcsp/components`. Focused Angular tests exercise role polic
 
 ### Angular preferences and rating (FUCQ-441)
 
-`gcsp-preference-category` and `gcsp-star-rating` in the Angular kit are native standalone
-presenters. Category inputs are the server definition, considered/unset state, open/removing and
-disabled flags. Outputs express value/importance changes, open, request removal, remove and keep.
-Multi choices use checkboxes; stops and medium/high importance use separate radio groups. Unset
-categories read Not important. Removal requires an explicit Remove preference action with a Keep
-preference alternative. Stars use a named native radio group for 1–5 and a Clear rating button.
-Tab, Space and the native radio arrow keys operate these controls; focus outlines remain visible.
-Disabled states retain readable answers. Gallery: **Preference categories and current-car rating**,
-including high importance, removal, unset/disabled, selected stars and an unconfirmed-save message.
+`gcsp-star-rating` remains the native named radio group for 1–5 and a Clear rating button.
+Its scoped current-car composition and versioned save queue remain unchanged.
 
-`gcsp-account-preferences` and `gcsp-current-car-rating` compose those presenters with the shared
-root `BriefEditorStore`. Account inputs are `carDescription`, and `contractId` for rating. Rating
-is hidden unless the editor's current contract matches exactly. The compact editor contains no
-recommendations. Its meter is server-projected input completeness and labels unsaved projections.
-Same again keeps the categories and prevents category edits while selected. Preferences, rating
-and Same again share a versioned save queue; unavailable outcomes retain retryable intent, stale
-outcomes require explicit reload, and identity/run changes clear the local state. Full preferences
-uses the same scoped editor resource, native position/importance/practical inputs, read-only facts,
-server preview decisions and explicit draft-save/confirmation. These fixture checks do not establish
-Java, OIDC, database, hosted-browser or accessibility acceptance.
+#### Compact preferences source ports (FUCQ-552)
+
+Port the frozen `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38` category preferences,
+choice-mode/help and understanding presenters; do not build replacement tiles, mode controls or meters
+in a consuming view. These source ports preserve the Node class/state names and consume the canonical
+assembled CSS owned by FUCQ-548. That branch is still unmerged: this checkpoint does not claim global
+style integration, rendered parity or acceptance. Reconcile `categoryPreferences`, `understandingMeter`
+and the composed `helpTip` rows in FUCQ-548's complete Port status inventory when it integrates;
+this bounded catalogue entry does not recreate that inventory.
+
+| Source presenter | Angular target and contract |
+|---|---|
+| `categoryPreferences` (`blocks/gcsp/kit/category-preferences.js`) | `PreferenceCategoryComponent` / `gcsp-preference-category`: existing `id`, server `definition`, considered/unset `state`, `open`, `removing`, `disabled` inputs and intent outputs remain. Additive `categoryKey` supplies the source icon key, `panelId` gives tiles one shared panel target, and `presentation: 'all'` (default), `'tile'`, `'panel'` or `'removal'` lets account composition keep the source grid and sibling regions. `closed` emits Done intent; the caller owns closing and focus restoration. Source `gcsp-prefs-*`, `vm-option`, stopped slider and importance-switch structure is retained. |
+| Category choice mode plus `helpTip` | `PreferenceModeComponent` / `gcsp-preference-mode`: inputs `id`, `description`, `on`, `available`, `reason`, `disabled`; output `toggled(boolean)`. Source alternative native radios, current-car summary and About Same again help preserve unavailable, hover/focus, Escape, outside-pointer dismissal and mode-toggle behavior. The shared presenter emits intent only. |
+| `understandingMeter` (`understanding-meter.js`) | `UnderstandingMeterComponent` / `gcsp-understanding-meter`: inputs `id`, `label`, `value`, `maximum`, `pending`, `failed`. Read-only projected input completeness, never confidence/probability/fit; source rounding/clamping (maximum 1–99), n/max wording, equal segments and saving/not-saved accessible suffixes remain. No policy or projection is changed. |
+
+The three Angular presenter hosts use `display: contents` solely to avoid a framework wrapper changing
+the source geometry; no source stylesheet is copied or restyled. Account composition supplies one
+`gcsp-prefs-tiles` grid and sibling removal/panel regions, preserves active keyed controls on quiet
+updates, and restores tile/bin focus after Done or removal decisions. Existing `BriefEditorStore`
+categories, mode, completeness projections, save/retry/reload and Buddy-command semantics stay authoritative.
+`gcsp-current-car-rating` remains scoped by exact contract identity. `gcsp-account-preferences` still accepts
+`carDescription`; it keeps the existing Buddy controls until FUCQ-551 integrates its separately owned tile.
+
+Gallery: the existing **Preference categories and current-car rating** section now includes source category,
+unset/stopped/medium/high/disabled, mode/help/unavailable and pending/failed completeness states. Focused
+kit and account composition specs plus the existing store/preferences/account callers cover source behavior.
+The full preferences editor remains on its existing controls/preview here: original FUCQ-552 AC4/5 and
+FUCQ-549 Activity-link integration plus the accepted-order link still require their allocated source work.
+Real Java/OIDC, keyboard/browser/narrow/Safari inspection, same-state 1280px pairs and human review remain
+required evidence; component tests do not establish them.
 
 `gcsp-buddy-controls` presents the saved server Buddy view and native Engage, Pause search, Resume
 search and Disengage actions. It reports paused search separately from withdrawn consent, keeps
