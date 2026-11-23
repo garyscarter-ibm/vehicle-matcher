@@ -303,6 +303,33 @@ describe('Angular offer API client', () => {
       expect(fetcher).toHaveBeenCalledTimes(1);
     });
 
+  it.each([480, 2048].flatMap(length => (['acknowledged', 'handoff-pending', 'handoff-failed'] as const).map(progressState => ({ length, progressState }))))(
+    'preserves the same $length-character configuration identity from offer read through $progressState receipt', async ({ length, progressState }) => {
+      const configurationId = 'C'.repeat(length); const original = offer();
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...original, quote: { ...(original['quote'] as object), configurationId } } }));
+      const read = await client.readOffer('offer-1'); expect(read.status).toBe('ok');
+      const raw = commandHandoff(progressState);
+      const selection = { ...raw, selection: { ...raw.selection, quote: { ...raw.selection.quote, configurationId }, stock: { ...raw.selection.stock, configurationId } },
+        order: raw.order ? { ...raw.order, configurationId } : null };
+      fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...decisionReceipt('accept', acceptInput), selection } }));
+      const result = await client.decide(acceptInput); expect(result.status).toBe('ok');
+      if (result.status !== 'ok') return;
+      expect(result.value.state).toBe('accepted'); expect(result.value.selection?.progress.selectionState).toBe(progressState);
+      expect(result.value.selection?.progress.approved).toBe(false);
+      expect(result.value.selection?.selection.stock.configurationId).toBe(configurationId);
+      expect(result.value.selection?.selection.quote.configurationId).toBe(configurationId);
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    });
+
+  it.each(['oversized', 'stock mismatch', 'order mismatch'] as const)('rejects a configuration identity that is %s without replay', async invalid => {
+    const configurationId = 'C'.repeat(invalid === 'oversized' ? 2049 : 480); const raw = commandHandoff();
+    const selection = { ...raw, selection: { ...raw.selection, quote: { ...raw.selection.quote, configurationId },
+      stock: { ...raw.selection.stock, configurationId: invalid === 'stock mismatch' ? 'other-configuration' : configurationId } },
+      order: { ...raw.order!, configurationId: invalid === 'order mismatch' ? 'other-configuration' : configurationId } };
+    fetcher.mockResolvedValueOnce(json({ status: 'ok', value: { ...decisionReceipt('accept', acceptInput), selection } }));
+    expect((await client.decide(acceptInput)).status).toBe('unavailable'); expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
   it.each(offerCommandProducerFixtures)('reads the actual $state producer receipt', async ({ input, receipt, state: progressState }) => {
     state.set({ status: 'ready', context: { ...context().context, runId: input.runId, employeeId: receipt.selection.selection.employeeAuthority.employeeId } });
     fetcher.mockResolvedValueOnce(json({ status: 'ok', value: receipt }));

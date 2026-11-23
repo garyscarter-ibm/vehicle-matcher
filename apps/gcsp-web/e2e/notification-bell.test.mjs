@@ -96,7 +96,7 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     const sourceCars = suite.plan.windows.flatMap((window) => window.stock);
     assert.ok(sourceCars.some((car) => car.orderUuid === offer.orderUuid), 'The held car comes from the exact retained Node input');
     suite.receipt.offer = { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, state: offer.state, expiresAt: offer.expiresAt };
-    const actualHold = suite.readActualHold(offer);
+    suite.readActualHold(offer);
     await suite.screenshot(employee, 'new-offer-note-1280');
     await bell(employee).click();
     await panel(employee).getByRole('heading', { name: 'Notifications', exact: true }).waitFor();
@@ -114,9 +114,8 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     assert.ok(channels && channels[0] > channels[1] * 1.5 && channels[0] > channels[2] * 1.5, 'The waiting-count badge is red');
     await suite.screenshot(employee, 'active-open-1280');
     suite.receipt.activePanel = { car: await panel(employee).locator('.gcsp-bell-copy p').nth(1).innerText(),
-      detail: await panel(employee).locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src') };
-    await suite.compareFrozenNode({ ...suite.receipt.offer, hold: actualHold, panel: suite.receipt.activePanel,
-      clock: suite.receipt.actualReleaseClock });
+      detail: await panel(employee).locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src'),
+      imageEvidence: await suite.readImage(employee, image) };
     await employee.keyboard.press('Escape');
     await delay(6500);
     assert.equal(await employee.locator('.gcsp-bell-note').isVisible(), false);
@@ -147,9 +146,21 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
     await bell(employee).click();
     await waitOpen(employee, true);
     const box = await panel(employee).boundingBox();
+    suite.receipt.narrowGeometry = { box, viewport: employee.viewportSize(), actual: await panel(employee).evaluate((node) => {
+      const css = getComputedStyle(node); const bell = node.closest('.gcsp-bell'); const header = node.closest('header');
+      const style = (item) => { const value = getComputedStyle(item); const rect = item.getBoundingClientRect();
+        return { rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }, position: value.position,
+          width: value.width, right: value.right, padding: value.padding, gap: value.gap, overflowX: value.overflowX }; };
+      return { panel: style(node), bell: style(bell), header: style(header), hidden: node.hidden,
+        expanded: bell.querySelector('button').getAttribute('aria-expanded'),
+        innerWidth, scrollWidth: document.documentElement.scrollWidth,
+        tokens: { space4: css.getPropertyValue('--gcsp-space-4'), headerHeight: css.getPropertyValue('--gcsp-header-height') } };
+    }) };
+    await suite.screenshot(employee, 'active-open-375');
+    await suite.compareFrozenNode({ ...suite.receipt.offer, hold: suite.receipt.actualHold.semantic, panel: suite.receipt.activePanel,
+      clock: suite.receipt.actualReleaseClock });
     assert.ok(box && box.x >= 0 && box.x + box.width <= 376, 'The narrow panel fits the viewport');
     assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The header adds no narrow horizontal overflow');
-    await suite.screenshot(employee, 'active-open-375');
     await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).click();
     await employee.waitForURL((url) => url.pathname.includes('/gcsp/offers/'));
     await bell(employee).waitFor();
@@ -162,13 +173,21 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
   });
 
   await t.test('AC4: actual interval requests, visibility handler and restored-page handler', async () => {
-    // Two consecutive automatic reads establish the real 30s interval without changing timers.
+    // Bell and Account are independent real consumers. A timer event can cause more than one read.
     const start = activityRequests(suite).length;
-    await until(() => activityRequests(suite).length >= start + 2, 'Two automatic activity polls must complete', 65000);
-    const polls = activityRequests(suite).slice(-2);
+    const bursts = () => activityRequests(suite).slice(start).reduce((groups, request) => {
+      const last = groups.at(-1);
+      if (last && request.at - last.requests.at(-1).at <= 1000) last.requests.push(request);
+      else groups.push({ at: request.at, requests: [request] });
+      return groups;
+    }, []);
+    try { await until(() => bursts().length >= 2, 'Two distinct automatic activity poll bursts must complete', 65000); }
+    finally { suite.receipt.polling = { requests: activityRequests(suite).slice(start), bursts: bursts(),
+      grouping: 'Requests within 1000ms belong to one observed burst; no timers or independent consumers changed.' }; }
+    const polls = suite.receipt.polling.bursts;
     const elapsed = polls[1].at - polls[0].at;
+    suite.receipt.polling.elapsedMs = elapsed;
     assert.ok(elapsed >= 28500 && elapsed <= 33000, `Real polling interval was ${elapsed}ms`);
-    suite.receipt.polling = { elapsedMs: elapsed, requests: polls };
     const other = await suite.context.newPage();
     await other.goto('about:blank');
     const observedVisibility = await employee.evaluate(() => document.visibilityState);
