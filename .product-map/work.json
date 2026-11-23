@@ -10730,10 +10730,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "Source17+Gallery14+Orders111=142scoped cases reused by matching identities after clean supported refresh; first clean web build passes. No covering batch green/live pair/human acceptance. Build child telemetry limitation retained.",
+      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
       "id": "FUCQ-556",
-      "note": "All6AC open; still building. Independent source increment refreshed without app changes;142scoped source/default/Gallery/Orders cases verified and first production build passed. Supported checkpoint integration is not final delivery; source screen/sibling/runtime/keyboard/pair/human proof remain.",
-      "observed_at": "2026-11-23T06:36:34Z",
+      "note": "All6AC open; still building. Independent canonical source/no-show increment merged as de454757f; complete covering Angular batch1499passed/86files in9resource-bounded whole-file chunks. Original screen/canonical sibling/runtime/keyboard/live-pair/human proof remains; no review-ready claim.",
+      "observed_at": "2026-11-23T06:51:21Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10756,11 +10756,11 @@
           "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
+          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
           "id": "integration-proof",
+          "observed_at": "2026-11-23T06:51:21Z",
           "status": "in-progress",
-          "title": "Supported sibling integration and actual same-state pair (2 points)",
-          "observed_at": "2026-11-23T06:36:34Z",
-          "evidence": "Independent source increment: clean supported base refresh introduced no app change;142scoped cases/default/callers verified, first production build passed. Covering batch and canonical sibling/actual screen/browser/keyboard/live pair/human proof remain; no acceptance claim."
+          "title": "Supported sibling integration and actual same-state pair (2 points)"
         }
       ],
       "started_at": "2026-11-23",
