@@ -309,6 +309,22 @@ describe('native offer read screen', () => {
     expect(highlights?.textContent).toContain('Less sporty than you prefer.');
     expect(highlights?.textContent).not.toMatch(/essential|Required:|Preference fit|Desired:/);
   });
+  it('uses the canonical comparison table with hidden caption, equal columns, identity detail and only grounded winners', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const host = fixture.nativeElement as HTMLElement; const comparison = host.querySelector('[data-offer-comparison]')!;
+    expect(comparison.querySelectorAll('gcsp-data-table')).toHaveLength(1);
+    expect(comparison.querySelectorAll('table')).toHaveLength(1);
+    expect(comparison.querySelector('.gcsp-table-wrap.is-compare.has-equal-columns')).not.toBeNull();
+    expect(comparison.querySelector('caption.gcsp-vh')?.textContent).toBe('Compared with your current car');
+    const headers = Array.from(comparison.querySelectorAll('thead th'));
+    expect(headers).toHaveLength(3); expect(headers[0].textContent?.trim()).toBe('');
+    expect(headers[1].textContent).toContain('Your current car'); expect(headers[1].querySelector('.gcsp-table-th-sub')?.textContent).toBe('BMW 320i M Sport Touring, 320i Automatic');
+    expect(headers[2].textContent).toContain('This offer'); expect(headers[2].querySelector('.gcsp-table-th-sub')?.textContent).toBe(offerScreenFixture().quote.facts.display.name);
+    expect(Array.from(comparison.querySelectorAll('td.is-winner')).map(cell => cell.textContent)).toEqual(['440 litres', '295 points']);
+    expect(comparison.querySelectorAll('td.is-missing')).toHaveLength(6);
+    expect(Array.from(comparison.querySelectorAll('td.is-missing')).every(cell => cell.textContent === 'Not supplied')).toBe(true);
+    expect(comparison.querySelector('button')).toBeNull();
+  });
   it('renders the source empty highlights and unknown-current-car note without an invented comparison table', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture();
     await load({ ...offer, comparison: { ...offer.comparison, currentCar: null, comparisonAvailable: false }, quote: { ...offer.quote,

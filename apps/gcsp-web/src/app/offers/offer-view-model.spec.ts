@@ -105,15 +105,43 @@ describe('offer read presentation projection', () => {
     expect(vm.decisionDetails.find(group => group.label === 'Trade-offs')?.entries).toContain('Less sporty than you prefer.');
     expect(offer.state).toBe('pending'); expect(JSON.stringify(offer)).toBe(before);
   });
-  it('retains current-car partial and unavailable unknowns without deriving winners', () => {
+  it('retains current-car partial and unavailable unknowns without deriving missing winners', () => {
     const offer = offerScreenFixture(); const vm = offerViewModel(offer);
-    expect(vm.comparison).toContainEqual({ label: 'Boot', current: '440 litres', offered: '410 litres' });
-    expect(vm.comparison).toContainEqual({ label: 'Fuel', current: 'Unknown', offered: 'Plug in hybrid' });
+    expect(vm.comparison).toContainEqual({ id: 'boot', label: 'Boot', cells: { label: 'Boot', current: { label: '440 litres', winner: true }, offer: '410 litres' } });
+    expect(vm.comparison).toContainEqual({ id: 'fuel', label: 'Fuel', cells: { label: 'Fuel', current: null, offer: 'Plug in hybrid' } });
     expect(vm.reasons).toContainEqual({ title: '300 fewer points', details: ['Every month, compared with your current car'] });
     expect(vm.tradeOffs).toContainEqual({ title: '30 litres less', details: ['Boot space compared with your current car'] });
     expect(vm.currentName).toBe('BMW 320i M Sport Touring, 320i Automatic');
     const absent = offerViewModel({ ...offer, comparison: { status: 'unavailable', reason: 'unavailable', comparisonAvailable: false, currentCar: null, unknowns: ['configuration', 'body'] } });
-    expect(absent.currentName).toBe('Current car not supplied'); expect(absent.comparison.every((row) => row.current === 'Unknown')).toBe(true);
+    expect(absent.currentName).toBe('Current car not supplied'); expect(absent.comparison.every((row) => row.cells['current'] === null)).toBe(true);
+  });
+  it('projects canonical current-before-offer columns and directional winner cells without mutation', () => {
+    const offer = offerScreenFixture(); const before = JSON.stringify(offer); const vm = offerViewModel(offer);
+    expect(vm.comparisonColumns).toEqual([
+      { key: 'label', label: '' }, { key: 'current', label: 'Your current car', detail: 'BMW 320i M Sport Touring, 320i Automatic' },
+      { key: 'offer', label: 'This offer', detail: offer.quote.facts.display.name },
+    ]);
+    expect(vm.comparison).toContainEqual({ id: 'boot', label: 'Boot', cells: { label: 'Boot', current: { label: '440 litres', winner: true }, offer: '410 litres' } });
+    expect(vm.comparison).toContainEqual({ id: 'points', label: 'Points a month', cells: { label: 'Points a month', current: '595 points', offer: { label: '295 points', winner: true } } });
+    expect(JSON.stringify(offer)).toBe(before);
+  });
+  it('marks the reverse numeric winners while keeping ties and preference-dependent differences neutral', () => {
+    const source = offerScreenFixture(); const vm = offerViewModel({ ...source, comparison: { ...source.comparison,
+      currentCar: { ...source.comparison.currentCar!, facts: { points: { value: 200, unit: null }, boot: { value: 400, unit: null }, seats: { value: 2, unit: null } } },
+    } });
+    expect(vm.comparison.find(row => row.id === 'points')?.cells).toEqual({ label: 'Points a month', current: { label: '200 points', winner: true }, offer: '295 points' });
+    expect(vm.comparison.find(row => row.id === 'boot')?.cells).toEqual({ label: 'Boot', current: '400 litres', offer: { label: '410 litres', winner: true } });
+    expect(vm.comparison.find(row => row.id === 'seats')?.cells).toEqual({ label: 'Seats', current: '2', offer: '5' });
+    const tied = offerViewModel({ ...source, comparison: { ...source.comparison, currentCar: { ...source.comparison.currentCar!,
+      facts: { points: { value: 295, unit: null }, boot: { value: 410, unit: null } } } } });
+    expect(tied.comparison.flatMap(row => Object.values(row.cells)).some(cell => typeof cell === 'object' && cell?.winner)).toBe(false);
+  });
+  it('leaves unknown and unsupported offered units neutral using canonical missing values', () => {
+    const source = offerScreenFixture(); const vm = offerViewModel({ ...source, quote: { ...source.quote, facts: { ...source.quote.facts,
+      facts: { ...source.quote.facts.facts, boot: screenFact(500, 'litres'), zeroTo62: screenFact(null) } } } });
+    expect(vm.comparison.find(row => row.id === 'boot')?.cells).toEqual({ label: 'Boot', current: '440 litres', offer: '500' });
+    expect(vm.comparison.find(row => row.id === 'fuel')?.cells).toEqual({ label: 'Fuel', current: null, offer: 'Plug in hybrid' });
+    expect(vm.comparison.find(row => row.id === 'zeroTo62')?.cells).toEqual({ label: '0 to 62 mph', current: null, offer: null });
   });
   it('builds the source saving and structured numeric highlights directly from comparable facts', () => {
     const offer = offerScreenFixture();
@@ -168,10 +196,13 @@ describe('offer read presentation projection', () => {
     const before = JSON.stringify(offer); expect(isOfferProjection(offer, { offerId: 'offer-1', runId: 'run-1' })).toBe(true);
     const vm = offerViewModel(offer);
     expect(vm.comparison).toEqual([
-      { label: 'Body style', current: 'Estate', offered: 'Touring' }, { label: 'Fuel', current: 'Petrol', offered: 'Plug in hybrid' },
-      { label: 'Seats', current: '5', offered: '5' }, { label: 'Boot', current: '440 litres', offered: '410 litres' },
-      { label: '0 to 62 mph', current: '7.6 s', offered: 'Not supplied' }, { label: 'Fuel economy', current: '42.8 mpg', offered: 'Not supplied' },
-      { label: 'Points a month', current: '595 points', offered: '295 points' },
+      { id: 'body', label: 'Body style', cells: { label: 'Body style', current: 'Estate', offer: 'Touring' } },
+      { id: 'fuel', label: 'Fuel', cells: { label: 'Fuel', current: 'Petrol', offer: 'Plug in hybrid' } },
+      { id: 'seats', label: 'Seats', cells: { label: 'Seats', current: '5', offer: '5' } },
+      { id: 'boot', label: 'Boot', cells: { label: 'Boot', current: { label: '440 litres', winner: true }, offer: '410 litres' } },
+      { id: 'zeroTo62', label: '0 to 62 mph', cells: { label: '0 to 62 mph', current: '7.6 s', offer: null } },
+      { id: 'mpg', label: 'Fuel economy', cells: { label: 'Fuel economy', current: '42.8 mpg', offer: null } },
+      { id: 'points', label: 'Points a month', cells: { label: 'Points a month', current: '595 points', offer: { label: '295 points', winner: true } } },
     ]);
     expect(vm).toMatchObject({ pointsDifference: '300 fewer than your current car', benefits: [{ number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, { title: 'Available by Tuesday 1 December 2026.' }] });
     expect(JSON.stringify(offer)).toBe(before);
@@ -181,7 +212,7 @@ describe('offer read presentation projection', () => {
       facts: { ...source.quote.facts, facts: { ...source.quote.facts.facts, boot: screenFact(410, 'litres') } } } };
     expect(isOfferProjection(offer, { offerId: 'offer-1', runId: 'run-1' })).toBe(true);
     const vm = offerViewModel(offer);
-    expect(vm.comparison).toContainEqual({ label: 'Boot', current: '440 litres', offered: '410' });
+    expect(vm.comparison).toContainEqual({ id: 'boot', label: 'Boot', cells: { label: 'Boot', current: '440 litres', offer: '410' } });
     expect(vm).toMatchObject({ tradeoffs: [{ title: 'Less sporty than you prefer.' }, { title: 'Touring, not the estate you prefer.' }] });
   });
   it('uses normalized source sentences in decision details instead of exposing raw provider codes', () => {

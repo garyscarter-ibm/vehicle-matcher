@@ -70,9 +70,7 @@
         <h2>What matters for your decision</h2>
         <gcsp-decision-highlights layout="list" [benefits]="vm.benefits" [tradeoffs]="vm.tradeoffs" />
         @if (vm.hasCurrentCar) {
-        <div class="offer-table-wrap"><table><caption>Compared with your current car</caption><thead><tr><th scope="col">Specification</th><th scope="col">Your current car<span>{{ vm.currentName }}</span></th><th scope="col">This offer<span>{{ vm.name }}</span></th></tr></thead><tbody>
-          @for (row of vm.comparison; track $index) { <tr><th scope="row">{{ row.label }}</th><td>{{ row.current }}</td><td>{{ row.offered }}</td></tr> }
-        </tbody></table></div>
+        <gcsp-data-table caption="Compared with your current car" [captionHidden]="true" [equalColumns]="true" [compare]="true" [columns]="vm.comparisonColumns" [rows]="vm.comparison" />
         }
         @if (vm.comparisonNote) { <p class="gcsp-note">{{ vm.comparisonNote }}</p> }
       </section>

@@ -3,12 +3,3 @@ h2, h3, p, dl { margin: 0; }
 h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 dt, .gcsp-note { color: var(--gcsp-text-muted); }
 dd { margin: var(--gcsp-space-1) 0 0; }
-.offer-table-wrap { min-width: 0; }
-table { border-collapse: collapse; width: 100%; table-layout: fixed; }
-caption { text-align: left; font-weight: var(--gcsp-font-strong-weight); padding-bottom: var(--gcsp-space-3); }
-th, td { text-align: left; vertical-align: top; padding: var(--gcsp-space-3); border-bottom: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
-thead th { background: var(--gcsp-surface-page); }
-thead span { display: block; margin-top: var(--gcsp-space-2); font-weight: var(--gcsp-font-weight); color: var(--gcsp-text-muted); }
-@media (max-width: 800px) {
-  th, td { padding-inline: var(--gcsp-space-2); }
-}

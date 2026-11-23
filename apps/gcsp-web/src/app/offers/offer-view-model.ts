@@ -3,6 +3,7 @@ import { VehicleDetailRow } from '../kit/vehicle-details.component';
 import { orderIdentityRows } from '../kit/order-identity';
 import type { DecisionHighlight } from '../kit/decision-highlights.component';
 import { bodyStyleLabel, fuelSpecLabel, reasonText } from '../preferences/brief.copy';
+import type { DataTableColumn, DataTableRow, DataTableValue } from '../kit/data-table.component';
 import type { FactRow } from '../kit/fact-list.component';
 
 const labels: Readonly<Record<string, string>> = {
@@ -205,7 +206,20 @@ export function offerViewModel(offer: OfferProjection) {
     current: currentValue(key, offer.comparison.currentCar?.facts?.[key]?.value),
     offered: key === 'points' ? `${quote.terms.points.value.toLocaleString('en-GB')} points` : offeredValue(key, facts[key]),
   }));
-  const comparison = sourceComparison.map(({ key, current, offered }) => ({ label: comparisonLabel(key), current: current ?? 'Unknown', offered: offered ?? 'Not supplied' }));
+  const currentName = offer.comparison.currentCar ? [offer.comparison.currentCar.model, offer.comparison.currentCar.facts?.['configuration']?.value].filter((value) => value !== undefined).join(', ') : 'Current car not supplied';
+  const comparisonColumns: readonly DataTableColumn[] = [
+    { key: 'label', label: '' }, { key: 'current', label: 'Your current car', detail: currentName },
+    { key: 'offer', label: 'This offer', detail: display.name },
+  ];
+  const comparison: readonly DataTableRow[] = sourceComparison.map(({ key, current, offered }) => {
+    const one = comparableNumber(offered); const two = comparableNumber(current);
+    const direction = key === 'points' ? -1 : key === 'boot' ? 1 : 0;
+    const winner = direction && one !== null && two !== null && one !== two
+      ? (one - two) * direction > 0 ? 'offer' : 'current' : null;
+    const cell = (value: string | null, side: 'current' | 'offer'): DataTableValue => winner === side ? { label: value, winner: true } : value;
+    const label = comparisonLabel(key);
+    return { id: key, label, cells: { label, current: cell(current, 'current'), offer: cell(offered, 'offer') } };
+  });
   const normalizedDecision = {
     reasons: sourceReasons(quote.decision.reasons, 'reasons').filter((entry) => !checkCodes.has(String(entry['code']))),
     tradeOffs: sourceReasons(quote.decision.tradeOffs, 'tradeOffs'),
@@ -246,7 +260,7 @@ export function offerViewModel(offer: OfferProjection) {
     ...(orderNumber ? orderIdentityRows(null, orderNumber) : [])];
   const selectionIdentityRows = refused && (offer.selection?.orderReference || offer.selection?.orderNumber)
     ? orderIdentityRows(offer.selection.orderReference, offer.selection.orderNumber) : [];
-  return { title, message, name: display.name, memberId: quote.orderUuid, gateStatus: quote.decision.gateStatus, genericFacts, genericImage, genericLine, genericTerm, finishes, rows, detailRows, equipment, overview, comparison,
+  return { title, message, name: display.name, memberId: quote.orderUuid, gateStatus: quote.decision.gateStatus, genericFacts, genericImage, genericLine, genericTerm, finishes, rows, detailRows, equipment, overview, comparison, comparisonColumns,
     images: display.images.length ? display.images : display.photo ? [{ src: display.photo, alt: display.name }] : [],
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,
@@ -266,7 +280,7 @@ export function offerViewModel(offer: OfferProjection) {
     blockers: quote.decision.blockers.map(offerExplanation), unknowns: quote.decision.unknowns.map(offerExplanation),
     handoffBlocker: offer.handoff?.blocker ? blockerCopy[offer.handoff.blocker] : null,
     selectionStages: refused ? offer.selection?.stages ?? [] : [],
-    currentName: offer.comparison.currentCar ? [offer.comparison.currentCar.model, offer.comparison.currentCar.facts?.['configuration']?.value].filter((value) => value !== undefined).join(', ') : 'Current car not supplied',
+    currentName,
     comparisonNote: !offer.comparison.currentCar ? 'Current-car details not supplied. Equipment is unknown.' : offer.comparison.status === 'available' ? '' : sourceComparison.some((row) => row.current !== null)
       ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.',
     comparisonUnknowns: offer.comparison.unknowns.map(offerFieldLabel),
