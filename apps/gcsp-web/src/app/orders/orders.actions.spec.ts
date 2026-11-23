@@ -9,7 +9,7 @@ const context = (): OrdersReadContext => ({ subject: 'subject', environmentId: '
 const identity = { orderUuid: 'order', employeeId: 'employee', runId: 'run' };
 const slot = { slotId: 'offered', start: '2026-11-15T09:00:00Z' };
 const ok = <T>(value: T): { status: 'ok'; value: T } => ({ status: 'ok', value });
-async function setup() {
+async function setup(appointmentState = 'not-requested') {
   let ctx: OrdersReadContext | null = context();
   const reads: OrdersReadPort = {
     readOrders: async () => ok({ orders: [{ ...identity, entitlementSlotId: 'entitlement' }], failed: [], failedCount: 0, nextAfter: null, pageEvidence: [] }),
@@ -17,7 +17,7 @@ async function setup() {
     readDocuments: async () => ok({ contractVersion: 'lifecycle.documents.v1', orders: [{ ...identity, contractVersion: 'lifecycle.documents.v1', documentsRevision: 3, acknowledgementSupported: true,
       items: [{ itemId: 'agreement', label: 'Agreement', kind: 'document', owner: 'employee', status: 'waiting-for-employee' }], tasks: [{ itemId: 'agreement', status: 'waiting-for-employee', actionable: true }],
       readiness: { ready: false, state: 'waiting', documentsComplete: false, vehicleReady: true, blocking: ['agreement'], failed: [] } }] }),
-    readAppointment: async () => ok({ ...identity, contractVersion: 'lifecycle.appointments.v1', version: 2, state: 'not-requested', booked: false,
+    readAppointment: async () => ok({ ...identity, contractVersion: 'lifecycle.appointments.v1', version: 2, state: appointmentState, booked: false,
       offeredSlots: [slot], owner: 'employee', provider: { mode: 'configured' }, eligibility: { eligible: true } }),
     readReturnPlan: async () => ok({ ...identity, contractVersion: 'lifecycle.return-plan.v1', version: 4, state: 'not-planned', applicable: true,
       scheduled: false, choices: [{ id: 'same-visit', available: true }], offeredSlots: { 'same-visit': [slot] }, owner: 'employee', provider: { mode: 'configured' } }),
@@ -29,6 +29,16 @@ async function setup() {
   return { actions, execute, controller, reads, setState: (s: OrdersControllerState) => { state = s; }, getState: () => state, setContext: (c: OrdersReadContext | null) => { ctx = c; } };
 }
 describe('reviewed employee lifecycle actions', () => {
+  it('reviews a supplied no-show rebooking slot and sends it once with the observed version', async () => {
+    const s = await setup('no-show');
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(true);
+    expect(s.execute).not.toHaveBeenCalled();
+    expect(s.actions.state.review?.command).toEqual({ kind: 'request-appointment', commandId: 'command', orderUuid: 'order', slotId: 'offered', expectedVersion: 2 });
+    await s.actions.confirm(); await s.actions.confirm();
+    expect(s.execute).toHaveBeenCalledOnce();
+    expect(s.actions.state.result).toMatchObject({ status: 'pending', operationId: 'operation' });
+    expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(false);
+  });
   it('prepares exact provider slot/version without writing until deliberate confirmation', async () => {
     const s = await setup(); expect(s.actions.prepare({ kind: 'request-appointment', slotId: slot.slotId })).toBe(true);
     expect(s.execute).not.toHaveBeenCalled(); expect(s.actions.state.review?.command).toEqual({ kind: 'request-appointment', commandId: 'command', orderUuid: 'order', slotId: 'offered', expectedVersion: 2 });

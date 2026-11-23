@@ -4,6 +4,8 @@ import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { BriefClient } from '../preferences/brief.client';
+import { briefEditorFixture } from '../preferences/brief.fixtures';
+import { ActivityClient } from '../activity/activity.client';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot, savedDraft } from './account.test-data';
@@ -28,7 +30,7 @@ describe('native employee account screen', () => {
       readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'saved@example.test', version: 4 } }),
       saveNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { deliveryEmail: 'canonical@example.test', version: 5 } }),
       startJourney: vi.fn().mockResolvedValue({ status: 'ok', value: savedDraft() }), discardDraft: vi.fn().mockResolvedValue({ status: 'ok', value: { discarded: true, draftVersion: 4 } }) };
-    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: AuthPort, useValue: auth }, { provide: AccountClient, useValue: client },
+    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: AuthPort, useValue: auth }, { provide: AccountClient, useValue: client }, { provide: ActivityClient, useValue: { readActivity: vi.fn().mockResolvedValue({ status: 'unavailable' }) } },
       { provide: BriefClient, useValue: { readEditor: vi.fn().mockResolvedValue({ status: 'unavailable' }) } }] });
     Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: function(this: HTMLDialogElement) { this.setAttribute('open', ''); } });
     Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: function(this: HTMLDialogElement) { this.removeAttribute('open'); } });
@@ -37,23 +39,58 @@ describe('native employee account screen', () => {
   const mount = async () => { fixture = TestBed.createComponent(AccountComponent); document.body.append(fixture.nativeElement); fixture.detectChanges(); await settle(); return fixture.componentInstance; };
   const root = (): HTMLElement => fixture.nativeElement;
   const text = () => root().textContent ?? '';
-  const button = (label: string): HTMLButtonElement => Array.from(root().querySelectorAll('button')).find((item) => item.textContent?.trim() === label)!;
+  const button = (label: string): HTMLButtonElement => Array.from(root().querySelectorAll('button')).find((item) => item.textContent?.trim() === label && item.closest('dialog')?.open !== false)!;
   const settle = async () => { await new Promise<void>((resolve) => setTimeout(resolve, 0)); await fixture.whenStable(); fixture.detectChanges(); };
 
   it('retains populated current car, identity, drivers, supplied labels and scheme history in approved order', async () => {
     const component = await mount();
     expect(root().querySelector('h1')?.textContent).toBe('Your cars');
-    expect(root().querySelector('.current-car h2')?.textContent).toBe('BMW 3 Series Touring 320i');
+    expect(root().querySelector('.gcsp-feature .gcsp-vehicle-title')?.textContent).toBe('BMW 3 Series Touring 320i');
     expect(text()).toContain('1,100 / 1,300'); expect(text()).toContain('Contract ends in 26 days');
     expect(text()).toContain('Paula Mason'); expect(text()).toContain('Casey Ward'); expect(text()).toContain('WARD9900000CW9XX'); expect(text()).toContain('Car licence valid until 1 January 2030');
     expect(text()).toContain('E749057'); expect(text()).toContain('27 Ashdown Road, Bracknell, RG12 9ZZ'); expect(text()).toContain('BMW Choices');
     expect(text()).not.toContain('demo-bmw-fs-uk'); expect(text()).not.toContain('choices-fs-uk'); expect(text()).not.toContain('Synthetic monthly');
     expect(root().querySelector<HTMLAnchorElement>('.account-preferences a')?.getAttribute('href')).toBe('/preferences');
     const classes = Array.from(root().querySelector('.account-screen')!.children).map((node) => node.className);
-    expect(classes.indexOf('current-car')).toBeLessThan(classes.indexOf('account-summary account-preferences'));
-    expect(classes.indexOf('account-summary account-preferences')).toBeLessThan(classes.indexOf('account-history'));
-    expect(classes.indexOf('account-history')).toBeLessThan(classes.indexOf('account-details'));
+    expect(classes.findIndex((name) => name === 'gcsp-feature')).toBeLessThan(classes.indexOf('gcsp-account-buddy-preferences'));
+    expect(classes.indexOf('gcsp-account-buddy-preferences')).toBeLessThan(classes.indexOf('account-history gcsp-account-history'));
+    expect(classes.indexOf('account-history gcsp-account-history')).toBeLessThan(classes.indexOf('account-details'));
     expect(component.projection()).toEqual(account);
+  });
+  it('ports source current-car media, two-column fact roles, title, fuel copy and countdown clock', async () => {
+    const base = briefEditorFixture(); const editor = { ...base, initial: { ...base.initial, currentCarRating: { contractId: account.contracts![0].contractId, value: 4 } } };
+    TestBed.inject(BriefClient).readEditor = vi.fn().mockResolvedValue({ status: 'ok', value: editor });
+    await mount();
+    const hero = root().querySelector('.gcsp-feature')!;
+    expect(hero.querySelector('.gcsp-feature-copy.gcsp-vehicle-copy .gcsp-vehicle-heading .gcsp-vehicle-title')?.textContent).toBe('BMW 3 Series Touring 320i');
+    expect(hero.querySelector('.gcsp-account-spec')?.textContent).toBe('M Sport Touring · Petrol');
+    expect(hero.querySelectorAll('.vm-facts.gcsp-account-car-facts > .vm-fact')).toHaveLength(3);
+    expect(hero.querySelector('.gcsp-countdown .gcsp-icon path')).not.toBeNull();
+    expect(hero.querySelector('button.vm-btn.vm-btn-ghost')?.textContent).toBe('View car record');
+    expect(hero.querySelector('button.vm-btn.vm-btn-primary')?.textContent).toBe('Choose a replacement');
+    const pill = hero.querySelector('.gcsp-feature-media .vm-card-media.gcsp-media.gcsp-media-whole .gcsp-star-rating-pill');
+    expect(pill).not.toBeNull(); expect(pill?.querySelector('input')?.getAttribute('aria-describedby')).toContain('-help');
+    expect(hero.querySelector('.gcsp-feature-copy gcsp-current-car-rating')).toBeNull();
+  });
+  it.each([[0, 'ends today'], [1, 'ends in 1 day'], [-1, 'ended 1 day ago'], [-3, 'ended 3 days ago']] as const)('uses source countdown wording for %i remaining days', async (daysRemaining, phrase) => {
+    const component = await mount(); const car = component.model()!.currentContracts[0];
+    expect(component.countdown({ ...car, daysRemaining })).toBe(`Contract ${phrase} · 1 December 2026`);
+    expect(component.countdown({ ...car, daysRemaining: null })).toBe('Contract end: Not supplied');
+  });
+  it('resolves packaged evidence photos under the actual GCSP base while preserving other accepted image URLs', async () => {
+    const existing = document.querySelector('base'); const previous = existing?.getAttribute('href');
+    const base = existing ?? document.createElement('base'); base.setAttribute('href', '/gcsp/'); if (!existing) document.head.append(base);
+    try {
+      const component = await mount(); const image = root().querySelector<HTMLImageElement>('.gcsp-feature img')!;
+      expect(image.getAttribute('src')).toBe('assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp');
+      expect(new URL(image.src).pathname).toBe('/gcsp/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp');
+      const car = component.model()!.currentContracts[0];
+      for (const src of ['https://images.example.test/car.webp', '/images/car.webp', '/assets/gcsp-vehicle-evidence/other.webp']) {
+        expect(component.image({ ...car, media: { src } })).toBe(src);
+      }
+      image.dispatchEvent(new Event('error')); await settle(); expect(root().querySelector('.gcsp-feature img')).toBeNull();
+      expect(root().querySelector('.gcsp-feature .vm-card-soon')?.textContent).toBe('No image available for your car');
+    } finally { if (!existing) base.remove(); else if (previous === null) base.removeAttribute('href'); else base.setAttribute('href', previous!); }
   });
   it('keeps zero/unknown terms distinct, omits unsupplied identity and recovers a broken image without inventing media', async () => {
     const car = { ...account.contracts![0], terms: { kind: 'points-monthly', value: 0, allowance: 0 }, registration: null, months: 0 };
@@ -77,12 +114,21 @@ describe('native employee account screen', () => {
   it('uses confirmed current-car relationships after handover and keeps delivered VIN separate', async () => {
     account = { ...account, currentCarRelationships: [{ currentCar: { kind: 'order', orderUuid: 'exact-stock', vin: 'DELIVEREDVIN' }, oldCar: { contractId: account.contracts![0].contractId, status: 'returned' }, newCar: { collectedAt: '2026-11-07T13:00:00.000Z' } }] };
     client.readAccount.mockResolvedValue({ status: 'ok', value: account }); await mount();
-    expect(root().querySelector('.current-car:not(.delivered-car)')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
+    expect(root().querySelector('.gcsp-feature')).toBeNull(); expect(text()).toContain('Your car has been handed over.'); expect(text()).toContain('DELIVEREDVIN'); expect(text()).not.toContain('No current car'); expect(text()).not.toContain('exact-stock'); expect(root().querySelector('a[href="/orders"]')).not.toBeNull();
   });
-  it('shows the newest pending owned offer link without inventing a manual-order gate', async () => {
+  it('lets the Buddy region own a pending offer while preserving the existing authoritative guard', async () => {
     client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });
-    await mount(); expect(text()).toContain('You have a car offer to decide on before choosing another car.');
-    expect(root().querySelector('a[href="/offers/owned-offer"]')?.textContent).toBe('View your offer'); expect(button('Choose a replacement').disabled).toBe(false);
+    const component = await mount(); expect(component.pendingOffer()?.offerId).toBe('owned-offer');
+    expect(root().querySelector('.offer-preview')).toBeNull(); expect(button('Choose a replacement')).toBeUndefined(); expect(component.canStart()).toBe(true);
+    expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Try again')).toBeDefined();
+  });
+  it('hides Buddy during authoritative journey choices and restores the source current-car action while keeping offer identity', async () => {
+    client.readOffers.mockResolvedValue({ status: 'ok', value: { offers: [{ offerId: 'owned-offer', runId: 'run', state: 'pending' }] } });
+    client.readDraft.mockResolvedValue({ status: 'ok', value: savedDraft() }); const component = await mount();
+    expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Choose a replacement')).toBeUndefined();
+    button('Carry on').click(); await settle(); expect(component.pendingIntent()).toEqual(savedDraft().choices);
+    expect(root().querySelector('gcsp-account-buddy')).toBeNull(); expect(button('Choose a replacement')).toBeDefined(); expect(root().querySelector('.offer-preview')).toBeNull(); expect(component.pendingOffer()?.offerId).toBe('owned-offer');
+    await component.refresh(); await settle(); expect(root().querySelector('gcsp-account-buddy')).not.toBeNull(); expect(button('Choose a replacement')).toBeUndefined();
   });
   it('shows preview loading without blocking the working account or treating pending reads as empty', async () => {
     const offers = deferred<AccountResult<import('./account.preview').AccountOffers>>(); const orders = deferred<AccountOrdersReadResult>();
@@ -90,6 +136,14 @@ describe('native employee account screen', () => {
     await mount(); expect(text()).toContain('Reading your offers and orders'); expect(text()).toContain('Paula Mason'); expect(button('Choose a replacement').disabled).toBe(false); expect(text()).not.toContain('No orders to track.');
     offers.resolve({ status: 'ok', value: { offers: [] } }); orders.resolve({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }); await settle();
     expect(text()).not.toContain('Reading your offers and orders'); expect(text()).toContain('No orders to track.');
+  });
+  it.each(['not-found', 'unavailable', 'forbidden'] as const)('keeps order-list %s distinct from an absent independent manual selection and provides only truthful recovery', async (status) => {
+    client.readOrders.mockResolvedValueOnce({ status }); const component = await mount();
+    const previews = root().querySelector('.account-previews')!;
+    expect(previews.textContent?.includes('Some offer or order details could not be read.')).toBe(status !== 'not-found');
+    expect(component.previewFailed()).toBe(status !== 'not-found'); expect(text()).toContain('Paula Mason'); expect(client.startJourney).not.toHaveBeenCalled();
+    if (status === 'not-found') { expect(button('Retry offers and orders')).toBeUndefined(); expect(text()).not.toContain('Your selection could not be read'); }
+    else { button('Retry offers and orders').click(); await settle(); expect(component.previewFailed()).toBe(false); expect(previews.textContent).not.toContain('Some offer or order details'); expect(text()).toContain('No orders to track.'); }
   });
   it('keeps preview failures isolated, truthful and explicitly retryable while the account stays usable', async () => {
     client.readOffers.mockResolvedValueOnce({ status: 'unavailable' }); client.readOrders.mockResolvedValueOnce({ status: 'forbidden' });
@@ -104,7 +158,7 @@ describe('native employee account screen', () => {
     expect(text()).toContain('Your selection is being sent on'); expect(text()).toContain('Do not choose again.');
     expect(text()).not.toContain('No orders to track.'); expect(text()).not.toContain('Some offer or order details could not be read.');
     expect(text()).not.toContain('private-operation'); expect(text()).not.toContain('manual-selection');
-    expect(root().querySelector('.order-preview')).toBeNull(); expect(root().querySelector('.placed-order')).toBeNull();
+    expect(root().querySelector('.order-preview')).toBeNull(); expect(component.placedRecord()).toBeNull();
     expect(component.newestOrder()).toBeNull(); expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId);
     expect(button('Choose a replacement').disabled).toBe(false); expect(client.startJourney).not.toHaveBeenCalled();
     expect(root().querySelector('.account-previews')?.getAttribute('aria-live')).toBe('polite');
@@ -132,7 +186,7 @@ describe('native employee account screen', () => {
     const component = await mount(); expect(text()).toContain('Your selection could not be sent');
     expect(root().querySelector('.account-previews a[href="/help"]')?.textContent).toBe('Contact support');
     expect(text()).not.toContain('No orders to track.'); expect(text()).not.toContain('private-provider-detail');
-    expect(root().querySelector('.order-preview')).toBeNull(); expect(root().querySelector('.placed-order')).toBeNull();
+    expect(root().querySelector('.order-preview')).toBeNull(); expect(component.placedRecord()).toBeNull();
     expect(component.model()?.primaryContract?.contractId).toBe(account.currentContract!.contractId); expect(root().querySelector('.delivered-car')).toBeNull();
   });
   it.each([
@@ -206,10 +260,10 @@ describe('native employee account screen', () => {
     const slot = account.slots![0].entitlementSlotId;
     client.readOrders.mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [{ orderUuid: 'exact-stock', entitlementSlotId: slot, outcome: 'ordered', currentStage: 'awaiting-handover', source: { orderReference: { value: 'REF-123' }, orderNumber: 'CAR-456' } }] } });
     client.readOrder.mockResolvedValue({ status: 'ok', value: { selection: { stock: { orderUuid: 'exact-stock', facts: { display: { name: 'BMW i4', photo: '/exact.webp' } } } } } });
-    await mount(); expect(root().querySelectorAll('table')).toHaveLength(1); expect(root().querySelectorAll('.placed-order')).toHaveLength(1);
+    await mount(); expect(root().querySelectorAll('table')).toHaveLength(1); expect(root().querySelector('.account-history tbody tr:first-child th')?.textContent).toBe('BMW i4');
     expect(text()).toContain('Current step: Awaiting handover.'); expect(root().querySelector('a[href="/orders"]')?.textContent).toBe('Track your order');
-    root().querySelector<HTMLButtonElement>('.placed-order button')!.click(); await settle();
-    const drawer = root().querySelector('dialog')!.textContent!; expect(drawer).toContain('BMW i4'); expect(drawer).toContain('REF-123'); expect(drawer).toContain('CAR-456'); expect(drawer).toContain('Ordered'); expect(drawer).not.toContain('exact-stock');
+    root().querySelector<HTMLButtonElement>('.account-history tbody tr:first-child button')!.click(); await settle();
+    const drawer = root().querySelector('.record-drawer')!.textContent!; expect(drawer).toContain('BMW i4'); expect(drawer).toContain('REF-123'); expect(drawer).toContain('CAR-456'); expect(drawer).toContain('Ordered'); expect(drawer).not.toContain('exact-stock');
   });
   it('lets an allocated order supersede a same-slot saved journey and no-car notice while returned-car evidence stays explicit', async () => {
     const slot = account.slots![0].entitlementSlotId;
@@ -307,15 +361,34 @@ describe('native employee account screen', () => {
     const component = await mount(); const input = root().querySelector<HTMLInputElement>('#notification-email')!; input.value = 'invalid'; input.dispatchEvent(new Event('input')); await settle();
     await component.saveEmail(new Event('submit')); await settle(); expect(client.saveNotificationEmail).not.toHaveBeenCalled(); expect(input.getAttribute('aria-invalid')).toBe('true'); expect(root().querySelector('.gcsp-error-summary a')?.getAttribute('href')).toBe('#notification-email');
   });
+  it('uses one canonical stacked history table, source Current car emphasis and named actions bound to exact records across schemes', async () => {
+    account = { ...account, histories: account.histories!.map((history, index) => ({ ...history, entries: history.entries.map(car => ({ ...car, model: 'Shared car name', ...(index === 0 ? { contractEndDate: '2026-12-01' } : { returnedDate: '2025-12-01' }) })) })) };
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); const component = await mount();
+    const history = root().querySelector('.account-history')!; expect(history.querySelectorAll('gcsp-data-table')).toHaveLength(1); expect(history.querySelectorAll('table')).toHaveLength(1); expect(history.querySelector('.gcsp-table-wrap.is-stack')).not.toBeNull();
+    const rows = history.querySelectorAll('tbody tr'); expect(rows).toHaveLength(2); expect(rows[0].querySelector('strong.is-success')?.textContent).toBe('Current car');
+    expect(rows[0].textContent).toContain('Ends 1 Dec 2026'); expect(rows[1].textContent).toContain('Returned 1 Dec 2025');
+    const record = rows[1].querySelector<HTMLButtonElement>('button')!; expect(record.getAttribute('aria-label')).toBe('View record for Shared car name, PCS UK FS BMW, Returned 1 Dec 2025');
+    record.focus(); record.click(); await settle(); expect(component.selectedRecord()?.contractId).toBe(account.histories![1].entries[0].contractId); expect(root().querySelector('.record-drawer')?.textContent).toContain('PCS UK FS BMW');
+    button('Close').click(); await settle(); expect(document.activeElement).toBe(record);
+  });
+  it('keeps unlabeled history schemes distinct and combines only populated history-only schemes into one source note', async () => {
+    account = { ...account, histories: account.histories!.map((history, index) => ({ ...history, label: undefined, orderingSupported: index === 1 ? undefined : false })) };
+    client.readAccount.mockResolvedValue({ status: 'ok', value: account }); const component = await mount();
+    const history = root().querySelector('.account-history')!; expect(history.querySelectorAll('tbody tr')).toHaveLength(2);
+    expect(history.textContent).toContain('Scheme 1'); expect(history.textContent).toContain('Scheme 2'); expect(history.textContent).not.toContain('Scheme 3');
+    expect(history.querySelectorAll('.gcsp-synthetic')).toHaveLength(1); expect(history.querySelector('.gcsp-synthetic')?.textContent).toBe("Scheme 1 and Scheme 2 show history only; you can't order through them here.");
+    account = { ...account, state: 'unsupported-scheme' }; client.readAccount.mockResolvedValue({ status: 'ok', value: account }); await component.refresh(); await settle();
+    expect(root().querySelectorAll('.account-history tbody tr')).toHaveLength(2); expect(root().querySelector('.account-history .gcsp-synthetic')).toBeNull();
+  });
   it('opens complete labelled history records, traps keyboard focus, restores the exact opener and prints only that selected record', async () => {
     await mount(); const opener = root().querySelector<HTMLButtonElement>('tbody tr:last-child button')!; opener.focus(); opener.click(); await settle();
-    const drawer = root().querySelector<HTMLDialogElement>('dialog')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
+    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
     button('Close').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Print record'));
     button('Print record').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Close'));
     const originalAppend = document.body.append.bind(document.body); let printed: HTMLIFrameElement | null = null; const print = vi.fn();
     vi.spyOn(document.body, 'append').mockImplementation((...nodes: (Node | string)[]) => { originalAppend(...nodes); const frame = nodes.find((node) => node instanceof HTMLIFrameElement) as HTMLIFrameElement | undefined; if (frame) { printed = frame; frame.contentWindow!.print = print; } });
     button('Print record').click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
-    drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('dialog')).toBeNull(); expect(document.activeElement).toBe(opener);
+    drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('.record-drawer')).toBeNull(); expect(document.activeElement).toBe(opener);
   });
   it('immediately hides private facts on account change, aborts pending commands and ignores late old-account responses', async () => {
     const pending = deferred<AccountResult<ManualDraft>>(); client.startJourney.mockReturnValue(pending.promise); const component = await mount(); button('Choose a replacement').click(); await settle();
