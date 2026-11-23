@@ -294,7 +294,29 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     for (const key of ['offerId', 'runId', 'state', 'reason', 'expiresAt', 'offerVersion', 'holdVersion', 'offerState', 'holdState', 'availableActions']) {
       assert.deepEqual(after.projection[key], before.projection[key], `Restart preserves the actual owner offer ${key}`);
     }
-    assert.deepEqual(after.clock, before.clock, 'The same owned scenario clock survives the active-offer JVM restart');
+    const { lastTick: presenterTick, ...beforeClock } = before.clock;
+    const { lastTick: startupTick, ...afterClock } = after.clock;
+    assert.deepEqual(afterClock, beforeClock, 'Every semantic clock property survives the active-offer JVM restart');
+    assert.equal(presenterTick.kind, 'presenter');
+    assert.match(startupTick.tickId, /^startup-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    assert.notEqual(startupTick.tickId, presenterTick.tickId);
+    assert.equal(startupTick.kind, 'startup'); assert.equal(startupTick.state, 'completed');
+    for (const key of ['runId', 'now', 'clockVersion']) {
+      assert.equal(startupTick[key], before.clock[key], `Startup tick preserves the authoritative before ${key}`);
+      assert.equal(startupTick[key], after.clock[key], `Startup tick uses the authoritative after ${key}`);
+    }
+    assert.equal(startupTick.policyVersion, presenterTick.policyVersion);
+    assert.equal(startupTick.policyVersion, before.projection.quote.policyVersion);
+    assert.equal(startupTick.policyVersion, after.projection.quote.policyVersion);
+    assert.deepEqual(startupTick.missingStages, []);
+    // clock.commands.v1 startupStages: restart reconciles existing work without releasing or allocating stock.
+    const startupStages = ['manual-expiry', 'buddy-expiry', 'pending-reconciliation'];
+    const expectedHandlers = presenterTick.handlerOrder.filter(({ stage }) => startupStages.includes(stage));
+    assert.deepEqual([...new Set(expectedHandlers.map(({ stage }) => stage))], startupStages, 'Every configured startup stage has a retained presenter handler');
+    assert.deepEqual(startupTick.handlerOrder, expectedHandlers, 'Startup runs exactly the configured subset in the original handler order');
+    assert.deepEqual(startupTick.outcomes.map(({ handlerId, stage }) => ({ handlerId, stage })), expectedHandlers,
+      'Startup outcomes cover every expected handler once and in order');
+    for (const { handlerId, outcome } of startupTick.outcomes) assert.equal(outcome.status, 'ok', `Startup handler ${handlerId} succeeds`);
     await openOffer(suite, employee, state.offer);
     const java = {};
     for (const width of [1280, 390]) {
