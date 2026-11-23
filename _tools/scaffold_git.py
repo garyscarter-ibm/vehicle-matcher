@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.9.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.9.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -14,7 +14,8 @@ Subcommands
   fetch [--branch B]       fetch the remote's B (default: the base branch) into <remote>/B; the working tree is untouched
   list-tree REF PREFIX     list files under PREFIX in REF; read-only
   show REF PATH            print PATH as held in REF; read-only
-  diff BASE HEAD           list the files HEAD changed since it left BASE (three-dot); read-only
+  diff BASE HEAD [-- P ...] list the files HEAD changed since it left BASE (three-dot), optionally filtered by paths;
+                           read-only. Pathspecs after -- cannot become git options
                            (these three refuse, exit 2, any REF, BASE, HEAD, PREFIX or PATH that starts with `-`, which
                            git could take for an option; the library functions list_tree, show and changed_files too)
   publish-tree --prefix P --branch B [--extra NAME ...]
@@ -1057,11 +1058,12 @@ def show(root, ref, path):
     return o
 
 
-def changed_files(root, base, head):
+def changed_files(root, base, head, paths=None):
     """The paths that differ between base and head: what head's branch changed since it left base (three-dot).
-    BadArgument for a base or head that starts with '-'."""
+    Optional paths are Git pathspecs, separated from options. BadArgument for a base or head that starts with '-'."""
     _no_option(base=base, head=head)
-    rc, o, e = git(root, ["--no-optional-locks", "diff", "--name-only", "-z", "--no-renames", "%s...%s" % (base, head)])
+    rc, o, e = git(root, ["--no-optional-locks", "diff", "--name-only", "-z", "--no-renames",
+                        "%s...%s" % (base, head), "--"] + list(paths or []))
     if rc != 0:
         raise RuntimeError("git diff %s...%s failed: %s" % (base, head, (e or o).strip()[:300]))
     return [p for p in o.split("\0") if p]            # -z: names as they are, never quoted; no renames: both sides
@@ -3354,7 +3356,7 @@ def cmd_show(args):
 
 def cmd_diff(args):
     try:
-        for p in changed_files(project_root(args.root), args.base, args.head):
+        for p in changed_files(project_root(args.root), args.base, args.head, args.paths):
             print(p)
     except BadArgument as e:
         return _refused(e)
@@ -3442,6 +3444,7 @@ def _core_commands(sub):
     df = sub.add_parser("diff", help="list the files HEAD changed since it left BASE (three-dot diff); read-only")
     df.add_argument("base")
     df.add_argument("head")
+    df.add_argument("paths", nargs="*", metavar="P", help="optional Git pathspecs (use -- before paths)")
     df.set_defaults(func=cmd_diff)
     sub.add_parser("push", help="push the base branch to the remote; refuses if the remote has commits it lacks"
                    ).set_defaults(func=cmd_push)
