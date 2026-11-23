@@ -71,7 +71,7 @@ export function projectOrders(input: OrdersProjectionInput): OrdersProjection {
       && doc.items.some((item) => item.itemId === task.itemId && item.owner === 'employee' && item.status === task.status))
       .map((task) => task.itemId) : [],
     appointment: {
-      requestSlotIds: appointmentOpen && a.eligibility?.eligible === true && a.state === 'not-requested'
+      requestSlotIds: appointmentOpen && a.eligibility?.eligible === true && (a.state === 'not-requested' || a.state === 'no-show')
         ? a.offeredSlots.map((slot) => slot.slotId) : [],
       acceptProposalId: appointmentOpen && a.state === 'change-proposed' && a.proposedSlot && a.proposalId ? a.proposalId : null,
     },
