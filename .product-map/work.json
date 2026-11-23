@@ -11376,6 +11376,69 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-570",
+      "title": "Java brief writes use wall time, making Buddy activity unavailable after a saved follow-up",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-570",
+      "branch": "dev/DEV-2026-11-23-003",
+      "unsliced": false,
+      "observed_at": "2026-11-23T18:35:01Z",
+      "note": "Scoped backend implementation and independent source/spec/security review passed; 272 focused tests passed. Original four AC unchanged. Root-owned registered useful Activity destination and covering batches remain pending; native status In Progress. Existing future history preserved; no data repair performed.",
+      "workers": [
+        {
+          "name": "Toothless",
+          "harness": "codex",
+          "role": "implementer",
+          "status": "complete",
+          "observed_at": "2026-11-23T18:34:35.796449+00:00",
+          "expires_at": "2026-11-23T18:34:35.796449+00:00",
+          "source": "Observed completed worker handoff: exact source closure 9dc0c9752d0ef3635cdd45bdf712b959d862bb4d3e8bf03443b7a36ccd613727, 272 focused tests, final owned cleanup verified by lead. Requested/selected gpt-6.1-sol/medium; no fallback."
+        },
+        {
+          "name": "Pluto",
+          "harness": "codex",
+          "role": "reviewer",
+          "status": "complete",
+          "observed_at": "2026-11-23T18:34:35.796449+00:00",
+          "expires_at": "2026-11-23T18:34:35.796449+00:00",
+          "source": "Observed independent source/spec/security review passed, no findings; actual XML hash-verified and recounted before compaction. Requested/selected gpt-6.1-sol/high; no fallback."
+        }
+      ],
+      "slices": [
+        {
+          "id": "domain-clock",
+          "status": "complete",
+          "title": "Scoped brief writer and editor time",
+          "observed_at": "2026-11-23T18:35:00Z",
+          "evidence": "Lead source/spec/security review passed: matching run clock governs all eight common writers and editor. Five reviewed source hashes match 272 passing tests. Receipt: .claude/test-runs/f555-resume-20261123/brief-domain-clock/independent-review.json"
+        },
+        {
+          "id": "regression",
+          "status": "complete",
+          "title": "Real signed OIDC PostgreSQL saved-follow-up and clock refusals",
+          "observed_at": "2026-11-23T18:35:01Z",
+          "evidence": "Real unchanged-production RED retained; final signed OIDC/native PostgreSQL decline-save-brief/history/reload-Activity 200 journey and every-writer no-clock refusal passed. Brief/journey 135 tests. Receipt: .claude/test-runs/f555-resume-20261123/brief-domain-clock/green-one/run-receipt.json"
+        },
+        {
+          "id": "callers-review",
+          "status": "complete",
+          "title": "Focused callers, startup and independent review",
+          "observed_at": "2026-11-23T18:35:01Z",
+          "evidence": "Affected callers 81 and startup/wiring 56 passed on matching 1714-input closure. Independent source/spec/security passed with no findings. Lead verified owned scratch/process/database/target/reservation/heavy cleanup. Receipt: .claude/test-runs/f555-resume-20261123/brief-domain-clock/lead-evidence-audit.json"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Final registered useful Activity destination and covering evidence",
+          "observed_at": "2026-11-23T18:35:01Z",
+          "evidence": "Root owns final registered F555 saved-follow-up flow with retained actual Activity response/useful content and covering batches. AC4 remains open; no browser proof or human F555 parity verdict inferred from scoped backend checks."
+        }
+      ]
     }
   ],
   "version": 1
