@@ -10,6 +10,9 @@ import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { briefEditorFixture } from '../preferences/brief.fixtures';
 import { BriefEditor } from '../preferences/brief.types';
 import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
+import { ActivityClient } from '../activity/activity.client';
+import { AccountBuddyComponent } from './account-buddy.component';
+import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
 import { accountSnapshot } from './account.test-data';
@@ -40,7 +43,7 @@ describe('Account composition with the published preference store and HTTP contr
   const settle = async () => { await new Promise<void>((resolve) => setTimeout(resolve, 0)); await fixture.whenStable(); fixture.detectChanges(); };
   const mount = async () => { fixture = TestBed.createComponent(AccountComponent); document.body.append(fixture.nativeElement); fixture.detectChanges(); await settle(); };
   const posts = () => fetcher.mock.calls.filter(([, init]) => init?.method === 'POST');
-  const rate = (star: number) => root().querySelectorAll<HTMLInputElement>('.star-rating input')[star - 1].click();
+  const rate = (star: number) => root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input')[star - 1].click();
   const button = (label: string) => Array.from(root().querySelectorAll<HTMLButtonElement>('button')).find((node) => node.textContent?.trim() === label)!;
 
   beforeEach(() => {
@@ -57,7 +60,7 @@ describe('Account composition with the published preference store and HTTP contr
     });
     TestBed.configureTestingModule({ providers: [provideRouter([]),
       { provide: AuthPort, useValue: { state, getAccessToken: vi.fn().mockResolvedValue('employee-token'), signIn: vi.fn(), retry: vi.fn() } },
-      { provide: RuntimeConfigService, useValue: { load: vi.fn().mockResolvedValue(config) } }, { provide: PORTAL_FETCH, useValue: fetcher },
+      { provide: RuntimeConfigService, useValue: { load: vi.fn().mockResolvedValue(config) } }, { provide: PORTAL_FETCH, useValue: fetcher }, { provide: ActivityClient, useValue: { readActivity: vi.fn().mockResolvedValue({ status: 'unavailable' }) } },
       { provide: AccountClient, useValue: { readAccount, readDraft: vi.fn().mockResolvedValue({ status: 'not-found' }),
         readOffers: vi.fn().mockResolvedValue({ status: 'ok', value: { offers: [] } }), readOrder: vi.fn().mockResolvedValue({ status: 'not-found' }), readOrders: vi.fn().mockResolvedValue({ status: 'ok', value: { failed: [], failedCount: 0, nextAfter: null, pageEvidence: [], orders: [] } }),
         readNotificationEmail: vi.fn().mockResolvedValue({ status: 'ok', value: { version: 1, deliveryEmail: null } }) } },
@@ -70,8 +73,11 @@ describe('Account composition with the published preference store and HTTP contr
     const store = TestBed.inject(BriefEditorStore);
     expect(fixture.debugElement.query(By.directive(AccountPreferencesComponent)).injector.get(BriefEditorStore)).toBe(store);
     expect(fixture.debugElement.query(By.directive(CurrentCarRatingComponent)).injector.get(BriefEditorStore)).toBe(store);
+    expect(fixture.debugElement.query(By.directive(AccountBuddyComponent)).injector.get(BriefEditorStore)).toBe(store);
+    expect(fixture.debugElement.query(By.directive(BuddyControlsComponent)).componentInstance.buddyControls()).toBe(true);
+    expect(button('Engage Buddy')).toBeDefined();
     expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(root().querySelector('.star-rating legend')?.textContent).toContain('BMW 3 Series Touring 320i');
+    expect(root().querySelector('.gcsp-star-rating legend')?.textContent).toContain('BMW 3 Series Touring 320i');
     rate(5); await settle();
     const [url, init] = posts()[0]; const command = JSON.parse(String(init?.body));
     expect(url).toBe(`${config.apiBaseUrl}/brief/preferences`);
@@ -90,7 +96,7 @@ describe('Account composition with the published preference store and HTTP contr
   it('omits rating for a mismatched current contract and never labels Same again with another projection car', async () => {
     editor = editorFor(account, 'other-current-contract');
     await mount();
-    expect(root().querySelector('.star-rating')).toBeNull();
+    expect(root().querySelector('.gcsp-star-rating')).toBeNull();
     expect(fixture.componentInstance.preferenceCarDescription()).toBe('');
     expect(posts()).toHaveLength(0);
   });
@@ -108,20 +114,20 @@ describe('Account composition with the published preference store and HTTP contr
     const incomplete = structuredClone(editor) as unknown as Record<string, Record<string, unknown>>;
     delete incomplete['context']['contextVersion']; delete incomplete['versions']['context']; delete incomplete['versions']['clock'];
     fetcher.mockResolvedValueOnce(json({ status: 'ok', value: incomplete }));
-    await mount(); expect(root().querySelector('.star-rating')).toBeNull(); expect(root().querySelector('.preference-mode')).toBeNull();
+    await mount(); expect(root().querySelector('.gcsp-star-rating')).toBeNull(); expect(root().querySelector('.preference-mode')).toBeNull();
     expect(root().textContent).toContain('Your preferences could not be loaded. Try again.');
-    expect(root().querySelector('.current-car h2')?.textContent).toContain('BMW 3 Series Touring'); expect(posts()).toHaveLength(0);
-    button('Try again').click(); await settle(); expect(root().querySelector('.star-rating')).not.toBeNull();
+    expect(root().querySelector('.gcsp-feature .gcsp-vehicle-title')?.textContent).toContain('BMW 3 Series Touring'); expect(posts()).toHaveLength(0);
+    button('Try again').click(); await settle(); expect(root().querySelector('.gcsp-star-rating')).not.toBeNull();
   });
 
   it('retains a stale rating refusal until explicit reload restores the saved server value', async () => {
     await mount(); fetcher.mockResolvedValueOnce(json({ status: 'stale-version', resource: 'brief', currentVersion: 9 }, 409));
     rate(4); await settle();
-    expect(root().querySelector<HTMLFieldSetElement>('.star-rating')?.disabled).toBe(true);
+    expect(root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input')).toHaveLength(5); root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input').forEach((radio) => expect(radio.disabled).toBe(true));
     expect(TestBed.inject(BriefEditorStore).failure()?.status).toBe('stale-version'); expect(posts()).toHaveLength(1);
     button('Reload preferences').click(); await settle();
-    expect(root().querySelector<HTMLFieldSetElement>('.star-rating')?.disabled).toBe(false);
-    expect(root().querySelectorAll<HTMLInputElement>('.star-rating input')[1].checked).toBe(true); expect(posts()).toHaveLength(1);
+    expect(root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input')).toHaveLength(5); root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input').forEach((radio) => expect(radio.disabled).toBe(false));
+    expect(root().querySelectorAll<HTMLInputElement>('.gcsp-star-rating input')[1].checked).toBe(true); expect(posts()).toHaveLength(1);
   });
 
   it('clears private controls on signout and ignores an old employee save after another employee signs in', async () => {
@@ -136,7 +142,7 @@ describe('Account composition with the published preference store and HTTP contr
     state.set(ready('employee-casey')); fixture.detectChanges(); await settle();
     finish(json({ status: 'ok', value: { ...old.initial, currentCarRating: { contractId: old.initial.sameAgain.contractId, value: 5 }, buddyTransition: null } }));
     await settle();
-    expect(root().textContent).toContain('Casey'); expect(root().textContent).not.toContain('Paula Mason'); expect(root().querySelector('.star-rating')).toBeNull();
+    expect(root().textContent).toContain('Casey'); expect(root().textContent).not.toContain('Paula Mason'); expect(root().querySelector('.gcsp-star-rating')).toBeNull();
     expect(TestBed.inject(BriefEditorStore).rating()).toBeNull(); expect(posts()).toHaveLength(1);
   });
 });

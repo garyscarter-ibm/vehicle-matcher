@@ -10728,6 +10728,305 @@
       ]
     },
     {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-029",
+      "evidence": "Published merge de454757f of918263482 verified; first production build passes. Covering web batch green1499/86files, initial resource-incomplete attempt excluded; all10attempt/chunk roots/groups and batch worktree/ref/link/lease removed. Source composition and actual live pair pending.",
+      "id": "FUCQ-556",
+      "note": "All6AC open; still building. Independent canonical source/no-show increment merged as de454757f; complete covering Angular batch1499passed/86files in9resource-bounded whole-file chunks. Original screen/canonical sibling/runtime/keyboard/live-pair/human proof remains; no review-ready claim.",
+      "observed_at": "2026-11-23T06:51:21Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json.",
+          "id": "source-ports",
+          "observed_at": "2026-11-23T00:40:55Z",
+          "status": "complete",
+          "title": "Pure TaskList and SlotPicker source ports (3 points)"
+        },
+        {
+          "id": "tracker-documents",
+          "status": "not-started",
+          "title": "Orders tracker and document checklist composition (5 points)"
+        },
+        {
+          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "id": "appointment-return",
+          "observed_at": "2026-11-23T06:24:07Z",
+          "status": "in-progress",
+          "title": "Appointment return history help and missed-state parity (3 points)"
+        },
+        {
+          "evidence": "Independent source increment merged de454757f; first production build and covering Angular1499/86file batch green, recovery/cleanup evidenced. Original screen/sibling/runtime/keyboard/live same-state pair/human review remain; all6AC open, still building.",
+          "id": "integration-proof",
+          "observed_at": "2026-11-23T06:51:21Z",
+          "status": "in-progress",
+          "title": "Supported sibling integration and actual same-state pair (2 points)"
+        }
+      ],
+      "started_at": "2026-11-23",
+      "status": "In Progress",
+      "story_points": 13,
+      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "harness": "codex",
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "role": "story-lead",
+          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
+          "status": "stopped; child422; launcher continues"
+        },
+        {
+          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "role": "dispatcher carrying source implementation",
+          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
+          "status": "active; F556 source checkpoint publication"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-028",
+      "evidence": "Manual check332a15f90:233scoped Angular, boundaries/inline4, ratchet124;28controlled1280/390 keyboard/rendered captures and independent source/visual review pass. No live Java/OIDC pair or human acceptance. docs/gcsp/evidence/fucq555-manual-check-2026-11-23.md Native Jira comment5065145 read back; status In Progress. All8AC remain open.",
+      "id": "FUCQ-555",
+      "note": "All8AC open. Generic exact card/media and manual Check feedback increments complete in source; comparison winners/DataTable, sibling integration, final connected composition and human live parity remain.",
+      "observed_at": "2026-11-23T11:40:55Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "a9fdc1cee canonical stage list/order identity + matching catalogue/gallery; lead15/15 scoped regressions and124/124 ratchet. Independent stage-only Chester Sol/xhigh review d6c76ac..a9fdc1c passed, no actionable finding. Source boundary only; rendered/connected/acceptance remain open.",
+          "id": "stage-list-source",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "status": "complete",
+          "title": "Canonical source stage list and exact order-identity rows (AC6)"
+        },
+        {
+          "evidence": "a9fdc1cee ONE canonical tracker imports existing formatter;15/15 source tests and independent Chester Sol/xhigh stage-only review passed. F556 future adapter must normalize nullable at and preserve owner/Next/blocked note; actual consumer integration remains separate.",
+          "id": "stage-tracker-source",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "status": "complete",
+          "title": "ONE canonical stage tracker reused by F556"
+        },
+        {
+          "evidence": "90999d25e ONE exact finish projection/palette, labels, uncapped highlights and pure decision shell with matching catalogue/gallery.23/23 scoped specs+gallery compilation, source boundaries,124/124 ratchet; data independently equal. Lead/self-review only; actual media/details/exact-card integration and independent review remain open. Later canonical Tabs/FactList, SideDrawerfb91, VehicleDetails947 and Media source ports are present. SideDrawer independent review passed; VehicleDetails independent review is unfinished. Latest Media151scoped passes incl source DOM parentage/actual callers; no rendered parity.",
+          "id": "decision-presenters",
+          "observed_at": "2026-11-23T00:52:03.823973+00:00",
+          "status": "complete",
+          "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
+        },
+        {
+          "evidence": "Manual check332a15f90 now completes visible feedback across authoritative reads, source completion words, expiry reread and owned focus. Generic card/media checkpoint retained.233scoped cases plus28controlled1280/390 keyboard/rendered captures pass; CSS33698df1 overlay only. Comparison/DataTable, sibling integration and live/human parity remain. docs/gcsp/evidence/fucq555-manual-check-2026-11-23.md",
+          "id": "offer-composition",
+          "observed_at": "2026-11-23T11:40:55Z",
+          "status": "in-progress",
+          "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
+        },
+        {
+          "evidence": "Source Documents and saved Activity exits plus canonical drawer controls/errors/facts/footer now composed; 30 OptionList + 63 OfferScreen + 35 interaction-store + 37 Stock/route/Gallery cases passed. Uncertain outcome still follows the unchanged Angular store; full source-state and CSS/Button integration/connected/human proof remain open. Latest local review/reason-retry/confirm/cancel controls use the published source Button; source adoption only, unchanged action guards. Shared drawer/media/fo",
+          "id": "decision-followup",
+          "observed_at": "2026-11-23T07:46:44Z",
+          "status": "in-progress",
+          "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
+        },
+        {
+          "evidence": "Frozen sibling branches remain unmerged; preserve CSS/navigation/refresh/dataTable/activity ports; no manual stacking/copying.",
+          "id": "sibling-integration",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "F548/F549/F550/F551 integration and shared source reuse"
+        },
+        {
+          "evidence": "Manual-check final233/233 scoped Angular, boundaries/inline4 and ratchet124; independent source/visual review after expiry/deadline/same-account regressions.28controlled keyboard/rendered captures;20roots/groups absent. Full suites deferred to batch; actual final composition/build and human/live pair remain.",
+          "id": "source-validation",
+          "observed_at": "2026-11-23T11:40:55Z",
+          "status": "in-progress",
+          "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
+        },
+        {
+          "evidence": "No connected stack authorized; parent F562 reset503/F564 clock routing unanswered; exact actual run/offer/state must align.",
+          "id": "connected-behavior",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
+        },
+        {
+          "evidence": "No captures/pair/human ledger review yet; parent coordinates actual live Node/local Java-OIDC composition.",
+          "id": "reviewed-parity",
+          "observed_at": "2026-11-22T23:16:00Z",
+          "status": "blocked",
+          "title": "Live same-offer 1280 Node/Angular attachments and human review (AC8)"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Angular offer decision support, exits, countdown and drawer parity",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-555",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:52:03.823973+00:00",
+          "harness": "codex",
+          "name": "Mr Potato Head",
+          "observed_at": "2026-11-22T23:42:34Z",
+          "role": "story-lead",
+          "source": "Observed in this active lead session; actual Sol/xhigh previously verified; parent allocated exact next paths. No implementer activated.",
+          "status": "stopped; repeated child422; launcher carries allocation"
+        },
+        {
+          "expires_at": "2026-11-23T05:57:08.114247+00:00",
+          "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T05:57:08.114247+00:00",
+          "role": "launcher carrying F555 original view implementation",
+          "source": "Observed direct canonical loading port/composition after retained child422; no model/provider/key change/retry. Runtime pair unexposed.",
+          "status": "checkpointed; scheduled continuation"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-551",
+      "title": "Angular Your cars lost the Buddy tile and car styling, shows a false error...",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-551",
+      "branch": "dev/DEV-2026-11-22-vesper-026",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "current-car",
+          "status": "complete",
+          "title": "Current car source styling and rating (5 points)",
+          "observed_at": "2026-11-22T23:20:17Z",
+          "evidence": "Source9f668374f; lead reviewed frozen markup/classes, factCSSspecificity, rating scopedqueue/canonicalack/retry, help lifecycle, exactcountdown and photo-base mapping; fresh89/89 in6specs passed lead-current-car-review receipt. Source boundary only; fullAC/pair remain pending."
+        },
+        {
+          "id": "buddy",
+          "status": "complete",
+          "title": "Account Buddy composition (5 points)",
+          "observed_at": "2026-11-22T23:37:17.621716+00:00",
+          "evidence": "Source793b9f51f. Lead compared frozen ports/composition, scoped command authority, adjacent canonical editor sync, journey omission, neutral preference frame and focus. Worker29 distinct focused cases plus lead84 caller cases/final6 HTTP passed;126ratchet/4inline/boundary receipts verified. Source boundary only; rendered/global-style/live/pair acceptance remains open."
+        },
+        {
+          "id": "account-history-media",
+          "status": "in-progress",
+          "title": "Shared history, failure regression and hosted image (3 points)",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "Source76607f189: lead reviewed frozen DataTable/history and explicit callers;26hashes/6receipts matched,101scoped cases/128ratchet/4inline/boundary passed. Clean pinned build and921compiled/assembled WebP hashes/87265982B pass. Actual authenticated hosted current-image200 remains unproved; all6ACs open."
+        },
+        {
+          "id": "integration-validation",
+          "status": "blocked",
+          "title": "Supported sibling integration and focused validation",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "Own source76607f189 clean production build and explicit targeted built boundary passed; code_key6fe81454, tree61d1da70. Supported F548/549/550/552/555 sibling/global/shared-presenter integration remains dispatcher work. No copying/manual stacking or rendered acceptance claimed."
+        },
+        {
+          "id": "connected-parity",
+          "status": "blocked",
+          "title": "Actual live same-state Node Angular parity",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "evidence": "No connected runtime/browser/deploy work performed. F562reset503/F564clock decisions remain unanswered; no equality weakened. Actual hosted src200, real same-state1280Node/Angular pair, attachments, independent visual critique and human-signed ledger remain absent. All6original ACs stay open."
+        },
+        {
+          "id": "review-handoff",
+          "status": "complete",
+          "title": "Lead review, fixed AC evidence and cleanup",
+          "evidence": "Partial Result/plan1f5b0bbe5 published after lead source/caller review, verified receipts, pinned build/asset proof and targeted boundary.71/71owned roots/groups/reservations absent; own dist/dependency link removed, shared caches preserved, heavy slot released. Source handoff only; all6ACs unticked and Jira In Progress unchanged.",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00"
+        }
+      ],
+      "observed_at": "2026-11-23T11:56:57Z",
+      "workers": [
+        {
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "expires_at": "2026-11-22T23:59:50.278295+00:00",
+          "source": "Observed running via collaboration.list_agents; completing final metadata publication and partial source handoff. All6ACs remain unticked; no connected work active. Parent will reconcile final completion.",
+          "status": "active"
+        },
+        {
+          "id": "01a2057b-3589-7b41-809e-9e26b50cdb3e",
+          "name": "Beaky Buzzard",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-22T23:54:50.278295+00:00",
+          "expires_at": "2026-11-22T23:54:50.278295+00:00",
+          "source": "Observed completed via collaboration.list_agents; canonical source reviewed and published76607f189; matching worker receipts/cleanup verified. No descendants.",
+          "status": "stopped"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-549",
+      "title": "Angular navigation cannot reach Activity, Greg Next order or Renewal cases",
+      "type": "Bug",
+      "status": "In Progress",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-22-vesper-024",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-549",
+      "workers": [
+        {
+          "name": "Mr Potato Head",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:46:40.248217+00:00",
+          "expires_at": "2026-11-22T22:05:23.777457+00:00",
+          "status": "source/component validation finished; required integration remains pending"
+        },
+        {
+          "name": "Sam Sheepdog",
+          "harness": "codex",
+          "observed_at": "2026-11-22T21:47:11Z",
+          "expires_at": "2026-11-22T22:05:23.777457+00:00",
+          "status": "published source64271c5ef; stopped"
+        }
+      ],
+      "observed_at": "2026-11-23T12:14:51Z",
+      "slices": [
+        {
+          "id": "shared-navigation",
+          "status": "complete",
+          "title": "Shared navigation, landing and breadcrumbs",
+          "observed_at": "2026-11-22T22:05:23Z",
+          "evidence": "Component/source boundary reviewed at64271c5ef;183 pinned source/caller tests,124 ratchet checks,4 inline/boundary checks and production build passed. Actual integration remains separate/incomplete; lead-review.md and story Result."
+        },
+        {
+          "id": "employee-entry",
+          "status": "complete",
+          "title": "Preferences Activity link",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "Allocated preferences Activity action source/state test reviewed at64271c5ef. F548 bell/F551 Buddy surfaces and actual click-through remain in integration slice; no original AC ticked."
+        },
+        {
+          "id": "validation",
+          "status": "complete",
+          "title": "Focused checks, build and review",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "lead-review.md, lead-pinned-source-callers/ratchet/targeted-boundaries/production-build receipts pass; source hashes unchanged.21 Scratch roots absent,21 groups stopped. Scoped source validation only."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Connected navigation and screenshot pairs",
+          "observed_at": "2026-11-22T22:05:24Z",
+          "evidence": "F548 CSS/bell/browser harness unmerged; F551 Buddy surface missing; F562/F564 prerequisite authorization unanswered. Persistent navigation cases, actual signed click-through,1280px pairs/attachments and human review unrun."
+        }
+      ],
+      "unsliced": false
+    },
+    {
       "id": "FUCQ-550",
       "title": "Angular employee live refresh and outbox status parity",
       "status": "In Progress",
@@ -10756,7 +11055,7 @@
           "source": "Native source worker completed; lead review/230tests passed, no active claim inferred."
         }
       ],
-      "observed_at": "2026-11-22T22:47:41Z",
+      "observed_at": "2026-11-23T12:28:17Z",
       "slices": [
         {
           "id": "outbox-chip-source",

@@ -169,6 +169,11 @@
       "re": "<span\\b[^>]*\\bclass\\s*=\\s*[\"'][^\"']*\\bgcsp-mail-status\\b",
       "flags": "g",
       "use": "span[gcspMailStatusChip] (apps/gcsp-web/src/app/kit/mail-status-chip.component.ts)"
+    },
+    "angular-tabs": {
+      "re": "role\\s*=\\s*[\"']tablist[\"']",
+      "flags": "g",
+      "use": "gcsp-tabs / gcsp-greg-navigation (apps/gcsp-web/src/app/kit/)"
     }
   },
   "stylesheets": [
@@ -415,6 +420,14 @@
     {
       "path": "apps/gcsp-web/src/app/kit/mail-status-chip.component.css",
       "max_lines": 8
+      },
+      {
+      "path": "apps/gcsp-web/src/app/kit/star-rating.component.css",
+      "max_lines": 2
+    },
+    {
+      "path": "apps/gcsp-web/src/app/kit/data-table.component.css",
+      "max_lines": 2
     }
   ],
   "baseline": {

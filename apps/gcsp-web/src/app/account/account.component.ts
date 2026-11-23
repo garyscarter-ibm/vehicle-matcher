@@ -1,7 +1,9 @@
+import { vehicleImageUrl } from '../kit/vehicle-image-url';
 import { ChangeDetectorRef, Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
+import { DataTableComponent, DataTableColumn, DataTableRow, DataTableRowAction, DataTableValue } from '../kit/data-table.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
@@ -12,11 +14,13 @@ import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { CurrentCarRatingComponent } from '../preferences/current-car-rating.component';
 import { AccountOffers, AccountOrdersReadResult, AccountOrderSnapshot, latestOrder, orderVehicle, placedOrderRecord } from './account.preview';
 import { AccountClient } from './account.client';
+import { AccountBuddyComponent } from './account-buddy.component';
 import { AccountChoicesComponent } from './account-choices.component';
 import { contractTerms, journeyIntent, toAccountView } from './account.projection';
 import { AccountAction, AccountDriver, AccountFailure, AccountProjection, AccountResult, ContractView, EvidenceRecord, JourneyIntent,
   ManualDraft, NotificationEmail, SaveNotificationEmailCommand } from './account.types';
 
+type HistoryTableRow = DataTableRow & { readonly contract: ContractView };
 type Row = { label: string; value: string };
 type Notice = { title: string; text: string };
 const object = (value: unknown): EvidenceRecord | null => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as EvidenceRecord : null;
@@ -38,7 +42,7 @@ const states: Record<string, Notice> = {
 @Component({
   selector: 'gcsp-account',
   imports: [RouterLink, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent,
-    AccountChoicesComponent, AccountPreferencesComponent, CurrentCarRatingComponent],
+    AccountChoicesComponent, AccountPreferencesComponent, CurrentCarRatingComponent, AccountBuddyComponent, DataTableComponent],
   templateUrl: './account.component.html', styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnDestroy {
@@ -49,6 +53,7 @@ export class AccountComponent implements OnDestroy {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   @ViewChild('recordDrawer') private drawer?: ElementRef<HTMLDialogElement>;
+  @ViewChild(AccountBuddyComponent) private accountBuddy?: AccountBuddyComponent;
   readonly projection = signal<AccountProjection | null>(null);
   readonly draft = signal<AccountResult<ManualDraft> | null>(null);
   readonly offers = signal<AccountResult<AccountOffers> | null>(null);
@@ -66,6 +71,39 @@ export class AccountComponent implements OnDestroy {
     return order && value && (value['status'] === undefined || value['status'] === 'acknowledged') ? orderVehicle(value, order.orderUuid) : null;
   });
   readonly placedRecord = computed(() => placedOrderRecord(this.newestOrder(), this.orderCar(), this.projection()));
+  readonly historyColumns: readonly DataTableColumn[] = [{ key: 'car', label: 'Car' }, { key: 'scheme', label: 'Scheme' }, { key: 'collected', label: 'Collected' }, { key: 'ended', label: 'Ended' }, { key: 'status', label: 'Status' }];
+  readonly historyRows = computed<readonly HistoryTableRow[]>(() => {
+    const model = this.model(); if (!model?.account) return [];
+    const rows: HistoryTableRow[] = [];
+    const add = (contract: ContractView, scheme: string | null, ended: string | null, status: DataTableValue): void => {
+      const car = this.carName(contract); const name = `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}`;
+      rows.push({ id: `history:${rows.length}:${contract.contractId}`, label: name, contract, cells: { car, scheme, collected: this.date(contract.actualCollectionDate), ended, status } });
+    };
+    const placed = this.placedRecord();
+    if (placed) { const index = model.histories.findIndex(history => history.schemeId === placed.schemeId); add(placed, index < 0 ? null : model.histories[index].label ?? `Scheme ${index + 1}`, null, this.status(placed.status)); }
+    model.histories.forEach((history, index) => {
+      const entries: readonly ContractView[] = history.entries;
+      entries.forEach(contract => {
+        const when = this.historyDate(contract.status === 'returned' ? contract.returnedDate : contract.contractEndDate);
+        const ended = when ? `${contract.status === 'current' ? 'Ends ' : contract.status === 'returned' ? 'Returned ' : ''}${when}` : null;
+        add(contract, history.label ?? `Scheme ${index + 1}`, ended, contract.status === 'current' ? { label: 'Current car', emphasis: true, tone: 'success' } : this.status(contract.status));
+      });
+    });
+    return rows;
+  });
+  readonly historyRowAction: DataTableRowAction = { header: 'Record', label: 'View record', name: row => row.label,
+    onSelect: row => {
+      const record = this.historyRows().find(item => item.id === row.id);
+      const opener = Array.from(this.host.nativeElement.querySelectorAll<HTMLButtonElement>('.account-history .gcsp-table-action')).find(button => button.dataset['rowId'] === row.id);
+      if (record && opener) this.openRecord(record.contract, opener);
+    } };
+  readonly historyOnlyNote = computed(() => {
+    const model = this.model(); if (!model || model.state === 'unsupported-scheme') return null;
+    const schemes = model.histories.flatMap((history, index) => !history['orderingSupported'] && history.count ? [history.label ?? `Scheme ${index + 1}`] : []);
+    if (!schemes.length) return null;
+    const names = schemes.length < 2 ? schemes[0] : `${schemes.slice(0, -1).join(', ')} and ${schemes.at(-1)}`;
+    return `${names} ${schemes.length === 1 ? 'shows' : 'show'} history only; you can't order through ${schemes.length === 1 ? 'it' : 'them'} here.`;
+  });
   readonly allocatedOrder = computed(() => this.model()?.state === 'no-entitlement' && !!this.placedRecord());
   readonly visibleSaved = computed(() => this.allocatedOrder() && this.saved()?.choices.slotId === this.newestOrder()?.entitlementSlotId ? null : this.saved());
   readonly pendingOffer = computed(() => { const offers = this.offers(); return this.currentScope() && offers?.status === 'ok' && offers.value.offers[0]?.state === 'pending' ? offers.value.offers[0] : null; });
@@ -170,6 +208,7 @@ export class AccountComponent implements OnDestroy {
     if (this.disposed || !this.currentScope() || this.loading() || this.busy() || this.emailBusy() || this.previewLoading()
       || this.emailInput() !== (this.email()?.deliveryEmail ?? '') || this.emailCommand || this.journeyLocked()
       || this.pendingIntent() || this.confirmingDiscard() || this.selectedRecord() || this.printFrame
+      || this.accountBuddy?.drawerKind() || this.accountBuddy?.pending() || this.accountBuddy?.phase() === 'loading'
       || this.brief.loading() || this.brief.queuePending() || this.brief.queueNeedsReview() || this.brief.fullDirty()
       || this.brief.fullBusy() || this.brief.buddyResolutionRequired() || this.brief.previewLoading()
       || this.brief.openCategory() || this.brief.pendingRemoval()) return;
@@ -329,9 +368,13 @@ export class AccountComponent implements OnDestroy {
     const date = new Date(`${value}T00:00:00Z`);
     return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value ? date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : null;
   }
+  private historyDate(value: unknown): string | null {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const date = new Date(`${value}T00:00:00Z`);
+    return Number.isFinite(date.getTime()) ? date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : null;
+  }
   status(value: unknown): string | null { return value === 'current' ? 'Current car' : value === 'returned' ? 'Returned' : typeof value === 'string' ? words(value) : null; }
   schemeName(schemeId: string): string | null { return this.model()?.histories.find((row) => row.schemeId === schemeId)?.label ?? null; }
-  historyScheme(schemeId: string): string { const index = this.model()?.histories.findIndex((row) => row.schemeId === schemeId) ?? -1; return this.schemeName(schemeId) ?? `Scheme ${index + 1}`; }
   carName(contract: ContractView): string { return contract.model ?? (contract.status === 'current' ? 'Your current car' : 'Your previous car'); }
   terms(contract: ContractView): string {
     const account = this.projection(); const term = account ? contractTerms(contract, account) : null;
@@ -346,17 +389,21 @@ export class AccountComponent implements OnDestroy {
   image(contract: ContractView): string | null {
     if (this.failedImages().has(contract.contractId)) return null;
     const src = contract.media?.['src'] ?? contract.media?.['photo'];
-    return typeof src === 'string' && (/^\/(?!\/)/.test(src) || /^https:\/\//.test(src)) ? src : null;
+    return vehicleImageUrl(src);
   }
   imageFailed(contract: ContractView): void { this.failedImages.update((current) => new Set([...current, contract.contractId])); }
   vehicleSpec(contract: ContractView): string {
     const configuration = this.shown(contract.vehicle?.['configuration']); const end = contract.model?.trim().split(/\s+/).at(-1);
     const trim = configuration?.startsWith(`${end} `) ? configuration.slice((end?.length ?? 0) + 1) : configuration;
-    return [trim, this.shown(contract.vehicle?.['fuel'])].filter(Boolean).join(' · ');
+    const fuel = ({ petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' } as Record<string, string>)[String(contract.vehicle?.['fuel'])];
+    return [trim, fuel].filter(Boolean).join(' · ');
   }
+  carDescription(contract: ContractView): string { return [this.carName(contract), this.vehicleSpec(contract)].filter(Boolean).join(' '); }
   countdown(contract: ContractView): string {
     if (contract.daysRemaining === null) return 'Contract end: Not supplied';
-    return contract.daysRemaining < 0 ? `Contract ended ${this.date(contract.contractEndDate)}` : `Contract ends in ${contract.daysRemaining} days · ${this.date(contract.contractEndDate)}`;
+    const days = contract.daysRemaining; const plural = (value: number) => `${value} day${value === 1 ? '' : 's'}`;
+    const phrase = days === 0 ? 'ends today' : days > 0 ? `ends in ${plural(days)}` : `ended ${plural(-days)} ago`;
+    return `Contract ${phrase} · ${this.date(contract.contractEndDate)}`;
   }
   driverLines(driver: AccountDriver): readonly string[] {
     const licence = driver.licence ?? {}; const categories = Array.isArray(licence['categories']) ? licence['categories'] : [];
@@ -388,8 +435,8 @@ export class AccountComponent implements OnDestroy {
     ];
     return sections.map((section) => ({ ...section, rows: section.rows.filter((item) => item.value !== '') }));
   }
-  openRecord(contract: ContractView, event: Event): void {
-    this.opener = event.currentTarget as HTMLElement; this.selectedRecord.set(contract); this.changeDetector.detectChanges();
+  openRecord(contract: ContractView, event: Event | HTMLElement): void {
+    this.opener = event instanceof HTMLElement ? event : event.currentTarget as HTMLElement; this.selectedRecord.set(contract); this.changeDetector.detectChanges();
     this.drawer?.nativeElement.showModal(); this.drawer?.nativeElement.querySelector<HTMLButtonElement>('button')?.focus();
   }
   closeRecord(event?: Event, restore = true): void {
