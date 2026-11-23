@@ -258,6 +258,7 @@ describe('native offer read screen', () => {
       ['Order reference', 'GCSP-000123'], ['Car order number', '7654321'],
     ]);
     expect(host.querySelector('[data-offer-action]')).toBeNull(); expect(client['decide']).not.toHaveBeenCalled();
+    expect(host.querySelector('.gcsp-decision-deadline')).toBeNull();
   });
   it('does not borrow the quote order number for a refused selection with only an order reference', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('accepted');
@@ -269,10 +270,30 @@ describe('native offer read screen', () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture(state));
     expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-header, .gcsp-offer-actions > a')).toBeNull();
     expect((fixture.nativeElement as HTMLElement).querySelector('gcsp-stage-list')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-deadline')).toBeNull();
   });
   it.each(['decision-pending', 'release-pending'])('shows truthful uncertain copy for %s', async (reason) => {
-    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load({ ...offerScreenFixture(), reason });
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load({ ...offerScreenFixture(), reason, serverNow: '2026-11-14T14:26:00.000Z' });
     expect(text()).toContain('Checking your decision'); expect(text()).toContain('being confirmed');
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('gcsp-vehicle-decision, .gcsp-offer-header, .gcsp-decision-deadline')).toBeNull();
+    expect(host.querySelector('[data-offer-action="accept"], [data-offer-action="decline"]')).toBeNull();
+    expect(host.querySelector('[data-offer-announcement]')?.textContent).toBe('');
+    const check = host.querySelector<HTMLButtonElement>('[data-offer-action="check"]')!;
+    expect(check?.disabled).toBe(false); check.click(); await settle();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('replaces a pending expiry warning with uncertain state and clears it on authority loss', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const offer = { ...offerScreenFixture(), serverNow: '2026-11-14T14:26:00.000Z' };
+    await load(offer);
+    const announcement = () => (fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent;
+    expect(announcement()).toBe('Less than five minutes remain on this offer.');
+    fixture.componentInstance.refresh(); await settle(); await load({ ...offer, reason: 'decision-pending' });
+    expect(announcement()).toBe('Checking your decision');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-deadline')).toBeNull();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+    auth.set({ status: 'signed-out' }); await settle(); expect(announcement()).toBe('');
   });
   it.each(['handoff-pending', 'handoff-failed'] as const)('preserves actual %s selection state', async (selectionState) => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle();

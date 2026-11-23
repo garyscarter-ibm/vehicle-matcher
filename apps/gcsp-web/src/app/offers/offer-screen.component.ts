@@ -61,8 +61,8 @@ export class OfferScreenComponent implements OnDestroy {
         return;
       }
       const identity = `${vm.title}:${offer.offerId}`;
-      if (offer.state === 'pending' && vm.remainingSeconds === 0) this.announcement.set('The deadline has been reached. Checking the current offer state.');
-      else if (offer.state === 'pending' && vm.remainingSeconds !== null && vm.remainingSeconds <= 300) this.announcement.set('Less than five minutes remain on this offer.');
+      if (vm.isPending && vm.remainingSeconds === 0) this.announcement.set('The deadline has been reached. Checking the current offer state.');
+      else if (vm.isPending && vm.remainingSeconds !== null && vm.remainingSeconds <= 300) this.announcement.set('Less than five minutes remain on this offer.');
       else if (this.announcedOffer !== null && this.announcedOffer !== identity) this.announcement.set(vm.title);
       this.announcedOffer = identity;
     });

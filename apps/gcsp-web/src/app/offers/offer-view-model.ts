@@ -130,10 +130,16 @@ function comparableNumber(value: string | null): number | null {
   return match ? Number(match[1].replaceAll(',', '')) : null;
 }
 
+// The source read adapter presents these pending receipts as an uncertain outcome.
+export function offerPresentationState(offer: Pick<OfferProjection, 'state' | 'reason'>): OfferProjection['state'] | 'uncertain' {
+  return offer.state === 'pending' && ['decision-pending', 'release-pending'].includes(offer.reason) ? 'uncertain' : offer.state;
+}
+
 export function offerViewModel(offer: OfferProjection) {
   const { quote } = offer;
   const { display, facts } = quote.facts;
-  const uncertain = offer.state === 'pending' && ['decision-pending', 'release-pending'].includes(offer.reason);
+  const presentationState = offerPresentationState(offer);
+  const isPending = presentationState === 'pending'; const uncertain = presentationState === 'uncertain';
   const refused = offer.state === 'accepted' && offer.selection?.selectionState === 'handoff-failed';
   const title = refused ? 'Your selection was not sent to ordering' : uncertain ? 'Checking your decision'
     : ({ pending: 'Your offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired', superseded: 'Offer superseded' })[offer.state];
@@ -204,10 +210,10 @@ export function offerViewModel(offer: OfferProjection) {
     }
   }
   const decisionDetails = [
-    { label: quote.decision.gateStatus === 'eligible' ? 'Why it suits you' : 'Checks passed', entries: offer.state === 'pending' ? [] : normalizedDecision.reasons.map((entry) => entry.text) },
+    { label: quote.decision.gateStatus === 'eligible' ? 'Why it suits you' : 'Checks passed', entries: isPending ? [] : normalizedDecision.reasons.map((entry) => entry.text) },
     { label: 'Why it is not eligible', entries: normalizedDecision.blockers.map((entry) => entry.text) },
     { label: 'Needs confirmation', entries: normalizedDecision.unknowns.map((entry) => entry.text) },
-    { label: 'Trade-offs', entries: offer.state === 'pending' ? [] : normalizedDecision.tradeOffs.map((entry) => entry.text) },
+    { label: 'Trade-offs', entries: isPending ? [] : normalizedDecision.tradeOffs.map((entry) => entry.text) },
   ].filter(group => group.entries.length);
   const orderNumber = offer.selection?.orderNumber ?? quote.orderNumber;
   const acceptedIdentityRows = [...(display.name ? [{ label: 'Your new car', value: display.name }] : []),
@@ -219,10 +225,10 @@ export function offerViewModel(offer: OfferProjection) {
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,
     orderNumber, acceptedIdentityRows, selectionIdentityRows, showSelection: refused && offer.selection !== null,
-    isPending: offer.state === 'pending', isExpired: offer.state === 'expired', isRefused: refused,
+    isPending, isExpired: offer.state === 'expired', isRefused: refused,
     monthlyPoints: quote.terms.points.value, monthlyAllowance: quote.terms.allowanceInputs.allowance?.value ?? null,
     pointsDifference, benefits, tradeoffs, hasCurrentCar: offer.comparison.currentCar !== null, decisionDetails,
-    decisionGate: offer.state === 'pending' && quote.decision.gateStatus === 'eligible' ? null
+    decisionGate: isPending && quote.decision.gateStatus === 'eligible' ? null
       : ({ eligible: 'Eligible', ineligible: 'Not eligible', 'needs-confirmation': 'Needs confirmation' })[quote.decision.gateStatus],
     points: offerValue(quote.terms.points.value), allowance: quote.terms.allowanceInputs.allowance ? offerValue(quote.terms.allowanceInputs.allowance.value) : null,
     contribution: contribution ? `${new Intl.NumberFormat('en-GB', { style: 'currency', currency: contribution.currency }).format(contribution.amount)} ${contribution.period === 'one-off' ? 'one-off' : `a ${contribution.period}`}` : null,

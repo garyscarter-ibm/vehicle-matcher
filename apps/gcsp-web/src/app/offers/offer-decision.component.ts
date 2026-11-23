@@ -8,6 +8,7 @@ import { OptionListComponent } from '../kit/option-list.component';
 import { SideDrawerComponent } from '../kit/side-drawer.component';
 import { OfferInteractionStore } from './offer-interaction.store';
 import { OfferDecisionKind } from './offer.types';
+import { offerPresentationState } from './offer-view-model';
 
 let sequence = 0;
 @Component({
@@ -19,6 +20,7 @@ export class OfferDecisionComponent {
   readonly store = inject(OfferInteractionStore);
   readonly state = this.store.state;
   readonly offer = this.store.offer;
+  readonly isPending = computed(() => { const offer = this.offer(); return !!offer && offerPresentationState(offer) === 'pending'; });
   readonly prefix = `offer-decision-${++sequence}`;
   private readonly drawer = viewChild(SideDrawerComponent);
   private readonly element: ElementRef<HTMLElement> = inject(ElementRef);

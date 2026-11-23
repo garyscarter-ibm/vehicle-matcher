@@ -76,8 +76,13 @@ describe('offer read presentation projection', () => {
     expect(offer.state).toBe('pending');
   });
   it.each(['decision-pending', 'release-pending'])('retains pending confirmation for %s', (reason) => {
-    const vm = offerViewModel({ ...offerScreenFixture(), reason });
+    const offer = { ...offerScreenFixture(), reason }; const before = JSON.stringify(offer);
+    const vm = offerViewModel(offer);
     expect(vm.title).toBe('Checking your decision'); expect(vm.message).toContain('being confirmed');
+    expect(vm.isPending).toBe(false); expect(vm.showVehicle).toBe(true); expect(vm.decisionGate).toBe('Eligible');
+    expect(vm.decisionDetails).toContainEqual({ label: 'Why it suits you', entries: ['Available by Tuesday 1 December 2026.'] });
+    expect(vm.decisionDetails.find(group => group.label === 'Trade-offs')?.entries).toContain('Less sporty than you prefer.');
+    expect(offer.state).toBe('pending'); expect(JSON.stringify(offer)).toBe(before);
   });
   it('retains current-car partial and unavailable unknowns without deriving winners', () => {
     const offer = offerScreenFixture(); const vm = offerViewModel(offer);
