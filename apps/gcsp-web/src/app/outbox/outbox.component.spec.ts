@@ -27,7 +27,7 @@ describe('presenter captured email inspection', () => {
       { provide: AuthPort, useValue: { state: authState } }, { provide: OutboxClient, useValue: { read } },
     ] }).compileComponents();
   });
-  afterEach(() => { fixture?.destroy(); fixture = undefined; TestBed.resetTestingModule(); });
+  afterEach(() => { fixture?.destroy(); fixture = undefined; TestBed.resetTestingModule(); vi.restoreAllMocks(); });
   const root = () => fixture!.nativeElement as HTMLElement;
   const text = () => root().textContent ?? '';
   const button = (label: string) => Array.from(root().querySelectorAll('button')).find((node) => node.textContent?.trim() === label)!;
@@ -119,6 +119,26 @@ describe('presenter captured email inspection', () => {
     expect(rows()[0].textContent).toContain(label); expect(text()).toContain('Delivery is not yet confirmed.');
     expect(text()).toContain('Email content is not available.'); expect(root().querySelector('iframe')).toBeNull();
   });
+  it.each([
+    ['sent', 'captured', 'Captured, not sent', 'ok'],
+    ['sent', 'configured', 'Accepted by email provider', 'ok'],
+    ['sent', null, 'Delivery status unknown', 'wait'],
+    ['pending', 'configured', 'Preparing', 'wait'],
+    ['sending', 'configured', 'Sending', 'wait'],
+    ['retrying', 'configured', 'Retrying', 'warn'],
+    ['failed', 'configured', 'Failed', 'bad'],
+    ['provider-awaiting-proof', 'configured', 'Delivery status unknown', 'wait'],
+  ] as const)('renders the %s/%s row status as the source chip with honest %s copy', async (state, transport, label, tone) => {
+    read.mockResolvedValueOnce(ok([message({ state, transport })])); await render();
+    const chip = rows()[0].querySelector('.gcsp-mail-status')!;
+    expect(chip.parentElement).toBe(rows()[0]);
+    expect(chip.tagName).toBe('SPAN');
+    expect(chip.className).toBe(`gcsp-mail-status is-${tone}`);
+    expect(chip.querySelector(':scope > span')?.textContent).toBe(label);
+    expect(chip.querySelector(':scope > svg.gcsp-icon')?.getAttribute('aria-hidden')).toBe('true');
+    expect(chip.querySelector('svg')?.getAttribute('focusable')).toBe('false');
+    expect(read).toHaveBeenCalledOnce();
+  });
   it('shows retries, fixed error copy, attempt count and next UK demo-clock time', async () => {
     read.mockResolvedValueOnce(ok([message({ state: 'retrying', attempts: 3, error: 'provider-timeout', nextAttemptAt: '2026-07-05T09:30:00Z' })])); await render();
     expect(text()).toContain('3 attempts.'); expect(text()).toContain('The email provider timed out. Acceptance is not confirmed.');
@@ -196,4 +216,25 @@ describe('presenter captured email inspection', () => {
     const signal = read.mock.calls[0][0]!.signal!; fixture.destroy(); fixture = undefined; expect(signal.aborted).toBe(true);
     pending.resolve(ok()); await Promise.resolve(); expect(component.messages()).toEqual([]); expect(component.selected()).toBeNull();
   });
+  it('rereads an idle presenter outbox on native visibility without selecting or focusing a row', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    document.dispatchEvent(new Event('visibilitychange')); await settled();
+    expect(read).toHaveBeenCalledTimes(2); expect(focus).not.toHaveBeenCalled();
+  });
+
+  it('does not overlap an outbox read, and resumes on a later eligible native trigger', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const pending = deferred<OutboxResult>(); read.mockReturnValueOnce(pending.promise);
+    fixture = TestBed.createComponent(OutboxComponent); fixture.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+    pending.resolve(ok()); await settled(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await settled(); expect(read).toHaveBeenCalledTimes(2);
+  });
+  it('does not reread on native signals after sign-out or owner teardown', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await render(); authState.set({ status: 'signed-out' }); fixture!.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+    fixture!.destroy(); fixture = undefined; document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(read).toHaveBeenCalledOnce();
+  });
+
 });

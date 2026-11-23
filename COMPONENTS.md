@@ -509,6 +509,7 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `ul[gcspSlotPicker]` | Port of frozen `kit/slot-picker.js`: inputs `slots` (supplied objects with `start`), `actionLabel`, optional `onPick(slot)`, `disabled` and `className`. Keeps the source root/day/time structure and classes, supplied order, London day/DST grouping, complete button names and `data-focus-key`. No callback gives static times; callbacks receive the exact supplied object. Missing, null, empty, nonstring or invalid starts are omitted, never inferred as an epoch appointment. Use for offered appointment times instead of local time lists. Gallery: Offered appointment times, interactive and read-only. |
 | `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2/h3 level. Page h1 accepts arrival focus. Level 3 (`h3.gcsp-intro-title`) nests the title under an embedded h2 section with the same look as the h2. |
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
+| `span[gcspMailStatusChip]` | Required `label`, supplied `state` and optional `transport`. Ports the frozen `messageList` status span, decorative `svgIcon` paths and `is-ok`/`is-warn`/`is-bad`/`is-wait` classes. Sent captured/configured use the check; retrying uses refresh, failed uses cross, and pending/sending/unknown use the clock. Sent with an unknown transport stays neutral wait. Copy remains caller-owned; use instead of building an outbox status span. Gallery: Outbox delivery status. |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
 | `gcsp-data-table` | Canonical source table with explicit row envelopes, numeric/detail columns, primitive/value-object cells, privacy bands, missing/emphasized/success/winner values, opt-in stack and compare layouts, captionHidden/equalColumns and optional rowAction (none by default). Preserves opened ID and safe `focusRow(id)`. Gallery: Case queue table and Canonical comparison table. |
@@ -700,6 +701,34 @@ does not apply. This routed composition adds no shared primitive or gallery API.
 Connected Chromium evidence against Java, local OIDC and PostgreSQL 17 is in the FUCQ-448
 Result; publication through this screen waits on Java policy preview.
 
+### Angular outbox status chip (FUCQ-550 source slice)
+
+`MailStatusChipComponent` ports only `blocks/gcsp/presenter/message-list.js:9–13`, the paths
+from `outbox-copy.js:2–5` and `svgIcon` attributes at frozen reference `e44ed08a9`. The
+six status rules from `gcsp-presenter.css:21–26` retain their selectors, declarations
+and classes in `kit/mail-status-chip.component.css`. `ViewEncapsulation.None` keeps the
+original `.gcsp` ancestor scope; the component uses the source span as its host,
+without an added wrapper. The outbox retains its existing truthful labels,
+including Preparing and the provider-acceptance distinction. Other messageList layout
+remains outside this component. The UI ratchet covers hand-built status spans in Angular
+consumers and caps the six ported rules. Source/unit work does not establish rendered
+parity or complete FUCQ-550 acceptance.
+
+The canonical Port status table below records only this status-chip subcomposition.
+The whole messageList composition (`.gcsp-mail`) remains unassessed; this bounded
+port does not declare completion of its remaining layout or rendered parity.
+
+### Angular native live refresh (FUCQ-550 source slice)
+
+`LiveRefreshService` owns one shared 30-second poll while visible, visibility and
+persisted-page restore listeners, with no initial read and teardown after the last
+consumer. Account, Activity, offer, order progress and outbox owners call their existing
+reads only when local edits, reviews and responses are safe to preserve. Automatic
+account reads retain only a previously reviewed exact context; they do not grant review
+authority. Order progress reuses its existing feedback region for changed ready producer
+sections, omitting only `asOf` from the comparison. Lifecycle tests are synthetic source
+evidence; presenter integration, connected behavior and rendered parity remain pending.
+
 ## Port status
 
 Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global stylesheet and inventory are in [styles.md](docs/migration/FUCQ-432/styles.md). Existing native Angular equivalents above remain catalogued; they are marked ported here only after preserving the source DOM/classes/state classes. Utility/gallery modules remain explicit source modules, with no invented root class.
@@ -725,6 +754,7 @@ Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global 
 | `loading-skeleton` (`blocks/gcsp/kit/loading-skeleton.js`) | `.gcsp-skeleton` | | not yet | pending |
 | `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
 | `media-gallery` (`blocks/gcsp/kit/media-gallery.js`) | `.gcsp-media-gallery` | | not yet | pending |
+| messageList.statusChip (subcomposition only) | `.gcsp-mail-status` | `apps/gcsp-web/src/app/kit/mail-status-chip.component.ts` | ported | yes: source span host, SVG/label children and all four tone classes |
 | `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | | not yet | pending |
 | `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | `apps/gcsp-web/src/app/kit/notification-bell.component.ts` | ported | yes |
 | `order-identity` (`blocks/gcsp/kit/order-identity.js`) | none (utility) | | not yet | pending |

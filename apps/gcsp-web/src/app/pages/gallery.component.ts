@@ -16,6 +16,7 @@ import { ActivityTimelineComponent } from '../kit/activity-timeline.component';
 import { ActivityOfferComponent } from '../kit/activity-offer.component';
 import { ActivityOffer, ActivityProjection, ActivityResult } from '../activity/activity.types';
 import { VehicleCardComponent } from '../kit/vehicle-card.component';
+import { MailStatusChipComponent } from '../kit/mail-status-chip.component';
 import { NotificationBellComponent } from '../kit/notification-bell.component';
 import { NotificationModel } from '../kit/notification-bell.types';
 import { TaskGroup, TaskListComponent } from '../kit/task-list.component';
@@ -26,7 +27,7 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [TabsComponent, GregNavigationComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, NotificationBellComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [TabsComponent, GregNavigationComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, NotificationBellComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent, TaskListComponent, SlotPickerComponent, MailStatusChipComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
     @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
@@ -39,6 +40,16 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
   <gcsp-status-screen title="Access not available" message="Your account does not have access to this page." [level]="2" />
+  <section class="gcsp-panel"><h2>Outbox delivery status</h2><div class="gcsp-actions">
+    <span gcspMailStatusChip state="sent" transport="captured" label="Captured, not sent"></span>
+    <span gcspMailStatusChip state="sent" transport="configured" label="Accepted by email provider"></span>
+    <span gcspMailStatusChip state="pending" label="Preparing"></span>
+    <span gcspMailStatusChip state="sending" label="Sending"></span>
+    <span gcspMailStatusChip state="retrying" label="Retrying"></span>
+    <span gcspMailStatusChip state="failed" label="Failed"></span>
+    <span gcspMailStatusChip state="sent" label="Delivery status unknown"></span>
+    <span gcspMailStatusChip state="unrecognised" label="Delivery status unknown"></span>
+  </div></section>
   <section class="gcsp-panel"><h2>Preference categories and current-car rating</h2><p class="gcsp-note">Native choices, independent importance, removal confirmation and disabled states.</p>
     <gcsp-preference-category id="gallery-preference" [definition]="category" [state]="{ state: 'considered', value: ['estate'], importance: 'high', exact: true }" [open]="true" [removing]="removing()" (removeRequested)="removing.set(true)" (kept)="removing.set(false)" (removed)="removing.set(false)" />
     <gcsp-preference-category id="gallery-preference-disabled" [definition]="category" [disabled]="true" />

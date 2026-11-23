@@ -11125,6 +11125,75 @@
           "title": "Independent review and status reconciliation"
         }
       ]
+    },
+    {
+      "id": "FUCQ-550",
+      "title": "Angular employee live refresh and outbox status parity",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "branch": "dev/DEV-2026-11-22-vesper-025",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-550",
+      "workers": [
+        {
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-22T22:17:09.286047+00:00",
+          "expires_at": "2026-11-22T22:47:41.776250+00:00",
+          "source": "Source frozen c8728d4ae; scoped 230 tests,126 ratchet,4 boundary,build and targeted checks passed; all5AC incomplete. Final fucq550/lead-resource-audit.json."
+        },
+        {
+          "id": "01a20556-00f0-7873-bc3d-4d8f563d82c0",
+          "name": "Barney McGrew",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-22T22:20:19.798049+00:00",
+          "expires_at": "2026-11-22T22:43:30.842757+00:00",
+          "source": "Native source worker completed; lead review/230tests passed, no active claim inferred."
+        }
+      ],
+      "observed_at": "2026-11-23T12:28:17Z",
+      "slices": [
+        {
+          "id": "outbox-chip-source",
+          "status": "complete",
+          "title": "Outbox chip source parity",
+          "observed_at": "2026-11-22T22:24:49Z",
+          "evidence": "Lead reviewed exact source span/SVG/classes/CSS, caller and gallery/ratchet diff; lead-chip-review passed61tests; worker126ratchet/4boundary checks, retained fucq550/barney-chip-summary.json. Source slice only; fullAC4/pairs pending."
+        },
+        {
+          "id": "native-refresh",
+          "status": "complete",
+          "title": "Shared visibility restore and polling with order announcement",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "Lead reviewed shared lifecycle/timer, five route-owned guarded readers, draft/response/review ownership and source order changeKey; corrected auth-boundary announcement regression; final230tests across7specs passed, retained fucq550/lead-native-final-callers-receipt.json. Source boundary only, no fullAC completion. Final production/targeted/cleanup receipts: /Users/usget/Claude/vehicle-matcher/.claude/test-runs/angular-gap-20261122/fucq550/lead-resource-audit.json; targeted code key909708dc470a8942b1990997d93de03dea7465f114fff3c35b26c4ec3bdb47c3. All5AC remain incomplete."
+        },
+        {
+          "id": "presenter-integration",
+          "status": "blocked",
+          "title": "Shared presenter signal integration",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "F548 owns unmerged subscribePresenterActions(Document) and successful presenter publication/globalCSS; integration withheld. No copy or no-op hook added."
+        },
+        {
+          "id": "connected-validation",
+          "status": "blocked",
+          "title": "Real composition refresh validation",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "No new connected run authorised; pending F562/F564 prerequisite scope decision and F548/549 integration. Native trigger tests are synthetic source handling only; no actual hidden/BFCache/two-tab proof."
+        },
+        {
+          "id": "parity-review",
+          "status": "blocked",
+          "title": "Same-state 1280px evidence and human review",
+          "observed_at": "2026-11-22T22:43:30Z",
+          "evidence": "Same-state1280px live Node/Java Angular release pair, attachment, human ledger review remain absent; no human matches/intended-change acceptance."
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1

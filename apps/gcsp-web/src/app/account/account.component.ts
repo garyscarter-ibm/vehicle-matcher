@@ -1,6 +1,7 @@
 import { vehicleImageUrl } from '../kit/vehicle-image-url';
 import { ChangeDetectorRef, Component, computed, effect, ElementRef, inject, OnDestroy, signal, untracked, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { DataTableComponent, DataTableColumn, DataTableRow, DataTableRowAction, DataTableValue } from '../kit/data-table.component';
 import { ButtonDirective } from '../kit/button.directive';
@@ -52,6 +53,7 @@ export class AccountComponent implements OnDestroy {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   @ViewChild('recordDrawer') private drawer?: ElementRef<HTMLDialogElement>;
+  @ViewChild(AccountBuddyComponent) private accountBuddy?: AccountBuddyComponent;
   readonly projection = signal<AccountProjection | null>(null);
   readonly draft = signal<AccountResult<ManualDraft> | null>(null);
   readonly offers = signal<AccountResult<AccountOffers> | null>(null);
@@ -186,6 +188,8 @@ export class AccountComponent implements OnDestroy {
   readonly canStart = computed(() => this.currentScope() && !this.busy() && !this.loading() && !this.journeyLocked()
     && ['ok', 'not-found'].includes(this.draft()?.status ?? ''));
 
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => this.autoRefresh());
+
   constructor() {
     effect(() => { const scope = this.scope(); untracked(() => { this.invalidate(); if (scope) void this.load(false); }); });
   }
@@ -200,6 +204,20 @@ export class AccountComponent implements OnDestroy {
   }
   private live(generation: number): boolean { return !this.disposed && generation === this.generation && this.scope() === this.loadedScope(); }
   async refresh(): Promise<void> { if (!this.loading() && !this.busy() && !this.emailBusy()) await this.load(true); }
+  private async autoRefresh(): Promise<void> {
+    if (this.disposed || !this.currentScope() || this.loading() || this.busy() || this.emailBusy() || this.previewLoading()
+      || this.emailInput() !== (this.email()?.deliveryEmail ?? '') || this.emailCommand || this.journeyLocked()
+      || this.pendingIntent() || this.confirmingDiscard() || this.selectedRecord() || this.printFrame
+      || this.accountBuddy?.drawerKind() || this.accountBuddy?.pending() || this.accountBuddy?.phase() === 'loading'
+      || this.brief.loading() || this.brief.queuePending() || this.brief.queueNeedsReview() || this.brief.fullDirty()
+      || this.brief.fullBusy() || this.brief.buddyResolutionRequired() || this.brief.previewLoading()
+      || this.brief.openCategory() || this.brief.pendingRemoval()) return;
+    const reviewed = this.reviewedContextVersion;
+    const read = this.load(false); const generation = this.generation;
+    await read;
+    // A native signal is not a review. Keep only an existing grant for this exact context.
+    if (this.live(generation) && reviewed !== null && this.projection()?.contextVersion === reviewed) this.reviewedContextVersion = reviewed;
+  }
   async choicesBack(): Promise<void> { this.pendingIntent.set(null); await this.refresh(); this.focus('h1'); }
   async choicesContinue(): Promise<void> { if (this.currentScope()) await this.router.navigateByUrl('/stock'); }
   private async load(reviewed: boolean): Promise<void> {
@@ -446,5 +464,5 @@ export class AccountComponent implements OnDestroy {
   }
   private finishPrint(): void { if (this.printTimer) clearTimeout(this.printTimer); this.printTimer = null; this.printFrame?.remove(); this.printFrame = null; }
   private focus(selector: string): void { this.changeDetector.detectChanges(); this.host.nativeElement.querySelector<HTMLElement>(selector)?.focus(); }
-  ngOnDestroy(): void { this.disposed = true; this.invalidate(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.disposed = true; this.invalidate(); }
 }
