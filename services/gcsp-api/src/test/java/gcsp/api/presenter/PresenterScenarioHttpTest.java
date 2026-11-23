@@ -8,15 +8,23 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gcsp.api.persistence.Persistence;
+import gcsp.api.account.AccountClockPort;
+import gcsp.api.account.AccountScope;
+import gcsp.api.account.AccountService;
+import gcsp.api.account.ClockUnavailableException;
+import gcsp.api.clock.RunClockHolder;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.path.json.JsonPath;
 import jakarta.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.UUID;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.AfterAll;
@@ -40,6 +48,15 @@ class PresenterScenarioHttpTest {
 
     @Inject
     Persistence persistence;
+
+    @Inject
+    AccountClockPort accountClock;
+
+    @Inject
+    AccountService accounts;
+
+    @Inject
+    RunClockHolder runClock;
 
     String presenter;
     String employee;
@@ -167,6 +184,64 @@ class PresenterScenarioHttpTest {
         }
         given().header("Authorization", "Bearer " + employee).get("/api/gcsp/v1/manual/account").then().statusCode(200)
                 .body("status", equalTo("ok"));
+    }
+
+    JsonPath accountAtPresenterTime() {
+        JsonPath clock = get(presenter, "/clock").then().statusCode(200).extract().jsonPath();
+        JsonPath account = given().header("Authorization", "Bearer " + employee).get("/api/gcsp/v1/manual/account")
+                .then().statusCode(200).extract().jsonPath();
+        assertEquals(clock.getString("value.now"), account.getString("value.asOf"));
+        assertEquals(Long.toString(clock.getLong("value.clockVersion")), account.getString("value.versions.clock"));
+        return clock;
+    }
+
+    @Test
+    void accountReadsFollowTheActualPresenterClockAdvanceAndNewRun() {
+        String firstRun = post(presenter, "/scenarios/reset",
+                resetBody(id(), current().getString("value.runId"), "gcsp-clock-scenario-v1"))
+                .then().statusCode(200).extract().jsonPath().getString("value.activatedRunId");
+        JsonPath initial = accountAtPresenterTime();
+        long version = initial.getLong("value.clockVersion");
+        post(presenter, "/clock/advance", "{\"commandId\":\"" + id() + "\",\"expectedClockVersion\":" + version
+                + ",\"bySeconds\":7}").then().statusCode(200);
+        JsonPath advanced = accountAtPresenterTime();
+        assertNotEquals(initial.getString("value.now"), advanced.getString("value.now"));
+        assertEquals(version + 1, advanced.getLong("value.clockVersion"));
+        String environment = runClock.activeRun().environmentId();
+        AccountScope retired = new AccountScope(environment, firstRun, "employee-paula", null, List.of("employee"),
+                null, null, null, null, current().getString("value.policyVersion"));
+
+        String nextRun = post(presenter, "/scenarios/reset", resetBody(id(), firstRun, "gcsp-clock-scenario-v1"))
+                .then().statusCode(200).extract().jsonPath().getString("value.activatedRunId");
+        assertNotEquals(firstRun, nextRun);
+        JsonPath reset = accountAtPresenterTime();
+        assertEquals(initial.getString("value.now"), reset.getString("value.now"));
+        assertEquals(version, reset.getLong("value.clockVersion"));
+        assertThrows(ClockUnavailableException.class, () -> accountClock.now(retired));
+        assertEquals("clock", accounts.readAccount(retired).refusal().get("source").asText());
+        given().header("Authorization", "Bearer " + employee).get("/api/gcsp/v1/context").then().statusCode(200)
+                .body("value.runId", equalTo(nextRun));
+    }
+
+    @Test
+    void anUnreadableRunClockReturns503AndRestoringItRestoresTheActualTime() throws Exception {
+        post(presenter, "/scenarios/reset",
+                resetBody(id(), current().getString("value.runId"), "gcsp-clock-scenario-v1")).then().statusCode(200);
+        JsonPath before = accountAtPresenterTime();
+        try (Connection c = PresenterClockProfiles.plain().getConnection()) {
+            c.createStatement().execute("SET search_path TO " + schema);
+            c.createStatement().execute("ALTER TABLE run_clocks RENAME TO unavailable_clocks");
+            try {
+                given().header("Authorization", "Bearer " + employee).get("/api/gcsp/v1/manual/account").then()
+                        .statusCode(503).body("code", equalTo("manual-source-unavailable"))
+                        .body("source", equalTo("clock")).body("retryable", equalTo(true));
+            } finally {
+                c.createStatement().execute("ALTER TABLE unavailable_clocks RENAME TO run_clocks");
+            }
+        }
+        JsonPath restored = accountAtPresenterTime();
+        assertEquals(before.getString("value.now"), restored.getString("value.now"));
+        assertEquals(before.getLong("value.clockVersion"), restored.getLong("value.clockVersion"));
     }
 
     @Test

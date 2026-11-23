@@ -101,6 +101,74 @@ class AccountServiceTest {
     }
 
     @Test
+    void persistedTimeDrivesSourceEffectiveDateCollectionDatesAndOrderingClosure() throws Exception {
+        GoldenFixture fx = new GoldenFixture("paula");
+        try (RepositoryFixture db = RepositoryFixture.create()) {
+            db.claim(fx);
+            RunAccountClockTest.seedClock(db, fx.scope, "2026-11-05T08:59:59.999Z", 11);
+            fx.clock = RunAccountClockTest.clock(db);
+            refused(fx.read(), "employee-not-effective");
+
+            db.update("UPDATE run_clocks SET clock_instant = '2026-11-05T09:00:00Z', clock_version = 12");
+            AccountService service = fx.service();
+            assertEquals("ready", service.readAccount(fx.scope).value().get("state").asText());
+            assertEquals("2026-11-12", AccountService.collectionDates(service.prepare(fx.scope), null).getFirst());
+            db.update("UPDATE run_clocks SET clock_instant = '2026-11-06T09:00:00Z', clock_version = 13");
+            assertEquals("2026-11-13", AccountService.collectionDates(service.prepare(fx.scope), null).getFirst());
+            JsonNode next = service.readAccount(fx.scope).value();
+            assertEquals("2026-11-06T09:00:00.000Z", next.get("asOf").asText());
+            assertEquals("13", next.at("/versions/clock").asText());
+            db.update("UPDATE run_clocks SET clock_instant = '2026-11-25T09:00:00Z', clock_version = 14");
+            assertEquals("ordering-closed", service.readAccount(fx.scope).value().get("state").asText());
+            assertTrue(AccountService.collectionDates(service.prepare(fx.scope), null).isEmpty());
+        }
+    }
+
+    @Test
+    void persistedTimeControlsDriverLicenceFactEligibility() throws Exception {
+        GoldenFixture fx = new GoldenFixture("paula");
+        ((ObjectNode) fx.manual().at("/drivers/0/licence/source")).put("effectiveFrom", "2026-11-05T09:00:01.000Z");
+        try (RepositoryFixture db = RepositoryFixture.create()) {
+            db.claim(fx);
+            RunAccountClockTest.seedClock(db, fx.scope, fx.now, 1);
+            fx.clock = RunAccountClockTest.clock(db);
+            AccountService service = fx.service();
+            var first = ManualDraftRules.validate(fx.scope, ManualDraftRulesTest.complete(), service.prepare(fx.scope));
+            assertEquals("licence-unconfirmed", first.invalid().get("code").asText());
+            db.update("UPDATE run_clocks SET clock_instant = '2026-11-05T09:00:01Z', clock_version = 2");
+            assertNull(ManualDraftRules.validate(fx.scope, ManualDraftRulesTest.complete(), service.prepare(fx.scope)).invalid());
+        }
+    }
+
+    @Test
+    void policyReadsUseThePersistedInstantRunAndPinnedVersion() throws Exception {
+        GoldenFixture fx = new GoldenFixture("paula");
+        try (RepositoryFixture db = RepositoryFixture.create()) {
+            db.claim(fx);
+            db.seed(fx);
+            RunAccountClockTest.seedClock(db, fx.scope, fx.now, 21);
+            AccountPolicyPort policy = new AccountPolicyPort() {
+                private PolicyOutcome dated(PolicyRead read, PolicyOutcome row) {
+                    assertEquals(fx.scope.runId(), read.runId());
+                    assertEquals(fx.scope.policyVersion(), read.policyVersion());
+                    return "2026-11-06T09:00:00.000Z".equals(read.asOf()) ? row
+                            : new PolicyOutcome("unavailable", "not-yet-effective", null, null);
+                }
+                public PolicyOutcome manualRules(PolicyRead read) { return dated(read, fx.manualRules); }
+                public PolicyOutcome allowance(AccountScope scope, PolicyRead read) { return dated(read, fx.allowance); }
+                public PolicyOutcome schemeDisplayNames(PolicyRead read) { return dated(read, fx.schemeNames); }
+            };
+            AccountService service = new AccountService(db.records(), policy, RunAccountClockTest.clock(db), s -> fx.cars);
+            refused(service.readAccount(fx.scope), "scheme-collection");
+            db.update("UPDATE run_clocks SET clock_instant = '2026-11-06T09:00:00Z', clock_version = 22");
+            JsonNode actual = service.readAccount(fx.scope).value();
+            assertEquals("ready", actual.get("state").asText());
+            assertEquals("22", actual.at("/versions/clock").asText());
+            assertEquals(fx.scope.policyVersion(), actual.at("/versions/policy").asText());
+        }
+    }
+
+    @Test
     void driverRecordSetMismatchIsRefused() {
         GoldenFixture fx = new GoldenFixture("paula");
         fx.driverReader = in -> {
