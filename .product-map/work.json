@@ -11196,41 +11196,6 @@
       "unsliced": false
     },
     {
-      "id": "FUCQ-565",
-      "title": "Java Buddy quotes omit the pinned current-car comparison and points saving",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "",
-      "type": "Bug",
-      "observed_at": "2026-11-23T14:53:33Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
-      "slices": [
-        {
-          "id": "quote-snapshot",
-          "status": "in-progress",
-          "title": "Pin immutable source facts at quote creation",
-          "observed_at": "2026-11-23T14:53:33Z",
-          "evidence": "Explicitly approved by Russell23Nov; necessary dependencies authorized without more questions. Native/repo In Progress; normal claimed DEV-2026-11-23-001 separate WT. Baymax implementing approved immutable existing quote JSON snapshot; no test result yet."
-        },
-        {
-          "id": "safe-projection",
-          "status": "not-started",
-          "title": "Expose allowlisted local/remote/follow-up comparisons"
-        },
-        {
-          "id": "validation",
-          "status": "not-started",
-          "title": "Focused Java/OIDC source-change, privacy and idempotency proof"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Merged registered browser and covering batch proof"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-566",
       "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
       "status": "To Do",
@@ -11239,6 +11204,102 @@
       "type": "Bug",
       "observed_at": "2026-11-23T14:42:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566"
+    },
+    {
+      "id": "FUCQ-565",
+      "title": "Java Buddy quotes omit the pinned current-car comparison and points saving",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-23T16:17:14Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
+      "slices": [
+        {
+          "id": "quote-snapshot",
+          "status": "complete",
+          "title": "Pin immutable source facts at quote creation",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Lead complete-source review + Pluto consolidated source/security PASS; final allocation83 and all35offersclasses176 confirm immutable local/remote/follow-up pin/DTO paths. Main/restart retained in integration slice."
+        },
+        {
+          "id": "safe-projection",
+          "status": "complete",
+          "title": "Expose allowlisted local/remote/follow-up comparisons",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Final14 pure cases include frozen states, malformed/owner/privacy/date/type/text limits/ECMAScript whitespace; all176offers checks pass. Lead/Pluto final review PASS; stored evidence preserved and safe public contract restored."
+        },
+        {
+          "id": "validation",
+          "status": "complete",
+          "title": "Focused Java/OIDC source-change, privacy and idempotency proof",
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Final consolidated source321/321: allocation83, exhaustive35offersclasses176 in17/18chunks, callers/wiring62. Zero failures/errors/skips; source identity a6f15cb4a2d0d69fa5422b552ad1e380406f9a2209e8216f5534f5c3b50b7c45. Owned resources cleaned; final-summary.json retained."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merged registered browser and covering batch proof"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-23-001",
+      "workers": [
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "handoff-ready",
+          "observed_at": "2026-11-23T16:17:14.849812+00:00",
+          "expires_at": "2026-11-23T16:17:14.849812+00:00",
+          "source": "lead final321 checks/review passed; root original integrated acceptance pending"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-567",
+      "title": "Java activity offer links point to a route the Angular app does not support",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-23T16:11:18Z",
+      "jira_observed_at": "2026-11-23T15:50:39.579953+00:00",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-567",
+      "branch": "dev/DEV-2026-11-23-vesper-001",
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "running",
+          "observed_at": "2026-11-23T16:11:18.260537+00:00",
+          "expires_at": "2026-11-23T16:41:18.260537+00:00",
+          "source": "native observed /root/speedy_gonzales"
+        }
+      ],
+      "slices": [
+        {
+          "id": "href",
+          "status": "complete",
+          "title": "Project the supported exact offer route",
+          "observed_at": "2026-11-23T16:11:18Z",
+          "evidence": "Lead reviewed full source and Angular route/consumers; final63 pass includes actual producer href, explicit encoded ID/run and active/expired; Pluto independent source/security PASS. AC3 retained separately."
+        },
+        {
+          "id": "validation",
+          "status": "complete",
+          "title": "Scoped nativePG/OIDC regression and independent review",
+          "observed_at": "2026-11-23T16:11:18Z",
+          "evidence": "63/63 focused nativePG/OIDC activity + required startup/wiring; source hashes match; meaningful RED5/2 expected failures. Lead + Pluto reviews PASS; cleanup receipts retained. Integration remains pending."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merged registered bell navigation and covering batch"
+        }
+      ]
     },
     {
       "id": "FUCQ-568",
