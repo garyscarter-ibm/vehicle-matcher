@@ -217,6 +217,8 @@ class AllocationTest {
         Trigger t = released("evt-dup");
         AllocationResult.Completed first = run(t);
         assertFalse(first.replayed());
+        String originalPin = f.text("SELECT (quote->'currentCarComparison')::text FROM buddy_quotes");
+        assertNotNull(originalPin, "Even missing comparison evidence is pinned once at claim time");
         long holds = f.count("SELECT count(*) FROM custody_holds");
         long receipts = f.count("SELECT count(*) FROM command_receipts");
         long revision = f.count("SELECT revision FROM runs");
@@ -228,6 +230,7 @@ class AllocationTest {
         assertEquals(1, f.count("SELECT count(*) FROM buddy_offers"));
         assertEquals(receipts, f.count("SELECT count(*) FROM command_receipts"));
         assertEquals(revision, f.count("SELECT revision FROM runs"));
+        assertEquals(originalPin, f.text("SELECT (quote->'currentCarComparison')::text FROM buddy_quotes"));
 
         Trigger changed = new Trigger("stock-released", "evt-dup", List.of(), List.of("car-1"));
         AllocationResult.Refused refused = assertInstanceOf(AllocationResult.Refused.class,
@@ -387,6 +390,10 @@ class AllocationTest {
         ObjectNode quote = (ObjectNode) AllocationFixture.json(stored);
         assertEquals("eligible", quote.remove("gateStatus").textValue());
         assertNotNull(quote.remove("decision"));
+        JsonNode comparison = quote.remove("currentCarComparison");
+        assertNotNull(comparison, "A minimal source cannot silently omit the historical comparison state");
+        assertEquals("unavailable", comparison.path("display").path("state").asText());
+        assertFalse(comparison.path("comparisonAvailable").asBoolean());
         assertEquals(ScriptedCandidates.quote(new EligibleCandidates.Car("car-1", "cfg-car-1", 1, null)), quote);
         assertEquals("Car car-1", f.text("SELECT vehicle_name FROM buddy_quotes WHERE employee_id = 'e-a'"));
         assertEquals("/img/car-1.jpg", f.text("SELECT image_path FROM buddy_quotes WHERE employee_id = 'e-a'"));
