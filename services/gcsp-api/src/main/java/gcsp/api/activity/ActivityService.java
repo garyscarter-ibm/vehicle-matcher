@@ -116,8 +116,8 @@ public class ActivityService {
         offers.sort(Comparator.comparing((ObjectNode o) -> o.path("offerRef").path("offerId").textValue()));
         ObjectNode current = offers.stream().max(Comparator.comparing((ObjectNode o) -> o.path("createdAt").asText(""))
                 .thenComparing(o -> o.path("offerRef").path("offerId").textValue())).map(ObjectNode::deepCopy).orElse(null);
-        if (current != null) current.put("href", "/gcsp/offer?offerId=" + encode(current.path("offerRef").path("offerId").textValue())
-                + "&runId=" + encode(run));
+        if (current != null) current.put("href", "/gcsp/offers/" + encode(current.path("offerRef").path("offerId").textValue())
+                + "?runId=" + encode(run));
 
         // Only the latest 200 completed allocations for this employee are read.
         List<ObjectNode> checks = new ArrayList<>();
