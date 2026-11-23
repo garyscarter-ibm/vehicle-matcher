@@ -186,7 +186,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     receipt.orderingSubstitute = { variant: ordering, requests: orderingRequests };
     receipt.finishedAt = new Date().toISOString();
     writeFileSync(path.join(output, 'browser-receipt.json'), JSON.stringify(receipt, null, 2));
-    for (const name of ['api-bootstrap.log', 'api.log']) {
+    for (const name of ['api-bootstrap.log', 'api.log', 'api-active-offer-restart.log']) {
       const file = path.join(dirs.logs, name);
       if (existsSync(file)) writeFileSync(path.join(output, name), readFileSync(file).subarray(-65536));
     }
@@ -267,15 +267,16 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
     };
+    const replayApiEnv = { ...apiEnv, GCSP_RUN_ID: runId };
     api = start('api-bootstrap', path.join(javaHome, 'bin/java'), apiArgs, apiEnv);
     // Playwright's isolated request context verifies readiness without printing issuer responses or tokens.
     const { request } = await import('playwright-core');
     const ready = await request.newContext({ ignoreHTTPSErrors: true });
-    async function waitForApi() {
+    async function waitForApi(readiness = ready) {
       let available = false;
       for (let i = 0; i < 180; i++) {
         if (api.exitCode !== null || api.signalCode) throw new Error('Java exited during startup; inspect the retained bounded API log');
-        try { available = (await ready.get(`${apiBase}/context`, { timeout: 1000 })).status() === 401; } catch { /* bounded startup */ }
+        try { available = (await readiness.get(`${apiBase}/context`, { timeout: 1000 })).status() === 401; } catch { /* bounded startup */ }
         if (available) break;
         await delay(500);
       }
@@ -323,9 +324,35 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         COMMIT;`);
       receipt.initialFixture = { bootstrapRunId, replayRunId: runId, replayIdentity: NODE_REPLAY_IDENTITY, identifierMapping: { environment: envId,
         fromRun: input.reference.runId, toRun: runId }, source: 'Exact captured Main input; parent-authorized BuddyJourneySeed pattern' };
-      api = start('api', path.join(javaHome, 'bin/java'), apiArgs, { ...apiEnv, GCSP_RUN_ID: runId });
+      api = start('api', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
       await waitForApi();
     } finally { await ready.dispose(); }
+    async function restartApi() {
+      assert.equal(caseId, 'f555-pending', 'Only the active-offer persistence proof restarts Java');
+      assert.equal(receipt.activeOfferRestart?.lifecycle, undefined, 'One literal active-offer restart per composition');
+      const previous = api;
+      const before = identity(previous.pid);
+      assert.ok(before?.start, 'The active-offer JVM has an observed PID/start');
+      assert.deepEqual(before, (({ pid, pgid, start, executable }) => ({ pid, pgid, start, executable }))(previous.ownedIdentity));
+      const lifecycle = { before, binding: { database: database[3], schema, environmentId: envId, runId,
+        policyVersion: replayApiEnv.GCSP_POLICY_VERSION }, startedAt: new Date().toISOString() };
+      receipt.activeOfferRestart ??= {};
+      receipt.activeOfferRestart.lifecycle = lifecycle;
+      await stop(previous);
+      await previous.joined;
+      lifecycle.previousExit = { code: previous.exitCode, signal: previous.signalCode };
+      lifecycle.oldAfterStop = identity(before.pid);
+      assert.equal(lifecycle.oldAfterStop, null, 'The old active-offer JVM is gone before relaunch');
+      api = start('api-active-offer-restart', path.join(javaHome, 'bin/java'), apiArgs, replayApiEnv);
+      const readiness = await request.newContext({ ignoreHTTPSErrors: true });
+      try { await waitForApi(readiness); } finally { await readiness.dispose(); }
+      lifecycle.after = identity(api.pid);
+      assert.ok(lifecycle.after?.start, 'The replacement JVM has an observed PID/start after readiness');
+      assert.notDeepEqual([lifecycle.after.pid, lifecycle.after.start], [before.pid, before.start], 'A new JVM identity is required');
+      assert.equal(lifecycle.after.executable, before.executable, 'Relaunch the same Java executable');
+      lifecycle.readyAt = new Date().toISOString();
+      return lifecycle;
+    }
     const type = process.env.GCSP_E2E_BROWSER === 'webkit' ? webkit : chromium;
     receipt.browsers.requested = type.name();
     const executablePath = process.env.GCSP_E2E_BROWSER_PATH;
@@ -501,6 +528,18 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       receipt.actualHold = { row: actual, semantic };
       return semantic;
     }
+    function readOfferPersistence(offer) {
+      assert.ok(offer.offerRef.offerId && offer.holdId);
+      // All three lookups use their existing environment/run primary keys; the immutable quote has no version column.
+      const actual = JSON.parse(sql(`SELECT json_build_object('database',current_database(),'schema',current_schema(),
+        'offer',to_jsonb(o),'quote',to_jsonb(q),'hold',to_jsonb(h)) FROM buddy_offers o
+        JOIN buddy_quotes q ON q.environment_id=o.environment_id AND q.run_id=o.run_id AND q.quote_id=o.quote_id
+        JOIN custody_holds h ON h.environment_id=o.environment_id AND h.run_id=o.run_id AND h.hold_id=o.hold_id
+        WHERE o.environment_id=${literal(envId)} AND o.run_id=${literal(runId)}
+        AND o.offer_id=${literal(offer.offerRef.offerId)} AND o.hold_id=${literal(offer.holdId)};`).split('\n').at(-1));
+      assert.equal(actual.database, database[3]); assert.equal(actual.schema, schema);
+      return actual;
+    }
     async function releaseMainOffer(employeePage, presenterPage) {
       const catalogue = await call(presenterPage, 'GET', '/presenter/scenarios');
       assert.equal(catalogue.status, 200);
@@ -568,7 +607,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
       readImage: (page, locator) => imageObservers.get(page).read(locator),
-      readActualHold, screenshot, compareFrozenNode, visitFrozenNode,
+      readActualHold, readOfferPersistence, restartApi, screenshot, compareFrozenNode, visitFrozenNode,
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };

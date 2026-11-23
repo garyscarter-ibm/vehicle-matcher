@@ -16,6 +16,48 @@ const offerPath = (id) => `/offers/${encodeURIComponent(id)}`;
 const decisions = (suite) => suite.receipt.requests.filter((row) => row.method === 'POST' && row.path.endsWith('/decision'));
 async function focused(locator) { return locator.evaluate((node) => node === document.activeElement); }
 async function actualRead(suite, employee, id) { return good(await suite.call(employee, 'GET', offerPath(id)), 'Actual owned offer read'); }
+function assertMainPoints(projection) {
+  assert.equal(projection.comparison.comparisonAvailable, true, 'The actual Main quote retains a usable current-car pin');
+  assert.deepEqual(projection.comparison.currentCar.facts.points, { value: 1100, unit: 'points-per-month' });
+  assert.deepEqual(projection.quote.terms.points, { value: 800, unit: 'points' }, 'The actual allocated Main offer costs 800 points');
+}
+async function activeOfferSnapshot(suite, employee, presenter, state) {
+  const projection = await actualRead(suite, employee, state.offer.offerRef.offerId);
+  const clock = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Signed presenter clock around active-offer restart');
+  const persistence = suite.readOfferPersistence(state.offer);
+  suite.readActualHold(state.offer);
+  assertMainPoints(projection);
+  assert.equal(state.account.currentContract.vehicle.points, 1100, 'Actual retained Main account current car costs 1100 points');
+  assert.equal(projection.offerId, state.offer.offerRef.offerId);
+  assert.equal(projection.runId, suite.receipt.composition.runId);
+  assert.equal(projection.state, 'pending'); assert.equal(projection.offerState, 'active'); assert.equal(projection.holdState, 'active');
+  assert.equal(projection.quote.revisions.quote, 1, 'Immutable buddy_quotes rows expose quote revision 1');
+  const { offer, quote, hold } = persistence;
+  for (const row of [offer, quote, hold]) {
+    assert.equal(row.environment_id, suite.receipt.composition.environmentId);
+    assert.equal(row.run_id, suite.receipt.composition.runId);
+    assert.equal(row.employee_id, suite.input.initialBrief.brief.employeeId);
+    assert.equal(row.order_uuid, state.offer.orderUuid);
+  }
+  assert.equal(offer.offer_id, projection.offerId); assert.equal(offer.quote_id, projection.quote.quoteId);
+  assert.equal(quote.quote_id, projection.quote.quoteId); assert.equal(offer.hold_id, state.offer.holdId); assert.equal(hold.hold_id, state.offer.holdId);
+  assert.equal(hold.slot_id, suite.input.initialBrief.brief.entitlementSlotId); assert.equal(quote.slot_id, hold.slot_id);
+  assert.equal(offer.state, 'active'); assert.equal(hold.state, 'active'); assert.equal(hold.hold_type, 'buddy-offer');
+  assert.ok(Number.isSafeInteger(offer.version) && offer.version > 0); assert.ok(Number.isSafeInteger(hold.version) && hold.version > 0);
+  assert.equal(offer.version, projection.offerVersion); assert.equal(hold.version, projection.holdVersion);
+  assert.equal(new Date(offer.expires_at).toISOString(), projection.expiresAt);
+  assert.equal(new Date(hold.expires_at).toISOString(), projection.expiresAt);
+  assert.equal(new Date(quote.valid_until).toISOString(), projection.quote.validUntil);
+  assert.equal(new Date(quote.quoted_at).toISOString(), projection.quote.quotedAt);
+  assert.equal(quote.monthly_points, 800);
+  const pin = quote.quote.currentCarComparison;
+  assert.equal(pin.display.facts.points.value, 1100);
+  assert.equal(pin.binding.environmentId, offer.environment_id); assert.equal(pin.binding.runId, offer.run_id);
+  assert.equal(pin.binding.employeeId, offer.employee_id); assert.equal(pin.binding.slotId, hold.slot_id);
+  assert.deepEqual(pin.display.facts.points, projection.comparison.currentCar.facts.points);
+  assert.equal(projection.serverNow, clock.now); assert.equal(String(projection.clockVersion), String(clock.clockVersion));
+  return { projection, clock, persistence };
+}
 async function visibleRefresh(page) {
   // This native handler signal makes real signed reads; it does not claim a physical visibility transition.
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
@@ -113,8 +155,15 @@ async function checkSurface(page, projection) {
     return image?.complete && image.naturalWidth > 0;
   });
   const actual = await surface(page);
+  assertMainPoints(projection);
   assert.equal(actual.name, projection.quote.facts.display.name);
-  assert.match(actual.points, /points a month$/);
+  assert.equal(actual.points, '800 points a month');
+  assert.equal(actual.saving, '300 fewer than your current car');
+  const points = actual.rows.find((row) => /^points/i.test(row.cells[0]));
+  assert.ok(points, 'The actual current-versus-offered points row renders');
+  assert.deepEqual(points.cells.slice(1), ['1,100 points', '800 points']);
+  assert.ok(actual.highlights.some((group) => group.heading === 'Benefits'
+    && group.entries.some((entry) => entry.number === '300' && entry.heading === '300 fewer points')));
   assert.equal(actual.finishes.length, 2);
   assert.deepEqual(actual.finishes.map((finish) => finish.label), ['Paint', 'Upholstery']);
   assert.ok(actual.finishes.every((finish) => finish.value && finish.swatch && finish.decorative === 'true'));
@@ -229,6 +278,24 @@ async function flow(t, name, ordering, check) {
 
 test('FUCQ-555: real offer decision support and exits against frozen Main inputs', { timeout: 540000 }, async (t) => {
   await flow(t, 'f555-pending', 'synthetic', async (suite, employee, presenter, state) => {
+    const before = await activeOfferSnapshot(suite, employee, presenter, state);
+    suite.receipt.activeOfferRestart = { before };
+    const lifecycle = await suite.restartApi();
+    const after = await activeOfferSnapshot(suite, employee, presenter, state);
+    suite.receipt.activeOfferRestart.after = after;
+    assert.equal(lifecycle.oldAfterStop, null);
+    assert.notDeepEqual([lifecycle.after.pid, lifecycle.after.start], [lifecycle.before.pid, lifecycle.before.start]);
+    assert.deepEqual(lifecycle.binding, { database: before.persistence.database, schema: before.persistence.schema,
+      environmentId: suite.receipt.composition.environmentId, runId: suite.receipt.composition.runId,
+      policyVersion: before.projection.quote.policyVersion });
+    assert.deepEqual(after.persistence, before.persistence, 'Literal JVM restart preserves every actual quote, offer and hold column, including identities, pin, state, versions and expiries');
+    assert.deepEqual(after.projection.quote, before.projection.quote, 'The signed owner rereads the same immutable quote after restart');
+    assert.deepEqual(after.projection.comparison, before.projection.comparison, 'The owner current-car pin is unchanged after restart');
+    for (const key of ['offerId', 'runId', 'state', 'reason', 'expiresAt', 'offerVersion', 'holdVersion', 'offerState', 'holdState', 'availableActions']) {
+      assert.deepEqual(after.projection[key], before.projection[key], `Restart preserves the actual owner offer ${key}`);
+    }
+    assert.deepEqual(after.clock, before.clock, 'The same owned scenario clock survives the active-offer JVM restart');
+    await openOffer(suite, employee, state.offer);
     const java = {};
     for (const width of [1280, 390]) {
       await employee.setViewportSize({ width, height: width === 1280 ? 800 : 844 });
