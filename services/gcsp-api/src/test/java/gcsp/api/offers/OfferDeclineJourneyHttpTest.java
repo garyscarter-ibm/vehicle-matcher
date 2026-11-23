@@ -27,6 +27,7 @@ import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
+import java.time.Instant;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -148,6 +149,33 @@ class OfferDeclineJourneyHttpTest {
         assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
         assertEquals(1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ? AND post_decline_change ->> 'decisionId' = ?",
                 BRUNO, decisionId));
+        // FUCQ-570: the scoped run is deliberately behind wall time. Saving must not create future history.
+        Instant runNow = Instant.parse(s.clockNow(presenter));
+        assertTrue(runNow.isBefore(Instant.now()), "this regression requires a run earlier than wall time");
+        JsonNode currentBrief = body(get(bruno, "/api/gcsp/v1/brief").then().statusCode(200).extract().response())
+                .get("value").get("brief");
+        assertEquals(saved.get("briefVersion").asLong(), currentBrief.get("briefVersion").asLong());
+        assertEquals("saloon", currentBrief.at("/preferences/body/value").asText());
+        assertEquals(runNow, Instant.parse(currentBrief.get("confirmedAt").asText()), "brief confirmation uses run time");
+        assertEquals(runNow, Instant.parse(currentBrief.at("/preferences/body/confirmedAt").asText()));
+        assertEquals(runNow, Instant.parse(currentBrief.at("/postDeclineChange/confirmedAt").asText()));
+        assertEquals(runNow, Instant.parse(saved.at("/event/occurredAt").asText()));
+        JsonNode history = body(get(bruno, "/api/gcsp/v1/brief/history").then().statusCode(200).extract().response())
+                .get("value").get("versions");
+        assertEquals(briefs + 1, history.size());
+        assertEquals(currentBrief, history.get(history.size() - 1));
+        JsonNode activity = body(get(bruno, "/api/gcsp/v1/activity").then().statusCode(200).extract().response()).get("value");
+        assertEquals(saved.get("briefVersion").asLong(), activity.get("briefVersion").asLong());
+        assertEquals("offer-closed", activity.get("state").asText());
+        assertEquals(brunoOffer, activity.at("/currentOffer/offerRef/offerId").asText());
+        assertEquals("declined", activity.at("/currentOffer/state").asText());
+        assertEquals(Long.toString(s.clockVersion(presenter)), activity.get("clockVersion").asText());
+        assertTrue(activity.get("stateChanges").findValuesAsText("operation").contains("changed-after-decline"));
+        assertEquals(currentBrief, body(get(bruno, "/api/gcsp/v1/brief").then().statusCode(200).extract().response())
+                .get("value").get("brief"));
+        assertEquals(activity, body(get(bruno, "/api/gcsp/v1/activity").then().statusCode(200).extract().response()).get("value"));
+        assertEquals("declined", s.text("SELECT state FROM buddy_offers WHERE offer_id = ?", brunoOffer));
+
         JsonNode replayed = body(BuddyJourneySupport.post(bruno, fu + "/confirm", confirm.toString()).then().statusCode(200)
                 .extract().response()).get("value");
         assertEquals(saved.get("briefVersion").asLong(), replayed.get("briefVersion").asLong());
@@ -234,5 +262,31 @@ class OfferDeclineJourneyHttpTest {
         assertEquals(0, s.count("SELECT count(*) FROM selection_orders"));
         JsonNode expiredView = view(paula, paulaOffer);
         assertEquals("expired", expiredView.get("state").asText());
+
+        // A missing scoped clock refuses a real signed brief command before any domain write.
+        JsonNode editor = body(get(bruno, "/api/gcsp/v1/brief/editor").then().statusCode(200).extract().response()).get("value");
+        ObjectNode draft = BuddyJourneySupport.JSON.createObjectNode().put("commandId", "missing-clock-draft")
+                .put("expectedBriefVersion", editor.at("/initial/briefVersion").asLong())
+                .put("expectedDraftVersion", editor.at("/initial/draftVersion").asLong());
+        draft.set("brief", editor.at("/initial/brief").deepCopy());
+        try (var c = dataSource.getConnection()) {
+            // Test-only fault injection; production clock rows remain append/forward guarded.
+            c.createStatement().execute("SET session_replication_role = replica");
+            assertEquals(1, c.createStatement().executeUpdate("DELETE FROM run_clocks"));
+        }
+        String beforeMissingClock = briefWrites(s);
+        JsonNode unavailable = body(BuddyJourneySupport.post(bruno, "/api/gcsp/v1/brief/draft", draft.toString())
+                .then().statusCode(503).extract().response());
+        assertEquals("brief-unavailable", unavailable.get("code").asText());
+        get(bruno, "/api/gcsp/v1/brief/editor").then().statusCode(503);
+        assertEquals(beforeMissingClock, briefWrites(s));
+
+    }
+
+    private static String briefWrites(BuddyJourneySupport s) throws Exception {
+        return s.count("SELECT count(*) FROM brief_heads") + ":" + s.count("SELECT coalesce(sum(version), 0) FROM brief_heads")
+                + ":" + s.count("SELECT count(*) FROM briefs") + ":" + s.count("SELECT count(*) FROM brief_drafts")
+                + ":" + s.count("SELECT count(*) FROM command_receipts") + ":" + s.count("SELECT count(*) FROM outbox_events")
+                + ":" + s.count("SELECT sum(revision) FROM runs");
     }
 }
