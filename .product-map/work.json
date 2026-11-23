@@ -11459,11 +11459,11 @@
       "type": "Bug",
       "status": "In Progress",
       "original_status": "In Progress",
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-571",
       "branch": "dev/DEV-2026-11-23-vesper-004",
       "unsliced": false,
-      "native_status_observed_at": "2026-11-23T21:15:00.350Z",
+      "native_status_observed_at": "2026-11-23T21:32:21.485Z",
       "note": "Exact one-line neutral separator repair merged/pushed at 7084c510e. Unchanged module22/22 passed; independent source review and root resource audit passed. Existing full Node RED and pending legacy disposition remain separate; native Done not inferred.",
       "slices": [
         {
@@ -11485,8 +11485,8 @@
           "evidence": "Scoped result only. Root F555 owns covering Node gate and pending37-case human ruling; full Node3dd remainsRED."
         }
       ],
-      "observed_at": "2026-11-23T21:14:41Z",
-      "native_updated_at": "2026-11-23T14:33:02.312-0600"
+      "observed_at": "2026-11-23T21:33:00Z",
+      "native_updated_at": "2026-11-23T15:32:07.048-0600"
     },
     {
       "id": "FUCQ-572",
@@ -11494,28 +11494,30 @@
       "type": "Bug",
       "status": "In Progress",
       "original_status": "In Progress",
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-572",
       "branch": "dev/DEV-2026-11-23-vesper-005",
       "unsliced": false,
-      "native_status_observed_at": "2026-11-23T21:15:00.740Z",
-      "note": "Native Bug/type/parent433/origin470 verified; other affected origins471-473 recorded. Claim9e0df89bb; source-confirmed4reader precedence. Real mixed-role Java reproduction and all4AC remain unproved. Retained lead preparing regression; repeated child422 do not establish credit balance.",
+      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
+      "note": "Actual final mixed-role HTTP RED4tests/2pass/2fail; all8Greg reads403, employee-only foreign read/write denials pass. Exact four classifiers restored; final focused packages/wiring and independent review pending. Original4AC/coveringJava remain open.",
       "slices": [
         {
           "id": "regression",
           "title": "Real OIDC mixed-role read regression and employee denial",
           "status": "in-progress",
-          "evidence": "Lead owns the new LifecycleMixedRoleHttpTest in isolated claimed worktree. Actual test execution not yet observed; existing Greg-only profiles insufficient."
+          "evidence": "Real signed Greg[greg,employee]/operator-greg and nativePG17; final unchanged-readerRED retained f572-red-millis-result.json/checkpoint7f0c4aec. Final positive evidence pending."
         },
         {
           "id": "readers",
           "title": "Repair four local Greg reader classifiers",
-          "status": "not-started"
+          "status": "in-progress",
+          "evidence": "Four local reader precedence repairs only; return write caller unchanged; independent Pluto review running."
         },
         {
           "id": "callers-review",
           "title": "Affected packages, boundaries and independent review",
-          "status": "not-started"
+          "status": "in-progress",
+          "evidence": "Final four-package plus mandatory startup/wiring run underway; no route/port/schema/sharedfixture change."
         },
         {
           "id": "integration",
@@ -11523,8 +11525,115 @@
           "status": "not-started"
         }
       ],
-      "observed_at": "2026-11-23T21:14:42Z",
-      "native_updated_at": "2026-11-23T14:36:01.249-0600"
+      "observed_at": "2026-11-23T21:34:18Z",
+      "native_updated_at": "2026-11-23T15:32:08.256-0600"
+    },
+    {
+      "id": "FUCQ-573",
+      "title": "Restore image CLI test checkout source dependency closure",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-573",
+      "branch": "dev/DEV-2026-11-23-vesper-006",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
+      "native_updated_at": "2026-11-23T15:32:09.438-0600",
+      "observed_at": "2026-11-23T21:33:00Z",
+      "note": "Local built result; native remains In Progress until covering evidence/disposition.",
+      "slices": [
+        {
+          "id": "source-closure",
+          "title": "Restore exact fixture source closure",
+          "status": "complete",
+          "evidence": "Eleven current source allowlist additions only; Dibble implementation and independent Pluto source/spec/security review PASS. Local07c65de51; no runtime/reference edits."
+        },
+        {
+          "id": "regression",
+          "title": "Meaningful CLI positive, refusal and offline checks",
+          "status": "complete",
+          "evidence": "Standalone unchanged2fail -> repaired2pass, all6actual CLI offline guards retained. f573-lead-review.json and root21:29:41cleanup audit passed."
+        },
+        {
+          "id": "integration",
+          "title": "Integrated regression and covering Node batch",
+          "status": "in-progress",
+          "evidence": "Root refresh/reassessment/merge and covering batch pending; original full53failureRED retained."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-574",
+      "title": "Reconcile retained-image regression with configured display gallery",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-574",
+      "branch": "dev/DEV-2026-11-23-vesper-007",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
+      "native_updated_at": "2026-11-23T15:32:10.580-0600",
+      "observed_at": "2026-11-23T21:33:00Z",
+      "note": "Claim0b92ea54d/worktree ready. Exact test-only allocation; current image source/history and negative tests retained; no implementation yet.",
+      "slices": [
+        {
+          "id": "display-expectation",
+          "title": "Separate original source from configured display expectation",
+          "status": "not-started"
+        },
+        {
+          "id": "regression",
+          "title": "Four owning image tests and original negative boundaries",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Integrated review and covering Node batch",
+          "status": "not-started"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-575",
+      "title": "Reconcile retained brief and manual-claim fixtures with authoritative employee revisions",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-575",
+      "branch": "dev/DEV-2026-11-23-vesper-008",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:32:21.487Z",
+      "native_updated_at": "2026-11-23T15:32:11.728-0600",
+      "observed_at": "2026-11-23T21:34:18Z",
+      "note": "Claim5ff1d6d4e. Barney McGrew requested/selectedSol/high, PinkySol/medium, no fallback; native In Progress is observed, not inferred from commits. First focused result50tests/41pass/1fail/8native-skips; repaired exact revision/CAS assertions pass, newly reached pause golden consent drift remains separately diagnosed.",
+      "slices": [
+        {
+          "id": "f575-brief-revision",
+          "title": "Authoritative brief revision fixture",
+          "status": "in-progress",
+          "evidence": "Barney/Pinky own exact test/fixture allocation; no final evidence yet."
+        },
+        {
+          "id": "f575-manual-authority-setup",
+          "title": "Successful current-revision authority setup",
+          "status": "in-progress",
+          "evidence": "Same lead owns current-row CAS and asserted setup success; final refusal/no-hold evidence pending."
+        },
+        {
+          "id": "f575-focused-validation",
+          "title": "Two owning modules and independent lead review",
+          "status": "in-progress",
+          "evidence": "First exact2moduleRED preserved; pause fixture contradicts current no-consent refusal. No scope expansion or full green claim."
+        },
+        {
+          "id": "integration",
+          "title": "Covering Node batch and native disposition",
+          "status": "not-started"
+        }
+      ]
     }
   ],
   "version": 1
