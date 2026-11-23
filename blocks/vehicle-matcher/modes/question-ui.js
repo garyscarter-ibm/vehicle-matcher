@@ -37,7 +37,7 @@ export function visibleQuestions(questions, answers) {
  * At the ceiling of a `plusAtMax` slider, append "+" ("£150,000+", "25,000+").
  */
 export function formatSliderValue(value, q) {
-  const base = q.format === 'gbp' ? gbp(value) : `${value.toLocaleString('en-GB')}${q.unit || ''}`;
+  const base = ['gbp', 'usd'].includes(q.format) ? gbp(value, q.currency || (q.format === 'usd' ? 'USD' : 'GBP')) : `${value.toLocaleString('en-GB')}${q.unit || ''}`;
   return q.plusAtMax && value >= q.max ? `${base}+` : base;
 }
 

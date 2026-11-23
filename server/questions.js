@@ -193,6 +193,51 @@ export const BUDGET_BANDS = {
  * → { label?, sub? } } }. A brand with no entry (BMW) keeps the base copy.
  */
 const BRAND_COPY = {
+  ram: {
+    budget: {
+      title: 'Set your truck budget.',
+      help: 'Advertised prices in US dollars, before taxes and fees. We’ll flag any stretch.',
+    },
+    fuel: {
+      title: 'What powers your next RAM?',
+      help: 'Choose gasoline, diesel, or keep your options open.',
+      optionsOverride: [
+        { value: 'petrol', label: 'Gasoline' },
+        { value: 'diesel', label: 'Diesel' },
+        { value: 'open', label: 'Show me both' },
+      ],
+    },
+    primaryUse: {
+      title: 'What’s ahead for your truck?',
+      options: {
+        city: { label: 'Around town', sub: 'Everyday errands and shorter trips' },
+        commute: { label: 'The daily drive' },
+        family: { label: 'Family duty', sub: 'Room for the people who come along' },
+        roadtrips: { label: 'Open-road trips', sub: 'Longer drives and weekends away' },
+        fun: { label: 'Weekend adventures', sub: 'Explore the available trims' },
+      },
+    },
+    people: {
+      title: 'Who’s riding with you?',
+      options: {
+        solo: { label: 'Mostly me', sub: 'An occasional passenger, too' },
+        family: { label: 'A small crew', sub: 'At least four listed seats' },
+        crew: { label: 'The whole crew', sub: 'At least five listed seats' },
+      },
+    },
+    mileage: {
+      title: 'How many miles in a year?',
+      help: 'A rough estimate helps us weigh your fuel options.',
+    },
+    priorities: {
+      title: 'What matters most? Pick two.',
+      optionsOverride: [
+        { value: 'comfort', label: 'Cabin comfort' },
+        { value: 'tech', label: 'Technology' },
+        { value: '4wd', label: 'Four-wheel drive' },
+      ],
+    },
+  },
   motorrad: {
     // Bike-native voice. Motorrad drops charging/people/style (see
     // BRANDS.motorrad.questions.drop) and adds ridingStyle + licence, whose copy

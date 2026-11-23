@@ -15,12 +15,12 @@
  * Brand voice comes from ./brand-copy.js; the card holds no copy of its own.
  */
 
-import { el, gbp } from '../ui.js';
+import { el, gbp, fuelLabel } from '../ui.js';
 import { BRAND_COPY, TRADE_COPY, tradeLines, orList } from './brand-copy.js';
 
 export const SPEC_LABELS = {
   hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV',
-  coupe: 'Coupé', convertible: 'Convertible', mpv: 'Family carrier',
+  coupe: 'Coupé', convertible: 'Convertible', mpv: 'Family carrier', pickup: 'Pickup',
 };
 export const FUEL_SPEC = { petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' };
 /*
@@ -206,16 +206,16 @@ export function matchCard(match, {
   // Single used price when min === max (live stock), else the range.
   // A grouped card prices the whole group; a single listing prices itself.
   const price = car.listingCount > 1 && car.priceFrom !== car.priceTo
-    ? `from ${gbp(car.priceFrom)}`
+    ? `from ${gbp(car.priceFrom, car.currency)}`
     : (car.priceMin === car.priceMax
-      ? gbp(car.priceMin)
-      : `${gbp(car.priceMin)}–${gbp(car.priceMax)}`);
+      ? gbp(car.priceMin, car.currency)
+      : `${gbp(car.priceMin, car.currency)}–${gbp(car.priceMax, car.currency)}`);
   const specs = el('p', 'vm-specs');
   // Paint, by its marketing name ("Legend Grey"), when the detail lookup got
   // one. It reads as a spec, but it's carrying more weight than that: when the
   // engine can't separate the cars, colour is very often the actual difference
   // between them — so it belongs on the card, not buried on the retailer's PDP.
-  const lead = [SPEC_LABELS[car.body], FUEL_SPEC[car.fuel]].filter(Boolean);
+  const lead = [SPEC_LABELS[car.body], fuelLabel(car.fuel, car.currency === 'USD' ? 'ram' : brandKey)].filter(Boolean);
   /*
    * The spec line, rebuilt rather than written once, because the listing
    * picker below can change what this card is describing. It used to be built
@@ -243,10 +243,12 @@ export function matchCard(match, {
     // 0–62 or economy.
     const tail = (compact ? [priceText] : [
       priceText,
-      car.seats ? `${car.seats} seats` : null,
-      car.boot ? `${car.boot}-litre boot, seats up` : null,
-      `0–62 ${car.zeroTo62}s`,
-      car.fuel === 'ev' ? `${car.evRange} mi range` : `${car.mpg} mpg`,
+      car.seats > 0 ? `${car.seats} seats` : null,
+      ...(brandKey === 'ram' ? [car.cab, car.bed, car.driveType, car.engineDescription,
+        Number.isFinite(car.power) && car.powerUnit === 'hp' ? `${car.power} hp` : null] : []),
+      car.boot > 0 && brandKey !== 'ram' ? `${car.boot}-litre boot, seats up` : null,
+      car.zeroTo62 > 0 ? `0–62 ${car.zeroTo62}s` : null,
+      car.fuel === 'ev' ? (car.evRange > 0 ? `${car.evRange} mi range` : null) : (car.mpg > 0 ? `${car.mpg} mpg` : null),
     ]).filter(Boolean);
     // No paint to print, or a compact tile whose caller hasn't asked for it.
     if (!paint || (compact && !showPaint)) {
@@ -302,8 +304,8 @@ export function matchCard(match, {
   if (car.listingCount > 1) {
     const avail = el('p', 'vm-avail');
     const span = car.priceFrom === car.priceTo
-      ? gbp(car.priceFrom)
-      : `${gbp(car.priceFrom)}–${gbp(car.priceTo)}`;
+      ? gbp(car.priceFrom, car.currency)
+      : `${gbp(car.priceFrom, car.currency)}–${gbp(car.priceTo, car.currency)}`;
     avail.append(el('span', 'vm-avail-count', `${car.listingCount} available`));
     avail.append(el('span', null, ` · ${span}`));
     if (car.colours?.length) avail.append(el('span', null, ` · ${orList(car.colours)}`));
@@ -313,11 +315,12 @@ export function matchCard(match, {
   // Real used-car detail from the live feed, when present.
   const detailBits = [];
   if (car.plate) detailBits.push(`’${car.plate} reg`);
+  if (brandKey === 'ram' && car.year) detailBits.push(`${car.year} model year`);
   if (car.mileage != null) detailBits.push(`${car.mileage.toLocaleString('en-GB')} miles`);
   const usedMeta = detailBits.length ? el('p', 'vm-usedmeta', detailBits.join('  ·  ')) : null;
   if (usedMeta) body.append(usedMeta);
 
-  if (!compact) body.append(el('p', 'vm-blurb', car.blurb));
+  if (!compact && car.blurb) body.append(el('p', 'vm-blurb', car.blurb));
 
   /*
    * What is actually on this car, from the feed's factory options list.
@@ -492,7 +495,7 @@ export function matchCard(match, {
       const label = listing.colour
         || (listing.mileage != null ? `${listing.mileage.toLocaleString('en-GB')} miles` : `Option ${i + 1}`);
       opt.append(el('span', 'vm-pick-colour', label));
-      const bits = [gbp(listing.priceMin)];
+      const bits = [gbp(listing.priceMin, listing.currency || car.currency)];
       if (listing.colour && listing.mileage != null) {
         bits.push(`${listing.mileage.toLocaleString('en-GB')} mi`);
       }
@@ -509,13 +512,16 @@ export function matchCard(match, {
         // previous listing's values is a card describing two cars at once.
         showPhoto(listing.photo);
         renderSpecs(
-          listing.colour, listing.shade, gbp(listing.priceMin),
+          listing.colour, listing.shade, gbp(listing.priceMin, listing.currency || car.currency),
           listing.transmission ?? car.transmission,
         );
         renderKit(listing);
         if (usedMeta) {
           const bits = [];
           if (car.plate) bits.push(`’${car.plate} reg`);
+          if (brandKey === 'ram' && (listing.year || car.year)) {
+            bits.push(`${listing.year || car.year} model year`);
+          }
           if (listing.mileage != null) {
             bits.push(`${listing.mileage.toLocaleString('en-GB')} miles`);
           }
@@ -554,10 +560,10 @@ export function previewTile(match) {
   const { car, score } = match;
   // A grouped card prices the whole group; a single listing prices itself.
   const price = car.listingCount > 1 && car.priceFrom !== car.priceTo
-    ? `from ${gbp(car.priceFrom)}`
+    ? `from ${gbp(car.priceFrom, car.currency)}`
     : (car.priceMin === car.priceMax
-      ? gbp(car.priceMin)
-      : `${gbp(car.priceMin)}–${gbp(car.priceMax)}`);
+      ? gbp(car.priceMin, car.currency)
+      : `${gbp(car.priceMin, car.currency)}–${gbp(car.priceMax, car.currency)}`);
 
   // Whole tile is the tap target — an <a> when we have a link, else a plain
   // article (still a valid tile, just not clickable).
@@ -578,7 +584,7 @@ export function previewTile(match) {
   badge.title = 'Match score';
   head.append(el('span', 'vm-ptile-name', car.name.replace(/^BMW /, '')), badge);
   const specs = el('span', 'vm-ptile-specs',
-    [SPEC_LABELS[car.body], FUEL_SPEC[car.fuel], price].filter(Boolean).join(' · '));
+    [SPEC_LABELS[car.body], fuelLabel(car.fuel, car.currency === 'USD' ? 'ram' : null), price].filter(Boolean).join(' · '));
   body.append(head, specs);
   tile.append(media, body);
   return tile;

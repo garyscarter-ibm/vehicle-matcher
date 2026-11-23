@@ -23,5 +23,9 @@ export function el(tag, className, text) {
 export const CARDINALS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 export const cardinal = (n) => CARDINALS[n] ?? String(n);
 
-/** Money, GBP, no pence. */
-export const gbp = (n) => `£${n.toLocaleString('en-GB')}`;
+/** Whole-unit money; callers carry currency so multiple brands can coexist. */
+export const currencySymbol = (currency = 'GBP') => (currency === 'USD' ? '$' : '£');
+export const gbp = (n, currency = 'GBP') => (Number.isFinite(n)
+  ? `${currencySymbol(currency)}${n.toLocaleString(currency === 'USD' ? 'en-US' : 'en-GB')}` : 'Price unavailable');
+export const fuelLabel = (fuel, brand) => (fuel === 'petrol' && brand === 'ram' ? 'Gasoline'
+  : ({ petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' }[fuel]));

@@ -535,6 +535,31 @@ function mergeTuning(overrides) {
   return out;
 }
 
+const RAM_TUNING = {
+  currency: 'USD',
+  weights: { budget: 4, body: 0, fuel: 3, practicality: 0, performance: 0, economy: 0, size: 0, character: 2, styleLine: 4 },
+  disabledDimensions: ['practicality', 'performance', 'economy', 'size'],
+  styleLine: {
+    match: 1, neutral: 0.7, miss: 0,
+    labels: { 1500: 'RAM 1500', 2500: 'RAM 2500', 3500: 'RAM 3500' },
+    reason: (label) => `${label}, the truck series you chose`,
+  },
+  hardFilter: { crewBoot: 0, crewSeats: 5, familySeats: 4 },
+  crewSeatShortfall: 1,
+  fuelLabels: { petrol: 'gasoline', diesel: 'diesel' },
+  priorityTags: { comfort: 'cruiser', tech: 'tech', '4wd': 'practical' },
+  reasons: {
+    dieselHighMileage: () => 'Diesel power suits the higher annual mileage you described',
+    tags: {
+      practical: 'Four-wheel drive is listed on this truck',
+      'drivers-car': 'The off-road or performance trim in your shortlist',
+      cruiser: 'Comfort equipment is listed on this truck',
+      tech: 'Technology features are listed on this truck',
+      image: 'The distinctive trim you chose',
+    },
+  },
+};
+
 export const BRANDS = {
   bmw: {
     label: 'BMW',
@@ -807,6 +832,30 @@ export const BRANDS = {
           ],
         },
       ],
+    },
+  },
+  ram: {
+    label: 'RAM',
+    origin: 'https://www.spoticar.com',
+    defaultRetailer: 'ram-cpo',
+    source: 'live-spoticar',
+    currency: 'USD',
+    budget: { max: 150000, default: [30000, 65000], format: 'usd', currency: 'USD' },
+    tuning: mergeTuning(RAM_TUNING),
+    questions: {
+      drop: ['bodyStyles', 'charging', 'style', 'primaryUse'],
+      add: [{
+        id: 'truckClass',
+        title: 'Which RAM fits the job?',
+        help: 'Choose a truck series. Towing and payload depend on the individual configuration; check the dealer listing.',
+        insertAfter: 'budget',
+        options: [
+          { value: '1500', label: 'RAM 1500', sub: 'Light-duty pickup, including 1500 Classic', scoresAs: { styleLine: '1500' } },
+          { value: '2500', label: 'RAM 2500', sub: 'Heavy-duty pickup', scoresAs: { styleLine: '2500' } },
+          { value: '3500', label: 'RAM 3500', sub: 'Heavy-duty pickup', scoresAs: { styleLine: '3500' } },
+          { value: 'open', label: 'Show me the options' },
+        ],
+      }],
     },
   },
   ferrari: {

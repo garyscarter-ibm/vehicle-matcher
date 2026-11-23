@@ -69,7 +69,7 @@ shell needs no change.
 ### Brand-agnostic, driven by a registry
 Brand is authored config, not baked in. `server/brands.js` is the **source of truth**: per-brand
 origin/retailer, and per-brand engine tuning (`BMW_TUNING` is the baseline; other brands override
-only what must differ). Supported brands: bmw, mini, ford, honda, motorrad, ferrari. Adding a
+only what must differ). Supported brands: bmw, mini, ford, honda, motorrad, ferrari, ram. Adding a
 brand = a tuning block in `brands.js` + a `MODEL_SPECS`/derivation entry in `mapping.js`; the
 engine itself never changes. See `docs/onboard-brand-blueprint.md` and the `onboard-brand` skill.
 
@@ -80,6 +80,13 @@ Ferrari and Motorrad each have a bespoke parser (`honda-listing.js`, `ferrari-li
 `motorrad-listing.js`) because their stock isn't a JSON API. The feed can't supply 0–62, boot
 litres or seat count — those come from `MODEL_SPECS` in `mapping.js`, keyed by model line.
 `server/data.js` is **fixture data for tests only**, not a product dataset.
+
+RAM uses `spoticar-stock.js` and `ram-mapping.js` for the US Spoticar visitor flow.
+`spoticar-cache.js` persists completed mapped walks; prepare the initial cache
+with `node scripts/warm-ram.mjs`. RAM prices carry explicit USD. Missing truck
+specifications stay null and their scoring dimensions are disabled. Individual
+VIN/dealer configurations retain `groupKey` to prevent factual cross-listing
+merges. See `docs/ram-spoticar.md` for coverage, freshness and source limits.
 
 ### CSS design tokens
 `blocks/vehicle-matcher/tokens.css` holds all `--vm-*` design tokens (brand-invariant on `:root`,
@@ -95,7 +102,7 @@ real EDS page gets it transitively. `demo-chrome.css` styles the demo homepage/p
   intro copy states numbers without a block rebuild — don't hardcode them client-side.
 - **`?scope=` and the Retailer Name row must agree.** `?scope=dealer|national` (default
   **dealer**) chooses the pool: one branch's forecourt, or every retailer of the brand.
-  Only BMW and MINI have two pools (`source: 'feed'` in `brands.js`); the other four run a
+  Only BMW and MINI have two pools (`source: 'feed'` in `brands.js`); the other brands run a
   single national programme feed each, so both scopes search the same cars for them and the
   programme name is the true label either way. The authored **Retailer Name** row is only a
   label, so nothing stops it naming a pool that wasn't searched — and both ways of getting it

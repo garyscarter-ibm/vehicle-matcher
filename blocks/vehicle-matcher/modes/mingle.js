@@ -29,7 +29,7 @@
  */
 
 import { apiGetQuestions, apiField, apiMatch } from '../engine.js';
-import { el } from '../ui.js';
+import { el, fuelLabel } from '../ui.js';
 import {
   WEAK_SCORE, SHADE_HEX, NEUTRAL_SWATCH,
   budgetBandsFromQuestion, useTilesFromQuestion,
@@ -395,6 +395,34 @@ const MINGLE_COPY = {
 /* ------------------------------ helpers ------------------------------ */
 
 /** Copy for the active brand, BMW as the fallback (matches ctx.brand shape). */
+MINGLE_COPY.ram = {
+  ...MINGLE_COPY.bmw,
+  wordmark: 'RAM Match',
+  seedKicker: 'Your next truck',
+  seedTitle: 'Work hard. Choose well.',
+  seedLede: 'Set your budget and choose a truck series. Then keep the RAMs you would put in your driveway.',
+  useLabel: 'Choose your truck series',
+  seedCta: 'Find my lineup',
+  deckInstruction: 'Keep the trucks you would drive. Pass the rest. Drag or use the buttons.',
+  badgesWarm: ['Worth a closer look', 'On your shortlist', 'In the running'],
+  badgesCool: ['Your next truck?', 'Take a look', 'Make the call'],
+  ageBadge: () => null,
+  hero: (car) => (Number.isFinite(car?.power) && car.powerUnit === 'hp' ? `${car.power} hp` : null),
+  tasteHeading: 'Your truck brief, so far',
+  tasteEmpty: 'Keep a truck to start building your brief.',
+  keptHeading: 'Your shortlist',
+  barLabels: { fuel: 'Fuel', colour: 'Color', budget: 'Budget', body: 'Body' },
+  matchKicker: 'Your RAM match',
+  matchTitle: ({ model }) => `Make room for the ${model}.`,
+  matchLede: 'Your shortlist pointed the way. Here is the truck that fits it best.',
+  whyIntro: 'Why this truck fits:',
+  thinTitle: 'A starting point for your search.',
+  thinLede: 'With fewer trucks kept, your budget and chosen series carry more of the match.',
+  weakNote: 'This inventory does not have a strong fit for every preference you showed. Check the details or widen your brief.',
+  emptyPoolTitle: 'No trucks in that budget right now.',
+  emptyPoolLede: ({ retailer }) => `Try a different budget to see more RAM trucks at ${retailer}.`,
+};
+
 const copyFor = (brand) => MINGLE_COPY[brand] || MINGLE_COPY.bmw;
 
 /*
@@ -433,7 +461,7 @@ function mount(root, ctx) {
   // ctx.answers or the questionnaire mode's #m= link).
   const state = {
     questions: [], // the engine's per-brand questions (seeds the budget/use tiles)
-    seed: null, // { budget, primaryUse }
+    seed: null, // budget plus primaryUse or truckClass
     deck: [], // shuffled, sampled preview matches
     index: 0, // next card to show
     kept: [], // cars the player kept (the taste signal)
@@ -484,12 +512,8 @@ function mount(root, ctx) {
     root.append(screen);
   };
 
-  /* ---------------------------- seed step ----------------------------
-   * The two answers a swipe can't read: budget (the engine's hard filter) and
-   * what the car's for. Both the budget bands and the "what's it for" tiles are
-   * built from the engine's own per-brand questions (state.questions) — NOT from
-   * local copy — so MINI shows MINI's labels and MINI-scale money, exactly like
-   * the questionnaire mode. Only the seed's framing (kicker/title/lede) is copy. */
+  // The seed takes budget plus the brand's usage or truck-series question.
+  // Keep the server's answer key when carrying that choice into the match.
   const renderSeed = (preset) => {
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-mingle-seed');
@@ -498,14 +522,16 @@ function mount(root, ctx) {
     screen.append(el('p', 'vm-lede', copy.seedLede));
 
     const budgetQ = state.questions.find((q) => q.id === 'budget');
-    const useQ = state.questions.find((q) => q.id === 'primaryUse');
+    const useQ = state.questions.find((q) => q.id === 'primaryUse')
+      || state.questions.find((q) => q.id === 'truckClass');
+    const seedKey = useQ?.id || 'primaryUse';
     const budgetBands = budgetBandsFromQuestion(budgetQ);
     const useTiles = useTilesFromQuestion(useQ);
 
-    const chosen = { budget: preset?.budget || null, primaryUse: preset?.primaryUse || null };
+    const chosen = { budget: preset?.budget || null, [seedKey]: preset?.[seedKey] || null };
     const cta = el('button', 'vm-btn vm-btn-primary vm-mingle-seed-cta', copy.seedCta);
     cta.type = 'button';
-    const refreshCta = () => { cta.disabled = !(chosen.budget && chosen.primaryUse); };
+    const refreshCta = () => { cta.disabled = !(chosen.budget && chosen[seedKey]); };
 
     // Budget bands — ceilings and open-top scale to the brand's slider max.
     screen.append(el('p', 'vm-mingle-seed-label', budgetQ?.title || copy.budgetLabel));
@@ -525,7 +551,7 @@ function mount(root, ctx) {
     });
     screen.append(budgetRow);
 
-    // What's it for — the engine's primaryUse options, brand labels + subs.
+    // The brand's available seed question supplies both the answer key and labels.
     screen.append(el('p', 'vm-mingle-seed-label', useQ?.title || copy.useLabel));
     const useRow = el('div', 'vm-mingle-tiles vm-mingle-tiles-use');
     useTiles.forEach(({ value, label, sub }) => {
@@ -533,9 +559,9 @@ function mount(root, ctx) {
       tile.type = 'button';
       tile.append(el('span', 'vm-mingle-tile-label', label));
       if (sub) tile.append(el('span', 'vm-mingle-tile-hint', sub));
-      if (chosen.primaryUse === value) tile.classList.add('is-selected');
+      if (chosen[seedKey] === value) tile.classList.add('is-selected');
       tile.addEventListener('click', () => {
-        chosen.primaryUse = value;
+        chosen[seedKey] = value;
         useRow.querySelectorAll('.vm-mingle-tile').forEach((t) => t.classList.remove('is-selected'));
         tile.classList.add('is-selected');
         refreshCta();
@@ -546,7 +572,7 @@ function mount(root, ctx) {
 
     refreshCta();
     cta.addEventListener('click', () => {
-      state.seed = { budget: chosen.budget, primaryUse: chosen.primaryUse };
+      state.seed = { ...chosen };
       loadDeck();
     });
     screen.append(cta);
@@ -644,7 +670,7 @@ function mount(root, ctx) {
       return row;
     };
     bars.append(
-      bar('fuel', modal(kept.map((c) => c.fuel)), cap),
+      bar('fuel', modal(kept.map((c) => c.fuel)), (v) => fuelLabel(v, ctx.brand) || cap(v)),
       bar('colour', modal(kept.map((c) => shadeOf(c)).filter(Boolean)), cap),
       bar('body', modal(kept.map((c) => c.body)), cap),
       bar('budget', kept.length ? { value: budgetBandLabel(kept), share: 1 } : null, (v) => v),
@@ -666,6 +692,7 @@ function mount(root, ctx) {
   // The budget bar shows a preference band, not a raw average (§11.6).
   const budgetBandLabel = (kept) => {
     const avg = kept.reduce((s, c) => s + (c.priceMin || c.priceFrom || 0), 0) / kept.length;
+    if (ctx.brand === 'ram') return `Around ${gbpShort(Math.round(avg / 1000) * 1000, kept[0]?.currency || 'USD')}`;
     if (avg < 20000) return 'Under £20k';
     if (avg < 25000) return 'Around £22k';
     if (avg < 30000) return 'Around £27k';
@@ -843,7 +870,7 @@ function mount(root, ctx) {
     if (spec) body.append(el('p', 'vm-mingle-card-spec', spec));
     body.append(el('p', 'vm-mingle-card-price', priceLabel(car)));
     const pills = el('div', 'vm-mingle-pills');
-    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', cap(car.fuel)));
+    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', fuelLabel(car.fuel, ctx.brand) || cap(car.fuel)));
     if (car.body) pills.append(el('span', 'vm-mingle-pill', cap(car.body)));
     body.append(pills);
 
@@ -1104,7 +1131,8 @@ function mount(root, ctx) {
   // The single trait to name in the swipe callback — the strongest kept signal.
   const swipeTrait = () => {
     const fuel = modal(state.kept.map((c) => c.fuel));
-    if (fuel && fuel.share >= 0.5) return fuel.value;
+    if (fuel && fuel.share >= 0.5) return ctx.brand === 'ram'
+      ? (fuelLabel(fuel.value, ctx.brand) || fuel.value).toLowerCase() : fuel.value;
     const shade = modal(state.kept.map((c) => shadeOf(c)).filter(Boolean));
     if (shade && shade.share >= 0.5) return shade.value;
     const body = modal(state.kept.map((c) => c.body));
@@ -1137,7 +1165,7 @@ function mount(root, ctx) {
     if (car.line) body.append(el('p', 'vm-mingle-card-spec', car.line));
     body.append(el('p', 'vm-mingle-card-price', priceLabel(car)));
     const pills = el('div', 'vm-mingle-pills');
-    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', cap(car.fuel)));
+    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', fuelLabel(car.fuel, ctx.brand) || cap(car.fuel)));
     if (car.body) pills.append(el('span', 'vm-mingle-pill', cap(car.body)));
     const shade = car.colour?.manufacturerColour;
     if (shade) pills.append(el('span', 'vm-mingle-pill', shade));

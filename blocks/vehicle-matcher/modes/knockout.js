@@ -33,7 +33,7 @@
  */
 
 import { apiGetQuestions, apiField, apiMatch } from '../engine.js';
-import { el } from '../ui.js';
+import { el, fuelLabel } from '../ui.js';
 import {
   WEAK_SCORE,
   budgetBandsFromQuestion, useTilesFromQuestion,
@@ -406,6 +406,33 @@ const KNOCKOUT_COPY = {
 /* ------------------------------ helpers ------------------------------ */
 
 /** Copy for the active brand, BMW as the fallback (matches ctx.brand shape). */
+KNOCKOUT_COPY.ram = {
+  ...KNOCKOUT_COPY.bmw,
+  wordmark: 'RAM Head to Head',
+  seedTitle: 'Build your truck lineup.',
+  seedLede: 'Set your budget and choose a truck series. Compare two RAM trucks at a time until your pick stands alone.',
+  useLabel: 'Choose your truck series',
+  seedCta: 'Line them up',
+  pickHint: 'Two trucks. Your call. Pick the one you would take home.',
+  finalTitle: 'Your final two.',
+  finalLede: 'Take a closer look. Choose the truck that belongs in your driveway.',
+  finalCta: 'Compare the finalists',
+  verdictForm: ({ model }) => `The ${model} leads on fit and gets your vote.`,
+  verdictUpset: ({ model }) => `The ${model} gets your vote and moves on.`,
+  taleTitle: 'Compare the listings',
+  statRows: (a, b) => [
+    lowerBetterRow('Mileage', a, b, mileageOf, milesText), ageRow(a, b),
+    higherBetterRow('Power', a, b, (car) => car.powerUnit === 'hp' ? powerOf(car) : NaN, (n) => `${n} hp`),
+  ],
+  matchTitle: ({ model }) => `The ${model}. Your truck.`,
+  matchLede: 'You chose it through every comparison. Here is how it fits your brief.',
+  whyIntro: 'Why it belongs on your shortlist:',
+  weakNote: 'Your pick misses part of your brief. Check the reasons and listing details before you take the next step.',
+  alsoNote: ({ model }) => `The ${model} scores better on your answers if you want another look.`,
+  emptyPoolTitle: 'Not enough trucks for a comparison.',
+  emptyPoolLede: ({ retailer }) => `Try a wider budget to line up more RAM trucks at ${retailer}.`,
+};
+
 const copyFor = (brand) => KNOCKOUT_COPY[brand] || KNOCKOUT_COPY.bmw;
 
 /** Largest power of two ≤ n (0 for n < 1). Used to snap the shuffled pool to a
@@ -570,7 +597,7 @@ function mount(root, ctx) {
   // clean. The mode owns its own state and its own hash key.
   const state = {
     questions: [], // the engine's per-brand questions (seeds the budget/use tiles)
-    seed: null, // { budget, primaryUse }
+    seed: null, // budget plus primaryUse or truckClass
     // Bracket:
     round: [], // cars entering the CURRENT round (a power of two, then halving)
     pairings: [], // pairUp(round) — the current round's matchups
@@ -628,11 +655,8 @@ function mount(root, ctx) {
     root.append(screen);
   };
 
-  /* ---------------------------- seed step ----------------------------
-   * Identical in shape to the swipe game's seed: budget (the engine's hard
-   * filter) + what the car's for, both built from the engine's own per-brand
-   * questions (state.questions), never local copy. Reuses the .vm-mingle-seed /
-   * .vm-mingle-tile classes so the two games' seed steps look the same. */
+  // The seed takes budget plus the brand's usage or truck-series question.
+  // Reuse the swipe controls and preserve the server's answer key.
   const renderSeed = (preset) => {
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-mingle-seed vm-knockout-seed');
@@ -641,14 +665,16 @@ function mount(root, ctx) {
     screen.append(el('p', 'vm-lede', copy.seedLede));
 
     const budgetQ = state.questions.find((q) => q.id === 'budget');
-    const useQ = state.questions.find((q) => q.id === 'primaryUse');
+    const useQ = state.questions.find((q) => q.id === 'primaryUse')
+      || state.questions.find((q) => q.id === 'truckClass');
+    const seedKey = useQ?.id || 'primaryUse';
     const budgetBands = budgetBandsFromQuestion(budgetQ);
     const useTiles = useTilesFromQuestion(useQ);
 
-    const chosen = { budget: preset?.budget || null, primaryUse: preset?.primaryUse || null };
+    const chosen = { budget: preset?.budget || null, [seedKey]: preset?.[seedKey] || null };
     const cta = el('button', 'vm-btn vm-btn-primary vm-mingle-seed-cta', copy.seedCta);
     cta.type = 'button';
-    const refreshCta = () => { cta.disabled = !(chosen.budget && chosen.primaryUse); };
+    const refreshCta = () => { cta.disabled = !(chosen.budget && chosen[seedKey]); };
 
     // Budget bands — ceilings and open-top scale to the brand's slider max.
     screen.append(el('p', 'vm-mingle-seed-label', budgetQ?.title || copy.budgetLabel));
@@ -668,7 +694,7 @@ function mount(root, ctx) {
     });
     screen.append(budgetRow);
 
-    // What's it for — the engine's primaryUse options, brand labels + subs.
+    // The brand's available seed question supplies both the answer key and labels.
     screen.append(el('p', 'vm-mingle-seed-label', useQ?.title || copy.useLabel));
     const useRow = el('div', 'vm-mingle-tiles vm-mingle-tiles-use');
     useTiles.forEach(({ value, label, sub }) => {
@@ -676,9 +702,9 @@ function mount(root, ctx) {
       tile.type = 'button';
       tile.append(el('span', 'vm-mingle-tile-label', label));
       if (sub) tile.append(el('span', 'vm-mingle-tile-hint', sub));
-      if (chosen.primaryUse === value) tile.classList.add('is-selected');
+      if (chosen[seedKey] === value) tile.classList.add('is-selected');
       tile.addEventListener('click', () => {
-        chosen.primaryUse = value;
+        chosen[seedKey] = value;
         useRow.querySelectorAll('.vm-mingle-tile').forEach((t) => t.classList.remove('is-selected'));
         tile.classList.add('is-selected');
         refreshCta();
@@ -689,7 +715,7 @@ function mount(root, ctx) {
 
     refreshCta();
     cta.addEventListener('click', () => {
-      state.seed = { budget: chosen.budget, primaryUse: chosen.primaryUse };
+      state.seed = { ...chosen };
       loadField();
     });
     screen.append(cta);
@@ -887,7 +913,7 @@ function mount(root, ctx) {
     if (car.line) body.append(el('p', 'vm-mingle-card-spec', car.line));
     body.append(el('p', 'vm-mingle-card-price', priceLabel(car)));
     const pills = el('div', 'vm-mingle-pills');
-    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', cap(car.fuel)));
+    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', fuelLabel(car.fuel, ctx.brand) || cap(car.fuel)));
     if (car.body) pills.append(el('span', 'vm-mingle-pill', cap(car.body)));
     body.append(pills);
     card.append(body);
@@ -1213,7 +1239,7 @@ function mount(root, ctx) {
     if (car.line) body.append(el('p', 'vm-mingle-card-spec', car.line));
     body.append(el('p', 'vm-mingle-card-price', priceLabel(car)));
     const pills = el('div', 'vm-mingle-pills');
-    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', cap(car.fuel)));
+    if (car.fuel) pills.append(el('span', 'vm-mingle-pill', fuelLabel(car.fuel, ctx.brand) || cap(car.fuel)));
     if (car.body) pills.append(el('span', 'vm-mingle-pill', cap(car.body)));
     const shade = car.colour?.manufacturerColour;
     if (shade) pills.append(el('span', 'vm-mingle-pill', shade));

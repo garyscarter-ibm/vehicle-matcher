@@ -31,6 +31,7 @@ import { mapVehicle, mapMotorradRaw, mapHondaRaw, mapFerrariRaw } from './mappin
 import { brandConfig, normalizeBrand } from './brands.js';
 import { parseListingHtml, listingUrl } from './honda-listing.js';
 import { parseResTable } from './motorrad-listing.js';
+import { fetchCachedRamStock, ramStockCache } from './spoticar-cache.js';
 import {
   parseListingHtml as parseFerrariHtml,
   listingUrl as ferrariListingUrl,
@@ -897,6 +898,15 @@ export async function fetchRetailerStock(brand = 'bmw', retailerSite, scope) {
   // snapshot is static for the run and the cars are already mapped.
   if (source === 'fixtures') return fixturesRetailerStock(b, site);
 
+  if (source === 'live-spoticar') {
+    seenRetailers.set(keyFor(b, defaultRetailer), { brand: b, retailerSite: defaultRetailer });
+    try {
+      return await fetchCachedRamStock();
+    } catch (err) {
+      throw new StockUnavailableError('RAM CPO inventory is temporarily unavailable', { cause: err });
+    }
+  }
+
   // Honda's live feed, when the registry opts into it. The listing is
   // server-rendered HTML (not JSON), so it has its own adapter; it's cached like
   // the BMW/MINI feed. A fetch failure throws StockUnavailableError, which the
@@ -1168,7 +1178,7 @@ export async function fetchNearbyStock(brand = 'bmw', retailerSite) {
   // carry no per-car distance and no distinct dealer identity, so it can't build
   // the distance-ranked, other-dealers carousel this returns. The location filter
   // belongs on the main pool fetch instead (hondaLiveStock opts), not here.
-  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda') return [];
+  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda' || source === 'live-spoticar') return [];
 
   const key = keyFor(b, site);
   seenRetailers.set(key, { brand: b, retailerSite: site });
@@ -1256,6 +1266,10 @@ export function startStockWarmer() {
 
   const tick = () => {
     for (const [key, { brand, retailerSite }] of seenRetailers) {
+      if (brandConfig(brand).source === 'live-spoticar') {
+        ramStockCache.get().catch((err) => console.warn('[stock] RAM warm failed:', err?.message));
+        continue;
+      }
       // A feed brand's main pool is scope-dependent, so it's warmed from the two
       // loops below (whichever scopes have actually been asked for) rather than
       // from here — warming it under this per-retailer key would otherwise
@@ -1429,7 +1443,7 @@ export async function enrichColours(brand, cars, budgetMs = COLOUR_BUDGET_MS) {
   // inline already; there's no separate colour PDP to fetch on this origin.
   // Honda's live listing already carries an "Exterior colour" spec per card, so
   // its cars gain colour at map time — there's no colour PDP to fetch here either.
-  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda') return cars;
+  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda' || source === 'live-spoticar') return cars;
   const queue = cars.filter((c) => c?.id);
   const deadline = Date.now() + budgetMs;
   for (let i = 0; i < queue.length; i += COLOUR_CONCURRENCY) {
@@ -1593,7 +1607,7 @@ async function colourSweep(brand) {
   // Same exclusions enrichColours makes: these brands have no PDP on this
   // origin to read paint from (fixtures point at the real brand site; Motorrad
   // and Honda already carry colour by the time they're mapped).
-  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda') return;
+  if (source === 'fixtures' || source === 'live-motorrad' || source === 'live-honda' || source === 'live-spoticar') return;
 
   const cars = cacheByRetailer.get(keyFor(brand, 'national'))?.cars;
   if (!cars?.length) return; // pool not walked yet — try again next tick
