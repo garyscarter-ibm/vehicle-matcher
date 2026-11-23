@@ -1,4 +1,4 @@
-import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, input, OnDestroy, output, untracked } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, input, OnDestroy, output, signal, untracked } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import { ButtonDirective } from '../kit/button.directive';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
@@ -26,6 +26,9 @@ export class OfferScreenComponent implements OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
   private readonly auth = inject(AuthPort);
   private wasSending = false;
+  private announcementScope: string | null = null;
+  private announcedOffer: string | null = null;
+  readonly announcement = signal('');
   private pendingFocus: { readonly offerId: string; readonly scope: string | null } | null = null;
   readonly state = this.store.state;
   readonly view = computed(() => { const offer = this.interactions.offer(); return offer ? offerViewModel(offer) : null; });
@@ -39,6 +42,24 @@ export class OfferScreenComponent implements OnDestroy {
       this.wasSending = decision === 'sending';
     });
     effect(() => { const state = this.state(); untracked(() => this.settleFocus(state)); });
+    effect(() => {
+      const vm = this.view(); const offer = this.interactions.offer(); const auth = this.auth.state(); const failure = this.failure();
+      const scope = auth.status === 'ready' && auth.context.roles.includes('employee') && !auth.context.roles.includes('presenter') ? this.scope() : null;
+      if (scope !== this.announcementScope || scope === null) {
+        this.announcementScope = scope; this.announcedOffer = null; this.announcement.set('');
+      }
+      if (!vm || !offer || scope === null) {
+        if (failure && scope !== null && this.announcedOffer !== null) {
+          this.announcement.set(failure.title); this.announcedOffer = `failure:${failure.title}`;
+        }
+        return;
+      }
+      const identity = `${vm.title}:${offer.offerId}`;
+      if (offer.state === 'pending' && vm.remainingSeconds === 0) this.announcement.set('The deadline has been reached. Checking the current offer state.');
+      else if (offer.state === 'pending' && vm.remainingSeconds !== null && vm.remainingSeconds <= 300) this.announcement.set('Less than five minutes remain on this offer.');
+      else if (this.announcedOffer !== null && this.announcedOffer !== identity) this.announcement.set(vm.title);
+      this.announcedOffer = identity;
+    });
   }
 
   refresh(): void { this.store.refresh(); }

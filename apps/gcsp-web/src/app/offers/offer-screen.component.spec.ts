@@ -68,6 +68,83 @@ describe('native offer read screen', () => {
       expect(fixture.nativeElement.querySelector('table')).toBeNull();
     }
   });
+  it('shows the source held-until time, weekday and accessible authoritative countdown', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const deadline = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-deadline');
+    expect(deadline?.querySelector('strong')?.textContent).toBe('Held until 14:30');
+    expect(deadline?.querySelector('.gcsp-decision-date')?.textContent).toBe('Saturday, 14 November 2026');
+    expect(deadline?.querySelector('.gcsp-decision-clock > .gcsp-countdown[aria-label="Time left to decide"]')?.textContent).toBe('2h 00m');
+    expect(deadline?.querySelector('.gcsp-decision-clock > .gcsp-decision-date')?.textContent).toBe('left to decide');
+    expect(text()).not.toContain('at last check');
+  });
+  it('uses London daylight saving for the held time and date', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    await load({ ...offerScreenFixture(), serverNow: '2026-07-14T10:30:00.000Z', expiresAt: '2026-07-14T12:30:00.000Z' });
+    const deadline = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-deadline');
+    expect(deadline?.querySelector('strong')?.textContent).toBe('Held until 13:30');
+    expect(deadline?.querySelector('.gcsp-decision-date')?.textContent).toBe('Tuesday, 14 July 2026');
+  });
+  it('announces the five-minute boundary without repeating it on an unchanged authoritative refresh', async () => {
+    const offer = { ...offerScreenFixture(), expiresAt: '2026-11-14T12:35:00.000Z' };
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offer);
+    const announcement = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('[data-offer-announcement]');
+    expect(announcement?.textContent).toBe('Less than five minutes remain on this offer.');
+    expect(announcement?.getAttribute('role')).toBe('status'); expect(announcement?.getAttribute('aria-live')).toBe('polite');
+    expect(announcement?.classList.contains('gcsp-vh')).toBe(true);
+    const changes: MutationRecord[] = [];
+    const observer = new MutationObserver(records => changes.push(...records));
+    try {
+      if (announcement) observer.observe(announcement, { childList: true, characterData: true, subtree: true });
+      fixture.componentInstance.refresh(); await settle(); await load({ ...offer, clockVersion: 'clock-v4' });
+      expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')).toBe(announcement);
+      expect(changes).toHaveLength(0);
+    } finally { observer.disconnect(); }
+  });
+  it('does not announce less than five minutes when the server still reports a fractional second above it', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    await load({ ...offerScreenFixture(), expiresAt: '2026-11-14T12:35:00.001Z' });
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-countdown')?.textContent).toBe('0h 06m');
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('');
+  });
+  it('keeps the zero deadline and disabled controls visible until the bounded server reread establishes expiry', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const offer = { ...actionableOffer(), expiresAt: '2026-11-14T12:30:00.000Z' };
+    await load(offer);
+    expect(reads).toHaveLength(2);
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-countdown')?.textContent).toBe('0h 00m');
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('The deadline has been reached. Checking the current offer state.');
+    for (const action of ['accept', 'decline']) expect((fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>(`[data-offer-action="${action}"]`)?.disabled).toBe(true);
+    expect(text()).not.toContain('Offer expired'); expect(client['decide']).not.toHaveBeenCalled();
+    await load({ ...offerScreenFixture('expired'), expiresAt: offer.expiresAt });
+    expect(text()).toContain('Offer expired'); expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-countdown')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Offer expired');
+    expect(reads).toHaveLength(2);
+  });
+  it('redacts the deadline announcement when employee authority is lost', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    await load({ ...offerScreenFixture(), expiresAt: '2026-11-14T12:35:00.000Z' });
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Less than five minutes remain on this offer.');
+    auth.set({ status: 'signed-out' }); await settle();
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('');
+    expect(text()).not.toContain('BMW 330e');
+  });
+  it('replaces the deadline announcement with the read failure when the expiry check cannot complete', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    await load({ ...offerScreenFixture(), expiresAt: '2026-11-14T12:30:00.000Z' });
+    expect(reads).toHaveLength(2);
+    reads[1].resolve({ status: 'unavailable', retryable: true }); await settle();
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Your offer could not be loaded');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-countdown')).toBeNull();
+    expect(text()).toContain('Check current offer'); expect(text()).not.toContain('Offer expired');
+  });
+  it('announces a changed authoritative selection outcome even when its offer state stays accepted', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const accepted = offerScreenFixture('accepted'); await load(accepted);
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('');
+    fixture.componentInstance.refresh(); await settle();
+    await load({ ...accepted, selection: { ...accepted.selection!, selectionState: 'handoff-failed' } });
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Your selection was not sent to ordering');
+  });
   it.each(['decision-pending', 'release-pending'])('shows truthful uncertain copy for %s', async (reason) => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load({ ...offerScreenFixture(), reason });
     expect(text()).toContain('Checking your decision'); expect(text()).toContain('being confirmed');

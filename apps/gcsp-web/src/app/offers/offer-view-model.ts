@@ -115,7 +115,10 @@ export function offerViewModel(offer: OfferProjection) {
     ? (Array.isArray(equipmentFact.value) ? equipmentFact.value : [equipmentFact.value]).map((value) => offerValue(value)) : [];
   const overview = ['body', 'fuel', 'boot', 'availableFrom'].filter((key) => facts[key]?.status === 'known')
     .map((key) => ({ label: offerFieldLabel(key), value: offerFactValue(facts[key]) }));
-  const remainingMinutes = Math.max(0, Math.floor((Date.parse(offer.expiresAt) - Date.parse(offer.serverNow)) / 60000));
+  const expiresAt = Date.parse(offer.expiresAt); const serverNow = Date.parse(offer.serverNow);
+  const remainingSeconds = Number.isFinite(expiresAt) && Number.isFinite(serverNow)
+    ? Math.max(0, Math.ceil((expiresAt - serverNow) / 1000)) : null;
+  const remainingMinutes = remainingSeconds === null ? null : Math.ceil(remainingSeconds / 60);
   const contribution = quote.terms.contribution;
   const comparison = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'].map((key) => {
     const current = offer.comparison.currentCar?.facts?.[key];
@@ -141,7 +144,10 @@ export function offerViewModel(offer: OfferProjection) {
     orderNumber: offer.selection?.orderNumber ?? quote.orderNumber,
     points: offerValue(quote.terms.points.value), allowance: quote.terms.allowanceInputs.allowance ? offerValue(quote.terms.allowanceInputs.allowance.value) : null,
     contribution: contribution ? `${new Intl.NumberFormat('en-GB', { style: 'currency', currency: contribution.currency }).format(contribution.amount)} ${contribution.period === 'one-off' ? 'one-off' : `a ${contribution.period}`}` : null,
-    deadline: offerDate(offer.expiresAt), remaining: `${Math.floor(remainingMinutes / 60)}h ${String(remainingMinutes % 60).padStart(2, '0')}m`,
+    deadline: offerDate(offer.expiresAt),
+    deadlineTime: Number.isFinite(expiresAt) ? new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' }).format(expiresAt) : null,
+    deadlineDate: Number.isFinite(expiresAt) ? new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London' }).format(expiresAt) : null,
+    remainingSeconds, remaining: remainingMinutes === null ? 'Time remaining unavailable' : `${Math.floor(remainingMinutes / 60)}h ${String(remainingMinutes % 60).padStart(2, '0')}m`,
     reasons: [...measuredBenefits, ...quote.decision.reasons.map(offerExplanation)], tradeOffs: [...measuredTradeOffs, ...quote.decision.tradeOffs.map(offerExplanation)],
     blockers: quote.decision.blockers.map(offerExplanation), unknowns: quote.decision.unknowns.map(offerExplanation),
     handoffBlocker: offer.handoff?.blocker ? blockerCopy[offer.handoff.blocker] : null,

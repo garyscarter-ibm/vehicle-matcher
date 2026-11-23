@@ -34,6 +34,18 @@ describe('offer read presentation projection', () => {
     expect(contradictory.remaining).toBe('0h 00m'); expect(contradictory.title).toBe('Your offer');
     expect(offerDate('2026-07-14T12:30:00.000Z')).toContain('13:30 BST');
   });
+  it.each([
+    ['2026-11-14T14:30:00.001Z', '2h 01m'],
+    ['2026-11-14T12:35:00.001Z', '0h 06m'],
+    ['2026-11-14T12:35:00.000Z', '0h 05m'],
+    ['2026-11-14T12:30:00.001Z', '0h 01m'],
+    ['2026-11-14T12:30:00.000Z', '0h 00m'],
+    ['2026-11-14T12:29:00.000Z', '0h 00m'],
+  ])('rounds authoritative remaining time up for deadline %s', (expiresAt, remaining) => {
+    const offer = { ...offerScreenFixture(), expiresAt };
+    expect(offerViewModel(offer).remaining).toBe(remaining);
+    expect(offer.state).toBe('pending');
+  });
   it.each(['decision-pending', 'release-pending'])('retains pending confirmation for %s', (reason) => {
     const vm = offerViewModel({ ...offerScreenFixture(), reason });
     expect(vm.title).toBe('Checking your decision'); expect(vm.message).toContain('being confirmed');

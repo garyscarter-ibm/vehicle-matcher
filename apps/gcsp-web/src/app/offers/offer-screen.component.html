@@ -29,7 +29,9 @@
             <p class="gcsp-note">{{ vm.allowance === null ? 'Allowance not supplied' : vm.allowance + ' points a month allowance' }}</p>
             <p class="gcsp-note">{{ vm.contribution === null ? 'Contribution not supplied' : vm.contribution }}</p>
           </div>
-          <div class="offer-deadline"><div><strong>Offer deadline</strong><p>{{ vm.deadline }}</p></div><div class="offer-clock"><strong>{{ vm.remaining }}</strong><span>at last check</span></div></div>
+          <div class="gcsp-decision-deadline"><div><strong>{{ vm.deadlineTime ? 'Held until ' + vm.deadlineTime : 'Deadline unavailable' }}</strong>
+            @if (vm.deadlineDate) { <p class="gcsp-decision-date">{{ vm.deadlineDate }}</p> }
+          </div><div class="gcsp-decision-clock"><p class="gcsp-countdown" aria-label="Time left to decide">{{ vm.remaining }}</p><p class="gcsp-decision-date">left to decide</p></div></div>
           @if (vm.handoffBlocker) { <p class="gcsp-note">{{ vm.handoffBlocker }}</p> }
           <gcsp-offer-decision />
         </div>
@@ -60,4 +62,5 @@
     @if (!vm.showVehicle) { <gcsp-offer-decision /> }
     <gcsp-offer-followup (offerOpened)="openNextOffer($event)" />
   }
+  <p class="gcsp-vh" role="status" aria-live="polite" aria-atomic="true" data-offer-announcement>{{ announcement() }}</p>
 </div>
