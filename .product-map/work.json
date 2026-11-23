@@ -11578,23 +11578,26 @@
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
       "native_updated_at": "2026-11-23T15:32:10.580-0600",
-      "observed_at": "2026-11-23T21:33:00Z",
-      "note": "Claim0b92ea54d/worktree ready. Exact test-only allocation; current image source/history and negative tests retained; no implementation yet.",
+      "observed_at": "2026-11-23T22:20:29Z",
+      "note": "Merged/pushed88778822a, exact one-line configured derivative expectation. Final owning4/4PASS, no skips; independent source/spec/security PASS and root exact owner/group45318/scratch/token/link audit PASS;11protected inputs equal current main. Covering Node/native acceptance pending.",
       "slices": [
         {
           "id": "display-expectation",
           "title": "Separate original source from configured display expectation",
-          "status": "not-started"
+          "status": "complete",
+          "evidence": "Final exact4test owning module passes, including raw original source/history, laterlabel/source/audit and all3negative cases unchanged. TestSHA42e222f65c252eb63d4e4e834994c9d4e171378a0f06587f213155b2ba782115; independent review and root cleanup PASS."
         },
         {
           "id": "regression",
           "title": "Four owning image tests and original negative boundaries",
-          "status": "not-started"
+          "status": "complete",
+          "evidence": "Final exact4test owning module passes, including raw original source/history, laterlabel/source/audit and all3negative cases unchanged. TestSHA42e222f65c252eb63d4e4e834994c9d4e171378a0f06587f213155b2ba782115; independent review and root cleanup PASS."
         },
         {
           "id": "integration",
           "title": "Integrated review and covering Node batch",
-          "status": "not-started"
+          "status": "in-progress",
+          "evidence": "Final test basisd0bab97d4 matches actual pre-merge base; merged/pushed88778822a. Full Node covering remains pending."
         }
       ]
     },
@@ -11686,8 +11689,8 @@
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:45:49.586Z",
       "native_updated_at": "2026-11-23T15:45:48.758-0600",
-      "observed_at": "2026-11-23T22:04:50.814262+00:00",
-      "note": "Built51ce8e293; original and refreshed70e11d85e owning/boundary runs both24/24PASS,0skip. Source identities unchanged, independent source/spec/security review PASS. Root audit/merge and covering Node pending.",
+      "observed_at": "2026-11-23T22:20:29Z",
+      "note": "Merged/pushedcd5a23c2c after final integrated24/24PASS. Independent source/spec/security and root8identity/2group/scratch/link/token audits PASS; final metadata-only refresh reused exact code/input/environment evidence. Covering Node/native acceptance pending.",
       "slices": [
         {
           "id": "fixture",
@@ -11705,7 +11708,7 @@
           "id": "integration",
           "title": "Review, merge and covering Node batch",
           "status": "in-progress",
-          "evidence": "Final integrated regression24/24PASS and Result91e66e632; root independent resource audit and merge/push pending, covering Node still required."
+          "evidence": "Final integrated24/24PASS; root audit PASS and merge/pushcd5a23c2c verified. Full Node covering remains pending."
         }
       ]
     },
@@ -11713,19 +11716,20 @@
       "id": "FUCQ-581",
       "title": "Java manual claims reject fresh run-clock quotes using wall time",
       "type": "Bug",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
-      "observed_at": "2026-11-23T22:04:50.814262+00:00",
-      "native_status_observed_at": "2026-11-23T22:01:02Z",
+      "observed_at": "2026-11-23T22:20:30Z",
+      "native_status_observed_at": "2026-11-23T22:15:30.859Z",
       "unsliced": false,
-      "note": "Native Bug/import DEV-2026-11-23-vesper-014 verified; exact internal clock allocation agreed against existing DemoClock topology. No claim or implementation yet. Four original ACs and canonical Java covering remain.",
+      "note": "Claim15cccc711/worktree014; native In Progress/assignment5points/start23Nov verified. Speedy lead is implementing the separately allocated existing run-clock authority repair; no test or implementation success yet. Original4AC and canonical Java covering remain.",
       "slices": [
         {
           "id": "claim-clock",
           "title": "Scoped persisted claim clock selection",
-          "status": "not-started"
+          "status": "in-progress",
+          "evidence": "Existing scoped RunClock contract and exact internal adapter allocation agreed; native claimed/lead observed running. No completed code/test claimed."
         },
         {
           "id": "ordering",
@@ -11746,6 +11750,19 @@
           "id": "integration",
           "title": "Final-source integration and canonical Java covering",
           "status": "not-started"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-23-vesper-014",
+      "native_updated_at": "2026-11-23T16:14:09.588-0600",
+      "workers": [
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "F581 delivery in progress",
+          "observed_at": "2026-11-23T22:20:29.810329+00:00",
+          "expires_at": "2026-11-23T22:50:29.810329+00:00",
+          "source": "Native collaboration.list_agents root observation; not inferred from commits"
         }
       ]
     }
