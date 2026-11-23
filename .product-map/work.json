@@ -11300,6 +11300,44 @@
           "title": "Merged registered bell navigation and covering batch"
         }
       ]
+    },
+    {
+      "id": "FUCQ-568",
+      "title": "Account Java-golden checks still require markup and image URLs replaced by...",
+      "type": "Bug",
+      "status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-568",
+      "branch": "dev/DEV-2026-11-23-vesper-002",
+      "observed_at": "2026-11-23T16:27:44Z",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "canonical-contract",
+          "status": "complete",
+          "title": "Canonical-markup-image-and-privacy-assertions",
+          "observed_at": "2026-11-23T16:27:43Z",
+          "evidence": "Complete final account14 passes with canonical roots/exact golden IDs/counts/titles/facts/images and source-backed history restrictions; only allocated spec changed; source35873d68c."
+        },
+        {
+          "id": "source-review",
+          "status": "complete",
+          "title": "Independent-source-and-security-review",
+          "observed_at": "2026-11-23T16:27:43Z",
+          "evidence": "Pluto independent source/security review passed; exact asset/base teardown and canonical privacy checks verified; production/goldens14blobs unchanged. Final specSHA2562360da2f146ff149b4406cec09457bf25f25956b50c2161c9d4c9ddf4bcbc02e."
+        },
+        {
+          "id": "focused-validation",
+          "status": "complete",
+          "title": "Complete-account14-supervised-validation",
+          "observed_at": "2026-11-23T16:27:44Z",
+          "evidence": "Final account14 passed trueexit0/issue null; exact one-spec coverage and before/after identity433d452e matched. Both owned scratchroots and dependencylink absent; processgroups/workers/reservation cleaned. Receipt .claude/test-runs/f555-resume-20261123/f568-toothless/summary.json."
+        },
+        {
+          "id": "covering-web",
+          "status": "not-started",
+          "title": "Shared-WEB-batch-covers-merge"
+        }
+      ]
     }
   ],
   "version": 1
