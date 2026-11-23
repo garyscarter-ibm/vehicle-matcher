@@ -288,4 +288,65 @@ class OrderingHandoffTest {
             assertEquals("acknowledged", OrderingFixture.status(backed.drive(f.scope("e1"), id)));
         }
     }
+    @Test
+    void unavailableBusinessTimeBeforeSubmitRefusesWithoutIntentOrProviderEffect() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            var input = f.body("e1", false, "clock-none");
+            for (boolean throwsClock : List.of(false, true)) {
+                OrderingService service = f.newService(f.pool(), f.provider, java.time.Duration.ZERO, context -> {
+                    if (throwsClock) throw new IllegalStateException("clock unavailable");
+                    return null;
+                });
+                assertEquals("ordering-policy-unavailable", assertInstanceOf(OrderingResult.Unavailable.class,
+                        service.submit(f.scope("e1"), input, f.cart)).code());
+                assertEquals(0, f.count("SELECT count(*) FROM selection_orders"));
+                assertEquals(0, f.count("SELECT count(*) FROM ordering_synthetic_receipts"));
+                assertEquals(0, f.cart.converts.get());
+            }
+        }
+    }
+
+    @Test
+    void anUnavailableOutcomeClockKeepsThePossibleEffectPendingAndRecoversWithTheSameKey() throws Exception {
+        try (OrderingFixture f = OrderingFixture.create()) {
+            var available = new java.util.concurrent.atomic.AtomicBoolean(true);
+            OrderingFixture.OrderingPort effect = new OrderingFixture.OrderingPort() {
+                public String mode() { return f.provider.mode(); }
+                public String provider() { return f.provider.provider(); }
+                public ProviderResponse reconcile(OrderingScope scope, ProviderRequest request) {
+                    return f.provider.reconcile(scope, request);
+                }
+                public ProviderResponse execute(OrderingScope scope, ProviderRequest request) {
+                    ProviderResponse response = f.provider.execute(scope, request);
+                    available.set(false);
+                    return response;
+                }
+            };
+            f.service = f.newService(f.pool(), effect, java.time.Duration.ZERO, context -> {
+                if (!available.get()) throw new IllegalStateException("clock disappeared after execute");
+                return OrderingFixture.NOW;
+            });
+            var input = f.body("e1", false, "clock-lost");
+            String id = assertInstanceOf(OrderingResult.Pending.class,
+                    f.service.submit(f.scope("e1"), input, f.cart)).operationId();
+            assertEquals(1, f.count("SELECT count(*) FROM ordering_synthetic_receipts"));
+            assertEquals(0, f.count("SELECT count(*) FROM outbox_events WHERE event_type = 'ordering.selection-acknowledged'"));
+            assertEquals("pending", f.text("SELECT state FROM pending_operations"));
+            long receipts = f.count("SELECT count(*) FROM command_receipts");
+            assertEquals("ordering-policy-unavailable", assertInstanceOf(OrderingResult.Unavailable.class,
+                    f.service.drive(f.scope("e1"), id)).code());
+            assertEquals(receipts, f.count("SELECT count(*) FROM command_receipts"));
+            available.set(true);
+            f.wall.set(OrderingFixture.NOW.plusSeconds(31));
+            assertEquals("acknowledged", OrderingFixture.status(f.service.reconcile(f.scope("e1"), id)));
+            assertEquals(1, f.provider.executes.get());
+            assertEquals(1, f.cart.converts.get());
+            assertEquals("2026-11-13T12:00:00.000Z", f.text("SELECT payload->>'occurredAt' FROM outbox_events "
+                    + "WHERE event_type = 'ordering.selection-acknowledged'"));
+            available.set(false);
+            assertTrue(assertInstanceOf(OrderingResult.Ok.class,
+                    f.service.submit(f.scope("e1"), input, f.cart)).replayed());
+        }
+    }
+
 }
