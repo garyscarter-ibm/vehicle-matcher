@@ -29,7 +29,8 @@ final class OfferPresentation {
         var pinned = record.projection();
         if (pinned == null || pinned.runId() == null || pinned.slotId() == null) return null;
         ObjectNode out = FollowupComparison.offer(view, pinned.runId(), pinned.clockVersion(),
-                "declined".equals(view.state()) ? pinned.decisionId() : null, pinned.quote(), pinned.orderNumber());
+                "declined".equals(view.state()) ? pinned.decisionId() : null, pinned.quote(), pinned.orderNumber(),
+                new CurrentCarComparison.Owner(p.environmentId(), pinned.runId(), record.employeeId(), pinned.slotId()));
         if (out == null) return null;
         OrderingScope scope = new OrderingScope(p.environmentId(), pinned.runId(), record.employeeId(),
                 pinned.slotId(), p.policyVersion());

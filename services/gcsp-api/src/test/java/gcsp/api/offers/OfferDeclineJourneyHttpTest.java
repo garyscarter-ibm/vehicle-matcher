@@ -163,6 +163,10 @@ class OfferDeclineJourneyHttpTest {
         assertEquals(briefs + 1, s.count("SELECT count(*) FROM briefs WHERE employee_id = ?", BRUNO));
 
         // A presenter tick re-evaluates Bruno against his saved brief: a second offer makes the follow-up ready.
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE employee_account_records SET record = "
+                + "jsonb_set(record, '{contracts,0,vehicle,points}', '900'::jsonb), version = version + 1 WHERE employee_id = ?")) {
+            ps.setString(1, BRUNO); assertEquals(1, ps.executeUpdate());
+        }
         assertEquals("completed", s.tick(presenter, "offer-journey-after-change").get("state").asText());
         JsonNode ready = body(get(bruno, fu + "?decisionId=" + decisionId).then().statusCode(200).extract().response())
                 .get("value");
@@ -178,6 +182,13 @@ class OfferDeclineJourneyHttpTest {
         assertEquals("body", cmp.get("requirements").get(0).get("key").asText());
         assertEquals("saloon", cmp.get("requirements").get(0).get("value").asText());
         assertEquals("known", cmp.get("requirements").get(0).get("nextFacts").get("body").get("status").asText());
+        JsonNode oldCurrent = cmp.path("previous").path("offer").path("comparison");
+        JsonNode newCurrent = cmp.path("next").path("offer").path("comparison");
+        assertEquals(1100, oldCurrent.path("currentCar").path("facts").path("points").path("value").asInt());
+        assertEquals(900, newCurrent.path("currentCar").path("facts").path("points").path("value").asInt());
+        assertFalse(oldCurrent.has("binding")); assertFalse(newCurrent.has("binding"));
+        assertEquals(oldCurrent, view(bruno, brunoOffer).path("comparison"));
+        assertEquals(newCurrent, view(bruno, secondOffer).path("comparison"));
         assertFalse(ready.toString().contains(paulaOffer));
         get(paula, fu + "?decisionId=" + decisionId).then().statusCode(403);
 
