@@ -1,4 +1,5 @@
-import { afterNextRender, Component, DestroyRef, ElementRef, Injector, computed, effect, inject, output, signal, viewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { afterNextRender, Component, DestroyRef, ElementRef, Injector, computed, effect, inject, input, output, signal, TemplateRef, viewChild } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
 import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
 import { ErrorSummaryComponent, FieldError } from '../kit/error-summary.component';
@@ -13,11 +14,13 @@ import { offerPresentationState } from './offer-view-model';
 let sequence = 0;
 @Component({
   selector: 'gcsp-offer-decision', standalone: true, host: { style: 'display: contents' },
-  imports: [ButtonDirective, CheckboxFieldComponent, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent, OptionListComponent, SideDrawerComponent],
+  imports: [NgTemplateOutlet, ButtonDirective, CheckboxFieldComponent, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent, OptionListComponent, SideDrawerComponent],
   templateUrl: './offer-decision.component.html', styleUrl: './offer-decision.component.css',
 })
 export class OfferDecisionComponent {
   readonly checkRequested = output<void>();
+  readonly inlineActions = input(true);
+  readonly actionsTemplate = viewChild<TemplateRef<unknown>>('actions');
   readonly store = inject(OfferInteractionStore);
   readonly state = this.store.state;
   readonly offer = this.store.offer;

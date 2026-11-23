@@ -1,13 +1,16 @@
 @if (offer(); as current) {
-  <div class="gcsp-offer-actions" data-offer-decision-actions>
-    @if (isPending() && !state().decision) {
-      <button gcspButton presentation="source" type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
-      <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
-    }
-    @if (!busy() && (!isPending() || state().decision)) { <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="check" (click)="checkCurrent()">Check current state</button> }
-  </div>
-  @if (isPending()) { <p class="gcsp-note" [id]="prefix + '-availability'">{{ decisionNote() }}</p> }
-  <p role="status" [attr.aria-live]="state().review ? 'off' : 'polite'" aria-atomic="true" [hidden]="!feedback()">{{ feedback() }}</p>
+  <ng-template #actions>
+    <div class="gcsp-offer-actions" data-offer-decision-actions>
+      @if (isPending() && !state().decision) {
+        <button gcspButton presentation="source" type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
+        <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
+      }
+      @if (!busy() && (!isPending() || state().decision)) { <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="check" (click)="checkCurrent()">Check current state</button> }
+    </div>
+    @if (isPending()) { <p class="gcsp-note" [id]="prefix + '-availability'">{{ decisionNote() }}</p> }
+    <p role="status" [attr.aria-live]="state().review ? 'off' : 'polite'" aria-atomic="true" [hidden]="!feedback()">{{ feedback() }}</p>
+  </ng-template>
+  @if (inlineActions()) { <ng-container [ngTemplateOutlet]="actions" /> }
   <gcsp-side-drawer context="Your vehicle offer" [title]="state().review === 'decline' ? 'Decline your offer' : 'Accept your offer'" [dismissible]="!busy()" (closed)="store.closeReview()">
     @if (state().review; as kind) {
       <div class="gcsp-offer-drawer-content" [attr.aria-busy]="busy()">

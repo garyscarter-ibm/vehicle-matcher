@@ -500,6 +500,34 @@ describe('native offer read screen', () => {
     fixture.destroy(); expect(reads[0]!.options.signal?.aborted).toBe(true); expect(reads[1]!.options.signal?.aborted).toBe(false);
     second.destroy(); expect(reads[1]!.options.signal?.aborted).toBe(true);
   });
+  it.each(['accept', 'decline'] as const)('opens one %s drawer outside the vehicle summary and returns to its actual inline opener', async kind => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(actionableOffer());
+    const host = fixture.nativeElement as HTMLElement;
+    const summary = host.querySelector<HTMLElement>('.gcsp-vehicle-summary')!;
+    const opener = summary.querySelector<HTMLButtonElement>(`[data-offer-action="${kind}"]`)!;
+    expect(opener.disabled).toBe(false);
+    expect(summary.querySelectorAll('[data-offer-decision-actions]')).toHaveLength(1);
+    expect(host.querySelectorAll('[data-offer-action="accept"], [data-offer-action="decline"]')).toHaveLength(2);
+    const availabilityId = opener.getAttribute('aria-describedby')!;
+    expect(summary.querySelector(`#${availabilityId}`)?.textContent).toBe('Review your details and declarations before accepting.');
+    expect(summary.querySelector('[role="status"]')).not.toBeNull();
+    opener.focus(); opener.click(); await settle();
+    const dialogs = host.querySelectorAll<HTMLElement>('.gcsp-side-drawer:not([hidden]) [role="dialog"]');
+    expect(dialogs).toHaveLength(1);
+    const dialog = dialogs[0];
+    expect(dialog.closest('.gcsp-vehicle-summary')).toBeNull();
+    expect(dialog.closest('gcsp-offer-decision')).not.toBeNull();
+    expect(host.querySelectorAll('gcsp-offer-decision')).toHaveLength(1);
+    expect(dialog.querySelector(`#${dialog.getAttribute('aria-labelledby')}`)?.textContent).toBe(kind === 'accept' ? 'Accept your offer' : 'Decline your offer');
+    expect(dialog.getAttribute('aria-modal')).toBe('true'); expect(dialog.closest('[inert]')).toBeNull();
+    expect(summary.closest('[inert]')).not.toBeNull();
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')!.click(); await settle();
+    expect(host.querySelector('.gcsp-side-drawer:not([hidden]) [role="dialog"]')).toBeNull();
+    expect(document.activeElement).toBe(opener); expect(summary.closest('[inert]')).toBeNull();
+    expect(host.querySelectorAll(`#${availabilityId}`)).toHaveLength(1);
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
   it('reviews server driver, contact, terms and return mileage before explicitly accepting', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(actionableOffer());
     fixture.nativeElement.querySelector('[data-offer-action="accept"]').click(); await settle();
