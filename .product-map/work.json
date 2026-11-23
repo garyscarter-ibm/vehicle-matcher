@@ -11338,6 +11338,44 @@
           "title": "Shared-WEB-batch-covers-merge"
         }
       ]
+    },
+    {
+      "id": "FUCQ-569",
+      "title": "Preferences Java-golden test omits router providers after saved Activity action",
+      "type": "Bug",
+      "status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-569",
+      "branch": "dev/DEV-2026-11-23-vesper-003",
+      "observed_at": "2026-11-23T16:37:38Z",
+      "slices": [
+        {
+          "id": "real-router",
+          "status": "complete",
+          "title": "Real-router-and-saved-Activity-action",
+          "observed_at": "2026-11-23T16:37:38Z",
+          "evidence": "Real provideRouter([]) and exact labelled saved Activity href; source9f230fc96. All prior request/golden/state assertions retained; complete6cases passed exit0."
+        },
+        {
+          "id": "source-review",
+          "status": "complete",
+          "title": "Independent-source-and-security-review",
+          "observed_at": "2026-11-23T16:37:38Z",
+          "evidence": "Pluto independent source/security review passed final44c681d63c6c26e05c7dd4e05126ac23a1d20024e1b3bbde422e3967aef35502. Whole spec/production real RouterLink/actual Angular provider reviewed; production/package/goldens16blobs unchanged."
+        },
+        {
+          "id": "focused-validation",
+          "status": "complete",
+          "title": "Complete-preferences-spec-with-runtime-errors-visible",
+          "observed_at": "2026-11-23T16:37:38Z",
+          "evidence": "Complete6cases passed trueexit0; JSON and default reporters,zero observed unhandled errors; before/after e85f9855 closure identical. Owned scratch/link absent;groups/workers/reservation clean. Retained f569-toothless/summary.json."
+        },
+        {
+          "id": "covering-web",
+          "status": "not-started",
+          "title": "Shared-WEB-batch-covers-merge"
+        }
+      ],
+      "unsliced": false
     }
   ],
   "version": 1
