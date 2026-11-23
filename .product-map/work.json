@@ -11239,6 +11239,51 @@
       "type": "Bug",
       "observed_at": "2026-11-23T14:42:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566"
+    },
+    {
+      "id": "FUCQ-567",
+      "title": "Java activity offer links point to a route the Angular app does not support",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-23T16:11:18Z",
+      "jira_observed_at": "2026-11-23T15:50:39.579953+00:00",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-567",
+      "branch": "dev/DEV-2026-11-23-vesper-001",
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "running",
+          "observed_at": "2026-11-23T16:11:18.260537+00:00",
+          "expires_at": "2026-11-23T16:41:18.260537+00:00",
+          "source": "native observed /root/speedy_gonzales"
+        }
+      ],
+      "slices": [
+        {
+          "id": "href",
+          "status": "complete",
+          "title": "Project the supported exact offer route",
+          "observed_at": "2026-11-23T16:11:18Z",
+          "evidence": "Lead reviewed full source and Angular route/consumers; final63 pass includes actual producer href, explicit encoded ID/run and active/expired; Pluto independent source/security PASS. AC3 retained separately."
+        },
+        {
+          "id": "validation",
+          "status": "complete",
+          "title": "Scoped nativePG/OIDC regression and independent review",
+          "observed_at": "2026-11-23T16:11:18Z",
+          "evidence": "63/63 focused nativePG/OIDC activity + required startup/wiring; source hashes match; meaningful RED5/2 expected failures. Lead + Pluto reviews PASS; cleanup receipts retained. Integration remains pending."
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merged registered bell navigation and covering batch"
+        }
+      ]
     }
   ],
   "version": 1
