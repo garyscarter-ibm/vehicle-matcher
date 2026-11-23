@@ -21,7 +21,8 @@ import { SideDrawerComponent } from '../kit/side-drawer.component';
 import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
 import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent], styleUrl: './gallery.component.css', template: `
+import { OptionListComponent } from '../kit/option-list.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -32,6 +33,11 @@ import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
     <div gcspCheckboxField controlId="gallery-disabled-declaration" label="Declaration unavailable" [disabled]="true" describedBy="gallery-declaration-disabled-reason"></div>
     <p class="gcsp-note" id="gallery-declaration-disabled-reason">This example is disabled until the record is supplied.</p>
     <p role="status">Example choices only. No changes have been saved.</p>
+  </section>
+  <section class="gcsp-panel"><h2>Source radio rows</h2>
+    <gcsp-option-list groupId="gallery-decline-reason" label="Example reason for declining" variant="rows" [options]="exampleReasons" [value]="selectedReason()" (valueChange)="selectedReason.set($event)" />
+    <p role="status">Example choice only. Nothing has been submitted.</p>
+    <gcsp-option-list groupId="gallery-decline-reason-disabled" label="Example unavailable reasons" variant="rows" [options]="exampleReasons" [value]="selectedReason()" [disabled]="true" />
   </section>
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
@@ -131,6 +137,12 @@ import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
   </section>
 ` })
 export class GalleryComponent {
+  readonly selectedReason = signal('gallery-size');
+  readonly exampleReasons = [
+    { value: 'gallery-size', label: 'The car is too large' },
+    { value: 'gallery-timing', label: 'The timing does not work' },
+    { value: 'gallery-unavailable', label: 'Another example reason', sub: 'Unavailable in this example', disabled: true },
+  ];
   readonly declarationChecked = signal(false);
   readonly importantChecked = signal(true);
   readonly mediaImages: readonly MediaGalleryImage[] = [
