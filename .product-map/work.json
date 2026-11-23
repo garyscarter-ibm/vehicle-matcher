@@ -10968,6 +10968,44 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-564",
+      "title": "Java account reads wall time instead of the presenter run clock",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "To Do",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-564",
+      "branch": "dev/DEV-2026-11-22-vesper-039",
+      "unsliced": false,
+      "observed_at": "2026-11-23T12:41:56Z",
+      "slices": [
+        {
+          "id": "clock-adapter",
+          "status": "complete",
+          "title": "Persisted account clock selection and failure semantics",
+          "observed_at": "2026-11-23T12:41:56Z",
+          "evidence": "Lazy persisted RunAccountClock returns actual scoped UTC milliseconds/version, refuses missing/retired/unreadable clocks; TEST fixed/nonpersistent system retained.38 focused tests + independent source/security review passed. Strict connected proof pending."
+        },
+        {
+          "id": "clock-regression",
+          "status": "complete",
+          "title": "Scoped unit and real OIDC PostgreSQL regression",
+          "observed_at": "2026-11-23T12:41:56Z",
+          "evidence": "38 selected tests include real PostgreSQL/OIDC exact account clock reset/advance/newrun/isolation and unavailable/recovery; remaining38 account/recommendation/presenter classes167passed. No failures/skips. Mandatory startup and strict frozen proof still pending."
+        },
+        {
+          "id": "integration-proof",
+          "status": "not-started",
+          "title": "Strict frozen Node Java account and offer proof"
+        },
+        {
+          "id": "review-handoff",
+          "status": "not-started",
+          "title": "Independent review and status reconciliation"
+        }
+      ]
     }
   ],
   "version": 1

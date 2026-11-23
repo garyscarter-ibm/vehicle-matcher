@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.quarkus.runtime.LaunchMode;
+import io.smallrye.config.SmallRyeConfigBuilder;
+import gcsp.api.clock.RunClock;
+import gcsp.api.clock.RunClockHolder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,5 +63,33 @@ class AccountSelectionTest {
         assertEquals(now, AccountSelection.clock(now, LaunchMode.TEST).now(null).now());
         assertThrows(IllegalStateException.class, () -> AccountSelection.clock("yesterday", LaunchMode.TEST));
         assertInstanceOf(SystemAccountClock.class, AccountSelection.clock(null, LaunchMode.NORMAL));
+    }
+
+    @Test
+    void persistedCompositionSelectsTheRunClockWithoutReadingItAtStartup() {
+        AccountSelection selection = new AccountSelection();
+        selection.config = new SmallRyeConfigBuilder().build();
+        selection.persistence = new gcsp.api.persistence.Persistence() {
+            @Override
+            public boolean active() { return true; }
+        };
+        selection.runClock = new RunClockHolder() {
+            @Override
+            public RunClock clock() { throw new AssertionError("Clock must be read only on an account request"); }
+        };
+        assertInstanceOf(RunAccountClock.class, selection.clock());
+    }
+
+    @Test
+    void persistedClockSelectionPreservesFixedTestClockPrecedenceAndRestrictions() {
+        RunClockHolder holder = new RunClockHolder();
+        String now = "2026-11-05T09:00:00.000Z";
+        assertEquals(now, AccountSelection.clock(now, LaunchMode.TEST, holder).now(null).now());
+        assertThrows(IllegalStateException.class, () -> AccountSelection.clock(now, LaunchMode.NORMAL, holder));
+        assertThrows(IllegalStateException.class, () -> AccountSelection.clock(now, LaunchMode.DEVELOPMENT, holder));
+        assertThrows(IllegalStateException.class, () -> AccountSelection.clock("yesterday", LaunchMode.TEST, holder));
+        assertInstanceOf(RunAccountClock.class, AccountSelection.clock(null, LaunchMode.NORMAL, holder));
+        assertInstanceOf(RunAccountClock.class, AccountSelection.clock(" ", LaunchMode.DEVELOPMENT, holder));
+        assertInstanceOf(SystemAccountClock.class, AccountSelection.clock(null, LaunchMode.NORMAL, null));
     }
 }
