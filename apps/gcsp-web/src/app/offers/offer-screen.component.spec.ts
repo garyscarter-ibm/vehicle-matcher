@@ -1,5 +1,6 @@
 import { ErrorHandler, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
@@ -29,7 +30,7 @@ describe('native offer read screen', () => {
     client['readDecisionReasons'].mockResolvedValue({ status: 'ok', value: { schemaVersion: 1, key: 'offer.declineReasons.v1', policyVersion: 'policy-v2',
       reasons: [{ code: 'body', label: 'Body style', attribute: 'body' }], provenance: { status: 'assumed', basis: 'fixture', source: 'fixture', sourceDate: '2026-11-14' } } });
     client['decide'].mockImplementation(async (input) => ({ status: 'ok', value: decisionReceipt(input) }));
-    await TestBed.configureTestingModule({ imports: [OfferScreenComponent], providers: [{ provide: AuthPort, useValue: { state: auth } }, { provide: OfferClient, useValue: client }] }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [OfferScreenComponent], providers: [provideRouter([]), { provide: AuthPort, useValue: { state: auth } }, { provide: OfferClient, useValue: client }] }).compileComponents();
     fixture = TestBed.createComponent(OfferScreenComponent);
   });
   afterEach(() => {
@@ -122,10 +123,30 @@ describe('native offer read screen', () => {
     const reason = fixture.nativeElement.querySelector('[role="dialog"] input[type="radio"]'); expect(reason.value).toBe('body');
     reason.click(); await settle(); fixture.nativeElement.querySelector('[role="dialog"] [data-offer-action="confirm"]').click(); await settle();
     expect(text()).toContain('Offer declined'); expect(text()).toContain('One change to your preferences');
+    expect(fixture.nativeElement.querySelector('[data-followup-link="activity"]')).toBeNull();
     expect(client['confirmFollowup']).not.toHaveBeenCalled();
     fixture.nativeElement.querySelector('gcsp-offer-followup input[value="suv"]').click(); await settle();
     fixture.nativeElement.querySelector('gcsp-offer-followup button[type="submit"]').click(); await settle();
     expect(client['confirmFollowup']).toHaveBeenCalledTimes(1); expect(text()).toContain('Change saved');
+    expect((fixture.nativeElement as HTMLElement).querySelector<HTMLAnchorElement>('[data-followup-link="activity"]')?.getAttribute('href')).toBe('/activity');
+  });
+  it.each(['change-saved', 'waiting', 'no-match'] as const)('restores the buddy activity exit for the confirmed %s outcome', async (state) => {
+    const saved = savedFollowup();
+    const value = state === 'change-saved' ? saved : state === 'waiting'
+      ? { schemaVersion: 1, state, decisionId: saved.decisionId, savedChange: saved }
+      : { schemaVersion: 1, state, decisionId: saved.decisionId, savedChange: saved, evaluation: { evaluatedAt: '2026-11-04T09:00:00Z', carsChecked: 2, suitable: 0 } };
+    client['readFollowup'].mockResolvedValue({ status: 'ok', value });
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('declined'));
+    const link = (fixture.nativeElement as HTMLElement).querySelector<HTMLAnchorElement>('a[data-followup-link="activity"]');
+    expect(link?.textContent?.trim()).toBe('See buddy activity'); expect(link?.getAttribute('href')).toBe('/activity');
+    expect(link?.hasAttribute('gcspButton')).toBe(true);
+    expect(client['decide']).not.toHaveBeenCalled(); expect(client['confirmFollowup']).not.toHaveBeenCalled();
+  });
+  it.each(['unavailable', 'pending', 'stale-version', 'forbidden'] as const)('does not promote the %s follow-up failure to a confirmed activity exit', async (status) => {
+    client['readFollowup'].mockResolvedValue({ status, savedChange: savedFollowup() });
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('declined'));
+    expect(fixture.nativeElement.querySelector('[data-followup-link="activity"]')).toBeNull();
+    expect(client['confirmFollowup']).not.toHaveBeenCalled();
   });
   it.each(['pending', 'unavailable', 'conflict', 'stale-version', 'forbidden'] as const)('offers a read, with safe %s decision feedback and no automatic replay', async (status) => {
     client['decide'].mockResolvedValue({ status, reason: 'PRIVATE provider details' });
@@ -161,6 +182,7 @@ describe('native offer read screen', () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(previous);
     expect(fixture.nativeElement.querySelectorAll('gcsp-offer-followup gcsp-media-gallery')).toHaveLength(2);
     expect(text()).toContain('Your next car offer'); expect(text()).toContain('importance 70%'); expect(text()).toContain('No new match score is calculated');
+    expect(fixture.nativeElement.querySelector('[data-followup-link="activity"]')).toBeNull();
     expect(text()).toContain('At least 5 (seats)'); expect(text()).toContain('Includes Heated seats'); expect(text()).not.toContain('gte ');
     expect(text()).not.toContain('[object Object]');
     const opened = vi.fn(); fixture.componentInstance.offerOpened.subscribe(opened);

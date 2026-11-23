@@ -61,6 +61,7 @@
       }
     }
     @if (state().phase === 'uncertain') { <button gcspButton type="button" (click)="confirm()">Retry the same change</button> }
+    @if (showActivity()) { <a gcspButton routerLink="/activity" data-followup-link="activity">See buddy activity</a> }
     <button gcspButton type="button" variant="ghost" [disabled]="busy()" (click)="store.refreshFollowup()">Check next-offer status</button>
   </section>
 }

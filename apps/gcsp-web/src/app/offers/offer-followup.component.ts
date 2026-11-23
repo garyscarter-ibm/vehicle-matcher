@@ -1,4 +1,5 @@
 import { afterNextRender, Component, computed, DestroyRef, ElementRef, inject, Injector, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ButtonDirective } from '../kit/button.directive';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
@@ -10,7 +11,7 @@ import { OfferFollowupRequirement, OfferFollowupRequirementFact, OfferJsonValue 
 let sequence = 0;
 @Component({
   selector: 'gcsp-offer-followup', standalone: true,
-  imports: [ButtonDirective, LabelledFieldComponent, MediaGalleryComponent, VehicleDetailsComponent],
+  imports: [RouterLink, ButtonDirective, LabelledFieldComponent, MediaGalleryComponent, VehicleDetailsComponent],
   templateUrl: './offer-followup.component.html', styleUrl: './offer-followup.component.css',
 })
 export class OfferFollowupComponent {
@@ -29,6 +30,11 @@ export class OfferFollowupComponent {
   });
   readonly prefix = `offer-followup-${++sequence}`;
   readonly busy = computed(() => ['loading', 'saving'].includes(this.state().phase));
+  readonly showActivity = computed(() => {
+    const { phase, value } = this.state();
+    if (phase !== 'ready' || !value) return false;
+    return value.state === 'change-saved' || ((value.state === 'waiting' || value.state === 'no-match') && !!value.savedChange);
+  });
   readonly headline = computed(() => {
     const state = this.state();
     if (state.phase === 'loading') return 'Checking your next offer';

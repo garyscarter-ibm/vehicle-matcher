@@ -10732,7 +10732,7 @@
       "branch": "dev/DEV-2026-11-22-vesper-028",
       "evidence": "Native claim remains In Progress at21points; all8 original ACs unchanged/unticked. Source checkpoints a9fdc1cee and90999d25e published and exact remote verified. Independent stage-only review passed; decision review/integration/source-final/connected/human parity remain separate. Next parent allocation: canonical Tabs/compatible FactList only.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T02:08:30Z",
+      "observed_at": "2026-11-23T02:23:57Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10764,10 +10764,10 @@
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
         {
-          "evidence": "Original Documents/error/radio/checkbox/saved Activity criteria unchanged. Canonical checkbox, single-select rows and ErrorSummary source prerequisites are available; actual drawer/follow-up composition remains unstarted. No producer/store/client/API change.",
+          "evidence": "OriginalAC7 saved Activity exit restored only after confirmed change-saved/waiting/no-match; question/comparison and failed/uncertain outcomes remain excluded.49OfferScreen+35interaction-store cases, boundaries/inline4,ratchet124. Source Button integration and Documents/error/control drawer composition remain open; no pair or acceptance.",
           "id": "decision-followup",
-          "observed_at": "2026-11-23T02:08:30.749169+00:00",
-          "status": "not-started",
+          "observed_at": "2026-11-23T02:23:57.792657+00:00",
+          "status": "in-progress",
           "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
         },
         {
@@ -10817,14 +10817,14 @@
         {
           "name": "usget-vesper launcher",
           "harness": "codex",
-          "role": "dispatcher carrying source controls implementation",
-          "observed_at": "2026-11-23T02:08:30.749169+00:00",
-          "expires_at": "2026-11-23T02:38:30.749169+00:00",
+          "role": "launcher carrying F555 original view implementation",
+          "observed_at": "2026-11-23T02:23:57.792657+00:00",
+          "expires_at": "2026-11-23T02:53:57.792657+00:00",
           "source": "Observed direct work after repeated child422, AGENTS6November; runtime pair not independently exposed, no model/provider/key change.",
-          "status": "active; validated ErrorSummary source publication"
+          "status": "active; validated saved follow-up Activity source checkpoint"
         }
       ],
-      "note": "All8originalAC open. Shared source controls include checkbox3f4fb954e, rows50db313cd and compatible ErrorSummary now validated on133scoped Angular cases, boundaries4/config and ratchet124. Source-only host adapter preserves default callers. Actual offer/decision composition, sibling integration/build/browser/live1280pair remain open; no human acceptance."
+      "note": "All8originalAC open. Canonical ErrorSummary source is published atceef28d01. OriginalAC7 saved follow-up Activity exit now source-validated on49OfferScreen+35interaction-store cases, boundaries/inline4 and ratchet124. Actual drawer/offer composition, supported source CSS/assets/Button integration, build/browser/live1280pair remain open."
     }
   ],
   "version": 1
