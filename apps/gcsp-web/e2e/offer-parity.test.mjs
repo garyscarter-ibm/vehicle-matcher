@@ -142,7 +142,7 @@ async function surface(page) {
           detail: text(row.querySelector('.gcsp-highlight-detail')),
         })), empty: text(group.querySelector('.gcsp-highlight-empty')),
       })),
-      columns: [...(table?.querySelectorAll('thead th') ?? [])].map(text),
+      columns: [...(table?.querySelectorAll('thead th') ?? [])].map((th) => th.innerText.replace(/\s+/g, ' ').trim()),
       rows: [...(table?.querySelectorAll('tbody tr') ?? [])].map((row) => ({
         cells: [...row.children].map(text), winners: [...row.children].map((cell) => cell.classList.contains('is-winner')),
       })),
