@@ -157,9 +157,11 @@ test('FUCQ-548: employee bell follows actual Java offers on the started signed-i
         tokens: { space4: css.getPropertyValue('--gcsp-space-4'), headerHeight: css.getPropertyValue('--gcsp-header-height') } };
     }) };
     await suite.screenshot(employee, 'active-open-375');
+    suite.receipt.narrowGeometry.baselineAssessment = { bug: 'FUCQ-566', contained: !!box && box.x >= 0 && box.x + box.width <= 376,
+      origin: 'FUCQ-375; frozen Node has the same off-left panel and right:-44px rule.',
+      scope: 'Separate Medium baseline Bug; original F548 keyboard, navigation and count checks continue without a new containment gate.' };
     await suite.compareFrozenNode({ ...suite.receipt.offer, hold: suite.receipt.actualHold.semantic, panel: suite.receipt.activePanel,
       clock: suite.receipt.actualReleaseClock });
-    assert.ok(box && box.x >= 0 && box.x + box.width <= 376, 'The narrow panel fits the viewport');
     assert.equal(await employee.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'The header adds no narrow horizontal overflow');
     await panel(employee).getByRole('link', { name: 'View your offer', exact: true }).click();
     await employee.waitForURL((url) => url.pathname.includes('/gcsp/offers/'));

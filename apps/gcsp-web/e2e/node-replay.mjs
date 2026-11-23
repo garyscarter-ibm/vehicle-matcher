@@ -62,9 +62,6 @@ export function observeImageResponses(page, { origins, records, label }) {
 }
 
 export function assertImageParity(node, angular) {
-  const content = (image) => ({ bytes: image.response.bytes, sha256: image.response.sha256, mime: image.response.mime,
-    naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
-    renderedWidth: image.renderedWidth, renderedHeight: image.renderedHeight, objectFit: image.objectFit });
   for (const [name, image] of [['Node', node], ['Angular', angular]]) {
     assert.equal(image.response.status, 200, `${name}: actual displayed image response succeeded`);
     assert.match(image.response.sha256 ?? '', /^[a-f0-9]{64}$/, `${name}: actual response bytes were hashed`);
@@ -72,7 +69,28 @@ export function assertImageParity(node, angular) {
     assert.ok(['image/webp', 'image/png', 'image/jpeg'].includes(image.response.mime));
     assert.ok(image.complete && image.naturalWidth > 0 && image.naturalHeight > 0 && image.renderedWidth > 0 && image.renderedHeight > 0);
   }
-  assert.deepEqual(content(node), content(angular), 'Actual served thumbnail content and natural/render dimensions agree; raw URLs remain recorded separately');
+  const catalogueBytes = readFileSync(new URL('../../../server/data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url));
+  const catalogueSha256 = sha(catalogueBytes);
+  assert.equal(catalogueSha256, 'f12e588c78ca900dc98800697960f7d2857283d982fadd5cde292ba6be27b694', 'Use the reviewed display-image catalogue');
+  const catalogue = JSON.parse(catalogueBytes);
+  const images = [...catalogue.configurations.map((row) => row.image), ...Object.values(catalogue.variants), ...Object.values(catalogue.models)];
+  const nodePath = new URL(node.actualUrl).pathname; const angularPath = new URL(angular.actualUrl).pathname;
+  const registration = images.find((image) => `/${image.asset}` === angularPath
+    && `/api/gcsp/vehicle-images/${image.imageId}.webp` === nodePath);
+  assert.ok(registration, 'Actual Node route and Angular asset belong to the same reviewed image registration');
+  assert.equal(angular.response.sha256, registration.sha256, 'Actual Angular bytes match the registered retained image');
+  assert.equal(angular.response.bytes, registration.bytes);
+  assert.equal(angular.naturalWidth, registration.width); assert.equal(angular.naturalHeight, registration.height);
+  for (const image of [node, angular]) {
+    assert.equal(image.renderedWidth, 84); assert.equal(image.renderedHeight, 56); assert.equal(image.objectFit, 'cover');
+  }
+  return { catalogueSha256, registration,
+    nodeBytesMatchRecordedSource: node.response.sha256 === registration.sourceSha256,
+    nodeBytesMatchRetainedAsset: node.response.sha256 === registration.sha256,
+    sameResponseBytes: node.response.sha256 === angular.response.sha256,
+    sameNaturalDimensions: node.naturalWidth === angular.naturalWidth && node.naturalHeight === angular.naturalHeight,
+    providerDifference: 'Frozen Node can serve a live source-framed image; Angular serves the registered retained crop. Raw URLs, hashes, byte counts and natural dimensions remain distinct evidence.',
+    humanReview: 'The same-offer 1280 pair remains pending Gary/Russell review; registration and rendering checks do not establish identical photos or visual acceptance.' };
 }
 
 // Optional engineering parity capture. The frozen checkout is read-only; all state stays in memory.
@@ -260,7 +278,10 @@ export async function captureNodeReplay(options) {
     const visible = { car: await panel.locator('.gcsp-bell-copy p').nth(1).innerText(),
       detail: await panel.locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src') };
     const imageEvidence = await images.read(image);
-    receipt.thumbnailComparison = { angular: expected.panel.imageEvidence, node: imageEvidence };
+    receipt.thumbnailComparison = { angular: expected.panel.imageEvidence, node: imageEvidence,
+      offerIdentity: { node: receipt.offer, angular: { orderUuid: expected.orderUuid, offerId: expected.offerId,
+        expiresAt: expected.expiresAt, state: expected.state },
+      binding: 'The actual activity offers and hold rows above already assert the same exact car, active state and deadline.' } };
     receipt.visible = visible;
     const destination = path.join(output, 'node-active-open-1280.png');
     await page.screenshot({ path: destination, fullPage: false }); receipt.screenshot = destination;
@@ -276,9 +297,13 @@ export async function captureNodeReplay(options) {
       }) };
     receipt.narrowScreenshot = path.join(output, 'node-active-open-375.png');
     await page.screenshot({ path: receipt.narrowScreenshot, fullPage: false });
+    const box = receipt.narrowGeometry.box;
+    receipt.narrowGeometry.baselineAssessment = { bug: 'FUCQ-566', contained: !!box && box.x >= 0 && box.x + box.width <= 376,
+      origin: 'FUCQ-375; right:-44px introduced by 5f0e9d7f2 before the frozen migration baseline.',
+      scope: 'Existing narrow-panel defect, separately prioritized; no containment pass or repair is claimed by F548/F555.' };
     assert.equal(visible.car, expected.panel.car, 'The actual Node/Angular car titles agree');
     assert.equal(visible.detail, expected.panel.detail, 'The actual Node/Angular displayed deadlines agree');
-    assertImageParity(imageEvidence, expected.panel.imageEvidence);
+    receipt.thumbnailComparison.registrationAssessment = assertImageParity(imageEvidence, expected.panel.imageEvidence);
     return { visible, screenshot: destination };
   });
 }

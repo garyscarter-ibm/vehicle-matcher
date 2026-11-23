@@ -340,8 +340,20 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     assert.equal(await focused(group.locator('[role="radio"][tabindex="0"]')), true);
     const reasons = good(await suite.call(employee, 'GET', `${offerPath(state.offer.offerRef.offerId)}/decision-reasons`), 'Actual decline registry');
     const body = reasons.reasons.find((reason) => reason.attribute === 'body'); assert.ok(body, 'A registered body reason supports the unchanged Main follow-up');
-    const radio = group.getByRole('radio', { name: body.label, exact: true }); await radio.focus(); await employee.keyboard.press('Space');
+    const radio = group.getByRole('radio', { name: body.label, exact: true });
+    try {
+      await radio.focus(); await employee.keyboard.press('Space');
+      await until(async () => await radio.getAttribute('aria-checked') === 'true', 'Actual keyboard-selected decline reason renders');
+    } finally {
+      suite.receipt.declineControls = { selected: await radio.evaluate((node) => ({ value: node.value, checked: node.getAttribute('aria-checked'),
+        disabled: node.disabled, tabIndex: node.tabIndex, focused: node === document.activeElement })),
+        group: await group.evaluate((node) => ({ disabled: node.getAttribute('aria-disabled'), invalid: node.getAttribute('aria-invalid'),
+          radios: [...node.querySelectorAll('[role="radio"]')].map((item) => ({ value: item.value, checked: item.getAttribute('aria-checked'), disabled: item.disabled })) })),
+        errorSummaryVisible: await summary.isVisible(), decisionPosts: decisions(suite).length };
+    }
     assert.equal(await radio.getAttribute('aria-checked'), 'true');
+    assert.equal(await focused(radio), true, 'Native Space selection keeps focus on the chosen reason');
+    assert.equal(decisions(suite).length, 0, 'Reason selection never submits a decision');
     await suite.screenshot(employee, 'decline-radio-1280');
     await dialog.getByRole('button', { name: 'Confirm decline', exact: true }).click();
     await employee.getByRole('heading', { name: 'Offer declined', exact: true }).waitFor();
@@ -354,11 +366,22 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     const currentAnswers = Array.isArray(question.question.currentValue) ? question.question.currentValue : [question.question.currentValue];
     const option = question.question.control.options.find((item) => currentAnswers.length !== 1 || item.value !== currentAnswers[0]); assert.ok(option);
     const followup = employee.locator('.followup');
-    await followup.getByRole('radio', { name: option.label, exact: true }).check();
     const before = suite.receipt.requests.filter((row) => row.method === 'POST' && row.path === '/offer-followup/confirm').length;
+    const answer = followup.getByRole('radio', { name: option.label, exact: true });
+    const confirm = followup.getByRole('button', { name: 'Confirm this change', exact: true });
+    try {
+      await answer.check();
+      await until(async () => await answer.isChecked() && await confirm.isEnabled(), 'Actual follow-up answer and explicit confirmation render ready');
+    } finally {
+      suite.receipt.followupControls = { selected: await answer.evaluate((node) => ({ value: node.value, checked: node.checked,
+        disabled: node.disabled, focused: node === document.activeElement })), confirmEnabled: await confirm.isEnabled(),
+        confirmPosts: suite.receipt.requests.filter((row) => row.method === 'POST' && row.path === '/offer-followup/confirm').length };
+    }
+    assert.equal(await answer.isChecked(), true); assert.equal(await confirm.isEnabled(), true);
+    assert.equal(suite.receipt.followupControls.confirmPosts, before, 'Choosing a follow-up answer never saves it');
     const confirmResponse = employee.waitForResponse((response) => response.request().method() === 'POST'
       && new URL(response.url()).pathname.endsWith('/offer-followup/confirm'));
-    await followup.getByRole('button', { name: 'Confirm this change', exact: true }).click();
+    await confirm.click();
     const confirmed = await confirmResponse;
     const confirmedBody = await confirmed.json();
     suite.receipt.followupConfirm = { status: confirmed.status(), request: confirmed.request().postDataJSON(), response: confirmedBody };
