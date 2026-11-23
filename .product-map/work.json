@@ -11499,7 +11499,7 @@
       "branch": "dev/DEV-2026-11-23-vesper-005",
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
-      "note": "Published reader repair a78fed861 refreshed to f856daa69 with mergedF5816818b8d76; retained Speedy now reassesses combined actual mixed-role/lifecycle composition. Prior378case scope and source review retained; final integration/canonical covering pending.",
+      "note": "Merged/pushed76f095298 after combined8/8 actual OIDC/nativePG checks and independent final PASS69a951cf. Four original lifecycle clock failures are resolved by F581; prior focused378case history retained. AC4 final-source canonical Java/connected covering remains; first CI attempt executed0tests after wrapper distribution download failure.",
       "slices": [
         {
           "id": "regression",
@@ -11518,30 +11518,21 @@
         {
           "id": "callers-review",
           "title": "Affected packages, boundaries and independent review",
-          "status": "in-progress",
-          "evidence": "All378selected cases/65classes completed:374pass and four pre-reader quote-expired failures. Independent reviewer PASS; final affected composition waits on separate F581. Exact reconciliation f572-final-scoped-reconciliation.json."
+          "status": "complete",
+          "evidence": "Original reader review and focused378case history retained; combined mixed4/4 plus four whole lifecyclejourneys4/4 pass on exact1385inputs. Final independent source/spec/security PASS69a951cf.",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
         },
         {
           "id": "integration",
           "title": "Useful readbacks and final covering Java evidence",
           "status": "in-progress",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "evidence": "F581 clock dependency merged; actual combined-source reassessment running, no new pass inferred."
+          "observed_at": "2026-11-23T23:01:31.499197+00:00",
+          "evidence": "Merged76f095298; root verified1385 unchanged inputs after metadata-only refresh and exact resource cleanup. Canonical Java/connected covering pending; CI first attempt ran0tests."
         }
       ],
-      "observed_at": "2026-11-23T22:39:28Z",
+      "observed_at": "2026-11-23T23:01:32Z",
       "native_updated_at": "2026-11-23T15:32:08.256-0600",
-      "workers": [
-        {
-          "name": "Speedy Gonzales",
-          "harness": "codex",
-          "role": "story-lead",
-          "status": "F572 integrated focused reassessment",
-          "observed_at": "2026-11-23T22:39:28.214309+00:00",
-          "expires_at": "2026-11-23T23:09:28.214309+00:00",
-          "source": "Native collaboration.list_agents observed lead running after retained F572 followup; not inferred from commits"
-        }
-      ]
+      "workers": []
     },
     {
       "id": "FUCQ-573",
@@ -11733,10 +11724,10 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
-      "observed_at": "2026-11-23T22:39:28Z",
+      "observed_at": "2026-11-23T23:01:32Z",
       "native_status_observed_at": "2026-11-23T22:15:30.859Z",
       "unsliced": false,
-      "note": "Merged/pushed6818b8d76: scoped418/418PASS across75classes, real signed-OIDC/nativePG fresh quote/claim/order and four lifecycle failures repaired. Independent Pluto source/spec/security PASS; exact cleanup audited. AC4 final-source canonical Java/connected integration pending; native remains In Progress.",
+      "note": "Merged6818b8d76;418/418focusedPASS and independent review retained. F572 combined composition is merged76f095298. OriginalAC4 canonical Java/connected covering remains; first CI attempt atb3b742f9 ran0tests after Maven-wrapper download failure.",
       "slices": [
         {
           "id": "claim-clock",
@@ -11787,6 +11778,141 @@
           "source": "Native collaboration.list_agents root observation; not inferred from commits"
         }
       ]
+    },
+    {
+      "id": "FUCQ-576",
+      "title": "Reconcile six retained comparison and learning goldens with an explicit policy pin",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-576",
+      "branch": "dev/DEV-2026-11-23-vesper-009",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T23:01:31.499197+00:00",
+      "note": "Native adoption In Progress/assignment/points/start23Nov verified; Hugo leads coherent shared-file fixture increment. Source work underway; no runtime or acceptance claim. Original ACs and pending37legacy-case decision preserved.",
+      "slices": [
+        {
+          "id": "pin-goldens",
+          "title": "Six current-pin fixtures and explained field changes",
+          "status": "in-progress",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "integration-validation",
+          "title": "Five owning modules on final shared identity",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "independent-review",
+          "title": "Independent source, spec and security review",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Hugo",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "F576/F577/F578 coherent fixture delivery",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00",
+          "expires_at": "2026-11-23T23:31:31.499197+00:00",
+          "source": "Native collaboration.list_agents root observation; Bugs Bunny, Mulan and Daffy also observed, not inferred from commits"
+        }
+      ],
+      "observed_at": "2026-11-23T23:01:31Z"
+    },
+    {
+      "id": "FUCQ-577",
+      "title": "Supply explicit mileage and policy to two retained Buddy handoff test callers",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-577",
+      "branch": "dev/DEV-2026-11-23-vesper-009",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T23:01:31.499197+00:00",
+      "note": "Native adoption In Progress/assignment/points/start23Nov verified; Hugo leads coherent shared-file fixture increment. Source work underway; no runtime or acceptance claim. Original ACs and pending37legacy-case decision preserved.",
+      "slices": [
+        {
+          "id": "handoff-inputs",
+          "title": "Explicit entered mileage and scoped policy in both callers",
+          "status": "in-progress",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "integration-validation",
+          "title": "Shared callers and actual converter refusal coverage",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "independent-review",
+          "title": "Independent source, spec and security review",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Hugo",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "F576/F577/F578 coherent fixture delivery",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00",
+          "expires_at": "2026-11-23T23:31:31.499197+00:00",
+          "source": "Native collaboration.list_agents root observation; Bugs Bunny, Mulan and Daffy also observed, not inferred from commits"
+        }
+      ],
+      "observed_at": "2026-11-23T23:01:31Z"
+    },
+    {
+      "id": "FUCQ-578",
+      "title": "Keep comparison read-only policy coverage compatible with immutable read scopes",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-578",
+      "branch": "dev/DEV-2026-11-23-vesper-009",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T23:01:31.499197+00:00",
+      "note": "Native adoption In Progress/assignment/points/start23Nov verified; Hugo leads coherent shared-file fixture increment. Source work underway; no runtime or acceptance claim. Original ACs and pending37legacy-case decision preserved.",
+      "slices": [
+        {
+          "id": "read-scope-spy",
+          "title": "Immutable scoped callback with actual reads and mutation refusal",
+          "status": "in-progress",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "integration-validation",
+          "title": "Final shared comparison-measures module",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        },
+        {
+          "id": "independent-review",
+          "title": "Independent source, spec and security review",
+          "status": "not-started",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00"
+        }
+      ],
+      "workers": [
+        {
+          "name": "Hugo",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "F576/F577/F578 coherent fixture delivery",
+          "observed_at": "2026-11-23T23:01:31.499197+00:00",
+          "expires_at": "2026-11-23T23:31:31.499197+00:00",
+          "source": "Native collaboration.list_agents root observation; Bugs Bunny, Mulan and Daffy also observed, not inferred from commits"
+        }
+      ],
+      "observed_at": "2026-11-23T23:01:32Z"
     }
   ],
   "version": 1
