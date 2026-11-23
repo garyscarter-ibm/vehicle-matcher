@@ -647,6 +647,7 @@ jobs:
 
               child_env = os.environ.copy()
               child_env.update({
+                  "MVNW_VERBOSE": "true",
                   "TMPDIR": str(scratch / "tmp"),
                   "TMP": str(scratch / "tmp"),
                   "TEMP": str(scratch / "tmp"),
