@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { offerDate, offerExplanation, offerFailureView, offerValue, offerViewModel } from './offer-view-model';
 import { offerScreenFixture, screenFact } from './offer-screen.fixture';
+import { isOfferProjection } from './offer.validation';
 
 describe('offer read presentation projection', () => {
   it('retains supplied exact identity, every fact, equipment and pinned terms without mutation', () => {
@@ -53,7 +54,7 @@ describe('offer read presentation projection', () => {
   it('retains current-car partial and unavailable unknowns without deriving winners', () => {
     const offer = offerScreenFixture(); const vm = offerViewModel(offer);
     expect(vm.comparison).toContainEqual({ label: 'Boot', current: '440 litres', offered: '410 litres' });
-    expect(vm.comparison).toContainEqual({ label: 'Fuel', current: 'Unknown', offered: 'Plug-in hybrid' });
+    expect(vm.comparison).toContainEqual({ label: 'Fuel', current: 'Unknown', offered: 'Plug in hybrid' });
     expect(vm.reasons).toContainEqual({ title: '300 fewer points', details: ['Every month, compared with your current car'] });
     expect(vm.tradeOffs).toContainEqual({ title: '30 litres less', details: ['Boot space compared with your current car'] });
     expect(vm.currentName).toBe('BMW 320i M Sport Touring, 320i Automatic');
@@ -69,10 +70,11 @@ describe('offer read presentation projection', () => {
       ], tradeoffs: [
         { number: '30', title: 'litres less', detail: 'Boot space compared with your current car' },
         { title: 'Less sporty than you prefer.' },
+        { title: 'Touring, not the estate you prefer.' },
       ],
     });
   });
-  it('omits source coded checks, measured-field duplicates and explanations without explicit text', () => {
+  it('normalizes source reason sentences while omitting coded checks and measured-field duplicates', () => {
     const offer = offerScreenFixture();
     const vm = offerViewModel({ ...offer, quote: { ...offer.quote, decision: { ...offer.quote.decision,
       reasons: [{ code: 'driver-eligible', text: 'Driver checked' }, { code: 'essential-met', text: 'Seats checked' },
@@ -80,7 +82,8 @@ describe('offer read presentation projection', () => {
       tradeOffs: [{ field: 'boot', text: 'Repeated boot difference' }, 'Explicit tradeoff'],
     } } });
     expect(vm).toMatchObject({ benefits: [
-      { number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, { title: 'Explicit benefit' },
+      { number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' },
+      { title: 'This car differs from your body style preference.' }, { title: 'Explicit benefit' },
     ], tradeoffs: [
       { number: '30', title: 'litres less', detail: 'Boot space compared with your current car' }, { title: 'Explicit tradeoff' },
     ] });
@@ -93,13 +96,57 @@ describe('offer read presentation projection', () => {
     expect(offerViewModel({ ...offer, comparison: { ...offer.comparison, currentCar: null, comparisonAvailable: false } }))
       .toMatchObject({ hasCurrentCar: false, pointsDifference: null, benefits: [], tradeoffs: [], comparisonNote: 'Current-car details not supplied. Equipment is unknown.' });
   });
-  it('uses the source overview priority, known-value fallback and four-fact limit', () => {
+  it('uses the overview facts actually projected by the live Node card adapter', () => {
     const offer = offerScreenFixture();
-    expect(offerViewModel({ ...offer, quote: { ...offer.quote, facts: { ...offer.quote.facts, facts: { ...offer.quote.facts.facts,
-      availableFrom: screenFact(null), collectionFrom: screenFact('Munich'),
-    } } } }).overview).toEqual([
-      { label: 'Body style', value: 'Touring' }, { label: 'Fuel', value: 'Plug-in hybrid' }, { label: 'Boot', value: '410 litres' }, { label: 'Collection from', value: 'Munich' },
+    expect(offerViewModel(offer).overview).toEqual([
+      { label: 'Body style', value: 'Touring' }, { label: 'Fuel', value: 'Plug in hybrid' }, { label: 'Boot', value: '410 litres' }, { label: 'Seats', value: '5' },
     ]);
+    expect(offer.quote.facts.facts['availableFrom'].value).toBe('1 December 2026');
+  });
+  it('formats valid recorded current facts by their source fields even when unit metadata is null', () => {
+    const source = offerScreenFixture();
+    const offer = { ...source, comparison: { status: 'available' as const, reason: 'current-car-facts-recorded', comparisonAvailable: true, unknowns: [],
+      currentCar: { ...source.comparison.currentCar!, facts: {
+        configuration: { value: '320i Automatic', unit: null }, body: { value: 'estate', unit: null }, fuel: { value: 'petrol', unit: null },
+        seats: { value: 5, unit: null }, boot: { value: 440, unit: null }, mpg: { value: 42.8, unit: null },
+        zeroTo62: { value: 7.6, unit: null }, points: { value: 595, unit: null },
+      } } } };
+    const before = JSON.stringify(offer); expect(isOfferProjection(offer, { offerId: 'offer-1', runId: 'run-1' })).toBe(true);
+    const vm = offerViewModel(offer);
+    expect(vm.comparison).toEqual([
+      { label: 'Body style', current: 'Estate', offered: 'Touring' }, { label: 'Fuel', current: 'Petrol', offered: 'Plug in hybrid' },
+      { label: 'Seats', current: '5', offered: '5' }, { label: 'Boot', current: '440 litres', offered: '410 litres' },
+      { label: '0 to 62 mph', current: '7.6 s', offered: 'Not supplied' }, { label: 'Fuel economy', current: '42.8 mpg', offered: 'Not supplied' },
+      { label: 'Points a month', current: '595 points', offered: '295 points' },
+    ]);
+    expect(vm).toMatchObject({ pointsDifference: '300 fewer than your current car', benefits: [{ number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, { title: 'Available by Tuesday 1 December 2026.' }] });
+    expect(JSON.stringify(offer)).toBe(before);
+  });
+  it('does not silently promote a display-only offered unit into the canonical DTO unit', () => {
+    const source = offerScreenFixture(); const offer = { ...source, quote: { ...source.quote,
+      facts: { ...source.quote.facts, facts: { ...source.quote.facts.facts, boot: screenFact(410, 'litres') } } } };
+    expect(isOfferProjection(offer, { offerId: 'offer-1', runId: 'run-1' })).toBe(true);
+    const vm = offerViewModel(offer);
+    expect(vm.comparison).toContainEqual({ label: 'Boot', current: '440 litres', offered: '410' });
+    expect(vm).toMatchObject({ tradeoffs: [{ title: 'Less sporty than you prefer.' }, { title: 'Touring, not the estate you prefer.' }] });
+  });
+  it('uses normalized source sentences in decision details instead of exposing raw provider codes', () => {
+    const source = offerScreenFixture();
+    expect(offerViewModel({ ...source, quote: { ...source.quote, decision: { ...source.quote.decision,
+      gateStatus: 'needs-confirmation', unknowns: [{ code: 'licence-unconfirmed' }], blockers: [{ code: 'essential-unmet', field: 'seats' }],
+    } } })).toMatchObject({ decisionDetails: [
+      { label: 'Why it is not eligible', entries: ['Does not meet your seats requirement.'] },
+      { label: 'Needs confirmation', entries: ['Your licence details still need confirming.'] },
+    ] });
+  });
+  it('keeps configuration-only current-car context distinct from recorded specification facts', () => {
+    const source = offerScreenFixture(); const offer = { ...source, comparison: { ...source.comparison,
+      currentCar: { ...source.comparison.currentCar!, facts: { configuration: { value: '320i Automatic', unit: null } } },
+      unknowns: ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'],
+    } };
+    expect(isOfferProjection(offer, { offerId: 'offer-1', runId: 'run-1' })).toBe(true);
+    expect(offerViewModel(offer)).toMatchObject({ currentName: 'BMW 320i M Sport Touring, 320i Automatic',
+      comparisonNote: 'Partial comparison. Current-car specifications and points are unknown.', pointsDifference: null });
   });
   it('does not promote handoff acknowledgement to approval or lose refused stages', () => {
     const offer = offerScreenFixture('accepted');

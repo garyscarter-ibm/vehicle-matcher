@@ -2,6 +2,7 @@ import { OfferExplanation, OfferFact, OfferFailure, OfferProjection, OfferSimple
 import { VehicleDetailRow } from '../kit/vehicle-details.component';
 import { orderIdentityRows } from '../kit/order-identity';
 import type { DecisionHighlight } from '../kit/decision-highlights.component';
+import { bodyStyleLabel, fuelSpecLabel, reasonText } from '../preferences/brief.copy';
 
 const labels: Readonly<Record<string, string>> = {
   eligibilityModelKey: 'Scheme model', body: 'Body style', fuel: 'Fuel', seats: 'Seats', doors: 'Doors', boot: 'Boot',
@@ -87,11 +88,34 @@ const blockerCopy: Readonly<Record<string, string>> = {
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.',
 };
 
-function sourceDecisionText(entry: OfferExplanation): string {
-  if (typeof entry === 'string') return entry;
-  const text = entry['text']; const reason = entry['reason']; const code = entry['code'];
-  return typeof text === 'string' && text ? text : typeof reason === 'string' && reason ? reason
-    : typeof code === 'string' && code ? code.replaceAll('-', ' ') : 'Not supplied';
+const comparedKeys = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'];
+const comparisonLabel = (key: string) => key === 'zeroTo62' ? '0 to 62 mph' : offerFieldLabel(key);
+const checkCodes = new Set(['driver-eligible', 'policy-include', 'allowance-sufficient', 'essential-met']);
+type SourceReason = Exclude<OfferExplanation, string> & { readonly text: string };
+const sourceReasons = (entries: readonly OfferExplanation[], kind: string): SourceReason[] => entries.map((entry) => typeof entry === 'string'
+  ? { text: entry } : { ...entry, text: reasonText(entry, kind) });
+
+// Current-car units are defined by the recorded field, not the optional DTO unit metadata.
+function currentValue(key: string, value: string | number | undefined): string | null {
+  if (['body', 'fuel'].includes(key)) return typeof value === 'string' && value.trim() ? value.charAt(0).toUpperCase() + value.slice(1) : null;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return null;
+  const n = value.toLocaleString('en-GB');
+  return ({ boot: `${n} litres`, mpg: `${n} mpg`, zeroTo62: `${n} s`, points: `${n} points`, seats: n } as Record<string, string>)[key] ?? null;
+}
+
+// Match decisionView's supplied fact labels and its bounded unit map before comparison.
+function offeredValue(key: string, fact: OfferFact | undefined): string | null {
+  if (fact?.status !== 'known') return null;
+  const value = key === 'body' ? bodyStyleLabel(fact.value) : key === 'fuel'
+    ? fuelSpecLabel(fact.value) ?? String(fact.value).replaceAll('-', ' ').replaceAll('_', ' ') : fact.value;
+  if (value === null || value === '') return null;
+  const unit = ({ L: 'litres', s: 's', 'mpg-imperial': 'mpg' } as Readonly<Record<string, string>>)[fact.unit ?? ''];
+  return `${typeof value === 'number' ? value.toLocaleString('en-GB') : value}${unit ? ` ${unit}` : ''}`;
+}
+
+function comparableNumber(value: string | null): number | null {
+  const match = value?.match(/^([\d,]+(?:\.\d+)?) (?:points|litres)$/);
+  return match ? Number(match[1].replaceAll(',', '')) : null;
 }
 
 export function offerViewModel(offer: OfferProjection) {
@@ -122,52 +146,52 @@ export function offerViewModel(offer: OfferProjection) {
   const equipmentFact = facts['options'] ?? facts['equipment'];
   const equipment = equipmentFact?.status === 'known' && equipmentFact.value !== null
     ? (Array.isArray(equipmentFact.value) ? equipmentFact.value : [equipmentFact.value]).map((value) => offerValue(value)) : [];
-  const overview = ['body', 'fuel', 'boot', 'availableFrom', 'collectionFrom', 'seats'].filter((key) => facts[key]?.status === 'known').slice(0, 4)
-    .map((key) => ({ label: offerFieldLabel(key), value: offerFactValue(facts[key]) }));
+  const overview = ['body', 'fuel', 'boot', 'seats'].map((key) => ({ label: comparisonLabel(key), value: offeredValue(key, facts[key]) }))
+    .filter((row) => row.value !== null);
   const expiresAt = Date.parse(offer.expiresAt); const serverNow = Date.parse(offer.serverNow);
   const remainingSeconds = Number.isFinite(expiresAt) && Number.isFinite(serverNow)
     ? Math.max(0, Math.ceil((expiresAt - serverNow) / 1000)) : null;
   const remainingMinutes = remainingSeconds === null ? null : Math.ceil(remainingSeconds / 60);
   const contribution = quote.terms.contribution;
-  const comparison = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'].map((key) => {
-    const current = offer.comparison.currentCar?.facts?.[key];
-    return { label: offerFieldLabel(key), current: current ? offerValue(current.value, current.unit) : 'Unknown',
-      offered: key === 'points' ? `${offerValue(quote.terms.points.value)} points` : offerFactValue(facts[key]) };
-  });
+  const sourceComparison = comparedKeys.map((key) => ({ key,
+    current: currentValue(key, offer.comparison.currentCar?.facts?.[key]?.value),
+    offered: key === 'points' ? `${quote.terms.points.value.toLocaleString('en-GB')} points` : offeredValue(key, facts[key]),
+  }));
+  const comparison = sourceComparison.map(({ key, current, offered }) => ({ label: comparisonLabel(key), current: current ?? 'Unknown', offered: offered ?? 'Not supplied' }));
+  const normalizedDecision = {
+    reasons: sourceReasons(quote.decision.reasons, 'reasons').filter((entry) => !checkCodes.has(String(entry['code']))),
+    tradeOffs: sourceReasons(quote.decision.tradeOffs, 'tradeOffs'),
+    blockers: sourceReasons(quote.decision.blockers, 'blockers'), unknowns: sourceReasons(quote.decision.unknowns, 'unknowns'),
+  };
   const measuredBenefits: ReturnType<typeof offerExplanation>[] = [];
   const measuredTradeOffs: ReturnType<typeof offerExplanation>[] = [];
   const benefits: DecisionHighlight[] = []; const tradeoffs: DecisionHighlight[] = [];
   const measuredFields = new Set<string>(); let pointsDifference: string | null = null;
   for (const key of ['points', 'boot']) {
-    const current = offer.comparison.currentCar?.facts?.[key];
-    const offered = key === 'points' ? quote.terms.points.value : facts[key]?.status === 'known' ? facts[key].value : null;
-    const unit = (value: string | null | undefined) => value === 'L' ? 'litres' : value === 'points-per-month' ? 'points' : value;
-    const offeredUnit = key === 'points' ? 'points' : facts[key]?.unit;
-    if (typeof current?.value !== 'number' || typeof offered !== 'number' || unit(current.unit) !== unit(offeredUnit) || current.value === offered) continue;
-    const better = key === 'points' ? offered < current.value : offered > current.value;
-    const delta = Math.abs(offered - current.value).toLocaleString('en-GB');
+    const row = sourceComparison.find((entry) => entry.key === key)!;
+    const current = comparableNumber(row.current); const offered = comparableNumber(row.offered);
+    if (current === null || offered === null || current === offered) continue;
+    const better = key === 'points' ? offered < current : offered > current;
+    const delta = Math.abs(offered - current).toLocaleString('en-GB');
     measuredFields.add(key);
     (better ? benefits : tradeoffs).push({ number: delta,
       title: key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`,
       detail: key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car' });
     if (key === 'points' && better) pointsDifference = `${delta} fewer than your current car`;
-    (better ? measuredBenefits : measuredTradeOffs).push({ title: `${Math.abs(offered - current.value).toLocaleString('en-GB')} ${key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`}`,
+    (better ? measuredBenefits : measuredTradeOffs).push({ title: `${delta} ${key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`}`,
       details: [key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car'] });
   }
-  const checks = new Set(['driver-eligible', 'policy-include', 'allowance-sufficient', 'essential-met']);
-  for (const [entries, target] of [[quote.decision.reasons, benefits], [quote.decision.tradeOffs, tradeoffs]] as const) {
+  for (const [entries, target] of [[normalizedDecision.reasons, benefits], [normalizedDecision.tradeOffs, tradeoffs]] as const) {
     for (const entry of entries) {
-      if (typeof entry !== 'string' && (typeof entry['code'] === 'string' && checks.has(entry['code'])
-        || typeof entry['field'] === 'string' && measuredFields.has(entry['field']))) continue;
-      const title = typeof entry === 'string' ? entry : typeof entry['text'] === 'string' ? entry['text'] : null;
-      if (title) target.push({ title });
+      if (checkCodes.has(String(entry['code'])) || typeof entry['field'] === 'string' && measuredFields.has(entry['field'])) continue;
+      if (entry.text) target.push({ title: entry.text });
     }
   }
   const decisionDetails = [
-    { label: quote.decision.gateStatus === 'eligible' ? 'Why it suits you' : 'Checks passed', entries: offer.state === 'pending' ? [] : quote.decision.reasons.map(sourceDecisionText) },
-    { label: 'Why it is not eligible', entries: quote.decision.blockers.map(sourceDecisionText) },
-    { label: 'Needs confirmation', entries: quote.decision.unknowns.map(sourceDecisionText) },
-    { label: 'Trade-offs', entries: offer.state === 'pending' ? [] : quote.decision.tradeOffs.map(sourceDecisionText) },
+    { label: quote.decision.gateStatus === 'eligible' ? 'Why it suits you' : 'Checks passed', entries: offer.state === 'pending' ? [] : normalizedDecision.reasons.map((entry) => entry.text) },
+    { label: 'Why it is not eligible', entries: normalizedDecision.blockers.map((entry) => entry.text) },
+    { label: 'Needs confirmation', entries: normalizedDecision.unknowns.map((entry) => entry.text) },
+    { label: 'Trade-offs', entries: offer.state === 'pending' ? [] : normalizedDecision.tradeOffs.map((entry) => entry.text) },
   ].filter(group => group.entries.length);
   const orderNumber = offer.selection?.orderNumber ?? quote.orderNumber;
   const acceptedIdentityRows = [...(display.name ? [{ label: 'Your new car', value: display.name }] : []),
@@ -195,8 +219,8 @@ export function offerViewModel(offer: OfferProjection) {
     handoffBlocker: offer.handoff?.blocker ? blockerCopy[offer.handoff.blocker] : null,
     selectionStages: refused ? offer.selection?.stages ?? [] : [],
     currentName: offer.comparison.currentCar ? [offer.comparison.currentCar.model, offer.comparison.currentCar.facts?.['configuration']?.value].filter((value) => value !== undefined).join(', ') : 'Current car not supplied',
-    comparisonNote: !offer.comparison.currentCar ? 'Current-car details not supplied. Equipment is unknown.' : offer.comparison.status === 'available' ? '' : offer.comparison.comparisonAvailable
-      ? 'Partial comparison. Some current-car facts are unknown.' : 'Current-car specifications and points are unknown.',
+    comparisonNote: !offer.comparison.currentCar ? 'Current-car details not supplied. Equipment is unknown.' : offer.comparison.status === 'available' ? '' : sourceComparison.some((row) => row.current !== null)
+      ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.',
     comparisonUnknowns: offer.comparison.unknowns.map(offerFieldLabel),
     termsDates: `${offerDate(quote.terms.validFrom)} to ${offerDate(quote.terms.validUntil)}`,
     termsWording: offer.handoff?.wording ?? 'Scheme wording not supplied.',

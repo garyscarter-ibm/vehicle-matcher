@@ -10730,9 +10730,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-028",
-      "evidence": "Native claim In Progress at21points; all8AC unticked. Published drawer/deadline/exits are partial. Pending source hero/saving/swatches/structured highlights now composed;154scoped cases across4files plus boundaries/inline4 and ratchet124. No full build/live pair/acceptance.",
+      "evidence": "Native claim remains21points/In Progress; all8AC unticked. Source comparison units/normalized reason projection plus real OfferScreen/Preferences/Route/InteractionStore:175scoped cases across6files, boundaries/inline4 and ratchet124. No full build/live pair/acceptance.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T04:10:11Z",
+      "note": "All8AC open. Source drawer/deadline/exits/hero and comparison/reason projection are partial. Contribution/raw detail/nonpending/state and supported shared integration/build/live pair/human review remain open.",
+      "observed_at": "2026-11-23T04:47:03Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10757,9 +10758,9 @@
           "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
         },
         {
-          "evidence": "Source deadline/exits/identity plus ONE canonical pending VehicleDecision, direct picker/contain media, finishes, numeric saving, overview/details and structured Benefits/Tradeoffs composed.154scoped cases pass. Nonpending/state reconciliation, source intro/status, comparison input/winner parity and supported sibling integration remain open.",
+          "evidence": "Source hero/exits/deadline plus field-derived current units, bounded offered units/body/fuel, normalized reasons/details, live overview and configuration-only note composed.175scoped cases pass. Raw detail/contribution, nonpending/state and supported source/sibling integration remain open.",
           "id": "offer-composition",
-          "observed_at": "2026-11-23T04:10:11.412981+00:00",
+          "observed_at": "2026-11-23T04:47:03.405916+00:00",
           "status": "in-progress",
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
@@ -10778,9 +10779,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Latest hero154cases across4files, boundaries/inline4 and ratchet124 passed;9expected old-product failures retained. All7current allocations absent. Existing compiler diagnostics kept. Full build/runtime/browser/rendered pair and human review unrun.",
+          "evidence": "Settled VM29/copy5/Screen82/Preferences12/InteractionStore35/Route12:175scoped passes; old-code12failed/22passed retained. Boundaries/inline4 and ratchet124 passed. Existing warnings retained; no full build/browser/live pair/human review.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T04:10:11.412981+00:00",
+          "observed_at": "2026-11-23T04:47:03.405916+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10815,16 +10816,15 @@
           "status": "stopped; repeated child422; launcher carries allocation"
         },
         {
-          "name": "usget-vesper launcher",
+          "expires_at": "2026-11-23T04:47:03.405916+00:00",
           "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T04:47:03.405916+00:00",
           "role": "launcher carrying F555 original view implementation",
-          "observed_at": "2026-11-23T04:10:11.412981+00:00",
-          "expires_at": "2026-11-23T04:10:11.412981+00:00",
-          "source": "Observed direct canonical pending hero/highlights after retained child422; no child retry, model/provider/key change. Runtime pair not independently exposed.",
+          "source": "Observed direct source projection work after retained child422; no child retry/model/provider/key change. Runtime pair unexposed.",
           "status": "checkpointed; scheduled continuation"
         }
-      ],
-      "note": "All8AC open. Source drawer/deadline/exits/identity and canonical pending hero/saving/swatches/highlights are partial; latest154scoped cases/boundaries/inline4/ratchet124 pass. Nonpending/state and comparison input parity, source intro/status/shared integration/build/live pair/human review remain open."
+      ]
     }
   ],
   "version": 1

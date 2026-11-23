@@ -616,6 +616,17 @@ cover source wording/order, heading association, missing/unknown values and Lond
 
 ### Angular finishes and decision presenters (FUCQ-555)
 
+The shared pure employee copy helpers live in
+`apps/gcsp-web/src/app/preferences/brief.copy.ts`. Preferences and offer projections
+reuse the same `reasonText(entry, kind)` before displaying reasons, tradeoffs,
+blockers and unknowns. Supplied sentences win; mapped codes become plain sentences
+and unknown codes use the kind's neutral fallback. Calendar dates keep their day;
+ISO instants with an explicit zone use the London day, without a locale comma.
+`bodyStyleLabel(value)` uses the existing body enum and title-cases other nonblank
+strings; `fuelSpecLabel(value)` returns only the existing four fuel enum labels or
+null, leaving each source caller's fallback intact. Generic `choiceLabel` is
+unchanged. These are data helpers with no DOM, requests or business decisions.
+
 These source presenters reuse FUCQ-548's global styles without copying CSS. Their
 hosts use `display: contents`. They fetch nothing, emit no business commands and
 infer no eligibility, comparison winner, clock or saving. This source checkpoint
