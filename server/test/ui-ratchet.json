@@ -3,7 +3,8 @@
   "roots": [
     "blocks/vehicle-matcher/",
     "blocks/gcsp/",
-    "blocks/demo-launcher/"
+    "blocks/demo-launcher/",
+    "apps/gcsp-web/src/app/"
   ],
   "exclude": [
     "blocks/vehicle-matcher/ui.js",
@@ -29,11 +30,14 @@
     "blocks/gcsp/kit/help-tip.js",
     "blocks/gcsp/kit/star-rating.js",
     "blocks/gcsp/kit/understanding-meter.js",
-    "blocks/gcsp/kit/buddy-status.js"
+    "blocks/gcsp/kit/buddy-status.js",
+    "apps/gcsp-web/src/app/kit/"
   ],
   "extensions": [
     ".js",
-    ".mjs"
+    ".mjs",
+    ".ts",
+    ".html"
   ],
   "patterns": {
     "heading": {
@@ -160,6 +164,11 @@
       "re": "el\\('span', `gcsp-buddy-status",
       "flags": "g",
       "use": "buddyStatus({ state, href }) (blocks/gcsp/kit/buddy-status.js)"
+    },
+    "angular-tabs": {
+      "re": "role\\s*=\\s*[\"']tablist[\"']",
+      "flags": "g",
+      "use": "gcsp-tabs / gcsp-greg-navigation (apps/gcsp-web/src/app/kit/)"
     }
   },
   "stylesheets": [

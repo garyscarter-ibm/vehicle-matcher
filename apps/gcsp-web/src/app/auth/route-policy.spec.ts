@@ -7,9 +7,9 @@ describe('role route policy', () => {
     expect(navigationFor(['employee']).map((item) => item.label)).toEqual(['Your cars', 'Order progress']);
   });
   it('composes employee and Greg destinations without impersonation', () => {
-    expect(navigationFor(['employee', 'greg']).map((item) => item.path)).toEqual(['account', 'orders', 'greg', 'comparison']);
-    expect(navigationFor(['greg']).map((item) => item.label)).toEqual(['Employee car ordering', 'Process comparisons']);
-    expect(landingFor(['greg'])).toBe('greg');
+    expect(navigationFor(['employee', 'greg']).map((item) => item.path)).toEqual(['account', 'orders', 'greg/plan']);
+    expect(navigationFor(['greg']).map((item) => item.label)).toEqual(['Employee car ordering']);
+    expect(landingFor(['greg'])).toBe('greg/plan');
     expect(permits(['greg'], ['employee'])).toBe(false);
   });
   it('keeps the presenter dedicated even for a context with additional roles', () => {

@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { provideRouter } from '@angular/router';
 import { AuthPort } from '../auth/auth.port';
 import { routes } from '../routes';
 import { reasonText } from './brief.copy';
@@ -17,7 +18,7 @@ describe('native preference controls', () => {
     client.saveDraft.mockReset(); client.confirm.mockReset();
     client.readEditor.mockReset().mockResolvedValue({ status: 'ok', value: briefEditorFixture() });
     client.savePreferences.mockReset().mockResolvedValue({ status: 'ok', value: preferenceSaveFixture() });
-    TestBed.configureTestingModule({ providers: [{ provide: BriefClient, useValue: client }, { provide: AuthPort, useValue: { state: signal({ status: 'ready', context: { subject: 's', environmentId: 'dev', runId: 'r', employeeId: 'e', roles: ['employee'] } }) } }] });
+    TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: BriefClient, useValue: client }, { provide: AuthPort, useValue: { state: signal({ status: 'ready', context: { subject: 's', environmentId: 'dev', runId: 'r', employeeId: 'e', roles: ['employee'] } }) } }] });
   });
   it('shares compact/rating load and gates stars by the exact server current contract', async () => {
     const preferences = TestBed.createComponent(AccountPreferencesComponent); const rating = TestBed.createComponent(CurrentCarRatingComponent);
@@ -51,6 +52,20 @@ describe('native preference controls', () => {
     expect(root.textContent).toContain('These facts are read-only.'); expect(root.textContent).toContain('Your current-car feedback');
     expect(root.querySelectorAll('input[name=practical-seats]').length).toBe(3); expect(root.textContent).toContain('Not sure yet');
     expect(root.querySelector('gcsp-error-summary')).toBeTruthy();
+  });
+  it('offers Activity only after a clean successful save with Buddy search engaged', async () => {
+    const fixture = TestBed.createComponent(PreferencesComponent); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement; const store = fixture.componentInstance.store;
+    const onward = () => Array.from(root.querySelectorAll<HTMLAnchorElement>('a')).find(link => link.textContent?.trim() === 'See your buddy at work');
+    expect(onward()).toBeUndefined();
+    store.consent.set({ search: true, hold: true }); store.fullState.set('saved'); store.fullDirty.set(false); await fixture.whenStable();
+    expect(onward()?.getAttribute('href')).toBe('/activity');
+    store.fullDirty.set(true); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    store.fullDirty.set(false); store.consent.set({ search: false, hold: false }); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    store.consent.set({ search: true, hold: true }); store.fullState.set('failed'); await fixture.whenStable(); expect(onward()).toBeUndefined();
+    client.readEditor.mockResolvedValueOnce({ status: 'ok', value: { ...briefEditorFixture(), selection: { state: 'accepted' } } });
+    await store.reload(); store.fullState.set('saved'); store.consent.set({ search: true, hold: true });
+    await fixture.whenStable(); expect(onward()).toBeUndefined();
   });
   it('uses native multi/stops and separate importance, with explicit removal/cancel intents', async () => {
     const fixture = TestBed.createComponent(PreferenceCategoryComponent); const definition = briefEditorFixture().context.accountPreferences.categories['body'];

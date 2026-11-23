@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { PreferenceCategoryComponent } from '../kit/preference-category.component';
 import { StarRatingComponent } from '../kit/star-rating.component';
+import { GregNavigationComponent } from '../kit/greg-navigation.component';
+import { TabsComponent } from '../kit/tabs.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -22,7 +24,7 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [TabsComponent, GregNavigationComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -61,6 +63,14 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   </section>
   <section class="gcsp-panel"><h2>Canonical comparison table</h2><p class="gcsp-note">Source comparison keeps columns at narrow widths. Numeric values, missing evidence, privacy bands and the supplied winner stay distinct. No row actions are configured.</p>
     <gcsp-data-table caption="Example car comparison" [columns]="compareColumns" [rows]="compareRows" [compare]="true" [equalColumns]="true" [captionHidden]="true" />
+  </section>
+  <section class="gcsp-panel"><h2>GCSP tabs</h2>
+    <gcsp-tabs label="Car details" [items]="[{ id: 'specification', label: 'Specification', content: specification }, { id: 'equipment', label: 'Selected equipment', content: equipment }]" />
+    <ng-template #specification>Supplied specification</ng-template><ng-template #equipment>Supplied selected equipment</ng-template>
+  </section>
+  <section class="gcsp-panel"><h2>Greg dashboard navigation</h2>
+    <gcsp-greg-navigation page="dashboard" [panels]="{ dashboard: gregDemand, policy: gregPolicy }" />
+    <ng-template #gregDemand>Saved demand and released supply</ng-template><ng-template #gregPolicy>Current policy draft</ng-template>
   </section>
   <section class="gcsp-panel"><h2>Released vehicle card</h2>
     <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"
