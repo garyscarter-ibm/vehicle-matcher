@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.http.ContentType;
@@ -36,9 +37,20 @@ class BriefHttpTest {
     @Inject
     Persistence persistence;
 
+    @Inject
+    AgroalDataSource dataSource;
+
     @BeforeEach
-    void needsDatabase() {
+    void needsDatabase() throws java.sql.SQLException {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
+        // This fixed-principal profile has no adopted scenario: supply its own scoped domain clock.
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("INSERT INTO run_clocks "
+                + "(environment_id, run_id, clock_instant, clock_version, scenario_version, fixture_version, starts_at, named_times) "
+                + "SELECT environment_id, run_id, '2026-11-13T10:00:00Z'::timestamptz, 1, 'brief-http', 'brief-http', "
+                + "'2026-11-13T10:00:00Z'::timestamptz, '{}'::jsonb FROM runs "
+                + "WHERE environment_id = 'test-app-env' AND run_id = 'run-1' AND status = 'active' ON CONFLICT DO NOTHING")) {
+            ps.executeUpdate();
+        }
     }
 
     private static RequestSpecification as() {

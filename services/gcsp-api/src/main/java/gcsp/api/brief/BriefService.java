@@ -11,6 +11,7 @@ import gcsp.api.brief.BriefResult.Refused;
 import gcsp.api.brief.BriefStore.BriefRow;
 import gcsp.api.brief.BriefStore.DraftRow;
 import gcsp.api.brief.BriefStore.Head;
+import gcsp.api.clock.ClockReading;
 import gcsp.api.persistence.Command;
 import gcsp.api.persistence.Outcome;
 import gcsp.api.persistence.Tx;
@@ -62,7 +63,16 @@ public final class BriefService {
     private final BriefAccountPort account;
     private final BriefOfferPort offers;
     private final BriefPreviewPort preview;
+    /** A domain clock resolved for exactly the requested environment and run. Empty means unavailable. */
+    @FunctionalInterface
+    public interface ScopedClock {
+        Optional<ClockReading> now(String environmentId, String runId);
+    }
+
+    private record Time(Instant now, String clockVersion) {}
+
     private final Clock clock;
+    private final ScopedClock scopedClock;
 
     public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
             Clock clock) {
@@ -71,6 +81,17 @@ public final class BriefService {
 
     public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
             BriefPreviewPort preview, Clock clock) {
+        this(dataSource, policy, account, offers, preview, clock, null);
+    }
+
+    /** Production composition uses the scoped run clock; explicit Clock callers retain their supplied time source. */
+    public BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
+            BriefPreviewPort preview, ScopedClock scopedClock) {
+        this(dataSource, policy, account, offers, preview, null, java.util.Objects.requireNonNull(scopedClock));
+    }
+
+    private BriefService(DataSource dataSource, BriefPolicyPort policy, BriefAccountPort account, BriefOfferPort offers,
+            BriefPreviewPort preview, Clock clock, ScopedClock scopedClock) {
         this.preview = preview;
         this.dataSource = dataSource;
         this.runner = new TransactionRunner(dataSource);
@@ -78,6 +99,21 @@ public final class BriefService {
         this.account = account;
         this.offers = offers;
         this.clock = clock;
+        this.scopedClock = scopedClock;
+    }
+
+    private Time time(BriefScope scope) {
+        if (scopedClock == null) return new Time(clock.instant().truncatedTo(ChronoUnit.MILLIS), null);
+        try {
+            Optional<ClockReading> found = scopedClock.now(scope.environmentId(), scope.runId());
+            if (found == null || found.isEmpty() || found.get().now() == null || found.get().clockVersion() < 1) {
+                throw new Refused(Refusal.unavailable());
+            }
+            ClockReading reading = found.get();
+            return new Time(reading.now().truncatedTo(ChronoUnit.MILLIS), Long.toString(reading.clockVersion()));
+        } catch (RuntimeException e) {
+            throw new Refused(Refusal.unavailable());
+        }
     }
 
     // ---- reads: head, then rows by primary key, then the consumed check by the semantic index ----
@@ -129,6 +165,7 @@ public final class BriefService {
     /** The Account editor read: policy-driven context, the content to show, the account-derived views and versions. */
     public BriefResult readEditor(BriefScope scope) {
         return read(scope, (c, rules) -> {
+            Time time = time(scope);
             Optional<BriefAccountPort.AccountFacts> facts = account.facts(scope.environmentId(), scope.runId(), scope.employeeId());
             if (facts.isEmpty()) return Refusal.unavailable();
             State s = state(c, scope, true);
@@ -145,10 +182,11 @@ public final class BriefService {
             initial.putObject("consent").put("search", flag(buddy, "searchConsent")).put("hold", flag(buddy, "holdConsent"));
             ObjectNode out = Json.obj();
             String contextVersion = AccountEditor.contextVersion(scope, facts);
-            out.set("context", AccountEditor.context(rules, facts, clock.instant().truncatedTo(ChronoUnit.MILLIS), contextVersion));
+            out.set("context", AccountEditor.context(rules, facts, time.now(), contextVersion));
             out.set("initial", initial);
             out.putObject("versions").put("policy", scope.policyVersion()).put("context", contextVersion)
-                    .put("facts", AccountEditor.factsVersion(facts)).put("clock", AccountEditor.clockVersion(facts));
+                    .put("facts", AccountEditor.factsVersion(facts))
+                    .put("clock", time.clockVersion() == null ? AccountEditor.clockVersion(facts) : time.clockVersion());
             if (accepted.isPresent() && s.current() != null) {
                 ObjectNode sel = out.putObject("selection").put("state", "accepted");
                 if (accepted.get().briefVersion() == null) sel.putNull("briefVersion");
@@ -440,7 +478,12 @@ public final class BriefService {
         } catch (PolicyRules.Unavailable e) {
             return Refusal.unavailable();
         }
-        Instant now = clock.instant().truncatedTo(ChronoUnit.MILLIS);
+        Instant now;
+        try {
+            now = time(scope).now();
+        } catch (Refused r) {
+            return r.refusal();
+        }
         Optional<BriefAccountPort.AccountFacts> facts = account.facts(scope.environmentId(), scope.runId(), scope.employeeId());
         // The decline change carries no draft version: it is checked against the brief version only.
         boolean draftChecked = input.has("expectedDraftVersion");
