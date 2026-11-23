@@ -15,7 +15,7 @@
           @if (current.handoff; as handoff) {
             @if (acceptNote()) { <p role="alert">{{ acceptNote() }}</p> }
             <section><h3>Your contact details</h3><dl><div><dt>Email</dt><dd>{{ handoff.contact?.email ?? 'To confirm' }}</dd></div><div><dt>Phone</dt><dd>{{ handoff.contact?.phone ?? 'To confirm' }}</dd></div></dl></section>
-            <section><h3>Driver and licence</h3><dl>
+            <section [id]="prefix + '-driver-record'"><h3 class="gcsp-h3">Driver and licence</h3><dl>
               <div><dt>Nominated driver</dt><dd>{{ handoff.driver?.name ?? 'To confirm' }}</dd></div>
               <div><dt>Licence number</dt><dd>{{ handoff.driver?.licence?.displayNumber ?? 'To confirm' }}</dd></div>
               <div><dt>Valid from</dt><dd>{{ date(handoff.driver?.licence?.validFrom) }}</dd></div>
@@ -23,7 +23,7 @@
               <div><dt>Licence categories</dt><dd>{{ handoff.driver?.licence?.categories?.join(', ') || 'To confirm' }}</dd></div>
             </dl></section>
             @if (handoff.mode === 'replacement') {
-              <section><h3>The car you will return</h3><p>{{ handoff.returnCar?.model ?? 'To confirm' }}</p><dl>
+              <section [id]="prefix + '-return-record'"><h3 class="gcsp-h3">The car you will return</h3><p>{{ handoff.returnCar?.model ?? 'To confirm' }}</p><dl>
                 <div><dt>Contract ends</dt><dd>{{ date(handoff.returnCar?.contractEndDate) }}</dd></div>
                 <div><dt>Recorded mileage</dt><dd>{{ handoff.returnCar?.currentOdometer?.value ?? 'To confirm' }} {{ handoff.returnCar?.currentOdometer?.unit }}</dd></div>
               </dl><p>Arrange its return after your new car is confirmed.</p>
@@ -31,7 +31,14 @@
                 <input [id]="prefix + '-mileage'" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="16" required [value]="state().mileage" [disabled]="busy()" [attr.aria-invalid]="!!state().mileage && !!store.mileageError()" [attr.aria-describedby]="prefix + '-mileage-hint' + (state().mileage && store.mileageError() ? ' ' + prefix + '-mileage-error' : '')" (input)="store.setMileage($any($event.target).value)" />
               </gcsp-labelled-field></section>
             }
-            <details><summary>Scheme terms</summary><p>{{ handoff.wording ?? 'Scheme terms are unavailable.' }}</p><p>Terms version {{ handoff.termsVersion }}</p></details>
+            <section class="gcsp-offer-drawer-section"><h3 class="gcsp-h3">Documents</h3>
+              <div class="gcsp-offer-document-links">
+                <a [href]="'#' + prefix + '-terms'" (click)="jumpToDocument($event, 'terms')">Read scheme terms</a>
+                <a [href]="'#' + prefix + '-driver-record'" (click)="jumpToDocument($event, 'driver-record')">View driver and licence record</a>
+                @if (handoff.mode === 'replacement') { <a [href]="'#' + prefix + '-return-record'" (click)="jumpToDocument($event, 'return-record')">View old contract and return mileage</a> }
+              </div>
+              <details [id]="prefix + '-terms'" class="gcsp-details"><summary class="gcsp-details-summary">Scheme terms</summary><p class="gcsp-note">{{ handoff.wording || 'Scheme terms are unavailable.' }}</p></details>
+            </section>
             <fieldset [disabled]="busy()"><legend>Before you accept</legend>
               @for (declaration of handoff.declarations; track declaration.id; let index = $index) {
                 <label class="decision-choice" [for]="prefix + '-declaration-' + index"><input type="checkbox" [id]="prefix + '-declaration-' + index" [checked]="state().declarations[declaration.id] === true" (change)="store.tick(declaration.id, $any($event.target).checked)" />{{ declaration.label }}</label>

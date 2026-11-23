@@ -20,6 +20,11 @@ describe('native offer read screen', () => {
     await new Promise<void>((resolve) => setTimeout(resolve, 0)); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges(); };
   const load = async (offer = offerScreenFixture()) => { reads.at(-1)!.resolve({ status: 'ok', value: offer }); await settle();
   };
+  const reviewAcceptance = async (offer = actionableOffer()) => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offer);
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="accept"]')!.click(); await settle();
+    return (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.gcsp-side-drawer:not([hidden]) [role="dialog"]')!;
+  };
 
   beforeEach(async () => {
     TestBed.resetTestingModule(); reads = []; auth = signal<SessionState>({ status: 'ready', context: offerScreenEmployee });
@@ -116,6 +121,51 @@ describe('native offer read screen', () => {
     expect(client['decide']).toHaveBeenCalledTimes(1); expect(text()).toContain('Offer accepted');
     expect(text()).toContain('Ordering and approval are separate steps'); expect(text()).not.toContain('Your order is approved');
     expect(fixture.nativeElement.querySelector('.gcsp-side-drawer:not([hidden]) [role="dialog"]')).toBeNull();
+  });
+  it('opens the actual scheme terms from Documents without changing the entered acceptance details', async () => {
+    const dialog = await reviewAcceptance();
+    const links = Array.from(dialog.querySelectorAll<HTMLAnchorElement>('.gcsp-offer-document-links a'));
+    expect(links.map(link => link.textContent)).toEqual(['Read scheme terms', 'View driver and licence record', 'View old contract and return mileage']);
+    const terms = dialog.querySelector<HTMLDetailsElement>(links[0].getAttribute('href')!)!;
+    expect(terms.tagName).toBe('DETAILS'); expect(terms.open).toBe(false); expect(terms.classList.contains('gcsp-details')).toBe(true);
+    expect(terms.textContent).toContain(actionableOffer().handoff!.wording);
+    const mileage = dialog.querySelector<HTMLInputElement>('input[type="text"]')!; mileage.value = '006100'; mileage.dispatchEvent(new Event('input')); await settle();
+    const declaration = dialog.querySelector<HTMLInputElement>('input[type="checkbox"]')!; declaration.click(); await settle();
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true }); links[0].dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true); expect(terms.open).toBe(true); expect(document.activeElement).toBe(terms.querySelector('summary'));
+    expect(mileage.value).toBe('006100'); expect(declaration.checked).toBe(true);
+    expect(client['decide']).not.toHaveBeenCalled(); expect(reads).toHaveLength(1);
+  });
+  it.each([
+    ['View driver and licence record', 'Driver and licence'],
+    ['View old contract and return mileage', 'The car you will return'],
+  ])('jumps from Documents to the actual %s heading', async (label, heading) => {
+    const dialog = await reviewAcceptance();
+    const link = Array.from(dialog.querySelectorAll<HTMLAnchorElement>('.gcsp-offer-document-links a')).find(node => node.textContent === label);
+    expect(link).toBeDefined(); const target = dialog.querySelector<HTMLElement>(link!.getAttribute('href')!)!;
+    expect(target.querySelector('h3')?.textContent).toBe(heading);
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true }); link!.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true); expect(document.activeElement).toBe(target.querySelector('h3')); expect(target.querySelector('h3')?.tabIndex).toBe(-1);
+    expect(client['decide']).not.toHaveBeenCalled(); expect(client['readDecisionReasons']).not.toHaveBeenCalled();
+  });
+  it('offers only the actual terms and driver documents for a new car selection', async () => {
+    const offer = actionableOffer(); const dialog = await reviewAcceptance({ ...offer, handoff: { ...offer.handoff!, mode: 'new', returnCar: null, returnMileage: null } });
+    expect(Array.from(dialog.querySelectorAll('.gcsp-offer-document-links a')).map(link => link.textContent)).toEqual(['Read scheme terms', 'View driver and licence record']);
+    expect(dialog.textContent).not.toContain('The car you will return'); expect(dialog.querySelector('input[type="text"]')).toBeNull();
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it.each([null, ''])('keeps the source unavailable-terms message for wording %s', async wording => {
+    const offer = actionableOffer(); const dialog = await reviewAcceptance({ ...offer, handoff: { ...offer.handoff!, wording } });
+    const documents = Array.from(dialog.querySelectorAll('section')).find(section => section.querySelector('h3')?.textContent === 'Documents');
+    expect(documents).toBeDefined(); expect(documents?.querySelector('details p')?.textContent).toBe('Scheme terms are unavailable.');
+    expect(documents?.querySelector('a[download]')).toBeNull(); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('keeps acceptance Documents out of the decline review', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="decline"]')!.click(); await settle();
+    const dialog = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('[role="dialog"]')!;
+    expect(dialog.querySelector('.gcsp-offer-document-links')).toBeNull(); expect(dialog.textContent).not.toContain('Documents');
+    expect(client['decide']).not.toHaveBeenCalled();
   });
   it('loads server decline reasons and offers a separate explicit preference confirmation', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();

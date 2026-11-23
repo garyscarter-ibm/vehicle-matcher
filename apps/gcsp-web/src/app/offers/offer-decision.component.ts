@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, viewChild } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { SideDrawerComponent } from '../kit/side-drawer.component';
@@ -17,6 +17,7 @@ export class OfferDecisionComponent {
   readonly offer = this.store.offer;
   readonly prefix = `offer-decision-${++sequence}`;
   private readonly drawer = viewChild(SideDrawerComponent);
+  private readonly element: ElementRef<HTMLElement> = inject(ElementRef);
   readonly busy = computed(() => this.state().decision === 'sending');
   readonly feedback = computed(() => {
     const result = this.state().decision;
@@ -42,6 +43,16 @@ export class OfferDecisionComponent {
     if (this.state().review === kind) this.drawer()?.open(event.currentTarget as HTMLElement);
   }
   close(): void { if (!this.busy()) this.drawer()?.close(); }
+  jumpToDocument(event: Event, record: 'terms' | 'driver-record' | 'return-record'): void {
+    event.preventDefault();
+    const target = this.element.nativeElement.querySelector<HTMLElement>(`#${this.prefix}-${record}`);
+    if (!target) return;
+    const terms = target.tagName === 'DETAILS';
+    if (terms) (target as HTMLDetailsElement).open = true;
+    const heading = target.querySelector<HTMLElement>(terms ? 'summary' : 'h3');
+    if (heading) { heading.tabIndex = -1; heading.focus(); }
+    target.scrollIntoView?.({ block: 'nearest' });
+  }
   date(value: string | null | undefined): string {
     return value && /^\d{4}-\d\d-\d\d$/.test(value) && Number.isFinite(Date.parse(value))
       ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : 'To confirm';
