@@ -43,14 +43,14 @@
       <div class="gcsp-offer-comparison">
       <section class="gcsp-offer-exact" aria-label="The offered car">
       @if (vm.isPending) {
-        <gcsp-vehicle-decision layout="focused" [name]="vm.name" kicker="Your buddy found a car for you" [finishes]="vm.finishes" [points]="vm.monthlyPoints" [allowance]="vm.monthlyAllowance" [contribution]="vm.contribution" [pointsDifference]="vm.pointsDifference">
+        <gcsp-vehicle-decision layout="focused" [name]="vm.name" kicker="Your buddy found a car for you" [finishes]="vm.finishes" [points]="vm.monthlyPoints" [allowance]="vm.monthlyAllowance" [pointsDifference]="vm.pointsDifference">
           <div decisionDeadline class="gcsp-decision-deadline"><div><strong>{{ vm.deadlineTime ? 'Held until ' + vm.deadlineTime : 'Deadline unavailable' }}</strong>
             @if (vm.deadlineDate) { <p class="gcsp-decision-date">{{ vm.deadlineDate }}</p> }
           </div><div class="gcsp-decision-clock"><p class="gcsp-countdown" aria-label="Time left to decide">{{ vm.remaining }}</p><p class="gcsp-decision-date">left to decide</p></div></div>
           <gcsp-offer-decision decisionActions />
           <gcsp-media-gallery decisionMedia [name]="vm.name" [images]="vm.images" presentation="picker" fit="contain" />
           @if (vm.overview.length) { <gcsp-fact-list decisionOverview presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="vm.overview" /> }
-          <gcsp-vehicle-details decisionDetails [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.rows" [equipment]="vm.equipment" [additionalDetails]="cardDecision" />
+          <gcsp-vehicle-details decisionDetails [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.detailRows" factsPresentation="source-card" [equipment]="vm.equipment" [additionalDetails]="cardDecision" />
         </gcsp-vehicle-decision>
       } @else {
       <div class="offer-focused">

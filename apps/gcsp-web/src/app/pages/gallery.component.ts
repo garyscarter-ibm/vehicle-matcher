@@ -126,6 +126,10 @@ import { OptionListComponent } from '../kit/option-list.component';
     <gcsp-vehicle-details name="BMW X2 M35i in Black Sapphire with a long supplied upholstery and model description"
       [finishes]="detailsFinishes" [facts]="detailsFacts" [equipment]="detailsEquipment" [additionalDetails]="detailsDecision" />
     <gcsp-vehicle-details name="Car with equipment not supplied" [finishes]="[{ label: 'Paint', value: null }, { label: 'Upholstery', value: '' }]" [facts]="[{ label: 'Build month', value: null }]" />
+    <h3>Exact-card source facts</h3>
+    <gcsp-vehicle-details name="Car with bounded source specification" factsPresentation="source-card"
+      [finishes]="[{ label: 'Paint', value: 'Alpine White' }]"
+      [facts]="[{ label: 'Boot', value: 410, unit: 'litres' }, { label: 'Recorded count', value: 0 }, { label: 'Recorded option', value: false }, { label: 'Unknown fact', value: null }]" />
   </section>
   <section class="gcsp-panel"><h2>Source vehicle images</h2>
     <p class="gcsp-note">Approved supplied views share feature, thumbnails and the enlarged viewer. The focused decision above uses the picker and contain variants.</p>

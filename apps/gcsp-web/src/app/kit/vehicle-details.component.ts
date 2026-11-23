@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, computed, effect, input, signal, viewChild } from '@angular/core';
 import { ButtonDirective } from './button.directive';
-import { FactListComponent } from './fact-list.component';
+import { FactListComponent, FactRow } from './fact-list.component';
 import { SideDrawerComponent } from './side-drawer.component';
 import { GcspTabItem, TabsComponent } from './tabs.component';
 
@@ -21,7 +21,8 @@ export interface VehicleDetailRow {
 export class VehicleDetailsComponent {
   readonly name = input.required<string>();
   readonly finishes = input<readonly VehicleDetailRow[]>([]);
-  readonly facts = input<readonly VehicleDetailRow[]>([]);
+  readonly facts = input<readonly FactRow[]>([]);
+  readonly factsPresentation = input<'default' | 'source-card'>('default');
   readonly equipment = input<readonly string[]>([]);
   readonly additionalDetails = input<TemplateRef<unknown> | null>(null);
   readonly isOpen = signal(false);
@@ -44,7 +45,7 @@ export class VehicleDetailsComponent {
 
   constructor() {
     effect(() => {
-      const snapshot = JSON.stringify({ name: this.name(), finishes: this.finishes(), facts: this.facts(), equipment: this.equipment() });
+      const snapshot = JSON.stringify({ name: this.name(), finishes: this.finishes(), facts: this.facts(), equipment: this.equipment(), factsPresentation: this.factsPresentation() });
       const additionalDetails = this.additionalDetails();
       if (this.previousSnapshot !== null && (snapshot !== this.previousSnapshot || additionalDetails !== this.previousAdditionalDetails)) {
         this.drawer()?.close(true);

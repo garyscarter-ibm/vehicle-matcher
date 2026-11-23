@@ -18,7 +18,9 @@
 <ng-template #specificationTemplate>
   <div class="gcsp-vehicle-specification">
     @if (suppliedFinishes().length) { <gcsp-fact-list presentation="source" [rows]="suppliedFinishes()" /> }
-    @if (facts().length) { <gcsp-fact-list presentation="source" [rows]="facts()" /> }
+    @if (factsPresentation() === 'source-card') {
+      <div class="vm-card-facts"><gcsp-fact-list presentation="source" className="vm-facts-pair" hideMissing="More details not supplied" [rows]="facts()" /></div>
+    } @else if (facts().length) { <gcsp-fact-list presentation="source" [rows]="facts()" /> }
     @if (additionalDetails(); as details) { <ng-container [ngTemplateOutlet]="details" /> }
   </div>
 </ng-template>

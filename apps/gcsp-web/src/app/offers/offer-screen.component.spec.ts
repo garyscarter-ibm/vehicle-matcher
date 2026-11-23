@@ -50,7 +50,7 @@ describe('native offer read screen', () => {
   it('renders exact terms, nested reasons, all details and deliberate review controls without submitting', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     expect(text()).toContain('BMW 330e M Sport Touring'); expect(text()).toContain('295 points a month');
-    expect(text()).toContain('620 points a month allowance'); expect(text()).toContain('£12.50 a month');
+    expect(text()).toContain('620 points a month allowance'); expect(text()).not.toContain('£12.50 a month');
     expect(text()).not.toContain('Required: at least 5'); expect(text()).toContain('Mileage needs confirmation.');
     expect(text()).not.toContain('[object Object]'); expect(text()).not.toMatch(/synthetic|fictional|example data/i);
     expect(fixture.nativeElement.querySelector('[data-offer-action="accept"]').textContent).toContain('Review & accept');
@@ -198,6 +198,11 @@ describe('native offer read screen', () => {
     const dialog = host.querySelector<HTMLElement>('gcsp-vehicle-details .gcsp-side-drawer:not([hidden]) [role="dialog"]');
     expect(dialog).not.toBeNull(); expect(dialog?.textContent).toContain('Mileage needs confirmation.');
     expect(dialog?.querySelector('.vm-card-decision .vm-why-label')?.textContent).toBe('Needs confirmation');
+    expect(dialog?.querySelectorAll('.gcsp-vehicle-specification > .vm-card-facts')).toHaveLength(1);
+    expect(dialog?.querySelectorAll('.vm-card-facts .vm-facts-wrap > .vm-facts-pair')).toHaveLength(1);
+    expect(Array.from(dialog?.querySelectorAll('.vm-card-facts dt') ?? [], node => node.textContent)).toEqual(['Model', 'Derivative', 'Body style', 'Fuel', 'Seats', 'Boot', 'Gearbox']);
+    expect(Array.from(dialog?.querySelectorAll('.vm-card-facts .vm-facts-more') ?? [], node => node.textContent)).toEqual(['More details not supplied']);
+    expect(dialog?.querySelector('.vm-card-facts')?.textContent).not.toMatch(/Front ISOFIX|Manufacturer|Mileage|Options|Paint|Interior/);
     expect(dialog?.textContent).toContain('Seats'); expect(dialog?.textContent).toContain('5');
     expect(dialog?.textContent).not.toContain('Required: at least 5');
     const equipment = Array.from(dialog?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? []).find(tab => tab.textContent?.includes('Selected equipment'))!;

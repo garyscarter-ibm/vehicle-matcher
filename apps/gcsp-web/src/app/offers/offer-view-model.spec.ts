@@ -22,6 +22,34 @@ describe('offer read presentation projection', () => {
       facts: { ...source.quote.facts, facts: { options: screenFact(null) } } } });
     expect(vm.points).toBe('0'); expect(vm.allowance).toBeNull(); expect(vm.contribution).toBeNull(); expect(vm.equipment).toEqual([]);
   });
+  it('projects only the pending source card facts while retaining every raw fact and contribution', () => {
+    const offer = offerScreenFixture(); const before = JSON.stringify(offer); const vm = offerViewModel(offer);
+    expect(vm).toHaveProperty('detailRows', [
+      { label: 'Model', value: '3 Series' }, { label: 'Derivative', value: 'M Sport Pro package' },
+      { label: 'Body style', value: 'Touring', unit: undefined }, { label: 'Fuel', value: 'Plug in hybrid', unit: undefined },
+      { label: 'Seats', value: 5, unit: undefined }, { label: 'Boot', value: 410, unit: 'litres' },
+      { label: '0 to 62 mph', value: null, unit: undefined }, { label: 'Fuel economy', value: null, unit: undefined },
+      { label: 'Gearbox', value: 'Automatic', unit: undefined, missingLabel: 'Not supplied' },
+    ]);
+    expect(vm.rows).toContainEqual({ label: 'Front ISOFIX', value: 'No' }); expect(vm.contribution).toBe('£12.50 a month');
+    expect(JSON.stringify(offer)).toBe(before);
+  });
+  it('uses source String/valueText finish and equipment copy without replacing supplied false or zero', () => {
+    const source = offerScreenFixture(); const offer = { ...source, quote: { ...source.quote, facts: { ...source.quote.facts,
+      facts: { ...source.quote.facts.facts, colour: screenFact(false), interior: screenFact(0), options: screenFact([false, 0, null, '']) } } } };
+    const before = JSON.stringify(offer); const vm = offerViewModel(offer);
+    expect(vm.finishes).toEqual([{ label: 'Paint', value: 'false' }, { label: 'Upholstery', value: '0' }]);
+    expect(vm.equipment).toEqual(['false', '0', 'Not supplied', '']); expect(JSON.stringify(offer)).toBe(before);
+  });
+  it.each([[false, false], [[], 'None listed']] as const)('keeps scalar or empty equipment %s in source facts rather than manufacturing a selected item', (value, rendered) => {
+    const source = offerScreenFixture(); const offer = { ...source, quote: { ...source.quote, facts: { ...source.quote.facts,
+      display: { ...source.quote.facts.display, colour: 'Do not borrow this paint' },
+      facts: { ...source.quote.facts.facts, colour: screenFact(null), interior: screenFact(null), options: screenFact(value) } } } };
+    const vm = offerViewModel(offer);
+    expect(vm.finishes).toEqual([{ label: 'Paint', value: null }, { label: 'Upholstery', value: null }]);
+    expect(vm.equipment).toEqual([]);
+    expect(vm).toHaveProperty('detailRows', expect.arrayContaining([{ label: 'Options', value: rendered, unit: undefined, missingLabel: 'Fitted equipment unknown' }]));
+  });
   it('formats nested grounded explanations without object coercion or omitted facts', () => {
     const entry = offerExplanation({ code: 'essential-met', field: 'seats', fact: screenFact(5), requirement: { operator: 'gte', value: 5, unit: 'count' }, facts: { boot: screenFact(null) }, desired: 'Estate' });
     expect(entry.title).toBe('Meets your requirement: Seats');

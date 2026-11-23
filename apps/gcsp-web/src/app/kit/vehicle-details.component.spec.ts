@@ -4,10 +4,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SideDrawerComponent } from './side-drawer.component';
 import { TabsComponent } from './tabs.component';
 import { VehicleDetailRow, VehicleDetailsComponent } from './vehicle-details.component';
+import { FactRow } from './fact-list.component';
 
 @Component({
   imports: [VehicleDetailsComponent],
-  template: '<gcsp-vehicle-details [name]="name()" [finishes]="finishes()" [facts]="facts()" [equipment]="equipment()" [additionalDetails]="additionalDetails()" /><ng-template #additional>Source-supplied specification detail</ng-template><ng-template #revised>Revised supplied decision detail</ng-template>',
+  template: '<gcsp-vehicle-details [name]="name()" [finishes]="finishes()" [facts]="facts()" [factsPresentation]="factsPresentation()" [equipment]="equipment()" [additionalDetails]="additionalDetails()" /><ng-template #additional>Source-supplied specification detail</ng-template><ng-template #revised>Revised supplied decision detail</ng-template>',
 })
 class VehicleDetailsHost implements OnInit {
   @ViewChild('additional', { static: true }) additional!: TemplateRef<unknown>;
@@ -17,7 +18,8 @@ class VehicleDetailsHost implements OnInit {
     { label: 'Paint', value: 'Black Sapphire' },
     { label: 'Upholstery', value: 'M Alcantara Veganza combination Black contrast stitching with extended long text' },
   ]);
-  readonly facts = signal<readonly VehicleDetailRow[]>([
+  readonly factsPresentation = signal<'default' | 'source-card'>('default');
+  readonly facts = signal<readonly FactRow[]>([
     { label: 'Body style', value: 'SUV' },
     { label: 'Fuel', value: 'Petrol' },
     { label: 'Transmission', value: 'Automatic' },
@@ -36,6 +38,46 @@ afterEach(() => {
 });
 
 describe('VehicleDetailsComponent', () => {
+  it('composes source card facts with raw zero/false/units and one missing note through FactList', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.finishes.set([]);
+    const rows = Object.freeze([{ label: 'Boot', value: 410, unit: 'litres' }, { label: 'Count', value: 0 },
+      { label: 'Option', value: false }, { label: 'Unknown', value: null }, { label: 'Empty', value: '' }]);
+    host.facts.set(rows); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement; const facts = root.querySelector('.gcsp-vehicle-specification > .vm-card-facts');
+    expect(facts?.querySelectorAll('.vm-facts-wrap > dl.vm-facts.vm-facts-pair')).toHaveLength(1);
+    expect(Array.from(facts?.querySelectorAll('dt') ?? [], row => row.textContent)).toEqual(['Boot', 'Count', 'Option']);
+    expect(Array.from(facts?.querySelectorAll('dd') ?? [], row => row.textContent)).toEqual(['410 litres', '0', 'false']);
+    expect(Array.from(facts?.querySelectorAll('.vm-facts-more') ?? [], row => row.textContent)).toEqual(['More details not supplied']);
+    expect(host.facts()).toBe(rows);
+  });
+  it('shows one source missing note when all supplied card facts are unknown', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.finishes.set([]); host.facts.set([{ label: 'Unknown', value: null }]);
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelectorAll('.vm-card-facts dl')).toHaveLength(0);
+    expect(root.querySelector('.vm-card-facts .vm-facts-wrap > .vm-facts-more')?.textContent).toBe('More details not supplied');
+  });
+  it('closes source details when a hidden raw missing value changes with the same rendered facts', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    host.factsPresentation.set('source-card'); host.facts.set([{ label: 'Unknown', value: null }]);
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click(); fixture.detectChanges();
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1].click(); fixture.detectChanges();
+    host.facts.set([{ label: 'Unknown', value: '' }]); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(true);
+    expect(root.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
+    expect(root.querySelector('.vm-card-facts .vm-facts-more')?.textContent).toBe('More details not supplied');
+  });
+  it('closes and resets when presentation changes while supplied raw facts stay equivalent', async () => {
+    const fixture = TestBed.createComponent(VehicleDetailsHost); const host = fixture.componentInstance;
+    await fixture.whenStable(); const root = fixture.nativeElement as HTMLElement;
+    root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click(); fixture.detectChanges();
+    root.querySelectorAll<HTMLButtonElement>('[role="tab"]')[1].click(); fixture.detectChanges();
+    host.factsPresentation.set('source-card'); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(true);
+    expect(root.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toBe('Specification');
+  });
   it('retains long supplied facts and all 57 equipment items behind a truthful, focus-wired drawer', async () => {
     const fixture = TestBed.createComponent(VehicleDetailsHost);
     await fixture.whenStable();

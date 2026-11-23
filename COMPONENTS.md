@@ -714,17 +714,25 @@ keeps source `vm-btn vm-btn-ghost` classes beside its existing ButtonDirective.
 All copied local presentation rules are removed; only the Angular host uses
 `display: contents`, consuming FUCQ-548's canonical global source styles.
 
-Public inputs remain `name`, readonly `finishes`/`facts: VehicleDetailRow[]`,
-`equipment` and `additionalDetails: TemplateRef | null`; the latter retains the
+Public inputs are `name`, readonly `finishes: VehicleDetailRow[]`, readonly
+`facts: FactRow[]` (existing string/null callers remain compatible), `equipment`
+and `additionalDetails: TemplateRef | null`; the latter retains the
 supplied decision/detail seam. `VehicleDetailRow`, `isOpen`, `tabItems`,
 `openDrawerFromEvent`, `openDrawer`, `displayValue` and `onDrawerClosed` remain.
-The existing raw JSON snapshot and separate TemplateRef identity guard are
-unchanged: equivalent readback preserves the open drawer, selected tab and focus;
-changed supplied details/template closes and resets to Specification. Actual
-production callers remain OfferScreen and OfferFollowup, with no caller edits.
+Optional `factsPresentation="source-card"` wraps those supplied raw facts in
+`.vm-card-facts` and reuses FactList's `vm-facts-pair` and
+`hideMissing="More details not supplied"`. It retains zero, false and supplied
+units; missing rows produce one note. The default preserves its prior DOM and
+explicit missing rows. Use the option for the pending offer's bounded source
+facts instead of local fact markup. The raw JSON snapshot and separate TemplateRef
+identity guard remain: equivalent readback preserves the open drawer/tab/focus;
+changed raw details, template or presentation closes and resets to Specification.
+OfferScreen's pending card uses this option; nonpending and OfferFollowup retain
+their default bindings. No facts are replaced with an empty guard snapshot.
 
 Gallery: **Source car details** shows long finishes, all 57 equipment entries,
-a supplied decision template and missing-equipment/finish values. This is a source
+a supplied decision template, missing-equipment/finish values and the exact-card
+source facts option with raw zero/false, units and a hidden missing row. This is a source
 checkpoint; F548/shared-button style integration, real browser/visual behavior,
 connected acceptance and same-offer human parity remain separate gates. All eight
 original FUCQ-555 acceptance criteria remain open.

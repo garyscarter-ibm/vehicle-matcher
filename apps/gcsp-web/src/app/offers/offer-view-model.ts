@@ -3,6 +3,7 @@ import { VehicleDetailRow } from '../kit/vehicle-details.component';
 import { orderIdentityRows } from '../kit/order-identity';
 import type { DecisionHighlight } from '../kit/decision-highlights.component';
 import { bodyStyleLabel, fuelSpecLabel, reasonText } from '../preferences/brief.copy';
+import type { FactRow } from '../kit/fact-list.component';
 
 const labels: Readonly<Record<string, string>> = {
   eligibilityModelKey: 'Scheme model', body: 'Body style', fuel: 'Fuel', seats: 'Seats', doors: 'Doors', boot: 'Boot',
@@ -104,13 +105,24 @@ function currentValue(key: string, value: string | number | undefined): string |
 }
 
 // Match decisionView's supplied fact labels and its bounded unit map before comparison.
-function offeredValue(key: string, fact: OfferFact | undefined): string | null {
-  if (fact?.status !== 'known') return null;
-  const value = key === 'body' ? bodyStyleLabel(fact.value) : key === 'fuel'
+function offeredFact(key: string, fact: OfferFact | undefined): FactRow {
+  const raw = fact?.status !== 'known' ? null : key === 'body' ? bodyStyleLabel(fact.value) : key === 'fuel'
     ? fuelSpecLabel(fact.value) ?? String(fact.value).replaceAll('-', ' ').replaceAll('_', ' ') : fact.value;
-  if (value === null || value === '') return null;
-  const unit = ({ L: 'litres', s: 's', 'mpg-imperial': 'mpg' } as Readonly<Record<string, string>>)[fact.unit ?? ''];
+  const value = raw !== null && typeof raw === 'object' ? String(raw) : raw;
+  const unit = ({ L: 'litres', s: 's', 'mpg-imperial': 'mpg' } as Readonly<Record<string, string>>)[fact?.unit ?? ''];
+  return { label: comparisonLabel(key), value, unit };
+}
+
+function offeredValue(key: string, fact: OfferFact | undefined): string | null {
+  const { value, unit } = offeredFact(key, fact);
+  if (value == null || value === '') return null;
   return `${typeof value === 'number' ? value.toLocaleString('en-GB') : value}${unit ? ` ${unit}` : ''}`;
+}
+
+function detailFact(label: string, fact: OfferFact | undefined, missingLabel = 'Not supplied'): FactRow {
+  const raw = fact?.status === 'known' ? fact.value : null;
+  const value = raw !== null && typeof raw === 'object' ? raw.length ? raw.map((entry) => entry === null ? 'Not supplied' : String(entry)).join(', ') : 'None listed' : raw;
+  return { label, value, unit: fact?.unit ?? undefined, missingLabel };
 }
 
 function comparableNumber(value: string | null): number | null {
@@ -135,17 +147,21 @@ export function offerViewModel(offer: OfferProjection) {
       : selection.selectionState === 'handoff-failed' ? `The car stays reserved for you. Nothing has been ordered.${selection.orderReference ? ` Quote order reference ${selection.orderReference} when you contact scheme support.` : ''}`
         : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`;
   }
-  const finishes: readonly VehicleDetailRow[] = [
-    { label: 'Paint', value: facts['colour'] ? offerFactValue(facts['colour']) : display.colour ?? null },
-    { label: 'Upholstery', value: facts['interior'] ? offerFactValue(facts['interior']) : null },
-  ];
+  const finishFacts = [facts['colour'] ? detailFact('Paint', facts['colour']) : { label: 'Paint', value: display.colour ?? null }, detailFact('Upholstery', facts['interior'])];
+  const finishes: readonly VehicleDetailRow[] = finishFacts.map(({ label, value }) => ({ label, value: value == null ? null : String(value) }));
   const rows: VehicleDetailRow[] = [
     ...(['manufacturer', 'model', 'derivative'] as const).filter((key) => display[key] !== undefined).map((key) => ({ label: offerFieldLabel(key), value: display[key]! })),
     ...Object.entries(facts).filter(([key]) => !['colour', 'interior'].includes(key)).map(([key, fact]) => ({ label: offerFieldLabel(key), value: offerFactValue(fact) })),
   ];
   const equipmentFact = facts['options'] ?? facts['equipment'];
-  const equipment = equipmentFact?.status === 'known' && equipmentFact.value !== null
-    ? (Array.isArray(equipmentFact.value) ? equipmentFact.value : [equipmentFact.value]).map((value) => offerValue(value)) : [];
+  const equipment = equipmentFact?.status === 'known' && Array.isArray(equipmentFact.value)
+    ? equipmentFact.value.map((value) => value === null ? 'Not supplied' : String(value)) : [];
+  const detailRows: readonly FactRow[] = [
+    { label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
+    ...(equipment.length ? [] : [detailFact('Options', equipmentFact, 'Fitted equipment unknown')]),
+    ...['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg'].map((key) => offeredFact(key, facts[key])),
+    detailFact('Gearbox', facts['gearbox'] ?? facts['transmission']),
+  ];
   const overview = ['body', 'fuel', 'boot', 'seats'].map((key) => ({ label: comparisonLabel(key), value: offeredValue(key, facts[key]) }))
     .filter((row) => row.value !== null);
   const expiresAt = Date.parse(offer.expiresAt); const serverNow = Date.parse(offer.serverNow);
@@ -198,7 +214,7 @@ export function offerViewModel(offer: OfferProjection) {
     ...(orderNumber ? orderIdentityRows(null, orderNumber) : [])];
   const selectionIdentityRows = refused && (offer.selection?.orderReference || offer.selection?.orderNumber)
     ? orderIdentityRows(offer.selection.orderReference, offer.selection.orderNumber) : [];
-  return { title, message, name: display.name, finishes, rows, equipment, overview, comparison,
+  return { title, message, name: display.name, finishes, rows, detailRows, equipment, overview, comparison,
     images: display.images.length ? display.images : display.photo ? [{ src: display.photo, alt: display.name }] : [],
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,
