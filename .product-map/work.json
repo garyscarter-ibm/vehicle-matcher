@@ -10732,7 +10732,7 @@
       "branch": "dev/DEV-2026-11-22-vesper-028",
       "evidence": "Native claim remains In Progress at21points; all8 original ACs unchanged/unticked. Source checkpoints a9fdc1cee and90999d25e published and exact remote verified. Independent stage-only review passed; decision review/integration/source-final/connected/human parity remain separate. Next parent allocation: canonical Tabs/compatible FactList only.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T01:30:49Z",
+      "observed_at": "2026-11-23T02:08:30Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10764,9 +10764,9 @@
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
         {
-          "evidence": "Original Documents/error/radio/checkbox/saved Activity criteria unchanged. Canonical checkbox and compatible single-select rows source prerequisites validated; actual drawer/follow-up composition remains unstarted. ErrorSummary source option is next. No store/client/API change.",
+          "evidence": "Original Documents/error/radio/checkbox/saved Activity criteria unchanged. Canonical checkbox, single-select rows and ErrorSummary source prerequisites are available; actual drawer/follow-up composition remains unstarted. No producer/store/client/API change.",
           "id": "decision-followup",
-          "observed_at": "2026-11-23T01:30:49.633738+00:00",
+          "observed_at": "2026-11-23T02:08:30.749169+00:00",
           "status": "not-started",
           "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
         },
@@ -10778,9 +10778,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Latest OptionList27direct+Stock23+Gallery-route14=64scoped passes, boundaries4/config and ratchet124 after2source reds/25passes. Prior checkpoint evidence retained without unrelated rerun. Final composed source/build/built-HTML and rendered/human proof remain open.",
+          "evidence": "Latest final ErrorSummary133cases across9files plus boundaries4/config and ratchet124 passed; intermediate/red/host-adapter checkpoints retained, no aggregate full-suite claim. Prior unrelated source proof reused. Final composed source/build/built-HTML and rendered/human gates remain open.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T01:30:49.633738+00:00",
+          "observed_at": "2026-11-23T02:08:30.749169+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10818,13 +10818,13 @@
           "name": "usget-vesper launcher",
           "harness": "codex",
           "role": "dispatcher carrying source controls implementation",
-          "observed_at": "2026-11-23T01:30:49.633738+00:00",
-          "expires_at": "2026-11-23T02:00:49.633738+00:00",
+          "observed_at": "2026-11-23T02:08:30.749169+00:00",
+          "expires_at": "2026-11-23T02:38:30.749169+00:00",
           "source": "Observed direct work after repeated child422, AGENTS6November; runtime pair not independently exposed, no model/provider/key change.",
-          "status": "active; validated OptionList source rows publication"
+          "status": "active; validated ErrorSummary source publication"
         }
       ],
-      "note": "All8originalAC open. Canonical checkbox published3f4fb954e; compatible source OptionList rows now validated with27direct+37actual Stock/Gallery callers, boundaries4/config and ratchet124. No production offer consumer change. Launcher VehicleDetails source review passed; no fresh-agent/security/visual verdict. Sibling integration/build/browser/live1280pair remain open."
+      "note": "All8originalAC open. Shared source controls include checkbox3f4fb954e, rows50db313cd and compatible ErrorSummary now validated on133scoped Angular cases, boundaries4/config and ratchet124. Source-only host adapter preserves default callers. Actual offer/decision composition, sibling integration/build/browser/live1280pair remain open; no human acceptance."
     }
   ],
   "version": 1

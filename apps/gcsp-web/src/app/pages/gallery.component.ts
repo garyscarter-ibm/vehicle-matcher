@@ -39,6 +39,13 @@ import { OptionListComponent } from '../kit/option-list.component';
     <p role="status">Example choice only. Nothing has been submitted.</p>
     <gcsp-option-list groupId="gallery-decline-reason-disabled" label="Example unavailable reasons" variant="rows" [options]="exampleReasons" [value]="selectedReason()" [disabled]="true" />
   </section>
+  <section class="gcsp-panel"><h2>Source validation summary</h2>
+    <gcsp-error-summary #sourceSummary presentation="source" summaryId="gallery-source-summary" title="Check before continuing" [errors]="[{ controlId: 'gallery-summary-email', message: 'Enter an email address.' }]" />
+    <gcsp-labelled-field controlId="gallery-summary-email" label="Example email address" error="Enter an email address."><input id="gallery-summary-email" type="email" aria-invalid="true" aria-describedby="gallery-summary-email-error" /></gcsp-labelled-field>
+    <button gcspButton type="button" variant="ghost" (click)="sourceSummary.focus()">Focus example errors</button>
+    <gcsp-error-summary presentation="source" summaryId="gallery-source-empty" [errors]="[]" />
+    <p class="gcsp-note">Example validation only. No form is submitted.</p>
+  </section>
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
   <gcsp-status-screen title="Access not available" message="Your account does not have access to this page." [level]="2" />
