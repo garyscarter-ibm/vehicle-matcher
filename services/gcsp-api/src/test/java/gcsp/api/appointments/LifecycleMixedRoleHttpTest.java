@@ -117,8 +117,7 @@ class LifecycleMixedRoleHttpTest {
         assertEquals("operator-greg", identity.get("employeeId").asText());
         assertEquals("sub-greg-dual", identity.get("subject").asText());
 
-        // Claims compare quote expiry to wall time; align the real presenter clock before creating quotes.
-        journey.advanceAndTick(Instant.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).plusSeconds(60));
+        // F581 supplies scoped run time to claims and ordering; use the actual unmodified scenario clock.
         // The released input includes an X1 eligible for Alex's grade, as in DocumentsJourneySupport.
         seedReleasedStock();
         alexOrder = journey.placeOrder("alex");
