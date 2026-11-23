@@ -144,6 +144,15 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   is not enough; the effort is part of the choice.
 - **Dev inbox.** When the inbox piece is on (see `.claude/scaffolding.json`), the procedure is `references/code-poller.md`
   in the plugin's dev-inbox skill, section Adapters, Codex.
+- **Data strategy.** Before creating/refining an epic that changes data, or planning, implementing or reviewing
+  persistence, queries or backend workloads, read `<repo>/plugin/skills/design-with-drawio/data-design.md`.
+  Apply it with design/inbox off too. Carry the strategy mode, contract reference and relevant evidence
+  into affected briefs; resolve routine data choices in the architecture-owning parent.
+- **Migration parity.** Only work that replaces one implementation of a user-visible app, or some of its screens,
+  with another to retire the old one, or a Story whose acceptance claims parity, is in scope: before creating or
+  refining such an epic, or writing, building or accepting a Story in it, read
+  `<repo>/plugin/skills/backlog/references/migration-parity.md`. Its baseline adds to every existing test and done
+  rule. Ordinary UI changes, new features, redesigns with no parity claim and backend-only migrations are out of scope.
 - **Bugs.** Before intake, triage, repair or review, read `<repo>/plugin/skills/defects/SKILL.md`; give children its
   absolute path and current diagnosis note.
 - **Product map.** When `pieces.product-map` is on, follow the product-map skill. Keep stable product
@@ -155,6 +164,48 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   active workers from commits. Follow the configured publishing mode; local hooks must be installed
   in each contributing clone, and IBM Pages serves the committed static files from main.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
+
+## Turning feedback into a standing rule
+
+Before saving a collaborator's feedback as a lasting instruction (a memory note, a brief, a skill or an instruction
+file), check how it could go wrong when read literally. An agent that copies it later sees only the words, not why
+they were said. The same rules are in the managed CLAUDE.md's "Turning my feedback into a standing rule".
+
+- **Intent.** State the intent in one line, such as "less ceremony" or "stop chasing gaps".
+- **What it must not weaken.** Name it: what counts as done, the acceptance criteria, scope, safety and cost.
+- **Backfire check.** Ask how an agent that follows it to the letter, with none of the conversation, could get it
+  wrong, in every brief it will be copied into and alongside work running at the same time. If there's a way, write
+  the safeguard into the rule itself.
+- **Origin.** Record where the rule came from and the date, so a later reader can tell a hasty remark from a
+  considered decision.
+- **Bars.** If the rule changes a bar the collaborator didn't mention, ask them in one line before saving it.
+- **A rule made for one phase ends with that phase.** When its source ties it to a phase, event or date ("until the
+  demo works", "this week", "for the Node build"), record the phase and an end that can be checked: a date, an epic or
+  Story reaching a status, or a named event recorded where an agent can read it. Every copy (a brief, a project
+  instruction file, a contract document, memory) carries the phase and the end. When the end has passed, the rule
+  lapses: stop applying it, and the default from before it applies again. The next session tells a collaborator once
+  and marks the rule lapsed rather than deleting it. Only a human collaborator carries it into a new phase, recorded
+  with the new phase; an agent never extends it. If it's unclear whether a rule is phase-specific, or no end is given,
+  ask in one line when saving it.
+- **Phase safeguards.** A rule whose source names no phase stays standing: don't invent a phase to retire a durable
+  rule. Lapsing never lowers a bar; it brings back the default from before the rule, so a phase rule that added checks
+  lapses back to the normal checks, not to none. Any collaborator can set or extend a phase; it isn't owner-only.
+- **A gate added to one layer gets checked against its siblings.** When a review, audit or bug fix adds a gate (a
+  check, a required Result line, a rule), list the sibling layers the same failure could reach (backend, frontend,
+  data and deploy; Claude and Codex; the old and the new implementation). Record each as one of three: the same gate
+  added; not needed, and why; or a follow-up item, with its key. Record it wherever the gate is recorded: the
+  learnings entry, the Bug's Result, the commit message or the rule's **Why**.
+- **Sibling safeguards.** Only for new gates, not for every fix. One line per sibling; "not needed, because …" is a
+  valid answer. The original fix isn't held up: a sibling gate can be a filed follow-up with its key, not a note. It
+  never adds a gate by itself: a sibling gate that would refuse, drop or hold back work still goes through the managed
+  CLAUDE.md's "Don't invent limits that refuse work" (ask a collaborator in one line first; unattended, build without
+  it and record the question).
+- **Why.** A 2026-11-11 complaint about over-testing was saved as "when ACs are met or the remaining gap is outside
+  the story, merge"; briefs copied it, and 28 stories merged as done with unmet criteria. A "don't pause for layout
+  reviews until the demo works" direction for one build phase was copied into a migration contract and governed the
+  migration. Phase rules added 2026-11-20 (SCAF-45). An audit's fix for the Java half of a migration added the
+  `partial` status and route-parity lines, and nothing asked whether the Angular half needed the same check; it lost
+  the notification bell, live refresh and most of the kit. Sibling rule added 2026-11-20 (SCAF-46).
 <!-- END agent-scaffolding -->
 
 ## Story test set

@@ -127,7 +127,7 @@ class ActivityHttpTest {
         String offerId = text("SELECT offer_id FROM buddy_offers WHERE employee_id = ?", PAULA);
         JsonNode current = v.get("currentOffer");
         assertEquals(offerId, current.get("offerRef").get("offerId").textValue());
-        assertEquals("/gcsp/offer?offerId=" + ActivityService.encode(offerId) + "&runId=run-1", current.get("href").textValue());
+        assertEquals("/gcsp/offers/" + offerId.replace(":", "%3A") + "?runId=run-1", current.get("href").textValue());
         assertEquals("active", current.get("state").textValue());
         assertEquals(1, v.get("offers").size());
         JsonNode check = v.get("lastSuccessfulCheck");
@@ -166,6 +166,60 @@ class ActivityHttpTest {
         tick("t-bad", "interrupted", order, "[{\"handlerId\":\"release\",\"stage\":\"release-pull\",\"outcome\":{\"status\":\"unavailable\","
                 + "\"code\":\"x\",\"retryable\":true}}]");
         assertEquals("unavailable", status());
+    }
+
+    @Test
+    @Order(5)
+    void offerHrefKeepsEncodedIdentityAndRunWhenActiveAndExpired() throws Exception {
+        String offerId = "offer /+?#%é";
+        Instant created = Instant.parse(text("SELECT to_char(max(created_at) AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') FROM buddy_offers"));
+        seedOffer("run-1", PAULA, offerId, created.plusSeconds(1));
+        seedOffer("run-1", OTHER, "other-employee-offer", created.plusSeconds(2));
+        update("INSERT INTO runs (environment_id, run_id, status, retired_at) VALUES (?, 'other-run', 'retired', now())", ENV);
+        seedOffer("other-run", PAULA, "other-run-offer", created.plusSeconds(3));
+
+        String href = "/gcsp/offers/offer%20%2F%2B%3F%23%25%C3%A9?runId=run-1";
+        for (String state : List.of("active", "expired")) {
+            if (state.equals("expired")) update("UPDATE buddy_offers SET state = 'expired', version = version + 1 "
+                    + "WHERE environment_id = ? AND run_id = 'run-1' AND offer_id = ?", ENV, offerId);
+            JsonNode value = JSON.readTree(get("sub-employee-a").then().statusCode(200).extract().asString()).get("value");
+            assertEquals("run-1", value.get("runId").textValue());
+            assertEquals(PAULA, value.get("employeeId").textValue());
+            JsonNode current = value.get("currentOffer");
+            assertEquals(offerId, current.get("offerRef").get("offerId").textValue());
+            assertEquals(href, current.get("href").textValue());
+            assertEquals(state, current.get("state").textValue());
+            assertEquals(state.equals("active") ? 1 : 2, current.get("version").intValue());
+            assertEquals(2, value.get("offers").size());
+            assertFalse(value.toString().contains("other-employee-offer"));
+            assertFalse(value.toString().contains("other-run-offer"));
+            JsonNode other = JSON.readTree(get("sub-employee-b").then().statusCode(200).extract().asString()).get("value");
+            assertEquals("other-employee-offer", other.get("currentOffer").get("offerRef").get("offerId").textValue());
+            assertEquals(1, other.get("offers").size());
+            assertFalse(other.toString().contains(offerId));
+        }
+    }
+
+    private void seedOffer(String run, String employee, String id, Instant created) throws SQLException {
+        update("INSERT INTO employees (environment_id, run_id, employee_id) VALUES (?, ?, ?) ON CONFLICT DO NOTHING",
+                ENV, run, employee);
+        update("INSERT INTO entitlement_slots (environment_id, run_id, slot_id, employee_id, capacity) VALUES (?, ?, ?, ?, 1)",
+                ENV, run, id, employee);
+        update("INSERT INTO stock_cars (environment_id, run_id, order_uuid, configuration_id, state) "
+                + "VALUES (?, ?, ?, 'config-1', 'held')", ENV, run, id);
+        update("INSERT INTO allocation_runs (environment_id, run_id, allocation_id, trigger_type, source_event_id, input_digest, "
+                + "state, evaluated_at, clock_version, policy_version, plan, contender_count) "
+                + "VALUES (?, ?, ?, 'stock-released', ?, ?, 'pending', ?, 1, 'policy-1', '{}'::jsonb, 0)",
+                ENV, run, id, id, "0".repeat(64), ts(created));
+        update("INSERT INTO buddy_quotes (environment_id, run_id, quote_id, allocation_id, order_uuid, employee_id, slot_id, "
+                + "configuration_id, policy_version, quoted_at, quote) VALUES (?, ?, ?, ?, ?, ?, ?, 'config-1', 'policy-1', ?, '{}'::jsonb)",
+                ENV, run, id, id, id, employee, id, ts(created));
+        update("INSERT INTO custody_holds (environment_id, run_id, hold_id, order_uuid, employee_id, slot_id, slot_unit, "
+                + "hold_type, state, expires_at) VALUES (?, ?, ?, ?, ?, ?, 1, 'buddy-offer', 'active', ?)",
+                ENV, run, id, id, employee, id, ts(created.plusSeconds(7200)));
+        update("INSERT INTO buddy_offers (environment_id, run_id, offer_id, hold_id, quote_id, employee_id, order_uuid, "
+                + "state, brief_version, policy_version, expires_at, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'active', 1, 'policy-1', ?, ?)",
+                ENV, run, id, id, id, employee, id, ts(created.plusSeconds(7200)), ts(created));
     }
 
     private String status() throws Exception {
