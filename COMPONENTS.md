@@ -652,3 +652,33 @@ all-hidden summaries and accessible tab panels. **Selection and order stages** n
 uses the source variant for exact identity rows. Media, complete details, drawer,
 generic-card and offer composition remain separate named obligations; no such
 presenter is claimed source-equivalent by this extension.
+
+
+### Angular source side drawer (FUCQ-555)
+
+The existing `SideDrawerComponent` / `gcsp-side-drawer` now uses the canonical
+source backdrop and single `aside[role="dialog"][aria-modal="true"]`, with
+`.gcsp-side-drawer-head`, `-titles`, `-title`, `-body` and `-foot`. It consumes
+FUCQ-548's global sheet; local CSS only adapts the Angular host with
+`display: contents` and hides an empty retained footer projection. The root is
+retained with `hidden` while closed, preserving Angular projected content without
+exposing it. No native dialog wrapper or second accessible dialog is introduced.
+
+Public contracts remain `title` (required), `context` (empty by default),
+`dismissible` (true), `closed`, `open(opener?)` and `close(restoreFocus = true)`.
+Body content projects normally and `[drawer-footer]` projects outside its scrolling
+body. Opening focuses the associated heading, contains page scrolling and marks
+background siblings inert; closing restores prior scrolling/inert attributes and
+the connected opener. Tab/Shift-Tab wrap across visible enabled controls, including
+summaries/iframes; hidden, inert and closed-details contents stay outside the cycle.
+Escaped focus returns to the heading. Close/Escape/backdrop obey `dismissible`;
+public API close remains available for terminal readback and teardown. Destroy
+removes listeners and restores page state without focusing a removed opener.
+
+VehicleDetails and OfferDecision remain the actual production callers. Their
+regressions retain all content, business, count and focus assertions while querying
+the source modal instead of the obsolete native wrapper. Gallery: **Source side
+drawer** demonstrates a normal record and nondismissible pending-command preview.
+This source checkpoint does not establish F548 stylesheet integration, real browser
+visual/focus/inert behavior, connected acceptance or same-offer parity. All eight
+original FUCQ-555 acceptance criteria remain open.

@@ -17,7 +17,8 @@ import { FinishLabelComponent } from '../kit/finish-label.component';
 import { DecisionHighlightsComponent } from '../kit/decision-highlights.component';
 import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
 import { TabsComponent } from '../kit/tabs.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent], styleUrl: './gallery.component.css', template: `
+import { SideDrawerComponent } from '../kit/side-drawer.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -81,6 +82,21 @@ import { TabsComponent } from '../kit/tabs.component';
       <div decisionDetails><p class="gcsp-note">Complete supplied facts, decision and equipment slot</p></div>
     </gcsp-vehicle-decision>
   </section>
+  <section class="gcsp-panel" id="gallery-drawer"><h2>Source side drawer</h2>
+    <p class="gcsp-note">One modal record with source backdrop, trapped keyboard focus and restored page state. Preview actions are not connected.</p>
+    <button #drawerOpener gcspButton type="button" variant="ghost" (click)="recordDrawer.open(drawerOpener)">View example record</button>
+    <button #lockedOpener gcspButton type="button" variant="ghost" (click)="lockedDrawer.open(lockedOpener)">Preview a pending command</button>
+    <p role="status">{{ drawerClosed() }}</p>
+    <gcsp-side-drawer #recordDrawer title="Example car record" context="Your offer" (closed)="drawerClosed.set('Example record closed')">
+      <h3>All supplied details stay in the scrolling body</h3><p>This example uses the shared source modal, not an offer command.</p>
+      <details><summary>Example scheme terms</summary><p>Expanded details are reachable while collapsed content stays out of the focus cycle.</p></details>
+      <button drawer-footer gcspButton type="button" variant="ghost" (click)="recordDrawer.close()">Back to components</button>
+    </gcsp-side-drawer>
+    <gcsp-side-drawer #lockedDrawer title="Pending command preview" [dismissible]="false">
+      <p>Close, Escape and backdrop dismissal are disabled. The caller may still close after terminal readback.</p>
+      <button drawer-footer gcspButton type="button" variant="ghost" (click)="lockedDrawer.close()">Finish preview</button>
+    </gcsp-side-drawer>
+  </section>
   <section class="gcsp-panel"><h2>Source facts and tabs</h2>
     <p class="gcsp-note">Canonical source classes with supplied facts. Default fact-list consumers keep their existing presentation.</p>
     <gcsp-fact-list presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="sourceOverview" />
@@ -92,6 +108,7 @@ import { TabsComponent } from '../kit/tabs.component';
   </section>
 ` })
 export class GalleryComponent {
+  readonly drawerClosed = signal('');
   readonly sourceOverview = [{ label: 'Body style', value: 'SUV' }, { label: 'Boot', value: 490, unit: 'litres' },
     { label: 'Extra payment', value: 0 }, { label: 'Unconfirmed fact', value: null }];
   readonly decisionFinishes = [{ label: 'Paint', value: 'Portimao Blue metallic' }, { label: 'Upholstery', value: 'Black with blue stitching Vernasca leather' }];

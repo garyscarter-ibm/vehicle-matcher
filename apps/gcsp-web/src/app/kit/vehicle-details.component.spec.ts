@@ -28,11 +28,6 @@ class VehicleDetailsHost implements OnInit {
   ngOnInit(): void { this.additionalDetails.set(this.additional); }
 }
 
-function stubDialog(dialog: HTMLDialogElement): void {
-  Object.defineProperty(dialog, 'showModal', { configurable: true, value: () => dialog.setAttribute('open', '') });
-  Object.defineProperty(dialog, 'close', { configurable: true, value: () => dialog.removeAttribute('open') });
-}
-
 describe('VehicleDetailsComponent', () => {
   it('retains long supplied facts and all 57 equipment items behind a truthful, focus-wired drawer', async () => {
     const fixture = TestBed.createComponent(VehicleDetailsHost);
@@ -41,8 +36,7 @@ describe('VehicleDetailsComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
 
     expect(entry.getAttribute('aria-haspopup')).toBe('dialog');
     expect(entry.getAttribute('aria-expanded')).toBe('false');
@@ -50,10 +44,10 @@ describe('VehicleDetailsComponent', () => {
     entry.click();
     fixture.detectChanges();
 
-    expect(dialog.open).toBe(true);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(false);
     expect(entry.getAttribute('aria-expanded')).toBe('true');
     expect(dialog.querySelector('.gcsp-side-drawer-context')?.textContent).toBe('Your offer');
-    expect(dialog.querySelector('.gcsp-side-drawer-header h2')?.textContent).toBe('Car details');
+    expect(dialog.querySelector('.gcsp-side-drawer-head h2')?.textContent).toBe('Car details');
     const bodyHeadings = dialog.querySelectorAll('.gcsp-vehicle-details-body h3');
     expect(bodyHeadings).toHaveLength(1);
     expect(bodyHeadings[0].textContent).toBe(fixture.componentInstance.name());
@@ -64,7 +58,7 @@ describe('VehicleDetailsComponent', () => {
     expect(dialog.textContent).toContain('M Alcantara Veganza combination Black contrast stitching with extended long text');
     expect(dialog.querySelectorAll('.gcsp-vehicle-equipment li')).toHaveLength(57);
     expect(dialog.textContent).toContain('Selected equipment item 57 with retained source wording');
-    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-header h2'));
+    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-head h2'));
 
     const tabs = dialog.querySelectorAll<HTMLButtonElement>('[role="tab"]');
     expect(tabs[1].textContent).toContain('Selected equipment (57)');
@@ -74,9 +68,9 @@ describe('VehicleDetailsComponent', () => {
     expect(dialog.querySelector<HTMLElement>('[role="tabpanel"]')?.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('true');
 
-    dialog.querySelector<HTMLButtonElement>('.gcsp-side-drawer-header button')!.click();
+    dialog.querySelector<HTMLButtonElement>('.gcsp-side-drawer-head button')!.click();
     fixture.detectChanges();
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(entry);
     root.remove();
@@ -90,7 +84,7 @@ describe('VehicleDetailsComponent', () => {
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('.gcsp-vehicle-details-entry')?.textContent).toContain('Equipment not supplied');
-    const dialog = root.querySelector('dialog')!;
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     const tabs = dialog.querySelectorAll('[role="tab"]');
     expect(tabs[1].textContent).toBe('Selected equipment');
     expect(dialog.textContent).toContain('Equipment not supplied');
@@ -105,8 +99,7 @@ describe('VehicleDetailsComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     entry.click();
     fixture.detectChanges();
     const tabs = dialog.querySelectorAll<HTMLButtonElement>('[role="tab"]');
@@ -120,7 +113,7 @@ describe('VehicleDetailsComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(entry.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(entry);
     expect(dialog.querySelector('.gcsp-vehicle-details-body h3')?.textContent).toBe('BMW X2 M35i with updated supplied trim');
@@ -137,14 +130,13 @@ describe('VehicleDetailsComponent', () => {
     const root = fixture.nativeElement as HTMLElement;
     document.body.append(root);
     const entry = root.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!;
-    const dialog = root.querySelector('dialog')!;
-    stubDialog(dialog);
+    const dialog = root.querySelector<HTMLElement>('[role="dialog"]')!;
     const focus = vi.spyOn(entry, 'focus');
     entry.click();
     fixture.detectChanges();
     fixture.destroy();
 
-    expect(dialog.open).toBe(false);
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true);
     expect(document.body.style.overflow).toBe('clip');
     expect(focus).not.toHaveBeenCalled();
     root.remove();

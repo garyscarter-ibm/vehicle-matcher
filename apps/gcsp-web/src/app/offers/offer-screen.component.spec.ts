@@ -18,10 +18,6 @@ describe('native offer read screen', () => {
   const settle = async () => { fixture.detectChanges(); await fixture.whenStable();
     await new Promise<void>((resolve) => setTimeout(resolve, 0)); fixture.detectChanges(); await fixture.whenStable(); fixture.detectChanges(); };
   const load = async (offer = offerScreenFixture()) => { reads.at(-1)!.resolve({ status: 'ok', value: offer }); await settle();
-    for (const dialog of Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('dialog'))) {
-      Object.defineProperty(dialog, 'showModal', { configurable: true, value: () => dialog.setAttribute('open', '') });
-      Object.defineProperty(dialog, 'close', { configurable: true, value: () => dialog.removeAttribute('open') });
-    }
   };
 
   beforeEach(async () => {
@@ -108,7 +104,7 @@ describe('native offer read screen', () => {
   it('reviews server driver, contact, terms and return mileage before explicitly accepting', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(actionableOffer());
     fixture.nativeElement.querySelector('[data-offer-action="accept"]').click(); await settle();
-    const dialog: HTMLDialogElement = fixture.nativeElement.querySelector('dialog[open]'); expect(dialog).not.toBeNull();
+    const dialog: HTMLElement = fixture.nativeElement.querySelector('.gcsp-side-drawer:not([hidden]) [role="dialog"]'); expect(dialog).not.toBeNull();
     expect(dialog.textContent).toContain('Paula Mason'); expect(dialog.textContent).toContain('MASON900000PM9XX');
     expect(dialog.textContent).toContain('paula.mason@gcsp-demo.com'); expect(dialog.textContent).toContain('Expected return mileage (miles)');
     expect(dialog.querySelector<HTMLButtonElement>('[data-offer-action="confirm"]')!.disabled).toBe(true);
@@ -118,13 +114,13 @@ describe('native offer read screen', () => {
     dialog.querySelector<HTMLButtonElement>('[data-offer-action="confirm"]')!.click(); await settle();
     expect(client['decide']).toHaveBeenCalledTimes(1); expect(text()).toContain('Offer accepted');
     expect(text()).toContain('Ordering and approval are separate steps'); expect(text()).not.toContain('Your order is approved');
-    expect(fixture.nativeElement.querySelector('dialog[open]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.gcsp-side-drawer:not([hidden]) [role="dialog"]')).toBeNull();
   });
   it('loads server decline reasons and offers a separate explicit preference confirmation', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     fixture.nativeElement.querySelector('[data-offer-action="decline"]').click(); await settle();
-    const reason = fixture.nativeElement.querySelector('dialog input[type="radio"]'); expect(reason.value).toBe('body');
-    reason.click(); await settle(); fixture.nativeElement.querySelector('dialog [data-offer-action="confirm"]').click(); await settle();
+    const reason = fixture.nativeElement.querySelector('[role="dialog"] input[type="radio"]'); expect(reason.value).toBe('body');
+    reason.click(); await settle(); fixture.nativeElement.querySelector('[role="dialog"] [data-offer-action="confirm"]').click(); await settle();
     expect(text()).toContain('Offer declined'); expect(text()).toContain('One change to your preferences');
     expect(client['confirmFollowup']).not.toHaveBeenCalled();
     fixture.nativeElement.querySelector('gcsp-offer-followup input[value="suv"]').click(); await settle();
@@ -135,8 +131,8 @@ describe('native offer read screen', () => {
     client['decide'].mockResolvedValue({ status, reason: 'PRIVATE provider details' });
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     fixture.nativeElement.querySelector('[data-offer-action="decline"]').click(); await settle();
-    fixture.nativeElement.querySelector('dialog input[type="radio"]').click(); await settle();
-    fixture.nativeElement.querySelector('dialog [data-offer-action="confirm"]').click(); await settle();
+    fixture.nativeElement.querySelector('[role="dialog"] input[type="radio"]').click(); await settle();
+    fixture.nativeElement.querySelector('[role="dialog"] [data-offer-action="confirm"]').click(); await settle();
     expect(text()).not.toContain('PRIVATE'); expect(text()).toMatch(/not.*confirmed|offer changed/i);
     expect(fixture.nativeElement.querySelector('[data-offer-action="accept"]')).toBeNull();
     fixture.nativeElement.querySelector('[data-offer-action="check"]').click(); await settle();
