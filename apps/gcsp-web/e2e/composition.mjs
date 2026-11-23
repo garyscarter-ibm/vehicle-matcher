@@ -10,7 +10,7 @@ import { chromium, webkit } from 'playwright-core';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../../scripts/build-gcsp-static.mjs';
 import { runtimeConfigFromEnv } from '../../../scripts/gcsp-runtime-config.mjs';
 import { apiJvmArgs } from '../../../scripts/gcsp/proof-jvm.mjs';
-import { captureNodeReplay, withNodeReplay, NODE_REPLAY_IDENTITY } from './node-replay.mjs';
+import { captureNodeReplay, withNodeReplay, observeImageResponses, NODE_REPLAY_IDENTITY } from './node-replay.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -117,6 +117,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
   let server;
   let browser;
   let browserServer;
+  const imageObservers = new Map();
   let closed = false;
   const orderingToken = randomUUID();
   const orderingReplies = new Map();
@@ -130,7 +131,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       'A bootstrap run migrates the owned database, then is legally retired. A fresh replay run receives the exact initial clock before Java restarts; no clock guard is bypassed.',
       'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
       'The frozen Node stock instance enters Java through its existing tranche-plan provider; release, allocation, holds and offers are actual services.'],
-    requests: [], screenshots: [], checks: {}, browsers: {}, consoleErrors: [], processes };
+    requests: [], screenshots: [], checks: {}, browsers: {}, consoleErrors: [], imageResponses: [], processes };
   const journalPath = path.join(runOutput, 'processes.json');
   const journal = () => {
     const prior = existsSync(journalPath) ? JSON.parse(readFileSync(journalPath, 'utf8')).processes : [];
@@ -175,7 +176,8 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     if (closed) return;
     closed = true;
     const errors = [];
-    for (const action of [() => browser?.close(), () => browserServer?.close(), () => stop(api), () => server && new Promise((resolve) => {
+    for (const action of [() => browser?.close(), () => Promise.all([...imageObservers.values()].map((observer) => observer.stop())),
+      () => browserServer?.close(), () => stop(api), () => server && new Promise((resolve) => {
       server.closeAllConnections?.(); server.close(resolve);
     })]) {
       try { await action(); } catch (error) { errors.push(error.message); }
@@ -283,7 +285,13 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       await waitForApi();
       await stop(api);
       const initial = input.initialBrief.brief;
-      const content = Object.fromEntries(['schemaVersion', 'preferences', 'essentials', 'knownFacts'].map((key) => [key, initial[key]]));
+      // BriefContent owns editable values; account/provider facts stay in their canonical source rows.
+      const editableKeys = ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain'];
+      const content = Object.fromEntries(editableKeys.filter((key) => Object.hasOwn(initial, key)).map((key) => [key, initial[key]]));
+      receipt.canonicalBriefFixture = { rawNodeKnownFacts: initial.knownFacts, editableKeys: Object.keys(content),
+        absentOptionalNodeFields: editableKeys.slice(3).filter((key) => !Object.hasOwn(initial, key)),
+        nodeFieldsOutsideEditableContent: Object.fromEntries(Object.entries(initial).filter(([key]) => !editableKeys.includes(key))),
+        authority: 'BriefContent.java:41 editable whitelist; BuddyJourneySeed.java:137. Source facts are read back and proven through /manual/account and /brief/editor.' };
       const account = input.account;
       const record = initial.knownFacts.contract.value.manualContext;
       const membership = { name: account.account.name, companyId: account.account.companyId, schemeId: account.account.schemeId,
@@ -340,6 +348,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
     }
     async function newPage(label, subject, route) {
       const page = await context.newPage(); observe(page, label);
+      imageObservers.set(page, observeImageResponses(page, { origins: [origins.web, origins.api], records: receipt.imageResponses, label }));
       await page.goto(`${origins.web}/gcsp/${route}`, { waitUntil: 'domcontentloaded' });
       await page.getByRole('button', { name: 'Sign in', exact: true }).first().click();
       await page.locator(`button[data-subject="${subject}"]`).click();
@@ -361,22 +370,23 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       }, { apiBase, method, suffix, body });
     }
     async function prepareInitialBrief(employeePage, presenterPage) {
-      const [read, accountRead, contextRead, clockRead] = await Promise.all([
+      const [read, accountRead, contextRead, clockRead, editorRead] = await Promise.all([
         call(employeePage, 'GET', '/brief'), call(employeePage, 'GET', '/manual/account'),
         call(employeePage, 'GET', '/context'), call(presenterPage, 'GET', '/presenter/controls'),
+        call(employeePage, 'GET', '/brief/editor'),
       ]);
       // Persist actual boundary responses before any status/equality assertion can stop setup.
       // These fictional-data bodies exclude headers and session storage; credential-named fields are redacted.
       const readbacks = { capturedAt: new Date().toISOString(),
         sanitization: 'Response bodies only; credential-named fields redacted recursively; no headers or session storage.',
         responses: Object.fromEntries([
-          ['/brief', read], ['/manual/account', accountRead], ['/context', contextRead], ['/presenter/controls', clockRead],
+          ['/brief', read], ['/manual/account', accountRead], ['/context', contextRead], ['/presenter/controls', clockRead], ['/brief/editor', editorRead],
         ].map(([endpoint, response]) => [endpoint, { method: 'GET', status: response.status, body: sanitizeReadback(response.body) }])) };
       const readbacksFile = path.join(output, 'initial-readbacks.json');
       const readbacksJson = JSON.stringify(readbacks, null, 2);
       writeFileSync(readbacksFile, readbacksJson, { mode: 0o600 });
       receipt.initialReadbacks = { path: readbacksFile, sha256: sha(readbacksJson), capturedAt: readbacks.capturedAt };
-      for (const response of [read, accountRead, contextRead, clockRead]) assert.equal(response.status, 200);
+      for (const response of [read, accountRead, contextRead, clockRead, editorRead]) assert.equal(response.status, 200);
       const expected = input.initialBrief.brief;
       const actual = read.body.value.brief;
       const project = (value, keys) => Object.fromEntries(keys.map((key) => [key, value[key]]));
@@ -394,9 +404,14 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
           'Angular activity/notification.model.ts:11-41 derives rows/count from currentOffer/offers/display; notification.source.ts does not consume brief lineage.',
           'Frozen blocks/gcsp/activity/notification-source.js:18-61 derives rows/count from currentOffer/offers/display; server/gcsp/allocation and offers contain no previousBriefVersion access.',
         ] };
-      const contentKeys = ['schemaVersion', 'preferences', 'essentials', 'knownFacts', 'buddy', 'briefVersion',
+      const contentKeys = ['schemaVersion', 'preferences', 'essentials', 'buddy', 'briefVersion',
         'status', 'policyVersion', 'confirmedBy'];
       assert.deepEqual(project(actual, contentKeys), project(expected, contentKeys), 'Actual Java brief/consent equals captured Node initial content');
+      for (const key of ['currentCarFeedback', 'currentCarRating', 'sameAgain']) {
+        assert.equal(Object.hasOwn(actual, key), Object.hasOwn(expected, key), `Optional Node editable field ${key} presence is exact`);
+        if (Object.hasOwn(expected, key)) assert.deepEqual(actual[key], expected[key]);
+      }
+      assert.equal(Object.hasOwn(actual, 'knownFacts'), false, 'Read-only facts are not editable brief content');
       assert.equal(Date.parse(actual.confirmedAt), Date.parse(expected.confirmedAt));
       const contextExpected = { subject: 'demo-paula', roles: ['employee'], environmentId: envId, runId,
         employeeId: expected.employeeId, policyVersion: expected.policyVersion };
@@ -412,6 +427,40 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
         'choices', 'allowance', 'versions'];
       assert.deepEqual(project(accountRead.body.value, accountKeys), mapIds(project(input.account, accountKeys)),
         'Actual Java account, relationships and source versions equal captured Node inputs');
+      const storedSource = JSON.parse(sql(`SELECT json_build_object('environmentId',environment_id,'runId',run_id,
+        'employeeId',employee_id,'recordSetId',record_set_id,'version',version,'record',record) FROM employee_account_records
+        WHERE environment_id=${literal(envId)} AND run_id=${literal(runId)} AND employee_id=${literal(expected.employeeId)};`).split('\n').at(-1));
+      const storedContent = JSON.parse(sql(`SELECT content FROM briefs WHERE environment_id=${literal(envId)}
+        AND run_id=${literal(runId)} AND employee_id=${literal(expected.employeeId)} AND brief_version=1;`).split('\n').at(-1));
+      const sourceRecord = expected.knownFacts.contract.value.manualContext;
+      const editor = editorRead.body.value; const known = editor.context.knownFacts; const actualAccount = accountRead.body.value;
+      receipt.knownFactAuthority = { frozenNodeKnownFacts: expected.knownFacts, actualStoredSourceRow: storedSource,
+        actualStoredEditableContent: storedContent, actualAccount, actualEditor: editor,
+        authority: 'BriefAccountAdapter.facts/known -> BriefAccountPort.Known -> AccountEditor.context; raw source and actual observation timestamps remain unchanged.' };
+      assert.deepEqual(storedSource.record, sourceRecord, 'The actual stored source row retains every captured account fact');
+      assert.equal(storedSource.recordSetId, sourceRecord.recordSetId); assert.equal(storedSource.version, actualAccount.versions.employee);
+      assert.equal(storedSource.environmentId, envId); assert.equal(storedSource.runId, runId); assert.equal(storedSource.employeeId, expected.employeeId);
+      assert.deepEqual(Object.keys(expected.knownFacts).sort(), ['name', 'companyId', 'schemeId', 'gradeId', 'contract'].sort(), 'Every captured Node known-fact field is accounted for');
+      for (const key of ['name', 'companyId', 'schemeId', 'gradeId']) {
+        assert.equal(expected.knownFacts[key].value, actualAccount.account[key], `Actual account retains Node ${key}`);
+        assert.equal(expected.knownFacts[key].sourceVersion, actualAccount.versions.employee);
+      }
+      assert.equal(expected.knownFacts.contract.sourceVersion, storedSource.version);
+      assert.deepEqual(storedContent, Object.fromEntries(receipt.canonicalBriefFixture.editableKeys.map((key) => [key, expected[key]])),
+        'The complete stored editable content equals the exact captured canonical fields');
+      const providerKeys = Object.keys(sourceRecord.employeeFacts).filter((key) => key !== 'essentials');
+      assert.deepEqual(Object.keys(known).sort(), ['account', 'currentContract', 'drivers', ...providerKeys].sort(), 'Every actual projected known-fact field is accounted for');
+      for (const key of ['account', 'currentContract', 'drivers']) {
+        assert.deepEqual(known[key].value, actualAccount[key], `AccountEditor projects actual ${key}`);
+        assert.equal(known[key].source, 'manual-account'); assert.equal(known[key].editable, false);
+        assert.deepEqual(known[key].sourceVersion, actualAccount.versions);
+      }
+      for (const key of providerKeys) {
+        assert.deepEqual(known[key].value, sourceRecord.employeeFacts[key], `AccountEditor projects exact captured provider ${key}`);
+        assert.equal(known[key].source, 'employee-provider'); assert.equal(known[key].editable, false);
+        assert.equal(known[key].sourceVersion, editor.versions.facts);
+      }
+      assert.equal(editor.versions.clock, input.clock.clockVersion);
       const clock = clockRead.body.value;
       assert.equal(clock.runId, runId);
       assert.equal(clock.now, input.clock.now);
@@ -518,6 +567,7 @@ export async function startComposition({ caseId = 'f548', ordering = 'synthetic'
       return receipt.nodeReplay;
     }
     return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
+      readImage: (page, locator) => imageObservers.get(page).read(locator),
       readActualHold, screenshot, compareFrozenNode, visitFrozenNode,
       ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {

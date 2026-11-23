@@ -18,6 +18,63 @@ const wrappedResetCommandId = `scenario:${sha(JSON.stringify(resetCommandId))}`;
 export const NODE_REPLAY_IDENTITY = Object.freeze({ environmentId: replayEnvironment, bootstrapCommandId, resetCommandId,
   initialRunId, runId: `demo-${sha(JSON.stringify([replayEnvironment, initialRunId, wrappedResetCommandId])).slice(0, 32)}` });
 
+// Observe the actual image responses used by the page. Never substitute an asset or equate raw routes.
+export function observeImageResponses(page, { origins, records, label }) {
+  const pending = new Set(); let observed = 0;
+  const listener = (response) => {
+    const url = new URL(response.url());
+    if (!origins.includes(url.origin) || !/^(?:\/assets\/gcsp-vehicle-evidence\/[a-f0-9]{64}|\/api\/gcsp\/(?:v1\/)?vehicle-images\/bmw-display-[a-f0-9]{20})\.webp$/.test(url.pathname)) return;
+    if (observed++ >= 128) return;
+    const headers = response.headers();
+    const record = { page: label, url: url.href, status: response.status(), mime: (headers['content-type'] ?? '').split(';')[0].trim().toLowerCase() };
+    records.push(record);
+    const reading = (async () => {
+      try {
+        const declared = headers['content-length'];
+        if (declared && (!/^\d+$/.test(declared) || Number(declared) > 2 * 1024 * 1024)) throw new Error('Image response exceeds the 2 MiB bound');
+        const bytes = await response.body();
+        assert.ok(bytes.length > 0 && bytes.length <= 2 * 1024 * 1024, 'Actual image response body is bounded');
+        record.bytes = bytes.length; record.sha256 = sha(bytes);
+      } catch (error) { record.failure = error.message.slice(0, 300); }
+    })();
+    pending.add(reading); reading.finally(() => pending.delete(reading));
+  };
+  page.on('response', listener);
+  return {
+    async read(locator) {
+      const deadline = Date.now() + 15000;
+      let image;
+      while (Date.now() < deadline) {
+        image = await locator.evaluate((node) => {
+          const box = node.getBoundingClientRect(); const css = getComputedStyle(node);
+          return { rawUrl: node.getAttribute('src'), actualUrl: node.currentSrc || node.src,
+            complete: node.complete, naturalWidth: node.naturalWidth, naturalHeight: node.naturalHeight,
+            renderedWidth: box.width, renderedHeight: box.height, objectFit: css.objectFit };
+        });
+        const response = records.findLast((record) => record.page === label && record.url === image.actualUrl && (record.sha256 || record.failure));
+        if (image.complete && image.naturalWidth > 0 && response) return { ...image, response: { ...response } };
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      return { ...image, response: { state: 'unobserved-or-unloaded', responseLimitReached: observed > 128 } };
+    },
+    async stop() { page.off('response', listener); await Promise.allSettled([...pending]); },
+  };
+}
+
+export function assertImageParity(node, angular) {
+  const content = (image) => ({ bytes: image.response.bytes, sha256: image.response.sha256, mime: image.response.mime,
+    naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
+    renderedWidth: image.renderedWidth, renderedHeight: image.renderedHeight, objectFit: image.objectFit });
+  for (const [name, image] of [['Node', node], ['Angular', angular]]) {
+    assert.equal(image.response.status, 200, `${name}: actual displayed image response succeeded`);
+    assert.match(image.response.sha256 ?? '', /^[a-f0-9]{64}$/, `${name}: actual response bytes were hashed`);
+    assert.ok(image.response.bytes > 0 && image.response.bytes <= 2 * 1024 * 1024);
+    assert.ok(['image/webp', 'image/png', 'image/jpeg'].includes(image.response.mime));
+    assert.ok(image.complete && image.naturalWidth > 0 && image.naturalHeight > 0 && image.renderedWidth > 0 && image.renderedHeight > 0);
+  }
+  assert.deepEqual(content(node), content(angular), 'Actual served thumbnail content and natural/render dimensions agree; raw URLs remain recorded separately');
+}
+
 // Optional engineering parity capture. The frozen checkout is read-only; all state stays in memory.
 export async function withNodeReplay({ browser, input, plan, cert, key, output, expected }, visit) {
   assert.equal(typeof visit, 'function', 'A live Node visitor is required');
@@ -54,7 +111,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     if (!providers.has(request.runId)) providers.set(request.runId, createSyntheticStockProvider({ runId: request.runId, ...plan }));
     return providers.get(request.runId).pull(request);
   } };
-  let runtime; let server; let api; let context;
+  let runtime; let server; let api; let context; let imageObserver;
   const receipt = { reference: input.reference, stockPlan: input.stockPlan, setupDifferences: [
     'The frozen named Main loader establishes initial brief/account/clock in an isolated memory repository.',
     'The same lossless generated stock instance enters the existing synthetic stock-provider seam.',
@@ -163,6 +220,8 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     await context.addCookies([{ name: cookie.slice(0, cookie.indexOf('=')), value: cookie.slice(cookie.indexOf('=') + 1),
       url: origin, httpOnly: true, secure: true, sameSite: 'Lax' }]);
     const page = await context.newPage();
+    receipt.imageResponses = [];
+    imageObserver = observeImageResponses(page, { origins: [origin], records: receipt.imageResponses, label: 'frozen-node' });
     receipt.consoleErrors = [];
     page.on('pageerror', (error) => receipt.consoleErrors.push(error.message.slice(0, 300)));
     Object.assign(receipt, { state: 'matched', initialClock,
@@ -170,7 +229,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
       tick: { clockVersion: tick.advance.clockVersion, now: tick.advance.now },
       offer: { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, expiresAt: offer.expiresAt, state: offer.state },
       humanAcceptance: 'pending Gary/Russell review; engineering equality is not acceptance' });
-    Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, offer, receipt }));
+    Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, offer, receipt, images: imageObserver }));
     assert.deepEqual(receipt.consoleErrors, [], 'No frozen source app runtime errors');
     return receipt;
   } catch (error) {
@@ -178,6 +237,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
     throw error;
   } finally {
     await context?.close();
+    await imageObserver?.stop();
     if (server) await new Promise((resolve) => { server.closeAllConnections(); server.close(resolve); });
     api?.closeAllConnections();
     await runtime?.close();
@@ -187,7 +247,7 @@ export async function withNodeReplay({ browser, input, plan, cert, key, output, 
 
 // Existing bell proof keeps the same public behavior while other cases visit the live source runtime.
 export async function captureNodeReplay(options) {
-  return withNodeReplay(options, async ({ page, origin }) => {
+  return withNodeReplay(options, async ({ page, origin, receipt, images }) => {
     const { expected, output } = options;
     await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
     const bell = page.getByRole('button', { name: 'Notifications, 1 car offer waiting', exact: true });
@@ -199,11 +259,26 @@ export async function captureNodeReplay(options) {
     await page.waitForFunction(() => [...document.querySelectorAll('.gcsp-bell-thumb')].every((item) => item.complete && item.naturalWidth > 0));
     const visible = { car: await panel.locator('.gcsp-bell-copy p').nth(1).innerText(),
       detail: await panel.locator('.gcsp-bell-muted').innerText(), image: await image.getAttribute('src') };
+    const imageEvidence = await images.read(image);
+    receipt.thumbnailComparison = { angular: expected.panel.imageEvidence, node: imageEvidence };
+    receipt.visible = visible;
+    const destination = path.join(output, 'node-active-open-1280.png');
+    await page.screenshot({ path: destination, fullPage: false }); receipt.screenshot = destination;
+    await page.setViewportSize({ width: 375, height: 812 });
+    receipt.narrowGeometry = { box: await panel.boundingBox(), viewport: page.viewportSize(),
+      actual: await panel.evaluate((node) => {
+        const style = (item) => { const css = getComputedStyle(item); const rect = item.getBoundingClientRect();
+          return { rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }, position: css.position,
+            width: css.width, right: css.right, padding: css.padding, gap: css.gap, overflowX: css.overflowX }; };
+        const root = node.closest('.gcsp-bell');
+        return { panel: style(node), bell: style(root), header: style(node.closest('header')), hidden: node.hidden,
+          expanded: root.querySelector('button').getAttribute('aria-expanded'), innerWidth, scrollWidth: document.documentElement.scrollWidth };
+      }) };
+    receipt.narrowScreenshot = path.join(output, 'node-active-open-375.png');
+    await page.screenshot({ path: receipt.narrowScreenshot, fullPage: false });
     assert.equal(visible.car, expected.panel.car, 'The actual Node/Angular car titles agree');
     assert.equal(visible.detail, expected.panel.detail, 'The actual Node/Angular displayed deadlines agree');
-    assert.equal(visible.image, expected.panel.image, 'The actual Node/Angular thumbnail sources agree');
-    const destination = path.join(output, 'node-active-open-1280.png');
-    await page.screenshot({ path: destination, fullPage: false });
+    assertImageParity(imageEvidence, expected.panel.imageEvidence);
     return { visible, screenshot: destination };
   });
 }

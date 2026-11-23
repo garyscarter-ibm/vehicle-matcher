@@ -174,7 +174,14 @@ async function acceptanceDocuments(suite, employee) {
     const checkbox = checkboxes.nth(index); await checkbox.focus(); await employee.keyboard.press('Space');
     assert.equal(await checkbox.isChecked(), true); assert.equal(await focused(checkbox), true);
   }
-  assert.equal(await dialog.getByRole('button', { name: 'Accept offer', exact: true }).isEnabled(), true);
+  const confirm = dialog.getByRole('button', { name: 'Accept offer', exact: true });
+  try { await until(() => confirm.isEnabled(), 'Actual acceptance control enables after declaration rendering'); }
+  finally {
+    suite.receipt.acceptanceControls = { mileage: await mileage.inputValue(),
+      declarations: await checkboxes.evaluateAll((nodes) => nodes.map((node) => ({ id: node.id, checked: node.checked, disabled: node.disabled }))),
+      confirmEnabled: await confirm.isEnabled(), focusedControl: await dialog.evaluate(() => document.activeElement?.id ?? null) };
+  }
+  assert.equal(await confirm.isEnabled(), true);
   assert.equal(decisions(suite).length, before, 'Review, documents and declarations never submit a decision');
   await suite.screenshot(employee, 'documents-1280');
   await employee.setViewportSize({ width: 390, height: 844 }); await suite.screenshot(employee, 'documents-390');
@@ -349,9 +356,19 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     const followup = employee.locator('.followup');
     await followup.getByRole('radio', { name: option.label, exact: true }).check();
     const before = suite.receipt.requests.filter((row) => row.method === 'POST' && row.path === '/offer-followup/confirm').length;
+    const confirmResponse = employee.waitForResponse((response) => response.request().method() === 'POST'
+      && new URL(response.url()).pathname.endsWith('/offer-followup/confirm'));
     await followup.getByRole('button', { name: 'Confirm this change', exact: true }).click();
+    const confirmed = await confirmResponse;
+    const confirmedBody = await confirmed.json();
+    suite.receipt.followupConfirm = { status: confirmed.status(), request: confirmed.request().postDataJSON(), response: confirmedBody };
+    const saved = good({ status: confirmed.status(), body: confirmedBody }, 'Actual explicit follow-up confirmation');
+    assert.equal(saved.state, 'change-saved'); assert.equal(saved.briefVersion, question.briefVersion + 1);
+    assert.equal(suite.receipt.followupConfirm.request.value, option.value);
+    assert.equal(suite.receipt.followupConfirm.request.expectedBriefVersion, question.briefVersion);
     await until(async () => {
       const response = await suite.call(employee, 'GET', followupPath);
+      suite.receipt.savedFollowupReadback = response;
       if (response.status !== 200) return false;
       suite.receipt.savedFollowup = response.body;
       return ['change-saved', 'waiting', 'ready'].includes(response.body.value.state);
@@ -363,7 +380,7 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
       currentClockReadback: await suite.call(presenter, 'GET', '/presenter/clock'),
       actualSavedFollowup: suite.receipt.savedFollowup, actualSavedBrief: brief,
       comparison: 'Actual values retained side by side; no timestamp normalization or added timestamp parity assertion.' };
-    assert.ok(brief.brief.briefVersion > state.projection.quote.briefVersion);
+    assert.equal(brief.brief.briefVersion, question.briefVersion + 1, 'Exactly one new brief version was saved');
     assert.equal(brief.brief.preferences.body.value, option.value);
     await employee.setViewportSize({ width: 390, height: 844 }); await suite.screenshot(employee, 'saved-followup-390');
     await followup.getByRole('link', { name: 'See buddy activity', exact: true }).click();
