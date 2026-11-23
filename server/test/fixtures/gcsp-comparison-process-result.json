@@ -92,7 +92,7 @@
           "comparison-c"
         ],
         "policyVersion": "gcsp-policy-v1",
-        "policyHash": "97df1a052794bcb1b8dbd5673a82debbf90c159602b247758f0276e8f9c1dcd5",
+        "policyHash": "c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994",
         "generatorVersion": "comparison-inputs.sha256.v1",
         "overlays": {
           "comparison.cohortSize": 4,
@@ -207,7 +207,7 @@
                 "carsHeldNotTaken": 3,
                 "carsUnused": 1
               },
-              "recordDigest": "6c4da99effac70337683622895d8896b06f98ffd0fc3bc5ce9238bebfbf13f67"
+              "recordDigest": "35e258f6c4ab9cd92066db2b8f02c80b4e2e79811123fc7c7b9be3b7d40539a6"
             },
             "buddy": {
               "measures": {
@@ -249,7 +249,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.4
               },
-              "recordDigest": "51c883ab084453141f6af70bb0885a33ef0b4af4998649fc94351fac3a0ace51"
+              "recordDigest": "86824eff35742b50cffd8928fe36c7f25fe323546b34fb7b6f12407f5e27d0de"
             }
           }
         },
@@ -282,7 +282,7 @@
                 "carsHeldNotTaken": 2,
                 "carsUnused": 2
               },
-              "recordDigest": "fc85899b3ab8b06cc1d4f1f0d2d46e5ecf886c6d92afcf54311cccf91b7a466b"
+              "recordDigest": "b4bc8fddeaf4a50501309b66524445e362ad015700bde59528277106d8c43fd2"
             },
             "buddy": {
               "measures": {
@@ -324,7 +324,7 @@
                 "buddyHeldNotTakenHours": 0,
                 "heldNotTakenHours": 0.066667
               },
-              "recordDigest": "a86bccd1dd065932840e1c5d739ddb6ff754a391fd5414dda9f92187339ecf84"
+              "recordDigest": "5d533fff4e91266d3739bc8e52d28633dcf46ce7d0c26780009b8bdac83a2174"
             }
           }
         },
@@ -357,7 +357,7 @@
                 "carsHeldNotTaken": 2,
                 "carsUnused": 2
               },
-              "recordDigest": "f74f2c8f4cec4ce239a73b347fa9dbf17892a4c20f6f8a26039a2ba66a0c5f42"
+              "recordDigest": "1a93fcd2fb58620ea140c5c6ba4a0d5bd03a5f13f63c331949b16ef7b08ca625"
             },
             "buddy": {
               "measures": {
@@ -399,7 +399,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.333333
               },
-              "recordDigest": "f756b14b298df9c2c3c765b66fd0ae7427b9b5152609d1fa37996ba5c48c4d41"
+              "recordDigest": "e195b89158f9c2fb0b73b52142277c368749ef244403995245ba2917bfe9ec63"
             }
           }
         }
@@ -936,7 +936,7 @@
         "After an offer expires the live service re-offers its car at once (FUCQ-227); this replay leaves it for the next release."
       ]
     },
-    "resultId": "process-comparison-09e9e4b53b2fd67e1d752e9253c4080f",
+    "resultId": "process-comparison-ce8b1e4cf5bc03164a08baf3f9c0d00c",
     "storedAt": "2026-11-08T12:00:00.000Z",
     "policyVersion": "gcsp-policy-v1",
     "activePolicyVersion": "gcsp-policy-v1",

@@ -660,9 +660,19 @@ test('ineligible configuration facts and mixed nested eligibility provenance are
   await assert.rejects(prepareLearning(valid, { policyService: ports }), (e) => e.code === 'incoherent-policy');
 });
 
+// FUCQ-576 selects current seed + reviewed definitions, with the existing learningSource
+// transformations and 3-person/2-cycle overrides; no extra manifest keys are permitted.
+// Provenance and complete delta ledger: docs/gcsp/evidence/fucq-576/field-causality.md.
 test('retained small synthetic dataset reproduces its full policy input and passes the training boundary', async () => {
   const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-learning-dataset.json', import.meta.url), 'utf8'));
   const snapshot = await prepareLearning(learningSource({ 'learning.cohortSize': 3, 'learning.cycles': 2 }));
+  for (const [path, expected] of [
+    ['../gcsp/policy/seed-v1.json', '23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591'],
+    ['../gcsp/predict/records/policy-definitions.json', 'c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143'],
+  ]) assert.equal(createHash('sha256').update(await readFile(new URL(path, import.meta.url))).digest('hex'), expected);
+  assert.equal(learningDefinitions.digest, 'a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782');
+  assert.equal(snapshot.snapshotHash, '7d6ba3b2c50a8c9b8e57d55184c612b7b93915b75a548ffd0478f314798f9d88');
+  assert.equal(fixture.manifest.policyHash, '6f8ea0fabe830e68385b82f209896aee5cf44bf8bbf216ad8909b531070d347f');
   assert.deepEqual(createLearningDataset('fictional-learning-sample-v1', snapshot), fixture);
   assert.equal(readLearningDataset(fixture).status, 'ok'); assert.equal(fixture.records.length, 6);
   assert.equal(fixture.manifest.snapshot.comparison.configurationSource.kind, 'reviewed-fixtures');

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { loadComparisonPolicy, generateComparisonInputs } from '../gcsp/comparison/generator.js';
 import { openComparisonRun } from '../gcsp/comparison/harness.js';
@@ -12,6 +13,20 @@ import { OfferDecisionService } from '../gcsp/offers/decision.js';
 import { CapturedTransport } from '../gcsp/notify/index.js';
 import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
+
+// FUCQ-576: current central policy selected on 2026-11-23; complete causal ledger:
+// docs/gcsp/evidence/fucq-576/field-causality.md (source lineage 94a9eaf0/ac6bccdc).
+const fixturePolicyPin = Object.freeze({
+  seedSha256: '23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591',
+  policyVersion: 'gcsp-policy-v1',
+  policyHash: 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994',
+});
+async function assertFixturePolicyPin(manifest) {
+  const bytes = await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), fixturePolicyPin.seedSha256);
+  assert.equal(manifest.policyVersion, fixturePolicyPin.policyVersion);
+  assert.equal(manifest.policyHash, fixturePolicyPin.policyHash);
+}
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-buddy-outcomes.json', import.meta.url), 'utf8'));
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
@@ -314,6 +329,8 @@ test('identical outcomes for the same seed', async (t) => {
 
 test('the recorded buddy outcome record matches the replay', async (t) => {
   const { record } = await replay(t, fixture);
+  await assertFixturePolicyPin(record);
+  await assertFixturePolicyPin(fixture.outcomeRecord);
   assert.deepEqual(JSON.parse(JSON.stringify(record)), fixture.outcomeRecord);
   assert.ok(record.employees.some((row) => row.participant) && record.employees.some((row) => !row.participant));
   const { totals } = record;

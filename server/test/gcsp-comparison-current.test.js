@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { loadComparisonPolicy, generateComparisonInputs } from '../gcsp/comparison/generator.js';
 import { openComparisonRun } from '../gcsp/comparison/harness.js';
@@ -9,6 +10,20 @@ import { replayCurrentRoute } from '../gcsp/comparison/routes/current.js';
 import { ManualClaimsService } from '../gcsp/manual-claims/index.js';
 import { deriveBuddyHandoffInputs, prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
 import { validContact } from '../gcsp/manual-context/index.js';
+
+// FUCQ-576: current central policy selected on 2026-11-23; complete causal ledger:
+// docs/gcsp/evidence/fucq-576/field-causality.md (source lineage 94a9eaf0/ac6bccdc).
+const fixturePolicyPin = Object.freeze({
+  seedSha256: '23ce0fef1d65e9e54c3b6ddc65361f2abd92e0bb8071c05b4f9797daafad4591',
+  policyVersion: 'gcsp-policy-v1',
+  policyHash: 'c0106882da69259021845df1a26128b218ac7dc7b79d5b528fe3806af7dff994',
+});
+async function assertFixturePolicyPin(manifest) {
+  const bytes = await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), fixturePolicyPin.seedSha256);
+  assert.equal(manifest.policyVersion, fixturePolicyPin.policyVersion);
+  assert.equal(manifest.policyHash, fixturePolicyPin.policyHash);
+}
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-current-outcomes.json', import.meta.url), 'utf8'));
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
@@ -288,6 +303,8 @@ test("a small cohort runs through FUCQ-66's real claim code, not a copy", async 
 
 test('the recorded outcome record matches the replay', async (t) => {
   const { record } = await replay(t, await scenario());
+  await assertFixturePolicyPin(record);
+  await assertFixturePolicyPin(fixture.outcomeRecord);
   assert.deepEqual(record, fixture.outcomeRecord);
 });
 
@@ -308,16 +325,46 @@ test('generated manual records pass the ordering handoff contact and vehicle che
   const handoff = async (seed) => {
     const setup = await mechanics(seed); const run = await openComparisonRun(setup); t.after(() => run.close());
     const today = setup.inputs.manifest.startsAt.slice(0, 10);
-    return Promise.all(setup.inputs.employees.map(async (employee) => {
+    return Promise.all(setup.inputs.employees.map(async (employee, index) => {
       const context = run.employeeContext(employee.employeeId);
       const row = requireOk(await run.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }));
       const derived = deriveBuddyHandoffInputs(row, { entitlementSlotId: context.entitlementSlotId, today });
       assert.ok(validContact(derived.contact) && derived.driver && derived.returnOk && derived.mode === 'replacement', employee.employeeId);
       assert.ok(derived.returnCar.model.trim() && Number.isSafeInteger(derived.returnCar.currentOdometer.value)
         && derived.returnCar.currentOdometer.unit === 'mi', employee.employeeId);
-      const prepared = requireOk(await prepareBuddySelection({ repository: run.repository, clock: run.clock }, context, { expectedDraftVersion: 1 }));
-      assert.deepEqual(prepared.draft.choices.returnOdometer, derived.returnCar.currentOdometer);
-      return { employeeId: employee.employeeId, contact: derived.contact, returnCar: derived.returnCar };
+      const recordedOdometer = structuredClone(derived.returnCar.currentOdometer);
+      const read = { runId: context.runId, policyVersion: context.policyVersion, asOf: setup.inputs.manifest.startsAt };
+      const maximum = requireOk(await run.policy.getAssumption('manual.context.v1', read)).value.maximumReturnMileage;
+      // Explicit synthetic entry, deterministically distinct from the recorded odometer.
+      const expectedReturnMileage = recordedOdometer.value + 100;
+      assert.ok(Number.isSafeInteger(expectedReturnMileage) && expectedReturnMileage <= maximum);
+      const dependencies = { repository: run.repository, clock: run.clock, policy: run.policy };
+      if (index === 0) {
+        const before = await run.snapshot();
+        for (const [label, values, status, reason] of [
+          ['missing mileage', {}, 'invalid', 'expected-return-mileage-required'],
+          ['negative mileage', { expectedReturnMileage: -1 }, 'invalid', 'expected-return-mileage-required'],
+          ['fractional mileage', { expectedReturnMileage: 1.5 }, 'invalid', 'expected-return-mileage-required'],
+          ['over-limit mileage', { expectedReturnMileage: maximum + 1 }, 'invalid', 'expected-return-mileage-required'],
+          ['unavailable policy', { policy: undefined, expectedReturnMileage }, 'conflict', 'return-mileage-requirements-unavailable'],
+        ]) {
+          const refused = await prepareBuddySelection({ ...dependencies, ...values }, context, { expectedDraftVersion: 1 });
+          assert.deepEqual([refused.status, refused.code ?? refused.reason], [status, reason], label);
+          assert.equal(Object.hasOwn(refused, 'value'), false, label);
+          assert.deepEqual(await run.snapshot(), before, `${label}: no persisted effects`);
+        }
+      }
+      const prepared = requireOk(await prepareBuddySelection({ ...dependencies, expectedReturnMileage }, context, { expectedDraftVersion: 1 }));
+      assert.deepEqual(prepared.draft.choices.returnOdometer, { value: expectedReturnMileage, unit: 'mi' });
+      assert.deepEqual(prepared.oldContract, derived.contract);
+      assert.deepEqual(prepared.oldContract.currentOdometer, recordedOdometer);
+      assert.deepEqual(prepared.draft.choices.contact, derived.contact);
+      assert.deepEqual(prepared.driver, derived.driver);
+      assert.equal(prepared.draft.choices.driverId, derived.driver.driverId);
+      const after = requireOk(await run.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }));
+      assert.deepEqual(after, row, 'entered return mileage never overwrites recorded account facts');
+      return { employeeId: employee.employeeId, contact: derived.contact, returnCar: derived.returnCar,
+        expectedReturnMileage, returnOdometer: prepared.draft.choices.returnOdometer };
     }));
   };
   const first = await handoff(fixture.seed);

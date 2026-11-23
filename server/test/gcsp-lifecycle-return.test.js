@@ -26,7 +26,7 @@ const DELAY = seedRow('lifecycle.appointments.confirmation.v1').value.confirmDel
 const OWNERSHIP = seedRow('lifecycle.return.ownership.v1').value;
 const HOUR = 3600;
 const DAY = 86400000;
-const MILEAGE = 6100;
+const MILEAGE = 6100; // Explicit synthetic expected return mileage; recorded current odometer is 5200 mi.
 
 // The canonical seed read only through PolicyService; `mutate` patches an alternative value by key.
 async function policyWith(mutate = () => {}) {
@@ -86,7 +86,7 @@ async function setup(t, { policy, order = 'replacement', outcomes = (repository)
   };
   f.before = await f.car();
   const contract = f.before.current[0];
-  const buddy = order === 'buddy' ? await prepareBuddySelection({ repository, clock }, ctx, { expectedDraftVersion: 1 }) : null;
+  const buddy = order === 'buddy' ? await prepareBuddySelection({ repository, clock, policy, expectedReturnMileage: MILEAGE }, ctx, { expectedDraftVersion: 1 }) : null;
   if (buddy) assert.equal(buddy.status, 'ok', JSON.stringify(buddy));
   const choices = order === 'replacement'
     ? { mode: 'replacement', oldContractId: contract.contractId, collectionLocationId: 'demo-collection-centre', expectedReturnMileage: MILEAGE,
@@ -165,6 +165,9 @@ test('FUCQ-184/194: a buddy replacement reads its old car and odometer, is colle
   const selection = (await f.repository.query(f.paula, 'pending_operations', { operationType: 'selection-order' })).value[0].payload.selection;
   assert.equal(selection.source.type, 'buddy-offer'); assert.equal(selection.draft.choices.expectedReturnMileage, undefined, 'the buddy draft has no manual fields');
   const odometer = selection.draft.choices.returnOdometer;
+  assert.deepEqual(odometer, { value: MILEAGE, unit: 'mi' }, 'entered mileage reaches the Buddy selection unchanged');
+  assert.deepEqual(f.contract.currentOdometer, { value: 5200, unit: 'mi' }, 'recorded account odometer is a separate fact');
+  assert.notEqual(odometer.value, f.contract.currentOdometer.value);
   const plan = await f.plan();
   assert.deepEqual([plan.applicable, plan.state, plan.oldContractId, plan.vehicleSlotId], [true, 'not-planned', f.contract.contractId, f.paula.entitlementSlotId]);
   assert.deepEqual([plan.currentCar.contractId, plan.currentCar.status, plan.currentCar.source], [f.contract.contractId, 'current', 'account']);
