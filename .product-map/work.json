@@ -11607,30 +11607,98 @@
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
       "native_updated_at": "2026-11-23T15:32:11.728-0600",
-      "observed_at": "2026-11-23T21:34:18Z",
-      "note": "Claim5ff1d6d4e. Barney McGrew requested/selectedSol/high, PinkySol/medium, no fallback; native In Progress is observed, not inferred from commits. First focused result50tests/41pass/1fail/8native-skips; repaired exact revision/CAS assertions pass, newly reached pause golden consent drift remains separately diagnosed.",
+      "observed_at": "2026-11-23T21:50:17Z",
+      "note": "Coherent implementation and both Results merged/pushed at4e3d132e3. Final owning2modules50tests/42pass/0fail/8native-skips. Lead source/spec/security review and root exact8processidentity/2group/scratch/link/token cleanup audit passed. Covering Node batch and native acceptance remain pending.",
       "slices": [
         {
           "id": "f575-brief-revision",
           "title": "Authoritative brief revision fixture",
-          "status": "in-progress",
-          "evidence": "Barney/Pinky own exact test/fixture allocation; no final evidence yet."
+          "status": "complete",
+          "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed."
         },
         {
           "id": "f575-manual-authority-setup",
           "title": "Successful current-revision authority setup",
-          "status": "in-progress",
-          "evidence": "Same lead owns current-row CAS and asserted setup success; final refusal/no-hold evidence pending."
+          "status": "complete",
+          "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed."
         },
         {
           "id": "f575-focused-validation",
           "title": "Two owning modules and independent lead review",
-          "status": "in-progress",
-          "evidence": "First exact2moduleRED preserved; pause fixture contradicts current no-consent refusal. No scope expansion or full green claim."
+          "status": "complete",
+          "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed."
         },
         {
           "id": "integration",
           "title": "Covering Node batch and native disposition",
+          "status": "in-progress",
+          "evidence": "Normal source integration4e3d132e3 pushed; root covering Node batch and human37-case ruling pending. No full/Done claim."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-580",
+      "title": "Reconcile retained brief pause fixture with explicit engagement consent",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-580",
+      "branch": "dev/DEV-2026-11-23-vesper-008",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:42:02.277Z",
+      "observed_at": "2026-11-23T21:50:17Z",
+      "note": "Coherent implementation and both Results merged/pushed at4e3d132e3. Final owning2modules50tests/42pass/0fail/8native-skips. Lead source/spec/security review and root exact8processidentity/2group/scratch/link/token cleanup audit passed. Covering Node batch and native acceptance remain pending.",
+      "slices": [
+        {
+          "id": "consent-fixture",
+          "title": "Exact no-consent refusal and consented successful pause",
+          "status": "complete",
+          "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed."
+        },
+        {
+          "id": "focused-validation",
+          "title": "Two-module composed regression and source review",
+          "status": "complete",
+          "evidence": "Lead independently reviewed exact field changes and final50/42pass/0fail/8skip composed run. Original partialRED retained; root integration/source identity and cleanup audits passed."
+        },
+        {
+          "id": "integration",
+          "title": "Normal integration and covering Node batch",
+          "status": "in-progress",
+          "evidence": "Normal source integration4e3d132e3 pushed; root covering Node batch and human37-case ruling pending. No full/Done claim."
+        }
+      ],
+      "native_updated_at": "2026-11-23T15:42:01.467-0600"
+    },
+    {
+      "id": "FUCQ-579",
+      "title": "Reconcile the canonical planner test with the fixed employee-driver read contract",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-579",
+      "branch": "dev/DEV-2026-11-23-vesper-012",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:45:49.586Z",
+      "native_updated_at": "2026-11-23T15:45:48.758-0600",
+      "observed_at": "2026-11-23T21:50:17Z",
+      "note": "Claimed and worktree ready; primaryF117/type/parent74 verified. Exact test-only fixture repair allocated, no product/planner policy change or implementation yet.",
+      "slices": [
+        {
+          "id": "fixture",
+          "title": "Truthful confirmed-driver expectation",
+          "status": "not-started"
+        },
+        {
+          "id": "regression",
+          "title": "Canonical and future-choice negative boundaries",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Review, merge and covering Node batch",
           "status": "not-started"
         }
       ]
