@@ -10,14 +10,14 @@
     </gcsp-status-screen>
   } @else if (view(); as vm) {
     @if (vm.isRefused) {
-      <gcsp-status-screen [title]="vm.title" [message]="vm.message" [announcement]="null">
+      <div gcspStatusScreen presentation="source" [level]="1" [title]="vm.title" [message]="vm.message" [announcement]="null">
         <a gcspButton routerLink="/help">Contact scheme support</a>
         <a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a>
-      </gcsp-status-screen>
+      </div>
     } @else {
       @if (vm.isPending) {
-        <div class="gcsp-offer-header"><gcsp-screen-intro [title]="vm.title" /><a gcspButton variant="ghost" routerLink="/account">‹ Back to Your cars</a></div>
-      } @else { <gcsp-screen-intro [title]="vm.title" /> }
+        <div class="gcsp-offer-header"><div gcspScreenIntro presentation="source" [level]="1" [title]="vm.title"></div><a gcspButton variant="ghost" routerLink="/account">‹ Back to Your cars</a></div>
+      } @else { <div gcspScreenIntro presentation="source" [level]="1" [title]="vm.title"></div> }
       @if (vm.showAcceptedIdentity && vm.acceptedIdentityRows.length) { <gcsp-fact-list presentation="source" [rows]="vm.acceptedIdentityRows" /> }
       <p class="gcsp-note" [hidden]="!vm.message">{{ vm.message }}</p>
       @if (vm.showAcceptedIdentity) {

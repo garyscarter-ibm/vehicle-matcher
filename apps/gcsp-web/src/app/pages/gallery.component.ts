@@ -131,6 +131,10 @@ import { OptionListComponent } from '../kit/option-list.component';
       [finishes]="[{ label: 'Paint', value: 'Alpine White' }]"
       [facts]="[{ label: 'Boot', value: 410, unit: 'litres' }, { label: 'Recorded count', value: 0 }, { label: 'Recorded option', value: false }, { label: 'Unknown fact', value: null }]" />
   </section>
+  <section class="gcsp-panel"><h2>Source headings and status</h2>
+    <div gcspScreenIntro presentation="source" title="Your offer" kicker="Your selection" lede="Review the car and your next step."></div>
+    <div gcspStatusScreen presentation="source" title="No car selected yet" message="Choose a car to see its details here." [announcement]="null"><a href="#top">Back to components</a></div>
+  </section>
   <section class="gcsp-panel"><h2>Source vehicle images</h2>
     <p class="gcsp-note">Approved supplied views share feature, thumbnails and the enlarged viewer. The focused decision above uses the picker and contain variants.</p>
     <gcsp-media-gallery name="Example BMW" [images]="mediaImages" />

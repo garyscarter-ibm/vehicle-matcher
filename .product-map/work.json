@@ -10730,10 +10730,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-028",
-      "evidence": "All8AC open. Pending source card facts/finishes/equipment/direct-contribution omission implemented;188scoped cases across6files, boundaries/inline4 and ratchet124. Source/default raw guards and catalogue/Gallery retained. No full build/live pair/acceptance.",
+      "evidence": "All8AC open. Shared source ScreenIntro/StatusScreen + normal/refused offer adoption;466scoped cases across25files including all direct default callers and real Gallery/Offer routes. Boundaries/inline4 and ratchet124; no full build/live pair/acceptance.",
       "id": "FUCQ-555",
-      "note": "All8AC open. Pending source hero/drawer/deadline/exits/comparison/reasons/details are partial. Nonpending/state, source intro/status and supported sibling integration/build/live pair/human review remain.",
-      "observed_at": "2026-11-23T05:01:51Z",
+      "note": "All8AC open. Pending/normal/refused source presenters are partial. Idle/loading/read-failure/generic/uncertain composition and supported sibling integration/build/live pair/human review remain.",
+      "observed_at": "2026-11-23T05:21:57Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10758,9 +10758,9 @@
           "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
         },
         {
-          "evidence": "Pending canonical card now has bounded raw source facts, finish/equipment copy and source contribution omission; source-card VehicleDetails reuses FactList missing treatment.188scoped passes. Nonpending/state/intro/status/comparison winners and supported sibling integration remain open.",
+          "evidence": "Canonical pending card/details plus ONE source native-DIV ScreenIntro/StatusScreen adopted by normal/refused offer states.466scoped passes with defaults retained. Idle/loading/read-failure/generic/uncertain state and comparison winners/supported sibling integration remain open.",
           "id": "offer-composition",
-          "observed_at": "2026-11-23T05:01:50.951077+00:00",
+          "observed_at": "2026-11-23T05:21:56.875753+00:00",
           "status": "in-progress",
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
@@ -10779,9 +10779,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "VehicleDetails12/VM33/Screen82/InteractionStore35/Route12/Stock-Gallery14:188scoped passes; old-source10failed/117passed plus test-only selector failure retained. Boundaries/inline4 and ratchet124. No full build/browser/live pair/human review.",
+          "evidence": "Source/default/OfferScreen96 +22actual caller files370 =466scoped cases across25files. All direct shared-status/intro consumers covered; default and source projection behavior pass. Boundaries/inline4/ratchet124. No full build/browser/live pair/human acceptance.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T05:01:50.951077+00:00",
+          "observed_at": "2026-11-23T05:21:56.875753+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10816,12 +10816,12 @@
           "status": "stopped; repeated child422; launcher carries allocation"
         },
         {
-          "expires_at": "2026-11-23T05:01:50.951077+00:00",
+          "expires_at": "2026-11-23T05:21:56.875753+00:00",
           "harness": "codex",
           "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T05:01:50.951077+00:00",
+          "observed_at": "2026-11-23T05:21:56.875753+00:00",
           "role": "launcher carrying F555 original view implementation",
-          "source": "Observed direct pending card facts/finishes/equipment work after retained child422; no model/provider/key change or retry. Runtime pair unexposed.",
+          "source": "Observed direct source heading/refused-status work after retained child422; no model/provider/key change/retry. Runtime pair unexposed.",
           "status": "checkpointed; scheduled continuation"
         }
       ]

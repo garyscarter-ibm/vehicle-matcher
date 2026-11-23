@@ -150,6 +150,7 @@ describe('native offer read screen', () => {
     const header = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-header');
     const back = header?.querySelector<HTMLAnchorElement>('a');
     expect(header?.querySelector('h1')?.textContent).toBe('Your offer');
+    expect(header?.querySelector(':scope > div[gcspScreenIntro] > h1.vm-title')).not.toBeNull();
     expect(back?.textContent).toBe('‹ Back to Your cars'); expect(back?.getAttribute('href')).toBe('/account');
     expect(back?.classList.contains('gcsp-button-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
   });
@@ -237,11 +238,14 @@ describe('native offer read screen', () => {
     await load({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderNumber: '7654321', stages: [
       { name: 'Selection received', state: 'complete' }, { name: 'Send to ordering', state: 'failed' }, { name: 'Await receipt', state: 'pending' },
     ] } });
-    const host = fixture.nativeElement as HTMLElement; const support = host.querySelector('gcsp-status-screen');
+    const host = fixture.nativeElement as HTMLElement; const support = host.querySelector('div[gcspStatusScreen].vm-screen.vm-status');
     expect(Array.from(support?.querySelectorAll('a') ?? []).map(link => [link.textContent, link.getAttribute('href')])).toEqual([
       ['Contact scheme support', '/help'], ['Back to Your cars', '/account'],
     ]);
-    expect(support?.querySelector('section')?.getAttribute('role')).toBeNull();
+    expect(support?.getAttribute('role')).toBeNull();
+    expect(support?.querySelector(':scope > h1.vm-title')?.textContent).toBe('Your selection was not sent to ordering');
+    expect(support?.querySelector(':scope > p.vm-lede')?.textContent).toContain('The car stays reserved for you.');
+    expect(support?.querySelector('section, gcsp-screen-intro, .gcsp-actions')).toBeNull();
     const group = host.querySelector('.gcsp-offer-current');
     expect(group?.querySelector('.gcsp-stage-heading')?.textContent).toBe('Your selection');
     expect(Array.from(group?.querySelectorAll('.gcsp-stage-item') ?? []).map(row => [row.querySelector('.gcsp-stage-name')?.textContent, row.querySelector('.gcsp-stage-state')?.textContent])).toEqual([

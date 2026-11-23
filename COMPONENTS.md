@@ -736,3 +736,26 @@ source facts option with raw zero/false, units and a hidden missing row. This is
 checkpoint; F548/shared-button style integration, real browser/visual behavior,
 connected acceptance and same-offer human parity remain separate gates. All eight
 original FUCQ-555 acceptance criteria remain open.
+
+
+### Angular source heading and status presenters (FUCQ-555)
+
+Extend/reuse the existing ScreenIntroComponent and StatusScreenComponent instead
+of local heading/status markup. Their element selectors and default presentation
+keep the legacy DOM/classes, level-one default, busy/announcement semantics and
+projected actions. Optional presentation="source" ports frozen ui.js helpers:
+
+| Source helper | Angular source contract |
+|---|---|
+| screenIntro | Use native div[gcspScreenIntro] with presentation="source", required title, optional kicker/lede and level1–6 (source default2). The DIV is the actual root; direct vm-kicker, hN.vm-title and vm-lede children preserve source ordering and omit absent copy. Native class binding supplies the source helper's optional root class. |
+| statusScreen | Use native div[gcspStatusScreen] with presentation="source", required title, optional kicker/message, level1–6 (source default2), announcement (status/alert/null) and existing busy. Actual root is DIV.vm-screen.vm-status; heading/message and caller-projected actions are direct children, with no nested intro/panel/action wrapper. Null announcement omits role; busy retains the existing truthful aria-busy semantics. |
+
+The native DIV hosts need no copied stylesheet, display workaround or view-local
+styling. OfferScreen uses source level1 for normal intros and refused-selection
+status; its existing heading-focus code supplies tabIndex when focus is needed.
+Idle/loading/read-failure and generic/uncertain state composition remain separate
+original gaps. Gallery: Source headings and status demonstrates both default-level
+source presenters with supplied copy/actions. Direct tests cover all six source
+levels/default2, absent copy, optional roles/busy and unique interactive projected
+actions; legacy/default behavior remains explicitly tested. F548 CSS/F556 Button
+integration, rendered/browser/connected pairs and human acceptance remain open.
