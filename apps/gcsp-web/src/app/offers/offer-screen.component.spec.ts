@@ -138,7 +138,7 @@ describe('native offer read screen', () => {
     reads[1].resolve({ status: 'unavailable', retryable: true }); await settle();
     expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Your offer could not be loaded');
     expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-countdown')).toBeNull();
-    expect(text()).toContain('Check current offer'); expect(text()).not.toContain('Offer expired');
+    expect(text()).toContain('Try again'); expect(text()).not.toContain('Offer expired');
   });
   it('announces a changed authoritative selection outcome even when its offer state stays accepted', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
@@ -286,8 +286,33 @@ describe('native offer read screen', () => {
     expect(text()).not.toContain('PRIVATE'); expect(text()).not.toContain('stacktrace');
     const retry = fixture.nativeElement.querySelector('button');
     if (['unavailable', 'stale-version', 'conflict', 'pending'].includes(status)) {
-      expect(retry?.textContent).toContain('Check current offer'); retry.click(); await settle(); expect(reads).toHaveLength(2);
+      expect(retry?.textContent).toContain('Try again'); retry.click(); await settle(); expect(reads).toHaveLength(2);
     } else expect(retry).toBeNull();
+  });
+  it('uses the source failed-read heading, message and retry without a second announcement region', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    reads[0]!.resolve({ status: 'unavailable', reason: 'PRIVATE provider failure', retryable: true }); await settle();
+    const page = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-body')!;
+    const content = page.querySelector('.gcsp-offer-content')!;
+    expect(Array.from(content.children, node => node.tagName)).toEqual(['DIV', 'P', 'BUTTON']);
+    expect(content.querySelector(':scope > div > h1.vm-title')?.textContent).toBe('Your offer could not be loaded');
+    expect(content.querySelector(':scope > p.gcsp-note')?.textContent).toBe('The current offer could not be loaded.');
+    const retry = content.querySelector<HTMLButtonElement>(':scope > button[data-offer-action="refresh"]')!;
+    expect(retry?.textContent?.trim()).toBe('Try again');
+    expect(page.querySelectorAll('[role="status"]')).toHaveLength(1);
+    expect(text()).not.toContain('PRIVATE');
+    retry.click(); await settle();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('marks the source page busy only while an authoritative offer read is loading', async () => {
+    const busy = () => (fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-body')?.getAttribute('aria-busy');
+    await settle(); expect(busy()).toBe('false');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); expect(busy()).toBe('true');
+    await load(); expect(busy()).toBe('false');
+    fixture.componentRef.setInput('offerId', 'offer-2'); await settle(); expect(busy()).toBe('true');
+    reads.at(-1)!.resolve({ status: 'unavailable', retryable: false }); await settle();
+    expect(busy()).toBe('false'); expect(fixture.nativeElement.querySelector('button')).toBeNull();
+    expect(text()).not.toContain('BMW 330e');
   });
   it('redacts the old snapshot and invalidates its request when the selector changes', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();

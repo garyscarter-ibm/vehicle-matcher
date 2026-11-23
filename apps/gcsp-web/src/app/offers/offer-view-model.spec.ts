@@ -209,7 +209,7 @@ describe('offer read presentation projection', () => {
     expect(offerViewModel({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderReference } }).message).toBe(message);
   });
   it('never presents private error payloads and retries only retryable read failures', () => {
-    expect(offerFailureView({ status: 'unavailable', reason: 'private-id stacktrace', retryable: true })).toEqual({ title: 'Your offer could not be loaded', message: 'Please try again in a moment.', retry: true });
+    expect(offerFailureView({ status: 'unavailable', reason: 'private-id stacktrace', retryable: true })).toEqual({ title: 'Your offer could not be loaded', message: 'The current offer could not be loaded.', retry: true });
     expect(offerFailureView({ status: 'denied', retryable: true }).retry).toBe(false);
     expect(offerFailureView({ status: 'conflict', retryable: false }).retry).toBe(false);
   });

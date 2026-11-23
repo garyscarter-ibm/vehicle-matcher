@@ -246,7 +246,7 @@ export function offerViewModel(offer: OfferProjection) {
 export function offerFailureView(failure: OfferFailure): { title: string; message: string; retry: boolean } {
   const copy: Readonly<Record<OfferFailure['status'], readonly [string, string]>> = {
     invalid: ['Offer link incomplete', 'Open the offer from your account or use its original email link.'],
-    unavailable: ['Your offer could not be loaded', 'Please try again in a moment.'],
+    unavailable: ['Your offer could not be loaded', 'The current offer could not be loaded.'],
     'stale-version': ['Offer details changed', 'Check the current offer again before continuing.'],
     conflict: ['Offer details changed', 'Check the current offer again before continuing.'],
     forbidden: ['Offer unavailable', 'This offer is not available for your account.'],

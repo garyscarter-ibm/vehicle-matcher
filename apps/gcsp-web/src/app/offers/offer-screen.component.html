@@ -1,4 +1,4 @@
-<div class="vm gcsp-offer-body gcsp-vehicle-page">
+<div class="vm gcsp-offer-body gcsp-vehicle-page" [attr.aria-busy]="state().status === 'loading'">
   <div class="gcsp-offer-content">
   @if (state().status === 'idle') {
     <gcsp-status-screen title="Choose an offer" message="Open the offer from your account or use its original email link." />
@@ -6,9 +6,9 @@
     <div gcspScreenIntro presentation="source" [level]="1" title="Your offer" class="gcsp-vh"></div>
     <div gcspLoadingSkeleton label="Loading your offer." layout="offer"></div>
   } @else if (failure(); as failed) {
-    <gcsp-status-screen [title]="failed.title" [message]="failed.message">
-      @if (failed.retry) { <button gcspButton type="button" (click)="refresh()">Check current offer</button> }
-    </gcsp-status-screen>
+    <div gcspScreenIntro presentation="source" [level]="1" [title]="failed.title"></div>
+    <p class="gcsp-note" [hidden]="!failed.message">{{ failed.message }}</p>
+    @if (failed.retry) { <button gcspButton variant="ghost" type="button" data-offer-action="refresh" (click)="refresh()">Try again</button> }
   } @else if (view(); as vm) {
     @if (vm.isRefused) {
       <div gcspStatusScreen presentation="source" [level]="1" [title]="vm.title" [message]="vm.message" [announcement]="null">
