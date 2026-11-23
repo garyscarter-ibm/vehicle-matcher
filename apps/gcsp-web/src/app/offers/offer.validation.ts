@@ -475,7 +475,7 @@ function commandHandoff(value: unknown, receipt: RecordValue, expected: OfferDec
     || !object(quote) || quote['quoteId'] !== receipt['quoteId'] || quote['version'] !== receipt['quoteVersion']
     || quote['version'] !== expected.expectedQuoteVersion || quote['policyVersion'] !== receipt['policyVersion']
     || quote['runId'] !== expected.runId || quote['briefVersion'] !== source['expectedDraftVersion']
-    || !text(quote['orderUuid'], 128) || !text(quote['configurationId'], 128)
+    || !text(quote['orderUuid'], 128) || !text(quote['configurationId'])
     || !object(stock) || stock['orderUuid'] !== quote['orderUuid'] || stock['configurationId'] !== quote['configurationId']
     || typeof stock['orderNumber'] !== 'string' || !/^\d{7}$/.test(stock['orderNumber'])
     || !object(selectedTerms) || !text(selectedTerms['termsVersion'], 128) || selectedTerms['policyVersion'] !== receipt['policyVersion']
