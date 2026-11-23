@@ -56,6 +56,18 @@ async function openedGallery() {
 }
 
 describe('MediaGalleryComponent', () => {
+  it('uses canonical source buttons for all four icon actions and retains specialized picker thumbs', async () => {
+    const { root } = await openedGallery();
+    for (const name of ['enlarge', 'close', 'previous', 'next']) {
+      const button = root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-' + name)!;
+      expect(button).not.toBeNull(); expect(button.classList.contains('vm-btn')).toBe(true);
+      expect(button.classList.contains('vm-btn-ghost')).toBe(true); expect(button.classList.contains('gcsp-button')).toBe(false);
+      expect(button.classList.contains('gcsp-button-ghost')).toBe(false);
+    }
+    expect(root.querySelectorAll('.gcsp-media-gallery-thumb')).toHaveLength(6);
+    expect(root.querySelector('.gcsp-media-gallery-thumb.gcsp-button, .gcsp-media-gallery-thumb.vm-btn')).toBeNull();
+  });
+
   it('shows an empty placeholder and omits navigation for an empty or single-image gallery', async () => {
     const fixture = TestBed.createComponent(GalleryHost);
     await fixture.whenStable();

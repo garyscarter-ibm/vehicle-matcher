@@ -1,0 +1,7 @@
+/* Frozen gcsp-presenter.css:21–26; the original GCSP scope and declarations are retained. */
+.gcsp .gcsp-mail-status { display: inline-flex; align-items: center; gap: var(--gcsp-space-2); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-mail-status .gcsp-icon { flex: none; width: 16px; height: 16px; }
+.gcsp .gcsp-mail-status.is-ok { color: var(--gcsp-success); }
+.gcsp .gcsp-mail-status.is-warn { color: var(--gcsp-warning); }
+.gcsp .gcsp-mail-status.is-bad { color: var(--gcsp-danger); }
+.gcsp .gcsp-mail-status.is-wait { color: var(--gcsp-unavailable); }

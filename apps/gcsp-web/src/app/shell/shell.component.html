@@ -4,9 +4,10 @@
     @if (navigation().length) { <button class="gcsp-menu-toggle" type="button" aria-label="Menu" aria-controls="portal-navigation" [attr.aria-expanded]="menuOpen" (click)="menuOpen = !menuOpen"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button> }
     <div class="gcsp-marks"><img class="gcsp-mark" src="assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22" /></div>
     <div class="gcsp-title">Group Car Schemes Portal</div>
+    @if (employee()) { <div gcspNotificationBell [model]="notifications()" (opened)="closeAccountForBell()" (navigate)="navigateNotification($event)"></div> }
     <div class="gcsp-account" aria-live="polite">
       @if (context(); as account) {
-        <details class="gcsp-account-details" (keydown.escape)="closeAccount($event)">
+        <details class="gcsp-account-details" (keydown.escape)="closeAccount($event)" (toggle)="onAccountToggle($event)">
           <summary class="gcsp-account-summary" aria-label="Account details"><span class="gcsp-avatar" aria-hidden="true">{{ initials() }}</span><span class="gcsp-account-name">{{ account.displayName || 'Account' }}</span><span aria-hidden="true">⌄</span></summary>
           <div class="gcsp-account-panel"><span class="gcsp-account-detail-name">{{ account.displayName || 'Your account' }}</span>@if (account.email) { <span class="gcsp-account-email">{{ account.email }}</span> }
             @if (employee()) { <ul class="gcsp-account-links"><li><a routerLink="/help" class="gcsp-account-link" (click)="closeAccount($event)">Renewal help</a></li></ul> }
@@ -20,10 +21,10 @@
   <div class="gcsp-body">
     @if (navigation().length) {
       <nav class="gcsp-nav" id="portal-navigation" aria-label="Portal" [attr.data-expanded]="expanded"><ul class="gcsp-nav-list">
-        @for (item of navigation(); track item.path) { <li class="gcsp-nav-item"><a class="gcsp-nav-btn" [routerLink]="'/' + item.path" routerLinkActive="active" ariaCurrentWhenActive="page" [title]="item.label"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">@for (path of item.icon; track path) { <path [attr.d]="path" /> }</svg><span class="gcsp-nav-label">{{ item.label }}</span></a></li> }
+        @for (item of navigation(); track item.path) { <li class="gcsp-nav-item"><a class="gcsp-nav-btn" [routerLink]="'/' + item.path" [class.active]="isCurrent(item.path)" [attr.aria-current]="isCurrent(item.path) ? 'page' : null" [title]="item.label"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">@for (path of item.icon; track path) { <path [attr.d]="path" /> }</svg><span class="gcsp-nav-label">{{ item.label }}</span></a></li> }
       </ul><button class="gcsp-nav-toggle" type="button" [attr.aria-expanded]="expanded" (click)="expanded = !expanded"><svg class="gcsp-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M9 6l6 6-6 6" /></svg><span class="gcsp-nav-label">{{ expanded ? 'Hide labels' : 'Show labels' }}</span></button></nav>
     }
-    <div class="gcsp-content"><main id="gcsp-main" class="gcsp-main" tabindex="-1">@if (auth.recovery(); as recovery) { <p role="status" class="gcsp-panel">{{ recovery.message }}</p> }@if (routeAllowed()) { <router-outlet /> } @else { @let state = auth.state(); @switch (state.status) {
+    <div class="gcsp-content"><div class="gcsp-crumbs-host">@if (breadcrumbs().length > 1) { <nav class="gcsp-crumbs" aria-label="Breadcrumb"><ol class="gcsp-crumb-list">@for (label of breadcrumbs(); track $index; let last = $last) { <li class="gcsp-crumb" [attr.aria-current]="last ? 'page' : null">{{ label }}</li> }</ol></nav> }</div><main id="gcsp-main" class="gcsp-main" tabindex="-1">@if (auth.recovery(); as recovery) { <p role="status" class="gcsp-panel">{{ recovery.message }}</p> }@if (routeAllowed()) { <router-outlet /> } @else { @let state = auth.state(); @switch (state.status) {
         @case ('ready') { <gcsp-status-screen title="Checking your access" message="Please wait." [busy]="true" /> }
         @case ('loading') { <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" /> }
         @case ('unavailable') { <gcsp-status-screen title="Account unavailable" [message]="state.message"><button gcspButton type="button" (click)="retryAccount()">Try again</button></gcsp-status-screen> }

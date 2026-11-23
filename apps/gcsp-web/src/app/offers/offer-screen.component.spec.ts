@@ -1,10 +1,15 @@
 import { ErrorHandler, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { MediaGalleryComponent } from '../kit/media-gallery.component';
+import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
+import { publishPresenterAction } from '../kit/presenter-actions';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { OfferClient } from './offer.client';
+import { OfferInteractionStore } from './offer-interaction.store';
 import { OfferScreenComponent } from './offer-screen.component';
 import { OfferStore } from './offer.store';
 import { offerScreenEmployee, offerScreenFixture } from './offer-screen.fixture';
@@ -745,6 +750,125 @@ describe('native offer read screen', () => {
       expect(focus).not.toHaveBeenCalled();
     });
   });
+  it('rereads the current offer after a presenter action through the shared refresh owner', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    publishPresenterAction(document); await settle(); expect(reads).toHaveLength(2); expect(reads[1].id).toBe('offer-1');
+    expect(client['decide']).not.toHaveBeenCalled(); expect(client['confirmFollowup']).not.toHaveBeenCalled();
+  });
+  it('rereads the open idle offer on a native visibility trigger without deciding', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(2); expect(reads[1].id).toBe('offer-1');
+    expect(client['decide']).not.toHaveBeenCalled(); expect(client['confirmFollowup']).not.toHaveBeenCalled();
+  });
+  it.each(['details drawer', 'image viewer'] as const)('preserves the real open %s until a later safe refresh trigger', async inspection => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture();
+    await load({ ...offer, quote: { ...offer.quote, facts: { ...offer.quote.facts, display: { ...offer.quote.facts.display,
+      images: [{ src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', label: 'Front' }] } } } });
+    const host = fixture.nativeElement as HTMLElement;
+    const details = fixture.debugElement.query(By.directive(VehicleDetailsComponent)).componentInstance as VehicleDetailsComponent;
+    const gallery = fixture.debugElement.query(By.directive(MediaGalleryComponent)).componentInstance as MediaGalleryComponent;
+    const opener = host.querySelector<HTMLButtonElement>(inspection === 'details drawer' ? '.gcsp-vehicle-details-entry' : '.gcsp-media-gallery-enlarge')!;
+    opener.click(); await settle();
+    expect(inspection === 'details drawer' ? details.isOpen() : gallery.viewerOpen()).toBe(true);
+    const dialog = host.querySelector<HTMLElement>(inspection === 'details drawer' ? 'gcsp-vehicle-details [role="dialog"]' : 'gcsp-media-gallery dialog')!;
+    publishPresenterAction(document); await settle();
+    expect(reads).toHaveLength(1); expect(dialog.isConnected).toBe(true);
+    expect(inspection === 'details drawer' ? details.isOpen() : gallery.viewerOpen()).toBe(true);
+    dialog.querySelector<HTMLButtonElement>(inspection === 'details drawer' ? '[aria-label="Close"]' : '[aria-label="Close image viewer"]')!.click(); await settle();
+    expect(inspection === 'details drawer' ? details.isOpen() : gallery.viewerOpen()).toBe(false);
+    expect(reads).toHaveLength(1);
+    publishPresenterAction(document); await settle();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it.each([{ kind: 'details drawer', index: 0 }, { kind: 'details drawer', index: 1 }, { kind: 'image viewer', index: 0 }, { kind: 'image viewer', index: 1 }])(
+    'preserves follow-up $kind on car $index until a later safe refresh trigger', async ({ kind, index }) => {
+      vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+      const withImage = (offer: OfferProjection): OfferProjection => ({ ...offer, quote: { ...offer.quote, facts: { ...offer.quote.facts,
+        display: { ...offer.quote.facts.display, images: [{ src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', label: 'Front' }] } } } });
+      const previous = withImage(offerScreenFixture('declined')); const next = withImage({ ...actionableOffer(), offerId: 'offer-2' });
+      client['readFollowup'].mockResolvedValue({ status: 'ok', value: { schemaVersion: 1, state: 'ready', decisionId: 'decision-1', savedChange: savedFollowup(),
+        comparison: { schemaVersion: 1, currentBriefVersion: 8, requirements: [], previous: { offer: previous }, next: { offer: next } } } });
+      fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(previous);
+      const host = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('gcsp-offer-followup')!;
+      const openers = host.querySelectorAll<HTMLButtonElement>(kind === 'details drawer' ? '.gcsp-vehicle-details-entry' : '.gcsp-media-gallery-enlarge');
+      expect(openers).toHaveLength(2); openers[index].click(); await settle();
+      const child = kind === 'details drawer' ? host.querySelectorAll('gcsp-vehicle-details')[index] : host.querySelectorAll('gcsp-media-gallery')[index];
+      const dialog = child.querySelector<HTMLElement>(kind === 'details drawer' ? '.gcsp-side-drawer:not([hidden]) [role="dialog"]' : 'dialog[open]')!;
+      expect(dialog).not.toBeNull();
+      publishPresenterAction(document); await settle();
+      expect(reads).toHaveLength(1); expect(dialog.isConnected).toBe(true);
+      dialog.querySelector<HTMLButtonElement>(kind === 'details drawer' ? '[aria-label="Close"]' : '[aria-label="Close image viewer"]')!.click(); await settle();
+      expect(reads).toHaveLength(1); publishPresenterAction(document); await settle();
+      expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+    });
+  it('keeps a manual check owned through background triggers and resumes silent reads afterward', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    await check(); const manualRead = reads.at(-1)!;
+    publishPresenterAction(document); await settle();
+    expect(reads).toHaveLength(2); expect(manualRead.options.signal?.aborted).toBe(false);
+    expect(checkNote()).toBe('Checking the current offer state.');
+    await load(offer); expect(checkNote()).toBe('Check complete. Nothing has changed.');
+    publishPresenterAction(document); await settle();
+    expect(reads).toHaveLength(3); await load(offer); expect(checkNote()).toBe('');
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('preserves exact mileage/declarations and selected decline reasons, then refreshes after review closes', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(actionableOffer());
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore);
+    interactions.review('accept'); interactions.setMileage('006100'); interactions.tick('terms', true); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(1); expect(interactions.state().mileage).toBe('006100'); expect(interactions.state().declarations).toEqual({ terms: true });
+    interactions.closeReview(); interactions.review('decline'); await settle(); interactions.selectReason('body');
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().reasons.selected).toBe('body');
+    interactions.closeReview(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(2); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('does not replace an in-flight offer read, and reads again on a later eligible restore', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1);
+    await load(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await settle(); expect(reads).toHaveLength(2);
+  });
+  it('keeps decision sending and unconfirmed outcomes owned until an explicit current-offer read', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    let complete!: (value: OfferFailure) => void; client['decide'].mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore);
+    interactions.review('decline'); await settle(); interactions.selectReason('body'); const decision = interactions.submitDecision();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().decision).toBe('sending');
+    complete({ status: 'pending' }); await decision; document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(1); expect(interactions.state().decision).toMatchObject({ status: 'pending' }); expect(client['decide']).toHaveBeenCalledOnce();
+    fixture.componentInstance.refresh(); await settle(); await load(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(reads).toHaveLength(3); expect(client['decide']).toHaveBeenCalledOnce();
+  });
+  it('preserves a followup answer during editing, saving and uncertain confirmation, then resumes after reconciliation', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const declined = { ...offerScreenFixture('declined'), followup: { decisionId: 'decision-1' } }; await load(declined);
+    const interactions = fixture.debugElement.injector.get(OfferInteractionStore); await settle(); interactions.chooseAnswer('suv');
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1); expect(interactions.state().followup.answer).toBe('suv');
+    let complete!: (value: OfferFailure) => void; client['confirmFollowup'].mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    const confirm = interactions.confirmFollowup(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(interactions.state().followup.phase).toBe('saving'); expect(interactions.state().followup.answer).toBe('suv'); expect(reads).toHaveLength(1);
+    complete({ status: 'pending' }); await confirm; const uncertain = interactions.state().followup;
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(interactions.state().followup).toBe(uncertain); expect(reads).toHaveLength(1);
+    client['readFollowup'].mockResolvedValueOnce({ status: 'ok', value: savedFollowup() }); await interactions.refreshFollowup();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(2); expect(client['confirmFollowup']).toHaveBeenCalledOnce();
+  });
+
+  it('does not refresh a signed-out offer or a destroyed offer owner', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(); auth.set({ status: 'signed-out' }); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(reads).toHaveLength(1);
+    fixture.destroy(); window.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); await Promise.resolve(); expect(reads).toHaveLength(1);
+  });
+
 });
 
 describe('native offer read screen through the real offer client', () => {
@@ -787,4 +911,6 @@ describe('native offer read screen through the real offer client', () => {
     expect(handleError).not.toHaveBeenCalled();
     fixture.destroy();
   });
+
+
 });

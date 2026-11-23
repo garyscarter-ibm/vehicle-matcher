@@ -6,7 +6,7 @@
         @if (context()) { <p class="gcsp-side-drawer-context">{{ context() }}</p> }
         <h2 #heading class="gcsp-side-drawer-title" [id]="titleId" tabindex="-1">{{ title() }}</h2>
       </div>
-      <button gcspButton type="button" variant="ghost" [disabled]="!dismissible()" aria-label="Close" (click)="onDialogClick($event)">Close</button>
+      <button gcspButton presentation="source" type="button" variant="ghost" [disabled]="!dismissible()" aria-label="Close" (click)="onDialogClick($event)">Close</button>
     </div>
     <div class="gcsp-side-drawer-body"><ng-content /></div>
     <div class="gcsp-side-drawer-foot"><ng-content select="[drawer-footer]" /></div>

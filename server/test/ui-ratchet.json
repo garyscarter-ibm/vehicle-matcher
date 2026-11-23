@@ -3,7 +3,8 @@
   "roots": [
     "blocks/vehicle-matcher/",
     "blocks/gcsp/",
-    "blocks/demo-launcher/"
+    "blocks/demo-launcher/",
+    "apps/gcsp-web/src/app/"
   ],
   "exclude": [
     "blocks/vehicle-matcher/ui.js",
@@ -29,11 +30,14 @@
     "blocks/gcsp/kit/help-tip.js",
     "blocks/gcsp/kit/star-rating.js",
     "blocks/gcsp/kit/understanding-meter.js",
-    "blocks/gcsp/kit/buddy-status.js"
+    "blocks/gcsp/kit/buddy-status.js",
+    "apps/gcsp-web/src/app/kit/"
   ],
   "extensions": [
     ".js",
-    ".mjs"
+    ".mjs",
+    ".ts",
+    ".html"
   ],
   "patterns": {
     "heading": {
@@ -160,6 +164,21 @@
       "re": "el\\('span', `gcsp-buddy-status",
       "flags": "g",
       "use": "buddyStatus({ state, href }) (blocks/gcsp/kit/buddy-status.js)"
+    },
+    "angular-mail-status": {
+      "re": "<span\\b[^>]*\\bclass\\s*=\\s*[\"'][^\"']*\\bgcsp-mail-status\\b",
+      "flags": "g",
+      "use": "span[gcspMailStatusChip] (apps/gcsp-web/src/app/kit/mail-status-chip.component.ts)"
+    },
+    "angular-tabs": {
+      "re": "role\\s*=\\s*[\"']tablist[\"']",
+      "flags": "g",
+      "use": "gcsp-tabs / gcsp-greg-navigation (apps/gcsp-web/src/app/kit/)"
+    },
+    "angular-source-kit": {
+      "re": "<(?:button|a)\\b(?!(?:\\s+[^\\s\"'<>/=]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'=<>`]+))?)*\\s+gcspButton(?=\\s|=|/?>))[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\bvm-btn\\b|<(?:div|section|ul|figure|details)\\b[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\bvm-btn\\b|<(?:button|a|div|section|ul|figure|details)\\b[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\b(?:gcsp-bell|gcsp-stage-tracker|gcsp-stage-list|gcsp-task-list|gcsp-slot-picker|gcsp-activity-timeline|gcsp-range-bar|gcsp-release-grid|gcsp-help-tip|gcsp-star-rating|gcsp-understanding|gcsp-buddy-status)\\b",
+      "flags": "g",
+      "use": "the corresponding 1:1 Angular kit port (COMPONENTS.md Port status); keep source markup inside apps/gcsp-web/src/app/kit/"
     }
   },
   "stylesheets": [
@@ -404,12 +423,20 @@
       "max_lines": 19
     },
     {
+      "path": "apps/gcsp-web/src/app/kit/mail-status-chip.component.css",
+      "max_lines": 8
+      },
+      {
       "path": "apps/gcsp-web/src/app/kit/star-rating.component.css",
       "max_lines": 2
     },
     {
       "path": "apps/gcsp-web/src/app/kit/data-table.component.css",
       "max_lines": 2
+    },
+    {
+      "path": "apps/gcsp-web/src/styles/node-gcsp.css",
+      "max_lines": 7157
     }
   ],
   "baseline": {
@@ -453,5 +480,23 @@
   "stylesheet": {
     "path": "blocks/vehicle-matcher/vehicle-matcher.css",
     "max_lines": 4534
+  },
+  "port": {
+    "source": [
+      "docs/migration/FUCQ-432/source-styles.css"
+    ],
+    "target": [
+      "apps/gcsp-web/src/styles/node-gcsp.css"
+    ],
+    "kit": [
+      "apps/gcsp-web/src/app/kit/"
+    ],
+    "catalogue": "COMPONENTS.md",
+    "rewrites": [],
+    "retired": [],
+    "baseline": {
+      "missing_selectors": 0,
+      "unported_components": 22
+    }
   }
 }

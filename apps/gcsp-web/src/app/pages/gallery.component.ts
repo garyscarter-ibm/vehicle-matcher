@@ -2,6 +2,7 @@ import { MediaWellComponent } from '../kit/media-well.component';
 import { Component, signal } from '@angular/core';
 import { PreferenceCategoryComponent } from '../kit/preference-category.component';
 import { StarRatingComponent } from '../kit/star-rating.component';
+import { GregNavigationComponent } from '../kit/greg-navigation.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
@@ -29,6 +30,9 @@ import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
 import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
 import { OptionListComponent } from '../kit/option-list.component';
+import { MailStatusChipComponent } from '../kit/mail-status-chip.component';
+import { NotificationBellComponent } from '../kit/notification-bell.component';
+import { NotificationModel } from '../kit/notification-bell.types';
 import { TaskGroup, TaskListComponent } from '../kit/task-list.component';
 import { SlotPickerComponent, SlotPickerSlot } from '../kit/slot-picker.component';
 import { formatActivityTime } from '../activity/activity.copy';
@@ -37,8 +41,13 @@ const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjecti
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [MediaWellComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [NotificationBellComponent, MailStatusChipComponent, GregNavigationComponent, MediaWellComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
+  <section class="gcsp-panel"><h2>GCSP notification bell</h2><div class="notification-gallery">
+    @for (example of bells; track example.label) { <div class="notification-example" [class.has-panel]="example.open"><h3>{{ example.label }}</h3>
+      <div gcspNotificationBell [model]="example.model" [previewOpen]="example.open" [pinned]="true" [noteMs]="2147483647"></div>
+    </div> }
+  </div></section>
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
   <gcsp-labelled-field controlId="gallery-email" label="Email address" hint="Your notification address." error="Enter an email address."><input id="gallery-email" type="email" aria-describedby="gallery-email-hint gallery-email-error" aria-invalid="true" /></gcsp-labelled-field></section>
@@ -64,6 +73,16 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
   <gcsp-status-screen title="Access not available" message="Your account does not have access to this page." [level]="2" />
+  <section class="gcsp-panel"><h2>Outbox delivery status</h2><div class="gcsp-actions">
+    <span gcspMailStatusChip state="sent" transport="captured" label="Captured, not sent"></span>
+    <span gcspMailStatusChip state="sent" transport="configured" label="Accepted by email provider"></span>
+    <span gcspMailStatusChip state="pending" label="Preparing"></span>
+    <span gcspMailStatusChip state="sending" label="Sending"></span>
+    <span gcspMailStatusChip state="retrying" label="Retrying"></span>
+    <span gcspMailStatusChip state="failed" label="Failed"></span>
+    <span gcspMailStatusChip state="sent" label="Delivery status unknown"></span>
+    <span gcspMailStatusChip state="unrecognised" label="Delivery status unknown"></span>
+  </div></section>
   <section class="gcsp-panel"><h2>Preference categories and current-car rating</h2><p class="gcsp-note">Native choices, independent importance, removal confirmation and disabled states.</p>
     <gcsp-preference-category id="gallery-preference" [definition]="category" [state]="{ state: 'considered', value: ['estate'], importance: 'high', exact: true }" [open]="true" [removing]="removing()" (removeRequested)="removing.set(true)" (kept)="removing.set(false)" (removed)="removing.set(false)" />
     <gcsp-preference-category id="gallery-preference-disabled" [definition]="category" [disabled]="true" />
@@ -99,6 +118,14 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
   <section class="gcsp-panel"><h2>Source primary vehicle media</h2>
     <gcsp-media-well name="BMW Touring" line="Order no. 0123456" [image]="{ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW Touring', caption: 'BMW' }" />
     <gcsp-media-well name="BMW Touring" line="Order number not supplied" />
+  </section>
+  <section class="gcsp-panel"><h2>GCSP tabs</h2>
+    <gcsp-tabs label="Car details" [items]="[{ id: 'specification', label: 'Specification', content: specification }, { id: 'equipment', label: 'Selected equipment', content: equipment }]" />
+    <ng-template #specification>Supplied specification</ng-template><ng-template #equipment>Supplied selected equipment</ng-template>
+  </section>
+  <section class="gcsp-panel"><h2>Greg dashboard navigation</h2>
+    <gcsp-greg-navigation page="dashboard" [panels]="{ dashboard: gregDemand, policy: gregPolicy }" />
+    <ng-template #gregDemand>Saved demand and released supply</ng-template><ng-template #gregPolicy>Current policy draft</ng-template>
   </section>
   <section class="gcsp-panel"><h2>Released vehicle card</h2>
     <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"
@@ -239,6 +266,19 @@ export class GalleryComponent {
     { label: 'Selection received', state: 'done', at: '2026-11-22T12:30:00.000Z' },
     { label: 'HR approval', state: 'current', owner: 'HR team', next: 'Review the request' },
     { label: 'Sent to ordering', state: 'upcoming' },
+  ];
+  private readonly waitingBell: NotificationModel = { status: 'ok', waiting: 1, note: null, rows: [{ key: 'offer:gallery', kind: 'offer', waiting: true,
+    title: 'Your buddy found a car', car: 'BMW i5 Touring eDrive40, Sophisto Grey', detail: 'Reserved for you. Respond by 14:00.', image: { src: '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp' },
+    action: { label: 'View your offer', href: '/gcsp/offers/gallery', variant: 'button' } }] };
+  readonly bells: readonly { label: string; open: boolean; model: NotificationModel }[] = [
+    { label: 'None waiting', open: false, model: { status: 'ok', waiting: 0, rows: [], note: null } },
+    { label: 'Waiting', open: false, model: this.waitingBell },
+    { label: 'New offer note', open: false, model: { ...this.waitingBell, note: { id: 'gallery-note', title: 'Your buddy found a car', text: 'BMW i5 Touring. Respond by 14:00.' } } },
+    { label: 'Open current offer', open: true, model: this.waitingBell },
+    { label: 'Open empty', open: true, model: { status: 'ok', waiting: 0, rows: [], note: null } },
+    { label: 'Open expired offer', open: true, model: { status: 'ok', waiting: 0, note: null, rows: [{ key: 'offer:expired-gallery', kind: 'offer', title: 'Your offer expired.',
+      action: { label: 'View expired offer', href: '/gcsp/offers/expired-gallery', variant: 'link' } }] } },
+    { label: 'Open unavailable', open: true, model: { status: 'unavailable', waiting: 0, rows: [], note: null } },
   ];
   readonly buddyStates = ['active', 'inactive', 'unset', 'finished', 'unavailable', 'paused'];
   readonly buddyEvents = [{ id: 'check', occurredAt: '2026-11-22T09:30:00Z', label: 'Cars checked', detail: '3 cars checked, 0 suitable.' }, { id: 'resumed', occurredAt: '2026-11-22T09:00:00Z', label: 'Search resumed' }];

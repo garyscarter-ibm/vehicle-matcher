@@ -1,2 +1,7 @@
 .buddy-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-4); }
+.notification-gallery { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-6); }
+.notification-example { min-height: 160px; padding: var(--gcsp-space-2) var(--gcsp-space-6); }
+.notification-example.has-panel { min-height: 350px; }
+.notification-example [gcspNotificationBell] { width: 44px; }
 @media (max-width: 600px) { .buddy-gallery { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .notification-example { padding-right: var(--gcsp-space-8); } }

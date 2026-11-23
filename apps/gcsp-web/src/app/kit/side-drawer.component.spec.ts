@@ -70,6 +70,12 @@ describe('SideDrawerComponent', () => {
     expect(panel.querySelector('.gcsp-side-drawer-foot > [drawer-footer]')?.textContent).toBe('Continue');
   });
 
+  it('renders its Close control through the canonical source button presentation', async () => {
+    const { panel } = await host(); const close = panel.querySelector<HTMLButtonElement>('[aria-label="Close"]')!;
+    expect(close.classList.contains('vm-btn')).toBe(true); expect(close.classList.contains('vm-btn-ghost')).toBe(true);
+    expect(close.classList.contains('gcsp-button')).toBe(false); expect(close.classList.contains('gcsp-button-ghost')).toBe(false);
+  });
+
   it('focuses its heading, contains scrolling, restores prior scrolling and returns focus once on close', async () => {
     document.body.style.overflow = 'clip';
     const { fixture, overlay, panel, drawer, opener } = await host();

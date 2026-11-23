@@ -6,13 +6,14 @@ import { GcspTabItem, TabsComponent } from './tabs.component';
 
 @Component({
   imports: [TabsComponent],
-  template: '<ng-template #specification>Every supplied specification fact</ng-template><ng-template #equipment>All selected equipment</ng-template><ng-template #history>Updated details</ng-template><gcsp-tabs label="Car details" [items]="items()" [initialSelectedId]="initialSelectedId" /><gcsp-tabs label="Other details" [items]="items()" />',
+  template: '<ng-template #specification>Every supplied specification fact</ng-template><ng-template #equipment>All selected equipment</ng-template><ng-template #history>Updated details</ng-template><gcsp-tabs label="Car details" [items]="items()" [initialSelectedId]="initialSelectedId" [activeId]="activeId()" /><gcsp-tabs label="Other details" [items]="items()" />',
 })
 class TabsHost implements OnInit {
   @ViewChild('specification', { static: true }) specification!: TemplateRef<unknown>;
   @ViewChild('equipment', { static: true }) equipment!: TemplateRef<unknown>;
   @ViewChild('history', { static: true }) history!: TemplateRef<unknown>;
   readonly items = signal<readonly GcspTabItem[]>([]);
+  readonly activeId = signal<string | undefined>(undefined);
   initialSelectedId: string | undefined = 'specification';
 
   ngOnInit(): void { this.items.set(this.makeItems()); }
@@ -81,6 +82,17 @@ describe('TabsComponent', () => {
     fixture.destroy();
   });
 
+  it('reflects externally selected route state and emits a request without replacing the panels', async () => {
+    const fixture = TestBed.createComponent(TabsHost); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement; const panels = Array.from(root.querySelectorAll('[role=tabpanel]'));
+    const tabs = fixture.debugElement.query(By.directive(TabsComponent)).componentInstance as TabsComponent;
+    const changes: string[] = []; tabs.selectionChange.subscribe(id => changes.push(id));
+    fixture.componentInstance.activeId.set('equipment'); await fixture.whenStable();
+    expect(tabs.selectedId()).toBe('equipment'); tabs.select('specification');
+    expect(changes).toEqual(['specification']); expect(tabs.selectedId()).toBe('equipment');
+    fixture.componentInstance.activeId.set('specification'); await fixture.whenStable();
+    expect(tabs.selectedId()).toBe('specification'); expect(Array.from(root.querySelectorAll('[role=tabpanel]'))).toEqual(panels);
+  });
   it('retains a valid selection across equivalent readback and chooses the initial or first valid id when removed', async () => {
     const fixture = TestBed.createComponent(TabsHost);
     await fixture.whenStable();

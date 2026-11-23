@@ -16,7 +16,7 @@
   @if (currentImage(); as image) {
     @if (featureLoading()) { <ng-container [ngTemplateOutlet]="loading" [ngTemplateOutletContext]="{ $implicit: 'feature' }" /> }
     @if (!compact()) {
-      <button #enlargeButton gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-enlarge" [hidden]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()).toLowerCase() + ' image'" (click)="openViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14" /><path d="m15 15 6 6" /><path d="M10 7v6M7 10h6" /></svg></button>
+      <button #enlargeButton gcspButton presentation="source" type="button" variant="ghost" class="gcsp-media-gallery-enlarge" [hidden]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()).toLowerCase() + ' image'" (click)="openViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14" /><path d="m15 15 6 6" /><path d="M10 7v6M7 10h6" /></svg></button>
     }
   }
 </div>
@@ -34,7 +34,7 @@
   @if (currentImage(); as image) {
     <div class="gcsp-media-gallery-head">
       <h2 class="gcsp-media-gallery-title" [id]="viewerTitleId">{{ viewLabel(image, selectedIndex()) }}</h2>
-      <button #viewerClose gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-close" aria-label="Close image viewer" (click)="closeViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
+      <button #viewerClose gcspButton presentation="source" type="button" variant="ghost" class="gcsp-media-gallery-close" aria-label="Close image viewer" (click)="closeViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
     </div>
     <div class="gcsp-media-gallery-stage">
       <div class="gcsp-media-gallery-large-well">
@@ -45,8 +45,8 @@
         }
       </div>
       @if (displayImages().length > 1) {
-        <button gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-previous" [hidden]="healthyImageCount() < 2" aria-label="Previous image" (click)="step(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7" /></svg></button>
-        <button gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-next" [hidden]="healthyImageCount() < 2" aria-label="Next image" (click)="step(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7" /></svg></button>
+        <button gcspButton presentation="source" type="button" variant="ghost" class="gcsp-media-gallery-previous" [hidden]="healthyImageCount() < 2" aria-label="Previous image" (click)="step(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7" /></svg></button>
+        <button gcspButton presentation="source" type="button" variant="ghost" class="gcsp-media-gallery-next" [hidden]="healthyImageCount() < 2" aria-label="Next image" (click)="step(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7" /></svg></button>
       }
     </div>
     <div class="gcsp-media-gallery-foot">

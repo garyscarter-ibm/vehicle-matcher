@@ -1,5 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, input, OnDestroy, output, signal, untracked } from '@angular/core';
+import { LiveRefreshService } from '../live-refresh.service';
 import { AuthPort } from '../auth/auth.port';
 import { RouterLink } from '@angular/router';
 import { ButtonDirective } from '../kit/button.directive';
@@ -59,6 +60,8 @@ export class OfferScreenComponent implements OnDestroy {
     return check && check.scope === this.employeeScope() && check.authority === this.store.readAuthority() && check.offerId === state.offerId
       && (!check.result || check.result === state) ? check.message : '';
   });
+
+  private readonly stopLiveRefresh = inject(LiveRefreshService).subscribe(() => this.autoRefresh());
 
   constructor() {
     effect(() => { const id = this.offerId(); untracked(() => { if (id.trim()) this.store.open(id); else this.store.clear(); }); });
@@ -126,6 +129,18 @@ export class OfferScreenComponent implements OnDestroy {
       message: 'Checking the current offer state.' });
   }
   checkCurrent(): void { this.beginCheck(); this.interactions.checkCurrent(); }
+  private autoRefresh(): void {
+    const state = this.state(); const interaction = this.interactions.state();
+    // The source dialog states also cover inspections inside the follow-up comparison view.
+    if (this.destroyRef.destroyed || state.status === 'idle' || state.status === 'loading'
+      || this.element.nativeElement.querySelector('gcsp-vehicle-details .gcsp-side-drawer:not([hidden]), gcsp-media-gallery dialog[open]')
+      || state.status === 'failed' && !state.failure.retryable || interaction.review || interaction.mileage
+      || interaction.reasons.selected || interaction.reasons.phase === 'loading' || Object.keys(interaction.declarations).length
+      || interaction.decision === 'sending' || interaction.decision && interaction.decision.status !== 'ok'
+      || ['loading', 'saving', 'uncertain', 'failed'].includes(interaction.followup.phase)
+      || interaction.followup.value?.state === 'question') return;
+    this.store.refresh();
+  }
   openNextOffer(id: string): void {
     this.store.open(id); this.offerOpened.emit(id);
     this.pendingFocus = this.state().status === 'loading' ? { offerId: id, scope: this.scope() } : null;
@@ -166,5 +181,5 @@ export class OfferScreenComponent implements OnDestroy {
       if (heading) { heading.tabIndex = -1; heading.focus(); }
     }, { injector: this.injector });
   }
-  ngOnDestroy(): void { this.pendingFocus = null; this.manualCheck.set(null); this.store.clear(); }
+  ngOnDestroy(): void { this.stopLiveRefresh(); this.pendingFocus = null; this.manualCheck.set(null); this.store.clear(); }
 }

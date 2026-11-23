@@ -511,18 +511,44 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `ul[gcspSlotPicker]` | Port of frozen `kit/slot-picker.js`: inputs `slots` (supplied objects with `start`), `actionLabel`, optional `onPick(slot)`, `disabled` and `className`. Keeps the source root/day/time structure and classes, supplied order, London day/DST grouping, complete button names and `data-focus-key`. No callback gives static times; callbacks receive the exact supplied object. Missing, null, empty, nonstring or invalid starts are omitted, never inferred as an epoch appointment. Use for offered appointment times instead of local time lists. Gallery: Offered appointment times, interactive and read-only. |
 | `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2/h3 level. Page h1 accepts arrival focus. Level 3 (`h3.gcsp-intro-title`) nests the title under an embedded h2 section with the same look as the h2. |
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
+| `span[gcspMailStatusChip]` | Required `label`, supplied `state` and optional `transport`. Ports the frozen `messageList` status span, decorative `svgIcon` paths and `is-ok`/`is-warn`/`is-bad`/`is-wait` classes. Sent captured/configured use the check; retrying uses refresh, failed uses cross, and pending/sending/unknown use the clock. Sent with an unknown transport stays neutral wait. Copy remains caller-owned; use instead of building an outbox status span. Gallery: Outbox delivery status. |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Readonly `errors: FieldError[]` retains `{ controlId, message }`. Default keeps the existing alert, section tabindex/focus, fixed heading ID/title, empty omission and native-target link behavior. Opt-in `presentation="source"` ports frozen `errorSummary`: requires caller-owned nonempty `summaryId`, accepts `title` (source default Check your choices), renders source heading/link classes and retains an empty root hidden. Its source-only host uses `display: contents` so a hidden summary adds no flex item. After rendering updated nonempty errors, `focus()` focuses the source h2 (default mode focuses its section); it never focuses automatically. Source links prevent fragment navigation and focus the actual control, or invoke supplied `onSelect(id)`. Use for validation and actual field jumps instead of local error lists; no save/request policy. Gallery: Source validation summary, configured/empty states and real field link/focus. |
 | `gcsp-data-table` | Canonical source table with explicit row envelopes, numeric/detail columns, primitive/value-object cells, privacy bands, missing/emphasized/success/winner values, opt-in stack and compare layouts, captionHidden/equalColumns and optional rowAction (none by default). Preserves opened ID and safe `focusRow(id)`. Gallery: Case queue table and Canonical comparison table. |
 | `gcsp-vehicle-card` | Released-car presenter with required exact `memberId`/`name`, optional line/order number, provided images/fallback, nullable points/allowance/contribution, supplied eligibility, `reviewDisabled`/`disabledReason` and `FactRow[]`. Emits `{ memberId, action: 'review' \| 'details' }`; no fetch, policy or claim. Native collapsed Car facts retains missing/zero/false. Disabled review reasons have unique accessible IDs. Gallery: Released vehicle card, with unavailable review and explicit details feedback. |
 | `gcsp-media-gallery` | Port of frozen `kit/media-gallery.js`: supplied `{ src, alt?, caption?, fidelity?, sourceRef?, viewpoint?, label? }[]`, name and placeholder; one displayed-view projection drives feature/thumbnails/viewer, selection, failures and counts. Exact display allowlisting reuses the existing Activity data through the one pure `kit/vehicle-image-assets.ts:isDisplayImage`, with frozen absent-fidelity fallback, brand-hero exception, first-src deduplication and label/alt defaults. The Angular host is the source `.gcsp-media-gallery` root; no extra wrapper breaks direct-child decision CSS. Optional `presentation="picker"` and `fit="contain"` retain source variants. Stock keeps `compact` (default false), a 180px image/fallback without thumbnails/caption/enlarge; entering compact closes the viewer and resets selection. Raw image/name equality preserves selection/failures/viewer on equivalent readbacks; no source requests or generated imagery. Use instead of view-local image pickers/viewers. Gallery: Source vehicle images and Focused decision layout shell. |
-| `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
+| `div[gcspNotificationBell]` | Native port of frozen `notificationBell`: source `.gcsp-bell*` DOM/classes, badge, note, current/expired rows and primary offer action. Input `model: NotificationModel`; outputs `opened` and `navigate(href)`. `open()`/`close(restoreFocus)` coordinate account disclosure. Escape/outside click, focus return and six-second note teardown match the source. Gallery-only `previewOpen`/`pinned` show retained states. |
+| `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. FUCQ-549 ports the source `gcsp-crumbs-host`/`gcsp-crumbs`/`gcsp-crumb-list`/`gcsp-crumb` structure, suppressing trails shorter than two entries. Off-rail employee views use Your cars as context; presenter captured emails and comparison use Presenter controls. The ordering rail remains selected throughout Greg's six views. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
 
 App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
 
-FUCQ-555 MediaGallery is a source checkpoint. Global source CSS and packaged-image serving require supported F548/F551 integration. Source icon controls still retain the pre-existing ButtonDirective; adopt F556's one compatible source-presentation option through supported integration rather than copying its directive. Real image responses, keyboard/browser critique and live same-state parity remain unverified; source selector coverage is not visual acceptance.
+FUCQ-555 MediaGallery consumes supported F548 global source CSS and F551 packaged-image serving. Its icon controls reuse F556's canonical ButtonDirective source presentation, retaining specialized thumbnail buttons and the picker API. Real image responses, keyboard/browser critique and live same-state parity remain pending the connected proof; source selector coverage is not visual acceptance.
 
-FUCQ-556's TaskList/SlotPicker checkpoint is a source port only. It consumes the global source CSS owned by FUCQ-548; supported integration, Orders composition, keyboard/browser review and the live same-state 1280px Node/Angular pair remain open. The canonical migration Port status inventory is owned by FUCQ-548 and is not recreated on this unmerged branch.
+
+
+`TabsComponent` (`gcsp-tabs`) ports the source `tabs` DOM and classes, including `.gcsp-tab-list`, panel IDs, roving tabindex and automatic arrow/Home/End activation. `activeId?: string` lets route composition supply the selected tab; existing uncontrolled callers retain their local selection and `initialSelectedId`. All supplied templates remain mounted. Gallery: **GCSP tabs**.
+
+`GregNavigationComponent` (`gcsp-greg-navigation`) composes `TabsComponent` for the six source dashboard views in their source order: Next order, Demand and supply, Policy, Order requests, Route comparison, Renewal cases. Inputs are `page: GregView` and `panels: Partial<Record<GregView, TemplateRef<unknown>>>`; optional `showIntro` renders the selected source view heading before the tabs, with `lede` shown only for Demand and supply. The nested order plan accepts `headingLevel` (default 1, route composition 2). It routes through the existing Angular views, retains unrelated query context, selects Policy via `#policy` or `?view=policy`, and Order requests via `#gcsp-order-requests` or `?view=orders`. Local panels stay mounted; leaving a route retains each route's existing private-store teardown. Transient router info preserves keyboard tab focus while intentional request/replan transitions keep their outcome focus. Use instead of per-screen Greg navigation. Gallery: **Greg dashboard navigation**. The ratchet now scans Angular `.ts`/`.html` outside the kit and rejects new hand-built `role="tablist"` copies with zero baseline debt.
+
+
+FUCQ-556's TaskList/SlotPicker checkpoint is a source port only. It consumes the global source CSS owned by FUCQ-548; supported integration, Orders composition, keyboard/browser review and the live same-state 1280px Node/Angular pair remain open. The canonical migration Port status inventory below now includes these supported source ports; connected and human parity evidence remains separate.
+
+### Angular notification source (FUCQ-548)
+
+The employee shell connects to root-scoped `NotificationSource` in `activity/notification.source.ts`.
+It reuses authenticated `ActivityClient.readActivity` and `readOfferDisplay` envelopes, derives only
+the current active/expired offer and expired history, deduplicates and caps six rows. The thumbnail
+uses the existing approved source/fidelity registry; the source London-time formatter supplies HH:MM.
+Opening the disclosure or following an offer preserves the active-offer count.
+
+Connect, successful presenter commands, visibility return, persisted pageshow and visible 30-second
+polls refresh one coalesced read. Disconnect aborts reads and removes listeners/timers; remount retains
+the last successful model without replaying its one-off note. Subject, environment, run, employee and
+sign-out changes clear transient state and abort the old scope. A later failed read preserves the last
+success; before success the panel is unavailable. Successful presenter mutations publish only a timestamp
+and random nonce through `gcsp:presenter-action` DOM/storage lanes; storage refusal preserves command success.
+The gallery covers none/waiting/new-note/open-current/open-empty/open-expired/open-unavailable. Focused
+specs establish these local behaviors; connected Java/OIDC/PostgreSQL and human 1280 parity review remain separate gates.
 
 ### Angular preferences and rating (FUCQ-441)
 
@@ -769,7 +795,8 @@ source backdrop and single `aside[role="dialog"][aria-modal="true"]`, with
 FUCQ-548's global sheet; local CSS only adapts the Angular host with
 `display: contents` and hides an empty retained footer projection. The root is
 retained with `hidden` while closed, preserving Angular projected content without
-exposing it. No native dialog wrapper or second accessible dialog is introduced.
+exposing it. Its Close control uses the canonical `gcspButton presentation="source"`
+ghost presentation. No native dialog wrapper or second accessible dialog is introduced.
 
 Public contracts remain `title` (required), `context` (empty by default),
 `dismissible` (true), `closed`, `open(opener?)` and `close(restoreFocus = true)`.
@@ -877,3 +904,91 @@ actual browser/rendered behavior and live same-state human parity remain open.
 ### Angular source primary media well (FUCQ-555)
 
 `MediaWellComponent` (`gcsp-media-well`) ports frozen `result-card.js` mediaWell for generic exact offer cards. Inputs: `name`, `line`, primary `image` and optional `placeholder`. It reuses the vehicle-image registry, keeps one lazy primary image with its own alt/caption, and removes broken media while retaining the placeholder and order identity. It does not select an image from a gallery. Gallery: **Source primary vehicle media**. Pending offers continue to use `MediaGalleryComponent`.
+
+### Angular outbox status chip (FUCQ-550 source slice)
+
+`MailStatusChipComponent` ports only `blocks/gcsp/presenter/message-list.js:9–13`, the paths
+from `outbox-copy.js:2–5` and `svgIcon` attributes at frozen reference `e44ed08a9`. The
+six status rules from `gcsp-presenter.css:21–26` retain their selectors, declarations
+and classes in `kit/mail-status-chip.component.css`. `ViewEncapsulation.None` keeps the
+original `.gcsp` ancestor scope; the component uses the source span as its host,
+without an added wrapper. The outbox retains its existing truthful labels,
+including Preparing and the provider-acceptance distinction. Other messageList layout
+remains outside this component. The UI ratchet covers hand-built status spans in Angular
+consumers and caps the six ported rules. Source/unit work does not establish rendered
+parity or complete FUCQ-550 acceptance.
+
+The canonical Port status table below records only this status-chip subcomposition.
+The whole messageList composition (`.gcsp-mail`) remains unassessed; this bounded
+port does not declare completion of its remaining layout or rendered parity.
+
+### Angular native live refresh (FUCQ-550 source slice)
+
+`LiveRefreshService` owns one shared 30-second poll while visible, visibility and
+persisted-page restore listeners, with no initial read and teardown after the last
+consumer. The first consumer also registers `subscribePresenterActions(document)`
+once; the last unsubscribe or service destruction removes that registration.
+Same-page presenter publication and cross-tab signals use the same visibility and
+pending-callback guards as native refresh triggers. Account, Activity, offer, order progress and outbox owners call their existing
+reads only when local edits, reviews and responses are safe to preserve. Automatic
+account reads retain only a previously reviewed exact context; they do not grant review
+authority. Order progress reuses its existing feedback region for changed ready producer
+sections, omitting only `asOf` from the comparison. Lifecycle tests are synthetic source
+evidence, including presenter orchestration; connected behavior and rendered parity
+remain pending. Drawer Close, the four gallery icon actions, and the follow-up
+actions and Activity exit use `gcspButton presentation="source"`; gallery picker
+thumbs retain their specialized controls.
+
+## Port status
+
+Frozen source: `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38`. The assembled global stylesheet and inventory are in [styles.md](docs/migration/FUCQ-432/styles.md). Existing native Angular equivalents above remain catalogued; they are marked ported here only after preserving the source DOM/classes/state classes. Utility/gallery modules remain explicit source modules, with no invented root class.
+
+| Source component | Root class | Target | Status | Classes kept |
+| --- | --- | --- | --- | --- |
+| `action-menu` (`blocks/gcsp/kit/action-menu.js`) | `.gcsp-action-menu` | | not yet | pending |
+| `activity-timeline` (`blocks/gcsp/kit/activity-timeline.js`) | `.gcsp-activity-timeline` | `apps/gcsp-web/src/app/kit/activity-timeline.component.ts` | ported | yes |
+| `arrival-focus` (`blocks/gcsp/kit/arrival-focus.js`) | none (utility) | | not yet | pending |
+| `buddy-status` (`blocks/gcsp/kit/buddy-status.js`) | `.gcsp-buddy-status` | `apps/gcsp-web/src/app/kit/buddy-status.component.ts` | ported | yes |
+| `buddy-tile-gallery` (`blocks/gcsp/kit/buddy-tile-gallery.js`) | `.vm-gallery-section` | | not yet | pending |
+| `buddy-tile` (`blocks/gcsp/kit/buddy-tile.js`) | `.gcsp-buddy-tile` | `apps/gcsp-web/src/app/kit/buddy-tile.component.ts` | ported | yes |
+| `category-preferences` (`blocks/gcsp/kit/category-preferences.js`) | `.gcsp-prefs` | | not yet | pending |
+| `count-bars` (`blocks/gcsp/kit/count-bars.js`) | `.gcsp-count-bars` | | not yet | pending |
+| `data-table` (`blocks/gcsp/kit/data-table.js`) | `.gcsp-table-wrap` | `apps/gcsp-web/src/app/kit/data-table.component.ts` | ported | yes |
+| `finish-shades-data` (`blocks/gcsp/kit/finish-shades-data.js`) | none (utility) | `apps/gcsp-web/src/app/kit/finish-shades-data.ts` | ported | yes |
+| `finish-shades` (`blocks/gcsp/kit/finish-shades.js`) | none (utility) | `apps/gcsp-web/src/app/kit/finish-shades.ts` | ported | yes |
+| `focus-key` (`blocks/gcsp/kit/focus-key.js`) | none (utility) | | not yet | pending |
+| `form-controls-gallery` (`blocks/gcsp/kit/form-controls-gallery.js`) | none (gallery composition) | | not yet | pending |
+| `form-controls` (`blocks/gcsp/kit/form-controls.js`) | `.gcsp-field` | | not yet | pending |
+| `friendly-time` (`blocks/gcsp/kit/friendly-time.js`) | none (utility) | | not yet | pending |
+| `help-tip` (`blocks/gcsp/kit/help-tip.js`) | `.gcsp-help-tip` | `apps/gcsp-web/src/app/kit/help-tip.directive.ts` | ported | yes |
+| `loading-skeleton` (`blocks/gcsp/kit/loading-skeleton.js`) | `.gcsp-skeleton` | `apps/gcsp-web/src/app/kit/loading-skeleton.component.ts` | ported | yes |
+| `media-gallery-examples` (`blocks/gcsp/kit/media-gallery-examples.js`) | none (gallery composition) | | not yet | pending |
+| `media-gallery` (`blocks/gcsp/kit/media-gallery.js`) | `.gcsp-media-gallery` | `apps/gcsp-web/src/app/kit/media-gallery.component.ts` | ported | yes |
+| messageList.statusChip (subcomposition only) | `.gcsp-mail-status` | `apps/gcsp-web/src/app/kit/mail-status-chip.component.ts` | ported | yes: source span host, SVG/label children and all four tone classes |
+| `metric-tile` (`blocks/gcsp/kit/metric-tile.js`) | `.gcsp-tile` | | not yet | pending |
+| `notification-bell` (`blocks/gcsp/kit/notification-bell.js`) | `.gcsp-bell` | `apps/gcsp-web/src/app/kit/notification-bell.component.ts` | ported | yes |
+| `order-identity` (`blocks/gcsp/kit/order-identity.js`) | none (utility) | `apps/gcsp-web/src/app/kit/order-identity.ts` | ported | yes |
+| `plain-copy` (`blocks/gcsp/kit/plain-copy.js`) | none (utility) | | not yet | pending |
+| `presenter-actions` (`blocks/gcsp/kit/presenter-actions.js`) | none (utility) | `apps/gcsp-web/src/app/kit/presenter-actions.ts` | ported | yes |
+| `presenter-bar` (`blocks/gcsp/kit/presenter-bar.js`) | `.gcsp-presenter-bar` | | not yet | pending |
+| `range-bar` (`blocks/gcsp/kit/range-bar.js`) | `.gcsp-range-bar` | | not yet | pending |
+| `rating-gallery` (`blocks/gcsp/kit/rating-gallery.js`) | none (gallery composition) | | not yet | pending |
+| `release-grid` (`blocks/gcsp/kit/release-grid.js`) | `.gcsp-release-grid` | | not yet | pending |
+| `run-restarted` (`blocks/gcsp/kit/run-restarted.js`) | `.gcsp-run-restarted` | | not yet | pending |
+| `show-more` (`blocks/gcsp/kit/show-more.js`) | `.gcsp-show-more` | | not yet | pending |
+| `side-drawer` (`blocks/gcsp/kit/side-drawer.js`) | `.gcsp-side-drawer` | `apps/gcsp-web/src/app/kit/side-drawer.component.ts` | ported | yes |
+| `slot-picker` (`blocks/gcsp/kit/slot-picker.js`) | `.gcsp-slot-picker` | `apps/gcsp-web/src/app/kit/slot-picker.component.ts` | ported | yes |
+| `stage-list` (`blocks/gcsp/kit/stage-list.js`) | `.gcsp-stage-list` | `apps/gcsp-web/src/app/kit/stage-list.component.ts` | ported | yes |
+| `stage-tracker` (`blocks/gcsp/kit/stage-tracker.js`) | `.gcsp-stage-tracker` | `apps/gcsp-web/src/app/kit/stage-tracker.component.ts` | ported | yes |
+| `star-rating` (`blocks/gcsp/kit/star-rating.js`) | `.gcsp-star-rating` | `apps/gcsp-web/src/app/kit/star-rating.component.ts` | ported | yes |
+| `tabs` (`blocks/gcsp/kit/tabs.js`) | `.gcsp-tabs` | `apps/gcsp-web/src/app/kit/tabs.component.ts` | ported | yes |
+| `task-list` (`blocks/gcsp/kit/task-list.js`) | `.gcsp-task-list` | `apps/gcsp-web/src/app/kit/task-list.component.ts` | ported | yes |
+| `understanding-meter` (`blocks/gcsp/kit/understanding-meter.js`) | `.gcsp-understanding` | | not yet | pending |
+| `vehicle-decision` (`blocks/gcsp/kit/vehicle-decision.js`) | `.gcsp-vehicle-decision` | | not yet | pending |
+| `vehicle-details` (`blocks/gcsp/kit/vehicle-details.js`) | `.gcsp-vehicle-details-control` | `apps/gcsp-web/src/app/kit/vehicle-details.component.ts` | ported | yes |
+| `vehicle-image-assets` (`blocks/gcsp/kit/vehicle-image-assets.js`) | none (utility) | | not yet | pending |
+| `view-status` (`blocks/gcsp/kit/view-status.js`) | `.gcsp-vh` | | not yet | pending |
+
+The port ratchet compares the frozen source stylesheet snapshot with the global Angular assembly, checks this table against Angular kit files, and scans Angular `.ts`/`.html` files for direct copies of source kit pieces. Explicit rootless utility/gallery rows require an exact existing Target file inside the configured kit. New ports lower the component count; source selectors stay complete. Run `node server/test/ui-ratchet.test.js --debt` to see remaining work.
+
+The supported F555 refresh records the nine complete source ports above. The vehicle-decision row remains not yet: its Angular decision layout shell is a bounded subcomposition, not the whole frozen helper. Source/component records do not establish connected or human parity.

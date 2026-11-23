@@ -1,13 +1,17 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthPort, SessionState } from '../auth/auth.port';
+import { BriefEditorStore } from '../preferences/brief-editor.store';
 import { BriefClient } from '../preferences/brief.client';
 import { briefEditorFixture } from '../preferences/brief.fixtures';
 import { ActivityClient } from '../activity/activity.client';
+import { ActivityProjection, ActivityResult } from '../activity/activity.types';
 import { AccountClient } from './account.client';
 import { AccountComponent } from './account.component';
+import { AccountBuddyComponent } from './account-buddy.component';
 import { accountSnapshot, savedDraft } from './account.test-data';
 import { AccountOrder, AccountOrdersCollection, AccountOrdersReadResult, AccountOrderSnapshot } from './account.preview';
 import { AccountProjection, AccountResult, ManualDraft } from './account.types';
@@ -41,6 +45,19 @@ describe('native employee account screen', () => {
   const text = () => root().textContent ?? '';
   const button = (label: string): HTMLButtonElement => Array.from(root().querySelectorAll('button')).find((item) => item.textContent?.trim() === label && item.closest('dialog')?.open !== false)!;
   const settle = async () => { await new Promise<void>((resolve) => setTimeout(resolve, 0)); await fixture.whenStable(); fixture.detectChanges(); };
+  const readyBuddy = () => {
+    const value: ActivityProjection = { runId: 'run', employeeId: 'employee-paula', asOf: '2026-11-22T10:00:00Z', clockVersion: '1', briefVersion: 4,
+      permission: { searchConsent: true, holdConsent: true, paused: false, permissionVersion: 3, canSearch: true, canHold: true }, state: 'offer', sourceStatus: 'ok',
+      lastSuccessfulCheck: { checkedAt: '2026-11-22T09:30:00Z', carsChecked: 3, suitableCars: 1, exclusions: [], outcome: 'offer-held' },
+      searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: { offerRef: { offerId: 'offer-one' }, state: 'active', displayState: 'active', version: 2, briefVersion: 4, expiresAt: '2026-11-23T12:00:00Z', href: '/gcsp/offers/offer-one' },
+      offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 } };
+    const activity = TestBed.inject(ActivityClient);
+    activity.readActivity = vi.fn().mockResolvedValue({ status: 'ok', value });
+    activity.readOfferDisplay = vi.fn().mockResolvedValue({ status: 'ok', value: { offerRef: { offerId: 'offer-one' }, state: 'active', version: 2, title: 'BMW i4', images: [] } });
+    const base = briefEditorFixture(); const editor = { ...base, initial: { ...base.initial, buddy: { ...base.initial.buddy, state: 'engaged' as const, reason: null, permissionVersion: 3, considered: 2, remaining: 0 }, consent: { search: true, hold: true } } };
+    TestBed.inject(BriefClient).readEditor = vi.fn().mockResolvedValue({ status: 'ok', value: editor });
+    return { activity, value };
+  };
 
   it('retains populated current car, identity, drivers, supplied labels and scheme history in approved order', async () => {
     const component = await mount();
@@ -369,7 +386,7 @@ describe('native employee account screen', () => {
     expect(rows[0].textContent).toContain('Ends 1 Dec 2026'); expect(rows[1].textContent).toContain('Returned 1 Dec 2025');
     const record = rows[1].querySelector<HTMLButtonElement>('button')!; expect(record.getAttribute('aria-label')).toBe('View record for Shared car name, PCS UK FS BMW, Returned 1 Dec 2025');
     record.focus(); record.click(); await settle(); expect(component.selectedRecord()?.contractId).toBe(account.histories![1].entries[0].contractId); expect(root().querySelector('.record-drawer')?.textContent).toContain('PCS UK FS BMW');
-    button('Close').click(); await settle(); expect(document.activeElement).toBe(record);
+    root().querySelector<HTMLButtonElement>('.record-drawer header button')!.click(); await settle(); expect(document.activeElement).toBe(record);
   });
   it('keeps unlabeled history schemes distinct and combines only populated history-only schemes into one source note', async () => {
     account = { ...account, histories: account.histories!.map((history, index) => ({ ...history, label: undefined, orderingSupported: index === 1 ? undefined : false })) };
@@ -382,12 +399,12 @@ describe('native employee account screen', () => {
   });
   it('opens complete labelled history records, traps keyboard focus, restores the exact opener and prints only that selected record', async () => {
     await mount(); const opener = root().querySelector<HTMLButtonElement>('tbody tr:last-child button')!; opener.focus(); opener.click(); await settle();
-    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
-    button('Close').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Print record'));
-    button('Print record').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Close'));
+    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; const close = drawer.querySelector<HTMLButtonElement>('header button')!; const printButton = drawer.querySelector<HTMLButtonElement>('footer button')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(close);
+    close.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(printButton);
+    printButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(close);
     const originalAppend = document.body.append.bind(document.body); let printed: HTMLIFrameElement | null = null; const print = vi.fn();
     vi.spyOn(document.body, 'append').mockImplementation((...nodes: (Node | string)[]) => { originalAppend(...nodes); const frame = nodes.find((node) => node instanceof HTMLIFrameElement) as HTMLIFrameElement | undefined; if (frame) { printed = frame; frame.contentWindow!.print = print; } });
-    button('Print record').click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
+    printButton.click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
     drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('.record-drawer')).toBeNull(); expect(document.activeElement).toBe(opener);
   });
   it('immediately hides private facts on account change, aborts pending commands and ignores late old-account responses', async () => {
@@ -402,4 +419,117 @@ describe('native employee account screen', () => {
     const wait = deferred<AccountResult<AccountProjection>>(); client.readAccount.mockReturnValue(wait.promise); await mount(); const requestSignal = client.readAccount.mock.calls[0][0].signal as AbortSignal;
     fixture.destroy(); expect(requestSignal.aborted).toBe(true); wait.resolve({ status: 'ok', value: account }); await Promise.resolve(); expect(fixture.componentInstance.projection()).toBeNull();
   });
+  it('rereads the idle account on a native visibility trigger without submitting a command', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await mount(); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.readDraft).toHaveBeenCalledTimes(2);
+    expect(client.startJourney).not.toHaveBeenCalled(); expect(client.saveNotificationEmail).not.toHaveBeenCalled();
+  });
+
+  it.each([{ label: 'Buddy history', content: '3 cars checked, 1 suitable.' }, { label: 'View held offer', content: 'BMW i4' }])('preserves the real $label drawer and focus until it closes before refreshing the account', async ({ label, content }) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); readyBuddy();
+    await mount(); const child = fixture.debugElement.query(By.directive(AccountBuddyComponent)).componentInstance;
+    const host = root().querySelector('gcsp-account-buddy'); button(label).click(); await settle();
+    const overlay = host!.querySelector<HTMLElement>('.gcsp-side-drawer')!; const dialog = overlay.querySelector<HTMLElement>('aside[role="dialog"]')!; const focus = dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')!;
+    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-title')); focus.focus(); expect(overlay.hidden).toBe(false); expect(dialog.textContent).toContain(content);
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(root().querySelector('gcsp-account-buddy')).toBe(host);
+    expect(fixture.debugElement.query(By.directive(AccountBuddyComponent)).componentInstance).toBe(child);
+    expect(overlay.hidden).toBe(false); expect(dialog.textContent).toContain(content); expect(document.activeElement).toBe(focus);
+    focus.click(); await settle(); expect(overlay.hidden).toBe(true); expect(document.activeElement).toBe(button(label));
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
+  });
+
+  it('lets a real Buddy activity read finish before a later visibility trigger refreshes the account', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); const { activity, value } = readyBuddy();
+    await mount(); const host = root().querySelector('gcsp-account-buddy');
+    const child = fixture.debugElement.query(By.directive(AccountBuddyComponent)).componentInstance as AccountBuddyComponent;
+    const pending = deferred<ActivityResult<ActivityProjection>>(); vi.mocked(activity.readActivity).mockReturnValueOnce(pending.promise);
+    const read = child.activity.refresh(); await settle(); const signal = vi.mocked(activity.readActivity).mock.calls[1][0]!.signal as AbortSignal;
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(root().querySelector('gcsp-account-buddy')).toBe(host); expect(signal.aborted).toBe(false);
+    pending.resolve({ status: 'ok', value }); await read; await settle(); expect(text()).toContain('A car is held for you');
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
+  });
+
+  it('retains Buddy command readback until the actual command and activity reconciliation finish', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); const { activity, value } = readyBuddy();
+    await mount(); const host = root().querySelector('gcsp-account-buddy');
+    const pause = deferred<import('../preferences/brief.types').BriefResult<import('../preferences/brief.types').BriefEngagementValue>>();
+    const readback = deferred<ActivityResult<ActivityProjection>>(); const briefClient = TestBed.inject(BriefClient);
+    briefClient.pauseSearch = vi.fn().mockReturnValueOnce(pause.promise); vi.mocked(activity.readActivity).mockReturnValueOnce(readback.promise);
+    button('Pause search').click(); await settle();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledOnce();
+    const base = briefEditorFixture().initial.buddy;
+    pause.resolve({ status: 'ok', value: { briefVersion: 5, draftVersion: 2, buddy: { ...base, state: 'disengaged', reason: 'paused', permissionVersion: 4, considered: 2, remaining: 0 } } }); await settle();
+    expect(activity.readActivity).toHaveBeenCalledTimes(2);
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(root().querySelector('gcsp-account-buddy')).toBe(host); expect(text()).toContain('A car is held for you');
+    readback.resolve({ status: 'ok', value: { ...value, briefVersion: 5, permission: { ...value.permission!, paused: true, canSearch: false, canHold: false } } }); await settle();
+    expect(button('Resume search').disabled).toBe(false); expect(briefClient.pauseSearch).toHaveBeenCalledOnce();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps exact unsaved email input through a skipped trigger and resumes after the edit is resolved', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); component.emailInput.set('  unsaved@example.test  ');
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(component.emailInput()).toBe('  unsaved@example.test  ');
+    component.emailInput.set('saved@example.test'); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.saveNotificationEmail).not.toHaveBeenCalled();
+  });
+  it('preserves busy reads, journey review and open or pending preference edits until an eligible trigger', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); const brief = TestBed.inject(BriefEditorStore);
+    const guards = [component.loading, component.busy, component.emailBusy, component.previewLoading, component.confirmingDiscard,
+      component.journeyLocked, brief.loading, brief.saving, brief.queueNeedsReview, brief.fullDirty, brief.fullBusy, brief.previewLoading, brief.buddyRefreshing];
+    for (const guard of guards) {
+      guard.set(true); document.dispatchEvent(new Event('visibilitychange')); await settle();
+      expect(client.readAccount).toHaveBeenCalledOnce(); expect(guard()).toBe(true); guard.set(false);
+    }
+    brief.openCategory.set('body'); brief.pendingRemoval.set('body');
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(brief.openCategory()).toBe('body'); expect(brief.pendingRemoval()).toBe('body'); expect(client.readAccount).toHaveBeenCalledOnce();
+    brief.openCategory.set(null); brief.pendingRemoval.set(null);
+    const intent = savedDraft().choices; component.pendingIntent.set(intent);
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(component.pendingIntent()).toBe(intent); expect(client.readAccount).toHaveBeenCalledOnce();
+    component.pendingIntent.set(null); document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(client.readAccount).toHaveBeenCalledTimes(2); expect(client.startJourney).not.toHaveBeenCalled(); expect(client.discardDraft).not.toHaveBeenCalled();
+  });
+  it('keeps an uncertain email command and its exact input until explicit reconciliation, with no replay', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); component.emailInput.set('new@example.test');
+    const pending = deferred<AccountResult<import('./account.types').NotificationEmail>>(); client.saveNotificationEmail.mockReturnValueOnce(pending.promise);
+    const save = component.saveEmail(new Event('submit', { cancelable: true }));
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledOnce();
+    pending.resolve({ status: 'uncertain' }); await save;
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    expect(component.emailInput()).toBe('new@example.test'); expect(component.emailMessage()).toContain('not confirmed');
+    expect(client.readAccount).toHaveBeenCalledOnce(); expect(client.saveNotificationEmail).toHaveBeenCalledOnce();
+    await component.reloadEmail(); document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
+  });
+  it('does not read the old account after sign-out or component destruction', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    await mount(); auth.state.set({ status: 'signed-out' }); fixture.detectChanges();
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledOnce();
+    fixture.destroy(); document.dispatchEvent(new Event('visibilitychange')); await Promise.resolve(); expect(client.readAccount).toHaveBeenCalledOnce();
+  });
+
+  it('does not grant stale-draft review authority during an automatic read, while explicit Refresh still can', async () => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); client.startJourney.mockResolvedValue({ status: 'stale-version' });
+    document.dispatchEvent(new Event('visibilitychange')); await settle();
+    await component.start(account.actions![0]); expect(client.startJourney.mock.calls[0][0].reviewedContextVersion).toBeNull();
+    await component.refresh(); await settle(); await component.start(account.actions![0]);
+    expect(client.startJourney.mock.calls[1][0].reviewedContextVersion).toBe(account.contextVersion);
+  });
+
+  it.each([false, true])('preserves an explicit review only for the same account context (changed=%s)', async (changed) => {
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible');
+    const component = await mount(); await component.refresh(); await settle();
+    client.readAccount.mockResolvedValueOnce({ status: 'ok', value: { ...account, contextVersion: changed ? 'new-context-version' : account.contextVersion } });
+    document.dispatchEvent(new Event('visibilitychange')); await settle(); await component.start(account.actions![0]);
+    expect(client.startJourney.mock.calls[0][0].reviewedContextVersion).toBe(changed ? null : account.contextVersion);
+  });
+
 });
