@@ -1,0 +1,28 @@
+{
+  "observed_on": "2026-11-22",
+  "origin_receipt": ".claude/test-runs/angular-gap-20261122/fucq548/slice1/baseline-proof.json",
+  "source_inspection_base": "85de44667",
+  "operation": "POST /api/gcsp/v1/presenter/scenarios/reset",
+  "scenario": "main-successful-journey",
+  "result": {
+    "status": 503,
+    "body": {
+      "status": "unavailable",
+      "code": "scenario-not-available-yet",
+      "reason": "not available yet",
+      "retryable": false,
+      "scenarioId": "main-successful-journey",
+      "missingCapabilities": [
+        "brief-confirmation",
+        "stock-release",
+        "buddy-allocation",
+        "buddy-offers",
+        "captured-notifications",
+        "offer-decisions",
+        "brief-change",
+        "order-handoff"
+      ]
+    }
+  },
+  "disposition": "Reproduced; no Java repair or named-reset success claimed."
+}

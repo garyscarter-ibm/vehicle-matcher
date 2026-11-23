@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.8.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.9.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -36,6 +36,7 @@ Subcommands
   refresh --id ID          bring the local base into that clean dev/ID worktree, from the shared checkout; preserves
                            shared staging and both histories, aborts its own conflicting merge, never switches branches
   merge --branch dev/ID    merge a dev/ branch into the base branch in the shared checkout; aborts cleanly on conflict
+                           refused (2) if it deletes or changes a recorded migration reference before parity sign-off
   drop-branch --id ID      remove merged dev/ID from the configured remote and local checkout, then release our lease;
                            repeat by ID after any refusal/partial failure, even when the local branch is absent
   claim --id ID --points N claim a waiting story (see "Story claims" below)
@@ -1566,7 +1567,8 @@ def refresh_branch(root, story_id):
 @_serialised
 def merge_branch(root, branch):
     """Merge a dev/ branch into the base branch (a merge commit) in the shared checkout. Returns (rc, message):
-    0 merged, 2 refused, 3 git failed or conflicted (the merge is aborted, so the base branch is as it was)."""
+    0 merged, 2 refused, 3 git failed or conflicted (the merge is aborted, so the base branch is as it was). A branch
+    that deletes or changes a recorded migration reference is refused before parity sign-off (reference_refusal)."""
     if not branch.startswith("dev/") or not DEV_ID.match(branch[4:]):
         return 2, "only dev/<id> branches are merged here, not %r" % branch
     base = base_branch(root)
@@ -1586,12 +1588,15 @@ def merge_branch(root, branch):
     refusal = merge_refusal(root, branch, base)
     if refusal:
         return refusal
+    refusal, notes = reference_refusal(root, branch, base)
+    if refusal:
+        return refusal
     rc, o, e = git(root, ["merge", "--no-ff", "-q", "-m", "Merge %s\n\n%s" % (branch, ATTRIBUTION), branch])
     if rc != 0:
         what = _merge_failure(root, e, o, branch)
         return 3, "merge of %s failed (%s); aborted, %s is as it was" % (branch, what, base)
     rc, sha, _ = git(root, ["--no-optional-locks", "rev-parse", "--short", "HEAD"])
-    return 0, "MERGED %s into %s at %s" % (branch, base, sha.strip())
+    return 0, "MERGED %s into %s at %s" % (branch, base, sha.strip()) + "".join("\nNOTE: " + n for n in notes)
 
 
 _DROP_PUSH_HOOK = r'''import os, shlex, subprocess, sys
@@ -3165,6 +3170,107 @@ def merge_refusal(root, branch, base):
         if texts:
             return 2, "%s is not merged: %s" % (branch, "; ".join(texts))
     return None
+
+
+# ---------------------------------------------------------------- the migration reference guard (SCAF-43)
+
+def _real_date(v):
+    """Whether v is an ISO date string that datetime.date.fromisoformat accepts: a real calendar day."""
+    try:
+        datetime.date.fromisoformat(v)
+    except (ValueError, TypeError):
+        return False
+    return True
+
+
+def _string_list(v):
+    """Whether v is a list of non-empty strings."""
+    return isinstance(v, list) and all(isinstance(s, str) and s for s in v)
+
+
+def _signed_off(v):
+    """Whether a screen of the migration record is signed off: its `signed_off` has a non-empty `by` and `source` and a
+    real `date`. Anything else, a bare name or a missing source included, is not a sign-off."""
+    so = v.get("signed_off") if isinstance(v, dict) else None
+    if not isinstance(so, dict):
+        return False
+    by, source = so.get("by"), so.get("source")
+    return (isinstance(by, str) and bool(by.strip()) and isinstance(source, str) and bool(source.strip())
+            and _real_date(so.get("date")))
+
+
+def _valid_decision(d):
+    """Whether a retirement decision counts: a non-empty `by`, `reason` and `source`, a real `date`, and `paths`, a
+    non-empty list of paths. Anything else is no decision at all."""
+    if not isinstance(d, dict):
+        return False
+    if not all(isinstance(d.get(k), str) and d[k] for k in ("by", "reason", "source")):
+        return False
+    return _real_date(d.get("date")) and _string_list(d.get("paths")) and bool(d["paths"])
+
+
+def reference_refusal(root, branch, base):
+    """(refusal, notes) for `merge --branch`: refusal is None or (rc, text), notes a list of strings for the MERGED
+    line. The migration record is read as `base` holds it, never from `branch`, so a branch can't sign itself off.
+    A migration whose reference the branch removes (a file deleted under reference.paths) or changes (any change to a
+    file under reference.deploy) is refused until every screen is signed off, or a retirement decision covers each such
+    file. A reference that isn't a list of strings can't be checked, so it is a note, not a refusal."""
+    rc, o, _ = git(root, ["--no-optional-locks", "show", "%s:%s" % (base, SCAFFOLDING_RECORD)])
+    if rc != 0:
+        return None, []
+    try:
+        rec = json.loads(o)
+    except ValueError:
+        return None, []
+    migrations = rec.get("migrations") if isinstance(rec, dict) else None
+    if not isinstance(migrations, dict):
+        return None, []
+    notes = []
+    for mid, m in migrations.items():
+        ref = m.get("reference") if isinstance(m, dict) else None
+        if not isinstance(ref, dict):
+            continue
+        paths, deploy = ref.get("paths", []), ref.get("deploy", [])
+        if not (_string_list(paths) and _string_list(deploy)):
+            notes.append("migrations.%s: reference.paths/deploy is not a list of strings, so the reference guard could "
+                         "not check it" % mid)
+            continue
+        if not paths and not deploy:
+            continue
+        rc, o, e = git(root, ["--no-optional-locks", "diff", "--name-status", "-z", "--no-renames",
+                              "%s...%s" % (base, branch)])
+        if rc != 0:
+            return (3, "git diff %s...%s failed: %s" % (base, branch, _git_error(e or o))), []
+        toks = o.split("\0")                                    # -z: each changed file is its status, then its path
+        hits = []
+        for i in range(0, len(toks) - 1, 2):
+            status, path = toks[i], toks[i + 1]
+            if (status == "D" and under_protected(path, paths)) or under_protected(path, deploy):
+                hits.append(path)
+        if not hits:
+            continue
+        screens = m.get("screens")
+        if isinstance(screens, dict) and screens:
+            unsigned = sorted(name for name, v in screens.items() if not _signed_off(v))
+            if not unsigned:
+                continue
+            waiting = "waiting for " + ", ".join(unsigned)
+        else:
+            waiting = "no screens are recorded in migrations.%s.screens" % mid
+        decisions = m.get("retirement_decisions")
+        covers = [d["paths"] for d in (decisions if isinstance(decisions, list) else []) if _valid_decision(d)]
+        uncovered = [h for h in hits if not any(under_protected(h, p) for p in covers)]
+        if not uncovered:
+            continue
+        files = "%s%s" % (", ".join(uncovered[:5]), " and %d more" % (len(uncovered) - 5) if len(uncovered) > 5 else "")
+        text = ("%s is not merged: it removes or changes the running reference of migration %s (%s), and parity is not "
+                "signed off: %s. The reference stays runnable until every screen is signed off (migrations.%s.screens, "
+                "from the parity ledger) or a human collaborator records a retirement decision covering these paths "
+                "(migrations.%s.retirement_decisions); see the backlog skill's references/migration-parity.md. Why: "
+                "GCSP lost its reference before anyone compared against it (cause 6)."
+                % (branch, mid, files, waiting, mid, mid))
+        return (2, text), notes
+    return None, notes
 
 
 # ---------------------------------------------------------------- command line

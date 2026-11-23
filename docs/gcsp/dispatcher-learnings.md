@@ -2899,3 +2899,25 @@ Several broad source/policy displays and an initial queue display again truncate
 - **Issue:** the connected shell proof's mock issuer issues no refresh token in its expiry case. The Angular app's handling of a refused refresh token (`invalid_grant`) was therefore never exercised. Against the real demo issuer it showed "Sign-in is not available".
 - **Resolution:** FUCQ-532 matched the mock (`GCSP_DEMO_IDP_REFRESH_TOKENS=false` for that proof case only), and FUCQ-534 fixes the app and removes the workaround.
 - **Learning:** when a proof swaps a mock for a real adapter, check that each scenario still exercises the same protocol path, and file a Bug for any gap the swap exposes rather than hiding it.
+
+
+### 2026-11-22 20:32 UTC · usget-vesper · Angular gap intake
+
+- Authenticated Jira read verified all fourteen FUCQ-548–561 Bugs, their FUCQ-432 parent and originating Story links. The review-linked capture directory is absent locally and all fourteen native attachment lists are empty; no original screenshot inspection is claimed. The first lead will reproduce the live before-fix state before implementation and retain fresh Node/Angular pairs.
+- FUCQ-548 initially failed check-story because its native description lacked the required ui component plan. Added only the existing portalShell/notificationBell plan to the native Bug, read it back and re-imported; check-story now passes. Preserve native descriptions as the source rather than patching only local mirrors. Apply this check at later pickups.
+
+### 2026-11-22 20:32 UTC · usget-vesper · DL-20261117-GCC-013 · Unbounded map projection
+
+- The generic product_map.py snapshot projected all historical branches and emitted an oversized response (the command tool reported 9,942,595 bytes omitted). No completion or freshness claim relies on it. Use the authored per-story plan/slice records and bounded output projections for this run; a producer-level bounded snapshot remains a proposed framework improvement. No extra validation run was added.
+
+
+### 2026-11-22 20:39 UTC · usget-vesper · Branch publication and reconciliation observations
+
+- Petunia Pig correctly distinguished the FUCQ-548 planning commit eaecbc88e on its story branch from scaffold_git.py push reporting only the configured base ref. The helper push subcommand targets base by design; its output does not prove story-branch publication. Existing human checkpoint-push authority permits a guarded, non-force explicit story-ref push through the scaffold_git Git wrapper, with the remote tip read back. No helper change or extra approval gate was added.
+- Full open-Bug reconciliation fetched all 248 rows with attachments present, then imported with zero failures. FUCQ-76 and FUCQ-399 are Rejected in a non-Done status category, so the open-Bug query includes them and the importer intentionally skips them. Because reconciliation marking also requires no skipped rows, the helper keeps requesting a complete reconciliation query. This is a bounded tooling inefficiency, not an Angular repair blocker; no marker was hand-edited or guard bypassed.
+
+
+### 2026-11-22 · usget-vesper · Java scenario gap found by live parity preparation
+
+- FUCQ-548's real Java/OIDC/PG baseline preparation returned503 for Main successful journey; all8capabilities are unconditionally missing in ScenarioCatalogue.java47-48. Source/history confirms FUCQ-479 introduced that catalogue (d31a5f516), despite route-based earlier completion evidence. Recorded High Bug FUCQ-562 under433, related479 and561; no Java repair or named-reset success claimed. This is the concrete benefit of preparing the named live scenario rather than proving only a route/JSON shape.
+- Public editor confirmation is not the trusted scenario loader: its3-category engagement gate correctly refuses the frozen1-category Main starting brief. Do not weaken the gate or add preferences to make a test pass. Parent approved only immutable initial-state fixtures in the owned testDB plus exact frozen tranche inputs; actual Java release/allocation must create outcomes. Equivalence remains to prove. CSS/bell work continues;562 routing is pending Russell's answer and no claimed548 scope was widened.
