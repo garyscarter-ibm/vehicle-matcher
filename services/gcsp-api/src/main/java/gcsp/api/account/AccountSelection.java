@@ -1,5 +1,6 @@
 package gcsp.api.account;
 
+import gcsp.api.clock.RunClockHolder;
 import gcsp.api.persistence.Persistence;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.runtime.LaunchMode;
@@ -35,6 +36,9 @@ public class AccountSelection {
     @Inject
     gcsp.api.policy.PolicyService policyService;
 
+    @Inject
+    RunClockHolder runClock;
+
     public String mode() {
         return normalise(config.getOptionalValue("gcsp.account.provider", String.class).orElse(NONE));
     }
@@ -57,7 +61,8 @@ public class AccountSelection {
     @Startup
     @ApplicationScoped
     AccountClockPort clock() {
-        return clock(config.getOptionalValue("gcsp.account.fixed-now", String.class).orElse(null), LaunchMode.current());
+        return clock(config.getOptionalValue("gcsp.account.fixed-now", String.class).orElse(null), LaunchMode.current(),
+                persistence.active() ? runClock : null);
     }
 
     @Produces
@@ -105,7 +110,13 @@ public class AccountSelection {
     }
 
     static AccountClockPort clock(String fixedNow, LaunchMode mode) {
-        if (fixedNow == null || fixedNow.isBlank()) return new SystemAccountClock();
+        return clock(fixedNow, mode, null);
+    }
+
+    static AccountClockPort clock(String fixedNow, LaunchMode mode, RunClockHolder runClock) {
+        if (fixedNow == null || fixedNow.isBlank()) {
+            return runClock == null ? new SystemAccountClock() : new RunAccountClock(runClock);
+        }
         if (mode != LaunchMode.TEST) {
             throw new IllegalStateException("gcsp.account.fixed-now is only allowed in automated tests");
         }
