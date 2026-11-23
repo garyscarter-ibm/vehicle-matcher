@@ -1,3 +1,5 @@
+> **Current run resumed, 23 November 2026:** Russell explicitly restarted the dev poller in a new chat and requested continuation from “Resume 555 session work”, without blocking questions overnight. Read [the current F555 overnight handover](poller-handover-2026-11-23-f555-overnight.md) first. The stop and earlier checkpoints below are historical; preserve their evidence and apply the later human scope and exact 37-case report-only ruling.
+
 # Angular port gap run — 22 November 2026
 
 **STOPPED by Russell on 23 November 2026.** Latest explicit instruction: “Stop the poller.” This overrides the earlier start/resume instructions below. Do not dispatch, claim, implement, retry children or restart the heartbeat without an explicit human resume. Preserve existing claims, branches and worktrees.
