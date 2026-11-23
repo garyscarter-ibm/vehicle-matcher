@@ -10726,6 +10726,57 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "id": "FUCQ-556",
+      "type": "Bug",
+      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-029",
+      "story_points": 13,
+      "started_at": "2026-11-23",
+      "unsliced": false,
+      "workers": [
+        {
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "expires_at": "2026-11-23T01:01:14.987181+00:00",
+          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
+          "status": "active; initial plan and pure source ports"
+        }
+      ],
+      "note": "Parent native Jira read-back at allocation: In Progress/Russell/13/start2026-11-23; original6AC unticked. Full13point/four-slice plan in _dev/in-progress/DEV-2026-11-22-vesper-029.md. Canonical F555 tracker a9fdc1c/F551 timeline766/F550 refreshc872 require supported integration, no copying/manual stacking. No-show parity in originalscope; F562/F564 decision and real same-state1280pair remain open. Source-only work is not acceptance; no Done authority.",
+      "observed_at": "2026-11-23T00:16:15Z",
+      "slices": [
+        {
+          "id": "source-ports",
+          "status": "in-progress",
+          "title": "Pure TaskList and SlotPicker source ports (3 points)",
+          "observed_at": "2026-11-23T00:16:15Z",
+          "evidence": "Accepted full13point plan; Chester allocated two pure source ports. No source/tests/acceptance evidence yet. Orders and connected composition remain unallocated; all6AC open."
+        },
+        {
+          "id": "tracker-documents",
+          "status": "not-started",
+          "title": "Orders tracker and document checklist composition (5 points)"
+        },
+        {
+          "id": "appointment-return",
+          "status": "not-started",
+          "title": "Appointment return history help and missed-state parity (3 points)"
+        },
+        {
+          "id": "integration-proof",
+          "status": "not-started",
+          "title": "Supported sibling integration and actual same-state pair (2 points)"
+        }
+      ]
     }
   ],
   "version": 1
