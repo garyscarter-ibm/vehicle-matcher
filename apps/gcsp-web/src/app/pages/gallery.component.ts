@@ -14,12 +14,15 @@ import { ActivityTimelineComponent } from '../kit/activity-timeline.component';
 import { ActivityOfferComponent } from '../kit/activity-offer.component';
 import { ActivityOffer, ActivityProjection, ActivityResult } from '../activity/activity.types';
 import { VehicleCardComponent } from '../kit/vehicle-card.component';
+import { TaskGroup, TaskListComponent } from '../kit/task-list.component';
+import { SlotPickerComponent, SlotPickerSlot } from '../kit/slot-picker.component';
+import { formatActivityTime } from '../activity/activity.copy';
 const buddyPreview = (patch: Partial<ActivityProjection> = {}): ActivityProjection => ({ runId: 'gallery', employeeId: 'gallery', asOf: '2026-11-22T10:00:00Z', clockVersion: 'gallery', briefVersion: 4,
   permission: { searchConsent: true, holdConsent: true, paused: false, permissionVersion: 1, canSearch: true, canHold: true }, state: 'searching', sourceStatus: 'ok', lastSuccessfulCheck: null,
   searchEvidence: { status: 'recorded', checks: 1 }, currentOffer: null, offers: [], stateChanges: [], stateChangesEvidence: { status: 'recorded', rejectedReceipts: 0 }, ...patch });
 const galleryOffer: ActivityOffer = { offerRef: { offerId: 'gallery-held' }, state: 'active', displayState: 'active', version: 1, briefVersion: 4, createdAt: '2026-11-22T09:00:00Z', expiresAt: '2026-11-23T12:00:00Z' };
 const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjection> => ({ status: 'ok', value });
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, BuddyStatusComponent, BuddyTileComponent, ActivityTimelineComponent, ActivityOfferComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -68,6 +71,20 @@ const readyBuddy = (value: ActivityProjection): ActivityResult<ActivityProjectio
       (action)="cardOpened.set('Vehicle details selected for the example car')" />
     <p role="status">{{ cardOpened() }}</p>
   </section>
+  <section class="gcsp-panel"><h2>Owned tasks and other owners</h2>
+    <section gcspTaskList heading="Your tasks" [level]="3" [rows]="true" [groups]="yourTasks"></section>
+    <section gcspTaskList heading="Being handled by others" [level]="3" [groups]="otherTasks"></section>
+    <p role="status">{{ taskSelected() }}</p>
+  </section>
+  <section class="gcsp-panel"><h2>Offered appointment times</h2>
+    <h3>Choose an example time</h3>
+    <ul gcspSlotPicker [slots]="offeredTimes" actionLabel="Request handover" [onPick]="pickTime"></ul>
+    <p role="status">{{ timeSelected() }}</p>
+    <h3>Read-only offered times</h3>
+    <ul gcspSlotPicker [slots]="offeredTimes"></ul>
+    <h3>Source action styles</h3>
+    <div class="gcsp-actions"><button gcspButton presentation="source" type="button" disabled>Example primary action</button><button gcspButton presentation="source" variant="ghost" type="button" disabled>Example secondary action</button></div>
+  </section>
 ` })
 export class GalleryComponent {
   readonly buddyStates = ['active', 'inactive', 'unset', 'finished', 'unavailable', 'paused'];
@@ -84,6 +101,21 @@ export class GalleryComponent {
     { id: 'gallery-unavailable', phase: 'unavailable', result: { status: 'unavailable' } },
     { id: 'gallery-finished', phase: 'ready', result: readyBuddy(buddyPreview({ currentOffer: { ...galleryOffer, state: 'accepted', displayState: 'accepted' } })) },
   ];
+  readonly taskSelected = signal('Example tasks only. No changes have been saved.');
+  readonly timeSelected = signal('Select an example time. No booking will be made.');
+  readonly pickTime = (slot: SlotPickerSlot) => this.timeSelected.set(`Example time selected: ${formatActivityTime(slot.start ?? '')}. No booking has been made.`);
+  readonly offeredTimes: readonly SlotPickerSlot[] = [
+    { slotId: 'gallery-monday-morning', start: '2026-11-23T10:00:00Z' },
+    { slotId: 'gallery-monday-afternoon', start: '2026-11-23T14:30:00Z' },
+    { slotId: 'gallery-tuesday-morning', start: '2026-11-24T09:00:00Z' },
+  ];
+  readonly yourTasks: readonly TaskGroup[] = [{ items: [
+    { id: 'gallery-acknowledge', label: 'Check your order details', owner: 'You', status: 'Ready', tone: 'todo', due: '2026-11-24T17:00:00Z', detail: 'Acknowledgement, not a signature.', action: { label: 'Acknowledge', onSelect: () => this.taskSelected.set('Example task selected. No acknowledgement has been saved.') } },
+    { id: 'gallery-document', label: 'Read your handover documents', owner: 'You', status: 'Waiting', tone: 'todo', action: { label: 'Read documents', disabled: true, reason: 'The documents have not been supplied for this example.' } },
+  ] }];
+  readonly otherTasks: readonly TaskGroup[] = [{ heading: 'Scheme team', items: [
+    { id: 'gallery-team', label: 'Prepare your handover', owner: 'Scheme team', status: 'In progress', tone: 'in-progress', due: '2026-11-25T12:00:00Z' },
+  ] }];
   readonly cardOpened = signal('');
   readonly tableOpened = signal('');
   readonly tableRowAction: DataTableRowAction = { header: 'Action', label: 'Open', name: row => `Open case for ${row.label}` };
