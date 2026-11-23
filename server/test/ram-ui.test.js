@@ -189,7 +189,7 @@ for (const [count, stage] of [[50, 'tile'], [200, 'chip']]) {
       assert.equal(link.href, linkSource === 'explicit' ? pool.links[0] : `${pool.linkPrefix}${pool.id[0]}`);
       assert.equal(link.target, '_blank');
       assert.equal(link.rel, 'noopener noreferrer');
-      assert.match(link.getAttribute('aria-label'), /RAM 1500 Big Horn/);
+      assert.match(link.getAttribute('aria-label'), /RAM 1500 Big Horn.*\$35,000.*Test RAM Dealer/);
       assert.ok(link.querySelector('img'), 'The photo opens the advert');
       assert.equal(link.querySelector('button'), null, 'Reject controls stay outside the link');
       if (stage === 'tile') {

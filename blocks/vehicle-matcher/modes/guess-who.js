@@ -648,9 +648,17 @@ function matchAt(pool, i, big) {
       // server/index.js). A card-sized card deserves the bigger variant, so it
       // is reconstructed here rather than sent for all 12,000.
       photo: big ? fullPhoto(photo) : photo,
-      link: pool.links?.[i] || (pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null),
+      link: linkAt(pool, i),
     },
   };
+}
+
+/** A car's advert URL: an explicit per-car link wins, else prefix + id, else none.
+ *  Shared by matchAt and the chip/tile cells, which need only this, the name and
+ *  the retailer, and so skip building a whole match object (and its feature list)
+ *  for every one of up to 12,000 cells. */
+function linkAt(pool, i) {
+  return pool.links?.[i] || (pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null);
 }
 
 /** The larger variant of a thumbnail URL, for cards big enough to need one.
@@ -1284,7 +1292,11 @@ function mount(root, ctx) {
     }
 
     if (stageKey === 'chip' || stageKey === 'tile') {
-      const { car } = matchAt(pool, i, true);
+      const car = {
+        name: pool.names[pool.name[i]],
+        retailerName: pool.retailers[pool.retailer[i]],
+        link: linkAt(pool, i),
+      };
       const advert = el(car.link ? 'a' : 'div', 'vm-gw-advert');
       if (car.link) {
         advert.href = car.link;
