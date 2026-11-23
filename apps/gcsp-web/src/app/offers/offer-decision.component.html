@@ -1,10 +1,10 @@
 @if (offer(); as current) {
   <div class="gcsp-offer-actions" data-offer-decision-actions>
     @if (current.state === 'pending' && !state().decision) {
-      <button gcspButton type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
-      <button gcspButton type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
+      <button gcspButton presentation="source" type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
+      <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
     }
-    @if (!busy() && (current.state !== 'pending' || state().decision || current.reason === 'decision-pending' || current.reason === 'release-pending')) { <button gcspButton type="button" variant="ghost" data-offer-action="check" (click)="store.checkCurrent()">Check current state</button> }
+    @if (!busy() && (current.state !== 'pending' || state().decision || current.reason === 'decision-pending' || current.reason === 'release-pending')) { <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="check" (click)="store.checkCurrent()">Check current state</button> }
   </div>
   @if (current.state === 'pending') { <p class="gcsp-note" [id]="prefix + '-availability'">{{ decisionNote() }}</p> }
   <p role="status" [attr.aria-live]="state().review ? 'off' : 'polite'" aria-atomic="true" [hidden]="!feedback()">{{ feedback() }}</p>
@@ -47,7 +47,7 @@
           <section class="gcsp-offer-drawer-section"><h3 class="gcsp-h3">Why are you declining?</h3><p class="gcsp-note">Your feedback helps your car buddy look again.</p>
             <p class="gcsp-note" [id]="prefix + '-reason-status'" tabindex="-1" [hidden]="state().reasons.phase !== 'loading' && state().reasons.phase !== 'failed'">{{ state().reasons.phase === 'loading' ? 'Loading reasons.' : 'Reasons are unavailable. Check again.' }}</p>
             <div [id]="prefix + '-reasons'" tabindex="-1"><gcsp-option-list [groupId]="prefix + '-choice-list'" label="Reason for declining" variant="rows" [options]="reasonOptions()" [value]="state().reasons.selected || null" [required]="true" [invalid]="!!state().error" [disabled]="busy() || state().reasons.phase !== 'ready' || !store.canDecline()" (valueChange)="store.selectReason($event)" /></div>
-            <button gcspButton type="button" variant="ghost" [hidden]="state().reasons.phase !== 'failed'" [disabled]="busy()" data-offer-action="reasons-refresh" (click)="store.refreshReasons()">Check reasons again</button>
+            <button gcspButton presentation="source" type="button" variant="ghost" [hidden]="state().reasons.phase !== 'failed'" [disabled]="busy()" data-offer-action="reasons-refresh" (click)="store.refreshReasons()">Check reasons again</button>
           </section>
         }
       </div>
@@ -55,8 +55,8 @@
     <ng-container drawer-footer>
       @if (state().review; as kind) {
         <p class="gcsp-note gcsp-offer-decision-note">{{ kind === 'accept' ? 'Accepting sends your selection for scheme checks. Confirm each declaration to continue.' : 'Declining releases your reserved car. Your buddy will use your feedback to look again.' }}</p>
-        <button gcspButton type="button" class="gcsp-offer-decision-button" data-offer-action="confirm" [disabled]="busy() || (kind === 'accept' ? !store.canAccept() : state().reasons.phase !== 'ready' || !store.canDecline())" (click)="store.submitDecision()">{{ busy() ? kind === 'accept' ? 'Accepting offer' : 'Declining offer' : kind === 'accept' ? 'Accept offer' : 'Confirm decline' }}</button>
-        <button gcspButton type="button" variant="ghost" class="gcsp-offer-decision-button" [attr.data-offer-action]="kind + '-cancel'" [disabled]="busy()" (click)="close()">{{ kind === 'accept' ? 'Keep reviewing' : 'Keep this offer' }}</button>
+        <button gcspButton presentation="source" type="button" class="gcsp-offer-decision-button" data-offer-action="confirm" [disabled]="busy() || (kind === 'accept' ? !store.canAccept() : state().reasons.phase !== 'ready' || !store.canDecline())" (click)="store.submitDecision()">{{ busy() ? kind === 'accept' ? 'Accepting offer' : 'Declining offer' : kind === 'accept' ? 'Accept offer' : 'Confirm decline' }}</button>
+        <button gcspButton presentation="source" type="button" variant="ghost" class="gcsp-offer-decision-button" [attr.data-offer-action]="kind + '-cancel'" [disabled]="busy()" (click)="close()">{{ kind === 'accept' ? 'Keep reviewing' : 'Keep this offer' }}</button>
         <p class="gcsp-vh" role="status" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>
       }
     </ng-container>

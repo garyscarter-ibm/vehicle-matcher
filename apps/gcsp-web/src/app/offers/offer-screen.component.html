@@ -8,23 +8,23 @@
   } @else if (failure(); as failed) {
     <div gcspScreenIntro presentation="source" [level]="1" [title]="failed.title"></div>
     <p class="gcsp-note" [hidden]="!failed.message">{{ failed.message }}</p>
-    @if (failed.retry) { <button gcspButton variant="ghost" type="button" data-offer-action="refresh" (click)="refresh()">Try again</button> }
+    @if (failed.retry) { <button gcspButton presentation="source" variant="ghost" type="button" data-offer-action="refresh" (click)="refresh()">Try again</button> }
   } @else if (view(); as vm) {
     @if (vm.isRefused) {
       <div gcspStatusScreen presentation="source" [level]="1" [title]="vm.title" [message]="vm.message" [announcement]="null">
-        <a gcspButton routerLink="/help">Contact scheme support</a>
-        <a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a>
+        <a gcspButton presentation="source" routerLink="/help">Contact scheme support</a>
+        <a gcspButton presentation="source" variant="ghost" routerLink="/account">Back to Your cars</a>
       </div>
     } @else {
       @if (vm.isPending) {
-        <div class="gcsp-offer-header"><div gcspScreenIntro presentation="source" [level]="1" [title]="vm.title"></div><a gcspButton variant="ghost" routerLink="/account">‹ Back to Your cars</a></div>
+        <div class="gcsp-offer-header"><div gcspScreenIntro presentation="source" [level]="1" [title]="vm.title"></div><a gcspButton presentation="source" variant="ghost" routerLink="/account">‹ Back to Your cars</a></div>
       } @else { <div gcspScreenIntro presentation="source" [level]="1" [title]="vm.title"></div> }
       @if (vm.showAcceptedIdentity && vm.acceptedIdentityRows.length) { <gcsp-fact-list presentation="source" [rows]="vm.acceptedIdentityRows" /> }
       <p class="gcsp-note" [hidden]="!vm.message">{{ vm.message }}</p>
       @if (vm.showAcceptedIdentity) {
-        <div class="gcsp-offer-actions"><a gcspButton routerLink="/orders">Track your order</a><a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a></div>
+        <div class="gcsp-offer-actions"><a gcspButton presentation="source" routerLink="/orders">Track your order</a><a gcspButton presentation="source" variant="ghost" routerLink="/account">Back to Your cars</a></div>
       } @else if (vm.isExpired) {
-        <div class="gcsp-offer-actions"><a gcspButton routerLink="/activity">See buddy activity</a><a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a></div>
+        <div class="gcsp-offer-actions"><a gcspButton presentation="source" routerLink="/activity">See buddy activity</a><a gcspButton presentation="source" variant="ghost" routerLink="/account">Back to Your cars</a></div>
       }
     }
     @if (vm.showSelection) {

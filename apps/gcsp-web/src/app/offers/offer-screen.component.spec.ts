@@ -155,7 +155,7 @@ describe('native offer read screen', () => {
     expect(header?.querySelector('h1')?.textContent).toBe('Your offer');
     expect(header?.querySelector(':scope > div[gcspScreenIntro] > h1.vm-title')).not.toBeNull();
     expect(back?.textContent).toBe('‹ Back to Your cars'); expect(back?.getAttribute('href')).toBe('/account');
-    expect(back?.classList.contains('gcsp-button-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
+    expect(back?.classList.contains('vm-btn-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
   });
   it('composes the focused source hero with direct picker media, numeric saving and decorative finish swatches', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
