@@ -133,11 +133,29 @@ describe('pure owned order and Java lifecycle projection', () => {
       .actions.appointment).toEqual({ requestSlotIds: [], acceptProposalId: 'proposal' });
     for (const changes of [{ provider: { mode: 'none' } }, { pending: { step: 'request' } },
       { blocked: { code: 'unsupported' } }, { eligibility: { eligible: false } }, { version: -1 },
-      { owner: 'retailer' }, { state: 'scheduled', booked: true }, { state: 'completed' }, { state: 'no-show' }]) {
+      { owner: 'retailer' }, { state: 'scheduled', booked: true }, { state: 'completed' }]) {
       expect(projectOrders(input({ appointment: ok(appointment(changes)) })).actions.appointment.requestSlotIds).toEqual([]);
     }
     expect(projectOrders(input({ appointment: ok(appointment({ state: 'change-proposed', proposalId: 'proposal' })) }))
       .actions.appointment.acceptProposalId).toBeNull();
+  });
+
+  it('offers only supplied rebooking slots after a missed handover without changing its outcome', () => {
+    const missed = appointment({ state: 'no-show', version: 7, booked: false,
+      slot: { slotId: 'missed-slot', start: '2026-11-14T09:00:00Z' } });
+    const projected = projectOrders(input({ appointment: ok(missed) }));
+    expect(projected.actions.appointment).toEqual({ requestSlotIds: ['offered-slot'], acceptProposalId: null });
+    expect(projected.appointment.value).toBe(missed);
+    expect(projected.appointment.value?.state).toBe('no-show');
+  });
+  it('retains every availability and authority boundary for no-show rebooking', () => {
+    for (const changes of [{ provider: { mode: 'none' } }, { pending: { step: 'request' } },
+      { blocked: { code: 'unsupported' } }, { eligibility: { eligible: false } }, { version: -1 },
+      { owner: 'retailer' }, { employeeId: 'other-employee' }, { runId: 'other-run' }]) {
+      expect(projectOrders(input({ appointment: ok(appointment({ state: 'no-show', ...changes })) })).actions.appointment.requestSlotIds).toEqual([]);
+    }
+    expect(projectOrders(input({ employeeAuthority: false, appointment: ok(appointment({ state: 'no-show' })) })).actions.appointment.requestSlotIds).toEqual([]);
+    expect(projectOrders(input({ appointment: { status: 'pending', value: appointment({ state: 'no-show' }) } })).actions.appointment.requestSlotIds).toEqual([]);
   });
 
   it('returns only provider-offered return choices and exact proposal hints, with no physical completion action', () => {

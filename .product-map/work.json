@@ -10726,6 +10726,71 @@
           "status": "stopped"
         }
       ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-22-vesper-029",
+      "evidence": "Source17+Gallery14+Orders111=142scoped cases reused by matching identities after clean supported refresh; first clean web build passes. No covering batch green/live pair/human acceptance. Build child telemetry limitation retained.",
+      "id": "FUCQ-556",
+      "note": "All6AC open; still building. Independent source increment refreshed without app changes;142scoped source/default/Gallery/Orders cases verified and first production build passed. Supported checkpoint integration is not final delivery; source screen/sibling/runtime/keyboard/pair/human proof remain.",
+      "observed_at": "2026-11-23T06:36:34Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json.",
+          "id": "source-ports",
+          "observed_at": "2026-11-23T00:40:55Z",
+          "status": "complete",
+          "title": "Pure TaskList and SlotPicker source ports (3 points)"
+        },
+        {
+          "id": "tracker-documents",
+          "status": "not-started",
+          "title": "Orders tracker and document checklist composition (5 points)"
+        },
+        {
+          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
+          "id": "appointment-return",
+          "observed_at": "2026-11-23T06:24:07Z",
+          "status": "in-progress",
+          "title": "Appointment return history help and missed-state parity (3 points)"
+        },
+        {
+          "id": "integration-proof",
+          "status": "in-progress",
+          "title": "Supported sibling integration and actual same-state pair (2 points)",
+          "observed_at": "2026-11-23T06:36:34Z",
+          "evidence": "Independent source increment: clean supported base refresh introduced no app change;142scoped cases/default/callers verified, first production build passed. Covering batch and canonical sibling/actual screen/browser/keyboard/live pair/human proof remain; no acceptance claim."
+        }
+      ],
+      "started_at": "2026-11-23",
+      "status": "In Progress",
+      "story_points": 13,
+      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "harness": "codex",
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "role": "story-lead",
+          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
+          "status": "stopped; child422; launcher continues"
+        },
+        {
+          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "role": "dispatcher carrying source implementation",
+          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
+          "status": "active; F556 source checkpoint publication"
+        }
+      ]
     }
   ],
   "version": 1
