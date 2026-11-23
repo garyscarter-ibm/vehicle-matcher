@@ -25,14 +25,12 @@ final class FollowupComparison {
             "monthlyPoints", "score", "weight", "importance", "ruleIds", "requiredBy", "availableFrom");
     private static final List<String> PINS = List.of("brief", "facts", "policy", "stock", "snapshot", "terms", "clock",
             "availability", "feedback");
-    private static final List<String> CURRENT_CAR = List.of("configuration", "body", "fuel", "seats", "boot", "mpg",
-            "zeroTo62", "points");
 
     private FollowupComparison() {}
 
     /** One offer as the follow-up shows it, or null. Quotes are immutable rows, so their revision is 1. */
     static ObjectNode offer(OfferView v, String runId, String clockVersion, String decisionId, JsonNode quote,
-            String orderNumber) {
+            String orderNumber, CurrentCarComparison.Owner comparisonOwner) {
         OfferView.Quote q = v.quote();
         long brief;
         try {
@@ -75,12 +73,7 @@ final class FollowupComparison {
         out.set("decision", decision);
         out.set("terms", terms);
         out.set("allowance", terms.get("allowanceInputs").deepCopy());
-        // A Java quote pins no current-car comparison, so the truthful answer is unavailable.
-        ObjectNode cmp = o.putObject("comparison");
-        cmp.put("status", "unavailable").put("reason", "pinned-current-car-comparison-unavailable");
-        cmp.put("comparisonAvailable", false).putNull("currentCar");
-        ArrayNode unknowns = cmp.putArray("unknowns");
-        CURRENT_CAR.forEach(unknowns::add);
+        o.set("comparison", CurrentCarComparison.project(quote.get("currentCarComparison"), comparisonOwner, q.quotedAt()));
         return o;
     }
 

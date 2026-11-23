@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gcsp.api.notify.NotificationIntent;
+import gcsp.api.offers.CurrentCarComparison;
 import gcsp.api.persistence.Canonical;
 import gcsp.api.persistence.PendingOperations;
 import gcsp.api.persistence.RunContext;
@@ -182,6 +183,7 @@ final class Claim {
                 ? Integer.valueOf(points.intValue())
                 : points.path("value").isIntegralNumber() && points.path("value").canConvertToInt()
                         && points.path("value").intValue() >= 0 ? Integer.valueOf(points.path("value").intValue()) : null;
+        quote.set("currentCarComparison", currentCarComparison(c, x, k, now));
         tx.write("INSERT INTO buddy_quotes (environment_id, run_id, quote_id, allocation_id, order_uuid, employee_id, "
                 + "slot_id, configuration_id, policy_version, quoted_at, valid_until, monthly_points, vehicle_name, "
                 + "image_path, quote) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", x.environmentId(),
@@ -223,6 +225,24 @@ final class Claim {
                 .put("offerId", offerId).put("quoteId", quoteId).put("operationId", operationId)
                 .put("slotUnit", unit).put("expiresAt", PolicyClock.iso(expiresAt));
         return new Claimed(out, null);
+    }
+
+    /** One statement observes the three existing keyed source rows coherently; absent evidence never refuses a claim. */
+    private static JsonNode currentCarComparison(Connection c, RunContext x, Row k, Instant now) throws SQLException {
+        String query = "SELECT jsonb_build_object('employee', jsonb_build_object('environmentId', e.environment_id, "
+                + "'runId', e.run_id, 'employeeId', e.employee_id, 'version', e.version, 'attributes', e.attributes), "
+                + "'slot', jsonb_build_object('environmentId', s.environment_id, 'runId', s.run_id, 'employeeId', s.employee_id, "
+                + "'slotId', s.slot_id, 'version', s.version, 'attributes', s.attributes), "
+                + "'accountRecord', jsonb_build_object('environmentId', a.environment_id, 'runId', a.run_id, "
+                + "'employeeId', a.employee_id, 'recordSetId', a.record_set_id, 'version', a.version, 'record', a.record))::text "
+                + "FROM employees e LEFT JOIN entitlement_slots s ON s.environment_id = e.environment_id "
+                + "AND s.run_id = e.run_id AND s.employee_id = e.employee_id AND s.slot_id = ? "
+                + "LEFT JOIN employee_account_records a ON a.environment_id = e.environment_id AND a.run_id = e.run_id "
+                + "AND a.employee_id = e.employee_id WHERE e.environment_id = ? AND e.run_id = ? AND e.employee_id = ?";
+        JsonNode rows = Sql.one(c, query, rs -> Sql.json(rs.getString(1)), k.slotId(), x.environmentId(), x.runId(), k.employeeId());
+        var owner = new CurrentCarComparison.Owner(x.environmentId(), x.runId(), k.employeeId(), k.slotId());
+        return CurrentCarComparison.snapshot(new CurrentCarComparison.Scope(owner, k.versions().path("employee").asLong(),
+                k.versions().path("slot").asLong(), now), rows);
     }
 
     /** What the remote call and its later validity check need: ids plus every version the claim was made under. */

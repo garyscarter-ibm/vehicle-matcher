@@ -92,6 +92,14 @@ class BuddyRemoteCustodyJourneyHttpTest {
         assertEquals(1, remote.effects(paulaOp));
         assertEquals(0, BuddyJourneySupport.value(get(paula, API + "/offers/current"), 200).get("value").get("offers").size());
         assertEquals("claim-pending", s.text("SELECT status FROM allocation_attempts WHERE operation_id = ?", paulaOp));
+        JsonNode originalPin = s.json("SELECT quote->'currentCarComparison' FROM buddy_quotes WHERE employee_id = ?", PAULA);
+        assertEquals("available", originalPin.path("display").path("state").asText());
+        assertEquals(1100, originalPin.path("display").path("facts").path("points").path("value").asInt());
+        // Account source facts may change while the remote operation is pending; the quote stays historical.
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE employee_account_records SET record = "
+                + "jsonb_set(record, '{contracts,0,vehicle,points}', '999'::jsonb), version = version + 1 WHERE employee_id = ?")) {
+            ps.setString(1, PAULA); assertEquals(1, ps.executeUpdate());
+        }
         // Carla and Bruno also want car 1, but nothing else can take it while the claim is uncertain.
         assertEquals(1, s.count("SELECT count(*) FROM custody_holds WHERE order_uuid = ?", CAR_1));
         s.assertCustodyInvariants(maxActive);
@@ -145,6 +153,11 @@ class BuddyRemoteCustodyJourneyHttpTest {
         assertEquals("pending", offered.get("state").asText());
         assertEquals("awaiting-decision", offered.get("reason").asText());
         assertEquals(quoteId, offered.get("quote").get("quoteId").asText());
+        assertEquals(originalPin, s.json("SELECT quote->'currentCarComparison' FROM buddy_quotes WHERE employee_id = ?", PAULA));
+        assertEquals(1100, offered.path("comparison").path("currentCar").path("facts").path("points").path("value").asInt());
+        assertTrue(holder.clock().tick(scope, "startup-restart-1", s.clockVersion(presenter),
+                TickKind.STARTUP) instanceof ClockResult.Ok);
+        assertEquals(originalPin, s.json("SELECT quote->'currentCarComparison' FROM buddy_quotes WHERE employee_id = ?", PAULA));
         JsonNode activity = BuddyJourneySupport.value(get(paula, API + "/activity"), 200).get("value");
         assertEquals("offer", activity.get("state").asText());
         assertEquals(paulaOffer, activity.get("currentOffer").get("offerRef").get("offerId").asText());

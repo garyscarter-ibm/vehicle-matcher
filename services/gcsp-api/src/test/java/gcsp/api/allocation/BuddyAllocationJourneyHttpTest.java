@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import gcsp.api.clock.ClockResult;
+import gcsp.api.clock.TickKind;
 import gcsp.api.clock.RunClockHolder;
 import gcsp.api.identity.IdentityPort;
 import gcsp.api.persistence.Canonical;
@@ -79,6 +81,11 @@ class BuddyAllocationJourneyHttpTest {
         assertFalse(handlers.contains("buddy-pending-operations"), "local mode has nothing remote to reconcile");
         assertEquals(2, s.count("SELECT count(*) FROM stock_cars WHERE state = 'unreleased'"));
         assertEquals(0, s.count("SELECT count(*) FROM custody_holds"));
+        // A second employee has only a recorded body fact: the real producer must preserve a partial comparison.
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE employee_account_records SET record = "
+                + "jsonb_set(record, '{contracts,0,vehicle}', '{\"body\":\"estate\"}'::jsonb) WHERE employee_id = ?")) {
+            ps.setString(1, BRUNO); assertEquals(1, ps.executeUpdate());
+        }
 
         // One presenter tick: the app's own supply path releases both cars and the same tick allocates them.
         JsonNode tick = s.tick(presenter, "journey-local-1");
@@ -177,6 +184,20 @@ class BuddyAllocationJourneyHttpTest {
         assertEquals("pending", view.get("state").asText());
         assertEquals("awaiting-decision", view.get("reason").asText());
         assertEquals(CAR_1, view.get("quote").get("orderUuid").asText());
+        JsonNode comparison = view.path("comparison");
+        assertEquals("available", comparison.path("status").asText(), comparison.toString());
+        assertTrue(comparison.path("comparisonAvailable").asBoolean());
+        assertEquals(1100, comparison.path("currentCar").path("facts").path("points").path("value").asInt());
+        JsonNode pin = s.json("SELECT quote->'currentCarComparison' FROM buddy_quotes WHERE employee_id = ?", PAULA);
+        assertEquals("available", pin.path("display").path("state").asText());
+        assertEquals(3, pin.path("binding").path("employeeVersion").asInt());
+        assertFalse(comparison.has("binding"));
+        JsonNode partial = BuddyJourneySupport.value(get(bruno, API + "/offers/" + brunoOffer), 200).path("value").path("comparison");
+        assertEquals("partial", partial.path("status").asText());
+        assertTrue(partial.path("comparisonAvailable").asBoolean());
+        assertEquals(1, partial.path("currentCar").path("facts").size());
+        assertEquals("estate", partial.path("currentCar").path("facts").path("body").path("value").asText());
+        assertEquals(7, partial.path("unknowns").size());
         assertEquals(brunoOffer, BuddyJourneySupport.value(get(bruno, API + "/offers/current"), 200).get("value")
                 .get("offers").get(0).get("offerId").asText());
         assertEquals(0, BuddyJourneySupport.value(get(carla, API + "/offers/current"), 200).get("value").get("offers").size());
@@ -215,5 +236,26 @@ class BuddyAllocationJourneyHttpTest {
         assertEquals(1, s.count("SELECT count(*) FROM outbox_events WHERE event_type = 'stock-released'"));
         assertEquals(2, s.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
         s.assertCustodyInvariants(maxActive);
+
+        // These three source revisions change after the quote; neither GET nor startup may rebuild its pin.
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE employee_account_records SET record = "
+                + "jsonb_set(jsonb_set(record, '{contracts,0,vehicle,points}', '999'::jsonb), '{contracts,0,model}', "
+                + "'\"Changed current source model\"'::jsonb), version = version + 1 WHERE employee_id = ?")) {
+            ps.setString(1, PAULA); assertEquals(1, ps.executeUpdate());
+        }
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE employees SET version = version + 1 "
+                + "WHERE employee_id = ?")) { ps.setString(1, PAULA); assertEquals(1, ps.executeUpdate()); }
+        try (var c = dataSource.getConnection(); var ps = c.prepareStatement("UPDATE entitlement_slots SET version = version + 1 "
+                + "WHERE employee_id = ?")) { ps.setString(1, PAULA); assertEquals(1, ps.executeUpdate()); }
+        JsonNode reloaded = BuddyJourneySupport.value(get(paula, API + "/offers/" + paulaOffer), 200).path("value").path("comparison");
+        assertEquals(comparison, reloaded);
+        assertTrue(holder.clock().tick(holder.scope("comparison-restart"), "comparison-restart", s.clockVersion(presenter),
+                TickKind.STARTUP) instanceof ClockResult.Ok);
+        assertEquals(pin, s.json("SELECT quote->'currentCarComparison' FROM buddy_quotes WHERE employee_id = ?", PAULA));
+        assertEquals(comparison, BuddyJourneySupport.value(get(paula, API + "/offers/" + paulaOffer), 200).path("value").path("comparison"));
+        assertEquals(2, s.count("SELECT count(*) FROM buddy_quotes"));
+        assertEquals(2, s.count("SELECT count(*) FROM custody_holds"));
+        assertEquals(2, s.count("SELECT count(*) FROM buddy_offers"));
+        assertEquals(2, s.count("SELECT count(*) FROM outbox_events WHERE event_type = 'notification.offer.v1'"));
     }
 }
