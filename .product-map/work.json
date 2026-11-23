@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-23T14:42:21Z",
+  "observed_at": "2026-11-23T14:52:19Z",
   "stories": [
     {
       "assignee": "",
@@ -11198,12 +11198,37 @@
     {
       "id": "FUCQ-565",
       "title": "Java Buddy quotes omit the pinned current-car comparison and points saving",
-      "status": "To Do",
-      "original_status": "To Do",
+      "status": "In Progress",
+      "original_status": "In Progress",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-23T14:24:58Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565"
+      "observed_at": "2026-11-23T14:53:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
+      "slices": [
+        {
+          "id": "quote-snapshot",
+          "status": "in-progress",
+          "title": "Pin immutable source facts at quote creation",
+          "observed_at": "2026-11-23T14:53:33Z",
+          "evidence": "Explicitly approved by Russell23Nov; necessary dependencies authorized without more questions. Native/repo In Progress; normal claimed DEV-2026-11-23-001 separate WT. Baymax implementing approved immutable existing quote JSON snapshot; no test result yet."
+        },
+        {
+          "id": "safe-projection",
+          "status": "not-started",
+          "title": "Expose allowlisted local/remote/follow-up comparisons"
+        },
+        {
+          "id": "validation",
+          "status": "not-started",
+          "title": "Focused Java/OIDC source-change, privacy and idempotency proof"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Merged registered browser and covering batch proof"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-566",
