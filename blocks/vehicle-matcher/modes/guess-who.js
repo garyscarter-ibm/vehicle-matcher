@@ -1269,14 +1269,8 @@ function mount(root, ctx) {
 
   /* ------------------------------ the board ------------------------------ */
 
-  /*
-   * One cell, painted for the current stage.
-   *
-   * Called once per car at build (12,084 of them: ~70 ms, and the reason
-   * `content-visibility: auto` is non-negotiable in the CSS — without it layout
-   * alone is 512 ms) and again only when a survivor's stage changes. The node is
-   * never recreated, so a card keeps its identity from dot to card and back.
-   */
+  // Repaint only when the layout stage changes, preserving each cell's identity.
+  // Content visibility keeps large photo grids affordable.
   const paintCell = (node, i, stageKey) => {
     const pool = state.pool;
     node.replaceChildren();
@@ -1284,34 +1278,36 @@ function mount(root, ctx) {
     nodeStage[i] = stageKey;
 
     if (stageKey === 'dot') {
-      // A photo is neither readable nor affordable at this size (12,000 image
-      // requests), so the cell carries the one fact that survives at 12px: the
-      // paint, once the enrichment pass has reached this car. Until then it gets
-      // a neutral (see blankTint).
+      // Tiny cells show paint, or a neutral tint until enrichment reaches them.
       node.style.setProperty('--vm-gw-tint', hexOf(pool.shades[pool.shade[i]]) || blankTint(i));
       return;
     }
 
-    if (stageKey === 'chip') {
-      node.append(photoFor(i, false, pool.names[pool.name[i]]));
+    if (stageKey === 'chip' || stageKey === 'tile') {
+      const { car } = matchAt(pool, i, true);
+      const advert = el(car.link ? 'a' : 'div', 'vm-gw-advert');
+      if (car.link) {
+        advert.href = car.link;
+        advert.target = '_blank';
+        advert.rel = 'noopener noreferrer';
+        const details = [car.name, pool.price[i] >= 0 ? gbp(pool.price[i], pool.currency) : null,
+          car.retailerName].filter(Boolean).join(', ');
+        advert.setAttribute('aria-label', `View advert: ${details} (opens in a new tab)`);
+        advert.title = advert.getAttribute('aria-label');
+      }
+      advert.append(photoFor(i, false, car.name));
+      if (stageKey === 'tile') {
+        const body = el('div', 'vm-gw-tile-body');
+        body.append(el('span', 'vm-gw-tile-name', car.name));
+        if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i], pool.currency)));
+        advert.append(body);
+      }
+      node.append(advert);
+      if (stageKey === 'tile') node.append(rejectBlock(i));
       return;
     }
 
-    if (stageKey === 'tile') {
-      node.append(photoFor(i, false, pool.names[pool.name[i]]));
-      const body = el('div', 'vm-gw-tile-body');
-      body.append(el('span', 'vm-gw-tile-name', pool.names[pool.name[i]]));
-      if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i], pool.currency)));
-      node.append(body);
-      node.append(rejectBlock(i));
-      return;
-    }
-
-    // card — the shared compact tile, with the score badge suppressed (there is
-    // no score in a hard filter) and the paint forced in (this mode filters on
-    // it, so the card it filtered down to has to name it). "Not this one" comes
-    // free: rejectOptions is entirely caller-driven, so the reject flow needed
-    // no change to result-card.js at all.
+    // Full cards share the compact layout, showing paint and omitting scores.
     node.append(matchCard(matchAt(pool, i, true), {
       compact: true,
       brand: ctx.brand,

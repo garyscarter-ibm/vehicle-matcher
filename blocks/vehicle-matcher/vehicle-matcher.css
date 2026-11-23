@@ -4195,12 +4195,36 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 }
 
 /* --- chip stage: photo only --- */
+.vm-gw-advert {
+  position: relative;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+a.vm-gw-advert:is(:hover, :focus-visible) {
+  outline: none;
+}
+a.vm-gw-advert:is(:hover, :focus-visible)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--vm-accent);
+  pointer-events: none;
+  z-index: 1;
+}
+a.vm-gw-advert:hover .vm-gw-tile-name { text-decoration: underline; }
+
 .vm-gw-photo {
   position: relative;
   display: block;
   aspect-ratio: 16 / 10;
   background: var(--vm-surface-alt);
   overflow: hidden;
+}
+.vm-gw-board[data-stage='tile'] .vm-gw-cell:has(.vm-reject-menu:not([hidden])) {
+  content-visibility: visible;
+  overflow: visible;
+  z-index: 3;
 }
 .vm-gw-photo img {
   width: 100%;
@@ -4273,7 +4297,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   top: 100%;
   right: 0;
   z-index: 3;
-  width: 220px;
+  width: min(220px, var(--vm-gw-track, 220px));
   margin-top: 2px;
   border: var(--vm-border-width) solid var(--vm-line);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);

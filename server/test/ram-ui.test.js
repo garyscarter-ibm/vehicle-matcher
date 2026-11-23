@@ -41,10 +41,11 @@ let dom;
 let emptyField = false;
 let error = false;
 let requests = [];
+let inventory = pool;
 before(() => { dom = installDom(); originalFetch = global.fetch; });
 after(() => { global.fetch = originalFetch; dom.window.close(); });
 beforeEach(() => {
-  resetDom(); emptyField = false; error = false; requests = [];
+  resetDom(); emptyField = false; error = false; requests = []; inventory = pool;
   window.history.replaceState(null, '', '/');
   navigator.clipboard.writeText = async () => {};
   global.fetch = async (input, options = {}) => {
@@ -54,7 +55,7 @@ beforeEach(() => {
     requests.push({ path, body });
     const brand = url.searchParams.get('brand') || body?.brand || 'ram';
     const data = path === '/api/questions' ? { questions: JSON.parse(JSON.stringify(questionsForBrand(brand))) }
-      : path === '/api/pool' ? pool
+      : path === '/api/pool' ? inventory
         : path === '/api/nearby' ? { nearby: [], unmet: {} }
           : { matches: emptyField ? [] : matches, total: 4, eligible: 4, decisive: true, unmet: {}, margin: 5 };
     return { ok: !error, status: error ? 503 : 200, json: async () => structuredClone(data) };
@@ -162,6 +163,41 @@ for (const mode of ['mingle', 'knockout']) {
     await settle(root, (r) => Boolean(r.querySelector('.vm-status')));
     assert.match(root.textContent, /trucks/); assert.match(root.textContent, /Adjust budget/); clean(root);
   });
+}
+
+for (const [count, stage] of [[50, 'tile'], [200, 'chip']]) {
+  for (const linkSource of ['explicit', 'prefix', 'missing']) {
+    test(`Guess Who ${stage} adverts support ${linkSource} listing URLs before the final shortlist`, async () => {
+      inventory = structuredClone(pool);
+      for (const key of ['id', 'name', 'line', 'body', 'fuel', 'transmission', 'retailer', 'shade', 'paint',
+        'price', 'mileage', 'year', 'plate', 'seats', 'features', 'boot', 'zeroTo62', 'mpg', 'photo', 'links']) {
+        inventory[key] = Array.from({ length: count }, (_, i) => pool[key][i % pool.n]);
+      }
+      inventory.n = count;
+      if (linkSource !== 'explicit') inventory.links = [];
+      if (linkSource === 'missing') inventory.linkPrefix = '';
+      const { root } = await mount('guess-who');
+      await settle(root, (r) => Boolean(r.querySelector(`.vm-gw-board[data-stage="${stage}"]`)));
+      const cell = root.querySelector('.vm-gw-cell');
+      const link = cell.querySelector('a');
+      if (linkSource === 'missing') {
+        assert.equal(link, null, 'A missing advert URL must not become a dead link');
+        assert.ok(cell.querySelector('img'));
+        return;
+      }
+      assert.ok(link, 'The advert is already clickable while many vehicles remain');
+      assert.equal(link.href, linkSource === 'explicit' ? pool.links[0] : `${pool.linkPrefix}${pool.id[0]}`);
+      assert.equal(link.target, '_blank');
+      assert.equal(link.rel, 'noopener noreferrer');
+      assert.match(link.getAttribute('aria-label'), /RAM 1500 Big Horn/);
+      assert.ok(link.querySelector('img'), 'The photo opens the advert');
+      assert.equal(link.querySelector('button'), null, 'Reject controls stay outside the link');
+      if (stage === 'tile') {
+        assert.match(link.textContent, /RAM 1500 Big Horn.*\$35,000/);
+        assert.ok(cell.querySelector('.vm-reject-open'));
+      }
+    });
+  }
 }
 
 test('RAM load failure offers a retry without fabricated inventory', async () => {
