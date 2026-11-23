@@ -7,6 +7,8 @@ import { sessionGuard } from '../auth/route.guards';
 import { StatePageComponent } from '../pages/state-page.component';
 import { GregNavigationComponent, GregView } from '../kit/greg-navigation.component';
 import { ShellComponent } from './shell.component';
+import { NotificationSource } from '../activity/notification.source';
+import { NotificationModel } from '../kit/notification-bell.types';
 @Component({ template: '<h1 tabindex="-1">Private saved car for Alice</h1><button role="tab" aria-selected="true">Selected ordering tab</button>' })
 class PrivateBody {}
 @Component({ imports: [GregNavigationComponent], template: '<h1 tabindex="-1">Ordering</h1><gcsp-greg-navigation [page]="page" [panels]="{}" />' })
@@ -17,6 +19,23 @@ describe('native portal shell', () => {
   beforeEach(() => { signOut.mockClear(); retry.mockReset(); state.set({ status: 'signed-out' }); TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'private', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, { path: 'account', component: PrivateBody, canActivate: [sessionGuard], data: { roles: ['employee'] } }, ...['preferences', 'activity', 'offers/:offerId', 'greg', 'greg/plan', 'greg/cases', 'comparison', 'presenter', 'presenter/outbox'].map(path => ({ path, component: PrivateBody })), { path: 'access-denied', component: StatePageComponent, data: { kind: 'denied' } }, { path: 'unavailable', component: StatePageComponent, data: { kind: 'unavailable' } }]), { provide: AuthPort, useValue: { state, recovery: signal(null), signOut, initialize: async () => {}, retry, signIn: async () => {} } }] }); });
   const ready = (roles: readonly Role[]): SessionState => ({ status: 'ready', context: { subject: 'own', roles, environmentId: 'isolated', runId: 'run', policyVersion: 'v1', capabilities: [] } });
   const settle = async (fixture: { whenStable(): Promise<unknown> }) => { await fixture.whenStable(); await TestBed.inject(Router).navigated; await new Promise((done) => setTimeout(done)); await fixture.whenStable(); };
+  it('shows the employee bell before account, coordinates disclosures and clears scoped data immediately', async () => {
+    let update!: (model: NotificationModel, key: string) => void; const stop = vi.fn();
+    TestBed.overrideProvider(NotificationSource, { useValue: { connect: (next: typeof update) => { update = next; return stop; } } });
+    const first = ready(['employee']); if (first.status !== 'ready') throw new Error('test setup');
+    state.set({ ...first, context: { ...first.context, employeeId: 'paula' } });
+    const fixture = TestBed.createComponent(ShellComponent); await fixture.whenStable(); const root: HTMLElement = fixture.nativeElement;
+    update({ status: 'ok', waiting: 1, rows: [], note: null }, JSON.stringify(['own', 'isolated', 'run', 'paula'])); await fixture.whenStable();
+    const bell = root.querySelector<HTMLButtonElement>('.gcsp-bell-btn')!; const account = root.querySelector<HTMLDetailsElement>('details')!;
+    expect(root.querySelector('header')?.children[3].classList.contains('gcsp-bell')).toBe(true);
+    account.open = true; bell.click(); await fixture.whenStable(); expect(account.open).toBe(false);
+    account.open = true; account.dispatchEvent(new Event('toggle')); await fixture.whenStable(); expect(bell.getAttribute('aria-expanded')).toBe('false');
+    expect(root.querySelector('.gcsp-bell-badge')?.textContent).toBe('1');
+    state.set({ ...first, context: { ...first.context, employeeId: 'other' } }); fixture.detectChanges();
+    expect(root.querySelector<HTMLElement>('.gcsp-bell-badge')?.hidden).toBe(true);
+    state.set({ status: 'signed-out' }); await fixture.whenStable(); expect(root.querySelector('.gcsp-bell')).toBeNull();
+    fixture.destroy(); expect(stop).toHaveBeenCalledOnce();
+  });
   it('reauthorizes the retained route when unavailable context recovers to a Greg-only principal', async () => {
     state.set({ status: 'unavailable', message: 'No connection', retryable: true }); retry.mockImplementation(async () => { state.set(ready(['greg'])); });
     const fixture = TestBed.createComponent(ShellComponent); const router = TestBed.inject(Router); await router.navigateByUrl('/account'); await settle(fixture); const root: HTMLElement = fixture.nativeElement;

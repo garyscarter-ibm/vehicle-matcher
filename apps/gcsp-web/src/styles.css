@@ -1,3 +1,4 @@
+@layer base {
 html, body { margin: 0; min-height: 100%; }
 gcsp-root, gcsp-screen-intro, gcsp-status-screen, gcsp-labelled-field { display: block; }
 .gcsp a { color: var(--gcsp-link); }
@@ -26,3 +27,4 @@ gcsp-status-screen + gcsp-status-screen, gcsp-gallery > section, gcsp-gallery > 
 .gcsp-field-error { color: var(--gcsp-danger); margin: 0; }
 .gcsp-error-summary { margin-top: var(--gcsp-space-5); padding: var(--gcsp-space-4); border: 2px solid var(--gcsp-danger); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}

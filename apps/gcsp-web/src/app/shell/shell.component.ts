@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, effect, ElementRef, HostListener, inject, signal, untracked, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, signal, untracked, viewChild, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -7,7 +7,10 @@ import { safeReturnTo, navigationFor, permits } from '../auth/route-policy';
 import { StatusScreenComponent } from '../kit/status-screen.component';
 import { breadcrumbsFor, currentDestination } from './shell-navigation';
 import { ButtonDirective } from '../kit/button.directive';
-@Component({ selector: 'gcsp-root', imports: [RouterLink, RouterOutlet, ButtonDirective, StatusScreenComponent], templateUrl: './shell.component.html', encapsulation: ViewEncapsulation.None })
+import { NotificationBellComponent } from '../kit/notification-bell.component';
+import { NotificationModel, emptyNotifications } from '../kit/notification-bell.types';
+import { NotificationSource, notificationScopeKey } from '../activity/notification.source';
+@Component({ selector: 'gcsp-root', imports: [RouterLink, RouterOutlet, ButtonDirective, StatusScreenComponent, NotificationBellComponent], templateUrl: './shell.component.html', encapsulation: ViewEncapsulation.None })
 export class ShellComponent {
   readonly auth = inject(AuthPort); private readonly changeDetector = inject(ChangeDetectorRef); private readonly router = inject(Router); private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly context = computed(() => { const state = this.auth.state(); return state.status === 'ready' ? state.context : null; });
@@ -20,11 +23,20 @@ export class ShellComponent {
   isCurrent(destination: string): boolean { return currentDestination(destination, this.navigationUrl()); }
   readonly navigation = computed(() => navigationFor(this.context()?.roles ?? []));
   readonly employee = computed(() => this.context()?.roles.includes('employee') && !this.context()?.roles.includes('presenter'));
+  private readonly notificationSource = inject(NotificationSource);
+  private readonly notificationState = signal<{ key: string | null; model: NotificationModel }>({ key: null, model: emptyNotifications('unavailable') });
+  readonly notifications = computed(() => {
+    const key = notificationScopeKey(this.auth.state()); const saved = this.notificationState();
+    return key && saved.key === key ? saved.model : emptyNotifications(key ? 'loading' : 'unavailable');
+  });
+  private readonly bell = viewChild(NotificationBellComponent);
   private readonly routeRoles = signal<readonly Role[] | null>(null);
   // A retained private route mounts only for a context its roles permit (recovery or restore may change them).
   readonly routeAllowed = computed(() => { const roles = this.routeRoles(); const context = this.context(); return roles === null || (context !== null && permits(context.roles, roles)); });
   expanded = false; menuOpen = false; signOutBusy = false; signOutFailed = false;
   constructor() {
+    const disconnect = this.notificationSource.connect((model, key) => this.notificationState.set({ key, model }));
+    inject(DestroyRef).onDestroy(disconnect);
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd), takeUntilDestroyed()).subscribe(() => {
       this.menuOpen = false; this.navigationUrl.set(this.router.url);
       const roles = this.router.routerState.snapshot.root.firstChild?.data['roles'];
@@ -48,4 +60,7 @@ export class ShellComponent {
   }
   async signOut(): Promise<void> { if (this.signOutBusy) return; this.signOutBusy = true; this.signOutFailed = false; try { await this.auth.signOut(); } catch { this.signOutFailed = true; } finally { this.signOutBusy = false; } }
   closeAccount(event: Event): void { const details = (event.target as HTMLElement).closest('details'); if (details) { details.open = false; details.querySelector('summary')?.focus(); } }
+  closeAccountForBell(): void { const details = this.host.nativeElement.querySelector<HTMLDetailsElement>('.gcsp-account-details'); if (details) details.open = false; }
+  onAccountToggle(event: Event): void { if ((event.target as HTMLDetailsElement).open) this.bell()?.close(false); }
+  navigateNotification(href: string): void { if (href.startsWith('/gcsp/')) void this.router.navigateByUrl(href.slice('/gcsp'.length)); }
 }

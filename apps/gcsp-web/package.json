@@ -11,7 +11,8 @@
     "build": "ng build",
     "start": "ng serve",
     "test": "ng test --watch=false",
-    "check:boundaries": "node --test tools/inline-events.test.mjs && node tools/check-boundaries.mjs"
+    "test:e2e": "python3 -B e2e/run.py",
+    "check:boundaries": "node --test tools/inline-events.test.mjs tools/source-boundaries.test.mjs && node tools/check-boundaries.mjs"
   },
   "dependencies": {
     "@angular/common": "21.2.26",
@@ -28,6 +29,7 @@
     "@angular/cli": "21.2.30",
     "@angular/compiler-cli": "21.2.26",
     "jsdom": "27.4.0",
+    "playwright-core": "1.60.0",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   },

@@ -2,19 +2,13 @@ import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { hasInlineEvent } from './inline-events.mjs';
+import { checkSource } from './source-boundaries.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 async function files(path) { return (await Promise.all((await readdir(path, { withFileTypes: true })).map((item) => item.isDirectory() ? files(join(path, item.name)) : join(path, item.name)))).flat(); }
 for (const path of await files(join(root, 'src'))) {
   if (path.endsWith('.spec.ts')) continue;
   const source = await readFile(path, 'utf8');
-  assert(!/\beval\s*\(|new\s+Function\s*\(|\b(?:setTimeout|setInterval)\s*\(\s*['"`]/.test(source), `${path}: dynamic execution`);
-  assert(!hasInlineEvent(path, source), `${path}: inline event attribute`);
-  assert(!/<script\b[^>]*>\s*\S/i.test(source), `${path}: inline script`);
-  assert(!/\binnerHTML\b|bypassSecurityTrust|\blegacy\b.*import/i.test(source), `${path}: unsafe rendering`);
-  assert(!/from\s*['"][^'"]*(?:blocks|server)\//.test(source), `${path}: controller/business import`);
-  assert(!/[—]/.test(source), `${path}: on-screen em dash`);
-  if (path.endsWith('.css')) assert(!/#[0-9a-f]{3,8}\b|rgba?\(/i.test(source), `${path}: use shared semantic colours`);
+  checkSource(path, source, root);
 }
 const config = JSON.parse(await readFile(join(root, 'angular.json'), 'utf8'));
 const production = config.projects['gcsp-web'].architect.build.configurations.production;
