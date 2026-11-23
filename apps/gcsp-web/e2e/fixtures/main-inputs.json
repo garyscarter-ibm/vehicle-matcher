@@ -1,0 +1,1130 @@
+{
+  "schemaVersion": 1,
+  "reference": {
+    "commit": "e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38",
+    "capturedAt": "2026-11-22T21:04:06.629Z",
+    "runId": "demo-4bf037223a3a9fd0792fb06668db141a",
+    "sourceFiles": {
+      "server/gcsp/fixtures/scenarios/catalogue-v1.js": "35bc69ef4a56fd5ce3482eb12b3b8d9f45ffb0473f438913bab5fdc7e1031176",
+      "server/gcsp/scenarios/brief-start.js": "d8c820fd0623090871c2e20172a671d31b24ea12b00e6ed694838ef4cce0deaa",
+      "server/gcsp/stock/generated-provider.js": "fe996eb2d48751dacb804a1c3c7fff1cb68736575c9bcab7dc0bb36bf5a45958",
+      "server/gcsp/stock/run-stock-generation.js": "031a37c9b1a6156a4ad77b8e8850f578a2d3c1fe44864bde0d141eade712a19f"
+    },
+    "stockSource": {
+      "source": "generated",
+      "reason": "Stock generated for the run."
+    }
+  },
+  "scenario": {
+    "scenarioId": "main-successful-journey",
+    "name": "Main successful journey",
+    "ownerStory": "FUCQ-109",
+    "kind": "journey",
+    "scenarioVersion": "gcsp-acceptance-scenarios-v1",
+    "fixtureVersion": "main-successful-journey-inputs-v2",
+    "epics": [
+      "FUCQ-86",
+      "FUCQ-87",
+      "FUCQ-88",
+      "FUCQ-89"
+    ],
+    "stories": [
+      "FUCQ-91",
+      "FUCQ-92",
+      "FUCQ-96",
+      "FUCQ-100",
+      "FUCQ-102",
+      "FUCQ-106",
+      "FUCQ-107",
+      "FUCQ-108",
+      "FUCQ-109"
+    ],
+    "requiredCapabilities": [
+      "brief-confirmation",
+      "stock-release",
+      "buddy-allocation",
+      "buddy-offers",
+      "captured-notifications",
+      "offer-decisions",
+      "brief-change",
+      "order-handoff"
+    ],
+    "principalIds": [
+      "demo-paula",
+      "demo-alex",
+      "demo-greg",
+      "demo-presenter"
+    ],
+    "inputs": {
+      "briefs": [
+        {
+          "principalId": "demo-paula",
+          "service": "brief",
+          "operation": "confirm",
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 80
+            }
+          },
+          "essentials": {
+            "seats": 5,
+            "charging": "not-ready"
+          },
+          "consent": {
+            "search": true,
+            "hold": true
+          }
+        }
+      ],
+      "pendingOperations": [],
+      "stockTranches": [
+        {
+          "source": "generated-stock",
+          "cue": "release",
+          "guarantee": {
+            "principalId": "demo-paula",
+            "minimumCars": 3,
+            "distinct": [
+              "eligibilityModelKey",
+              "colour"
+            ]
+          }
+        }
+      ]
+    },
+    "steps": [
+      {
+        "operation": "advance",
+        "to": "release"
+      },
+      {
+        "operation": "tick",
+        "purpose": "release-and-allocation"
+      },
+      {
+        "operation": "employee",
+        "purpose": "decline-change-review-and-accept"
+      },
+      {
+        "operation": "tick",
+        "purpose": "reconciliation-if-pending"
+      }
+    ],
+    "variants": []
+  },
+  "clock": {
+    "now": "2026-11-22T09:00:00.000Z",
+    "clockVersion": "1",
+    "startsAt": "2026-11-22T09:00:00.000Z",
+    "namedTimes": {
+      "release": "2026-11-22T09:30:00.000Z",
+      "expiry": "2026-11-22T11:00:00.000Z"
+    },
+    "nextRelease": {
+      "status": "available",
+      "to": "release-window",
+      "at": "2026-11-23T11:30:00.000Z"
+    },
+    "policyVersion": "gcsp-policy-v1+offer-journey-v1"
+  },
+  "initialBrief": {
+    "brief": {
+      "schemaVersion": 1,
+      "preferences": {
+        "body": {
+          "value": "estate",
+          "importance": 80,
+          "valueState": "confirmed",
+          "importanceState": "confirmed",
+          "source": "scenario:main-successful-journey",
+          "confirmedAt": "2026-11-22T09:00:00.000Z"
+        }
+      },
+      "essentials": {
+        "seats": {
+          "value": 5,
+          "operator": "gte",
+          "unit": "count",
+          "state": "confirmed",
+          "source": "scenario:main-successful-journey",
+          "confirmedAt": "2026-11-22T09:00:00.000Z"
+        },
+        "charging": {
+          "value": "not-ready",
+          "operator": "equals",
+          "unit": null,
+          "state": "confirmed",
+          "source": "scenario:main-successful-journey",
+          "confirmedAt": "2026-11-22T09:00:00.000Z"
+        }
+      },
+      "knownFacts": {
+        "name": {
+          "value": "Paula Mason",
+          "source": "repository:employees",
+          "sourceVersion": 3,
+          "observedAt": "2026-11-22T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "companyId": {
+          "value": "demo-bmw-fs-uk",
+          "source": "repository:employees",
+          "sourceVersion": 3,
+          "observedAt": "2026-11-22T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "schemeId": {
+          "value": "choices-fs-uk",
+          "source": "repository:employees",
+          "sourceVersion": 3,
+          "observedAt": "2026-11-22T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "gradeId": {
+          "value": "G7",
+          "source": "repository:employees",
+          "sourceVersion": 3,
+          "observedAt": "2026-11-22T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "contract": {
+          "value": {
+            "manualContext": {
+              "recordSetId": "manual:employee-paula:v1",
+              "source": {
+                "mode": "synthetic",
+                "sourceRef": "fixture:manual-records-v1",
+                "schemaVersion": "1",
+                "sourceVersion": "manual-records-v1",
+                "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                "observedAt": "2026-11-22T09:00:00.000Z"
+              },
+              "account": {
+                "employeeId": "employee-paula",
+                "name": "Paula Mason",
+                "companyId": "demo-bmw-fs-uk",
+                "gradeId": "G7",
+                "schemeId": "choices-fs-uk",
+                "employeeNumber": "E749057",
+                "address": {
+                  "line1": "27 Ashdown Road",
+                  "town": "Bracknell",
+                  "postcode": "RG12 9ZZ"
+                },
+                "contact": {
+                  "phone": "01632 960000",
+                  "email": "paula.mason@gcsp-demo.com"
+                },
+                "allowanceOverride": null
+              },
+              "drivers": [
+                {
+                  "driverId": "driver:employee-paula",
+                  "employeeId": "employee-paula",
+                  "name": "Paula Mason",
+                  "kind": "employee",
+                  "eligible": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:manual-records-v1",
+                      "version": "manual-records-v1",
+                      "observedAt": "2026-11-22T09:00:00.000Z",
+                      "assurance": "synthetic-scenario"
+                    }
+                  },
+                  "licence": {
+                    "displayNumber": "MASON900000PM9XX",
+                    "categories": [
+                      "car"
+                    ],
+                    "validFrom": "2010-01-01",
+                    "validUntil": "2030-01-01",
+                    "source": {
+                      "mode": "synthetic",
+                      "sourceRef": "fixture:manual-records-v1",
+                      "schemaVersion": "1",
+                      "sourceVersion": "manual-records-v1",
+                      "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                      "observedAt": "2026-11-22T09:00:00.000Z"
+                    }
+                  }
+                },
+                {
+                  "driverId": "nominated:employee-paula",
+                  "employeeId": "employee-paula",
+                  "name": "Casey Ward",
+                  "kind": "nominated",
+                  "relationship": "spouse",
+                  "eligible": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:manual-records-v1",
+                      "version": "manual-records-v1",
+                      "observedAt": "2026-11-22T09:00:00.000Z",
+                      "assurance": "synthetic-scenario"
+                    }
+                  },
+                  "licence": {
+                    "displayNumber": "WARD9900000CW9XX",
+                    "categories": [
+                      "car"
+                    ],
+                    "validFrom": "2012-01-01",
+                    "validUntil": "2030-01-01",
+                    "source": {
+                      "mode": "synthetic",
+                      "sourceRef": "fixture:manual-records-v1",
+                      "schemaVersion": "1",
+                      "sourceVersion": "manual-records-v1",
+                      "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                      "observedAt": "2026-11-22T09:00:00.000Z"
+                    }
+                  }
+                }
+              ],
+              "employeeFacts": {
+                "essentials": {},
+                "charging": {
+                  "status": "known",
+                  "value": "home",
+                  "unit": null,
+                  "provenance": {
+                    "sourceRef": "fixture:manual-records-v1",
+                    "version": "manual-records-v1",
+                    "observedAt": "2026-11-22T09:00:00.000Z",
+                    "assurance": "synthetic-scenario"
+                  }
+                },
+                "requiredBy": {
+                  "status": "known",
+                  "value": "2026-12-01T23:59:59.999Z",
+                  "unit": null,
+                  "provenance": {
+                    "sourceRef": "fixture:manual-records-v1",
+                    "version": "manual-records-v1",
+                    "observedAt": "2026-11-22T09:00:00.000Z",
+                    "assurance": "synthetic-scenario"
+                  }
+                }
+              },
+              "contracts": [
+                {
+                  "contractId": "current:employee-paula",
+                  "employeeId": "employee-paula",
+                  "schemeId": "choices-fs-uk",
+                  "slotId": "slot-paula",
+                  "driverId": "driver:employee-paula",
+                  "status": "current",
+                  "model": "BMW 3 Series Touring 320i",
+                  "media": {
+                    "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+                    "alt": "BMW 3 Series Touring"
+                  },
+                  "vehicle": {
+                    "configuration": "320i M Sport Touring",
+                    "modelLine": "G21 Touring",
+                    "eligibilityModelKey": "G21 Touring|320i",
+                    "body": "estate",
+                    "fuel": "petrol",
+                    "seats": 5,
+                    "boot": 500,
+                    "mpg": 42.8,
+                    "zeroTo62": 7.6,
+                    "points": 1100,
+                    "sizeClass": 2,
+                    "tags": [
+                      "family"
+                    ]
+                  },
+                  "actualCollectionDate": "2026-06-01",
+                  "contractEndDate": "2026-12-01",
+                  "returnedDate": null,
+                  "annualMileage": 12000,
+                  "mileageUnit": "mi/year",
+                  "months": 6,
+                  "currentOdometer": {
+                    "value": 5200,
+                    "unit": "mi"
+                  },
+                  "earliestCollectionDate": "2026-11-12",
+                  "latestCollectionDate": "2026-12-01",
+                  "source": {
+                    "mode": "synthetic",
+                    "sourceRef": "fixture:manual-records-v1",
+                    "schemaVersion": "1",
+                    "sourceVersion": "manual-records-v1",
+                    "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                    "observedAt": "2026-11-22T09:00:00.000Z"
+                  }
+                }
+              ],
+              "histories": [
+                {
+                  "schemeId": "choices-fs-uk",
+                  "entries": [
+                    {
+                      "contractId": "current:employee-paula",
+                      "employeeId": "employee-paula",
+                      "schemeId": "choices-fs-uk",
+                      "slotId": "slot-paula",
+                      "driverId": "driver:employee-paula",
+                      "status": "current",
+                      "model": "BMW 3 Series Touring 320i",
+                      "media": {
+                        "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+                        "alt": "BMW 3 Series Touring"
+                      },
+                      "vehicle": {
+                        "configuration": "320i M Sport Touring",
+                        "modelLine": "G21 Touring",
+                        "eligibilityModelKey": "G21 Touring|320i",
+                        "body": "estate",
+                        "fuel": "petrol",
+                        "seats": 5,
+                        "boot": 500,
+                        "mpg": 42.8,
+                        "zeroTo62": 7.6,
+                        "points": 1100,
+                        "sizeClass": 2,
+                        "tags": [
+                          "family"
+                        ]
+                      },
+                      "actualCollectionDate": "2026-06-01",
+                      "contractEndDate": "2026-12-01",
+                      "returnedDate": null,
+                      "annualMileage": 12000,
+                      "mileageUnit": "mi/year",
+                      "months": 6,
+                      "currentOdometer": {
+                        "value": 5200,
+                        "unit": "mi"
+                      },
+                      "earliestCollectionDate": "2026-11-12",
+                      "latestCollectionDate": "2026-12-01",
+                      "source": {
+                        "mode": "synthetic",
+                        "sourceRef": "fixture:manual-records-v1",
+                        "schemaVersion": "1",
+                        "sourceVersion": "manual-records-v1",
+                        "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                        "observedAt": "2026-11-22T09:00:00.000Z"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemeId": "pcs-ukfs-bmw",
+                  "entries": [
+                    {
+                      "contractId": "historic:employee-paula",
+                      "employeeId": "employee-paula",
+                      "schemeId": "pcs-ukfs-bmw",
+                      "status": "returned",
+                      "model": "BMW 1 Series Sports Hatch 120",
+                      "media": {
+                        "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+                        "alt": "BMW 1 Series Sports Hatch"
+                      },
+                      "vehicle": {
+                        "configuration": "120 M Sport",
+                        "body": "hatchback",
+                        "fuel": "petrol"
+                      },
+                      "actualCollectionDate": "2025-01-01",
+                      "returnedDate": "2025-12-01",
+                      "source": {
+                        "mode": "synthetic",
+                        "sourceRef": "fixture:manual-records-v1",
+                        "schemaVersion": "1",
+                        "sourceVersion": "manual-records-v1",
+                        "effectiveFrom": "2026-11-22T09:00:00.000Z",
+                        "observedAt": "2026-11-22T09:00:00.000Z"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "schemeId": "motorcycle-choices",
+                  "entries": []
+                }
+              ]
+            }
+          },
+          "source": "repository:employees",
+          "sourceVersion": 3,
+          "observedAt": "2026-11-22T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        }
+      },
+      "buddy": {
+        "enabled": true,
+        "searchConsent": true,
+        "holdConsent": true,
+        "paused": false,
+        "permissionVersion": 1,
+        "confirmedBy": "demo-paula",
+        "confirmedAt": "2026-11-22T09:00:00.000Z"
+      },
+      "runId": "demo-4bf037223a3a9fd0792fb06668db141a",
+      "employeeId": "employee-paula",
+      "entitlementSlotId": "slot-paula",
+      "renewalId": null,
+      "briefVersion": 1,
+      "previousBriefVersion": null,
+      "status": "confirmed",
+      "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+      "confirmedBy": "demo-paula",
+      "confirmedAt": "2026-11-22T09:00:00.000Z",
+      "version": 1,
+      "createdAt": "2026-11-22T09:00:00.000Z",
+      "updatedAt": "2026-11-22T09:00:00.000Z"
+    },
+    "activity": {
+      "canSearch": true,
+      "canHold": true,
+      "existingOffersUnaffected": true,
+      "existingOffers": []
+    },
+    "validation": {
+      "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+      "unknownEssentials": [],
+      "assumptions": [
+        {
+          "key": "brief.slider.minimum",
+          "value": 0,
+          "unit": "integer slider units",
+          "status": "assumed",
+          "basis": "Assumed `brief.slider.scale`; shared position and importance scale.",
+          "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+          "sourceDate": "2026-11-04",
+          "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+          "effectiveFrom": "2026-11-04T00:00:00.000Z"
+        },
+        {
+          "key": "brief.slider.maximum",
+          "value": 100,
+          "unit": "integer slider units",
+          "status": "assumed",
+          "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+          "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+          "sourceDate": "2026-11-04",
+          "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+          "effectiveFrom": "2026-11-04T00:00:00.000Z"
+        },
+        {
+          "key": "eligibility.homeCharging.requiredForPlugIn",
+          "value": true,
+          "unit": "boolean",
+          "status": "assumed",
+          "basis": "Demo assumption only, not a BMW rule. Assumed demo practical gate from brief; target has no such BMW rule (round-2). Unknown/not-ready charging prevents a plug-in offer under this assumption.",
+          "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+          "sourceDate": "2026-11-04",
+          "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+          "effectiveFrom": "2026-11-04T00:00:00.000Z"
+        },
+        {
+          "key": "brief.lifecycle.v1",
+          "value": {
+            "charging": {
+              "operator": "equals",
+              "type": "enum",
+              "unit": null,
+              "values": [
+                "home",
+                "work",
+                "either",
+                "not-ready"
+              ]
+            },
+            "postDeclineChangeLimit": 1
+          },
+          "unit": "brief lifecycle registry",
+          "status": "assumed",
+          "basis": "Charging readiness is an explicit practical demo input, not a BMW home-charging rule. Q16 permits one confirmed field change for a recorded decline. Unknown is represented by null and needs-confirmation.",
+          "source": "docs/gcsp/shared-contracts.md#brief-schema-v1",
+          "sourceDate": "2026-11-05",
+          "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+          "effectiveFrom": "2026-11-04T00:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "account": {
+    "state": "ready",
+    "asOf": "2026-11-22T09:00:00.000Z",
+    "account": {
+      "employeeId": "employee-paula",
+      "name": "Paula Mason",
+      "companyId": "demo-bmw-fs-uk",
+      "gradeId": "G7",
+      "schemeId": "choices-fs-uk",
+      "employeeNumber": "E749057",
+      "address": {
+        "line1": "27 Ashdown Road",
+        "town": "Bracknell",
+        "postcode": "RG12 9ZZ"
+      },
+      "contact": {
+        "phone": "01632 960000",
+        "email": "paula.mason@gcsp-demo.com"
+      },
+      "allowanceOverride": null,
+      "roles": [
+        "employee"
+      ]
+    },
+    "drivers": [
+      {
+        "driverId": "driver:employee-paula",
+        "employeeId": "employee-paula",
+        "name": "Paula Mason",
+        "kind": "employee",
+        "eligible": {
+          "status": "known",
+          "value": true,
+          "unit": null,
+          "provenance": {
+            "sourceRef": "fixture:manual-records-v1",
+            "version": "manual-records-v1",
+            "observedAt": "2026-11-22T09:00:00.000Z",
+            "assurance": "synthetic-scenario"
+          }
+        },
+        "licence": {
+          "displayNumber": "MASON900000PM9XX",
+          "categories": [
+            "car"
+          ],
+          "validFrom": "2010-01-01",
+          "validUntil": "2030-01-01",
+          "source": {
+            "mode": "synthetic",
+            "sourceRef": "fixture:manual-records-v1",
+            "schemaVersion": "1",
+            "sourceVersion": "manual-records-v1",
+            "effectiveFrom": "2026-11-22T09:00:00.000Z",
+            "observedAt": "2026-11-22T09:00:00.000Z"
+          }
+        }
+      },
+      {
+        "driverId": "nominated:employee-paula",
+        "employeeId": "employee-paula",
+        "name": "Casey Ward",
+        "kind": "nominated",
+        "relationship": "spouse",
+        "eligible": {
+          "status": "known",
+          "value": true,
+          "unit": null,
+          "provenance": {
+            "sourceRef": "fixture:manual-records-v1",
+            "version": "manual-records-v1",
+            "observedAt": "2026-11-22T09:00:00.000Z",
+            "assurance": "synthetic-scenario"
+          }
+        },
+        "licence": {
+          "displayNumber": "WARD9900000CW9XX",
+          "categories": [
+            "car"
+          ],
+          "validFrom": "2012-01-01",
+          "validUntil": "2030-01-01",
+          "source": {
+            "mode": "synthetic",
+            "sourceRef": "fixture:manual-records-v1",
+            "schemaVersion": "1",
+            "sourceVersion": "manual-records-v1",
+            "effectiveFrom": "2026-11-22T09:00:00.000Z",
+            "observedAt": "2026-11-22T09:00:00.000Z"
+          }
+        }
+      }
+    ],
+    "contracts": [
+      {
+        "contractId": "current:employee-paula",
+        "employeeId": "employee-paula",
+        "schemeId": "choices-fs-uk",
+        "slotId": "slot-paula",
+        "driverId": "driver:employee-paula",
+        "status": "current",
+        "model": "BMW 3 Series Touring 320i",
+        "media": {
+          "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+          "alt": "BMW 3 Series Touring"
+        },
+        "vehicle": {
+          "configuration": "320i M Sport Touring",
+          "modelLine": "G21 Touring",
+          "eligibilityModelKey": "G21 Touring|320i",
+          "body": "estate",
+          "fuel": "petrol",
+          "seats": 5,
+          "boot": 500,
+          "mpg": 42.8,
+          "zeroTo62": 7.6,
+          "points": 1100,
+          "sizeClass": 2,
+          "tags": [
+            "family"
+          ]
+        },
+        "actualCollectionDate": "2026-06-01",
+        "contractEndDate": "2026-12-01",
+        "returnedDate": null,
+        "annualMileage": 12000,
+        "mileageUnit": "mi/year",
+        "months": 6,
+        "currentOdometer": {
+          "value": 5200,
+          "unit": "mi"
+        },
+        "earliestCollectionDate": "2026-11-12",
+        "latestCollectionDate": "2026-12-01",
+        "source": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-22T09:00:00.000Z",
+          "observedAt": "2026-11-22T09:00:00.000Z"
+        }
+      }
+    ],
+    "slots": [
+      {
+        "employeeId": "employee-paula",
+        "entitlementSlotId": "slot-paula",
+        "capacity": 1,
+        "employeeCapacity": 1,
+        "runId": "demo-4bf037223a3a9fd0792fb06668db141a",
+        "version": 2,
+        "createdAt": "2026-11-22T21:04:05.508Z",
+        "updatedAt": "2026-11-22T21:04:06.293Z",
+        "contractId": "current:employee-paula",
+        "renewalId": "renewal:employee-paula",
+        "state": "entitled",
+        "ordering": {
+          "enabled": true,
+          "reason": null
+        }
+      }
+    ],
+    "currentContract": {
+      "contractId": "current:employee-paula",
+      "employeeId": "employee-paula",
+      "schemeId": "choices-fs-uk",
+      "slotId": "slot-paula",
+      "driverId": "driver:employee-paula",
+      "status": "current",
+      "model": "BMW 3 Series Touring 320i",
+      "media": {
+        "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+        "alt": "BMW 3 Series Touring"
+      },
+      "vehicle": {
+        "configuration": "320i M Sport Touring",
+        "modelLine": "G21 Touring",
+        "eligibilityModelKey": "G21 Touring|320i",
+        "body": "estate",
+        "fuel": "petrol",
+        "seats": 5,
+        "boot": 500,
+        "mpg": 42.8,
+        "zeroTo62": 7.6,
+        "points": 1100,
+        "sizeClass": 2,
+        "tags": [
+          "family"
+        ]
+      },
+      "actualCollectionDate": "2026-06-01",
+      "contractEndDate": "2026-12-01",
+      "returnedDate": null,
+      "annualMileage": 12000,
+      "mileageUnit": "mi/year",
+      "months": 6,
+      "currentOdometer": {
+        "value": 5200,
+        "unit": "mi"
+      },
+      "earliestCollectionDate": "2026-11-12",
+      "latestCollectionDate": "2026-12-01",
+      "source": {
+        "mode": "synthetic",
+        "sourceRef": "fixture:manual-records-v1",
+        "schemaVersion": "1",
+        "sourceVersion": "manual-records-v1",
+        "effectiveFrom": "2026-11-22T09:00:00.000Z",
+        "observedAt": "2026-11-22T09:00:00.000Z"
+      }
+    },
+    "contractState": "current-contract",
+    "histories": [
+      {
+        "schemeId": "choices-fs-uk",
+        "entries": [
+          {
+            "contractId": "current:employee-paula",
+            "employeeId": "employee-paula",
+            "schemeId": "choices-fs-uk",
+            "slotId": "slot-paula",
+            "driverId": "driver:employee-paula",
+            "status": "current",
+            "model": "BMW 3 Series Touring 320i",
+            "media": {
+              "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+              "alt": "BMW 3 Series Touring"
+            },
+            "vehicle": {
+              "configuration": "320i M Sport Touring",
+              "modelLine": "G21 Touring",
+              "eligibilityModelKey": "G21 Touring|320i",
+              "body": "estate",
+              "fuel": "petrol",
+              "seats": 5,
+              "boot": 500,
+              "mpg": 42.8,
+              "zeroTo62": 7.6,
+              "points": 1100,
+              "sizeClass": 2,
+              "tags": [
+                "family"
+              ]
+            },
+            "actualCollectionDate": "2026-06-01",
+            "contractEndDate": "2026-12-01",
+            "returnedDate": null,
+            "annualMileage": 12000,
+            "mileageUnit": "mi/year",
+            "months": 6,
+            "currentOdometer": {
+              "value": 5200,
+              "unit": "mi"
+            },
+            "earliestCollectionDate": "2026-11-12",
+            "latestCollectionDate": "2026-12-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-22T09:00:00.000Z",
+              "observedAt": "2026-11-22T09:00:00.000Z"
+            }
+          }
+        ],
+        "label": "BMW Choices",
+        "state": "history",
+        "count": 1,
+        "orderingSupported": true
+      },
+      {
+        "schemeId": "pcs-ukfs-bmw",
+        "entries": [
+          {
+            "contractId": "historic:employee-paula",
+            "employeeId": "employee-paula",
+            "schemeId": "pcs-ukfs-bmw",
+            "status": "returned",
+            "model": "BMW 1 Series Sports Hatch 120",
+            "media": {
+              "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp",
+              "alt": "BMW 1 Series Sports Hatch"
+            },
+            "vehicle": {
+              "configuration": "120 M Sport",
+              "body": "hatchback",
+              "fuel": "petrol"
+            },
+            "actualCollectionDate": "2025-01-01",
+            "returnedDate": "2025-12-01",
+            "source": {
+              "mode": "synthetic",
+              "sourceRef": "fixture:manual-records-v1",
+              "schemaVersion": "1",
+              "sourceVersion": "manual-records-v1",
+              "effectiveFrom": "2026-11-22T09:00:00.000Z",
+              "observedAt": "2026-11-22T09:00:00.000Z"
+            }
+          }
+        ],
+        "label": "PCS UK FS BMW",
+        "state": "history",
+        "count": 1,
+        "orderingSupported": false
+      },
+      {
+        "schemeId": "motorcycle-choices",
+        "entries": [],
+        "label": "Motorcycle Choices",
+        "state": "empty-history",
+        "count": 0,
+        "orderingSupported": false
+      }
+    ],
+    "actions": [
+      {
+        "action": "replace",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "oldContractId": "current:employee-paula",
+        "enabled": true
+      }
+    ],
+    "choices": {
+      "schemeId": "choices-fs-uk",
+      "slotId": "slot-paula",
+      "drivers": [
+        {
+          "driverId": "driver:employee-paula",
+          "name": "Paula Mason",
+          "kind": "employee"
+        },
+        {
+          "driverId": "nominated:employee-paula",
+          "name": "Casey Ward",
+          "kind": "nominated"
+        }
+      ],
+      "contractOptions": [
+        {
+          "contractOptionId": "six-month-8000",
+          "months": 6,
+          "annualMileage": 8000,
+          "mileageUnit": "mi/year",
+          "schemeIds": [
+            "choices-fs-uk"
+          ],
+          "driverKinds": [
+            "employee",
+            "nominated"
+          ]
+        },
+        {
+          "contractOptionId": "twelve-month-12000",
+          "months": 12,
+          "annualMileage": 12000,
+          "mileageUnit": "mi/year",
+          "schemeIds": [
+            "choices-fs-uk"
+          ],
+          "driverKinds": [
+            "employee"
+          ]
+        }
+      ],
+      "collectionLocations": [
+        {
+          "locationId": "demo-collection-centre",
+          "label": "Bracknell collection centre",
+          "contractOptionIds": [
+            "six-month-8000",
+            "twelve-month-12000"
+          ],
+          "driverKinds": [
+            "employee",
+            "nominated"
+          ],
+          "closedDates": []
+        },
+        {
+          "locationId": "demo-company-site",
+          "label": "Bracknell office",
+          "contractOptionIds": [
+            "twelve-month-12000"
+          ],
+          "driverKinds": [
+            "employee"
+          ],
+          "closedDates": []
+        }
+      ],
+      "brands": [
+        "bmw"
+      ]
+    },
+    "allowance": {
+      "key": "allowance.choices-fs-uk.G7",
+      "value": 1300,
+      "unit": "points/month",
+      "status": "assumed",
+      "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "allowanceId": "allowance.choices-fs-uk.G7",
+      "companyId": "demo-bmw-fs-uk",
+      "schemeId": "choices-fs-uk",
+      "gradeId": "G7",
+      "monthlyPoints": 1300
+    },
+    "assumptions": [
+      {
+        "key": "manual.context.v1",
+        "value": {
+          "enabledSchemes": [
+            "choices-fs-uk"
+          ],
+          "brands": [
+            "bmw"
+          ],
+          "contractOptions": [
+            {
+              "contractOptionId": "six-month-8000",
+              "months": 6,
+              "annualMileage": 8000,
+              "mileageUnit": "mi/year",
+              "schemeIds": [
+                "choices-fs-uk"
+              ],
+              "driverKinds": [
+                "employee",
+                "nominated"
+              ]
+            },
+            {
+              "contractOptionId": "twelve-month-12000",
+              "months": 12,
+              "annualMileage": 12000,
+              "mileageUnit": "mi/year",
+              "schemeIds": [
+                "choices-fs-uk"
+              ],
+              "driverKinds": [
+                "employee"
+              ]
+            }
+          ],
+          "locations": [
+            {
+              "locationId": "demo-collection-centre",
+              "label": "Bracknell collection centre",
+              "contractOptionIds": [
+                "six-month-8000",
+                "twelve-month-12000"
+              ],
+              "driverKinds": [
+                "employee",
+                "nominated"
+              ],
+              "closedDates": []
+            },
+            {
+              "locationId": "demo-company-site",
+              "label": "Bracknell office",
+              "contractOptionIds": [
+                "twelve-month-12000"
+              ],
+              "driverKinds": [
+                "employee"
+              ],
+              "closedDates": []
+            }
+          ],
+          "minimumLeadDays": 7,
+          "maximumLeadDays": 180,
+          "maximumSpecialRequirements": 500,
+          "maximumReturnMileage": 500000,
+          "insuranceMaximumByGrade": {
+            "G1-6": 30,
+            "G7": 35,
+            "G8-10": 45,
+            "G11-14": 50
+          }
+        },
+        "unit": "manual contract months; annual mileage mi/year; lead days; insurance group; return miles; text characters",
+        "status": "assumed",
+        "basis": "Revisable synthetic manual rules, not transcribed dropdowns or BMW policy. One explicitly enabled October 2024 FS&UK matrix and BMW brand; permitted nominated-driver/contract/location combinations and insurance caps demonstrate real validation. Choices monthly points uses the shared allowance gate; cash top-up keys remain unused.",
+        "source": "docs/gcsp/manual-journey-refinement.md#implemented-manual-context-contract--fucq-65",
+        "sourceDate": "2026-11-05",
+        "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+      }
+    ],
+    "contextVersion": "1877f8dc9a557e4a9b5f23733162d596438317ef3376de8d55a81d4e1ed45a49",
+    "versions": {
+      "policy": "gcsp-policy-v1+offer-journey-v1",
+      "employeeContract": {
+        "mode": "synthetic",
+        "sourceRef": "fixture:manual-records-v1",
+        "schemaVersion": "1",
+        "sourceVersion": "manual-records-v1",
+        "effectiveFrom": "2026-11-22T09:00:00.000Z",
+        "observedAt": "2026-11-22T09:00:00.000Z"
+      },
+      "driver": {
+        "mode": "synthetic",
+        "sourceRef": "fixture:manual-records-v1",
+        "schemaVersion": "1",
+        "sourceVersion": "manual-records-v1",
+        "effectiveFrom": "2026-11-22T09:00:00.000Z",
+        "observedAt": "2026-11-22T09:00:00.000Z"
+      },
+      "recordSetId": "manual:employee-paula:v1",
+      "employee": 3,
+      "slot": 2,
+      "clock": "1"
+    },
+    "view": {
+      "state": "ready",
+      "editable": true,
+      "supportOwner": "employee",
+      "action": "choose-order-options",
+      "fields": {
+        "account": {
+          "editable": false,
+          "supportOwner": "hr-support"
+        },
+        "licence": {
+          "editable": false,
+          "supportOwner": "driver-support"
+        },
+        "driver": {
+          "editable": true,
+          "supportOwner": "driver-support"
+        },
+        "contract": {
+          "editable": true,
+          "supportOwner": "scheme-support"
+        },
+        "collection": {
+          "editable": true,
+          "supportOwner": "collection-support"
+        },
+        "contact": {
+          "editable": true,
+          "supportOwner": "employee"
+        },
+        "expectedReturnMileage": {
+          "editable": true,
+          "supportOwner": "employee"
+        },
+        "specialRequirements": {
+          "editable": true,
+          "supportOwner": "employee"
+        }
+      }
+    }
+  },
+  "stockPlan": {
+    "file": "main-stock-plan.json.gz",
+    "sha256": "50f19efc4b4ae818f500b6a2e32c1f1f5ea3d56150d05d72312102f35748c475",
+    "bytes": 24374358,
+    "compressedSha256": "a58dec30c10cc97ad834c205ad00f17ca5ed56a763f7cb4400cb78331077a6fe",
+    "compressedBytes": 2305230,
+    "stockCount": 500,
+    "closure": "Full exact generated source instance, all planned windows, captured before release.",
+    "windowCount": 5
+  },
+  "replay": "Frozen createGcspRuntime stockProvider seam + createSyntheticStockProvider; Java existing tranche-plan provider. Only run/environment identifiers are mapped."
+}

@@ -88,6 +88,21 @@
           "apps/gcsp-web/**"
         ],
         "needs": "npm registry access for npm ci"
+      },
+      {
+        "name": "web-e2e",
+        "command": "npm run test:e2e",
+        "cwd": "apps/gcsp-web",
+        "ttl_minutes": 30,
+        "kind": "browser",
+        "paths": [
+          "apps/gcsp-web/**",
+          "blocks/gcsp/**",
+          "services/gcsp-api/**",
+          "scripts/build-gcsp-static.mjs",
+          "scripts/gcsp-runtime-config.mjs"
+        ],
+        "needs": "Node 24.22.3, JDK 21, PostgreSQL 17 and installed Playwright Chromium"
       }
     ]
   },

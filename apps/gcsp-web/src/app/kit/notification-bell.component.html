@@ -1,0 +1,23 @@
+<button #trigger class="gcsp-bell-btn" type="button" [class.is-open]="isOpen()" [attr.aria-label]="label()" [attr.aria-expanded]="isOpen()" [attr.aria-controls]="bellId() + '-panel'" (click)="toggle()">
+  <svg viewBox="0 0 24 24" class="gcsp-icon" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9" /><path d="M10.3 20.5a2 2 0 0 0 3.4 0" /></svg>
+  <span class="gcsp-bell-badge" aria-hidden="true" [hidden]="!waiting()">{{ waiting() || '' }}</span>
+</button>
+<div class="gcsp-bell-note" aria-hidden="true" [hidden]="!note()">@if (note(); as current) { <strong>{{ current.title }}</strong><span>{{ current.text }}</span> }</div>
+<div #panel class="gcsp-bell-panel" [id]="bellId() + '-panel'" [hidden]="!isOpen()" [attr.aria-labelledby]="bellId() + '-title'" (click)="onPanelClick($event)">
+  <h2 class="gcsp-bell-title" [id]="bellId() + '-title'">Notifications</h2>
+  <div class="gcsp-bell-body">
+    @if (model().status !== 'ok') { <p class="gcsp-bell-empty">Notifications are unavailable right now.</p> }
+    @else if (!model().rows.length) { <p class="gcsp-bell-empty">No notifications yet.</p> }
+    @else { <ul class="gcsp-bell-rows">@for (row of model().rows; track row.key) {
+      <li class="gcsp-bell-row" [class.is-waiting]="row.waiting">
+        @if (row.image?.src) { <img class="gcsp-bell-thumb" [src]="row.image!.src" alt="" /> }
+        <div class="gcsp-bell-copy"><p class="gcsp-bell-head">@if (row.waiting) { <span class="gcsp-bell-dot" aria-hidden="true"></span> }<strong>{{ row.title }}</strong></p>
+          @if (row.car) { <p>{{ row.car }}</p> }@if (row.detail) { <p class="gcsp-bell-muted">{{ row.detail }}</p> }
+          @if (row.action; as action) { @if (action.variant === 'button') { <a class="vm-btn vm-btn-primary gcsp-bell-action" [href]="action.href">{{ action.label }}</a> }
+          @else { <a class="gcsp-bell-link" [href]="action.href">{{ action.label }}</a> } }
+        </div>
+      </li>
+    }</ul> }
+  </div>
+</div>
+<p class="gcsp-vh" role="status" aria-atomic="true">{{ announcement() }}</p>

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
 import type { ApplicationContext, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService } from '../auth/runtime-config';
+import { publishPresenterAction } from '../kit/presenter-actions';
 import type {
   PresenterAdvance, PresenterAdvanceInput, PresenterCatalogue, PresenterClientFailure, PresenterClock,
   PresenterCommand, PresenterCommandValue, PresenterControls, PresenterControlTickInput, PresenterCurrentScenario,
@@ -194,7 +195,10 @@ export class PresenterClient {
         }
       }
     };
-    return this.request(paths[command.kind], parse, options, intent, command.kind === 'reset');
+    return this.request(paths[command.kind], parse, options, intent, command.kind === 'reset').then((result) => {
+      if (result.state === 'ready') publishPresenterAction(document);
+      return result;
+    });
   }
   private capture(): Scope | PresenterClientFailure {
     const session = this.auth.state();
