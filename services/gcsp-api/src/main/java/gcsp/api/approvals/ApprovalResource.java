@@ -129,8 +129,8 @@ public class ApprovalResource {
     // ---- shared steps ----
 
     private static Reader reader(Principal p) {
-        if (p.roles().contains(Role.EMPLOYEE.wire())) return new Reader(Role.EMPLOYEE, p.employeeId());
         if (p.roles().contains(Role.GREG.wire())) return new Reader(Role.GREG, null);
+        if (p.roles().contains(Role.EMPLOYEE.wire())) return new Reader(Role.EMPLOYEE, p.employeeId());
         return new Reader(Role.PRESENTER, null);
     }
 
