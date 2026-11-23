@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-23T14:24:58Z",
+  "observed_at": "2026-11-23T14:42:21Z",
   "stories": [
     {
       "assignee": "",
@@ -10930,7 +10930,7 @@
       "evidence": "Manual check332a15f90:233scoped Angular, boundaries/inline4, ratchet124;28controlled1280/390 keyboard/rendered captures and independent source/visual review pass. No live Java/OIDC pair or human acceptance. docs/gcsp/evidence/fucq555-manual-check-2026-11-23.md Native Jira comment5065145 read back; status In Progress. All8AC remain open.",
       "id": "FUCQ-555",
       "note": "All8AC open. Generic exact card/media and manual Check feedback increments complete in source; comparison winners/DataTable, sibling integration, final connected composition and human live parity remain.",
-      "observed_at": "2026-11-23T14:14:42Z",
+      "observed_at": "2026-11-23T14:42:21Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10983,9 +10983,9 @@
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
         {
-          "evidence": "First real registered web-e2e on36e3e896 RED:12reported/2pass/10fail incl2parents. F564 exact account/clock/car/hold parity passes; Java pinned comparison and frontend receipt/seed/harness proof remain. Original AC unchanged, In Progress; docs/gcsp/evidence/batch-web-e2e-2026-11-23-1357.md",
+          "evidence": "Corrected254b212e9 registeredRED12reported7pass5fail incl2parents; actualaccept/rejected/unknown+canonical source+clockPASS. PendingcomparisonF565 awaitsrepairauthorization; declinecontrolledradioproofremaining. Rawimagevariants and inheritednarrowF566recorded againstnativeF548criteria. docs/gcsp/evidence/batch-web-e2e-2026-11-23-1430.md",
           "id": "connected-behavior",
-          "observed_at": "2026-11-23T14:14:42Z",
+          "observed_at": "2026-11-23T14:42:21Z",
           "status": "in-progress",
           "title": "Actual Java/OIDC/DemoClock persistent browser behavior (AC1-7)"
         },
@@ -11204,6 +11204,16 @@
       "type": "Bug",
       "observed_at": "2026-11-23T14:24:58Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565"
+    },
+    {
+      "id": "FUCQ-566",
+      "title": "Notification panel clips its heading and vehicle off the left of narrow screens",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-23T14:42:21Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-566"
     }
   ],
   "version": 1
