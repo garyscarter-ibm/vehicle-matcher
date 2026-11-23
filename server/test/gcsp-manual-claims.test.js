@@ -364,8 +364,13 @@ test('concurrent draft edits and changed authoritative employee records cannot b
   const changing = { ...g.repository, async transaction(context, command, work) {
     if (!changed && command.commandId.startsWith('manual-claims:')) {
       changed = true;
-      await g.repository.transaction(context, cmd('authority-change'), (tx) => tx.compareAndSwap(
-        ref(g, 'employees', { employeeId: context.employeeId }), 2, { gradeId: 'G1-6' }));
+      const authorityChange = await g.repository.transaction(context, cmd('authority-change'), async (tx) => {
+        const employeeRef = ref(g, 'employees', { employeeId: context.employeeId });
+        const employee = await tx.get(employeeRef);
+        assert.equal(employee.status, 'ok', JSON.stringify(employee));
+        return tx.compareAndSwap(employeeRef, employee.value.version, { gradeId: 'G1-6' });
+      });
+      assert.equal(authorityChange.status, 'ok', JSON.stringify(authorityChange));
     }
     return g.repository.transaction(context, command, work);
   } };

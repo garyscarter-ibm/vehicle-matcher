@@ -55,28 +55,28 @@
         "name": {
           "value": "Paula Mason",
           "source": "repository:employees",
-          "sourceVersion": 1,
+          "sourceVersion": 2,
           "observedAt": "2026-11-05T09:00:00.000Z",
           "status": "supplied-demo-fact"
         },
         "companyId": {
           "value": "demo-bmw-fs-uk",
           "source": "repository:employees",
-          "sourceVersion": 1,
+          "sourceVersion": 2,
           "observedAt": "2026-11-05T09:00:00.000Z",
           "status": "supplied-demo-fact"
         },
         "schemeId": {
           "value": "choices-fs-uk",
           "source": "repository:employees",
-          "sourceVersion": 1,
+          "sourceVersion": 2,
           "observedAt": "2026-11-05T09:00:00.000Z",
           "status": "supplied-demo-fact"
         },
         "gradeId": {
           "value": "G7",
           "source": "repository:employees",
-          "sourceVersion": 1,
+          "sourceVersion": 2,
           "observedAt": "2026-11-05T09:00:00.000Z",
           "status": "supplied-demo-fact"
         }
@@ -214,28 +214,28 @@
           "name": {
             "value": "Paula Mason",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "companyId": {
             "value": "demo-bmw-fs-uk",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "schemeId": {
             "value": "choices-fs-uk",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "gradeId": {
             "value": "G7",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           }
@@ -423,28 +423,28 @@
           "name": {
             "value": "Paula Mason",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "companyId": {
             "value": "demo-bmw-fs-uk",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "schemeId": {
             "value": "choices-fs-uk",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           },
           "gradeId": {
             "value": "G7",
             "source": "repository:employees",
-            "sourceVersion": 1,
+            "sourceVersion": 2,
             "observedAt": "2026-11-05T09:00:00.000Z",
             "status": "supplied-demo-fact"
           }
