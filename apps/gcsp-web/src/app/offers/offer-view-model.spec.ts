@@ -50,6 +50,27 @@ describe('offer read presentation projection', () => {
     expect(vm.equipment).toEqual([]);
     expect(vm).toHaveProperty('detailRows', expect.arrayContaining([{ label: 'Options', value: rendered, unit: undefined, missingLabel: 'Fitted equipment unknown' }]));
   });
+  it('keeps generic primary media distinct from the pending gallery and preserves exact source facts', () => {
+    const source = offerScreenFixture('superseded'); const before = JSON.stringify(source);
+    const image = { src: '/assets/brand-hero/bmw.jpg', alt: 'Primary car', caption: 'BMW' };
+    const withoutPrimary = offerViewModel({ ...source, quote: { ...source.quote, facts: { ...source.quote.facts,
+      display: { ...source.quote.facts.display, images: [image] } } } });
+    expect(withoutPrimary.genericImage).toBeNull(); expect(withoutPrimary.images).toEqual([image]);
+    const vm = offerViewModel({ ...source, quote: { ...source.quote, facts: { ...source.quote.facts,
+      display: { ...source.quote.facts.display, photo: image.src, images: [image] } } } });
+    expect(vm.genericImage).toEqual(image); expect(vm.genericTerm).toBe('295 points a month · 620 points a month allowance');
+    expect(vm.genericFacts.find(row => row.label === 'Options')?.value).toBe('Heated seats, Parking assistance');
+    expect(vm.genericFacts.some(row => ['Mileage', 'Manufacturer'].includes(row.label))).toBe(false);
+    expect(JSON.stringify(source)).toBe(before);
+  });
+  it('preserves zero terms, missing allowance/order identity and supplied empty equipment in the generic card', () => {
+    const source = offerScreenFixture('superseded'); const vm = offerViewModel({ ...source, quote: { ...source.quote, orderNumber: null,
+      terms: { ...source.quote.terms, points: { value: 0, unit: 'points' }, allowanceInputs: {} },
+      facts: { ...source.quote.facts, facts: { options: screenFact([]) } } } });
+    expect(vm.genericLine).toBe('Order number not supplied'); expect(vm.genericTerm).toBe('0 points a month · monthly points allowance not supplied');
+    expect(vm.genericFacts.find(row => row.label === 'Options')?.value).toBe('None listed');
+    expect(vm.genericFacts.find(row => row.label === 'Colour')?.value).toBeNull();
+  });
   it('formats nested grounded explanations without object coercion or omitted facts', () => {
     const entry = offerExplanation({ code: 'essential-met', field: 'seats', fact: screenFact(5), requirement: { operator: 'gte', value: 5, unit: 'count' }, facts: { boot: screenFact(null) }, desired: 'Estate' });
     expect(entry.title).toBe('Meets your requirement: Seats');

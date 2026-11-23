@@ -1,3 +1,4 @@
+import { MediaWellComponent } from '../kit/media-well.component';
 import { Component, signal } from '@angular/core';
 import { PreferenceCategoryComponent } from '../kit/preference-category.component';
 import { StarRatingComponent } from '../kit/star-rating.component';
@@ -26,7 +27,7 @@ import { OptionListComponent } from '../kit/option-list.component';
 import { TaskGroup, TaskListComponent } from '../kit/task-list.component';
 import { SlotPickerComponent, SlotPickerSlot } from '../kit/slot-picker.component';
 import { formatActivityTime } from '../activity/activity.copy';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [MediaWellComponent, PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent, TaskListComponent, SlotPickerComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -68,6 +69,10 @@ import { formatActivityTime } from '../activity/activity.copy';
     <gcsp-data-table caption="Example renewal cases" [columns]="tableColumns" [rows]="tableRows" (opened)="tableOpened.set('Opened example case for Paula')" />
     <p role="status">{{ tableOpened() }}</p>
     <gcsp-data-table caption="Unavailable case actions" [columns]="tableColumns" [rows]="tableRows" [disabled]="true" />
+  </section>
+  <section class="gcsp-panel"><h2>Source primary vehicle media</h2>
+    <gcsp-media-well name="BMW Touring" line="Order no. 0123456" [image]="{ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW Touring', caption: 'BMW' }" />
+    <gcsp-media-well name="BMW Touring" line="Order number not supplied" />
   </section>
   <section class="gcsp-panel"><h2>Released vehicle card</h2>
     <gcsp-vehicle-card memberId="gallery-exact-stock" name="BMW 3 Series" line="Touring"

@@ -176,6 +176,28 @@ describe('native offer read screen', () => {
     expect(summary?.querySelector('[data-offer-action="check"]')).toBeNull();
     expect(summary?.querySelector('.gcsp-offer-actions')).not.toBeNull();
   });
+  it.each(['superseded', 'decision-pending', 'release-pending', 'handoff-failed'])('uses the source exact card for %s without pending commands', async (state) => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    const base = offerScreenFixture(state === 'handoff-failed' ? 'accepted' : state === 'superseded' ? 'superseded' : 'pending');
+    const offer = state === 'handoff-failed' ? { ...base, selection: { ...base.selection!, selectionState: 'handoff-failed' as const } }
+      : state === 'superseded' ? base : { ...base, reason: state };
+    await load(offer);
+    const host = fixture.nativeElement as HTMLElement; const card = host.querySelector('.gcsp-offer-exact > .vm-card.vm-card-explicit');
+    expect(card).not.toBeNull();
+    expect(card?.querySelector('h2.vm-card-name')?.textContent).toBe(offer.quote.facts.display.name);
+    expect(card?.querySelector('.vm-card-line')?.textContent).toBe('Order no. 0123456');
+    expect(card?.querySelector('.vm-card-terms')?.textContent?.trim()).toBe('295 points a month · 620 points a month allowance');
+    expect(Array.from(card?.querySelectorAll('.vm-fact-label') ?? []).map(row => row.textContent)).toEqual([
+      'Model', 'Derivative', 'Colour', 'Options', 'Body style', 'Fuel', 'Seats', 'Boot', 'Interior', 'Gearbox',
+    ]);
+    expect(card?.textContent).toContain('More details not supplied');
+    expect(card?.querySelector('.vm-card-gate')?.textContent).toBe('Eligible');
+    expect(card?.textContent).toContain('Mileage needs confirmation.');
+    expect(card?.querySelector('gcsp-media-gallery, gcsp-vehicle-details, button, .gcsp-countdown')).toBeNull();
+    expect(card?.textContent).not.toContain('£12.50');
+    expect(host.querySelector('.offer-focused, .offer-summary')).toBeNull();
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
   it('shows canonical Benefits and Tradeoffs with numeric emphasis while omitting coded or invented highlights', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     const highlights = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-highlights.gcsp-decision-lists');

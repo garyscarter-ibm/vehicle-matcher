@@ -168,6 +168,18 @@ export function offerViewModel(offer: OfferProjection) {
     ...['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg'].map((key) => offeredFact(key, facts[key])),
     detailFact('Gearbox', facts['gearbox'] ?? facts['transmission']),
   ];
+  const genericFacts: readonly FactRow[] = [
+    { label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
+    facts['colour'] ? detailFact('Colour', facts['colour']) : { label: 'Colour', value: display.colour ?? null },
+    detailFact('Options', equipmentFact, 'Fitted equipment unknown'),
+    ...['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg'].map((key) => offeredFact(key, facts[key])),
+    detailFact('Interior', facts['interior']), detailFact('Gearbox', facts['gearbox'] ?? facts['transmission']),
+  ];
+  const primaryImage = display.images.find(image => image.src === display.photo);
+  const genericImage = display.photo ? { ...primaryImage, src: display.photo, alt: primaryImage?.alt || display.name } : null;
+  const genericLine = quote.orderNumber === null ? 'Order number not supplied' : `Order no. ${quote.orderNumber}`;
+  const genericTerm = `${quote.terms.points.value.toLocaleString('en-GB')} points a month · ${quote.terms.allowanceInputs.allowance
+    ? quote.terms.allowanceInputs.allowance.value.toLocaleString('en-GB') + ' points a month allowance' : 'monthly points allowance not supplied'}`;
   const overview = ['body', 'fuel', 'boot', 'seats'].map((key) => ({ label: comparisonLabel(key), value: offeredValue(key, facts[key]) }))
     .filter((row) => row.value !== null);
   const expiresAt = Date.parse(offer.expiresAt); const serverNow = Date.parse(offer.serverNow);
@@ -220,7 +232,7 @@ export function offerViewModel(offer: OfferProjection) {
     ...(orderNumber ? orderIdentityRows(null, orderNumber) : [])];
   const selectionIdentityRows = refused && (offer.selection?.orderReference || offer.selection?.orderNumber)
     ? orderIdentityRows(offer.selection.orderReference, offer.selection.orderNumber) : [];
-  return { title, message, name: display.name, finishes, rows, detailRows, equipment, overview, comparison,
+  return { title, message, name: display.name, memberId: quote.orderUuid, gateStatus: quote.decision.gateStatus, genericFacts, genericImage, genericLine, genericTerm, finishes, rows, detailRows, equipment, overview, comparison,
     images: display.images.length ? display.images : display.photo ? [{ src: display.photo, alt: display.name }] : [],
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,

@@ -785,3 +785,7 @@ DOM nodes even though their text matches. Gallery: Source loading skeletons show
 all12layouts with non-announcing example labels. Source layout/count/label/role
 and nested offer/feature/text-card contracts have focused tests. F548 global CSS,
 actual browser/rendered behavior and live same-state human parity remain open.
+
+### Angular source primary media well (FUCQ-555)
+
+`MediaWellComponent` (`gcsp-media-well`) ports frozen `result-card.js` mediaWell for generic exact offer cards. Inputs: `name`, `line`, primary `image` and optional `placeholder`. It reuses the vehicle-image registry, keeps one lazy primary image with its own alt/caption, and removes broken media while retaining the placeholder and order identity. It does not select an image from a gallery. Gallery: **Source primary vehicle media**. Pending offers continue to use `MediaGalleryComponent`.

@@ -54,23 +54,16 @@
           <gcsp-vehicle-details decisionDetails [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.detailRows" factsPresentation="source-card" [equipment]="vm.equipment" [additionalDetails]="cardDecision" />
         </gcsp-vehicle-decision>
       } @else {
-      <div class="offer-focused">
-        <gcsp-media-gallery [name]="vm.name" [images]="vm.images" />
-        <div class="offer-summary">
-          <div class="offer-heading"><p class="offer-context">Your buddy found this car for you</p><h2>{{ vm.name }}</h2></div>
-          <dl class="offer-finishes">@for (finish of vm.finishes; track $index) { <div><dt>{{ finish.label }}</dt><dd>{{ finish.value ?? 'Not supplied' }}</dd></div> }</dl>
-          <div class="offer-cost"><p><strong>{{ vm.points }}</strong> points a month</p>
-            <p class="gcsp-note">{{ vm.allowance === null ? 'Allowance not supplied' : vm.allowance + ' points a month allowance' }}</p>
-            <p class="gcsp-note">{{ vm.contribution === null ? 'Contribution not supplied' : vm.contribution }}</p>
-          </div>
-          @if (vm.handoffBlocker) { <p class="gcsp-note">{{ vm.handoffBlocker }}</p> }
-          @if (!vm.isRefused) { <gcsp-offer-decision /> }
+      <article class="vm-card vm-card-explicit" [attr.data-member-id]="vm.memberId" [attr.data-gate]="vm.gateStatus">
+        <gcsp-media-well [name]="vm.name" [line]="vm.genericLine" [image]="vm.genericImage" />
+        <div class="vm-card-body">
+          <div class="vm-card-head"><h2 class="vm-card-name">{{ vm.name }}</h2><span class="vm-score" hidden title="Preference match score"></span></div>
+          <div class="vm-card-terms"><p class="vm-specs">{{ vm.genericTerm }}</p></div>
+          <div class="vm-card-facts"><gcsp-fact-list presentation="source" className="vm-facts-pair" hideMissing="More details not supplied" [rows]="vm.genericFacts" /></div>
+          <ng-container [ngTemplateOutlet]="cardDecision" />
+          <div class="vm-pick" role="group" aria-label="Exact cars" hidden></div><div class="vm-card-actions"></div>
         </div>
-        <div class="offer-details">
-          @if (vm.overview.length) { <dl class="offer-overview">@for (fact of vm.overview; track $index) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl> }
-          <gcsp-vehicle-details [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.rows" [equipment]="vm.equipment" [additionalDetails]="cardDecision" />
-        </div>
-      </div>
+      </article>
       }
       </section>
       <section class="gcsp-offer-current" aria-label="What matters for your decision" data-offer-comparison>
@@ -85,7 +78,7 @@
       </section>
       </div>
     }
-    @if (!vm.showVehicle && !vm.showAcceptedIdentity && !vm.isExpired) { <gcsp-offer-decision /> }
+    @if (!vm.isPending && !vm.showAcceptedIdentity && !vm.isExpired && !vm.isRefused) { <gcsp-offer-decision /> }
     <gcsp-offer-followup (offerOpened)="openNextOffer($event)" />
   }
   </div>
