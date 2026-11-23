@@ -156,7 +156,10 @@ describe('released stock route and browser history', () => {
 
   it('adds a shared card gallery example with details feedback while preserving the existing table examples', async () => {
     await harness.navigateByUrl('/components', GalleryComponent); await settle();
-    const root = harness.routeNativeElement!; expect(root.querySelectorAll('gcsp-data-table')).toHaveLength(2);
+    const root = harness.routeNativeElement!; const captions = Array.from(root.querySelectorAll('gcsp-data-table caption')).map(caption => caption.textContent);
+    expect(captions).toEqual(['Example renewal cases', 'Unavailable case actions', 'Example car comparison']);
+    expect(root.querySelector('gcsp-data-table .gcsp-table-action')?.getAttribute('aria-label')).toBe('Open case for Paula');
+    const comparison = root.querySelector('gcsp-data-table .gcsp-table-wrap.is-compare')!; expect(comparison.querySelector('button')).toBeNull(); expect(comparison.querySelector('td.is-winner')?.textContent).toBe('1,100'); expect(comparison.querySelector('[data-band=true] .gcsp-vh')?.textContent).toBe('Fewer than five');
     expect(root.textContent).toContain('Case queue table'); expect(root.textContent).toContain('Released vehicle card');
     const card = root.querySelector('gcsp-vehicle-card')!;
     const actions = Array.from(card.querySelectorAll<HTMLButtonElement>('button'));

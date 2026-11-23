@@ -511,7 +511,7 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
 | `gcsp-error-summary` | Only renders when errors exist; alert and links that focus the invalid native control. |
-| `gcsp-data-table` | Native caption, column/row headers and explicit header associations; rows stack below 640px with visible labels. Supplied literal cells, stable row IDs, one employee-named Open action, disabled/empty states and `focusRow(id)` for return focus. The component emits an ID and sends no requests. Gallery: Case queue table. |
+| `gcsp-data-table` | Canonical source table with explicit row envelopes, numeric/detail columns, primitive/value-object cells, privacy bands, missing/emphasized/success/winner values, opt-in stack and compare layouts, captionHidden/equalColumns and optional rowAction (none by default). Preserves opened ID and safe `focusRow(id)`. Gallery: Case queue table and Canonical comparison table. |
 | `gcsp-vehicle-card` | Released-car presenter with required exact `memberId`/`name`, optional line/order number, provided images/fallback, nullable points/allowance/contribution, supplied eligibility, `reviewDisabled`/`disabledReason` and `FactRow[]`. Emits `{ memberId, action: 'review' \| 'details' }`; no fetch, policy or claim. Native collapsed Car facts retains missing/zero/false. Disabled review reasons have unique accessible IDs. Gallery: Released vehicle card, with unavailable review and explicit details feedback. |
 | `gcsp-media-gallery` | Provided ordered `{ src, alt?, caption? }[]`, name and placeholder; default feature/thumbnails/dialog with keyboard navigation and focus return. Optional `compact` defaults false; stock cards use a 180px cover/fallback with no thumbnail/caption/enlarge controls. Switching compact closes the viewer and resets selection; no generated imagery or source lookup. |
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
@@ -527,10 +527,27 @@ presenters. Category inputs are the server definition, considered/unset state, o
 disabled flags. Outputs express value/importance changes, open, request removal, remove and keep.
 Multi choices use checkboxes; stops and medium/high importance use separate radio groups. Unset
 categories read Not important. Removal requires an explicit Remove preference action with a Keep
-preference alternative. Stars use a named native radio group for 1–5 and a Clear rating button.
-Tab, Space and the native radio arrow keys operate these controls; focus outlines remain visible.
+preference alternative. Stars port Node `starRating` with its source classes, `RATING_WORDS`, selected-star clearing,
+arrow/Home/End selection and Enter/Space activation (including the synthetic-click guard).
+`overlay`, `pill`, `help`, `labels`, `status` and `retryable` are additive presenter inputs;
+`rated` and `retried` leave saving with the caller. Pending/saved/failed announcements and
+the source Try again row retain their semantics; focus outlines remain visible.
 Disabled states retain readable answers. Gallery: **Preference categories and current-car rating**,
 including high importance, removal, unset/disabled, selected stars and an unconfirmed-save message.
+
+Canonical Angular `HelpTipDirective` (`kit/help-tip.directive.ts`) ports Node `helpTip` on
+`[gcspHelpTip]` hosts. Inputs: text, `helpTipId`, `helpTipTriggers` (native selector),
+`helpTipPlacement` (`below-start`/`above-end`), `helpTipDismissOnActivate`; lifecycle
+methods are `show`, `hide`, `dismiss`. Its exported typed `helpTip()` retains source
+hover/focus, touch exclusion, Escape/outside dismissal, held dismissal and cleanup.
+Star/help styling reuses the frozen Node sheets in FUCQ-548's global stylesheet at supported
+integration; no duplicate component sheets. Gallery: **Preference categories and current-car rating**.
+
+Your cars current-car composition ports `currentCar`: `gcsp-feature` media/copy,
+`gcsp-vehicle-title` type role, `gcsp-account-car-facts` two-column roles,
+`gcsp-countdown` with the source clock, and `starRating` in the photo.
+`gcsp-current-car-rating` adds only `overlay`/`pill` inputs and keeps `BriefEditorStore` authority.
+Rating announcements follow its own queued intent and canonical save outcome; unrelated category errors retain preference recovery.
 
 `gcsp-account-preferences` and `gcsp-current-car-rating` compose those presenters with the shared
 root `BriefEditorStore`. Account inputs are `carDescription`, and `contractId` for rating. Rating
@@ -548,6 +565,77 @@ search and Disengage actions. It reports paused search separately from withdrawn
 uncertain requests available for an explicit same-command retry, and provides a status reload. Its
 gallery states use inert projections with actions disabled; the live compact and full preferences
 views bind its outputs to the shared `BriefEditorStore` command lane.
+
+### Angular canonical history/DataTable contract (FUCQ-551)
+
+`kit/data-table.component.ts` uses one explicit Angular row envelope:
+`DataTableRow { id: string, label: string, cells: Record<columnKey, DataTableValue> }`.
+Rows may carry owner metadata, such as Account's exact contract association; the kit reads only
+that envelope and never infers row shape. `DataTableColumn` adds `numeric?` and `detail?` to
+`key/label`. Cells accept string/number/boolean/null/undefined or source value objects with
+`label`, `isBand`, `fewerThan`, `missing`, `emphasis`, `tone` and `winner`.
+Zero stays zero; numbers use en-GB grouping; missing labels read Not supplied; finite band
+thresholds are visual while the supplied band label is spoken. Emphasis wraps the filled value
+in strong, with optional success tone; only non-header cells can be winners.
+
+Inputs mirror the source options: `caption`, `columns`, `rows`, `id`, `emptyText` (Nothing to
+show), `stack`, `compare`, `captionHidden`, `equalColumns` and optional `rowAction`.
+Default layout does not stack and has no action. Compare suppresses stack at every width.
+The compatible `disabled` input gates all actions and `emptyLabel` remains an optional empty
+copy alias. `rowAction { header='Action', label='Open', name?, onSelect?, disabled? }` uses
+functions of `(rowEnvelope, index)`; disabled accepts a boolean or predicate. The same supplied
+name labels the button and its focus key. Selecting invokes the optional callback and emits
+`opened: string` with the unchanged row id. `focusRow(id)` uses safe array lookup and skips
+disabled controls. CaseQueue explicitly binds Open/name/stack/empty state; its store, commands,
+opened identity and close-focus behavior remain unchanged.
+
+Account history composes one stacked shared table across schemes, preserves Current car as
+`{ label: 'Current car', emphasis: true, tone: 'success' }`, source Ends/Returned dates,
+placed-order rows and named View record actions. The account owns the exact contract and
+opener association; the existing record drawer, focus trap, print and authority remain in place.
+No-history and populated history-only schemes retain separate source outcomes. The pre-existing
+not-found exclusion is unchanged; tests distinguish absent order reads from unavailable/forbidden
+failures and explicit recovery. Generic local table CSS is removed; F548 owns source table and
+comparison CSS. The Angular DataTable stylesheet contains only the one-line host adaptation,
+ratchet-capped at 2 counted lines (one rule plus its final newline). Existing caps stay unchanged.
+Rendered/global-style and connected acceptance remain open.
+
+### Angular canonical Buddy ports (FUCQ-551)
+
+`kit/activity-timeline.component.ts` is the single Angular `gcsp-activity-timeline` port.
+Inputs are `events` (label/time/detail plus optional action `TemplateRef`), `heading`, `emptyText`,
+`level`, `collapseRepeats`, `formatTime` and `note`. It preserves supplied order, collapses only
+adjacent equal time/label/detail when requested and exports `demoTime` as the existing
+`activity.copy.formatActivityTime` alias. Missing or invalid times stay explicit.
+
+`kit/buddy-status.component.ts` exports `buddyState`, `buddyEngaged` and the pure
+`gcsp-buddy-status` presenter (`state`, optional `href`, `prominent`, `id`, `label`; `activated`).
+`kit/buddy-tile.component.ts` composes it with that timeline using the frozen source classes.
+Tile inputs are `phase`, `result`, `pending`, `events`, `offerTitle`, `deadline`, `orderHref`,
+`id` and `canPause/Resume/Retry/History/Offer`; outputs are `paused`, `resumed`, `retried`,
+`historyRequested` and `offerRequested` (the drawer opener). All eight source outcomes remain
+distinct; focused removed controls recover to their matching control or heading without stealing
+retained focus. These presenters own no requests, commands or consent.
+
+`kit/activity-offer.component.ts` is the pure `gcsp-activity-offer` port (`offer`, `display`,
+`level`). It reuses approved raw image evidence before the shared `vehicleImageUrl` helper
+normalizes exact repository WebP paths to the Angular base. It retains supplied captions,
+source missing/broken-image fallback and Image N selection. It does not substitute MediaGallery.
+
+`account/account-buddy.component.ts` owns the scoped ActivityStore lifecycle, composes the ports
+with the existing SideDrawer, and reuses the root BriefEditorStore for guarded pauseSearch,
+resumeSearch, same-command retry and status reload. Activity is refreshed after actual tile commands and settled canonical root-editor Buddy/version
+changes, including adjacent engagement. History uses authoritative check/offer-creation times, exclusion and partial-evidence
+copy. Scope changes, restarted state and teardown clear private drawer data and abort reads.
+The account uses the original `gcsp-account-buddy-preferences` grid and direct Buddy host class;
+the authoritative `pendingOffer()` suppresses the old preview and current-car replacement action
+while Buddy is present. Journey choices omit Buddy and retain the source current-car action.
+The optional `buddyControls` input on AccountPreferences and BuddyControls defaults to false.
+Account passes true so the tile owns active/paused/disabled actions; inactive engagement and
+failure recovery remain reachable. No editor/store/client behavior or source CSS is duplicated.
+Gallery: **GCSP Buddy status**, **GCSP Buddy tile** (eight outcomes), and **GCSP activity timeline
+and offer**. Selected synthetic tests establish source/component contracts only; rendered source
+CSS, connected state, hosted assets and human parity review remain separate acceptance work.
 
 ### Angular manual review and summary (FUCQ-443)
 

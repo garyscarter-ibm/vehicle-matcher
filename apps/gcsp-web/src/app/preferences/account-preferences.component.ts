@@ -20,12 +20,12 @@ let sequence = 0;
         <gcsp-preference-category [id]="id + '-' + key" [definition]="editor.context.accountPreferences.categories[key]" [state]="store.category(key)" [open]="store.openCategory() === key" [removing]="store.pendingRemoval() === key" [disabled]="store.locked() || store.fullBusy()" (opened)="store.open(key)" (changed)="store.change(key, $event)" (removeRequested)="store.requestRemove(key)" (removed)="remove(key)" (kept)="keep(key)" />
       }</div> }
       <p role="status">{{ store.message() }}</p><div class="gcsp-actions">@if (store.failure() && !store.locked()) { <button gcspButton type="button" (click)="store.retry()">Try again</button> }@if (store.failure()) { <button gcspButton variant="ghost" type="button" (click)="store.reload()">Reload preferences</button> }@if (store.queueNeedsReview()) { <button gcspButton type="button" (click)="store.retry()">Save kept changes</button> }</div>
-      <gcsp-buddy-controls [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
+      <gcsp-buddy-controls [buddyControls]="buddyControls()" [buddy]="editor.initial.buddy" [disabledReason]="store.buddyBlockedReason() ?? ''" [message]="store.buddyMessage()" [pendingAction]="store.buddyPendingAction()" [failure]="store.buddyFailure()" [operationId]="store.buddyOperationId()" [canRetry]="store.buddyCanRetry()" [refreshing]="store.buddyRefreshing()" (action)="store.runBuddyCommand($event)" (retryRequest)="store.retryBuddy()" (reloadStatus)="store.reloadBuddyStatus()" />
     </section>
   } @else { <gcsp-status-screen title="Your preferences" [level]="2" [busy]="store.loading()" [message]="store.loading() ? 'Loading your preferences.' : store.message() || 'Your preferences are unavailable.'">@if (!store.loading()) { <button gcspButton type="button" (click)="store.load()">Try again</button> }</gcsp-status-screen> }
 ` })
 export class AccountPreferencesComponent {
-  readonly store = inject(BriefEditorStore); readonly carDescription = input(''); readonly id = `account-preferences-${++sequence}`;
+  readonly store = inject(BriefEditorStore); readonly carDescription = input(''); readonly buddyControls = input(false); readonly id = `account-preferences-${++sequence}`;
   private focus(key: string): void { queueMicrotask(() => document.getElementById(`${this.id}-${key}-panel`)?.parentElement?.querySelector<HTMLElement>('.category-title')?.focus()); }
   remove(key: string): void { this.store.confirmRemove(key); this.focus(key); }
   keep(key: string): void { this.store.keep(); this.focus(key); }
