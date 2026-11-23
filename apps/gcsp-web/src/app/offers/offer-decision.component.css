@@ -1,0 +1,2 @@
+/* Preserve the source summary grid above the generic layered offer action style. */
+.gcsp-offer-actions-focused { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }

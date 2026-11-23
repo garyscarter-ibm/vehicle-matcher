@@ -1,6 +1,6 @@
 @if (offer(); as current) {
   <ng-template #actions>
-    <div class="gcsp-offer-actions" data-offer-decision-actions>
+    <div class="gcsp-offer-actions" [class.gcsp-offer-actions-focused]="!inlineActions()" data-offer-decision-actions>
       @if (isPending() && !state().decision) {
         <button gcspButton presentation="source" type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
         <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
