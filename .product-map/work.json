@@ -11499,25 +11499,27 @@
       "branch": "dev/DEV-2026-11-23-vesper-005",
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
-      "note": "Actual final mixed-role HTTP RED4tests/2pass/2fail; all8Greg reads403, employee-only foreign read/write denials pass. Exact four classifiers restored; final focused packages/wiring and independent review pending. Original4AC/coveringJava remain open.",
+      "note": "Published partial a78fed861: exact mixed-role regression4/4GREEN and independent source/spec/security PASS. Deduplicated focused inventory378/374pass/4quote-expired failures/0errors/skips; all mandatory wiring passes. Distinct clock dependency FUCQ-581 is captured/imported, unclaimed. Final integration/canonical Java covering pending; prior incomplete cap run retained.",
       "slices": [
         {
           "id": "regression",
           "title": "Real OIDC mixed-role read regression and employee denial",
-          "status": "in-progress",
-          "evidence": "Real signed Greg[greg,employee]/operator-greg and nativePG17; final unchanged-readerRED retained f572-red-millis-result.json/checkpoint7f0c4aec. Final positive evidence pending."
+          "status": "complete",
+          "evidence": "Exact unchanged-readerRED4tests/2pass/2fail; repaired real OIDC/nativePG mixed-role regression4/4GREEN with all eight reads and foreign employee read/write denials meaningful. Published9d7bcdc03/a78fed861; independent review PASS.",
+          "observed_at": "2026-11-23T22:04:26Z"
         },
         {
           "id": "readers",
           "title": "Repair four local Greg reader classifiers",
-          "status": "in-progress",
-          "evidence": "Four local reader precedence repairs only; return write caller unchanged; independent Pluto review running."
+          "status": "complete",
+          "evidence": "Exactly four local Greg reader classifiers repaired, no write caller/global ownership change; independent Pluto source/spec/security PASS266438471279a3f3d433b8e335bd2de63c9874b14cfe1578c0a76b678af463d0.",
+          "observed_at": "2026-11-23T22:04:26Z"
         },
         {
           "id": "callers-review",
           "title": "Affected packages, boundaries and independent review",
           "status": "in-progress",
-          "evidence": "Final four-package plus mandatory startup/wiring run underway; no route/port/schema/sharedfixture change."
+          "evidence": "All378selected cases/65classes completed:374pass and four pre-reader quote-expired failures. Independent reviewer PASS; final affected composition waits on separate F581. Exact reconciliation f572-final-scoped-reconciliation.json."
         },
         {
           "id": "integration",
@@ -11525,7 +11527,7 @@
           "status": "not-started"
         }
       ],
-      "observed_at": "2026-11-23T21:34:18Z",
+      "observed_at": "2026-11-23T22:04:50.814262+00:00",
       "native_updated_at": "2026-11-23T15:32:08.256-0600"
     },
     {
@@ -11540,8 +11542,8 @@
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
       "native_updated_at": "2026-11-23T15:32:09.438-0600",
-      "observed_at": "2026-11-23T21:33:00Z",
-      "note": "Local built result; native remains In Progress until covering evidence/disposition.",
+      "observed_at": "2026-11-23T22:04:50.814262+00:00",
+      "note": "Merged/pushed70e11d85e after final integrated2/2PASS; exact eleven-path source closure only, all six CLI offline guards preserved. Root integrated audit independently verifies cleanup and20protected input hashes. Covering Node batch pending.",
       "slices": [
         {
           "id": "source-closure",
@@ -11559,7 +11561,8 @@
           "id": "integration",
           "title": "Integrated regression and covering Node batch",
           "status": "in-progress",
-          "evidence": "Root refresh/reassessment/merge and covering batch pending; original full53failureRED retained."
+          "evidence": "Integrated final owning module2/2PASS after refresh26c32d898; root exact resource/input audit PASS; merged/pushed70e11d85e. Covering Node still pending.",
+          "observed_at": "2026-11-23T22:04:26Z"
         }
       ]
     },
@@ -11683,22 +11686,65 @@
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:45:49.586Z",
       "native_updated_at": "2026-11-23T15:45:48.758-0600",
-      "observed_at": "2026-11-23T21:50:17Z",
-      "note": "Claimed and worktree ready; primaryF117/type/parent74 verified. Exact test-only fixture repair allocated, no product/planner policy change or implementation yet.",
+      "observed_at": "2026-11-23T22:04:50.814262+00:00",
+      "note": "Built51ce8e293; original and refreshed70e11d85e owning/boundary runs both24/24PASS,0skip. Source identities unchanged, independent source/spec/security review PASS. Root audit/merge and covering Node pending.",
       "slices": [
         {
           "id": "fixture",
           "title": "Truthful confirmed-driver expectation",
-          "status": "not-started"
+          "status": "complete",
+          "evidence": "Barney independently reviewed confirmed-driver/choice/scarcity/lead-time assertions and all negative driver variants; final integrated24/24PASS atb2275399c, source hashes unchanged."
         },
         {
           "id": "regression",
           "title": "Canonical and future-choice negative boundaries",
-          "status": "not-started"
+          "status": "complete",
+          "evidence": "Barney independently reviewed confirmed-driver/choice/scarcity/lead-time assertions and all negative driver variants; final integrated24/24PASS atb2275399c, source hashes unchanged."
         },
         {
           "id": "integration",
           "title": "Review, merge and covering Node batch",
+          "status": "in-progress",
+          "evidence": "Final integrated regression24/24PASS and Result91e66e632; root independent resource audit and merge/push pending, covering Node still required."
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-581",
+      "title": "Java manual claims reject fresh run-clock quotes using wall time",
+      "type": "Bug",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
+      "observed_at": "2026-11-23T22:04:50.814262+00:00",
+      "native_status_observed_at": "2026-11-23T22:01:02Z",
+      "unsliced": false,
+      "note": "Native Bug/import DEV-2026-11-23-vesper-014 verified; exact internal clock allocation agreed against existing DemoClock topology. No claim or implementation yet. Four original ACs and canonical Java covering remain.",
+      "slices": [
+        {
+          "id": "claim-clock",
+          "title": "Scoped persisted claim clock selection",
+          "status": "not-started"
+        },
+        {
+          "id": "ordering",
+          "title": "Coherent order time and pending recovery",
+          "status": "not-started"
+        },
+        {
+          "id": "regression",
+          "title": "Real quote/claim/expiry and unavailable regression",
+          "status": "not-started"
+        },
+        {
+          "id": "callers-review",
+          "title": "Affected callers, wiring and independent review",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Final-source integration and canonical Java covering",
           "status": "not-started"
         }
       ]
