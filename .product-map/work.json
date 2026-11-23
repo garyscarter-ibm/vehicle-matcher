@@ -11634,6 +11634,39 @@
           "status": "not-started"
         }
       ]
+    },
+    {
+      "id": "FUCQ-580",
+      "title": "Reconcile retained brief pause fixture with explicit engagement consent",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-580",
+      "branch": "dev/DEV-2026-11-23-vesper-008",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:42:02.277Z",
+      "observed_at": "2026-11-23T21:43:09Z",
+      "note": "Native Bug/type/parent86/origin91 verified; claimed4b5983a94. Retained Barney/Pinky are delivering the bounded F575/F580 test dependency together in branch008, with each originalAC and ownResult retained. Native InProgress/assignment/date verified independently; no acceptance inferred.",
+      "slices": [
+        {
+          "id": "consent-fixture",
+          "title": "Exact no-consent refusal and consented successful pause",
+          "status": "in-progress",
+          "evidence": "Original F575 downstreamRED and pause-intake draft retained. No F580repair yet."
+        },
+        {
+          "id": "focused-validation",
+          "title": "Two-module composed regression and source review",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Normal integration and covering Node batch",
+          "status": "not-started"
+        }
+      ],
+      "native_updated_at": "2026-11-23T15:42:01.467-0600"
     }
   ],
   "version": 1
