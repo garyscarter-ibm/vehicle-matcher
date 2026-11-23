@@ -1,5 +1,7 @@
+<gcsp-screen-intro title="Renewal cases" lede="Review owned renewal cases and the actions currently permitted by the scheme." />
+<gcsp-greg-navigation page="cases" [panels]="{ cases: casePanel }" />
+<ng-template #casePanel>
 <section class="case-queue" [attr.aria-busy]="view().pending || view().phase === 'loading' || view().detailPhase === 'loading' ? 'true' : null">
-  <gcsp-screen-intro title="Renewal cases" lede="Review owned renewal cases and the actions currently permitted by the scheme." />
   <p class="case-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" data-case-status>{{ view().message }}</p>
   @if (view().phase === 'signed-out' || view().phase === 'auth-required') {
     <gcsp-status-screen title="Sign in to review cases" [level]="2" [announcement]="null"><button gcspButton type="button" (click)="store.signIn()">Sign in</button></gcsp-status-screen>
@@ -114,3 +116,5 @@
     }
   }
 </section>
+
+</ng-template>

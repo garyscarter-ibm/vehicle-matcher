@@ -28,7 +28,7 @@ describe('session route guards', () => {
   it('keeps launcher context through sign-in and role landing without granting query roles', async () => {
     const entry = '/?brand=bmw&role=presenter&employeeId=another#home';
     expect(url(await land(entry))).toBe('/sign-in?returnTo=%2Fgcsp%2F%3Fbrand%3Dbmw%26role%3Dpresenter%26employeeId%3Danother%23home');
-    for (const [roles, path] of [[['employee'], '/account'], [['greg'], '/greg'], [['presenter', 'employee'], '/presenter']] as const) {
+    for (const [roles, path] of [[['employee'], '/account'], [['greg'], '/greg/plan'], [['presenter', 'employee'], '/presenter']] as const) {
       state.set({ status: 'ready', context: { ...context, roles } });
       expect(url(await land(entry))).toBe(`${path}?brand=bmw&role=presenter&employeeId=another#home`);
     }

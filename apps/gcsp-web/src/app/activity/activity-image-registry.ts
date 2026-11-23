@@ -940,9 +940,14 @@ const approved = new Map<string, ReadonlySet<string>>(
 );
 
 export function isApprovedActivityImage(image: ActivityDisplayImage): boolean {
-  const fidelity = image.kind ?? image.fidelity;
   return typeof image.src === 'string' && typeof image.alt === 'string' && image.alt.trim().length > 0
-    && typeof fidelity === 'string' && approved.get(image.src)?.has(fidelity) === true;
+    && isApprovedActivityThumbnail(image);
+}
+
+/** The bell's decorative thumbnail uses the same approved source/fidelity pair without a gallery alt requirement. */
+export function isApprovedActivityThumbnail(image: ActivityDisplayImage): boolean {
+  const fidelity = image.kind ?? image.fidelity;
+  return typeof image.src === 'string' && typeof fidelity === 'string' && approved.get(image.src)?.has(fidelity) === true;
 }
 
 export function approvedActivityImages(images: readonly ActivityDisplayImage[] | null | undefined): readonly ActivityDisplayImage[] {

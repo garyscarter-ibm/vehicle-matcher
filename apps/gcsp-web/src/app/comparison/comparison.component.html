@@ -1,5 +1,7 @@
+<gcsp-screen-intro kicker="Route comparison" title="Route comparison" lede="Stored results of the comparison. Both routes get the same employees, cars and releases." />
+@if (isGreg()) { <gcsp-greg-navigation page="comparison" [panels]="{ comparison: comparisonPanel }" /> } @else { <ng-container [ngTemplateOutlet]="comparisonPanel" /> }
+<ng-template #comparisonPanel>
 <div class="gcsp-comparison">
-  <gcsp-screen-intro kicker="Route comparison" title="Route comparison" lede="Stored results of the comparison. Both routes get the same employees, cars and releases." />
   <div class="comparison-bar">
     <p class="gcsp-note" role="status">@if (view() === 'ready') { Active policy: {{ activePolicy() }} } @else if (view() === 'loading') { Loading the stored comparisons. }</p>
     <button gcspButton variant="ghost" type="button" [disabled]="!canRefresh()" (click)="refresh()">Refresh</button>
@@ -78,3 +80,5 @@
     } @else { <gcsp-status-screen title="No stored result yet" message="This comparison has not been run yet." [level]="2" /> }
   }
 </div>
+
+</ng-template>

@@ -2927,3 +2927,20 @@ Several broad source/policy displays and an initial queue display again truncate
 
 - Independent F555 review found a manual Check could announce completion on an intermediate pending-at-zero snapshot while its bounded expiry reread remained active, and could retain ownership through an observed sign-out/same-account return. Reproduced both before repair; read-only existing-store lifecycle/authority views now let the presenter await the real terminal read and reject obsolete ownership. Preserved the source deadline announcement with another reproduced regression. Final233scoped cases and28controlled keyboard/rendered captures pass; actual connected parity remains open. This verifies the bounded presenter correction, not the whole Bug. Proposed workflow improvement: include terminal-read/authority epochs in async presenter test selection rather than treating any nonloading snapshot as completion.
 - The isolated render harness initially threw ERR_HTTP_HEADERS_SENT on a missing asset because it wrote200 before reading bytes. Read-before-header corrected the harness; final supervised run passed and all20owned roots/groups are absent. No product test was hidden or retried into a success claim; failure evidence remains in offer-check-pickup-20261123.
+
+
+### 2026-11-23 · usget-vesper human completion · DL-20261123-F555-02 · Preserved reference checkout missing
+
+- The previously preserved frozen reference checkout at /Users/usget/.codex/worktrees/gcsp-gap-poller/vehicle-matcher is absent from the actual filesystem and Git worktree list; frozen e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38 still exists. Cause unknown. Recreate an isolated exact reference before final proof; no prior live proof or reference preservation inferred. Proposed improvement: verify retained checkout identities at consequential proof handoffs. No OneDrive accessed.
+
+### 2026-11-23 · usget-vesper human completion · DL-20261123-F555-03 · Additive merge array boundary
+
+- F555/F551 Gallery union initially omitted the independent orderStages array closing boundary, producing a compiler error before any test ran. Corrected exact parent blocks; independent resolution review plus247scoped cases/boundaries4/ratchet124 passed. Retained f555-after551{,-green} receipts identify failed and corrected trees. Proposed improvement: compare complete syntactic parent blocks during additive unions, with compile as the first executable check.
+
+### 2026-11-23 · usget-vesper human completion · DL-20261123-F564-01 · Conflicting native origin link
+
+- F564's explicit originating Story458 was accompanied by an unintended native Relates479 link, causing importer related_story hold. Atlassian connector exposes no unlink operation. Removed only link660659 through background Jira UI, retaining458/548links and479composition context in the description; read back native links and imported/claimed039 successfully. Russell explicitly authorised F564 repair separately from F555. Proposed improvement: distinguish native origin from contextual Story links; no importer bypass/change applied.
+
+### 2026-11-23 · usget-vesper human completion · DL-20261123-F555-04 · Story push transient rejection
+
+- Publishing27385551d first returned remote rejected(failed), leaving remote759678fc4. Reconciled actual remote, retried the same nonforce ref push once, then read back exact27385551d. Cause unknown; no source loss or successful publication inferred from a failed command. Proposed improvement: preserve remote rejection and require exact ref readback before reporting published.
