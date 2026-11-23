@@ -30,6 +30,8 @@ const raw: Record<string, unknown> = { alex, 'alex-not-yet-eligible': alexNotYet
   'sam-account-foreign': samAccountForeign, 'sam-driver-invalid': samDriverInvalid };
 const golden = (name: string): Golden => structuredClone(raw[name]) as Golden;
 const base = 'https://api.example/api/gcsp/v1';
+const appBase = 'https://portal.example/gcsp/';
+const carSelector = '.gcsp-feature[data-contract-id]';
 const ready = (g: Golden): SessionState => ({ status: 'ready', context: { subject: `sub-${g.context.employeeId}`, roles: ['employee'],
   environmentId: g.context.environmentId, runId: g.context.runId, employeeId: g.context.employeeId, policyVersion: g.context.policyVersion, capabilities: ['account:read'] } });
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -46,7 +48,13 @@ describe('account screen over the Java account goldens', () => {
   let state: ReturnType<typeof signal<SessionState>>;
   let byToken: Map<string, () => Response>;
   let requests: { path: string; token: string | null }[];
+  let baseElement: HTMLBaseElement;
+  let previousBase: { element: HTMLBaseElement; href: string | null } | null;
   beforeEach(() => {
+    const existing = document.querySelector('base');
+    previousBase = existing ? { element: existing, href: existing.getAttribute('href') } : null;
+    baseElement = existing ?? document.createElement('base'); baseElement.href = appBase;
+    if (!existing) document.head.append(baseElement);
     state = signal<SessionState>({ status: 'signed-out' }); byToken = new Map(); requests = [];
     const config = (environmentId: string): RuntimePublicConfig => ({ schemaVersion: 1, environmentId, apiBaseUrl: base,
       oidc: { authority: 'https://issuer.example', clientId: 'public-client', scope: 'openid', redirectUri: 'https://portal.example/gcsp/auth/callback', postLogoutRedirectUri: 'https://portal.example/gcsp/' } });
@@ -69,7 +77,12 @@ describe('account screen over the Java account goldens', () => {
       { provide: PORTAL_FETCH, useValue: fetcher },
       { provide: BriefClient, useValue: { readEditor: vi.fn().mockResolvedValue({ status: 'unavailable' }) } }] });
   });
-  afterEach(() => { fixture?.destroy(); fixture = undefined; vi.restoreAllMocks(); });
+  afterEach(() => {
+    fixture?.destroy(); fixture = undefined; vi.restoreAllMocks();
+    if (!previousBase) baseElement.remove();
+    else if (previousBase.href === null) previousBase.element.removeAttribute('href');
+    else previousBase.element.setAttribute('href', previousBase.href);
+  });
 
   const serve = (g: Golden, response: () => Response = () => accountResponse(g)) => byToken.set(`token-${g.context.employeeId}`, response);
   const root = (): HTMLElement => fixture!.nativeElement;
@@ -109,21 +122,35 @@ describe('account screen over the Java account goldens', () => {
     for (const driver of value.drivers ?? []) expect(text()).toContain(driver.name!);
     expect(text()).not.toContain(identity.companyId!); expect(text()).not.toContain(value.contextVersion!);
 
-    const cars = Array.from(root().querySelectorAll('.current-car:not(.delivered-car)'));
-    expect(cars.map((car) => car.querySelector('h2')?.textContent)).toEqual((value.contracts ?? []).map((row) => row.model));
+    const cars = Array.from(root().querySelectorAll(carSelector));
+    expect(cars).toHaveLength((value.contracts ?? []).length);
+    expect(cars.map((car) => car.getAttribute('data-contract-id'))).toEqual((value.contracts ?? []).map((row) => row.contractId));
+    expect(cars.map((car) => car.querySelector('.gcsp-vehicle-title')?.textContent)).toEqual((value.contracts ?? []).map((row) => row.model));
     (value.contracts ?? []).forEach((row, index) => {
       const img = cars[index].querySelector('img'); const media = row.media as { src?: string; alt?: string } | null | undefined;
-      expect(img?.getAttribute('src') ?? null).toBe(media?.src ?? null);
+      // Java goldens name packaged repository assets; the Angular app serves them below its base.
+      if (media?.src) expect(media.src).toMatch(/^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/);
+      expect(img?.src ?? null).toBe(media?.src ? new URL(media.src.slice(1), appBase).href : null);
       if (media?.alt) expect(img?.getAttribute('alt')).toBe(media.alt);
       expect(cars[index].textContent).toContain(`Contract ends in ${days(value.asOf!, row.contractEndDate!)} days`);
-      expect(cars[index].querySelector('.car-facts dd')?.textContent).toBe(terms);
+      expect(cars[index].querySelector('.gcsp-account-car-facts dd')?.textContent).toBe(terms);
     });
     if (!(value.contracts ?? []).length) {
       expect(text()).toContain('No current car');
       expect(text()).toContain(`Your allowance is ${(value.allowance!['value'] as number).toLocaleString('en-GB')} points a month.`);
     }
-    for (const history of value.histories ?? []) {
-      if (history.entries.length && history['orderingSupported'] === false) expect(text()).toContain(`${history.label} shows history only`);
+    const historySection = root().querySelector('.gcsp-account-history')!;
+    const historyRows = Array.from(historySection.querySelectorAll('tbody tr'));
+    const historyEntries = (value.histories ?? []).flatMap((history) => history.entries.map((row) => ({ model: row.model, scheme: history.label })));
+    expect(historyRows).toHaveLength(historyEntries.length);
+    expect(historyRows.map((row) => ({ model: row.querySelector('th[scope="row"]')?.textContent,
+      scheme: row.querySelector('[data-label="Scheme"]')?.textContent }))).toEqual(historyEntries);
+    const historyOnly = (value.histories ?? []).filter((history) => history.entries.length && history['orderingSupported'] === false).map((history) => history.label);
+    if (value.state === 'unsupported-scheme' || !historyOnly.length) expect(historySection.querySelector('.gcsp-synthetic')).toBeNull();
+    else {
+      const names = historyOnly.length === 1 ? historyOnly[0] : `${historyOnly.slice(0, -1).join(', ')} and ${historyOnly.at(-1)}`;
+      expect(historySection.querySelector('.gcsp-synthetic')?.textContent)
+        .toBe(`${names} ${historyOnly.length === 1 ? 'shows' : 'show'} history only; you can't order through ${historyOnly.length === 1 ? 'it' : 'them'} here.`);
     }
 
     if (notice) { expect(text()).toContain(notice); expect(root().querySelector('a[href="/help"]')).not.toBeNull(); expect(button('Refresh')).toBeDefined(); }
@@ -141,7 +168,7 @@ describe('account screen over the Java account goldens', () => {
     expect(component.projection()).toEqual(g.expected.value);
     expect(text()).toContain('Your HR account is missing'); expect(text()).toContain('Contact HR support to check your employee account.');
     expect(root().querySelector('a[href="/help"]')).not.toBeNull();
-    expect(root().querySelector('.current-car')).toBeNull(); expect(root().querySelector('.account-details')).toBeNull();
+    expect(root().querySelector(carSelector)).toBeNull(); expect(root().querySelector('.account-details')).toBeNull();
     expect(button('Start a new order')).toBeUndefined(); expect(button('Choose a replacement')).toBeUndefined();
     expect(requests.map((row) => row.path).sort()).toEqual(['manual/account', 'manual/draft']);
   });
@@ -158,7 +185,7 @@ describe('account screen over the Java account goldens', () => {
       code: name === 'provider not configured' ? 'account-provider-not-configured' : g.expected['code'] });
     expect(text()).toContain('Your account is unavailable'); expect(text()).toContain('Refresh to try again, or contact scheme support.');
     expect(button('Refresh')).toBeDefined();
-    expect(root().querySelector('.current-car')).toBeNull(); expect(root().querySelector('.account-details')).toBeNull();
+    expect(root().querySelector(carSelector)).toBeNull(); expect(root().querySelector('.account-details')).toBeNull();
     expect(text()).not.toContain('Sam Patel'); expect(text()).not.toContain('No current car');
     expect(requests.map((row) => row.path).sort()).toEqual(['manual/account', 'manual/draft']);
   });
@@ -166,10 +193,14 @@ describe('account screen over the Java account goldens', () => {
   it('switching the signed-in employee replaces the account; no fact from the previous employee remains', async () => {
     const first = golden('paula'); const second = golden('alex'); serve(first); serve(second);
     await mount(first);
+    expect(Array.from(root().querySelectorAll(carSelector), (car) => car.getAttribute('data-contract-id')))
+      .toEqual((first.expected.value!.contracts ?? []).map((row) => row.contractId));
     expect(text()).toContain(first.expected.value!.account!.employeeNumber!);
     requests = []; state.set(ready(second)); fixture!.detectChanges();
     const component = await idle();
     expect(component.projection()).toEqual(second.expected.value);
+    expect(Array.from(root().querySelectorAll(carSelector), (car) => car.getAttribute('data-contract-id')))
+      .toEqual((second.expected.value!.contracts ?? []).map((row) => row.contractId));
     expect(text()).toContain('Alex Brennan'); expect(text()).toContain(second.expected.value!.account!.employeeNumber!);
     expect(text()).not.toContain('Paula Mason'); expect(text()).not.toContain(first.expected.value!.account!.employeeNumber!);
     expect(requests.length).toBeGreaterThan(0); expect(requests.every((row) => row.token === 'token-employee-alex')).toBe(true);
@@ -182,6 +213,6 @@ describe('account screen over the Java account goldens', () => {
     expect(component.model()?.failure).toMatchObject({ status: 'unavailable', code: 'account-response-scope-mismatch' });
     expect(text()).toContain('Your account is unavailable');
     expect(text()).not.toContain('Alex Brennan'); expect(text()).not.toContain(other.expected.value!.account!.employeeNumber!);
-    expect(root().querySelector('.current-car')).toBeNull();
+    expect(root().querySelector(carSelector)).toBeNull();
   });
 });
