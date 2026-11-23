@@ -495,8 +495,38 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     assert.equal(brief.brief.briefVersion, question.briefVersion + 1, 'Exactly one new brief version was saved');
     assert.equal(brief.brief.preferences.body.value, option.value);
     await employee.setViewportSize({ width: 390, height: 844 }); await suite.screenshot(employee, 'saved-followup-390');
+    const activityResponse = employee.waitForResponse((response) => response.request().method() === 'GET'
+      && response.url() === `${suite.apiBase}/activity`);
     await followup.getByRole('link', { name: 'See buddy activity', exact: true }).click();
-    await employee.waitForURL((url) => url.pathname === '/gcsp/activity'); await suite.screenshot(employee, 'saved-followup-activity-390');
+    await employee.waitForURL((url) => url.pathname === '/gcsp/activity');
+    const activityRead = await activityResponse;
+    suite.receipt.savedFollowupActivity = { method: activityRead.request().method(), url: activityRead.url(), status: activityRead.status() };
+    const activityBody = await activityRead.json(); suite.receipt.savedFollowupActivity.body = activityBody;
+    const activity = good({ status: activityRead.status(), body: activityBody }, 'Actual saved-follow-up navigation activity read');
+    assert.equal(activity.runId, suite.receipt.composition.runId);
+    assert.equal(activity.employeeId, suite.input.initialBrief.brief.employeeId);
+    assert.equal(activity.briefVersion, brief.brief.briefVersion, 'Activity uses the newly saved brief version');
+    assert.equal(activity.currentOffer?.offerRef?.offerId, state.offer.offerRef.offerId);
+    assert.equal(activity.currentOffer.state, 'declined'); assert.equal(activity.currentOffer.orderUuid, state.offer.orderUuid);
+    const terminalOffers = activity.offers.filter((row) => row.offerRef.offerId === state.offer.offerRef.offerId);
+    assert.equal(terminalOffers.length, 1); assert.equal(terminalOffers[0].state, 'declined');
+    const activitySummary = employee.locator('.activity-summary[aria-label="Buddy status"]');
+    const activityTimeline = employee.locator('.activity-timeline');
+    await activitySummary.waitFor({ state: 'visible' });
+    await activityTimeline.getByRole('heading', { name: 'Activity', exact: true }).waitFor();
+    await activityTimeline.locator('.activity-timeline-list li').first().waitFor();
+    const activityOfferState = employee.locator('.activity-offer-state');
+    await activityOfferState.waitFor({ state: 'visible' });
+    assert.equal(await activityOfferState.innerText(), 'Declined');
+    const buddyStatus = await activitySummary.locator('.activity-badge').innerText();
+    const timelineRows = await activityTimeline.locator('.activity-timeline-list li').evaluateAll((rows) => rows.map((row) => ({
+      label: row.querySelector('p')?.textContent, occurredAt: row.querySelector('time')?.getAttribute('datetime'),
+    })));
+    suite.receipt.savedFollowupActivity.rendered = { buddyStatus, timelineRows, summary: await activitySummary.innerText(), timeline: await activityTimeline.innerText() };
+    assert.match(buddyStatus.trim(), /^Buddy (?:engaged|disengaged)$/);
+    assert.ok(timelineRows.length > 0 && timelineRows.every((row) => row.label?.trim()), 'Ready Activity contains actual history entries');
+    assert.notEqual(await employee.locator('.activity-page').getAttribute('aria-busy'), 'true');
+    await suite.screenshot(employee, 'saved-followup-activity-390');
   });
 
   for (const ordering of ['rejected', 'unknown-then-rejected']) {
