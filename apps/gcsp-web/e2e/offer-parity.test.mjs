@@ -196,6 +196,8 @@ async function details(page) {
   const specification = await dialog.locator('.gcsp-vehicle-specification').innerText();
   const equipment = dialog.getByRole('tab', { name: /^Selected equipment/ });
   await equipment.focus(); await page.keyboard.press('Enter');
+  await until(async () => (await equipment.getAttribute('aria-selected')) === 'true', 'Selected equipment tab is active');
+  await dialog.locator('.gcsp-vehicle-equipment').waitFor({ state: 'visible' });
   const equipmentText = await dialog.locator('.gcsp-vehicle-equipment').innerText();
   assert.ok(specification.trim() && equipmentText.trim());
   await page.keyboard.press('Escape'); await dialog.waitFor({ state: 'hidden' });
