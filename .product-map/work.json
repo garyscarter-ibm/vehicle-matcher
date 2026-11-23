@@ -10746,20 +10746,29 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-23T00:16:14.987181+00:00",
-          "expires_at": "2026-11-23T01:01:14.987181+00:00",
+          "expires_at": "2026-11-23T00:41:42.562696+00:00",
           "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
-          "status": "active; initial plan and pure source ports"
+          "status": "stopped; child422; launcher continues"
+        },
+        {
+          "name": "usget-vesper launcher",
+          "harness": "codex",
+          "role": "dispatcher carrying source implementation",
+          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
+          "status": "active; F556 source checkpoint publication"
         }
       ],
-      "note": "Parent native Jira read-back at allocation: In Progress/Russell/13/start2026-11-23; original6AC unticked. Full13point/four-slice plan in _dev/in-progress/DEV-2026-11-22-vesper-029.md. Canonical F555 tracker a9fdc1c/F551 timeline766/F550 refreshc872 require supported integration, no copying/manual stacking. No-show parity in originalscope; F562/F564 decision and real same-state1280pair remain open. Source-only work is not acceptance; no Done authority.",
-      "observed_at": "2026-11-23T00:16:15Z",
+      "note": "Parent native Jira read-back at allocation: In Progress/Russell/13/start2026-11-23; original6AC unticked. Full13point/four-slice plan in _dev/in-progress/DEV-2026-11-22-vesper-029.md. Canonical F555 tracker a9fdc1c/F551 timeline766/F550 refreshc872 require supported integration, no copying/manual stacking. No-show parity in originalscope; F562/F564 decision and real same-state1280pair remain open. Source-only work is not acceptance; no Done authority. Source ports validated: 17 direct/legacy and14 actual Gallery caller cases; all6AC remain open. Launcher continues after child422, no independent source verdict or rendered proof yet.",
+      "observed_at": "2026-11-23T00:41:59Z",
       "slices": [
         {
           "id": "source-ports",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Pure TaskList and SlotPicker source ports (3 points)",
-          "observed_at": "2026-11-23T00:16:15Z",
-          "evidence": "Accepted full13point plan; Chester allocated two pure source ports. No source/tests/acceptance evidence yet. Orders and connected composition remain unallocated; all6AC open."
+          "observed_at": "2026-11-23T00:40:55Z",
+          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json."
         },
         {
           "id": "tracker-documents",

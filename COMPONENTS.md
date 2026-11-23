@@ -504,7 +504,9 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 
 | Angular primitive | Use and semantics |
 | --- | --- |
-| `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. |
+| `button[gcspButton]`, `a[gcspButton]` | Primary/ghost shared action treatment. Native buttons retain type, disabled and click semantics; navigation uses links. Existing callers keep the default `presentation="legacy"`. Frozen Node ports use `presentation="source"` with `variant="primary"` (default) or `"ghost"`, emitting exact `vm-btn vm-btn-primary` / `vm-btn vm-btn-ghost` classes for the global Node CSS. Use this option instead of duplicating the source button primitive or CSS. Gallery: Source action styles. |
+| `section[gcspTaskList]` | Port of frozen `kit/task-list.js`: inputs `heading`, `groups: readonly TaskGroup[]`, `emptyText`, `level` (1–6) and `rows`. Each group has an optional heading and supplied items with identity, label, owner, status, tone, due, detail/reason and optional action. Keeps the source `section.gcsp-task-list`, group/list/row/state classes, London due-time copy and native source buttons. Disabled or missing callbacks stay disabled; reasons describe their button. The caller owns `action.onSelect(id)` and all effects. Use for owned task checklists instead of screen-built lists. Gallery: Owned tasks and other owners. |
+| `ul[gcspSlotPicker]` | Port of frozen `kit/slot-picker.js`: inputs `slots` (supplied objects with `start`), `actionLabel`, optional `onPick(slot)`, `disabled` and `className`. Keeps the source root/day/time structure and classes, supplied order, London day/DST grouping, complete button names and `data-focus-key`. No callback gives static times; callbacks receive the exact supplied object. Missing, null, empty, nonstring or invalid starts are omitted, never inferred as an epoch appointment. Use for offered appointment times instead of local time lists. Gallery: Offered appointment times, interactive and read-only. |
 | `gcsp-screen-intro` | Required title, optional concise lede/kicker and h1/h2/h3 level. Page h1 accepts arrival focus. Level 3 (`h3.gcsp-intro-title`) nests the title under an embedded h2 section with the same look as the h2. |
 | `gcsp-status-screen` | Loading, unavailable, denied or unavailable-feature body; shared intro, busy/announcement semantics and projected actions. `level` (1, 2 or 3) follows the host section: an embedded h2 body passes 3 (FUCQ-502). |
 | `gcsp-labelled-field` | Associated label and stable hint/error IDs from required `controlId`. Caller supplies its native input with matching `id`, `aria-describedby` and `aria-invalid`. |
@@ -515,6 +517,8 @@ FUCQ-439 introduces native standalone Angular equivalents because the DOM factor
 | `ShellComponent` / `AuthPort` | Native Angular shell/router and typed account states, role destinations, narrow menu, account disclosure, skip link and deliberate auth actions. Default auth is unavailable until the real adapter is wired; no successful fixture login. |
 
 App-local gallery: `/gcsp/components`. Focused Angular tests exercise role policy/direct-entry guards, state presentation and rendered kit semantics; app-local boundary checks enforce semantic colours, pinned production AOT and the CSP/controller boundary. Browser and real OIDC/Java acceptance remain separate gates; future feature bodies reuse this kit.
+
+FUCQ-556's TaskList/SlotPicker checkpoint is a source port only. It consumes the global source CSS owned by FUCQ-548; supported integration, Orders composition, keyboard/browser review and the live same-state 1280px Node/Angular pair remain open. The canonical migration Port status inventory is owned by FUCQ-548 and is not recreated on this unmerged branch.
 
 ### Angular preferences and rating (FUCQ-441)
 
