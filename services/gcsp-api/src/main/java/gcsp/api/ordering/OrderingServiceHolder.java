@@ -4,7 +4,7 @@ import gcsp.api.claims.ManualReviewDetails;
 import gcsp.api.claims.ManualReviewDetailsHolder;
 import gcsp.api.claims.ReviewResult;
 import gcsp.api.persistence.Persistence;
-import gcsp.api.policy.PolicyClock;
+import gcsp.api.claims.ClaimClock;
 import gcsp.api.policy.PolicyService;
 import io.agroal.api.AgroalDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,7 +32,7 @@ public class OrderingServiceHolder {
     PolicyService policy;
 
     @Inject
-    PolicyClock clock;
+    ClaimClock clock;
 
     @Inject
     ManualReviewDetailsHolder reviewDetails;
@@ -47,7 +47,7 @@ public class OrderingServiceHolder {
         if (!persistence.active()) return Optional.empty();
         if (service == null) {
             AgroalDataSource ds = dataSource.get();
-            service = new OrderingService(ds, new OrderingTerms(policy, clock),
+            service = new OrderingService(ds, new OrderingTerms(policy, clock::now),
                     bindings.provider(ds)).withReviewFreeze(this::freeze);
         }
         return Optional.of(service);

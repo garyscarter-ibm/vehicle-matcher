@@ -204,7 +204,8 @@ public final class OrderingService {
         OrderingResult existing = existing(scope, id, digest);
         if (existing != null) return replayed(existing);
 
-        Instant now = terms.now(scope);
+        Instant now = businessNow(scope);
+        if (now == null) return new OrderingResult.Unavailable("ordering-policy-unavailable");
         OrderingTerms.TermsRead tr = terms.terms(scope, now);
         if (tr instanceof Failed f) return new OrderingResult.Unavailable(f.code());
         ObjectNode termsValue = ((TermsOk) tr).value();
@@ -372,6 +373,7 @@ public final class OrderingService {
         if (r == null) return new OrderingResult.Refused("not-found", 404, null);
         if (!r.employeeId().equals(scope.employeeId())) return new OrderingResult.Refused("forbidden", 403, null);
         if (!r.open() || "none".equals(provider.mode())) return result(r);
+        if (businessNow(scope) == null) return new OrderingResult.Unavailable("ordering-policy-unavailable");
 
         // Claim: one driver at a time holds the lease and the version, so one provider call is in flight.
         Instant now = wall.get();
@@ -411,13 +413,9 @@ public final class OrderingService {
             outcome.put("status", "unknown").put("reason", resp == null ? "provider-unreachable"
                     : reason(resp.reason(), resp.status().name().toLowerCase(java.util.Locale.ROOT)));
         }
-        Instant at;
-        try {
-            at = terms.now(scope);
-        } catch (RuntimeException e) {
-            at = wall.get();
-        }
-        Instant occurredAt = at;
+        Instant occurredAt = businessNow(scope);
+        // A provider may already have acted. Keep the durable pending intent and reconcile its same key later.
+        if (occurredAt == null) return current(scope, id);
         Instant retryAt = wall.get().plus(backoff);
         Outcome fin = runner.execute(actor, new Command("ordering.finish", "ordering:finish:" + id + ":" + claimed,
                 outcome), tx -> finishWork(tx, scope, r, claimed, confirmed ? "acknowledged" : rejected ? "refused" : "pending",
@@ -471,6 +469,14 @@ public final class OrderingService {
     }
 
     // ---- helpers ----
+
+    private Instant businessNow(OrderingScope scope) {
+        try {
+            return terms.now(scope);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
 
     private static boolean matches(ProviderResponse r, OrderingScope scope, ProviderRequest q) {
         return q.operationId().equals(r.operationId()) && scope.runId().equals(r.runId()) && q.orderUuid().equals(r.orderUuid());

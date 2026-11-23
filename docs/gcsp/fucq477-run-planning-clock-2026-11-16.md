@@ -23,10 +23,10 @@ The read is one selected read that only returns the active run's clock, so envir
 
 ## FUCQ-515
 `PostgresPlanningSupply` judges each occupying hold's expiry against the clock that stamped it, so an advanced run clock no longer makes a fresh cart hold look expired.
-- Cart hold (`hold_type='cart'`): expired when `expires_at <= ClaimClock.now`, observed once per read and truncated to milliseconds like `ManualClaims`. Claims stay on wall time (`PolicyClaimClock`), which ordering also compares.
+- Cart hold (`hold_type='cart'`): expired when `expires_at <= ClaimClock.now`, observed once per read and truncated to milliseconds like `ManualClaims`. FUCQ-581 binds persisted claims and ordering to the scoped presenter run clock through `RunClaimClock`; persistence-off keeps `PolicyClaimClock`. The consumer still follows the `ClaimClock` port rather than substituting planning time.
 - Buddy-offer hold: expired when `expires_at <= asOf` (the run clock), unchanged. Any other or missing `hold_type`, a missing expiry or slot, or more than one occupying hold stays `planning-held-stock-unresolved`.
 - A claim clock that throws or answers nothing is `planning-supply-unavailable`, never a fallback. The claim instant is not part of the double-read conflict check.
-- Existing wall-stamped cart holds need no migration: they are judged by their own wall-time authority.
+- Existing `quote.validUntil` and hold `expiresAt` remain unchanged absolute instants. Their original wall-versus-run provenance is not encoded: FUCQ-581 does not guess a rebase, rewrite timestamps, reset state or claim to repair historical clock provenance. Existing expiry, explicit release and reconciliation compare those retained instants with the corrected scoped authority. Live deployment/cutover remains outside this local repair.
 
 ## Unrun
 Compiled and run on native PostgreSQL in FUCQ-477 slice A (planning package plus `ProductionPlanCompositionTest`). Not run in the browser. `RunPlanningClockTest` needs no database; `PostgresPlanningSupplyTest` needs `GCSP_TEST_DATABASE_URL`.
