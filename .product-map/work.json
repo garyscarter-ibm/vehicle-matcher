@@ -10732,7 +10732,7 @@
       "branch": "dev/DEV-2026-11-22-vesper-028",
       "evidence": "Native claim remains In Progress at21points; all8 original ACs unchanged/unticked. Source checkpoints a9fdc1cee and90999d25e published and exact remote verified. Independent stage-only review passed; decision review/integration/source-final/connected/human parity remain separate. Next parent allocation: canonical Tabs/compatible FactList only.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T02:33:52Z",
+      "observed_at": "2026-11-23T03:00:33Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10764,9 +10764,9 @@
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
         {
-          "evidence": "Saved Activity exit053c820bc and now Documents source jumps to real terms/driver/replacement-return records;56OfferScreen+35interaction-store cases,boundaries/inline4,ratchet124. ErrorSummary/Checkbox/OptionList composition, source drawer outer styles and supported CSS/Button integration still open. No live pair or acceptance.",
+          "evidence": "Source Documents and saved Activity exits plus canonical drawer controls/errors/facts/footer now composed; 30 OptionList + 63 OfferScreen + 35 interaction-store + 37 Stock/route/Gallery cases passed. Uncertain outcome still follows the unchanged Angular store; full source-state and CSS/Button integration/connected/human proof remain open.",
           "id": "decision-followup",
-          "observed_at": "2026-11-23T02:33:52.452783+00:00",
+          "observed_at": "2026-11-23T03:00:33.196863+00:00",
           "status": "in-progress",
           "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
         },
@@ -10818,13 +10818,13 @@
           "name": "usget-vesper launcher",
           "harness": "codex",
           "role": "launcher carrying F555 original view implementation",
-          "observed_at": "2026-11-23T02:33:52.452783+00:00",
-          "expires_at": "2026-11-23T03:03:52.452783+00:00",
+          "observed_at": "2026-11-23T03:00:33.196863+00:00",
+          "expires_at": "2026-11-23T03:30:33.196863+00:00",
           "source": "Observed direct work after repeated child422, AGENTS6November; runtime pair not independently exposed, no model/provider/key change.",
-          "status": "active; validated original Documents jumps source checkpoint"
+          "status": "active; validated source drawer controls/composition checkpoint"
         }
       ],
-      "note": "All8originalAC open. Saved Activity exit053c820bc published. OriginalAC7 Documents jumps now restore actual terms/driver/replacement-return targets without changing entered data or submitting;56OfferScreen+35store cases, boundaries/inline4 and ratchet124. Remaining source drawer controls/errors/outer styles, full offer composition/integration/build/browser/live1280pair open."
+      "note": "All eight original ACs remain open. Canonical source drawer facts, sections, checkbox/radio rows, error links, touched mileage, owned asynchronous reason focus and modal-accessible footer announcements are composed. 165 scoped Angular cases plus boundaries/inline4 and ratchet124 passed. Full offer composition, uncertain-state equivalence, supported sibling integration/build/browser/live pair remain open."
     }
   ],
   "version": 1

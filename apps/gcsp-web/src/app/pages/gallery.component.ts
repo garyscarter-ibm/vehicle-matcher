@@ -35,9 +35,9 @@ import { OptionListComponent } from '../kit/option-list.component';
     <p role="status">Example choices only. No changes have been saved.</p>
   </section>
   <section class="gcsp-panel"><h2>Source radio rows</h2>
-    <gcsp-option-list groupId="gallery-decline-reason" label="Example reason for declining" variant="rows" [options]="exampleReasons" [value]="selectedReason()" (valueChange)="selectedReason.set($event)" />
+    <gcsp-option-list groupId="gallery-decline-reason" label="Example reason for declining" variant="rows" [required]="true" [invalid]="!selectedReason()" [options]="exampleReasons" [value]="selectedReason()" (valueChange)="selectedReason.set($event)" />
     <p role="status">Example choice only. Nothing has been submitted.</p>
-    <gcsp-option-list groupId="gallery-decline-reason-disabled" label="Example unavailable reasons" variant="rows" [options]="exampleReasons" [value]="selectedReason()" [disabled]="true" />
+    <gcsp-option-list groupId="gallery-decline-reason-disabled" label="Example unavailable reasons" variant="rows" [required]="true" [invalid]="false" [options]="exampleReasons" [value]="selectedReason()" [disabled]="true" />
   </section>
   <section class="gcsp-panel"><h2>Source validation summary</h2>
     <gcsp-error-summary #sourceSummary presentation="source" summaryId="gallery-source-summary" title="Check before continuing" [errors]="[{ controlId: 'gallery-summary-email', message: 'Enter an email address.' }]" />

@@ -167,10 +167,74 @@ describe('native offer read screen', () => {
     expect(dialog.querySelector('.gcsp-offer-document-links')).toBeNull(); expect(dialog.textContent).not.toContain('Documents');
     expect(client['decide']).not.toHaveBeenCalled();
   });
+  it('composes the source drawer sections, fact lists, declaration rows and direct footer children', async () => {
+    const dialog = await reviewAcceptance(); const content = dialog.querySelector<HTMLElement>('.gcsp-offer-drawer-content');
+    expect(content).not.toBeNull(); expect(content?.querySelector('.gcsp-offer-drawer-vehicle')?.textContent).toContain('Alpine White · Black Veganza');
+    const driver = content?.querySelector<HTMLElement>('[id$="-driver-record"]');
+    expect(Array.from(driver!.querySelectorAll('dl.vm-facts dt')).map(node => node.textContent)).toEqual(['Nominated driver', 'Licence number', 'Valid until', 'Car entitlement']);
+    expect(driver?.textContent).toContain('Paula Mason'); expect(driver?.textContent).toContain('Car');
+    const declarations = content?.querySelector<HTMLElement>('section[aria-label="Declarations"]'); expect(declarations?.getAttribute('role')).toBe('group');
+    const rows = Array.from(declarations!.querySelectorAll<HTMLElement>('div[gcspCheckboxField].gcsp-check')); expect(rows).toHaveLength(3);
+    for (const row of rows) { const input = row.querySelector('input')!; expect(row.querySelector('label')?.htmlFor).toBe(input.id); expect(row.firstElementChild).toBe(input); }
+    const foot = dialog.querySelector('.gcsp-side-drawer-foot')!;
+    expect(foot.querySelector(':scope > .gcsp-offer-decision-note')).not.toBeNull(); expect(foot.querySelectorAll(':scope > .gcsp-offer-decision-button')).toHaveLength(2);
+    expect(foot.querySelector('.decision-footer')).toBeNull(); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('shows the source decline summary and focuses the actual required radio without posting an empty reason', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="decline"]')!.click(); await settle();
+    const dialog = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('[role="dialog"]')!;
+    const confirm = dialog.querySelector<HTMLButtonElement>('[data-offer-action="confirm"]')!; expect(confirm.disabled).toBe(false); confirm.click(); await settle();
+    const summary = dialog.querySelector<HTMLElement>('.gcsp-error-summary')!; expect(summary.hidden).toBe(false); expect(summary.textContent).toContain('Choose a reason.');
+    const heading = summary.querySelector('h2')!; expect(heading.textContent).toBe('Check before continuing'); expect(document.activeElement).toBe(heading);
+    const live = dialog.querySelector<HTMLElement>('.gcsp-side-drawer-foot [role="status"]'); expect(live?.textContent).toBe('Choose a reason.'); expect(live?.closest('[inert]')).toBeNull();
+    const group = dialog.querySelector<HTMLElement>('.vm-options-rows[role="radiogroup"]')!; expect(group.getAttribute('aria-required')).toBe('true'); expect(group.getAttribute('aria-invalid')).toBe('true');
+    const radio = group.querySelector<HTMLButtonElement>('button[role="radio"][tabindex="0"]')!;
+    summary.querySelector<HTMLAnchorElement>('a')!.click(); expect(document.activeElement).toBe(radio); expect(client['decide']).not.toHaveBeenCalled();
+    radio.click(); await settle(); expect(summary.hidden).toBe(true); expect(group.getAttribute('aria-invalid')).toBe('false'); expect(radio.getAttribute('aria-checked')).toBe('true');
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it.each([false, true])('preserves source reason-loading focus ownership when the user moved to cancel: %s', async moved => {
+    let complete!: (value: unknown) => void; client['readDecisionReasons'].mockImplementationOnce(() => new Promise(resolve => { complete = resolve; }));
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="decline"]')!.click(); await settle();
+    const dialog = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('[role="dialog"]')!;
+    const status = Array.from(dialog.querySelectorAll('p')).find(node => node.textContent === 'Loading reasons.')!; expect(document.activeElement).toBe(status);
+    const cancel = Array.from(dialog.querySelectorAll('button')).find(button => button.textContent === 'Keep this offer')!; if (moved) cancel.focus();
+    complete({ status: 'ok', value: { schemaVersion: 1, key: 'offer.declineReasons.v1', policyVersion: 'policy-v2', reasons: [{ code: 'body', label: 'Body style', attribute: 'body' }], provenance: { status: 'assumed', basis: 'fixture', source: 'fixture', sourceDate: '2026-11-14' } } }); await settle();
+    expect(document.activeElement).toBe(moved ? cancel : dialog.querySelector('button[role="radio"][tabindex="0"]')); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('focuses the actual source retry control when the reason registry is unavailable', async () => {
+    client['readDecisionReasons'].mockResolvedValueOnce({ status: 'unavailable' });
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="decline"]')!.click(); await settle();
+    const retry = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="reasons-refresh"]');
+    expect(retry?.hidden).toBe(false); expect(document.activeElement).toBe(retry); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('links touched return-mileage validation to the actual input and clears it on a valid controlled value', async () => {
+    const dialog = await reviewAcceptance(); const mileage = dialog.querySelector<HTMLInputElement>('input[type="text"]')!;
+    const summary = dialog.querySelector<HTMLElement>('.gcsp-error-summary'); expect(summary).not.toBeNull(); expect(summary?.hidden).toBe(true);
+    mileage.dispatchEvent(new Event('blur')); await settle(); expect(summary?.hidden).toBe(false); expect(mileage.getAttribute('aria-invalid')).toBe('true');
+    expect(mileage.getAttribute('aria-describedby')).toContain(mileage.id + '-error');
+    const link = summary!.querySelector<HTMLAnchorElement>('a')!; expect(link.getAttribute('href')).toBe('#' + mileage.id); link.click(); expect(document.activeElement).toBe(mileage);
+    mileage.value = '006100'; mileage.dispatchEvent(new Event('input')); await settle(); expect(mileage.value).toBe('006100'); expect(summary?.hidden).toBe(true); expect(mileage.hasAttribute('aria-invalid')).toBe(false);
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('keeps native fields and dismissal locked while the explicit acceptance command is pending', async () => {
+    let finish!: (value: OfferFailure) => void; client['decide'].mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+    const dialog = await reviewAcceptance(); const mileage = dialog.querySelector<HTMLInputElement>('input[type="text"]')!;
+    mileage.value = '6100'; mileage.dispatchEvent(new Event('input')); await settle();
+    for (const box of Array.from(dialog.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'))) box.click(); await settle();
+    dialog.querySelector<HTMLButtonElement>('[data-offer-action="confirm"]')!.click(); await settle();
+    expect(Array.from(dialog.querySelectorAll('input')).every(input => input.disabled)).toBe(true);
+    expect(dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')?.disabled).toBe(true);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')?.hidden).toBe(false);
+    expect(client['decide']).toHaveBeenCalledTimes(1); finish({ status: 'pending' }); await settle(); expect(client['decide']).toHaveBeenCalledTimes(1);
+  });
   it('loads server decline reasons and offers a separate explicit preference confirmation', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     fixture.nativeElement.querySelector('[data-offer-action="decline"]').click(); await settle();
-    const reason = fixture.nativeElement.querySelector('[role="dialog"] input[type="radio"]'); expect(reason.value).toBe('body');
+    const reason = fixture.nativeElement.querySelector('[role="dialog"] :is(input[type="radio"], button[role="radio"])'); expect(reason.value).toBe('body');
     reason.click(); await settle(); fixture.nativeElement.querySelector('[role="dialog"] [data-offer-action="confirm"]').click(); await settle();
     expect(text()).toContain('Offer declined'); expect(text()).toContain('One change to your preferences');
     expect(fixture.nativeElement.querySelector('[data-followup-link="activity"]')).toBeNull();
@@ -202,7 +266,7 @@ describe('native offer read screen', () => {
     client['decide'].mockResolvedValue({ status, reason: 'PRIVATE provider details' });
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     fixture.nativeElement.querySelector('[data-offer-action="decline"]').click(); await settle();
-    fixture.nativeElement.querySelector('[role="dialog"] input[type="radio"]').click(); await settle();
+    fixture.nativeElement.querySelector('[role="dialog"] :is(input[type="radio"], button[role="radio"])').click(); await settle();
     fixture.nativeElement.querySelector('[role="dialog"] [data-offer-action="confirm"]').click(); await settle();
     expect(text()).not.toContain('PRIVATE'); expect(text()).toMatch(/not.*confirmed|offer changed/i);
     expect(fixture.nativeElement.querySelector('[data-offer-action="accept"]')).toBeNull();

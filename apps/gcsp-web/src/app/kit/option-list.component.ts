@@ -20,6 +20,8 @@ export class OptionListComponent implements DoCheck, AfterViewChecked {
   readonly value = input<string | null>(null);
   readonly disabled = input(false);
   readonly variant = input<'default' | 'rows'>('default');
+  readonly required = input<boolean | undefined>(undefined);
+  readonly invalid = input<boolean | undefined>(undefined);
   readonly valueChange = output<string>();
   private readonly buttons = viewChildren<ElementRef<HTMLButtonElement>>('optionButton');
   private restoreFocusValue: string | undefined;

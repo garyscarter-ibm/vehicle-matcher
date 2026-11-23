@@ -40,6 +40,18 @@ function key(button: HTMLButtonElement, value: string) {
 }
 
 describe('OptionListComponent', () => {
+  it('keeps optional required/invalid semantics absent for existing callers', async () => {
+    const { fixture } = await render(); const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement;
+    expect(group.hasAttribute('aria-required')).toBe(false); expect(group.hasAttribute('aria-invalid')).toBe(false);
+  });
+  it.each(['required', 'invalid'])('exposes caller-owned %s semantics on the actual radio group without changing its value or focus', async name => {
+    const { fixture, emitted, buttons } = await render('estate', choices, false, 'rows');
+    const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement; buttons()[2].focus();
+    fixture.componentRef.setInput(name, true); await fixture.whenStable(); expect(group.getAttribute(`aria-${name}`)).toBe('true');
+    fixture.componentRef.setInput(name, false); await fixture.whenStable(); expect(group.getAttribute(`aria-${name}`)).toBe('false');
+    fixture.componentRef.setInput(name, undefined); await fixture.whenStable(); expect(group.hasAttribute(`aria-${name}`)).toBe(false);
+    expect(document.activeElement).toBe(buttons()[2]); expect(fixture.componentInstance.value()).toBe('estate'); expect(emitted).toEqual([]);
+  });
   it('ports source single-select rows with supplied labels, zero counts and exact state classes', async () => {
     const { fixture, emitted, buttons } = await render('old', choices, false, 'rows');
     const group = fixture.nativeElement.querySelector('[role="radiogroup"]') as HTMLElement;
