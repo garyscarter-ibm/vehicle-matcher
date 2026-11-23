@@ -37,6 +37,11 @@ describe('order plan screen', () => {
     expect(table.querySelectorAll('th[scope="col"]').length).toBe(3); expect(table.querySelector('th[scope="row"]')?.textContent).toBe('3 Series');
     expect(root.querySelector('details.plan-limits')?.hasAttribute('open')).toBe(false);
   });
+  it('keeps the standalone h1 by default and permits nesting under a route-owned heading', () => {
+    const root = fixture.nativeElement as HTMLElement; expect(root.querySelector('h1')?.textContent).toBe('Next order');
+    fixture.componentRef.setInput('headingLevel', 2); fixture.detectChanges();
+    expect(root.querySelector('h1')).toBeNull(); expect(root.querySelector('.planning-heading h2')?.textContent).toBe('Next order');
+  });
   it('associates native editor labels and hints, and forwards actual input without conversion', () => {
     const root = fixture.nativeElement as HTMLElement; const input = root.querySelector('input')!;
     expect(root.querySelector('label')?.htmlFor).toBe(input.id); expect(input.getAttribute('aria-describedby')).toContain(input.id + '-hint');

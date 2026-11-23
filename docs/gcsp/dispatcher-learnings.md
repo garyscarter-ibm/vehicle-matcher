@@ -2909,3 +2909,21 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-22 20:32 UTC · usget-vesper · DL-20261117-GCC-013 · Unbounded map projection
 
 - The generic product_map.py snapshot projected all historical branches and emitted an oversized response (the command tool reported 9,942,595 bytes omitted). No completion or freshness claim relies on it. Use the authored per-story plan/slice records and bounded output projections for this run; a producer-level bounded snapshot remains a proposed framework improvement. No extra validation run was added.
+
+
+### 2026-11-22 20:39 UTC · usget-vesper · Branch publication and reconciliation observations
+
+- Petunia Pig correctly distinguished the FUCQ-548 planning commit eaecbc88e on its story branch from scaffold_git.py push reporting only the configured base ref. The helper push subcommand targets base by design; its output does not prove story-branch publication. Existing human checkpoint-push authority permits a guarded, non-force explicit story-ref push through the scaffold_git Git wrapper, with the remote tip read back. No helper change or extra approval gate was added.
+- Full open-Bug reconciliation fetched all 248 rows with attachments present, then imported with zero failures. FUCQ-76 and FUCQ-399 are Rejected in a non-Done status category, so the open-Bug query includes them and the importer intentionally skips them. Because reconciliation marking also requires no skipped rows, the helper keeps requesting a complete reconciliation query. This is a bounded tooling inefficiency, not an Angular repair blocker; no marker was hand-edited or guard bypassed.
+
+
+### 2026-11-22 · usget-vesper · Java scenario gap found by live parity preparation
+
+- FUCQ-548's real Java/OIDC/PG baseline preparation returned503 for Main successful journey; all8capabilities are unconditionally missing in ScenarioCatalogue.java47-48. Source/history confirms FUCQ-479 introduced that catalogue (d31a5f516), despite route-based earlier completion evidence. Recorded High Bug FUCQ-562 under433, related479 and561; no Java repair or named-reset success claimed. This is the concrete benefit of preparing the named live scenario rather than proving only a route/JSON shape.
+- Public editor confirmation is not the trusted scenario loader: its3-category engagement gate correctly refuses the frozen1-category Main starting brief. Do not weaken the gate or add preferences to make a test pass. Parent approved only immutable initial-state fixtures in the owned testDB plus exact frozen tranche inputs; actual Java release/allocation must create outcomes. Equivalence remains to prove. CSS/bell work continues;562 routing is pending Russell's answer and no claimed548 scope was widened.
+
+
+### 2026-11-23 · usget-vesper human pickup · DL-20261123-F555-01 · Async feedback terminal state
+
+- Independent F555 review found a manual Check could announce completion on an intermediate pending-at-zero snapshot while its bounded expiry reread remained active, and could retain ownership through an observed sign-out/same-account return. Reproduced both before repair; read-only existing-store lifecycle/authority views now let the presenter await the real terminal read and reject obsolete ownership. Preserved the source deadline announcement with another reproduced regression. Final233scoped cases and28controlled keyboard/rendered captures pass; actual connected parity remains open. This verifies the bounded presenter correction, not the whole Bug. Proposed workflow improvement: include terminal-read/authority epochs in async presenter test selection rather than treating any nonloading snapshot as completion.
+- The isolated render harness initially threw ERR_HTTP_HEADERS_SENT on a missing asset because it wrote200 before reading bytes. Read-before-header corrected the harness; final supervised run passed and all20owned roots/groups are absent. No product test was hidden or retried into a success claim; failure evidence remains in offer-check-pickup-20261123.

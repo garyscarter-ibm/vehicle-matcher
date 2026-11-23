@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -19,7 +20,7 @@ describe('planning route composition', () => {
   beforeEach(async () => {
     state.set({ status: 'ready', context }); submit.mockReset().mockResolvedValue({ status: 'pending', reason: 'Waiting for Production.', operationId: 'operation-1', httpStatus: 202 });
     readPlan.mockReset().mockResolvedValue({ status: 'ok', value: value() }); readProduction.mockReset().mockResolvedValue({ status: 'ok', value: { asOf: '2026-11-16T12:00:00Z', provider: {}, submissions: [], requests: [] } });
-    await TestBed.configureTestingModule({ imports: [PlanningRouteComponent], providers: [{ provide: AuthPort, useValue: { state, signIn: vi.fn(), retry: vi.fn() } },
+    await TestBed.configureTestingModule({ imports: [PlanningRouteComponent], providers: [provideRouter([{ path: 'greg/plan', component: PlanningRouteComponent }]), { provide: AuthPort, useValue: { state, signIn: vi.fn(), retry: vi.fn() } },
       { provide: PlanningClient, useValue: { readPlan, readProduction, previewPlan: vi.fn(), submit } }] }).compileComponents();
   });
   it('shares one route-owned store between both native Angular sections without auto submission', async () => {
@@ -28,6 +29,16 @@ describe('planning route composition', () => {
     expect(order.injector.get(PlanningStore)).toBe(production.injector.get(PlanningStore));
     await vi.waitFor(() => expect(order.injector.get(PlanningStore).plan()?.planId).toBe('plan-1'));
     expect(submit).not.toHaveBeenCalled(); expect((fixture.nativeElement as HTMLElement).querySelectorAll('h1').length).toBe(1);
+  });
+  it('keeps the selected planning heading before the six tabs for Next order and Order requests', async () => {
+    const fixture = TestBed.createComponent(PlanningRouteComponent); fixture.detectChanges(); await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    const heading = root.querySelector('h1')!;
+    expect(heading.closest('[role=tabpanel]')).toBeNull(); expect(heading.textContent).toBe('Next order');
+    Array.from(root.querySelectorAll<HTMLButtonElement>('[role=tab]')).find(tab => tab.textContent === 'Order requests')!.click();
+    await fixture.whenStable(); fixture.detectChanges();
+    expect(root.querySelector('h1')?.textContent).toBe('Order requests'); expect(root.querySelector('h1')?.closest('[hidden]')).toBeNull();
+    expect(root.querySelector('[role=tab][aria-selected=true]')?.textContent).toBe('Order requests');
   });
   it('composes a deliberate request with pending feedback and renders outcome focus after the action', async () => {
     const fixture = TestBed.createComponent(PlanningRouteComponent); fixture.detectChanges(); await fixture.whenStable();

@@ -1,15 +1,16 @@
 import { ChangeDetectorRef, Component, computed, DestroyRef, effect, ElementRef, HostListener, inject, signal, untracked, viewChild, ViewEncapsulation } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthPort, Role } from '../auth/auth.port';
 import { safeReturnTo, navigationFor, permits } from '../auth/route-policy';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { breadcrumbsFor, currentDestination } from './shell-navigation';
 import { ButtonDirective } from '../kit/button.directive';
 import { NotificationBellComponent } from '../kit/notification-bell.component';
 import { NotificationModel, emptyNotifications } from '../kit/notification-bell.types';
 import { NotificationSource, notificationScopeKey } from '../activity/notification.source';
-@Component({ selector: 'gcsp-root', imports: [RouterLink, RouterOutlet, RouterLinkActive, ButtonDirective, StatusScreenComponent, NotificationBellComponent], templateUrl: './shell.component.html', encapsulation: ViewEncapsulation.None })
+@Component({ selector: 'gcsp-root', imports: [RouterLink, RouterOutlet, ButtonDirective, StatusScreenComponent, NotificationBellComponent], templateUrl: './shell.component.html', encapsulation: ViewEncapsulation.None })
 export class ShellComponent {
   readonly auth = inject(AuthPort); private readonly changeDetector = inject(ChangeDetectorRef); private readonly router = inject(Router); private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly context = computed(() => { const state = this.auth.state(); return state.status === 'ready' ? state.context : null; });
@@ -17,6 +18,9 @@ export class ShellComponent {
     const words = (this.context()?.displayName ?? '').replace(/\(.*?\)/g, ' ').split(/[\s-]+/).filter(Boolean);
     return words.length ? (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase() : '?';
   });
+  private readonly navigationUrl = signal(this.router.url);
+  readonly breadcrumbs = computed(() => this.routeAllowed() ? breadcrumbsFor(this.navigationUrl(), this.context()?.roles ?? []) : []);
+  isCurrent(destination: string): boolean { return currentDestination(destination, this.navigationUrl()); }
   readonly navigation = computed(() => navigationFor(this.context()?.roles ?? []));
   readonly employee = computed(() => this.context()?.roles.includes('employee') && !this.context()?.roles.includes('presenter'));
   private readonly notificationSource = inject(NotificationSource);
@@ -34,10 +38,13 @@ export class ShellComponent {
     const disconnect = this.notificationSource.connect((model, key) => this.notificationState.set({ key, model }));
     inject(DestroyRef).onDestroy(disconnect);
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd), takeUntilDestroyed()).subscribe(() => {
-      this.menuOpen = false;
+      this.menuOpen = false; this.navigationUrl.set(this.router.url);
       const roles = this.router.routerState.snapshot.root.firstChild?.data['roles'];
       this.routeRoles.set(Array.isArray(roles) ? roles : null);
-      requestAnimationFrame(() => document.querySelector<HTMLElement>('main h1')?.focus());
+      const info = this.router.currentNavigation()?.extras.info;
+      const gregNavigation = typeof info === 'object' && info !== null && 'gcspGregNavigation' in info && info.gcspGregNavigation === true;
+      if (gregNavigation && !('focusTab' in info && info.focusTab === true)) return;
+      requestAnimationFrame(() => this.host.nativeElement.querySelector<HTMLElement>(gregNavigation ? 'main [role=tab][aria-selected=true]' : 'main h1')?.focus());
     });
     effect(() => { if (this.context() && !this.routeAllowed()) untracked(() => void this.router.navigate(['/access-denied'], { replaceUrl: true })); });
   }

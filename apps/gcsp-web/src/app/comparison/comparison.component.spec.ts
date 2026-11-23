@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -33,7 +34,7 @@ describe('comparison inspection and supported Greg commands', () => {
     authState = signal(session()); recovery = signal<RecoveryNotice | null>(null); sessionStorage.clear(); readResults = vi.fn<ComparisonClient['readResults']>().mockResolvedValue(catalogue());
     readJob = vi.fn<ComparisonClient['readJob']>().mockResolvedValue({ status: 'ok', value: { job: null, reruns: true } });
     start = vi.fn<ComparisonClient['start']>().mockResolvedValue({ status: 'pending', value: job() }); retry = vi.fn().mockResolvedValue(undefined); signIn = vi.fn().mockResolvedValue(undefined);
-    await TestBed.configureTestingModule({ imports: [ComparisonComponent], providers: [
+    await TestBed.configureTestingModule({ imports: [ComparisonComponent], providers: [provideRouter([]),
       { provide: AuthPort, useValue: { state: authState, recovery, retry, signIn } }, { provide: ComparisonClient, useValue: { readResults, readJob, start } },
     ] }).compileComponents();
   });
@@ -53,7 +54,7 @@ describe('comparison inspection and supported Greg commands', () => {
   it('renders actual retained measurements, full assumptions, provenance and the fit caveat', async () => {
     const stored = retained(); const units = ['versioned synthetic buddy behaviour', 'versioned synthetic manual behaviour'];
     readResults.mockResolvedValue(catalogue({ ...stored, result: { ...stored.result, assumptions: [...stored.result.assumptions, ...units.map((unit, index) => ({ ...stored.result.assumptions[0], key: `behaviour.${index}`, unit }))] } }));
-    await render(); expect(text()).toContain('Retained baseline'); expect(text()).toContain('1189 (1102 to 1234)'); expect(text()).toContain('3.7 (3 to 4)'); expect(text()).toContain('-1185.3 (-1230 to -1099)'); expect(text()).toContain('Buddy route better');
+    await render(); expect(root().querySelectorAll('[role=tab]')).toHaveLength(6); expect(root().querySelector('[role=tab][aria-selected=true]')?.textContent).toBe('Route comparison'); expect(text()).toContain('Retained baseline'); expect(text()).toContain('1189 (1102 to 1234)'); expect(text()).toContain('3.7 (3 to 4)'); expect(text()).toContain('-1185.3 (-1230 to -1099)'); expect(text()).toContain('Buddy route better');
     expect(text()).toContain('brief.slider.maximum'); expect(text()).toContain('integer slider units'); expect(text()).toContain('Assumed `brief.slider.scale`'); expect(text()).toContain('comparison-a, comparison-b, comparison-c'); expect(text()).toContain('669fbc2f'); expect(text()).toContain('Calculated fit is not observed satisfaction.'); expect(root().querySelectorAll('h1')).toHaveLength(1); expect(text()).toContain('versioned buddy behaviour'); expect(text()).toContain('versioned manual behaviour'); expect(text()).not.toContain('synthetic'); expect(units).toEqual(['versioned synthetic buddy behaviour', 'versioned synthetic manual behaviour']);
     expect(root().querySelector('table caption')?.textContent).toContain('Assumptions'); expect(root().querySelector('th[scope="row"]')?.textContent).toBe('brief.slider.maximum');
   });
@@ -75,7 +76,7 @@ describe('comparison inspection and supported Greg commands', () => {
     expect(root().querySelector<HTMLSelectElement>('#comparison-experiment')!.value).toBe('hold-sweep'); expect(root().querySelector<HTMLOptionElement>('option[value="hold-sweep"]')!.selected).toBe(true);
   });
   it('keeps presenter inspection read-only and guards direct command calls', async () => {
-    authState.set(session(['presenter'])); await render(); expect(text()).toContain('1189'); expect(root().querySelector('.comparison-command')).toBeNull(); expect(root().querySelector('textarea')).toBeNull(); fixture!.componentInstance.start(); fixture!.componentInstance.retryCommand(); await settle(); expect(start).not.toHaveBeenCalled();
+    authState.set(session(['presenter'])); await render(); expect(root().querySelector('[role=tablist]')).toBeNull(); expect(text()).toContain('1189'); expect(root().querySelector('.comparison-command')).toBeNull(); expect(root().querySelector('textarea')).toBeNull(); fixture!.componentInstance.start(); fixture!.componentInstance.retryCommand(); await settle(); expect(start).not.toHaveBeenCalled();
   });
   it('denies employee-only access without reading comparison facts', async () => {
     authState.set(session(['employee'])); await render(); expect(text()).toContain('You cannot open comparisons'); expect(readResults).not.toHaveBeenCalled(); expect(readJob).not.toHaveBeenCalled();

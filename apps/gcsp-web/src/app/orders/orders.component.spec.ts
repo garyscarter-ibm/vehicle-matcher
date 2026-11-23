@@ -62,6 +62,21 @@ describe('native employee order progress screen', () => {
     expect(client.execute).toHaveBeenCalledOnce(); expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'acknowledge', itemId: 'agreement', expectedDocumentsRevision: 3 });
     expect(text()).toContain('op-123'); expect(button('Acknowledge').disabled).toBe(true);
   });
+  it('lets the employee review a new offered time after a missed handover without claiming it is booked', async () => {
+    client.readAppointment.mockResolvedValue(ok({ ...appointment(), state: 'no-show', version: 7,
+      slot: { slotId: 'missed-slot', start: '2026-11-14T09:00:00Z' } }));
+    await render();
+    const panel = (fixture.nativeElement as HTMLElement).querySelector('[aria-labelledby="handover-title"]')!;
+    expect(panel.textContent).toContain('Handover missed'); expect(panel.textContent).not.toContain('Handover booked');
+    const request = panel.querySelector<HTMLButtonElement>('[aria-label^="Request handover"]')!;
+    expect(request).not.toBeNull(); expect(client.execute).not.toHaveBeenCalled();
+    request.click(); fixture.detectChanges(); await fixture.whenStable();
+    expect(text()).toContain('Request this handover time?'); expect(client.execute).not.toHaveBeenCalled();
+    button('Confirm').click(); await commandSettled();
+    expect(client.execute).toHaveBeenCalledOnce();
+    expect(client.execute.mock.calls[0][0]).toMatchObject({ kind: 'request-appointment', orderUuid: 'order', slotId: 'provider-slot', expectedVersion: 7 });
+    expect(text()).toContain('op-123'); expect(panel.textContent).not.toContain('Handover booked');
+  });
   it('cancels review with Escape and makes no command call', async () => {
     await render(); const opener = button('Acknowledge'); opener.focus(); opener.click(); fixture.detectChanges(); const review = (fixture.nativeElement as HTMLElement).querySelector('.order-review')!;
     review.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); fixture.detectChanges();

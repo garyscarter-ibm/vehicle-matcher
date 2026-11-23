@@ -42,7 +42,7 @@ describe('route state presentation', () => {
     state.set({ status: 'ready', context: { ...context, roles: ['greg'] } });
     const harness = await RouterTestingHarness.create('/missing/nested-page?brand=mini#entry');
     harness.routeNativeElement!.querySelector('button')!.click(); await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/greg?brand=mini#entry');
+    expect(TestBed.inject(Router).url).toBe('/greg/plan?brand=mini#entry');
     expect(signIn).not.toHaveBeenCalled(); expect(retry).not.toHaveBeenCalled();
   });
   it('retains a new offer link including its query and fragment when starting sign-in', async () => {
@@ -62,7 +62,7 @@ describe('route state presentation', () => {
     expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toBe('Account unavailable');
     retry.mockImplementation(async () => { state.set({ status: 'ready', context: { ...context, roles: ['greg'] } }); });
     harness.routeNativeElement!.querySelector('button')!.click(); await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/greg?brand=mini#home');
+    expect(TestBed.inject(Router).url).toBe('/greg/plan?brand=mini#home');
   });
   it('offers sign-in with the requested route when retry discovers a signed-out session', async () => {
     const harness = await RouterTestingHarness.create('/unavailable?returnTo=%2Fgcsp%2Foffers%2Foffer-7%3Fbrand%3Dmini%23decision');
@@ -76,12 +76,12 @@ describe('route state presentation', () => {
   it('completes sign-in through the safe root and retains launcher context at role landing', async () => {
     completeSignIn.mockImplementation(async () => { state.set({ status: 'ready', context: { ...context, roles: ['greg'] } }); return '/gcsp/?brand=bmw#home'; });
     const harness = await RouterTestingHarness.create('/auth/callback'); await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/greg?brand=bmw#home'); expect(completeSignIn).toHaveBeenCalledOnce();
+    expect(TestBed.inject(Router).url).toBe('/greg/plan?brand=bmw#home'); expect(completeSignIn).toHaveBeenCalledOnce();
   });
   it('contains an unsafe retry destination at the authorized role landing', async () => {
     const harness = await RouterTestingHarness.create('/unavailable?returnTo=https%3A%2F%2Fother.invalid%2Faccount');
     retry.mockImplementation(async () => { state.set({ status: 'ready', context: { ...context, roles: ['greg'] } }); return 'https://other.invalid/account'; });
     harness.routeNativeElement!.querySelector('button')!.click(); await harness.fixture.whenStable();
-    expect(TestBed.inject(Router).url).toBe('/greg');
+    expect(TestBed.inject(Router).url).toBe('/greg/plan');
   });
 });

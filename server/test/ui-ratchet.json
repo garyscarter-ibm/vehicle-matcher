@@ -165,8 +165,13 @@
       "flags": "g",
       "use": "buddyStatus({ state, href }) (blocks/gcsp/kit/buddy-status.js)"
     },
+    "angular-tabs": {
+      "re": "role\\s*=\\s*[\"']tablist[\"']",
+      "flags": "g",
+      "use": "gcsp-tabs / gcsp-greg-navigation (apps/gcsp-web/src/app/kit/)"
+    },
     "angular-source-kit": {
-      "re": "<(?:button|a|div|section|ul|figure|details)\\b[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\b(?:vm-btn|gcsp-bell|gcsp-stage-tracker|gcsp-stage-list|gcsp-task-list|gcsp-slot-picker|gcsp-activity-timeline|gcsp-range-bar|gcsp-release-grid|gcsp-help-tip|gcsp-star-rating|gcsp-understanding|gcsp-buddy-status)\\b",
+      "re": "<(?:button|a)\\b(?!(?:\\s+[^\\s\"'<>/=]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'=<>`]+))?)*\\s+gcspButton(?=\\s|=|/?>))[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\bvm-btn\\b|<(?:div|section|ul|figure|details)\\b[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\bvm-btn\\b|<(?:button|a|div|section|ul|figure|details)\\b[^>]*\\bclass\\s*=\\s*[\\\"\\'][^\\\"\\']*\\b(?:gcsp-bell|gcsp-stage-tracker|gcsp-stage-list|gcsp-task-list|gcsp-slot-picker|gcsp-activity-timeline|gcsp-range-bar|gcsp-release-grid|gcsp-help-tip|gcsp-star-rating|gcsp-understanding|gcsp-buddy-status)\\b",
       "flags": "g",
       "use": "the corresponding 1:1 Angular kit port (COMPONENTS.md Port status); keep source markup inside apps/gcsp-web/src/app/kit/"
     }
@@ -413,6 +418,14 @@
       "max_lines": 19
     },
     {
+      "path": "apps/gcsp-web/src/app/kit/star-rating.component.css",
+      "max_lines": 2
+    },
+    {
+      "path": "apps/gcsp-web/src/app/kit/data-table.component.css",
+      "max_lines": 2
+    },
+    {
       "path": "apps/gcsp-web/src/styles/node-gcsp.css",
       "max_lines": 7157
     }
@@ -474,7 +487,7 @@
     "retired": [],
     "baseline": {
       "missing_selectors": 0,
-      "unported_components": 40
+      "unported_components": 31
     }
   }
 }
