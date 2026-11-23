@@ -42,17 +42,23 @@ describe('Account Buddy source composition with real stores', () => {
     value = projection({ lastSuccessfulCheck: { checkedAt: '2026-11-22T09:30:00Z', carsChecked: 3, suitableCars: 0, exclusions: [{ essential: 'seats', requirement: { value: 5 }, cars: 3 }], outcome: 'no-match' }, stateChangesEvidence: { status: 'incomplete', rejectedReceipts: 1 } });
     const component = await mount(); expect(component.brief).toBe(TestBed.inject(BriefEditorStore)); expect(activity.readActivity).toHaveBeenCalledOnce();
     const opener = button('Buddy history'); opener.focus(); opener.click(); await settle();
-    const dialog = root().querySelector<HTMLDialogElement>('dialog')!;
-    expect(dialog.open).toBe(true); expect(document.activeElement).toBe(dialog.querySelector('h2')); expect(dialog.textContent).toContain('Buddy history');
+    const dialog = root().querySelector<HTMLElement>('aside[role="dialog"]')!;
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(false); expect(document.activeElement).toBe(dialog.querySelector('h2')); expect(dialog.textContent).toContain('Buddy history');
     expect(dialog.textContent).toContain('Cars checked'); expect(dialog.textContent).toContain('3 cars checked, 0 suitable.'); expect(dialog.textContent).toContain('No released car has 5 seats.'); expect(dialog.textContent).toContain('Some activity could not be verified.');
-    const cancel = new Event('cancel', { cancelable: true }); dialog.dispatchEvent(cancel); await settle(); expect(cancel.defaultPrevented).toBe(true); expect(dialog.open).toBe(false); expect(document.activeElement).toBe(opener);
+    const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }); dialog.dispatchEvent(escape); await settle(); expect(escape.defaultPrevented).toBe(true); expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true); expect(document.activeElement).toBe(opener);
   });
   it('shows supplied held offer media fallback in the existing drawer and refocuses its heading on refreshed content', async () => {
     value = projection({ currentOffer: held() }); const component = await mount();
-    const opener = button('View held offer'); opener.focus(); opener.click(); await settle(); const dialog = root().querySelector<HTMLDialogElement>('dialog')!;
+    const opener = button('View held offer'); opener.focus(); opener.click(); await settle(); const dialog = root().querySelector<HTMLElement>('aside[role="dialog"]')!;
     expect(dialog.textContent).toContain('Your held offer'); expect(dialog.textContent).toContain('BMW i4'); expect(dialog.querySelector('a')?.getAttribute('href')).toBe('/gcsp/offers/offer-one'); expect(dialog.textContent).toContain('No image for this car yet');
-    dialog.querySelector<HTMLAnchorElement>('a')!.focus(); value = projection({ currentOffer: { ...held(), state: 'accepted', displayState: 'accepted' } });
-    await component.activity.refresh(); await settle(); expect(document.activeElement).toBe(dialog.querySelector('h2')); expect(dialog.textContent).toContain('Accepted');
+    const link = dialog.querySelector<HTMLAnchorElement>('a')!; link.focus(); expect(document.activeElement).toBe(link);
+    const refresh = deferred<ActivityResult<ActivityProjection>>(); activity.readActivity.mockReturnValueOnce(refresh.promise);
+    const reading = component.activity.refresh(); await settle();
+    expect(link.isConnected).toBe(false); expect(dialog.textContent).toContain('Activity unavailable. Close and try again.');
+    expect(dialog.closest<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(false);
+    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-title'));
+    value = projection({ currentOffer: { ...held(), state: 'accepted', displayState: 'accepted' } }); refresh.resolve(ok(value));
+    await reading; await settle(); expect(document.activeElement).toBe(dialog.querySelector('h2')); expect(dialog.textContent).toContain('Accepted');
     button('Close').click(); await settle(); expect(root().querySelector('[data-focus-key=buddy-order]')?.textContent).toBe('Track your order');
   });
   it('uses only exact editor pause/resume commands, retains held readback during refresh and refreshes activity after an actual command', async () => {
@@ -94,9 +100,9 @@ describe('Account Buddy source composition with real stores', () => {
     if (change === 'signout') state.set({ status: 'signed-out' });
     else if (change === 'scope') { value = projection({ employeeId: 'employee-two', runId: 'run-two' }); state.set(ready('employee-two', 'run-two')); }
     else late.resolve({ status: 'stale-run' });
-    await settle(); expect(root().querySelector<HTMLDialogElement>('dialog')!.open).toBe(false); expect(root().querySelector('dialog')!.textContent).not.toContain('BMW i4');
+    await settle(); expect(root().querySelector<HTMLElement>('.gcsp-side-drawer')!.hidden).toBe(true); expect(root().querySelector('aside[role="dialog"]')!.textContent).not.toContain('BMW i4');
     if (change !== 'restart') { expect(signal.aborted).toBe(true); late.resolve(ok(projection({ currentOffer: held() }))); }
-    await loading; await settle(); expect(root().querySelector('dialog')!.textContent).not.toContain('BMW i4'); expect(component.drawerKind()).toBeNull();
+    await loading; await settle(); expect(root().querySelector('aside[role="dialog"]')!.textContent).not.toContain('BMW i4'); expect(component.drawerKind()).toBeNull();
     if (change === 'restart') expect(root().textContent).toContain('This page was restarted.');
   });
   it('aborts the component activity read on teardown and ignores late data', async () => {

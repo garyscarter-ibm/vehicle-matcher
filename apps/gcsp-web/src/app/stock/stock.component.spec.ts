@@ -175,12 +175,12 @@ describe('released stock screen', () => {
   });
   it('preserves the source primary image and keeps filters available while exact details are open', async () => {
     const source = stock(2); const first = source.decisions[0];
-    const primary = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    const primary = '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp';
     const changed = { ...first, snapshot: { ...first.snapshot, display: { ...first.snapshot.display, photo: primary,
-      images: [{ src: 'data:image/gif;base64,other', alt: 'Other' }, { src: primary, alt: 'Exact primary' }] } } };
+      images: [{ src: '/assets/gcsp-vehicle-evidence/01af2978ba13fd99e11d6477eb706e0648f67d5602bc72e8e20217908b235748.webp', alt: 'Other' }, { src: primary, alt: 'Exact primary' }] } } };
     client.readStock.mockResolvedValue({ status: 'ok', value: { ...source, decisions: [changed, source.decisions[1]], cars: [changed] } });
     const { root, fixture, component } = await screen();
-    expect(root.querySelector('.gcsp-media-feature-image')?.getAttribute('alt')).toBe('Exact primary');
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('alt')).toBe('Exact primary');
     component.activate({ memberId: 'stock-1', action: 'details' }); fixture.detectChanges();
     const search = root.querySelector<HTMLInputElement>('#stock-query')!; search.value = 'No matches'; search.dispatchEvent(new Event('input')); fixture.detectChanges();
     expect(component.store.selectedId()).toBe('stock-1'); expect(root.querySelector('[data-detail-heading]')?.textContent).toBe('BMW car 1');

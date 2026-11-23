@@ -386,7 +386,7 @@ describe('native employee account screen', () => {
     expect(rows[0].textContent).toContain('Ends 1 Dec 2026'); expect(rows[1].textContent).toContain('Returned 1 Dec 2025');
     const record = rows[1].querySelector<HTMLButtonElement>('button')!; expect(record.getAttribute('aria-label')).toBe('View record for Shared car name, PCS UK FS BMW, Returned 1 Dec 2025');
     record.focus(); record.click(); await settle(); expect(component.selectedRecord()?.contractId).toBe(account.histories![1].entries[0].contractId); expect(root().querySelector('.record-drawer')?.textContent).toContain('PCS UK FS BMW');
-    button('Close').click(); await settle(); expect(document.activeElement).toBe(record);
+    root().querySelector<HTMLButtonElement>('.record-drawer header button')!.click(); await settle(); expect(document.activeElement).toBe(record);
   });
   it('keeps unlabeled history schemes distinct and combines only populated history-only schemes into one source note', async () => {
     account = { ...account, histories: account.histories!.map((history, index) => ({ ...history, label: undefined, orderingSupported: index === 1 ? undefined : false })) };
@@ -399,12 +399,12 @@ describe('native employee account screen', () => {
   });
   it('opens complete labelled history records, traps keyboard focus, restores the exact opener and prints only that selected record', async () => {
     await mount(); const opener = root().querySelector<HTMLButtonElement>('tbody tr:last-child button')!; opener.focus(); opener.click(); await settle();
-    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(button('Close'));
-    button('Close').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Print record'));
-    button('Print record').dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(button('Close'));
+    const drawer = root().querySelector<HTMLDialogElement>('.record-drawer')!; const close = drawer.querySelector<HTMLButtonElement>('header button')!; const printButton = drawer.querySelector<HTMLButtonElement>('footer button')!; expect(drawer.open).toBe(true); expect(drawer.getAttribute('aria-labelledby')).toBe('record-title'); expect(drawer.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(drawer.textContent).toContain('Technical specification and options'); expect(drawer.textContent).toContain('Model or handbook evidence'); expect(document.activeElement).toBe(close);
+    close.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true })); expect(document.activeElement).toBe(printButton);
+    printButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })); expect(document.activeElement).toBe(close);
     const originalAppend = document.body.append.bind(document.body); let printed: HTMLIFrameElement | null = null; const print = vi.fn();
     vi.spyOn(document.body, 'append').mockImplementation((...nodes: (Node | string)[]) => { originalAppend(...nodes); const frame = nodes.find((node) => node instanceof HTMLIFrameElement) as HTMLIFrameElement | undefined; if (frame) { printed = frame; frame.contentWindow!.print = print; } });
-    button('Print record').click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
+    printButton.click(); expect(print).toHaveBeenCalledTimes(1); const frame = printed as HTMLIFrameElement | null; expect(frame!.contentDocument!.body.textContent).toContain('BMW 1 Series Sports Hatch 120'); expect(frame!.contentDocument!.body.textContent).not.toContain('Casey Ward'); frame!.contentWindow!.dispatchEvent(new Event('afterprint')); expect(document.querySelector('iframe')).toBeNull();
     drawer.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); await settle(); expect(root().querySelector('.record-drawer')).toBeNull(); expect(document.activeElement).toBe(opener);
   });
   it('immediately hides private facts on account change, aborts pending commands and ignores late old-account responses', async () => {
@@ -430,13 +430,13 @@ describe('native employee account screen', () => {
     vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('visible'); readyBuddy();
     await mount(); const child = fixture.debugElement.query(By.directive(AccountBuddyComponent)).componentInstance;
     const host = root().querySelector('gcsp-account-buddy'); button(label).click(); await settle();
-    const dialog = host!.querySelector<HTMLDialogElement>('dialog')!; const focus = dialog.querySelector<HTMLButtonElement>('button')!;
-    focus.focus(); expect(dialog.open).toBe(true); expect(dialog.textContent).toContain(content);
+    const overlay = host!.querySelector<HTMLElement>('.gcsp-side-drawer')!; const dialog = overlay.querySelector<HTMLElement>('aside[role="dialog"]')!; const focus = dialog.querySelector<HTMLButtonElement>('[aria-label="Close"]')!;
+    expect(document.activeElement).toBe(dialog.querySelector('.gcsp-side-drawer-title')); focus.focus(); expect(overlay.hidden).toBe(false); expect(dialog.textContent).toContain(content);
     document.dispatchEvent(new Event('visibilitychange')); await settle();
     expect(client.readAccount).toHaveBeenCalledOnce(); expect(root().querySelector('gcsp-account-buddy')).toBe(host);
     expect(fixture.debugElement.query(By.directive(AccountBuddyComponent)).componentInstance).toBe(child);
-    expect(dialog.open).toBe(true); expect(dialog.textContent).toContain(content); expect(document.activeElement).toBe(focus);
-    focus.click(); await settle(); expect(dialog.open).toBe(false);
+    expect(overlay.hidden).toBe(false); expect(dialog.textContent).toContain(content); expect(document.activeElement).toBe(focus);
+    focus.click(); await settle(); expect(overlay.hidden).toBe(true); expect(document.activeElement).toBe(button(label));
     document.dispatchEvent(new Event('visibilitychange')); await settle(); expect(client.readAccount).toHaveBeenCalledTimes(2);
   });
 

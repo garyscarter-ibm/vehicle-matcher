@@ -56,7 +56,7 @@ export class AccountBuddyComponent implements OnDestroy {
       if (projection !== this.lastProjection && this.content?.nativeElement.contains(this.host.nativeElement.ownerDocument.activeElement)) this.focusHeading = true;
       this.lastProjection = projection;
     });
-    afterRenderEffect(() => { this.view(); this.drawerKind(); if (this.focusHeading) { this.focusHeading = false; this.host.nativeElement.querySelector<HTMLElement>('.gcsp-side-drawer-heading h2')?.focus(); } });
+    afterRenderEffect(() => { this.view(); this.drawerKind(); if (this.focusHeading) { this.focusHeading = false; this.host.nativeElement.querySelector<HTMLElement>('.gcsp-side-drawer-title')?.focus(); } });
   }
   run(action: 'pauseSearch' | 'resumeSearch'): void {
     if (this.pending() || this.phase() !== 'ready' || (action === 'pauseSearch' ? !this.canPause() : !this.canResume())) return;

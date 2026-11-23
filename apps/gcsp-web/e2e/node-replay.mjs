@@ -19,7 +19,8 @@ export const NODE_REPLAY_IDENTITY = Object.freeze({ environmentId: replayEnviron
   initialRunId, runId: `demo-${sha(JSON.stringify([replayEnvironment, initialRunId, wrappedResetCommandId])).slice(0, 32)}` });
 
 // Optional engineering parity capture. The frozen checkout is read-only; all state stays in memory.
-export async function captureNodeReplay({ browser, input, plan, cert, key, output, expected }) {
+export async function withNodeReplay({ browser, input, plan, cert, key, output, expected }, visit) {
+  assert.equal(typeof visit, 'function', 'A live Node visitor is required');
   const reference = process.env.GCSP_NODE_REFERENCE;
   if (!reference) return { state: 'unrun', reason: 'GCSP_NODE_REFERENCE was not supplied; no Node parity evidence claimed' };
   assert.ok(path.isAbsolute(reference) && !/OneDrive|CloudStorage/i.test(reference));
@@ -58,7 +59,7 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     'The frozen named Main loader establishes initial brief/account/clock in an isolated memory repository.',
     'The same lossless generated stock instance enters the existing synthetic stock-provider seam.',
     'The real clock advanceAndTick service targets the captured generated release instant; provider injection does not recreate stock-generation control metadata.',
-    'Run/environment IDs and slot creation/update wall timestamps differ; semantic source/brief/clock values are asserted.',
+    'The environment and slot creation/update wall timestamps differ; the replay run ID and semantic source/brief/clock values are asserted.',
   ] };
   try {
     runtime = good(await createGcspRuntime({ mode: 'memory', repository, environmentId: NODE_REPLAY_IDENTITY.environmentId,
@@ -90,14 +91,17 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
       reason: 'Run ID is an input of both unchanged car lottery functions; only the environment identifier differs.' };
     const employee = good(await runtime.identity.resolveEmployeeContext(control, 'employee-paula'), 'Node Paula');
     const brief = good(await runtime.brief.readCurrent(employee), 'Node initial brief').brief;
+    receipt.actualInitialBrief = brief;
     for (const name of ['schemaVersion', 'preferences', 'essentials', 'knownFacts', 'buddy', 'policyVersion']) {
       assert.deepEqual(brief[name], input.initialBrief.brief[name], `Node actual initial ${name}`);
     }
     const account = good(await runtime.account.readAccount(employee), 'Node initial account');
+    receipt.actualInitialAccount = account;
     for (const name of ['state', 'asOf', 'account', 'drivers', 'contracts', 'currentContract', 'contractState', 'choices', 'allowance', 'versions']) {
       assert.deepEqual(account[name], input.account[name], `Node actual account ${name}`);
     }
     const initialClock = good(await runtime.clock.now(control), 'Node actual initial clock');
+    receipt.initialClock = initialClock;
     assert.equal(initialClock.now, input.clock.now);
     assert.equal(initialClock.clockVersion, input.clock.clockVersion);
     assert.equal(control.policyVersion, input.clock.policyVersion);
@@ -113,25 +117,45 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     initialDerivedCounts.allocationReceipts = allocationReceipts.length;
     assert.equal(allocationReceipts.length, 0, 'No real Node allocation receipt exists before the public release');
     receipt.initialDerivedCounts = initialDerivedCounts;
-    const tick = good(await runtime.clock.advanceAndTick(control, { commandId: 'f548-node-release',
-      expectedClockVersion: initialClock.clockVersion, mode: 'to', to: input.clock.nextRelease.at }), 'Node actual release/allocation');
+    const actions = expected.clock.actions;
+    assert.ok(Array.isArray(actions) && actions[0]?.action === 'Next release', 'Actual Java clock transitions are required');
+    let tick = good(await runtime.clock.advanceAndTick(control, { commandId: 'f548-node-release',
+      expectedClockVersion: initialClock.clockVersion, mode: 'to', to: actions[0].observedNow }), 'Node actual Next release');
+    if (actions.length > 1) {
+      assert.equal(actions.length, 3);
+      assert.equal(actions[1].action, 'Advanced clock advance');
+      assert.equal(actions[2].action, 'Step and tick');
+      const advanced = good(await runtime.clock.advance(control, { commandId: 'f548-node-generated-window',
+        expectedClockVersion: tick.advance.clockVersion, bySeconds: actions[1].seconds }), 'Node actual Advanced advance');
+      tick = good(await runtime.clock.advanceAndTick(control, { commandId: 'f548-node-generated-tick',
+        expectedClockVersion: advanced.clockVersion, mode: 'to', to: input.clock.nextRelease.at }), 'Node actual generated-window tick');
+      assert.equal(Date.parse(tick.advance.now) - Date.parse(advanced.now), actions[2].seconds * 1000);
+    }
+    const finalAccount = good(await runtime.account.readAccount(employee), 'Node actual final account');
+    receipt.finalClockComparison = { node: { now: tick.advance.now, clockVersion: tick.advance.clockVersion, actions },
+      java: expected.clock, versionEqualityRequired: true, actualFinalAccount: finalAccount,
+      reason: 'Both engines executed the same meaningful clock transitions; instant and version must agree.' };
     assert.equal(tick.advance.now, expected.clock.now, 'Actual Node and Java final clock instants agree');
-    receipt.finalClockComparison = { node: { now: tick.advance.now, clockVersion: tick.advance.clockVersion,
-      actions: [{ action: 'advanceAndTick to captured generated window', to: input.clock.nextRelease.at }] },
-      java: expected.clock, versionEqualityRequired: false,
-      reason: 'Java uses the recorded extra public preparation actions; versions count those real transitions independently.' };
+    assert.equal(String(tick.advance.clockVersion), String(expected.clock.clockVersion), 'Actual final clock versions agree');
+    assert.equal(finalAccount.asOf, expected.clock.now);
+    assert.equal(String(finalAccount.versions.clock), String(expected.clock.clockVersion));
+    if (expected.finalAccount) {
+      assert.equal(finalAccount.asOf, expected.finalAccount.asOf);
+      assert.equal(String(finalAccount.versions.clock), String(expected.finalAccount.versions.clock));
+    }
     const activity = good(await runtime.activity.readActivity(employee), 'Node actual activity');
     const offer = activity.currentOffer;
+    receipt.actualActivity = activity;
     assert.equal(offer?.state, 'active', 'Node real services create an active offer');
     assert.equal(offer.orderUuid, expected.orderUuid, 'The same exact car is held by actual Node and Java services');
     assert.equal(offer.expiresAt, expected.expiresAt, 'The actual Node and Java offer deadlines agree');
     const actualHold = good(await repository.read(control, { table: 'holds', key: { runId: control.runId, holdId: offer.holdId } }), 'Node actual held row');
     const holdSemantic = Object.fromEntries(['orderUuid', 'employeeId', 'entitlementSlotId', 'type', 'state'].map((key) => [key, actualHold[key]]));
     holdSemantic.expiresAt = new Date(actualHold.expiresAt).toISOString();
-    assert.deepEqual(holdSemantic, expected.hold, 'Actual Node and Java hold rows have identical common semantics');
     receipt.actualHold = { row: Object.fromEntries(['runId', 'holdId', 'version', 'orderUuid', 'employeeId', 'entitlementSlotId',
       'type', 'state', 'expiresAt'].map((key) => [key, actualHold[key]])), semantic: holdSemantic,
       identifierMapping: 'Each actual offer supplies its actual holdId; IDs/versions are recorded, not equated or seeded.' };
+    assert.deepEqual(holdSemantic, expected.hold, 'Actual Node and Java hold rows have identical common semantics');
     context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 800 },
       reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'Europe/London' });
     const issued = good(await runtime.identity.switchPrincipal(control, 'demo-paula', 'f548-node-browser-paula'), 'Node Paula session');
@@ -139,6 +163,32 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     await context.addCookies([{ name: cookie.slice(0, cookie.indexOf('=')), value: cookie.slice(cookie.indexOf('=') + 1),
       url: origin, httpOnly: true, secure: true, sameSite: 'Lax' }]);
     const page = await context.newPage();
+    receipt.consoleErrors = [];
+    page.on('pageerror', (error) => receipt.consoleErrors.push(error.message.slice(0, 300)));
+    Object.assign(receipt, { state: 'matched', initialClock,
+      actualContext: { runId: employee.runId, environmentId: employee.environmentId, employeeId: employee.employeeId, policyVersion: employee.policyVersion },
+      tick: { clockVersion: tick.advance.clockVersion, now: tick.advance.now },
+      offer: { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, expiresAt: offer.expiresAt, state: offer.state },
+      humanAcceptance: 'pending Gary/Russell review; engineering equality is not acceptance' });
+    Object.assign(receipt, await visit({ page, context, origin, runtime, employee, control, repository, offer, receipt }));
+    assert.deepEqual(receipt.consoleErrors, [], 'No frozen source app runtime errors');
+    return receipt;
+  } catch (error) {
+    receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };
+    throw error;
+  } finally {
+    await context?.close();
+    if (server) await new Promise((resolve) => { server.closeAllConnections(); server.close(resolve); });
+    api?.closeAllConnections();
+    await runtime?.close();
+    writeFileSync(path.join(output, 'node-replay-receipt.json'), JSON.stringify(receipt, null, 2));
+  }
+}
+
+// Existing bell proof keeps the same public behavior while other cases visit the live source runtime.
+export async function captureNodeReplay(options) {
+  return withNodeReplay(options, async ({ page, origin }) => {
+    const { expected, output } = options;
     await page.goto(`${origin}/gcsp-account.html`, { waitUntil: 'domcontentloaded' });
     const bell = page.getByRole('button', { name: 'Notifications, 1 car offer waiting', exact: true });
     await bell.waitFor(); await bell.click();
@@ -154,21 +204,6 @@ export async function captureNodeReplay({ browser, input, plan, cert, key, outpu
     assert.equal(visible.image, expected.panel.image, 'The actual Node/Angular thumbnail sources agree');
     const destination = path.join(output, 'node-active-open-1280.png');
     await page.screenshot({ path: destination, fullPage: false });
-    Object.assign(receipt, { state: 'matched', actualInitialBrief: { preferences: brief.preferences, essentials: brief.essentials, buddy: brief.buddy },
-      actualInitialAccount: { account: account.account, slots: account.slots, versions: account.versions }, initialClock,
-      actualContext: { runId: employee.runId, environmentId: employee.environmentId, employeeId: employee.employeeId, policyVersion: employee.policyVersion },
-      tick: { clockVersion: tick.advance.clockVersion, now: tick.advance.now },
-      offer: { orderUuid: offer.orderUuid, expiresAt: offer.expiresAt, state: offer.state }, visible,
-      screenshot: destination, humanAcceptance: 'pending Gary/Russell review; engineering equality is not acceptance' });
-    return receipt;
-  } catch (error) {
-    receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };
-    throw error;
-  } finally {
-    await context?.close();
-    if (server) await new Promise((resolve) => { server.closeAllConnections(); server.close(resolve); });
-    api?.closeAllConnections();
-    await runtime?.close();
-    writeFileSync(path.join(output, 'node-replay-receipt.json'), JSON.stringify(receipt, null, 2));
-  }
+    return { visible, screenshot: destination };
+  });
 }

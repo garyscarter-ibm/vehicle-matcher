@@ -10,6 +10,11 @@ Run from the repository root with the pinned toolchain:
 npx -y -p node@24.22.3 -p npm@11.19.1 npm --prefix apps/gcsp-web run test:e2e
 ```
 
+The default runs every registered case family, including the retained FUCQ-548 bell cases. Select FUCQ-555 alone
+with `npm --prefix apps/gcsp-web run test:e2e -- --case f555`; repeat `--case f548 --case f555` to select both.
+Only those allowlisted names are accepted. The heavy-slot re-exec preserves the selection, and the run receipt
+lists the selected files. A selected run is scoped evidence; it does not stamp the full browser batch.
+
 Use `_tools/test_stack_build.py node link --app <absolute-app-path>` for the lockfile-keyed install first.
 The only added development dependency is `playwright-core@1.60.0`; Node's test runner owns the tests. Install
 its matching Chromium browser once using the team's normal local browser setup. No browser download happens
@@ -45,8 +50,9 @@ policy is `gcsp-policy-v1+offer-journey-v1`; existing Java startup adopts it. Ac
 brief/consent and clock responses are compared to captured inputs, mapping only environment/run identifiers.
 Before comparison, `initial-readbacks.json` retains the actual `/context`, `/manual/account`, `/brief` and
 `/presenter/controls` response bodies, recursively redacting credential-named fields and excluding headers/session storage.
-Account `asOf` and `versions.clock` remain mandatory equality checks. The packaged Java account clock currently
-uses system time; `gcsp.account.fixed-now` is test-mode-only, so this boundary remains unresolved for the captured run clock.
+Account `asOf` and `versions.clock` remain mandatory equality checks. The separately authorized FUCQ-564 repair
+binds persisted packaged Java account reads to their scoped run clock; `gcsp.account.fixed-now` remains test-only.
+The connected suite must execute these strict checks on the final committed build before claiming this boundary green.
 Public editor validation is unchanged. Stock enters the existing tranche-plan provider; public presenter actions
 create release/allocation/holds/offers/counts. The composition explicitly enables the canonical `recommendation`
 candidates provider, which registers allocation and expiry; Buddy holds use the existing local-synthetic default.
@@ -69,10 +75,36 @@ Java uses that same fresh run ID because it participates in both engines' car lo
 car title and thumbnail must match Java before the second 1280px screenshot is retained. Read-only queries also
 compare the actual active Buddy hold rows (car, employee, entitlement slot, type, state and normalized deadline),
 recording their distinct IDs/versions. Initial input comparisons
-and the run/environment and slot wall-timestamp differences are recorded. Omitting the reference records this
+and the environment and slot wall-timestamp differences are recorded. Node replays the same meaningful recorded
+Next release/Advanced advance/step transitions through its unchanged clock APIs; actual final instant, version
+and account clock must also agree. There are no no-op advances or version-padding writes. Raw clock/account
+readbacks are retained before equality assertions. Omitting the reference records this
 comparison as unrun; it cannot establish parity acceptance.
 
 Visibility and persisted-pageshow event assertions make actual signed Java reads; their synthetic event fallback
 is identified separately from actual tab visibility/BFCache observations. The interval assertion uses elapsed
 time with no fake timers. Engineering screenshots do not satisfy human parity acceptance: Gary or Russell must
 review the same-state 1280px Node/Angular pair, and a green batch must cover the merge.
+
+
+FUCQ-555 adds five sequential flows with fresh owned schemas: pending offer/details/comparison at 1280/390,
+under-five/deadline readback and actual expiry; native Documents/validation/declarations and acceptance to Orders;
+native reason selection and saved follow-up to Activity; remote ordering rejection; and remote unknown followed
+by reconciliation of the same operation to rejection. The last two use an owned HTTPS ordering substitute through
+the real remote adapter, never a browser response stub or inserted selection/offer/hold. Its bounded journal
+records identity and idempotency, excluding the transient bearer token. Initial source fixtures are unchanged.
+The empty-highlight branch reuses retained component evidence rather than modifying the real Main quote.
+Both actual offer pages retain bounded DOM journals for the under-five warning, countdown, decision controls
+and expiry announcement. Ordinary active offers project directly to expired at the deadline (frozen
+`server/gcsp/offers/access.js:116-117`; Java `OfferView.java:61-63`). The frozen view's pending-at-zero checking
+announcement is conditional (`blocks/gcsp/offer/offer-view.js:364-366`): if observed, Angular must match it.
+Otherwise that conditional branch reuses the existing offer-screen/store regressions, identified in the receipt.
+No intermediate projection is manufactured for this Main offer.
+
+Each flow has a separate scratch/output namespace and receipt; the supervisor's aggregate process journal retains
+every flow's child identity. `withNodeReplay` owns the frozen runtime and private browser context through a live
+visitor and closes both in `finally`; `captureNodeReplay` retains the existing bell visitor. The frozen checkout
+is never installed into or modified. The pending same-offer screenshot pairs remain pending human review.
+Saved follow-up readbacks retain their actual timestamps; a clock discrepancy is reported, never normalized.
+Five-flow duration and peak allocation must be measured on the final run. The 3 GiB/2 GiB/600-second limits still
+apply; a resource stop leaves the exact incomplete cases visible for a separately bounded continuation.

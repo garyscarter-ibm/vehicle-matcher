@@ -1,6 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, computed, effect, input, signal, viewChild } from '@angular/core';
 import { ButtonDirective } from './button.directive';
+import { FactListComponent, FactRow } from './fact-list.component';
 import { SideDrawerComponent } from './side-drawer.component';
 import { GcspTabItem, TabsComponent } from './tabs.component';
 
@@ -13,17 +14,19 @@ export interface VehicleDetailRow {
 @Component({
   selector: 'gcsp-vehicle-details',
   standalone: true,
-  imports: [ButtonDirective, NgTemplateOutlet, SideDrawerComponent, TabsComponent],
+  imports: [ButtonDirective, FactListComponent, NgTemplateOutlet, SideDrawerComponent, TabsComponent],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css',
 })
 export class VehicleDetailsComponent {
   readonly name = input.required<string>();
   readonly finishes = input<readonly VehicleDetailRow[]>([]);
-  readonly facts = input<readonly VehicleDetailRow[]>([]);
+  readonly facts = input<readonly FactRow[]>([]);
+  readonly factsPresentation = input<'default' | 'source-card'>('default');
   readonly equipment = input<readonly string[]>([]);
   readonly additionalDetails = input<TemplateRef<unknown> | null>(null);
   readonly isOpen = signal(false);
+  readonly suppliedFinishes = computed(() => this.finishes().filter(row => row.value != null && row.value !== ''));
 
   private readonly specificationTemplate = viewChild.required<TemplateRef<unknown>>('specificationTemplate');
   private readonly equipmentTemplate = viewChild.required<TemplateRef<unknown>>('equipmentTemplate');
@@ -42,7 +45,7 @@ export class VehicleDetailsComponent {
 
   constructor() {
     effect(() => {
-      const snapshot = JSON.stringify({ name: this.name(), finishes: this.finishes(), facts: this.facts(), equipment: this.equipment() });
+      const snapshot = JSON.stringify({ name: this.name(), finishes: this.finishes(), facts: this.facts(), equipment: this.equipment(), factsPresentation: this.factsPresentation() });
       const additionalDetails = this.additionalDetails();
       if (this.previousSnapshot !== null && (snapshot !== this.previousSnapshot || additionalDetails !== this.previousAdditionalDetails)) {
         this.drawer()?.close(true);

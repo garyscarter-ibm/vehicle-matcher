@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Owned local composition for the persistent GCSP browser suite. No hosted services."""
 import json
+import argparse
 import contextlib
 import os
 from pathlib import Path
@@ -12,9 +13,23 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(ROOT / "_tools"))
 import scaffold_git
 import test_resources as resources
+
+CASES = {
+    'f548': 'apps/gcsp-web/e2e/notification-bell.test.mjs',
+    'f555': 'apps/gcsp-web/e2e/offer-parity.test.mjs',
+}
+
+
+def selected_cases(argv):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append', choices=tuple(CASES), dest='cases',
+                        help='Run this registered case family; repeat to combine. Default: all registered cases.')
+    options = parser.parse_args(argv)
+    return list(dict.fromkeys(options.cases or CASES))
 
 
 def local_path(value):
@@ -130,12 +145,13 @@ def owned_scratch(retained, policy):
 
 
 def main():
+    selected = selected_cases(sys.argv[1:])
     os.environ.setdefault("SCAFFOLDING_HARNESS", "codex")
     # Enter the shared slot before allocating/building. The inner supervisor launches the actual
     # Node session itself, so its RSS monitor covers that session rather than just the queue wrapper.
     if not os.environ.get("GCSP_HEAVY_SLOT"):
         return subprocess.call([sys.executable, "-B", str(ROOT / "_tools/test_stack.py"), "heavy", "--label", "gcsp-web-e2e",
-                                "--ram-gib", "3", "--", sys.executable, "-B", str(Path(__file__).resolve())], cwd=ROOT)
+                                "--ram-gib", "3", "--", sys.executable, "-B", str(Path(__file__).resolve()), *sys.argv[1:]], cwd=ROOT)
     run_id = "web-e2e-" + time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
     common = local_path(ROOT / git_value("rev-parse", "--git-common-dir"))
     retained = local_path(os.environ.get("GCSP_E2E_OUTPUT", str(common.parent / ".claude/test-runs/web-e2e" / run_id)))
@@ -148,7 +164,8 @@ def main():
         "chunk_seconds": 600, "log_mib": 2,
     })
     receipt = {"schema": "gcsp-browser-suite/1", "run": run_id, "started": time.time(),
-               "source_revision": git_value("rev-parse", "HEAD"), "scope": "FUCQ-548 notification bell, real Java/OIDC/PostgreSQL",
+               "source_revision": git_value("rev-parse", "HEAD"), "scope": "Registered browser cases, real Java/OIDC/PostgreSQL",
+               "selected_cases": selected, "test_files": [CASES[name] for name in selected],
                "full_suites": "deferred to dispatcher batch", "retained": str(retained)}
     scratch = None
     database_created = False
@@ -202,7 +219,7 @@ def main():
             env.update(json.loads(db))
             # One owned session contains Node, Java and Playwright's browser descendants.
             # Java is spawned without detached:true so the outer group finalizer also covers cancellation.
-            command = [str(node), "--test", "--test-concurrency=1", "apps/gcsp-web/e2e/notification-bell.test.mjs"]
+            command = [str(node), "--test", "--test-concurrency=1", *receipt['test_files']]
             try:
                 bounded(command, 'suite')
                 receipt["result"] = receipt['chunks'][-1]

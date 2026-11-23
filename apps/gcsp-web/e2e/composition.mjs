@@ -10,12 +10,17 @@ import { chromium, webkit } from 'playwright-core';
 import { assembleGcspStatic, GCSP_FIXED_ROUTES } from '../../../scripts/build-gcsp-static.mjs';
 import { runtimeConfigFromEnv } from '../../../scripts/gcsp-runtime-config.mjs';
 import { apiJvmArgs } from '../../../scripts/gcsp/proof-jvm.mjs';
-import { captureNodeReplay, NODE_REPLAY_IDENTITY } from './node-replay.mjs';
+import { captureNodeReplay, withNodeReplay, NODE_REPLAY_IDENTITY } from './node-replay.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FROZEN = 'e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38';
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+async function until(check, message, timeout = 12000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) { if (await check()) return; await delay(100); }
+  assert.fail(message);
+}
 const sha = (value) => createHash('sha256').update(value).digest('hex');
 const literal = (value) => `'${String(value).replaceAll("'", "''")}'`;
 const canonical = (value) => JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
@@ -57,11 +62,15 @@ function identity(pid) {
     ? { pid: Number(parts[0]), pgid: Number(parts[1]), start: parts.slice(2, 7).join(' '), executable: parts.slice(7).join(' ') } : null;
 }
 
-export async function startComposition() {
+export async function startComposition({ caseId = 'f548', ordering = 'synthetic' } = {}) {
+  assert.ok(['f548', 'f555-pending', 'f555-accept', 'f555-decline', 'f555-rejected', 'f555-uncertain'].includes(caseId));
+  assert.ok(['synthetic', 'rejected', 'unknown-then-rejected'].includes(ordering));
   const scratch = local(process.env.SCRATCH ?? '');
   assert.ok(scratch.startsWith('/private/tmp/'), 'The supervisor must own /private/tmp scratch');
-  const output = local(process.env.GCSP_E2E_OUTPUT ?? '');
-  const work = path.join(scratch, 'browser-suite');
+  const runOutput = local(process.env.GCSP_E2E_OUTPUT ?? '');
+  const output = caseId === 'f548' ? runOutput : path.join(runOutput, caseId);
+  mkdirSync(output, { recursive: true });
+  const work = path.join(scratch, 'browser-suite', caseId);
   const dirs = Object.fromEntries(['certs', 'static', 'logs', 'tmp'].map((name) => [name, path.join(work, name)]));
   for (const dir of Object.values(dirs)) mkdirSync(dir, { recursive: true });
   const envId = 'e2e-' + randomUUID().slice(0, 12);
@@ -109,8 +118,12 @@ export async function startComposition() {
   let browser;
   let browserServer;
   let closed = false;
+  const orderingToken = randomUUID();
+  const orderingReplies = new Map();
+  const orderingRequests = [];
+  let rejectPending = false;
   const receipt = { schema: 'gcsp-notification-browser/1', sourceRevision: process.env.PROOF_SOURCE_REVISION,
-    reference: input.reference, composition: { origins, issuer, environmentId: envId, runId, database: database[3],
+    reference: input.reference, caseId, composition: { origins, issuer, environmentId: envId, runId, database: database[3], ordering,
       identity: 'started Java demo issuer, code/PKCE and signed bearer validation', supply: 'tranche-plan over exact retained Node input' },
     input: { stockPlan: input.stockPlan, scenario: input.scenario, clock: input.clock },
     setupDifferences: ['Java named Main reset availability is recorded separately (FUCQ-562); no successful reset is claimed.',
@@ -118,7 +131,12 @@ export async function startComposition() {
       'The exact initial Main brief and consent are fixture inputs in the owned test database; public editor validation is unchanged.',
       'The frozen Node stock instance enters Java through its existing tranche-plan provider; release, allocation, holds and offers are actual services.'],
     requests: [], screenshots: [], checks: {}, browsers: {}, consoleErrors: [], processes };
-  const journal = () => writeFileSync(path.join(output, 'processes.json'), JSON.stringify({ ownerPid: process.pid, processes }, null, 2));
+  const journalPath = path.join(runOutput, 'processes.json');
+  const journal = () => {
+    const prior = existsSync(journalPath) ? JSON.parse(readFileSync(journalPath, 'utf8')).processes : [];
+    const others = prior.filter((record) => record.caseId !== caseId);
+    writeFileSync(journalPath, JSON.stringify({ ownerPid: process.pid, processes: [...others, ...processes] }, null, 2));
+  };
   const schema = 'gcsp_e2e_' + randomUUID().replaceAll('-', '');
   function sql(statement) {
     return execFileSync(psql, ['-X', '-v', 'ON_ERROR_STOP=1', '-A', '-t', '-h', database[1], '-p', database[2] ?? '5432',
@@ -126,7 +144,7 @@ export async function startComposition() {
       input: `SET search_path TO ${schema};\n${statement}\n`, encoding: 'utf8', timeout: 10000 }).trim();
   }
   const recordProcess = (name, child) => {
-    const record = { name, ...identity(child.pid), parentPid: process.pid, ended: false };
+    const record = { name, caseId, ...identity(child.pid), parentPid: process.pid, ended: false };
     assert.equal(record.pid, child.pid, `Positive process identity for ${name}`);
     processes.push(record); journal();
     child.once('exit', () => { record.ended = true; journal(); });
@@ -163,6 +181,7 @@ export async function startComposition() {
       try { await action(); } catch (error) { errors.push(error.message); }
     }
     receipt.cleanupErrors = errors;
+    receipt.orderingSubstitute = { variant: ordering, requests: orderingRequests };
     receipt.finishedAt = new Date().toISOString();
     writeFileSync(path.join(output, 'browser-receipt.json'), JSON.stringify(receipt, null, 2));
     for (const name of ['api-bootstrap.log', 'api.log']) {
@@ -187,8 +206,31 @@ export async function startComposition() {
       appRoot: path.join(ROOT, 'apps/gcsp-web'), compilerTools: { node: process.version, npm: '11.19.1' } });
     const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml',
       '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
-    server = createServer({ key: readFileSync(cert('leaf.key')), cert: readFileSync(cert('leaf.pem')) }, (req, res) => {
+    server = createServer({ key: readFileSync(cert('leaf.key')), cert: readFileSync(cert('leaf.pem')) }, async (req, res) => {
       const requested = decodeURIComponent(new URL(req.url, origins.web).pathname);
+      if (requested.startsWith('/proof-ordering/')) {
+        const answer = (status, value) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
+        if (ordering === 'synthetic' || req.headers.authorization !== `Bearer ${orderingToken}` || orderingRequests.length >= 64) return answer(403, {});
+        let input;
+        if (req.method === 'POST' && requested === '/proof-ordering/execute') {
+          const chunks = []; let bytes = 0;
+          for await (const chunk of req) { bytes += chunk.length; if (bytes > 65536) return answer(413, {}); chunks.push(chunk); }
+          try { input = JSON.parse(Buffer.concat(chunks).toString()); } catch { return answer(400, {}); }
+        } else if (req.method === 'GET' && requested === '/proof-ordering/reconcile') input = Object.fromEntries(new URL(req.url, origins.web).searchParams);
+        else return answer(405, {});
+        if (!['operationId', 'runId', 'orderUuid'].every((key) => typeof input?.[key] === 'string' && input[key])) return answer(400, {});
+        const ids = Object.fromEntries(['operationId', 'runId', 'orderUuid'].map((key) => [key, input[key]]));
+        const operation = JSON.stringify(ids); const previous = orderingReplies.get(operation);
+        let reply;
+        if (req.method === 'POST') {
+          if (req.headers['idempotency-key'] !== ids.operationId || input.idempotencyKey !== ids.operationId) return answer(400, {});
+          reply = previous ?? { status: ordering === 'rejected' ? 'rejected' : 'unknown', ...ids, fictional: true };
+          orderingReplies.set(operation, reply);
+        } else reply = previous ? (rejectPending ? { ...previous, status: 'rejected' } : previous) : { status: 'not-found', ...ids, fictional: true };
+        orderingRequests.push({ method: req.method, path: requested, authenticated: true, ...ids,
+          idempotencyKey: req.headers['idempotency-key'] ?? null, reply });
+        return answer(200, reply);
+      }
       if (requested.includes('..')) { res.writeHead(404).end(); return; }
       let file;
       if (requested.startsWith('/assets/gcsp-vehicle-evidence/')) file = path.join(ROOT, requested.slice(1));
@@ -216,7 +258,9 @@ export async function startComposition() {
       GCSP_DEMO_IDP_ENABLED: 'true', GCSP_DEMO_IDP_REDIRECT_URIS: `${origins.web}/gcsp/auth/callback`,
       GCSP_DEMO_IDP_POST_LOGOUT_REDIRECT_URIS: `${origins.web}/gcsp/`, GCSP_DEMO_IDP_ACCESS_TOKEN_LIFETIME: '1h',
       GCSP_ENVIRONMENT_ID: envId, GCSP_RUN_ID: bootstrapRunId, GCSP_POLICY_VERSION: input.clock.policyVersion,
-      GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: 'synthetic', GCSP_RESET_ALLOWED: 'true',
+      GCSP_SCENARIO_PROVIDER: 'demo', GCSP_ACCOUNT_PROVIDER: 'repository', GCSP_ORDERING_PROVIDER: ordering === 'synthetic' ? 'synthetic' : 'remote', GCSP_RESET_ALLOWED: 'true',
+      ...(ordering === 'synthetic' ? {} : { GCSP_ORDERING_EXECUTE_URL: `${origins.web}/proof-ordering/execute`,
+        GCSP_ORDERING_RECONCILE_URL: `${origins.web}/proof-ordering/reconcile`, GCSP_ORDERING_TOKEN: orderingToken, GCSP_ORDERING_TIMEOUT: '5s' }),
       GCSP_SUPPLY_PROVIDER: 'tranche-plan', GCSP_SUPPLY_TRANCHE_PLAN_FILE: planFile,
       GCSP_ALLOCATION_CANDIDATES_PROVIDER: 'recommendation',
       GCSP_CLAIMS_SWEEP_INTERVAL: '10m', GCSP_NOTIFY_DRAIN_INTERVAL: '10m', GCSP_PUBLIC_BASE_URL: 'https://gcsp-proof.example.test',
@@ -282,7 +326,7 @@ export async function startComposition() {
     recordProcess('browser', browserServer.process());
     browser = await type.connect(browserServer.wsEndpoint());
     receipt.browsers.actual = browser.version();
-    receipt.browsers.webkit = type.name() === 'webkit' ? 'run' : 'unrun: WebKit is not installed on this machine';
+    receipt.browsers.webkit = type.name() === 'webkit' ? 'run' : 'unrun: not selected';
     const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 800 },
       reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'Europe/London' });
     receipt.browsers.context = 'fresh non-persistent private context; employee and presenter use independent tab sessionStorage';
@@ -408,12 +452,74 @@ export async function startComposition() {
       receipt.actualHold = { row: actual, semantic };
       return semantic;
     }
+    async function releaseMainOffer(employeePage, presenterPage) {
+      const catalogue = await call(presenterPage, 'GET', '/presenter/scenarios');
+      assert.equal(catalogue.status, 200);
+      const main = catalogue.body.value.scenarios.find((item) => item.scenarioId === 'main-successful-journey');
+      assert.ok(main);
+      receipt.namedReset = { observedAvailability: main.availability.available, missingCapabilities: main.availability.missingCapabilities,
+        bug: 'FUCQ-562', used: false, setup: 'Authorized immutable initial-input fixture; no successful named reset claimed' };
+      await prepareInitialBrief(employeePage, presenterPage);
+      let clock = (await call(presenterPage, 'GET', '/presenter/controls')).body.value;
+      const initialVersion = clock.clockVersion;
+      await presenterPage.getByRole('button', { name: 'Next release', exact: true }).click();
+      await until(async () => {
+        clock = (await call(presenterPage, 'GET', '/presenter/controls')).body.value;
+        return clock.clockVersion > initialVersion;
+      }, 'The public Next release must complete');
+      const actions = [{ action: 'Next release', observedNow: clock.now, clockVersion: clock.clockVersion }];
+      const target = input.clock.nextRelease.at;
+      if (Date.parse(clock.now) < Date.parse(target)) {
+        const step = clock.controls.step.value;
+        const seconds = (Date.parse(target) - Date.parse(clock.now)) / 1000 - step;
+        assert.ok(Number.isSafeInteger(seconds) && seconds > 0);
+        await presenterPage.getByText('Advanced clock controls', { exact: true }).click();
+        await presenterPage.getByLabel('Seconds', { exact: true }).fill(String(seconds));
+        await presenterPage.getByRole('button', { name: 'Advance clock', exact: true }).click();
+        await until(async () => {
+          clock = (await call(presenterPage, 'GET', '/presenter/controls')).body.value;
+          return Date.parse(clock.now) === Date.parse(target) - step * 1000;
+        }, 'The public advance must reach the generated window minus a step');
+        await presenterPage.getByRole('button', { name: /^Step \d+ seconds$/ }).click();
+        await until(async () => {
+          clock = (await call(presenterPage, 'GET', '/presenter/controls')).body.value;
+          return clock.now === target;
+        }, 'The public tick must reach the exact captured generated release');
+        actions.push({ action: 'Advanced clock advance', seconds }, { action: 'Step and tick', seconds: step });
+      }
+      receipt.actualReleaseClock = { now: clock.now, clockVersion: clock.clockVersion, actions };
+      assert.equal(clock.now, target);
+      let activity;
+      await until(async () => {
+        activity = await call(employeePage, 'GET', '/activity');
+        return activity.status === 200 && activity.body.value.currentOffer?.state === 'active';
+      }, 'Actual allocation must produce an active offer');
+      const offer = activity.body.value.currentOffer;
+      const projection = await call(employeePage, 'GET', `/offers/${encodeURIComponent(offer.offerRef.offerId)}`);
+      const account = await call(employeePage, 'GET', '/manual/account');
+      receipt.releaseReadbacks = sanitizeReadback({ activity, projection, account, clock });
+      assert.equal(projection.status, 200); assert.equal(account.status, 200);
+      assert.equal(account.body.value.asOf, clock.now);
+      assert.equal(String(account.body.value.versions.clock), String(clock.clockVersion));
+      assert.equal(projection.body.value.serverNow, clock.now);
+      assert.ok(plan.windows.flatMap((window) => window.stock).some((car) => car.orderUuid === offer.orderUuid));
+      const hold = readActualHold(offer);
+      receipt.offer = { orderUuid: offer.orderUuid, offerId: offer.offerRef.offerId, state: offer.state, expiresAt: offer.expiresAt };
+      return { offer, projection: projection.body.value, clock: receipt.actualReleaseClock, hold, account: account.body.value };
+    }
     async function compareFrozenNode(expected) {
       receipt.nodeReplay = await captureNodeReplay({ browser, input, plan, cert: cert('leaf.pem'), key: cert('leaf.key'), output,
         expected: { ...expected, runId } });
       return receipt.nodeReplay;
     }
-    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, readActualHold, screenshot, compareFrozenNode, close };
+    async function visitFrozenNode(expected, visit) {
+      receipt.nodeReplay = await withNodeReplay({ browser, input, plan, cert: cert('leaf.pem'), key: cert('leaf.key'), output,
+        expected: { ...expected, runId } }, visit);
+      return receipt.nodeReplay;
+    }
+    return { context, receipt, origins, apiBase, input, plan, newPage, call, prepareInitialBrief, releaseMainOffer,
+      readActualHold, screenshot, compareFrozenNode, visitFrozenNode,
+      ordering: { requests: orderingRequests, rejectPending() { assert.equal(ordering, 'unknown-then-rejected'); rejectPending = true; } }, close };
   } catch (error) {
     receipt.failure = { name: error.name, message: error.message.slice(0, 1000) };
     await close();

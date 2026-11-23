@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { LiveRefreshService } from './live-refresh.service';
+import { PRESENTER_ACTION_KEY, publishPresenterAction } from './kit/presenter-actions';
 
 // Synthetic DOM events prove orchestration, not actual hidden-tab or BFCache behavior.
 describe('shared native live refresh lifecycle', () => {
@@ -88,6 +89,53 @@ describe('shared native live refresh lifecycle', () => {
     expect(vi.getTimerCount()).toBe(0); release(); await pending; await Promise.resolve(); stop();
     service.subscribe(vi.fn()); host.dispatchEvent(new Event('visibilitychange')); window.dispatchEvent(restored(true));
     await vi.advanceTimersByTimeAsync(60_000); expect(refresh).toHaveBeenCalledOnce(); expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('registers presenter publishing and cross-tab delivery once for the first consumer and removes both after the last', async () => {
+    const addDocument = vi.spyOn(host, 'addEventListener'); const addWindow = vi.spyOn(window, 'addEventListener');
+    const removeDocument = vi.spyOn(host, 'removeEventListener'); const removeWindow = vi.spyOn(window, 'removeEventListener');
+    const first = vi.fn(); const second = vi.fn();
+    publishPresenterAction(host); expect(addDocument.mock.calls.filter(([name]) => name === PRESENTER_ACTION_KEY)).toHaveLength(0);
+    const stopFirst = service.subscribe(first); const stopSecond = service.subscribe(second);
+    expect(addDocument.mock.calls.filter(([name]) => name === PRESENTER_ACTION_KEY)).toHaveLength(1);
+    expect(addWindow.mock.calls.filter(([name]) => name === 'storage')).toHaveLength(1);
+    publishPresenterAction(host); await Promise.resolve(); expect(first).toHaveBeenCalledOnce(); expect(second).toHaveBeenCalledOnce();
+    window.dispatchEvent(new StorageEvent('storage', { key: 'unrelated' })); expect(second).toHaveBeenCalledOnce();
+    stopFirst(); publishPresenterAction(host); await Promise.resolve(); expect(first).toHaveBeenCalledOnce(); expect(second).toHaveBeenCalledTimes(2);
+    window.dispatchEvent(new StorageEvent('storage', { key: PRESENTER_ACTION_KEY })); await Promise.resolve(); expect(second).toHaveBeenCalledTimes(3);
+    stopSecond(); stopSecond();
+    expect(removeDocument.mock.calls.filter(([name]) => name === PRESENTER_ACTION_KEY)).toHaveLength(1);
+    expect(removeWindow.mock.calls.filter(([name]) => name === 'storage')).toHaveLength(1);
+    publishPresenterAction(host); window.dispatchEvent(new StorageEvent('storage', { key: PRESENTER_ACTION_KEY })); expect(second).toHaveBeenCalledTimes(3);
+    const third = vi.fn(); service.subscribe(third); publishPresenterAction(host); expect(third).toHaveBeenCalledOnce();
+    expect(addDocument.mock.calls.filter(([name]) => name === PRESENTER_ACTION_KEY)).toHaveLength(2);
+  });
+
+  it('uses the same hidden-page and pending-consumer guards for presenter, native and cross-tab events', async () => {
+    let release!: () => void; const pending = new Promise<void>(resolve => { release = resolve; });
+    const slow = vi.fn(() => pending); const quick = vi.fn(); service.subscribe(slow); service.subscribe(quick);
+    visibility = 'hidden'; publishPresenterAction(host); window.dispatchEvent(new StorageEvent('storage', { key: PRESENTER_ACTION_KEY }));
+    expect(slow).not.toHaveBeenCalled(); expect(quick).not.toHaveBeenCalled();
+    visibility = 'visible'; publishPresenterAction(host); await Promise.resolve();
+    window.dispatchEvent(new StorageEvent('storage', { key: PRESENTER_ACTION_KEY })); await Promise.resolve();
+    host.dispatchEvent(new Event('visibilitychange')); await Promise.resolve();
+    expect(slow).toHaveBeenCalledOnce(); expect(quick).toHaveBeenCalledTimes(3);
+    release(); await pending; await Promise.resolve(); publishPresenterAction(host); expect(slow).toHaveBeenCalledTimes(2);
+  });
+
+  it('isolates presenter callback failures and permanently removes presenter listeners on destruction', async () => {
+    const thrown = vi.fn(() => { throw new Error('presenter consumer'); });
+    const rejected = vi.fn(() => Promise.reject(new Error('presenter promise'))); const good = vi.fn();
+    service.subscribe(thrown); service.subscribe(rejected); const stop = service.subscribe(good);
+    publishPresenterAction(host); await Promise.resolve(); publishPresenterAction(host); await Promise.resolve();
+    expect(thrown).toHaveBeenCalledTimes(2); expect(rejected).toHaveBeenCalledTimes(2); expect(good).toHaveBeenCalledTimes(2);
+    const removeDocument = vi.spyOn(host, 'removeEventListener'); const removeWindow = vi.spyOn(window, 'removeEventListener');
+    TestBed.resetTestingModule(); stop();
+    expect(removeDocument).toHaveBeenCalledWith(PRESENTER_ACTION_KEY, expect.any(Function));
+    expect(removeWindow).toHaveBeenCalledWith('storage', expect.any(Function));
+    const late = vi.fn(); service.subscribe(late); publishPresenterAction(host); window.dispatchEvent(new StorageEvent('storage', { key: PRESENTER_ACTION_KEY }));
+    await Promise.resolve(); expect(late).not.toHaveBeenCalled(); expect(good).toHaveBeenCalledTimes(2);
+    await vi.runOnlyPendingTimersAsync(); expect(vi.getTimerCount()).toBe(0); expect(good).toHaveBeenCalledTimes(2);
   });
 
   it('handles a document without a window without allocating a timer', () => {

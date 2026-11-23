@@ -39,7 +39,7 @@ describe('TabsComponent', () => {
     const panels = root.querySelectorAll<HTMLElement>('[role="tabpanel"]');
 
     expect(root.querySelector('[role="tablist"]')?.getAttribute('aria-label')).toBe('Car details');
-    expect(root.querySelector('.gcsp-tab-list')).toBeTruthy();
+    expect(root.querySelector('.gcsp-tabs > .gcsp-tab-list[role="tablist"]')).not.toBeNull();
     expect(buttons).toHaveLength(4);
     expect(panels).toHaveLength(4);
     expect(buttons[0].getAttribute('aria-selected')).toBe('true');

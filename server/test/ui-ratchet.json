@@ -496,7 +496,7 @@
     "retired": [],
     "baseline": {
       "missing_selectors": 0,
-      "unported_components": 31
+      "unported_components": 22
     }
   }
 }

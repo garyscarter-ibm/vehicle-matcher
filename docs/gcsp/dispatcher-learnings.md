@@ -2944,3 +2944,37 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-23 · usget-vesper human completion · DL-20261123-F555-04 · Story push transient rejection
 
 - Publishing27385551d first returned remote rejected(failed), leaving remote759678fc4. Reconciled actual remote, retried the same nonforce ref push once, then read back exact27385551d. Cause unknown; no source loss or successful publication inferred from a failed command. Proposed improvement: preserve remote rejection and require exact ref readback before reporting published.
+
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-02 · Reference recovery verified
+
+- Recreated an attached read-only reference checkout at /Users/usget/.codex/worktrees/f555-node-reference/vehicle-matcher and verified exact e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38. No reference runtime or parity success is inferred from checkout recovery. No OneDrive access.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-04 · Publication retry reconciled
+
+- A second story publication rejection occurred during overlapping story/base pushes; overlap is a hypothesis, not a verified remote cause. Serialized final F550 publication ca6329768 succeeded with exact remote readback, then normal merge/push4408a0a14 succeeded. Preserve failed attempts; serialize subsequent Git mutations and verify each remote tip.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-05 · Ratchet false exemptions
+
+- Independent F548 review found a free-word gcspButton match could exempt unrelated controls and seven-tag coverage had been lost. Corrected directive parsing and retained205 positive/negative/matrix cases, including13roots×7tags and false quoted/unquoted/title/data attributes; independent source/security review passed before merge. Proposed framework improvement: exercise non-directive near-matches alongside positive exemptions.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-06 · Actual Gallery caller correction
+
+- F548's261 passing Angular cases were real, but17 StatePage cases were mislabeled as mounting Gallery. Actual caller is StockRoute's14 cases; these passed in F550 refresh and again in the F555 integration selection. Earlier numeric results remain unchanged; no actual Gallery proof is attributed to StatePage. Select callers from mounted component imports rather than names.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-07 · Own bytecode cleanup
+
+- Python imports in operational launchers produced62339B test_resources.cpython-315.pyc files. Removed only task-owned copies:039 untracked,025 accidentally committed then removed before final merge,028 attributed by Daffy to the13:14:37 cleanup import. Root verified028 untracked identity/bytes and absence after removal. Existing tracked314 caches remain. Launchers now use-B and disable bytecode before imports; observed cleanup is verified, universal prevention is not.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-08 · Automatic refresh interrupted inspections
+
+- Supported F550/F555 integration allowed background reads to unmount open car details/media, including both follow-up comparison cars. Six real-child regressions reproduced the unwanted second read. A root-scoped guard using existing source dialog open states now preserves inspection and permits the next safe trigger after close; manual Check remains unchanged. Final291 scoped Angular cases plus independent source/security review passed at this boundary. First2GiB Angular attempt exceeded RAM before results; measured single-worker replan to2.5GiB passed, all12 owned roots/groups absent. Proposed improvement: cover nested active inspections when integrating automatic refresh.
+
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-09 · Shared drawer caller reconciliation
+
+- Final source caller checks exposed stale Buddy native-dialog queries and unscoped Account Close selectors after the shared source aside port. A real deferred activity content replacement also reproduced focus falling tobody because AccountBuddy selected the old heading class. Corrected that one caller selector and preserved original record/close/opener/read/instance assertions with scoped tests. Final Account74/Buddy10/Drawer10 passed; independent source/security review passed. Framework improvement: trace DOM/focus consumers as well as type consumers of a shared presentation port.
+
+### 2026-11-23 · usget-vesper completion · DL-20261123-F555-10 · Conditional reference behavior in proof review
+
+- Review initially requested a mandatory pending-at-zero/checking transition in the ordinary Main deadline flow. Parent verified frozen access.js116–117 and Java OfferView61–63 project that active state directly expired; the view's checking announcement is conditional on a pending projection. Corrected the unexecuted harness assertion before live execution, retained actual DOM journals and existing conditional component/store regressions, with independent review agreement. No test failure, waived original criterion or manufactured state is claimed. Framework improvement: ground requested proof states in both runtime projections before adding a mandatory intermediate.

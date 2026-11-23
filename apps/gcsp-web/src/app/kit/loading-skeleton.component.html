@@ -1,0 +1,37 @@
+<p class="gcsp-vh" [attr.role]="statusRole() || null">{{ label() }}</p>
+<div class="gcsp-skeleton-shapes" aria-hidden="true">
+  @for (kind of blocks(); track $index) { <ng-container [ngTemplateOutlet]="block" [ngTemplateOutletContext]="{ $implicit: kind }" /> }
+</div>
+
+<ng-template #block let-kind>
+  @if (kind === 'offer-header') {
+    <div class="gcsp-skeleton-offer-header"><div class="gcsp-skeleton-text">
+      <ng-container [ngTemplateOutlet]="block" [ngTemplateOutletContext]="{ $implicit: 'title' }" />
+      <ng-container [ngTemplateOutlet]="block" [ngTemplateOutletContext]="{ $implicit: 'line-short' }" />
+    </div></div>
+  } @else if (kind === 'offer-card') {
+    <div class="gcsp-skeleton-offer-card"><span class="gcsp-skeleton-shape gcsp-skeleton-media"></span><div class="gcsp-skeleton-text">
+      @for (shape of offerLines; track $index) { <ng-container [ngTemplateOutlet]="block" [ngTemplateOutletContext]="{ $implicit: shape }" /> }
+    </div></div>
+  } @else if (kind === 'tiles') {
+    <div class="gcsp-skeleton-release-grid">@for (at of tiles(); track $index) { <span class="gcsp-skeleton-shape gcsp-release-tile"></span> }</div>
+  } @else if (kind === 'stats') {
+    <div class="gcsp-skeleton-stats">@for (label of statLabels(); track $index) { <div>
+      @if (label) { <span class="vm-fact-label">{{ label }}</span> } @else { <span class="gcsp-skeleton-shape gcsp-skeleton-line"></span> }
+      <span class="gcsp-skeleton-shape gcsp-skeleton-stat-value"></span>
+    </div> }</div>
+  } @else if (kind === 'bars') {
+    <div class="gcsp-count-bars-rows">@for (at of bars(); track $index) { <div class="gcsp-count-bars-row">
+      <span class="gcsp-skeleton-shape gcsp-skeleton-line"></span><span class="gcsp-skeleton-shape gcsp-skeleton-bar" [style.width.%]="100 - (at % 4) * 20"></span><span class="gcsp-skeleton-shape"></span>
+    </div> }</div>
+  } @else if (kind === 'actions') {
+    <div class="gcsp-skeleton-actions">@for (at of [0, 1]; track $index) { <span class="gcsp-skeleton-shape gcsp-skeleton-button"></span> }</div>
+  } @else if (kind === 'card' || kind === 'card-text' || kind === 'feature') {
+    <div [class]="kind === 'feature' ? 'gcsp-skeleton-card gcsp-skeleton-feature' : 'gcsp-skeleton-card'">
+      @if (kind !== 'card-text') { <span class="gcsp-skeleton-shape gcsp-skeleton-media"></span> }
+      <div class="gcsp-skeleton-text">@for (shape of cardLines; track $index) { <span [class]="'gcsp-skeleton-shape gcsp-skeleton-' + shape"></span> }</div>
+    </div>
+  } @else if (kind === 'rows' || kind === 'panel') {
+    <div [class]="'gcsp-skeleton-' + kind">@for (at of kind === 'rows' ? [0, 1, 2] : [0, 1, 2, 3]; track $index) { <span [class]="'gcsp-skeleton-shape gcsp-skeleton-' + (at ? 'line' : 'heading')"></span> }</div>
+  } @else { <span [class]="'gcsp-skeleton-shape gcsp-skeleton-' + kind"></span> }
+</ng-template>
