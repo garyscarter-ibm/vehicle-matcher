@@ -6,6 +6,7 @@ import { AuthPort, SessionState } from '../auth/auth.port';
 import { PORTAL_FETCH, RuntimeConfigService, RuntimePublicConfig } from '../auth/runtime-config';
 import { OfferClient } from './offer.client';
 import { OfferScreenComponent } from './offer-screen.component';
+import { OfferStore } from './offer.store';
 import { offerScreenEmployee, offerScreenFixture } from './offer-screen.fixture';
 import { OfferFailure, OfferProjection, OfferRequestOptions, OfferResult } from './offer.types';
 import { actionableOffer, decisionReceipt, followupQuestion, savedFollowup } from './offer-interaction.fixture';
@@ -156,6 +157,107 @@ describe('native offer read screen', () => {
     expect(header?.querySelector(':scope > div[gcspScreenIntro] > h1.vm-title')).not.toBeNull();
     expect(back?.textContent).toBe('‹ Back to Your cars'); expect(back?.getAttribute('href')).toBe('/account');
     expect(back?.classList.contains('vm-btn-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  const checkNote = () => (fixture.nativeElement as HTMLElement).querySelector('[data-offer-check]')?.textContent?.trim() ?? '';
+  const announced = () => (fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent ?? '';
+  const check = async () => {
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="check"], [data-offer-action="refresh"]')!.click(); await settle();
+  };
+  it('keeps explicit checking feedback through the deferred read and reports an unchanged offer once', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="check"]')!;
+    button.click(); button.click(); await settle();
+    expect(checkNote()).toBe('Checking the current offer state.'); expect(announced()).toBe('');
+    expect(reads).toHaveLength(2); expect(text()).toContain('Loading your offer');
+    await load(offer);
+    expect(checkNote()).toBe('Check complete. Nothing has changed.'); expect(announced()).toBe(checkNote());
+    expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-check]')?.getAttribute('role')).toBeNull();
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('ignores top-level clock/version changes but reports changed exact-car evidence', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    await check(); const clock = { ...offer, serverNow: '2026-11-14T12:31:00.000Z', clockVersion: 'clock-v4', offerVersion: 5 }; await load(clock);
+    expect(checkNote()).toBe('Check complete. Nothing has changed.');
+    await check(); await load({ ...clock, quote: { ...clock.quote, facts: { ...clock.quote.facts, snapshotVersion: 'snapshot-v2' } } });
+    expect(checkNote()).toBe('Check complete. The offer details have been updated.'); expect(announced()).toBe(checkNote());
+  });
+  it('reports the current state when the manual read changes the state', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    await check(); await load(offerScreenFixture('declined'));
+    expect(checkNote()).toBe('Check complete. Current state: declined.'); expect(announced()).toBe(checkNote());
+  });
+  it.each(['expired', 'unavailable'] as const)('waits for the bounded expiry reread before finishing a manual check as %s', async result => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    await check(); await load({ ...offerScreenFixture(), expiresAt: '2026-11-14T12:30:00.000Z' });
+    expect(reads).toHaveLength(3); expect(checkNote()).toBe('Checking the current offer state.');
+    expect(announced()).toBe('The deadline has been reached. Checking the current offer state.');
+    if (result === 'expired') { await load(offerScreenFixture('expired')); expect(checkNote()).toBe(''); expect(announced()).toBe('Offer expired'); }
+    else { reads.at(-1)!.resolve({ status: 'unavailable', retryable: true }); await settle();
+      expect(checkNote()).toBe('Check not completed. Try again in a moment.'); expect(announced()).toBe(checkNote()); }
+  });
+  it('ignores unused current-car unit metadata and quote contribution but retains pinned quote clock revisions', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    await check(); const changed = { ...offer, comparison: { ...offer.comparison, currentCar: { ...offer.comparison.currentCar!,
+      facts: { ...offer.comparison.currentCar!.facts, points: { value: 595, unit: 'changed-metadata' } } } },
+      quote: { ...offer.quote, terms: { ...offer.quote.terms, contribution: { amount: 45, currency: 'GBP', period: 'month' as const } } } };
+    await load(changed); expect(checkNote()).toBe('Check complete. Nothing has changed.');
+    await check(); await load({ ...changed, quote: { ...changed.quote, revisions: { ...changed.quote.revisions, clock: 'pinned-clock-2' } } });
+    expect(checkNote()).toBe('Check complete. The offer details have been updated.');
+  });
+  it('restores owned check focus after loading without taking it from a control selected during the read', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('[data-offer-action="check"]')!; button.focus();
+    await check(); await load(offer);
+    expect(document.activeElement?.getAttribute('data-offer-action')).toBe('check');
+    await check(); const elsewhere = document.createElement('button'); document.body.append(elsewhere); elsewhere.focus();
+    try { await load(offer); expect(document.activeElement).toBe(elsewhere); } finally { elsewhere.remove(); }
+  });
+  it('reports unchanged uncertain decisions without replaying a command', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = { ...offerScreenFixture(), reason: 'decision-pending' }; await load(offer);
+    await check(); await load(offer);
+    expect(checkNote()).toBe('Check complete. Your decision is still being confirmed.'); expect(announced()).toBe(checkNote());
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('reports a failed manual check and recovers through the explicit failure retry', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    await check(); reads.at(-1)!.resolve({ status: 'unavailable', retryable: true }); await settle();
+    expect(checkNote()).toBe('Check not completed. Try again in a moment.'); expect(announced()).toBe(checkNote());
+    await check(); expect(checkNote()).toBe('Checking the current offer state.');
+    await load(offerScreenFixture('superseded'));
+    expect(checkNote()).toBe('Check complete. Current state: replaced by a newer offer.'); expect(announced()).toBe(checkNote());
+  });
+  it.each(['pending', 'accepted', 'expired'] as const)('removes the check note and announces the %s heading when no check remains', async state => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    await check(); await load(offerScreenFixture(state));
+    expect(checkNote()).toBe(''); expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-action="check"]')).toBeNull();
+    expect(announced()).toBe(state === 'pending' ? 'Your offer' : `Offer ${state}`);
+  });
+  it.each(['selector', 'account', 'role', 'clear'] as const)('clears manual feedback across a %s boundary and rejects the late completion', async boundary => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    await check(); const old = reads.at(-1)!;
+    if (boundary === 'selector') fixture.componentRef.setInput('offerId', 'offer-2');
+    if (boundary === 'clear') fixture.componentRef.setInput('offerId', '');
+    if (boundary === 'account') auth.set({ status: 'ready', context: { ...offerScreenEmployee, employeeId: 'employee-2' } });
+    if (boundary === 'role') auth.set({ status: 'ready', context: { ...offerScreenEmployee, roles: ['presenter'] } });
+    await settle(); expect(checkNote()).toBe('');
+    old.resolve({ status: 'ok', value: offerScreenFixture('declined') }); await settle();
+    expect(checkNote()).toBe(''); expect(announced()).not.toContain('Check complete');
+  });
+  it('drops manual ownership after an observed sign-out even when the same account returns before screen effects', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded')); await check();
+    const old = reads.at(-1)!; const store = fixture.debugElement.injector.get(OfferStore);
+    auth.set({ status: 'signed-out' }); expect(store.state().status).toBe('failed');
+    auth.set({ status: 'ready', context: offerScreenEmployee }); await settle();
+    expect(checkNote()).toBe('');
+    old.resolve({ status: 'ok', value: offerScreenFixture('declined') }); await settle(); await load(offerScreenFixture('superseded'));
+    expect(checkNote()).toBe(''); expect(announced()).not.toContain('Check complete');
+  });
+  it('keeps direct refresh silent and permits later ordinary outcome announcements', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('superseded'); await load(offer);
+    fixture.componentInstance.refresh(); await settle(); expect(checkNote()).toBe(''); await load(offer); expect(checkNote()).toBe('');
+    await check(); await load(offer); expect(checkNote()).toBe('Check complete. Nothing has changed.');
+    fixture.componentInstance.refresh(); await settle(); await load(offerScreenFixture('expired'));
+    expect(checkNote()).toBe(''); expect(announced()).toBe('Offer expired');
   });
   it('composes the focused source hero with direct picker media, numeric saving and decorative finish swatches', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();

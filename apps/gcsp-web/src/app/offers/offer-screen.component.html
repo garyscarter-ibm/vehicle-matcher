@@ -8,7 +8,7 @@
   } @else if (failure(); as failed) {
     <div gcspScreenIntro presentation="source" [level]="1" [title]="failed.title"></div>
     <p class="gcsp-note" [hidden]="!failed.message">{{ failed.message }}</p>
-    @if (failed.retry) { <button gcspButton presentation="source" variant="ghost" type="button" data-offer-action="refresh" (click)="refresh()">Try again</button> }
+    @if (failed.retry) { <button gcspButton presentation="source" variant="ghost" type="button" data-offer-action="refresh" (click)="checkCurrent()">Try again</button> }
   } @else if (view(); as vm) {
     @if (vm.isRefused) {
       <div gcspStatusScreen presentation="source" [level]="1" [title]="vm.title" [message]="vm.message" [announcement]="null">
@@ -48,7 +48,7 @@
           <div decisionDeadline class="gcsp-decision-deadline"><div><strong>{{ vm.deadlineTime ? 'Held until ' + vm.deadlineTime : 'Deadline unavailable' }}</strong>
             @if (vm.deadlineDate) { <p class="gcsp-decision-date">{{ vm.deadlineDate }}</p> }
           </div><div class="gcsp-decision-clock"><p class="gcsp-countdown" aria-label="Time left to decide">{{ vm.remaining }}</p><p class="gcsp-decision-date">left to decide</p></div></div>
-          <gcsp-offer-decision decisionActions />
+          <gcsp-offer-decision decisionActions (checkRequested)="beginCheck()" />
           <gcsp-media-gallery decisionMedia [name]="vm.name" [images]="vm.images" presentation="picker" fit="contain" />
           @if (vm.overview.length) { <gcsp-fact-list decisionOverview presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="vm.overview" /> }
           <gcsp-vehicle-details decisionDetails [name]="vm.name" [finishes]="vm.finishes" [facts]="vm.detailRows" factsPresentation="source-card" [equipment]="vm.equipment" [additionalDetails]="cardDecision" />
@@ -78,9 +78,10 @@
       </section>
       </div>
     }
-    @if (!vm.isPending && !vm.showAcceptedIdentity && !vm.isExpired && !vm.isRefused) { <gcsp-offer-decision /> }
     <gcsp-offer-followup (offerOpened)="openNextOffer($event)" />
+    @if (!vm.isPending && !vm.showAcceptedIdentity && !vm.isExpired && !vm.isRefused) { <gcsp-offer-decision (checkRequested)="beginCheck()" /> }
   }
+  @if (checkFeedback()) { <p class="gcsp-note" data-offer-check>{{ checkFeedback() }}</p> }
   </div>
   <p class="gcsp-vh" role="status" aria-live="polite" aria-atomic="true" data-offer-announcement>{{ announcement() }}</p>
 </div>

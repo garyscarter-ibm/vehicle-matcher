@@ -4,7 +4,7 @@
       <button gcspButton presentation="source" type="button" data-offer-action="accept" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canReviewAccept()" (click)="open('accept', $event)">Review &amp; accept</button>
       <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="decline" [attr.aria-describedby]="prefix + '-availability'" [disabled]="!store.canDecline()" (click)="open('decline', $event)">Decline offer</button>
     }
-    @if (!busy() && (!isPending() || state().decision)) { <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="check" (click)="store.checkCurrent()">Check current state</button> }
+    @if (!busy() && (!isPending() || state().decision)) { <button gcspButton presentation="source" type="button" variant="ghost" data-offer-action="check" (click)="checkCurrent()">Check current state</button> }
   </div>
   @if (isPending()) { <p class="gcsp-note" [id]="prefix + '-availability'">{{ decisionNote() }}</p> }
   <p role="status" [attr.aria-live]="state().review ? 'off' : 'polite'" aria-atomic="true" [hidden]="!feedback()">{{ feedback() }}</p>

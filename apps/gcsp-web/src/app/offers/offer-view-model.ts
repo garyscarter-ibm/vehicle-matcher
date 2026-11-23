@@ -135,6 +135,20 @@ export function offerPresentationState(offer: Pick<OfferProjection, 'state' | 'r
   return offer.state === 'pending' && ['decision-pending', 'release-pending'].includes(offer.reason) ? 'uncertain' : offer.state;
 }
 
+// Frozen offer-view compares the card's retained evidence and current-car projection,
+// not active read clocks/versions, actions, or unprojected contribution metadata.
+export function offerCheckStructure(offer: OfferProjection): string {
+  const q = offer.quote; const terms = q.terms; const car = offer.comparison.currentCar;
+  return JSON.stringify([offerPresentationState(offer), {
+    quoteId: q.quoteId, configurationId: q.configurationId, orderUuid: q.orderUuid, orderNumber: q.orderNumber,
+    briefVersion: q.briefVersion, policyVersion: q.policyVersion, quotedAt: q.quotedAt,
+    revisions: q.revisions, facts: q.facts, decision: q.decision,
+    terms: { kind: terms.kind, termsVersion: terms.termsVersion, validFrom: terms.validFrom, validUntil: terms.validUntil,
+      points: terms.points, allowanceInputs: terms.allowanceInputs, provenance: terms.provenance },
+  }, car && { status: offer.comparison.status, model: car.model, configuration: car.facts?.['configuration']?.value ?? null,
+    facts: comparedKeys.map(key => currentValue(key, car.facts?.[key]?.value)), source: car.source }, offer.handoff, offer.selection]);
+}
+
 export function offerViewModel(offer: OfferProjection) {
   const { quote } = offer;
   const { display, facts } = quote.facts;

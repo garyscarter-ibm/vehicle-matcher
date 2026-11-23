@@ -1,4 +1,4 @@
-import { afterNextRender, Component, DestroyRef, ElementRef, Injector, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, ElementRef, Injector, computed, effect, inject, output, signal, viewChild } from '@angular/core';
 import { ButtonDirective } from '../kit/button.directive';
 import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
 import { ErrorSummaryComponent, FieldError } from '../kit/error-summary.component';
@@ -17,6 +17,7 @@ let sequence = 0;
   templateUrl: './offer-decision.component.html', styleUrl: './offer-decision.component.css',
 })
 export class OfferDecisionComponent {
+  readonly checkRequested = output<void>();
   readonly store = inject(OfferInteractionStore);
   readonly state = this.store.state;
   readonly offer = this.store.offer;
@@ -139,6 +140,11 @@ export class OfferDecisionComponent {
     if (this.state().review === kind) { this.mileageTouched.set(false); this.drawer()?.open(event.currentTarget as HTMLElement); }
   }
   close(): void { if (!this.busy()) this.drawer()?.close(); }
+  checkCurrent(): void {
+    if (this.busy()) return;
+    this.checkRequested.emit();
+    this.store.checkCurrent();
+  }
   jumpToDocument(event: Event, record: 'terms' | 'driver-record' | 'return-record'): void {
     event.preventDefault();
     const target = this.element.nativeElement.querySelector<HTMLElement>(`#${this.prefix}-${record}`);
