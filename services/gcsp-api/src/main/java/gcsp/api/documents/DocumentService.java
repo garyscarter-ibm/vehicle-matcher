@@ -80,7 +80,8 @@ public final class DocumentService {
             return DocumentOutcome.invalid("orderUuid", "Supply the order to check.");
         }
         if (clock.now(ctx).isEmpty()) return unavailable();
-        boolean employee = principal.roles().contains(Role.EMPLOYEE.wire());
+        boolean employee = principal.roles().contains(Role.EMPLOYEE.wire())
+                && !principal.roles().contains(Role.GREG.wire());
         String self = principal.employeeId();
         // An employee role without a mapped employee id owns nothing, so it never reads unfiltered.
         if (employee && (self == null || self.isEmpty())) {
