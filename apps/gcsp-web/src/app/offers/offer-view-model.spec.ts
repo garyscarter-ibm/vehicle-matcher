@@ -67,6 +67,31 @@ describe('offer read presentation projection', () => {
     const refused = offerViewModel({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed' } });
     expect(refused.title).toBe('Your selection was not sent to ordering'); expect(refused.selectionStages).toEqual(offer.selection!.stages);
   });
+  it('projects only the supplied short accepted identity, without adding the order reference', () => {
+    const offer = offerScreenFixture('accepted');
+    expect(offerViewModel(offer)).toMatchObject({ acceptedIdentityRows: [
+      { label: 'Your new car', value: 'BMW 330e M Sport Touring' }, { label: 'Car order number', value: '0123456' },
+    ], message: 'Selection received. Waiting for HR approval.' });
+    expect(offerViewModel({ ...offer, selection: { ...offer.selection!, orderNumber: null }, quote: { ...offer.quote, orderNumber: null } }))
+      .toMatchObject({ acceptedIdentityRows: [{ label: 'Your new car', value: 'BMW 330e M Sport Touring' }] });
+  });
+  it.each([
+    ['GCSP-000123', [{ label: 'Order reference', value: 'GCSP-000123' }, { label: 'Car order number', value: '7654321' }]],
+    [null, [{ label: 'Car order number', value: '7654321' }]],
+    ['invalid reference!', [{ label: 'Car order number', value: '7654321' }]],
+  ])('keeps refused selection identity exact with reference %s', (orderReference, selectionIdentityRows) => {
+    const offer = offerScreenFixture('accepted');
+    const vm = offerViewModel({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderReference: orderReference as string | null, orderNumber: '7654321' } });
+    expect(vm).toMatchObject({ showSelection: true, selectionIdentityRows });
+    expect(vm.selectionStages).toEqual(offer.selection!.stages);
+  });
+  it.each([
+    ['GCSP-000123', 'The car stays reserved for you. Nothing has been ordered. Quote order reference GCSP-000123 when you contact scheme support.'],
+    [null, 'The car stays reserved for you. Nothing has been ordered.'],
+  ])('uses the frozen support-linked refusal message with reference %s', (orderReference, message) => {
+    const offer = offerScreenFixture('accepted');
+    expect(offerViewModel({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderReference } }).message).toBe(message);
+  });
   it('never presents private error payloads and retries only retryable read failures', () => {
     expect(offerFailureView({ status: 'unavailable', reason: 'private-id stacktrace', retryable: true })).toEqual({ title: 'Your offer could not be loaded', message: 'Please try again in a moment.', retry: true });
     expect(offerFailureView({ status: 'denied', retryable: true }).retry).toBe(false);

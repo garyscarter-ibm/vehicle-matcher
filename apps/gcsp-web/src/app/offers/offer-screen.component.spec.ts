@@ -145,6 +145,67 @@ describe('native offer read screen', () => {
     await load({ ...accepted, selection: { ...accepted.selection!, selectionState: 'handoff-failed' } });
     expect((fixture.nativeElement as HTMLElement).querySelector('[data-offer-announcement]')?.textContent).toBe('Your selection was not sent to ordering');
   });
+  it('offers the source back exit beside the pending heading without submitting a decision', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const header = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-header');
+    const back = header?.querySelector<HTMLAnchorElement>('a');
+    expect(header?.querySelector('h1')?.textContent).toBe('Your offer');
+    expect(back?.textContent).toBe('‹ Back to Your cars'); expect(back?.getAttribute('href')).toBe('/account');
+    expect(back?.classList.contains('gcsp-button-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('uses canonical short accepted facts and the order/back exits without a tracker or another decision check', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('accepted'));
+    const host = fixture.nativeElement as HTMLElement;
+    expect(Array.from(host.querySelectorAll('.gcsp-offer-actions > a')).map(link => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Track your order', '/orders'], ['Back to Your cars', '/account'],
+    ]);
+    expect(Array.from(host.querySelectorAll('gcsp-fact-list .vm-fact')).map(row => [row.querySelector('dt')?.textContent, row.querySelector('dd')?.textContent])).toEqual([
+      ['Your new car', 'BMW 330e M Sport Touring'], ['Car order number', '0123456'],
+    ]);
+    expect(text().split('BMW 330e M Sport Touring')).toHaveLength(2); expect(text().split('0123456')).toHaveLength(2);
+    expect(host.querySelector('gcsp-stage-list, table, [data-offer-action]')).toBeNull();
+    expect(text()).not.toContain('Order reference'); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('offers the source activity/back exits for expiry without a second decision check', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('expired'));
+    const host = fixture.nativeElement as HTMLElement;
+    expect(Array.from(host.querySelectorAll('.gcsp-offer-actions > a')).map(link => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['See buddy activity', '/activity'], ['Back to Your cars', '/account'],
+    ]);
+    expect(host.querySelector('[data-offer-action], gcsp-stage-list')).toBeNull();
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('composes refused support/back, canonical stage labels and the exact selection identity', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('accepted');
+    await load({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderNumber: '7654321', stages: [
+      { name: 'Selection received', state: 'complete' }, { name: 'Send to ordering', state: 'failed' }, { name: 'Await receipt', state: 'pending' },
+    ] } });
+    const host = fixture.nativeElement as HTMLElement; const support = host.querySelector('gcsp-status-screen');
+    expect(Array.from(support?.querySelectorAll('a') ?? []).map(link => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Contact scheme support', '/help'], ['Back to Your cars', '/account'],
+    ]);
+    expect(support?.querySelector('section')?.getAttribute('role')).toBeNull();
+    const group = host.querySelector('.gcsp-offer-current');
+    expect(group?.querySelector('.gcsp-stage-heading')?.textContent).toBe('Your selection');
+    expect(Array.from(group?.querySelectorAll('.gcsp-stage-item') ?? []).map(row => [row.querySelector('.gcsp-stage-name')?.textContent, row.querySelector('.gcsp-stage-state')?.textContent])).toEqual([
+      ['Selection received', 'Done'], ['Send to ordering', 'Not accepted'], ['Await receipt', 'Sending'],
+    ]);
+    expect(Array.from(group?.querySelectorAll('.vm-fact') ?? []).map(row => [row.querySelector('dt')?.textContent, row.querySelector('dd')?.textContent])).toEqual([
+      ['Order reference', 'GCSP-000123'], ['Car order number', '7654321'],
+    ]);
+    expect(host.querySelector('[data-offer-action]')).toBeNull(); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('does not borrow the quote order number for a refused selection with only an order reference', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture('accepted');
+    await load({ ...offer, selection: { ...offer.selection!, selectionState: 'handoff-failed', orderNumber: null } });
+    const group = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-current');
+    expect(Array.from(group?.querySelectorAll('.vm-fact') ?? []).map(row => row.querySelector('dd')?.textContent)).toEqual(['GCSP-000123', 'Not supplied']);
+  });
+  it.each(['declined', 'superseded'] as const)('does not display another state exit in the %s state', async state => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture(state));
+    expect((fixture.nativeElement as HTMLElement).querySelector('.gcsp-offer-header, .gcsp-offer-actions > a')).toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('gcsp-stage-list')).toBeNull();
+  });
   it.each(['decision-pending', 'release-pending'])('shows truthful uncertain copy for %s', async (reason) => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load({ ...offerScreenFixture(), reason });
     expect(text()).toContain('Checking your decision'); expect(text()).toContain('being confirmed');
@@ -442,6 +503,7 @@ describe('native offer read screen through the real offer client', () => {
     offer.quote.facts.display.images = images;
     const fetcher = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ status: 'ok', value: offer }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
     await TestBed.configureTestingModule({ imports: [OfferScreenComponent], providers: [
+      provideRouter([]),
       { provide: AuthPort, useValue: { state: signal<SessionState>({ status: 'ready', context: offerScreenEmployee }), getAccessToken: async () => 'access-token' } },
       { provide: RuntimeConfigService, useValue: { load: async () => config } }, { provide: PORTAL_FETCH, useValue: fetcher },
       { provide: ErrorHandler, useValue: { handleError } },

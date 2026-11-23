@@ -8,16 +8,27 @@
       @if (failed.retry) { <button gcspButton type="button" (click)="refresh()">Check current offer</button> }
     </gcsp-status-screen>
   } @else if (view(); as vm) {
-    <gcsp-screen-intro [title]="vm.title" [lede]="vm.message" />
-    @if (vm.showAcceptedIdentity) {
-      <dl class="offer-confirmation"><div><dt>Your new car</dt><dd>{{ vm.name }}</dd></div>
-        @if (vm.orderNumber) { <div><dt>Car order number</dt><dd>{{ vm.orderNumber }}</dd></div> }
-      </dl>
+    @if (vm.isRefused) {
+      <gcsp-status-screen [title]="vm.title" [message]="vm.message" [announcement]="null">
+        <a gcspButton routerLink="/help">Contact scheme support</a>
+        <a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a>
+      </gcsp-status-screen>
+    } @else {
+      @if (vm.isPending) {
+        <div class="gcsp-offer-header"><gcsp-screen-intro [title]="vm.title" /><a gcspButton variant="ghost" routerLink="/account">‹ Back to Your cars</a></div>
+      } @else { <gcsp-screen-intro [title]="vm.title" /> }
+      @if (vm.showAcceptedIdentity && vm.acceptedIdentityRows.length) { <gcsp-fact-list presentation="source" [rows]="vm.acceptedIdentityRows" /> }
+      <p class="gcsp-note" [hidden]="!vm.message">{{ vm.message }}</p>
+      @if (vm.showAcceptedIdentity) {
+        <div class="gcsp-offer-actions"><a gcspButton routerLink="/orders">Track your order</a><a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a></div>
+      } @else if (vm.isExpired) {
+        <div class="gcsp-offer-actions"><a gcspButton routerLink="/activity">See buddy activity</a><a gcspButton variant="ghost" routerLink="/account">Back to Your cars</a></div>
+      }
     }
-    @if (vm.selectionStages.length) {
-      <section class="offer-selection" aria-label="Your selection"><h2>Your selection</h2><ol>
-        @for (stage of vm.selectionStages; track $index) { <li>{{ stage.name }}: {{ stage.state.replaceAll('-', ' ') }}</li> }
-      </ol></section>
+    @if (vm.showSelection) {
+      <div class="gcsp-offer-current"><gcsp-stage-list heading="Your selection" [stages]="vm.selectionStages" />
+        @if (vm.selectionIdentityRows.length) { <gcsp-fact-list presentation="source" [rows]="vm.selectionIdentityRows" /> }
+      </div>
     }
     @if (vm.showVehicle) {
       <section class="offer-focused" aria-label="The offered car">
@@ -33,7 +44,7 @@
             @if (vm.deadlineDate) { <p class="gcsp-decision-date">{{ vm.deadlineDate }}</p> }
           </div><div class="gcsp-decision-clock"><p class="gcsp-countdown" aria-label="Time left to decide">{{ vm.remaining }}</p><p class="gcsp-decision-date">left to decide</p></div></div>
           @if (vm.handoffBlocker) { <p class="gcsp-note">{{ vm.handoffBlocker }}</p> }
-          <gcsp-offer-decision />
+          @if (!vm.isRefused) { <gcsp-offer-decision /> }
         </div>
         <div class="offer-details">
           @if (vm.overview.length) { <dl class="offer-overview">@for (fact of vm.overview; track $index) { <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div> }</dl> }
@@ -59,7 +70,7 @@
         <p>{{ vm.termsWording }}</p>
       </details>
     }
-    @if (!vm.showVehicle) { <gcsp-offer-decision /> }
+    @if (!vm.showVehicle && !vm.showAcceptedIdentity && !vm.isExpired) { <gcsp-offer-decision /> }
     <gcsp-offer-followup (offerOpened)="openNextOffer($event)" />
   }
   <p class="gcsp-vh" role="status" aria-live="polite" aria-atomic="true" data-offer-announcement>{{ announcement() }}</p>

@@ -1,5 +1,6 @@
 import { OfferExplanation, OfferFact, OfferFailure, OfferProjection, OfferSimpleValue } from './offer.types';
 import { VehicleDetailRow } from '../kit/vehicle-details.component';
+import { orderIdentityRows } from '../kit/order-identity';
 
 const labels: Readonly<Record<string, string>> = {
   eligibilityModelKey: 'Scheme model', body: 'Body style', fuel: 'Fuel', seats: 'Seats', doors: 'Doors', boot: 'Boot',
@@ -99,8 +100,8 @@ export function offerViewModel(offer: OfferProjection) {
   if (offer.state === 'accepted' && offer.selection) {
     const selection = offer.selection;
     message = selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
-      : selection.selectionState === 'handoff-failed' ? `The car stays reserved for you. Nothing has been ordered. Contact scheme support${selection.orderReference ? ` and quote order reference ${selection.orderReference}` : ''}.`
-        : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}. Ordering and approval are separate steps.`;
+      : selection.selectionState === 'handoff-failed' ? `The car stays reserved for you. Nothing has been ordered.${selection.orderReference ? ` Quote order reference ${selection.orderReference} when you contact scheme support.` : ''}`
+        : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`;
   }
   const finishes: readonly VehicleDetailRow[] = [
     { label: 'Paint', value: facts['colour'] ? offerFactValue(facts['colour']) : display.colour ?? null },
@@ -137,11 +138,17 @@ export function offerViewModel(offer: OfferProjection) {
     (better ? measuredBenefits : measuredTradeOffs).push({ title: `${Math.abs(offered - current.value).toLocaleString('en-GB')} ${key === 'points' ? `${better ? 'fewer' : 'more'} points` : `litres ${better ? 'more' : 'less'}`}`,
       details: [key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car'] });
   }
+  const orderNumber = offer.selection?.orderNumber ?? quote.orderNumber;
+  const acceptedIdentityRows = [...(display.name ? [{ label: 'Your new car', value: display.name }] : []),
+    ...(orderNumber ? orderIdentityRows(null, orderNumber) : [])];
+  const selectionIdentityRows = refused && (offer.selection?.orderReference || offer.selection?.orderNumber)
+    ? orderIdentityRows(offer.selection.orderReference, offer.selection.orderNumber) : [];
   return { title, message, name: display.name, finishes, rows, equipment, overview, comparison,
     images: display.images.length ? display.images : display.photo ? [{ src: display.photo, alt: display.name }] : [],
     showVehicle: offer.state === 'pending' || offer.state === 'superseded' || refused,
     showAcceptedIdentity: offer.state === 'accepted' && !refused,
-    orderNumber: offer.selection?.orderNumber ?? quote.orderNumber,
+    orderNumber, acceptedIdentityRows, selectionIdentityRows, showSelection: refused && offer.selection !== null,
+    isPending: offer.state === 'pending', isExpired: offer.state === 'expired', isRefused: refused,
     points: offerValue(quote.terms.points.value), allowance: quote.terms.allowanceInputs.allowance ? offerValue(quote.terms.allowanceInputs.allowance.value) : null,
     contribution: contribution ? `${new Intl.NumberFormat('en-GB', { style: 'currency', currency: contribution.currency }).format(contribution.amount)} ${contribution.period === 'one-off' ? 'one-off' : `a ${contribution.period}`}` : null,
     deadline: offerDate(offer.expiresAt),

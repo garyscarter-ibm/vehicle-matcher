@@ -10730,9 +10730,9 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-028",
-      "evidence": "Native claim remains In Progress at21points; all8 original ACs unticked. Published source drawer checkpoint b49dc780b remains partial. Authoritative deadline source proof:177 scoped Angular cases, settled boundaries/inline4 and ratchet124; all15 current allocations absent. No connected pair/build/acceptance.",
+      "evidence": "Native claim remains In Progress at21points and all8AC unticked. Published drawer/deadline source b49dc780b/de0edfdb6 remain partial. Original source exits and canonical accepted/refused facts/stages now composed with146scoped Angular cases, boundaries/inline4 and ratchet124. No live pair/build/acceptance.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T03:35:11Z",
+      "observed_at": "2026-11-23T03:47:56Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10757,9 +10757,9 @@
           "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
         },
         {
-          "evidence": "Original AC2 authoritative deadline now uses source London time/date/ceil countdown, deduplicated announcements and one bounded zero reread with abort/scope ownership.177 scoped Angular cases pass; hero/exits/savings/highlights/winners/stages and supported sibling integration remain open.",
+          "evidence": "Source authoritative deadline plus pending/accepted/expired/refused local exits, canonical accepted/refused identity and StageList are composed.146scoped current Angular cases pass; main hero/savings/swatches/highlights/winners, source-state reconciliation and supported shared integration remain open.",
           "id": "offer-composition",
-          "observed_at": "2026-11-23T03:35:10.958127+00:00",
+          "observed_at": "2026-11-23T03:47:56.532404+00:00",
           "status": "in-progress",
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
@@ -10778,9 +10778,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Deadline177cases across5files plus settled boundaries/inline4 and ratchet124 passed, by module/fixture/config identity. All15 current allocations absent; intermediate failures and boundary helper recovery retained. No full suite, production build, browser/rendered/connected pair or human acceptance.",
+          "evidence": "Latest exits source146cases across4files plus boundaries/inline4 and ratchet124 passed. All9current allocations absent; test-only compilation/provider/selection-null expectation history retained. No full suite, production build, real browser/rendered pair or human acceptance.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T03:35:10.958127+00:00",
+          "observed_at": "2026-11-23T03:47:56.532404+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10818,13 +10818,13 @@
           "name": "usget-vesper launcher",
           "harness": "codex",
           "role": "launcher carrying F555 original view implementation",
-          "observed_at": "2026-11-23T03:35:10.958127+00:00",
-          "expires_at": "2026-11-23T03:35:10.958127+00:00",
-          "source": "Observed direct original F555 deadline work after retained child422 errors; no child active/retried, no model/provider/key change. Runtime pair not independently exposed.",
+          "observed_at": "2026-11-23T03:47:56.532404+00:00",
+          "expires_at": "2026-11-23T03:47:56.532404+00:00",
+          "source": "Observed direct source exits/identity work after retained child422; no child retry, model/provider/key change. Runtime pair not independently exposed.",
           "status": "checkpointed; scheduled continuation"
         }
       ],
-      "note": "All8 original ACs remain open. Source drawer/Docs/saved Activity composition remains valid; authoritative deadline source and bounded zero reread now added.177 scoped Angular cases plus boundaries/inline4 and ratchet124; full hero, source-state reconciliation, supported sibling integration/build/browser/live pair pending."
+      "note": "All8original ACs open. Source drawer/Docs/Activity/deadline plus exact authored exits and canonical accepted/refused stage/identity composition are partial; latest146scoped Angular cases/boundaries/inline4/ratchet124 pass. Main hero, integration/build/browser/live pair and human review remain open."
     }
   ],
   "version": 1

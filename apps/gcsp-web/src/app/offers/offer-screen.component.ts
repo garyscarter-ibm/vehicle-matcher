@@ -1,9 +1,12 @@
 import { afterNextRender, Component, computed, DestroyRef, effect, ElementRef, inject, Injector, input, OnDestroy, output, signal, untracked } from '@angular/core';
 import { AuthPort } from '../auth/auth.port';
+import { RouterLink } from '@angular/router';
 import { ButtonDirective } from '../kit/button.directive';
+import { FactListComponent } from '../kit/fact-list.component';
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { StageListComponent } from '../kit/stage-list.component';
 import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { OfferStore, OfferStoreState } from './offer.store';
 import { offerFailureView, offerViewModel } from './offer-view-model';
@@ -13,7 +16,7 @@ import { OfferFollowupComponent } from './offer-followup.component';
 
 @Component({
   selector: 'gcsp-offer-screen', standalone: true,
-  imports: [ButtonDirective, MediaGalleryComponent, ScreenIntroComponent, StatusScreenComponent, VehicleDetailsComponent, OfferDecisionComponent, OfferFollowupComponent],
+  imports: [RouterLink, ButtonDirective, FactListComponent, MediaGalleryComponent, ScreenIntroComponent, StatusScreenComponent, StageListComponent, VehicleDetailsComponent, OfferDecisionComponent, OfferFollowupComponent],
   providers: [OfferStore, OfferInteractionStore], templateUrl: './offer-screen.component.html', styleUrl: './offer-screen.component.css',
 })
 export class OfferScreenComponent implements OnDestroy {
