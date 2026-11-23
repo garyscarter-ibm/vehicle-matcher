@@ -18,7 +18,8 @@ import { DecisionHighlightsComponent } from '../kit/decision-highlights.componen
 import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
 import { TabsComponent } from '../kit/tabs.component';
 import { SideDrawerComponent } from '../kit/side-drawer.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent], styleUrl: './gallery.component.css', template: `
+import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -97,6 +98,13 @@ import { SideDrawerComponent } from '../kit/side-drawer.component';
       <button drawer-footer gcspButton type="button" variant="ghost" (click)="lockedDrawer.close()">Finish preview</button>
     </gcsp-side-drawer>
   </section>
+  <section class="gcsp-panel"><h2>Source car details</h2>
+    <p class="gcsp-note">Long supplied finishes, complete equipment and a supplied decision share the canonical details drawer. The second example has no supplied equipment.</p>
+    <ng-template #detailsDecision><p class="gcsp-note">Supplied decision detail: 300 fewer points each month compared with the current car.</p></ng-template>
+    <gcsp-vehicle-details name="BMW X2 M35i in Black Sapphire with a long supplied upholstery and model description"
+      [finishes]="detailsFinishes" [facts]="detailsFacts" [equipment]="detailsEquipment" [additionalDetails]="detailsDecision" />
+    <gcsp-vehicle-details name="Car with equipment not supplied" [finishes]="[{ label: 'Paint', value: null }, { label: 'Upholstery', value: '' }]" [facts]="[{ label: 'Build month', value: null }]" />
+  </section>
   <section class="gcsp-panel"><h2>Source facts and tabs</h2>
     <p class="gcsp-note">Canonical source classes with supplied facts. Default fact-list consumers keep their existing presentation.</p>
     <gcsp-fact-list presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="sourceOverview" />
@@ -108,6 +116,9 @@ import { SideDrawerComponent } from '../kit/side-drawer.component';
   </section>
 ` })
 export class GalleryComponent {
+  readonly detailsFinishes = [{ label: 'Paint', value: 'Black Sapphire' }, { label: 'Upholstery', value: 'M Alcantara Veganza combination Black contrast stitching with extended long text' }];
+  readonly detailsFacts = [{ label: 'Body style', value: 'SUV' }, { label: 'Fuel', value: 'Petrol' }, { label: 'Build month', value: null }];
+  readonly detailsEquipment = Array.from({ length: 57 }, (_, index) => `Selected equipment item ${index + 1} with retained source wording`);
   readonly drawerClosed = signal('');
   readonly sourceOverview = [{ label: 'Body style', value: 'SUV' }, { label: 'Boot', value: 490, unit: 'litres' },
     { label: 'Extra payment', value: 0 }, { label: 'Unconfirmed fact', value: null }];

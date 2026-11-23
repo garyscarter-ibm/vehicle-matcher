@@ -682,3 +682,34 @@ drawer** demonstrates a normal record and nondismissible pending-command preview
 This source checkpoint does not establish F548 stylesheet integration, real browser
 visual/focus/inert behavior, connected acceptance or same-offer parity. All eight
 original FUCQ-555 acceptance criteria remain open.
+
+
+### Angular source car details (FUCQ-555)
+
+The existing `VehicleDetailsComponent` / `gcsp-vehicle-details` composes the ONE
+source SideDrawer, Tabs and explicit source FactList ports. The source control
+contains the entry and retained hidden drawer content, the supplied name in
+`h3.gcsp-h2`, specification facts followed by the optional supplied template,
+and the complete equipment list in `.gcsp-vehicle-equipment > ul`. The component
+adds no Finishes/Vehicle facts headings. Null/empty finishes are omitted; supplied
+whitespace and explicit missing facts remain. Missing equipment reads
+**Equipment not supplied.** and the entry always starts **Full specification ·**,
+with the actual singular/plural count when equipment is supplied. The owned entry
+keeps source `vm-btn vm-btn-ghost` classes beside its existing ButtonDirective.
+All copied local presentation rules are removed; only the Angular host uses
+`display: contents`, consuming FUCQ-548's canonical global source styles.
+
+Public inputs remain `name`, readonly `finishes`/`facts: VehicleDetailRow[]`,
+`equipment` and `additionalDetails: TemplateRef | null`; the latter retains the
+supplied decision/detail seam. `VehicleDetailRow`, `isOpen`, `tabItems`,
+`openDrawerFromEvent`, `openDrawer`, `displayValue` and `onDrawerClosed` remain.
+The existing raw JSON snapshot and separate TemplateRef identity guard are
+unchanged: equivalent readback preserves the open drawer, selected tab and focus;
+changed supplied details/template closes and resets to Specification. Actual
+production callers remain OfferScreen and OfferFollowup, with no caller edits.
+
+Gallery: **Source car details** shows long finishes, all 57 equipment entries,
+a supplied decision template and missing-equipment/finish values. This is a source
+checkpoint; F548/shared-button style integration, real browser/visual behavior,
+connected acceptance and same-offer human parity remain separate gates. All eight
+original FUCQ-555 acceptance criteria remain open.
