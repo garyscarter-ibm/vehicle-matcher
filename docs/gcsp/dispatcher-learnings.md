@@ -2994,3 +2994,19 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-23 · usget-vesper · DL-20261123-F555-14 · Preserved batch-supervisor review recovered
 
 - Resumed Spike's prior failed Node supervisor review instead of treating preparation receipts as readiness: sole hardcoded mkdtemp writer was F482's exact /private/tmp/f482-refusal- prefix, plus an interrupted-receipt gate. Current runner already had the latter; precise observer/journal/budget/cleanup repair is implemented but independent fixture/review remains pending. No Node batch launched or readiness inferred. Framework proposal: retain reviewer verdict with preparation state and invalidate readiness until concrete closure evidence exists.
+
+### 2026-11-23 · usget-vesper · DL-20261123-F555-14 · Node supervisor closure verified
+
+- Dibble's exact external-root observer/journal/accounting/cleanup repair passed eight bounded synthetic checks and independent Speedy source/security review. Root reconciled the frozen runner/helper/observer hashes, fixture receipt and actual owned-root absence. This closes the preparation finding; the covering Node suite remains unrun. Evidence: `.claude/test-runs/f555-resume-20261123/node-runner-review/`. No additional product gate or acceptance claim.
+
+### 2026-11-23 · usget-vesper · DL-20261123-F555-02 · Reference disappearance recurred
+
+- During final preflight Pugh and root found the previously verified frozen checkout missing again, absent from Git's worktree registry, with only its Codex parent marker retained. Cause remains unverified. Root restored clean exact `e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38` through the Git wrapper/mutex at `.claude/worktrees/f555-node-reference`, attached it to this chat and reverified it at17:35UTC. This is a stable-local-path mitigation, not proof that the disappearance cause is resolved; preserve the reference after the final run. No OneDrive access.
+
+### 2026-11-23 · usget-vesper · DL-20261123-F555-15 · Java batch supervisor resource repair
+
+- Pugh's preflight review found that the canonical Java deadline excluded setup/finalization, partial database creation could evade cleanup, and PostgreSQL RSS was not explicitly anchored. Toothless repaired total/work/cleanup budgeting, exact registry-owned partial-create cleanup and verified postmaster/descendant accounting. Eight tiny synthetic checks and Pluto's independent full-source review passed; root rehashed runner `ef29df0a60087ac5058930fe9f2c21efda320f40c4c56fa8ecc900c338a36eb5` and read the receipt. Actual PostgreSQL/Maven execution remains unrun. Evidence: `.claude/test-runs/f555-resume-20261123/batch-java/`. Proposed framework improvement: retain supervisor review findings and distinguish synthetic readiness from runtime evidence.
+
+### 2026-11-23 · usget-vesper · DL-20261123-F555-16 · Ephemeral batch refresh ownership mismatch
+
+- Normal `scaffold_git.py refresh` refused the WEB batch branch as claimed by unknown: ephemeral batch snapshots have no Story claimant. No source change occurred on refusal. Dibble verified three exact clean batch branches and ancestor identities, then used the existing Git wrapper/mutex for strict fast-forwards to final `c49e2d801`; exact owned Node dependency links were restored without installation. Old RED WEB history remains retained. Evidence: `.claude/test-runs/f555-completion-20261123/final-snapshot-refresh.json`. Proposed framework improvement: support guarded batch snapshot refresh explicitly without weakening Story claims.
