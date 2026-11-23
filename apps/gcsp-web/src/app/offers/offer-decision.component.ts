@@ -11,7 +11,7 @@ import { OfferDecisionKind } from './offer.types';
 
 let sequence = 0;
 @Component({
-  selector: 'gcsp-offer-decision', standalone: true,
+  selector: 'gcsp-offer-decision', standalone: true, host: { style: 'display: contents' },
   imports: [ButtonDirective, CheckboxFieldComponent, ErrorSummaryComponent, FactListComponent, LabelledFieldComponent, OptionListComponent, SideDrawerComponent],
   templateUrl: './offer-decision.component.html', styleUrl: './offer-decision.component.css',
 })
@@ -26,6 +26,14 @@ export class OfferDecisionComponent {
   private readonly injector = inject(Injector);
   private readonly destroyRef = inject(DestroyRef);
   readonly busy = computed(() => this.state().decision === 'sending');
+  readonly decisionNote = computed(() => {
+    const offer = this.offer();
+    if (!offer || offer.state !== 'pending') return '';
+    if (Date.parse(offer.expiresAt) <= Date.parse(offer.serverNow)) return 'Checking availability. Actions are unavailable.';
+    if (this.store.canReviewAccept()) return 'Review your details and declarations before accepting.';
+    if (this.store.canDecline() && !offer.availableActions.includes('accept')) return 'Acceptance is unavailable. You can still decline this offer.';
+    return 'Actions depend on current server availability.';
+  });
   readonly mileageTouched = signal(false);
   readonly mileageMessage = computed(() => this.mileageTouched() || this.state().mileage ? this.store.mileageError() : '');
   readonly reasonOptions = computed(() => this.state().reasons.choices.map(({ code, label }) => ({ value: code, label })));

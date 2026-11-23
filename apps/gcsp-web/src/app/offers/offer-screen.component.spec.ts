@@ -51,7 +51,7 @@ describe('native offer read screen', () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
     expect(text()).toContain('BMW 330e M Sport Touring'); expect(text()).toContain('295 points a month');
     expect(text()).toContain('620 points a month allowance'); expect(text()).toContain('£12.50 a month');
-    expect(text()).toContain('Required: at least 5'); expect(text()).toContain('Mileage needs confirmation.');
+    expect(text()).not.toContain('Required: at least 5'); expect(text()).toContain('Mileage needs confirmation.');
     expect(text()).not.toContain('[object Object]'); expect(text()).not.toMatch(/synthetic|fictional|example data/i);
     expect(fixture.nativeElement.querySelector('[data-offer-action="accept"]').textContent).toContain('Review & accept');
     expect(fixture.nativeElement.querySelector('[data-offer-action="decline"]').textContent).toContain('Decline offer');
@@ -152,6 +152,58 @@ describe('native offer read screen', () => {
     expect(header?.querySelector('h1')?.textContent).toBe('Your offer');
     expect(back?.textContent).toBe('‹ Back to Your cars'); expect(back?.getAttribute('href')).toBe('/account');
     expect(back?.classList.contains('gcsp-button-ghost')).toBe(true); expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('composes the focused source hero with direct picker media, numeric saving and decorative finish swatches', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const host = fixture.nativeElement as HTMLElement; const card = host.querySelector('.gcsp-vehicle-decision.gcsp-vehicle-focused');
+    expect(card).not.toBeNull();
+    expect(Array.from(card?.children ?? []).map(child => child.classList.contains('gcsp-vehicle-summary') ? 'summary'
+      : child.classList.contains('gcsp-media-gallery') ? 'media' : child.classList.contains('gcsp-vehicle-details') ? 'details' : 'other')).toEqual(['summary', 'media', 'details']);
+    const summary = card?.querySelector('.gcsp-vehicle-summary');
+    expect(summary?.querySelector('.gcsp-vehicle-context')?.textContent).toBe('Your buddy found a car for you');
+    expect(summary?.querySelector('.gcsp-points-n')?.textContent).toBe('295');
+    expect(summary?.querySelector('.gcsp-vehicle-saving')?.textContent).toBe('300 fewer than your current car');
+    expect(card?.querySelector(':scope > .gcsp-media-gallery-picker.gcsp-media-gallery-whole')).not.toBeNull();
+    expect(Array.from(summary?.querySelectorAll('.gcsp-vehicle-meta .gcsp-finish') ?? []).map(finish => [
+      finish.querySelector('.gcsp-finish-label')?.textContent, finish.querySelector('.gcsp-finish-value')?.textContent,
+      finish.querySelector('.gcsp-finish-swatch')?.getAttribute('aria-hidden'),
+    ])).toEqual([['Paint', 'Alpine White', 'true'], ['Upholstery', 'Black Veganza', 'true']]);
+    expect(host.querySelector('.offer-focused, .offer-summary, .offer-terms')).toBeNull();
+    expect(summary?.querySelector('[data-offer-action="check"]')).toBeNull();
+    expect(summary?.querySelector('.gcsp-offer-actions')).not.toBeNull();
+  });
+  it('shows canonical Benefits and Tradeoffs with numeric emphasis while omitting coded or invented highlights', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const highlights = (fixture.nativeElement as HTMLElement).querySelector('.gcsp-decision-highlights.gcsp-decision-lists');
+    expect(Array.from(highlights?.querySelectorAll('h3') ?? []).map(h => h.textContent)).toEqual(['Benefits', 'Tradeoffs']);
+    expect(Array.from(highlights?.querySelectorAll('.gcsp-highlight-number') ?? []).map(n => n.textContent)).toEqual(['300', '30']);
+    expect(highlights?.textContent).toContain('Available by Tuesday 1 December 2026.');
+    expect(highlights?.textContent).toContain('Less sporty than you prefer.');
+    expect(highlights?.textContent).not.toMatch(/essential|Required:|Preference fit|Desired:/);
+  });
+  it('renders the source empty highlights and unknown-current-car note without an invented comparison table', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); const offer = offerScreenFixture();
+    await load({ ...offer, comparison: { ...offer.comparison, currentCar: null, comparisonAvailable: false }, quote: { ...offer.quote,
+      decision: { ...offer.quote.decision, reasons: [], tradeOffs: [] } } });
+    const host = fixture.nativeElement as HTMLElement;
+    expect(Array.from(host.querySelectorAll('.gcsp-highlight-empty')).map(p => p.textContent)).toEqual(['No benefits confirmed.', 'No tradeoffs confirmed.']);
+    expect(text()).toContain('Current-car details not supplied. Equipment is unknown.'); expect(host.querySelector('table')).toBeNull();
+    expect(host.querySelector('.gcsp-vehicle-saving')).toBeNull();
+  });
+  it('keeps actual specification, confirmation notes and complete equipment in the one shared details drawer', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelectorAll('gcsp-vehicle-details')).toHaveLength(1);
+    host.querySelector<HTMLButtonElement>('.gcsp-vehicle-details-entry')!.click(); await settle();
+    const dialog = host.querySelector<HTMLElement>('gcsp-vehicle-details .gcsp-side-drawer:not([hidden]) [role="dialog"]');
+    expect(dialog).not.toBeNull(); expect(dialog?.textContent).toContain('Mileage needs confirmation.');
+    expect(dialog?.querySelector('.vm-card-decision .vm-why-label')?.textContent).toBe('Needs confirmation');
+    expect(dialog?.textContent).toContain('Seats'); expect(dialog?.textContent).toContain('5');
+    expect(dialog?.textContent).not.toContain('Required: at least 5');
+    const equipment = Array.from(dialog?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? []).find(tab => tab.textContent?.includes('Selected equipment'))!;
+    equipment.click(); await settle();
+    expect(Array.from(dialog?.querySelectorAll('.gcsp-vehicle-equipment li') ?? []).map(li => li.textContent)).toEqual(['Heated seats', 'Parking assistance']);
+    expect(client['decide']).not.toHaveBeenCalled();
   });
   it('uses canonical short accepted facts and the order/back exits without a tracker or another decision check', async () => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('accepted'));

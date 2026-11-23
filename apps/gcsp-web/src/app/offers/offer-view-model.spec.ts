@@ -60,6 +60,47 @@ describe('offer read presentation projection', () => {
     const absent = offerViewModel({ ...offer, comparison: { status: 'unavailable', reason: 'unavailable', comparisonAvailable: false, currentCar: null, unknowns: ['configuration', 'body'] } });
     expect(absent.currentName).toBe('Current car not supplied'); expect(absent.comparison.every((row) => row.current === 'Unknown')).toBe(true);
   });
+  it('builds the source saving and structured numeric highlights directly from comparable facts', () => {
+    const offer = offerScreenFixture();
+    expect(offerViewModel(offer)).toMatchObject({ monthlyPoints: 295, monthlyAllowance: 620, pointsDifference: '300 fewer than your current car',
+      benefits: [
+        { number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' },
+        { title: 'Available by Tuesday 1 December 2026.' },
+      ], tradeoffs: [
+        { number: '30', title: 'litres less', detail: 'Boot space compared with your current car' },
+        { title: 'Less sporty than you prefer.' },
+      ],
+    });
+  });
+  it('omits source coded checks, measured-field duplicates and explanations without explicit text', () => {
+    const offer = offerScreenFixture();
+    const vm = offerViewModel({ ...offer, quote: { ...offer.quote, decision: { ...offer.quote.decision,
+      reasons: [{ code: 'driver-eligible', text: 'Driver checked' }, { code: 'essential-met', text: 'Seats checked' },
+        { field: 'points', text: 'Repeated saving' }, { code: 'preference-fit', field: 'body' }, { text: 'Explicit benefit' }],
+      tradeOffs: [{ field: 'boot', text: 'Repeated boot difference' }, 'Explicit tradeoff'],
+    } } });
+    expect(vm).toMatchObject({ benefits: [
+      { number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, { title: 'Explicit benefit' },
+    ], tradeoffs: [
+      { number: '30', title: 'litres less', detail: 'Boot space compared with your current car' }, { title: 'Explicit tradeoff' },
+    ] });
+  });
+  it('keeps ties and absent current-car facts neutral rather than manufacturing savings or numeric highlights', () => {
+    const source = offerScreenFixture(); const offer = { ...source, quote: { ...source.quote, decision: { ...source.quote.decision, reasons: [], tradeOffs: [] } } };
+    expect(offerViewModel({ ...offer, comparison: { ...offer.comparison, currentCar: { ...offer.comparison.currentCar!, facts: {
+      points: { value: 295, unit: 'points' }, boot: { value: 410, unit: 'litres' }, seats: { value: 7, unit: 'count' },
+    } } } })).toMatchObject({ pointsDifference: null, benefits: [], tradeoffs: [] });
+    expect(offerViewModel({ ...offer, comparison: { ...offer.comparison, currentCar: null, comparisonAvailable: false } }))
+      .toMatchObject({ hasCurrentCar: false, pointsDifference: null, benefits: [], tradeoffs: [], comparisonNote: 'Current-car details not supplied. Equipment is unknown.' });
+  });
+  it('uses the source overview priority, known-value fallback and four-fact limit', () => {
+    const offer = offerScreenFixture();
+    expect(offerViewModel({ ...offer, quote: { ...offer.quote, facts: { ...offer.quote.facts, facts: { ...offer.quote.facts.facts,
+      availableFrom: screenFact(null), collectionFrom: screenFact('Munich'),
+    } } } }).overview).toEqual([
+      { label: 'Body style', value: 'Touring' }, { label: 'Fuel', value: 'Plug-in hybrid' }, { label: 'Boot', value: '410 litres' }, { label: 'Collection from', value: 'Munich' },
+    ]);
+  });
   it('does not promote handoff acknowledgement to approval or lose refused stages', () => {
     const offer = offerScreenFixture('accepted');
     expect(offerViewModel(offer).message).toContain('Waiting for HR approval');
