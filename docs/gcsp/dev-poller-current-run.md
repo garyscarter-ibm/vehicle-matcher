@@ -1,10 +1,13 @@
 # Angular port gap run — 22 November 2026
 
+**STOPPED by Russell on 23 November 2026.** Latest explicit instruction: “Stop the poller.” This overrides the earlier start/resume instructions below. Do not dispatch, claim, implement, retry children or restart the heartbeat without an explicit human resume. Preserve existing claims, branches and worktrees.
+
 Phase: repair FUCQ-548 through FUCQ-561; ends when all fourteen have validated implementations, same-state 1280px Node/Angular screenshot pairs attached, and Jira status In Review. Human acceptance remains pending until Gary or Russell reviews the pairs. Do not mark Done. No work outside this scope is authorised by a scheduled wake.
 
 Poller: usget-vesper. Root: /Users/usget/Claude/vehicle-matcher. Base branch: gcsp-poc-dev. Use SCAFFOLDING_HARNESS=codex and --poller vesper for dev_mail.py/scaffold_git.py; Jira uses SCAFFOLD_POLLER=vesper.
 
 Latest explicit human instructions:
+- **23 November: stop the poller.** The following start/run instructions are retained as historical scope for a future explicitly authorised resume.
 - Start/resume the dev-inbox dispatcher and follow defects. Read docs/gcsp/angular-port-gap-review-2026-11-20.md, its captures, docs/gcsp/experience-quality.md and docs/gcsp/build-rules.md.
 - Order: 548 bell; 549 navigation; 550 live refresh; 551 Your cars; 552 preferences; 555 offer; 556 order progress; 553 stock/order choices; 554 manual review/summary; 561 presenter; 558 demand; 559 planning; 557 cases; 560 comparison.
 - Independent Bugs may run concurrently with no shared file writers. 554 depends on 553: gallery reserves; no second reserve at review. 559 AC3 restores production confirm/delay and Retry release queue; inspect services/gcsp-api and add missing Node-parity routes with Java tests.
@@ -407,3 +410,10 @@ F555 uncertain presenter checkpoint **4ea002efbb972378b76ffb045ad3679aed00cd87**
 Old product7failed/111passed, then unchanged VM33/Screen85 plus actual InteractionStore35/OfferRoute12 pass **165distinct scoped cases across4files**. Fresh boundaries/inline4 and ratchet124 pass; no test correction or duplicate final counts. Strict default targeted proof passes;301tracked app inputs reconcile and all7actual current-chunk roots/groups, including red and targeted wrapper/inner, are independently absent. Selected sampled RAM2,012,250,112B/scratch12,616,736B; Angular14.65s. Existing compiler diagnostics and shared dependencies/cache remain. Retained uncertain-state selection/verifier/final audit/publication and atomic impact hold exact evidence. No full F555 suite/build/browser/keyboard/Safari/live pair/independent-agent/security/human verdict.
 
 All7claims remain partial; original acceptance boxes and original14pairs/InReview stay open/zero. Next is the actual generic source exact-card/media composition and explicit-refresh feedback; read full frozen result-card.js explicitViewCard623+ and mediaWell143+ with their helpers before porting, reusing existing source kit rather than adapting the unrelated stock card blindly. Preserve completed pending/details/headings/loading/failure/buttons and this DTO-state correction. Supported F548CSS/F549navigation/F550refresh/F551assets-activity-DataTable integration and actual final pair/human proof remain; F548 actual connected-proof/High holds stay binding. F562/F564 scope unanswered; no backend repair or third548connected run. No test/live stack/browser/database remains allocated.
+
+
+## Explicit human stop — 23 November 2026, 08:00 UTC
+
+Russell instructed: “Stop the poller.” The existing vehicle-matcher-dev-poller heartbeat was paused through the app automation tool, preserving its prompt, interval and target chat. dev_mail.py --poller vesper poller stop vesper returned RELEASED poller usget-vesper; a fresh status read returned none. Live child inspection found only three terminally errored children and no active child writer; no child was retried. No further dispatcher pass, claim, implementation, test, browser capture or database was started. The interrupted 07:52 pass had performed reads only.
+
+Preserve the seven partial claims FUCQ-548/549/550/551/552/555/556 (DEV suffixes 023–029), all branches and worktrees, and the immutable Node reference at e44ed08a9674d8bf0fe6de2e7195ec3e2d775d38. Latest F555 branch checkpoint remains 4ea002efbb972378b76ffb045ad3679aed00cd87. The original fourteen Bugs still have zero completed same-state screenshot pairs and zero In Review; no acceptance or completion is implied. F562/F564 backend prerequisite scope remains unanswered. Earlier cleanup receipts remain the resource record; no new development resources were allocated during shutdown. Resume only on an explicit human instruction.
