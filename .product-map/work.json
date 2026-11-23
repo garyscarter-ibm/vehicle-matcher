@@ -11499,7 +11499,7 @@
       "branch": "dev/DEV-2026-11-23-vesper-005",
       "unsliced": false,
       "native_status_observed_at": "2026-11-23T21:32:21.487Z",
-      "note": "Published partial a78fed861: exact mixed-role regression4/4GREEN and independent source/spec/security PASS. Deduplicated focused inventory378/374pass/4quote-expired failures/0errors/skips; all mandatory wiring passes. Distinct clock dependency FUCQ-581 is captured/imported, unclaimed. Final integration/canonical Java covering pending; prior incomplete cap run retained.",
+      "note": "Published reader repair a78fed861 refreshed to f856daa69 with mergedF5816818b8d76; retained Speedy now reassesses combined actual mixed-role/lifecycle composition. Prior378case scope and source review retained; final integration/canonical covering pending.",
       "slices": [
         {
           "id": "regression",
@@ -11524,11 +11524,24 @@
         {
           "id": "integration",
           "title": "Useful readbacks and final covering Java evidence",
-          "status": "not-started"
+          "status": "in-progress",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "evidence": "F581 clock dependency merged; actual combined-source reassessment running, no new pass inferred."
         }
       ],
-      "observed_at": "2026-11-23T22:04:50.814262+00:00",
-      "native_updated_at": "2026-11-23T15:32:08.256-0600"
+      "observed_at": "2026-11-23T22:39:28Z",
+      "native_updated_at": "2026-11-23T15:32:08.256-0600",
+      "workers": [
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "F572 integrated focused reassessment",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "expires_at": "2026-11-23T23:09:28.214309+00:00",
+          "source": "Native collaboration.list_agents observed lead running after retained F572 followup; not inferred from commits"
+        }
+      ]
     },
     {
       "id": "FUCQ-573",
@@ -11720,36 +11733,45 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-581",
-      "observed_at": "2026-11-23T22:20:30Z",
+      "observed_at": "2026-11-23T22:39:28Z",
       "native_status_observed_at": "2026-11-23T22:15:30.859Z",
       "unsliced": false,
-      "note": "Claim15cccc711/worktree014; native In Progress/assignment5points/start23Nov verified. Speedy lead is implementing the separately allocated existing run-clock authority repair; no test or implementation success yet. Original4AC and canonical Java covering remain.",
+      "note": "Merged/pushed6818b8d76: scoped418/418PASS across75classes, real signed-OIDC/nativePG fresh quote/claim/order and four lifecycle failures repaired. Independent Pluto source/spec/security PASS; exact cleanup audited. AC4 final-source canonical Java/connected integration pending; native remains In Progress.",
       "slices": [
         {
           "id": "claim-clock",
           "title": "Scoped persisted claim clock selection",
-          "status": "in-progress",
-          "evidence": "Existing scoped RunClock contract and exact internal adapter allocation agreed; native claimed/lead observed running. No completed code/test claimed."
+          "status": "complete",
+          "evidence": "93e94bec5 scoped RunClaimClock binds existing environment/run DemoClock, supported fallback retained; real earlier-than-wall quote/claim HTTP passes.",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00"
         },
         {
           "id": "ordering",
           "title": "Coherent order time and pending recovery",
-          "status": "not-started"
+          "status": "complete",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "evidence": "Same ClaimClock supplies OrderingTerms; unavailable before effects, durable pending/same-key recovery after possible effect and settled replay covered; wall lease/backoff remains."
         },
         {
           "id": "regression",
           "title": "Real quote/claim/expiry and unavailable regression",
-          "status": "not-started"
+          "status": "complete",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "evidence": "Actual RED2assertions retained; final deterministic real OIDC/nativePG HTTP3/3 and unit4/4, expiry/isolation/retired/unavailable/pinned timestamps meaningful."
         },
         {
           "id": "callers-review",
           "title": "Affected callers, wiring and independent review",
-          "status": "not-started"
+          "status": "complete",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "evidence": "418distinct focused cases/75classes PASS,0fail/errors/skips including four original lifecycle journeys/planning/wiring; independent review4293d6980344468d passes."
         },
         {
           "id": "integration",
           "title": "Final-source integration and canonical Java covering",
-          "status": "not-started"
+          "status": "in-progress",
+          "observed_at": "2026-11-23T22:39:28.214309+00:00",
+          "evidence": "6818b8d76 merged; root verified1384 unchanged tested inputs after metadata-only refresh. Exact-source canonical Java/connected checks remain; no covering pass."
         }
       ],
       "branch": "dev/DEV-2026-11-23-vesper-014",
@@ -11759,9 +11781,9 @@
           "name": "Speedy Gonzales",
           "harness": "codex",
           "role": "story-lead",
-          "status": "F581 delivery in progress",
+          "status": "F581 scoped delivery completed; covering pending",
           "observed_at": "2026-11-23T22:20:29.810329+00:00",
-          "expires_at": "2026-11-23T22:50:29.810329+00:00",
+          "expires_at": "2026-11-23T22:39:28.214309+00:00",
           "source": "Native collaboration.list_agents root observation; not inferred from commits"
         }
       ]
