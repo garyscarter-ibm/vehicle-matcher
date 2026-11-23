@@ -10730,10 +10730,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "evidence": "No-show rebooking: source body and existing Java route verified; only not-requested-only Angular projection guard changed. Old product3failed/46passed; projection20/actions15/component14/controller31/client26/route5 passed111; boundaries/inline4/ratchet124 pass. Source checkpoint only.",
+      "evidence": "Source17+Gallery14+Orders111=142scoped cases reused by matching identities after clean supported refresh; first clean web build passes. No covering batch green/live pair/human acceptance. Build child telemetry limitation retained.",
       "id": "FUCQ-556",
-      "note": "All6original ACs remain open. Canonical TaskList/SlotPicker/source Button are published; the independent no-show rebooking action-hint repair now passes111scoped Orders cases. Actual tracker/tasks/slot/timeline composition, supported siblings, build/browser/live pair and human review remain.",
-      "observed_at": "2026-11-23T06:24:07Z",
+      "note": "All6AC open; still building. Independent source increment refreshed without app changes;142scoped source/default/Gallery/Orders cases verified and first production build passed. Supported checkpoint integration is not final delivery; source screen/sibling/runtime/keyboard/pair/human proof remain.",
+      "observed_at": "2026-11-23T06:36:34Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10749,16 +10749,18 @@
           "title": "Orders tracker and document checklist composition (5 points)"
         },
         {
+          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain.",
           "id": "appointment-return",
-          "status": "in-progress",
-          "title": "Appointment return history help and missed-state parity (3 points)",
           "observed_at": "2026-11-23T06:24:07Z",
-          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain."
+          "status": "in-progress",
+          "title": "Appointment return history help and missed-state parity (3 points)"
         },
         {
           "id": "integration-proof",
-          "status": "not-started",
-          "title": "Supported sibling integration and actual same-state pair (2 points)"
+          "status": "in-progress",
+          "title": "Supported sibling integration and actual same-state pair (2 points)",
+          "observed_at": "2026-11-23T06:36:34Z",
+          "evidence": "Independent source increment: clean supported base refresh introduced no app change;142scoped cases/default/callers verified, first production build passed. Covering batch and canonical sibling/actual screen/browser/keyboard/live pair/human proof remain; no acceptance claim."
         }
       ],
       "started_at": "2026-11-23",
