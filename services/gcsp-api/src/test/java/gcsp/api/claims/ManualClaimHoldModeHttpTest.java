@@ -12,7 +12,6 @@ import gcsp.api.account.ClaimCompositionSeed;
 import gcsp.api.account.StockDbFixture;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
-import gcsp.api.policy.WallPolicyClock;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -61,8 +60,8 @@ class ManualClaimHoldModeHttpTest {
     @Inject
     Instance<AgroalDataSource> dataSource;
 
-    /** The only replaced bean: the wall clock, pinned to the account fixture's instant. */
-    static final class Clock extends WallPolicyClock {
+    /** The only replaced bean: the claim-clock port, pinned to the account fixture's instant. */
+    static final class Clock implements ClaimClock {
         @Override
         public Instant now(RunContext context) {
             return T0;
@@ -83,7 +82,7 @@ class ManualClaimHoldModeHttpTest {
     void seed() throws Exception {
         ownedSchema = schema;
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
-        QuarkusMock.installMockForType(new Clock(), WallPolicyClock.class);
+        QuarkusMock.installMockForType(new Clock(), ClaimClock.class);
         clean();
         try (Connection c = dataSource.get().getConnection()) {
             StockDbFixture.insertStock(c, ClaimCompositionSeed.ENV, ClaimCompositionSeed.RUN, StockDbFixture.rows());

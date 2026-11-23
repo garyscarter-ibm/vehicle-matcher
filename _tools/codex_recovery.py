@@ -22,7 +22,7 @@ import sys
 import time
 import uuid
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 DEFAULT_GIT_TOOL = "_tools/scaffold_git.py"
 INTERVAL = 10
 REGISTRATION_TTL = 12 * 3600
@@ -40,6 +40,12 @@ DIRECTIVE = ("Continue the registered dev-inbox poller under the current project
 
 class RecoveryError(Exception):
     pass
+
+
+class NativeControlUnavailable(RecoveryError):
+    def __init__(self, code):
+        self.code = code
+        super().__init__('native owner control connection unavailable')
 
 
 def directory(root):
@@ -144,7 +150,12 @@ class Native:
         self.connection = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.connection.settimeout(RPC_TIMEOUT)
         try:
-            self.connection.connect(control)
+            try:
+                self.connection.connect(control)
+            except FileNotFoundError:
+                raise NativeControlUnavailable('control_socket_missing') from None
+            except ConnectionRefusedError:
+                raise NativeControlUnavailable('control_connection_refused') from None
             key = base64.b64encode(os.urandom(16)).decode('ascii')
             request = ('GET /rpc HTTP/1.1\r\nHost: localhost\r\nUpgrade: websocket\r\n'
                        'Connection: Upgrade\r\nSec-WebSocket-Version: 13\r\n'
@@ -347,7 +358,9 @@ def gateway_failure(turn):
         for details in info.values():
             if isinstance(details, dict) and details.get('httpStatusCode') is not None:
                 status = details['httpStatusCode']
-    return bool(('Frontier Advantage credits exhausted' in message)
+    credit_rejection = ('Frontier Advantage credits exhausted' in message
+                        or "You've used all of your Advantage credits for Frontier Models." in message)
+    return bool(credit_rejection
                 and (status == 422 or (status is None and re.search(r'\b422\b', message))))
 
 
@@ -372,6 +385,7 @@ def step(root, thread):
             state.update(native_control='verified', observed_at=now,
                          observed_turn=turn.get('id') if turn else None,
                          observed_turn_status=turn.get('status') if turn else None)
+            state.pop('control_error', None)
             attempt = state.get('attempt')
             if attempt:
                 matching = [item for item in queued
@@ -423,8 +437,12 @@ def step(root, thread):
                         return submit(root, thread, state, generation)
             elif not attempt:
                 state.update(phase='waiting', reason='no eligible terminal gateway failure')
+    except NativeControlUnavailable as error:
+        state.update(native_control='unavailable', control_error=error.code,
+                     reason='native owner connection unavailable; waiting for shared native daemon setup and exact-root verification')
     except Exception:
         # Never persist native error bodies, CLI output, prompts or credentials.
+        state.pop('control_error', None)
         state.update(native_control='unavailable', reason='native or poller state unavailable; waiting')
     with locked(root):
         current = read_state(root, thread)

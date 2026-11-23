@@ -12,7 +12,6 @@ import gcsp.api.account.ClaimCompositionSeed;
 import gcsp.api.account.StockDbFixture;
 import gcsp.api.persistence.Persistence;
 import gcsp.api.persistence.RunContext;
-import gcsp.api.policy.WallPolicyClock;
 import gcsp.api.remote.RemoteOperationServer;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.test.junit.QuarkusMock;
@@ -58,8 +57,8 @@ abstract class RemoteClaimComposedSupport {
 
     Clock clock;
 
-    /** The only replaced bean: the wall clock under PolicyClaimClock, pinned so the test decides when a claim is due. */
-    static final class Clock extends WallPolicyClock {
+    /** The only replaced bean: the claim-clock port, pinned so the test decides when a claim is due. */
+    static final class Clock implements ClaimClock {
         volatile Instant now = T0;
 
         @Override
@@ -88,7 +87,7 @@ abstract class RemoteClaimComposedSupport {
         Assumptions.assumeTrue(persistence.active(), "GCSP_TEST_DATABASE_URL is not set");
         assertNotNull(remote, "the loopback stock server was not injected into the test");
         clock = new Clock();
-        QuarkusMock.installMockForType(clock, WallPolicyClock.class);
+        QuarkusMock.installMockForType(clock, ClaimClock.class);
     }
 
     @AfterAll

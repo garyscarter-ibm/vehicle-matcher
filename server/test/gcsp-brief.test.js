@@ -298,7 +298,15 @@ lifecycle('retained brief, conflict and validation fixtures match the real prese
   assert.deepEqual(await f.service.confirm(f.context, { commandId: 'fixture-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0 }), fixtures.confirmed);
   assert.deepEqual(await changeState(f, 'pause', 0, 'fixture-stale'), fixtures.conflict);
   assert.deepEqual(await save(f, 'fixture-invalid', { ...data(), contribution: 500 }, { expectedDraftVersion: 1, expectedBriefVersion: 1 }), fixtures.validation);
-  assert.deepEqual(await changeState(f, 'pause', 1, 'fixture-pause'), fixtures.paused);
+  const beforeRefusal = structuredClone(f.store.state);
+  assert.deepEqual(await changeState(f, 'pause', 1, 'fixture-pause'), fixtures.notEngaged);
+  assert.deepEqual(f.store.state, beforeRefusal);
+
+  const consented = await setup();
+  assert.deepEqual(await save(consented, 'fixture-consented-draft'), fixtures.draft);
+  const consentedConfirmation = await confirm(consented, 'fixture-consented-confirm', {}, { search: true, hold: true });
+  assert.equal(consentedConfirmation.status, 'ok', JSON.stringify(consentedConfirmation));
+  assert.deepEqual(await changeState(consented, 'pause', 1, 'fixture-consented-pause'), fixtures.paused);
 });
 
 lifecycle('work charging is ready; unknown equipment and driver/points gates remain independent of preferences', async () => {
