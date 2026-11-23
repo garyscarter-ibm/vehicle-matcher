@@ -283,6 +283,28 @@ describe('native offer read screen', () => {
     expect(summary?.querySelector('[data-offer-action="check"]')).toBeNull();
     expect(summary?.querySelector('.gcsp-offer-actions')).not.toBeNull();
   });
+  it.each([true, false])('keeps the focused pending choices in two equal columns with acceptance available: %s', async acceptAvailable => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
+    await load({ ...offerScreenFixture(), availableActions: acceptAvailable ? ['accept', 'decline'] : ['decline'] });
+    const actions = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.gcsp-vehicle-summary [data-offer-decision-actions]')!;
+    const style = getComputedStyle(actions);
+    expect(style.display).toBe('grid');
+    expect(style.gridTemplateColumns).toBe('repeat(2, minmax(0, 1fr))');
+    expect(Array.from(actions.querySelectorAll<HTMLButtonElement>('button')).map(button => [button.dataset['offerAction'], button.disabled])).toEqual([
+      ['accept', !acceptAvailable], ['decline', false],
+    ]);
+    expect(fixture.nativeElement.querySelectorAll('gcsp-offer-decision')).toHaveLength(1);
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
+  it('keeps ordinary inline check actions outside the focused pending grid', async () => {
+    fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('superseded'));
+    const host = fixture.nativeElement as HTMLElement;
+    const actions = host.querySelector<HTMLElement>('[data-offer-decision-actions]')!;
+    expect(actions.closest('.gcsp-vehicle-summary')).toBeNull();
+    expect(getComputedStyle(actions).display).not.toBe('grid');
+    expect(Array.from(actions.querySelectorAll<HTMLButtonElement>('button')).map(button => [button.dataset['offerAction'], button.disabled])).toEqual([['check', false]]);
+    expect(client['decide']).not.toHaveBeenCalled();
+  });
   it.each(['superseded', 'decision-pending', 'release-pending', 'handoff-failed'])('uses the source exact card for %s without pending commands', async (state) => {
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
     const base = offerScreenFixture(state === 'handoff-failed' ? 'accepted' : state === 'superseded' ? 'superseded' : 'pending');

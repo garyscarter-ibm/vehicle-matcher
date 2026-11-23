@@ -55,6 +55,17 @@ describe('owned offer route composition', () => {
     expect(text()).not.toContain('This page is not available yet.');
   });
 
+  it('leaves the only inline content inset to the shell through both route hosts', async () => {
+    await harness.navigateByUrl('/offers/offer-1', OfferRouteComponent); await settle(); await load();
+    const page = harness.routeNativeElement!.querySelector<HTMLElement>('gcsp-offer-screen > .gcsp-offer-body')!;
+    expect(page.parentElement?.parentElement).toBe(harness.routeNativeElement);
+    const style = getComputedStyle(page);
+    expect(Number.parseFloat(style.paddingInline)).toBe(0);
+    expect(Number.parseFloat(style.marginInline)).toBe(0);
+    expect(page.querySelector('.gcsp-offer-header > div > h1')?.textContent).toBe('Your offer');
+    expect(page.querySelector('.gcsp-offer-header > a')?.getAttribute('href')).toBe('/account');
+  });
+
   it('updates the same route instance and cancels the previous selector read', async () => {
     const first = await harness.navigateByUrl('/offers/offer-1', OfferRouteComponent); await settle(); const firstScreen = screen();
     const second = await harness.navigateByUrl('/offers/offer-2', OfferRouteComponent); await settle();

@@ -3,3 +3,5 @@ h2, h3, p, dl { margin: 0; }
 h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 dt, .gcsp-note { color: var(--gcsp-text-muted); }
 dd { margin: var(--gcsp-space-1) 0 0; }
+/* The lazy offer route adds a second host; keep the content inset owned by the shell. */
+:host > .gcsp-offer-body { padding-inline: 0; margin-inline: 0; }

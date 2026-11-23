@@ -142,7 +142,7 @@ async function surface(page) {
           detail: text(row.querySelector('.gcsp-highlight-detail')),
         })), empty: text(group.querySelector('.gcsp-highlight-empty')),
       })),
-      columns: [...(table?.querySelectorAll('thead th') ?? [])].map(text),
+      columns: [...(table?.querySelectorAll('thead th') ?? [])].map((th) => th.innerText.replace(/\s+/g, ' ').trim()),
       rows: [...(table?.querySelectorAll('tbody tr') ?? [])].map((row) => ({
         cells: [...row.children].map(text), winners: [...row.children].map((cell) => cell.classList.contains('is-winner')),
       })),
@@ -318,11 +318,35 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
       'Startup outcomes cover every expected handler once and in order');
     for (const { handlerId, outcome } of startupTick.outcomes) assert.equal(outcome.status, 'ok', `Startup handler ${handlerId} succeeds`);
     await openOffer(suite, employee, state.offer);
+    const comparisonPair = {};
+    const comparisonScreenshot = async (page, name) => {
+      const table = page.locator('.gcsp-table-wrap.is-compare');
+      const scroll = await table.evaluate((element) => {
+        const ancestors = [];
+        for (let node = element; node; node = node.parentElement) ancestors.push({ left: node.scrollLeft, top: node.scrollTop });
+        return { ancestors, left: window.scrollX, top: window.scrollY };
+      });
+      const destination = path.join(process.env.GCSP_E2E_OUTPUT, 'f555-pending', name);
+      try { await table.screenshot({ path: destination }); }
+      finally {
+        await table.evaluate((element, position) => {
+          let node = element;
+          for (const offset of position.ancestors) {
+            if (!node) break;
+            node.scrollTo({ ...offset, behavior: 'instant' }); node = node.parentElement;
+          }
+          window.scrollTo({ left: position.left, top: position.top, behavior: 'instant' });
+        }, scroll);
+      }
+      return destination;
+    };
+    suite.receipt.pendingComparisonScreenshotPairs = comparisonPair;
     const java = {};
     for (const width of [1280, 390]) {
       await employee.setViewportSize({ width, height: width === 1280 ? 800 : 844 });
       java[width] = await checkSurface(employee, state.projection);
       await suite.screenshot(employee, `angular-pending-${width}`);
+      if (width === 1280) comparisonPair.angular = await comparisonScreenshot(employee, 'angular-comparison-1280.png');
     }
     java.details = await details(employee);
     await employee.getByRole('link', { name: /Back to Your cars$/, exact: false }).click();
@@ -342,6 +366,8 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
         const destination = path.join(process.env.GCSP_E2E_OUTPUT, 'f555-pending', `node-pending-${width}.png`);
         await source.page.screenshot({ path: destination, fullPage: false }); pair[width] = { node: destination, angular: `angular-pending-${width}.png` };
         source.receipt.pendingScreenshotPairs = pair;
+        if (width === 1280) comparisonPair.node = await comparisonScreenshot(source.page, 'node-comparison-1280.png');
+        source.receipt.pendingComparisonScreenshotPairs = comparisonPair;
         assert.deepEqual(actual, java[width], `Actual same-car pending surface at ${width}`);
       }
       assert.deepEqual(await details(source.page), java.details, 'Actual source specification and equipment match');
@@ -387,7 +413,7 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
         suite.receipt.deadlineDom = { angular: retained(journals[0]), node: retained(journals[1]) };
         source.receipt.deadlineDom = retained(journals[1]);
       }
-      return { screenshots: pair, engineeringComparison: 'actual live source/Java same held car and clock; human review pending' };
+      return { screenshots: pair, comparisonScreenshots: comparisonPair, engineeringComparison: 'actual live source/Java same held car and clock; human review pending' };
     });
     assert.equal(replay.state, 'matched', 'F555 requires the frozen live Node reference');
     const tickClock = good(await suite.call(presenter, 'GET', '/presenter/clock'), 'Clock at expiry');
@@ -398,6 +424,7 @@ test('FUCQ-555: real offer decision support and exits against frozen Main inputs
     await employee.waitForURL((url) => url.pathname === '/gcsp/activity');
     await suite.screenshot(employee, 'expired-activity-390');
     suite.receipt.parity = { humanAcceptance: 'pending', pairs: replay.screenshots,
+      comparisonPairs: replay.comparisonScreenshots,
       emptyHighlightState: 'Retained source/component proof; no derived Main quote was changed to manufacture an empty group' };
     writeFileSync(path.join(process.env.GCSP_E2E_OUTPUT, 'f555-pending', 'offer-surface-comparison.json'), JSON.stringify(java, null, 2));
   });
