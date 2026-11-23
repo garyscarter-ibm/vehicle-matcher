@@ -380,3 +380,19 @@ Final source role check reproduced an empty-string role attribute (1failed/16pas
 Reused source ScreenIntro and the one view-status region for failed reads; native heading/message/Try again order and root loading-only aria-busy now match the frozen view. Unavailable copy matches the controller. Existing typed auth/failure distinctions, retryability, requests and all authority/command guards remain. VM33/Screen84/Route12:129scoped cases, boundaries/inline4 and ratchet124 pass after8old-product failures. Six supervised roots/groups independently absent; source-only evidence retained in the read-failure receipts. No new shared primitive/API/style or catalogue/Gallery change.
 
 Generic/uncertain exact-card and refresh feedback, canonical sibling/source Button integration, final build/runtime/keyboard/Safari/live same-state pair/human review remain. No original AC closes from this checkpoint. Preserve prior canonical pending/details/headings/loading work.
+
+
+## Whole-F555 completion resumption — 23 November 2026
+
+Russell explicitly requested “Do all the remaining 555 work please”, after the generic-card and manual-check checkpoints. The root now owns supported integration, final F555 source composition, actual local connected proof and the review package. This replaces the earlier child allocations' no-merge/no-connected-composition restriction for F555; it does not restart the stopped poller/heartbeat, change any original AC or authorize unrelated backend repairs. The separate F564 prerequisite decision is pending via an asynchronous question while independent F555 integration proceeds. F562's named reset remains unavailable; reuse only the already-agreed immutable initial-input/BuddyJourneySeed path with truthful provenance, never claim a named reset worked.
+
+Data strategy: default, reusing the existing scoped PostgreSQL run-clock/state contracts and shared local test stack; no new schema/store or derived outcome seeding. Source baseline remains e44ed08a9, all8originalAC stay unticked until their real evidence exists. Source partials may integrate under dev-inbox step D and remain In Progress; human pair signoff is required for closure.
+
+Remaining sequence:
+1. Supported whole-branch refresh/merge/push of released F551, F549 and F550 source, then F548 when its concrete failed-proof hold is resolved; refresh F555 from published gcsp-poc-dev. Preserve all source/catalogue/Gallery/map/ratchet changes and validation boundaries.
+2. Consume canonical DataTable compare/equal-column/header-detail/missing/winner semantics, only lower points/larger boot directions. Reconcile remaining affected source Button consumers and guarded automatic/manual refresh integration without duplicate subscription or business inference.
+3. Run final focused own/changed shared-port and caller tests, boundaries/ratchet, one production build and broad independent source/security review. Prior matching component evidence remains valid at its original boundary. Full suites run in the shared due batch after merges.
+4. Extend the integrated persistent browser suite for actual local Angular/Java/real OIDC/native PG17, exits/deadline/savings/swatches/highlights/winners/stages/drawer/followup, desktop/narrow keyboard and same-Main frozen live Node1280pair. Recreate an isolated exact frozen reference if needed; don't mutate it or substitute controlled outputs.
+5. Publish source/evidence, supported base merge and due batch validation; reconcile originalAC evidence, repo/map/Jira state and a human-reviewable parity ledger. No automatic human signoff/Done.
+
+Shared resources: .claude/test-runs/f555-completion-20261123/selection.json and run-owned manifests/finalizers; shared heavy lane, one worker, initial2GiBRAM/scratch600s chunks. Actual connected budget is selected from retained telemetry before launch. No OneDrive access; source worktrees/dependency caches are preserved.
