@@ -27,6 +27,11 @@ async function fixture(t) {
   const images = APPROVED_CORPUS_IMAGES.filter((image) => ids.has(image.configurationId));
   assert.equal(images.length, 1, 'exactly one approved image matches the source-backed configuration');
   for (const path of ['server/gcsp', 'server/vehicle-evidence', 'scripts/gcsp',
+    'server/scenarios/employee/index.js', 'server/scenarios/employee/option-evidence.js',
+    'server/scenarios/retail/dimensions.js', 'server/scenarios/retail/used-retail-v1.js',
+    'server/recommendation/index.js', 'server/recommendation/evaluate.js',
+    'server/recommendation/order.js', 'server/recommendation/result-view.js',
+    'server/engine.js', 'server/questions.js', 'server/brands.js',
     'server/package.json', 'package.json', 'server/scripts/fleet-artifacts.mjs',
     'server/data/gcsp/vehicle-evidence/vin-profiles.v1.json', images[0].asset]) {
     await mkdir(dirname(join(app, path)), { recursive: true });
