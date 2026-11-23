@@ -32,6 +32,17 @@ describe('native Buddy controls', () => {
     const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button'));
     expect(buttons[0].disabled).toBe(true); expect(buttons.at(-1)?.disabled).toBe(false);
   });
+  it('lets an account Buddy tile own active, paused and disabled actions while keeping engagement and recovery', async () => {
+    const fixture = TestBed.createComponent(BuddyControlsComponent); fixture.componentRef.setInput('buddyControls', true);
+    const labels = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button')).map((button) => button.textContent?.trim());
+    fixture.componentRef.setInput('buddy', view('engaged')); await fixture.whenStable(); expect(labels()).toEqual(['Reload Buddy status']);
+    fixture.componentRef.setInput('buddy', view('disengaged', 'paused')); await fixture.whenStable(); expect(labels()).toEqual(['Reload Buddy status']);
+    fixture.componentRef.setInput('buddy', view('disengaged')); await fixture.whenStable(); expect(labels()).toEqual(['Engage Buddy', 'Reload Buddy status']);
+    const action = vi.fn(); fixture.componentInstance.action.subscribe(action); fixture.nativeElement.querySelector('button').click(); expect(action).toHaveBeenCalledWith('engage');
+    fixture.componentRef.setInput('disabledReason', 'Save your preference changes before changing Buddy.'); fixture.componentRef.setInput('canRetry', true); await fixture.whenStable();
+    expect(labels()).toEqual(['Retry the same request', 'Reload Buddy status']); expect(fixture.nativeElement.textContent).toContain('Save your preference changes');
+    fixture.componentRef.setInput('pendingAction', 'pauseSearch'); await fixture.whenStable(); expect(Array.from(fixture.nativeElement.querySelectorAll('button')).every((button) => (button as HTMLButtonElement).disabled)).toBe(true);
+  });
   it('gives repeated gallery instances distinct accessible headings', async () => {
     const first = TestBed.createComponent(BuddyControlsComponent); const second = TestBed.createComponent(BuddyControlsComponent);
     await Promise.all([first.whenStable(), second.whenStable()]);

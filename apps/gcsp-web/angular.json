@@ -27,6 +27,12 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "*.webp",
+                "input": "vehicle-evidence",
+                "output": "assets/gcsp-vehicle-evidence",
+                "followSymlinks": true
               }
             ],
             "styles": [

@@ -37,12 +37,12 @@ describe('native preference controls', () => {
     expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(true);
     root.querySelectorAll<HTMLFieldSetElement>('gcsp-preference-category fieldset').forEach((fieldset) => expect(fieldset.disabled).toBe(true));
     root.querySelectorAll<HTMLButtonElement>('.category-title, .removal button:first-of-type').forEach((button) => expect(button.disabled).toBe(true));
-    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(true);
+    expect(stars.querySelectorAll<HTMLInputElement>('input')).toHaveLength(5); stars.querySelectorAll<HTMLInputElement>('input').forEach((radio) => expect(radio.disabled).toBe(true));
     expect(root.textContent).toContain('Medium · Medium importance'); expect(root.textContent).toContain('Remove this preference?');
     expect(root.querySelector<HTMLInputElement>('.preference-mode input')!.checked).toBe(true);
     resolve({ status: 'ok', value: briefEditorFixture() }); await refreshing; await preferences.whenStable(); await rating.whenStable();
     expect(root.querySelector<HTMLFieldSetElement>('.preference-mode')!.disabled).toBe(false);
-    expect(stars.querySelector<HTMLFieldSetElement>('fieldset')!.disabled).toBe(false);
+    expect(stars.querySelectorAll<HTMLInputElement>('input')).toHaveLength(5); stars.querySelectorAll<HTMLInputElement>('input').forEach((radio) => expect(radio.disabled).toBe(false));
     expect(client.savePreferences).not.toHaveBeenCalled();
   });
   it('presents native independent preference, importance, practical and read-only fact controls', async () => {
@@ -62,8 +62,8 @@ describe('native preference controls', () => {
   });
   it('gives every star a native accessible name and a clear action', async () => {
     const fixture = TestBed.createComponent(StarRatingComponent); fixture.componentRef.setInput('id', 'rating-example'); fixture.componentRef.setInput('value', 4); await fixture.whenStable();
-    const root = fixture.nativeElement as HTMLElement; const inputs = root.querySelectorAll<HTMLInputElement>('input'); expect(inputs.length).toBe(5); expect(inputs[3].checked).toBe(true); expect(inputs[3].closest('label')?.textContent).toContain('4 stars');
-    const rated = vi.fn(); fixture.componentInstance.rated.subscribe(rated); root.querySelector<HTMLButtonElement>('button')!.click(); expect(rated).toHaveBeenCalledWith(null);
+    const root = fixture.nativeElement as HTMLElement; const inputs = root.querySelectorAll<HTMLInputElement>('input'); expect(inputs.length).toBe(5); expect(inputs[3].checked).toBe(true); expect(inputs[3].getAttribute('aria-label')).toBe('4 stars: I really like it');
+    const rated = vi.fn(); fixture.componentInstance.rated.subscribe(rated); inputs[3].click(); expect(rated).toHaveBeenCalledWith(null);
   });
   it('retains source plain-copy reasons and supplied facts without ranking or technical metadata', async () => {
     expect(reasonText({ code: 'preference-fit', field: 'comfort', score: 100 }, 'reasons')).toBe('Comfort matches your preference.');
