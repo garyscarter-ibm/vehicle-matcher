@@ -11212,29 +11212,29 @@
       "original_status": "In Progress",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-23T15:46:51Z",
+      "observed_at": "2026-11-23T16:17:14Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-565",
       "slices": [
         {
           "id": "quote-snapshot",
           "status": "complete",
           "title": "Pin immutable source facts at quote creation",
-          "observed_at": "2026-11-23T15:46:51.868380Z",
-          "evidence": "Lead reviewed immutable source/safe projection; Pluto independent round2 PASS after two public-contract regressions RED then10/10GREEN; real local/remote allocation83/83 on final source. Exact Main/browser/restart stays integration slice."
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Lead complete-source review + Pluto consolidated source/security PASS; final allocation83 and all35offersclasses176 confirm immutable local/remote/follow-up pin/DTO paths. Main/restart retained in integration slice."
         },
         {
           "id": "safe-projection",
           "status": "complete",
           "title": "Expose allowlisted local/remote/follow-up comparisons",
-          "observed_at": "2026-11-23T15:46:51.868380Z",
-          "evidence": "Lead reviewed immutable source/safe projection; Pluto independent round2 PASS after two public-contract regressions RED then10/10GREEN; real local/remote allocation83/83 on final source. Exact Main/browser/restart stays integration slice."
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Final14 pure cases include frozen states, malformed/owner/privacy/date/type/text limits/ECMAScript whitespace; all176offers checks pass. Lead/Pluto final review PASS; stored evidence preserved and safe public contract restored."
         },
         {
           "id": "validation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Focused Java/OIDC source-change, privacy and idempotency proof",
-          "observed_at": "2026-11-23T15:46:51.868380Z",
-          "evidence": "Final allocation83/83 and pure10/10GREEN. Offers/caller/wiring final reruns queued after shared WEB lane; prior315pre-reviewsource green retained as historical, not final."
+          "observed_at": "2026-11-23T16:17:14Z",
+          "evidence": "Final consolidated source321/321: allocation83, exhaustive35offersclasses176 in17/18chunks, callers/wiring62. Zero failures/errors/skips; source identity a6f15cb4a2d0d69fa5422b552ad1e380406f9a2209e8216f5534f5c3b50b7c45. Owned resources cleaned; final-summary.json retained."
         },
         {
           "id": "integration",
@@ -11249,10 +11249,10 @@
           "name": "Speedy Gonzales",
           "harness": "codex",
           "role": "story-lead",
-          "status": "running",
-          "observed_at": "2026-11-23T15:46:51.868380Z",
-          "expires_at": "2026-11-23T16:16:51.868380Z",
-          "source": "native observed /root/speedy_gonzales"
+          "status": "handoff-ready",
+          "observed_at": "2026-11-23T16:17:14.849812+00:00",
+          "expires_at": "2026-11-23T16:17:14.849812+00:00",
+          "source": "lead final321 checks/review passed; root original integrated acceptance pending"
         }
       ]
     }

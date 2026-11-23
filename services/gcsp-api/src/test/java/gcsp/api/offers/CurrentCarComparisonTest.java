@@ -198,6 +198,90 @@ class CurrentCarComparisonTest {
     }
 
     @Test
+    void publicTextBoundariesMatchTheFrozenReaderWithoutTruncatingTheStoredPin() throws Exception {
+        ObjectNode exact = pin();
+        ((ObjectNode) exact.path("display")).put("model", "m".repeat(256));
+        ((ObjectNode) exact.path("display").path("source")).put("sourceVersion", "v".repeat(128));
+        ((ObjectNode) exact.path("display").path("facts").path("configuration")).put("value", "c".repeat(128));
+        ((ObjectNode) exact.path("display").path("facts").path("points")).put("unit", "u".repeat(128));
+        assertEquals("available", project(exact).path("status").asText());
+        assertEquals("m".repeat(256), project(exact).path("currentCar").path("model").asText());
+        ObjectNode model = exact.deepCopy(); ((ObjectNode) model.path("display")).put("model", "m".repeat(257));
+        assertUnavailable(project(model));
+        ObjectNode version = exact.deepCopy();
+        ((ObjectNode) version.path("display").path("source")).put("sourceVersion", "v".repeat(129));
+        assertUnavailable(project(version));
+        ObjectNode facts = exact.deepCopy();
+        ((ObjectNode) facts.path("display").path("facts").path("configuration")).put("value", "c".repeat(129));
+        ((ObjectNode) facts.path("display").path("facts").path("points")).put("unit", "u".repeat(129));
+        JsonNode comparison = project(facts);
+        assertEquals("partial", comparison.path("status").asText());
+        assertEquals(JSON.valueToTree(List.of("configuration", "points")), comparison.path("unknowns"));
+        assertEquals(129, facts.path("display").path("facts").path("configuration").path("value").asText().length());
+    }
+
+    @Test
+    void javascriptBlankTextRemainsUnknownRatherThanInvalidatingTheWholeOffer() throws Exception {
+        for (String blank : List.of("\u00a0", "\ufeff", "\u2007", "\u202f", " \u00a0\ufeff ")) {
+            ObjectNode model = pin(); ((ObjectNode) model.path("display")).put("model", blank);
+            assertUnavailable(project(model));
+            ObjectNode version = pin(); ((ObjectNode) version.path("display").path("source")).put("sourceVersion", blank);
+            assertUnavailable(project(version));
+            ObjectNode rows = sourceRows(); contract(rows).put("model", blank);
+            assertEquals("unavailable", CurrentCarComparison.snapshot(SCOPE, rows).path("display").path("state").asText());
+            ObjectNode fact = pin(); ((ObjectNode) fact.path("display").path("facts").path("configuration")).put("value", blank);
+            assertEquals(JSON.valueToTree(List.of("configuration")), project(fact).path("unknowns"));
+        }
+    }
+
+    @Test
+    void numericSchemaAndIdentityValuesAreNotCoercedIntoAuthenticatedText() throws Exception {
+        ObjectNode schema = pin(); schema.put("schemaVersion", 1); assertUnavailable(project(schema));
+        ObjectNode rows = sourceRows();
+        ((ObjectNode) rows.path("employee")).put("employeeId", "1");
+        ((ObjectNode) rows.path("employee").path("attributes")).put("entitlementSlotId", "2");
+        ((ObjectNode) rows.path("slot")).put("employeeId", "1").put("slotId", "2");
+        ((ObjectNode) rows.path("slot").path("attributes")).put("contractId", "3");
+        ((ObjectNode) rows.path("accountRecord")).put("employeeId", "1");
+        contract(rows).put("contractId", "3").put("employeeId", "1").put("slotId", "2");
+        var owner = new CurrentCarComparison.Owner("env-one", "run-one", "1", "2");
+        var scope = new CurrentCarComparison.Scope(owner, 3, 2, NOW);
+        ObjectNode valid = CurrentCarComparison.snapshot(scope, rows);
+        assertEquals("available", valid.path("display").path("state").asText());
+        for (String field : List.of("contractId", "employeeId", "slotId")) {
+            ObjectNode malformed = rows.deepCopy();
+            contract(malformed).put(field, Integer.parseInt(contract(malformed).path(field).asText()));
+            assertEquals("unavailable", CurrentCarComparison.snapshot(scope, malformed).path("display").path("state").asText(), field);
+        }
+        ObjectNode slot = rows.deepCopy(); ((ObjectNode) slot.path("slot").path("attributes")).put("contractId", 3);
+        assertEquals("unavailable", CurrentCarComparison.snapshot(scope, slot).path("display").path("state").asText());
+        ObjectNode employeeSlot = rows.deepCopy();
+        ((ObjectNode) employeeSlot.path("employee").path("attributes")).put("entitlementSlotId", 2);
+        assertEquals("unavailable", CurrentCarComparison.snapshot(scope, employeeSlot).path("display").path("state").asText());
+        ObjectNode binding = valid.deepCopy(); ((ObjectNode) binding.path("binding")).put("employeeId", 1);
+        assertUnavailable(CurrentCarComparison.project(binding, owner, NOW));
+    }
+
+    @Test
+    void sourceOffsetParsingMatchesTheExistingJavascriptContractWithoutChangingPublicZDates() throws Exception {
+        for (String offset : List.of("+19:00", "+23:59", "-19:00", "-23:59")) {
+            ObjectNode rows = sourceRows();
+            recordSource(rows).put("effectiveFrom", "2026-11-01T09:00:00" + offset);
+            ((ObjectNode) contract(rows).path("source")).put("effectiveFrom", "2026-11-01T09:00:00" + offset);
+            JsonNode pinned = CurrentCarComparison.snapshot(SCOPE, rows);
+            assertEquals("available", pinned.path("display").path("state").asText(), offset);
+            assertEquals("2026-11-01T09:00:00" + offset, pinned.path("binding").path("source").path("effectiveFrom").asText());
+            assertEquals("available", CurrentCarComparison.project(pinned, OWNER, NOW).path("status").asText());
+        }
+        for (String offset : List.of("+24:00", "+23:60")) {
+            ObjectNode rows = sourceRows(); recordSource(rows).put("effectiveFrom", "2026-11-01T09:00:00" + offset);
+            assertEquals("unavailable", CurrentCarComparison.snapshot(SCOPE, rows).path("display").path("state").asText());
+        }
+        ObjectNode future = sourceRows(); recordSource(future).put("observedAt", "2026-11-23T11:30:00-00:01");
+        assertEquals("unavailable", CurrentCarComparison.snapshot(SCOPE, future).path("display").path("state").asText());
+    }
+
+    @Test
     void aComparisonPinForAnotherQuoteOwnerNeverCrossesThePublicBoundary() throws Exception {
         for (String field : List.of("environmentId", "runId", "employeeId", "slotId")) {
             ObjectNode other = pin(); ((ObjectNode) other.path("binding")).put(field, "other-" + field);

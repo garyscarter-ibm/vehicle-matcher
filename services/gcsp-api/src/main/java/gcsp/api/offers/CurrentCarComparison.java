@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Instant;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
@@ -46,24 +47,26 @@ public final class CurrentCarComparison {
         if (revision(slot.path("version"))) binding.set("slotVersion", slot.get("version").deepCopy());
         JsonNode attributes = employee.path("attributes");
         if (!matches(employee, owner) || !matches(slot, owner) || !matches(account, owner)
-                || !owner.slotId().equals(slot.path("slotId").asText(null))
-                || !owner.slotId().equals(attributes.path("entitlementSlotId").asText(null))
+                || !sameText(slot.path("slotId"), owner.slotId())
+                || !sameText(attributes.path("entitlementSlotId"), owner.slotId())
                 || !text(attributes.path("companyId")) || !text(attributes.path("schemeId"))
                 || !revision(employee.path("version")) || employee.path("version").longValue() != scope.employeeVersion()
                 || !revision(slot.path("version")) || slot.path("version").longValue() != scope.slotVersion()
                 || !revision(account.path("version")) || !text(account.path("recordSetId"))) return pin;
         JsonNode record = account.path("record");
-        String contractId = slot.path("attributes").path("contractId").asText(null);
-        if (!text(contractId) || !account.path("recordSetId").equals(record.path("recordSetId"))
+        JsonNode contractKey = slot.path("attributes").path("contractId");
+        if (!text(contractKey)) return pin;
+        String contractId = contractKey.textValue();
+        if (!account.path("recordSetId").equals(record.path("recordSetId"))
                 || !record.path("contracts").isArray() || !source(record.path("source"), scope.quotedAt())) return pin;
         JsonNode contract = null;
         for (JsonNode row : record.path("contracts")) {
-            if (!contractId.equals(row.path("contractId").asText(null))) continue;
+            if (!sameText(row.path("contractId"), contractId)) continue;
             if (contract != null) return pin;
             contract = row;
         }
-        if (contract == null || !owner.employeeId().equals(contract.path("employeeId").asText(null))
-                || !owner.slotId().equals(contract.path("slotId").asText(null))
+        if (contract == null || !sameText(contract.path("employeeId"), owner.employeeId())
+                || !sameText(contract.path("slotId"), owner.slotId())
                 || !attributes.path("schemeId").equals(contract.path("schemeId"))
                 || !"current".equals(contract.path("status").asText()) || !text(contract.path("model"))
                 || !source(contract.path("source"), scope.quotedAt())) return pin;
@@ -95,12 +98,12 @@ public final class CurrentCarComparison {
         ObjectNode unavailable = F.objectNode().put("status", "unavailable").put("reason", "pinned-current-car-comparison-unavailable")
                 .put("comparisonAvailable", false).putNull("currentCar");
         unavailable.set("unknowns", unknowns(F.objectNode()));
-        if (pin == null || !pin.isObject() || !"1".equals(pin.path("schemaVersion").asText())
+        if (pin == null || !pin.isObject() || !sameText(pin.path("schemaVersion"), "1")
                 || !pin.path("comparisonAvailable").isBoolean() || !validOwner(owner) || !matches(pin.path("binding"), owner)
-                || !owner.slotId().equals(pin.path("binding").path("slotId").asText(null)) || quotedAt == null) return unavailable;
+                || !sameText(pin.path("binding").path("slotId"), owner.slotId()) || quotedAt == null) return unavailable;
         JsonNode display = pin.path("display"), source = display.path("source");
         Instant observed = instant(source.path("observedAt"));
-        if (!List.of("available", "partial").contains(display.path("state").asText()) || !publicText(display.path("model"))
+        if (!List.of("available", "partial").contains(display.path("state").asText()) || !publicText(display.path("model"), 256)
                 || !MODES.contains(source.path("mode").asText()) || !publicText(source.path("sourceVersion"))
                 || !source.path("observedAt").isTextual() || !PUBLIC_INSTANT.matcher(source.path("observedAt").textValue()).matches()
                 || observed == null || observed.isAfter(quotedAt)) return unavailable;
@@ -123,8 +126,8 @@ public final class CurrentCarComparison {
     }
 
     private static boolean matches(JsonNode row, Owner owner) {
-        return owner.environmentId().equals(row.path("environmentId").asText(null))
-                && owner.runId().equals(row.path("runId").asText(null)) && owner.employeeId().equals(row.path("employeeId").asText(null));
+        return sameText(row.path("environmentId"), owner.environmentId())
+                && sameText(row.path("runId"), owner.runId()) && sameText(row.path("employeeId"), owner.employeeId());
     }
 
     private static boolean validOwner(Owner owner) {
@@ -147,13 +150,35 @@ public final class CurrentCarComparison {
 
     private static Instant instant(JsonNode value) {
         if (!value.isTextual() || !INSTANT.matcher(value.textValue()).matches()) return null;
-        try { return OffsetDateTime.parse(value.textValue()).toInstant(); } catch (DateTimeParseException e) { return null; }
+        String raw = value.textValue();
+        int end = raw.endsWith("Z") ? raw.length() - 1 : raw.length() - 6;
+        long offset = 0;
+        if (!raw.endsWith("Z")) {
+            int hour = Integer.parseInt(raw.substring(end + 1, end + 3));
+            int minute = Integer.parseInt(raw.substring(end + 4));
+            if (hour > 23 || minute > 59) return null;
+            offset = (hour * 60L + minute) * 60 * (raw.charAt(end) == '-' ? -1 : 1);
+        }
+        // Date.parse allows offsets through23:59; ZoneOffset itself stops at18:00.
+        try { return LocalDateTime.parse(raw.substring(0, end)).toInstant(ZoneOffset.UTC).minusSeconds(offset); }
+        catch (DateTimeParseException e) { return null; }
     }
 
     private static boolean revision(JsonNode n) { return n.isIntegralNumber() && n.canConvertToLong() && n.longValue() > 0 && n.longValue() <= MAX_REVISION; }
-    private static boolean publicText(JsonNode n) { return text(n) && !CONTROL.matcher(n.textValue()).find(); }
+    private static boolean sameText(JsonNode n, String expected) { return n.isTextual() && expected.equals(n.textValue()); }
+    private static boolean publicText(JsonNode n) { return publicText(n, 128); }
+    private static boolean publicText(JsonNode n, int maximum) {
+        return text(n) && n.textValue().length() <= maximum && !CONTROL.matcher(n.textValue()).find();
+    }
     private static boolean text(JsonNode n) { return n.isTextual() && text(n.textValue()); }
-    private static boolean text(String s) { return s != null && !s.isBlank() && s.length() <= 256; }
+    private static boolean text(String s) { return s != null && s.length() <= 256 && !blank(s); }
+
+    /** The frozen producer uses JavaScript trim; Java isBlank differs for non-breaking spaces and BOM. */
+    private static boolean blank(String s) {
+        return s.codePoints().allMatch(c -> c >= 0x0009 && c <= 0x000D || c == 0x0020 || c == 0x00A0
+                || c == 0x1680 || c >= 0x2000 && c <= 0x200A || c == 0x2028 || c == 0x2029
+                || c == 0x202F || c == 0x205F || c == 0x3000 || c == 0xFEFF);
+    }
 
     private static ObjectNode select(JsonNode source, List<String> keys) {
         ObjectNode out = F.objectNode(); for (String key : keys) out.set(key, source.path(key).deepCopy()); return out;
