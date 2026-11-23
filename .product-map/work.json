@@ -10732,7 +10732,7 @@
       "branch": "dev/DEV-2026-11-22-vesper-028",
       "evidence": "Native claim remains In Progress at21points; all8 original ACs unchanged/unticked. Source checkpoints a9fdc1cee and90999d25e published and exact remote verified. Independent stage-only review passed; decision review/integration/source-final/connected/human parity remain separate. Next parent allocation: canonical Tabs/compatible FactList only.",
       "id": "FUCQ-555",
-      "observed_at": "2026-11-23T00:52:03Z",
+      "observed_at": "2026-11-23T01:09:49Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10764,9 +10764,9 @@
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
         {
-          "evidence": "Original Documents/error/radio/checkbox/saved Activity criteria unchanged. Exact offer/shared-control writers remain held; no store/client/API repair allocated.",
+          "evidence": "Original Documents/error/radio/checkbox/saved Activity criteria unchanged. Canonical checkboxField source prerequisite validated; actual drawer/follow-up composition remains unstarted. No store/client/API change.",
           "id": "decision-followup",
-          "observed_at": "2026-11-22T23:42:34Z",
+          "observed_at": "2026-11-23T01:09:49.927948+00:00",
           "status": "not-started",
           "title": "Source Documents jumps, errors/control rows and saved Activity exit (AC7)"
         },
@@ -10778,9 +10778,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Latest Media source43reused+108actual caller passes across8files, boundaries4/config and ratchet124; source hashes and cleanup verified in fucq555 launcher-media receipts. Prior bounded source evidence retained. Final settled composition/build/built-HTML and independent VehicleDetails review remain open; no aggregate/full result.",
+          "evidence": "Latest checkbox source8+actual Gallery14, boundaries4/config and ratchet124 passed after8-case behavioural red. Prior Media151 and other bounded source evidence retained, not rerun. Launcher VehicleDetails source review passed; fresh-agent/security/visual verdict not claimed. Final composed source/build/built-HTML remain open.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T00:52:03.823973+00:00",
+          "observed_at": "2026-11-23T01:09:49.927948+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10817,14 +10817,14 @@
         {
           "name": "usget-vesper launcher",
           "harness": "codex",
-          "role": "dispatcher carrying Media source implementation",
-          "observed_at": "2026-11-23T00:52:03.823973+00:00",
-          "expires_at": "2026-11-23T01:22:03.823973+00:00",
+          "role": "dispatcher carrying source controls implementation",
+          "observed_at": "2026-11-23T01:09:49.927948+00:00",
+          "expires_at": "2026-11-23T01:39:49.927948+00:00",
           "source": "Observed direct work after repeated child422, AGENTS6November; runtime pair not independently exposed, no model/provider/key change.",
-          "status": "active; validated Media source publication"
+          "status": "active; validated checkbox source publication"
         }
       ],
-      "note": "All8originalAC open. Published through VehicleDetails947f54cb4; independent VehicleDetails review unfinished after reviewer422. Launcher Media source checkpoint reuses exact registry;151scoped Angular passes+boundaries4/config+ratchet124, catalogue/gallery included. Actual offer/decision/sibling integration/build/browser/live1280pair remain open; no human acceptance."
+      "note": "All8originalAC open. Published source through Media2707d9b9d. Launcher carried VehicleDetails source review: passed; no completed fresh-agent/security/visual verdict. Canonical checkbox source prerequisite has8direct+14actual Gallery caller passes, boundaries4/config and ratchet124 with same-commit catalogue/gallery. Production offer/decision/sibling integration/build/browser/live1280pair remain open."
     }
   ],
   "version": 1

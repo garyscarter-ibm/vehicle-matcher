@@ -20,11 +20,19 @@ import { TabsComponent } from '../kit/tabs.component';
 import { SideDrawerComponent } from '../kit/side-drawer.component';
 import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent], styleUrl: './gallery.component.css', template: `
+import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
   <gcsp-labelled-field controlId="gallery-email" label="Email address" hint="Your notification address." error="Enter an email address."><input id="gallery-email" type="email" aria-describedby="gallery-email-hint gallery-email-error" aria-invalid="true" /></gcsp-labelled-field></section>
+  <section class="gcsp-panel"><h2>Source checkboxes and switches</h2>
+    <div gcspCheckboxField controlId="gallery-driver-confirmed" label="The nominated driver and licence details are correct." [checked]="declarationChecked()" (checkedChange)="declarationChecked.set($event)"></div>
+    <div gcspCheckboxField controlId="gallery-importance" label="This is really important" [switch]="true" [checked]="importantChecked()" (checkedChange)="importantChecked.set($event)"></div>
+    <div gcspCheckboxField controlId="gallery-disabled-declaration" label="Declaration unavailable" [disabled]="true" describedBy="gallery-declaration-disabled-reason"></div>
+    <p class="gcsp-note" id="gallery-declaration-disabled-reason">This example is disabled until the record is supplied.</p>
+    <p role="status">Example choices only. No changes have been saved.</p>
+  </section>
   <gcsp-status-screen title="Loading your account" message="Please wait." [busy]="true" [level]="2" />
   <gcsp-status-screen title="Account unavailable" message="Please try again." [level]="2"><button gcspButton type="button">Try again</button></gcsp-status-screen>
   <gcsp-status-screen title="Access not available" message="Your account does not have access to this page." [level]="2" />
@@ -123,6 +131,8 @@ import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.c
   </section>
 ` })
 export class GalleryComponent {
+  readonly declarationChecked = signal(false);
+  readonly importantChecked = signal(true);
   readonly mediaImages: readonly MediaGalleryImage[] = [
     { src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', label: 'Front view', alt: 'Example BMW, front view' },
     { src: '/assets/gcsp-vehicle-evidence/01af2978ba13fd99e11d6477eb706e0648f67d5602bc72e8e20217908b235748.webp', label: 'Second view', alt: 'Example BMW, second view' },
