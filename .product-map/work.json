@@ -10728,47 +10728,20 @@
       ]
     },
     {
-      "id": "FUCQ-556",
-      "type": "Bug",
-      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
-      "status": "In Progress",
-      "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-029",
-      "story_points": 13,
-      "started_at": "2026-11-23",
-      "unsliced": false,
-      "workers": [
-        {
-          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
-          "name": "Chester",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-23T00:16:14.987181+00:00",
-          "expires_at": "2026-11-23T00:41:42.562696+00:00",
-          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
-          "status": "stopped; child422; launcher continues"
-        },
-        {
-          "name": "usget-vesper launcher",
-          "harness": "codex",
-          "role": "dispatcher carrying source implementation",
-          "observed_at": "2026-11-23T00:41:42.562696+00:00",
-          "expires_at": "2026-11-23T01:26:42.562696+00:00",
-          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
-          "status": "active; F556 source checkpoint publication"
-        }
-      ],
-      "note": "Parent native Jira read-back at allocation: In Progress/Russell/13/start2026-11-23; original6AC unticked. Full13point/four-slice plan in _dev/in-progress/DEV-2026-11-22-vesper-029.md. Canonical F555 tracker a9fdc1c/F551 timeline766/F550 refreshc872 require supported integration, no copying/manual stacking. No-show parity in originalscope; F562/F564 decision and real same-state1280pair remain open. Source-only work is not acceptance; no Done authority. Source ports validated: 17 direct/legacy and14 actual Gallery caller cases; all6AC remain open. Launcher continues after child422, no independent source verdict or rendered proof yet.",
-      "observed_at": "2026-11-23T00:41:59Z",
+      "evidence": "No-show rebooking: source body and existing Java route verified; only not-requested-only Angular projection guard changed. Old product3failed/46passed; projection20/actions15/component14/controller31/client26/route5 passed111; boundaries/inline4/ratchet124 pass. Source checkpoint only.",
+      "id": "FUCQ-556",
+      "note": "All6original ACs remain open. Canonical TaskList/SlotPicker/source Button are published; the independent no-show rebooking action-hint repair now passes111scoped Orders cases. Actual tracker/tasks/slot/timeline composition, supported siblings, build/browser/live pair and human review remain.",
+      "observed_at": "2026-11-23T06:24:07Z",
+      "original_status": "In Progress",
       "slices": [
         {
+          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json.",
           "id": "source-ports",
-          "status": "complete",
-          "title": "Pure TaskList and SlotPicker source ports (3 points)",
           "observed_at": "2026-11-23T00:40:55Z",
-          "evidence": "TaskList/SlotPicker source ports and compatible Button source option; same-commit catalogue/gallery. 17 direct/legacy +14 actual Gallery caller cases, boundaries4/config and ratchet124 passed. Source only: all6AC open; Orders/sibling integration/build/browser/live1280pair unrun. Receipts fucq556/launcher-*.json."
+          "status": "complete",
+          "title": "Pure TaskList and SlotPicker source ports (3 points)"
         },
         {
           "id": "tracker-documents",
@@ -10777,13 +10750,43 @@
         },
         {
           "id": "appointment-return",
-          "status": "not-started",
-          "title": "Appointment return history help and missed-state parity (3 points)"
+          "status": "in-progress",
+          "title": "Appointment return history help and missed-state parity (3 points)",
+          "observed_at": "2026-11-23T06:24:07Z",
+          "evidence": "No-show provider-slot request eligibility restored through unchanged explicit review/confirm/version/no-replay path;111scoped Orders cases plus boundaries/inline4/ratchet124. Canonical SlotPicker/Timeline composition and other original states, supported integration/live proof remain."
         },
         {
           "id": "integration-proof",
           "status": "not-started",
           "title": "Supported sibling integration and actual same-state pair (2 points)"
+        }
+      ],
+      "started_at": "2026-11-23",
+      "status": "In Progress",
+      "story_points": 13,
+      "title": "Angular order progress shows plain lists instead of the stage tracker, task checklist, slot picker and timeline",
+      "type": "Bug",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-556",
+      "workers": [
+        {
+          "expires_at": "2026-11-23T00:41:42.562696+00:00",
+          "harness": "codex",
+          "id": "01a20553-daae-7f10-944e-1d8cb280ed69",
+          "name": "Chester",
+          "observed_at": "2026-11-23T00:16:14.987181+00:00",
+          "role": "story-lead",
+          "source": "Active F556 allocation observed through parent dispatch; requested/selected/effective gpt-6.1-sol/xhigh explicit StoryLead override, no fallback; actual identity/title independently verified by parent. Claim1f1080595.",
+          "status": "stopped; child422; launcher continues"
+        },
+        {
+          "expires_at": "2026-11-23T01:26:42.562696+00:00",
+          "harness": "codex",
+          "name": "usget-vesper launcher",
+          "observed_at": "2026-11-23T00:41:42.562696+00:00",
+          "role": "dispatcher carrying source implementation",
+          "source": "Direct work observed in root after child422; primary runtime pair not independently exposed. No substitute model/provider.",
+          "status": "active; F556 source checkpoint publication"
         }
       ]
     }
