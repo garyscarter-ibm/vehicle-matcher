@@ -11452,6 +11452,79 @@
       "native_updated_at": "2026-11-23T12:56:38.581-0600",
       "evidence": "Final3dd registered12/12 exit0; source/scoped proof and actual critique retained. docs/gcsp/evidence/offer-and-bell-parity-2026-11-23.md Native In Progress observed 2026-11-23T19:37:24.986Z; WEB1948/117/12 GREEN; Node/Java covering and human/native disposition remain separate.",
       "covering_node_observation": "Running with observed failing chunks1/2/4; root failure-to-existing-disposition audit pending. No repair/reopen/waiver inferred; human retirement boundaries preserved."
+    },
+    {
+      "id": "FUCQ-571",
+      "title": "Migration overlay heading breaks the BMW catalogue documentation regression check",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-571",
+      "branch": "dev/DEV-2026-11-23-vesper-004",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:15:00.350Z",
+      "note": "Exact one-line neutral separator repair merged/pushed at 7084c510e. Unchanged module22/22 passed; independent source review and root resource audit passed. Existing full Node RED and pending legacy disposition remain separate; native Done not inferred.",
+      "slices": [
+        {
+          "id": "doc",
+          "title": "Preserve meaningful catalogue documentation",
+          "status": "complete",
+          "evidence": "Exact docline3 separator; all other bytes and required literals unchanged. Published4a9dc5200, merged7084c510e; independent Pluto PASS."
+        },
+        {
+          "id": "regression",
+          "title": "Unchanged owning regression module",
+          "status": "complete",
+          "evidence": "Once-only22/22, exit0; original RED retained. .claude/test-runs/f555-resume-20261123/f571-validation-result.json"
+        },
+        {
+          "id": "integration",
+          "title": "Covering Node batch and disposition",
+          "status": "in-progress",
+          "evidence": "Scoped result only. Root F555 owns covering Node gate and pending37-case human ruling; full Node3dd remainsRED."
+        }
+      ],
+      "observed_at": "2026-11-23T21:14:41Z",
+      "native_updated_at": "2026-11-23T14:33:02.312-0600"
+    },
+    {
+      "id": "FUCQ-572",
+      "title": "Dual-role Greg is treated as employee-only by Java lifecycle readers",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-572",
+      "branch": "dev/DEV-2026-11-23-vesper-005",
+      "unsliced": false,
+      "native_status_observed_at": "2026-11-23T21:15:00.740Z",
+      "note": "Native Bug/type/parent433/origin470 verified; other affected origins471-473 recorded. Claim9e0df89bb; source-confirmed4reader precedence. Real mixed-role Java reproduction and all4AC remain unproved. Retained lead preparing regression; repeated child422 do not establish credit balance.",
+      "slices": [
+        {
+          "id": "regression",
+          "title": "Real OIDC mixed-role read regression and employee denial",
+          "status": "in-progress",
+          "evidence": "Lead owns the new LifecycleMixedRoleHttpTest in isolated claimed worktree. Actual test execution not yet observed; existing Greg-only profiles insufficient."
+        },
+        {
+          "id": "readers",
+          "title": "Repair four local Greg reader classifiers",
+          "status": "not-started"
+        },
+        {
+          "id": "callers-review",
+          "title": "Affected packages, boundaries and independent review",
+          "status": "not-started"
+        },
+        {
+          "id": "integration",
+          "title": "Useful readbacks and final covering Java evidence",
+          "status": "not-started"
+        }
+      ],
+      "observed_at": "2026-11-23T21:14:42Z",
+      "native_updated_at": "2026-11-23T14:36:01.249-0600"
     }
   ],
   "version": 1
