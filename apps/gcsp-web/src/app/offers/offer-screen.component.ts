@@ -7,6 +7,7 @@ import { DecisionHighlightsComponent } from '../kit/decision-highlights.componen
 import { MediaGalleryComponent } from '../kit/media-gallery.component';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { LoadingSkeletonComponent } from '../kit/loading-skeleton.component';
 import { StageListComponent } from '../kit/stage-list.component';
 import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
@@ -18,7 +19,7 @@ import { OfferFollowupComponent } from './offer-followup.component';
 
 @Component({
   selector: 'gcsp-offer-screen', standalone: true,
-  imports: [RouterLink, ButtonDirective, FactListComponent, DecisionHighlightsComponent, MediaGalleryComponent, ScreenIntroComponent, StatusScreenComponent, StageListComponent, VehicleDetailsComponent, VehicleDecisionComponent, OfferDecisionComponent, OfferFollowupComponent],
+  imports: [RouterLink, ButtonDirective, FactListComponent, DecisionHighlightsComponent, MediaGalleryComponent, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, StageListComponent, VehicleDetailsComponent, VehicleDecisionComponent, OfferDecisionComponent, OfferFollowupComponent],
   providers: [OfferStore, OfferInteractionStore], templateUrl: './offer-screen.component.html', styleUrl: './offer-screen.component.css',
 })
 export class OfferScreenComponent implements OnDestroy {

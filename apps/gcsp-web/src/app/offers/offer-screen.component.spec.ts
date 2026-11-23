@@ -45,6 +45,9 @@ describe('native offer read screen', () => {
     await settle(); expect(text()).toContain('Choose an offer'); expect(reads.length).toBe(0);
     fixture.componentRef.setInput('offerId', 'offer-1'); await settle();
     expect(text()).toContain('Loading your offer'); expect(fixture.nativeElement.querySelector('[aria-busy="true"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('div[gcspScreenIntro].gcsp-vh > h1.vm-title')?.textContent).toBe('Your offer');
+    expect(fixture.nativeElement.querySelector('.gcsp-skeleton[data-layout="offer"] > p.gcsp-vh[role="status"]')?.textContent).toBe('Loading your offer.');
+    expect(fixture.nativeElement.querySelector('.gcsp-skeleton-shapes[aria-hidden="true"] .gcsp-skeleton-offer-card')).not.toBeNull();
     expect(reads[0]!.id).toBe('offer-1');
   });
   it('renders exact terms, nested reasons, all details and deliberate review controls without submitting', async () => {
@@ -504,24 +507,29 @@ describe('native offer read screen', () => {
   });
   describe('focus after opening the next offer', () => {
     const heading = () => fixture.nativeElement.querySelector('h1') as HTMLElement;
+    const isLoading = () => !!fixture.nativeElement.querySelector('.gcsp-skeleton[data-layout="offer"]');
+    let loadingHeading: HTMLElement;
     const openNext = async () => {
       client['readFollowup'].mockResolvedValue({ status: 'ok', value: { schemaVersion: 1, state: 'ready', decisionId: 'decision-1', savedChange: savedFollowup(),
         comparison: { schemaVersion: 1, currentBriefVersion: 8, requirements: [], previous: { offer: offerScreenFixture('declined') }, next: { offer: { ...actionableOffer(), offerId: 'offer-2' } } } } });
       fixture.componentRef.setInput('offerId', 'offer-1'); await settle(); await load(offerScreenFixture('declined'));
       const open = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('gcsp-offer-followup button')).find((button) => button.textContent?.includes('Open this offer'))!;
       open.focus(); open.click(); await settle();
-      expect(reads.at(-1)!.id).toBe('offer-2'); expect(document.activeElement).toBe(heading()); expect(heading().textContent).toContain('Loading your offer');
+      expect(reads.at(-1)!.id).toBe('offer-2'); expect(document.activeElement).toBe(heading()); expect(heading().textContent).toBe('Your offer');
+      expect(heading().closest('.gcsp-vh')).not.toBeNull(); expect(isLoading()).toBe(true); loadingHeading = heading();
     };
     const resolveNext = async (value: OfferResult<OfferProjection> | OfferFailure, read = reads.at(-1)!) => { read.resolve(value as OfferResult<OfferProjection>); await settle(); };
 
     it('focuses the final ready heading once a delayed next-offer read completes', async () => {
       await openNext(); await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } });
-      expect(heading().textContent).not.toContain('Loading your offer'); expect(heading().isConnected).toBe(true);
+      expect(heading().textContent).toBe('Your offer'); expect(heading().isConnected).toBe(true);
+      expect(loadingHeading.isConnected).toBe(false); expect(heading()).not.toBe(loadingHeading); expect(isLoading()).toBe(false);
       expect(document.activeElement).toBe(heading());
     });
     it('focuses the failure heading when the delayed next-offer read fails', async () => {
       await openNext(); await resolveNext({ status: 'unavailable', code: 'offer-unavailable', retryable: true });
-      expect(heading().textContent).not.toContain('Loading your offer'); expect(document.activeElement).toBe(heading());
+      expect(heading().textContent).toBe('Your offer could not be loaded'); expect(document.activeElement).toBe(heading());
+      expect(loadingHeading.isConnected).toBe(false); expect(heading()).not.toBe(loadingHeading); expect(isLoading()).toBe(false);
     });
     it('does not take focus back from a control the user moved to while loading', async () => {
       const elsewhere = document.body.appendChild(document.createElement('button'));
@@ -535,15 +543,15 @@ describe('native offer read screen', () => {
       fixture.componentRef.setInput('offerId', 'offer-3'); await settle(); expect(reads.at(-1)!.id).toBe('offer-3');
       await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } }, stale);
       await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-3' } });
-      expect(heading().textContent).not.toContain('Loading your offer'); expect(focus).not.toHaveBeenCalled();
+      expect(isLoading()).toBe(false); expect(loadingHeading.isConnected).toBe(false); expect(focus).not.toHaveBeenCalled();
     });
     it('does not move focus for a read completed under a different account', async () => {
       await openNext(); const stale = reads.at(-1)!;
       auth.set({ status: 'ready', context: { ...offerScreenEmployee, subject: 'other-subject', employeeId: 'employee-2' } }); await settle();
       await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } }, stale);
-      expect(heading().textContent).toContain('Loading your offer');
+      expect(isLoading()).toBe(true); expect(heading().textContent).toBe('Your offer');
       expect(reads.at(-1)).not.toBe(stale); await resolveNext({ status: 'ok', value: { ...offerScreenFixture(), offerId: 'offer-2' } });
-      expect(heading().textContent).not.toContain('Loading your offer'); expect(document.activeElement).not.toBe(heading());
+      expect(isLoading()).toBe(false); expect(loadingHeading.isConnected).toBe(false); expect(document.activeElement).not.toBe(heading());
     });
     it('does not focus anything after the screen is disposed mid-read', async () => {
       await openNext(); const read = reads.at(-1)!; fixture.destroy(); const focus = vi.spyOn(HTMLElement.prototype, 'focus');

@@ -4,6 +4,7 @@ import { StarRatingComponent } from '../kit/star-rating.component';
 import { ButtonDirective } from '../kit/button.directive';
 import { ScreenIntroComponent } from '../kit/screen-intro.component';
 import { StatusScreenComponent } from '../kit/status-screen.component';
+import { LoadingSkeletonComponent } from '../kit/loading-skeleton.component';
 import { LabelledFieldComponent } from '../kit/labelled-field.component';
 import { ErrorSummaryComponent } from '../kit/error-summary.component';
 import { BuddyControlsComponent } from '../preferences/buddy-controls.component';
@@ -22,7 +23,7 @@ import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
 import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
 import { CheckboxFieldComponent } from '../kit/checkbox-field.component';
 import { OptionListComponent } from '../kit/option-list.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent], styleUrl: './gallery.component.css', template: `
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LoadingSkeletonComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent, CheckboxFieldComponent, OptionListComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -135,6 +136,12 @@ import { OptionListComponent } from '../kit/option-list.component';
     <div gcspScreenIntro presentation="source" title="Your offer" kicker="Your selection" lede="Review the car and your next step."></div>
     <div gcspStatusScreen presentation="source" title="No car selected yet" message="Choose a car to see its details here." [announcement]="null"><a href="#top">Back to components</a></div>
   </section>
+  <section class="gcsp-panel"><h2>Source loading skeletons</h2>
+    <p class="gcsp-note">Decorative placeholders from the shared kit, shown as examples.</p>
+    @for (layout of skeletonLayouts; track layout) {
+      <h3>{{ layout }}</h3><div gcspLoadingSkeleton [layout]="layout" label="Loading example" [items]="6" [labels]="['Reserved', '', 'Available']" [role]="null"></div>
+    }
+  </section>
   <section class="gcsp-panel"><h2>Source vehicle images</h2>
     <p class="gcsp-note">Approved supplied views share feature, thumbnails and the enlarged viewer. The focused decision above uses the picker and contain variants.</p>
     <gcsp-media-gallery name="Example BMW" [images]="mediaImages" />
@@ -152,6 +159,7 @@ import { OptionListComponent } from '../kit/option-list.component';
   </section>
 ` })
 export class GalleryComponent {
+  readonly skeletonLayouts = ['page', 'form', 'timeline', 'card', 'feature', 'console', 'section', 'release-grid', 'stats', 'bars', 'offer', 'media'];
   readonly selectedReason = signal('gallery-size');
   readonly exampleReasons = [
     { value: 'gallery-size', label: 'The car is too large' },

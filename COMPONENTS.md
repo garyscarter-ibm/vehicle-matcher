@@ -759,3 +759,25 @@ source presenters with supplied copy/actions. Direct tests cover all six source
 levels/default2, absent copy, optional roles/busy and unique interactive projected
 actions; legacy/default behavior remains explicitly tested. F548 CSS/F556 Button
 integration, rendered/browser/connected pairs and human acceptance remain open.
+
+
+### Angular source loading skeleton (FUCQ-555)
+
+Port/reuse LoadingSkeletonComponent on native div[gcspLoadingSkeleton] instead of
+page-local placeholder markup or a generic status box. It preserves frozen
+kit/loading-skeleton.js hierarchy/classes for page, form, timeline, card, feature,
+console, section, release-grid, stats, bars, offer and media layouts; unknown layouts
+fall back to page. Inputs are label (Loading), layout (page), role (status or null),
+optional items and labels. Source defaults are100tiles/5stats/3bars; explicit zero
+and supplied stat labels keep their source meaning without invented counts/caps.
+The actual DIV.gcsp-skeleton has data-layout/aria-busy; its one gcsp-vh paragraph
+owns the role/label, while all artwork is under aria-hidden=true. It has no image,
+control, request, business clock or own stylesheet. Source CSS owns motion/geometry.
+
+OfferScreen loading composes the source hidden Your offer h1 and offer-layout
+skeleton labelled Loading your offer. Existing same-offer/account refocus,
+no-focus-theft/stale/dispose guards remain; loading and ready headings are distinct
+DOM nodes even though their text matches. Gallery: Source loading skeletons shows
+all12layouts with non-announcing example labels. Source layout/count/label/role
+and nested offer/feature/text-card contracts have focused tests. F548 global CSS,
+actual browser/rendered behavior and live same-state human parity remain open.

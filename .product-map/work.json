@@ -10730,10 +10730,10 @@
     {
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-22-vesper-028",
-      "evidence": "All8AC open. Shared source ScreenIntro/StatusScreen + normal/refused offer adoption;466scoped cases across25files including all direct default callers and real Gallery/Offer routes. Boundaries/inline4 and ratchet124; no full build/live pair/acceptance.",
+      "evidence": "All8AC open. Canonical12-layout LoadingSkeleton and source offer loading/hidden heading adopted, original focus guards retained;125scoped cases across4files plus boundaries/inline4/ratchet124. No full build/live pair/acceptance.",
       "id": "FUCQ-555",
-      "note": "All8AC open. Pending/normal/refused source presenters are partial. Idle/loading/read-failure/generic/uncertain composition and supported sibling integration/build/live pair/human review remain.",
-      "observed_at": "2026-11-23T05:21:57Z",
+      "note": "All8AC open. Loading and pending/normal/refused source presenters are partial; idle/read-failure/generic/uncertain composition, supported sibling integration/build/live pair/human review remain.",
+      "observed_at": "2026-11-23T05:57:08Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -10758,9 +10758,9 @@
           "title": "Canonical finishes, vehicle-decision shell and Benefits/Tradeoffs (AC3/4/5)"
         },
         {
-          "evidence": "Canonical pending card/details plus ONE source native-DIV ScreenIntro/StatusScreen adopted by normal/refused offer states.466scoped passes with defaults retained. Idle/loading/read-failure/generic/uncertain state and comparison winners/supported sibling integration remain open.",
+          "evidence": "Source pending hero/details, normal/refused headings/status and new canonical LoadingSkeleton/hidden h1 compose without changing read/focus guards.125scoped cases passed. Idle/read-failure/generic/uncertain and comparison winners/sibling integration remain.",
           "id": "offer-composition",
-          "observed_at": "2026-11-23T05:21:56.875753+00:00",
+          "observed_at": "2026-11-23T05:52:43.854413+00:00",
           "status": "in-progress",
           "title": "Source exits, authoritative countdown, savings, winners and stages (AC1-6)"
         },
@@ -10779,9 +10779,9 @@
           "title": "F548/F549/F550/F551 integration and shared source reuse"
         },
         {
-          "evidence": "Source/default/OfferScreen96 +22actual caller files370 =466scoped cases across25files. All direct shared-status/intro consumers covered; default and source projection behavior pass. Boundaries/inline4/ratchet124. No full build/browser/live pair/human acceptance.",
+          "evidence": "Final LoadingSkeleton17/OfferScreen82/Gallery14/OfferRoute12:125scoped passes across4files. Empty-role1/16red then source truthiness repaired; class-token test serialization history retained. Fresh boundaries/inline4/ratchet124. No full build/browser/live pair/human acceptance.",
           "id": "source-validation",
-          "observed_at": "2026-11-23T05:21:56.875753+00:00",
+          "observed_at": "2026-11-23T05:57:08.114247+00:00",
           "status": "in-progress",
           "title": "Lead review, focused regressions/callers, ratchet, boundaries/build"
         },
@@ -10816,12 +10816,12 @@
           "status": "stopped; repeated child422; launcher carries allocation"
         },
         {
-          "expires_at": "2026-11-23T05:21:56.875753+00:00",
+          "expires_at": "2026-11-23T05:57:08.114247+00:00",
           "harness": "codex",
           "name": "usget-vesper launcher",
-          "observed_at": "2026-11-23T05:21:56.875753+00:00",
+          "observed_at": "2026-11-23T05:57:08.114247+00:00",
           "role": "launcher carrying F555 original view implementation",
-          "source": "Observed direct source heading/refused-status work after retained child422; no model/provider/key change/retry. Runtime pair unexposed.",
+          "source": "Observed direct canonical loading port/composition after retained child422; no model/provider/key change/retry. Runtime pair unexposed.",
           "status": "checkpointed; scheduled continuation"
         }
       ]
