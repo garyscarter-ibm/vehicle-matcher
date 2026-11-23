@@ -359,6 +359,14 @@
     ],
     "contractVersion": "1.0.0"
   },
+  "notEngaged": {
+    "status": "conflict",
+    "reason": "not-engaged",
+    "current": {
+      "briefVersion": 1
+    },
+    "contractVersion": "1.0.0"
+  },
   "paused": {
     "status": "ok",
     "value": {
@@ -410,9 +418,9 @@
           "source": "employee"
         },
         "buddy": {
-          "enabled": false,
-          "searchConsent": false,
-          "holdConsent": false,
+          "enabled": true,
+          "searchConsent": true,
+          "holdConsent": true,
           "paused": true,
           "permissionVersion": 2,
           "confirmedBy": "demo-paula",
