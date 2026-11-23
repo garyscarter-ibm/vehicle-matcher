@@ -842,7 +842,7 @@ public final class AppointmentService implements AutoCloseable {
     }
 
     private AppointmentResult readModel(Principal who, RunContext run, Prep prep, String orderUuid) throws SQLException {
-        boolean employee = who.roles().contains(Role.EMPLOYEE.wire());
+        boolean employee = who.roles().contains(Role.EMPLOYEE.wire()) && !who.roles().contains(Role.GREG.wire());
         Optional<Row> found;
         try (Connection c = dataSource.getConnection()) {
             found = AppointmentStore.row(c, run, orderUuid);
