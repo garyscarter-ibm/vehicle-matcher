@@ -3,10 +3,11 @@ import { By } from '@angular/platform-browser';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MediaGalleryComponent, MediaGalleryImage } from './media-gallery.component';
+import { VehicleDecisionComponent } from './vehicle-decision.component';
 
-const imageA: MediaGalleryImage = { src: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=', label: 'Front view' };
-const imageB: MediaGalleryImage = { src: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=2', alt: 'Rear of the supplied car', caption: 'Rear view', viewpoint: 'Rear' };
-const imageC: MediaGalleryImage = { src: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=3', label: 'Interior' };
+const imageA: MediaGalleryImage = { src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', label: 'Front view' };
+const imageB: MediaGalleryImage = { src: '/api/gcsp/vehicle-images/bmw-display-07c269dd7f55fad0a56b.webp', alt: 'Rear of the supplied car', caption: 'Rear view', viewpoint: 'Rear' };
+const imageC: MediaGalleryImage = { src: '/assets/gcsp-vehicle-evidence/01af2978ba13fd99e11d6477eb706e0648f67d5602bc72e8e20217908b235748.webp', label: 'Interior' };
 
 @Component({
   imports: [MediaGalleryComponent],
@@ -48,7 +49,7 @@ async function openedGallery() {
   const component = fixture.debugElement.query(By.directive(MediaGalleryComponent)).componentInstance as MediaGalleryComponent;
   const dialog = root.querySelector('dialog')!;
   stubDialog(dialog);
-  const opener = root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')!;
+  const opener = root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')!;
   opener.click();
   fixture.detectChanges();
   return { fixture, root, component, dialog, opener };
@@ -60,16 +61,16 @@ describe('MediaGalleryComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('.gcsp-media-placeholder')?.textContent).toBe('No image is available');
+    expect(root.querySelector('.vm-card-soon')?.textContent).toBe('No image is available');
     expect(root.querySelectorAll('button')).toHaveLength(0);
 
     fixture.componentInstance.images.set([{ ...imageA, alt: undefined }]);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(root.querySelector('.gcsp-media-feature-image')?.getAttribute('alt')).toBe('BMW X2 M35i');
-    expect(root.querySelectorAll('.gcsp-media-thumbnails')).toHaveLength(0);
-    expect(root.querySelectorAll('.gcsp-media-viewer-previous, .gcsp-media-viewer-next')).toHaveLength(0);
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('alt')).toBe('BMW X2 M35i, front view');
+    expect(root.querySelectorAll('.gcsp-media-gallery-thumbs')).toHaveLength(0);
+    expect(root.querySelectorAll('.gcsp-media-gallery-previous:not([hidden]), .gcsp-media-gallery-next:not([hidden])')).toHaveLength(0);
     expect(root.querySelectorAll('button')).toHaveLength(2);
     fixture.destroy();
   });
@@ -80,10 +81,10 @@ describe('MediaGalleryComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('.gcsp-media-feature-image')).toBeNull();
-    expect(root.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable');
-    expect(root.querySelector('.gcsp-media-feature')?.getAttribute('aria-busy')).toBeNull();
-    expect(root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')?.disabled).toBe(true);
+    expect(root.querySelector('.vm-card-photo')).toBeNull();
+    expect(root.querySelector('.vm-card-soon')?.textContent).toBe('No image is available');
+    expect(root.querySelector('.gcsp-media-gallery-feature')?.getAttribute('aria-busy')).toBeNull();
+    expect(root.querySelector('.gcsp-media-gallery-enlarge')).toBeNull();
     fixture.destroy();
   });
 
@@ -118,16 +119,16 @@ describe('MediaGalleryComponent', () => {
     const component = fixture.debugElement.query(By.directive(MediaGalleryComponent)).componentInstance as MediaGalleryComponent;
     component.select(1);
     fixture.detectChanges();
-    const selectedThumb = root.querySelectorAll<HTMLButtonElement>('.gcsp-media-thumbnails .gcsp-media-thumb')[1];
+    const selectedThumb = root.querySelectorAll<HTMLButtonElement>('.gcsp-media-gallery-thumbs .gcsp-media-gallery-thumb')[1];
     selectedThumb.querySelector('img')!.dispatchEvent(new Event('error'));
     fixture.detectChanges();
 
     expect(component.selectedIndex()).toBe(1);
     expect(selectedThumb.getAttribute('aria-pressed')).toBe('true');
     expect(selectedThumb.querySelector('img')).toBeNull();
-    expect(selectedThumb.textContent).toContain('Image unavailable');
-    expect(root.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable');
-    expect(root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')?.disabled).toBe(true);
+    expect(selectedThumb.classList.contains('is-unavailable')).toBe(true);
+    expect(root.querySelector('.vm-card-soon')?.textContent).toBe('Image unavailable. Choose another view.');
+    expect(root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')?.hidden).toBe(true);
     fixture.destroy();
   });
 
@@ -142,7 +143,7 @@ describe('MediaGalleryComponent', () => {
     const component = fixture.debugElement.query(By.directive(MediaGalleryComponent)).componentInstance as MediaGalleryComponent;
     const dialog = root.querySelector('dialog')!;
     stubDialog(dialog);
-    const enlarge = root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')!;
+    const enlarge = root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')!;
     enlarge.click();
     fixture.detectChanges();
 
@@ -150,13 +151,21 @@ describe('MediaGalleryComponent', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBe(dialog.querySelector('h2')?.id);
     expect(dialog.querySelector('button[aria-label="Close image viewer"]')).not.toBeNull();
     expect(document.activeElement).toBe(dialog.querySelector('button[aria-label="Close image viewer"]'));
-    expect(dialog.querySelectorAll('.gcsp-media-viewer-thumbnails .gcsp-media-thumb')).toHaveLength(3);
+    expect(dialog.querySelectorAll('.gcsp-media-gallery-strip .gcsp-media-gallery-thumb')).toHaveLength(3);
+    const close = dialog.querySelector<HTMLButtonElement>('[aria-label="Close image viewer"]')!;
+    const last = dialog.querySelectorAll<HTMLButtonElement>('.gcsp-media-gallery-strip .gcsp-media-gallery-thumb')[2];
+    dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true, cancelable: true }));
+    expect(document.activeElement).toBe(last);
+    dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }));
+    expect(document.activeElement).toBe(close);
+    enlarge.focus();
+    expect(document.activeElement).toBe(close);
     expect(document.body.style.overflow).toBe('hidden');
 
     dialog.querySelector<HTMLButtonElement>('[aria-label="Previous image"]')!.click();
     fixture.detectChanges();
     expect(component.selectedIndex()).toBe(2);
-    expect(dialog.querySelector('.gcsp-media-counter')?.textContent?.trim()).toBe('3 of 3');
+    expect(dialog.querySelector('.gcsp-media-gallery-position')?.textContent?.trim()).toBe('3 of 3');
     dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
     fixture.detectChanges();
     expect(component.selectedIndex()).toBe(0);
@@ -182,14 +191,14 @@ describe('MediaGalleryComponent', () => {
     expect(dialog.open).toBe(false);
     expect(component.viewerOpen()).toBe(false);
     expect(document.body.style.overflow).toBe('scroll');
-    expect(root.querySelector('.gcsp-media-placeholder')).not.toBeNull();
+    expect(root.querySelector('.vm-card-soon')).not.toBeNull();
     expect(root.querySelector('dialog[open]')).toBeNull();
 
     fixture.componentInstance.images.set([imageC]);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')!.click();
+    root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')!.click();
     fixture.detectChanges();
     expect(dialog.open).toBe(true);
     expect(component.viewerOpen()).toBe(true);
@@ -209,7 +218,7 @@ describe('MediaGalleryComponent', () => {
     expect(document.body.style.overflow).toBe('scroll');
     expect(focus).toHaveBeenCalledOnce();
     expect(document.activeElement).toBe(opener);
-    expect(component.currentImage()).toEqual(imageC);
+    expect(component.currentImage()).toEqual({ ...imageC, alt: 'BMW X2 M35i, interior' });
   });
 
   it('closes a changed vehicle name even when its image readback is unchanged', async () => {
@@ -249,7 +258,7 @@ describe('MediaGalleryComponent', () => {
     expect(component.viewerOpen()).toBe(true);
     expect(dialog.open).toBe(true);
     expect(document.body.style.overflow).toBe('hidden');
-    expect(dialog.querySelector('.gcsp-media-counter')?.textContent?.trim()).toBe('3 of 3');
+    expect(dialog.querySelector('.gcsp-media-gallery-position')?.textContent?.trim()).toBe('3 of 3');
   });
 
   it('synchronizes native close and ignores an old close event after reopening', async () => {
@@ -289,27 +298,33 @@ describe('MediaGalleryComponent', () => {
 
     component.markFailed(imageA);
     fixture.detectChanges();
-    expect(dialog.querySelectorAll('.gcsp-media-viewer-previous, .gcsp-media-viewer-next')).toHaveLength(0);
-    dialog.querySelectorAll<HTMLButtonElement>('.gcsp-media-thumb')[1].click();
+    expect(dialog.querySelectorAll('.gcsp-media-gallery-previous:not([hidden]), .gcsp-media-gallery-next:not([hidden])')).toHaveLength(0);
+    dialog.querySelectorAll<HTMLButtonElement>('.gcsp-media-gallery-thumb')[1].click();
     fixture.detectChanges();
     expect(component.selectedIndex()).toBe(1);
-    expect(dialog.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable');
+    expect(dialog.querySelector('.gcsp-media-gallery-unavailable')?.textContent).toBe('Image unavailable');
     dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
     fixture.detectChanges();
     expect(component.selectedIndex()).toBe(2);
     component.markFailed(imageC);
     fixture.detectChanges();
     expect(dialog.open).toBe(true);
-    expect(dialog.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable');
-    expect(dialog.querySelectorAll('.gcsp-media-viewer-previous, .gcsp-media-viewer-next')).toHaveLength(0);
+    expect(dialog.querySelector('.gcsp-media-gallery-unavailable')?.textContent).toBe('Image unavailable');
+    expect(dialog.querySelectorAll('.gcsp-media-gallery-previous:not([hidden]), .gcsp-media-gallery-next:not([hidden])')).toHaveLength(0);
     dialog.querySelector<HTMLButtonElement>('[aria-label="Close image viewer"]')!.click();
     fixture.detectChanges();
     expect(dialog.open).toBe(false);
   });
 
   it('names image-only picker buttons without painting view labels', async () => {
-    const { root } = await openedGallery();
-    const thumbs = root.querySelectorAll<HTMLButtonElement>('.gcsp-media-thumbnails .gcsp-media-thumb');
+    const fixture = TestBed.createComponent(MediaGalleryComponent);
+    fixture.componentRef.setInput('name', 'BMW X2 M35i');
+    fixture.componentRef.setInput('images', [imageA, imageB, imageC]);
+    fixture.componentRef.setInput('presentation', 'picker');
+    await fixture.whenStable();
+    cleanup.push(() => fixture.destroy());
+    const root = fixture.nativeElement as HTMLElement;
+    const thumbs = root.querySelectorAll<HTMLButtonElement>('.gcsp-media-gallery-thumbs .gcsp-media-gallery-thumb');
     expect(thumbs).toHaveLength(3);
     expect(thumbs[0].getAttribute('aria-label')).toBe('Front view of BMW X2 M35i');
     expect(thumbs[0].getAttribute('aria-pressed')).toBe('true');
@@ -317,7 +332,7 @@ describe('MediaGalleryComponent', () => {
       expect(thumb.textContent?.trim()).toBe('');
       expect(thumb.querySelector('img')?.getAttribute('alt')).toBe('');
     }
-    expect(root.querySelector('.gcsp-media-enlarge svg[aria-hidden="true"]')).not.toBeNull();
+    expect(root.querySelector('.gcsp-media-gallery-enlarge svg[aria-hidden="true"]')).not.toBeNull();
   });
 
   it('closes without returning focus to an opener when destroyed', async () => {
@@ -329,7 +344,7 @@ describe('MediaGalleryComponent', () => {
     document.body.append(root);
     const dialog = root.querySelector('dialog')!;
     stubDialog(dialog);
-    const opener = root.querySelector<HTMLButtonElement>('.gcsp-media-enlarge')!;
+    const opener = root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')!;
     const focus = vi.spyOn(opener, 'focus');
     opener.click();
     fixture.detectChanges();
@@ -347,15 +362,90 @@ describe('compact stock media', () => {
     fixture.componentInstance.images.set([imageA, imageB]); await fixture.whenStable(); fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('.gcsp-media-gallery')?.classList.contains('is-compact')).toBe(true);
-    expect(root.querySelector('.gcsp-media-feature-image')?.getAttribute('src')).toBe(imageA.src);
-    expect(root.querySelector('.gcsp-media-enlarge, .gcsp-media-thumbnails, .gcsp-media-caption')).toBeNull();
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('src')).toBe(imageA.src);
+    expect(root.querySelector('.gcsp-media-gallery-enlarge, .gcsp-media-gallery-thumbs, .vm-media-caption')).toBeNull();
     root.querySelector('img')!.dispatchEvent(new Event('error')); fixture.detectChanges();
-    expect(root.querySelector('.gcsp-media-unavailable')?.textContent).toBe('Image unavailable'); fixture.destroy();
+    expect(root.querySelector('.vm-card-soon')?.textContent).toBe('Image unavailable. Choose another view.'); fixture.destroy();
   });
   it('closes an existing viewer on compact transition and guards programmatic opening', async () => {
     const { fixture, component, dialog } = await openedGallery();
     expect(dialog.open).toBe(true); fixture.componentInstance.compact.set(true); await fixture.whenStable(); fixture.detectChanges();
     expect(dialog.open).toBe(false); expect(component.viewerOpen()).toBe(false); expect(document.body.style.overflow).toBe('scroll');
     component.openViewer(); expect(dialog.open).toBe(false);
+  });
+});
+
+
+@Component({
+  imports: [VehicleDecisionComponent, MediaGalleryComponent],
+  template: '<gcsp-vehicle-decision name="BMW X2" layout="focused"><gcsp-media-gallery decisionMedia name="BMW X2" [images]="images" /></gcsp-vehicle-decision>',
+})
+class DecisionMediaHost { readonly images = [imageA]; }
+
+describe('source media projection and DOM', () => {
+  it('makes the actual Angular host the direct source decision media root', async () => {
+    const fixture = TestBed.createComponent(DecisionMediaHost); await fixture.whenStable();
+    cleanup.push(() => fixture.destroy());
+    const root = fixture.nativeElement as HTMLElement;
+    const media = root.querySelector('.gcsp-vehicle-decision > .gcsp-media-gallery');
+    expect(media?.tagName).toBe('GCSP-MEDIA-GALLERY');
+    expect(media?.querySelector(':scope > .gcsp-media-gallery-feature > .vm-card-media.gcsp-media-whole > img.vm-card-photo')).not.toBeNull();
+    expect(media?.querySelector(':scope > dialog.gcsp-media-gallery-dialog')).not.toBeNull();
+    expect(media?.querySelector('.gcsp-media-gallery')).toBeNull();
+  });
+
+  it('filters before indexing, keeps first-source deduplication, and uses source label/alt defaults', async () => {
+    const fixture = TestBed.createComponent(GalleryHost);
+    fixture.componentInstance.images.set([
+      { src: 'https://images.example/rejected.webp', label: 'Rejected' },
+      { ...imageA, fidelity: 'exact' }, { ...imageA, fidelity: 'representative-model' },
+      { ...imageB, fidelity: '', label: undefined, alt: undefined, viewpoint: 'Ignored viewpoint' },
+      { ...imageC, fidelity: 'representative-model', alt: '' }, { ...imageB, label: 'Duplicate' },
+      { src: '/assets/brand-hero/bmw.jpg', fidelity: 'representative' },
+    ]);
+    await fixture.whenStable(); cleanup.push(() => fixture.destroy());
+    const root = fixture.nativeElement as HTMLElement;
+    const component = fixture.debugElement.query(By.directive(MediaGalleryComponent)).componentInstance as MediaGalleryComponent;
+    const thumbs = root.querySelectorAll('.gcsp-media-gallery-thumbs button');
+    expect(Array.from(thumbs, thumb => thumb.getAttribute('aria-label'))).toEqual(['View 1 of BMW X2 M35i', 'Interior of BMW X2 M35i', 'View 3 of BMW X2 M35i']);
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('src')).toBe(imageB.src);
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('alt')).toBe('BMW X2 M35i, view 1');
+    component.select(-1); fixture.detectChanges(); expect(component.selectedIndex()).toBe(2);
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('src')).toBe('/assets/brand-hero/bmw.jpg');
+    component.select(7); fixture.detectChanges(); expect(component.selectedIndex()).toBe(1);
+    expect(root.querySelector('.vm-card-photo')?.getAttribute('src')).toBe(imageC.src);
+    component.select(1.5); expect(component.selectedIndex()).toBe(1);
+  });
+
+  it.each([
+    [undefined, true], ['', true], ['representative-model', true], ['exact', false],
+  ] as const)('applies gallery missing-fidelity fallback without accepting explicit %s', async (fidelity, wanted) => {
+    const fixture = TestBed.createComponent(GalleryHost); fixture.componentInstance.images.set([{ ...imageC, fidelity }]);
+    await fixture.whenStable(); cleanup.push(() => fixture.destroy());
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('.vm-card-photo') !== null).toBe(wanted);
+  });
+
+  it.each([[undefined, true], ['', true], ['representative', true], ['representative-model', false], ['exact', false]] as const)('limits the hero exception to source fidelity %s', async (fidelity, wanted) => {
+    const fixture = TestBed.createComponent(GalleryHost); fixture.componentInstance.images.set([{ src: '/assets/brand-hero/bmw.jpg', fidelity }]);
+    await fixture.whenStable(); cleanup.push(() => fixture.destroy());
+    expect((fixture.nativeElement as HTMLElement).querySelector('.vm-card-photo') !== null).toBe(wanted);
+  });
+
+  it('retains source default thumbnail labels, contain classes and separate feature/viewer loading states', async () => {
+    const fixture = TestBed.createComponent(MediaGalleryComponent);
+    fixture.componentRef.setInput('name', 'BMW'); fixture.componentRef.setInput('images', [imageA, imageB]); fixture.componentRef.setInput('fit', 'contain');
+    await fixture.whenStable(); cleanup.push(() => fixture.destroy());
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.classList.contains('gcsp-media-gallery-whole')).toBe(true);
+    expect(root.querySelector('.gcsp-media-gallery-thumbs button span')?.textContent).toBe('Front view');
+    expect(root.querySelector('.gcsp-media-gallery-feature')?.getAttribute('aria-busy')).toBe('true');
+    root.querySelector('.vm-card-photo')!.dispatchEvent(new Event('load')); fixture.detectChanges();
+    expect(root.querySelector('.gcsp-media-gallery-feature')?.getAttribute('aria-busy')).toBe('false');
+    const dialog = root.querySelector('dialog')!; stubDialog(dialog);
+    root.querySelector<HTMLButtonElement>('.gcsp-media-gallery-enlarge')!.click(); fixture.detectChanges();
+    expect(dialog.querySelector('.gcsp-media-gallery-large-well > .gcsp-skeleton.gcsp-media-gallery-large-loading')).not.toBeNull();
+    dialog.querySelector('.gcsp-media-gallery-large')!.dispatchEvent(new Event('load')); fixture.detectChanges();
+    expect(dialog.querySelector('.gcsp-media-gallery-large-loading')).toBeNull();
   });
 });

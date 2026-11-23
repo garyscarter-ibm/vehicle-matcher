@@ -1,59 +1,66 @@
-<div class="gcsp-media-gallery" [class.is-compact]="compact()" role="group" [attr.aria-label]="name() + ' images'">
-  <div class="gcsp-media-feature" [attr.aria-busy]="featureLoading() && images().length ? 'true' : null">
-    @if (currentImage(); as image) {
-      @if (isFailed(selectedIndex())) {
-        <div class="gcsp-media-unavailable" role="status">Image unavailable</div>
-      } @else {
-        <img class="gcsp-media-feature-image" [src]="image.src" [alt]="image.alt || name()" (load)="onFeatureLoad(image)" (error)="markFailed(image)" />
-        @if (featureLoading()) { <div class="gcsp-media-loading" role="status">Loading image</div> }
-      }
-      @if (!compact()) {
-      <button #enlargeButton gcspButton type="button" variant="ghost" class="gcsp-media-enlarge" [disabled]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()) + ' image'" (click)="openViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14" /><path d="m15 15 6 6" /><path d="M10 7v6M7 10h6" /></svg></button>
-      }
-      @if (!compact() && image.caption) { <p class="gcsp-media-caption">{{ image.caption }}</p> }
-    } @else {
-      <div class="gcsp-media-placeholder" role="img" [attr.aria-label]="name() + ': ' + placeholder()">{{ placeholder() }}</div>
-    }
+<ng-template #loading let-kind>
+  <div class="gcsp-skeleton" [class.gcsp-media-gallery-loading]="kind === 'feature'" [class.gcsp-media-gallery-large-loading]="kind === 'large'" data-layout="media" aria-busy="true">
+    <p class="gcsp-vh" role="status">Loading image</p>
+    <div class="gcsp-skeleton-shapes" aria-hidden="true"><span class="gcsp-skeleton-shape gcsp-skeleton-media"></span></div>
   </div>
-
-  @if (!compact() && images().length > 1) {
-    <div class="gcsp-media-thumbnails" role="group" [attr.aria-label]="name() + ' image views'">
-      @for (image of images(); track $index; let index = $index) {
-        <button gcspButton type="button" variant="ghost" class="gcsp-media-thumb" [attr.aria-label]="viewLabel(image, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
-          @if (isFailed(index)) { <span class="gcsp-media-thumb-unavailable">Image unavailable</span> }
-          @else { <img [src]="image.src" alt="" loading="lazy" (error)="markFailed(image)" /> }
-        </button>
-      }
-    </div>
+</ng-template>
+<div class="gcsp-media-gallery-feature" [attr.aria-busy]="displayImages().length ? (featureLoading() ? 'true' : 'false') : null">
+  <div class="vm-card-media gcsp-media-whole" [class.has-photo]="currentImage() && !isFailed(selectedIndex())">
+    @if (currentImage(); as image) {
+      @if (!isFailed(selectedIndex())) { <img class="vm-card-photo" [src]="image.src" [alt]="image.alt" loading="eager" (load)="onFeatureLoad(image)" (error)="markFailed(image)" /> }
+    }
+    <span class="vm-card-soon">{{ currentImage() && isFailed(selectedIndex()) && displayImages().length > 1 ? 'Image unavailable. Choose another view.' : placeholder() }}</span>
+    <span class="vm-card-line"></span>
+    @if (currentImage(); as image) { @if (!compact() && !isFailed(selectedIndex()) && image.caption) { <span class="vm-media-caption">{{ image.caption }}</span> } }
+  </div>
+  @if (currentImage(); as image) {
+    @if (featureLoading()) { <ng-container [ngTemplateOutlet]="loading" [ngTemplateOutletContext]="{ $implicit: 'feature' }" /> }
+    @if (!compact()) {
+      <button #enlargeButton gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-enlarge" [hidden]="isFailed(selectedIndex())" [attr.aria-label]="'Enlarge ' + viewLabel(image, selectedIndex()).toLowerCase() + ' image'" (click)="openViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14" /><path d="m15 15 6 6" /><path d="M10 7v6M7 10h6" /></svg></button>
+    }
   }
 </div>
-
-<dialog #viewer class="gcsp-media-viewer" [attr.aria-labelledby]="viewerTitleId" (close)="onViewerClose()" (cancel)="onCancel($event)" (keydown)="onViewerKeydown($event)">
+@if (!compact() && displayImages().length > 1) {
+  <div class="gcsp-media-gallery-thumbs" role="group" aria-label="Vehicle image views">
+    @for (image of displayImages(); track image.src; let index = $index) {
+      <button type="button" class="gcsp-media-gallery-thumb" [class.is-unavailable]="isFailed(index)" [attr.aria-label]="viewLabel(image, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
+        @if (!isFailed(index)) { <img [src]="image.src" alt="" loading="lazy" (error)="markFailed(image)" /> }
+        @if (presentation() !== 'picker') { <span>{{ viewLabel(image, index) }}</span> }
+      </button>
+    }
+  </div>
+}
+<dialog #viewer class="gcsp-media-gallery-dialog" aria-modal="true" [attr.aria-labelledby]="viewerTitleId" (close)="onViewerClose()" (cancel)="onCancel($event)">
   @if (currentImage(); as image) {
-    <header class="gcsp-media-viewer-header">
-      <h2 [id]="viewerTitleId">{{ viewLabel(image, selectedIndex()) }}</h2>
-      <button #viewerClose gcspButton type="button" variant="ghost" class="gcsp-media-viewer-close" aria-label="Close image viewer" (click)="closeViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
-    </header>
-    <div class="gcsp-media-viewer-stage">
-      @if (isFailed(selectedIndex())) { <div class="gcsp-media-unavailable" role="status">Image unavailable</div> }
-      @else { <img class="gcsp-media-viewer-image" [src]="image.src" [alt]="image.alt || name()" (error)="markFailed(image)" /> }
-      @if (healthyImageCount() > 1) {
-        <button gcspButton type="button" variant="ghost" class="gcsp-media-viewer-previous" aria-label="Previous image" (click)="step(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7" /></svg></button>
-        <button gcspButton type="button" variant="ghost" class="gcsp-media-viewer-next" aria-label="Next image" (click)="step(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7" /></svg></button>
+    <div class="gcsp-media-gallery-head">
+      <h2 class="gcsp-media-gallery-title" [id]="viewerTitleId">{{ viewLabel(image, selectedIndex()) }}</h2>
+      <button #viewerClose gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-close" aria-label="Close image viewer" (click)="closeViewer()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
+    </div>
+    <div class="gcsp-media-gallery-stage">
+      <div class="gcsp-media-gallery-large-well">
+        @if (isFailed(selectedIndex())) { <p class="gcsp-media-gallery-unavailable">Image unavailable</p> }
+        @else if (viewerOpen()) {
+          <img class="gcsp-media-gallery-large" [src]="image.src" [alt]="image.alt" (load)="onViewerLoad(image)" (error)="markFailed(image)" />
+          @if (viewerLoading()) { <ng-container [ngTemplateOutlet]="loading" [ngTemplateOutletContext]="{ $implicit: 'large' }" /> }
+        }
+      </div>
+      @if (displayImages().length > 1) {
+        <button gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-previous" [hidden]="healthyImageCount() < 2" aria-label="Previous image" (click)="step(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7" /></svg></button>
+        <button gcspButton type="button" variant="ghost" class="vm-btn vm-btn-ghost gcsp-media-gallery-next" [hidden]="healthyImageCount() < 2" aria-label="Next image" (click)="step(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7" /></svg></button>
       }
     </div>
-    <footer class="gcsp-media-viewer-footer">
-      <p class="gcsp-media-counter" aria-live="polite">{{ selectedIndex() + 1 }} of {{ images().length }}</p>
-      @if (images().length > 1) {
-        <div class="gcsp-media-viewer-thumbnails" role="group" [attr.aria-label]="name() + ' image views'">
-          @for (view of images(); track $index; let index = $index) {
-            <button gcspButton type="button" variant="ghost" class="gcsp-media-thumb" [attr.aria-label]="viewLabel(view, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
-              @if (isFailed(index)) { <span class="gcsp-media-thumb-unavailable">Image unavailable</span> }
-              @else { <img [src]="view.src" alt="" loading="lazy" (error)="markFailed(view)" /> }
+    <div class="gcsp-media-gallery-foot">
+      <p class="gcsp-media-gallery-position" aria-live="polite">{{ selectedIndex() + 1 }} of {{ displayImages().length }}</p>
+      @if (displayImages().length > 1) {
+        <div class="gcsp-media-gallery-strip" role="group" aria-label="Vehicle image views">
+          @for (view of displayImages(); track view.src; let index = $index) {
+            <button type="button" class="gcsp-media-gallery-thumb" [class.is-unavailable]="isFailed(index)" [attr.aria-label]="viewLabel(view, index) + ' of ' + name()" [attr.aria-pressed]="selectedIndex() === index" (click)="select(index)">
+              @if (!isFailed(index)) { <img [src]="view.src" alt="" loading="lazy" (error)="markFailed(view)" /> }
+              @if (presentation() !== 'picker') { <span>{{ viewLabel(view, index) }}</span> }
             </button>
           }
         </div>
       }
-    </footer>
+    </div>
   }
 </dialog>

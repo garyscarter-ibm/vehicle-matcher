@@ -251,9 +251,9 @@ describe('native offer read screen through the real offer client', () => {
   });
 
   it('still renders healthy supplied images in the gallery with a null primary photo', async () => {
-    const { fixture, element } = await render([{ src: '/assets/car.webp', alt: 'BMW 330e M Sport Touring', label: 'Front' }]);
+    const { fixture, element } = await render([{ src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', alt: 'BMW 330e M Sport Touring', label: 'Front' }]);
     expect(element.textContent).not.toContain('Your offer could not be loaded');
-    expect(element.querySelector('gcsp-media-gallery img')?.getAttribute('src')).toBe('/assets/car.webp');
+    expect(element.querySelector('gcsp-media-gallery img')?.getAttribute('src')).toBe('/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp');
     expect(handleError).not.toHaveBeenCalled();
     fixture.destroy();
   });

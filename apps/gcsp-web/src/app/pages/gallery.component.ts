@@ -19,7 +19,8 @@ import { VehicleDecisionComponent } from '../kit/vehicle-decision.component';
 import { TabsComponent } from '../kit/tabs.component';
 import { SideDrawerComponent } from '../kit/side-drawer.component';
 import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
-@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent], styleUrl: './gallery.component.css', template: `
+import { MediaGalleryComponent, MediaGalleryImage } from '../kit/media-gallery.component';
+@Component({ selector: 'gcsp-gallery', imports: [PreferenceCategoryComponent, StarRatingComponent, ButtonDirective, ScreenIntroComponent, StatusScreenComponent, LabelledFieldComponent, ErrorSummaryComponent, BuddyControlsComponent, DataTableComponent, VehicleCardComponent, FactListComponent, StageListComponent, StageTrackerComponent, FinishLabelComponent, DecisionHighlightsComponent, VehicleDecisionComponent, TabsComponent, SideDrawerComponent, VehicleDetailsComponent, MediaGalleryComponent], styleUrl: './gallery.component.css', template: `
   <gcsp-screen-intro title="Angular components" lede="Shared portal components and states." />
   <section class="gcsp-panel"><h2>Actions and fields</h2><div class="gcsp-actions"><button gcspButton type="button">Continue</button><button gcspButton variant="ghost" type="button">Back</button><button gcspButton type="button" disabled>Unavailable</button></div>
   <gcsp-error-summary [errors]="[{ controlId: 'gallery-email', message: 'Enter an email address.' }]" />
@@ -73,13 +74,13 @@ import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
     <gcsp-decision-highlights layout="list" />
   </section>
   <section class="gcsp-panel"><h2>Focused decision layout shell</h2>
-    <p class="gcsp-note">The source summary and reading-order slots only. Media, complete car details and live offer integration are pending.</p>
+    <p class="gcsp-note">The source summary, media and reading-order slots. Complete car details and live offer integration are pending.</p>
     <gcsp-vehicle-decision name="BMW iX1" kicker="Your buddy found a car for you" layout="focused"
       [finishes]="decisionFinishes" [points]="1100" [allowance]="1300" pointsDifference="300 fewer than your current car">
       <div decisionDeadline class="gcsp-decision-deadline"><div><strong>Held until 14:30</strong><p class="gcsp-decision-date">Sunday 22 November 2026</p></div><div class="gcsp-decision-clock"><p class="gcsp-countdown">1h 20m</p><p class="gcsp-decision-date">Static gallery example</p></div></div>
       <div decisionActions class="gcsp-offer-actions"><button gcspButton type="button" disabled>Review &amp; accept</button><button gcspButton type="button" variant="ghost" disabled>Decline offer</button></div>
       <p decisionNote class="gcsp-note">Gallery actions are not connected.</p>
-      <div decisionMedia><p class="gcsp-note">Supplied media slot</p></div>
+      <gcsp-media-gallery decisionMedia name="BMW iX1" [images]="mediaImages" presentation="picker" fit="contain" />
       <div decisionDetails><p class="gcsp-note">Complete supplied facts, decision and equipment slot</p></div>
     </gcsp-vehicle-decision>
   </section>
@@ -105,6 +106,12 @@ import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
       [finishes]="detailsFinishes" [facts]="detailsFacts" [equipment]="detailsEquipment" [additionalDetails]="detailsDecision" />
     <gcsp-vehicle-details name="Car with equipment not supplied" [finishes]="[{ label: 'Paint', value: null }, { label: 'Upholstery', value: '' }]" [facts]="[{ label: 'Build month', value: null }]" />
   </section>
+  <section class="gcsp-panel"><h2>Source vehicle images</h2>
+    <p class="gcsp-note">Approved supplied views share feature, thumbnails and the enlarged viewer. The focused decision above uses the picker and contain variants.</p>
+    <gcsp-media-gallery name="Example BMW" [images]="mediaImages" />
+    <h3>Compact stock image</h3><gcsp-media-gallery name="Example BMW" [images]="mediaImages" [compact]="true" />
+    <h3>No supplied image</h3><gcsp-media-gallery name="Example car without an image" />
+  </section>
   <section class="gcsp-panel"><h2>Source facts and tabs</h2>
     <p class="gcsp-note">Canonical source classes with supplied facts. Default fact-list consumers keep their existing presentation.</p>
     <gcsp-fact-list presentation="source" className="vm-facts-pair gcsp-vehicle-overview" [rows]="sourceOverview" />
@@ -116,6 +123,10 @@ import { VehicleDetailsComponent } from '../kit/vehicle-details.component';
   </section>
 ` })
 export class GalleryComponent {
+  readonly mediaImages: readonly MediaGalleryImage[] = [
+    { src: '/assets/gcsp-vehicle-evidence/000cfa6bd4d71e51611f32283003aacf383c9c9d12f1a29f25b600a98d496490.webp', label: 'Front view', alt: 'Example BMW, front view' },
+    { src: '/assets/gcsp-vehicle-evidence/01af2978ba13fd99e11d6477eb706e0648f67d5602bc72e8e20217908b235748.webp', label: 'Second view', alt: 'Example BMW, second view' },
+  ];
   readonly detailsFinishes = [{ label: 'Paint', value: 'Black Sapphire' }, { label: 'Upholstery', value: 'M Alcantara Veganza combination Black contrast stitching with extended long text' }];
   readonly detailsFacts = [{ label: 'Body style', value: 'SUV' }, { label: 'Fuel', value: 'Petrol' }, { label: 'Build month', value: null }];
   readonly detailsEquipment = Array.from({ length: 57 }, (_, index) => `Selected equipment item ${index + 1} with retained source wording`);
