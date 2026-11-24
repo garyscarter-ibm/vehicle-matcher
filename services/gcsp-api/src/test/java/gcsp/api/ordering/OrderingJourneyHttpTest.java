@@ -1,5 +1,6 @@
 package gcsp.api.ordering;
 
+import static gcsp.api.appointments.ReturnJourneySteps.withCollectionDate;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -199,7 +200,7 @@ class OrderingJourneyHttpTest {
         JsonNode account = body(paula().get(BASE + "/manual/account")).get("value");
         assertEquals("ready", account.get("state").asText());
         assertTrue(account.get("slots").get(0).get("ordering").get("enabled").asBoolean());
-        String draft = StockDbFixture.complete().toString().replace("2026-11-12", "2026-11-30");
+        String draft = withCollectionDate(account, StockDbFixture.complete()).toString();
         Response saved = paula().body("{\"commandId\":\"draft-" + id() + "\",\"expectedDraftVersion\":0,\"expectedContextVersion\":\""
                 + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}").post(BASE + "/manual/draft");
         assertEquals(200, saved.statusCode(), saved.asString());

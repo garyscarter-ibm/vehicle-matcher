@@ -1,5 +1,6 @@
 package gcsp.api.ordering;
 
+import static gcsp.api.appointments.ReturnJourneySteps.withCollectionDate;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -184,12 +185,12 @@ abstract class OrderingRemoteJourneySupport {
         assertEquals("ready", account.get("state").asText(), who);
         assertTrue(account.get("slots").get(0).get("ordering").get("enabled").asBoolean(), who);
         ObjectNode choices = StockDbFixture.complete().deepCopy();
-        choices.put("slotId", "slot-" + who).put("driverId", "driver:employee-" + who).put("requestedCollectionDate", "2026-11-30");
+        choices.put("slotId", "slot-" + who).put("driverId", "driver:employee-" + who);
         // Jordan has no current contract, so the draft is a new order; Paula replaces hers.
         if ("jordan".equals(who)) choices.put("mode", "new").putNull("oldContractId").putNull("expectedReturnMileage");
         else choices.put("oldContractId", "current:employee-" + who);
         choices.with("contact").put("email", who + "@gcsp-demo.com");
-        String draft = choices.toString();
+        String draft = withCollectionDate(account, choices).toString();
         Response saved = employee(who).body("{\"commandId\":\"draft-" + id() + "\",\"expectedDraftVersion\":0,"
                 + "\"expectedContextVersion\":\"" + account.get("contextVersion").asText() + "\",\"choices\":" + draft + "}")
                 .post(BASE + "/manual/draft");
