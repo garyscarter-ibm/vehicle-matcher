@@ -12276,52 +12276,6 @@
       "observed_at": "2026-11-24T04:38:51Z"
     },
     {
-      "id": "FUCQ-588",
-      "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
-      "type": "Bug",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
-      "branch": "dev/DEV-2026-11-23-vesper-017",
-      "unsliced": false,
-      "note": "Source 34895c581 and scoped 119 Angular / 135 Node ratchet passed with independent source/spec/security review. Changed-source registered WebKit, rendered desktop/narrow critique and any immutable-reference difference remain F588 work owned by root. No human acceptance inferred.",
-      "workers": [
-        {
-          "name": "Lord Business",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "expires_at": "2026-11-24T05:17:49.796448+00:00",
-          "source": "Retained task /root/lord_business; actual scoped delivery, reviewed source and exact cleanup",
-          "status": "Scoped handoff complete; root connected integration pending"
-        }
-      ],
-      "slices": [
-        {
-          "id": "deadline-format",
-          "title": "Direct London HH:MM notification deadline with existing guards",
-          "status": "complete",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "evidence": "Reviewed source 34895c581; direct en-GB h23 Europe/London time formatter, unchanged active/valid guards. Actual model and source regression checks passed; f588-validation-r2/f588-result.json."
-        },
-        {
-          "id": "focused-regression",
-          "title": "Affected activity, source, shell and bell regression checks",
-          "status": "complete",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "evidence": "Actual 119 cases across exact eight Angular files and 135 ui-ratchet cases passed, no skips; Sniffles final source/spec/security review passed. f588-validation-r2/f588-result.json and f588-source-review-addendum.json."
-        },
-        {
-          "id": "connected-integration",
-          "title": "Registered changed-source WebKit assertions and reviewed integration",
-          "status": "not-started",
-          "observed_at": "2026-11-24T05:17:49.796448+00:00",
-          "evidence": "Root owns once-on-final-merged-source registered connected WebKit run and rendered desktop/narrow critique. Immutable frozen Node comparator may remain RED; no waiver or human verdict."
-        }
-      ],
-      "observed_at": "2026-11-24T05:17:49Z"
-    },
-    {
       "id": "FUCQ-589",
       "title": "Planning journey expects a cart hold to survive advancing its authoritative expiry clock",
       "type": "Bug",
@@ -12394,6 +12348,52 @@
           "evidence": "Root owns merge and complete-input reconciliation/green canonical covering. Tested c22 API0bd4 preserved by metadata-only ffefd322 refresh. Full canonical 45341810266 INCOMPLETE:303 reports/1886 cases,1883pass/1later F547 policy fail/2originalskips;410 methods unrun. Native In Progress; no acceptance inferred."
         }
       ]
+    },
+    {
+      "id": "FUCQ-588",
+      "title": "Notification deadline shows the full date in WebKit instead of HH:MM",
+      "type": "Bug",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-588",
+      "branch": "dev/DEV-2026-11-23-vesper-017",
+      "unsliced": false,
+      "note": "Actual connected WebKit26.4 on c22 observed correct Angular13:30 row/note at375/1280; all5 F555flows passed. Registered suite remains RED9pass/3fail: unchanged frozenNode full-date comparator and navigation-context-destroyed refresh check. AC1/AC2 observedmet;AC3partial. No Safari or human acceptance inferred; F548AC6/F555AC8pending.",
+      "workers": [
+        {
+          "name": "Lord Business",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "expires_at": "2026-11-24T05:17:49.796448+00:00",
+          "source": "Retained task /root/lord_business; actual scoped delivery, reviewed source and exact cleanup",
+          "status": "Scoped handoff complete; actual connected partial result recorded by root"
+        }
+      ],
+      "slices": [
+        {
+          "id": "deadline-format",
+          "title": "Direct London HH:MM notification deadline with existing guards",
+          "status": "complete",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "evidence": "Reviewed source 34895c581; direct en-GB h23 Europe/London time formatter, unchanged active/valid guards. Actual model and source regression checks passed; f588-validation-r2/f588-result.json."
+        },
+        {
+          "id": "focused-regression",
+          "title": "Affected activity, source, shell and bell regression checks",
+          "status": "complete",
+          "observed_at": "2026-11-24T05:17:49.796448+00:00",
+          "evidence": "Actual 119 cases across exact eight Angular files and 135 ui-ratchet cases passed, no skips; Sniffles final source/spec/security review passed. f588-validation-r2/f588-result.json and f588-source-review-addendum.json."
+        },
+        {
+          "id": "connected-integration",
+          "title": "Registered changed-source WebKit assertions and reviewed integration",
+          "status": "in-progress",
+          "observed_at": "2026-11-24T07:12:00Z",
+          "evidence": "Actual registered changed-source WebKit c22 RED9pass/3fail, all5 F555flowspass. Rootaudit66b8ddf5 reconciles1834inputs/14seals/cleanup; viewed375row/1280note13:30. Unchanged frozenNode date comparator differs; refresh evaluation context destroyed after GET200. OriginalAC3partial; humanverdicts remainpending."
+        }
+      ],
+      "observed_at": "2026-11-24T07:42:33Z"
     }
   ]
 }

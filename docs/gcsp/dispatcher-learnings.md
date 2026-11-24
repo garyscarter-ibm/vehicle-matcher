@@ -3440,3 +3440,12 @@ Several broad source/policy displays and an initial queue display again truncate
 ### 2026-11-24 07:24 UTC · usget-vesper · DL-20261124-F555-08 · Explicit commit attribution and branch publication
 
 - Rootobserved scaffold_git.ATTRIBUTION isused forhelpermerges, notordinarycommit messages; metadata checkpoints37a8b0601/c43526be3/3ba590a08 thereforelackrequiredCodextrailer. Publishedhistory ispreserved withoutforce. Newmessages include literaltrailer and arecheckedaftercommit. Ordinaryhelperpush fromlinkedF555WT pushedbase, nottheunpublishedsourcebranch; caughtbeforeclaimingpublication. Rootamendedonlyitsunpublished85bfcheckpoint toaddtrailer, thenexplicitmutex-protectedhelperlibrarypush published eca4f4db34e3d46e93fb336876bb941567e3d795 andremoteSHAverified. No sourcebytes changed bythatcorrection. Proposedimprovement: helpercommit/push contracts should makecaller attribution andbranchdestination explicit. No helper/frameworkchange inthisStory.
+
+
+### 2026-11-24 07:43 UTC · usget-vesper · DL-20261124-F555-07 · Focused wiring gap completed and integrated
+
+- Four missing mandatory classes actually ran once:46/46PASS,0fail/error/skip. Rootd987be6f independently parses retainedXML/exactidentities,18inputs,97PIDstarts/3groups absent and scratch/target/fixednativeDB/ownregistry/tokens clear, sharedPGpreserved. Combined175planning+56wiring=231selectedpasses plus3supplementaryClaimRunClock; source/spec/security/runtimereviewpassed. F589 integrated95de5d418 with completeAPI0bd4ff97e/all18inputsexact. Fullbatch remainsINCOMPLETE; F547original2AC repair claimedDEV022, all14importattachmentrequests reverifiedready. Existing resource-pathmitigation nowyielded actualselectedevidence; nofullbatch/humanacceptance claimed. Proposedimprovement remains identity-based coverage reconciliation, not unchangedrepetition.
+
+### 2026-11-24 07:43 UTC · usget-vesper · DL-20261124-F555-08 · Claim commits use a separate attribution path
+
+- Rootwrapped commit_paths forclaim attribution, but actualclaimbda895581 uses _commit_two directly and publishedwithoutCodextrailer. Postcommitinspection caughtit; publishedhistorypreserved. Futurehelperclaim calls need explicit attribution at _commit_two aswell asordinarycommit_paths; thisis an observedremaininghelperinterface issue, noframeworkchangeornewgate. Merge95de5d418 andpublishedF555candidatea5a2cc165 includeactualCodextrailers.
