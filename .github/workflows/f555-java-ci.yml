@@ -70,6 +70,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import collections
+          import hashlib
           import json
           import os
           from pathlib import Path
@@ -119,6 +120,7 @@ jobs:
           CONSOLE_EVENT_CAP = 2048
           SKIP_DETAIL_CAP = 128 * 1024
           FAILED_IDENTITY_CAP = 128 * 1024
+          CASE_INVENTORY_CAP = 512 * 1024
           FAILURE_SAMPLE_CAP = 256 * 1024
           FAILURE_CLASS_CAP = 16 * 1024
           PROCESS_TELEMETRY_CAP = 512 * 1024
@@ -330,6 +332,11 @@ jobs:
               skipped_omitted = 0
               testcase_count = executed_tests = parsed_reports = 0
               failure_details = error_details = skipped_count = 0
+              case_inventory = []
+              case_inventory_bytes, case_inventory_omitted = 2, 0
+              identity_counts = collections.Counter()
+              outcome_counts = collections.Counter()
+              malformed_identities = 0
               parse_issue = None
               try:
                   for report in reports:
@@ -348,6 +355,24 @@ jobs:
                                    if node.tag.rsplit("}", 1)[-1] == "testcase"):
                           testcase_count += 1
                           diagnostic_case_count += case.attrib.get("classname") == "gcsp.api.DefaultProfileTest"
+                          class_name, test_name = case.attrib.get("classname", ""), case.attrib.get("name", "")
+                          malformed_identities += not class_name or not test_name
+                          identity_hash = hashlib.sha256(json.dumps(
+                              [class_name, test_name], ensure_ascii=True, separators=(",", ":")
+                          ).encode("utf-8")).hexdigest()
+                          outcomes = sorted(detail.tag.rsplit("}", 1)[-1] for detail in case
+                                            if detail.tag.rsplit("}", 1)[-1] in ("failure", "error", "skipped")) or ["passed"]
+                          identity_counts[identity_hash] += 1
+                          outcome_counts[(identity_hash, tuple(outcomes))] += 1
+                          entry = bounded_diagnostic({"class": class_name, "test": test_name,
+                                                      "report": report.name}, 2048)
+                          entry.update(identity_sha256=identity_hash, outcomes=outcomes)
+                          size = encoded_size(entry) + 1
+                          if case_inventory_bytes + size <= CASE_INVENTORY_CAP:
+                              case_inventory.append(entry)
+                              case_inventory_bytes += size
+                          else:
+                              case_inventory_omitted += 1
                           skips = []
                           for detail in case:
                               kind = detail.tag.rsplit("}", 1)[-1]
@@ -422,6 +447,28 @@ jobs:
                   "skipped_details_cap_bytes": SKIP_DETAIL_CAP,
                   "skipped_details_omitted": skipped_omitted,
                   "first_failures": failed_cases, "parse_issue": parse_issue
+              }
+              summary["case_inventory"] = {
+                  "state": "incomplete" if parse_issue else "no-reports" if not reports else
+                           "complete-with-omissions" if case_inventory_omitted else "complete",
+                  "order": "sorted report filename, then testcase order; not execution chronology",
+                  "cases": case_inventory, "case_count": testcase_count,
+                  "bytes": case_inventory_bytes, "cap_bytes": CASE_INVENTORY_CAP,
+                  "omitted": case_inventory_omitted, "malformed_identity_count": malformed_identities,
+                  "unique_identity_count": len(identity_counts),
+                  "repeated_identity_count": sum(count > 1 for count in identity_counts.values()),
+                  "duplicate_occurrence_count": sum(count - 1 for count in identity_counts.values()),
+                  "identity_multiset_sha256": hashlib.sha256(json.dumps(
+                      sorted(identity_counts.items()), ensure_ascii=True, separators=(",", ":")
+                  ).encode("utf-8")).hexdigest(),
+                  "multiset_sha256": hashlib.sha256(json.dumps(
+                      sorted((identity, list(outcomes), count)
+                             for (identity, outcomes), count in outcome_counts.items()),
+                      ensure_ascii=True, separators=(",", ":")
+                  ).encode("utf-8")).hexdigest(),
+                  "identity_basis": "SHA256 of compact ASCII JSON [raw classname,raw testcase name]; "
+                                    "multiset hashes sorted [identity_sha256,outcomes,multiplicity]; "
+                                    "repeated names are observations, not validation failures"
               }
               summary["failure_capture"] = {
                   "state": "incomplete" if parse_issue else "no-reports" if not reports else
